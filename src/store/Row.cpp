@@ -183,6 +183,10 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   m8* amCellAddress = (m8*) & m_wxaColumnCell[i_Col];
   i8  i_Ofs = m_wxaColumnCell[i_Col].m_iWrd;
 
+  // check for null
+  if (i_Ofs == C_DATUM_NULL)
+    return (Stz*)C_DATUM_NULL;
+
   Stz* pStz = aAdd<Stz*>(amCellAddress,i_Ofs);
   
   return pStz;

@@ -253,6 +253,38 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if all of the projected expressions are aggregate expressions */
+/*----------------------------------------------------------------------------*/
+b1 ProjectOp::bHasOnlyAggregates(QueryNode* pNode, b1 bAllowLiterals)
+{
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
+
+  if (pProjColumns->nChildren() == 0) {
+    return false;
+  }
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  b1 bResult = true;
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+    if (!ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      if (!bAllowLiterals || !ProjectedColumn::bIsFullyLiteral(pProjColumn)) {
+        bResult = false;
+        break;
+      }
+    }
+  }
+
+  delete pIter;
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the projectedColumns node of the projectOp                           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pProjectedColumns(QueryNode* pNode)
@@ -422,7 +454,20 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(Expr::bIsNotOrdinal(pExpr));
 
   // First check if the expression is already being projected
+  QueryNode* pExistingProjCol = pColumnWithExpr(pNode, pExpr);
 
+  if (pExistingProjCol) {
+    ASSERT(ProjectedColumn::bIsOfType(pExistingProjCol));
+
+    if (!ProjectedColumn::szAliasName(pExistingProjCol) && pAlias) {
+      ProjectedColumn::vSetAlias(pExistingProjCol, pAlias);
+      pAlias = nullptr;
+    }
+
+    delete pExpr;
+    delete pAlias;
+    return;
+  }
 
   // Create a projected column
   QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExpr, pAlias);
@@ -432,6 +477,168 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(ProjectedColumns::bIsOfType(pProjectedColumns));
 
   pProjectedColumns->vAppendChild(pProjectedColumn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns modified for           */
+/* partitioned aggregate expressions                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
+{
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, new PlanNodeList());
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Check if the current projected column requires changes for partitioning.
+    // If so, a non-null QueryNodeList is returned.
+    QueryNodeList* pPartitionedColList = ProjectedColumn::pPartitionAggregates(pProjColumn);
+
+    if (!pPartitionedColList) {
+      // Column doesn't need partitioning
+      continue;
+    }
+
+    // Column has been partitioned
+    ASSERT(pPartitionedColList->nItems() > 0);
+
+    // Need to remove the current column and insert these ones in its place,
+    // unless their expressions are already being projected.
+    pIter->vRemove();
+    delete pProjColumn;
+
+    QueryNode* pNewCol;
+    while ((pNewCol = pPartitionedColList->pPop()) != nullptr) {
+
+      // Check if pNewCol is already being projected
+      QueryNode* pNewExpr = ProjectedColumn::pExprNode(pNewCol);
+      if (pColumnWithExpr(pNewOp, pNewExpr)) {
+        // This expression is already being projected. No need to project it twice.
+        delete pNewCol;
+        continue;
+      }
+
+      pIter->vInsertBefore(pNewCol);
+    }
+
+    ASSERT(pPartitionedColList->nItems() == 0);
+    delete pPartitionedColList;
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns super-aggregating      */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Any aggregated expressions need to be super-aggregated
+    if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      ProjectedColumn::vSuperAggregate(pProjColumn);
+    }
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns doubly super-aggregating*/
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Any aggregated expressions need to be super-aggregated
+    if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      ProjectedColumn::vDoubleSuperAggregate(pProjColumn);
+    }
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of columns being projected                              */
+/*----------------------------------------------------------------------------*/
+i8 ProjectOp::nColumns(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pProjCols = pProjectedColumns(pNode);
+  return pProjCols->nChildren();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a ptr to the internal ProjectedColumn node (not Expr) that contains*/
+/* a symbolically equal expression as pExpr, or nullptr                       */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pExpr);
+  ASSERT(Expr::bIsOfType(pExpr));
+  ASSERT(Expr::bIsNotOrdinal(pExpr));
+
+  QueryNode* pMatchingProjCol = nullptr;
+
+  PlanNodeIter* pIter = pProjectedColumns(pNode)->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+
+    QueryNode* pProjCol = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjCol));
+
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjCol);
+    ASSERT(Expr::bIsOfType(pColExpr));
+
+    if (Expr::bIsSymbolicallyEqual(pExpr, pColExpr)) {
+      pMatchingProjCol = pProjCol;
+      break;
+    }
+  }
+
+  delete pIter;
+
+  return pMatchingProjCol;
 }
 
 /*============================================================================*/

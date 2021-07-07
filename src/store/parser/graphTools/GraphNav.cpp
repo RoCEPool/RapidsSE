@@ -80,6 +80,14 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 void GraphNav::vPrintNode(PlanNode* pNode)
 {
+  vPrintNode(pNode, true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks the graph from a given node and prints information to the console    */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrintNode(PlanNode* pNode, b1 bPrintProperties)
+{
   ASSERT(pNode);
 
   vTrace("\n\nPlan Graph:\n-----------\n\n"_Stz);
@@ -96,7 +104,7 @@ void GraphNav::vPrintNode(PlanNode* pNode)
     return WALK_CONTINUE;
   };
 
-  bGlobalWalk(pNode, fVisitor, nullptr);
+  bGlobalWalk(pNode, bPrintProperties, true, fVisitor, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1220,6 +1228,43 @@ PlanNode* GraphNav::pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1
 }
 
 /*----------------------------------------------------------------------------*/
+/* Search for a node that matches a given condition in a bottom-up fashion.   */
+/* If found then the node^ is returned. Searches the entire graph from the    */
+/* starting node.                                                             */
+/* The condition function is a lambda/function with the following definition: */
+/*   b1 bCondition(PlanNode* pNode, void* pvArg);                             */
+/* Returning true out of this function will return pNode and abort the search.*/
+/* Returning false out of this function will continue the search.             */
+/* If no node matching the condition is found then a nullptr is returned.     */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pGlobalSearchBottomUp(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                          std::function<b1(PlanNode*, void*)> fCondition, void* pvArg)
+{
+  ASSERT(pStartNode);
+
+  PlanNode* pResult = nullptr;
+
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    // test the condition
+    if (fCondition(pNode, pvArg)) {
+      pResult = pNode;
+      return WALK_ABORT;
+    }
+
+    return WALK_CONTINUE;
+  };
+
+  // Walk the graph then return the result, if any
+  bGlobalWalkBottomUp(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
+
+  return pResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Search for a node that matches a given condition. If found then the node^  */
 /* is returned. Searches this plan segment only (until a PlanMarker           */
 /* is hit).                                                                   */
@@ -1252,6 +1297,43 @@ PlanNode* GraphNav::pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b
 
   // Walk the graph then return the result, if any
   bBoundedWalk(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
+
+  return pResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Search for a node that matches a given condition in a bottom-up fashion.   */
+/* If found then the node^ is returned. Searches this plan segment only       */
+/* (until a PlanMarker is hit).                                               */
+/* The condition function is a lambda/function with the following definition: */
+/*   b1 bCondition(PlanNode* pNode, void* pvArg);                             */
+/* Returning true out of this function will return pNode and abort the search.*/
+/* Returning false out of this function will continue the search.             */
+/* If no node matching the condition is found then a nullptr is returned.     */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pBoundedSearchBottomUp(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                           std::function<b1(PlanNode*, void*)> fCondition, void* pvArg)
+{
+  ASSERT(pStartNode);
+
+  PlanNode* pResult = nullptr;
+
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    // test the condition
+    if (fCondition(pNode, pvArg)) {
+      pResult = pNode;
+      return WALK_ABORT;
+    }
+
+    return WALK_CONTINUE;
+  };
+
+  // Walk the graph then return the result, if any
+  bBoundedWalkBottomUp(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
 
   return pResult;
 }

@@ -43,6 +43,14 @@ namespace Parser
     static void vSetLocation(QueryNode* pNode, Location::eLO eLocation);
     static void vClearLocation(QueryNode* pNode);
 
+    // Returns the location of this node, otherwise if the node doesn't have a location
+    // then it can descend into the children until a location is found. If no location
+    // is set then LO_NONE is returned.
+    static Location::eLO eLocation(QueryNode* pNode, b1 bIncludeChildren);
+
+    // Returns true if this specific node has a location property and it's value is valid
+    static b1 bNodeHasLocation(QueryNode* pNode);
+
   protected:
     // Indent format
     enum eIndentFormat {

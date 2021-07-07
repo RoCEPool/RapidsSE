@@ -27,6 +27,7 @@
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "LimitOp.hpp"
+#include "Location.hpp"
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
@@ -109,8 +110,9 @@ Backend::Backend(RootNode* pPlanRoot)
   // Find the /plan node
   m_pPlanRoot = pPlanRoot;
 
-  m_pColExprList = nullptr;
-  m_sPipeline = nullptr;
+  m_sPipeline    = nullptr;
+  m_bHasUnionOp  = false;
+  m_bNewStage   = false;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -123,10 +125,6 @@ Backend::Backend(RootNode* pPlanRoot)
 Backend::~Backend(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
-  if (m_pColExprList) {
-    m_pColExprList->vDeleteAll();
-    delete m_pColExprList;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,16 +166,15 @@ bool Backend::bTransliterate(String* sPipeline) {
   ASSERT(StageMarker::bIsOfType(pStartingNode));
   QueryNode* pStageMarker = _pQueryNode(pStartingNode);
 
+  // append the start stage
   vAppendStartStage();
 
   // We want to iterate over each logical subgraph, bounded by StageMarkers,
   // and generate the pipeline for each statement
-  vAppendPipe();
-  vAppendNextOp(pStageMarker->szName());
   GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vAppendLastStage();
+  vAppendLastStage("on origin"_Stz);
 
   return true;
 }
@@ -209,14 +206,18 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode, Stz* szAliasName) {
+void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pExprNode, Stz* szAliasName) {
   _static_
 
-  String* sPipeline = pBackend->m_sPipeline;
+  QueryNode* pQueryNode = _pQueryNode(pExprNode);
 
-  // get the expr node
-  //QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pNode));
-  //ASSERT(pExprNode);
+  QueryNode* pOrdinalExpr = nullptr;
+  RASSERT(pColExprList);
+
+  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pBackend->m_pPlanRoot);
+  RASSERT(pOrdinalExpr);
+
+  String* sPipeline = pBackend->m_sPipeline;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
@@ -226,6 +227,14 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode, Stz* szAliasN
       ""_Stz,
       aCT[eType]);
 
+  if ( ! szAliasName) {
+    if (ColumnRef::bIsOfType(pExprNode)) {
+      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+      szAliasName = ColumnRef::szColumn(pColumnRef);
+      StrLib::vToLower(szAliasName->azChar());
+    }
+  }
+
   if (szAliasName) {
     sPipeline->vCatSprint(
         " as %s"
@@ -233,28 +242,39 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode, Stz* szAliasN
         szAliasName);
   }
 
-//  if (szAliasName) {
-//    sPipeline->vCatSprint(
-//        " as %s"
-//        ""_Stz,
-//        szAliasName);
-//  }
-//  else if (ColumnRef::bIsOfType(pExprNode)) {
-//
-//    QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-//    s256 sColumnName;
-//    sColumnName = ColumnRef::szColumn(pColumnRef);
-//    StrLib::vToLower(sColumnName.azChar());
-//
-//    sPipeline->vCatSprint(
-//        " as %s"
-//        ""_Stz,
-//        sColumnName.szStz());
-//  }
-
   // Walk the expr node plan graph
-  //GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) pBackend);
-  GraphNav::bGlobalWalk(pExprNode, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+  GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+  delete pOrdinalExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append aggregate Op to the pipeline                                        */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName)
+{
+  _static_
+
+  String* sPipeline = pBackend->m_sPipeline;
+
+  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+
+  sPipeline->vCatSprint(
+    " type %s"
+    ""_Stz,
+    aCT[eType]);
+
+  sPipeline->vCatSprint(
+    " $K%lld"
+    ""_Stz,
+    ColumnOrdinal::iOrdinal(pOrdinalExprNode));
+
+  if (szAliasName) {
+    sPipeline->vCatSprint(
+        " as %s"
+        ""_Stz,
+        szAliasName);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,26 +293,16 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
-
-
-  // Iterate each projected expression to look for aggregates if any
-  QueryNode* pOrdinalProjectedColumns = nullptr;
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // get the ordinal projected columns relative to group by
-  if (AggregateOp::bIsOfType(pNode))
-    pOrdinalProjectedColumns = AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
+  QueryNode* pOrdinalProjectedColumns =
+      AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
 
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-      sPipeline->vCatSprint(
-          "    | aggreg 1 \""
-          ""_Stz);
+    pBackend->vAppendNextOp("aggreg 0 \""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -310,113 +320,57 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       // get the next projectedColumn from the iterator
       QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
       ASSERT(pProjectedColumn);
+
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+      Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
+      QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      // get the expr node
-      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
-      ASSERT(pExprNode);
+      // get the ordinal projected column relative to group by
+      QueryNode *pRelativeOrdinal = static_cast<QueryNode *>(pOrdinalProjectedColumns->pNthChild(iChild));
+      QueryNode *pOrdinalExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pRelativeOrdinal));
+      ASSERT(pOrdinalExprNode);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // alias
-      Stz *szAliasName = ""_Stz;
-      szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
-
-      if ( ! szAliasName) {
-        if (ColumnRef::bIsOfType(pExprNode)) {
-          QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-          szAliasName = ColumnRef::szColumn(pColumnRef);
-          StrLib::vToLower(szAliasName->azChar());
-        }
-      }
-
-      if (AggregateOp::bIsOfType(pNode)) {
-
-        // get the ordinal projected column relative to group by
-        QueryNode *pRelativeOrdinal = static_cast<QueryNode *>(pOrdinalProjectedColumns->pNthChild(iChild));
-        QueryNode *pOrdinalExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pRelativeOrdinal));
-        ASSERT(pOrdinalExprNode);
-
-        // generate $K? relative to group by key if its a column ordinal
-        if ( ! ColumnRef::bIsOfType(pExprNode) &&
-               ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
-
-          eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
-
-          sPipeline->vCatSprint(
-              " type %s"
-              ""_Stz,
-              aCT[eType]);
-
-          sPipeline->vCatSprint(
-              " $K%lld"
-              ""_Stz,
-              ColumnOrdinal::iOrdinal(pOrdinalExprNode));
-
-          if (szAliasName) {
-            sPipeline->vCatSprint(
-                " as %s"
-                ""_Stz,
-                szAliasName);
-          }
-        } else {
-          vAppendExpr(pBackend, pExprNode, szAliasName);
-        }
-      }
-      else {
-        vAppendExpr(pBackend, pExprNode, szAliasName);
+      // generate $K? relative to group by key if its a column ordinal
+      if ( ! ColumnRef::bIsOfType(pExprNode) &&
+           ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+        vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
+      } else {
+        vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
       }
     }
+
+    // cleanup
+    delete pOrdinalProjectedColumns;
     delete pIter;
-    if (pOrdinalProjectedColumns)
-      delete pOrdinalProjectedColumns;
 
-    // if aggregOp , get a groupBy iterator
-    if (AggregateOp::bIsOfType(pNode)) {
+    // Get the groupBy from ProjectOp
+    sPipeline->vCatSprint(" groupBy "_Stz);
+    bFirstExpr = false;
 
-      // Get the groupBy from ProjectOp
-      sPipeline->vCatSprint(" groupBy "_Stz);
-      bFirstExpr = false;
+    QueryNode *pGroupByList = AggregateOp::pGroupByList(pNode);
+    PlanNodeIter *pGroupByIter = pGroupByList->pNewChildrenIter();
+    while (pGroupByIter->bHasNext()) {
 
-      QueryNode *pGroupByList = AggregateOp::pGroupByList(pNode);
-      PlanNodeIter *pGroupByIter = pGroupByList->pNewChildrenIter();
-      while (pGroupByIter->bHasNext()) {
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
 
-        // append comma
-        if (bFirstExpr)
-          sPipeline->vCatSprint(" ,"_Stz);
-        else
-          bFirstExpr = true;
+      // get the next groupByExpr from the iterator
+      QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
+      ASSERT(pGroupByExpr);
 
-        // get the next groupByExpr from the iterator
-        QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
-        ASSERT(pGroupByExpr);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // alias
-        Stz *szAliasName = ""_Stz;
-        //szAliasName = ProjectedColumn::szAliasName(pGroupByExpr);
-
-        if (ColumnRef::bIsOfType(pGroupByExpr)) {
-          QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // columnRef
-          vAppendExpr(pBackend, pColumnRef, nullptr);
-        }
-        else if (AliasRef::bIsOfType(pGroupByExpr)) {
-          QueryNode *pAliasRef = static_cast<QueryNode *>(pGroupByExpr);
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // columnRef
-          vAppendExpr(pBackend, pAliasRef, nullptr);
-        }
-        else
-          vAppendExpr(pBackend, pGroupByExpr, nullptr);
-      }
-      delete pGroupByIter;
+      vAppendExpr(pBackend, pColExprList, pGroupByExpr, nullptr);
     }
+    delete pGroupByIter;
   }
 
-  sPipeline->vCatSprint(" \" \n"_Stz);
+  sPipeline->vCatSprint(" \""_Stz);
 
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,16 +387,17 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
-  sPipeline->vCatSprint(
-      "    | filter 1 \" type BOOLEAN "
-      ""_Stz);
+  pBackend->vAppendNextOp("filter 1 \" type BOOLEAN "_Stz);
+//  sPipeline->vCatSprint(
+//      "    filter 1 \" type BOOLEAN "
+//      ""_Stz);
 
   // Walk the expr node plan graph
   //GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) pBackend);
   GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
-  sPipeline->vCatSprint(" \" \n"_Stz);
+  sPipeline->vCatSprint(" \""_Stz);
 
 }
 
@@ -455,18 +410,24 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 
   String* sPipeline = pBackend->m_sPipeline;
 
-  sPipeline->vCatSprint(
-      "    | limit 1 %lld"
-      ""_Stz,
-      LimitOp::iLimit(pNode));
+  s256 sLimit;
+
+//  sPipeline->vCatSprint(
+//      "    limit 1 %lld"
+//      ""_Stz,
+//      LimitOp::iLimit(pNode));
 
   i8 iOffset = LimitOp::iOffset(pNode);
 
   if (iOffset != C_UNKNOWN) {
-    sPipeline->vCatSprint("offset %lld"_Stz, iOffset);
+    //sPipeline->vCatSprint("offset %lld"_Stz, iOffset);
+    sLimit.vCatSprint("limit 1 %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
+  }
+  else {
+    sLimit.vCatSprint("limit 1 %lld"_Stz, LimitOp::iLimit(pNode));
   }
 
-  sPipeline->vCatSprint(" \n"_Stz);
+  pBackend->vAppendNextOp(sLimit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,18 +446,15 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrderItemList);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
 
-    sPipeline->vCatSprint(
-        "    | orderBy 0 \""
-        ""_Stz);
+    pBackend->vAppendNextOp("orderBy 0 \""_Stz);
+//    sPipeline->vCatSprint(
+//        "    orderBy 0 \""
+//        ""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pOrderItemList->pNewChildrenIter();
@@ -514,11 +472,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      // get the expr node
-      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pOrderItem));
-      ASSERT(pExprNode);
-
-      vAppendExpr(pBackend, pExprNode, ""_Stz);
+      vAppendExpr(pBackend, pColExprList, pOrderItem, ""_Stz);
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -526,8 +480,11 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
 
   }
 
-  sPipeline->vCatSprint(" \" \n"_Stz);
+  sPipeline->vCatSprint(" \""_Stz);
 
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -546,18 +503,12 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pProjectedColumns);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    sPipeline->vCatSprint(
-        "    | project 0 \""
-        ""_Stz);
+    pBackend->vAppendNextOp("project 0 \""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -575,31 +526,20 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      // get the expr node
-      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
-      ASSERT(pExprNode);
+      Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
+      QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // alias
-      Stz *szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
-      if ( ! szAliasName) {
-        if (ColumnRef::bIsOfType(pExprNode)) {
-          QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-          szAliasName = ColumnRef::szColumn(pColumnRef);
-          StrLib::vToLower(szAliasName->azChar());
-        }
-      }
-
-      vAppendExpr(pBackend, pExprNode, szAliasName);
+      vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
     }
     delete pIter;
 
   }
 
-  //delete pOrdinalProjectedColumns;
+  sPipeline->vCatSprint(" \""_Stz);
 
-  sPipeline->vCatSprint(" \" \n"_Stz);
-
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,10 +556,16 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   Stz *szSchemaName    = TableRef::szSchema(pTableRef);
   Stz *szTableName     = TableRef::szTable(pTableRef);
 
-  sPipeline->vCatSprint(
-      "    scan %s %s %s\n"
-      ""_Stz,
-      szCatalogName, szSchemaName, szTableName);
+  s256 sScan;
+
+  sScan.vCatSprint("scan %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
+
+  pBackend->vAppendNextOp(sScan);
+
+//  sPipeline->vCatSprint(
+//      "    scan %s %s %s\n"
+//      ""_Stz,
+//      szCatalogName, szSchemaName, szTableName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -636,14 +582,50 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   QueryNode *pChildStageMarker1 = _pQueryNode(pUnionNode->pFirstChild());
   QueryNode *pChildStageMarker2 = _pQueryNode(pUnionNode->pSecondChild());
 
-  pBackend->vAppendNextOp(pChildStageMarker1->szName());
-  pBackend->vAppendPipe();
-  pBackend->vAppendNextOp(pChildStageMarker2->szName());
+  // check for a stagemarker
+  PlanNode* pLeafStageMarker = nullptr;
 
-  // bounded walk of each of first children
+  auto fLeafStageMarker = [&pLeafStageMarker](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl  {
+    if (StageMarker::bIsExactType(pNode)) {
+      pLeafStageMarker = pNode;
+      return GraphNav::WALK_ABORT;
+    }
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  String* sPipeline = pBackend->m_sPipeline;
+
+  // add child op's
+
+  GraphNav::bGlobalWalkBottomUp(pChildStageMarker1, false, true, fLeafStageMarker, (void *) pBackend);
+  RASSERT(pLeafStageMarker);
+
+  // check for a unionOp
+  auto fHasUnionOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return UnionOp::bIsExactType(pNode);
+  };
+
+  // check for a unionOp
+  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pChildStageMarker1, false, true, fHasUnionOp, nullptr);
+
+  if ( ! pHasUnionOp )
+    pBackend->vAppendNextOp(pLeafStageMarker->szName());
+
+  // add child op's
+  GraphNav::bGlobalWalkBottomUp(pChildStageMarker2, false, true, fLeafStageMarker, (void *) pBackend);
+  RASSERT(pLeafStageMarker);
+
+  pBackend->vAppendNextOp(pLeafStageMarker->szName());
+
+  pBackend->m_bNewStage = false;
+  pBackend->m_bHasUnionOp = true;
+
+  // bounded walk of first children
   GraphNav::bGlobalWalk(pChildStageMarker1, false, true, vVisitorPlan, (void *) pBackend);
 
-  // bounded walk of each of first children
+  pBackend->m_bHasUnionOp = true;
+
+  // bounded walk of first children
   GraphNav::bGlobalWalk(pChildStageMarker2, false, true, vVisitorPlan, (void *) pBackend);
 }
 
@@ -653,12 +635,12 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
 {
   _static_
-  UNUSED(sPath);
+      UNUSED(sPath);
   UNUSED(iDepth);
 
   static bool bHasAgg = false;
 
-  QueryNode* pQueryNode = static_cast<QueryNode *>(pExprNode);
+  QueryNode* pOrdinalExpr = _pQueryNode(pExprNode);
 
   Backend* pBackend = (Backend*)pvArg;
   String* sPipeline = pBackend->m_sPipeline;
@@ -667,41 +649,13 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 //           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
 //           sPath.szStz());
 
-  QueryNode* pOrdinalExpr = nullptr;
-  b1 bDeleteOrdExpr = false;
-
-  QueryNode* pAliasedNode;
-  if (AliasRef::bIsOfType(pQueryNode)) {
-    pAliasedNode = AliasRef::pAliasedExpr(pQueryNode);
-    if (ColumnRef::bIsOfType(pAliasedNode)) {
-      pOrdinalExpr = Expr::pSymbolicToOrdinal(pAliasedNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-      bDeleteOrdExpr = true;
-    } else
-      pOrdinalExpr = pAliasedNode;
-  }
-  else {
-//    if (ColumnRef::bIsOfType(pQueryNode)) {
-//      pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-//      bDeleteOrdExpr = true;
-//    } else
-//      pOrdinalExpr = pQueryNode;
-
-    if (pBackend->m_pColExprList) {
-      pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-      bDeleteOrdExpr = true;
-    }
-    if ( ! pOrdinalExpr )
-      pOrdinalExpr = pQueryNode;
-  }
-
   if (eEventType == Parser::GraphNav::EVENT_ENTER) {
 
-    if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
+    if (iDepth == 0 && AggregateExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" ) "_Stz);
     }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //delete pOrdinalExpr;
 
     return GraphNav::WALK_CONTINUE;
   }
@@ -722,14 +676,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // aggregate
   if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
 
-    if (AvgExpr::bIsOfType(pOrdinalExpr)) {
-
-      RASSERT(0);
-      bHasAgg = true;
-
-    }
-
-    else if (CountExpr::bIsOfType(pOrdinalExpr)) {
+    if (iDepth == 0 && CountExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isCountAll
@@ -758,7 +705,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     }
 
-    else if (MinExpr::bIsOfType(pOrdinalExpr)) {
+    else if (iDepth == 0 && MinExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -777,7 +724,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     }
 
-    else if (MaxExpr::bIsOfType(pOrdinalExpr)) {
+    else if (iDepth == 0 && MaxExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -796,7 +743,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     }
 
-    else if (SumExpr::bIsOfType(pOrdinalExpr)) {
+    else if (iDepth == 0 && SumExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -815,12 +762,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     }
 
-    else {
-      NEVER_REACH;
-    }
+//    else {
+//      NEVER_REACH;
+//    }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //if (bDeleteOrdExpr)
+    //delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -856,8 +803,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //if (bDeleteOrdExpr)
+    //  delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -901,8 +848,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" TIMESTAMP '%s' "_Stz, (char*)spTsp.sz(TimestampLiteral::xValue(pOrdinalExpr)));
     }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //if (bDeleteOrdExpr)
+    //  delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -934,8 +881,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //if (bDeleteOrdExpr)
+    //  delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -971,14 +918,14 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
+    //if (bDeleteOrdExpr)
+    //  delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
   // Keep walking
-  if (bDeleteOrdExpr)
-    delete pOrdinalExpr;
+  //if (bDeleteOrdExpr)
+  //  delete pOrdinalExpr;
   return GraphNav::WALK_CONTINUE;
 }
 
@@ -992,11 +939,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
   QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
 
   Backend* pBackend = (Backend*)pvArg;
-
-  if (iDepth == 0) {
-    pBackend->vAppendPipe();
-    pBackend->vAppendNextOp("stageLast"_Stz);
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
@@ -1085,24 +1027,84 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 
   // we have a unionOp
   if (pHasUnionOp) {
-    pBackend->vAppendNextStage(pStageMarker->szName());
+
+    pBackend->m_bHasUnionOp = true;
+    pBackend->vAppendNextOp(pStageMarker->szName());
+
+    // get the location of this stageMarker
+    QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
+    RASSERT(pLocation);
+    Stz *szLocation = Parser::Location::szLocationType(pLocation);
+
+    pBackend->vAppendNewStage(pStageMarker->szName(), szLocation);
 
     QueryNode *pUnionOp = static_cast<QueryNode *>(pHasUnionOp);
     pBackend->vAppendNextOp(pUnionOp->szName());
 
-    // previos stage to pipe to union stage
-    pBackend->vAppendNextStage(pUnionOp->szName());
+    // previous stage to pipe to union stage
+    pBackend->vAppendNewStage(pUnionOp->szName(), szLocation);
     vAppendUnionOp(pBackend, pUnionOp);
     return GraphNav::WALK_SKIP_CHILDREN;
   }
 
-  pBackend->vAppendNextStage(pStageMarker->szName());
+  // get the location of this stageMarker
+  QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
+  RASSERT(pLocation);
+  Stz *szLocation = Parser::Location::szLocationType(pLocation);
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
   // bottom-up, depth-first traversal.
   // Starting on a StageMarker will walk until the subsequent StageMarker
   // node is encountered.
+  if ( ! pHasUnionOp ) {
+    GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
+    pBackend->vAppendNextOp("stageLast"_Stz);
+    return GraphNav::WALK_ABORT;
+  }
+
+  // Keep walking
+  return GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visitor function for the stage                                             */
+/*----------------------------------------------------------------------------*/
+GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  _static_
+
+  // Continue walking till a StageMarker is hit
+  if (!StageMarker::bIsOfType(pRootNode)) {
+    return GraphNav::WALK_CONTINUE;
+  }
+
+  // get the stageMarker
+  QueryNode* pStageMarker = _pQueryNode(pRootNode);
+
+  // get the backend
+  Backend* pBackend = (Backend*)pvArg;
+
+  // get the location of this stageMarker
+  QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
+  RASSERT(pLocation);
+  Stz *szLocation = Parser::Location::szLocationType(pLocation);
+
+  if (pBackend->m_bHasUnionOp) {
+    pBackend->m_bHasUnionOp = false;
+  }
+  else {
+    pBackend->vAppendNextOp(pStageMarker->szName());
+  }
+
+  pBackend->vAppendNewStage(pStageMarker->szName(), szLocation);
+
+  // Walk the current node and its children,
+  // calling the visitor function for each node encountered. This is a
+  // bottom-up, depth-first traversal.
+  // Starting on a StageMarker will walk until the subsequent StageMarker
+  // node is encountered.
+
   GraphNav::bBoundedWalkBottomUp(pStageMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
@@ -1112,12 +1114,12 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 /*----------------------------------------------------------------------------*/
 /* append last stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendLastStage(void) {
+void Backend::vAppendLastStage(Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
-      "  stage stageLast on origin :\n"
+      "\n  stage stageLast %s :\n"
       "    output\n"
-      ""_Stz);
+      ""_Stz, szLocation);
 
   m_sPipeline->vCatSprint(
       "    | sink\n"
@@ -1128,27 +1130,21 @@ void Backend::vAppendLastStage(void) {
       "end ;\n"
       ""_Stz);
 
-  //vTrace("%s\n"_Stz, m_sPipeline->azStr());
+  vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
 
 /*----------------------------------------------------------------------------*/
-/* append next stage to the pipeline                                          */
+/* append new stage to the pipeline                                           */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendNextStage(Stz* szStage) {
+void Backend::vAppendNewStage(Stz* szStage, Stz* szLocation) {
+
+  m_bNewStage = true;
 
   m_sPipeline->vCatSprint(
-      "  stage %s on all partitions :\n"
+      "\n  stage %s on %s :\n"
       ""_Stz,
-      szStage);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append extra pipe pipeline                                                 */
-/*----------------------------------------------------------------------------*/
-void Backend::vAppendPipe(void) {
-
-  m_sPipeline->vCatSprint(
-      "    | "_Stz);
+      szStage,
+      szLocation);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1156,16 +1152,25 @@ void Backend::vAppendPipe(void) {
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendNextOp(Stz* szNextStage) {
 
-  m_sPipeline->vCatSprint(
-      "    %s\n"
-      ""_Stz,
-      szNextStage);
+  if (m_bNewStage) {
+    m_bNewStage = false;
+    m_sPipeline->vCatSprint(
+        "    %s"
+        ""_Stz,
+        szNextStage);
+  }
+  else {
+    m_sPipeline->vCatSprint(
+        "\n    | %s"
+        ""_Stz,
+        szNextStage);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* append the start stage to the pipeline                                     */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendStartStage(void) {
+void Backend::vAppendStartStage() {
 
   m_sPipeline->vCopy(
       "pipeline unnamed\n"
@@ -1175,7 +1180,7 @@ void Backend::vAppendStartStage(void) {
   m_sPipeline->vCatSprint(
       "  stage startStage on origin :\n"
       "    start\n"
-      "    | periodic once\n"
+      "    | periodic once"
       ""_Stz
       );
 }

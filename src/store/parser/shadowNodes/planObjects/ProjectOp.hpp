@@ -40,6 +40,9 @@ namespace Parser
     // Returns true if any of the projected expressions are aggregate expressions
     static b1 bHasAnAggregate(QueryNode* pNode);
 
+    // Returns true if all of the projected expressions are aggregate expressions
+    static b1 bHasOnlyAggregates(QueryNode* pNode, b1 bAllowLiterals);
+
     // Return the internal node that represents the list of projected expressions.
     // Individual projected expressions are children of this node.
     static QueryNode* pProjectedColumns(QueryNode* pNode);
@@ -59,6 +62,25 @@ namespace Parser
 
     // Adds an expression to be projected, with an optional alias
     static void vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias);
+
+    // Returns a new ProjectOp node with projected columns modified for
+    // partitioned aggregate expressions
+    static QueryNode* pCreatePartitioned(QueryNode* pNode);
+
+    // Returns a new ProjectOp node with projected columns super-aggregating aggregated
+    // expressions from each partition or node
+    static QueryNode* pCreateSuperAggregate(QueryNode* pSinglePartitionNode);
+
+    // Returns a new ProjectOp node with projected columns doubly super-aggregating aggregated
+    // expressions from each partition or node. Used to factor in node-level aggregation.
+    static QueryNode* pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode);
+
+    // Returns the number of columns being projected
+    static i8 nColumns(QueryNode* pNode);
+
+    // Returns a ptr to the internal ProjectedColumn node (not Expr) that contains
+    // a symbolically equal expression as pExpr, or nullptr
+    static QueryNode* pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr);
 
   protected:
 

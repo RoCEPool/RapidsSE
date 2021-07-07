@@ -17,8 +17,9 @@ namespace STORE
   private:
 
     PlanNode*      m_pPlanRoot;
-    QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
+    bool           m_bHasUnionOp;
+    bool           m_bNewStage;
 
     // must be last
     Footer m_xFooter;
@@ -38,7 +39,8 @@ namespace STORE
     // plan transliteration
     //
     static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
-    static void vAppendExpr(Backend* pBackend, QueryNode* pNode, Stz* szAliasName);
+    static void vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pNode, Stz* szAliasName);
+    static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendOrderByOp(Backend* pBackend,  QueryNode* pNode);
@@ -56,16 +58,17 @@ namespace STORE
                                                     GraphNav::eWalkEvent eEventType, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorStage(PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
 
     //
     // pipeline stages
     //
-    void vAppendLastStage(void);
-    void vAppendNextStage(Stz* szStage);
+    void vAppendLastStage(Stz* szLocation);
+    void vAppendNewStage(Stz* szStage, Stz* szLocation);
     void vAppendNextOp(Stz* szStage);
-    void vAppendPipe(void);
     void vAppendStartStage(void);
 
     Footer* aFooter(void);

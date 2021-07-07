@@ -101,7 +101,7 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
 
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
-      sBuf.vCatSprint("location: \"%s\""_Stz, szLocation);
+      sBuf.vCatSprint("location: %s"_Stz, szLocation);
     }
 
     return;
@@ -177,6 +177,11 @@ QueryNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 void PlanObject::vSetLocation(QueryNode *pNode, Location::eLO eLocation)
 {
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+  ASSERT(eLocation > Location::LO_NONE);
+  ASSERT(eLocation < Location::LO_NENUMS);
+
   vClearLocation(pNode);
   QueryNode* pLocation = Location::pCreate(eLocation);
   pLocation->vSetName(C_LOCATION_PROP);
@@ -188,11 +193,85 @@ void PlanObject::vSetLocation(QueryNode *pNode, Location::eLO eLocation)
 /*----------------------------------------------------------------------------*/
 void PlanObject::vClearLocation(QueryNode *pNode)
 {
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+
   QueryNode* pLocation = pNode->pRemoveProperty(C_LOCATION_PROP);
 
   if (pLocation) {
     delete pLocation;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the location of this node, otherwise if the node doesn't have a    */
+/* location then it can descend into the children until a location is found.  */
+/* If no location is set then LO_NONE is returned.                            */
+/*----------------------------------------------------------------------------*/
+Parser::Location::eLO PlanObject::eLocation(QueryNode* pNode, b1 bIncludeChildren)
+{
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+
+  Location::eLO eLocType;
+
+  QueryNode* pLocationNode = _pQueryNode(GraphNav::pFindProperty(C_LOCATION_PROP, pNode));
+
+  if (pLocationNode) {
+    // There is a location set on this node. Return it.
+    ASSERT(Location::bIsOfType(pLocationNode));
+
+    eLocType = Location::eLocationType(pLocationNode);
+    ASSERT(eLocType > Location::LO_NONE);
+    ASSERT(eLocType < Location::LO_NENUMS);
+
+    return eLocType;
+  }
+
+  // No location set on this node.
+  if (!bIncludeChildren) {
+    return Location::LO_NONE;
+  }
+
+  // Try each child.
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  eLocType = Location::LO_NONE;
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    ASSERT(PlanObject::bIsOfType(pChild));
+
+    // Recurse into the child node
+    Location::eLO eLoc = eLocation(pChild, bIncludeChildren);
+
+    if (eLoc > Location::LO_NONE && eLoc < Location::LO_NENUMS) {
+      eLocType = eLoc;
+      break;
+    }
+  }
+
+  delete pIter;
+  return eLocType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this specific node has a location property set             */
+/*----------------------------------------------------------------------------*/
+b1 PlanObject::bNodeHasLocation(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+
+  QueryNode* pLocationNode = _pQueryNode(GraphNav::pFindProperty(C_LOCATION_PROP, pNode));
+
+  if (!pLocationNode) {
+    return false;
+  }
+
+  Location::eLO eLocType = Location::eLocationType(pLocationNode);
+  ASSERT(eLocType > Location::LO_NONE);
+  ASSERT(eLocType < Location::LO_NENUMS);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

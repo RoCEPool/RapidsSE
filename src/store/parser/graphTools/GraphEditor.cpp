@@ -87,16 +87,58 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Remove and replace pReplaceChild in parent node pParentNode with the       */
-/* nodes in pReplacementList. Moves nodes from pReplacementList.              */
-/* Deletes the pReplaceChild. Does not delete pReplacementList.               */
+/* Remove and replace pExistingChild in parent node pParentNode with          */
+/* pReplacementNode. Deletes pExistingChild.                                  */
 /*----------------------------------------------------------------------------*/
-void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
+void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                                QueryNode* pReplacementNode)
+{
+  ASSERT(pParentNode);
+  ASSERT(pParentNode->m_pChildren);
+  ASSERT(pExistingChild);
+  ASSERT(pReplacementNode);
+
+  // We are going to create a new list of children and replace the existing
+  // child list in the parent object.
+
+  PlanNodeList* pOldChildList = pParentNode->m_pChildren;
+  PlanNodeList* pNewChildList = new PlanNodeList();
+
+  PlanNode* pChild;
+
+  while ((pChild = pOldChildList->pPop()) != nullptr) {
+
+    if (pChild == pExistingChild) {
+      // replace this child
+      delete pExistingChild;
+      pNewChildList->vAppend(pReplacementNode);
+
+    } else {
+      // keep this child
+      pNewChildList->vAppend(pChild);
+    }
+  }
+
+  // clean up
+  ASSERT(pOldChildList->nItems() == 0);
+  delete pOldChildList;
+
+  // Set the new list as the children list in the parent object
+  pParentNode->m_pChildren = pNewChildList;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Remove and replace pExistingChild in parent node pParentNode with the       */
+/* nodes in pReplacementList. Moves nodes from pReplacementList.              */
+/* Deletes the pExistingChild. Does not delete pReplacementList.               */
+/*----------------------------------------------------------------------------*/
+void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
                                 QueryNodeList* pReplacementList)
 {
   ASSERT(pParentNode);
   ASSERT(pParentNode->m_pChildren);
-  ASSERT(pReplaceChild);
+  ASSERT(pExistingChild);
   ASSERT(pReplacementList);
 
   // We are going to create a new list of children and replace the existing
@@ -107,13 +149,13 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild
 
   PlanNode* pChild;
 
-  // Order is important here, so move all of the children we find before pReplaceChild
+  // Order is important here, so move all of the children we find before pExistingChild
   // into the new list.
-  while ((pChild = pOldChildList->pPop()) != pReplaceChild && pChild != nullptr) {
+  while ((pChild = pOldChildList->pPop()) != pExistingChild && pChild != nullptr) {
     pNewChildList->vAppend(pChild);
   }
 
-  ASSERT(pChild == pReplaceChild);
+  ASSERT(pChild == pExistingChild);
 
   // Now move the replacements
   while ((pChild = pReplacementList->pPop()) != nullptr) {
@@ -126,7 +168,7 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild
   }
 
   // clean up
-  delete pReplaceChild;
+  delete pExistingChild;
   ASSERT(pOldChildList->nItems() == 0);
   delete pOldChildList;
 
@@ -198,6 +240,30 @@ QueryNodeList* GraphEditor::pSnipChild(QueryNode* pParent, std::function<b1(Quer
 
   delete pIter;
   return pSnippedChildren;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Connects two distinct chains of nodes (nodes with at most 1 child each)    */
+/* by making pSecond a child of the leaf node of pFirst.                      */
+/* i.e. navigate down the child hierarchy of pFirst to find the leaf node     */
+/* and make pSecond a child of it.                                            */
+/* e.g. if pFirst was /a/b/c and pSecond was /d/e then pFirst would end up    */
+/* as /a/b/c/d/e                                                              */
+/*----------------------------------------------------------------------------*/
+void GraphEditor::vConnectChains(QueryNode* pFirst, QueryNode* pSecond)
+{
+  ASSERT(pFirst);
+  ASSERT(pSecond);
+
+  QueryNode* pNode = pFirst;
+  while (pNode->nChildren() != 0) {
+    ASSERT(pNode->nChildren() == 1);
+    pNode = _pQueryNode(pNode->pFirstChild());
+  }
+
+  ASSERT(pNode->nChildren() == 0);
+  pNode->vAppendChild(pSecond);
 }
 
 /*============================================================================*/

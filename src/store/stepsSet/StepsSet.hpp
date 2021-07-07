@@ -1480,6 +1480,7 @@ public:
   void vSocketSuccessStore(void);
 
   // sql compiler
+  void vSqlCompilerAggregateSplit(void);
   void vSqlCompilerCorrBySquash(void);
   void vSqlCompilerDeletePlan(void);
   void vSqlCompilerDoExplain(void);

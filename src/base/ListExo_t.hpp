@@ -197,7 +197,9 @@ namespace BASE
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
     void  vInsertAfter(ITEM* pInsertItem, ITEM* pAfterItem);
+    void  vInsertAfter(ITEM* pInsertItem, ListExoNode_t<ITEM>* pAfterNode);
     void  vInsertBefore(ITEM* pInsertItem, ITEM* pBeforeItem);
+    void  vInsertBefore(ITEM* pInsertItem, ListExoNode_t<ITEM>* pBeforeNode);
     i8    nItems(void);
     ListExoIter_t<ITEM>* pNewIter(void);
     ITEM* pPeek(i8 nThItem);
@@ -410,6 +412,27 @@ void ListExo_t<CLASSNO,ITEM>::vInsertAfter(ITEM* pInsertThisItem,
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert item after given node                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vInsertAfter(ITEM* pInsertThisItem,
+                                           ListExoNode_t<ITEM>* pAfterThisNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  ListExoNode_t<ITEM>* pInsertThisNode = pNewNode(pInsertThisItem);
+  ASSERT(! pInsertThisNode->pNextNode());
+  ASSERT(! pInsertThisNode->pPrevNode());
+
+  m_okLock.vGrabWrite();
+  
+  vInsertNodeAfter(pInsertThisNode,pAfterThisNode);
+
+  m_okLock.vDropWrite();
+  vValidateList();
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert item before given item                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -434,6 +457,27 @@ void ListExo_t<CLASSNO,ITEM>::vInsertBefore(ITEM* pInsertThisItem,
   
   vInsertNodeBefore(pInsertThisNode,pBeforeThisNode);
   
+  m_okLock.vDropWrite();
+  vValidateList();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert item before given node                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vInsertBefore(ITEM* pInsertThisItem,
+                                           ListExoNode_t<ITEM>* pBeforeThisNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  ListExoNode_t<ITEM>* pInsertThisNode = pNewNode(pInsertThisItem);
+  ASSERT(! pInsertThisNode->pNextNode());
+  ASSERT(! pInsertThisNode->pPrevNode());
+
+  m_okLock.vGrabWrite();
+
+  vInsertNodeBefore(pInsertThisNode,pBeforeThisNode);
+
   m_okLock.vDropWrite();
   vValidateList();
 }
@@ -968,7 +1012,9 @@ public:
   ITEM* pNext(void);
   ITEM* pPrev(void);
   void  vRemove(void);
-  
+  void  vInsertAfter(ITEM* pItem);
+  void  vInsertBefore(ITEM* pItem);
+
 private:
   Footer* aFooter(void);
 };
@@ -1203,6 +1249,73 @@ void ListExoIter_t<ITEM>::vRemove(void)
   // Can't call vRemove() twice. Need to move the iterator.
   m_bCanRemove = false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Inserts an object after the last object that was retrieved                 */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoIter_t<ITEM>::vInsertAfter(ITEM* pItem)
+{
+  ASSERT(pItem);
+
+  if (bIsBeforeFirst()) {
+    m_pListExot->vPush(pItem);
+    m_pNextCursor = m_pListExot->pHeadNode();
+
+  } else if (bIsAfterLast()) {
+    m_pListExot->vAppend(pItem);
+    m_pNextCursor = m_pListExot->pTailNode();
+    m_pPrevCursor = m_pNextCursor->pPrevNode();
+
+  } else {
+    if (m_bFwdDir) {
+      // The last item returned was m_pPrevCursor->pItem()
+      ASSERT(m_pPrevCursor);
+      m_pListExot->vInsertAfter(pItem, m_pPrevCursor);
+      m_pNextCursor = m_pPrevCursor->pNextNode();
+
+    } else {
+      // The last item returned was m_pNextCursor->pItem()
+      ASSERT(m_pNextCursor);
+      m_pListExot->vInsertAfter(pItem, m_pNextCursor);
+      // No need to move the iterator cursors
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Inserts an object before the last object that was retrieved                */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoIter_t<ITEM>::vInsertBefore(ITEM* pItem)
+{
+  ASSERT(pItem);
+
+  if (bIsBeforeFirst()) {
+    m_pListExot->vPush(pItem);
+    m_pPrevCursor = m_pListExot->pHeadNode();
+    m_pNextCursor = m_pPrevCursor->pNextNode();
+
+  } else if (bIsAfterLast()) {
+    m_pListExot->vAppend(pItem);
+    m_pPrevCursor = m_pListExot->pTailNode();
+
+  } else {
+    if (m_bFwdDir) {
+      // The last item returned was m_pPrevCursor->pItem()
+      ASSERT(m_pPrevCursor);
+      m_pListExot->vInsertBefore(pItem, m_pPrevCursor);
+      // No need to move the iterator cursors
+
+    } else {
+      // The last item returned was m_pNextCursor->pItem()
+      ASSERT(m_pNextCursor);
+      m_pListExot->vInsertBefore(pItem, m_pNextCursor);
+      m_pPrevCursor = m_pNextCursor->pPrevNode();
+    }
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

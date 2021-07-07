@@ -847,22 +847,34 @@
 
   begin
 
+    // Where possible, try to name these operators in the format:  <noun><verb>
+    // e.g. exprValidate
+    // This makes it easier to glance through and categorise/identify transformations.
+    // For example, if all transformations of aggregates begin with aggregate or agg
+    // then it is easy to visually spot them.
+    // There are always exceptions though, e.g. explainPlan, partitionPlan, etc.
+
     stage stageA on origin :
       start
       | periodic once
+// Parsing phase
       | parser $sqlStatement
+// Planning Phase
       | nameValidate
       | exprValidate
       | setOpValidate
       | postProject
       | exprPushdown
       | projValidation
+// Optimisation Phase
       | corrBySquash
       | explainPlan
       | partitionPlan
-      | partitionExplain
       | projValidation    // sanity check after partitioning
+      | partitionExplain
+// Transliteration Phase
       | stageMarkers
+      | aggregateSplit 
       | transliterate
       | output
       | sink

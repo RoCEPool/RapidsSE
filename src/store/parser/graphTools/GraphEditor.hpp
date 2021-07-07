@@ -26,10 +26,15 @@ namespace Parser
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(const PlanNode* pTemplateRoot);
 
-    // Remove and replace pReplaceChild in parent node pParentNode with the
-    // nodes in pReplacementList.
-    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
-                              QueryNodeList* pReplacementList);
+    // Remove and replace pExistingChild in parent node pParentNode with pReplacementNode.
+    // Deletes pExistingChild.
+    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                              QueryNode* pReplacementNode);
+
+    // Remove and replace pExistingChild in parent node pParentNode with the
+    // nodes in pReplacementNode.
+    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                              QueryNodeList* pReplacementNode);
 
     // Remove a child from its parent and optionally transplant that child's
     // children in its place. Returns the snipped child.
@@ -45,6 +50,13 @@ namespace Parser
     static QueryNodeList* pSnipChild(QueryNode* pParent, std::function<b1(QueryNode*)> fCondition, b1 bTransplant);
 
 
+    // Connects two distinct chains of nodes (nodes with at most 1 child each)
+    // by making pSecond a child of the leaf node of pFirst.
+    // i.e. navigate down the child hierarchy of pFirst to find the leaf node
+    // and make pSecond a child of it.
+    // e.g. if pFirst was /a/b/c and pSecond was /d/e then pFirst would end up
+    // as /a/b/c/d/e
+    static void vConnectChains(QueryNode* pFirst, QueryNode* pSecond);
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.

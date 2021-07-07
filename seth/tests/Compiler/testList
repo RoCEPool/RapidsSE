@@ -11,3 +11,4 @@ exprPushdown.test
 projValidation.test
 stageMarkers.test
 partitionPlan.test
+aggregateSplit.test

@@ -33,6 +33,9 @@ namespace Parser
     // Returns true if the expression in this node is an aggregate expression.
     static b1 bContainsAnAggregate(QueryNode* pNode);
 
+    // Returns true if the expression in this node is literal.
+    static b1 bIsFullyLiteral(QueryNode* pNode);
+
     // Returns the node that represents the expression
     static QueryNode* pExprNode(QueryNode* pQueryNode);
 
@@ -44,6 +47,18 @@ namespace Parser
 
     // Changes the alias for this projected column
     static void vSetAlias(QueryNode* pNode, Text* pNewAlias);
+
+    // If the given projectedColumn requires partitioning then a non-null
+    // QueryNodeList is returned which contains those partitioned
+    // projected columns.
+    static QueryNodeList* pPartitionAggregates(QueryNode* pNode);
+
+    // Changes the aggregate expression in pNode to super-aggregate results from each partition/node
+    static void vSuperAggregate(QueryNode* pNode);
+
+    // Changes the aggregate expression in pNode to super-aggregate results from each partition/node.
+    // This version super-aggregates twice to factor in node-level aggregation.
+    static void vDoubleSuperAggregate(QueryNode* pNode);
   };
 
 }

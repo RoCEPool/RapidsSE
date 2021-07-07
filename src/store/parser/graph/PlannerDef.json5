@@ -328,7 +328,15 @@
 // Path: /__root__/definitions/object/planObject/planMarker/stageMarker
                     {
                       name: "stageMarker",
-                      value: "An inert marker used in the transliteration process to indicate a new pipeline stage is required"
+                      value: "An inert marker used in the transliteration process to indicate a new pipeline stage is required",
+                      properties: [
+                        // don't forget all planObjects also have an optional location too
+                        {
+                          name: "routing",
+                          value: "How row data that comes from the child node is to be routed to the parent node",
+                          type: "/__root__/definitions/types/routing"
+                        }
+                      ]
                     },
 
 // Path: /__root__/definitions/object/planObject/planMarker/statementMarker
@@ -2251,27 +2259,27 @@
               name: "routing",
               value: "a container for the enumeration of different ways data can be sent from a child operator to a parent",
               children: [
-// Path: /__root__/definitions/types/location/unicast
+// Path: /__root__/definitions/types/routing/unicast
                 {
                   name: "unicast",
                   value: "Data is sent to a single endpoint only"
                 },
-// Path: /__root__/definitions/types/location/broadcast
+// Path: /__root__/definitions/types/routing/broadcast
                 {
                   name: "broadcast",
                   value: "Data is sent to all endpoints"
                 },
-// Path: /__root__/definitions/types/location/hashcast
+// Path: /__root__/definitions/types/routing/hashcast
                 {
                   name: "hashcast",
                   value: "Data is sent to one specific endpoint based on the hashing of an expression"
                 },
-// Path: /__root__/definitions/types/location/localPartition
+// Path: /__root__/definitions/types/routing/localPartition
                 {
                   name: "localPartition",
                   value: "Data is sent to a pipeline stage running on the same partition on the current node"
                 },
-// Path: /__root__/definitions/types/location/localNode
+// Path: /__root__/definitions/types/routing/localNode
                 {
                   name: "localNode",
                   value: "Data is sent to a pipeline stage running on the same node"
