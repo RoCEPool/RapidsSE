@@ -59,20 +59,20 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
-  if      (AggregateOp::bIsExactType(pNode)) { AggregateOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (  ProjectOp::bIsExactType(pNode)) {   ProjectOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if ( DataSource::bIsOfType(pNode))    {  DataSource::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (   FilterOp::bIsExactType(pNode)) {    FilterOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (    LimitOp::bIsExactType(pNode)) {     LimitOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (    UnionOp::bIsExactType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (    OrderOp::bIsExactType(pNode)) {     OrderOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (  ExplainOp::bIsExactType(pNode)) {   ExplainOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  if      (AggregateOp::bIsExactType(pNode)) { AggregateOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (  ProjectOp::bIsExactType(pNode)) {   ProjectOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if ( DataSource::bIsOfType(pNode))    {  DataSource::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (   FilterOp::bIsExactType(pNode)) {    FilterOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (    LimitOp::bIsExactType(pNode)) {     LimitOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (    UnionOp::bIsExactType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (    OrderOp::bIsExactType(pNode)) {     OrderOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (  ExplainOp::bIsExactType(pNode)) {   ExplainOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -82,7 +82,7 @@ void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SqlOperator::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void SqlOperator::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -92,21 +92,21 @@ void SqlOperator::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTy
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     return;
   }
 
   // Manual polymorphism here
-  if      (AggregateOp::bIsExactType(szType)) { AggregateOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (  ProjectOp::bIsExactType(szType)) {   ProjectOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if ( DataSource::bIsOfType(szType))    {  DataSource::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (   FilterOp::bIsExactType(szType)) {    FilterOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (    LimitOp::bIsExactType(szType)) {     LimitOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (      SetOp::bIsOfType(szType))    {       SetOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (    OrderOp::bIsExactType(szType)) {     OrderOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (  ExplainOp::bIsExactType(szType)) {   ExplainOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  if      (AggregateOp::bIsExactType(szType)) { AggregateOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (  ProjectOp::bIsExactType(szType)) {   ProjectOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if ( DataSource::bIsOfType(szType))    {  DataSource::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (   FilterOp::bIsExactType(szType)) {    FilterOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (    LimitOp::bIsExactType(szType)) {     LimitOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (      SetOp::bIsOfType(szType))    {       SetOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (    OrderOp::bIsExactType(szType)) {     OrderOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (  ExplainOp::bIsExactType(szType)) {   ExplainOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

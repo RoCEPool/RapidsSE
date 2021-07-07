@@ -52,15 +52,15 @@ void PlanMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
 
-  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -71,7 +71,7 @@ void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
       ASSERT(bIsOfType(pNode));
@@ -81,7 +81,7 @@ void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     return;
@@ -90,8 +90,8 @@ void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
 
   // Manual polymorphism of subtypes here
 
-  if      (StatementMarker::bIsOfType(szType))   { StatementMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  else if (    StageMarker::bIsOfType(szType))   {     StageMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  if      (StatementMarker::bIsOfType(szType))   { StatementMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (    StageMarker::bIsOfType(szType))   {     StageMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here

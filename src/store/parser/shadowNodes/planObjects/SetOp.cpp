@@ -87,16 +87,16 @@ void SetOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual polymorphism here
 
-  if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, sBuf, iIndent);  }
-//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vExplain(pNode, pRootNode, sBuf, iIndent);   }
-//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vExplain(pNode, pRootNode, sBuf, iIndent);   }
+  if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
+//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
+//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
 
   else {
     // Need to add in manual polymorphism here
@@ -107,7 +107,7 @@ void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInden
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -117,7 +117,7 @@ void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s4
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
 
@@ -146,9 +146,9 @@ void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s4
   }
 
   // Manual polymorphism here
-  if      (    UnionOp::bIsOfType(szType)) {     UnionOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);  }
-//else if (IntersectOp::bIsOfType(szType)) { IntersectOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);   }
-//else if (   ExceptOp::bIsOfType(szType)) {    ExceptOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);   }
+  if      (    UnionOp::bIsOfType(szType)) {     UnionOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+//else if (IntersectOp::bIsOfType(szType)) { IntersectOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);   }
+//else if (   ExceptOp::bIsOfType(szType)) {    ExceptOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);   }
 
   else {
     // Need to add in manual polymorphism here

@@ -75,7 +75,7 @@ void StageMarker::vDescribe(PlanNode* pNode, s2K& buf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain to the buf             */
 /*----------------------------------------------------------------------------*/
-void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -88,7 +88,7 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   sBuf.vCatSprint("StageMarker"_Stz);
 
   // Add the local properties
-  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+  vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
@@ -98,7 +98,7 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+      PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -108,7 +108,7 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -118,7 +118,7 @@ void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTy
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Location is explained in the common attributes above
     // Explain any local attributes of this object

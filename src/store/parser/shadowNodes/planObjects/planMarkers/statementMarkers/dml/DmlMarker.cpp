@@ -62,7 +62,7 @@ b1 DmlMarker::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void DmlMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void DmlMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -72,7 +72,7 @@ void DmlMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     return;
@@ -80,8 +80,8 @@ void DmlMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType
 
 
   // Manual polymorphism of subtypes here
-  if      ( SelectMarker::bIsOfType(szType)) {  SelectMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
-  else if (ExplainMarker::bIsOfType(szType)) { ExplainMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  if      ( SelectMarker::bIsOfType(szType)) {  SelectMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
+  else if (ExplainMarker::bIsOfType(szType)) { ExplainMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

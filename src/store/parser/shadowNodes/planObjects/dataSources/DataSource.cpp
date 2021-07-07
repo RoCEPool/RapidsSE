@@ -49,7 +49,7 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -57,10 +57,10 @@ void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
   // Manual polymorphism here
 
   // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   // IndexScanOp
-  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -71,7 +71,7 @@ void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -81,7 +81,7 @@ void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     return;
@@ -89,8 +89,8 @@ void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
 
   // Manual polymorphism here
   // TableScanOp
-  if      (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
-  //else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);  }
+  if        (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  //else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
 
   else {
     // Need to add in manual polymorphism here
