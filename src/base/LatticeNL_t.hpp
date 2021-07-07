@@ -34,12 +34,14 @@ namespace BASE
 
     i8    iAdd(ITEM* pItem);
     void  vClear(void);
+    i8    iFind(ITEM* pItem);
     ITEM* pGet(i8 i_Item);
     bool  bIsItem(i8 i_Item);
     i8    nItems(void);
     i8    iNext(i8 i_Item);
+    bool  bRemove(ITEM* pItem);
     void  vRemove(i8 i_Item);
-    
+
   private:
   
     Footer* aFooter(void);
@@ -164,6 +166,8 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
     return C_UNKNOWN;
   
   m_i_FirstFree = m_i_NextFree[i_Item];
+  if (! (m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS))
+    vDebugPoint();
   ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
   
   m_pItem[i_Item] = pItem;
@@ -187,6 +191,21 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vClear(void)
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     m_i_NextFree[i_Item] = i_Item + 1;
   m_i_NextFree[MAX_ITEMS - 1] = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+    if (pItem == m_pItem[i_Item])
+      return i_Item;
+  
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,6 +270,22 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
     
     i_Next++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove the given item                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+
+  i8 i_Item = iFind(pItem);
+  if (C_UNKNOWN == i_Item)
+    return false;
+  
+  vRemove(i_Item);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
