@@ -31,6 +31,7 @@ set -Eeu
 readonly DIR=$(dirname "$0")
 readonly THIS_FILE=$(basename "$0")
 readonly SETUP_FN="setup.fn"
+readonly BOOT_FN="boot.fn"
 
 
 ###############################################################################
@@ -40,6 +41,9 @@ readonly SETUP_FN="setup.fn"
 # Include a file that contains all of the functions used within.
 #shellcheck source=setup.fn
 source "${SETUP_FN}" || { >&2 echo "Could not load ${SETUP_FN}"; exit 1; }
+
+#shellcheck source=boot.fn
+source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 
 
 ###############################################################################
@@ -58,6 +62,9 @@ INSTALL_FILE=""
 
 # Path to the config file used, if any.
 CONFIG_FILE=""
+
+# Has value 1 if any nodes in the cluster are running, otherwise 0.
+CLUSTER_IS_RUNNING=0
 
 # The array of unique node names. The values here are used to help form the
 # name of the dynamic associative arrays used to hold the configuration of
@@ -292,10 +299,6 @@ function processAddNodeArgs() {
 # Process the arguments given to the script.
 processAddNodeArgs "$@"
 
-if [ -z "${INSTALL_FILE}" ]; then
-  findInstallFile
-fi
-
 # Print out current settings from the arguments
 debugPrint ""
 debugPrint "pwd = $(pwd)"
@@ -306,15 +309,37 @@ debugPrint "ADV_WIZARD = ${ADV_WIZARD}"
 debugPrint "DEBUG = ${DEBUG}"
 debugPrint "INSTALL_FILE = ${INSTALL_FILE}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
-debugPrint 
+debugPrint
 
 
-if [ ${CLUSTER_INSTALL} -eq 1 ]; then
-  # cluster installation
-  doClusterInstall
+# Load the config file
+
+# Find the installation file and check that it's version matches the current version
+if [ -z "${INSTALL_FILE}" ]; then
+  findInstallFile
 
 else
-  # node installation
-  doNodeInstall
+  # Check that this file matches the current version
+
+  [ -f "${DIR:+${DIR}/}${VERSION_FILE}" ] || errorExit "Could not find the file ${VERSION_FILE} in the installation directory."
+  #shellcheck source=common.fn
+  currentVer="$(source "${DIR:+${DIR}/}${VERSION_FILE}" && echo "${SE_VERSION_STR}")"
+  [ -n "${currentVer}" ] || errorExit "Could not extract out the current RapidsSE version number."
+
+  checkInstallFileVersion "${INSTALL_FILE}" "${currentVer}" || errorExit "RapidsSE installation file version does not match the currently installed version (${currentVer})."
 fi
 
+# Check if the cluster is running
+isClusterRunning && CLUSTER_IS_RUNNING=1
+
+
+# Prompt for details on new node (host, port, directory, etc)
+# Validate new config
+# Backup existing config
+# Install new nodes
+# Write out new config to all nodes
+# If cluster is running
+#   Start new nodes, wait for them to be ready
+#   Wait for nodes to join the cluster
+#   Rebalance node data
+# end

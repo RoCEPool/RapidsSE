@@ -372,16 +372,14 @@ function findInstallFile() {
     # Get the current installed version
     local currentVer
 
+    #shellcheck ignore=SC2031
     #shellcheck source=common.fn
     currentVer="$(source "${DIR:+${DIR}/}${VERSION_FILE}" && echo "${SE_VERSION_STR}")"
 
     # Check that the version of each installer file matches that of the current installation
     for runfile in "${runfiles[@]}"; do
-      local runfileBody
-      runfileBody="${runfile%%.run}"  # remove the ".run" trailing part of the string
 
-      # The runfileBody should now end with the same version from VERSION_FILE
-      if [ "${runfileBody: -${#currentVer}}" = "${currentVer}" ]; then
+      if checkInstallFileVersion "${runfile}" "${currentVer}"; then
         INSTALL_FILE="${runfile}"
         return
       fi
@@ -389,6 +387,34 @@ function findInstallFile() {
   fi
 
   errorExit "Could not find the installation *.run file for the purpose of copying to and installing on other nodes. Try specifying the location of this file with the --installer argument."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the version of the install file is expected.
+## Returns a zero exit code on success and non-zero exit code on failure.
+## Params:
+##  $1 - The path to the installation file
+##  $2 - The version string from the current installed SE version (e.g. 0.8.0-SNAPSHOT)
+function checkInstallFileVersion() {
+
+  [ "$?" -ne 2 ] || errorExit "Function checkInstallFileVersion() must be called with 2 arguments"
+  [ -n "$1" ]    || errorExit "Function checkInstallFileVersion() parameter $$1 cannot be null"
+  [ -n "$2" ]    || errorExit "Function checkInstallFileVersion() parameter $$2 cannot be null"
+
+  local installFile="$1"
+  local expectedVersion="$2"
+
+  # First, strip off the ".run" off the end of the install file
+  local fileBody
+  fileBody="${installFile%%.run}"
+
+  # The $fileBody should now end with the same version from $expectedVersion
+  if [ "${fileBody: -${#expectedVersion}}" = "${expectedVersion}" ]; then
+    true
+    return
+  fi
+
+  false
 }
 
 

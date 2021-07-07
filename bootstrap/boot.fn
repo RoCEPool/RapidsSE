@@ -802,6 +802,26 @@ function isLocalSeRunning() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit status if ANY of the SE nodes in the cluster are running,
+## otherwise it returns a non-zero exit status if ALL nodes are NOT running.
+## Params: None
+
+function isClusterRunning() {
+
+  for row in "${NODE_LIST[@]}"; do
+
+    pid="$(getRemoteRunningPid "${row}")"
+
+    if [ -n "${pid}" ]; then
+      true
+      return
+    fi
+  done
+
+  false
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that none of the nodes are currently running. If one or more nodes
 ## are actually running then errors are printed to stderr and a non-zero
 ## exit code is returned.

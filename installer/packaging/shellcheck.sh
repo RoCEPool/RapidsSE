@@ -6,17 +6,24 @@ if ! which shellcheck &>/dev/null; then
 fi
 
 # Files to be checked
-declare -a FILES
-FILES+=("../../bootstrap/setup.sh")
-FILES+=("../../bootstrap/setup.fn")
-FILES+=("../../bootstrap/envCheck.fn")
-FILES+=("../../bootstrap/common.fn")
-FILES+=("../../bootstrap/boot.fn")
-FILES+=("../../bootstrap/startSE.sh")
-FILES+=("../../bootstrap/stopSE.sh")
-FILES+=("../../bootstrap/prompt.sh")
-FILES+=("../../bootstrap/generateData.sh")
-FILES+=("../../bootstrap/collectLogs.sh")
-FILES+=("../../bootstrap/addNode.sh")
+#declare -a FILES
+#FILES+=("../../bootstrap/setup.sh")
+#FILES+=("../../bootstrap/setup.fn")
+#FILES+=("../../bootstrap/envCheck.fn")
+#FILES+=("../../bootstrap/common.fn")
+#FILES+=("../../bootstrap/boot.fn")
+#FILES+=("../../bootstrap/startSE.sh")
+#FILES+=("../../bootstrap/stopSE.sh")
+#FILES+=("../../bootstrap/prompt.sh")
+#FILES+=("../../bootstrap/generateData.sh")
+#FILES+=("../../bootstrap/collectLogs.sh")
+#FILES+=("../../bootstrap/addNode.sh")
 
-shellcheck -s bash -P ../../bootstrap "${FILES[@]}"
+#shellcheck -s bash -P ../../bootstrap "${FILES[@]}"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/setup.sh"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/startSE.sh"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/stopSE.sh"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/prompt.sh"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/generateData.sh"
+shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/collectLogs.sh"
+shellcheck -s bash -x -P ../../bootstrap -e SC2031 "../../bootstrap/addNode.sh"
