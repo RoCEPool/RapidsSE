@@ -22,18 +22,28 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Run all changes for this transformation stage                              */
+/*----------------------------------------------------------------------------*/
+void StageMarkers::vStageMarkers(PlanNode *pRootNode)
+{
+  QueryNode* pPlanNode = _pQueryNode(ShadowRoot::pPlanRoot(pRootNode));
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+
+  vRemoveStatementMarkers(pPlanNode, pRootNode);
+  vAddStageMarkers(pPlanNode, pRootNode);
+  vStandardiseSetOpChildrenLocation(pPlanNode, pRootNode);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Removes all StatementMarker nodes from the plan.                           */
 /* StatementMarkers are a concept for the planner. They don't mean the same   */
 /* thing as a StageMarker, which is used by the transliteration.              */
 /*----------------------------------------------------------------------------*/
-void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
+void StageMarkers::vRemoveStatementMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
-
   // A lambda that checks if a node is a StatementMarker to be removed. Used later.
   // We don't remove ExplainMarkers.
   auto fCondition = [](QueryNode* pChildNode) -> b1 {
@@ -70,13 +80,8 @@ void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
 /* We explicitly place these rather than replace StatementMarkers because we  */
 /* don't want to mix the semantics of a StatementMarker and StageMarker.      */
 /*----------------------------------------------------------------------------*/
-void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
+void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 {
-  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
-
-
   // Lambda called as we walk the graph
   auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
@@ -137,6 +142,53 @@ void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
 
     pPlanNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Ensure all children of set operators are StageMarkers with a location set  */
+/* to "origin"                                                                */
+/*----------------------------------------------------------------------------*/
+void StageMarkers::vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanNode* pRootNode)
+{
+  // All Set operators run on origin only (TODO: need to check about distinct
+  // set operators). To avoid problems with the pipeline transliteration, all
+  // children of a SetOp (which are StageMarkers) must also have a location of
+  // "origin". If they don't then we will add in a StageMarker with that location.
+
+  // Lambda called as we walk the graph
+  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+
+    if (!SetOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode *pSetOp = _pQueryNode(pNode);
+
+
+    // Check the children
+    ASSERT(pSetOp->nChildren() == 2);
+
+    QueryNode* apChildren[2] = { _pQueryNode(pSetOp->pFirstChild()), _pQueryNode(pSetOp->pSecondChild()) };
+
+    for (QueryNode* pChild : apChildren) {
+      ASSERT(StageMarker::bIsOfType(pChild));
+
+      if (StageMarker::eLocation(pChild) != Location::LO_ORIGIN) {
+        QueryNode* pNewStageMarker = StageMarker::pCreate(Location::LO_ORIGIN, Routing::RT_UNICAST);
+        pSetOp->vInsertAsParentOfChild(pChild, pNewStageMarker);
+      }
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk each node and add in StageMarkers as appropriate
+  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*============================================================================*/

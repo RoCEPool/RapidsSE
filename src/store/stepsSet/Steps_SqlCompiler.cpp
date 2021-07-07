@@ -297,7 +297,7 @@ void Step::vSqlCompilerDoExplain(void) {
     // This stage does need explaining!
     // Don't explain the explain node, but start from the first child under it.
     s48K sExplainBuf;
-    Parser::PlanObject::vExplain(pExplainOp->pFirstChild(), pRootNode, sExplainBuf, 0);
+    Parser::PlanObject::vExplain(pExplainOp->pFirstChild(), pRootNode, pExplainOp, sExplainBuf, 0);
 
     i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
 
@@ -1080,8 +1080,7 @@ void Step::vSqlCompilerStageMarkers(void)
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
   try {
-    StageMarkers::vRemoveStatementMarkers(pPlanRoot);
-    StageMarkers::vAddStageMarkers(pPlanRoot);
+    StageMarkers::vStageMarkers(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

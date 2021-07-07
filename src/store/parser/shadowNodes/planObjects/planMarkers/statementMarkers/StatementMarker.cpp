@@ -76,20 +76,13 @@ void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if (sBuf.nLength() > 0) {
-    sBuf.vConcat("\n\n"_Stz);
-  }
-
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
-
-  // Add the local properties
-  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+  // Add the object header and local properties
+  vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
@@ -99,7 +92,7 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+      PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -109,7 +102,7 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -119,7 +112,7 @@ void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* 
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
 
@@ -142,9 +135,9 @@ void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* 
 
 
   // Manual polymorphism of subtypes here
-  if      ( DmlMarker::bIsOfType(szType)) {  DmlMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
-//  else if ( DdlMarker::bIsOfType(szType)) {  DdlMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
-//  else if ( DclMarker::bIsOfType(szType)) {  DclMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
+  if        ( DmlMarker::bIsOfType(szType)) {  DmlMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
+//  else if ( DdlMarker::bIsOfType(szType)) {  DdlMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
+//  else if ( DclMarker::bIsOfType(szType)) {  DclMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

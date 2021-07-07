@@ -18,12 +18,12 @@ namespace Parser
     ExplainOp();
 
   public:
-    static QueryNode* pCreate(QueryNode* pStageRangeList, Stz* szFormat);
+    static QueryNode* pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
+    static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
     // Explains any common properties of parent definitions
-    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent);
+    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -62,6 +62,9 @@ namespace Parser
     // Return the tabledef name for the definition of the explain table
     // for the current format. Must return one of the C_TDEF_* constants.
     static Stz* szTableDef(QueryNode* pNode);
+
+    // Returns true if the names of the sql operator nodes should be printed instead of their types
+    static b1 bWithNames(QueryNode* pNode);
 
   protected:
 

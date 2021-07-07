@@ -466,6 +466,11 @@
                           value: "A list of the names of stages that have been encountered",
                           type: "/__root__/definitions/object/list/stringList",
                         },
+                        {
+                          name: "withNames",
+                          value: "If true then the names of sql operator nodes should be printed instead of their types",
+                          type: "/__root__/definitions/object/valueObject/booleanObject",
+                        },
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/explainOp
 // Path: /__root__/definitions/object/planObject/sqlOperator/projectOp

@@ -37,6 +37,9 @@ static Stz* C_STAGESPAST_DEFN = "/__root__/definitions/object/list/stringList"_S
 static Stz* C_FORMAT_PRETTY = "PRETTY"_Stz;
 static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 
+static Stz* C_WITHNAMES_PROP = "withNames"_Stz;
+static Stz* C_WITHNAMES_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
+
 // Name of the last stage prior to transliteration and conversion to
 // a physical pipeline statement
 static Stz* C_LAST_REGULAR_EXPLAIN_STAGE = "explainPlan"_Stz;
@@ -51,7 +54,7 @@ static Stz* C_LAST_EXPLAINABLE_STAGE = "transliterate"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create ExplainOp nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
+QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames)
 {
   ASSERT(pStageRangeList);
 
@@ -95,6 +98,11 @@ QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
   QueryNode* pStagesPast = new QueryNode(C_STAGESPAST_PROP, C_STAGESPAST_DEFN);
   pExplainOp->vAppendProperty(pStagesPast);
 
+  // Create and add the withNames property
+  Value xWithNamesVal(bWithNames);
+  QueryNode* pWithNames = new QueryNode(C_WITHNAMES_PROP, C_WITHNAMES_DEFN, static_cast<Value&&>(xWithNamesVal));
+  pExplainOp->vAppendProperty(pWithNames);
+
   return pExplainOp;
 }
 
@@ -116,17 +124,13 @@ void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat("\n\n"_Stz);
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
-
-  // Add the local properties
-  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+  // Add the object header and local properties
+  vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -136,7 +140,7 @@ void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+      PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
     delete pIter;
   }
@@ -145,7 +149,7 @@ void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void ExplainOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void ExplainOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -155,7 +159,7 @@ void ExplainOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
 
@@ -458,6 +462,21 @@ Stz* ExplainOp::szTableDef(QueryNode* pNode)
   } else {
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the names of the sql operator nodes should be printed      */
+/* instead of their types                                                     */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bWithNames(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the property
+  QueryNode* pWithNamesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_WITHNAMES_PROP), pNode));
+  ASSERT(ShadowNode::bIsExactType(pWithNamesNode, C_WITHNAMES_DEFN));
+
+  return pWithNamesNode->bValue();
 }
 
 /*============================================================================*/

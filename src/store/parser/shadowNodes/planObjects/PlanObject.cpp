@@ -11,7 +11,9 @@
 #include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "SqlOperator.hpp"
+#include "ExplainOp.hpp"
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -60,15 +62,15 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
 
-  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vExplain(pNode, pRootNode, sBuf, iIndent);    }
-  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);    }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -79,7 +81,7 @@ void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -87,9 +89,29 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
   if (PlanObject::bIsExactType(szType)) {
     // Explain any common attributes of this object
     // This is as far as we recurse back
-//    s256 sParentType;
-//    GraphNav::vParentType(szType, sParentType);
-//    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    if (sBuf.nLength() > 0) {
+      sBuf.vConcat("\n\n"_Stz);
+    }
+
+    // Print the indent before we print the object type/name
+    vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+
+    if (pExplainNode && ExplainOp::bWithNames(pExplainNode)) {
+      // Print the object name (e.g. FilterOp9123)
+      sBuf.vConcat(pNode->szName());
+
+    } else {
+      // Print the object type (e.g. FilterOp)
+      // Special case for StatementMarkers
+      if (StatementMarker::bIsOfType(pNode)) {
+        sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
+
+      } else {
+        sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+      }
+    }
+
 
     // Explain any local attributes of this object
 
@@ -110,8 +132,8 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
 
   // Manual polymorphism here
 
-  if      ( PlanMarker::bIsOfType(szType))   {  PlanMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
-  else if (SqlOperator::bIsOfType(szType))   { SqlOperator::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  if      ( PlanMarker::bIsOfType(szType))   {  PlanMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
+  else if (SqlOperator::bIsOfType(szType))   { SqlOperator::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
