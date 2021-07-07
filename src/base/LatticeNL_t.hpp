@@ -34,12 +34,14 @@ namespace BASE
 
     i8    iAdd(ITEM* pItem);
     void  vClear(void);
+    i8    iFind(ITEM* pItem);
     ITEM* pGet(i8 i_Item);
     bool  bIsItem(i8 i_Item);
     i8    nItems(void);
     i8    iNext(i8 i_Item);
+    bool  bRemove(ITEM* pItem);
     void  vRemove(i8 i_Item);
-    
+
   private:
   
     Footer* aFooter(void);
@@ -192,6 +194,21 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+    if (pItem == m_i_NextFree[i_Item])
+      return i_Item;
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
@@ -253,6 +270,22 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
     
     i_Next++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove the given item                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+
+  i8 i_Item = iFind(pItem);
+  if (C_UNKNOWN == i_Item)
+    return false;
+  
+  vRemove(i_Item);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
