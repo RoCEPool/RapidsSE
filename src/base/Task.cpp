@@ -116,7 +116,7 @@ Task::Task(Job* pJob)
   m_pInput       = nullptr;
 
 #ifdef WITH_LOCK_SETS
-  ASSERT(! m_oLockSet.nItems());
+  ASSERT(! m_oWriteLocks.nItems());
 #endif
   
   _checkInitialised_(CN_TASK);
@@ -147,7 +147,7 @@ Task::~Task(void) noexcept(false)
   RASSERT(m_bDoneFinally);
   
 #ifdef WITH_LOCK_SETS
-  ASSERT(! m_oLockSet.nItems());
+  ASSERT(! m_oWriteLocks.nItems());
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -698,24 +698,6 @@ void Task::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get lock set                                                               */
-/*----------------------------------------------------------------------------*/
-LockSet* Task::pLockSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-#ifdef WITH_LOCK_SETS
-
-  return & m_oLockSet;
-  
-#else
-  
-  return nullptr;
-  
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* log memory?                                                                */
 /*----------------------------------------------------------------------------*/
 bool Task::bLogMemory(void)
@@ -1179,6 +1161,25 @@ u8 Task::uWakeupTime(void)
   
   return uMicroseconds;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get write lock set                                                         */
+/*----------------------------------------------------------------------------*/
+LockSet* Task::pWriteLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+#ifdef WITH_LOCK_SETS
+
+  return & m_oWriteLocks;
+  
+#else
+  
+  return nullptr;
+  
+#endif
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

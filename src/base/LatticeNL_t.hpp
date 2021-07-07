@@ -202,7 +202,7 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
-    if (pItem == m_i_NextFree[i_Item])
+    if (pItem == m_pItem[i_Item])
       return i_Item;
   
   return C_UNKNOWN;

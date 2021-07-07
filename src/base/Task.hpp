@@ -55,7 +55,7 @@ namespace BASE
     Profile*     m_pProfile;     // runtime profile
   
 #ifdef WITH_LOCK_SETS
-    LockSet      m_oLockSet;     // locks currently held by this task/op
+    LockSet      m_oWriteLocks;  // write locks currently held by this task/op
 #endif
   
   public:
@@ -126,7 +126,6 @@ namespace BASE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    LockSet* pLockSet(void);
     bool bLogMemory(void);
     void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
@@ -166,6 +165,7 @@ namespace BASE
     bool bWakeupNow(void);
     Sleep& oWakeupSleep(void);
     u8   uWakeupTime(void);
+    LockSet* pWriteLocks(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

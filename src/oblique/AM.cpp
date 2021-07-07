@@ -248,19 +248,13 @@ void AM::LOCK::vBeingUnlocked(Lock* pLock)
 
 #ifdef WITH_LOCK_SETS
   Task* pUnlockingTask = MY::pTask();
-  
   if (! pUnlockingTask)
     return;
       
-  i8 i_LockSet = pLock->iLockSet();
+  LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
   
-  LockSet* pLockSet = pUnlockingTask->pLockSet();
- 
-  if (C_UNKNOWN != i_LockSet)
-    pLockSet->vRemove(i_LockSet);
-  
-  pLock->vLockSet(C_UNKNOWN);
-  
+  bool bRemoved = pWriteLocks->bRemove(pLock);
+  RASSERT(bRemoved);
 #endif
 }
 
@@ -273,16 +267,13 @@ void AM::LOCK::vWasLocked(Lock* pLock)
   
 #ifdef WITH_LOCK_SETS
   Task* pLockingTask = MY::pTask();
-  
   if (! pLockingTask)
     return;
       
-  LockSet* pLockSet = pLockingTask->pLockSet();
+  LockSet* pWriteLocks = pLockingTask->pWriteLocks();
   
-  i8 i_LockSet = pLockSet->iAdd(pLock);
-  RASSERT(i_LockSet != C_UNKNOWN);
-  pLock->vLockSet(i_LockSet);
-  
+  i8 i_Lock = pWriteLocks->iAdd(pLock);
+  RASSERT(i_Lock != C_UNKNOWN);
 #endif
 }
 
