@@ -453,9 +453,15 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   RASSERT(pNextStage);
     
   switch (m_eSendKind) {
-      
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED : {
+    case XK_BROADCAST : {
+      RASSERT(0);
+      break;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_HASHCAST : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
       tPtnNo = pDataBuffer->tPtnNo();
       
@@ -569,9 +575,14 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   DataBuffer* pDataBuffer = nullptr;
   
   switch (m_eSendKind) {
-      
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED :
+    case XK_BROADCAST :
+      RASSERT(0);
+      break;
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_HASHCAST :
       pDataBuffer = _pDataBuffer(pOperand);
       tDstPtn = pDataBuffer->tPtnNo();
       break;

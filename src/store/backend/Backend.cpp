@@ -31,6 +31,7 @@
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
+#include "Routing.hpp"
 
 #include "TableRef.hpp"
 #include "AliasRef.hpp"
@@ -113,6 +114,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_sPipeline    = nullptr;
   m_bHasUnionOp  = false;
   m_bNewStage   = false;
+  m_pPrevStageMarker = nullptr;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -608,14 +610,17 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   // check for a unionOp
   PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pChildStageMarker1, false, true, fHasUnionOp, nullptr);
 
-  if ( ! pHasUnionOp )
-    pBackend->vAppendNextOp(pLeafStageMarker->szName());
+  if ( ! pHasUnionOp ) {
+    Stz* szRouting = szGetRouting(pChildStageMarker1);
+    pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
+  }
 
   // add child op's
   GraphNav::bGlobalWalkBottomUp(pChildStageMarker2, false, true, fLeafStageMarker, (void *) pBackend);
   RASSERT(pLeafStageMarker);
 
-  pBackend->vAppendNextOp(pLeafStageMarker->szName());
+  Stz *szRouting = szGetRouting(pChildStageMarker2);
+  pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
 
   pBackend->m_bNewStage = false;
   pBackend->m_bHasUnionOp = true;
@@ -1029,7 +1034,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   if (pHasUnionOp) {
 
     pBackend->m_bHasUnionOp = true;
-    pBackend->vAppendNextOp(pStageMarker->szName());
+    Stz *szRouting = szGetRouting(pStageMarker);
+    pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
 
     // get the location of this stageMarker
     QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
@@ -1058,6 +1064,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   // Starting on a StageMarker will walk until the subsequent StageMarker
   // node is encountered.
   if ( ! pHasUnionOp ) {
+    pBackend->m_pPrevStageMarker = pStageMarker;
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
     pBackend->vAppendNextOp("stageLast"_Stz);
     return GraphNav::WALK_ABORT;
@@ -1094,7 +1101,8 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s256& sPath, i8 
     pBackend->m_bHasUnionOp = false;
   }
   else {
-    pBackend->vAppendNextOp(pStageMarker->szName());
+    Stz *szRouting = szGetRouting(pBackend->m_pPrevStageMarker);
+    pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
   }
 
   pBackend->vAppendNewStage(pStageMarker->szName(), szLocation);
@@ -1105,6 +1113,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s256& sPath, i8 
   // Starting on a StageMarker will walk until the subsequent StageMarker
   // node is encountered.
 
+  pBackend->m_pPrevStageMarker = pStageMarker;
   GraphNav::bBoundedWalkBottomUp(pStageMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
@@ -1150,7 +1159,7 @@ void Backend::vAppendNewStage(Stz* szStage, Stz* szLocation) {
 /*----------------------------------------------------------------------------*/
 /* append extra pipe pipeline                                                 */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendNextOp(Stz* szNextStage) {
+void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
 
   if (m_bNewStage) {
     m_bNewStage = false;
@@ -1160,10 +1169,17 @@ void Backend::vAppendNextOp(Stz* szNextStage) {
         szNextStage);
   }
   else {
-    m_sPipeline->vCatSprint(
-        "\n    | %s"
-        ""_Stz,
-        szNextStage);
+    if (szRouting)
+      m_sPipeline->vCatSprint(
+          "\n    | %s %s"
+          ""_Stz,
+          szNextStage,
+          szRouting);
+    else
+      m_sPipeline->vCatSprint(
+          "\n    | %s"
+          ""_Stz,
+          szNextStage);
   }
 }
 
@@ -1183,6 +1199,22 @@ void Backend::vAppendStartStage() {
       "    | periodic once"
       ""_Stz
       );
+}
+/*----------------------------------------------------------------------------*/
+/* get routing of this stage                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Backend::szGetRouting(QueryNode* pStageMarker) {
+
+  // get the routing of the stage
+  QueryNode *pRouting = StageMarker::pRouting(pStageMarker);
+  RASSERT(pRouting);
+  Routing::eRT eRouting = Routing::eRoutingType(pRouting);
+
+  Stz *szRouting = nullptr;
+  if (eRouting == Routing::RT_BROADCAST || eRouting == Routing::RT_HASHCAST)
+    szRouting = Routing::szRoutingType(pRouting);
+
+  return szRouting;
 }
 
 /*============================================================================*/

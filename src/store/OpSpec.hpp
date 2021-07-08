@@ -26,7 +26,7 @@ namespace STORE
     i8  m_i_OtherOp;       // next Op in the other stage
 
     bool   m_bAppendRight; // append to right queue of next operator
-    eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
+    eXK    m_eSendKind;    // {normal, broadcast, hashcast, robin, local robin} if send op
 
     // must be last
     Footer m_xFooter;
