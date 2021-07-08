@@ -186,7 +186,7 @@ void Parcel::vSendOut(Op* pSrcOp)
     
   // is the operand is a marker or a streamDef ?
   if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    m_eSendKind = XK_NORMAL;
+    m_eSendKind = XK_UNICAST;
   
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
@@ -409,7 +409,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
+    case XK_UNICAST: {
       
       ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
       for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
@@ -492,7 +492,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
+    case XK_UNICAST: {
       
       ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
@@ -588,7 +588,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL:
+    case XK_UNICAST:
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
