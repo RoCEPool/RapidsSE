@@ -118,7 +118,6 @@ enum eEG // enum groups
   EG_UK,
   
   EG_VA,
-  EG_VL,
   
   EG_WK,
 

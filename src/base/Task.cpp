@@ -925,7 +925,7 @@ void Task::vSeedTask(void)
   if (! pSeedWord) {
     AM::szJobSeed(m_pJob);
     
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 

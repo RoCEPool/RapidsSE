@@ -111,7 +111,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
   // open a new shm region which will contain the activity map
   bResult = ShmLib::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Engine::vCreate: failed to create region %s; errno %lld %s\n"_Stz,
            sRegionName.azChar(),
            oSysCall.iError(),
@@ -120,7 +120,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
   // extend the shm region
   bResult = ShmLib::bExtend(iRegionFd,iRegionSize,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Engine::vCreate: failed to extend region %s\n"_Stz,
            sRegionName.azChar());
   
@@ -131,7 +131,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Engine::vCreate failed to map region!\n"_Stz);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
@@ -146,7 +146,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
   if (bLock) {
     bResult = ShmLib::bLock(gaSeShmRegion,iRegionSize,oSysCall);
     if (! bResult)
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Engine::vAttach failed to lock\n"_Stz);
     
     if (bVerbose)

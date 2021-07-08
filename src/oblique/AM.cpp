@@ -2222,11 +2222,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUMS not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in aCN (%lld) "
            "do not match the no in eCN (%lld) -- missing comma??\n\n"_Stz,
            iEntriesPCN, iEntriesECN);
@@ -2248,11 +2248,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in gxaSizeHeap\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in gxaSizeHeap (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
@@ -2732,7 +2732,6 @@ static Stz* aEG[]
   "EG_UK"_Stz,
 
   "EG_VA"_Stz,
-  "EG_VL"_Stz,
 
   "EG_WK"_Stz,
 
@@ -2863,7 +2862,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_UK: return aUK[i_Enum];
 
     case EG_VA: return aVA[i_Enum];
-    case EG_VL: return aVL[i_Enum];
+
  
     case EG_WK: return aWK[i_Enum];
 
@@ -3227,7 +3226,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
   Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
   if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+    vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %lld in the cluster"_Stz,
            iNode);
   }
@@ -3242,7 +3241,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
   Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
   if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+    vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            pszName);
   }

@@ -2974,7 +2974,7 @@ L_END:
     bPrompt_memoryLeaks_dump(pPrompt);
   
   if (nLeaksDetected && bFatal)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "fatal: memory leaks detected"_Stz);
   
   if (! nLeaksDetected)
@@ -5856,7 +5856,7 @@ bool PROMPT::bPrompt_with(SePrompt* pPrompt)
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
   if (! BASE::bTraceWith(szWith))
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "With: Code was not compiled with: %s"_Stz,szWith);
 
   return true;
@@ -5901,7 +5901,7 @@ bool PROMPT::bPrompt_without(SePrompt* pPrompt)
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
   if (! BASE::bTraceWithout(szWith))
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Without: Code was compiled with: %s"_Stz,szWith);
 
   return true;

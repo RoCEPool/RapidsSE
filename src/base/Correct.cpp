@@ -490,7 +490,6 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /* throw an xException                                                        */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrow(eFK   eKind,
-                                 eVL   eSeverity,
                                  const char* azFunc,
                                  const char* azFilePath,
                                  i8    iLineNo,
@@ -512,7 +511,6 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
           "\n"
           "BASE::vThrow(\n"
           "  eKind      = %lld\n"
-          "  eSeverity  = %lld\n"
           "  azFunc     = %s\n"
           "  azFilePath = %s\n"
           "  iLineNo    = %lld\n"
@@ -520,7 +518,6 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
           ")\n"
           
           ,(i8)eKind
-          ,(i8)eSeverity
           ,azFunc
           ,azFilePath
           ,(i8)iLineNo
@@ -538,7 +535,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   va_end(xArgs);
   
   
-  Exception xException(eKind,eSeverity,azFunc,zCondition,zFileNm,iLineNo);
+  Exception xException(eKind,azFunc,zCondition,zFileNm,iLineNo);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the call stack
@@ -568,7 +565,6 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowUser(eFK   eKind,
-                                        eVL   eSeverity,
                                         const char* azFunc,
                                         const char* azFilePath,
                                         i8    iLineNo,
@@ -578,13 +574,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     fprintf(stderr,
             "BASE::vThrow:\n"
             "eKind = %lld\n"
-            "eSeverity = %lld\n"
             "azFunc = %s\n"
             "azFilePath = %s\n"
             "iLineNo = %lld\n"
             "szFormat = %s\n",
             (i8)eKind,
-            (i8)eSeverity,
             azFunc,
             azFilePath,
             (i8)iLineNo,
@@ -606,7 +600,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(eKind,eSeverity,azFunc,zCondition,zFileNm,iLineNo);
+  Exception xException(eKind,azFunc,zCondition,zFileNm,iLineNo);
   
   throw xException;
 }
@@ -615,7 +609,6 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowType(eFK   eKind,
-                                            eVL   eSeverity,
                                             const char* azFunc,
                                             const char* azFilePath,
                                             i8    iLineNo,
@@ -653,14 +646,13 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     vThreadCallStackDump();
   }
 
-  vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
+  vThrow(eKind,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
 
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowType2(eFK   eKind,
-                                            eVL   eSeverity,
                                             const char* azFunc,
                                             const char* azFilePath,
                                             i8    iLineNo,
@@ -700,7 +692,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     vThreadCallStackDump();
   }
 
-  vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
+  vThrow(eKind,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
 
 
