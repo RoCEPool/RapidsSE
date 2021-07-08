@@ -4,237 +4,183 @@
 
 bc;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INDEX JOIN
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = c
 create table T (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
 );
 
 print "loading nation.csv..." ;
-load T "../TPCH/SF1/nation.tbl" ;
+load T "../DATA/Joins/T.csv" ;
 
 create table J (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
 );
 
+create index jidx on j (a);
 print "loading nation.csv..." ;
-load J "../TPCH/SF1/nation.tbl" ;
-create index idx on j (n_nationkey);
+load J "../DATA/Joins/J.csv" ;
 
-dumpidx j idx;
-
-//range_I j idx "EQUAL $I1 0 == ";
-
-pipeline eachRowExp
+pipeline indexJoinP
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | project 0 "type integer $1 " |
-     indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageC
+    scan T | stageC
 
   stage stageC on all partitions :
-    project 0 "type integer $1 , $2 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageD
-
-  stage stageD on all partitions :
-    project 0 "type integer $1 , $2 , $3 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageE
-
-  stage stageE on all partitions :
-     project 0 "type integer $1 , $2 , $3 , $4 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageF
-
-  stage stageF on origin :
-    output | sink | stageA
-end;
-
-/*
-trackMemory;
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | project 0 "type integer $1 " | filter 0 "type integer $1 5 <= " | eachRow |
-    eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
-
-  stage stageC on all partitions :
-    project 0 "type integer $1 , $2 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
-
-  stage stageD on all partitions :
-    project 0 "type integer $1 , $2 , $3 " | eachRow | eachScan T | eachJoin 0 "$L1 $R1 ==" | stageE
-
-  stage stageE on all partitions :
-     project 0 "type integer $1 , $2 , $3 , $4 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageF
-
-  stage stageF on origin :
-    output | sink | stageA
-end;
-
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | eachRow | stageC
-
-  stage stageC on all partitions :
-    eachScan J | filter 0 "type integer $1 2 <= " | eachJoin 0 "$L1 $R1 ==" | stageD
+    indexJoin 0 J jidx "EQUAL $I1 $L1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
 end;
 
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// CO-PARTITIONED JOIN
+// T.a = J.a
+// PtnKey[T] = a
+// PtnKey[J] = a
 
-//select N_NATIONKEY from J;
+create table T (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
 
-pipeline eachRowExp
+print "loading nation.csv..." ;
+load T "../DATA/Joins/T.csv" ;
+
+create table J (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading nation.csv..." ;
+load J "../DATA/Joins/J.tbl" ;
+
+pipeline loopJoinCo
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | project 0 "type integer $1 " | filter 0 "type integer $1 5 <= " | eachRow | stageC
+    scan T | stageC
 
   stage stageC on all partitions :
-    eachScan J | project 0 "type integer $1 " | stageCC
+    scan right J | loopJoin "$L1 $R1 ==" | stageD
 
-  stage stageCC on all partitions :
-    eachJoin 0 "$L1 $R1 ==" | stageD
-
-  stage stageD on all partitions :
-    eachRow | eachScan J |
-    eachJoin 0 "$L1 $R1 ==" | stageE
-
-  stage stageE on origin :
-    output | sink | stageA
-end;
-
-
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end;
-
-
-
-stage stageC on all partitions :
-    eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end;
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end;
-
-
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow |
-    eachScan J | filter 0 "type boolean $1 15 >=" |
-    eachJoin 0 "$L1 $R1 ==" | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end;
-
-
-MemoryLeaks;
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// T.N_NATIONKEY = J.N_NATIONKEY
-// PtnKey[T] = N_NATIONKEY
-// PtnKey[J] = N_NATIONKEY
-
-pipeline loopJoinPro
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | loopJoin | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-end;
-
-ipeline loopJoin
-begin
-  stage stageA on origin :
-    start | periodic once | eachRow | stageB
-
-  stage stageB on origin :
-    eachScan J | eachJoin | stageC
-
-  stage stageC on origin :
+  stage stageD on origin :
     output | sink | stageA
 
 end;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// T.a = J.b
-// PtnKey[T] = a
+// PARTITIONABLE JOIN
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = a
+
+drop table T;
+drop table J;
+
+create table T (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+
+print "loading nation.csv..." ;
+load T "../DATA/Joins/T.csv" ;
+
+create table J (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (b);
+
+print "loading nation.csv..." ;
+load J "../DATA/Joins/J.tbl" ;
+
+pipeline loopJoinPartitionable
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | hash $1 | stageC hashcast
+
+  stage stageC on all partitions :
+    scan right J | loopJoin "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BROADCAST JOIN
+// T.a = J.a
+// PtnKey[T] = b
 // PtnKey[J] = c
 
-pipeline JoinTables
+drop table T;
+drop table J;
+
+create table T (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (b);
+
+print "loading nation.csv..." ;
+load T "../DATA/Joins/T.tbl" ;
+
+create table J (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+
+print "loading nation.csv..." ;
+load J "../DATA/Joins/J.tbl" ;
+
+pipeline loopJoinPartitionable
 begin
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan TableT | filter | stageD  (default leftQ)
+    scan T | stageC broadcast
 
   stage stageC on all partitions :
-    scan TableJ | filter | stageD rightQ hashed (on column b)
+    scan right J | loopJoin "$L1 $R1 ==" | stageD
 
-  stage D on all partitions:
-    join "type boolean L.a R.b"
-    | stageE
-
-  stage stageE on origin :
+  stage stageD on origin :
     output | sink | stageA
 
 end;
+
+
 */
 
 /*============================================================================*/
