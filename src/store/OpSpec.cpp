@@ -43,7 +43,7 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_i_OtherOp     = C_UNKNOWN;
 
   m_bAppendRight  = false;
-  m_eSendKind     = XK_NORMAL;
+  m_eSendKind     = XK_UNICAST;
 
   _checkInitialised_(CN_OPSPEC);
   
