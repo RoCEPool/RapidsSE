@@ -7,8 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_Xyz ...                                                              */
 /*----------------------------------------------------------------------------*/
-: throw_Xyz \handler
+: throw_throw \handler
 
+  debug::throw
+
+  PipeIn[].pipeOut
+  
   true
 ;
 
@@ -20,6 +24,8 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: throw_throw  ZK_CRWBUFFER  op[].handler!
 
   op__loop
 
