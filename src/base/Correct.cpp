@@ -487,49 +487,60 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 }
 
 /*----------------------------------------------------------------------------*/
-/* throw anexception                                                          */
+/* throw an xException                                                        */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrow(eFK   eKind,
-                                        eVL   eSeverity,
-                                        const char* azFunc,
-                                        const char* azFilePath,
-                                        i8    iLineNo,
-                                        Stz*  szFormat,...)
+                                 eVL   eSeverity,
+                                 const char* azFunc,
+                                 const char* azFilePath,
+                                 i8    iLineNo,
+                                 Stz*  szFormat,
+                                 ...)
 {
+  char zFileNm[1024];
+  char zCondition[1024];
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   fprintf(stderr,
-          "BASE::vThrow:\n"
-          "eKind = %lld\n"
-          "eSeverity = %lld\n"
-          "azFunc = %s\n"
-          "azFilePath = %s\n"
-          "iLineNo = %lld\n"
-          "szFormat = %s\n",
-          (i8)eKind,
-          (i8)eSeverity,
-          azFunc,
-          azFilePath,
-          (i8)iLineNo,
-          szFormat->azChar()
+          "\n\n"
+        // 0         1         2         3
+        // 0123456789012345678901234567890123456789"
+          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
+          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
+          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
+          "\n"
+          "BASE::vThrow(\n"
+          "  eKind      = %lld\n"
+          "  eSeverity  = %lld\n"
+          "  azFunc     = %s\n"
+          "  azFilePath = %s\n"
+          "  iLineNo    = %lld\n"
+          "  szFormat   = %s\n"
+          ")\n"
+          
+          ,(i8)eKind
+          ,(i8)eSeverity
+          ,azFunc
+          ,azFilePath
+          ,(i8)iLineNo
+          ,szFormat->azChar()
           );
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
   
-  // put a breakpoint here to trap throws
-  sleep(0);
-  
-  char zFileNm[256];
   StrLib::vSubPath(zFileNm,(char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szFormat);
-  char zCondition[256];
   StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
   va_end(xArgs);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Exception xException(eKind,eSeverity,azFunc,zCondition,zFileNm,iLineNo);
-  
-  //xException.vPrint();
-  
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the call stack
   
   if (AM::bDeveloper() || AM::bDebugMode()) {
@@ -537,6 +548,18 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     vThreadCallStackDump();
     vDebugPoint();
   }
+  
+  fprintf(stderr,
+          // 0         1         2         3
+          // 0123456789012345678901234567890123456789"
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
+            "\n"
+          );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
   
   throw xException;
 }

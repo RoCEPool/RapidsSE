@@ -288,7 +288,6 @@ void Task::vTraceOnException(void)
          );
   
   
-  //vThreadCallStackDump();
   AM::vTaskDump();
   vContentDump();
   AM::vTaskFullTrace(this);
