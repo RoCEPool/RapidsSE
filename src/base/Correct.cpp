@@ -534,9 +534,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   if (AM::bDeveloper() || AM::bDebugMode()) {
     xException.vPrint();
-    AM::vTaskDump();
     vThreadCallStackDump();
-
     vDebugPoint();
   }
   

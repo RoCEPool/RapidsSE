@@ -1548,16 +1548,11 @@ void AM::vTaskFullTrace(Task* pTask)
   Job* pJob = pTask->pJob();
     
 
-  // dump the call stack
-  vThreadCallStackDump();
-  
-  // write activity log
-  AM::vWriteLog();
-  
+     
   // dump api state
   //AM::vDumpApi();
 
-  pTask->vContentDump();
+  //pTask->vContentDump();
   
   if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
 

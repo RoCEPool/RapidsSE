@@ -280,15 +280,19 @@ void Task::vTraceOnException(void)
   
   vTrace("\n\n"_Stz);
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  
   vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz
          
          ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
          ,aCN[AM::eJobClass(m_pJob)]
          
          );
-
+  
+  
+  //vThreadCallStackDump();
+  AM::vTaskDump();
+  vContentDump();
   AM::vTaskFullTrace(this);
+  
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("\n\n"_Stz);
