@@ -281,7 +281,73 @@ function processAddNodeArgs() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Welcomes the user to the interactive addNode wizard.
+## Params: None
 
+function displayAddNodeWelcome() {
+  clear
+  #shellcheck disable=1090
+  source "${VERSION_FILE}"
+
+  echo "Welcome to the Add Node wizard for RapidsSE version ${SE_VERSION_STR}."
+  echo "(git ${SE_COMMIT_HASH})"
+  echo ""
+  echo "This will guide you through the process of adding additional RapidsSE nodes"
+  echo "in a cluster."
+  echo ""
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Alters the in-memory cluster configuration interactively by prompting the user.
+## Params: None
+
+function alterConfiguration() {
+
+  # (advanced) node name prefix
+  askNamePrefix
+
+  # hostnames
+  askHostnames
+
+  # We need to validate hostnames and SSH access now so that we can connect
+  # to each machine and determine the number of CPUs, so we can set the
+  # number of partitions/threads appropriately.
+  validateHostsAreResolvable
+  validateHostsReachableBySsh
+
+  # Get the number of CPU cores, memory size, SHM size of each node.
+  # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+  # and will be used for default values for partitions, threads and
+  # shared memory size later on.
+  collectHostSizeInfo
+
+  # Now we can update the default values for memory size, partitions and threads.
+  updateDefaults
+
+  # (advanced) port
+  askPort
+
+  # (advanced) heartbeat
+  askHeartbeat
+
+  # installation directory
+  askInstallDir
+
+  # shared memory size
+  askMemSize
+
+  # (advanced) partitions
+  askPartitions
+
+  # (advanced) threads
+  askThreads
+
+  # (advanced) additional parameters
+  askParams
+
+  # Set cluster ID
+  setClusterId
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -311,16 +377,19 @@ debugPrint "INSTALL_FILE = ${INSTALL_FILE}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint
 
+# Use the default config file path if the config file was not specified
+[ -n "${CONFIG_FILE}" ] || CONFIG_FILE="${DIR:+${DIR}/}${DEFAULT_CONFIG_PATH}"
 
 # Load the config file
+loadClusterConfig
 
 # Find the installation file and check that it's version matches the current version
 if [ -z "${INSTALL_FILE}" ]; then
   findInstallFile
 
 else
-  # Check that this file matches the current version
-
+  # Check that this file matches the current version.
+  # First get the RapidsSE version from the version file in the install dir.
   [ -f "${DIR:+${DIR}/}${VERSION_FILE}" ] || errorExit "Could not find the file ${VERSION_FILE} in the installation directory."
   #shellcheck source=common.fn
   currentVer="$(source "${DIR:+${DIR}/}${VERSION_FILE}" && echo "${SE_VERSION_STR}")"
@@ -332,6 +401,18 @@ fi
 # Check if the cluster is running
 isClusterRunning && CLUSTER_IS_RUNNING=1
 
+# Is this an interactive or scripted install?
+if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+  displayAddNodeWelcome
+
+  # Alter the in-memory configuration by prompting the user
+  alterConfiguration
+
+  true
+else
+  # Scripted installation
+  true
+fi
 
 # Prompt for details on new node (host, port, directory, etc)
 # Validate new config

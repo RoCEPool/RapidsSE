@@ -431,7 +431,7 @@ function doClusterInstall() {
   # whether an existing config file is being used.
 
   if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
-    displayWelcome
+    displaySetupWelcome
 
     if [ -n "${CONFIG_FILE}" ]; then
       # Interactive install but we have been given a config file.
@@ -564,7 +564,7 @@ function createConfiguration() {
 ## Welcomes the user to the interactive install wizard.
 ## Params: None
 
-function displayWelcome() {
+function displaySetupWelcome() {
   clear
   #shellcheck disable=1090
   source "${VERSION_FILE}"
@@ -1281,6 +1281,9 @@ EOT
 
   # Write out the definition of the node list.
   (
+    echo    "NODE_NAME_PREFIX=\"${NODE_NAME_PREFIX}\""
+    echo    "NODE_SEQ_NUM=${NODE_SEQ_NUM}"
+    echo    ""
     echo    "declare -ga NODE_LIST"
     echo -n "NODE_LIST=( "
 
