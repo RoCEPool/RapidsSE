@@ -557,7 +557,7 @@ function createConfiguration() {
   askParams
 
   # Set cluster ID
-  setClusterId
+  generateClusterId
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -723,6 +723,22 @@ function askHostnames() {
   # Build the node list, now that we have the initial list & count of hosts.
   createNodeNames ${#hostnames[@]}
 
+  # We now need to create the default node configurations for each node.
+  # If we are installing then just create them all, but if we are adding
+  # a node then we only need to create node configs for the nodes we are adding.
+  # So determine which nodes.
+  local -a nodeNames
+  if [ "${#hostnames[@]}" -eq "${#NODE_LIST[@]}" ]; then
+    # Create node configs for all
+    nodeNames=("${NODE_LIST[@]}")
+  else
+    # Only create node configs for the last node(s)
+    local startIdx=$(( ${#NODE_LIST[@]} - ${#hostnames[@]} ))
+    for (( i=startIdx ; i<${#NODE_LIST[@]} ; i++ )); do
+      nodeNames+=("${NODE_LIST[$i]}")
+    done
+  fi
+
   # With the node count and the node names we can now build the 
   # node_cfg associative arrays to hold the configuration of each node.
   createNodeConfigs "${NODE_LIST[@]}"
@@ -734,19 +750,28 @@ function askHostnames() {
     nodeCfgSetValue "${NODE_LIST[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
     i=$((i+1))
   done
-
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default port number that each SE instance will listen on.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+## Params:
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askPort() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}"   
+    specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}" "${nodeNames[@]}"
     return
   fi
 
@@ -796,8 +821,8 @@ function askPort() {
     break
   done
 
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -805,12 +830,21 @@ function askPort() {
 ## Ask the user to enter a default UDP port number that each SE instance will use
 ## to share status information and heartbeat messages on.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askHeartbeat() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT}"
+    specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT}" "${nodeNames[@]}"
     return
   fi
 
@@ -861,15 +895,17 @@ function askHeartbeat() {
   done
 
   # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${line}"
+  specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default installation directory for each SE instance
 ## on each node.
-## Params: None
+##  $@ - (optional) a list of node names to set the install dir value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askInstallDir() {
 
   echo ""
@@ -907,17 +943,34 @@ function askInstallDir() {
     break
   done
 
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}"
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default size (in GB) for the shared memory segment
 ## for all nodes.
-## Params: None
+##  $@ - (optional) a list of node names to set the memory size value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askMemSize() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
 
   echo ""
   echo "Reserved Memory Size"
@@ -933,7 +986,7 @@ function askMemSize() {
   local hostName
   local totalShm
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     totalShm="${NODE_TOTAL_SHM[${nodeName}]}"
@@ -983,19 +1036,28 @@ function askMemSize() {
   done
 
   # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}"
+  specificNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default number of partitions for each SE instance.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+##  $@ - (optional) a list of node names to set the partition count value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askPartitions() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}"
+    specificNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}" "${nodeNames[@]}"
     return
   fi
 
@@ -1013,7 +1075,7 @@ function askPartitions() {
   local hostName
   local nodeCoreCount
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeCoreCount="${NODE_CORE_COUNT[${nodeName}]}"
@@ -1062,20 +1124,29 @@ function askPartitions() {
     break
   done
 
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default number of threads for each SE instance.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+##  $@ - (optional) a list of node names to set the thread value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askThreads() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}"
+    specificNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}" "${nodeNames[@]}"
     return
   fi
 
@@ -1122,8 +1193,8 @@ function askThreads() {
     break
   done
   
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -1133,10 +1204,18 @@ function askThreads() {
 ## This only runs when ADV_WIZARD=1.
 ## Params: None
 
+# shellcheck disable=SC2120
 function askParams() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}"
+    specificNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}" "${nodeNames[@]}"
     return
   fi
 
@@ -1171,8 +1250,8 @@ function askParams() {
     break
   done
   
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -1183,7 +1262,7 @@ function askParams() {
 ## it supports.
 ## Params: None
 
-function setClusterId() {
+function generateClusterId() {
 
   # Refer to: https://tldp.org/LDP/abs/html/randomvar.html
 
@@ -1564,10 +1643,20 @@ function cleanupNodeInstall() {
 # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM
 # and NODE_FREE_SHM and will be used for default values for partitions, 
 # threads and  shared memory size later on.
-# Params: None
+# Params:
+#  $@ - (optional) a list of node names to collect size info for.
+#       If not set then info will be collected for all nodes.
 
+# shellcheck disable=SC2120
 function collectHostSizeInfo() {
- 
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local tempFile
 
@@ -1575,7 +1664,7 @@ function collectHostSizeInfo() {
 
   debugPrint "About to collect the CPU/memory/SHM stats from each node and write them to ${tempFile}"
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     (
       local coreCount

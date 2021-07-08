@@ -81,9 +81,19 @@ function validateEnvironment() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that all hosts are resolvable on the current machine. Exits out
 ## and writes an error to stderr if not.
-## Params: None
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
+# shellcheck disable=SC2120
 function validateHostsAreResolvable() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
 
   local nodeName
   local host
@@ -96,7 +106,7 @@ function validateHostsAreResolvable() {
 
   debugPrint "About to validate that all hostnames are resolvable."
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -249,10 +259,20 @@ function validateHostsAndPortsAreUnique() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that each hostname is reachable by SSH.
 ## Exits out and writes an error to stderr if not.
-## Params: None
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
+# shellcheck disable=SC2120
 function validateHostsReachableBySsh() {
- 
+
+ local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local host 
 
@@ -261,7 +281,7 @@ function validateHostsReachableBySsh() {
 
   debugPrint "About to validate that nodes can be reached by SSH."
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"

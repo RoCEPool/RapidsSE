@@ -740,6 +740,34 @@ function allNodeCfgsSetValue() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in the dynamically created associative arrays for
+## certain specified node names.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the key to be set.
+##  $2 : The value to set in this key.
+##  $3 : The array of node names to set this key/value for
+
+function specificNodeCfgsSetValue() {
+
+  local key="$1"
+  shift
+  local value="$1"
+  shift
+  local -a nodeNames=("$@")
+
+  [ "${#nodeNames[@]}" -gt 0 ] && errorExit "Invalid number of node names specified in function specificNodeCfgsSetValue()"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    nodeCfgSetValue "${nodeName}" "${key}" "${value}"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Sets a value for a key in a dynamically created associative array.
 ##
 ## NB: Not relying on bash v4.3 which introduces reference variables that would

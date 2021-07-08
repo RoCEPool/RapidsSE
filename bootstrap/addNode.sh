@@ -304,31 +304,50 @@ function displayAddNodeWelcome() {
 function alterConfiguration() {
 
   # (advanced) node name prefix
-  askNamePrefix
+  [ -z "${NODE_NAME_PREFIX}" ] && errorExit "NODE_NAME_PREFIX is not set"
+  [ "${NODE_SEQ_NUM}" -gt 0 ]  && errorExit "NODE_SEQ_NUM is not set"
+
+  # Record how many nodes we started with
+  local initialNodeCount
+  initialNodeCount="${#NODE_LIST[@]}"
 
   # hostnames
   askHostnames
 
+  # Work out which node names we are adding
+  local finalNodeCount
+  finalNodeCount="${#NODE_LIST[@]}"
+
+  local -a addedNodeNames
+  for (( i=initialNodeCount ; i<finalNodeCount ; i++ )); do
+    addedNodeNames+=("${NODE_LIST[$i]}")
+  done
+
   # We need to validate hostnames and SSH access now so that we can connect
   # to each machine and determine the number of CPUs, so we can set the
   # number of partitions/threads appropriately.
-  validateHostsAreResolvable
-  validateHostsReachableBySsh
+  validateHostsAreResolvable "${addedNodeNames[@]}"
+  validateHostsReachableBySsh "${addedNodeNames[@]}"
 
   # Get the number of CPU cores, memory size, SHM size of each node.
   # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
   # and will be used for default values for partitions, threads and
   # shared memory size later on.
-  collectHostSizeInfo
+  collectHostSizeInfo "${addedNodeNames[@]}"
 
   # Now we can update the default values for memory size, partitions and threads.
+  # At the end of this the following globals will be set based on the capabilities
+  # of the new nodes being added (not all the nodes):
+  #     NODE_CFG_DEFAULT_PARTITIONS
+  #     NODE_CFG_DEFAULT_THREADS
+  #     NODE_CFG_DEFAULT_MEM
   updateDefaults
 
   # (advanced) port
   askPort
 
-  # (advanced) heartbeat
-  askHeartbeat
+  # Copy the same heartbeat value from the first node
+  copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${addedNodeNames[@]}"
 
   # installation directory
   askInstallDir
@@ -345,9 +364,31 @@ function alterConfiguration() {
   # (advanced) additional parameters
   askParams
 
-  # Set cluster ID
-  setClusterId
+  # Copy the cluster ID from the first node
+  copyValue "${NODE_CFG_CLUSTERID_KEY}" "${addedNodeNames[@]}"
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies a specific value from the first node in the cluster and sets it
+## for the given nodes specified.
+## Params:
+##  $1 - the key name of the value to copy from the first node
+##  $@ - the list of node names to have their heartbeat value set.
+
+function copyValue() {
+  [ "$#" -lt 2 ] && errorExit "Not enough parameters provided for function copyHeartbeat"
+  local key="$1"
+  shift
+  local -a nodeNames=("$@")
+
+  local value
+  value="$(nodeCfgGetValue "${NODE_LIST[0]}" "${key}")"
+
+  specificNodeCfgsSetValue "${key}" "${value}" "${nodeNames[@]}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
