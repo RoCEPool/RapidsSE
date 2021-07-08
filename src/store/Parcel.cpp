@@ -241,10 +241,16 @@ void Parcel::vSendOut(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      if (pGetOperand()->bIsBuffer())
-        vSendToPartition(pSrcOp,tDstPtn);
-      else
+
+      if (m_eSendKind == XK_BROADCAST) {
         vSendToAllPartitions(pSrcOp);
+      }
+      else {
+        if (pGetOperand()->bIsBuffer())
+          vSendToPartition(pSrcOp, tDstPtn);
+        else
+          vSendToAllPartitions(pSrcOp);
+      }
       break;
     }
      
@@ -456,7 +462,14 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_BROADCAST : {
-      RASSERT(0);
+      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
+
+        // sendNode is the partition node
+        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pSrcOp->vSendNode(iDstNode);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      }
       break;
     }
 
