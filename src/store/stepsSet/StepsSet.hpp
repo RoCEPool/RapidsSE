@@ -191,9 +191,10 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
-  void vDebugTrap(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
+  void vDebugThrow(void);
+  void vDebugBreakpoint(void);
 
   // devLftRow
   void vDevLftRowStreamDefStore(void);
