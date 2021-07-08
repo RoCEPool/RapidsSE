@@ -37,7 +37,7 @@ void* Schedule::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Schedule::operator delete(void* )
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "fatal: Schedule class cannot be deleted"_Stz);
 }
 

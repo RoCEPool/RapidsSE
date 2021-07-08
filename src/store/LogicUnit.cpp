@@ -1127,7 +1127,7 @@ void LogicUnit::vDumpCode(void)
     vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
       
     if (eCode <= EO_NONE || eCode >= EO_ENUMS) {
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eo code sequence detected"_Stz);
     }
     
@@ -1388,7 +1388,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
     if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "LogicUnit data stack exhausted\n"_Stz);
 
     i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);

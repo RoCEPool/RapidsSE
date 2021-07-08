@@ -22,14 +22,12 @@
 /* constructor (long-form)                                                    */
 /*----------------------------------------------------------------------------*/
 Exception::Exception(eFK   eKind,
-                     eVL   eSeverity,
                      const char* azFuncNm,
                      const char* azText,
                      const char* azFileNm,
                      i8    iLineNo)
 {
   m_eKind = eKind;
-  m_eSeverity = eSeverity;
   StrLib::vCopy(m_zFuncNm,azFuncNm);
   StrLib::vCopy(m_zText,azText);   //! #030 this should be length delimited copy
   StrLib::vCopy(m_zFileNm,azFileNm);
@@ -120,20 +118,15 @@ void Exception::vSprint(char* azIntoBuf)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
                   
-                  "Exception : %s of condition (%s) "
-                  "for job %s "
-                  "thrown in func %s() file %s line %lld"_Stz,
+                  "Exception : condition=%s (%s) "
+                  "thrown by func=%s() in file=%s at line=%lld"_Stz
          
-                  aFK[eKind()]->azChar(),
-                  azText(),
+                  ,aFK[eKind()]->azChar()
+                  ,azText()
                   
-                  pJob()
-                    ? aCN[((Object*)pJob())->eGetClassNo()]->azChar()
-                    : "<null>",
-
-                  m_zFuncNm,
-                  azFileNm(),
-                  iLineNo()
+                  ,m_zFuncNm
+                  ,azFileNm()
+                  ,iLineNo()
                   );
 }
 

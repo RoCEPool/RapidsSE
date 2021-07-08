@@ -687,28 +687,28 @@ void PoolHelper::vValidateEnums(void)
         
       case HT_T_TINY:
         if (iSize >= C_SIZE_TINY_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
@@ -717,34 +717,34 @@ void PoolHelper::vValidateEnums(void)
 
       case HT_P_TINY:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
                 
       default:
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                "Heaps::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
                eHeap);
     }

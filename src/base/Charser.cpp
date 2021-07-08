@@ -1074,7 +1074,7 @@ void Charser::vLoadRegWithRawChar(AnnChar& rxReg)
       
     default:
       rxReg.vReset();
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
 }

@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eVL.h"
-
 /*----------------------------------------------------------------------------*/
 /* explicitly ignore the return value                                         */
 /*----------------------------------------------------------------------------*/
@@ -24,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 #define ALWAYS(condition) \
   if (! (condition)) \
-    BASE::vThrow(FK_ASSERT,VL_FATAL,\
+    BASE::vThrow(FK_ASSERT,\
                         __func__,__FILE__,__LINE__,\
                         (Stz*)#condition); \
 
@@ -34,7 +32,7 @@
 #ifdef WITH_ASSERT_MACRO
   #define ASSERT(condition) \
     if (! (condition)) \
-      BASE::vThrow(FK_ASSERT,VL_FATAL,\
+      BASE::vThrow(FK_ASSERT,\
                           __func__,__FILE__,__LINE__,\
                           (Stz*)#condition); \
 EndDefine
@@ -47,7 +45,7 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 #define RASSERT(condition) \
   if (! (condition)) \
-    BASE::vThrow(FK_RASSERT,VL_FATAL,\
+    BASE::vThrow(FK_RASSERT,\
                         __func__,__FILE__,__LINE__,\
                         (Stz*)#condition); \
 EndDefine
@@ -57,7 +55,7 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pOBJECT,eCLASS) \
   if (pOBJECT && eCLASS != pOBJECT->eGetClassNo()) \
-    BASE::vThrowType(FK_TYPE,VL_FATAL, \
+    BASE::vThrowType(FK_TYPE,\
                             __func__,__FILE__,__LINE__, \
                             pOBJECT,eCLASS); \
 EndDefine
@@ -66,7 +64,7 @@ EndDefine
 /* THROW macro                                                                */
 /*----------------------------------------------------------------------------*/
 #define THROW(szDescription) \
-  BASE::vThrow(FK_THROW,VL_FATAL,\
+  BASE::vThrow(FK_THROW,\
                       __func__,__FILE__,__LINE__,\
                       szDescription); \
 EndDefine
@@ -75,7 +73,7 @@ EndDefine
 /* THROW_EXCEPTION macro                                                      */
 /*----------------------------------------------------------------------------*/
 #define THROW_USER(szDescription) \
-  BASE::vThrowUser(FK_THROW,VL_FATAL,\
+  BASE::vThrowUser(FK_THROW,\
                           __func__,__FILE__,__LINE__,\
                          szDescription); \
 EndDefine
@@ -84,7 +82,7 @@ EndDefine
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  BASE::vThrow(FK_REACHED,VL_FATAL,\
+  BASE::vThrow(FK_REACHED,\
                       __func__,__FILE__,__LINE__, \
                       (Stz*)"NEVER_REACH point reached"); \
 EndDefine
@@ -93,7 +91,7 @@ EndDefine
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NOT_IMPLEMENTED_YET \
-  BASE::vThrow(FK_REACHED,VL_FATAL,\
+  BASE::vThrow(FK_REACHED,\
                       __func__,__FILE__,__LINE__, \
                       (Stz*)"NOT_IMPLEMENTED_YET point reached"); \
 EndDefine

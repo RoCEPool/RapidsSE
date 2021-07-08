@@ -49,7 +49,7 @@ void Step::vDirChangeCurrent(void)
   m_pDataStack->vPopStr(sDir,__func__);
   
   if ( ! Dir::bChangeCurrent(sDir) )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to change current directory"_Stz);
   
   EXIT();
@@ -88,7 +88,7 @@ void Step::vDirGetCurrent(void)
     m_pDataStack->vPushItem(xDirPath);
   }
   else {
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to get current directory"_Stz);
   }
   

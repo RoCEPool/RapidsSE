@@ -469,7 +469,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
           pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {
-          vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
                  "Invalid eWordType %lld"_Stz,pCalledWord->eWord());
         }
         break;
@@ -494,7 +494,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
         
       // -- -- -- -- -- -- -- -- -- --
       default:
-        vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+        vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
                "Invalid eToken %lld %s"_Stz,
                eToken,
                szChars

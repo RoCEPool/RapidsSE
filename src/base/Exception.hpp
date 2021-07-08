@@ -3,15 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "eVL.h"
-
 namespace BASE
 {
   class Exception
   {
   private:
     eFK  m_eKind;         // kind of exception
-    eVL  m_eSeverity;     // severity
     char m_zFuncNm[256];  // function name
     char m_zText[1024];   // descriptive text
     char m_zFileNm[256];  // file name/path
@@ -21,7 +18,6 @@ namespace BASE
   
   public:
     Exception(eFK   eKind,
-              eVL   eSeverity,
               const char* azFuncNm,
               const char* azText,
               const char* azFileNm,

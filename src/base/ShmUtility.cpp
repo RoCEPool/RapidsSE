@@ -72,7 +72,7 @@ void ShmUtility::vRun(int argc, Stz* argv[])
     vDelete();
   }
   else
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unrecognised SHM command\n"_Stz);
   
 }
@@ -89,7 +89,7 @@ void ShmUtility::vAttach(void)
   bool bResult = ShmLib::bOpenExisting(iFD,msRegionName,oSysCall);
 
   if ( ! bResult ) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vAttach: failed to open region: %s\n"_Stz,
            msRegionName.azChar());
     NEVER_REACH;
@@ -104,7 +104,7 @@ void ShmUtility::vAttach(void)
 
   if (! gaSeShmRegion)  {
     ShmLib::bClose(iFD,oSysCall);
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vAttach failed to map\n"_Stz);
   }
 
@@ -127,14 +127,14 @@ void ShmUtility::vCreate(void)
   // open a new shm region which will contain the activity map
   bResult = ShmLib::bOpenCreate(iFD,msRegionName,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.azChar());
   
   // extend the shm region
   bResult = ShmLib::bExtend(iFD,miRegionSize,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vCreate: failed to extend region %s\n"_Stz,
            msRegionName.azChar());
 
@@ -159,7 +159,7 @@ void ShmUtility::vDelete(void)
   SysCall oSysCall;
   
   if (! ShmLib::bUnlink(msRegionName,oSysCall)) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Region %s not unlinked\n"_Stz,msRegionName.azChar());
   }
   
