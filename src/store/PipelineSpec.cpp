@@ -450,8 +450,12 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
   p_StageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pTkn()->bSame("ROBIN"_Stz)) {
+
+  if (pTkn()->bSame("BROADCAST"_Stz)) {
+    pOpSpec->vSendKind(XK_BROADCAST);
+    vTokenAccept();
+  }
+  else if (pTkn()->bSame("ROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_ROBIN);
     vTokenAccept();
   }
@@ -459,8 +463,8 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
     pOpSpec->vSendKind(XK_LOCALROBIN);
     vTokenAccept();
   }
-  else if (pTkn()->bSame("HASHED"_Stz)) {
-    pOpSpec->vSendKind(XK_HASHED);
+  else if (pTkn()->bSame("HASHCAST"_Stz)) {
+    pOpSpec->vSendKind(XK_HASHCAST);
     vTokenAccept();
   }
   

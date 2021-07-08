@@ -16,7 +16,7 @@ namespace STORE
   public:
     i8   m_iPipelineJobId;  // pipeline job id
     ePX  m_eCrossTopo;      // cross topology
-    eXK  m_eSendKind;       // hashed, localRobin, normal, robin
+    eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
     bool m_bAppendRight;    // append operand to right queue
   
     i8  m_iDstNode;        // destination node id

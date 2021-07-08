@@ -20,6 +20,7 @@ namespace STORE
     String*        m_sPipeline;
     bool           m_bHasUnionOp;
     bool           m_bNewStage;
+    QueryNode*     m_pPrevStageMarker;
 
     // must be last
     Footer m_xFooter;
@@ -47,7 +48,7 @@ namespace STORE
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
-
+    static Stz* szGetRouting(QueryNode* pStageMarker);
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
     //
@@ -68,7 +69,7 @@ namespace STORE
     //
     void vAppendLastStage(Stz* szLocation);
     void vAppendNewStage(Stz* szStage, Stz* szLocation);
-    void vAppendNextOp(Stz* szStage);
+    void vAppendNextOp(Stz* szStage, Stz* szRouting = nullptr);
     void vAppendStartStage(void);
 
     Footer* aFooter(void);
