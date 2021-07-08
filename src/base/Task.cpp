@@ -248,8 +248,6 @@ void Task::vTaskLoop(void)
     
     // catch exception
     catch (Exception xException) {
-      xException.vJob(m_pJob);
-      xException.vCaught();
       vExceptionHandler(xException);
     }
   }

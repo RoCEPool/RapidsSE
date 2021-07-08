@@ -8,16 +8,15 @@ namespace BASE
   class Exception
   {
   private:
-    eFK  m_eKind;         // kind of exception
-    char m_zFuncNm[256];  // function name
+    eFK  m_eFailure;      // kind of failure
     char m_zText[1024];   // descriptive text
+  
+    char m_zFuncNm[256];  // function name
     char m_zFileNm[256];  // file name/path
     i8   m_iLineNo;       // line number
-  
-    Job* m_pJob;          // in which job the exception occurred
-  
+
   public:
-    Exception(eFK   eKind,
+    Exception(eFK   eFailure,
               const char* azFuncNm,
               const char* azText,
               const char* azFileNm,
@@ -25,17 +24,13 @@ namespace BASE
   
    ~Exception(void) noexcept(false);
   
+    eFK   eFailure(void);
     char* azFileNm(void);
-    Job*  pJob(void);
-    void  vJob(Job* pJob);
-    eFK   eKind(void);
     i8    iLineNo(void);
     char* azText(void);
   
     void  vPrint(void);
     void  vSprint(char* azText);
-  
-    void  vCaught(void);
   };
 }
 

@@ -31,7 +31,7 @@ namespace BASE
                               const char* azFunc,
                              const char* azFilePath,
                              i8    iLineNo,
-                             Stz*  szFormat,...);
+                             Stz*  szCondition,...);
   
   [[ noreturn ]] void vThrowUser(eFK   eKind,
                              const char* azFunc,
