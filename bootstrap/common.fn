@@ -224,7 +224,17 @@ function loadClusterConfig() {
   source "${CONFIG_FILE}" || errorExit "Error sourcing cluster config file: ${CONFIG_FILE}"
 
   # Now check that the configuration is valid.
+  validateClusterConfig
 
+  debugPrint "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that a loaded cluster configuration is sane.
+## Prints an error message and exits if it is not.
+## Params: None
+
+function validateClusterConfig() {
   local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
 
   if [ -z "${CONFIG_VERSION}" ]; then
@@ -292,8 +302,6 @@ function loadClusterConfig() {
       errorExit "${errMsg}" "Node ${nodeName} has a different value for parameter ${NODE_CFG_CLUSTERID_KEY} than node ${NODE_LIST[0]}."
     fi
   done
-
-  debugPrint "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
 }
 
 

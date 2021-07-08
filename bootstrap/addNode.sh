@@ -71,6 +71,12 @@ CLUSTER_IS_RUNNING=0
 # an individual node.
 declare -ga NODE_LIST=()
 
+# The array of node names before not including the nodes being added
+declare -ga EXISTING_NODE_LIST=()
+
+# The array of node names of nodes that are being added
+declare -ga ADDED_NODE_LIST=()
+
 # The prefix given to each node name before its sequence number.
 NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
 
@@ -308,32 +314,29 @@ function alterConfiguration() {
   [ "${NODE_SEQ_NUM}" -gt 0 ]  && errorExit "NODE_SEQ_NUM is not set"
 
   # Record how many nodes we started with
-  local initialNodeCount
-  initialNodeCount="${#NODE_LIST[@]}"
+  EXISTING_NODE_LIST=( "${NODE_LIST[@]}" )
 
   # hostnames
   askHostnames
 
-  # Work out which node names we are adding
-  local finalNodeCount
-  finalNodeCount="${#NODE_LIST[@]}"
-
-  local -a addedNodeNames
-  for (( i=initialNodeCount ; i<finalNodeCount ; i++ )); do
-    addedNodeNames+=("${NODE_LIST[$i]}")
+  # At this point ${NODE_LIST[@]} will be updated to include all the nodes
+  # in the cluster, including those we are adding.
+  # Let's work out which node names we are adding and save them in a separate array.
+  for (( i=${#EXISTING_NODE_LIST[@]} ; i<${#NODE_LIST[@]} ; i++ )); do
+    ADDED_NODE_LIST+=("${NODE_LIST[$i]}")
   done
 
   # We need to validate hostnames and SSH access now so that we can connect
   # to each machine and determine the number of CPUs, so we can set the
   # number of partitions/threads appropriately.
-  validateHostsAreResolvable "${addedNodeNames[@]}"
-  validateHostsReachableBySsh "${addedNodeNames[@]}"
+  validateHostsAreResolvable "${ADDED_NODE_LIST[@]}"
+  validateHostsReachableBySsh "${ADDED_NODE_LIST[@]}"
 
   # Get the number of CPU cores, memory size, SHM size of each node.
   # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
   # and will be used for default values for partitions, threads and
   # shared memory size later on.
-  collectHostSizeInfo "${addedNodeNames[@]}"
+  collectHostSizeInfo "${ADDED_NODE_LIST[@]}"
 
   # Now we can update the default values for memory size, partitions and threads.
   # At the end of this the following globals will be set based on the capabilities
@@ -347,7 +350,7 @@ function alterConfiguration() {
   askPort
 
   # Copy the same heartbeat value from the first node
-  copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${addedNodeNames[@]}"
+  copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${ADDED_NODE_LIST[@]}"
 
   # installation directory
   askInstallDir
@@ -365,7 +368,7 @@ function alterConfiguration() {
   askParams
 
   # Copy the cluster ID from the first node
-  copyValue "${NODE_CFG_CLUSTERID_KEY}" "${addedNodeNames[@]}"
+  copyValue "${NODE_CFG_CLUSTERID_KEY}" "${ADDED_NODE_LIST[@]}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -388,6 +391,36 @@ function copyValue() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Asks the user to confirm that they wish to proceed with the installation.
+## Params: None
+
+function confirmNodeAddition() {
+  echo ""
+  echo "Node Addition"
+  echo "-------------"
+  echo ""
+  echo "RapidsSE is now ready to add nodes to the cluster."
+
+  local line
+
+  while true
+  do
+    echo ""
+    echo -n "Do you wish to proceed with the node addition? (y/n) [default: y] : "
+    IFS=$'\n' read -r line
+
+    if [[ -z "${line}" || "${line}" == "y" || "${line}" == "Y" || "${line}" == "yes" || "${line}" == "YES" ]]; then
+      break
+    fi
+
+    if [[ "${line}" == "n" || "${line}" == "N" || "${line}" == "no" || "${line}" == "NO" ]]; then
+      echo "Aborting node addition."
+      exit 1
+    fi
+
+    echo "Invalid input: y/n expected."
+  done
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -421,8 +454,9 @@ debugPrint
 # Use the default config file path if the config file was not specified
 [ -n "${CONFIG_FILE}" ] || CONFIG_FILE="${DIR:+${DIR}/}${DEFAULT_CONFIG_PATH}"
 
-# Load the config file
+# Load the config file and node name
 loadClusterConfig
+loadNodeName
 
 # Find the installation file and check that it's version matches the current version
 if [ -z "${INSTALL_FILE}" ]; then
@@ -447,21 +481,45 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   displayAddNodeWelcome
 
   # Alter the in-memory configuration by prompting the user
+  # for details on new node (host, port, directory, etc)
   alterConfiguration
 
-  true
+  # Validate new config
+  validateClusterConfig
+
+  # Confirm config
+  confirmNodeAddition
+
+  # Backup existing config
+  backupSuffix="$(mktemp -u XXXXXXXX)"
+  backupConfig "${backupSuffix}" "${ADDED_NODE_LIST[@]}"
+
+  # Write out new config on the existing node
+  writeClusterConfig "${CONFIG_FILE}"
+
+  # Install new nodes
+  distributeSoftware "${CONFIG_FILE}" "${ADDED_NODE_LIST[@]}"
+
+  # TODO: Write out new config to all existing nodes
+
+
+  # If cluster is running
+  if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
+    true
+    #   TODO: Start new nodes, wait for them to be ready
+    #   TODO: Wait for nodes to join the cluster
+    #   TODO: Rebalance node data
+  fi
+
+  echo ""
+  if [ ${#ADDED_NODE_LIST[@]} -eq 1 ]; then
+    echo "Addition of ${#ADDED_NODE_LIST[@]} node to RapidsSE is complete!"
+  else
+    echo "Addition of ${#ADDED_NODE_LIST[@]} nodes to RapidsSE is complete!"
+  fi
+
 else
-  # Scripted installation
+  # TODO: Scripted installation
   true
 fi
 
-# Prompt for details on new node (host, port, directory, etc)
-# Validate new config
-# Backup existing config
-# Install new nodes
-# Write out new config to all nodes
-# If cluster is running
-#   Start new nodes, wait for them to be ready
-#   Wait for nodes to join the cluster
-#   Rebalance node data
-# end

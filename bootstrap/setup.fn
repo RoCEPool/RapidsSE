@@ -1403,18 +1403,76 @@ EOT
   debugPrint "\nContents of the cluster configuration file: ${outputFile}\n $(cat "${outputFile}")\n"
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Saves a copy of the existing cluster.config on each node under a separate filename.
+## Params:
+##  $1 - the backup suffix to use
+##  $@ - the list of node names this operation should occur on
+
+function backupConfig() {
+
+  [ "$#" -ge 2 ] || errorExit "Insufficient arguments to function backupConfig."
+
+  local suffix="$1"
+  shift
+  local -a nodeNames=("$@")
+
+  local nodeName
+  local hostname
+  local installDir
+  local existingConfigPath
+  local backupConfigPath
+
+  echo "Backing up the cluster configuration on each node in the cluster to ${DEFAULT_CONFIG_PATH}.${suffix}"
+
+  # For each node
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    [ -n "${hostname}" ]   || errorExit "Cannot backup the cluster configuration on node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot backup the cluster configuration on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+
+    existingConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}"
+    backupConfigPath="${existingConfigPath}.${suffix}"
+
+    # Build the command
+    local cmd=( "ssh" "-q" "${hostname}" "cp" "${existingConfigPath}" "${backupConfigPath}"  )
+
+    debugPrint "Copying cluster configuration on node ${nodeName} [host: ${hostname}] to ${backupConfigPath}."
+    debugPrint "Command: ${cmd[*]}"
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error backing up the cluster configuration file to node ${nodeName} [host: ${hostname}] to ${backupConfigPath}."
+  done
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Copies the installer and cluster.config to each node and invokes the 
 ## installer to do a single node installation.
 ## Params: 
 ##  $1 : cluster.config path
+##  $@ : The list of node names to install the software on. If not specified
+##       then all nodes in the cluster will be installed to.
 
 function distributeSoftware() {
   local configFile="$1"
+  shift
+  local -a nodeNames
+  local isFullInstallation
+
+  if [ "$#" -gt 0 ]; then
+    isFullInstallation=0
+    nodeNames=("$@")
+  else
+    isFullInstallation=1
+    nodeNames=("${NODE_LIST[@]}")
+  fi
 
   # Assert that we have a valid configuration
-  if [ ! -v "NODE_LIST" ] || [ ${#NODE_LIST[@]} -eq 0 ]; then
+  if [ ! -v "nodeNames" ] || [ ${#nodeNames[@]} -eq 0 ]; then
     errorExit "No nodes have been defined to install RapidsSE onto."
   fi
 
@@ -1429,13 +1487,18 @@ function distributeSoftware() {
   fi
 
   echo ""
-  echo "Installing RapidsSE to all nodes in the cluster."
+
+  if [ "${isFullInstallation}" -eq 1 ]; then
+    echo "Installing RapidsSE to all nodes in the cluster."
+  else
+    echo "Installing RapidsSE to new nodes in the cluster."
+  fi
 
   local nodeName
   local hostname
 
   # For each node
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do 
     # Extract the hostname
     hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -1445,7 +1508,7 @@ function distributeSoftware() {
     fi
 
     # Copy the installer & cluster.config to /tmp
-    # Buid the command
+    # Build the command
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
       debugPrint "Copying installer to node ${nodeName} [host: ${hostname}]."
