@@ -61,15 +61,15 @@ namespace BASE
   
   public:
     Word* m_pSeedWord;      // seed
-    Word* m_pExceptionWord; // seed
+    Word* m_pRecoveryWord;  // sen word called to recover from failure
 
-    bool m_bSeedInitially; // seed_initially sentinel has been executed
+    bool  m_bSeedInitially; // seed_initially sentinel has been executed
     bool  m_bDoneFinally;   // done_finally sentinel has been executed
 
-    DicStack m_oDicStack;      // dictionary stack
-    DicStack m_oSaveDicStack;  // save dictionary stack
+    DicStack m_oDicStack;         // dictionary stack
+    DicStack m_oSaveDicStack;    // save dictionary stack
 
-    CodeCell* m_aInxPtr;      // instruction/cell pointer
+    CodeCell* m_aInxPtr;         // instruction/cell pointer
 
     TypedStack*  m_pAuxStack;    // auxiliary stack
     TypedStack*  m_pDataStack;   // data stack
@@ -145,7 +145,7 @@ namespace BASE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LockSet* pReadLocks(void);
-    void vReset(void);
+    void vResetSenContext(void);
     void vReseed(void);
     bool bLogResource(void);
     void vLogResource(bool bLogResource);

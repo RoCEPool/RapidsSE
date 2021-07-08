@@ -98,7 +98,7 @@ Task::Task(Job* pJob)
   m_nOperandYield = 10;
 
   m_pSeedWord       = nullptr;
-  m_pExceptionWord  = nullptr;
+  m_pRecoveryWord  = nullptr;
   
   m_bSeedInitially  = false;
   m_bDoneFinally    = false;
@@ -304,9 +304,9 @@ void Task::vTraceOnException(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRecoverFromException(void)
 {
-  vReset();
+  vResetSenContext();
   
-  m_aInxPtr = m_pExceptionWord->aFirstCell();
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
 
 }
 
@@ -522,9 +522,9 @@ void Task::vDump(void)
   vTrace("m_pSeedWord=%s %p\n"_Stz,
          m_pSeedWord->szWordNm(),
          m_pSeedWord);
-  vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
-         m_pExceptionWord);
+  vTrace("m_pRecoveryWord=%s %p\n"_Stz,
+         m_pRecoveryWord ? m_pRecoveryWord->szWordNm() : C_NO_NAME,
+         m_pRecoveryWord);
 
   m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
   m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
@@ -860,15 +860,15 @@ void Task::vReseed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  vReset();
+  vResetSenContext();
 
   vSeedTask();
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset forth execution context                                              */
+/* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vReset(void)
+void Task::vResetSenContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -937,20 +937,19 @@ void Task::vSeedTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
-  if (pExceptionWord) {
-    m_pExceptionWord = pExceptionWord;
+  Word* pRecoveryWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
+  if (pRecoveryWord) {
+    m_pRecoveryWord = pRecoveryWord;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionDef = pDicRoot->pFindWord("std_exceptionHook"_Stz);
-  if (pExceptionDef) {
-    m_pExceptionWord = pExceptionDef;
+  pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
+  if (pRecoveryWord) {
+    m_pRecoveryWord = pRecoveryWord;
     return;
   }
-
 
 }
 
