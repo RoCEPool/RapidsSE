@@ -66,6 +66,8 @@ void Step::vDebugThrow(void)
 {
   ENTRY();
   
+  NEVER_REACH;
+  
   EXIT();
 }
 
