@@ -276,6 +276,10 @@ void Task::vTraceOnException(void)
 {
   _noPreconditions_
   
+  //
+  // trace what is relevant for debugging.  could be quite substantial
+  //
+  
   vTrace("\n\n"_Stz);
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz

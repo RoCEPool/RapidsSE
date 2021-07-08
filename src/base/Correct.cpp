@@ -39,8 +39,8 @@ void BASE::vThreadCallStackDump_Mangled(void)
   int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
 
   vTrace("\n"_Stz);
-  vTrace("Call TypedStack Backtrace\n"_Stz);
-  vTrace("--------------------\n"_Stz);
+  vTrace("Thread Backtrace\n"_Stz);
+  vTrace("----------------\n"_Stz);
 
   // print out all the frames to stderr
   backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
@@ -56,8 +56,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
   int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
 
   vTrace("\n"_Stz);
-  vTrace("Call TypedStack Backtrace\n"_Stz);
-  vTrace("--------------------\n"_Stz);
+  vTrace("Thread Backtrace:\n"_Stz);
 
   // First try to extract out file and line numbers and print that.
   // If this fails then we will fall back to a secondary approach.
@@ -73,7 +72,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
     for (i8 iFrame = 0; iFrame < nPtrs; iFrame++) {
 
       if (asFileNames[iFrame].nLength() > 0) {
-        vTrace("Frame %2lld:  %-26s  %018p  %s  (%s:%lld)\n"_Stz,
+        vTrace("  [%02lld]  %-26s  %018p  %s  (%s:%lld)\n"_Stz,
                iFrame,
                asModules[iFrame].azChar(),
                aaFramePtr[iFrame],
@@ -82,7 +81,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
                aiLines[iFrame]);
       } else {
         // Filename and line numbers not available. Print the offset instead.
-        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz,
+        vTrace("  [%02lld]  %-26s  %018p  %s  (+%lld)\n"_Stz,
                iFrame,
                asModules[iFrame].azChar(),
                aaFramePtr[iFrame],
@@ -90,9 +89,11 @@ void BASE::vThreadCallStackDump_Demangled(void)
                aiOffsets[iFrame]);
       }
     }
+    vTrace("End Thread Backtrace\n"_Stz);
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // Secondary approach - Get the manged symbols, parse them and try to demangle the functions.
   // We won't have file and line numbers, but we should be able to get offsets into the functions.
@@ -111,12 +112,14 @@ void BASE::vThreadCallStackDump_Demangled(void)
     b1 bParsed = bParseBacktraceSymbol(acSymbolList[i], sModule, sSymbol, iOffset);
 
     if (bParsed || (sModule.nLength() > 0 && sSymbol.nLength() > 0 && iOffset > 0)) {
-      vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, i, sModule.azChar(), pvAddr, sSymbol.azChar(), iOffset);
+      vTrace("  [%02lld]  %-26s  %018p  %s  (+%lld)\n"_Stz, i, sModule.azChar(), pvAddr, sSymbol.azChar(), iOffset);
 
     } else {
-      vTrace( "Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
+      vTrace("  [%02lld]  %s\n"_Stz, i, acSymbolList[i]);
     }
   }
+
+  vTrace("End Thread Backtrace\n"_Stz);
 
   free(acSymbolList);
 }
