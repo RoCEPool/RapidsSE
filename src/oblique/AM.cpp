@@ -853,7 +853,7 @@ MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMaste
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
-Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
+Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -3015,14 +3015,16 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 
 
 /*----------------------------------------------------------------------------*/
-/* update heartbeat info for a given node                                     */
+/* update heartbeat info for a given node by ID                               */
 /*----------------------------------------------------------------------------*/
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
-  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
-  if (pThisNode) {
-    pThisNode->vPutHeartbeat(xHeartbeat);
+    if (pThisNode) {
+      pThisNode->vPutHeartbeat(xHeartbeat);
+    }
   }
 }
 
@@ -3031,7 +3033,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 /*----------------------------------------------------------------------------*/
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
-  if (AM::pGrid()) {
+  if (AM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
     if (pThisNode) {
@@ -3043,11 +3045,11 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 }
 
 /*----------------------------------------------------------------------------*/
-/* get heartbeat info for a give node                                         */
+/* get heartbeat info for a given node ID                                     */
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
@@ -3062,7 +3064,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
@@ -3089,7 +3091,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  */
 void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
 {
-  if (AM::pGrid()) {
+  if (AM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
     // Check to make sure we don't have this node yet
     if (!pThisNode) {
@@ -3110,18 +3112,20 @@ void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
  */
 void AM::vRemoveNode(Stz* pszName)
 {
-  Node* pThisNode = AM::pGrid()->pFindNode(pszName);
-  // Check to make sure we have this node in the cluster/grid.
-  if (pThisNode) {
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    // Check to make sure we have this node in the cluster/grid.
+    if (pThisNode) {
 
-    AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
-    //delete pThisNode;
+      AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
+      //delete pThisNode;
 
-    AM::pGrid()->vDecConnectedNodes();
-    AM::pGrid()->vDecDefinedNodes();
-    AM::pGrid()->vDecNodes();
-    //AM::pGrid()->vDecBootNodes();
+      AM::pGrid()->vDecConnectedNodes();
+      AM::pGrid()->vDecDefinedNodes();
+      AM::pGrid()->vDecNodes();
+      //AM::pGrid()->vDecBootNodes();
 
+    }
   }
 }
 

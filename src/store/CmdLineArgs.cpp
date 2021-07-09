@@ -77,6 +77,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
+  m_xSysArgs.m_iDelay           = 0;
   m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -287,7 +288,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bDebugMode = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--delay"_Stz)) {
+      m_xSysArgs.m_iDelay = argv[++i_Arg].iToI8();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;

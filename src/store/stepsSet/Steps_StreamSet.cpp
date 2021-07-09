@@ -384,7 +384,13 @@ void Step::vStreamSetAddNodeStatus(void)
   Grid* pGrid = AM::pGrid();
   
   s32 sRegionNm(AM::szRegionName());
-  
+
+  /* commented out, the old status command which is required to go to all nodes
+   * for each node, it gets back a row and its status.
+   * With the new model, we need a grid of the requested node,
+   * each individual node in the grid will have its own status.
+   */
+  /*
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         pGrid->pThisNode()->szNodeNm(),
@@ -394,6 +400,26 @@ void Step::vStreamSetAddNodeStatus(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
+  m_pDataStack->vPushInt(pRow ? true : false);
+  */
+  Row* pRow = nullptr;
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+
+    pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      (*oNode_I)->szNodeNm(),
+                                      sRegionNm.azChar(),
+                                      (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                                      C_VARGS_END);
+
+    if (! pRow) {
+      // call again
+      m_pDataStack->vPushInt(oNode_I.i_Node());
+      break;
+    }
+  }
+
+  // done
   m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();

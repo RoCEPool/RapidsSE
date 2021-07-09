@@ -21266,7 +21266,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "cmdSyntax: status :: status ;\n"
     "\n"
-    ": status_cmdTags _cmdTags tagCopy: liteOp_tags\n"
+    ": status_cmdTags _cmdTags tagCopy: localliteOp_tags\n"
     "  tags{\n"
     "    <cmdDesc>   = \"--desc for op--\"\n"
     "    <streamDef> = __status\n"

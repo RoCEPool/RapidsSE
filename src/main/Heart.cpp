@@ -55,7 +55,7 @@ void vHeartInit(void) {
     HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort);
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
-    // Create Reader thread to test out the ringbuffer
+    // Create Reader thread to maintain the Grid
     PsxThd::iSpawnPosixThread(vHeartReadLoop, nullptr);
 
 
@@ -85,39 +85,16 @@ void vHeartInit(void) {
 
   for (;;) {
     sleep(3); // send every 3 seconds
-    //MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
     if (gxHeartbeatData.bTryRead(xHeartbeat)) {
-
-      /*
-      sprintf(azHeartbeat,
-
-              "SE sent heartbeat from Node: %s seqNo %lld sinceEpoch %lld gitHash %s\n",
-              xHeartbeat.m_acNodeName, // node number
-              xHeartbeat.m_iSeqNo,
-              xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash
-
-      );*/
 
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
       if (iCnt++ <= 1) // debug only: print twice
         vTrace("Node: %s sent HB\n"_Stz, xHeartbeat.m_acNodeName);
     }
-
-
-    if (iCnt >8) {
-      //if (strcmp(xHeartbeat.m_acNodeName, "NODE1") == 0) {
-      //  vTrace("Process NODE1 got killed!!!!!!!\n"_Stz);
-        //Process::vExitSuccess();
-        //printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
-        //AM::vSupervisorHalt(true);
-      //}
-    }
-
   }
 
-  //return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,13 +106,16 @@ void vHeartInit(void) {
   HeartbeatRcv *pReceiver = (HeartbeatRcv *) pFuncObj;
 
   Heartbeat xHeartbeat;
-  struct tm *tmTimeInfo;
 
-  char azTimeBuffer[80];
   char azHeartbeat[C_1KB];
   int iCnt = 0;
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
-  sleep(5); // delay receiving 5 seconds when started
+
+  if (!AM::bHasStarted()) {
+    // delay receiving 5 seconds when SE not started
+    // Although, no harms to receive HB, we will ignore them as SE is sot started.
+    sleep(5);
+  }
 
   for (;;) {
 
@@ -157,15 +137,6 @@ void vHeartInit(void) {
         if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
           if (iCnt++ <= 1) { // debug print twice
-            /*tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
-            strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
-            sprintf(azHeartbeat,
-                    "\nSE received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
-
-                    xHeartbeat.m_acNodeName, // name
-                    xHeartbeat.m_iSeqNo,
-                    xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
-            );*/
 
             vTrace("Received HB from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
             vTrace("iLen=%d m_u2DataLen=%d checksum=%lld \n"_Stz, iLen, xHeartbeat.m_u2DataLen,
@@ -177,8 +148,6 @@ void vHeartInit(void) {
       //}
     }
   }
-
-  //return nullptr;
 }
 
 
@@ -196,10 +165,8 @@ void vHeartInit(void) {
  */
 [[noreturn]] void *vHeartReadLoop(void *pVoid)
 {
-
+  UNUSED(pVoid);
   Heartbeat xHeartbeat;
-
-  int iCnt = 0;
 
   for (;;) {
 

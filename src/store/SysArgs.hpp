@@ -67,6 +67,7 @@ namespace STORE
     bool m_bConfig;          // print configuration information
     bool m_bDebugIndex;      // debug indexes
     bool m_bDebugMode;       // debug mode
+    i8   m_iDelay;           // delay in seconds to test (who's on first)
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
