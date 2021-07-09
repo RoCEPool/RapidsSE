@@ -278,7 +278,7 @@ void LogicUnit::vContentDump(void)
          
          m_i_NextRnd,
          
-         m_xpSendNode,
+         *m_xpSendNode,
          m_xpSendNode.bIsNotNull() ? m_xpSendNode->szNodeNm() : ""_Stz,
          
          C_VARGS_END

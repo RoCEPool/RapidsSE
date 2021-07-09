@@ -1,9 +1,7 @@
 /*============================================================================*/
-/* REG_t.hpp -- hidden shared memory pointer (or nullptr)                     */
+/* REG_t.hpp -- register for logic unit                                       */
 /*============================================================================*/
 #pragma once
-
-
 
 namespace BASE
 {
@@ -14,6 +12,8 @@ namespace BASE
   
     CLASSNM* m_pObject; // pointer to the object
   
+    i8       m_iOtherInfo;
+  
   public:
   
     /*------------------------------------------------------------------------*/
@@ -22,6 +22,7 @@ namespace BASE
     REG<CLASSNM>(void)
     {
       m_pObject = nullptr;
+      m_iOtherInfo = C_UNKNOWN;
     }
   
     /*------------------------------------------------------------------------*/
@@ -35,6 +36,15 @@ namespace BASE
       m_pObject = pObject;
     }
     
+    /*------------------------------------------------------------------------*/
+    /* destructor                                                             */
+    /*------------------------------------------------------------------------*/
+    ~REG<CLASSNM>(void)
+    {
+      //RASSERT(! m_pObject);
+    }
+
+
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
   
@@ -66,7 +76,7 @@ namespace BASE
     CLASSNM* operator * (void)
     {
       if (! m_pObject)
-        THROW("SMA::operator *() : m_pObject member is null"_Stz);
+        THROW("REG::operator *() : m_pObject member is null"_Stz);
       
       return m_pObject;
     }
