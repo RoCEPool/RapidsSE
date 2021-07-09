@@ -68,6 +68,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
+  vAddStep("Operand[].newEndRightMarker"_Stz, &Step::vOperandNewEndRightMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
@@ -76,8 +77,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
   vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
-  vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
+  vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
+  vAddStep("Operand[].newStartRightMarker"_Stz, &Step::vOperandNewStartRightMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
@@ -523,6 +525,20 @@ void Step::vOperandNewEachScanEosMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newEndRightMarker -- new an end right marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndRightMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDRIGHTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newEosMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEosMarker(void)
@@ -635,20 +651,6 @@ void Step::vOperandNewPulsedMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newStartMarker -- new a start marker                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewStartMarker(void)
-{
-  ENTRY();
-  
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].newStartedMarker -- new a started marker                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewStartedMarker(void)
@@ -659,6 +661,34 @@ void Step::vOperandNewStartedMarker(void)
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTEDMARKER);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartMarker -- new a start marker                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartRightMarker -- new a start right marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartRightMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTRIGHTMARKER);
+
   EXIT();
 }
 

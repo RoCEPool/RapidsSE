@@ -1,0 +1,272 @@
+/*============================================================================*/
+/* OP_scanRight.sen -- Operator scanRight                                     */
+/*============================================================================*/
+
+" OP_scanRight.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: scanRight_Xyz \handler
+
+  // delete all operands
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: scanRight_CancelMarker \handler
+
+  // drop the tablePtn lock if held
+  counter0[] true == if
+    TablePtn[].dropRead
+    false to counter0[]
+  then
+
+  // delete the ptn stream
+  ptnStream[].isNull not if
+    ptnStream[] ptnStream.delete
+  then
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_DataMarker" .
+
+: scanRight_DataMarker \handler
+
+  debug::flag@ if "(Revised) scanRight_DataMarker handler" . then
+
+  // pipe out the pulse marker
+  PipeIn[].pipeOut
+
+  // pipe out a new a stream def
+  //Operand[].newStreamDef
+  //Operand[].pipeOut
+
+  // grab table ptn read lock
+  TablePtn[].grabRead_yieldLoop
+
+  // set counter0 to true to indicate lock held
+  true to counter0[]
+
+  // new a partition stream for access crw buffer
+  TablePtn[] ptnStream::new to ptnStream[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_EosMarker" .
+
+: scanRight_EosMarker \handler
+
+  // send an eos marker
+  PipeIn[].pipeout
+
+  // delete partition stream
+  ptnStream[] ptnStream.delete
+  nullptr to ptnStream[]
+
+  // drop table ptn lock
+  TablePtn[].dropRead
+
+  // set counter0 to 0 to indicate lock released
+  false to counter0[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ROWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_LeftCrwRowBuffer" .
+
+: scanRight_LeftCrwRowBuffer \handler
+
+  "scanRight_LeftCrwRowBuffer " .
+
+  PipeIn[].pipeout
+
+  // send a newRightMarker (there was no data)
+  Operand[].newStartRightMarker
+  Operand[].pipeOut
+
+  // open partition stream to access the crw buffers
+  ptnStream[] ptnStream.open if
+
+    // force op loop to call scanRight_CrwBuffer to start processing buffers
+    "scanRight_RightCrwBuffer" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+
+  else
+
+    // unable to open partition stream (this would be unusual)
+
+    // delete partition stream
+    ptnStream[] ptnStream.delete
+    nullptr to ptnStream[]
+
+    // drop table ptn lock
+    TablePtn[].dropRead
+
+    // set counter0 to 0 to indicate lock released
+    false to counter0[]
+
+    // send an EndRightMarker (there was no data)
+    Operand[].newEndRightMarker
+    Operand[].pipeOut
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ... (of right table)                              */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_RightCrwBuffer" .
+
+: scanRight_RightCrwBuffer \handler
+
+  debug::flag@ if "(Revised) scanRight_RightCrwBuffer handler" . then
+
+  // read next buffer from ptn stream
+  ptnStream[] ptnStream.read to Operand[]
+"T1" .
+  Operand[].isNotNull if
+    // read a next crw buffer
+"T2" .
+    // pipe out the read crw buffer
+    Operand[].pipeOut
+
+    // call this handler again to process next buffer
+    true LogicUnit[].callAgain!
+
+  else
+    // no more crw buffers
+"T3" .
+    // close the partition stream
+    ptnStream[] ptnStream.close
+
+    // send an eachScanEosMarker
+    Operand[].newEndRightMarker
+    Operand[].pipeout
+  then
+"T4" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // check for rate metering
+
+  0 locals| rateSecs |
+
+  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
+    <rateSecs> >int to rateSecs
+  then
+
+  rateSecs if
+    rateSecs "Scan Pausing for %v secs" str.format .
+    rateSecs task::sleepSsec
+    "Scan awake" .
+  then
+"T5" .
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_StartMarker" .
+
+: scanRight_StartMarker \handler
+
+  <tableNm> op__table if
+    Table[].tablePtn@ to TablePtn[]
+    PipeIn[].pipeOut
+  else
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: scanRight_Xyz   ZK_DATAPULSE      op[].handler!
+    find: scanRight_Xyz   ZK_PULSEDMARKER   op[].handler!
+  then
+
+  //args.developer if
+  //  1 debug::flag!
+  //then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                               */
+/*----------------------------------------------------------------------------*/
+// ": scanRight_StreamDef" .
+
+: scanRight_StreamDef \handler
+
+  "piping out left streamDef" .
+  PipeIn[]\clear to StreamDefLft[]
+  StreamDefLft[].pipeOut
+
+  // pipe out a new a stream def
+  "piping out right streamDef" .
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan request                                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: scanRight_req \operator
+
+  LogReqEntry SEED_REQ
+
+  "<catalogNm>"  job[] job.tagSet@ tagSet.hasName if
+    <schemaNm> <catalogNm>
+    "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
+    str.toStrVec Path[].set
+  then
+
+  op__topology
+
+  find: scanRight_CancelMarker     ZK_CANCELMARKER  op[].handler!
+  find: scanRight_DataMarker       ZK_DATAPULSE     op[].handler!
+  find: scanRight_EosMarker        ZK_EOSMARKER     op[].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_CRWBUFFER     op[].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_ROWBUFFER     op[].handler!
+  find: scanRight_StartMarker      ZK_STARTMARKER   op[].handler!
+  find: scanRight_StreamDef        ZK_STREAMDEF     op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: scanRight :: scanRight <tableNm> ;
+cmdSyntax: scanRight :: scanRight <catalogNm> <schemaNm> <tableNm> ;
+cmdSyntax: scanRight :: scanRight <tableNm> <rateSecs> ;
+cmdSyntax: scanRight :: scanRight <catalogNm> <schemaNm> <tableNm> <rateSecs> ;
+
+: scanRight_cmdTags _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

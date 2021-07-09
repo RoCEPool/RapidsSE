@@ -45,6 +45,24 @@ begin
     output | sink | stageA
 end;
 
+
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | stageC
+
+  stage stageC on all partitions :
+    scanRight J | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
+
 /*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CO-PARTITIONED JOIN
@@ -81,7 +99,7 @@ begin
     scan T | stageC
 
   stage stageC on all partitions :
-    scan right J | loopJoin "$L1 $R1 ==" | stageD
+    scanRight J | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA

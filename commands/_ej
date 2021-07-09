@@ -1,0 +1,157 @@
+/*============================================================================*/
+/* _EachJoin - each join (loop join)                                          */
+/*============================================================================*/
+
+bc;
+
+create table T (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load T "../TPCH/SF1/nation.tbl" ;
+
+create table J (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load J "../TPCH/SF1/nation.tbl" ;
+
+/*
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | project 0 "type integer $1 " | filter 0 "type integer $1 5 <= " | eachRow |
+    eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on all partitions :
+    project 0 "type integer $1 , $2 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on all partitions :
+    project 0 "type integer $1 , $2 , $3 " | eachRow | eachScan T | eachJoin 0 "$L1 $R1 ==" | stageE
+
+  stage stageE on all partitions :
+     project 0 "type integer $1 , $2 , $3 , $4 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageF
+
+  stage stageF on origin :
+    output | sink | stageA
+end;
+
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | eachRow | stageC
+
+  stage stageC on all partitions :
+    eachScan J | filter 0 "type integer $1 2 <= " | eachJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+
+//select N_NATIONKEY from J;
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | project 0 "type integer $1 " | filter 0 "type integer $1 5 <= " | eachRow | stageC
+
+  stage stageC on all partitions :
+    eachScan J | project 0 "type integer $1 " | stageCC
+
+  stage stageCC on all partitions :
+    eachJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on all partitions :
+    eachRow | eachScan J |
+    eachJoin 0 "$L1 $R1 ==" | stageE
+
+  stage stageE on origin :
+    output | sink | stageA
+end;
+
+
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+
+
+stage stageC on all partitions :
+    eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow |
+    eachScan J | filter 0 "type boolean $1 15 >=" |
+    eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+
+MemoryLeaks;
+
+*/
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
