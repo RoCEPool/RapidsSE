@@ -264,15 +264,15 @@ void Task::vExceptionHandler(Exception xException)
 {
   _noPreconditions_
   
-  vTraceOnException();
+  vExceptionTrace();
   
-  vRecoverFromException();
+  vContinueAfterFailure();
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace the task                                                             */
+/* trace the task on exception                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceOnException(void)
+void Task::vExceptionTrace(void)
 {
   _noPreconditions_
   
@@ -282,11 +282,9 @@ void Task::vTraceOnException(void)
   
   vTrace("\n\n"_Stz);
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz
+  vTrace("Exception Trace of Task %p\n"_Stz
          
-         ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
-         ,aCN[AM::eJobClass(m_pJob)]
-         
+         ,this
          );
   
   
@@ -300,14 +298,13 @@ void Task::vTraceOnException(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recover task after an exception                                            */
+/* task continues after failure                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vRecoverFromException(void)
+void Task::vContinueAfterFailure(void)
 {
   vResetSenContext();
   
   m_aInxPtr = m_pRecoveryWord->aFirstCell();
-
 }
 
 /*----------------------------------------------------------------------------*/
