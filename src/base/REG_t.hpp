@@ -13,9 +13,10 @@ namespace BASE
     CLASSNM* m_pObject; // pointer to the object
   
     struct {
-      u8 m_bNullOnDelete :  1; // m_pObject must be null on delete
-      u8 m_uSpare        : 63;
-      //                   64b
+      u8 m_bNullOnDelete    :  1; // m_pObject must be null on delete
+      u8 m_bDeleteOnFailure :  1; // m_pObject to be deleted on failure
+      u8 m_uSpare           : 62; // delete m_pObject on failure
+      //                      64b
     };
   
   public:
@@ -26,7 +27,10 @@ namespace BASE
     REG<CLASSNM>(void)
     {
       m_pObject = nullptr;
+    
       m_bNullOnDelete = false;
+      m_bDeleteOnFailure = false;
+      m_uSpare = 0;
     }
   
     /*------------------------------------------------------------------------*/
@@ -86,6 +90,15 @@ namespace BASE
     }
     
     /*------------------------------------------------------------------------*/
+    /* delete object                                                          */
+    /*------------------------------------------------------------------------*/
+    bool vDeleteObject(void)
+    {
+      delete m_pObject;
+      m_pObject = nullptr;
+    }
+  
+    /*------------------------------------------------------------------------*/
     /* is there a pointer?                                                    */
     /*------------------------------------------------------------------------*/
     bool bIsNotNull(void)
@@ -126,6 +139,18 @@ namespace BASE
       m_bNullOnDelete = bNullOnDelete;
     }
   
+    /*------------------------------------------------------------------------*/
+    /* recover from failure                                                   */
+    /*------------------------------------------------------------------------*/
+    bool vRecoverFromFailure(void)
+    {
+      m_pObject->vRecoverFromFailure();
+    
+      if (m_bDeleteOnFailure) {
+        vDeleteObject();
+      }
+    }
+
   };
 }
 
