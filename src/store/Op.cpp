@@ -1128,6 +1128,7 @@ Operand* Op::pPopLeft(void)
   
   if (pOperand) {
     vDropTaskLock();
+    vOpTrace(pOperand,"pPopLeft :"_Stz);
     AM::vOperandsDec();
     return pOperand;
   }
@@ -1188,6 +1189,7 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
+    vOpTrace(pOperand,"pPopOoOLeft :"_Stz);
     return pOperand;
   }
   else {
