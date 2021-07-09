@@ -97,7 +97,7 @@ declare -gA NODE_FREE_SHM
 # Process the arguments given to the script.
 processSetupArgs "$@"
 
-if [ -z "${INSTALL_FILE}" ]; then
+if [ -z "${INSTALL_FILE:-}" ]; then
   findInstallFile
 fi
 

@@ -19,8 +19,8 @@ readonly SCRIPT_NAME=$(basename "$0")
 # Default modes of operation
 CLUSTER_OP=1
 CLUSTER_INIT=0
-CONFIG_FILE="${DIR}/cluster.config"
-NAME_FILE="${DIR}/node.name"
+CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
+NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 DEBUG=0
 
 # Will be set after loading node name file.
