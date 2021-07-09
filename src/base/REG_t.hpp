@@ -12,7 +12,11 @@ namespace BASE
   
     CLASSNM* m_pObject; // pointer to the object
   
-    i8       m_iOtherInfo;
+    struct {
+      u8 m_bNullOnDelete :  1; // m_pObject must be null on delete
+      u8 m_uSpare        : 63;
+      //                   64b
+    };
   
   public:
   
@@ -22,7 +26,7 @@ namespace BASE
     REG<CLASSNM>(void)
     {
       m_pObject = nullptr;
-      m_iOtherInfo = C_UNKNOWN;
+      m_bNullOnDelete = false;
     }
   
     /*------------------------------------------------------------------------*/
@@ -41,7 +45,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     ~REG<CLASSNM>(void)
     {
-      //RASSERT(! m_pObject);
+      RASSERT(! m_bNullOnDelete || ! m_pObject);
     }
 
 
@@ -113,6 +117,15 @@ namespace BASE
       else
         return false;
     }
+  
+    /*------------------------------------------------------------------------*/
+    /* set null on delete                                                     */
+    /*------------------------------------------------------------------------*/
+    bool vNullOnDelete(bool bNullOnDelete)
+    {
+      m_bNullOnDelete = bNullOnDelete;
+    }
+  
   };
 }
 
