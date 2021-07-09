@@ -265,6 +265,7 @@ void Task::vExceptionHandler(Exception xException)
   _noPreconditions_
   
   vExceptionTrace();
+  vDumpOnFailure();
   
   vContinueAfterFailure();
 }
@@ -306,6 +307,32 @@ void Task::vContinueAfterFailure(void)
   
   m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* detailed dump of task on exception                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vDumpOnFailure(void)
+{
+  _noPreconditions_
+  
+  vTrace("\n\n"_Stz);
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("Dump of Task %p\n"_Stz
+         
+         ,this
+         );
+
+  
+  vTrace("1) TBD \n"_Stz);
+  vTrace("2) TBD \n"_Stz);
+  vTrace("3) TBD \n"_Stz);
+
+  
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("\n\n"_Stz);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

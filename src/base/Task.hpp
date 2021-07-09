@@ -101,6 +101,8 @@ namespace BASE
     void vExceptionTrace(void);
     void vContinueAfterFailure(void);
 
+    void vDumpOnFailure(void);
+
   
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
