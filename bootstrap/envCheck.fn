@@ -21,7 +21,7 @@ readonly BASH_MINIMUM_VERSION="4.2.46"
 ## continuing with the installation.
 ## Params: None
 
-function validateEnvironment() {
+function validateInstallationEnvironment() {
 
   echo "Validating the installation environment on all nodes..."
   echo ""
@@ -77,6 +77,72 @@ function validateEnvironment() {
   validateBash
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the environment we are installing into is correct before
+## nodes are added to the cluster. This is a slight subset of the full installation
+## environment checks.
+## Params:
+##  $@ - the array of node names that are being added at this time
+
+function validateNodeAdditionEnvironment() {
+
+  [ "$#" -gt 0 ] || errorExit "Function validateNodeAdditionEnvironment requires at least 1 parameter"
+  local -a nodeNames=("$@")
+
+  echo "Validating the installation environment of nodes being added..."
+  echo ""
+
+  # Check that all hosts are resolvable.
+  validateHostsAreResolvable "${nodeNames[@]}"
+
+  # Check that all host/dir combinations are unique.
+  validateHostsAndDirsAreUnique
+
+  # Check that all host:port combinations are unique.
+  validateHostsAndPortsAreUnique
+
+  # Check if all hosts are reachable by SSH.
+  validateHostsReachableBySsh "${nodeNames[@]}"
+
+  # Check if SE is running in any of these host:directory combinations.
+  validateSENotRunning "${nodeNames[@]}"
+
+  # Check if the port is not being used on any of the hosts.
+  validatePortsNotInUse "${nodeNames[@]}"
+
+  # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
+
+  # Check if the SE reserved memory size exceeds /dev/shm total size (if this exists).
+  validateShmAgainstTotalSize "${nodeNames[@]}"
+
+  # Check if the SE reserved memory size exceeds 95% of RAM.
+  validateShmAgainstRAM "${nodeNames[@]}"
+
+  # Check if the SE reserved memory size exceeds the available SHM space.
+  validateShmAgainstAvailableMem "${nodeNames[@]}"
+
+  # Check that the number of partitions is acceptable.
+  validatePartitions "${nodeNames[@]}"
+
+  # Check that the number of threads is acceptable.
+  validateThreads "${nodeNames[@]}"
+
+  # Check that the installation dir can be created (if not already) on each node,
+  # and that it is writable.
+  validateInstallDirIsWritable "${nodeNames[@]}"
+
+  # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
+
+  # Check that node names don't contain spaces or special characters and are unique.
+  validateNodeNames
+
+  # Check that gcc is installed and is new enough
+  validateGcc "${nodeNames[@]}"
+
+  # Check that bash has the correct version
+  validateBash "${nodeNames[@]}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that all hosts are resolvable on the current machine. Exits out
@@ -146,7 +212,7 @@ function validateHostsAreResolvable() {
     if command -v getent &>/dev/null; then
 
       output="$(getent hosts "${host}" | awk '{ print $1; exit }' 2>/dev/null)"
-      if [ -z "${output}" ]; then
+      if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
       fi
   
@@ -158,7 +224,7 @@ function validateHostsAreResolvable() {
     elif command -v dig &>/dev/null; then
 
       output="$(dig +short +search "${host}" | awk '{ print ; exit }' 2>/dev/null)"
-      if [ -z "${output}" ]; then
+      if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
       fi
 
@@ -170,7 +236,7 @@ function validateHostsAreResolvable() {
     elif command -v nslookup &>/dev/null; then
       
       output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
-      if [ -z "${output}" ]; then
+      if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
       fi
 
@@ -314,24 +380,33 @@ function validateHostsReachableBySsh() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Validate that SE is not running on any of the host:dir combinations.
-# Params: None
+## Validate that SE is not running on any of the host:dir combinations.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateSENotRunning() {
-  
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local host
   local path
   local pid
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
     pid="$(getRemoteRunningPid "${nodeName}")"
 
-    if [ -n "${pid}" ]; then
+    if [ -n "${pid:-}" ]; then
       errorExit "RapidsSE is already running on ${nodeName} [host ${host}] in path: ${path}"
     fi
 
@@ -340,10 +415,19 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Validate that the port specified for each node is not currently in use.
-# Params: None
+## Validate that the port specified for each node is not currently in use.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validatePortsNotInUse() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
 
   local nodeName
   local host
@@ -354,7 +438,7 @@ function validatePortsNotInUse() {
   declare -a sshArgs=()
   declare -a failedNodes=()
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
@@ -387,23 +471,33 @@ function validatePortsNotInUse() {
 
   
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Validates that the shared memory segment does not exceed the size of shared
-# memory on any node.
-# Params: None
+## Validates that the shared memory segment does not exceed the size of shared
+## memory on any node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateShmAgainstTotalSize() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
 
   local nodeName
   local host
   local nodeShm   # SE SHM allocated for a given node
   local shmTotal  # OS SHM on /dev/shm
 
-  for nodeName in "${!NODE_TOTAL_SHM[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
     shmTotal="${NODE_TOTAL_SHM[${nodeName}]}"
 
+    # Do the comparison in bc because bash doesn't handle decimals
     if [ "$(echo "${nodeShm} > ${shmTotal}" | bc -l)" -eq 1 ]; then
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds the allocation of shared memory on that host (${shmTotal}GB). Refer to \"df -h /dev/shm\" on that host."
     fi
@@ -412,17 +506,26 @@ function validateShmAgainstTotalSize() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check if the SE shared memory size exceeds 95% of RAM on any node.
-# Params: None
+## Check if the SE shared memory size exceeds 95% of RAM on any node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateShmAgainstRAM() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
 
   local nodeName
   local host
   local nodeShm   # SE SHM allocated for a given node
   local ram       # OS total RAM
 
-  for nodeName in "${!NODE_TOTAL_MEM[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
@@ -436,18 +539,27 @@ function validateShmAgainstRAM() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check if the shared memory size exceeds the available shared memory space
-# on /dev/shm. Issue a warning if this is the case.
-# Params: None
+## Check if the shared memory size exceeds the available shared memory space
+## on /dev/shm. Issue a warning if this is the case.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateShmAgainstAvailableMem() {
-  
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local host
   local nodeShm   # SE SHM allocated for a given node
   local availableShm  # The space left on /dev/shm
 
-  for nodeName in "${!NODE_FREE_SHM[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
@@ -461,22 +573,31 @@ function validateShmAgainstAvailableMem() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Validate that the number of partitions is acceptable. This includes the 
-# following rules:
-#   - #partitions is > 0
-#   - #partitions is <= 32 (for now) 
-#   - #partitions is <= #cores
-#
-# Params: None
+## Validate that the number of partitions is acceptable. This includes the
+## following rules:
+##   - #partitions is > 0
+##   - #partitions is <= 32 (for now)
+##   - #partitions is <= #cores
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validatePartitions() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
 
   local nodeName
   local host
   local nodePartitions # SE #partitions for a given node
   local cores          # #cpu cores on a given node
 
-  for nodeName in "${!NODE_CORE_COUNT[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodePartitions="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PARTITIONS_KEY}")"
@@ -499,16 +620,25 @@ function validatePartitions() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Validate that the number of threads is acceptable. This includes the following
-# rules:
-#   - #threads must be at least the minimum (error).
-#   - #threads must be >= #partitions (error).
-#   - #threads must be >= #partitions + 6.
-#   - #threads should not be > #cores unless to meet any of the above rules.
-# 
-# Params: None
+## Validate that the number of threads is acceptable. This includes the following
+## rules:
+##   - #threads must be at least the minimum (error).
+##   - #threads must be >= #partitions (error).
+##   - #threads must be >= #partitions + 6.
+##   - #threads should not be > #cores unless to meet any of the above rules.
+##
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateThreads() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
 
   local nodeName
   local host
@@ -516,7 +646,7 @@ function validateThreads() {
   local nodePartitions # SE #partitions for a given node
   local cores          # #cpu cores on a given node
 
-  for nodeName in "${!NODE_CORE_COUNT[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeThreads="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_THREADS_KEY}")"
@@ -546,10 +676,19 @@ function validateThreads() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the installation directory on each node can be created 
 ## and is writable. Exits out if not.
-## Params: None
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateInstallDirIsWritable() {
- 
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName 
   local host
   local dir
@@ -559,7 +698,7 @@ function validateInstallDirIsWritable() {
   declare -a sshCmd=()
   declare -A errors
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -602,7 +741,7 @@ function validateInstallDirIsWritable() {
     if ! response="$("${sshCmd[@]}")"; then
       debugPrint "Install dir validation failed: ${response}"
 
-      if [ -z "${response}" ]; then
+      if [ -z "${response:-}" ]; then
         response="<no error returned>"
       fi
 
@@ -633,8 +772,8 @@ function validateInstallDirIsWritable() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check that node names don't contain spaces or special characters and are unique.
-# Params: None
+## Check that node names don't contain spaces or special characters and are unique.
+## Params: None
 
 function validateNodeNames() {
 
@@ -658,10 +797,20 @@ function validateNodeNames() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check that GCC is installed and is new enough on each node.
-# Params: None
+## Check that GCC is installed and is new enough on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateGcc() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local host
   local remoteCmd
@@ -672,7 +821,7 @@ function validateGcc() {
 
   debugPrint "Validating gcc version"
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -688,7 +837,7 @@ function validateGcc() {
 
     # Check the gcc version is sufficient.
     # First check if the output is empty.
-    if [ -z "${output}" ]; then
+    if [ -z "${output:-}" ]; then
       failedNodes+=("${nodeName}")
       continue;
     fi
@@ -715,10 +864,20 @@ function validateGcc() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check that bash is installed and is new enough on each node.
-# Params: None
+## Check that bash is installed and is new enough on each node.
+## Params: None
+##  $@ - (optional) the list of node names to check. If not set then check all.
 
 function validateBash() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local host
   local remoteCmd
@@ -729,7 +888,7 @@ function validateBash() {
 
   debugPrint "Validating bash version"
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -746,7 +905,7 @@ function validateBash() {
 
     # Check the gcc version is sufficient.
     # First check if the output is empty.
-    if [ -z "${output}" ]; then
+    if [ -z "${output:-}" ]; then
       failedNodes+=("${nodeName}")
       continue;
     fi
@@ -773,8 +932,8 @@ function validateBash() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Check that the local bash version is new enough.
-# Params: None
+## Check that the local bash version is new enough.
+## Params: None
 
 function validateLocalBash() {
   local output
@@ -784,7 +943,7 @@ function validateLocalBash() {
 
   # Check the bash version is sufficient.
   # First check if the output is empty.
-  if [ -z "${output}" ]; then
+  if [ -z "${output:-}" ]; then
     errorExit "Could not get the bash version number (empty output)"
   fi
 

@@ -106,7 +106,7 @@ function processArgs() {
   # Now check for invalid argument combinations and settings
 
   # If --config was specified then so must the config file.
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified"
     printUsageAndExit
   fi

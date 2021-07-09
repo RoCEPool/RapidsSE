@@ -13,6 +13,8 @@ fi
 ###############################################################################
 ### Constants                                                               ###
 ###############################################################################
+# Variable that can be tested to see if we have already sourced this file
+readonly __COMMON_FN=1
 
 #shellcheck disable=2034
 readonly VERSION_FILE="version"
@@ -20,6 +22,9 @@ readonly CONFIG_DEFAULT_VERSION="2"
 
 readonly PID_FILENAME="se.pid"
 readonly READY_FILENAME="se.ready"
+
+readonly DEFAULT_CONFIG_PATH="cluster.config"
+readonly DEFAULT_NAME_FILE="node.name"
 
 # Prefix of the name of the associative arrays for each node in the cluster.config
 readonly NODE_CFG_PREFIX="NODE_CFG_"
@@ -100,7 +105,7 @@ function errorExit() {
 ##  $@ : The arguments to print
 
 function debugPrint() {
-  if [ -n "${DEBUG}" ] && [ "${DEBUG}" -eq 1 ]; then
+  if [ -n "${DEBUG:-}" ] && [ "${DEBUG}" -eq 1 ]; then
     echo -e "$*"
   fi
 }
@@ -137,7 +142,7 @@ function printIndentArray() {
   shift
   local array=("$@")
 
-  if [ -z "${indents}" ]; then
+  if [ -z "${indents:-}" ]; then
    indents=2
   fi
 
@@ -212,7 +217,7 @@ function sleepProgressPrint() {
 ## Params: None
 
 function loadClusterConfig() {
-  if [ -z "${CONFIG_FILE}" ]; then
+  if [ -z "${CONFIG_FILE:-}" ]; then
     errorExit "Cluster configuration file not specified."
   fi
 
@@ -237,7 +242,7 @@ function loadClusterConfig() {
 function validateClusterConfig() {
   local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
 
-  if [ -z "${CONFIG_VERSION}" ]; then
+  if [ -z "${CONFIG_VERSION:-}" ]; then
     errorExit "${errMsg}" "No config version (\$CONFIG_VERSION) has been set."
   fi
 
@@ -245,11 +250,11 @@ function validateClusterConfig() {
     errorExit "${errMsg}" "Config version (${CONFIG_VERSION}) does not match the expected version (${CONFIG_DEFAULT_VERSION})."
   fi
 
-  if [ -z "${NODE_NAME_PREFIX}" ]; then
+  if [ -z "${NODE_NAME_PREFIX:-}" ]; then
     errorExit "${errMsg}" "NODE_NAME_PREFIX is not defined."
   fi
 
-  if [ -z "${NODE_SEQ_NUM}" ]; then
+  if [ -z "${NODE_SEQ_NUM:-}" ]; then
     errorExit "${errMsg}" "NODE_SEQ_NUM is not defined."
   fi
 
@@ -264,7 +269,7 @@ function validateClusterConfig() {
   local firstClusterId
   firstClusterId="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_CLUSTERID_KEY}")"
 
-  if [ -z "${firstClusterId}" ]; then
+  if [ -z "${firstClusterId:-}" ]; then
     errorExit "${errMsg}" "Parameter \"${NODE_CFG_CLUSTERID_KEY}\" of node ${NODE_LIST[0]} is not set."
   fi
 
@@ -286,7 +291,7 @@ function validateClusterConfig() {
     do
       val="$(nodeCfgGetValue "${nodeName}" "${key}")"
 
-      if [ -z "${val}" ]; then
+      if [ -z "${val:-}" ]; then
         errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
       fi
     done
@@ -310,7 +315,7 @@ function validateClusterConfig() {
 ## Params: None
 
 function loadNodeName() {
-  if [ -z "${NAME_FILE}" ]; then
+  if [ -z "${NAME_FILE:-}" ]; then
     errorExit "Node name file not specified."
   fi
 
@@ -321,7 +326,7 @@ function loadNodeName() {
   #shellcheck disable=1090
   source "${NAME_FILE}" || errorExit "Error sourcing node name file: ${NAME_FILE}"
 
-  if [ -z "${CURRENT_NODE_NAME}" ]; then
+  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
     errorExit "\$CURRENT_NODE_NAME has not been set in node name file: ${NAME_FILE}"
   fi
 
@@ -345,7 +350,7 @@ function getCpuCount() {
   declare -a sshArgs=()
   local response
 
-  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+  [ -n "${nodeName:-}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -386,7 +391,7 @@ function getTotalMem() {
   declare -a sshArgs=()
   local response
 
-  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+  [ -n "${nodeName:-}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -425,7 +430,7 @@ function getTotalShm() {
   declare -a sshArgs=()
   local response
 
-  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+  [ -n "${nodeName:-}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   
@@ -464,7 +469,7 @@ function getFreeShm() {
   declare -a sshArgs=()
   local response
 
-  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+  [ -n "${nodeName:-}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
@@ -581,7 +586,7 @@ function parseRowData() {
   while IFS='' read -r line; do
 
     # Ignore empty lines
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       continue
     fi
 
@@ -630,7 +635,7 @@ function parseRowData() {
     done
 
     # output the column
-    if [ -n "${output}" ]; then
+    if [ -n "${output:-}" ]; then
       echo "${output}"
     fi
   done < <(cat "${filename}" 2>/dev/null)
@@ -767,7 +772,7 @@ function specificNodeCfgsSetValue() {
   shift
   local -a nodeNames=("$@")
 
-  [ "${#nodeNames[@]}" -gt 0 ] && errorExit "Invalid number of node names specified in function specificNodeCfgsSetValue()"
+  [ "${#nodeNames[@]}" -gt 0 ] || errorExit "Invalid number of node names specified in function specificNodeCfgsSetValue()"
 
   for nodeName in "${nodeNames[@]}"
   do
@@ -908,7 +913,7 @@ function nodeCfgExists() {
   local val
   val="$(eval echo "${NODE_CFG_PREFIX}${nodeName}[@]")"
 
-  if [ -z "${val}" ]; then
+  if [ -z "${val:-}" ]; then
     false
     return
   fi

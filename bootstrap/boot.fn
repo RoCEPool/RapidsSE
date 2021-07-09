@@ -12,16 +12,20 @@ fi
 # Load other common functions
 COMMON_FN="common.fn"
 
-if [ -n "${DIR}" ]; then
+if [ -n "${DIR:-}" ]; then
   COMMON_FN="${DIR}/${COMMON_FN}"
 fi
 
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
 
 ###############################################################################
 ### Constants                                                               ###
 ###############################################################################
+# Variable that can be tested to see if we have already sourced this file
+readonly __BOOT_FN=1
 
 readonly EXE_DIR="${ROOT_DIR}/bin"
 readonly EXE="${EXE_DIR}/rapidsse"
@@ -76,8 +80,8 @@ function printStartStopUsageAndExit() {
 function processStartStopArgs() {
 
   # Check that some globals are specified with defaults
-  if [ -z "${CLUSTER_OP}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
-  if [ -z "${CLUSTER_INIT}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_INIT:-}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
 
   # Indicates if a given argument was specified.
   local argCluster=0
@@ -149,7 +153,7 @@ function processStartStopArgs() {
     printStartStopUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified"
     printStartStopUsageAndExit
   fi
@@ -184,7 +188,7 @@ function startCluster() {
   echo "Starting the RapidsSE cluster."
   local row
 
-  if [ -n "${SEQ_START}" ]; then
+  if [ -n "${SEQ_START:-}" ]; then
     # Start the nodes sequentially
     for row in "${NODE_LIST[@]}"
     do
@@ -206,7 +210,7 @@ function startCluster() {
   echo "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
 
   # Wait for all nodes to boot and become ready
-  if [ -z "${BOOT_TIMEOUT}" ]; then
+  if [ -z "${BOOT_TIMEOUT:-}" ]; then
     BOOT_TIMEOUT="${DEFAULT_BOOT_TIMEOUT}"
   fi
 
@@ -500,7 +504,7 @@ function remoteClusterInit() {
 function localClusterInit() {
   echo -n "Waiting for the cluster to cross-connect..."
 
-  if [ -z "${CURRENT_NODE_NAME}" ]; then
+  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
     errorExit "The name of the local node has not been loaded."
   fi
 
@@ -566,7 +570,7 @@ function localClusterInit() {
       errorExit "Cluster startup failed during node cross-connect"
     fi
 
-    if [ -z "${nonXConnOutput}" ]; then
+    if [ -z "${nonXConnOutput:-}" ]; then
       # Success. Every node is cross connected
       rm -f "${cmdOutputFile}" 2>/dev/null
       echo "Done"
@@ -615,7 +619,7 @@ function getNonXConnectedNodes() {
 
   local filename="$1"
 
-  if [ -z "${filename}" ]; then
+  if [ -z "${filename:-}" ]; then
     errorExit "function getNonXConnectedNodes() called without a filename parameter"
   fi
 
@@ -635,7 +639,7 @@ function getNonXConnectedNodes() {
 
   while IFS='' read -r row; do
 
-    if [ -z "${row}" ] ; then
+    if [ -z "${row:-}" ] ; then
       continue
     fi
 
@@ -654,7 +658,7 @@ function getNonXConnectedNodes() {
 
   # Print out each non-null (unset) element in the array
   for node in "${nodes[@]}" ; do
-    if [ -v "node" ] && [ -n "${node}" ] ; then
+    if [ -v "node" ] && [ -n "${node:-}" ] ; then
       echo "${node}"
     fi
   done
@@ -682,7 +686,7 @@ function printClusterStatus() {
 
     pid="$(getRemoteRunningPid "${row}")"
 
-    if [ -n "${pid}" ]  && [ "${pid}" -gt 0 ]; then
+    if [ -n "${pid:-}" ]  && [ "${pid}" -gt 0 ]; then
 
       # Node is running, but is it ready?
       if isRemoteSeReady "${row}"; then
@@ -791,7 +795,7 @@ function isLocalSeRunning() {
 
   pid="$(getLocalRunningPid)"
 
-  if [ -n "${pid}" ]; then
+  if [ -n "${pid:-}" ]; then
     true
     return
 
@@ -812,7 +816,7 @@ function isClusterRunning() {
 
     pid="$(getRemoteRunningPid "${row}")"
 
-    if [ -n "${pid}" ]; then
+    if [ -n "${pid:-}" ]; then
       true
       return
     fi
@@ -845,7 +849,7 @@ function assertNoNodesRunning() {
   do
     pid="$(getRemoteRunningPid "${row}")"
 
-    if [ -n "${pid}" ]; then
+    if [ -n "${pid:-}" ]; then
       gotError=1
       errMsg="${errMsg}\n  ${row}  (pid: ${pid})"
     fi
@@ -926,7 +930,7 @@ function stopCluster() {
   
   echo "Stopping the RapidsSE cluster."
 
-  if [ -n "${SEQ_START}" ]; then
+  if [ -n "${SEQ_START:-}" ]; then
     # Stop the nodes sequentially
     for row in "${NODE_LIST[@]}"
     do

@@ -93,7 +93,7 @@ function printUsageAndExit() {
 function processArgs() {
 
   # Check that some globals are specified with defaults
-  if [ -z "${CLUSTER_OP}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
 
   # Indicates if a given argument was specified.
   local argCluster=0
@@ -218,7 +218,7 @@ function processArgs() {
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified"
     printUsageAndExit
   fi

@@ -29,6 +29,7 @@ set -Eeu
 
 #shellcheck disable=2034
 readonly DIR=$(dirname "$0")
+readonly ROOT_DIR="${DIR}"
 readonly THIS_FILE=$(basename "$0")
 readonly SETUP_FN="setup.fn"
 readonly BOOT_FN="boot.fn"
@@ -56,6 +57,7 @@ CLUSTER_INSTALL=1
 INTERACTIVE_INSTALL=1
 ADV_WIZARD=0
 DEBUG=0
+NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 
 # Path to the installation (run) file used.
 INSTALL_FILE=""
@@ -298,8 +300,8 @@ function displayAddNodeWelcome() {
   echo "Welcome to the Add Node wizard for RapidsSE version ${SE_VERSION_STR}."
   echo "(git ${SE_COMMIT_HASH})"
   echo ""
-  echo "This will guide you through the process of adding additional RapidsSE nodes"
-  echo "in a cluster."
+  echo "This will guide you through the process of adding additional nodes to"
+  echo "a RapidsSE cluster."
   echo ""
 }
 
@@ -311,7 +313,8 @@ function alterConfiguration() {
 
   # (advanced) node name prefix
   [ -z "${NODE_NAME_PREFIX}" ] && errorExit "NODE_NAME_PREFIX is not set"
-  [ "${NODE_SEQ_NUM}" -gt 0 ]  && errorExit "NODE_SEQ_NUM is not set"
+  [ -z "${NODE_SEQ_NUM:-}" ]   && errorExit "NODE_SEQ_NUM is not set"
+  [ "${NODE_SEQ_NUM}" -le 0 ]  && errorExit "NODE_SEQ_NUM must be a positive value"
 
   # Record how many nodes we started with
   EXISTING_NODE_LIST=( "${NODE_LIST[@]}" )
@@ -347,25 +350,25 @@ function alterConfiguration() {
   updateDefaults
 
   # (advanced) port
-  askPort
+  askPort "${ADDED_NODE_LIST[@]}"
 
   # Copy the same heartbeat value from the first node
   copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${ADDED_NODE_LIST[@]}"
 
   # installation directory
-  askInstallDir
+  askInstallDir "${ADDED_NODE_LIST[@]}"
 
   # shared memory size
-  askMemSize
+  askMemSize "${ADDED_NODE_LIST[@]}"
 
   # (advanced) partitions
-  askPartitions
+  askPartitions "${ADDED_NODE_LIST[@]}"
 
   # (advanced) threads
-  askThreads
+  askThreads "${ADDED_NODE_LIST[@]}"
 
   # (advanced) additional parameters
-  askParams
+  askParams "${ADDED_NODE_LIST[@]}"
 
   # Copy the cluster ID from the first node
   copyValue "${NODE_CFG_CLUSTERID_KEY}" "${ADDED_NODE_LIST[@]}"
@@ -442,7 +445,6 @@ processAddNodeArgs "$@"
 # Print out current settings from the arguments
 debugPrint ""
 debugPrint "pwd = $(pwd)"
-debugPrint "USER_PWD = ${USER_PWD}"
 debugPrint "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
 debugPrint "INTERACTIVE_INSTALL = ${INTERACTIVE_INSTALL}"
 debugPrint "ADV_WIZARD = ${ADV_WIZARD}"
@@ -487,21 +489,25 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   # Validate new config
   validateClusterConfig
 
+  # Validate the environment on the new nodes, as well as any cluster conflicts
+  # between the old and new nodes.
+  validateNodeAdditionEnvironment "${ADDED_NODE_LIST[@]}"
+
   # Confirm config
   confirmNodeAddition
 
-  # Backup existing config
-  backupSuffix="$(mktemp -u XXXXXXXX)"
-  backupConfig "${backupSuffix}" "${ADDED_NODE_LIST[@]}"
+  # Backup existing configs on all existing nodes in the cluster
+  backupSuffix="$(date +%Y%m%dT%H%M%S)"
+  backupConfig "${backupSuffix}" "${EXISTING_NODE_LIST[@]}"
 
-  # Write out new config on the existing node
+  # Write out new config on the current node
   writeClusterConfig "${CONFIG_FILE}"
 
   # Install new nodes
   distributeSoftware "${CONFIG_FILE}" "${ADDED_NODE_LIST[@]}"
 
-  # TODO: Write out new config to all existing nodes
-
+  # Write out new config to all existing nodes
+  distributeFile "${CONFIG_FILE}" "${DEFAULT_CONFIG_PATH}" "${EXISTING_NODE_LIST[@]}"
 
   # If cluster is running
   if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
@@ -510,6 +516,9 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
     #   TODO: Wait for nodes to join the cluster
     #   TODO: Rebalance node data
   fi
+
+  # Remove the backed up cluster.config
+  #removeConfig "${backupSuffix}" "${EXISTING_NODE_LIST[@]}"
 
   echo ""
   if [ ${#ADDED_NODE_LIST[@]} -eq 1 ]; then
