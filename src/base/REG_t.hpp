@@ -13,7 +13,9 @@ namespace BASE
     CLASSNM* m_pObject; // pointer to the object
    
     Stz*     m_szRegNm; // register name
-  
+
+    LogicUnit* m_pLogicUnit; // which logic unit
+
     struct {
       
       u8 m_bUseAllowed      :  1; // this register will be used
@@ -23,7 +25,7 @@ namespace BASE
       u8 m_bNullOnDelete    :  1; // m_pObject must be null on delete
       u8 m_bDeleteOnFailure :  1; // m_pObject to be deleted on failure
       
-      u8 m_uSpare           : 59; // delete m_pObject on failure
+      u8 m_uSpare           : 59; // spare bits
       //                      64b
     };
   
@@ -37,6 +39,8 @@ namespace BASE
       m_pObject = nullptr;
       m_szRegNm = C_NO_NAME;
 
+      m_pLogicUnit = nullptr;
+    
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -58,6 +62,8 @@ namespace BASE
       m_pObject = pObject;
       m_szRegNm = C_NO_NAME;
 
+      m_pLogicUnit = nullptr;
+    
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -205,11 +211,19 @@ namespace BASE
     }
   
     /*------------------------------------------------------------------------*/
-    /* set resgister name                                                     */
+    /* set register name                                                      */
     /*------------------------------------------------------------------------*/
-    bool vRegNm(Stz* szRegNm)
+    void vRegNm(Stz* szRegNm)
     {
       m_szRegNm = C_NO_NAME;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* set logic unit                                                         */
+    /*------------------------------------------------------------------------*/
+    void vLogicUnit(LogicUnit* pLogicUnit)
+    {
+      m_pLogicUnit = pLogicUnit;
     }
 
   };
