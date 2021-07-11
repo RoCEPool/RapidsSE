@@ -122,6 +122,7 @@ LogicUnit::LogicUnit(Task* pTask)
 ,       m_xpToPtnRow(this,"m_xpToPtnRow"_Stz)
 ,          m_xpToRow(this,"m_xpToRow"_Stz)
 ,             m_xpTx(this,"m_xpTx"_Stz)
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -244,8 +245,8 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_eSendKind = XK_NONE;
   
-  for ( ; m_nRegs < C_MAX_REGS; m_nRegs++)
-    m_paReg[m_nRegs] = nullptr;
+  for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
+    m_paReg[i_UnusedReg] = nullptr;
   
   _checkInitialised_(CN_LOGICUNIT);
   
@@ -356,6 +357,16 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add reg                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddReg(REG<Object>* pReg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
+
+  m_paReg[m_nRegs++] = pReg;
+}
 
 /*----------------------------------------------------------------------------*/
 /* conditional code                                                           */

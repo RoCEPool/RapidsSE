@@ -35,6 +35,8 @@
 #include "eLH.h"
 #include "eXK.h"
 
+#include "REG_t.hpp"
+
 
 namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
@@ -136,6 +138,9 @@ namespace STORE
 
     REF<Job>            m_xpJobRef;   // job reference
     
+    REG<Object>*        m_paReg[C_MAX_REGS];
+    i8 m_nRegs;
+    
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -189,9 +194,6 @@ namespace STORE
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
 
-    REG<Object>*        m_paReg[C_MAX_REGS];
-    i8 m_nRegs;
-    
     bool                m_bCompilerToExit;
 
     i8                  m_iCounter0;   // counter
@@ -272,6 +274,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vAddReg(REG<Object>* pReg);
     void vCC(i8 i_Cond);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);

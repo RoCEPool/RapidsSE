@@ -108,7 +108,6 @@ extern d8 C_D8_MID;
 #include "PTR.hpp"
 #include "SMA.hpp"
 #include "REF_t.hpp"
-#include "REG_t.hpp"
 
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"

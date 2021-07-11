@@ -3,8 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "LogicUnit.hpp"
 
-namespace BASE
+namespace STORE
 {
   template <class CLASSNM>
   class REG
@@ -50,6 +51,8 @@ namespace BASE
       m_bDeleteOnFailure = false;
     
       m_uSpare = 0;
+    
+      AM::LOGICUNIT::vAddReg(pLogicUnit,this);
     }
   
     /*------------------------------------------------------------------------*/
