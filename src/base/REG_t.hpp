@@ -10,12 +10,12 @@ namespace BASE
   {
   public:
   
-    CLASSNM* m_pObject; // pointer to the object
-   
-    Stz*     m_szRegNm; // register name
-
     LogicUnit* m_pLogicUnit; // which logic unit
+    Stz*       m_szRegNm;    // register name
 
+  
+    CLASSNM*   m_pObject;    // pointer to the object
+   
     struct {
       
       u8 m_bUseAllowed      :  1; // this register will be used
@@ -34,13 +34,13 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(LogicUnit* pLogicUnit)
+    REG<CLASSNM>(LogicUnit* pLogicUnit, Stz* szRegNm)
     {
-      m_pObject = nullptr;
-      m_szRegNm = C_NO_NAME;
-
       m_pLogicUnit = nullptr;
+      m_szRegNm    = szRegNm;
     
+      m_pObject = nullptr;
+      
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
