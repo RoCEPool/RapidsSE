@@ -11,6 +11,8 @@ namespace BASE
   public:
   
     CLASSNM* m_pObject; // pointer to the object
+   
+    Stz*     m_szRegNm; // register name
   
     struct {
       
@@ -33,7 +35,8 @@ namespace BASE
     REG<CLASSNM>(void)
     {
       m_pObject = nullptr;
-    
+      m_szRegNm = C_NO_NAME;
+
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -53,7 +56,8 @@ namespace BASE
         THROW("REG::REG(pObject) : invalid pObject parameter"_Stz);
     
       m_pObject = pObject;
-    
+      m_szRegNm = C_NO_NAME;
+
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -198,6 +202,14 @@ namespace BASE
     bool vFinalised(void)
     {
       m_bFinalised = true;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* set resgister name                                                     */
+    /*------------------------------------------------------------------------*/
+    bool vRegNm(Stz* szRegNm)
+    {
+      m_szRegNm = C_NO_NAME;
     }
 
   };
