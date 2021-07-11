@@ -189,6 +189,9 @@ namespace STORE
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
 
+    REG<Object>*        m_paReg[C_MAX_REGS];
+    i8 m_nRegs;
+    
     bool                m_bCompilerToExit;
 
     i8                  m_iCounter0;   // counter

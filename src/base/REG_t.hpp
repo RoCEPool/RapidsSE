@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+
 namespace BASE
 {
   template <class CLASSNM>
@@ -36,7 +37,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     REG<CLASSNM>(LogicUnit* pLogicUnit, Stz* szRegNm)
     {
-      m_pLogicUnit = nullptr;
+      m_pLogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
     
       m_pObject = nullptr;

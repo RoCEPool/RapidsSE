@@ -69,6 +69,7 @@ __aFooterFunction(LogicUnit)
 /*----------------------------------------------------------------------------*/
 LogicUnit::LogicUnit(Task* pTask)
 : Object(CN_LOGICUNIT)
+, m_nRegs(0)
 ,       m_xpAggTimer(this,"m_xpAggTimer"_Stz)
 ,       m_xpCrwToRow(this,"m_xpCrwToRow"_Stz)
 ,           m_xpDir0(this,"m_xpDir0"_Stz)
@@ -242,6 +243,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_eErrorCode = EC_NONE;
   
   m_eSendKind = XK_NONE;
+  
+  for ( ; m_nRegs < C_MAX_REGS; m_nRegs++)
+    m_paReg[m_nRegs] = nullptr;
   
   _checkInitialised_(CN_LOGICUNIT);
   
