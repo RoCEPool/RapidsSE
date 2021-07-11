@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* REG_t.hpp -- register for logic unit                                       */
+/* REG_t.hpp -- register of logic unit                                        */
 /*============================================================================*/
 #pragma once
 
@@ -34,7 +34,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(void)
+    REG<CLASSNM>(LogicUnit* pLogicUnit)
     {
       m_pObject = nullptr;
       m_szRegNm = C_NO_NAME;
@@ -54,25 +54,25 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(CLASSNM* pObject)
-    {
-      if ( pObject && ! AM::bInBufferPool(pObject) )
-        THROW("REG::REG(pObject) : invalid pObject parameter"_Stz);
-    
-      m_pObject = pObject;
-      m_szRegNm = C_NO_NAME;
-
-      m_pLogicUnit = nullptr;
-    
-      m_bUseAllowed      = true;
-      m_bInitialised     = true;
-      m_bFinalised       = true;
-    
-      m_bNullOnDelete    = false;
-      m_bDeleteOnFailure = false;
-
-      m_uSpare = 0;
-    }
+//    REG<CLASSNM>(CLASSNM* pObject)
+//    {
+//      if ( pObject && ! AM::bInBufferPool(pObject) )
+//        THROW("REG::REG(pObject) : invalid pObject parameter"_Stz);
+//
+//      m_pObject = pObject;
+//      m_szRegNm = C_NO_NAME;
+//
+//      m_pLogicUnit = nullptr;
+//
+//      m_bUseAllowed      = true;
+//      m_bInitialised     = true;
+//      m_bFinalised       = true;
+//
+//      m_bNullOnDelete    = false;
+//      m_bDeleteOnFailure = false;
+//
+//      m_uSpare = 0;
+//    }
     
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */

@@ -134,6 +134,8 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
+    REF<Job>            m_xpJobRef;   // job reference
+    
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -147,7 +149,6 @@ namespace STORE
     REG<IndexStream>    m_xpIndexStream;
     REG<InfoSet>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
-    REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
     REG<Node>           m_xpNode;      // node reference
