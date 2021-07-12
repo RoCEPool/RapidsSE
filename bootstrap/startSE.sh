@@ -12,6 +12,16 @@ readonly ROOT_DIR="${DIR}"
 readonly BOOT_FN="${DIR}/boot.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
+
+###############################################################################
+### Includes                                                                ###
+###############################################################################
+
+# Load bootstrapping functions
+#shellcheck source=boot.fn
+source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
+
+
 ###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
@@ -25,14 +35,6 @@ DEBUG=0
 
 # Will be set after loading node name file.
 CURRENT_NODE_NAME=""
-
-###############################################################################
-### Includes                                                                ###
-###############################################################################
-
-# Load bootstrapping functions
-#shellcheck source=boot.fn
-source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 
 
 ###############################################################################

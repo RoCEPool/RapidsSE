@@ -10,15 +10,6 @@ readonly COMMON_FN="${DIR}/common.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
 ###############################################################################
-### Significant Global Variables                                            ###
-###############################################################################
-
-# Default modes of operation
-CONFIG_FILE="${DIR}/cluster.config"
-
-DEBUG=0
-
-###############################################################################
 ### Includes                                                                ###
 ###############################################################################
 
@@ -26,6 +17,15 @@ DEBUG=0
 #shellcheck source=common.fn
 source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 
+
+###############################################################################
+### Significant Global Variables                                            ###
+###############################################################################
+
+# Default modes of operation
+CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
+
+DEBUG=0
 
 ###############################################################################
 ### Functions                                                               ###

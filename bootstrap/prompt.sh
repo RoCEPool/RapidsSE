@@ -11,18 +11,6 @@ readonly ROOT_DIR="${DIR}"
 readonly BOOT_FN="${DIR}/boot.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
-
-###############################################################################
-### Significant Global Variables                                            ###
-###############################################################################
-
-# Default modes of operation
-CONFIG_FILE="${DIR}/cluster.config"
-NAME_FILE="${DIR}/node.name"
-DEBUG=0
-
-CURRENT_NODE_NAME=""
-
 ###############################################################################
 ### Includes                                                                ###
 ###############################################################################
@@ -31,6 +19,18 @@ CURRENT_NODE_NAME=""
 #shellcheck source=boot.fn
 source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 
+
+
+###############################################################################
+### Significant Global Variables                                            ###
+###############################################################################
+
+# Default modes of operation
+CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
+NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
+DEBUG=0
+
+CURRENT_NODE_NAME=""
 
 ###############################################################################
 ### Functions                                                               ###
