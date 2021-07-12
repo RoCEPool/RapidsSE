@@ -15,6 +15,8 @@ namespace STORE
     LogicUnit* m_pLogicUnit; // which logic unit
     Stz*       m_szRegNm;    // register name
     eRF        m_eRepair;    // how to repair
+  
+    bool (*m_fpRepair)(COMPONENT* pComponent);
 
     COMPONENT* m_pComponent; // pointer to the object
 
@@ -36,11 +38,15 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT>(LogicUnit* pLogicUnit, eRF eRepair, void*, Stz* szRegNm)
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
+                   eRF eRepair,
+                   bool (*fpRepair)(COMPONENT* pComponent),
+                   Stz* szRegNm)
     {
       m_pLogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
       m_eRepair    = eRepair;
+      m_fpRepair   = fpRepair;
     
       m_pComponent = nullptr;
       
