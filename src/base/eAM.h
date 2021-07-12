@@ -13,11 +13,12 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_INDEXJOIN_NEXT,
   /*    */ AM_CRW_INDEXJOIN_ROWS,
 
+  /*    */ AM_CRW_JOIN_CRW,
   /*    */ AM_CRW_JOIN_ENT,
   /*    */ AM_CRW_JOIN_ROW,
 
+  /*    */ AM_CRW_LOOPJOIN_CRW,
   /*    */ AM_CRW_LOOPJOIN_END,
-  /*    */ AM_CRW_LOOPJOIN_ROWS,
 
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
@@ -38,7 +39,7 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_CRWBUFFER_AGG,
   /*    */ AM_HANDLER_CRWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_CRWBUFFER_LIMIT,
-  /*    */ AM_HANDLER_CRWBUFFER_RHT,
+  /*    */ AM_HANDLER_CRWLFT_CRWRHT,
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
@@ -116,11 +117,12 @@ static Stz* aAM[]
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
     /*    */ "CRW_INDEXJOIN_ROWS"_Stz,
 
+    /*    */ "CRW_JOIN_CRW"_Stz,
     /*    */ "CRW_JOIN_ENT"_Stz,
     /*    */ "CRW_JOIN_ROW"_Stz,
 
+    /*    */ "CRW_LOOPJOIN_CRW"_Stz,
     /*    */ "CRW_LOOPJOIN_END"_Stz,
-    /*    */ "CRW_LOOPJOIN_ROWS"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
@@ -141,7 +143,7 @@ static Stz* aAM[]
     /*    */ "HANDLER_CRWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_CRWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_CRWBUFFER_LIMIT"_Stz,
-    /*    */ "HANDLER_CRWBUFFER_RHT"_Stz,
+    /*    */ "HANDLER_CRWLFT_CRWRHT"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,

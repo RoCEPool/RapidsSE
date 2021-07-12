@@ -30,6 +30,7 @@ create index jidx on j (a);
 print "loading nation.csv..." ;
 load J "../DATA/Joins/J.csv" ;
 
+/*
 pipeline indexJoinP
 begin
   stage stageA on origin :
@@ -45,8 +46,7 @@ begin
     output | sink | stageA
 end;
 
-
-pipeline loopJoinCo
+pipeline scanRightTest
 begin
   stage stageA on origin :
     start | periodic once | stageB
@@ -61,9 +61,8 @@ begin
     output | sink | stageA
 
 end;
+*/
 
-
-/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CO-PARTITIONED JOIN
 // T.a = J.a
@@ -106,7 +105,7 @@ begin
 
 end;
 
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PARTITIONABLE JOIN
 // T.a = J.a
