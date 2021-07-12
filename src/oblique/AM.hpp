@@ -263,6 +263,12 @@ namespace OBLIQUE
       static bool bIsOoO(Operand* pOperand);
     };
 
+    class LOGICUNIT
+    {
+    public:
+      static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
+    };
+
     class PARCEL
     {
     public:

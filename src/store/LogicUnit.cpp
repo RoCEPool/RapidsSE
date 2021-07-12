@@ -69,6 +69,60 @@ __aFooterFunction(LogicUnit)
 /*----------------------------------------------------------------------------*/
 LogicUnit::LogicUnit(Task* pTask)
 : Object(CN_LOGICUNIT)
+, m_nRegs(0)
+,       m_xpAggTimer(this,"m_xpAggTimer"_Stz)
+,       m_xpCrwToRow(this,"m_xpCrwToRow"_Stz)
+,           m_xpDir0(this,"m_xpDir0"_Stz)
+,           m_xpDir1(this,"m_xpDir1"_Stz)
+,       m_xpExprEval(this,"m_xpExprEval"_Stz)
+,          m_xpFile0(this,"m_xpFile0"_Stz)
+,          m_xpFile1(this,"m_xpFile1"_Stz)
+,        m_xpHandler(this,"m_xpHandler"_Stz)
+,          m_xpIndex(this,"m_xpIndex"_Stz)
+,       m_xpIndexDef(this,"m_xpIndexDef"_Stz)
+,    m_xpIndexStream(this,"m_xpIndexStream"_Stz)
+,        m_xpInfoSet(this,"m_xpInfoSet"_Stz)
+,   m_xpInfoSetTable(this,"m_xpInfoSetTable"_Stz)
+,           m_xpList(this,"m_xpList"_Stz)
+,  m_xpLogicCompiler(this,"m_xpLogicCompiler"_Stz)
+,           m_xpNode(this,"m_xpNode"_Stz)
+,         m_xpNode_I(this,"m_xpNode_I"_Stz)
+,            m_xpNow(this,"m_xpNow"_Stz)
+,             m_xpOp(this,"m_xpOp"_Stz)
+,       m_xpOperandA(this,"m_xpOperandA"_Stz)
+,       m_xpOperandB(this,"m_xpOperandB"_Stz)
+,       m_xpOperandC(this,"m_xpOperandC"_Stz)
+,     m_xpOperandOoO(this,"m_xpOperandOoO"_Stz)
+, m_xpPathIdentifier(this,"m_xpPathIdentifier"_Stz)
+,         m_xpPipein(this,"m_xpPipein"_Stz)
+,       m_xpPipeline(this,"m_xpPipeline"_Stz)
+,   m_xpPipelineSpec(this,"m_xpPipelineSpec"_Stz)
+,      m_xpPtnStream(this,"m_xpPtnStream"_Stz)
+,          m_xpRange(this,"m_xpRange"_Stz)
+,      m_xpRegister0(this,"m_xpRegister0"_Stz)
+,      m_xpRegister1(this,"m_xpRegister1"_Stz)
+,      m_xpRegister2(this,"m_xpRegister2"_Stz)
+,            m_xpRow(this,"m_xpRow"_Stz)
+,        m_xpRowOnce(this,"m_xpRowOnce"_Stz)
+,       m_xpSendNode(this,"m_xpSendNode"_Stz)
+,          m_xpSends(this,"m_xpSends"_Stz)
+,       m_xpShardDef(this,"m_xpShardDef"_Stz)
+,         m_xpSocket(this,"m_xpSocket"_Stz)
+,   m_xpStreamDefLft(this,"m_xpStreamDefLft"_Stz)
+,   m_xpStreamDefRht(this,"m_xpStreamDefRht"_Stz)
+,   m_xpStreamDefOut(this,"m_xpStreamDefOut"_Stz)
+,      m_xpStreamSet(this,"m_xpStreamSet"_Stz)
+, m_xpStreamSetTable(this,"m_xpStreamSetTable"_Stz)
+,         m_xpSubset(this,"m_xpSubset"_Stz)
+,          m_xpTable(this,"m_xpTable"_Stz)
+,       m_xpTablePtn(this,"m_xpTablePtn"_Stz)
+,          m_xpTimer(this,"m_xpTimer"_Stz)
+,       m_xpToHshCrw(this,"m_xpToHshCrw"_Stz)
+,       m_xpToNstRow(this,"m_xpToNstRow"_Stz)
+,       m_xpToPtnRow(this,"m_xpToPtnRow"_Stz)
+,          m_xpToRow(this,"m_xpToRow"_Stz)
+,             m_xpTx(this,"m_xpTx"_Stz)
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -191,6 +245,9 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_eSendKind = XK_NONE;
   
+  for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
+    m_paReg[i_UnusedReg] = nullptr;
+  
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -300,6 +357,16 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add reg                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddReg(REG<Object>* pReg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
+
+  m_paReg[m_nRegs++] = pReg;
+}
 
 /*----------------------------------------------------------------------------*/
 /* conditional code                                                           */

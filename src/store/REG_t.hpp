@@ -1,21 +1,33 @@
 /*============================================================================*/
-/* REG_t.hpp -- register for logic unit                                       */
+/* REG_t.hpp -- register of logic unit                                        */
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+#include "LogicUnit.hpp"
+
+namespace STORE
 {
   template <class CLASSNM>
   class REG
   {
   public:
   
-    CLASSNM* m_pObject; // pointer to the object
+    LogicUnit* m_pLogicUnit; // which logic unit
+    Stz*       m_szRegNm;    // register name
+
   
+    CLASSNM*   m_pObject;    // pointer to the object
+   
     struct {
+      
+      u8 m_bUseAllowed      :  1; // this register will be used
+      u8 m_bInitialised     :  1; // this register has been initialised
+      u8 m_bFinalised       :  1; // this register has been finalised
+      
       u8 m_bNullOnDelete    :  1; // m_pObject must be null on delete
       u8 m_bDeleteOnFailure :  1; // m_pObject to be deleted on failure
-      u8 m_uSpare           : 62; // delete m_pObject on failure
+      
+      u8 m_uSpare           : 59; // spare bits
       //                      64b
     };
   
@@ -24,31 +36,33 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(void)
+    REG<CLASSNM>(LogicUnit* pLogicUnit, Stz* szRegNm)
     {
-      m_pObject = nullptr;
+      m_pLogicUnit = pLogicUnit;
+      m_szRegNm    = szRegNm;
     
-      m_bNullOnDelete = false;
+      m_pObject = nullptr;
+      
+      m_bUseAllowed      = true;
+      m_bInitialised     = true;
+      m_bFinalised       = true;
+    
+      m_bNullOnDelete    = false;
       m_bDeleteOnFailure = false;
+    
       m_uSpare = 0;
+    
+      AM::LOGICUNIT::vAddReg(pLogicUnit,this);
     }
   
-    /*------------------------------------------------------------------------*/
-    /* parameterized constructor                            (nullptr allowed) */
-    /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(CLASSNM* pObject)
-    {
-      if ( pObject && ! AM::bInBufferPool(pObject) )
-        THROW("REG::REG(pObject) : invalid pObject parameter"_Stz);
-    
-      m_pObject = pObject;
-    }
-    
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
     ~REG<CLASSNM>(void)
     {
+      RASSERT(m_bInitialised);
+      RASSERT(m_bFinalised);
+    
       RASSERT(! m_bNullOnDelete || ! m_pObject);
     }
 
@@ -131,6 +145,8 @@ namespace BASE
         return false;
     }
   
+  
+  
     /*------------------------------------------------------------------------*/
     /* set null on delete                                                     */
     /*------------------------------------------------------------------------*/
@@ -140,7 +156,7 @@ namespace BASE
     }
   
     /*------------------------------------------------------------------------*/
-    /* recover from failure                                                   */
+    /* call m_pObject to recover from failure                                 */
     /*------------------------------------------------------------------------*/
     bool vRecoverFromFailure(void)
     {
@@ -149,6 +165,46 @@ namespace BASE
       if (m_bDeleteOnFailure) {
         vDeleteObject();
       }
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* use is allowed                                                         */
+    /*------------------------------------------------------------------------*/
+    bool vUseAllowed(void)
+    {
+      m_bNullOnDelete = true;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* initialised                                                            */
+    /*------------------------------------------------------------------------*/
+    bool vInitialised(void)
+    {
+      m_bNullOnDelete = true;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* finalised                                                              */
+    /*------------------------------------------------------------------------*/
+    bool vFinalised(void)
+    {
+      m_bFinalised = true;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* set register name                                                      */
+    /*------------------------------------------------------------------------*/
+    void vRegNm(Stz* szRegNm)
+    {
+      m_szRegNm = C_NO_NAME;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* set logic unit                                                         */
+    /*------------------------------------------------------------------------*/
+    void vLogicUnit(LogicUnit* pLogicUnit)
+    {
+      m_pLogicUnit = pLogicUnit;
     }
 
   };

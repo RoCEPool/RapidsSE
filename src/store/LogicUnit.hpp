@@ -35,6 +35,8 @@
 #include "eLH.h"
 #include "eXK.h"
 
+#include "REG_t.hpp"
+
 
 namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
@@ -134,6 +136,11 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
+    REF<Job>            m_xpJobRef;   // job reference
+    
+    REG<Object>*        m_paReg[C_MAX_REGS];
+    i8 m_nRegs;
+    
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -147,7 +154,6 @@ namespace STORE
     REG<IndexStream>    m_xpIndexStream;
     REG<InfoSet>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
-    REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
     REG<Node>           m_xpNode;      // node reference
@@ -268,6 +274,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vAddReg(REG<Object>* pReg);
     void vCC(i8 i_Cond);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);
