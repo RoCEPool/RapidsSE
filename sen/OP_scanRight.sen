@@ -141,10 +141,10 @@
 
   // read next buffer from ptn stream
   ptnStream[] ptnStream.read to Operand[]
-"T1" .
+
   Operand[].isNotNull if
     // read a next crw buffer
-"T2" .
+
     // pipe out the read crw buffer
     Operand[].pipeOut
 
@@ -153,7 +153,7 @@
 
   else
     // no more crw buffers
-"T3" .
+
     // close the partition stream
     ptnStream[] ptnStream.close
 
@@ -161,7 +161,7 @@
     Operand[].newEndRightMarker
     Operand[].pipeout
   then
-"T4" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // check for rate metering
@@ -177,7 +177,7 @@
     rateSecs task::sleepSsec
     "Scan awake" .
   then
-"T5" .
+
   true
 ;
 

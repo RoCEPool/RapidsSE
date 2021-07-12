@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 bc;
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INDEX JOIN
 // T.a = J.a
@@ -16,7 +16,7 @@ create table T (
 	 d       VARCHAR(15)
 );
 
-print "loading nation.csv..." ;
+print "loading T.csv..." ;
 load T "../DATA/Joins/T.csv" ;
 
 create table J (
@@ -27,10 +27,10 @@ create table J (
 );
 
 create index jidx on j (a);
-print "loading nation.csv..." ;
+print "loading J.csv..." ;
 load J "../DATA/Joins/J.csv" ;
 
-/*
+
 pipeline indexJoinP
 begin
   stage stageA on origin :
@@ -61,7 +61,7 @@ begin
     output | sink | stageA
 
 end;
-*/
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CO-PARTITIONED JOIN
@@ -76,7 +76,7 @@ create table T (
 	 d       VARCHAR(15)
 ) partition by (a);
 
-print "loading nation.csv..." ;
+print "loading T.csv..." ;
 load T "../DATA/Joins/T.csv" ;
 
 create table J (
@@ -86,8 +86,8 @@ create table J (
 	 d       VARCHAR(15)
 ) partition by (a);
 
-print "loading nation.csv..." ;
-load J "../DATA/Joins/J.tbl" ;
+print "loading J.csv..." ;
+load J "../DATA/Joins/J.csv" ;
 
 pipeline loopJoinCo
 begin
@@ -105,15 +105,15 @@ begin
 
 end;
 
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PARTITIONABLE JOIN
 // T.a = J.a
 // PtnKey[T] = c
 // PtnKey[J] = a
 
-drop table T;
-drop table J;
+//drop table T;
+//drop table J;
 
 create table T (
 	 a       INTEGER,
@@ -135,7 +135,7 @@ create table J (
 print "loading nation.csv..." ;
 load J "../DATA/Joins/J.tbl" ;
 
-pipeline loopJoinPartitionable
+pipeline loopJoinPart
 begin
   stage stageA on origin :
     start | periodic once | stageB
@@ -144,7 +144,7 @@ begin
     scan T | hash $1 | stageC hashcast
 
   stage stageC on all partitions :
-    scan right J | loopJoin "$L1 $R1 ==" | stageD
+    scanRight J | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -160,6 +160,7 @@ end;
 
 drop table T;
 drop table J;
+*/
 
 create table T (
 	 a       INTEGER,
@@ -169,7 +170,7 @@ create table T (
 ) partition by (b);
 
 print "loading nation.csv..." ;
-load T "../DATA/Joins/T.tbl" ;
+load T "../DATA/Joins/T.csv" ;
 
 create table J (
 	 a       INTEGER,
@@ -179,9 +180,9 @@ create table J (
 ) partition by (c);
 
 print "loading nation.csv..." ;
-load J "../DATA/Joins/J.tbl" ;
+load J "../DATA/Joins/J.csv" ;
 
-pipeline loopJoinPartitionable
+pipeline loopJoinBroad
 begin
   stage stageA on origin :
     start | periodic once | stageB
@@ -190,15 +191,13 @@ begin
     scan T | stageC broadcast
 
   stage stageC on all partitions :
-    scan right J | loopJoin "$L1 $R1 ==" | stageD
+    scanRight J | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
 
 end;
 
-
-*/
 
 /*============================================================================*/
 /* end                                                                        */
