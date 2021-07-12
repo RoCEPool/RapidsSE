@@ -53,8 +53,10 @@ ExprEval::ExprEval(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   m_uExprEvalColumns = 0;
+  m_uExprEvalColumnsRht = 0;
   m_nPayLoadBytes = 0;
   m_iStreamInColumns = 0;
+  m_iStreamInColumnsRht = 0;
   m_iJoinStartColumn = 0;
 
   m_bHasAgg = false;
@@ -228,6 +230,14 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
   TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect all the StreamDefLft's source columns needed for the join
+
+  eError = eCollectLeftColumns(pStreamDefRht, pTknVec);
+
+  if (eError != EC_NONE)
+    goto L_RETRUN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefRht's source columns needed for the join
@@ -475,11 +485,11 @@ eEC ExprEval::eCollectRightColumns(StreamDef* pStreamDefRht, TokenVec* pTknVec)
       }
 
       // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
+      if (!BitLib::bIsOn(m_uExprEvalColumnsRht, i_ColumnOrdinal)) {
 
         // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-        m_iStreamInColumns++;
+        BitLib::vSetOn(m_uExprEvalColumnsRht, i_ColumnOrdinal);
+        m_iStreamInColumnsRht++;
       }
     }
 
@@ -1551,8 +1561,6 @@ eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
 
       vPushLclCol(m_sUpperBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
       vCheckIsNull(m_sUpperBoundAsm, &m_xTypeStack);
-
-      m_uProjectColumn = i_ColumnOrdinal;
     }
 
     pTkn = pTknVec->pNextToken();
@@ -1762,8 +1770,8 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
       Stz *sOrdinalColumn = pTkn->szChars() + 2;
       i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
       Column* pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-      vPushLftRowCol2(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
-
+      i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+      vPushLclCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
     }
     else {
       RASSERT(pTkn->szChars()->bContains("R"_Stz));
@@ -1772,7 +1780,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
       i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
       i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
       Column* pColumn = pStreamDefRht->pGetColumn(i_ColumnOrdinal);
-      vPushLclCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+      vPushRhtCrwCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
     }
     pTkn = pTknVec->pNextToken();
   }
@@ -2904,7 +2912,7 @@ void ExprEval::vPushLftCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS 1\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
@@ -2962,13 +2970,33 @@ void ExprEval::vPushLftCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for push right column                                           */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushRhtCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumnsRht);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumnsRht);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVIXT_COL_PUSHSET_PST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+
+
+  eDM eDatumType = Column::eDatum(eColumnType);
+  pTypeStack->vPush(eDatumType);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for push left column                                           */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS 1\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
@@ -2976,6 +3004,22 @@ void ExprEval::vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
   StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_COLS_TO_LOCALS\n"_Stz);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for push left column                                           */
+/*----------------------------------------------------------------------------*/
+//void ExprEval::vPushRhtCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column) {
+//
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+//
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS 1\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVIXT_COL_PUSHSET_ADR\n"_Stz);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for push left column                                           */

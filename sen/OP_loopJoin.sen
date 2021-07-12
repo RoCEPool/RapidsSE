@@ -39,11 +39,31 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  Operand[].pipeIn
-  Operand[] DevLftIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  Counter1[] 0 == if
+    Operand[].pipeIn
+    Operand[] DevLftIxt.crwBuffer!
+  else
+    Operand[].pipeIn
+    Operand[] DevRhtIxt.crwBuffer!
+    ZK_CRWBUFFER Counter0[] executeAsmArgs
+  then
 
   PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ENDRIGHTMARKER ...                                              INIT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_EndRightMarker \handler
+
+  0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].delete
+
+  // record receipt of end right marker
+  0 to Counter1[]
 
   true
 ;
@@ -90,9 +110,14 @@
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  Counter1[] 0 == if
+    Operand[].pipeIn
+    Operand[] DevLftRow.rowBuffer!
+  else
+    Operand[].pipeIn
+    Operand[] DevRhtRow.rowBuffer!
+    ZK_ROWBUFFER Counter1[] executeAsmArgs
+  then
 
   Operand[].delete
 
@@ -118,6 +143,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STARTRIGHTMARKER ...                                            INIT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_StartRightMarker \handler
+
+  0 ZK_STARTRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].delete
+
+  // record receipt of start right marker
+  1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StreamDef \handler
@@ -126,14 +166,25 @@
 
   EC_NONE locals| eError |
 
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
+  StreamDefLft[].isNull if
+
+      // move pipein[] to StreamDefLft[]
+      Pipein[]\clear to StreamDefLft[]
+
+      true
+      exit
+    then
+
+    // received right table stream def
+
+    // move pipein[] to StreamDefRht[]
+    Pipein[]\clear to StreamDefRht[]
 
   // evaluate the expression
   ExprEval[].new
-  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].new
 
-  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateLoopJoin to eError
 
   // check for error
   eError EC_NONE == not if
@@ -155,6 +206,9 @@
 
   // set the streamDef in the DevLftRow
   StreamDefLft[]\clear DevLftRow.streamDef!
+
+  // set the streamDef in the devRightRow
+  StreamDefRht[]\clear DevRhtRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
@@ -189,13 +243,15 @@
 
   op__topology
 
-  find: loopJoin_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: loopJoin_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: loopJoin_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: loopJoin_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: loopJoin_RowBuffer    ZK_ROWBUFFER    op[].handler!
-  find: loopJoin_StartMarker  ZK_STARTMARKER  op[].handler!
-  find: loopJoin_StreamDef    ZK_STREAMDEF    op[].handler!
+  find: loopJoin_CancelMarker     ZK_CANCELMARKER     op[].handler!
+  find: loopJoin_CrwBuffer        ZK_CRWBUFFER        op[].handler!
+  find: loopJoin_EndRightMarker   ZK_ENDRIGHTMARKER   op[].handler!
+  find: loopJoin_EosMarker        ZK_EOSMARKER        op[].handler!
+  find: loopJoin_ErrorMarker      ZK_ERRORMARKER      op[].handler!
+  find: loopJoin_RowBuffer        ZK_ROWBUFFER        op[].handler!
+  find: loopJoin_StartMarker      ZK_STARTMARKER      op[].handler!
+  find: loopJoin_StartRightMarker ZK_STARTRIGHTMARKER op[].handler!
+  find: loopJoin_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop
 
