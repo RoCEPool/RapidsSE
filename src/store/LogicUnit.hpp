@@ -291,6 +291,7 @@ namespace STORE
     void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);
+    void vFailure(void);
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);

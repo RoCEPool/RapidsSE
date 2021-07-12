@@ -3,29 +3,29 @@
 /*============================================================================*/
 #pragma once
 
-#include "LogicUnit.hpp"
+#include "eRF.h"
 
 namespace STORE
 {
-  template <class CLASSNM>
+  template <class COMPONENT>
   class REG
   {
   public:
   
     LogicUnit* m_pLogicUnit; // which logic unit
     Stz*       m_szRegNm;    // register name
+    eRF        m_eRepair;    // how to repair
 
-  
-    CLASSNM*   m_pObject;    // pointer to the object
-   
+    COMPONENT* m_pComponent; // pointer to the object
+
     struct {
       
       u8 m_bUseAllowed      :  1; // this register will be used
       u8 m_bInitialised     :  1; // this register has been initialised
       u8 m_bFinalised       :  1; // this register has been finalised
       
-      u8 m_bNullOnDelete    :  1; // m_pObject must be null on delete
-      u8 m_bDeleteOnFailure :  1; // m_pObject to be deleted on failure
+      u8 m_bNullOnDelete    :  1; // m_pComponent must be null on delete
+      u8 m_bDeleteOnFailure :  1; // m_pComponent to be deleted on failure
       
       u8 m_uSpare           : 59; // spare bits
       //                      64b
@@ -36,12 +36,13 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<CLASSNM>(LogicUnit* pLogicUnit, Stz* szRegNm)
+    REG<COMPONENT>(LogicUnit* pLogicUnit, eRF eRepair, void*, Stz* szRegNm)
     {
       m_pLogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
+      m_eRepair    = eRepair;
     
-      m_pObject = nullptr;
+      m_pComponent = nullptr;
       
       m_bUseAllowed      = true;
       m_bInitialised     = true;
@@ -58,12 +59,12 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REG<CLASSNM>(void)
+    ~REG<COMPONENT>(void)
     {
       RASSERT(m_bInitialised);
       RASSERT(m_bFinalised);
     
-      RASSERT(! m_bNullOnDelete || ! m_pObject);
+      RASSERT(! m_bNullOnDelete || ! m_pComponent);
     }
 
 
@@ -73,43 +74,43 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* assignment operator =                                (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASSNM* pObject)
+    void operator = (COMPONENT* pComponent)
     {
-      if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
-        THROW("REG::operator =(pObject) : invalid pObject parameter"_Stz);
+      if (pComponent && ! AM::bInBufferPool(pComponent))
+        THROW("REG::operator =(pComponent) : invalid pComponent parameter"_Stz);
     
-      m_pObject = pObject;
+      m_pComponent = pComponent;
     }
   
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASSNM* operator -> (void)
+    COMPONENT* operator -> (void)
     {
-      if (! m_pObject)
-        THROW("REG::operator ->(void) : m_pObject member is null"_Stz);
+      if (! m_pComponent)
+        THROW("REG::operator ->(void) : m_pComponent member is null"_Stz);
    
-      return m_pObject;
+      return m_pComponent;
     }
   
     /*------------------------------------------------------------------------*/
     /* member operator *                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASSNM* operator * (void)
+    COMPONENT* operator * (void)
     {
-      if (! m_pObject)
-        THROW("REG::operator *() : m_pObject member is null"_Stz);
+      if (! m_pComponent)
+        THROW("REG::operator *() : m_pComponent member is null"_Stz);
       
-      return m_pObject;
+      return m_pComponent;
     }
     
     /*------------------------------------------------------------------------*/
     /* delete object                                                          */
     /*------------------------------------------------------------------------*/
-    bool vDeleteObject(void)
+    bool vDeleteComponent(void)
     {
-      delete m_pObject;
-      m_pObject = nullptr;
+      delete m_pComponent;
+      m_pComponent = nullptr;
     }
   
     /*------------------------------------------------------------------------*/
@@ -117,7 +118,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool bIsNotNull(void)
     {
-      if (m_pObject)
+      if (m_pComponent)
         return true;
       else
         return false;
@@ -128,7 +129,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool bIsNull(void)
     {
-      if ( ! m_pObject )
+      if ( ! m_pComponent )
         return true;
       else
         return false;
@@ -139,7 +140,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool bIsValid(void)
     {
-      if ( ! m_pObject || (m_pObject && AM::bInBufferPool(m_pObject)) )
+      if ( ! m_pComponent || (m_pComponent && AM::bInBufferPool(m_pComponent)) )
         return true;
       else
         return false;
@@ -156,14 +157,32 @@ namespace STORE
     }
   
     /*------------------------------------------------------------------------*/
-    /* call m_pObject to recover from failure                                 */
+    /* call m_pComponent to recover from failure                              */
     /*------------------------------------------------------------------------*/
-    bool vRecoverFromFailure(void)
+    bool vRepair(void)
     {
-      m_pObject->vRecoverFromFailure();
+      //m_pComponent->vRecoverFromFailure();
     
+      switch (m_eRepair) {
+          
+        case RF_NONE:
+          break;
+          
+        case RF_REPAIR_AND_DELETE:
+          break;
+          
+        case RF_REPAIR_ONLY:
+          break;
+          
+        case RF_DELETE_ONLY:
+          break;
+          
+        default:
+          break;
+      }
+
       if (m_bDeleteOnFailure) {
-        vDeleteObject();
+        vDeleteComponent();
       }
     }
 
