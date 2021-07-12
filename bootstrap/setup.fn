@@ -1286,6 +1286,7 @@ function askParams() {
   
   # Set the value for all relevant nodes
   specificNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}" "${nodeNames[@]}"
+  echo ""
 }
 
 

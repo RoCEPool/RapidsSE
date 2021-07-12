@@ -512,9 +512,14 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   # If cluster is running
   if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
     true
-    #   TODO: Start new nodes, wait for them to be ready
-    #   TODO: Wait for nodes to join the cluster
-    #   TODO: Rebalance node data
+    #   Start new nodes, wait for them to be ready and wait until
+    #   they all cross-connect
+    if ! startCluster "${ADDED_NODE_LIST[@]}" ; then
+      exit 1
+    fi
+
+    # Rebalance node data
+    localClusterRebalance
   fi
 
   # Remove the backed up cluster.config
@@ -522,13 +527,13 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
 
   echo ""
   if [ ${#ADDED_NODE_LIST[@]} -eq 1 ]; then
-    echo "Addition of ${#ADDED_NODE_LIST[@]} node to RapidsSE is complete!"
+    echo "The addition of ${#ADDED_NODE_LIST[@]} node to RapidsSE is complete!"
   else
-    echo "Addition of ${#ADDED_NODE_LIST[@]} nodes to RapidsSE is complete!"
+    echo "The addition of ${#ADDED_NODE_LIST[@]} nodes to RapidsSE is complete!"
   fi
 
 else
   # TODO: Scripted installation
-  true
+  errorExit "Scripted installation is not yet supported"
 fi
 

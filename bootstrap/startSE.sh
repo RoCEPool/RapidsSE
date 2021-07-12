@@ -62,17 +62,18 @@ loadClusterConfig
 
 if [ ${CLUSTER_OP} -eq 1 ]; then
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    remoteClusterInit
+    remoteClusterXConnect
     exit
   fi
 
+  #shellcheck disable=SC2119
   startCluster
 
 else
   loadNodeName
 
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    localClusterInit
+    localClusterXConnect
     exit
   fi
 
