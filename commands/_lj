@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 bc;
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INDEX JOIN
 // T.a = J.a
@@ -16,7 +16,7 @@ create table T (
 	 d       VARCHAR(15)
 );
 
-print "loading nation.csv..." ;
+print "loading T.csv..." ;
 load T "../DATA/Joins/T.csv" ;
 
 create table J (
@@ -27,10 +27,10 @@ create table J (
 );
 
 create index jidx on j (a);
-print "loading nation.csv..." ;
+print "loading J.csv..." ;
 load J "../DATA/Joins/J.csv" ;
 
-/*
+
 pipeline indexJoinP
 begin
   stage stageA on origin :
@@ -76,7 +76,7 @@ create table T (
 	 d       VARCHAR(15)
 ) partition by (a);
 
-print "loading nation.csv..." ;
+print "loading T.csv..." ;
 load T "../DATA/Joins/T.csv" ;
 
 create table J (
@@ -86,8 +86,8 @@ create table J (
 	 d       VARCHAR(15)
 ) partition by (a);
 
-print "loading nation.csv..." ;
-load J "../DATA/Joins/J.tbl" ;
+print "loading J.csv..." ;
+load J "../DATA/Joins/J.csv" ;
 
 pipeline loopJoinCo
 begin
@@ -105,15 +105,32 @@ begin
 
 end;
 
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | stageC
+
+  stage stageC on all partitions :
+    scanRight J | project 0 "type integer $1, type varchar $4 " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
 /*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PARTITIONABLE JOIN
 // T.a = J.a
 // PtnKey[T] = c
 // PtnKey[J] = a
 
-drop table T;
-drop table J;
+//drop table T;
+//drop table J;
 
 create table T (
 	 a       INTEGER,
@@ -135,7 +152,7 @@ create table J (
 print "loading nation.csv..." ;
 load J "../DATA/Joins/J.tbl" ;
 
-pipeline loopJoinPartitionable
+pipeline loopJoinPart
 begin
   stage stageA on origin :
     start | periodic once | stageB

@@ -39,7 +39,7 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_CRWBUFFER_AGG,
   /*    */ AM_HANDLER_CRWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_CRWBUFFER_LIMIT,
-  /*    */ AM_HANDLER_CRWLFT_CRWRHT,
+  /*    */ AM_HANDLER_CRWBUFFER_RHT,
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
@@ -62,6 +62,11 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSE_TILL_END,
   /*    */ AM_INDEX_TRAVERSE_TILL_UPPER,
   /*    */ AM_INDEX_UPPER_BOUND,
+
+  /*    */ AM_JOIN_CRWLFT_CRWRHT,
+  /*    */ AM_JOIN_CRWLFT_ROWRHT,
+  /*    */ AM_JOIN_ROWLFT_CRWRHT,
+  /*    */ AM_JOIN_ROWLFT_ROWRHT,
 
   /*    */ AM_PAYLOAD_AGG,
   /*    */ AM_PAYLOAD_END,
@@ -143,7 +148,7 @@ static Stz* aAM[]
     /*    */ "HANDLER_CRWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_CRWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_CRWBUFFER_LIMIT"_Stz,
-    /*    */ "HANDLER_CRWLFT_CRWRHT"_Stz,
+    /*    */ "HANDLER_CRWBUFFER_RHT"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
@@ -166,6 +171,11 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSE_TILL_END"_Stz,
     /*    */ "INDEX_TRAVERSE_TILL_UPPER"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
+
+    /*    */ "JOIN_CRWLFT_CRWRHT"_Stz,
+    /*    */ "JOIN_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOIN_ROWLFT_CRWRHT"_Stz,
+    /*    */ "JOIN_ROWLFT_ROWRHT"_Stz,
 
     /*    */ "PAYLOAD_AGG"_Stz,
     /*    */ "PAYLOAD_END"_Stz,
