@@ -524,7 +524,7 @@ void Grid::vRemoveNode(Node* pNode)
  * @return none
  *
  */
-void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
+void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
@@ -544,7 +544,8 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
                            pszName,
                            AM::nDegOfPar(),
                            pszAddr,
-                           iPort);
+                           iPort,
+                           szRegionNm);
 
     vPutNode(pNode); // this also incr m_nNodes;
 

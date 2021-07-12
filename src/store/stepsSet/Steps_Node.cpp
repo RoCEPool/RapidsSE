@@ -72,7 +72,8 @@ void Step::vNodeNew(void)
                          sNodeNm,
                          nDegOfPar,
                          sIpAddr,
-                         iPortNo);
+                         iPortNo,
+                         AM::szRegionName());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

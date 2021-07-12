@@ -380,10 +380,6 @@ void Step::vStreamSetAddNodeStatus(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   StreamSet* pStreamSet = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  s32 sRegionNm(AM::szRegionName());
 
   /* commented out, the old status command which is required to go to all nodes
    * for each node, it gets back a row and its status.
@@ -408,7 +404,7 @@ void Step::vStreamSetAddNodeStatus(void)
     pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       (*oNode_I)->szNodeNm(),
-                                      sRegionNm.azChar(),
+                                      (*oNode_I)->xGetHeartbeat().m_acRegionName,
                                       (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
                                       C_VARGS_END);
 

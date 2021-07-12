@@ -55,7 +55,7 @@ void Node::operator delete(void* pNodeAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
@@ -77,6 +77,8 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
 
   Heartbeat xHeartbeat;
   MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
+  strcpy(xHeartbeat.m_acRegionName, szRegionNm->azChar());
+
   m_atmHeartbeat.store(xHeartbeat,std::memory_order_release);
   //MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
 

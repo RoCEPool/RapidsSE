@@ -183,7 +183,7 @@ void vHeartInit(void) {
           // Then we need to add this node into the cluster/grid.
           if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
             AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
-                            xHeartbeat.m_iPort);
+                            xHeartbeat.m_iPort, (Stz *)xHeartbeat.m_acRegionName);
             vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
           } else {
             vTrace("Heartbeat message came from an older version of SE %ld"_Stz, xHeartbeat.m_u2Version);

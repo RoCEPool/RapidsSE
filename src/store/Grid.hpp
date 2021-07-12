@@ -47,7 +47,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort);
+    void vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);

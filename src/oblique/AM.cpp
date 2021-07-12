@@ -3089,13 +3089,13 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  * @return none
  *
  */
-void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
+void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm)
 {
   if (AM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
     // Check to make sure we don't have this node yet
     if (!pThisNode) {
-      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort);
+      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort, pszRegionNm);
     }
   }
 }

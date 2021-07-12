@@ -38,6 +38,7 @@ public:
   i4   m_iPort;              // Port number for SE
 
   i8   m_iSincePosixEpoch;   //
+  char m_acRegionName[32];   // name of shared memory region
   char m_acBuildGitHash[32]; //
   i8   m_iPid;               // Do we need this ? Why?
   bool m_bHasMetadata;       // This node has or doesn't have metadata

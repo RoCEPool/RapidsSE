@@ -79,6 +79,7 @@ void Step::vSupervisorCollectInfo(void)
   strncpy(xHeartbeat.m_acNodeName, szNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
    */
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
+  strncpy(xHeartbeat.m_acRegionName, AM::szRegionName()->azChar(), sizeof(xHeartbeat.m_acRegionName) - 1);
 
   xHeartbeat.xBaseHeartbeat.m_iSystemUsec = AM::iSystemUsec();
   xHeartbeat.xBaseHeartbeat.m_iUserUsec = AM::iUserUsec();
@@ -103,6 +104,7 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_acNodeName)
       + sizeof(xHeartbeat.m_iSeqNo)
       + sizeof(xHeartbeat.m_iSincePosixEpoch)
+      + sizeof(xHeartbeat.m_acRegionName)
       + sizeof(xHeartbeat.m_acBuildGitHash)
       + sizeof(xHeartbeat.m_iPid)
       + sizeof(xHeartbeat.m_iNodeNo)

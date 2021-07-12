@@ -1780,7 +1780,8 @@ void Engine::vCreateGridOfNodes(void)
                            szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo,
+                           AM::szRegionName());
 
     AM::pGrid()->vPutNode(pNode);
 
