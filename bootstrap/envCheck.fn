@@ -755,7 +755,10 @@ function validateInstallDirIsWritable() {
   ## can be unset. And with set -b (unbound variables) this can cause issues.
   ## Reference here:
   ## https://stackoverflow.com/questions/26925905/in-bash-test-if-associative-array-is-declared
-  if [ -v "errors[@]" ] && [ "${#errors[@]}" -gt 0 ]; then
+  ## Also note that the "-v" operator seems to work differently on CentOS 7 compared
+  ## to Ubuntu 20 when applied to arrays. So we are using the parameter substitution
+  ## when the variable is null trick below to avoid unbound variable problems with arrays.
+  if [ "${errors[*]:-x}" != "x" ] && [ "${#errors[@]}" -gt 0 ]; then
     local errMsg="Validation of the installation directory failed:"
 
     for nodeName in "${!errors[@]}"

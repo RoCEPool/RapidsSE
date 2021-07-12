@@ -1549,7 +1549,7 @@ function distributeSoftware() {
   fi
 
   # Assert that we have a valid configuration
-  if [ ! -v "nodeNames" ] || [ ${#nodeNames[@]} -eq 0 ]; then
+  if [ "${nodeNames[*]:-x}" = "x" ] || [ ${#nodeNames[@]} -eq 0 ]; then
     errorExit "No nodes have been defined to install RapidsSE onto."
   fi
 

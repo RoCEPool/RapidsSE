@@ -276,8 +276,8 @@ function startCluster() {
 
   if printClusterStatus; then
 
-    # Initialise the cluster
-    remoteClusterXConnect "${nodeNames[@]}"
+    # Wait for the cluster to cross connect
+    remoteClusterXConnect
 
     if [ "${fullClusterStart}" -eq 1 ]; then
       echo "Cluster startup complete."
@@ -616,7 +616,7 @@ function localClusterXConnect() {
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
-      errorExit "The cluster status command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      errorExit "The cluster status command timed out on RapidsSE. RapidsSE may have crashed or the appropriate ports may not have been opened in the firewall. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
 
     elif [ "${cmdExitStatus}" -ne 0 ]
     then
@@ -641,7 +641,7 @@ function localClusterXConnect() {
     while IFS='' read -r line; do nonXConnectedNodes+=("${line}"); done <<<"${nonXConnOutput}"
 
     # Did we validate that each node cross connected, or did we time out?
-    if [ ! -v "nonXConnectedNodes[@]" ] || [ "${#nonXConnectedNodes[@]}" -eq 0 ]; then
+    if [ "${nonXConnectedNodes[*]:-x}" = "x" ] || [ "${#nonXConnectedNodes[@]}" -eq 0 ]; then
       # Success. Every node is cross connected
       rm -f "${cmdOutputFile}" 2>/dev/null
       echo "Done"
