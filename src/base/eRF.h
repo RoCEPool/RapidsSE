@@ -7,7 +7,7 @@ enum eRF // repair from failure
 {
   /*  0 */ RF_NONE=0,
   
-  /*    */ RF_REPAIR_AND_DELETE,
+  /*    */ RF_REPAIR_DELETE,
   /*    */ RF_REPAIR_ONLY,
   /*    */ RF_DELETE_ONLY,
 
@@ -18,7 +18,7 @@ static Stz* aRF[]
 {
   /*  0 */ "RF_NONE"_Stz,
   
-  /*    */ "RF_REPAIR_AND_DELETE"_Stz,
+  /*    */ "RF_REPAIR_DELETE"_Stz,
   /*    */ "RF_REPAIR_ONLY"_Stz,
   /*    */ "RF_DELETE_ONLY"_Stz,
 

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eRF.h"
+
 namespace BASE
 {
   class Object : public Header
@@ -13,6 +15,7 @@ namespace BASE
     Object(eCN eClass);
   
     static bool bInspect(Object* pObject);
+    static bool bRepair(Object* pObject, eRF eRepair);
 
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);

@@ -16,9 +16,9 @@ namespace STORE
     Stz*       m_szRegNm;    // register name
     eRF        m_eRepair;    // how to repair
   
-    bool (*m_fpRepair)(COMPONENT* pComponent);
+    bool (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
-    COMPONENT* m_pComponent; // pointer to the object
+    COMPONENT* m_pComponent; // pointer to the component object
 
     struct {
       
@@ -40,7 +40,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     REG<COMPONENT>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   bool (*fpRepair)(COMPONENT* pComponent),
+                   bool (*fpRepair)(Object* pObject, eRF eRepair),
                    Stz* szRegNm)
     {
       m_pLogicUnit = pLogicUnit;
@@ -174,7 +174,7 @@ namespace STORE
         case RF_NONE:
           break;
           
-        case RF_REPAIR_AND_DELETE:
+        case RF_REPAIR_DELETE:
           break;
           
         case RF_REPAIR_ONLY:
