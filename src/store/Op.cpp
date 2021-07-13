@@ -1055,7 +1055,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_bTraceOp) {
+//  if (m_bTraceOp) {
 //    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
 //           m_sOpNm.szStz(),
 //           m_pStage->szStageNm(),
@@ -1066,7 +1066,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 //           AM::pOperandName(pOperand),
 //           pOperand);
     vOpTrace(pOperand,"vPipeToNextOp :"_Stz);
-  }
+// }
   
   RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
   
@@ -1097,7 +1097,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 
   RASSERT(pOutputQueue);
   
-  if (m_bTraceOp) {
+//  if (m_bTraceOp) {
 //    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
 //           m_sOpNm.szStz(),
 //           m_pStage->szStageNm(),
@@ -1108,7 +1108,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 //           AM::pOperandName(pOperand),
 //           pOperand);
     vOpTrace(pOperand,"vPipeToOutput :"_Stz);
-  }
+//  }
   
   pOutputQueue->vAppend(pOperand);
 }
