@@ -1274,13 +1274,6 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 void AM::vSendNode(Op* pOp, i8 i_SendNode) {
   pOp->vSendNode(i_SendNode);
 }
-bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
-bool AM::bVerboseProgress(void)  {
-  if (gxCmdLineArgs.m_xSysArgs.m_bVerbose || gxCmdLineArgs.m_xSysArgs.m_bProgress)
-    return true;
-  else
-    return false;
-}
 
 //
 void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
