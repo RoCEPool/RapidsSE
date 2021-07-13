@@ -45,6 +45,7 @@
 #include "Steps.hpp"
 
 #include "CmdLineArgs.hpp"
+#include "TagConstants.h"
 
 extern CmdLineArgs  gxCmdLineArgs;
 
@@ -138,7 +139,7 @@ void Constants::vAddConstantsArgs(void)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstantsCpp(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
   // true / flase

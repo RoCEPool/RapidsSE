@@ -1027,14 +1027,18 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerbose())
+  if (gpAttachMap->m_xSysArgs.m_bVerbose)
     return true;
   
-  if (!AM::bDeveloper())
+  if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
     return false;
 
   Job* pJob = MY::pJob();
   Op* pOp = MY::pOp();
+  
+  if (! pJob)
+    return false;
+
 
   TagSet* pJobTags = pJob->pJobTags();
   if (pJobTags) {
@@ -2292,7 +2296,7 @@ void AM::vBootCheck(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  aCN[] has CN_ENUMS\n"_Stz);
   
   bool bFoundEnum = false;
@@ -2318,7 +2322,7 @@ void AM::vBootCheck(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  gxaSizeHeap[] matches aCN[]\n"_Stz);
   
   bFoundEnum = false;
@@ -2344,7 +2348,7 @@ void AM::vBootCheck(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Heap assignment matches class size\n"_Stz);
   
   // check sizes are less than pool block size

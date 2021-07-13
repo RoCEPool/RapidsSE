@@ -57,7 +57,7 @@ AttachMap::AttachMap(void)
   
   gpAttachMap = this;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,
           sizeof(AttachMap));
@@ -243,7 +243,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
   m_xSysArgs.m_nBootNodes       = pCmdLineArgs->m_xSysArgs.m_nBootNodes;

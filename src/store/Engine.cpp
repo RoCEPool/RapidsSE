@@ -115,7 +115,7 @@ void Engine::vPreliminary(void)
   vPrintWelcome();
   
   
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n"_Stz);
     vTrace("argv[]:\n"_Stz);
     for (i8 i = 0; i < gi_argc; i++)
@@ -135,31 +135,31 @@ void Engine::vPreliminary(void)
 
   gxCmdLineArgs.vPrintStartupInfo();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("\n*\n* %lld) Internal Initialisation\n*\n"_Stz,giProgressPoint++);
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("Setting signal handlers...\n"_Stz);
   
   // Segmentation Violation
   signal(SIGSEGV, Engine::vSignalHandler);
   
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("Init H/W counters...\n"_Stz);
   HwCounters::bInit();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("Checking assumptions...\n"_Stz);
   
   BASE::vCheckAssumptions();
   STORE::vCheckAssumptions();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("Boot check...\n"_Stz);
   AM::vBootCheck();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("Sanity check...\n"_Stz);
   vSanityCheck();
   
@@ -177,7 +177,7 @@ void Engine::vPreliminary(void)
   
   BASE::vInitAllGlobals();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vInfo("\n*\n* %lld) Synthesise Names\n*\n"_Stz,giProgressPoint++);
   vCreateFileNames();
   
@@ -189,12 +189,12 @@ void Engine::vPreliminary(void)
 
   //vCheckGrid();
 
-//  if (AM::bVerboseProgress()) {
+//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
 //    vInfo("\n*\n* %lld) Attach Map Contents\n*\n"_Stz,giProgressPoint++);
 //    gpAttachMap->vPrintAttachMap();
 //  }
   
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
      vInfo("\n**\n** Preliminaries Complete \n**\n"_Stz);
   }
 }
@@ -207,7 +207,7 @@ void Engine::vRunCommandLine(void)
   
   eBO eBootOption = eDecodeCommandLine();
 
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("\n+\n+ %lld) Run Command Line\n+\n"_Stz,giProgressPoint++);
     switch (eBootOption) {
         
@@ -324,7 +324,7 @@ void Engine::vAttachRegion(void)
   // get pointers to global objects from attach map
   pAttachMap->vGetGlobals();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::szTab(1));
 }
 
@@ -387,7 +387,7 @@ void Engine::vCallBoot(void)
 
   pBootTask->vAddMunged();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   pJob->vTimerStart();
@@ -425,12 +425,12 @@ void Engine::vCallPrompt(void)
 //
 //  delete pSePrompt;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
 
   //AM::vPromptCall();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding Ignore memory leaks\n"_Stz);
   vIgnoreMemoryLeak();
 
@@ -447,7 +447,7 @@ void Engine::vCallPrompt(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallStart(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
   
   PsxThd::vMarkNonSeThread();
@@ -484,10 +484,10 @@ void Engine::vChangeDirectory(void)
   s256 sOriginal;
   s256 sCurrent;
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Change Working Directory\n*\n"_Stz,giProgressPoint++);
   
-  if (Dir::bGetCurrent(sOriginal) && AM::bVerboseProgress())
+  if (Dir::bGetCurrent(sOriginal) && AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Original working directory: %s\n"_Stz,sOriginal.szStz());
   
   // change working directory to commands dir
@@ -506,7 +506,7 @@ void Engine::vChangeDirectory(void)
     Process::vUnrecoverableError("Unable to change to command dir"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
 
-  if (Dir::bGetCurrent(sCurrent) && AM::bVerboseProgress())
+  if (Dir::bGetCurrent(sCurrent) && AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Current working directory: %s\n"_Stz,sCurrent.szStz());
 }
 
@@ -519,12 +519,12 @@ void Engine::vCheckGrid(void)
   if ( ! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
    for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
      
-     if (AM::bVerboseProgress())
+     if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
        vInfo("Checking %s %s %lld\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
@@ -535,7 +535,7 @@ void Engine::vCheckGrid(void)
        Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
                                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress);
      
-     if (AM::bVerboseProgress())
+     if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
        vInfo("Loopback %s for %s is valid\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz());
@@ -554,7 +554,7 @@ void Engine::vCheckNodes(void)
   if (! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
   if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes < 1)
@@ -584,7 +584,7 @@ void Engine::vCheckPort(void)
   if ( ! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
   iPort = gxCmdLineArgs.m_xSysArgs.m_xBootNode[gxCmdLineArgs.m_xSysArgs.m_iThisNode].m_iPortNo;
@@ -609,12 +609,12 @@ void Engine::vCheckPort(void)
 //    Process::vExitFailure();
 //  }
 //
-//  if (AM::bVerboseProgress())
+//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
 //    vInfo("Able to open port %lld\n"_Stz, iPort);
 //
 //  pSocket->bClose(oSysCall);
 //
-//  if (AM::bVerboseProgress())
+//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
 //    vInfo("Closed port %lld\n"_Stz, iPort);
 //
 //  delete pSocket;
@@ -633,7 +633,7 @@ void Engine::vClosePool(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCloseTrace(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
   gpTraceFile->vClose();
   //delete gpTraceFile;
@@ -646,7 +646,7 @@ void Engine::vCloseTrace(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCreateAttachMap(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Create Attach Map\n*\n"_Stz,giProgressPoint++);
   
   // create the attach map (which records global pointers)
@@ -676,7 +676,7 @@ void Engine::vCreateFileNames(void)
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 #endif
   
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("Trace file path: %s\n"_Stz,gpAttachMap->m_sTraceFile.szStz());
     vInfo("Log file path (csv): %s\n"_Stz,gpAttachMap->m_sLogCsvFile.szStz());
     vInfo("Log file path (text): %s\n"_Stz,gpAttachMap->m_sLogTxtFile.szStz());
@@ -864,7 +864,7 @@ void Engine::vKillPrev(void)
   if (! gxCmdLineArgs.m_xSysArgs.m_bKillPrev)
     return;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Kill Previous Occurences\n*\n"_Stz,giProgressPoint++);
   
   // an assumption is that regions will be /SE_<node>
@@ -1038,7 +1038,7 @@ void Engine::vOpenPool(void)
       return;
     }
     
-    if (AM::bVerboseProgress())
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
       vInfo("\n*\n* %lld) Create Shared Memory Region\n*\n"_Stz,giProgressPoint++);
     
     Region::vCreate(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
@@ -1052,7 +1052,7 @@ void Engine::vOpenPool(void)
                     gxCmdLineArgs.m_xSysArgs.m_bDontFree,
                     gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
     
-    if (AM::bVerboseProgress()) {
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       
       s32 sRegionSize_magn;
       MagLib::vByteMag(gxCmdLineArgs.m_xSysArgs.m_iRegionSize,3,sRegionSize_magn);
@@ -1079,7 +1079,7 @@ void Engine::vOpenPool(void)
       Process::vExitFailure();
       return;
     }
-    if (AM::bVerboseProgress())
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
                               gxCmdLineArgs.m_xSysArgs.m_bVerbose,
@@ -1095,7 +1095,7 @@ void Engine::vOpenPool(void)
       Process::vExitFailure();
       return;
     }
-    if (AM::bVerboseProgress())
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
                               gxCmdLineArgs.m_xSysArgs.m_bVerbose,
@@ -1110,7 +1110,7 @@ void Engine::vOpenPool(void)
     return;
   }
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* Attach Region\n*\n"_Stz);
   bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
                             gxCmdLineArgs.m_xSysArgs.m_bVerbose,
@@ -1151,7 +1151,7 @@ void Engine::vOpenTrace(void)
                        "SEgrid"_Stz,
                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   #endif
-  //if (AM::bVerboseProgress())
+  //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
   gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
@@ -1164,7 +1164,7 @@ void Engine::vOpenTrace(void)
     bOpened = gpTraceFile->bOpenWrite(sTracePath);
   RASSERT(bOpened);
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Opened trace file for %s: %s\n"_Stz,
           (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace) ? "append" : "write",
           sTracePath.szStz());
@@ -1197,7 +1197,7 @@ void Engine::vPostRecvFns(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintBuild(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
     
   vInfo("\n"_Stz);
@@ -1214,7 +1214,7 @@ void Engine::vPrintBuild(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintConstants(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
     
   vInfo("\n"_Stz);
@@ -1292,7 +1292,7 @@ void Engine::vPrintConstants(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintExit(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Engine exits\n"_Stz);
 }
 
@@ -1301,7 +1301,7 @@ void Engine::vPrintExit(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintFormats(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
     
   vInfo("\n"_Stz);
@@ -1356,7 +1356,7 @@ void Engine::vPrintStatus(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintMachine(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
   
   s32 sHostName;
@@ -1416,7 +1416,7 @@ void Engine::vPrintMachine(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintRLimits(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
   
   vInfo("\n"_Stz);
@@ -1479,14 +1479,14 @@ void Engine::vPrintRLimits(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintTime(void)
 {
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
   
   Now spNow;
   Now spNowUTC;
   spNowUTC.vSetNowUTC();
   
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("\n"_Stz);
     vInfo("Time:\n"_Stz);
     vInfo("  %s (local)\n"_Stz,spNow.sz());
@@ -1562,14 +1562,14 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
   
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
     
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     gpAttachMap->vPrintAttachMap();
   }
   
@@ -1595,7 +1595,7 @@ void Engine::vStartSystem(void)
   
   gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
     
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Grid and Node's\n"_Stz);
 
   vCreateGridOfNodes(); // newcode
@@ -1641,7 +1641,7 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Sessions\n"_Stz);
 
 
@@ -1653,7 +1653,7 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Partition Map\n"_Stz);
 
   gpAttachMap->m_pPtnMap =
@@ -1662,56 +1662,56 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding Expressions\n"_Stz);
   Step::vAddSteps();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding LowMemory Discard\n"_Stz);
   vLowMemoryDiscard();
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding No Memory Logging\n"_Stz);
   vNoMemoryLogging();
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding Constants\n"_Stz);
   Constants::vAddConstantsArgs();
   Constants::vAddConstantsCpp();
 
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Boot Job\n"_Stz);
   vCallBoot();
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Spawning Threads\n"_Stz);
   
   Scheduler::vScheduler_Boot();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Start\n"_Stz);
   vCallStart();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Internal Tables\n"_Stz);
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
@@ -1722,7 +1722,7 @@ void Engine::vStartSystem(void)
   s32 sVirtual_magn;
   MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
 
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
 
     vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz,giProgressPoint++);
 
@@ -1750,7 +1750,7 @@ void Engine::vStartSystem(void)
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
     
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("\n++\n++ System Started\n++\n"_Stz);
   }
 }
@@ -1817,7 +1817,7 @@ void Engine::vTestPort(i8 iPort)
     
   pSocket->bClose(oSysCall);
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Able to open and close port %lld on this machine\n"_Stz, iPort);
 
   delete pSocket;
@@ -1836,7 +1836,7 @@ void Engine::vUnlinkSystem(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vWaitStop(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
   
   // this primary thread waits for flag indicationg systems is to stop
@@ -1849,7 +1849,7 @@ void Engine::vWaitStop(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vWriteRegionName(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* Write Region Name\n*\n"_Stz);
  
   s256 sFileName;
@@ -1866,7 +1866,7 @@ void Engine::vWriteRegionName(void)
     oFile.vClose();
   }
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("REGION NAME: %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
 }
 

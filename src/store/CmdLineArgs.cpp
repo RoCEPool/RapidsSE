@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "CmdLineArgs.hpp"
+#include "TagConstants.h"
 
 extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap*  gpAttachMap;
@@ -936,7 +937,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // print startup information
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
   
   
