@@ -1011,6 +1011,22 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
 {
   _static_
   
+  if (! gpAttachMap) {
+  
+    if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
+      return true;
+    
+    TagSet* pArgTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
+    if (pArgTags) {
+      if (pArgTags->bHasName(szVBtag))
+        return true;
+    }
+
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (AM::bVerbose())
     return true;
   
