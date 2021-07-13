@@ -112,6 +112,7 @@ static Stz* C_TAG_UBOUND_TYPE     = "<uboundType>"_Stz;
 static Stz* C_TAG_LBOUND_LITERAL = "<lboundLiteral>"_Stz;
 static Stz* C_TAG_UBOUND_LITERAL = "<uboundLiteral>"_Stz;
 
+static Stz* C_VB_PIPELINESPEC = "<vb_pipelineSpec>"_Stz;
 
 /*============================================================================*/
 /* end                                                                        */
