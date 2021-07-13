@@ -152,7 +152,7 @@ void File::vInitGlobals(void)
 {
   _static_
   
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("File::vInitGlobals\n"_Stz);
   
    if (! gpOpenFiles)

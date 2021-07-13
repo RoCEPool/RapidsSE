@@ -548,7 +548,7 @@ void BASE::vTraceWithout(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vInitAllGlobals(void)
 {
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("BASE::vInitAllGlobals\n"_Stz);
   
   File::vInitGlobals();

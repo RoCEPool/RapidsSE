@@ -134,7 +134,7 @@ void Step::vSocketConnect(void)
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
   
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_SOCKET))
     vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
   
   

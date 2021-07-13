@@ -278,7 +278,7 @@ void Step::vWordDelete(void)
   Word* pRemovedWord = m_oDicStack.pRemoveWord(pWord->szWordNm());
   ASSERT(pRemovedWord);
   
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_WORD))
     m_pReturnStack->vDump(&m_oDicStack,"ReturnStack:"_Stz);
   
   delete pRemovedWord;

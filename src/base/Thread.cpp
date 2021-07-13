@@ -82,7 +82,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     Scheduler::vThread_AddDedicatedThread(pThread);
     
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_THREAD))
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
@@ -94,7 +94,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     // -- -- -- -- -- -- -- -- -- --
     
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_THREAD))
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -137,7 +137,7 @@ void* Thread::aEntryPoint_general(void* pArg)
 
     Scheduler::vThread_AddGeneralThread(pThread);
     
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_THREAD))
       vTrace("    Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -149,7 +149,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     
     // -- -- -- -- -- -- -- -- -- --
 
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_THREAD))
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -191,7 +191,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     
     pThread->m_pPsxThd->vThreadEntry();
     
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_THREAD))
       vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
