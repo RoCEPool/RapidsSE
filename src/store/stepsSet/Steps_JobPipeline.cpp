@@ -108,7 +108,7 @@ void Step::vJob_PipelineCompile(void)
       
       // clean compile, passes low memory test
       
-      if (AM::bVerbose()) {
+      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
         SP_PipelineSpec spPipelineSpec(pPipelineSpec);
         vTrace("%s\n"_Stz,spPipelineSpec.sz());
       }

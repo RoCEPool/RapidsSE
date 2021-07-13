@@ -312,6 +312,12 @@ namespace OBLIQUE
     
     };
   
+    class TRACE
+    {
+    public:
+      static bool bVerbose(Stz* szVBtag);
+    };
+
     class WORD
     {
     public:
