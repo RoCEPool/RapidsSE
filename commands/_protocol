@@ -28,7 +28,12 @@ begin
   stage stageC on origin :
     output | sink | stageA
 
-end ;
+end
+
+//<vb_op> = 1
+<vb_pipelineSpec> = 1
+
+;
 
 /*============================================================================*/
 /* end                                                                        */

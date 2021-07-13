@@ -1017,6 +1017,20 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   if (!AM::bDeveloper())
     return false;
 
+  Job* pJob = MY::pJob();
+  Op* pOp = MY::pOp();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (pJobTags) {
+    if (pJobTags->bHasName(szVBtag))
+      return true;
+  }
+  
+  TagSet* pArgTags = AM::pDbgTagSet();
+  if (pArgTags) {
+    if (pArgTags->bHasName(szVBtag))
+      return true;
+  }
 
   return false;
 }
