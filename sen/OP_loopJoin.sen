@@ -119,8 +119,6 @@
     ZK_ROWBUFFER Counter1[] executeAsmArgs
   then
 
-  Operand[].delete
-
   PotRlu[].pipeoutCompletedPtns
 
   true

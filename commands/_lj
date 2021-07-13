@@ -3,12 +3,12 @@
 /*============================================================================*/
 
 bc;
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INDEX JOIN
 // T.a = J.a
-// PtnKey[T] = c
-// PtnKey[J] = c
+// PtnKey[T] = a
+// PtnKey[J] = a
 create table T (
 	 a       INTEGER,
 	 b       INTEGER,
@@ -46,28 +46,15 @@ begin
     output | sink | stageA
 end;
 
-pipeline scanRightTest
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | stageC
-
-  stage stageC on all partitions :
-    scanRight J | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-
-end;
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CO-PARTITIONED JOIN
 // T.a = J.a
 // PtnKey[T] = a
 // PtnKey[J] = a
+
+drop table T;
+drop table J;
 
 create table T (
 	 a       INTEGER,
@@ -105,15 +92,14 @@ begin
 
 end;
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PARTITIONABLE JOIN
 // T.a = J.a
 // PtnKey[T] = c
 // PtnKey[J] = a
 
-//drop table T;
-//drop table J;
+drop table T;
+drop table J;
 
 create table T (
 	 a       INTEGER,
@@ -130,10 +116,10 @@ create table J (
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-) partition by (b);
+) partition by (a);
 
 print "loading nation.csv..." ;
-load J "../DATA/Joins/J.tbl" ;
+load J "../DATA/Joins/J.csv" ;
 
 pipeline loopJoinPart
 begin
@@ -141,7 +127,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | hash $1 | stageC hashcast
+    scan T | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
     scanRight J | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -151,7 +137,6 @@ begin
 
 end;
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST JOIN
 // T.a = J.a
@@ -160,7 +145,6 @@ end;
 
 drop table T;
 drop table J;
-*/
 
 create table T (
 	 a       INTEGER,

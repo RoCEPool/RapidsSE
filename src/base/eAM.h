@@ -10,6 +10,9 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_FILTER_END,
   /*    */ AM_CRW_FILTER_ROWS,
 
+  /*    */ AM_CRW_HASHROWS_BEGIN,
+  /*    */ AM_CRW_HASHROWS_END,
+
   /*    */ AM_CRW_INDEXJOIN_NEXT,
   /*    */ AM_CRW_INDEXJOIN_ROWS,
 
@@ -18,7 +21,6 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_JOIN_ROW,
 
   /*    */ AM_CRW_LOOPJOIN_CRW,
-  /*    */ AM_CRW_LOOPJOIN_END,
 
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
@@ -68,6 +70,8 @@ enum eAM // ASM Macros
   /*    */ AM_JOIN_ROWLFT_CRWRHT,
   /*    */ AM_JOIN_ROWLFT_ROWRHT,
 
+  /*    */ AM_LOOPJOIN_END,
+
   /*    */ AM_PAYLOAD_AGG,
   /*    */ AM_PAYLOAD_END,
   /*    */ AM_PAYLOAD_GBY,
@@ -83,8 +87,11 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_EXPR_AGG,
   /*    */ AM_ROW_EXPR_AGG_END,
 
-  /*    */ AM_ROW_FILTER_ROWS,
   /*    */ AM_ROW_FILTER_END,
+  /*    */ AM_ROW_FILTER_ROWS,
+
+  /*    */ AM_ROW_HASHROWS_BEGIN,
+  /*    */ AM_ROW_HASHROWS_END,
 
   /*    */ AM_ROW_INDEXJOIN_NEXT,
   /*    */ AM_ROW_INDEXJOIN_ROWS,
@@ -94,8 +101,8 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_JOIN_CRW,
   /*    */ AM_ROW_JOIN_ROW,
 
-  /*    */ AM_ROW_LOOPJOIN_END,
-  /*    */ AM_ROW_LOOPJOIN_ROWS,
+  /*    */ AM_ROW_LOOPJOIN_CRW,
+  /*    */ AM_ROW_LOOPJOIN_ROW,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
@@ -119,6 +126,9 @@ static Stz* aAM[]
     /*    */ "CRW_FILTER_END"_Stz,
     /*    */ "CRW_FILTER_ROWS"_Stz,
 
+    /*    */ "CRW_HASHROWS_BEGIN"_Stz,
+    /*    */ "CRW_HASHROWS_END"_Stz,
+
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
     /*    */ "CRW_INDEXJOIN_ROWS"_Stz,
 
@@ -127,7 +137,6 @@ static Stz* aAM[]
     /*    */ "CRW_JOIN_ROW"_Stz,
 
     /*    */ "CRW_LOOPJOIN_CRW"_Stz,
-    /*    */ "CRW_LOOPJOIN_END"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
@@ -177,6 +186,8 @@ static Stz* aAM[]
     /*    */ "JOIN_ROWLFT_CRWRHT"_Stz,
     /*    */ "JOIN_ROWLFT_ROWRHT"_Stz,
 
+    /*    */ "LOOPJOIN_END"_Stz,
+
     /*    */ "PAYLOAD_AGG"_Stz,
     /*    */ "PAYLOAD_END"_Stz,
     /*    */ "PAYLOAD_GBY"_Stz,
@@ -192,8 +203,11 @@ static Stz* aAM[]
     /*    */ "ROW_EXPR_AGG"_Stz,
     /*    */ "ROW_EXPR_AGG_END"_Stz,
 
-    /*    */ "ROW_FILTER_ROWS"_Stz,
     /*    */ "ROW_FILTER_END"_Stz,
+    /*    */ "ROW_FILTER_ROWS"_Stz,
+
+    /*    */ "ROW_HASHROWS_BEGIN"_Stz,
+    /*    */ "ROW_HASHROWS_END"_Stz,
 
     /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
     /*    */ "ROW_INDEXJOIN_ROWS"_Stz,
@@ -203,8 +217,9 @@ static Stz* aAM[]
     /*    */ "ROW_JOIN_ROW"_Stz,
     /*    */ "ROW_JOIN_CRW"_Stz,
 
-    /*    */ "ROW_LOOPJOIN_END"_Stz,
-    /*    */ "ROW_LOOPJOIN_ROWS"_Stz,
+    /*    */ "ROW_LOOPJOIN_CRW"_Stz,
+    /*    */ "ROW_LOOPJOIN_ROW"_Stz,
+
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
