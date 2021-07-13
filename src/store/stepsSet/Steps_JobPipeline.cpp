@@ -66,7 +66,7 @@ void Step::vJob_PipelineBegin(void)
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
     if (iThisNode == 0) {
       SP_Pipeline spPipeline(pPipeline,true);
       vTrace("%s\n"_Stz,spPipeline.sz());
@@ -76,7 +76,7 @@ void Step::vJob_PipelineBegin(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   
   pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);

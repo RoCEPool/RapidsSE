@@ -35,6 +35,8 @@
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"
 
+#include "TagConstants.h"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +134,7 @@ void Step::vSocketConnect(void)
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
   
   

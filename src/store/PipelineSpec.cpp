@@ -297,7 +297,7 @@ bool PipelineSpec::bCollectTag(void)
   }
   vTokenAccept();
 
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

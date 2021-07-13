@@ -49,7 +49,7 @@ void Step::vApiAddProcedure(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
   
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
     vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
@@ -90,7 +90,7 @@ void Step::vApiExecuteNested(void)
 //  s48K sWithTagStr;
 //  m_pDataStack->vPopStr(sWithTagStr,__func__);
 //
-//  if (AM::bVerbose()) {
+//  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
 //    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
 //    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
 //  }
@@ -140,7 +140,7 @@ void Step::vApiExecuteNested(void)
   m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet()->vDumpSet();
   pJobTagSet->vCopy(m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet());
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -181,7 +181,7 @@ void Step::vApiExecuteRequest(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
 
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
     vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
@@ -245,7 +245,7 @@ void Step::vApiExecuteRequest(void)
 
   
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -290,7 +290,7 @@ void Step::vApiSpawnDemon(void)
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
     vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
     vTrace("WithTags: %s\n"_Stz,sTagStr.szStz());
   }
@@ -331,7 +331,7 @@ void Step::vApiSpawnDemon(void)
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
   Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     pJobTagSet->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

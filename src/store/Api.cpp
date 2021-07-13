@@ -426,7 +426,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   
   ASSERT(! pSession->m_pSsnJob->pTask());
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     pSession->m_pSsnJob->pJobTags()->vDumpSet();
 
   if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {

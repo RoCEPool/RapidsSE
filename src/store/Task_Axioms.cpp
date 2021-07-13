@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "eWK.h"
+#include "TagConstants.h"
 
 extern Stz* gszaMungedText[];
 
@@ -20,7 +21,7 @@ void Task::vAddMunged(void)
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged()) {
 
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
 
     vNewInput();
@@ -40,7 +41,7 @@ void Task::vAddAxioms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("[[mainThread]] Adding axiomatic routines...\n"_Stz);
   
   vNewInput();
@@ -533,7 +534,7 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   // get string
   pInput->vReadToken();
 
-  //if (AM::bVerbose())
+  //if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
   //  vTrace("CompileConstant: %s\n"_Stz,
   //         pInput->szChars());
   

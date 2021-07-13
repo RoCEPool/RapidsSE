@@ -11,6 +11,8 @@
 #include "eAR.h"
 #include "eEV.h"
 
+#include "TagConstants.h"
+
 Atomic gixFile;
 
 OpenFiles* gpOpenFiles;
@@ -150,7 +152,7 @@ void File::vInitGlobals(void)
 {
   _static_
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("File::vInitGlobals\n"_Stz);
   
    if (! gpOpenFiles)

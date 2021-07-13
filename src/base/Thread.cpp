@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp"  //?
+#include "TagConstants.h"
 
 Atomic gixThread;
 
@@ -81,7 +82,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     Scheduler::vThread_AddDedicatedThread(pThread);
     
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
@@ -93,7 +94,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     // -- -- -- -- -- -- -- -- -- --
     
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -136,7 +137,7 @@ void* Thread::aEntryPoint_general(void* pArg)
 
     Scheduler::vThread_AddGeneralThread(pThread);
     
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("    Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -148,7 +149,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     
     // -- -- -- -- -- -- -- -- -- --
 
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
         
@@ -190,7 +191,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     
     pThread->m_pPsxThd->vThreadEntry();
     
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
       vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     

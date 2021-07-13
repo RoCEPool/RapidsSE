@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "TagConstants.h"
+
 SubSysFn __Base_SubSystem("Base"_Stz,(fpSELFFN*)BASE::vSubSystem,
                           ""_Stz,
                           "Files"_Stz,nullptr);
@@ -546,7 +548,7 @@ void BASE::vTraceWithout(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vInitAllGlobals(void)
 {
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
     vTrace("BASE::vInitAllGlobals\n"_Stz);
   
   File::vInitGlobals();
