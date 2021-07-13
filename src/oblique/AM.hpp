@@ -316,6 +316,7 @@ namespace OBLIQUE
     {
     public:
       static bool bVerbose(Stz* szVBtag);
+      static bool bVerbose(Stz* szVBtag1, Stz* szVBtag2);
     };
 
     class WORD

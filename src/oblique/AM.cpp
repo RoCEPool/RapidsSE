@@ -1035,6 +1035,22 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
+{
+  _static_
+  
+  if (AM::TRACE::bVerbose(szVBtag1))
+    return true;
+  
+  if (AM::TRACE::bVerbose(szVBtag2))
+    return true;
+
+  return false;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Word                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
