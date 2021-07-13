@@ -29,7 +29,21 @@
 void Step::vAddSteps_DevLftIxt(void)
 {
   vAddStep("DevLftIxt.indexTree!"_Stz,         &Step::vDevLftIxtIndexTreeStore);
+  vAddStep("DevLftIxt.crwBuffer@"_Stz,         &Step::vDevLftIxtCrwBufferFetch);
   vAddStep("DevLftIxt.crwBuffer!"_Stz,         &Step::vDevLftIxtCrwBufferStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevLftIxt.crwBuffer@ -- fetch crwBuffer in DevSrcRow                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDevLftIxtCrwBufferFetch(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = ( m_pJob->pLogicUnit_job() )->m_pDevLftIxt->m_pCrwBuffer;
+  m_pDataStack->vPushPtr(pCrwBuffer);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
