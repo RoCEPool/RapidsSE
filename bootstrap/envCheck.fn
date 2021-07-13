@@ -961,4 +961,244 @@ function validateLocalBash() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Tests that two hosts can communicate via TCP/IP.
+## Params:
+##  $1 - hostname of the client that is establishing the connection.
+##  $2 - hostname of the server that is listening for the connection and whose
+##       firewall we are testing for.
+##  $3 - TCP/IP port number to use.
+## Returns: a 0 exit code if the two hostnames can communicate, or a non-zero
+##          exit code if there is a communication problem.
+
+function checkFirewallTcp() {
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+
+  local client="$1"
+  local server="$2"
+  local port="$3"
+
+  # Spawn a command to test that the given TCP/IP port is not currently being
+  # used on the server.
+  local -a cmdServerSocketInUse=()
+  cmdServerSocketInUse+=( "ssh"
+                          "-q" "${server}"
+                          "nc" "-z" "localhost" "${port}"
+                          "&>/dev/null" )
+
+  debugPrint "About to execute the following command to check if TCP port ${port} is in use on host ${server}:"
+  debugPrint "${cmdServerSocketInUse[*]}"
+
+  if "${cmdServerSocketInUse[@]}" ; then
+    errorExit "TCP port ${port} is already in use on host ${server}."
+  fi
+
+  # Spawn the server in the background.
+  local -a cmdServerTask=()
+  local cmdServerPid
+  cmdServerTask+=( "ssh"
+                   "-t"
+                   "-t"
+                   "-q" "${server}"
+                   "/bin/bash" "-O" "huponexit" "-c"
+                   "'nc -l ${port} &>/dev/null'" )
+
+  # Note that in the above command we need to run it in a bash shell with -O huponexit
+  # and two -t commands for pseudo-terminals.
+  # This way when we kill the local ssh process with HUP signal (kill -1) then this HUP
+  # will be propagated to the remote bash process that is running the netcat server,
+  # and that remote bash process will also be terminated.
+  # Reference: https://unix.stackexchange.com/questions/103699/kill-process-spawned-by-ssh-when-ssh-dies
+
+  debugPrint "About to execute the following command to start a TCP netcat server on host ${server}:${port} :"
+  debugPrint "${cmdServerTask[*]}"
+
+  "${cmdServerTask[@]}" &
+  cmdServerPid="$!"
+
+  # Give the server a little bit of time to load.
+  sleep 1
+
+  # Spawn a client to try to connect to the server.
+  local -a cmdClientTask=()
+  local clientResult
+  cmdClientTask+=( "ssh"
+                   "-q" "${client}"
+                   "nc" "-z" "${server}" "${port}" )
+
+  debugPrint "About to execute the following command to start a netcat client on TCP host ${client}:${port} :"
+  debugPrint "${cmdClientTask[*]}"
+
+  # Run the client and get its exit code
+  "${cmdClientTask[@]}"
+  clientResult="$?"
+
+  # Kill the server
+  (kill -1 "${cmdServerPid}" || true) &>/dev/null
+
+  # Return the appropriate exit code
+  if [ "${clientResult}" -ne 0 ] ; then
+    echo "exit status is ${clientResult}"
+    errorExit "TCP port ${port} may be blocked on on host ${server}."
+  fi
+
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Tests that two hosts can communicate via UDP/IP.
+## Params:
+##  $1 - hostname of the client that is establishing the connection.
+##  $2 - hostname of the server that is listening for the connection and whose
+##       firewall we are testing for.
+##  $3 - UDP/IP port number to use.
+## Returns: a 0 exit code if the two hostnames can communicate, or a non-zero
+##          exit code if there is a communication problem.
+
+function checkFirewallUdp() {
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+
+  local client="$1"
+  local server="$2"
+  local port="$3"
+
+  # Spawn a command to check if there are any applications currently listening on
+  # that given UDP port on the server. If so, we cannot reliably check because
+  # unicast messages may not be received by the correct receiver, and broadcast
+  # messages are not possible with all versions of netcat (particularly on CentOS 7).
+  #
+  # If we get any lines printed from this command then it means that the socket
+  # is in use.
+  local -a cmdServerSocketInUse=()
+  cmdServerSocketInUse+=( "ssh"
+                          "-q" "${server}"
+                          "ss" "-lunH" "'( sport = ${port} )'" )
+
+  debugPrint "About to execute the following command to check if UDP port ${port} is in use on host ${server}:"
+  debugPrint "${cmdServerSocketInUse[*]}"
+
+  local responseServerSocketInUse
+  responseServerSocketInUse="$("${cmdServerSocketInUse[@]}")"
+
+  if [ "${responseServerSocketInUse:-x}" != "x" ]; then
+    errorExit "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used."
+  fi
+
+  debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
+
+
+
+  # Generate a string that will be send between client and server
+  local udpMessage="checkFirewallUdp:${server}:${port}:checkFirewallUdp"
+
+
+  # Create a temporary file on the server for saving data that is read off the socket
+  local -a cmdServerMakeTemp=()
+  cmdServerMakeTemp=( "ssh"
+                      "-q" "${server}"
+                      "mktemp" )
+
+  local responseServerMakeTemp
+  responseServerMakeTemp="$("${cmdServerMakeTemp[@]}")"
+
+  debugPrint "Temporary directory on the server for response data is ${server}:${responseServerMakeTemp}"
+
+
+  # Spawn the server in the background.
+  local -a cmdServerTask=()
+  local cmdServerPid
+  cmdServerTask=( "ssh"
+                  "-t"
+                  "-t"
+                  "-q" "${server}"
+                  "/bin/bash" "-O" "huponexit" "-c"
+                  "'nc -ul ${port} > ${responseServerMakeTemp}'" )
+
+  # Note that in the above command we need to run it in a bash shell with -O huponexit
+  # and two -t commands for pseudo-terminals.
+  # This way when we kill the local ssh process with HUP signal (kill -1) then this HUP
+  # will be propagated to the remote bash process that is running the netcat server,
+  # and that remote bash process will also be terminated.
+  # Reference: https://unix.stackexchange.com/questions/103699/kill-process-spawned-by-ssh-when-ssh-dies
+
+  debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
+  debugPrint "${cmdServerTask[*]}"
+
+  "${cmdServerTask[@]}" &
+  cmdServerPid="$!"
+
+  # Give the server a little bit of time to load.
+  sleep 1
+
+  # Spawn a client to try to send a message to the server.
+  # Run it in the background and collect it's pid.
+  # The message is sent multiple times with small gaps in between in case a packet gets dropped.
+
+  local -a cmdClientTask=()
+  local cmdClientPid
+  cmdClientTask=( "ssh"
+                  "-t"
+                  "-t"
+                  "-q" "${client}"
+                  "/bin/bash" "-O" "huponexit" "-c"
+                  "'echo ${udpMessage} | nc -u ${server} ${port}'")
+
+  debugPrint "About to execute the following command to start a UDP netcat client on host ${client} :"
+  debugPrint "${cmdClientTask[*]}"
+
+  "${cmdClientTask[@]}" &
+  cmdClientPid="$!"
+
+  # Give the client a little bit of time to send the messages
+  sleep 1
+
+  # Now kill the client. Some versions of netcat (*cough* CentOS 7) will return after sending
+  # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
+  # command line option to exit on stdin EOF, so let's just try to kill them anyway.
+  (kill -1 "${cmdClientPid}" || true) &>/dev/null
+
+  # Check what the server read
+  local -a cmdServerReadData=()
+  cmdServerReadData=( "ssh"
+                      "-q" "${server}"
+                      "cat" "${responseServerMakeTemp}" "2>/dev/null" )
+
+  debugPrint "About to execute the following command to read data from server host ${server} :"
+  debugPrint "${cmdServerReadData[*]}"
+
+  local responseServerReadData
+  responseServerReadData="$("${cmdServerReadData[@]}")"
+
+  local result=0;
+
+  if [ "${responseServerReadData:-x}" != "x" ]; then
+    while read -r line || [ -n "${line}" ]; do
+      debugPrint "Read line: ${line}"
+      if [[ "${line}" =~ ${udpMessage} ]]; then
+        result=1
+        break
+      fi
+    done <<< "${responseServerReadData}"
+  fi
+
+  # Kill the server
+  (kill -1 "${cmdServerPid}" || true) &>/dev/null
+
+  # Remove the temporary file
+  local -a cmdServerRemoveTemp=()
+  cmdServerRemoveTemp=( "ssh"
+                      "-q" "${server}"
+                      "rm" "-f" "${responseServerMakeTemp}" "&>/dev/null" )
+
+  "${cmdServerRemoveTemp[@]}" || true
+
+
+  # Return the result
+  [ "${result}" -eq 1 ]
+  return
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
