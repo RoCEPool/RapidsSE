@@ -40,12 +40,15 @@
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Counter1[] 0 == if
-    Operand[].pipeIn
-    Operand[] DevLftIxt.crwBuffer!
+    PipeIn[]\clear DevLftIxt.crwBuffer!
   else
-    Operand[].pipeIn
+    Operand[].pipein
     Operand[] DevRhtIxt.crwBuffer!
     ZK_CRWBUFFER Counter0[] executeAsmArgs
+
+    // delete the right rowbuffer
+    Operand[].delete
+    nullptr DevRhtIxt.crwBuffer!
   then
 
   PotRlu[].pipeoutCompletedPtns
@@ -61,6 +64,18 @@
   0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
+
+  // delete the left buffer
+  DevLftIxt.crwBuffer@ to Operand[]
+  Operand[].isNull not if
+    Operand[].delete
+    nullptr DevLftIxt.crwBuffer!
+  else
+    DevLftRow.rowBuffer@ to Operand[]
+    Operand[].isNull not assert
+    Operand[].delete
+    nullptr DevLftRow.rowBuffer!
+  then
 
   // record receipt of end right marker
   0 to Counter1[]
@@ -117,6 +132,10 @@
     Operand[].pipeIn
     Operand[] DevRhtRow.rowBuffer!
     ZK_ROWBUFFER Counter1[] executeAsmArgs
+
+    // delete the right rowbuffer
+    Operand[].delete
+    nullptr DevRhtRow.rowBuffer!
   then
 
   PotRlu[].pipeoutCompletedPtns
@@ -230,7 +249,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* filter request                                                       SPAWN */
+/* loopJoin request                                                     SPAWN */
 /*----------------------------------------------------------------------------*/
 : loopJoin_req \operator
 

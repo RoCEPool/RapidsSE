@@ -201,6 +201,7 @@ public:
   void vDevLftRowDeleteEachRowBuffer(void);
   void vDevLftRowRowStore(void);
   void vDevLftRowEachRowBufferStore(void);
+  void vDevLftRowRowBufferFetch(void);
   void vDevLftRowRowBufferStore(void);
   void vDevLftRowCrwBufferStore(void);
 
@@ -209,6 +210,7 @@ public:
   void vDevRhtRowStreamDefStore(void);
 
   // devLftIxt
+  void vDevLftIxtCrwBufferFetch(void);
   void vDevLftIxtCrwBufferStore(void);
   void vDevLftIxtIndexTreeStore(void);
 
