@@ -206,12 +206,12 @@ void Op::vAckJob(void)
     SP_Op spOp;
 
     vTrace("%s "
-           "%18s : %s pipelineJob=%p\n"_Stz
+           "%18s : %s %p\n"_Stz
            
            ,spOp.szLeading(this)
            
            ,"vAckJob"
-           ,"acking pipeline job"
+           ,"acking pipelineJob="
            ,m_pJob
            );
   }
@@ -931,7 +931,7 @@ TagSet* Op::pOpTagSet(void)
 /*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
+void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -945,11 +945,11 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
   SP_Op spOp;
   
   vTrace("%s "
-         "%18s %-15s %p %s\n"_Stz
+         "%18s : %-15s %p %s\n"_Stz
          
          ,spOp.szLeading(this)
          
-         ,szFunActNm
+         ,szFunNm
          ,AM::pOperandName(pOperand)
          ,pOperand
          ,szSupplemental
@@ -1118,7 +1118,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 //           "vPipeOut :"_Stz,
 //           AM::pOperandName(pOperand),
 //           pOperand);
-    vOpTrace(pOperand,"vPipeToNextOp :"_Stz);
+  vOpTrace(pOperand,(Stz*)__func__);//"vPipeToNextOp :"_Stz);
 // }
   
   RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
@@ -1160,7 +1160,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 //           "vPipeToOutput :"_Stz,
 //           AM::pOperandName(pOperand),
 //           pOperand);
-    vOpTrace(pOperand,"vPipeToOutput :"_Stz);
+    vOpTrace(pOperand,(Stz*)__func__);
 //  }
   
   pOutputQueue->vAppend(pOperand);
@@ -1182,7 +1182,7 @@ Operand* Op::pPopLeft(void)
   
   if (pOperand) {
     vDropTaskLock();
-    vOpTrace(pOperand,"pPopLeft :"_Stz);
+    vOpTrace(pOperand,(Stz*)__func__);
     AM::vOperandsDec();
     return pOperand;
   }
@@ -1243,7 +1243,7 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
-    vOpTrace(pOperand,"pPopOoOLeft :"_Stz);
+    vOpTrace(pOperand,(Stz*)__func__);
     return pOperand;
   }
   else {

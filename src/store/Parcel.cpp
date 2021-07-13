@@ -321,7 +321,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   
   sSupplemental.vSprint("%s %s"_Stz,pDstNode->szNodeNm(),aXK[m_eSendKind]);
   
-  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,sSupplemental);
+  pSrcOp->vOpTrace(this,(Stz*)__func__,sSupplemental);
 }
 
 /*----------------------------------------------------------------------------*/
