@@ -322,6 +322,7 @@ namespace STORE
     eEC eGenerateAggregate(ExprEval* pExprEval);
     eEC eGenerateFilter(ExprEval* pExprEval);
     eEC eGenerateGroupBy(ExprEval* pExprEval);
+    eEC eGenerateHash(ExprEval* pExprEval);
     eEC eGenerateIndexJoin(ExprEval* pExprEval);
     eEC eGenerateIndexScan(ExprEval* pExprEval);
     eEC eGenerateLimit(i8 iLimit);

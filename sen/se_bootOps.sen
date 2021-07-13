@@ -80,6 +80,8 @@ assert::stack_0
  
 "h" .verbose
 
+  "OP_hash.sen"                include
+
 "i" .verbose
 
   "OP_indexJoin.sen"            include

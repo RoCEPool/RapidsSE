@@ -898,6 +898,7 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenHash(void);
   void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);

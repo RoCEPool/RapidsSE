@@ -2912,8 +2912,8 @@ void ExprEval::vPushLftCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumns);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumns);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_LFT\n"_Stz);
@@ -2976,8 +2976,8 @@ void ExprEval::vPushRhtCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumnsRht);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumnsRht);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumnsRht);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumnsRht);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
@@ -2996,8 +2996,8 @@ void ExprEval::vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_uExprEvalColumns);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumns);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_LFT\n"_Stz);

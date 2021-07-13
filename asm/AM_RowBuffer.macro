@@ -456,7 +456,6 @@ macro AM_ROW_LOOPJOIN_ROWS
 
 endMacro
 
-
 //----------------------------------------------------------------------------//
 // macro AM_ROW_LOOPJOIN_END                                                  //
 //----------------------------------------------------------------------------//
@@ -494,6 +493,35 @@ macro AM_ROW_JOIN_ENT
   // inflate right row into dst row
   EO_PUSH_DEVROW_DST
   EO_PUSH_DEVROW_RHT
+  EO_PUSH_DEVIXT_RHT
+  EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
+  EO_DEVIXT_COLS_TO_ROW_OFS
+
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_JOIN_CRW                                                     //
+//----------------------------------------------------------------------------//
+macro AM_ROW_JOIN_CRW
+  // ROW_JOIN_CRW
+  Label ROW_JOIN_CRW
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVIXT_COLS_TO_ROW
+
+  // inflate right row into dst row
+  EO_PUSH_DEVROW_DST
   EO_PUSH_DEVIXT_RHT
   EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
   EO_DEVIXT_COLS_TO_ROW_OFS
