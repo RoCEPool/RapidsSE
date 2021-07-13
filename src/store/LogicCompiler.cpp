@@ -258,7 +258,7 @@ void LogicCompiler::vExtract(void)
 {
   _static_
     
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
     vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
   
   LocalFile oFile;
@@ -272,7 +272,7 @@ void LogicCompiler::vExtract(void)
   while (oFile.bNextLiteTok(sTok)) {
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
-      if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+      if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
         vTrace("Found +ExtractBegin\n"_Stz);
       while (bExtractAll(&oFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
         {;}
@@ -280,7 +280,7 @@ void LogicCompiler::vExtract(void)
   }
   
   
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
+  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER)) {
     vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
     for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++) {
       vTrace("Fragment:: %s\n%s\n"_Stz,aEO[i_EO],gszaEoFragments[i_EO]);
@@ -317,7 +317,7 @@ void LogicCompiler::vExtractAsm(void)
 {
   _static_
 
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
     vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
 
   LocalFile oFile;
@@ -326,7 +326,7 @@ void LogicCompiler::vExtractAsm(void)
   //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
   for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
 
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
       vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
     bool b = oFile.bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
     RASSERT(b);
@@ -340,7 +340,7 @@ void LogicCompiler::vExtractAsm(void)
     oFile.vClose();
   }
 
-   if (AM::TRACE::bVerboseFeature(C_VB_BOOT)) {
+   if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER)) {
      for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
        vTrace("Macro[%lld]:: %s\n%s\n"_Stz, i_AM, aAM[i_AM], gszaAmMacros[i_AM]);
     }
@@ -364,7 +364,7 @@ void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* start
   if (startMarker->bSame("case"_Stz)) {
     i8 i_EO = eFindEO(sTok);
 
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
       vTrace("Fragment %s [%lld]\n"_Stz, sTok.szStz(), i_EO);
 
     gszaEoFragments[i_EO] = (Stz*)*aazCrs;
@@ -373,7 +373,7 @@ void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* start
     RASSERT(startMarker->bSame("macro"_Stz));
     i_AM = eFindAM(sTok);
 
-    if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+    if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
       vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
 
     gszaAmMacros[i_AM] = (Stz *) *aazCrs;
@@ -390,7 +390,7 @@ void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* start
 
   StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\0');
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
     if (i_AM != C_UNKNOWN)
     vTrace("-- %s\n"_Stz, gszaAmMacros[i_AM]);
 }

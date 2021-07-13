@@ -565,7 +565,7 @@ void Engine::vCheckNodes(void)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  if (AM::TRACE::bVerboseFeature(C_VB_BOOT))
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("This is node %lld of %lld nodes\n"_Stz,
           gxCmdLineArgs.m_xSysArgs.m_iThisNode,
           gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
