@@ -50,7 +50,27 @@ SP_Op::~SP_Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint pipeline                                                            */
+/* sprint leading portion                                                     */
+/*----------------------------------------------------------------------------*/
+void SP_Op::vLeading(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vInit();
+    
+  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz
+        
+        ,pOp->szOpNm()
+        ,pOp->pStage()->szStageNm()
+        ,pOp->iNode()
+        ,pOp->tPtnNo()
+        ,pOp->pPipelineJob()
+
+        );
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint op                                                                  */
 /*----------------------------------------------------------------------------*/
 void SP_Op::vOp(Op* pOp, bool bDescend)
 {
@@ -102,6 +122,18 @@ Stz* SP_Op::sz(Op* pOp)
   _precondition_(_MAGIC_,_FOOTER_);
 
   vOp(pOp);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Vch and return Stz* to result                                       */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szLeading(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vLeading(pOp);
   
   return (Stz*) &m_caResult[0];
 }

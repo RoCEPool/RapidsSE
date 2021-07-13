@@ -915,19 +915,47 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
     return;
   
   //if (m_bTraceOp) {
-  if (AM::TRACE::bVerbose(C_VB_OP)) {
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) %18s %-15s %p %s\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           iNode(),
-           tPtnNo(),
-           pPipelineJob(),
-           szFunActNm,
-           AM::pOperandName(pOperand),
-           pOperand,
-           szSupplemental);
-  }
+  if (! AM::TRACE::bVerbose(C_VB_OP))
+    return;
+  
+  SP_Op spOp;
+  
+  vTrace("%s "
+         "%18s %-15s %p %s\n"_Stz,
+         
+         spOp.szLeading(this),
+         
+         szFunActNm,
+         AM::pOperandName(pOperand),
+         pOperand,
+         szSupplemental);
 }
+/*----------------------------------------------------------------------------*/
+//void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  if (! pOperand)
+//    return;
+//
+//  //if (m_bTraceOp) {
+//  if (! AM::TRACE::bVerbose(C_VB_OP))
+//    return;
+//
+//  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
+//         "%18s %-15s %p %s\n"_Stz,
+//
+//         m_sOpNm.szStz(),
+//         m_pStage->szStageNm(),
+//         iNode(),
+//         tPtnNo(),
+//         pPipelineJob(),
+//
+//         szFunActNm,
+//         AM::pOperandName(pOperand),
+//         pOperand,
+//         szSupplemental);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get next op                                                                */

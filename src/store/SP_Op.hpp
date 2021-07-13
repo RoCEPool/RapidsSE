@@ -17,11 +17,14 @@ namespace STORE
     SP_Op(Op* pOp, bool bDescend=false);
    ~SP_Op(void) noexcept(false);
 
+    void vLeading(Op* pOp);
     void vOp(Op* pOp, bool bDescend=false);
-  
+
     Stz* sz(void);
     Stz* sz(Op* pOp);
   
+    Stz* szLeading(Op* pOp);
+
     Footer* aFooter(void);
   };
 }
