@@ -327,12 +327,12 @@ macro AM_CRW_PROJECT_END
   EO_RETURN
 endMacro
 
-macro AM_CRW_FILTER_ROWS
+macro AM_CRW_FILTER_BEGIN
 //----------------------------------------------------------------------------//
-// macro AM_CRW_FILTER_ROWS                                                   //
+// macro AM_CRW_FILTER_BEGIN                                                  //
 //----------------------------------------------------------------------------//
-  // CRW_FILTER_ROWS
-  Label CRW_FILTER_ROWS
+  // CRW_FILTER_BEGIN
+  Label CRW_FILTER_BEGIN
 
   EO_INTEGER <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_JMP_FALSE CRW_FILTER
@@ -404,18 +404,13 @@ macro AM_CRW_HASHROWS_END
   EO_RETURN
 endMacro
 
-macro AM_CRW_INDEXJOIN_ROWS
+macro AM_CRW_INDEXJOIN_BEGIN
 //----------------------------------------------------------------------------//
-// macro AM_CRW_INDEXJOIN_ROWS                                                 //
+// macro AM_CRW_INDEXJOIN_BEGIN                                               //
 //----------------------------------------------------------------------------//
-  // CRW_INDEXJOIN_ROWS
-  Label CRW_INDEXJOIN_ROWS
+  // CRW_INDEXJOIN_BEGIN
+  Label CRW_INDEXJOIN_BEGIN
 
-  // left row
-  //EO_PUSH_DEVIXT_LFT
-  //EO_DEVIXT_PUSHCOLI <projectSrcColumn>
-
-  Label CRW_INDEXJOIN
 endMacro
 
 macro AM_CRW_INDEXJOIN_NEXT

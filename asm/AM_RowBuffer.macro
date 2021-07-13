@@ -376,12 +376,12 @@ macro AM_ROW_PROJECT_END
   EO_RETURN
 endMacro
 
-macro AM_ROW_FILTER_ROWS
+macro AM_ROW_FILTER_BEGIN
 //----------------------------------------------------------------------------//
-// macro AM_ROW_FILTER_ROWS                                                   //
+// macro AM_ROW_FILTER_BEGIN                                                  //
 //----------------------------------------------------------------------------//
-  // ROW_FILTER_ROWS
-  Label ROW_FILTER_ROWS
+  // ROW_FILTER_BEGIN
+  Label ROW_FILTER_BEGIN
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
@@ -401,12 +401,12 @@ macro AM_ROW_FILTER_END
   EO_RETURN
 endMacro
 
-macro AM_ROW_INDEXJOIN_ROWS
+macro AM_ROW_INDEXJOIN_BEGIN
 //----------------------------------------------------------------------------//
-// macro AM_ROW_INDEXJOIN_ROWS                                                 //
+// macro AM_ROW_INDEXJOIN_BEGIN                                               //
 //----------------------------------------------------------------------------//
-  // ROW_INDEXJOIN_ROWS
-  Label ROW_INDEXJOIN_ROWS
+  // ROW_INDEXJOIN_BEGIN
+  Label ROW_INDEXJOIN_BEGIN
 
   // left row
   //EO_PUSH_DEVIXT_LFT

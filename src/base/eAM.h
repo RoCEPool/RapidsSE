@@ -7,14 +7,14 @@ enum eAM // ASM Macros
 {
   /*  0 */ AM_NONE=0,
 
+  /*    */ AM_CRW_FILTER_BEGIN,
   /*    */ AM_CRW_FILTER_END,
-  /*    */ AM_CRW_FILTER_ROWS,
 
   /*    */ AM_CRW_HASHROWS_BEGIN,
   /*    */ AM_CRW_HASHROWS_END,
 
+  /*    */ AM_CRW_INDEXJOIN_BEGIN,
   /*    */ AM_CRW_INDEXJOIN_NEXT,
-  /*    */ AM_CRW_INDEXJOIN_ROWS,
 
   /*    */ AM_CRW_JOIN_CRW,
   /*    */ AM_CRW_JOIN_ENT,
@@ -87,14 +87,14 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_EXPR_AGG,
   /*    */ AM_ROW_EXPR_AGG_END,
 
+  /*    */ AM_ROW_FILTER_BEGIN,
   /*    */ AM_ROW_FILTER_END,
-  /*    */ AM_ROW_FILTER_ROWS,
 
   /*    */ AM_ROW_HASHROWS_BEGIN,
   /*    */ AM_ROW_HASHROWS_END,
 
   /*    */ AM_ROW_INDEXJOIN_NEXT,
-  /*    */ AM_ROW_INDEXJOIN_ROWS,
+  /*    */ AM_ROW_INDEXJOIN_BEGIN,
 
   /*    */ AM_ROW_JOIN_ENT,
 
@@ -123,14 +123,14 @@ static Stz* aAM[]
 {
     /*  0 */ "NONE"_Stz,
 
+    /*    */ "CRW_FILTER_BEGIN"_Stz,
     /*    */ "CRW_FILTER_END"_Stz,
-    /*    */ "CRW_FILTER_ROWS"_Stz,
 
     /*    */ "CRW_HASHROWS_BEGIN"_Stz,
     /*    */ "CRW_HASHROWS_END"_Stz,
 
+    /*    */ "CRW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
-    /*    */ "CRW_INDEXJOIN_ROWS"_Stz,
 
     /*    */ "CRW_JOIN_CRW"_Stz,
     /*    */ "CRW_JOIN_ENT"_Stz,
@@ -203,14 +203,14 @@ static Stz* aAM[]
     /*    */ "ROW_EXPR_AGG"_Stz,
     /*    */ "ROW_EXPR_AGG_END"_Stz,
 
+    /*    */ "ROW_FILTER_BEGIN"_Stz,
     /*    */ "ROW_FILTER_END"_Stz,
-    /*    */ "ROW_FILTER_ROWS"_Stz,
 
     /*    */ "ROW_HASHROWS_BEGIN"_Stz,
     /*    */ "ROW_HASHROWS_END"_Stz,
 
+    /*    */ "ROW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
-    /*    */ "ROW_INDEXJOIN_ROWS"_Stz,
 
     /*    */ "ROW_JOIN_ENT"_Stz,
 
