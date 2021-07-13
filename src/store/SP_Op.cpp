@@ -127,7 +127,7 @@ Stz* SP_Op::sz(Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint Vch and return Stz* to result                                       */
+/* sprint leading portion of an op trace                                      */
 /*----------------------------------------------------------------------------*/
 Stz* SP_Op::szLeading(Op* pOp)
 {

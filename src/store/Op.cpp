@@ -201,15 +201,39 @@ void Op::vAckJob(void)
   
   Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
-  if (m_bTraceOp)
-    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-           AM::JOB::szJobNm(m_pJob),
-           m_pStage->szStageNm(),
-           iNode(),
-           tPtnNo());
+  if (m_bTraceOp) {
+    
+    SP_Op spOp;
+
+    vTrace("%s "
+           "%18s : %s pipelineJob=%p\n"_Stz
+           
+           ,spOp.szLeading(this)
+           
+           ,"vAckJob"
+           ,"acking pipeline job"
+           ,m_pJob
+           );
+  }
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
+/*----------------------------------------------------------------------------*/
+//void Op::vAckJob(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
+//
+//  if (m_bTraceOp)
+//    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+//           AM::JOB::szJobNm(m_pJob),
+//           m_pStage->szStageNm(),
+//           iNode(),
+//           tPtnNo());
+//
+//  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get ack job on end marker                                                  */
@@ -921,14 +945,15 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
   SP_Op spOp;
   
   vTrace("%s "
-         "%18s %-15s %p %s\n"_Stz,
+         "%18s %-15s %p %s\n"_Stz
          
-         spOp.szLeading(this),
+         ,spOp.szLeading(this)
          
-         szFunActNm,
-         AM::pOperandName(pOperand),
-         pOperand,
-         szSupplemental);
+         ,szFunActNm
+         ,AM::pOperandName(pOperand)
+         ,pOperand
+         ,szSupplemental
+         );
 }
 /*----------------------------------------------------------------------------*/
 //void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
