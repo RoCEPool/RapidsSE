@@ -205,6 +205,13 @@ void Api::vExecuteJob(Session* pSession)
     if (! pSession->bHasCascade())
       return;
   
+    if (AM::TRACE::bVerbose(C_VB_API)) {
+      vTrace("<vb_api>:: cascading: \n"
+             "%s\n"
+             "end <vb_api>\n"_Stz
+             ,pSession->m_sCascade.azChar());
+    }
+    
     pJob->vResetForReuse(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
