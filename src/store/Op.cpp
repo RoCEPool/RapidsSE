@@ -85,7 +85,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   Job* pPipelineJob = pStream->pPipeline()->pPipelineJob();
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
-  if (AM::TRACE::bVerbose(C_VB_BOOT) || pJobTags->bHasName(C_TAG_TRACEOP)) {
+  if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_OP) ||
+      pJobTags->bHasName(C_TAG_TRACEOP)) {
     m_bTraceOp = true;
   }
   
