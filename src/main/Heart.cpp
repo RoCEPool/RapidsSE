@@ -90,8 +90,13 @@ void vHeartInit(void) {
 
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
-      if (iCnt++ <= 1) // debug only: print twice
+      if (iCnt++ <= 1) { // debug only: a few prints
         vTrace("Node: %s sent HB\n"_Stz, xHeartbeat.m_acNodeName);
+        // faulty injected message
+        //u2 uVal = AM::iVersionNumber() ;
+        //memcpy(&azHeartbeat[8], (char *) &uVal, sizeof(AM::iVersionNumber()));
+        //pSender->iSend((char *) azHeartbeat, sizeof(azHeartbeat) / 2);
+      }
     }
   }
 
@@ -132,7 +137,7 @@ void vHeartInit(void) {
       // recalculate checksum and compare
       CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
 
-      //if (ChecksumValue.uGetFletcher16() == iSaveChk) {
+      if (ChecksumValue.uGetFletcher16() == iSaveChk) {
         xHeartbeat.m_iChecksum = iSaveChk;
         if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
@@ -143,9 +148,9 @@ void vHeartInit(void) {
                    iSaveChk);
           }
         }
-      //} else {
-      //  vTrace("Checksum is not equal, skip this heartbeat packet\n"_Stz);
-      //}
+      } else {
+        vTrace("Invalid Heartbeat message, checksum is not equal, skip this message.\n"_Stz);
+      }
     }
   }
 }
@@ -186,7 +191,7 @@ void vHeartInit(void) {
                             xHeartbeat.m_iPort, (Stz *)xHeartbeat.m_acRegionName);
             vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
           } else {
-            vTrace("Heartbeat message came from an older version of SE %ld"_Stz, xHeartbeat.m_u2Version);
+            vTrace("Invalid Heartbeat message version (%ld) is rejected. \n"_Stz, xHeartbeat.m_u2Version);
           }
         }
       }
