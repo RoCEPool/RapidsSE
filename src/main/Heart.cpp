@@ -90,12 +90,12 @@ void vHeartInit(void) {
 
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
-      if (iCnt++ <= 1) { // debug only: a few prints
+      if (iCnt++ == 0) { // debug only: a few prints
         vTrace("Node: %s sent HB\n"_Stz, xHeartbeat.m_acNodeName);
         // faulty injected message
         //u2 uVal = AM::iVersionNumber() ;
         //memcpy(&azHeartbeat[8], (char *) &uVal, sizeof(AM::iVersionNumber()));
-        //pSender->iSend((char *) azHeartbeat, sizeof(azHeartbeat) / 2);
+        //pSender->iSend((char *) azHeartbeat, 10);
       }
     }
   }
@@ -128,7 +128,7 @@ void vHeartInit(void) {
 
     int iLen = pReceiver->iRecv((char *) &xHeartbeat, sizeof(xHeartbeat));
 
-    if (iLen > 0) {
+    if (iLen >= 10) { // if < 10 bytes, ignore
       i8 iSaveChk = xHeartbeat.m_iChecksum;
 
       xHeartbeat.m_iChecksum = 0;
