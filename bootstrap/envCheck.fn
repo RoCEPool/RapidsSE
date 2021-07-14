@@ -81,6 +81,9 @@ function validateInstallationEnvironment() {
 
   # Check that the ss utility is installed
   validateSs
+
+  # Check that all appropriate ports are opened on firewalls
+  validateFirewall
 }
 
 
@@ -154,6 +157,9 @@ function validateNodeAdditionEnvironment() {
 
   # Check that the ss utility is installed
   validateSs "${nodeNames[@]}"
+
+  # Check that all appropriate ports are opened on firewalls
+  validateFirewall "${nodeNames[@]}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -204,7 +210,7 @@ function validateHostsAreResolvable() {
       # This is a valid IPv4 address
       continue
 
-    elif [[ "${host}" == *:* ]]; then
+    elif [[ "${host}" = *:* ]]; then
       # We've got an IPv6 address
       re="^([0-9a-fA-F]{0,4}:){1,7}([0-9a-fA-F]){0,4}$"
 
@@ -462,7 +468,7 @@ function validatePortsNotInUse() {
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
 
-    if [ "${output}" == "PORT_IN_USE" ]; then
+    if [ "${output}" = "PORT_IN_USE" ]; then
       failedNodes+=("${nodeName}")
     fi
   done
@@ -1079,6 +1085,148 @@ function validateLocalBash() {
 }
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that all configured ports are reachable through each machine's firewall.
+## This test can be skipped by setting SKIP_FIREWALL_TEST=1.
+## Params:
+##  $@ - (optional) a list of node names to check, otherwise all nodes will be checked.
+
+function validateFirewall() {
+
+  if [ "${SKIP_FIREWALL_TEST:-0}" -eq 1 ]; then
+    echo "Skipping firewall test"
+    return
+  fi
+
+  local isFullCluster
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    # Check all nodes
+    isFullCluster=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    # Check on the nodes given
+    isFullCluster=0
+    nodeNames=( "$@" )
+  fi
+
+  # If we only have a cluster of 1 then there is no point checking for connectivity
+  # because it is all local and unaffected by firewalls.
+  if [ ${#NODE_LIST[@]} -eq 1 ]; then
+    debugPrint "No need to test the firewall because there is only 1 node in the cluster."
+    return 0
+  fi
+
+  # Similarly, if we are adding nodes to an existing single node cluster then
+  # we should test all nodes in the system because the firewall of the existing
+  # single node wouldn't have previously been tested.
+  if [ "${isFullCluster}" -eq 0 ] && [ $(( ${#NODE_LIST[@]} - ${#nodeNames[@]} )) -eq 1 ]; then
+    isFullCluster=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  fi
+
+
+  local firstHost
+  firstHost="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_HOST_KEY}")"
+
+
+  # We can't test the firewall capabilities of the current host from the current host.
+  # So we need to find an alternate host to test from.
+  local alternateHost
+  for nodeName in "${NODE_LIST[@]}"; do
+    if [ "${nodeName}" != "${firstHost}" ]; then
+      alternateHost="${nodeName}"
+      break;
+    fi
+  done
+
+  #shellcheck disable=SC2016
+  [ "${alternateHost:-x}" != x ] || errorExit 'null value for ${alternateHost}'
+
+  local nodeName
+  local server
+  local client
+  local internalPort
+  local heartbeatPort
+
+  local -a errorList=()
+  local -a warningList=()
+
+  # Check each node specified
+  for nodeName in "${nodeNames[@]}"; do
+
+    server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    client="${firstHost}"  # by default
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+
+    # Ensure we don't try to test the firewall of the current host from the current host
+    if [ "${server}" = "${client}" ]; then
+      client="${alternateHost}"
+    fi
+
+    # Test the main internal TCP port. This either succeeds or fails.
+    local tcpResult
+    checkFirewallTcp "${client}" "${server}" "${internalPort}"
+    tcpResult="$?"
+    if [ "${tcpResult}" -eq 2 ]; then
+      # TODO: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      true
+    elif [ "${tcpResult}" -ne 0 ]; then
+      # Add to failed node/socket list
+      errorList+=( "${server}:${internalPort}  (TCP)" )
+    fi
+
+    # Test the heartbeat UDP port. This may be indeterminant if another process
+    # is using the socket, so we need to cater for that.
+    local udpResult
+    checkFirewallUdp "${client}" "${server}" "${heartbeatPort}"
+    udpResult="$?"
+    if [ "${udpResult}" -eq 2 ] ; then
+      # Add to warning node/socket list
+      warningList+=( "${server}:${heartbeatPort}  (UCP)" )
+
+    elif [ "${udpResult}" -ne 0 ] ; then
+      # Add to failed node/socket list
+      errorList+=( "${server}:${heartbeatPort}  (UCP)" )
+    fi
+  done
+
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -eq 0 ]; then
+    debugPrint "No errors or warnings from the firewall"
+    return
+  fi
+
+  # Print errors/warnings
+  if [ "${#errorList[@]}" -gt 0 ]; then
+    local errMsg
+    errMsg="The following hosts appear to have a firewall blocking their ports.\n"
+    errMsg+="RapidsSE requires these ports to be open."
+    for host in "${errorList[@]}"; do
+      errMsg+="\n  ${host}"
+    done
+
+    printError "${errMsg}"
+  fi
+
+  if [ "${#warningList[@]}" -gt 0 ]; then
+    local warningMsg
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg+="RapidsSE requires these ports to be open."
+    for host in "${warningList[@]}"; do
+      warningMsg+="\n  ${host}"
+    done
+
+    printWarning "${warningMsg}"
+  fi
+
+  if [ "${#errorList[@]}" -gt 0 ]; then
+    exit 1
+  fi
+
+  # Otherwise continue on errors
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Tests that two hosts can communicate via TCP/IP.
@@ -1087,8 +1235,9 @@ function validateLocalBash() {
 ##  $2 - hostname of the server that is listening for the connection and whose
 ##       firewall we are testing for.
 ##  $3 - TCP/IP port number to use.
-## Returns: a 0 exit code if the two hostnames can communicate, or a non-zero
-##          exit code if there is a communication problem.
+## Returns: a 0 exit code if the two hostnames can communicate,
+##          exit code 1 if there is a communication problem
+##          or exit code 2 if the TCP/IP port is already in use
 
 function checkFirewallTcp() {
 
@@ -1110,7 +1259,8 @@ function checkFirewallTcp() {
   debugPrint "${cmdServerSocketInUse[*]}"
 
   if "${cmdServerSocketInUse[@]}" ; then
-    errorExit "TCP port ${port} is already in use on host ${server}."
+    printError "TCP port ${port} is already in use on host ${server}."
+    return 2
   fi
 
   # Spawn the server in the background.
@@ -1158,11 +1308,11 @@ function checkFirewallTcp() {
 
   # Return the appropriate exit code
   if [ "${clientResult}" -ne 0 ] ; then
-    echo "exit status is ${clientResult}"
-    errorExit "TCP port ${port} may be blocked on on host ${server}."
+    printError "TCP port ${port} may be blocked on on host ${server}."
+    return 1
   fi
 
-  true
+  return 0
 }
 
 

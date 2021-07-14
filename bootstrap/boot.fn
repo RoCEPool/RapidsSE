@@ -970,7 +970,7 @@ function assertNoNodesRunning() {
 
   local errMsg="The following node are already running:"
 
-  if [ "$1" == "stop" ]; then
+  if [ "$1" = "stop" ]; then
     errMsg="The following node are still running:"
   fi
 

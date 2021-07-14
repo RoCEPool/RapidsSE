@@ -412,11 +412,11 @@ function confirmNodeAddition() {
     echo -n "Do you wish to proceed with the node addition? (y/n) [default: y] : "
     IFS=$'\n' read -r line
 
-    if [[ -z "${line}" || "${line}" == "y" || "${line}" == "Y" || "${line}" == "yes" || "${line}" == "YES" ]]; then
+    if [[ -z "${line}" || "${line}" = "y" || "${line}" = "Y" || "${line}" = "yes" || "${line}" = "YES" ]]; then
       break
     fi
 
-    if [[ "${line}" == "n" || "${line}" == "N" || "${line}" == "no" || "${line}" == "NO" ]]; then
+    if [[ "${line}" = "n" || "${line}" = "N" || "${line}" = "no" || "${line}" = "NO" ]]; then
       echo "Aborting node addition."
       exit 1
     fi

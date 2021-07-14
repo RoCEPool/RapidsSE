@@ -341,10 +341,10 @@ function findInstallFile() {
   local parentScript
   parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
 
-  if [[ -n "${parentScript:-}" && "${parentScript:(-4):4}" == ".run" ]]; then
+  if [[ -n "${parentScript:-}" && "${parentScript:(-4):4}" = ".run" ]]; then
 
     # Is it an absolute path?
-    if [[ "${parentScript:0:1}" == "/" && -f "${parentScript}" ]]; then
+    if [[ "${parentScript:0:1}" = "/" && -f "${parentScript}" ]]; then
       INSTALL_FILE="${parentScript}"
       return
     fi
@@ -701,7 +701,7 @@ function askHostnames() {
     gotLoopback=0
     for addr in "${loopbackHosts[@]}"
     do
-      if [ "${line}" == "${addr}" ]; then
+      if [ "${line}" = "${addr}" ]; then
         echo "Invalid input: hostname cannot be a loopback name/address."
         gotLoopback=1
         break;
@@ -735,7 +735,7 @@ function askHostnames() {
     gotLoopback=0
     for addr in "${loopbackHosts[@]}"
     do
-      if [ "${line}" == "${addr}" ]; then
+      if [ "${line}" = "${addr}" ]; then
         echo "Invalid input: hostname cannot be a loopback name/address."
         gotLoopback=1
         break;
@@ -1025,7 +1025,7 @@ function askMemSize() {
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     totalShm="${NODE_TOTAL_SHM[${nodeName}]}"
 
-    if [[ -z "${totalShm:-}" || "${totalShm}" == "-1" ]]; then
+    if [[ -z "${totalShm:-}" || "${totalShm}" = "-1" ]]; then
       totalShm="<unknown>"
     else
       totalShm+=" GB"
@@ -1114,7 +1114,7 @@ function askPartitions() {
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeCoreCount="${NODE_CORE_COUNT[${nodeName}]}"
 
-    if [[ -z "${nodeCoreCount:-}" || "${nodeCoreCount:-}" == "-1" ]]; then
+    if [[ -z "${nodeCoreCount:-}" || "${nodeCoreCount:-}" = "-1" ]]; then
       nodeCoreCount="<unknown>"
     else
       nodeCoreCount+=" cores"
@@ -1327,11 +1327,11 @@ function confirmConfig() {
     echo -n "Do you wish to proceed with the installation? (y/n) [default: y] : "
     IFS=$'\n' read -r line
 
-    if [[ -z "${line:-}" || "${line}" == "y" || "${line}" == "Y" || "${line}" == "yes" || "${line}" == "YES" ]]; then
+    if [[ -z "${line:-}" || "${line}" = "y" || "${line}" = "Y" || "${line}" = "yes" || "${line}" = "YES" ]]; then
       break
     fi
 
-    if [[ "${line}" == "n" || "${line}" == "N" || "${line}" == "no" || "${line}" == "NO" ]]; then
+    if [[ "${line}" = "n" || "${line}" = "N" || "${line}" = "no" || "${line}" = "NO" ]]; then
       echo "Aborting installation."
       exit 1
     fi
@@ -1814,11 +1814,11 @@ function doNodeInstall() {
 function cleanupNodeInstall() {
 
   # Remove the installation file and cluster.config if they reside in /tmp
-  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" == "/tmp" ]]; then
+  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" = "/tmp" ]]; then
     rm -f "${INSTALL_FILE}" > /dev/null || true
   fi
 
-  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" == "/tmp" ]]; then
+  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" = "/tmp" ]]; then
     rm -f "${CONFIG_FILE}" > /dev/null || true
   fi
 }
@@ -2104,7 +2104,7 @@ function arrayGetMinNonNegativeValue() {
       continue
     fi
 
-    if [ "$(echo "${min} == -1" | bc -l)" -eq 1 ]; then 
+    if [ "$(echo "${min} == -1" | bc -l)" -eq 1 ]; then
       # This is the first min value
       min="$i"
       continue

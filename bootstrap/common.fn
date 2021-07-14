@@ -899,7 +899,7 @@ function nodeCfgExists() {
 
   for node in "${NODE_LIST[@]}"
   do
-    if [ "${node}" == "${nodeName}" ]; then
+    if [ "${node}" = "${nodeName}" ]; then
       foundNode=1
       break;
     fi
