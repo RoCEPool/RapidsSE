@@ -1053,8 +1053,9 @@ function checkFirewallTcp() {
 ##  $2 - hostname of the server that is listening for the connection and whose
 ##       firewall we are testing for.
 ##  $3 - UDP/IP port number to use.
-## Returns: a 0 exit code if the two hostnames can communicate, or a non-zero
-##          exit code if there is a communication problem.
+## Returns: exit code 0 if the two hostnames can communicate,
+##          exit code 1 if the two hostnames cannot communicate,
+##          exit code 2 if a process is already using the given port on the server
 
 function checkFirewallUdp() {
 
@@ -1074,6 +1075,8 @@ function checkFirewallUdp() {
   local -a cmdServerSocketInUse=()
   cmdServerSocketInUse+=( "ssh"
                           "-q" "${server}"
+                          "export" 'PATH=${PATH}:/usr/sbin'
+                          "&&"
                           "ss" "-lunH" "'( sport = ${port} )'" )
 
   debugPrint "About to execute the following command to check if UDP port ${port} is in use on host ${server}:"
@@ -1083,7 +1086,8 @@ function checkFirewallUdp() {
   responseServerSocketInUse="$("${cmdServerSocketInUse[@]}")"
 
   if [ "${responseServerSocketInUse:-x}" != "x" ]; then
-    errorExit "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used."
+    printError "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used by another process."
+    exit 2
   fi
 
   debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
@@ -1106,7 +1110,7 @@ function checkFirewallUdp() {
   debugPrint "Temporary directory on the server for response data is ${server}:${responseServerMakeTemp}"
 
 
-  # Spawn the server in the background.
+  # Define the command to spawn the server in the background.
   local -a cmdServerTask=()
   local cmdServerPid
   cmdServerTask=( "ssh"
@@ -1123,6 +1127,7 @@ function checkFirewallUdp() {
   # and that remote bash process will also be terminated.
   # Reference: https://unix.stackexchange.com/questions/103699/kill-process-spawned-by-ssh-when-ssh-dies
 
+
   debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
   debugPrint "${cmdServerTask[*]}"
 
@@ -1132,10 +1137,8 @@ function checkFirewallUdp() {
   # Give the server a little bit of time to load.
   sleep 1
 
-  # Spawn a client to try to send a message to the server.
-  # Run it in the background and collect it's pid.
+  # Define the command to spawn a client to try to send a message to the server.
   # The message is sent multiple times with small gaps in between in case a packet gets dropped.
-
   local -a cmdClientTask=()
   local cmdClientPid
   cmdClientTask=( "ssh"
@@ -1143,16 +1146,17 @@ function checkFirewallUdp() {
                   "-t"
                   "-q" "${client}"
                   "/bin/bash" "-O" "huponexit" "-c"
-                  "'echo ${udpMessage} | nc -u ${server} ${port}'")
+                  "'{ echo ${udpMessage} | nc -u ${server} ${port}; }; sleep 0.5; { echo ${udpMessage} | nc -u ${server} ${port}; }; sleep 0.5; { echo ${udpMessage} | nc -u ${server} ${port}; };'")
 
   debugPrint "About to execute the following command to start a UDP netcat client on host ${client} :"
   debugPrint "${cmdClientTask[*]}"
 
+  # Run it in the background and collect it's pid.
   "${cmdClientTask[@]}" &
   cmdClientPid="$!"
 
   # Give the client a little bit of time to send the messages
-  sleep 1
+  sleep 2
 
   # Now kill the client. Some versions of netcat (*cough* CentOS 7) will return after sending
   # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
@@ -1171,13 +1175,13 @@ function checkFirewallUdp() {
   local responseServerReadData
   responseServerReadData="$("${cmdServerReadData[@]}")"
 
-  local result=0;
+  local exitCode=1;
 
   if [ "${responseServerReadData:-x}" != "x" ]; then
     while read -r line || [ -n "${line}" ]; do
       debugPrint "Read line: ${line}"
       if [[ "${line}" =~ ${udpMessage} ]]; then
-        result=1
+        exitCode=0
         break
       fi
     done <<< "${responseServerReadData}"
@@ -1196,8 +1200,7 @@ function checkFirewallUdp() {
 
 
   # Return the result
-  [ "${result}" -eq 1 ]
-  return
+  return "${exitCode}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
