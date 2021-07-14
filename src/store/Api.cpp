@@ -176,8 +176,13 @@ void Api::vExecuteJob(Session* pSession)
   //pInpTknVec->vDumpVec(false);
   //pJobTagSet->vDumpSet(true);
 
-  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
-    vTrace("TagSet:\n"_Stz);
+//  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
+//    vTrace("TagSet:\n"_Stz);
+//    pJobTagSet->vDumpSet(true);
+//  }
+  
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    pInpTknVec->vDumpVec(false);
     pJobTagSet->vDumpSet(true);
   }
       
