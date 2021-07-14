@@ -75,6 +75,12 @@ function validateInstallationEnvironment() {
 
   # Check that bash has the correct version
   validateBash
+
+  # Check that netcat is installed
+  validateNetcat
+
+  # Check that the ss utility is installed
+  validateSs
 }
 
 
@@ -142,6 +148,12 @@ function validateNodeAdditionEnvironment() {
 
   # Check that bash has the correct version
   validateBash "${nodeNames[@]}"
+
+  # Check that netcat is installed
+  validateNetcat "${nodeNames[@]}"
+
+  # Check that the ss utility is installed
+  validateSs "${nodeNames[@]}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -923,6 +935,114 @@ function validateBash() {
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
     local errMsg="Bash is either not installed or is too old (min: ${BASH_MINIMUM_VERSION}) on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that netcat (nc) is installed on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateNetcat() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating netcat is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd="which nc &>/dev/null"
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="Netcat is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that ss utility is installed on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateSs() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating ss is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd='export PATH=${PATH}:/usr/sbin which ss &>/dev/null'
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="ss is not installed on the following nodes:"
 
     for nodeName in "${failedNodes[@]}"
     do
