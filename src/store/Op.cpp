@@ -22,6 +22,7 @@
 #include "eTS.h"
 #include "TagConstants.h"
 
+#include "SP_Margin.hpp"
 #include "SP_Op.hpp"
 
 Atomic gixOp;
@@ -943,10 +944,15 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
   
+  SP_Margin spMargin;
+  
   SP_Op spOp;
   
   vTrace("%s "
+         "%s "
          "%18s : %-15s %p %s\n"_Stz
+         
+         ,spMargin.sz()
          
          ,spOp.szLeading(this)
          

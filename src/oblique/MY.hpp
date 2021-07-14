@@ -30,6 +30,7 @@ namespace OBLIQUE
     static Stz* szGridNm(void);
     static Stz* szHostNm(void);
     static Stz* szJobNm(void);
+    static Stz* szNodeNm(void);
     static Stz* szOpNm(void);
     static Stz* szPipelineNm(void);
     static Stz* szSchemaNm(void);
