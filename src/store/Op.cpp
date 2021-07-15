@@ -197,7 +197,7 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set ack job on end marker                                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAckJob(void)
+void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -208,12 +208,11 @@ void Op::vAckJob(void)
     SP_Op spOp;
 
     vTraceM("%s "
-            "%18s : %s %p\n"_Stz
+            "%-18s pipelineJob=%p\n"_Stz
            
             ,spOp.szLeading(this)
            
             ,__func__
-            ,"acking pipelineJob="
             ,m_pJob
            );
   }
@@ -221,7 +220,7 @@ void Op::vAckJob(void)
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
 /*----------------------------------------------------------------------------*/
-//void Op::vAckJob(void)
+//void Op::vAckPipelineJob(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 //
@@ -947,7 +946,7 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   SP_Op spOp;
   
   vTraceM("%s "
-          "%18s : %-15s %p %s\n"_Stz
+          "%-18s pOperand=%s @%p %s\n"_Stz
                   
           ,spOp.szLeading(this)
          

@@ -44,7 +44,7 @@ void Step::vOpAckPipelineJob(void)
   ENTRY();
   
   Op* pOp = m_pJob->m_pOp;
-  pOp->vAckJob();
+  pOp->vAckPipelineJob();
 }
 
 /*----------------------------------------------------------------------------*/

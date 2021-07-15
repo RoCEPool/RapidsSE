@@ -40,7 +40,7 @@ void SP_Margin::vMargin(void)
   
   Now spNow;
   
-  vCatf("%s %s"_Stz
+  vCatf("+ %s %s"_Stz
         
         ,MY::szNodeNm()
         ,spNow.sz());

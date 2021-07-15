@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "StageSpec.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"
@@ -57,16 +58,37 @@ void SP_Op::vLeading(Op* pOp)
   _precondition_(_MAGIC_,_FOOTER_);
   
   vInit();
-    
-  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz
+  
+  OpSpec* pOpSpec = pOp->pOpSpec();
+  StageSpec* pStageSpec = pOpSpec->pStageSpec();
+  Stream* pStream = pOp->pStream();
+  Pipeline* pPipeline = pOp->pPipeline();
+
+  vCatf("<? %-12s "
+        "[%lld] %-12s "
+        "[%02lld.%03lld] %-12s ?> ## "_Stz
         
+        ,pPipeline  ? pPipeline->szPipelineNm() : C_NO_NAME
+        
+        ,pStageSpec ? pStageSpec->i_StageSpec() : -1
+        ,pStageSpec ? pStageSpec->szStageNm()   : C_NO_NAME
+        
+        ,pStream    ? pStream->i_Stream()       : -1
+        ,pOpSpec    ? pOpSpec->iOpSpec()        : -1
         ,pOp->szOpNm()
-        ,pOp->pStage()->szStageNm()
-        ,pOp->iNode()
-        ,pOp->tPtnNo()
-        ,pOp->pPipelineJob()
 
         );
+  
+//  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz
+//
+//        ,pOp->szOpNm()
+//        ,pOp->pStage()->szStageNm()
+//        ,pOp->iNode()
+//        ,pOp->tPtnNo()
+//        ,pOp->pPipelineJob()
+//
+//        );
+
 }
 
 /*----------------------------------------------------------------------------*/
