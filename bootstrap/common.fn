@@ -921,6 +921,34 @@ function nodeCfgExists() {
   true
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns via stdout the number of unique hostnames in the cluster configuration.
+## Params:
+##  $@ - (optional) The list of node names to consider. If not supplied then all
+##        nodes in the cluster will be considered.
+
+function numberOfUniqueHosts() {
+
+  local nodeNames=()
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local -A hostMap
+
+  for nodeName in "${nodeNames[@]}"; do
+    # Get the hostname and set it in the map
+    local hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    hostMap["${hostname}"]=1
+  done
+
+  echo "${#hostMap[@]}"
+}
+
 # =========================================================================== #
 
 

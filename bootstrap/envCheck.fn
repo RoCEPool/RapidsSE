@@ -1111,31 +1111,39 @@ function validateFirewall() {
     nodeNames=( "$@" )
   fi
 
-  # If we only have a cluster of 1 then there is no point checking for connectivity
-  # because it is all local and unaffected by firewalls.
-  if [ ${#NODE_LIST[@]} -eq 1 ]; then
-    debugPrint "No need to test the firewall because there is only 1 node in the cluster."
+  # If we have a full cluster with only 1 unique hostname then there is no point checking
+  # for connectivity because it is all local and unaffected by firewalls.
+  local numUniqueHosts
+  numUniqueHosts="$(numberOfUniqueHosts)"
+
+  if [ "${numUniqueHosts}" -eq 1 ]; then
+    debugPrint "No need to test the firewall because there is only 1 unique hostname in the cluster."
     return 0
   fi
 
-  # Similarly, if we are adding nodes to an existing single node cluster then
-  # we should test all nodes in the system because the firewall of the existing
-  # single node wouldn't have previously been tested.
-  if [ "${isFullCluster}" -eq 0 ] && [ $(( ${#NODE_LIST[@]} - ${#nodeNames[@]} )) -eq 1 ]; then
-    isFullCluster=1
-    nodeNames=( "${NODE_LIST[@]}" )
-  fi
-
+  # There is a blind spot here. If we start with a one node cluster then we cannot test
+  # that this single node has had its firewall ports opened up. For a single node cluster
+  # it doesn't matter anyway.
+  # But if we then add additional nodes to this cluster we really need to test the connectivity
+  # to that single node from the second node being added. However if the existing cluster was
+  # already running then the desired ports will already be in use and we cannot test to see
+  # if they are being filtered out by the firewall, particularly any UDP ports. We could
+  # potentially make a TCP connection and not send any data though.
+  #
+  # For now we will only only test the nodeNames that are being passed in, or the full
+  # cluster if we have more than 1 unique hostname.
 
   local firstHost
   firstHost="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_HOST_KEY}")"
-
 
   # We can't test the firewall capabilities of the current host from the current host.
   # So we need to find an alternate host to test from.
   local alternateHost
   for nodeName in "${NODE_LIST[@]}"; do
-    if [ "${nodeName}" != "${firstHost}" ]; then
+    local host
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    if [ "${host}" != "${firstHost}" ]; then
       alternateHost="${nodeName}"
       break;
     fi
@@ -1166,30 +1174,33 @@ function validateFirewall() {
       client="${alternateHost}"
     fi
 
-    # Test the main internal TCP port. This either succeeds or fails.
+    # Test the main internal TCP port. This either succeeds or fails. Ignore stderr output.
     local tcpResult
-    checkFirewallTcp "${client}" "${server}" "${internalPort}"
+    checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null
     tcpResult="$?"
+
     if [ "${tcpResult}" -eq 2 ]; then
-      # TODO: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      true
+      # TCP socket is already in use. This is an error
+      errorList+=( "${server}:${internalPort}  (TCP port already in use by another process on host)" )
+
     elif [ "${tcpResult}" -ne 0 ]; then
-      # Add to failed node/socket list
-      errorList+=( "${server}:${internalPort}  (TCP)" )
+      # Socket is blocked. Add to failed node/socket list
+      errorList+=( "${server}:${internalPort}  (TCP port blocked)" )
     fi
 
     # Test the heartbeat UDP port. This may be indeterminant if another process
-    # is using the socket, so we need to cater for that.
+    # is using the socket, so we need to cater for that. Ignore stderr output.
     local udpResult
-    checkFirewallUdp "${client}" "${server}" "${heartbeatPort}"
+    checkFirewallUdp "${client}" "${server}" "${heartbeatPort}" 2>/dev/null
     udpResult="$?"
+
     if [ "${udpResult}" -eq 2 ] ; then
-      # Add to warning node/socket list
-      warningList+=( "${server}:${heartbeatPort}  (UCP)" )
+      # UDP socket is already in use. Add to warning node/socket list
+      warningList+=( "${server}:${heartbeatPort}  (UCP port already in use by another process on host)" )
 
     elif [ "${udpResult}" -ne 0 ] ; then
-      # Add to failed node/socket list
-      errorList+=( "${server}:${heartbeatPort}  (UCP)" )
+      # Socket is likely blocked. Add to failed node/socket list
+      errorList+=( "${server}:${heartbeatPort}  (UCP port may be blocked)" )
     fi
   done
 
@@ -1201,8 +1212,8 @@ function validateFirewall() {
   # Print errors/warnings
   if [ "${#errorList[@]}" -gt 0 ]; then
     local errMsg
-    errMsg="The following hosts appear to have a firewall blocking their ports.\n"
-    errMsg+="RapidsSE requires these ports to be open."
+    errMsg="The following hosts appear to have connectivity problems on their ports.\n"
+    errMsg+="RapidsSE requires these ports to be open in the host's firewall."
     for host in "${errorList[@]}"; do
       errMsg+="\n  ${host}"
     done
