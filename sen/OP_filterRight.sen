@@ -62,8 +62,6 @@
 
   0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
 
-  PipeIn[].pipeout
-
   // execute the eosMarker asm handler
   ZK_EOSMARKER Counter0[] executeAsmArgs
 
@@ -76,6 +74,8 @@
 
   // record receipt of end right marker
   0 to Counter1[]
+
+  PipeIn[].pipeout
 
   true
 ;
@@ -154,7 +154,7 @@
 
   0 ZK_STARTRIGHTMARKER EG_ZK LogicUnit[].diaryNote
 
-  PipeIn[].delete
+  PipeIn[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]
@@ -171,7 +171,7 @@
 
   EC_NONE locals| eError |
 
-  // ignore streamDef if not received startRightMarker
+  // ignore streamDef if not yet received startRightMarker
   Counter1[] 0 == if
     Pipein[].pipeout
     true
