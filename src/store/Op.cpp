@@ -381,6 +381,20 @@ i8 Op::iCurHandler(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current executing word                                                 */
+/*----------------------------------------------------------------------------*/
+Word* Op::pCurWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Task* pTask = MY::pTask();
+  
+  Word* pCurWord = pTask->pCurWord();
+  
+  return pCurWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set downstream op                                                          */
 /*----------------------------------------------------------------------------*/
 Op* Op::pDownstreamOp(void)
@@ -470,7 +484,7 @@ void Op::vIncHandlerCount(i8 i_Handler)
   
   m_i_CurHandler = i_Handler;
   
-  m_iHandlerCount[i_Handler]++;
+  m_iHandlerCount[m_i_CurHandler]++;
 }
 
 /*----------------------------------------------------------------------------*/

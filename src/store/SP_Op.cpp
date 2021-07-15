@@ -88,9 +88,9 @@ void SP_Op::vLeading(Op* pOp)
         );
   }
   else {
-    vCatf("%-30s?> ## "_Stz
+    vCatf(": %-28s?> ## "_Stz
         
-         ,"(no handler)"_Stz
+         ,pOp->pCurWord()->szWordNm()
         );
   }
 //  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz

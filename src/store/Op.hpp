@@ -75,6 +75,7 @@ namespace STORE
     Stz* szArgs(void);
     ePX  eCrossTopo(void);
     i8   iCurHandler(void);
+    Word* pCurWord(void);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);

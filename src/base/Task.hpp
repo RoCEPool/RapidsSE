@@ -114,6 +114,7 @@ namespace BASE
     bool bCorrectLayout(void);
     SenCompiler* pSenCompiler(void);
     void vContentDump(void);
+    Word* pCurWord(void);
     void vDeleteInput(void);
     static void vDebug(void);
     DicStack* pDicStack(void);

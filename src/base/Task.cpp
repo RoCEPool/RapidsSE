@@ -448,6 +448,18 @@ void Task::vCheckBreakPt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current executing word                                                 */
+/*----------------------------------------------------------------------------*/
+Word* Task::pCurWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pCurWord = m_oDicStack.pLocateRoutine(m_aInxPtr);;
+  
+  return pCurWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* debug                                                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vDebug(void)
