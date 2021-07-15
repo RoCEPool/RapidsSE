@@ -207,14 +207,14 @@ void Op::vAckJob(void)
     
     SP_Op spOp;
 
-    vTrace("%s "
-           "%18s : %s %p\n"_Stz
+    vTraceM("%s "
+            "%18s : %s %p\n"_Stz
            
-           ,spOp.szLeading(this)
+            ,spOp.szLeading(this)
            
-           ,"vAckJob"
-           ,"acking pipelineJob="
-           ,m_pJob
+            ,__func__
+            ,"acking pipelineJob="
+            ,m_pJob
            );
   }
   
@@ -944,22 +944,17 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
   
-  SP_Margin spMargin;
-  
   SP_Op spOp;
   
-  vTrace("%s "
-         "%s "
-         "%18s : %-15s %p %s\n"_Stz
+  vTraceM("%s "
+          "%18s : %-15s %p %s\n"_Stz
+                  
+          ,spOp.szLeading(this)
          
-         ,spMargin.sz()
-         
-         ,spOp.szLeading(this)
-         
-         ,szFunNm
-         ,AM::pOperandName(pOperand)
-         ,pOperand
-         ,szSupplemental
+          ,szFunNm
+          ,AM::pOperandName(pOperand)
+          ,pOperand
+          ,szSupplemental
          );
 }
 /*----------------------------------------------------------------------------*/
