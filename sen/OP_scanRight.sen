@@ -100,6 +100,11 @@
   Operand[].newStartRightMarker
   Operand[].pipeOut
 
+  // now pipe out the stream def for the right table
+  //"piping out right streamDef" .
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
@@ -216,11 +221,6 @@
   //"piping out left streamDef" .
   PipeIn[]\clear to StreamDefLft[]
   StreamDefLft[].pipeOut
-
-  // pipe out a new a stream def
-  //"piping out right streamDef" .
-  Operand[].newStreamDef
-  Operand[].pipeOut
 
   true
 ;
