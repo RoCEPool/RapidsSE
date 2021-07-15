@@ -1274,28 +1274,17 @@ function checkFirewallTcp() {
     return 2
   fi
 
-  # Spawn the server in the background.
+  # Spawn the server with nc in the background, but save it's pid.
   local -a cmdServerTask=()
   local cmdServerPid
   cmdServerTask+=( "ssh"
-                   "-t"
-                   "-t"
                    "-q" "${server}"
-                   "/bin/bash" "-O" "huponexit" "-c"
-                   "'nc -l ${port} &>/dev/null'" )
-
-  # Note that in the above command we need to run it in a bash shell with -O huponexit
-  # and two -t commands for pseudo-terminals.
-  # This way when we kill the local ssh process with HUP signal (kill -1) then this HUP
-  # will be propagated to the remote bash process that is running the netcat server,
-  # and that remote bash process will also be terminated.
-  # Reference: https://unix.stackexchange.com/questions/103699/kill-process-spawned-by-ssh-when-ssh-dies
+                   "nc" "-l" "${port}" "&>/dev/null" "&" "echo" '$!' )
 
   debugPrint "About to execute the following command to start a TCP netcat server on host ${server}:${port} :"
   debugPrint "${cmdServerTask[*]}"
 
-  "${cmdServerTask[@]}" &
-  cmdServerPid="$!"
+  cmdServerPid="$("${cmdServerTask[@]}")"
 
   # Give the server a little bit of time to load.
   sleep 1
@@ -1314,12 +1303,14 @@ function checkFirewallTcp() {
   "${cmdClientTask[@]}"
   clientResult="$?"
 
-  # Kill the server
-  (kill -1 "${cmdServerPid}" || true) &>/dev/null
+  # Kill nc on the server
+  local -a cmdServerKill
+  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
+  "${cmdServerKill[@]}" || true
 
   # Return the appropriate exit code
   if [ "${clientResult}" -ne 0 ] ; then
-    printError "TCP port ${port} may be blocked on on host ${server}."
+    printError "TCP port ${port} may be blocked by a firewall on on host ${server}."
     return 1
   fi
 
@@ -1391,58 +1382,47 @@ function checkFirewallUdp() {
   debugPrint "Temporary directory on the server for response data is ${server}:${responseServerMakeTemp}"
 
 
-  # Define the command to spawn the server in the background.
+  # Define the command to spawn nc on the server in the background.
   local -a cmdServerTask=()
   local cmdServerPid
   cmdServerTask=( "ssh"
-                  "-t"
-                  "-t"
                   "-q" "${server}"
-                  "/bin/bash" "-O" "huponexit" "-c"
-                  "'nc -ul ${port} > ${responseServerMakeTemp}'" )
-
-  # Note that in the above command we need to run it in a bash shell with -O huponexit
-  # and two -t commands for pseudo-terminals.
-  # This way when we kill the local ssh process with HUP signal (kill -1) then this HUP
-  # will be propagated to the remote bash process that is running the netcat server,
-  # and that remote bash process will also be terminated.
-  # Reference: https://unix.stackexchange.com/questions/103699/kill-process-spawned-by-ssh-when-ssh-dies
+                  "nc" "-ul" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
 
 
   debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
   debugPrint "${cmdServerTask[*]}"
 
-  "${cmdServerTask[@]}" &
-  cmdServerPid="$!"
+  cmdServerPid="$("${cmdServerTask[@]}")"
 
   # Give the server a little bit of time to load.
   sleep 1
 
   # Define the command to spawn a client to try to send a message to the server.
-  # The message is sent multiple times with small gaps in between in case a packet gets dropped.
+  # Note that some versions of netcat (*cough* CentOS 7) will return after sending
+  # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
+  # command line option to exit on stdin EOF (or those arguments are different on
+  # different systems), so let's just save the pid and kill them anyway.
   local -a cmdClientTask=()
   local cmdClientPid
   cmdClientTask=( "ssh"
-                  "-t"
-                  "-t"
                   "-q" "${client}"
-                  "/bin/bash" "-O" "huponexit" "-c"
-                  "'{ echo ${udpMessage} | nc -u ${server} ${port}; }; sleep 0.5; { echo ${udpMessage} | nc -u ${server} ${port}; }; sleep 0.5; { echo ${udpMessage} | nc -u ${server} ${port}; };'")
+                  "echo" "\"${udpMessage}\"" "|" "nc" "-u" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!' )
+
 
   debugPrint "About to execute the following command to start a UDP netcat client on host ${client} :"
   debugPrint "${cmdClientTask[*]}"
 
   # Run it in the background and collect it's pid.
-  "${cmdClientTask[@]}" &
-  cmdClientPid="$!"
+  cmdClientPid="$("${cmdClientTask[@]}")"
 
   # Give the client a little bit of time to send the messages
-  sleep 2
+  sleep 1
 
-  # Now kill the client. Some versions of netcat (*cough* CentOS 7) will return after sending
-  # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
-  # command line option to exit on stdin EOF, so let's just try to kill them anyway.
-  (kill -1 "${cmdClientPid}" || true) &>/dev/null
+  # Now kill the nc on the remote client.
+  local -a cmdClientKill
+  cmdClientKill=( "ssh" "-q" "${client}" "kill" "-9" "${cmdClientPid}" "&>/dev/null" )
+  "${cmdClientKill[@]}" || true
 
   # Check what the server read
   local -a cmdServerReadData=()
@@ -1469,7 +1449,9 @@ function checkFirewallUdp() {
   fi
 
   # Kill the server
-  (kill -1 "${cmdServerPid}" || true) &>/dev/null
+  local -a cmdServerKill
+  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
+  "${cmdServerKill[@]}" || true
 
   # Remove the temporary file
   local -a cmdServerRemoveTemp=()
@@ -1479,6 +1461,9 @@ function checkFirewallUdp() {
 
   "${cmdServerRemoveTemp[@]}" || true
 
+  if [ "${exitCode}" -ne 0 ] ; then
+    printError "UDP port ${port} may be blocked by a firewall on on host ${server}."
+  fi
 
   # Return the result
   return "${exitCode}"
