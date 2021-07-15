@@ -739,6 +739,10 @@ function validateInstallDirIsWritable() {
             break
           fi
 
+          if [ "\$(dirname "\${dname}")" = "/" ]; then
+            break;
+          fi
+          
           dname="\$(dirname "\${dname}")"
         done
 
