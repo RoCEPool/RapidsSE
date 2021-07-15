@@ -66,7 +66,7 @@ void SP_Op::vLeading(Op* pOp)
 
   Word* pEventHandler = pOp->pEventHandler();
   
-  vCatf("<? %-12s "
+  vCatf("<? pipeline %-12s "
         "[%lld] %-12s "
         "[%02lld.%03lld] %-12s %-32s?> ## "_Stz
         
