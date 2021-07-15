@@ -48,7 +48,9 @@ namespace STORE
     Op*            m_pDownstreamOp;  // downstream op
     Operand*       m_pOutboundOperand;  // operand to be piped out
 
+    i8    m_i_CurHandler;
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
+    i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
     i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
     
     // must be last
@@ -72,12 +74,15 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     ePX  eCrossTopo(void);
+    i8   iCurHandler(void);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(void);
+    i8   iHandlerCount(i8 i_Handler);
+    void vIncHandlerCount(i8 i_Handler);
     void vIncOperandCount(i8 i_OperandKind);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
@@ -92,6 +97,7 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNode(void);
+    i8   iOperandCount(i8 i_OperandKind);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     i8   iOp(void);

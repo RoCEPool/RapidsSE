@@ -371,6 +371,16 @@ ePX Op::eCrossTopo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current handler                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Op::iCurHandler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_i_CurHandler;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set downstream op                                                          */
 /*----------------------------------------------------------------------------*/
 Op* Op::pDownstreamOp(void)
@@ -440,6 +450,30 @@ void Op::vGrabTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get handler count for given handler                                        */
+/*----------------------------------------------------------------------------*/
+i8 Op::iHandlerCount(i8 i_Handler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 iCount = m_iHandlerCount[i_Handler];
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc handler count for given handler                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vIncHandlerCount(i8 i_Handler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_i_CurHandler = i_Handler;
+  
+  m_iHandlerCount[i_Handler]++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc operand count for given operand kind                                   */
 /*----------------------------------------------------------------------------*/
 void Op::vIncOperandCount(i8 i_OperandKind)
@@ -485,9 +519,11 @@ void Op::vInitOperandHandlers(void)
     
     m_iOperandCount[i_Kind] = 0;
     m_paOperandHandler[i_Kind] = pHandler;
+    m_iHandlerCount[i_Kind] = 0;
+
   }
   
-  BASE::vDebugPoint();
+  m_i_CurHandler = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -892,6 +928,18 @@ i8 Op::iOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_i_Op;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get operand count   for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOperandCount(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 iCount = m_iOperandCount[i_OperandKind];
+  
+  return iCount;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -413,6 +413,7 @@
       then
 
       PipeIn[].kind op[].incOperandCount
+      PipeIn[].kind op[].incHandlerCount
       PipeIn[].kind op[].handler@ LogicUnit[].handler!
       op__handle to iContinue
       continue_if
@@ -463,6 +464,7 @@
     then
     
     PipeIn[].kind op[].incOperandCount
+    PipeIn[].kind op[].incHandlerCount
     PipeIn[].kind op[].handler@ LogicUnit[].handler!
     op__handle to iContinue
 

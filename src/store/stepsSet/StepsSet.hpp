@@ -1275,6 +1275,7 @@ public:
   void vRegOpHandlerAllStore(void);
   void vRegOpInit(void);
   void vRegOpIsOperandValid(void);
+  void vRegOpIncHandlerCount(void);
   void vRegOpIncOperandCount(void);
 
   // reg Path

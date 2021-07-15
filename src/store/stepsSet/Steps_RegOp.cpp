@@ -27,6 +27,7 @@ void Step::vAddSteps_RegOp(void)
   vAddStep("op[].handlerAll!"_Stz, &Step::vRegOpHandlerAllStore);
   vAddStep("op[].init"_Stz,        &Step::vRegOpInit);
   vAddStep("op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
+  vAddStep("op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
   vAddStep("op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
 }
 
@@ -122,6 +123,20 @@ void Step::vRegOpIsOperandValid(void)
     RASSERT(0);
   
   m_pDataStack->vPushInt(bValid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op[].incHandlerCount -- inc handler count                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpIncHandlerCount(void)
+{
+  ENTRY();
+  
+  i8 i_Handler = m_pDataStack->iPopInt(__func__);
+  
+  m_pJob->pLogicUnit_job()->m_xpOp->vIncHandlerCount(i_Handler);
   
   EXIT();
 }
