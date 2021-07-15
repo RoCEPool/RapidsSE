@@ -742,7 +742,7 @@ function validateInstallDirIsWritable() {
           if [ "\$(dirname "\${dname}")" = "/" ]; then
             break;
           fi
-          
+
           dname="\$(dirname "\${dname}")"
         done
 
@@ -1180,31 +1180,33 @@ function validateFirewall() {
 
     # Test the main internal TCP port. This either succeeds or fails. Ignore stderr output.
     local tcpResult
-    checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null
-    tcpResult="$?"
+    if ! checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null ; then
+      tcpResult="$?"
 
-    if [ "${tcpResult}" -eq 2 ]; then
-      # TCP socket is already in use. This is an error
-      errorList+=( "${server}:${internalPort}  (TCP port already in use by another process on host)" )
+      if [ "${tcpResult}" -eq 2 ]; then
+        # TCP socket is already in use. This is an error
+        errorList+=( "${server}:${internalPort}  (TCP port already in use by another process on host)" )
 
-    elif [ "${tcpResult}" -ne 0 ]; then
-      # Socket is blocked. Add to failed node/socket list
-      errorList+=( "${server}:${internalPort}  (TCP port blocked)" )
+      else
+        # Socket is blocked. Add to failed node/socket list
+        errorList+=( "${server}:${internalPort}  (TCP port blocked)" )
+      fi
     fi
 
     # Test the heartbeat UDP port. This may be indeterminant if another process
     # is using the socket, so we need to cater for that. Ignore stderr output.
     local udpResult
-    checkFirewallUdp "${client}" "${server}" "${heartbeatPort}" 2>/dev/null
-    udpResult="$?"
+    if ! checkFirewallUdp "${client}" "${server}" "${heartbeatPort}" 2>/dev/null ; then
+      udpResult="$?"
 
-    if [ "${udpResult}" -eq 2 ] ; then
-      # UDP socket is already in use. Add to warning node/socket list
-      warningList+=( "${server}:${heartbeatPort}  (UCP port already in use by another process on host)" )
+      if [ "${udpResult}" -eq 2 ] ; then
+        # UDP socket is already in use. Add to warning node/socket list
+        warningList+=( "${server}:${heartbeatPort}  (UCP port already in use by another process on host)" )
 
-    elif [ "${udpResult}" -ne 0 ] ; then
-      # Socket is likely blocked. Add to failed node/socket list
-      errorList+=( "${server}:${heartbeatPort}  (UCP port may be blocked)" )
+      else
+        # Socket is likely blocked. Add to failed node/socket list
+        errorList+=( "${server}:${heartbeatPort}  (UCP port may be blocked)" )
+      fi
     fi
   done
 
@@ -1295,7 +1297,7 @@ function checkFirewallTcp() {
 
   # Spawn a client to try to connect to the server.
   local -a cmdClientTask=()
-  local clientResult
+  local exitCode=0
   cmdClientTask+=( "ssh"
                    "-q" "${client}"
                    "nc" "-z" "${server}" "${port}" )
@@ -1304,8 +1306,10 @@ function checkFirewallTcp() {
   debugPrint "${cmdClientTask[*]}"
 
   # Run the client and get its exit code
-  "${cmdClientTask[@]}"
-  clientResult="$?"
+  if ! "${cmdClientTask[@]}" ; then
+    printError "TCP port ${port} may be blocked by a firewall on on host ${server}."
+    exitCode=1
+  fi
 
   # Kill nc on the server
   local -a cmdServerKill
@@ -1313,12 +1317,7 @@ function checkFirewallTcp() {
   "${cmdServerKill[@]}" || true
 
   # Return the appropriate exit code
-  if [ "${clientResult}" -ne 0 ] ; then
-    printError "TCP port ${port} may be blocked by a firewall on on host ${server}."
-    return 1
-  fi
-
-  return 0
+  return "${exitCode}"
 }
 
 
