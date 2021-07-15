@@ -406,8 +406,8 @@ void Step::vStreamSetAddNodeStatus(void)
                                  (*oNode_I)->szNodeNm(),
                                  (*oNode_I)->xGetHeartbeat().m_acRegionName,
                                  (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
-                                 (*oNode_I)->pSendSocket() ? "1" : "0",
-                                 (*oNode_I)->pRecvSocket() ? "1" : "0",
+                                 (*oNode_I)->pSendSocket() ? true : false,
+                                 (*oNode_I)->pRecvSocket() ? true : false,
                                  C_VARGS_END);
 
     if (!pRow) {
