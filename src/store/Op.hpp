@@ -76,6 +76,7 @@ namespace STORE
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
+    Word* pEventHandler(void);
     void vGrabTaskLock(void);
     void vIncOperandCount(i8 i_OperandKind);
     void vIncWorkDone(void);

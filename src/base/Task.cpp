@@ -585,6 +585,57 @@ void Task::vEntryPoint(eEP eEntryPoint)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get event hander                                                           */
+/*----------------------------------------------------------------------------*/
+Word* Task::pEventHandler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  Word* pEventHandler = nullptr;
+  CodeCell* aFip = nullptr;
+  Word* pWord = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord &&
+      pWord->pCategory() &&
+      pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+    pEventHandler = pWord;
+    
+    return pEventHandler;
+  }
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nItems = m_pReturnStack->nValues();
+  for (i8 i_Item = nItems; i_Item >= 0; i_Item--) {
+    TypedCell* aPeekedItem = m_pReturnStack->aPeekItem(i_Item);
+    eCN eType = aPeekedItem->eType();
+    if (CN_FIPVAL != eType)
+      continue;
+    
+    aFip = aPeekedItem->aFip();
+    pWord = m_oDicStack.pLocateRoutine(aFip);
+    
+    if (pWord &&
+        pWord->pCategory() &&
+        pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+      pEventHandler = pWord;
+      break;
+    }
+  }
+  
+//  if (! pEventHandler) {
+//    m_pReturnStack->vDump(&m_oDicStack,
+//                          "ReturnStack:"_Stz);
+//
+//  }
+  
+  return pEventHandler;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop all locks held by this task                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vDropAllLocks(void)

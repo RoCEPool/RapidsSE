@@ -215,6 +215,9 @@ void Op::vAckPipelineJob(void)
             ,__func__
             ,m_pJob
            );
+    
+//    pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
+//                                "ReturnStack:"_Stz);
   }
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
@@ -410,6 +413,20 @@ void Op::vDump(void)
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_i_Node=%lld\n"_Stz,iNode());
   vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event hander                                                           */
+/*----------------------------------------------------------------------------*/
+Word* Op::pEventHandler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Task* pTask = MY::pTask();
+  
+  Word* pEventHandler = pTask->pEventHandler();
+  
+  return pEventHandler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,6 +972,11 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
           ,pOperand
           ,szSupplemental
          );
+  
+//  Task* pTask = MY::pTask();
+//  pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
+//                              "ReturnStack:"_Stz);
+
 }
 /*----------------------------------------------------------------------------*/
 //void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)

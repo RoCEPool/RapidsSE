@@ -140,8 +140,20 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateRoutine(aFip);
           
-          vTrace("=%p word %s \n"_Stz,aFip,
-                 pWord ? pWord->szWordNm() : C_NO_WORD);
+          if (pWord) {
+            vTrace("=%p word %s %s\n"_Stz
+                   ,aFip
+                   ,pWord->szWordNm()
+                   ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                                       : ""_Stz
+                   );
+          }
+          else {
+            vTrace("=%p word %s \n"_Stz,
+                   aFip,
+                   C_NO_WORD
+                   );
+          }
         }
         else {
           vTrace("%p word %s \n"_Stz,aFip,

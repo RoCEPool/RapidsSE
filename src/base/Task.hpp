@@ -122,6 +122,7 @@ namespace BASE
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
+    Word* pEventHandler(void);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
     bool bIsImmediate(void);

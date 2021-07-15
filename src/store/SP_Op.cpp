@@ -64,9 +64,11 @@ void SP_Op::vLeading(Op* pOp)
   Stream* pStream = pOp->pStream();
   Pipeline* pPipeline = pOp->pPipeline();
 
+  Word* pEventHandler = pOp->pEventHandler();
+  
   vCatf("<? %-12s "
         "[%lld] %-12s "
-        "[%02lld.%03lld] %-12s ?> ## "_Stz
+        "[%02lld.%03lld] %-12s %-32s?> ## "_Stz
         
         ,pPipeline  ? pPipeline->szPipelineNm() : C_NO_NAME
         
@@ -76,7 +78,7 @@ void SP_Op::vLeading(Op* pOp)
         ,pStream    ? pStream->i_Stream()       : -1
         ,pOpSpec    ? pOpSpec->iOpSpec()        : -1
         ,pOp->szOpNm()
-
+        ,pEventHandler ? pEventHandler->szWordNm() : "(no handler)"_Stz
         );
   
 //  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz
