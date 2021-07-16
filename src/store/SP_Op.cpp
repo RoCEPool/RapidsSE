@@ -81,14 +81,14 @@ void SP_Op::vLeading(Op* pOp)
         );
   
   if (pEventHandler) {
-    vCatf("#%04lld %-24s?> ## "_Stz
+    vCatf("%-24s #%04lld ?> ## "_Stz
         
-         ,pOp->iHandlerCount(pOp->iCurHandler())
          ,pEventHandler->szWordNm()
+         ,pOp->iHandlerCount(pOp->iCurHandler())
         );
   }
   else {
-    vCatf(": %-28s?> ## "_Stz
+    vCatf(": %-28s ?> ## "_Stz
         
          ,pOp->pCurWord()->szWordNm()
         );

@@ -493,7 +493,9 @@ void Op::vIncHandlerCount(i8 i_Handler)
 void Op::vIncOperandCount(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+  m_i_CurOperand = i_OperandKind;
+
   m_iOperandCount[i_OperandKind]++;
 }
 
@@ -538,6 +540,7 @@ void Op::vInitOperandHandlers(void)
   }
   
   m_i_CurHandler = 0;
+  m_i_CurOperand = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,7 +826,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
   }
   
-  m_iOperandCount[i_OperandKind]++;
+  //m_iOperandCount[i_OperandKind]++;
   return true;
 }
 
@@ -1025,47 +1028,17 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   SP_Op spOp;
   
   vTraceM("%s "
-          "%-18s pOperand=%s @%p %s\n"_Stz
+          "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
                   
           ,spOp.szLeading(this)
          
           ,szFunNm
           ,AM::pOperandName(pOperand)
+          ,m_iOperandCount[m_i_CurOperand]
           ,pOperand
           ,szSupplemental
          );
-  
-//  Task* pTask = MY::pTask();
-//  pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
-//                              "ReturnStack:"_Stz);
-
 }
-/*----------------------------------------------------------------------------*/
-//void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  if (! pOperand)
-//    return;
-//
-//  //if (m_bTraceOp) {
-//  if (! AM::TRACE::bVerbose(C_VB_OP))
-//    return;
-//
-//  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
-//         "%18s %-15s %p %s\n"_Stz,
-//
-//         m_sOpNm.szStz(),
-//         m_pStage->szStageNm(),
-//         iNode(),
-//         tPtnNo(),
-//         pPipelineJob(),
-//
-//         szFunActNm,
-//         AM::pOperandName(pOperand),
-//         pOperand,
-//         szSupplemental);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get next op                                                                */

@@ -49,6 +49,7 @@ namespace STORE
     Operand*       m_pOutboundOperand;  // operand to be piped out
 
     i8    m_i_CurHandler;
+    i8    m_i_CurOperand;
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
     i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived

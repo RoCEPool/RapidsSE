@@ -899,7 +899,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
   }
   
-  m_xSysArgs.m_oArgTagSet.vDumpSet(true);
+  //m_xSysArgs.m_oArgTagSet.vDumpSet(true);
   
   return true;
 }
