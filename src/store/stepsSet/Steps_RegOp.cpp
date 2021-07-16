@@ -21,11 +21,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOp(void)
 {
-  vAddStep("op[]"_Stz,             &Step::vRegOpGet);
-  vAddStep("op[].handler@"_Stz,    &Step::vRegOpHandlerFetch);
-  vAddStep("op[].handler!"_Stz,    &Step::vRegOpHandlerStore);
-  vAddStep("op[].handlerAll!"_Stz, &Step::vRegOpHandlerAllStore);
-  vAddStep("op[].init"_Stz,        &Step::vRegOpInit);
+  vAddStep("op[]"_Stz,                 &Step::vRegOpGet);
+  vAddStep("op[].handlerEntry"_Stz,    &Step::vRegOpHandlerEntry);
+  vAddStep("op[].handlerExit"_Stz,     &Step::vRegOpHandlerExit);
+  vAddStep("op[].handler@"_Stz,        &Step::vRegOpHandlerFetch);
+  vAddStep("op[].handler!"_Stz,        &Step::vRegOpHandlerStore);
+  vAddStep("op[].handlerAll!"_Stz,     &Step::vRegOpHandlerAllStore);
+  vAddStep("op[].init"_Stz,            &Step::vRegOpInit);
   vAddStep("op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
   vAddStep("op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
   vAddStep("op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
@@ -39,6 +41,34 @@ void Step::vRegOpGet(void)
   ENTRY();
     
   m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOp);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op[].handlerEntry -- handler entry                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpHandlerEntry(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pJob->m_pOp;
+  
+  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull()) {
+    Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
+  
+    pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op[].handlerExit -- handler exit                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpHandlerExit(void)
+{
+  ENTRY();
 
   EXIT();
 }

@@ -1270,6 +1270,8 @@ public:
 
   // reg op
   void vRegOpGet(void);
+  void vRegOpHandlerEntry(void);
+  void vRegOpHandlerExit(void);
   void vRegOpHandlerFetch(void);
   void vRegOpHandlerStore(void);
   void vRegOpHandlerAllStore(void);

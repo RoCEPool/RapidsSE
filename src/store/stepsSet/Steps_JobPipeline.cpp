@@ -69,7 +69,7 @@ void Step::vJob_PipelineBegin(void)
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
       SP_Pipeline spPipeline(pPipeline,true);
-      vTrace("%s\n"_Stz,spPipeline.sz());
+      vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
   }
@@ -77,7 +77,7 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   
   pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
   
@@ -109,8 +109,9 @@ void Step::vJob_PipelineCompile(void)
       // clean compile, passes low memory test
       
       if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+        
         SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-        vTrace("%s\n"_Stz,spPipelineSpec.sz());
+        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
       }
       
       pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
