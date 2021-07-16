@@ -493,7 +493,9 @@ void Op::vIncHandlerCount(i8 i_Handler)
 void Op::vIncOperandCount(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+  m_i_CurOperand = i_OperandKind;
+
   m_iOperandCount[i_OperandKind]++;
 }
 
@@ -538,6 +540,7 @@ void Op::vInitOperandHandlers(void)
   }
   
   m_i_CurHandler = 0;
+  m_i_CurOperand = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,7 +826,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
   }
   
-  m_iOperandCount[i_OperandKind]++;
+  //m_iOperandCount[i_OperandKind]++;
   return true;
 }
 
@@ -1011,7 +1014,11 @@ TagSet* Op::pOpTagSet(void)
 /*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
+void Op::vOpTrace(Operand* pOperand
+                  ,Stz* szFunNm
+                  ,bool bHandler
+                  ,Stz* szSupplemental
+                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -1024,48 +1031,30 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   
   SP_Op spOp;
   
-  vTraceM("%s "
-          "%-18s pOperand=%s @%p %s\n"_Stz
-                  
-          ,spOp.szLeading(this)
-         
-          ,szFunNm
-          ,AM::pOperandName(pOperand)
-          ,pOperand
-          ,szSupplemental
-         );
-  
-//  Task* pTask = MY::pTask();
-//  pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
-//                              "ReturnStack:"_Stz);
-
+  if (bHandler)
+    vTraceM("%s "
+            "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
+                    
+            ,spOp.szLeading(this)
+           
+            ,szFunNm
+            ,AM::pOperandName(pOperand)
+            ,m_iOperandCount[m_i_CurOperand]
+            ,pOperand
+            ,szSupplemental
+           );
+  else
+    vTraceM("%s "
+            "%-18s pOperand=%s @%p %s\n"_Stz
+                    
+            ,spOp.szLeading(this)
+           
+            ,szFunNm
+            ,AM::pOperandName(pOperand)
+            ,pOperand
+            ,szSupplemental
+           );
 }
-/*----------------------------------------------------------------------------*/
-//void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  if (! pOperand)
-//    return;
-//
-//  //if (m_bTraceOp) {
-//  if (! AM::TRACE::bVerbose(C_VB_OP))
-//    return;
-//
-//  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
-//         "%18s %-15s %p %s\n"_Stz,
-//
-//         m_sOpNm.szStz(),
-//         m_pStage->szStageNm(),
-//         iNode(),
-//         tPtnNo(),
-//         pPipelineJob(),
-//
-//         szFunActNm,
-//         AM::pOperandName(pOperand),
-//         pOperand,
-//         szSupplemental);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get next op                                                                */
@@ -1193,18 +1182,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-//  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeOut :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-  vOpTrace(pOperand,(Stz*)__func__);//"vPipeToNextOp :"_Stz);
-// }
+  vOpTrace(pOperand,(Stz*)__func__);
   
   RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
   
@@ -1235,18 +1213,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 
   RASSERT(pOutputQueue);
   
-//  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeToOutput :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,(Stz*)__func__);
-//  }
+  vOpTrace(pOperand,(Stz*)__func__);
   
   pOutputQueue->vAppend(pOperand);
 }
@@ -1267,7 +1234,7 @@ Operand* Op::pPopLeft(void)
   
   if (pOperand) {
     vDropTaskLock();
-    vOpTrace(pOperand,(Stz*)__func__);
+    vOpTrace(pOperand,(Stz*)__func__,false);
     AM::vOperandsDec();
     return pOperand;
   }
@@ -1328,7 +1295,7 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
-    vOpTrace(pOperand,(Stz*)__func__);
+    vOpTrace(pOperand,(Stz*)__func__,false);
     return pOperand;
   }
   else {
