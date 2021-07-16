@@ -106,8 +106,11 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTagSet(void);
-    void vOpTrace(Operand* pOperand, Stz* szFunNm,
-                  Stz* szSupplemental=""_Stz);
+    void vOpTrace(Operand* pOperand
+                  ,Stz* szFunNm
+                  ,bool bHandler=true
+                  ,Stz* szSupplemental=""_Stz
+                  );
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Operand* pOutboundOperand(void);

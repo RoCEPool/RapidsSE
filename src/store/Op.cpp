@@ -1014,7 +1014,11 @@ TagSet* Op::pOpTagSet(void)
 /*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
+void Op::vOpTrace(Operand* pOperand
+                  ,Stz* szFunNm
+                  ,bool bHandler
+                  ,Stz* szSupplemental
+                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -1027,17 +1031,29 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunNm, Stz* szSupplemental)
   
   SP_Op spOp;
   
-  vTraceM("%s "
-          "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
-                  
-          ,spOp.szLeading(this)
-         
-          ,szFunNm
-          ,AM::pOperandName(pOperand)
-          ,m_iOperandCount[m_i_CurOperand]
-          ,pOperand
-          ,szSupplemental
-         );
+  if (bHandler)
+    vTraceM("%s "
+            "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
+                    
+            ,spOp.szLeading(this)
+           
+            ,szFunNm
+            ,AM::pOperandName(pOperand)
+            ,m_iOperandCount[m_i_CurOperand]
+            ,pOperand
+            ,szSupplemental
+           );
+  else
+    vTraceM("%s "
+            "%-18s pOperand=%s @%p %s\n"_Stz
+                    
+            ,spOp.szLeading(this)
+           
+            ,szFunNm
+            ,AM::pOperandName(pOperand)
+            ,pOperand
+            ,szSupplemental
+           );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1218,7 +1234,7 @@ Operand* Op::pPopLeft(void)
   
   if (pOperand) {
     vDropTaskLock();
-    vOpTrace(pOperand,(Stz*)__func__);
+    vOpTrace(pOperand,(Stz*)__func__,false);
     AM::vOperandsDec();
     return pOperand;
   }
@@ -1279,7 +1295,7 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
-    vOpTrace(pOperand,(Stz*)__func__);
+    vOpTrace(pOperand,(Stz*)__func__,false);
     return pOperand;
   }
   else {
