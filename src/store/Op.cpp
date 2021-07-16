@@ -203,23 +203,31 @@ void Op::vAckPipelineJob(void)
   
   Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
+
   if (m_bTraceOp) {
     
-    SP_Op spOp;
+    if (AM::TRACE::bVBlong()) {
+      SP_Op spOp;
 
-    vTraceM("%s "
-            "%-18s pipelineJob=%p\n"_Stz
-           
-            ,spOp.szLeading(this)
-           
-            ,__func__
-            ,m_pJob
-           );
-    
-//    pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
-//                                "ReturnStack:"_Stz);
+      vTraceM("%s "
+              "%-18s pipelineJob=%p\n"_Stz
+             
+              ,spOp.szLeading(this)
+             
+              ,__func__
+              ,m_pJob
+             );
+    }
+    else {
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+             AM::JOB::szJobNm(m_pJob),
+             m_pStage->szStageNm(),
+             iNode(),
+             tPtnNo());
+    }
   }
   
+
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
 /*----------------------------------------------------------------------------*/
@@ -1021,6 +1029,31 @@ void Op::vOpTrace(Operand* pOperand
                   )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (AM::TRACE::bVBlong())
+    goto L_Long_Form;
+
+  
+  if (! AM::TRACE::bVerbose(C_VB_OP))
+    return;
+
+  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
+         "%18s %-15s %p %s\n"_Stz,
+
+         m_sOpNm.szStz(),
+         m_pStage->szStageNm(),
+         iNode(),
+         tPtnNo(),
+         pPipelineJob(),
+
+         szFunNm,
+         AM::pOperandName(pOperand),
+         pOperand,
+         szSupplemental);
+  
+  return;
+  
+  L_Long_Form:
   
   //if (m_bTraceOp) {
   if (! AM::TRACE::bVerbose(C_VB_OP))

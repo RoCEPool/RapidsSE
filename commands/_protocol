@@ -31,7 +31,7 @@ begin
 end
 
 //<vb_op> = 1
-<vb_pipelineSpec> = 1
+//<vb_pipelineSpec> = 1
 
 ;
 
