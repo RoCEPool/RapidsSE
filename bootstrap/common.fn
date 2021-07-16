@@ -157,6 +157,36 @@ function printIndentArray() {
   done
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns with exit code 0 if the given value is present in the array.
+## Otherwise returns with exit code 1.
+## Params:
+##  $1 - the value to test
+##  $@ - the array
+
+function isValueInArray() {
+
+  local val="$1"
+  shift
+  local -a arr=("$@")
+
+  if [ "${val:-x}" = x ]; then
+    return 1
+  fi
+
+  if [ "${arr[*]:-x}" = x ] || [ "${#arr[@]}" -eq 0 ]; then
+    return 1
+  fi
+
+  for item in "${arr[@]}"; do
+    if [ "${item}" = "${val}" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Compares two version numbers in the form x.y.z and returns a successful
@@ -949,7 +979,50 @@ function numberOfUniqueHosts() {
   echo "${#hostMap[@]}"
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns an array of non-unique hostnames from a given list of node names.
+## The output of this can be read into an array by calling it like this:
+##   mapfile -t myarray < <(nonUniqueHosts "${nodeNames[@]}")
+## Params:
+##  $@ - (optional) The list of node names to consider. If not supplied then all
+##        nodes in the cluster will be considered.
+function nonUniqueHosts() {
+
+  local nodeNames=()
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local -A hostMap
+
+  for nodeName in "${nodeNames[@]}"; do
+    # Get the hostname and set it in the map
+    local hostname
+    local currentVal
+
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    currentVal="${hostMap["${hostname}"]}"
+    ((currentVal+=1))
+    hostMap["${hostname}"]="${currentVal}"
+  done
+
+  # Find all of the hostnames with a value > 1
+  for hostname in "${!hostMap[@]}"; do
+    local currentVal
+    currentVal="${hostMap["${hostname}"]}"
+
+    if [ "${currentVal}" -gt 1 ]; then
+      echo "${hostname}"
+    fi
+  done
+}
+
+
 # =========================================================================== #
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

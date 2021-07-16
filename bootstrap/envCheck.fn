@@ -1093,16 +1093,34 @@ function validateLocalBash() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that all configured ports are reachable through each machine's firewall.
-## This test can be skipped by setting SKIP_FIREWALL_TEST=1.
+## This test can be skipped by setting NO_FIREWALL=1.
+## By default all ports are tested in parallel (where possible). You can force
+## sequential tests by setting SEQ_FIREWALL=1
 ## Params:
 ##  $@ - (optional) a list of node names to check, otherwise all nodes will be checked.
 
 function validateFirewall() {
 
-  if [ "${SKIP_FIREWALL_TEST:-0}" -eq 1 ]; then
-    echo "Skipping firewall test"
+  if [ "${NO_FIREWALL:-0}" -eq 1 ]; then
+    debugPrint "Skipping firewall tests."
     return
   fi
+
+  if [ "${SEQ_FIREWALL:-0}" -eq 1 ]; then
+    validateFirewallSequential "$@"
+  else
+    validateFirewallParallel "$@"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that all configured ports are reachable through each machine's firewall.
+## Runs the tests in parallel.
+## Params:
+##  $@ - (optional) a list of node names to check, otherwise all nodes will be checked.
+
+function validateFirewallSequential() {
 
   local isFullCluster
   local -a nodeNames
@@ -1113,6 +1131,7 @@ function validateFirewall() {
     nodeNames=( "${NODE_LIST[@]}" )
   else
     # Check on the nodes given
+    #shellcheck disable=SC2034
     isFullCluster=0
     nodeNames=( "$@" )
   fi
@@ -1127,17 +1146,17 @@ function validateFirewall() {
     return 0
   fi
 
-  # There is a blind spot here. If we start with a one node cluster then we cannot test
-  # that this single node has had its firewall ports opened up. For a single node cluster
-  # it doesn't matter anyway.
-  # But if we then add additional nodes to this cluster we really need to test the connectivity
-  # to that single node from the second node being added. However if the existing cluster was
-  # already running then the desired ports will already be in use and we cannot test to see
-  # if they are being filtered out by the firewall, particularly any UDP ports. We could
-  # potentially make a TCP connection and not send any data though.
+  # TODO: There is a blind spot here. If we start with a one node cluster then we cannot test
+  # TODO: that this single node has had its firewall ports opened up. For a single node cluster
+  # TODO: it doesn't matter anyway.
+  # TODO: But if we then add additional nodes to this cluster we really need to test the connectivity
+  # TODO: to that single node from the second node being added. However if the existing cluster was
+  # TODO: already running then the desired ports will already be in use and we cannot test to see
+  # TODO: if they are being filtered out by the firewall, particularly any UDP ports. We could
+  # TODO: potentially make a TCP connection and not send any data though.
   #
-  # For now we will only only test the nodeNames that are being passed in, or the full
-  # cluster if we have more than 1 unique hostname.
+  # TODO: For now we will only only test the nodeNames that are being passed in, or the full
+  # TODO: cluster if we have more than 1 unique hostname.
 
   local firstHost
   firstHost="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_HOST_KEY}")"
@@ -1203,11 +1222,11 @@ function validateFirewall() {
 
       if [ "${udpResult}" -eq 2 ] ; then
         # UDP socket is already in use. Add to warning node/socket list
-        warningList+=( "${server}:${heartbeatPort}  (UCP port already in use by another process on host)" )
+        warningList+=( "${server}:${heartbeatPort}  (UDP port already in use by another process on host)" )
 
       else
         # Socket is likely blocked. Add to failed node/socket list
-        errorList+=( "${server}:${heartbeatPort}  (UCP port may be blocked)" )
+        errorList+=( "${server}:${heartbeatPort}  (UDP port may be blocked)" )
       fi
     fi
   done
@@ -1244,8 +1263,243 @@ function validateFirewall() {
     exit 1
   fi
 
-  # Otherwise continue on errors
+  # Otherwise continue on warnings
 }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that all configured ports are reachable through each machine's firewall.
+## Runs the tests in parallel.
+## Params:
+##  $@ - (optional) a list of node names to check, otherwise all nodes will be checked.
+
+function validateFirewallParallel() {
+
+  local isFullCluster
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    # Check all nodes
+    isFullCluster=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    # Check on the nodes given
+    #shellcheck disable=SC2034
+    isFullCluster=0
+    nodeNames=( "$@" )
+  fi
+
+  # If we have a full cluster with only 1 unique hostname then there is no point checking
+  # for connectivity because it is all local and unaffected by firewalls.
+  local numUniqueHosts
+  numUniqueHosts="$(numberOfUniqueHosts)"
+
+  if [ "${numUniqueHosts}" -eq 1 ]; then
+    debugPrint "No need to test the firewall because there is only 1 unique hostname in the cluster."
+    return 0
+  fi
+
+  # TODO: There is a blind spot here. If we start with a one node cluster then we cannot test
+  # TODO: that this single node has had its firewall ports opened up. For a single node cluster
+  # TODO: it doesn't matter anyway.
+  # TODO: But if we then add additional nodes to this cluster we really need to test the connectivity
+  # TODO: to that single node from the second node being added. However if the existing cluster was
+  # TODO: already running then the desired ports will already be in use and we cannot test to see
+  # TODO: if they are being filtered out by the firewall, particularly any UDP ports. We could
+  # TODO: potentially make a TCP connection and not send any data though.
+  #
+  # TODO: For now we will only only test the nodeNames that are being passed in, or the full
+  # TODO: cluster if we have more than 1 unique hostname.
+
+  local firstHost
+  firstHost="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_HOST_KEY}")"
+
+  # We can't test the firewall capabilities of the current host from the current host.
+  # So we need to find an alternate host to test from.
+  local alternateHost
+  for nodeName in "${NODE_LIST[@]}"; do
+    local host
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    if [ "${host}" != "${firstHost}" ]; then
+      alternateHost="${host}"
+      break;
+    fi
+  done
+
+  #shellcheck disable=SC2016
+  [ "${alternateHost:-x}" != x ] || errorExit 'null value for ${alternateHost}'
+
+  local nodeName
+  local server
+  local client
+  local port
+  local protocol
+
+  local -a errorList=()
+  local -a warningList=()
+
+  # All TCP tests can be run in parallel because they have unique hosts and ports.
+  # For UDP tests they can share the same port if they are on the same host, so we
+  # may need to run some of those tests sequentially.
+
+  # First we need an array to hold the pids of all background tasks
+  # and an associative array to hold the client/server/port information (keyed on pid).
+  local -a jobPids=()
+  local -A jobParams
+  local pid
+
+  # Now launch all TCP tests in parallel
+  for nodeName in "${nodeNames[@]}"; do
+
+    server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    client="${firstHost}"  # by default
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    # Ensure we don't try to test the firewall of the current host from the current host
+    if [ "${server}" = "${client}" ]; then
+      client="${alternateHost}"
+    fi
+
+    (checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null) &
+    pid="$!"
+
+    jobPids+=( "${pid}" )
+    jobParams["${pid}_server"]="${server}"
+    jobParams["${pid}_client"]="${client}"
+    jobParams["${pid}_port"]="${port}"
+    jobParams["${pid}_protocol"]="TCP"
+  done
+
+  # The Heartbeat UDP tests all run on the same port, so we only need to consider
+  # the hostnames for uniqueness or non-uniqueness.
+
+  # Get a list of non-unique server names
+  local -a sequentialServers
+  mapfile -t sequentialServers < <(nonUniqueHosts "${nodeNames[@]}")
+
+  # Launch all of the unique server name UDP tests
+  for nodeName in "${nodeNames[@]}"; do
+
+    server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    client="${firstHost}"  # by default
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+
+    # Skip any sequential hosts
+    if isValueInArray "${server}" "${sequentialServers[@]}"; then
+      continue
+    fi
+
+    # Ensure we don't try to test the firewall of the current host from the current host
+    if [ "${server}" = "${client}" ]; then
+      client="${alternateHost}"
+    fi
+
+    (checkFirewallUdp "${client}" "${server}" "${port}" 2>/dev/null) &
+    pid="$!"
+
+    jobPids+=( "${pid}" )
+    jobParams["${pid}_server"]="${server}"
+    jobParams["${pid}_client"]="${client}"
+    jobParams["${pid}_port"]="${port}"
+    jobParams["${pid}_protocol"]="UDP"
+  done
+
+  # Wait for all parallel jobs to finish and collate all parallel results
+  for pid in "${jobPids[@]}"; do
+    local pidResult
+    wait "${pid}"
+    pidResult="$?"
+
+    if [ "${pidResult}" -eq 0 ]; then
+      # All good
+      continue
+    fi
+
+    server="${jobParams["${pid}_server"]}"
+    port="${jobParams["${pid}_port"]}"
+    protocol="${jobParams["${pid}_protocol"]}"
+
+    if [ "${pidResult}" -eq 2 ]; then
+
+      # For TCP this is an error. For UDP it is a warning.
+      if [ "${protocol}" = "TCP" ]; then
+        errorList+=( "${server}:${port}  (TCP port already in use by another process on host)" )
+      else
+        warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+      fi
+      # TCP socket is already in use. This is an error
+
+    else
+      # Socket is blocked. Add to failed node/socket list
+      errorList+=( "${server}:${port}  (${protocol} port may be blocked)" )
+    fi
+  done
+
+  # Launch all of the non-unique server name UDP tests sequentially and collate results
+  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_KEY}")"
+  for server in "${sequentialServers[@]}"; do
+    client="${firstHost}"  # by default
+
+    # Ensure we don't try to test the firewall of the current host from the current host
+    if [ "${server}" = "${client}" ]; then
+      client="${alternateHost}"
+    fi
+
+    # Test the heartbeat UDP port. This may be indeterminant if another process
+    # is using the socket, so we need to cater for that. Ignore stderr output.
+    local udpResult
+    if ! checkFirewallUdp "${client}" "${server}" "${port}" 2>/dev/null ; then
+      udpResult="$?"
+
+      if [ "${udpResult}" -eq 2 ] ; then
+        # UDP socket is already in use. Add to warning node/socket list
+        warningList+=( "${server}:${heartbeatPort}  (UDP port already in use by another process on host)" )
+
+      else
+        # Socket is likely blocked. Add to failed node/socket list
+        errorList+=( "${server}:${heartbeatPort}  (UDP port may be blocked)" )
+      fi
+    fi
+  done
+
+
+  # Present final results
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -eq 0 ]; then
+    debugPrint "No errors or warnings from the firewall"
+    return
+  fi
+
+  # Print errors/warnings
+  if [ "${#errorList[@]}" -gt 0 ]; then
+    local errMsg
+    errMsg="The following hosts appear to have connectivity problems on their ports.\n"
+    errMsg+="RapidsSE requires these ports to be open in the host's firewall."
+    for host in "${errorList[@]}"; do
+      errMsg+="\n  ${host}"
+    done
+
+    printError "${errMsg}"
+  fi
+
+  if [ "${#warningList[@]}" -gt 0 ]; then
+    local warningMsg
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg+="RapidsSE requires these ports to be open."
+    for host in "${warningList[@]}"; do
+      warningMsg+="\n  ${host}"
+    done
+
+    printWarning "${warningMsg}"
+  fi
+
+  if [ "${#errorList[@]}" -gt 0 ]; then
+    exit 1
+  fi
+
+  # Otherwise continue on warnings
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Tests that two hosts can communicate via TCP/IP.
