@@ -38,112 +38,13 @@ macro AM_HANDLER_CRWBUFFER_RHT
   EO_DEVIXT_CRWBUF_TEST
   EO_JMP_FALSE ROWLFT_CRWRHT
 
-  EO_CALL JOIN_CRWLFT_CRWRHT
+  EO_CALL JOINBUFFERS_CRWLFT_CRWRHT
   EO_RETURN
 
   Label ROWLFT_CRWRHT
-  EO_CALL JOIN_ROWLFT_CRWRHT
+  EO_CALL JOINBUFFERS_ROWLFT_CRWRHT
   EO_RETURN
 
-endMacro
-
-macro AM_JOIN_CRWLFT_CRWRHT
-//----------------------------------------------------------------------------//
-// macro AM_JOIN_CRWLFT_CRWRHT                                                //
-//----------------------------------------------------------------------------//
-  // JOIN_CRWLFT_CRWRHT
-  Label JOIN_CRWLFT_CRWRHT
-  EO_PRINTF "**AM_JOIN_CRWLFT_CRWRHT**\n"
-  EO_POP
-
-  // For each row in the left buffer
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_CRWBUF_BEGIN
-
-  // NEXT_CRW_LFT
-  Label CRWLFT_CRWRHT_NEXT_CRWLFT
-
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_CRWBUF_NEXT
-  EO_JMP_FALSE QUERY_DONE
-
-  EO_PRINTF "**CRWBUFFER HANDLER GOT LFT**\n"
-
-  // left row
-  EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
-  EO_PUSH_RLU_LOCALS
-  EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_LFT
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_COLS_TO_LOCALS
-
-  // Now iterate each right buffer
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_CRWBUF_BEGIN
-
-  // CRWLFT_CRWRHT_NEXT_CRW_RHT
-  Label CRWLFT_CRWRHT_NEXT_CRW_RHT
-
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_CRWBUF_NEXT
-
-  EO_JMP_FALSE CRWLFT_CRWRHT_NEXT_CRWLFT
-
-  EO_PRINTF "**CRWBUFFER HANDLER GOT RHT**\n"
-
-  EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
-  EO_JMP CRWLFT_CRWRHT_NEXT_CRW_RHT
-  EO_JMP QUERY_DONE
-endMacro
-
-macro AM_JOIN_ROWLFT_CRWRHT
-//----------------------------------------------------------------------------//
-// macro AM_JOIN_ROWLFT_CRWRHT                                                //
-//----------------------------------------------------------------------------//
-  // JOIN_ROWLFT_CRWRHT
-  Label JOIN_ROWLFT_CRWRHT
-  EO_PRINTF "**AM_JOIN_ROWLFT_CRWRHT**\n"
-  EO_POP
-
-  // For each row in the left buffer
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_ROWBUF_BEGIN
-
-  // NEXT_ROW_LFT
-  Label ROWLFT_CRWRHT_NEXT_ROWLFT
-
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_ROWBUF_NEXT
-  EO_JMP_FALSE QUERY_DONE
-
-  EO_PRINTF "**CRWBUFFER HANDLER GOT LFT**\n"
-
-  // left row
-  EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
-  EO_PUSH_RLU_LOCALS
-  EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_COLS_TO_LOCALS
-
-  // Now iterate each right buffer
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_CRWBUF_BEGIN
-
-  // NEXT_CRW_RHT
-  Label ROWLFT_CRWRHT_NEXT_CRWRHT
-
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_CRWBUF_NEXT
-
-  EO_JMP_FALSE ROWLFT_CRWRHT_NEXT_ROWLFT
-
-  EO_PRINTF "**CRWBUFFER HANDLER GOT RHT**\n"
-
-  EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
-  EO_JMP ROWLFT_CRWRHT_NEXT_CRWRHT
-  EO_JMP QUERY_DONE
 endMacro
 
 macro AM_HANDLER_CRWBUFFER_AGG

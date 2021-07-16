@@ -64,7 +64,7 @@
   0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
-/*
+
   // delete the left buffer
   DevLftIxt.crwBuffer@ to Operand[]
   Operand[].isNull not if
@@ -76,7 +76,7 @@
     Operand[].delete
     nullptr DevLftRow.rowBuffer!
   then
-*/
+
   // record receipt of end right marker
   0 to Counter1[]
 
@@ -184,12 +184,24 @@
   EC_NONE locals| eError |
 
   // if we have not received STARTRIGHTMARKER
+  /*
   Counter1[] 0 == if
      "loopJoin_StreamDef got left streamDef" .
      // move pipein[] to StreamDefLft[]
      Pipein[]\clear to StreamDefLft[]
     true
     exit
+  then
+  */
+
+  StreamDefLft[].isNull if
+
+      "loopJoin_StreamDef got left streamDef" .
+      // move pipein[] to StreamDefLft[]
+      Pipein[]\clear to StreamDefLft[]
+
+      true
+      exit
   then
 
   // We have received the STARTRIGHTMARKER
