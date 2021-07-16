@@ -2,13 +2,13 @@
 /* AM_LoopJoin.macro -- ASM Macros for LOOPJOIN                               */
 /*============================================================================*/
 
-macro AM_JOINBUFFERS_CRWLFT_CRWRHT
+macro AM_LOOPJOIN_CRWLFT_CRWRHT
 //----------------------------------------------------------------------------//
-// macro AM_JOINBUFFERS_CRWLFT_CRWRHT                                         //
+// macro AM_LOOPJOIN_CRWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-  // JOINBUFFERS_CRWLFT_CRWRHT
-  Label JOINBUFFERS_CRWLFT_CRWRHT
-  EO_PRINTF "**AM_JOINBUFFERS_CRWLFT_CRWRHT**\n"
+  // LOOPJOIN_CRWLFT_CRWRHT
+  Label LOOPJOIN_CRWLFT_CRWRHT
+  EO_PRINTF "**AM_LOOPJOIN_CRWLFT_CRWRHT**\n"
   EO_POP
 
   // For each row in the left buffer
@@ -22,7 +22,7 @@ macro AM_JOINBUFFERS_CRWLFT_CRWRHT
   EO_DEVIXT_CRWBUF_NEXT
   EO_JMP_FALSE QUERY_DONE
 
-  EO_PRINTF "**JOINBUFFERS_CRWLFT_CRWRHT GOT LFT**\n"
+  EO_PRINTF "**LOOPJOIN_CRWLFT_CRWRHT GOT LFT**\n"
 
   // left row
   EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
@@ -45,20 +45,20 @@ macro AM_JOINBUFFERS_CRWLFT_CRWRHT
 
   EO_JMP_FALSE CRWLFT_CRWRHT_NEXT_CRWLFT
 
-  EO_PRINTF "**JOINBUFFERS_CRWLFT_CRWRHT GOT RHT**\n"
+  EO_PRINTF "**LOOPJOIN_CRWLFT_CRWRHT GOT RHT**\n"
 
   EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP CRWLFT_CRWRHT_NEXT_CRWRHT
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_JOINBUFFERS_CRWLFT_ROWRHT
+macro AM_LOOPJOIN_CRWLFT_ROWRHT
 //----------------------------------------------------------------------------//
-// macro AM_JOINBUFFERS_CRWLFT_ROWRHT                                         //
+// macro AM_LOOPJOIN_CRWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
-  // JOINBUFFERS_CRWLFT_ROWRHT
-  Label JOINBUFFERS_CRWLFT_ROWRHT
-  EO_PRINTF "**AM_JOINBUFFERS_CRWLFT_ROWRHT**\n"
+  // LOOPJOIN_CRWLFT_ROWRHT
+  Label LOOPJOIN_CRWLFT_ROWRHT
+  EO_PRINTF "**AM_LOOPJOIN_CRWLFT_ROWRHT**\n"
   EO_POP
 
   // For each row in the left crw buffer
@@ -72,7 +72,7 @@ macro AM_JOINBUFFERS_CRWLFT_ROWRHT
   EO_DEVIXT_CRWBUF_NEXT
   EO_JMP_FALSE QUERY_DONE
 
-  EO_PRINTF "**JOINBUFFERS_CRWLFT_ROWRHT GOT LFT**\n"
+  EO_PRINTF "**LOOPJOIN_CRWLFT_ROWRHT GOT LFT**\n"
 
   // left row
   EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
@@ -95,20 +95,20 @@ macro AM_JOINBUFFERS_CRWLFT_ROWRHT
 
   EO_JMP_FALSE CRWLFT_ROWRHT_NEXT_CRWLFT
 
-  EO_PRINTF "**JOINBUFFERS_CRWLFT_ROWRHT GOT RHT**\n"
+  EO_PRINTF "**LOOPJOIN_CRWLFT_ROWRHT GOT RHT**\n"
 
   EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP CRWLFT_ROWRHT_NEXT_ROWRHT
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_JOINBUFFERS_ROWLFT_CRWRHT
+macro AM_LOOPJOIN_ROWLFT_CRWRHT
 //----------------------------------------------------------------------------//
-// macro AM_JOINBUFFERS_ROWLFT_CRWRHT                                         //
+// macro AM_LOOPJOIN_ROWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-  // JOINBUFFERS_ROWLFT_CRWRHT
-  Label JOINBUFFERS_ROWLFT_CRWRHT
-  EO_PRINTF "**AM_JOINBUFFERS_ROWLFT_CRWRHT**\n"
+  // LOOPJOIN_ROWLFT_CRWRHT
+  Label LOOPJOIN_ROWLFT_CRWRHT
+  EO_PRINTF "**AM_LOOPJOIN_ROWLFT_CRWRHT**\n"
   EO_POP
 
   // For each row in the left buffer
@@ -122,7 +122,7 @@ macro AM_JOINBUFFERS_ROWLFT_CRWRHT
   EO_DEVROW_ROWBUF_NEXT
   EO_JMP_FALSE QUERY_DONE
 
-  EO_PRINTF "**JOINBUFFERS_ROWLFT_CRWRHT GOT LFT**\n"
+  EO_PRINTF "**LOOPJOIN_ROWLFT_CRWRHT GOT LFT**\n"
 
   // left row
   EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
@@ -144,20 +144,20 @@ macro AM_JOINBUFFERS_ROWLFT_CRWRHT
 
   EO_JMP_FALSE ROWLFT_CRWRHT_NEXT_ROWLFT
 
-  EO_PRINTF "**JOINBUFFERS_ROWLFT_CRWRHT GOT RHT**\n"
+  EO_PRINTF "**LOOPJOIN_ROWLFT_CRWRHT GOT RHT**\n"
 
   EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP ROWLFT_CRWRHT_NEXT_CRWRHT
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_JOINBUFFERS_ROWLFT_ROWRHT
+macro AM_LOOPJOIN_ROWLFT_ROWRHT
 //----------------------------------------------------------------------------//
-// macro AM_JOINBUFFERS_ROWLFT_ROWRHT                                         //
+// macro AM_LOOPJOIN_ROWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
-  // JOINBUFFERS_ROWLFT_ROWRHT
-  Label JOINBUFFERS_ROWLFT_ROWRHT
-  EO_PRINTF "**AM_JOINBUFFERS_ROWLFT_ROWRHT**\n"
+  // LOOPJOIN_ROWLFT_ROWRHT
+  Label LOOPJOIN_ROWLFT_ROWRHT
+  EO_PRINTF "**AM_LOOPJOIN_ROWLFT_ROWRHT**\n"
   EO_POP
 
   // For each row in the left buffer
@@ -171,7 +171,7 @@ macro AM_JOINBUFFERS_ROWLFT_ROWRHT
   EO_DEVROW_ROWBUF_NEXT
   EO_JMP_FALSE QUERY_DONE
 
-  EO_PRINTF "**JOINBUFFERS_ROWLFT_ROWRHT GOT LFT**\n"
+  EO_PRINTF "**LOOPJOIN_ROWLFT_ROWRHT GOT LFT**\n"
 
   // left row
   EO_RLU_SET_ITEMS <projectItems>     // C_TAG_PROJECT_ITEMS
@@ -193,7 +193,7 @@ macro AM_JOINBUFFERS_ROWLFT_ROWRHT
 
   EO_JMP_FALSE ROWLFT_ROWRHT_NEXT_ROWLFT
 
-  EO_PRINTF "**JOINBUFFERS_ROWLFT_ROWRHT GOT RHT**\n"
+  EO_PRINTF "**LOOPJOIN_ROWLFT_ROWRHT GOT RHT**\n"
 
   EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP ROWLFT_ROWRHT_NEXT_ROWRHT

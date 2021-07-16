@@ -65,10 +65,10 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSE_TILL_UPPER,
   /*    */ AM_INDEX_UPPER_BOUND,
 
-  /*    */ AM_JOINBUFFERS_CRWLFT_CRWRHT,
-  /*    */ AM_JOINBUFFERS_CRWLFT_ROWRHT,
-  /*    */ AM_JOINBUFFERS_ROWLFT_CRWRHT,
-  /*    */ AM_JOINBUFFERS_ROWLFT_ROWRHT,
+  /*    */ AM_LOOPJOIN_CRWLFT_CRWRHT,
+  /*    */ AM_LOOPJOIN_CRWLFT_ROWRHT,
+  /*    */ AM_LOOPJOIN_ROWLFT_CRWRHT,
+  /*    */ AM_LOOPJOIN_ROWLFT_ROWRHT,
 
   /*    */ AM_LOOPJOIN_END,
 
@@ -181,10 +181,10 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSE_TILL_UPPER"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
-    /*    */ "JOINBUFFERS_CRWLFT_CRWRHT"_Stz,
-    /*    */ "JOINBUFFERS_CRWLFT_ROWRHT"_Stz,
-    /*    */ "JOINBUFFERS_ROWLFT_CRWRHT"_Stz,
-    /*    */ "JOINBUFFERS_ROWLFT_ROWRHT"_Stz,
+    /*    */ "LOOPJOIN_CRWLFT_CRWRHT"_Stz,
+    /*    */ "LOOPJOIN_CRWLFT_ROWRHT"_Stz,
+    /*    */ "LOOPJOIN_ROWLFT_CRWRHT"_Stz,
+    /*    */ "LOOPJOIN_ROWLFT_ROWRHT"_Stz,
 
     /*    */ "LOOPJOIN_END"_Stz,
 
