@@ -1860,8 +1860,84 @@ void vTest32(void)
 /*----------------------------------------------------------------------------*/
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
+
+void vScale(i8 nRequired, i16& iValue, i8& nScale)
+{
+  // 1) the value has the required scale
+  if (nScale == nRequired)
+    return;
+
+  i8 iScaleDiff;
+  i8 iScaleCorrect;
+
+  // 1) the value needs its scale increased
+  if (nRequired > nScale) {
+
+    iScaleDiff = nRequired - nScale;
+    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+    iValue = iValue * iScaleCorrect;
+    nScale = nRequired;
+    return;
+  }
+
+  // 3) the value needs its scale decreased
+  iScaleDiff = nScale - nRequired;
+  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+  iValue = iValue / iScaleCorrect;
+  nScale = nRequired;
+}
+
+void vRescale(i16& iA, i8& iA_scale, i16& iB, i8& iB_scale)
+{
+  // 1) the two scales are the same
+  if (iA_scale == iB_scale)
+    return;
+  
+  i8 iScaleDiff;
+  i8 iScaleCorrect;
+
+  // 2) scale A > scale B
+  if (iA_scale > iB_scale) {
+    iScaleDiff = iA_scale - iB_scale;
+    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+    iB = iB * iScaleCorrect;
+    iB_scale = iA_scale;
+    return;
+  }
+
+  // 3) scale A < scale B
+  iScaleDiff = iB_scale - iA_scale;
+  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+  iA = iA * iScaleCorrect;
+  iA_scale = iB_scale;
+}
+
+
 void vTest33(void)
 {
+  vTrace("vTest33 -- Decimal Tests\n"_Stz);
+  
+  i16 iA = 1;
+  i8  iA_scale = 0;
+  
+  vTrace("iA = %lld ; iA_scale = %lld\n"_Stz,(i8)iA,iA_scale);
+  
+  i8 nPlaces;
+  for (nPlaces = 0; nPlaces < 5; nPlaces++) {
+    vScale(nPlaces,iA,iA_scale);
+    vTrace("scale to %lld places: iA = (%lld,%lld)\n"_Stz,
+           nPlaces,
+           (i8)iA,
+           iA_scale);
+  }
+  for (nPlaces--; nPlaces >=0; nPlaces--) {
+    vScale(nPlaces,iA,iA_scale);
+    vTrace("scale to %lld places: iA = (%lld,%lld)\n"_Stz,
+           nPlaces,
+           (i8)iA,
+           iA_scale);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
