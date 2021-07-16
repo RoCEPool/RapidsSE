@@ -69,7 +69,18 @@ void Step::vRegOpHandlerEntry(void)
 void Step::vRegOpHandlerExit(void)
 {
   ENTRY();
-
+  
+//  Op* pOp = m_pJob->m_pOp;
+//  
+//  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull()) {
+//    Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
+//  
+//    pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+//  }
+//  else {
+//    pOp->vOpTrace(nullptr,(Stz*)__func__,true);
+//  }
+  
   EXIT();
 }
 

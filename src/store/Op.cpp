@@ -1021,9 +1021,6 @@ void Op::vOpTrace(Operand* pOperand
                   )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  if (! pOperand)
-    return;
   
   //if (m_bTraceOp) {
   if (! AM::TRACE::bVerbose(C_VB_OP))
@@ -1031,8 +1028,9 @@ void Op::vOpTrace(Operand* pOperand
   
   SP_Op spOp;
   
-  if (bHandler)
-    vTraceM("%s "
+  if (pOperand) {
+    if (bHandler) {
+      vTraceM("%s "
             "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
                     
             ,spOp.szLeading(this)
@@ -1043,17 +1041,31 @@ void Op::vOpTrace(Operand* pOperand
             ,pOperand
             ,szSupplemental
            );
-  else
+    }
+    else {
+      vTraceM("%s "
+              "%-18s pOperand=%s @%p %s\n"_Stz
+                      
+              ,spOp.szLeading(this)
+             
+              ,szFunNm
+              ,AM::pOperandName(pOperand)
+              ,pOperand
+              ,szSupplemental
+             );
+    }
+  }
+  else {
     vTraceM("%s "
-            "%-18s pOperand=%s @%p %s\n"_Stz
-                    
-            ,spOp.szLeading(this)
-           
-            ,szFunNm
-            ,AM::pOperandName(pOperand)
-            ,pOperand
-            ,szSupplemental
-           );
+            "%-18s %s\n"_Stz
+                  
+           ,spOp.szLeading(this)
+         
+           ,szFunNm
+           ,szSupplemental
+         );
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
