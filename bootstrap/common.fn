@@ -158,6 +158,24 @@ function printIndentArray() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Trims whitespace from the start and end of a string.
+## Courtesy of: https://stackoverflow.com/a/3352015
+## Params:
+##  $1 - the string to be trimmed.
+## Returns: the trimmed string on stdout.
+function trim() {
+  local var="$*"
+
+  # remove leading whitespace characters
+  var="${var#"${var%%[![:space:]]*}"}"
+
+  # remove trailing whitespace characters
+  var="${var%"${var##*[![:space:]]}"}"
+
+  printf '%s' "$var"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Returns with exit code 0 if the given value is present in the array.
 ## Otherwise returns with exit code 1.
 ## Params:
@@ -699,6 +717,9 @@ function getColumn() {
   fi
 
   local columnVal="${columns[$((colNum - 1))]}"
+
+  # Strip leading/trailing spaces if present
+  columnVal="$(trim "${columnVal}")"
 
   # Strip single quotes if necessary
   local stringRe="^[[:space:]]*'([^']*)'[[:space:]]*$"

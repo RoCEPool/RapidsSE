@@ -684,8 +684,10 @@ function getNonXConnectedNodes() {
     errorExit "function getNonXConnectedNodes() called without a filename parameter"
   fi
 
-  #local -a interestedColumns=("1" "3")  # first and third columns
-  local -a interestedColumns=("1")
+  # Get the first, fourth and fifth columns. When we get the row these will be
+  # the 1st, 2nd and 3rd values respectively.
+  local -a interestedColumns=("1" "4" "5")
+
   local -a nodes=( "${NODE_LIST[@]}" )
 
   local numElements
@@ -705,12 +707,22 @@ function getNonXConnectedNodes() {
     fi
 
     # Extract out the desired column and remove string quotes
+    local hasSendSocket
+    local hasRecvSocket
     local nodeName
-    nodeName="$(getColumn "${row}" "1")"
+
+    nodeName="$(getColumn "${row}" "1")"        # The first  column from the original row
+    hasSendSocket="$(getColumn "${row}" "2")"   # The fourth column from the original row
+    hasRecvSocket="$(getColumn "${row}" "3")"   # The fifth  column from the original row
+
+    if [ "${hasSendSocket:-x}" != "true" ] || [ "${hasRecvSocket:-x}" != "true" ] ; then
+      # This node hasn't properly cross-connected yet.
+      continue
+    fi
 
     # Is this nodeName in ${nodes[@]}? If so, remove that element
     for (( i=0; i<numElements; i++ )); do
-      if [ "${nodeName}" = "${nodes[$i]}" ]; then
+      if [ "${nodeName:-__x}" = "${nodes[$i]}" ]; then
         unset 'nodes[i]'
         break
       fi
