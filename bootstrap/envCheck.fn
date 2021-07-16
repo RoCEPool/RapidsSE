@@ -23,6 +23,7 @@ readonly BASH_MINIMUM_VERSION="4.2.46"
 
 function validateInstallationEnvironment() {
 
+  echo ""
   echo "Validating the installation environment on all nodes..."
   echo ""
 
@@ -99,6 +100,7 @@ function validateNodeAdditionEnvironment() {
   [ "$#" -gt 0 ] || errorExit "Function validateNodeAdditionEnvironment requires at least 1 parameter"
   local -a nodeNames=("$@")
 
+  echo ""
   echo "Validating the installation environment of nodes being added..."
   echo ""
 
@@ -1148,7 +1150,7 @@ function validateFirewall() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     if [ "${host}" != "${firstHost}" ]; then
-      alternateHost="${nodeName}"
+      alternateHost="${host}"
       break;
     fi
   done
@@ -1189,7 +1191,7 @@ function validateFirewall() {
 
       else
         # Socket is blocked. Add to failed node/socket list
-        errorList+=( "${server}:${internalPort}  (TCP port blocked)" )
+        errorList+=( "${server}:${internalPort}  (TCP port may be blocked)" )
       fi
     fi
 
@@ -1263,6 +1265,8 @@ function checkFirewallTcp() {
   local client="$1"
   local server="$2"
   local port="$3"
+
+  debugPrint "checkFirewallTcp $1 $2 $3"
 
   # Spawn a command to test that the given TCP/IP port is not currently being
   # used on the server.
@@ -1339,6 +1343,8 @@ function checkFirewallUdp() {
   local client="$1"
   local server="$2"
   local port="$3"
+
+  debugPrint "checkFirewallUdp $1 $2 $3"
 
   # Spawn a command to check if there are any applications currently listening on
   # that given UDP port on the server. If so, we cannot reliably check because
