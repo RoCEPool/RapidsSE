@@ -16,10 +16,6 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_INDEXJOIN_BEGIN,
   /*    */ AM_CRW_INDEXJOIN_NEXT,
 
-  /*    */ AM_CRW_JOIN_CRW,
-  /*    */ AM_CRW_JOIN_ENT,
-  /*    */ AM_CRW_JOIN_ROW,
-
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
   /*    */ AM_CRW_PROJECT_END,
@@ -63,6 +59,13 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSE_TILL_UPPER,
   /*    */ AM_INDEX_UPPER_BOUND,
 
+  /*    */ AM_JOINROW_CRWLFT_CRWRHT,
+  /*    */ AM_JOINROW_CRWLFT_ENTRHT,
+  /*    */ AM_JOINROW_CRWLFT_ROWRHT,
+  /*    */ AM_JOINROW_ROWLFT_CRWRHT,
+  /*    */ AM_JOINROW_ROWLFT_ENTRHT,
+  /*    */ AM_JOINROW_ROWLFT_ROWRHT,
+
   /*    */ AM_JOINTEST_CRWLFT_CRWRHT,
   /*    */ AM_JOINTEST_CRWLFT_ROWRHT,
   /*    */ AM_JOINTEST_ROWLFT_CRWRHT,
@@ -99,12 +102,6 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_INDEXJOIN_NEXT,
   /*    */ AM_ROW_INDEXJOIN_BEGIN,
 
-  /*    */ AM_ROW_JOIN_ENT,
-
-  /*    */ AM_ROW_JOIN_CRW,
-  /*    */ AM_ROW_JOIN_ROW,
-
-
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
   /*    */ AM_ROW_PROJECT_END,
@@ -132,10 +129,6 @@ static Stz* aAM[]
 
     /*    */ "CRW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
-
-    /*    */ "CRW_JOIN_CRW"_Stz,
-    /*    */ "CRW_JOIN_ENT"_Stz,
-    /*    */ "CRW_JOIN_ROW"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
@@ -180,6 +173,13 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSE_TILL_UPPER"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
+    /*    */ "JOINROW_CRWLFT_CRWRHT"_Stz,
+    /*    */ "JOINROW_CRWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROW_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOINROW_ROWLFT_CRWRHT"_Stz,
+    /*    */ "JOINROW_ROWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROW_ROWLFT_ROWRHT"_Stz,
+
     /*    */ "JOINTEST_CRWLFT_CRWRHT"_Stz,
     /*    */ "JOINTEST_CRWLFT_ROWRHT"_Stz,
     /*    */ "JOINTEST_ROWLFT_CRWRHT"_Stz,
@@ -215,11 +215,6 @@ static Stz* aAM[]
 
     /*    */ "ROW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
-
-    /*    */ "ROW_JOIN_ENT"_Stz,
-
-    /*    */ "ROW_JOIN_ROW"_Stz,
-    /*    */ "ROW_JOIN_CRW"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
