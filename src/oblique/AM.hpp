@@ -315,6 +315,7 @@ namespace OBLIQUE
     class TRACE
     {
     public:
+      static bool bVBlong(void);
       static bool bVerbose(Stz* szVBtag);
       static bool bVerbose(Stz* szVBtag1, Stz* szVBtag2);
     };

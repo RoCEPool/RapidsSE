@@ -203,23 +203,31 @@ void Op::vAckPipelineJob(void)
   
   Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
+
   if (m_bTraceOp) {
     
-    SP_Op spOp;
+    if (AM::TRACE::bVBlong()) {
+      SP_Op spOp;
 
-    vTraceM("%s "
-            "%-18s pipelineJob=%p\n"_Stz
-           
-            ,spOp.szLeading(this)
-           
-            ,__func__
-            ,m_pJob
-           );
-    
-//    pTask->m_pReturnStack->vDump(&pTask->m_oDicStack,
-//                                "ReturnStack:"_Stz);
+      vTraceM("%s "
+              "%-18s pipelineJob=%p\n"_Stz
+             
+              ,spOp.szLeading(this)
+             
+              ,__func__
+              ,m_pJob
+             );
+    }
+    else {
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+             AM::JOB::szJobNm(m_pJob),
+             m_pStage->szStageNm(),
+             iNode(),
+             tPtnNo());
+    }
   }
   
+
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
 /*----------------------------------------------------------------------------*/
@@ -1022,8 +1030,30 @@ void Op::vOpTrace(Operand* pOperand
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  if (! pOperand)
+  if (AM::TRACE::bVBlong())
+    goto L_Long_Form;
+
+  
+  if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
+
+  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
+         "%18s %-15s %p %s\n"_Stz,
+
+         m_sOpNm.szStz(),
+         m_pStage->szStageNm(),
+         iNode(),
+         tPtnNo(),
+         pPipelineJob(),
+
+         szFunNm,
+         AM::pOperandName(pOperand),
+         pOperand,
+         szSupplemental);
+  
+  return;
+  
+  L_Long_Form:
   
   //if (m_bTraceOp) {
   if (! AM::TRACE::bVerbose(C_VB_OP))
@@ -1031,9 +1061,10 @@ void Op::vOpTrace(Operand* pOperand
   
   SP_Op spOp;
   
-  if (bHandler)
-    vTraceM("%s "
-            "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
+  if (pOperand) {
+    if (bHandler) {
+      vTraceM("%s "
+            "%-18s %s #%0004ld @%p %s\n"_Stz
                     
             ,spOp.szLeading(this)
            
@@ -1043,17 +1074,31 @@ void Op::vOpTrace(Operand* pOperand
             ,pOperand
             ,szSupplemental
            );
-  else
+    }
+    else {
+      vTraceM("%s "
+              "%-18s %s @%p %s\n"_Stz
+                      
+              ,spOp.szLeading(this)
+             
+              ,szFunNm
+              ,AM::pOperandName(pOperand)
+              ,pOperand
+              ,szSupplemental
+             );
+    }
+  }
+  else {
     vTraceM("%s "
-            "%-18s pOperand=%s @%p %s\n"_Stz
-                    
-            ,spOp.szLeading(this)
-           
-            ,szFunNm
-            ,AM::pOperandName(pOperand)
-            ,pOperand
-            ,szSupplemental
-           );
+            "%-18s %s\n"_Stz
+                  
+           ,spOp.szLeading(this)
+         
+           ,szFunNm
+           ,szSupplemental
+         );
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1280,14 +1325,20 @@ Operand* Op::pPopOoOLeft(void)
   
   //Operand* pOperand = m_pQueueLeft->pPopQueue();
   
+  bool bLeft = false;
+  
 #ifdef WITH_SEPARATE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
-  if (! pOperand)
+  if (! pOperand) {
     pOperand = m_pQueueLeft->pPopQueue();
+    bLeft = true;
+  }
 #else
   Operand* pOperand = m_pQueueLeft->pPopOoO();
-  if (! pOperand)
+  if (! pOperand) {
+    bLeft = true;
     pOperand = m_pQueueLeft->pPopQueue();
+  }
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1295,7 +1346,10 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
-    vOpTrace(pOperand,(Stz*)__func__,false);
+    vOpTrace(pOperand
+             ,(Stz*)__func__
+             ,false
+             ,bLeft ? "Left"_Stz : "OoO"_Stz);
     return pOperand;
   }
   else {

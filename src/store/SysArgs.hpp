@@ -102,6 +102,7 @@ namespace STORE
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint
     bool m_bTracing;         // tracing
+    bool m_bVBlong;          // long vb_ traces
     bool m_bVerbose;         // print extra stuff
     bool m_bWelcome;         // print banner
 

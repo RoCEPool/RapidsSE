@@ -64,10 +64,12 @@
 
 : _handler_exit
 
-  "_handler_exit" .
+  Op[].handlerExit
 ;
 
 : \handler \\category
+
+  "_handler_exit" senCompiler::current@ word.exitHook!
 
   POSTPONE _handler_entry
 ;
