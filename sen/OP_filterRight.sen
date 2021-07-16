@@ -172,10 +172,25 @@
   EC_NONE locals| eError |
 
   // ignore streamDef if not yet received startRightMarker
+  /*
   Counter1[] 0 == if
     Pipein[].pipeout
     true
     exit
+  then
+  */
+
+  // filterRight gets the left streamDef, then right streamDef
+  // it needs to store the right streamDef in left
+  // and left in right (which it will ignore)
+  StreamDefRht[].isNull if
+
+      "loopJoin_StreamDef got left streamDef" .
+      // move pipein[] to StreamDefRht[]
+      Pipein[]\clear to StreamDefRht[]
+
+      true
+      exit
   then
 
   // move pipein[] to StreamDefLft[]
@@ -211,7 +226,8 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  // pipeout the streamDefOut
+  // pipeout the StreamDefRht and streamDefOut
+  StreamDefRht[].pipeout
   StreamDefOut[].pipeout
 
   // create the compiler

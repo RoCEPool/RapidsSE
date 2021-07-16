@@ -1318,7 +1318,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_LOOPJOIN_CRW"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOIN_CRWLFT_CRWRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_LOOPJOIN_CRWLFT_CRWRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1328,7 +1328,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "ROW_LOOPJOIN_CRW"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOIN_ROWLFT_CRWRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_LOOPJOIN_ROWLFT_CRWRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1345,7 +1345,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_LOOPJOIN_ROW"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOIN_CRWLFT_ROWRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_LOOPJOIN_CRWLFT_ROWRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1355,7 +1355,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "ROW_LOOPJOIN_ROW"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOIN_ROWLFT_ROWRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_LOOPJOIN_ROWLFT_ROWRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
