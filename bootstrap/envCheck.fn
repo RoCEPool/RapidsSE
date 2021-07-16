@@ -1201,6 +1201,7 @@ function validateFirewallSequential() {
 
     # Test the main internal TCP port. This either succeeds or fails. Ignore stderr output.
     local tcpResult
+    debugPrint "Sequential TCP: ${server}:${internalPort}"
     if ! checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null ; then
       tcpResult="$?"
 
@@ -1217,6 +1218,7 @@ function validateFirewallSequential() {
     # Test the heartbeat UDP port. This may be indeterminant if another process
     # is using the socket, so we need to cater for that. Ignore stderr output.
     local udpResult
+    debugPrint "Sequential UDP: ${server}:${heartbeatPort}"
     if ! checkFirewallUdp "${client}" "${server}" "${heartbeatPort}" 2>/dev/null ; then
       udpResult="$?"
 
@@ -1351,10 +1353,11 @@ function validateFirewallParallel() {
 
   # Now launch all TCP tests in parallel
   for nodeName in "${nodeNames[@]}"; do
-
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
     port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    debugPrint "Parallel TCP: ${server}:${port}"
 
     # Ensure we don't try to test the firewall of the current host from the current host
     if [ "${server}" = "${client}" ]; then
@@ -1390,6 +1393,8 @@ function validateFirewallParallel() {
       continue
     fi
 
+    debugPrint "Parallel UDP: ${server}:${port}"
+
     # Ensure we don't try to test the firewall of the current host from the current host
     if [ "${server}" = "${client}" ]; then
       client="${alternateHost}"
@@ -1403,6 +1408,35 @@ function validateFirewallParallel() {
     jobParams["${pid}_client"]="${client}"
     jobParams["${pid}_port"]="${port}"
     jobParams["${pid}_protocol"]="UDP"
+  done
+
+  # Launch all of the non-unique server name UDP tests sequentially and collate results
+  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_KEY}")"
+  for server in "${sequentialServers[@]}"; do
+    client="${firstHost}"  # by default
+
+    debugPrint "Sequential UDP test: ${server}:${port}"
+
+    # Ensure we don't try to test the firewall of the current host from the current host
+    if [ "${server}" = "${client}" ]; then
+      client="${alternateHost}"
+    fi
+
+    # Test the heartbeat UDP port. This may be indeterminant if another process
+    # is using the socket, so we need to cater for that. Ignore stderr output.
+    local udpResult
+    if ! checkFirewallUdp "${client}" "${server}" "${port}" 2>/dev/null ; then
+      udpResult="$?"
+
+      if [ "${udpResult}" -eq 2 ] ; then
+        # UDP socket is already in use. Add to warning node/socket list
+        warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+
+      else
+        # Socket is likely blocked. Add to failed node/socket list
+        errorList+=( "${server}:${port}  (UDP port may be blocked)" )
+      fi
+    fi
   done
 
   # Wait for all parallel jobs to finish and collate all parallel results
@@ -1435,34 +1469,6 @@ function validateFirewallParallel() {
       errorList+=( "${server}:${port}  (${protocol} port may be blocked)" )
     fi
   done
-
-  # Launch all of the non-unique server name UDP tests sequentially and collate results
-  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_KEY}")"
-  for server in "${sequentialServers[@]}"; do
-    client="${firstHost}"  # by default
-
-    # Ensure we don't try to test the firewall of the current host from the current host
-    if [ "${server}" = "${client}" ]; then
-      client="${alternateHost}"
-    fi
-
-    # Test the heartbeat UDP port. This may be indeterminant if another process
-    # is using the socket, so we need to cater for that. Ignore stderr output.
-    local udpResult
-    if ! checkFirewallUdp "${client}" "${server}" "${port}" 2>/dev/null ; then
-      udpResult="$?"
-
-      if [ "${udpResult}" -eq 2 ] ; then
-        # UDP socket is already in use. Add to warning node/socket list
-        warningList+=( "${server}:${heartbeatPort}  (UDP port already in use by another process on host)" )
-
-      else
-        # Socket is likely blocked. Add to failed node/socket list
-        errorList+=( "${server}:${heartbeatPort}  (UDP port may be blocked)" )
-      fi
-    fi
-  done
-
 
   # Present final results
   if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -eq 0 ]; then
