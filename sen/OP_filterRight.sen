@@ -226,10 +226,8 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  // pipeout the streamDefOut
-  //StreamDefRht[].pipeout
-  StreamDefRht[] to Operand[]
-  Operand[].pipeout
+  // pipeout the StreamDefRht and streamDefOut
+  StreamDefRht[].pipeout
   StreamDefOut[].pipeout
 
   // create the compiler
