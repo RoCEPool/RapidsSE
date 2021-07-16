@@ -1031,7 +1031,7 @@ void Op::vOpTrace(Operand* pOperand
   if (pOperand) {
     if (bHandler) {
       vTraceM("%s "
-            "%-18s pOperand=%s #%0004ld @%p %s\n"_Stz
+            "%-18s %s #%0004ld @%p %s\n"_Stz
                     
             ,spOp.szLeading(this)
            
@@ -1044,7 +1044,7 @@ void Op::vOpTrace(Operand* pOperand
     }
     else {
       vTraceM("%s "
-              "%-18s pOperand=%s @%p %s\n"_Stz
+              "%-18s %s @%p %s\n"_Stz
                       
               ,spOp.szLeading(this)
              
@@ -1292,14 +1292,20 @@ Operand* Op::pPopOoOLeft(void)
   
   //Operand* pOperand = m_pQueueLeft->pPopQueue();
   
+  bool bLeft = false;
+  
 #ifdef WITH_SEPARATE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
-  if (! pOperand)
+  if (! pOperand) {
     pOperand = m_pQueueLeft->pPopQueue();
+    bLeft = true;
+  }
 #else
   Operand* pOperand = m_pQueueLeft->pPopOoO();
-  if (! pOperand)
+  if (! pOperand) {
+    bLeft = true;
     pOperand = m_pQueueLeft->pPopQueue();
+  }
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1307,7 +1313,10 @@ Operand* Op::pPopOoOLeft(void)
   if (pOperand) {
     vDropTaskLock();
     AM::vOperandsDec();
-    vOpTrace(pOperand,(Stz*)__func__,false);
+    vOpTrace(pOperand
+             ,(Stz*)__func__
+             ,false
+             ,bLeft ? "Left"_Stz : "OoO"_Stz);
     return pOperand;
   }
   else {
