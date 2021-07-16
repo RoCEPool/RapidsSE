@@ -3,12 +3,12 @@
 /*============================================================================*/
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_CRWLFT_CRWRHT                                             //
+// macro AM_JOINROWS_CRWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_CRWLFT_CRWRHT
-  // AM_JOINROW_CRWLFT_CRWRHT
-  Label JOINROW_CRWLFT_CRWRHT
-  EO_PRINTF "**JOINROW_CRWLFT_CRWRHT**\n"
+macro AM_JOINROWS_CRWLFT_CRWRHT
+  // AM_JOINROWS_CRWLFT_CRWRHT
+  Label JOINROWS_CRWLFT_CRWRHT
+  EO_PRINTF "**JOINROWS_CRWLFT_CRWRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
@@ -36,12 +36,12 @@ macro AM_JOINROW_CRWLFT_CRWRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_CRWLFT_ENTRHT                                             //
+// macro AM_JOINROWS_CRWLFT_ENTRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_CRWLFT_ENTRHT
-  // JOINROW_CRWLFT_ENTRHT
-  Label JOINROW_CRWLFT_ENTRHT
-  EO_PRINTF "**JOINROW_CRWLFT_ENTRHT**\n"
+macro AM_JOINROWS_CRWLFT_ENTRHT
+  // JOINROWS_CRWLFT_ENTRHT
+  Label JOINROWS_CRWLFT_ENTRHT
+  EO_PRINTF "**JOINROWS_CRWLFT_ENTRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
@@ -73,12 +73,12 @@ macro AM_JOINROW_CRWLFT_ENTRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_CRWLFT_ROWRHT                                             //
+// macro AM_JOINROWS_CRWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_CRWLFT_ROWRHT
-  // JOINROW_CRWLFT_ROWRHT
-  Label JOINROW_CRWLFT_ROWRHT
-  EO_PRINTF "**JOINROW_CRWLFT_ROWRHT**\n"
+macro AM_JOINROWS_CRWLFT_ROWRHT
+  // JOINROWS_CRWLFT_ROWRHT
+  Label JOINROWS_CRWLFT_ROWRHT
+  EO_PRINTF "**JOINROWS_CRWLFT_ROWRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
@@ -105,12 +105,12 @@ macro AM_JOINROW_CRWLFT_ROWRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_ROWLFT_CRWRHT                                             //
+// macro AM_JOINROWS_ROWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_ROWLFT_CRWRHT
-  // JOINROW_ROWLFT_CRWRHT
-  Label JOINROW_ROWLFT_CRWRHT
-  EO_PRINTF "**JOINROW_ROWLFT_CRWRHT**\n"
+macro AM_JOINROWS_ROWLFT_CRWRHT
+  // JOINROWS_ROWLFT_CRWRHT
+  Label JOINROWS_ROWLFT_CRWRHT
+  EO_PRINTF "**JOINROWS_ROWLFT_CRWRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
@@ -136,12 +136,12 @@ macro AM_JOINROW_ROWLFT_CRWRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_ROWLFT_ENTRHT                                             //
+// macro AM_JOINROWS_ROWLFT_ENTRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_ROWLFT_ENTRHT
-  // JOINROW_ROWLFT_ENTRHT
-  Label JOINROW_ROWLFT_ENTRHT
-  EO_PRINTF "**JOINROW_ROWLFT_ENTRHT**\n"
+macro AM_JOINROWS_ROWLFT_ENTRHT
+  // JOINROWS_ROWLFT_ENTRHT
+  Label JOINROWS_ROWLFT_ENTRHT
+  EO_PRINTF "**JOINROWS_ROWLFT_ENTRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
@@ -172,12 +172,12 @@ macro AM_JOINROW_ROWLFT_ENTRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_JOINROW_ROWLFT_ROWRHT                                             //
+// macro AM_JOINROWS_ROWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
-macro AM_JOINROW_ROWLFT_ROWRHT
-  // JOINROW_ROWLFT_ROWRHT
-  Label JOINROW_ROWLFT_ROWRHT
-  EO_PRINTF "**JOINROW_ROWLFT_ROWRHT**\n"
+macro AM_JOINROWS_ROWLFT_ROWRHT
+  // JOINROWS_ROWLFT_ROWRHT
+  Label JOINROWS_ROWLFT_ROWRHT
+  EO_PRINTF "**JOINROWS_ROWLFT_ROWRHT**\n"
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
