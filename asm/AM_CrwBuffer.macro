@@ -346,38 +346,6 @@ macro AM_CRW_INDEXJOIN_NEXT
   EO_RETURN
 endMacro
 
-macro AM_CRW_LOOPJOIN_CRW
-//----------------------------------------------------------------------------//
-// macro AM_CRW_LOOPJOIN_CRW                                                  //
-//----------------------------------------------------------------------------//
-  // CRW_LOOPJOIN_CRW
-  Label CRW_LOOPJOIN_CRW
-
-endMacro
-
-
-//----------------------------------------------------------------------------//
-// macro AM_LOOPJOIN_END                                                      //
-//----------------------------------------------------------------------------//
-macro AM_LOOPJOIN_END
-  // LOOPJOIN_END
-  EO_RETURN_FALSE
-  EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
-  //EO_PUSH_DEVROW_DST
-  //EO_DEVROW_ROW_PRINT
-  EO_RETURN
-endMacro
-
-macro AM_ROW_LOOPJOIN_CRW
-//----------------------------------------------------------------------------//
-// macro AM_ROW_LOOPJOIN_CRW                                                  //
-//----------------------------------------------------------------------------//
-  // ROW_LOOPJOIN_CRW
-  Label ROW_LOOPJOIN_CRW
-
-endMacro
-
-
 //----------------------------------------------------------------------------//
 // macro AM_CRW_JOIN_CRW                                                      //
 //----------------------------------------------------------------------------//

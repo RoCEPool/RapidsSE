@@ -20,8 +20,6 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_JOIN_ENT,
   /*    */ AM_CRW_JOIN_ROW,
 
-  /*    */ AM_CRW_LOOPJOIN_CRW,
-
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
   /*    */ AM_CRW_PROJECT_END,
@@ -65,6 +63,11 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSE_TILL_UPPER,
   /*    */ AM_INDEX_UPPER_BOUND,
 
+  /*    */ AM_JOINTEST_CRWLFT_CRWRHT,
+  /*    */ AM_JOINTEST_CRWLFT_ROWRHT,
+  /*    */ AM_JOINTEST_ROWLFT_CRWRHT,
+  /*    */ AM_JOINTEST_ROWLFT_ROWRHT,
+
   /*    */ AM_LOOPJOIN_CRWLFT_CRWRHT,
   /*    */ AM_LOOPJOIN_CRWLFT_ROWRHT,
   /*    */ AM_LOOPJOIN_ROWLFT_CRWRHT,
@@ -101,8 +104,6 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_JOIN_CRW,
   /*    */ AM_ROW_JOIN_ROW,
 
-  /*    */ AM_ROW_LOOPJOIN_CRW,
-  /*    */ AM_ROW_LOOPJOIN_ROW,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
@@ -135,8 +136,6 @@ static Stz* aAM[]
     /*    */ "CRW_JOIN_CRW"_Stz,
     /*    */ "CRW_JOIN_ENT"_Stz,
     /*    */ "CRW_JOIN_ROW"_Stz,
-
-    /*    */ "CRW_LOOPJOIN_CRW"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
@@ -181,6 +180,11 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSE_TILL_UPPER"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
+    /*    */ "JOINTEST_CRWLFT_CRWRHT"_Stz,
+    /*    */ "JOINTEST_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOINTEST_ROWLFT_CRWRHT"_Stz,
+    /*    */ "JOINTEST_ROWLFT_ROWRHT"_Stz,
+
     /*    */ "LOOPJOIN_CRWLFT_CRWRHT"_Stz,
     /*    */ "LOOPJOIN_CRWLFT_ROWRHT"_Stz,
     /*    */ "LOOPJOIN_ROWLFT_CRWRHT"_Stz,
@@ -216,10 +220,6 @@ static Stz* aAM[]
 
     /*    */ "ROW_JOIN_ROW"_Stz,
     /*    */ "ROW_JOIN_CRW"_Stz,
-
-    /*    */ "ROW_LOOPJOIN_CRW"_Stz,
-    /*    */ "ROW_LOOPJOIN_ROW"_Stz,
-
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,

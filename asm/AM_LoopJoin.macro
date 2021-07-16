@@ -200,30 +200,39 @@ macro AM_LOOPJOIN_ROWLFT_ROWRHT
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_CRW_LOOPJOIN_CRW
+macro AM_JOINTEST_CRWLFT_CRWRHT
 //----------------------------------------------------------------------------//
-// macro AM_CRW_LOOPJOIN_CRW                                                  //
+// macro AM_JOINTEST_CRWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-  // CRW_LOOPJOIN_CRW
-  Label CRW_LOOPJOIN_CRW
+  // JOINTEST_CRWLFT_CRWRHT
+  Label JOINTEST_CRWLFT_CRWRHT
 
 endMacro
 
-macro AM_ROW_LOOPJOIN_CRW
+macro AM_JOINTEST_CRWLFT_ROWRHT
 //----------------------------------------------------------------------------//
-// macro AM_ROW_LOOPJOIN_CRW                                                  //
+// macro AM_JOINTEST_CRWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
-  // ROW_LOOPJOIN_CRW
-  Label ROW_LOOPJOIN_CRW
+  // JOINTEST_CRWLFT_ROWRHT
+  Label JOINTEST_CRWLFT_ROWRHT
 
 endMacro
 
-macro AM_ROW_LOOPJOIN_ROWS
+macro AM_JOINTEST_ROWLFT_CRWRHT
 //----------------------------------------------------------------------------//
-// macro AM_ROW_LOOPJOIN_ROWS                                                 //
+// macro AM_JOINTEST_ROWLFT_CRWRHT                                            //
 //----------------------------------------------------------------------------//
-  // ROW_LOOPJOIN_ROWS
-  Label ROW_LOOPJOIN_ROWS
+  // JOINTEST_ROWLFT_CRWRHT
+  Label JOINTEST_ROWLFT_CRWRHT
+
+endMacro
+
+macro AM_JOINTEST_ROWLFT_ROWRHT
+//----------------------------------------------------------------------------//
+// macro AM_JOINTEST_ROWLFT_ROWRHT                                            //
+//----------------------------------------------------------------------------//
+  // JOINTEST_ROWLFT_ROWRHT
+  Label JOINTEST_ROWLFT_ROWRHT
 
 endMacro
 
