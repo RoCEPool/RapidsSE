@@ -1861,32 +1861,6 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
-void vScaleResult(i16& iValue, i8& nScale, i8 nRequired)
-{
-  // 1) the value has the required scale
-  if (nScale == nRequired)
-    return;
-
-  i8 iScaleDiff;
-  i8 iScaleCorrect;
-
-  // 1) the value needs its scale increased
-  if (nRequired > nScale) {
-
-    iScaleDiff = nRequired - nScale;
-    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
-    iValue = iValue * iScaleCorrect;
-    nScale = nRequired;
-    return;
-  }
-
-  // 3) the value needs its scale decreased
-  iScaleDiff = nScale - nRequired;
-  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
-  iValue = iValue / iScaleCorrect;
-  nScale = nRequired;
-}
-
 void vScaleArgs(i16 iA, i8 iA_scale, i16& iAs, i8& iAs_scale,
                 i16 iB, i8 iB_scale, i16& iBs, i8& iBs_scale
                 )
@@ -1922,6 +1896,35 @@ void vScaleArgs(i16 iA, i8 iA_scale, i16& iAs, i8& iAs_scale,
   iAs = iA * iScaleCorrect;
   iAs_scale = iBs_scale;
 }
+
+void vScaleResult(i16& iR, i8& iRs, i8 iAs_scale, i8 iBs_scale)
+{
+  i8 nPlaces = MAX__(iAs_scale,iBs_scale);
+
+  // 1) result has the required scale
+  if (iRs == nPlaces)
+    return;
+
+  i8 iScaleDiff;
+  i8 iScaleCorrect;
+
+  // 2) result needs its scale increased
+  if (nPlaces > iRs) {
+
+    iScaleDiff = nPlaces - iRs;
+    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+    iR = iR * iScaleCorrect;
+    iRs = nPlaces;
+    return;
+  }
+
+  // 3) result needs its scale decreased
+  iScaleDiff = iRs - nPlaces;
+  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+  iR = iR / iScaleCorrect;
+  iRs = nPlaces;
+}
+
 
 void vScaleTrace(Stz* szOp
                  
@@ -1973,18 +1976,16 @@ void vDecimalMul(
 {
   i16 iAs; i8 iAs_scale;
   i16 iBs; i8 iBs_scale;
-  i16 iRs; i8 iRs_scale;
   
   vScaleArgs(iA,iA_scale, iAs,iAs_scale,
              iB,iB_scale, iBs,iBs_scale);
 
-  iRs = iAs * iBs;
-  iRs_scale = iAs_scale + iBs_scale;
+  i16 iRs = iAs * iBs;
+  i8  iRs_scale = iAs_scale + iBs_scale;
 
-  i8 nPlaces = MAX__(iAs_scale,iBs_scale);
   iR = iRs; iR_scale = iRs_scale;
   
-  vScaleResult(iR,iR_scale,nPlaces);
+  vScaleResult(iR,iR_scale,  iAs_scale,iBs_scale);
 
   vScaleTrace("*"_Stz
               
