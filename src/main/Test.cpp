@@ -1861,7 +1861,7 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
-void vScale(i8 nRequired, i16& iValue, i8& nScale)
+void vRescale(i8 nRequired, i16& iValue, i8& nScale)
 {
   // 1) the value has the required scale
   if (nScale == nRequired)
@@ -1887,7 +1887,7 @@ void vScale(i8 nRequired, i16& iValue, i8& nScale)
   nScale = nRequired;
 }
 
-void vRescalePair(i16& iA, i8& iA_scale, i16& iB, i8& iB_scale)
+void vScalePair(i16& iA, i8& iA_scale, i16& iB, i8& iB_scale)
 {
   // 1) the two scales are the same
   if (iA_scale == iB_scale)
@@ -1924,14 +1924,14 @@ void vTest33(void)
   
   i8 nPlaces;
   for (nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    vScale(nPlaces,iA,iA_scale);
+    vRescale(nPlaces,iA,iA_scale);
     vTrace("scale to %lld places: iA = (%lld,%lld)\n"_Stz,
            nPlaces,
            (i8)iA,
            iA_scale);
   }
   for (nPlaces--; nPlaces >=0; nPlaces--) {
-    vScale(nPlaces,iA,iA_scale);
+    vRescale(nPlaces,iA,iA_scale);
     vTrace("scale to %lld places: iA = (%lld,%lld)\n"_Stz,
            nPlaces,
            (i8)iA,
@@ -1945,25 +1945,31 @@ void vTest33(void)
   for (i8 iScaleA = 0; iScaleA <= 4; iScaleA++) {
     for (i8 iScaleB = 0; iScaleB <= 4; iScaleB++) {
       
-      i16 iA = 2; i8 iA_scale = iScaleA;
-      i16 iB = 3; i8 iB_scale = iScaleB;
+      i16 iA = 20000; i8 iA_scale = iScaleA;
+      i16 iB = 30000; i8 iB_scale = iScaleB;
 
       i16 iAs = iA; i8 iAs_scale = iA_scale;
       i16 iBs = iB; i8 iBs_scale = iB_scale;
 
-      vRescalePair(iAs,iAs_scale,iBs,iBs_scale);
+      vScalePair(iAs,iAs_scale,iBs,iBs_scale);
  
-      i16 iCs = iAs * iBs; i8 iCs_scale = iAs_scale;
+      i16 iCs = iAs * iBs; i8 iCs_scale = iAs_scale + iBs_scale;
 
-      vTrace("iA = (%lld,%lld) iB = (%lld,%lld) ; "
-             "vRescalePair: iAs = (%5lld,%lld) iBs = (%5lld,%lld) "
-             "iCs = (%lld,%lld) "
+      i8 nPlaces = MAX__(iAs_scale,iBs_scale);
+      i16 iR = iCs; i8 iR_scale = iCs_scale;
+      vRescale(nPlaces,iR,iR_scale);
+
+      vTrace("iA = (%10lld,%lld) iB = (%10lld,%lld) ; "
+             "vRescalePair: iAs = (%10lld,%lld) iBs = (%10lld,%lld) ;"
+             "iAs * iBs = (%15lld,%lld) ; "
+             "iR = (%10lld,%lld) ; "
              "\n"_Stz
              ,(i8)iA,iA_scale
              ,(i8)iB,iB_scale
              ,(i8)iAs,iAs_scale
              ,(i8)iBs,iBs_scale
              ,(i8)iCs,iCs_scale
+             ,(i8)iR,iR_scale
              );
 
     }
