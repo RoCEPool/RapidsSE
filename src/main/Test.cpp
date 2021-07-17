@@ -1881,7 +1881,7 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
     isArgA = inArgA;
     isArgA_places = inArgA_places;
     iScaleDiff = inArgA_places - inArgB_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);//(i8)( pow(10,iScaleDiff) + 0.5 );
+    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
     isArgB = inArgB * iScaleCorrect;
     isArgB_places = isArgA_places;
     return;
@@ -1891,7 +1891,7 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
   isArgB = inArgB;
   isArgB_places = inArgB_places;
   iScaleDiff = inArgB_places - inArgA_places;
-  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);//(i8)( pow(10,iScaleDiff) + 0.5 );
+  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
   isArgA = inArgA * iScaleCorrect;
   isArgA_places = isArgB_places;
 }
