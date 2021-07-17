@@ -1881,7 +1881,7 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
     isArgA = inArgA;
     isArgA_places = inArgA_places;
     iScaleDiff = inArgA_places - inArgB_places;
-    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);//(i8)( pow(10,iScaleDiff) + 0.5 );
     isArgB = inArgB * iScaleCorrect;
     isArgB_places = isArgA_places;
     return;
@@ -1891,20 +1891,21 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
   isArgB = inArgB;
   isArgB_places = inArgB_places;
   iScaleDiff = inArgB_places - inArgA_places;
-  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);//(i8)( pow(10,iScaleDiff) + 0.5 );
   isArgA = inArgA * iScaleCorrect;
   isArgA_places = isArgB_places;
 }
 
 /*----------------------------------------------------------------------------*/
-void vNormalizeResult(i16& inRes, i8& inRes_places, i8 nPlaces,
-                      i16  isRes, i8  isRes_places
+void vNormalizeResult(i16& inRes,
+                      i8   inRes_places,
+                      i16  isRes,
+                      i8   isRes_places
                       )
 {
   // 1) result has the required scale
-  if (isRes_places == nPlaces) {
+  if (isRes_places == inRes_places) {
     inRes = isRes;
-    inRes_places = isRes_places;
     return;
   }
   
@@ -1912,20 +1913,17 @@ void vNormalizeResult(i16& inRes, i8& inRes_places, i8 nPlaces,
   i8 iScaleCorrect;
 
   // 2) result needs its scale increased
-  if (nPlaces > isRes_places) {
-
-    iScaleDiff = nPlaces - isRes_places;
-    iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
+  if (inRes_places > isRes_places) {
+    iScaleDiff = inRes_places - isRes_places;
+    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
     inRes = isRes * iScaleCorrect;
-    inRes_places = nPlaces;
-    return;
   }
-
-  // 3) result needs its scale decreased
-  iScaleDiff = isRes_places - nPlaces;
-  iScaleCorrect = (i8)( pow(10,iScaleDiff) + 0.5 );
-  inRes = isRes / iScaleCorrect;
-  inRes_places = nPlaces;
+  else {
+    // 3) result needs its scale decreased
+    iScaleDiff = isRes_places - inRes_places;
+    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+    inRes = isRes / iScaleCorrect;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1937,8 +1935,9 @@ void vDecimalTrace(Stz* szOp,
                    i16 inArgB ,i8 inArgB_places,
                    i16 isArgB ,i8 isArgB_places,
                  
-                   i16 isRes  ,i8 isRes_places,
-                   i16 inRes  ,i8 inRes_places)
+                   i16 inRes  ,i8 inRes_places,
+                   i16 isRes  ,i8 isRes_places)
+
 {
   vTrace("(%5lld,%lld) %5lld "
          "%s "
@@ -1946,14 +1945,12 @@ void vDecimalTrace(Stz* szOp,
          "= "
          "%10lld (%9lld,%lld) "
 
-         
-         "  [ "
+         "// "
          "isArgA (%9lld,%lld) "
          "%s "
          "isArgB (%9lld,%lld) "
          "= "
          "isRes %9lld (%15lld,%lld) "
-         "] "
          
          "\n"_Stz
          
@@ -1971,27 +1968,32 @@ void vDecimalTrace(Stz* szOp,
 }
 
 /*----------------------------------------------------------------------------*/
-void vDecimalMul(i16  inArgA, i8  inArgA_places,
-                 i16  inArgB, i8  inArgB_places,
-                 i16& inRes,  i8& inRes_places)
+void vDecimalMul(i16& inRes,  i8& inRes_places,
+                 i16  inArgA, i8  inArgA_places,
+                 i16  inArgB, i8  inArgB_places)
 {
+  // scale the arguments
   i16 isArgA; i8 isArgA_places;
   i16 isArgB; i8 isArgB_places;
   vScaleArgs(inArgA,inArgA_places, isArgA,isArgA_places,
              inArgB,inArgB_places, isArgB,isArgB_places);
 
+  // calc argA * argB
   i16 isRes = isArgA * isArgB;
   i8  isRes_places = isArgA_places + isArgB_places;
-  i8  nPlaces = MAX__(isArgA_places,isArgB_places);
-  vNormalizeResult(inRes,inRes_places,nPlaces,isRes,isRes_places);
+  inRes_places = MAX__(isArgA_places,isArgB_places);
+  
+  // normalise result
+  vNormalizeResult(inRes,inRes_places,isRes,isRes_places);
 
+  // trace
   vDecimalTrace("*"_Stz,
                 inArgA ,inArgA_places,
                 isArgA ,isArgA_places,
                 inArgB ,inArgB_places,
                 isArgB ,isArgB_places,
-                isRes  ,isRes_places,
-                inRes  ,inRes_places);
+                inRes  ,inRes_places,
+                isRes  ,isRes_places);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2001,7 +2003,7 @@ void vTest33(void)
   
   i16 inArgA = -1; i8 inArgA_places = -1;
   i16 inArgB = -1; i8 inArgB_places = -1;
-  i16 inRes  = -1; i8 inRes_places = -1;
+  i16 inRes = -1; i8 inRes_places = -1;
   
   for (i8 iScaleA = 0; iScaleA <= 4; iScaleA++) {
     for (i8 iScaleB = 0; iScaleB <= 4; iScaleB++) {
@@ -2009,13 +2011,11 @@ void vTest33(void)
       inArgA = 20000; inArgA_places = iScaleA;
       inArgB = 30000; inArgB_places = iScaleB;
       
-      vDecimalMul(inArgA,inArgA_places,
-                  inArgB,inArgB_places,
-                  inRes,inRes_places);
-            
+      vDecimalMul(inRes,inRes_places,
+                  inArgA,inArgA_places,
+                  inArgB,inArgB_places);
     }
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
