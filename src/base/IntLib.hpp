@@ -28,6 +28,7 @@ namespace BASE
     static i8 iPercent(i8 iNumerator, i8 iDenominator);
     static i8 iPow(i8 iArg, i8 iRaisedTo);
     static i8 iQuartile(i8 iNumerator, i8 iDenominator);
+    static i8 iTenToPow(i8 iPower);
     static i8 iVlqToInt(byte yVlqVec[16]);
   
     static char* sAsText(i8 iValue);
