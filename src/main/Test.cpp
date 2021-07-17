@@ -1937,35 +1937,36 @@ void vDecimalTrace(Stz* szOp,
                    i16 inArgB ,i8 inArgB_places,
                    i16 isArgB ,i8 isArgB_places,
                  
-                   i16 inRes  ,i8 inRes_places,
-                   i16 isRes  ,i8 isRes_places)
+                   i16 isRes  ,i8 isRes_places,
+                   i16 inRes  ,i8 inRes_places)
 {
-  vTrace("%5lld (%10lld,%lld) "
+  vTrace("(%5lld,%lld) %5lld "
          "%s "
-         "%5lld (%10lld,%lld) "
-         
-         "[ ScaledArgs: "
-         "(%10lld,%lld) "
-         "%s "
-         "(%10lld,%lld) "
+         "%5lld (%5lld,%lld) "
          "= "
-         "%10lld (%15lld,%lld) "
+         "%10lld (%9lld,%lld) "
+
+         
+         "  [ "
+         "isArgA (%9lld,%lld) "
+         "%s "
+         "isArgB (%9lld,%lld) "
+         "= "
+         "isRes %9lld (%15lld,%lld) "
          "] "
          
-         "ScaledResult: "
-         "%10lld (%12lld,%lld) "
          "\n"_Stz
          
-         ,(i8)inArgA  / IntLib::iTenToPow(inArgA_places),(i8)inArgA,inArgA_places
-         , szOp
-         ,(i8)inArgB  / IntLib::iTenToPow(inArgB_places),(i8)inArgB,inArgB_places
-         
+         ,(i8)inArgA,inArgA_places,(i8)inArgA / IntLib::iTenToPow(inArgA_places)
+         ,szOp
+         ,(i8)inArgB / IntLib::iTenToPow(inArgB_places),(i8)inArgB,inArgB_places
+         ,(i8)inRes / IntLib::iTenToPow(inRes_places),(i8)inRes,inRes_places
+
          ,(i8)isArgA,isArgA_places
-         , szOp
+         ,szOp
          ,(i8)isArgB,isArgB_places
-         ,(i8)inRes  / IntLib::iTenToPow(inRes_places),(i8)inRes,inRes_places
-         
          ,(i8)isRes / IntLib::iTenToPow(isRes_places),(i8)isRes,isRes_places
+         
          );
 }
 
@@ -2000,7 +2001,7 @@ void vTest33(void)
   
   i16 inArgA = -1; i8 inArgA_places = -1;
   i16 inArgB = -1; i8 inArgB_places = -1;
-  i16 inRes = -1; i8 inRes_places = -1;
+  i16 inRes  = -1; i8 inRes_places = -1;
   
   for (i8 iScaleA = 0; iScaleA <= 4; iScaleA++) {
     for (i8 iScaleB = 0; iScaleB <= 4; iScaleB++) {
