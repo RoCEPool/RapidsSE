@@ -2976,13 +2976,13 @@ void ExprEval::vPushRhtCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumnsRht);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumnsRht);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVIXT_COL_PUSHSET_PST\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumnsRht);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumnsRht);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVIXT_COL_PUSHSET_PST\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
 
 
   eDM eDatumType = Column::eDatum(eColumnType);

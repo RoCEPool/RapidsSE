@@ -1406,8 +1406,8 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // JOINTEST_ROWLFT_CRWRHT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumnsRht);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumnsRht);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINTEST_ROWLFT_CRWRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 

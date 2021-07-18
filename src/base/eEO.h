@@ -395,6 +395,7 @@ enum eEO : u2 // expression operators
   /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
 
   // ixt device col operators
+  /*  S  */ EO_DEVROW_COLS_PUSHSET_PST,  // push column subset from dev row
   /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
   /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
   /*  S  */ EO_DEVIXT_COLS_TO_ROW_OFS,   // push columns from ixt dev to row dev at offset column
@@ -909,6 +910,7 @@ static Stz* aEO[]
   /*    */ "EO_RLU_POT_COMPLETED"_Stz,
 
   // ixt device col operators
+  /*    */ "EO_DEVROW_COLS_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW_OFS"_Stz,
@@ -1430,6 +1432,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
 
   // ixt device col operators
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW_OFS

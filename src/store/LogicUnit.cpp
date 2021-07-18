@@ -3951,6 +3951,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device col operators
+      case EO_DEVROW_COLS_PUSHSET_PST: ArgNil(); // push column value from dev
+        vDev_ROW_COLS_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
+        dLU0(EO_DEVROW_COLS_PUSHSET_PST);
+        break;//+endCase
+
       case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COLS_TO_LOCALS);
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
