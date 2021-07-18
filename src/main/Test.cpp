@@ -1890,6 +1890,76 @@ void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
 
 
 
+/*----------------------------------------------------------------------------*/
+void vDecimalMul(i16& isResC, i8& isResC_places,
+                 i16  isArgA, i8  isArgA_places,
+                 i16  isArgB, i8  isArgB_places)
+{
+  i16 iuArgA;
+  i16 iuArgB;
+
+  vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
+         ,(i8)isArgA, isArgA_places
+         ,(i8)isArgB, isArgB_places
+         );
+
+  
+  // scale the arguments
+  //vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
+
+  vUnscaleVal(iuArgA,isArgA,isArgA_places);
+  vUnscaleVal(iuArgB,isArgB,isArgB_places);
+
+  vTrace("Unscaled Args %10lld * %10lld "_Stz
+         ,(i8)iuArgA
+         ,(i8)iuArgB
+         );
+
+  // calc argA * argB
+  i16 iuResC = iuArgA * iuArgB;
+  i8 nPlaces = isArgA_places + isArgB_places;
+
+  vTrace("| Unscaled Result %18lld (%lld) "_Stz
+         ,(i8)iuResC
+         ,nPlaces
+         );
+
+  vScaleVal(isResC,isResC_places,iuResC,nPlaces);
+  
+  vTrace("| Scaled Result (%10lld,%lld) "_Stz
+         ,(i8)isResC
+         ,isResC_places
+         );
+
+  vTrace("\n"_Stz);
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+void vTest33(void)
+{
+  vTrace("vTest33 -- Decimal Experiments\n"_Stz);
+    
+  i16 isResC; i8 isResC_places;
+
+  for (i8 isArgA_places = 0; isArgA_places <= 4; isArgA_places++) {
+    for (i8 isArgB_places = 0; isArgB_places <= 4; isArgB_places++) {
+      
+      i16 isArgA = 20000;
+      i16 isArgB = 30000;
+      
+      vDecimalMul(isResC,isResC_places,
+                  isArgA,isArgA_places,
+                  isArgB,isArgB_places);
+    }
+  }
+  
+  vTrace("- - - - - - -\n"_Stz);
+  
+}
+
+#if 0
 void vScaleArgs(i16& isArgA, i8& isArgA_places,
                 i16& isArgB, i8& isArgB_places)
 {
@@ -1947,155 +2017,8 @@ void vNormalizeResult(i16& inRes,
   inRes = isRes / iScaleCorrect;
 }
 
-/*----------------------------------------------------------------------------*/
-//void vDecimalTrace(Stz* szOp,
-//
-//                   i16 inArgA ,i8 inArgA_places,
-//                   i16 isArgA ,i8 isArgA_places,
-//
-//                   i16 inArgB ,i8 inArgB_places,
-//                   i16 isArgB ,i8 isArgB_places,
-//
-//                   i16 inRes  ,i8 inRes_places,
-//                   i16 isRes  ,i8 isRes_places)
-//
-//{
-//  i16 inVal = isRes;
-//  i8  inVal_places = inRes_places;
-//
-//  vRescaleVal(inVal,inVal_places);
-//
-//  vTrace("(%10lld,%lld) %10lld "
-//         "%s "
-//         "%10lld (%10lld,%lld) "
-//         "= "
-//         "%10lld (%10lld,%lld) "
-//
-//         "// "
-//         "isArgA (%10lld,%lld) "
-//         "%s "
-//         "isArgB (%10lld,%lld) "
-//         "= "
-//         "isRes %10lld (%15lld,%lld) "
-//
-//         "// "
-//         "rescaled (%10lld,%lld) "
-//
-//         "\n"_Stz
-//
-//         ,(i8)inArgA,inArgA_places,(i8)inArgA / IntLib::iTenToPow(inArgA_places)
-//         ,szOp
-//         ,(i8)inArgB / IntLib::iTenToPow(inArgB_places),(i8)inArgB,inArgB_places
-//         ,(i8)inRes / IntLib::iTenToPow(inRes_places),(i8)inRes,inRes_places
-//
-//         ,(i8)isArgA,isArgA_places
-//         ,szOp
-//         ,(i8)isArgB,isArgB_places
-//         ,(i8)isRes / IntLib::iTenToPow(isRes_places),(i8)isRes,isRes_places
-//
-//         ,(i8)inVal
-//         ,inVal_places
-//
-//         );
-//}
+#endif
 
-/*----------------------------------------------------------------------------*/
-void vDecimalMul(i16& isResC, i8& isResC_places,
-                 i16  isArgA, i8  isArgA_places,
-                 i16  isArgB, i8  isArgB_places)
-{
-  i16 iuArgA;
-  i16 iuArgB;
-
-  vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
-         ,(i8)isArgA, isArgA_places
-         ,(i8)isArgB, isArgB_places
-         );
-
-  
-  // scale the arguments
-  //vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
-
-  vUnscaleVal(iuArgA,isArgA,isArgA_places);
-  vUnscaleVal(iuArgB,isArgB,isArgB_places);
-
-  vTrace("Unscaled Args %10lld * %10lld "_Stz
-         ,(i8)iuArgA
-         ,(i8)iuArgB
-         );
-
-  // calc argA * argB
-  i16 iuResC = iuArgA * iuArgB;
-  i8 nPlaces = isArgA_places + isArgB_places;
-
-  vTrace("| Unscaled Result %18lld (%lld) "_Stz
-         ,(i8)iuResC
-         ,nPlaces
-         );
-
-  vScaleVal(isResC,isResC_places,iuResC,nPlaces);
-  
-  vTrace("| Scaled Result (%10lld,%lld) "_Stz
-         ,(i8)isResC
-         ,isResC_places
-         );
-
-  vTrace("\n"_Stz);
-
-
-//  // trace
-//  vDecimalTrace("*"_Stz,
-//                iuArgA ,iuArgA_places, isArgA ,isArgA_places,
-//                inArgB ,inArgB_places, isArgB ,isArgB_places,
-//                inRes  ,inRes_places,  isRes  ,isRes_places);
-}
-
-/*----------------------------------------------------------------------------*/
-void vTest33(void)
-{
-  vTrace("vTest33 -- Decimal Experiments\n"_Stz);
-    
-  i16 isResC; i8 isResC_places;
-
-  for (i8 isArgA_places = 0; isArgA_places <= 4; isArgA_places++) {
-    for (i8 isArgB_places = 0; isArgB_places <= 4; isArgB_places++) {
-      
-      i16 isArgA = 20000;
-      i16 isArgB = 30000;
-      
-      vDecimalMul(isResC,isResC_places,
-                  isArgA,isArgA_places,
-                  isArgB,isArgB_places);
-    }
-  }
-  
-  vTrace("- - - - - - -\n"_Stz);
-  
-//  for (i8 iScaleA = 0; iScaleA <= 4; iScaleA++) {
-//    for (i8 iScaleB = 0; iScaleB <= 4; iScaleB++) {
-//
-//      inArgA = 20000; inArgA_places = iScaleA;
-//      inArgB = 30000; inArgB_places = iScaleB;
-//
-//      vDecimalMul(inRes,inRes_places,
-//                  inArgA,inArgA_places,
-//                  inArgB,inArgB_places);
-//    }
-//  }
-
-//  for (i8 nPlaces = 0; nPlaces < 9; nPlaces++) {
-//
-//    i16 isVal = 9876543210;
-//    i8 isVal_places = 0;
-//
-//    vRescaleVal(isVal,isVal_places,nPlaces);
-//
-//    vTrace("%lld: (%lld,%lld)\n"_Stz,
-//           nPlaces,
-//           isVal,
-//           isVal_places);
-//  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */
