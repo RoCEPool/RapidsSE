@@ -1957,6 +1957,17 @@ void vTest33(void)
   
   vTrace("- - - - - - -\n"_Stz);
   
+  i16 iuResC = 12345;
+  
+  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+    vScaleVal(isResC,isResC_places,iuResC,nPlaces);
+
+    vTrace("(%10lld,?) to %lld places = (%10lld,%lld)\n"_Stz
+           ,(i8)iuResC, nPlaces
+           ,(i8)isResC, isResC_places
+           );
+  }
+  
 }
 
 #if 0
