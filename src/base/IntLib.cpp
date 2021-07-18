@@ -384,6 +384,29 @@ i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return 10 raised to given power                                            */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iTenToPow(i8 iPower)
+{
+  switch (iPower) {
+    case 0: return 1;
+    case 1: return 10;
+    case 2: return 100;
+    case 3: return 1000;
+    case 4: return 10000;
+    case 5: return 100000;
+    case 6: return 1000000;
+    case 7: return 10000000;
+    case 8: return 100000000;
+    case 9: return 1000000000;
+    default : NEVER_REACH;
+  }
+  
+  return 0;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iVlqToInt(byte yVlqVec[])

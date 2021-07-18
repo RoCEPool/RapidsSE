@@ -4,8 +4,8 @@
 #pragma once
 
 #define DIV(a,b) (b ? (a / b) : 0)    EndDefine // checked divide
-//#define MAX(a,b) (((a)>(b))?(a):(b))  EndDefine // which is smaller
-//#define MIN(a,b) (((a)<(b))?(a):(b))  EndDefine // which is bigger
+#define MAX__(a,b) (((a)>(b))?(a):(b))  EndDefine // which is smaller
+#define MIN__(a,b) (((a)<(b))?(a):(b))  EndDefine // which is bigger
 #define MOD(a,b) (b ? (a % b) : 0)    EndDefine // checked modulo
 #define NIL(a,b) (a ? a : b)          EndDefine // null replacement
 
@@ -28,6 +28,7 @@ namespace BASE
     static i8 iPercent(i8 iNumerator, i8 iDenominator);
     static i8 iPow(i8 iArg, i8 iRaisedTo);
     static i8 iQuartile(i8 iNumerator, i8 iDenominator);
+    static i8 iTenToPow(i8 iPower);
     static i8 iVlqToInt(byte yVlqVec[16]);
   
     static char* sAsText(i8 iValue);
