@@ -6,7 +6,7 @@ ROOT_DIR="${DIR}/.."
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
 # This is the colleciton of tests that are actually run by bamboo.
-TESTLIST_FILE="${DIR}/bamboo/allTestsBamboo"
+TESTLIST_FILE="${DIR}/bamboo/testlists/allTestsBamboo"
 
 SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
