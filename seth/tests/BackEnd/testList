@@ -11,7 +11,7 @@ filterRows$_I.test
 limitRows.test
 limitRows_I.test
 
-//loopJoin.test
+loopJoin.test
 
 projectColumns$_I.test
 projectColumns$.test
