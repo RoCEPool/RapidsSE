@@ -1861,8 +1861,10 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
-void vRescaleVal(i16& isVal, i8& isVal_places)
+void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
 {
+  isVal = iuVal;
+  isVal_places = iuVal_places;
   i8 isTest = isVal;
   
   for (i8 i_Place = 0; i_Place < 10; i_Place++) {
@@ -1874,7 +1876,7 @@ void vRescaleVal(i16& isVal, i8& isVal_places)
     
     isTest /= 10;
     
-    if (i_Place >= isVal_places) {
+    if (i_Place >= iuVal_places) {
       isVal = isTest;
       isVal_places++;
     }
@@ -1883,8 +1885,10 @@ void vRescaleVal(i16& isVal, i8& isVal_places)
 
 void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
 {
-  iuVal *= IntLib::iTenToPow(isVal_places);
+  iuVal = isVal * IntLib::iTenToPow(isVal_places);
 }
+
+
 
 void vScaleArgs(i16& isArgA, i8& isArgA_places,
                 i16& isArgB, i8& isArgB_places)
@@ -2003,24 +2007,39 @@ void vDecimalMul(i16& isResC, i8& isResC_places,
   i16 iuArgA;
   i16 iuArgB;
 
-  vTrace("(%10lld,%lld) * (%10lld,%lld) | "_Stz
+  vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
          ,(i8)isArgA, isArgA_places
          ,(i8)isArgB, isArgB_places
          );
 
   
   // scale the arguments
-  vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
-  
+  //vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
+
   vUnscaleVal(iuArgA,isArgA,isArgA_places);
   vUnscaleVal(iuArgB,isArgB,isArgB_places);
 
+  vTrace("Unscaled Args %10lld * %10lld "_Stz
+         ,(i8)iuArgA
+         ,(i8)iuArgB
+         );
+
   // calc argA * argB
   i16 iuResC = iuArgA * iuArgB;
+  i8 nPlaces = isArgA_places + isArgB_places;
+
+  vTrace("| Unscaled Result %18lld (%lld) "_Stz
+         ,(i8)iuResC
+         ,nPlaces
+         );
+
+  vScaleVal(isResC,isResC_places,iuResC,nPlaces);
   
-  // rescale result
-  vRescaleVal(isResC,isResC_places);
-  
+  vTrace("| Scaled Result (%10lld,%lld) "_Stz
+         ,(i8)isResC
+         ,isResC_places
+         );
+
   vTrace("\n"_Stz);
 
 
