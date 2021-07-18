@@ -1861,10 +1861,37 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
+void vRescaleVal(i16& isVal, i8& isVal_places, i8 inPlaces)
+{
+  // 1) already the required scale
+  if (inPlaces == isVal_places) {
+    return;
+  }
+
+  i8 iScaleDiff;
+
+  // 2) need to increase places
+  if (inPlaces > isVal_places) {
+    
+    iScaleDiff = inPlaces - isVal_places;
+    isVal *= IntLib::iTenToPow(iScaleDiff);
+    
+    isVal_places = inPlaces;
+    
+    return;
+  }
+  
+  // 3) need to decrease places
+  iScaleDiff = isVal_places - inPlaces;
+  isVal /= IntLib::iTenToPow(iScaleDiff);
+    
+  isVal_places = inPlaces;
+}
+
 void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
                 i16 inArgB, i8 inArgB_places, i16& isArgB, i8& isArgB_places)
 {
-  // 1) places A == places B
+  // 1) arg a & b have the same scale
   if (inArgA_places == inArgB_places) {
     isArgA = inArgA;
     isArgA_places = inArgA_places;
@@ -1876,7 +1903,7 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
   i8 iScaleDiff;
   i8 iScaleCorrect;
 
-  // 2) places A > places B
+  // 2) arg b needs to be scaled to arg a places
   if (inArgA_places > inArgB_places) {
     isArgA = inArgA;
     isArgA_places = inArgA_places;
@@ -1887,7 +1914,7 @@ void vScaleArgs(i16 inArgA, i8 inArgA_places, i16& isArgA, i8& isArgA_places,
     return;
   }
 
-  // 3) places B > scale A
+  // 2) arg a needs to be scaled to arg a places
   isArgB = inArgB;
   isArgB_places = inArgB_places;
   iScaleDiff = inArgB_places - inArgA_places;
@@ -1917,13 +1944,13 @@ void vNormalizeResult(i16& inRes,
     iScaleDiff = inRes_places - isRes_places;
     iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
     inRes = isRes * iScaleCorrect;
+    return;
   }
-  else {
-    // 3) result needs its scale decreased
-    iScaleDiff = isRes_places - inRes_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    inRes = isRes / iScaleCorrect;
-  }
+  
+  // 3) result needs its scale decreased
+  iScaleDiff = isRes_places - inRes_places;
+  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+  inRes = isRes / iScaleCorrect;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2015,6 +2042,21 @@ void vTest33(void)
                   inArgA,inArgA_places,
                   inArgB,inArgB_places);
     }
+  }
+  
+  vTrace("- - - - - - -\n"_Stz);
+  
+  for (i8 nPlaces = 0; nPlaces < 9; nPlaces++) {
+    
+    i16 isVal = 9876543210;
+    i8 isVal_places = 0;
+    
+    vRescaleVal(isVal,isVal_places,nPlaces);
+    
+    vTrace("%lld: (%lld,%lld)\n"_Stz,
+           nPlaces,
+           isVal,
+           isVal_places);
   }
 }
 
