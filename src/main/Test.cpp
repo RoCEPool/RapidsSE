@@ -1924,12 +1924,16 @@ void vRoundUp(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
   if (xsVal.m_nPlaces == nPlaces)
     return;
   
+  i8 iScaleDiff;
+  i8 iMod ;
+  i8 iCutVal;
+
   // too many decimal digits
   if (xsVal.m_nPlaces > nPlaces) {
-    i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
+    iScaleDiff = xsVal.m_nPlaces - nPlaces;
     xrVal.m_iValue /= IntLib::iTenToPow(iScaleDiff);
-    i8 iMod = IntLib::iTenToPow(iScaleDiff - 1);
-    i8 iCutVal = xsVal.m_iValue % iMod;
+    iMod = IntLib::iTenToPow(iScaleDiff);
+    iCutVal = xsVal.m_iValue % iMod;
     if (iCutVal >= iMod / 2)
       xrVal.m_iValue += 1;
     xrVal.m_nPlaces -= iScaleDiff;
@@ -1937,7 +1941,7 @@ void vRoundUp(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
   }
   
   // too few decimal digits
-  i8 iScaleDiff = nPlaces - xsVal.m_nPlaces;
+  iScaleDiff = nPlaces - xsVal.m_nPlaces;
   xrVal.m_iValue *= IntLib::iTenToPow(iScaleDiff);
   xrVal.m_nPlaces += iScaleDiff;
 }
@@ -1956,6 +1960,15 @@ void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
                  xsArgA.m_nPlaces + xsArgB.m_nPlaces);
 
   vTrace("= %s "_Stz,spResC.sz(xsResC));
+  
+  DecVal xrResC;
+  vTrace("| to nPlaces %lld: "_Stz,xsArgA.m_nPlaces);
+  
+  vRoundDown(xrResC,xsResC,xsArgA.m_nPlaces);
+  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
+  
+  vRoundUp(xrResC,xsResC,xsArgA.m_nPlaces);
+  vTrace("roundUp %10s "_Stz,spResC.sz(xrResC));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2003,6 +2016,25 @@ void vTest33(void)
   }
 
   vTrace("\n"_Stz);
+
+  vTrace("- - - - - - -\n"_Stz);
+  
+  xArgA.vAssign(31415,0); // the first 5 digits of pi
+  xArgB.vAssign(27182,0); // the first 5 digits of e
+
+  for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
+    for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
+      vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
+      
+      if (4 == xArgA.m_nPlaces && 4 == xArgB.m_nPlaces)
+        vDebugPoint();
+      
+      vDecimalMul(xResC,xArgA,xArgB);
+      vTrace("\n"_Stz);
+    }
+  }
+  
+
 
 }
 
