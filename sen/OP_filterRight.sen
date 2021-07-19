@@ -41,7 +41,7 @@
 
   // ignore streamDef if not received startRightMarker
   Counter1[] 0 == if
-    Pipein[].pipeout
+     Pipein[].pipeout
     true
     exit
   then
@@ -67,10 +67,6 @@
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
-  PotRlu[].delete
-
-  // cleanup compiler
-  Counter0[] cleanUpAsm
 
   // record receipt of end right marker
   0 to Counter1[]
@@ -87,9 +83,16 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  Pipein[].pipeout
+  // Arrival of EOSMARKER implies left is all done
 
-  true
+  // delete the pot
+  PotRlu[].delete
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
