@@ -46,8 +46,64 @@ begin
 
 end;
 
-rows:
-  0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 // drop the tables
 drop table T1;
@@ -56,17 +112,11 @@ success
 drop table T2;
 success
 
-MemoryLeaks;
-rows: 0
-
 //------------------------------------------------------------------------------
 // BROADCAST JOIN (NO RIGHT DATA)
 // T1.a = T2.a
 // PtnKey[T] = b
 // PtnKey[J] = c
-
-trackMemory;
-success;
 
 create table T1 (
 	 a       INTEGER,
@@ -103,8 +153,64 @@ begin
 
 end;
 
-rows:
-  0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 // drop the tables
 drop table T1;
@@ -113,17 +219,11 @@ success
 drop table T2;
 success
 
-MemoryLeaks;
-rows: 0
-
 //------------------------------------------------------------------------------
 // BROADCAST JOIN (NO LEFT AND RIGHT DATA)
 // T1.a = T2.a
 // PtnKey[T] = b
 // PtnKey[J] = c
-
-trackMemory;
-success;
 
 create table T1 (
 	 a       INTEGER,
@@ -157,8 +257,64 @@ begin
 
 end;
 
-rows:
-  0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 // drop the tables
 drop table T1;
@@ -167,17 +323,11 @@ success
 drop table T2;
 success
 
-MemoryLeaks;
-rows: 0
-
 //------------------------------------------------------------------------------
 // BROADCAST JOIN
 // T1.a = T2.a
 // PtnKey[T] = b
 // PtnKey[J] = c
-
-trackMemory;
-success;
 
 create table T1 (
 	 a       INTEGER,
