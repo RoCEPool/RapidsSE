@@ -1894,18 +1894,23 @@ void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 }
 
 
-void vRoundVal(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
+void vRoundDown(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
 {
-  xrVal.vAssign(xsVal.m_iValue ,
-                xsVal.m_nPlaces);
+  xrVal.vAssign(xsVal.m_iValue,xsVal.m_nPlaces);
   
-  if (xsVal.m_nPlaces <= nPlaces)
+  if (xsVal.m_nPlaces == nPlaces)
     return;
   
-  i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
-  i8 iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+  if (xsVal.m_nPlaces > nPlaces) {
+    i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
+    xrVal.m_iValue /= IntLib::iTenToPow(iScaleDiff);
+    xrVal.m_nPlaces -= iScaleDiff;
+    return;
+  }
   
-  xrVal.m_iValue /= iScaleCorrect;
+  i8 iScaleDiff = nPlaces - xsVal.m_nPlaces;
+  xrVal.m_iValue *= IntLib::iTenToPow(iScaleDiff);
+  xrVal.m_nPlaces += iScaleDiff;
 }
 
 
@@ -1944,20 +1949,21 @@ void vTest33(void)
     }
   }
   
-//  vTrace("- - - - - - -\n"_Stz);
-//
-//  DecVal xsResC;
-//  SP_DecVal spResC;
-//
-//  xsResC.vAssign(12345678,2);
-//  vTrace("%s | rounded to "_Stz,spResC.sz(xsResC));
-//
-//  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-//    vRoundVal(xrResC,xsResC,nPlaces);
-//    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
-//  }
-//
-//  vTrace("\n"_Stz);
+  vTrace("- - - - - - -\n"_Stz);
+
+  DecVal xuResC;
+  DecVal xrResC;
+  SP_DecVal spResC;
+
+  xuResC.vAssign(12345678,4);
+  vTrace("%s | rounded down to: "_Stz,spResC.sz(xuResC));
+
+  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+    vRoundDown(xrResC,xuResC,nPlaces);
+    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
+  }
+
+  vTrace("\n"_Stz);
 }
 
 #if 0
