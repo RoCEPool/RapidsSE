@@ -14,12 +14,21 @@ namespace BASE
   public:
     DecVal(void);
   
+    void operator =(DecVal xDecVal);
+    DecVal operator *(DecVal xDecVal);
+
     void vAssign(DecVal xArg);
     void vAssign(i16 iValue,i8 nPlaces);
   
+     void vMultiply(DecVal xsArgA, DecVal xsArgB);
+
     void vRoundDown(DecVal xsVal, i8 nPlaces);
     void vRoundUp(DecVal xsVal, i8 nPlaces);
   };
+
+  // user defined string literal
+  DecVal operator "" _Dec(const char* azLiteral, size_t nSize);
+
 }
 
 /*============================================================================*/

@@ -1863,84 +1863,6 @@ void vTest32(void)
 
 #include "SP_DecVal.hpp"
 
-void vRoundDown(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
-{
-  xrVal.vAssign(xsVal.m_iValue,xsVal.m_nPlaces);
-  
-  // required number of places
-  if (xsVal.m_nPlaces == nPlaces)
-    return;
-  
-  // too many decimal digits
-  if (xsVal.m_nPlaces > nPlaces) {
-    i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
-    xrVal.m_iValue /= IntLib::iTenToPow(iScaleDiff);
-    xrVal.m_nPlaces -= iScaleDiff;
-    return;
-  }
-  
-  // too few decimal digits
-  i8 iScaleDiff = nPlaces - xsVal.m_nPlaces;
-  xrVal.m_iValue *= IntLib::iTenToPow(iScaleDiff);
-  xrVal.m_nPlaces += iScaleDiff;
-}
-
-void vRoundUp(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
-{
-  xrVal.vAssign(xsVal.m_iValue,xsVal.m_nPlaces);
-  
-  // required number of places
-  if (xsVal.m_nPlaces == nPlaces)
-    return;
-  
-  i8 iScaleDiff;
-  i8 iMod ;
-  i8 iCutVal;
-
-  // too many decimal digits
-  if (xsVal.m_nPlaces > nPlaces) {
-    iScaleDiff = xsVal.m_nPlaces - nPlaces;
-    xrVal.m_iValue /= IntLib::iTenToPow(iScaleDiff);
-    iMod = IntLib::iTenToPow(iScaleDiff);
-    iCutVal = xsVal.m_iValue % iMod;
-    if (iCutVal >= iMod / 2)
-      xrVal.m_iValue += 1;
-    xrVal.m_nPlaces -= iScaleDiff;
-    return;
-  }
-  
-  // too few decimal digits
-  iScaleDiff = nPlaces - xsVal.m_nPlaces;
-  xrVal.m_iValue *= IntLib::iTenToPow(iScaleDiff);
-  xrVal.m_nPlaces += iScaleDiff;
-}
-
-
-/*----------------------------------------------------------------------------*/
-void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
-{
-  SP_DecVal spArgA;
-  SP_DecVal spArgB;
-  SP_DecVal spResC;
-  
-  vTrace("%s * %s "_Stz,spArgA.sz(xsArgA),spArgB.sz(xsArgB));
-
-  xsResC.vAssign(xsArgA.m_iValue  * xsArgB.m_iValue,
-                 xsArgA.m_nPlaces + xsArgB.m_nPlaces);
-
-  vTrace("= %s "_Stz,spResC.sz(xsResC));
-  
-  DecVal xrResC;
-  vTrace("| to nPlaces %lld: "_Stz,xsArgA.m_nPlaces);
-  
-  xrResC.vRoundDown(xsResC,xsArgA.m_nPlaces);
-  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
-  
-  xrResC.vRoundUp(xsResC,xsArgA.m_nPlaces);
-  vTrace("roundUp %10s "_Stz,spResC.sz(xrResC));
-}
-
-/*----------------------------------------------------------------------------*/
 void vTest33(void)
 {
   vTrace("vTest33 -- Decimal Experiments\n"_Stz);
@@ -1949,13 +1871,15 @@ void vTest33(void)
   DecVal xArgB;
   DecVal xResC;
 
-  xArgA.vAssign(20000,0);
-  xArgB.vAssign(30000,0);
+//  xArgA.vAssign(20000,0);
+//  xArgB.vAssign(30000,0);
+  xArgA = "20000."_Dec;
+  xArgB = "30000."_Dec;
 
   for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
     for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
       vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
-      vDecimalMul(xResC,xArgA,xArgB);
+      xResC.vMultiply(xArgA,xArgB);
       vTrace("\n"_Stz);
     }
   }
@@ -1970,7 +1894,7 @@ void vTest33(void)
   vTrace("%s | rounded down to: "_Stz,spResC.sz(xuResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    vRoundDown(xrResC,xuResC,nPlaces);
+    xrResC.vRoundDown(xuResC,nPlaces);
     vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
 
@@ -1980,7 +1904,7 @@ void vTest33(void)
   vTrace("%s | rounded up to: "_Stz,spResC.sz(xuResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    vRoundUp(xrResC,xuResC,nPlaces);
+    xrResC.vRoundUp(xuResC,nPlaces);
     vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
 
@@ -1988,8 +1912,8 @@ void vTest33(void)
 
   vTrace("- - - - - - -\n"_Stz);
   
-  xArgA.vAssign(31415,0); // the first 5 digits of pi
-  xArgB.vAssign(27182,0); // the first 5 digits of e
+  xArgA = "31415."_Dec; // the first 5 digits of pi
+  xArgB = "27182."_Dec; // the first 5 digits of e
 
   for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
     for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
@@ -1998,14 +1922,11 @@ void vTest33(void)
       if (4 == xArgA.m_nPlaces && 4 == xArgB.m_nPlaces)
         vDebugPoint();
       
-      vDecimalMul(xResC,xArgA,xArgB);
+      xResC.vMultiply(xArgA,xArgB);
       vTrace("\n"_Stz);
     }
   }
-  
-
-
-}
+  }
 
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */
