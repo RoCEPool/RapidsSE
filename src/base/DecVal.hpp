@@ -12,11 +12,27 @@ namespace BASE
     i8   m_nPlaces;  // number of decimal places
 
   public:
-     DecVal(void);
+    DecVal(void);
   
-    void vAssign(i16 iValue,i8 nPlaces);
+    void operator =(DecVal xDecVal);
+    DecVal operator *(DecVal xDecVal);
 
+    void vAssign(DecVal xArg);
+    void vAssign(i16 iValue,i8 nPlaces);
+  
+    void vMultiply(DecVal xsArgB);
+    void vMultiply(DecVal xsArgA, DecVal xsArgB);
+
+    void vRoundDown(i8 nPlaces);
+    void vRoundDown(DecVal xsVal, i8 nPlaces);
+  
+    void vRoundUp(i8 nPlaces);
+    void vRoundUp(DecVal xsVal, i8 nPlaces);
   };
+
+  // user defined string literal
+  DecVal operator "" _Dec(const char* azLiteral, size_t nSize);
+
 }
 
 /*============================================================================*/

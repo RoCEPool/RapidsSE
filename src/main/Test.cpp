@@ -1863,73 +1863,6 @@ void vTest32(void)
 
 #include "SP_DecVal.hpp"
 
-void vScaleVal(DecVal& xsVal, DecVal xuVal)
-{
-  xsVal.vAssign(xuVal.m_iValue,xuVal.m_nPlaces);
-
-//  i8 isTest = xuVal.m_iValue;
-//  
-//  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
-//
-//    i8 iLastDigit = isTest % 10;
-//
-//    if (iLastDigit)
-//      break;
-//
-//    isTest /= 10;
-//
-//    if (i_Place >= xuVal.m_nPlaces) {
-//      xsVal.m_iValue = isTest;
-//      xsVal.m_nPlaces++;
-//    }
-//  }
-  
-}
-
-
-void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
-{
-  xuVal.vAssign(xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces),
-                xsVal.m_nPlaces);
-}
-
-
-void vRoundDown(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
-{
-  xrVal.vAssign(xsVal.m_iValue,xsVal.m_nPlaces);
-  
-  if (xsVal.m_nPlaces == nPlaces)
-    return;
-  
-  if (xsVal.m_nPlaces > nPlaces) {
-    i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
-    xrVal.m_iValue /= IntLib::iTenToPow(iScaleDiff);
-    xrVal.m_nPlaces -= iScaleDiff;
-    return;
-  }
-  
-  i8 iScaleDiff = nPlaces - xsVal.m_nPlaces;
-  xrVal.m_iValue *= IntLib::iTenToPow(iScaleDiff);
-  xrVal.m_nPlaces += iScaleDiff;
-}
-
-
-/*----------------------------------------------------------------------------*/
-void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
-{
-  SP_DecVal spArgA;
-  SP_DecVal spArgB;
-  SP_DecVal spResC;
-  
-  vTrace("%s * %s "_Stz,spArgA.sz(xsArgA),spArgB.sz(xsArgB));
-
-  xsResC.vAssign(xsArgA.m_iValue  * xsArgB.m_iValue,
-                 xsArgA.m_nPlaces + xsArgB.m_nPlaces);
-
-  vTrace("= %s "_Stz,spResC.sz(xsResC));
-}
-
-/*----------------------------------------------------------------------------*/
 void vTest33(void)
 {
   vTrace("vTest33 -- Decimal Experiments\n"_Stz);
@@ -1938,13 +1871,15 @@ void vTest33(void)
   DecVal xArgB;
   DecVal xResC;
 
-  xArgA.vAssign(20000,0);
-  xArgB.vAssign(30000,0);
+//  xArgA.vAssign(20000,0);
+//  xArgB.vAssign(30000,0);
+  xArgA = "20000."_Dec;
+  xArgB = "30000."_Dec;
 
   for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
     for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
       vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
-      vDecimalMul(xResC,xArgA,xArgB);
+      xResC.vMultiply(xArgA,xArgB);
       vTrace("\n"_Stz);
     }
   }
@@ -1959,73 +1894,39 @@ void vTest33(void)
   vTrace("%s | rounded down to: "_Stz,spResC.sz(xuResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    vRoundDown(xrResC,xuResC,nPlaces);
+    xrResC.vRoundDown(xuResC,nPlaces);
     vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
 
   vTrace("\n"_Stz);
-}
-
-#if 0
-void vScaleArgs(i16& isArgA, i8& isArgA_places,
-                i16& isArgB, i8& isArgB_places)
-{
-  // 1) arg a & b have the same scale
-  if (isArgA_places == isArgB_places) {
-    return;
-  }
-    
-  i8 iScaleDiff;
-  i8 iScaleCorrect;
-
-  // 2) arg b needs to be scaled to arg a places
-  if (isArgA_places > isArgB_places) {
-    iScaleDiff = isArgA_places - isArgB_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    isArgB = isArgB * iScaleCorrect;
-    isArgB_places = isArgA_places;
-    return;
-  }
-
-  // 2) arg a needs to be scaled to arg a places
-  iScaleDiff = isArgB_places - isArgA_places;
-  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-  isArgA = isArgA * iScaleCorrect;
-  isArgA_places = isArgB_places;
-}
-
-/*----------------------------------------------------------------------------*/
-void vNormalizeResult(i16& inRes,
-                      i8   inRes_places,
-                      i16  isRes,
-                      i8   isRes_places
-                      )
-{
-  // 1) result has the required scale
-  if (isRes_places == inRes_places) {
-    inRes = isRes;
-    return;
-  }
   
-  i8 iScaleDiff;
-  i8 iScaleCorrect;
+  xuResC.vAssign(12345678,4);
+  vTrace("%s | rounded up to: "_Stz,spResC.sz(xuResC));
 
-  // 2) result needs its scale increased
-  if (inRes_places > isRes_places) {
-    iScaleDiff = inRes_places - isRes_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    inRes = isRes * iScaleCorrect;
-    return;
+  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+    xrResC.vRoundUp(xuResC,nPlaces);
+    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
+
+  vTrace("\n"_Stz);
+
+  vTrace("- - - - - - -\n"_Stz);
   
-  // 3) result needs its scale decreased
-  iScaleDiff = isRes_places - inRes_places;
-  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-  inRes = isRes / iScaleCorrect;
-}
+  xArgA = "31415."_Dec; // the first 5 digits of pi
+  xArgB = "27182."_Dec; // the first 5 digits of e
 
-#endif
-
+  for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
+    for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
+      vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
+      
+      if (4 == xArgA.m_nPlaces && 4 == xArgB.m_nPlaces)
+        vDebugPoint();
+      
+      xResC.vMultiply(xArgA,xArgB);
+      vTrace("\n"_Stz);
+    }
+  }
+  }
 
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */
