@@ -38,10 +38,12 @@ void SP_DecVal::vDecVal(DecVal xDecVal)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
     
-  vCatf("(%9lld,%lld,%s)"_Stz
-        ,xDecVal.m_iValue
+  vInit();
+  
+  vCatf("(%9lld %s %lld)"_Stz
+        ,(i8)xDecVal.m_iValue
+        ,xDecVal.m_bScaled ? "scaled to" : "unscaled at"
         ,xDecVal.m_nPlaces
-        ,xDecVal.m_bScaled ? "scaled" : "unscaled"
         );
 }
 
