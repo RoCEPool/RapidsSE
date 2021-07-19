@@ -1933,10 +1933,10 @@ void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
   DecVal xrResC;
   vTrace("| to nPlaces %lld: "_Stz,xsArgA.m_nPlaces);
   
-  vRoundDown(xrResC,xsResC,xsArgA.m_nPlaces);
+  xrResC.vRoundDown(xsResC,xsArgA.m_nPlaces);
   vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
   
-  vRoundUp(xrResC,xsResC,xsArgA.m_nPlaces);
+  xrResC.vRoundUp(xsResC,xsArgA.m_nPlaces);
   vTrace("roundUp %10s "_Stz,spResC.sz(xrResC));
 }
 

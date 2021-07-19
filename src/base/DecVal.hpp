@@ -12,10 +12,13 @@ namespace BASE
     i8   m_nPlaces;  // number of decimal places
 
   public:
-     DecVal(void);
+    DecVal(void);
   
+    void vAssign(DecVal xArg);
     void vAssign(i16 iValue,i8 nPlaces);
-
+  
+    void vRoundDown(DecVal xsVal, i8 nPlaces);
+    void vRoundUp(DecVal xsVal, i8 nPlaces);
   };
 }
 
