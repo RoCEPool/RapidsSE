@@ -29,7 +29,7 @@ readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-readonly RELATIVE_BAMBOO_DIR="seth/bamboo"  # Relative to the project root
+readonly RELATIVE_BAMBOO_DIR="${DIR}"
 readonly BAMBOO_RESULTS_DIR="${RELATIVE_BAMBOO_DIR}/results"
 readonly BAMBOO_LOGS_DIR="${RELATIVE_BAMBOO_DIR}/logs"
 readonly BAMBOO_CONFIG_DIR="${RELATIVE_BAMBOO_DIR}/config"
@@ -178,11 +178,13 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
     # Ensure these files exist
     if [ ! -f "${configFile}" ]; then
       printError "Config file does not exist: ${configFile}"
+      printError "Skipping testing of configuration: [${buildType}, ${buildConfig}]\n"
       continue
     fi
 
     if [ ! -f "${testlistFile}" ]; then
       printError "Testlist file does not exist: ${testlistFile}"
+      printError "Skipping testing of configuration: [${buildType}, ${buildConfig}]\n"
       continue
     fi
 
