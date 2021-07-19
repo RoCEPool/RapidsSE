@@ -1925,7 +1925,7 @@ void vTest33(void)
       if (4 == xArgA.m_nPlaces && 4 == xArgB.m_nPlaces)
         vDebugPoint();
       
-      xResC.vMultiply(xArgA,xArgB);
+      xResC = xArgA * xArgB;
       vTrace("\n"_Stz);
     }
   }

@@ -21,16 +21,12 @@ namespace BASE
     void vAssign(i16 iValue, i8 nPlaces);
     void vAssign(i8 iWhole, i8 iFraction, i8 nPlaces);
 
-    void vMultiply(DecVal xsArgB);
-    void vMultiply(DecVal xsArgA, DecVal xsArgB);
-
     void vRoundDown(i8 nPlaces);
     void vRoundUp(i8 nPlaces);
   };
 
   // user defined string literal
   DecVal operator "" _Dec(const char* azLiteral, size_t nSize);
-
 }
 
 /*============================================================================*/

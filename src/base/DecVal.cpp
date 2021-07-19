@@ -39,8 +39,10 @@ DecVal DecVal::operator *(DecVal xArgB)
   
   vTrace("(( %s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
 
-  xResC.vAssign(m_iValue  * xArgB.m_iValue,
-                m_nPlaces + xArgB.m_nPlaces);
+  i16 iComputedValue  = m_iValue  * xArgB.m_iValue;
+  i8  iComputedPlaces = m_nPlaces + xArgB.m_nPlaces;
+
+  xResC.vAssign(iComputedValue,iComputedPlaces);
 
   vTrace("= %s "_Stz,spResC.sz(xResC));
     
@@ -74,43 +76,9 @@ void DecVal::vAssign(i16 iValue, i8 nPlaces)
 /*----------------------------------------------------------------------------*/
 void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
 {
-  vAssign(iWhole * IntLib::iTenToPow(nPlaces) + iFraction,nPlaces);
-}
+  i16 iValue = iWhole * IntLib::iTenToPow(nPlaces) + iFraction;
 
-/*----------------------------------------------------------------------------*/
-/* multiply                                                                   */
-/*----------------------------------------------------------------------------*/
-void DecVal::vMultiply(DecVal xsArgB)
-{
-  SP_DecVal spArgA;
-  SP_DecVal spArgB;
-  SP_DecVal spResC;
-  
-  vTrace("%s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xsArgB));
-
-  i8 nToPlaces = m_nPlaces;
-  
-  vAssign(m_iValue  * xsArgB.m_iValue,
-          m_nPlaces + xsArgB.m_nPlaces);
-
-  vTrace("= %s "_Stz,spResC.sz(*this));
-  
-  DecVal xrResC;
-  vTrace("| to nPlaces %lld: "_Stz,m_nPlaces);
-  
-  xrResC.vRoundDown(m_nPlaces);
-  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
-  
-  xrResC.vRoundUp(m_nPlaces);
-  vTrace("roundUp %10s "_Stz,spResC.sz(xrResC));
-}
-
-/*----------------------------------------------------------------------------*/
-/* multiply                                                                   */
-/*----------------------------------------------------------------------------*/
-void DecVal::vMultiply(DecVal xArgA, DecVal xArgB)
-{
-  vAssign(xArgA * xArgB);
+  vAssign(iValue,nPlaces);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,20 +90,18 @@ void DecVal::vRoundDown(i8 nPlaces)
   if (m_nPlaces == nPlaces)
     return;
   
-  i8 iScaleDiff;
-  
   // too many decimal digits
   if (m_nPlaces > nPlaces) {
-    iScaleDiff = m_nPlaces - nPlaces;
-    m_nPlaces -= iScaleDiff;
-    m_iValue /= IntLib::iTenToPow(iScaleDiff);
+    i8 nReduce = m_nPlaces - nPlaces;         // number of places to reduce
+    m_iValue /= IntLib::iTenToPow(nReduce);   // m_iValue /= 10^nReduce
+    m_nPlaces -= nReduce;                     // reduce m_nPlaces
     return;
   }
   
   // too few decimal digits
-  iScaleDiff = nPlaces - m_nPlaces;
-  m_nPlaces += iScaleDiff;
-  m_iValue *= IntLib::iTenToPow(iScaleDiff);
+  i8 nIncrease = nPlaces - m_nPlaces;         // number of places to increase
+  m_iValue *= IntLib::iTenToPow(nIncrease);   // m_iValue /*= 10^nIncrease
+  m_nPlaces += nIncrease;                     // increase m_nPlaces
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,27 +113,26 @@ void DecVal::vRoundUp(i8 nPlaces)
   if (m_nPlaces == nPlaces)
     return;
   
-  i8 iScaleDiff;
-
   // too many decimal digits
   if (m_nPlaces > nPlaces) {
-    iScaleDiff = m_nPlaces - nPlaces;
-    m_nPlaces -= iScaleDiff;
+    i8 nReduce = m_nPlaces - nPlaces;        // number of places to reduce
     
-    i8 iMod = IntLib::iTenToPow(iScaleDiff);
+    i8 iMod = IntLib::iTenToPow(nReduce);    // calc what gets cut
     i8 iCutVal = m_iValue % iMod;
     
-    m_iValue /= IntLib::iTenToPow(iScaleDiff);
+    m_iValue /= IntLib::iTenToPow(nReduce);  // m_iValue /= 10^nReduce
     
-    if (iCutVal >= iMod / 2)
+    if (iCutVal >= iMod / 2)                 // round up if cut is over half
       m_iValue += 1;
+    
+    m_nPlaces -= nReduce;                    // reduce m_nPlaces
     return;
   }
   
   // too few decimal digits
-  iScaleDiff = nPlaces - m_nPlaces;
-  m_nPlaces += iScaleDiff;
-  m_iValue *= IntLib::iTenToPow(iScaleDiff);
+  i8 nIncrease = nPlaces - m_nPlaces;        // number of places to increase
+  m_iValue *= IntLib::iTenToPow(nIncrease);  // m_iValue /*= 10^nIncrease
+  m_nPlaces += nIncrease;                    // increase m_nPlaces
 }
 
 /*----------------------------------------------------------------------------*/
