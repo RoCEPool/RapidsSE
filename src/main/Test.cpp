@@ -1879,7 +1879,8 @@ void vTest33(void)
   for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
     for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
       vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
-      xResC.vMultiply(xArgA,xArgB);
+      //xResC.vMultiply(xArgA,xArgB);
+      xResC = xArgA * xArgB;
       vTrace("\n"_Stz);
     }
   }
@@ -1901,10 +1902,11 @@ void vTest33(void)
   vTrace("\n"_Stz);
   
   xuResC.vAssign(12345678,4);
-  vTrace("%s | rounded up to: "_Stz,spResC.sz(xuResC));
+  vTrace("%s | rounded up to  : "_Stz,spResC.sz(xuResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    xrResC.vRoundUp(xuResC,nPlaces);
+    xrResC = xuResC;
+    xrResC.vRoundUp(nPlaces);
     vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
 

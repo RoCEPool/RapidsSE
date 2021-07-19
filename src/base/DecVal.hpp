@@ -28,7 +28,6 @@ namespace BASE
     void vRoundDown(DecVal xsVal, i8 nPlaces);
   
     void vRoundUp(i8 nPlaces);
-    void vRoundUp(DecVal xsVal, i8 nPlaces);
   };
 
   // user defined string literal
