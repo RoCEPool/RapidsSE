@@ -1905,51 +1905,30 @@ void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 /*----------------------------------------------------------------------------*/
 void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
 {
-  SP_DecVal spArgA;
-  SP_DecVal spArgB;
-  SP_DecVal spResC;
-  
-  vTrace("%s * %s : "_Stz
-         ,spArgA.sz(xsArgA)
-         ,spArgB.sz(xsArgB)
-         );
-
   DecVal xuArgA;
   DecVal xuArgB;
   DecVal xuResC;
 
-  // 1) unscale arguments
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
+  
+  vTrace("%s * %s "_Stz,spArgA.sz(xsArgA),spArgB.sz(xsArgB));
 
+  // 1) unscale arguments
   vUnscaleVal(xuArgA,xsArgA);
   vUnscaleVal(xuArgB,xsArgB);
-
-//  vTrace("Unscaled (%10lld,%lld) * (%10lld,%lld) : "_Stz
-//         ,(i8)xuArgA.m_iValue,xuArgA.m_nPlaces
-//         ,(i8)xuArgB.m_iValue,xuArgB.m_nPlaces
-//         );
-  vTrace("| Unscaled %s * %s : "_Stz
-         ,spArgA.sz(xuArgA)
-         ,spArgB.sz(xuArgB)
-         );
+  vTrace("; %s * %s "_Stz,spArgA.sz(xuArgA),spArgB.sz(xuArgB));
 
   // 2) calc argA * argB
-  
-//  xuResC.m_iValue  = xuArgA.m_iValue  * xuArgB.m_iValue;
-//  xuResC.m_nPlaces = xuArgA.m_nPlaces + xuArgB.m_nPlaces;
-//
-//  vTrace("| Unscaled Result (%10lld,%lld) "_Stz
-//         ,(i8)xuResC.m_iValue
-//         ,xuResC.m_nPlaces
-//         );
-//
-//  // 3) scale result
-//  
-//  vScaleVal(xsResC,xuResC);
-//
-//  vTrace("| Scaled Result (%10lld,%lld) "_Stz
-//         ,(i8)xsResC.m_iValue
-//         ,xsResC.m_nPlaces
-//         );
+  xuResC.vAssign(xuArgA.m_iValue * xuArgB.m_iValue,
+                 xuArgA.m_nPlaces + xuArgB.m_nPlaces,
+                 false);
+  vTrace("= %s "_Stz,spResC.sz(xuResC));
+
+  // 3) scale result
+  vScaleVal(xsResC,xuResC);
+  vTrace("= %s "_Stz,spResC.sz(xsResC));
 
   vTrace("\n"_Stz);
 }

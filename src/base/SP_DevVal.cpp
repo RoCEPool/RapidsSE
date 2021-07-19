@@ -40,11 +40,16 @@ void SP_DecVal::vDecVal(DecVal xDecVal)
     
   vInit();
   
-  vCatf("(%9lld %s %lld)"_Stz
-        ,(i8)xDecVal.m_iValue
-        ,xDecVal.m_bScaled ? "scaled to" : "unscaled at"
-        ,xDecVal.m_nPlaces
-        );
+  if (xDecVal.m_bScaled)
+    vCatf("%9lldE%02lld"_Stz
+          ,(i8)xDecVal.m_iValue
+          ,xDecVal.m_nPlaces
+          );
+  else
+    vCatf("%18lld (%02lld implied places)"_Stz
+          ,(i8)xDecVal.m_iValue
+          ,xDecVal.m_nPlaces
+          );
 }
 
 /*----------------------------------------------------------------------------*/
