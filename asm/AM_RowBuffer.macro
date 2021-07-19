@@ -302,6 +302,49 @@ macro AM_ROW_FILTER_END
   EO_RETURN
 endMacro
 
+macro AM_ROW_HASHROWS_BEGIN
+//----------------------------------------------------------------------------//
+// macro AM_ROW_HASHROWS_BEGIN                                                //
+//----------------------------------------------------------------------------//
+  // ROW_HASHROWS_BEGIN
+  Label ROW_HASHROWS_BEGIN
+
+  // calc i_Ptn
+  EO_PTN_RESET
+
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
+  EO_PUSH_RLU_LOCALS
+  EO_PUSH_RLU_COLSET
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_LOCALS
+
+endMacro
+
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_HASHROWS_END                                                  //
+//----------------------------------------------------------------------------//
+macro AM_ROW_HASHROWS_END
+  // AM_ROW_HASHROWS_END
+
+  EO_PTN_RUNNING
+  EO_PTN_CALC
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_ROW
+
+  //EO_PUSH_DEVROW_DST
+  //EO_DEVROW_ROW_PRINT
+  EO_RETURN
+endMacro
+
 macro AM_ROW_INDEXJOIN_BEGIN
 //----------------------------------------------------------------------------//
 // macro AM_ROW_INDEXJOIN_BEGIN                                               //

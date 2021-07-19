@@ -637,17 +637,17 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   // ROW_HASH_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the filter
-//  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
-//  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-//
-//  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_HASHROWS_BEGIN, &oTagSet, sMacro));
-//  oTagSet.vReset();
-//
-//  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
-//  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
-//  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
-//
-//  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_HASHROWS_END, &oTagSet, sMacro));
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_HASHROWS_BEGIN, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_HASHROWS_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
