@@ -185,7 +185,7 @@
   // and left in right (which it will ignore)
   StreamDefRht[].isNull if
 
-      "loopJoin_StreamDef got left streamDef" .
+      //"loopJoin_StreamDef got left streamDef" .
       // move pipein[] to StreamDefRht[]
       Pipein[]\clear to StreamDefRht[]
 
