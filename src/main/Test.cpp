@@ -1926,7 +1926,12 @@ void vTest33(void)
       vTrace("\n"_Stz);
     }
   }
-  }
+  
+  vTrace("- - - - - - -\n"_Stz);
+  
+  xResC = "4.8"_Dec * "2.10"_Dec;
+  vTrace("xResC = %s\n"_Stz,spResC.sz(xResC));
+}
 
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */

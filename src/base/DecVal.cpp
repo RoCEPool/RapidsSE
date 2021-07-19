@@ -35,21 +35,18 @@ DecVal DecVal::operator *(DecVal xArgB)
   SP_DecVal spArgB;
   SP_DecVal spResC;
   
-  vTrace("%s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+  vTrace("(( %s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
 
   i8 nToPlaces = m_nPlaces;
   vAssign(m_iValue  * xArgB.m_iValue,
           nToPlaces + xArgB.m_nPlaces);
 
   vTrace("= %s "_Stz,spResC.sz(*this));
-  
-  DecVal xrResC;
-  vTrace("| to nPlaces %lld: "_Stz,nToPlaces);
-  
-  xrResC.vRoundDown(*this,nToPlaces);
-  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
-  
-  xrResC.vRoundUp(*this,nToPlaces);
+    
+  vRoundUp(*this,nToPlaces);
+  vTrace("; round up (to %lld places) = %s "_Stz,nToPlaces,spResC.sz(*this));
+
+  vTrace(")) "_Stz);
 
   return *this;
 }
