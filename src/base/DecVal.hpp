@@ -20,9 +20,13 @@ namespace BASE
     void vAssign(DecVal xArg);
     void vAssign(i16 iValue,i8 nPlaces);
   
-     void vMultiply(DecVal xsArgA, DecVal xsArgB);
+    void vMultiply(DecVal xsArgB);
+    void vMultiply(DecVal xsArgA, DecVal xsArgB);
 
+    void vRoundDown(i8 nPlaces);
     void vRoundDown(DecVal xsVal, i8 nPlaces);
+  
+    void vRoundUp(i8 nPlaces);
     void vRoundUp(DecVal xsVal, i8 nPlaces);
   };
 

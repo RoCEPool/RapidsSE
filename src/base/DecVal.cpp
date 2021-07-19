@@ -30,11 +30,28 @@ void DecVal::operator =(DecVal xDecVal)
 /*----------------------------------------------------------------------------*/
 /* multiply operator                                                          */
 /*----------------------------------------------------------------------------*/
-DecVal DecVal::operator *(DecVal xDecVal)
+DecVal DecVal::operator *(DecVal xArgB)
 {
-  m_iValue  = xDecVal.m_iValue;
-  m_nPlaces = xDecVal.m_nPlaces;
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
   
+  vTrace("%s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  i8 nToPlaces = m_nPlaces;
+  vAssign(m_iValue  * xArgB.m_iValue,
+          nToPlaces + xArgB.m_nPlaces);
+
+  vTrace("= %s "_Stz,spResC.sz(*this));
+  
+  DecVal xrResC;
+  vTrace("| to nPlaces %lld: "_Stz,nToPlaces);
+  
+  xrResC.vRoundDown(*this,nToPlaces);
+  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
+  
+  xrResC.vRoundUp(*this,nToPlaces);
+
   return *this;
 }
 
@@ -54,6 +71,34 @@ void DecVal::vAssign(i16 iValue,i8 nPlaces)
 {
   m_iValue  = iValue;
   m_nPlaces = nPlaces;
+}
+
+/*----------------------------------------------------------------------------*/
+/* multiply                                                                   */
+/*----------------------------------------------------------------------------*/
+void DecVal::vMultiply(DecVal xsArgB)
+{
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
+  
+  vTrace("%s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xsArgB));
+
+  i8 nToPlaces = m_nPlaces;
+  
+  vAssign(m_iValue  * xsArgB.m_iValue,
+          m_nPlaces + xsArgB.m_nPlaces);
+
+  vTrace("= %s "_Stz,spResC.sz(*this));
+  
+  DecVal xrResC;
+  vTrace("| to nPlaces %lld: "_Stz,m_nPlaces);
+  
+  xrResC.vRoundDown(*this,m_nPlaces);
+  vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
+  
+  xrResC.vRoundUp(*this,m_nPlaces);
+  vTrace("roundUp %10s "_Stz,spResC.sz(xrResC));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +130,31 @@ void DecVal::vMultiply(DecVal xsArgA, DecVal xsArgB)
 /*----------------------------------------------------------------------------*/
 /* round down                                                                 */
 /*----------------------------------------------------------------------------*/
+void DecVal::vRoundDown(i8 nPlaces)
+{
+  // required number of places
+  if (m_nPlaces == nPlaces)
+    return;
+  
+  i8 iScaleDiff;
+  
+  // too many decimal digits
+  if (m_nPlaces > nPlaces) {
+    iScaleDiff = m_nPlaces - nPlaces;
+    m_nPlaces -= iScaleDiff;
+    m_iValue /= IntLib::iTenToPow(iScaleDiff);
+    return;
+  }
+  
+  // too few decimal digits
+  iScaleDiff = nPlaces - m_nPlaces;
+  m_nPlaces += iScaleDiff;
+  m_iValue *= IntLib::iTenToPow(iScaleDiff);
+}
+
+/*----------------------------------------------------------------------------*/
+/* round down                                                                 */
+/*----------------------------------------------------------------------------*/
 void DecVal::vRoundDown(DecVal xsArg, i8 nPlaces)
 {
   vAssign(xsArg.m_iValue,xsArg.m_nPlaces);
@@ -109,6 +179,39 @@ void DecVal::vRoundDown(DecVal xsArg, i8 nPlaces)
   m_iValue *= IntLib::iTenToPow(iScaleDiff);
 }
 
+/*----------------------------------------------------------------------------*/
+/* round up                                                                   */
+/*----------------------------------------------------------------------------*/
+void DecVal::vRoundUp(i8 nPlaces)
+{
+  // required number of places
+  if (m_nPlaces == nPlaces)
+    return;
+  
+  i8 iScaleDiff;
+  i8 iMod ;
+  i8 iCutVal;
+
+  // too many decimal digits
+  if (m_nPlaces > nPlaces) {
+    iScaleDiff = m_nPlaces - nPlaces;
+    m_nPlaces -= iScaleDiff;
+    
+    iMod = IntLib::iTenToPow(iScaleDiff);
+    iCutVal = m_iValue % iMod;
+    
+    m_iValue /= IntLib::iTenToPow(iScaleDiff);
+    
+    if (iCutVal >= iMod / 2)
+      m_iValue += 1;
+    return;
+  }
+  
+  // too few decimal digits
+  iScaleDiff = nPlaces - m_nPlaces;
+  m_nPlaces += iScaleDiff;
+  m_iValue *= IntLib::iTenToPow(iScaleDiff);
+}
 /*----------------------------------------------------------------------------*/
 /* round up                                                                   */
 /*----------------------------------------------------------------------------*/
