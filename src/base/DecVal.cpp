@@ -39,13 +39,18 @@ DecVal DecVal::operator *(DecVal xArgB)
   
   vTrace("(( %s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute result
+  
   i16 iComputedValue  = m_iValue  * xArgB.m_iValue;
   i8  iComputedPlaces = m_nPlaces + xArgB.m_nPlaces;
-
+  
   xResC.vAssign(iComputedValue,iComputedPlaces);
-
   vTrace("= %s "_Stz,spResC.sz(xResC));
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // round up
+  
   xResC.vRoundUp(m_nPlaces);
   vTrace("; round up (to %lld places) = %s "_Stz,m_nPlaces,spResC.sz(xResC));
 
@@ -160,18 +165,22 @@ DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
   i8 iFraction;
   i8 nParts = sscanf(azLiteral,"%lld.%lld",&iWhole,&iFraction);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // whole part only, no fraction (e.g. "2000."_Dec)
+  
   if (1 == nParts) {
-    // whole part only, no fraction (e.g. "2000."_Dec)
     xDecVal.vAssign(iWhole,0);
+    return xDecVal;
   }
-  else {
-    // both whole and fraction parts (e.g. "12.34."_Dec)
-    s32 sFractionDigits;
-    sFractionDigits.vSprint("%lld"_Stz,iFraction);
-    i8 nFractionDigits = sFractionDigits.nLength();
 
-    xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // both whole and fraction parts (e.g. "12.34."_Dec)
+  
+  s32 sFractionDigits;
+  sFractionDigits.vSprint("%lld"_Stz,iFraction);
+  i8 nFractionDigits = sFractionDigits.nLength();
+
+  xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
     
   return xDecVal;
 }
