@@ -82,7 +82,7 @@ void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
 }
 
 /*----------------------------------------------------------------------------*/
-/* round down                                                                 */
+/* round down to given number of places                                       */
 /*----------------------------------------------------------------------------*/
 void DecVal::vRoundDown(i8 nPlaces)
 {
@@ -90,7 +90,9 @@ void DecVal::vRoundDown(i8 nPlaces)
   if (m_nPlaces == nPlaces)
     return;
   
-  // too many decimal digits
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // too many decimal digits (e.g with nPlaces=1: 34.56 => 34.5)
+  
   if (m_nPlaces > nPlaces) {
     i8 nReduce = m_nPlaces - nPlaces;         // number of places to reduce
     m_iValue /= IntLib::iTenToPow(nReduce);   // m_iValue /= 10^nReduce
@@ -98,14 +100,16 @@ void DecVal::vRoundDown(i8 nPlaces)
     return;
   }
   
-  // too few decimal digits
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // too few decimal digits (e.g with nPlaces=3: 12.34 => 12.340)
+  
   i8 nIncrease = nPlaces - m_nPlaces;         // number of places to increase
   m_iValue *= IntLib::iTenToPow(nIncrease);   // m_iValue /*= 10^nIncrease
   m_nPlaces += nIncrease;                     // increase m_nPlaces
 }
 
 /*----------------------------------------------------------------------------*/
-/* round up                                                                   */
+/* round up to given number of places                                         */
 /*----------------------------------------------------------------------------*/
 void DecVal::vRoundUp(i8 nPlaces)
 {
@@ -113,11 +117,14 @@ void DecVal::vRoundUp(i8 nPlaces)
   if (m_nPlaces == nPlaces)
     return;
   
-  // too many decimal digits
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // too many decimal digits (e.g with nPlaces=1: 12.34 => 12.3 ; 34.56 => 34.6)
+  
   if (m_nPlaces > nPlaces) {
     i8 nReduce = m_nPlaces - nPlaces;        // number of places to reduce
-    
-    i8 iMod = IntLib::iTenToPow(nReduce);    // calc what gets cut
+    m_nPlaces -= nReduce;                    // reduce m_nPlaces
+
+    i8 iMod = IntLib::iTenToPow(nReduce);    // calc what gets cut off
     i8 iCutVal = m_iValue % iMod;
     
     m_iValue /= IntLib::iTenToPow(nReduce);  // m_iValue /= 10^nReduce
@@ -125,14 +132,15 @@ void DecVal::vRoundUp(i8 nPlaces)
     if (iCutVal >= iMod / 2)                 // round up if cut is over half
       m_iValue += 1;
     
-    m_nPlaces -= nReduce;                    // reduce m_nPlaces
     return;
   }
   
-  // too few decimal digits
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // too few decimal digits (e.g with nPlaces=3: 34.56 => 34.560)
+  
   i8 nIncrease = nPlaces - m_nPlaces;        // number of places to increase
-  m_iValue *= IntLib::iTenToPow(nIncrease);  // m_iValue /*= 10^nIncrease
   m_nPlaces += nIncrease;                    // increase m_nPlaces
+  m_iValue *= IntLib::iTenToPow(nIncrease);  // m_iValue /*= 10^nIncrease
 }
 
 /*----------------------------------------------------------------------------*/
