@@ -46,8 +46,64 @@ begin
 
 end;
 
-rows:
-0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 drop table T1;
 success
@@ -96,8 +152,64 @@ begin
 
 end;
 
-rows:
-0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 drop table T1;
 success
@@ -143,8 +255,64 @@ begin
 
 end;
 
-rows:
-  0
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
 
 // drop the tables
 drop table T1;
@@ -263,7 +431,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end
+end;
 
 rows:
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
