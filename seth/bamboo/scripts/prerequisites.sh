@@ -17,13 +17,6 @@
 
 readonly SCRIPT_NAME=$(basename "$0")
 readonly DIR="$(dirname "$0")"
-readonly PROJ_ROOT="${DIR}/../../.."
-
-readonly TPCH_DIR="$(readlink -f "${PROJ_ROOT}/TPCH")"
-
-# An array of possible places the TPC-H data could be kept, depending on the environment
-readonly TPCH_LINK_DESTS=( "/mnt/spinningDisk/bamboo/TPCH"
-                           "/opt/TPCH" )
 
 
 readonly COMMON_FN="${DIR}/common.fn"
@@ -82,7 +75,7 @@ function onExit() {
 function processArgs() {
 
   if [ "$#" -gt 0 ]; then
-    errorExit "No arguments are applicable to this script."
+    errorExit "No arguments are applicable to this script: $*"
   fi
 }
 
@@ -98,76 +91,7 @@ function checkOS() {
 }
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Looks for the TPC-H SF1 data somewhere on the system. Writes the path out
-## to stdout and returns a zero exit code if the data is found.
-## Params: None
 
-function findTpchData() {
-
-  for dataDir in "${TPCH_LINK_DESTS[@]}"; do
-    if isTpchDir "${dataDir}"; then
-      echo "${dataDir}"
-      return 0
-    fi
-  done
-
-  printError "Could not find TPC-H SF1 data necessary for these tests. Tried looking in the following directories:"
-  >&2 printf "  %s\n" "${TPCH_LINK_DESTS[@]}"
-  exit 1
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Returns a zero exit code if the given path is a TPCH directory with data.
-## Params:
-##  $1 - path of the directory
-
-function isTpchDir() {
-
-  [ "$#" -eq 1 ] || errorExit "Function isTpchDir() needs to be called with 1 parameter."
-
-  local tpchDir="$1"
-
-  if [ ! -e "${tpchDir}" ]; then
-    echo "Looking for TPC-H data found in path: ${tpchDir}"
-    return 1;
-  fi
-
-  if [ ! -d "${tpchDir}" ]; then
-    echo "Path ${tpchDir} is not a TPC-H data directory because it is not a directory."
-    return 1;
-  fi
-
-  # It must have a SF0 and SF1 subdirectories
-  local subdirs=( "SF0" "SF1" )
-
-  for subdir in "${subdirs[@]}"; do
-    if [ ! -d "${tpchDir}/${subdir}" ]; then
-      echo "Path ${tpchDir} is not a TPC-H data directory because it does not have a ${subdir} subdirectory."
-      return 1;
-    fi
-  done
-
-  # Check for data files
-  local -a files=( "SF1/customer.tbl"
-                   "SF1/lineitem.tbl"
-                   "SF1/nation.tbl"
-                   "SF1/orders.tbl"
-                   "SF1/part.tbl"
-                   "SF1/partsupp.tbl"
-                   "SF1/region.tbl"
-                   "SF1/supplier.tbl" )
-
-  for file in "${files[@]}"; do
-    if ! [ -f "${tpchDir}/${file}" ]; then
-      echo "Path ${tpchDir} is not a TPC-H data directory because it is missing the file: ${file}"
-      return 1
-    fi
-  done
-
-  echo "Found TPC-H data at path: ${tpchDir}"
-  return 0
-}
 
 ###############################################################################
 ### Main Script                                                             ###

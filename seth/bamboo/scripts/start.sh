@@ -141,6 +141,8 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Start Config: ${CONFIG_FILE} ***"
+echo ""
 
 # First get the installation dir from the config.
 # To do this, load the config (it is just a bash script file)

@@ -132,6 +132,9 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Install Config: ${CONFIG_FILE} ***"
+echo ""
+
 # Locate the installation file
 INSTALLER="$(ls -1 "${OUT_DIR}"/*.run)" || true
 
@@ -193,7 +196,7 @@ ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
 readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
 
 TPCH_SYMLINK_DEST=""
-if ! TPCH_SYMLINK_DEST="$(source "${DIR}/prerequisites.sh" && findTpchData)"; then
+if ! TPCH_SYMLINK_DEST="$(getTpchDataDir)"; then
   errorExit "Could not find the TPC-H SF1 data on the system."
 fi
 

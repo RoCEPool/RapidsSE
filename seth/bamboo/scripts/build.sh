@@ -121,6 +121,9 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Build Config: ${TARGET} ***"
+echo ""
+
 # First, kill any rogue SE and SETH instances owned by the current user.
 killRogueInstances
 

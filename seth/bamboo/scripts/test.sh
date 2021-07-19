@@ -169,6 +169,9 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Test Config: ${CONFIG_FILE} ***"
+echo "*** Test Build: ${TARGET} ***"
+echo ""
 
 # First get the installation dir from the config.
 # To do this, load the config (it is just a bash script file)
