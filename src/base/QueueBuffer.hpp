@@ -30,6 +30,7 @@ namespace BASE
     void     vContentDump(Stz* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
+    Object*  pPeek(void);
     Object*  pPop(bool& bDiscard);
 
   private:

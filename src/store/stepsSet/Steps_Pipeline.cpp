@@ -14,6 +14,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "LogicUnit.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +22,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
+  vAddStep("pipeline::call"_Stz,    &Step::vPipelineCall);
+  vAddStep("pipeline::spawn"_Stz,   &Step::vPipelineSpawn);
+
   vAddStep("pipeline.pipeout"_Stz,  &Step::vPipelinePipeout);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeline::call -- call nested pipeline                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineCall(void)
+{
+  ENTRY();
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeline::spawn -- spawn nested pipeline                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpawn(void)
+{
+  ENTRY();
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,12 +59,12 @@ void Step::vPipelinePipeout(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
   Stage*    pStage0   = pPipeline->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
-  pOp0->vAppend(pOperand,this);
+  pOp0->vAppendLeft(pOperand,this);
 
   EXIT();
 }

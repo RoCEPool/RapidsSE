@@ -175,8 +175,13 @@ void Api::vExecuteJob(Session* pSession)
   //pInpTknVec->vDumpVec(false);
   //pJobTagSet->vDumpSet(true);
 
-  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
-    vTrace("TagSet:\n"_Stz);
+//  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
+//    vTrace("TagSet:\n"_Stz);
+//    pJobTagSet->vDumpSet(true);
+//  }
+  
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    pInpTknVec->vDumpVec(false);
     pJobTagSet->vDumpSet(true);
   }
       
@@ -199,6 +204,13 @@ void Api::vExecuteJob(Session* pSession)
     if (! pSession->bHasCascade())
       return;
   
+    if (AM::TRACE::bVerbose(C_VB_API)) {
+      vTrace("<vb_api>:: cascading: \n"
+             "%s\n"
+             "end <vb_api>\n"_Stz
+             ,pSession->m_sCascade.azChar());
+    }
+    
     pJob->vResetForReuse(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
@@ -425,7 +437,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   
   ASSERT(! pSession->m_pSsnJob->pTask());
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_API))
     pSession->m_pSsnJob->pJobTags()->vDumpSet();
 
   if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {
@@ -593,7 +605,7 @@ bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
       "begin "
       " "
       "  stage stageA on origin : "
-      "    start | periodic once | /ON_ORIGIN/ | stageB hashed "
+      "    start | periodic once | /ON_ORIGIN/ | stageB hashcast "
       " "
       "  stage stageB on all partitions : "
       "    /ALL_PARTITIONS/ | stageC "
@@ -966,17 +978,13 @@ Op* Api::pOpCreate(Word* pOpWord)
   Op* pOp = new Op(pOpWord->szWordNm());
   
   ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId, false);
-  Job* pOpJob = AM::pNewJobOp(pOp,&xReqTuple);
-  pOp->vOpJob(pOpJob);
+  Job* pJob = AM::pNewJobOp(pOp,&xReqTuple);
+  pOp->vJob(pJob);
   
-  TagSet* pJobTags = pOpJob->pJobTags();
+  TagSet* pJobTags = pJob->pJobTags();
   
   pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-
-  pJobTags->vReplace(C_TAG_TOPOLOGY,C_UNKNOWN);
-  pJobTags->vReplace(C_TAG_NEXTSTAGE,C_UNKNOWN);
-  pJobTags->vReplace(C_TAG_NEXTOP,C_UNKNOWN);
 
   return pOp;
 }

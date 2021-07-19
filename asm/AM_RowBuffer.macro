@@ -11,13 +11,38 @@ macro AM_HANDLER_ROWBUFFER
   EO_PRINTF "**HANDLER_ROWBUFFER**\n"
   EO_POP
   //EO_ROW_SRC_BEGIN
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_BEGIN
 
   // NEXT_ROW_SRC
   Label NEXT_ROW_SRC
   //EO_ROW_SRC_NEXT
-  EO_PUSH_DEVROW_SRC
+  EO_DUMP
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_ROWBUF_NEXT
+
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>  // C_TAG_ROW_PROCESS_ROUTINE
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
+macro AM_HANDLER_ROWBUFFER_RHT
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_RHT                                             //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER HANDLER_RHT
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**HANDLER_ROWBUFFER**\n"
+  EO_POP
+  //EO_ROW_SRC_BEGIN
+  EO_PUSH_DEVROW_RHT
+  EO_DEVROW_ROWBUF_BEGIN
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+  //EO_ROW_SRC_NEXT
+  EO_PUSH_DEVROW_RHT
   EO_DEVROW_ROWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
@@ -51,13 +76,13 @@ macro AM_HANDLER_ROWBUFFER_AGG
 
   Label HANDLER_ROWBUFFER_AGG_BEGIN
   //EO_ROW_SRC_BEGIN
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_BEGIN
 
   // NEXT_ROW_SRC
   Label NEXT_ROW_SRC
   //EO_ROW_SRC_NEXT
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
@@ -94,12 +119,12 @@ macro AM_HANDLER_ROWBUFFER_AGG_GBY
   EO_POP
 
   Label HANDLER_ROWBUFFER_AGG_GBY_BEGIN
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_BEGIN
 
   // NEXT_ROW_SRC
   Label NEXT_ROW_SRC
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
@@ -121,7 +146,7 @@ macro AM_HANDLER_ROWBUFFER_LIMIT
   EO_POP
 
   //EO_ROW_SRC_BEGIN
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_BEGIN
 
   //EO_DUMP
@@ -141,7 +166,7 @@ macro AM_HANDLER_ROWBUFFER_LIMIT
   EO_JMP_TRUE QUERY_DONE
 
   //EO_ROW_SRC_NEXT
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
@@ -153,6 +178,28 @@ macro AM_HANDLER_ROWBUFFER_LIMIT
   EO_JMP NEXT_ROW_SRC
   EO_JMP QUERY_DONE
  endMacro
+
+macro AM_HANDLER_ROWBUFFER_RHT
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_RHT                                             //
+//----------------------------------------------------------------------------//
+  // HANDLER_ROWBUFFER
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**ROWBUFFER RHT HANDLER**\n"
+  EO_POP
+
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_CRWBUF_TEST
+  EO_JMP_FALSE ROWLFT_ROWRHT
+
+  EO_CALL LOOPJOIN_CRWLFT_ROWRHT
+  EO_RETURN
+
+  Label ROWLFT_ROWRHT
+  EO_CALL LOOPJOIN_ROWLFT_ROWRHT
+  EO_RETURN
+
+endMacro
 
 macro AM_ROW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
@@ -168,7 +215,7 @@ macro AM_ROW_PROJECT_COLUMNS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_COLS_TO_LOCALS
 
   Label ROW_PROJECT
@@ -195,7 +242,7 @@ macro AM_ROW_PROJECT_COLUMNS_AGG
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_COLS_TO_LOCALS
   //EO_DUMP
 
@@ -214,8 +261,8 @@ macro AM_ROW_PROJECT_STAR
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
 
-  EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_COLS_TO_ROW
 
   EO_RETURN
@@ -230,17 +277,17 @@ macro AM_ROW_PROJECT_END
   EO_RETURN
 endMacro
 
-macro AM_ROW_FILTER_ROWS
+macro AM_ROW_FILTER_BEGIN
 //----------------------------------------------------------------------------//
-// macro AM_ROW_FILTER_ROWS                                                   //
+// macro AM_ROW_FILTER_BEGIN                                                  //
 //----------------------------------------------------------------------------//
-  // ROW_FILTER_ROWS
-  Label ROW_FILTER_ROWS
+  // ROW_FILTER_BEGIN
+  Label ROW_FILTER_BEGIN
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_COLS_TO_LOCALS
 endMacro
 
@@ -252,6 +299,95 @@ macro AM_ROW_FILTER_END
   EO_RETURN_FALSE
   EO_CALL ROW_PROJECT_STAR
 
+  EO_RETURN
+endMacro
+
+macro AM_ROW_HASHROWS_BEGIN
+//----------------------------------------------------------------------------//
+// macro AM_ROW_HASHROWS_BEGIN                                                //
+//----------------------------------------------------------------------------//
+  // ROW_HASHROWS_BEGIN
+  Label ROW_HASHROWS_BEGIN
+
+  // calc i_Ptn
+  EO_PTN_RESET
+
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
+  EO_PUSH_RLU_LOCALS
+  EO_PUSH_RLU_COLSET
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_LOCALS
+
+endMacro
+
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_HASHROWS_END                                                  //
+//----------------------------------------------------------------------------//
+macro AM_ROW_HASHROWS_END
+  // AM_ROW_HASHROWS_END
+
+  EO_PTN_RUNNING
+  EO_PTN_CALC
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_ROW
+
+  //EO_PUSH_DEVROW_DST
+  //EO_DEVROW_ROW_PRINT
+  EO_RETURN
+endMacro
+
+macro AM_ROW_INDEXJOIN_BEGIN
+//----------------------------------------------------------------------------//
+// macro AM_ROW_INDEXJOIN_BEGIN                                               //
+//----------------------------------------------------------------------------//
+  // ROW_INDEXJOIN_BEGIN
+  Label ROW_INDEXJOIN_BEGIN
+
+  // left row
+  //EO_PUSH_DEVIXT_LFT
+  //EO_DEVIXT_PUSHCOLI <projectSrcColumn>
+
+  Label ROW_INDEXJOIN
+endMacro
+
+macro AM_ROW_INDEXJOIN_NEXT
+//----------------------------------------------------------------------------//
+// macro AM_ROW_INDEXJOIN_NEXT                                                 //
+//----------------------------------------------------------------------------//
+  // ROW_INDEXJOIN_NEXT
+  Label ROW_INDEXJOIN_NEXT
+
+  // fetch next entry from index
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_IDX_NEXT
+  EO_RETURN_FALSE
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSH
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSHUPPER
+
+  EO_EQ_INTINT
+  EO_RETURN_TRUE
+
+  // projection
+  //EO_CRW_SRC_DEREF
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_DEREF
+
+  EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
+  //EO_ROW_DST_PRINT
+  EO_JMP ROW_INDEXJOIN_NEXT
   EO_RETURN
 endMacro
 

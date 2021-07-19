@@ -191,21 +191,26 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
-  void vDebugTrap(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
+  void vDebugThrow(void);
+  void vDebugBreakpoint(void);
 
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
+  void vDevLftRowRowStore(void);
   void vDevLftRowEachRowBufferStore(void);
+  void vDevLftRowRowBufferFetch(void);
   void vDevLftRowRowBufferStore(void);
   void vDevLftRowCrwBufferStore(void);
 
   // devRhtRow
+  void vDevRhtRowRowBufferStore(void);
   void vDevRhtRowStreamDefStore(void);
 
   // devLftIxt
+  void vDevLftIxtCrwBufferFetch(void);
   void vDevLftIxtCrwBufferStore(void);
   void vDevLftIxtIndexTreeStore(void);
 
@@ -338,7 +343,9 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
-void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateIndexJoin(void);
+  void vExprEvalEvaluateLoopJoin(void);
   void vExprEvalSet(void);
 
   // fact
@@ -756,7 +763,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vJob_PipelineBegin(void);
   void vJob_PipelineCancelled(void);
   void vJob_PipelineCompile(void);
-  void vJob_PipelineDeleteDynamo(void);
+  void vJob_PipelineDeleteSpec(void);
   void vJob_PipelineEarlyExitFetch(void);
   void vJob_PipelineEarlyExitStore(void);
   void vJob_PipelineErrored(void);
@@ -897,6 +904,8 @@ void vExprEvalEvaluateIndexScan(void);
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenHash(void);
+  void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenLoopJoin(void);
@@ -999,11 +1008,8 @@ void vExprEvalEvaluateIndexScan(void);
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
   void vOpFindOp(void);
-  void vOpNextOpStore(void);
-  void vOpNextStageStore(void);
+
   void vOpOpNameFetch(void);
-  void vOpOtherOpStore(void);
-  void vOpOtherStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
@@ -1011,7 +1017,6 @@ void vExprEvalEvaluateIndexScan(void);
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
-  void vOpTopologyStore(void);
   void vOpSendKindStore(void);
 
   // operand
@@ -1019,7 +1024,6 @@ void vExprEvalEvaluateIndexScan(void);
 
   // operand[]
   void vOperandCsvAppend(void);
-  void vOperandBide(void);
   void vOperandCrwDuplicate(void);
   void vOperandCrwRowCountFetch(void);
   void vOperandCrwToCsv(void);
@@ -1042,6 +1046,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);
+  void vOperandNewEndRightMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
@@ -1050,10 +1055,10 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandNewExitedMarker(void);
   void vOperandNewExitedEarlyMarker(void);
   void vOperandNewPulsedMarker(void);
-  void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);
+  void vOperandNewStartMarker(void);
+  void vOperandNewStartRightMarker(void);
   void vOperandNewStreamDef(void);
-  void vOperandNext(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
@@ -1093,29 +1098,6 @@ void vExprEvalEvaluateIndexScan(void);
   void vOpSysIsLinux(void);
   void vOpSysIsMacOs(void);
 
-  // persistence
-  void vPersistenceCheckpoint(void);
-  void vPersistenceReload(void);
-
-  // pipeline
-  void vPipelinePipeout(void);
-
-  // plan
-  void vPlanCompile(void);
-  void vPlanDelete(void);
-  void vPlanDic(void);
-  void vPlanExecutingTaskFetch(void);
-  void vPlanExecutingTaskStore(void);
-  void vPlanFinished(void);
-  void vPlanIdFetch(void);
-  void vPlanLambdaAppend(void);
-  void vPlanLambdaFetch(void);
-  void vPlanLambdaStore(void);
-  void vPlanNew(void);
-  void vPlanNameFetch(void);
-  void vPlanNameStore(void);
-  void vPlanShow(void);
-
   // path identifier
   void vPathIdentifierChoosePaths(void);
   void vPathIdentifierChosenPath(void);
@@ -1137,6 +1119,32 @@ void vExprEvalEvaluateIndexScan(void);
   void vPathIdentifierShowPaths(void);
   void vPathIdentifierTableFetch(void);
   void vPathIdentifierTableStore(void);
+
+  // persistence
+  void vPersistenceCheckpoint(void);
+  void vPersistenceReload(void);
+
+  // pipeline
+  void vPipelineCall(void);
+  void vPipelinePipeout(void);
+  void vPipelineSpawn(void);
+
+  // plan
+  void vPlanCompile(void);
+  void vPlanDelete(void);
+  void vPlanDic(void);
+  void vPlanExecutingTaskFetch(void);
+  void vPlanExecutingTaskStore(void);
+  void vPlanFinished(void);
+  void vPlanIdFetch(void);
+  void vPlanLambdaAppend(void);
+  void vPlanLambdaFetch(void);
+  void vPlanLambdaStore(void);
+  void vPlanNew(void);
+  void vPlanNameFetch(void);
+  void vPlanNameStore(void);
+  void vPlanShow(void);
+
 
   // plist (participant list)
   void vPlistFindJob(void);
@@ -1267,11 +1275,14 @@ void vExprEvalEvaluateIndexScan(void);
 
   // reg op
   void vRegOpGet(void);
+  void vRegOpHandlerEntry(void);
+  void vRegOpHandlerExit(void);
   void vRegOpHandlerFetch(void);
   void vRegOpHandlerStore(void);
   void vRegOpHandlerAllStore(void);
   void vRegOpInit(void);
   void vRegOpIsOperandValid(void);
+  void vRegOpIncHandlerCount(void);
   void vRegOpIncOperandCount(void);
 
   // reg Path
@@ -1485,6 +1496,7 @@ void vExprEvalEvaluateIndexScan(void);
 
 
   // sql compiler
+  void vSqlCompilerAggregateSplit(void);
   void vSqlCompilerCorrBySquash(void);
   void vSqlCompilerDeletePlan(void);
   void vSqlCompilerDoExplain(void);
@@ -1586,6 +1598,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vStreamDefRhtGet(void);
   void vStreamDefRhtGetAndClear(void);
   void vStreamDefRhtIsNull(void);
+  void vStreamDefRhtNew(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
@@ -1748,6 +1761,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vTaskThread(void);
   void vTaskWait(void);
   void vTaskYield(void);
+  void vTaskYield_opLoop(void);
 
   // tenants
   void vTenantsDelete(void);

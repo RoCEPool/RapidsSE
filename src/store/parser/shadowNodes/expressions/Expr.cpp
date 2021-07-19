@@ -26,10 +26,18 @@
 #include "GtExpr.hpp"
 #include "LeExpr.hpp"
 #include "GeExpr.hpp"
+#include "AvgExpr.hpp"
+#include "SumExpr.hpp"
+#include "CountExpr.hpp"
+#include "MinExpr.hpp"
+#include "MaxExpr.hpp"
+#include "DivisionExpr.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
+#include "GraphEditor.hpp"
 #include "SqlException.hpp"
+
 
 using namespace Parser;
 
@@ -126,7 +134,13 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pExpr)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pExpr));
+    }
+
+    if (AggregateExpr::bIsOfType(pExpr)) {
       bIsAgg = true;
       return GraphNav::WALK_ABORT;
     }
@@ -161,11 +175,17 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pNode));
+    }
+
+    if (AggregateExpr::bIsOfType(pExpr)) {
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    if (ColumnRef::bIsOfType(pNode)) {
+    if (ColumnRef::bIsOfType(pExpr)) {
       bHasNonAggColumnRef = true;
       return GraphNav::WALK_ABORT;
     }
@@ -196,8 +216,14 @@ b1 Expr::bIsFullyLiteral(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (    ColumnRef::bIsOfType(pNode) ||
-        ColumnOrdinal::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pNode));
+    }
+
+    if (    ColumnRef::bIsOfType(pExpr) ||
+        ColumnOrdinal::bIsOfType(pExpr)) {
       bIsLit = false;
       return GraphNav::WALK_ABORT;
     }
@@ -680,9 +706,9 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,    nullptr);
-    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition,   nullptr);
-    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, false, true, fHasAggregateCondition, nullptr);
+    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, true, true, fColumnRefCondition,    nullptr);
+    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, true, true, fOrdinalRefCondition,   nullptr);
+    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, true, true, fHasAggregateCondition, nullptr);
 
     if ( pColumnRef && !pOrdinalRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
@@ -700,20 +726,42 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
 /* Given an expression, return a list of each aggregate term found in         */
 /* that expression. The returned list is to be deleted, but the items         */
 /* in the list are not to be deleted.                                         */
+/* If bDescendAggregates is true then all nested aggregate terms are returned.*/
+/* If false then only the outer aggregate terms are returned.                 */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
+QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
 {
   QueryNodeList* pList = new QueryNodeList();
 
-  auto fVisitor = [pList]
+  auto fVisitor = [pList, bDescendAggregates]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
-      pList->vPush(_pQueryNode(pNode));
+    QueryNode* pExprNode = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      QueryNode* pAliasedExpr = AliasRef::pAliasedExpr(pExprNode);
+
+      // Since the alias expression is a property of alias, and we are not walking
+      // properties, we manually search this space and add it to the outer list of aggregates.
+      QueryNodeList* pAliasAggs = pAggregateExprs(pAliasedExpr, bDescendAggregates);
+
+      while (pAliasAggs->nItems() > 0) {
+        pList->vPush(pAliasAggs->pPop());
+      }
+
+      ASSERT(pAliasAggs->nItems() == 0);
+      delete pAliasAggs;
+
+    } else if (AggregateExpr::bIsOfType(pExprNode)) {
+      pList->vPush(_pQueryNode(pExprNode));
+      
+      if (!bDescendAggregates) {
+        return GraphNav::WALK_SKIP_SUBTREE;
+      }
     }
 
     return GraphNav::WALK_CONTINUE;
@@ -722,6 +770,114 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
   GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr);
 
   return pList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the existing expression in place to support super-aggregation of   */
+/* partitioned aggregate expressions.                                         */
+/*----------------------------------------------------------------------------*/
+void Expr::vSuperAggregate(QueryNode* pExpr)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
+  // SUM(SUM(x))/SUM(COUNT(x))
+
+  QueryNodeList* pAggList = Expr::pAggregateExprs(pExpr, false);
+  
+  QueryNodeIter* pIter = pAggList->pNewIter();
+
+  while (pIter->bHasNext()) {
+
+    QueryNode* pAgg = pIter->pNext();
+
+    if (AvgExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Form a template that we will then transmogrify the avgExpr node into.
+
+      // Build the SUM(SUM(x)) chain.
+      QueryNode* pNumerator = SumExpr::pCreate(false, SumExpr::pCreate(false, pChildExpr->pDeepCopy(true)));
+
+      // Build the SUM(COUNT(x)) chain
+      QueryNode* pDenominator = SumExpr::pCreate(false, CountExpr::pCreate(false, false, pChildExpr->pDeepCopy(true)));
+
+      // Build the division expression
+      QueryNode* pDivExpr = DivisionExpr::pCreate(pNumerator, pDenominator);
+
+      // Apply this template
+      pAgg->vTransmogrifyTo(pDivExpr, true);
+      ASSERT(DivisionExpr::bIsOfType(pAgg));
+
+      // Delete the template
+      delete pDivExpr;
+
+    } else if (SumExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner SUM
+      QueryNode* pInnerSum = SumExpr::pCreate(false, pChildExpr->pDeepCopy(true));
+
+      // Insert the inner SUM as a child of the outer SUM
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerSum);
+
+
+    } else if (CountExpr::bIsOfType(pAgg)) {
+      // Form a template that we will then transmogrify the avgExpr node into.
+
+      // Build the inner COUNT(x)
+      QueryNode* pInnerCount = pAgg->pDeepCopy(true);
+
+      // Build the outer SUM() expr
+      QueryNode* pOuterSum = SumExpr::pCreate(false, pInnerCount);
+
+      // Apply this template
+      pAgg->vTransmogrifyTo(pOuterSum, true);
+      ASSERT(SumExpr::bIsOfType(pAgg));
+
+      // Delete the template
+      delete pOuterSum;
+
+
+    } else if (MinExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner MIN
+      QueryNode* pInnerMin = pAgg->pDeepCopy(true);
+
+      // Insert the inner MIN as a child of the outer MIN
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerMin);
+
+
+    } else if (MaxExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode *pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner MAX
+      QueryNode *pInnerMax = pAgg->pDeepCopy(true);
+
+      // Insert the inner MAX as a child of the outer MAX
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerMax);
+
+    } else {
+      NEVER_REACH
+    }
+  }
+  delete pIter;
+
+  pAggList->vRemoveAll();
+  delete pAggList;
 }
 
 /*----------------------------------------------------------------------------*/

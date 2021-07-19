@@ -3,22 +3,24 @@
 /*============================================================================*/
 #pragma once
 
-enum eXK // system call
+enum eXK // send kind
 {
   /* 0 */ XK_NONE = 0,   // none
-  /* 1 */ XK_HASHED,     // hashed
-  /* 2 */ XK_LOCALROBIN, // local round robin
-  /* 3 */ XK_NORMAL,     // normal
-  /* 4 */ XK_ROBIN       // round robin
+  /* 1 */ XK_BROADCAST,  // broad cast
+  /* 2 */ XK_HASHCAST,   // hash cast
+  /* 3 */ XK_LOCALROBIN, // local round robin
+  /* 4 */ XK_ROBIN,      // round robin
+  /* 5 */ XK_UNICAST     // unicast
 };
 
 static Stz* aXK[]
 {
   /* 0 */ "XK_NONE"_Stz,
-  /* 1 */ "XK_HASHED"_Stz,
-  /* 2 */ "XK_LOCALROBIN"_Stz,
-  /* 3 */ "XK_NORMAL"_Stz,
-  /* 4 */ "XK_ROBIN"_Stz
+  /* 1 */ "XK_BROADCAST"_Stz,
+  /* 2 */ "XK_HASHCAST"_Stz,
+  /* 3 */ "XK_LOCALROBIN"_Stz,
+  /* 4 */ "XK_ROBIN"_Stz,
+  /* 5 */ "XK_UNICAST"_Stz
 };
 
 /*============================================================================*/

@@ -213,7 +213,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 }
 
 #define dPV(sNM,pTV) { \
-  if (AM::bVerbose()) { \
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) { \
     s48K sDbgStr; \
     pTV->vDbgStr(sDbgStr); \
     vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
@@ -229,7 +229,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 {
   _static_
 
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
     
     if (pwMatchedProc->szWordNm()->bSame("create__unique__index"_Stz))
@@ -395,7 +395,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   pPrdTxtVec->vVecToString(pToPipelineStmt->szStz(),0,true);
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
   
   delete pPrdTxtVec;

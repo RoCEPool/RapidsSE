@@ -45,6 +45,7 @@
 #include "Steps.hpp"
 
 #include "CmdLineArgs.hpp"
+#include "TagConstants.h"
 
 extern CmdLineArgs  gxCmdLineArgs;
 
@@ -139,7 +140,7 @@ void Constants::vAddConstantsArgs(void)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstantsCpp(void)
 {
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
   // true / flase
@@ -541,7 +542,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_UF"_Stz,   EG_UF);
   vAddConstant("EG_UK"_Stz,   EG_UK);
   vAddConstant("EG_VA"_Stz,   EG_VA);
-  vAddConstant("EG_VL"_Stz,   EG_VL);
   vAddConstant("EG_WK"_Stz,   EG_WK);
   vAddConstant("EG_XA"_Stz,   EG_XA);
   vAddConstant("EG_XK"_Stz,   EG_XK);
@@ -712,6 +712,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EACHSCANEOSMARKER"_Stz,ZK_EACHSCANEOSMARKER);
   /*  0 */ vAddConstant("ZK_EACHROWBUFFER"_Stz,   ZK_EACHROWBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
+  /*  0 */ vAddConstant("ZK_ENDRIGHTMARKER"_Stz,  ZK_ENDRIGHTMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
   /*  0 */ vAddConstant("ZK_ERROREDMARKER"_Stz,   ZK_ERROREDMARKER);
@@ -742,6 +743,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_SEEKOFFSETS"_Stz,     ZK_SEEKOFFSETS);
   /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,       ZK_SRTBUFFER);
   /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,     ZK_STARTMARKER);
+  /*  0 */ vAddConstant("ZK_STARTRIGHTMARKER"_Stz,ZK_STARTRIGHTMARKER);
   /*  0 */ vAddConstant("ZK_STARTEDMARKER"_Stz,   ZK_STARTEDMARKER);
   /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
   /*  0 */ vAddConstant("ZK_STREAMSET"_Stz,       ZK_STREAMSET);
@@ -870,13 +872,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_TRACE_DYNAMO
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_TRACE_PURGING
   vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)true);
   #else

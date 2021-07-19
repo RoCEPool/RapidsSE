@@ -17,6 +17,8 @@
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 
+#include "SP_Stream.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -81,34 +83,6 @@ void Stream::vCreateOps(void)
     vAdd(pOp);
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-void Stream::vDump(void)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  
-  if (m_pStageSpec->bNodeTopo()) {
-    vTrace("  [%02lld] (N%lld) Node-Stream %s:\n"_Stz,
-           m_i_Stream,
-           m_i_Node,
-           m_sStreamNm.szStz());
-  }
-  else {
-    vTrace("  [%02lld] (N%lld,S%02lld) Partition-Stream %s:\n"_Stz,
-           m_i_Stream,
-           m_i_Node,
-           m_i_Stream,
-           m_sStreamNm.szStz());
-  }
-
-  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
-    Op* pOp = pGet(i_Op);
-  
-    pOp->vDump(i_Op);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +158,16 @@ void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
     }
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* getm_i_Stream                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Stream::i_Stream(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  return m_i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/

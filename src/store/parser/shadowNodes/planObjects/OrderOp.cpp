@@ -75,17 +75,13 @@ void OrderOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat("\n\n"_Stz);
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
-
-  // Add the local properties
-  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+  // Add the object header and local properties
+  vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -95,7 +91,7 @@ void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+      PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
     delete pIter;
   }
@@ -104,7 +100,7 @@ void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -114,7 +110,7 @@ void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, 
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
 
@@ -269,6 +265,107 @@ QueryNodeList* OrderOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pChild);
 
   return PlanObject::pColumnExprs(pChild, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
+  ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
+
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNewOp));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and super-aggregate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+    Expr::vSuperAggregate(pOrderExpr);
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
+/* aggregated expressions from each partition or node. This version used to   */
+/* factor in node-level aggregation.                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* OrderOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
+  ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
+
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNewOp));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and super-aggregate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+    Expr::vSuperAggregate(pOrderExpr);
+    Expr::vSuperAggregate(pOrderExpr);
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+b1 OrderOp::bContainsAnAggregate(QueryNode* pNode)
+{
+  ASSERT(OrderOp::bIsOfType(pNode));
+
+  b1 bResult = false;
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNode));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and super-aggregate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+
+    if (Expr::bContainsAnAggregate(pOrderExpr)) {
+      bResult = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
 }
 
 /*============================================================================*/

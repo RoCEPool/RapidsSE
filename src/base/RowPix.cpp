@@ -21,14 +21,14 @@ RowPix* BASE::_pRowPix(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t)
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "fatal: RowPix class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t, RowPix* aInfoPix)
 {
@@ -36,7 +36,7 @@ void* RowPix::operator new(size_t, RowPix* aInfoPix)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void RowPix::operator delete(void* aAddress)
 {

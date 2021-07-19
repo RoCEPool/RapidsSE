@@ -27,7 +27,7 @@ void* TextMedium::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void TextMedium::operator delete(void* pTextAddress)
 {

@@ -18,6 +18,8 @@ namespace BASE
   static const i8 C_TRACE_STEPS    = 0x1;
   static const i8 C_TRACE_ROUTINES = 0x2;
   
+  typedef LatticeNL_t<CN_LOCKSET,Lock,C_MAX_LOCKS> LockSet;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Object,
@@ -30,8 +32,8 @@ namespace BASE
   
     ObjId<CN_TASK> m_xTaskId;    // tasks object id
 
-    SMA<Job>     m_pJob;         // the job for this task
-    SMA<Thread>  m_pThread;      // current thread
+    SMA<Thread>  m_pThread;      // current thread executing this task
+    SMA<Job>     m_pJob;         // job this task is executing
   
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?
@@ -52,21 +54,23 @@ namespace BASE
     i8           m_nOperandYield;  //
   
     Profile*     m_pProfile;     // runtime profile
-  
-    // -- from Forth --
-    //LogicUnit*   m_pLogicUnit;      // associated register set
+
+#ifdef WITH_LOCK_SETS
+    LockSet      m_oReadLocks;   // read locks currently held by this task/op
+    LockSet      m_oWriteLocks;  // write locks currently held by this task/op
+#endif
 
   public:
     Word* m_pSeedWord;      // seed
-    Word* m_pExceptionWord; // seed
+    Word* m_pRecoveryWord;  // sen word called to recover from failure
 
-    bool m_bSeedInitially; // seed_initially sentinel has been executed
+    bool  m_bSeedInitially; // seed_initially sentinel has been executed
     bool  m_bDoneFinally;   // done_finally sentinel has been executed
 
-    DicStack m_oDicStack;      // dictionary stack
-    DicStack m_oSaveDicStack;  // save dictionary stack
+    DicStack m_oDicStack;         // dictionary stack
+    DicStack m_oSaveDicStack;    // save dictionary stack
 
-    CodeCell* m_aInxPtr;      // instruction/cell pointer
+    CodeCell* m_aInxPtr;         // instruction/cell pointer
 
     TypedStack*  m_pAuxStack;    // auxiliary stack
     TypedStack*  m_pDataStack;   // data stack
@@ -85,11 +89,20 @@ namespace BASE
     void  operator delete(void*);
     
     Task(Job* pJob);
-    ~Task(void) noexcept(false);
+   ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+  
+    void vTaskLoop(void);
+    void vExceptionHandler(Exception xException);
+    void vExceptionTrace(void);
+    void vContinueAfterFailure(void);
+
+    void vDumpOnFailure(void);
+
   
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
@@ -97,19 +110,20 @@ namespace BASE
     bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
-    void vAssertStructure(void);
-    void vCaught(Exception xException);
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     SenCompiler* pSenCompiler(void);
     void vContentDump(void);
+    Word* pCurWord(void);
     void vDeleteInput(void);
     static void vDebug(void);
     DicStack* pDicStack(void);
+    void vDropAllLocks(void);
     void vDropTaskLock(void);
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
+    Word* pEventHandler(void);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
     bool bIsImmediate(void);
@@ -134,7 +148,8 @@ namespace BASE
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    void vReset(void);
+    LockSet* pReadLocks(void);
+    void vResetSenContext(void);
     void vReseed(void);
     bool bLogResource(void);
     void vLogResource(bool bLogResource);
@@ -145,7 +160,6 @@ namespace BASE
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);
-    void vTaskLoop(void);
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
@@ -162,6 +176,7 @@ namespace BASE
     bool bWakeupNow(void);
     Sleep& oWakeupSleep(void);
     u8   uWakeupTime(void);
+    LockSet* pWriteLocks(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

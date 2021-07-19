@@ -290,21 +290,6 @@
 
   op[].init
 
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // set otherStage and otherOp in op
-  "<otherStage>" job[] job.tagSet@ tagSet.hasName if
-    <otherStage> op.otherStage!
-    <otherOp> op.otherOp!
-  then
-
   "<diary>" job[] job.tagSet@ tagSet.hasName if
     rluDiary_init
   then
@@ -387,8 +372,12 @@
 
   0 LogicUnit[].logOperand
   
+  //Task[] task.dropLock //OoO
+
   LogicUnit[].handler@ execute
   
+  //Task[] task.grabLock //OoO
+
   1 LogicUnit[].logOperand
 ;
 
@@ -398,11 +387,14 @@
 : op__loop
 
   0 locals| iOperandYield |
- 
+  1 locals| iContinue |
+
   op__pipelineJobWait
+  
+  //Task[] task.grabLock //OoO
 
-  begin
-
+  begin  iContinue while
+    
     assert::stack_0
     
     PipeIn[].isNull assert
@@ -416,13 +408,14 @@
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
       PipeIn[].kind op[].isOperandValid not if
-        find: INVALID_OPERAND_handler op__handle not if exit then
+        find: INVALID_OPERAND_handler op__handle to iContinue
         continue_if
       then
 
       PipeIn[].kind op[].incOperandCount
+      PipeIn[].kind op[].incHandlerCount
       PipeIn[].kind op[].handler@ LogicUnit[].handler!
-      op__handle not if exit then
+      op__handle to iContinue
       continue_if
       
     then
@@ -437,7 +430,7 @@
       false LogicUnit[].callAgain!
       true LogicUnit[].calledAgain!
 
-      op__handle not if exit then
+      op__handle to iContinue
       continue_if
 
     then
@@ -448,7 +441,8 @@
 
     iOperandYield 1 + to iOperandYield
     iOperandYield task::operandYield@ >= if
-      task::yield
+      task::yield_opLoop
+      //Task[] task.grabLock //OoO
       0 to iOperandYield
     then
 
@@ -465,15 +459,20 @@
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
     PipeIn[].kind op[].isOperandValid not if
-      find: INVALID_OPERAND_handler op__handle not if exit then
+      find: INVALID_OPERAND_handler op__handle to iContinue
       continue_if
     then
     
     PipeIn[].kind op[].incOperandCount
+    PipeIn[].kind op[].incHandlerCount
     PipeIn[].kind op[].handler@ LogicUnit[].handler!
-    op__handle not if exit then
+    op__handle to iContinue
 
-  again
+  repeat
+  
+  iContinue not assert
+  
+  //Task[] task.dropLock //OoO
 ;
 
 /*----------------------------------------------------------------------------*/

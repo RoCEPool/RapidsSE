@@ -2,12 +2,13 @@
 /* Expr Pushdown semantic tests                                               */
 /*----------------------------------------------------------------------------*/
 
-// This tests whether intermediate (working) columns that are referenced above
-// ProjectOps/AggregateOps are identified and pushed down into the nearest
-// ProjectOp. We already have a post-project stage that stops these intermediate
-// columns from being output, but we need to ensure that these intermediate
-// expressions are calculated and projected for SQL operators upstream to use.
-// This typically occurs in the HAVING or ORDER BY clauses.
+-- This tests whether intermediate (working) columns that are referenced above
+-- ProjectOps/AggregateOps are identified and pushed down into the nearest
+-- ProjectOp. We already have a post-project stage that stops these intermediate
+-- columns from being output, but we need to ensure that these intermediate
+-- expressions are calculated and projected for SQL operators upstream to use.
+-- This typically occurs in the HAVING or ORDER BY clauses, but can also apply
+-- to GROUP BY expressions too (particularly when the plan is partitioned).
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
@@ -342,6 +343,8 @@ rows: (*,'explainPlan',
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
          » column: (Expr = rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey ; Ordinal Expr = $3 + $1)
+         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » group by: (rapidsse.public.nation.n_name)
          » group by: (rapidsse.public.nation.n_regionkey)
          » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($2) ; Ordinal Exprs = ($3) ; Ordinal Exprs = ($1)
@@ -398,6 +401,55 @@ rows: (*,'explainPlan',
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Grouping expressions that need to be pushed down
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1)
+   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+
+-> projectOp
+   » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = $1)
+   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> aggregateOp
+      » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = 2 * ($1 + 1))
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Union tests

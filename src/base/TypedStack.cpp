@@ -140,8 +140,20 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateRoutine(aFip);
           
-          vTrace("=%p word %s \n"_Stz,aFip,
-                 pWord ? pWord->szWordNm() : C_NO_WORD);
+          if (pWord) {
+            vTrace("=%p word %s %s\n"_Stz
+                   ,aFip
+                   ,pWord->szWordNm()
+                   ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                                       : ""_Stz
+                   );
+          }
+          else {
+            vTrace("=%p word %s \n"_Stz,
+                   aFip,
+                   C_NO_WORD
+                   );
+          }
         }
         else {
           vTrace("%p word %s \n"_Stz,aFip,
@@ -241,7 +253,7 @@ i8 TypedStack::iPopAsInt(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -259,7 +271,7 @@ CodeCell* TypedStack::aPopFip(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_FIPVAL) )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -278,7 +290,7 @@ i8 TypedStack::iPopInt(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -297,7 +309,7 @@ Object* TypedStack::pPopPtr(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (! bGuard(CN_PTRVAL) && ! bTopIsZero() )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -316,7 +328,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STZVAL) )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -339,7 +351,7 @@ void TypedStack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    BASE::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   

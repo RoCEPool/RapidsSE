@@ -71,7 +71,7 @@ b1 SelectMarker::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SelectMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void SelectMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -81,7 +81,7 @@ void SelectMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szT
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     return;

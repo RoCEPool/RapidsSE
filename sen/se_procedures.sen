@@ -684,7 +684,7 @@
     toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
     //dump rowBuffer 1   |
 
-    stageC hashed
+    stageC hashcast
 
   stage stageC on all partitions :
 
@@ -751,7 +751,7 @@
     toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
     //dump rowBuffer 1   |
 
-    stageD hashed
+    stageD hashcast
 
   stage stageD on all partitions :
 
@@ -855,7 +855,7 @@
     toPtnRow      |
     toNstRow      |
     toHshCrw      |
-    stageC hashed
+    stageC hashcast
 
   stage stageC on all partitions :
     insert $Table |
@@ -932,7 +932,7 @@
         | toRow $Table
         | toPtnRow
         | toNstRow
-        | stageB hashed
+        | stageB hashcast
 
     stage stageB on all partitions :
       noop
@@ -1164,7 +1164,7 @@
   begin
 
     stage stageA on origin :
-      start | periodic once | metaGet $TableNm | stageB hashed
+      start | periodic once | metaGet $TableNm | stageB hashcast
 
     stage stageB on all nodes :
       metaSend | stageC
@@ -1186,7 +1186,7 @@
   begin
 
     stage stageA on origin :
-      start | metaGet $TableNm | stageB hashed
+      start | metaGet $TableNm | stageB hashcast
 
     stage stageB on all nodes :
       metaSend | metaRecv | stageC
@@ -1223,7 +1223,7 @@
         | catFile $File
         | toRow $Table
         | toPtnRow
-        | stageB hashed
+        | stageB hashcast
 
     stage stageB on all partitions :
       noop
@@ -1256,7 +1256,7 @@
         | catFile $File
         | toRow $Table
         | toPtnRow
-        | stageB hashed
+        | stageB hashcast
 
     stage stageB on all partitions :
       //noop
@@ -1303,7 +1303,7 @@
 
      //toHshCrw |
 
-     stageC hashed
+     stageC hashcast
 
 
    stage stageC on all partitions :

@@ -50,7 +50,6 @@ namespace STORE
     TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
-    Pipeline*  m_pPipeline;  // pipeline
     Op*        m_pOp;        // Op this job is executing
     Op*        m_pOuterOp;   // Op that called the pipeline
     Op*        m_pInputOp;   // The optional input op of the pipeline
@@ -64,7 +63,7 @@ namespace STORE
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
     eSS     m_eSeed;         // seed to spawn
     i8      m_i_TablePtn;    // table ptn on its node this job processes
-    Task*   m_pTaskJ;        // task executing the job
+    Task*   m_pTask;         // task executing this job
 
     // must be last
     Footer m_xFooter;

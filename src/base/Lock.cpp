@@ -29,7 +29,7 @@ Lock* BASE::_pLock(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Lock::operator new(size_t, Lock* pLock)
 {
@@ -37,7 +37,7 @@ void* Lock::operator new(size_t, Lock* pLock)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Lock::operator delete(void*)
 {
@@ -48,14 +48,15 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(Object* pObjectLocked)
+Lock::Lock(Object* pObjectLocked, bool bLockSet)
 : Object(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
   m_uLockWord = 0;
   m_pObjectLocked = pObjectLocked;
-  m_pWriteLockingTask  = nullptr;
+  
+  m_bLockSet = bLockSet;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -92,6 +93,7 @@ Lock::~Lock(void) noexcept(false)
 u8 Lock::iLockDropRead(u8* pWord)
 {
   _static_
+  
   
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
   bool bWasSet;
@@ -139,7 +141,7 @@ u8 Lock::iLockGrabRead(u8* pWord)
 #else
   u8 uResult = iGrabRead(pWord);
 #endif
-  
+    
   return uResult;
 }
 
@@ -199,7 +201,7 @@ u8 Lock::iLockGrabWrite(u8* pWord)
 #else
   u8 uResult = iGrabWrite(pWord);
 #endif
-  
+   
   return uResult;
 }
 
@@ -272,9 +274,9 @@ u8 Lock::uLockWord(void)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-//                                Read Locking                                //
-////////////////////////////////////////////////////////////////////////////////
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                Read Locking                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
 /* check for read lock                                                        */
@@ -294,7 +296,9 @@ void Lock::vDropRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   vAssertRead();
-  
+  if (m_bLockSet)
+    AM::LOCK::vIntendReadUnlocked(this);
+
   // remove the readlock
   i8 iResult = Lock::iLockDropRead(&m_uLockWord);
   RASSERT(iResult);
@@ -317,8 +321,11 @@ bool Lock::bGrabRead(void)
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
+  
   if (iResult) {
     vAssertRead();
+    if (m_bLockSet)
+      AM::LOCK::vJustReadLocked(this);
     return true;
   }
   
@@ -350,6 +357,8 @@ void Lock::vGrabRead(void)
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
     vAssertRead();
+    if (m_bLockSet)
+      AM::LOCK::vJustReadLocked(this);
     return;
   }
   
@@ -380,6 +389,8 @@ void Lock::vGrabRead(void)
 
   
   vAssertRead();
+  if (m_bLockSet)
+    AM::LOCK::vJustReadLocked(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,9 +414,10 @@ i8 Lock::iReadCollisions(void)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-//                                Write Locking                               //
-////////////////////////////////////////////////////////////////////////////////
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                               Write Locking                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 
 /*----------------------------------------------------------------------------*/
 /* check for write lock                                                       */
@@ -425,9 +437,8 @@ void Lock::vDropWrite(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   vAssertWrite();
-  
-  // clear the locking task
-  m_pWriteLockingTask  = nullptr;
+  if (m_bLockSet)
+    AM::LOCK::vIntendWriteUnlocked(this);
 
   // remove the readlock
   i8 iResult = Lock::iLockDropWrite(&m_uLockWord);
@@ -453,7 +464,8 @@ bool Lock::bGrabWrite(void)
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
     vAssertWrite();
-    m_pWriteLockingTask = MY::pTask();
+    if (m_bLockSet)
+      AM::LOCK::vJustWriteLocked(this);
     return true;
   }
   
@@ -485,7 +497,8 @@ void Lock::vGrabWrite(void)
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
     vAssertWrite();
-    m_pWriteLockingTask = MY::pTask();
+    if (m_bLockSet)
+      AM::LOCK::vJustWriteLocked(this);
     return;
   }
   
@@ -515,6 +528,8 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   vAssertWrite();
+  if (m_bLockSet)
+    AM::LOCK::vJustWriteLocked(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -548,6 +563,7 @@ i8 Lock::iWriteCollisions(void)
   
   return *m_ixWriteCollisions;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/

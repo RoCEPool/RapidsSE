@@ -15,6 +15,8 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 
+#include "SP_Pipeline.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -126,36 +128,6 @@ void Pipeline::vCreateStages(void)
     Stage* pStage = new Stage(pStageSpec, this);
     vAdd(pStage);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the pipeline                                                          */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump all operators of each stage
-    
-  Grid* pGrid = AM::pGrid();
-  
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-    
-  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld tablePtns:\n"_Stz,
-         m_sPipelineNm.szStz(),
-         pGrid->szGridNm(),
-         pGrid->nBootNodes(),
-         AM::nPtnsPerTable());
-    
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the stages with the operators
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
-    Stage* pStage = pGet(i_Stage);
-    pStage->vDump(this);
-  }
-  
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,7 +298,7 @@ void Pipeline::vSetupJob(void)
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
       Op* pOp = pStream->pGet(i_Op);
       
-      if (AM::JOB::szJobNm(pOp->pOpJob())->bSame("limitOp"_Stz)) {
+      if (AM::JOB::szJobNm(pOp->pJob())->bSame("limitOp"_Stz)) {
         m_bPulsedLimit = true;
         break;
       }
@@ -342,7 +314,7 @@ void Pipeline::vSetupJob(void)
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
       Op* pOp = pStream->pGet(i_Op);
 
-      if (AM::JOB::szJobNm(pOp->pOpJob())->bSame("scan"_Stz)) {
+      if (AM::JOB::szJobNm(pOp->pJob())->bSame("scan"_Stz)) {
         m_pOpToPulse = pOp;
         pOp->vPulsedLimit(true);
         break;

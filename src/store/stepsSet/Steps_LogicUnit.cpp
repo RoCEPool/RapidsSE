@@ -48,6 +48,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
+  vAddStep("LogicUnit[].genHash"_Stz,       &Step::vLogicUnitGenHash);
+  vAddStep("LogicUnit[].genIndexJoin"_Stz,  &Step::vLogicUnitGenIndexJoin);
   vAddStep("LogicUnit[].genIndexScan"_Stz,  &Step::vLogicUnitGenIndexScan);
   vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genLoopJoin"_Stz,   &Step::vLogicUnitGenLoopJoin);
@@ -184,7 +186,7 @@ void Step::vLogicUnitDiaryAction(void)
   m_pJob->pLogicUnit_job()->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pJob->pLogicUnit_job()->m_oSince.iNanoseconds();
   
-  i8 nQueueLength = m_pJob->pLogicUnit_job()->m_xpOp->nQueueLength();
+  i8 nQueueLength = m_pJob->pLogicUnit_job()->m_xpOp->nQueuedOperands();
 
   m_pJob->pLogicUnit_job()->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            i_Action,i_ActEnumGroup,i_ActEnum,nQueueLength);
@@ -264,7 +266,7 @@ void Step::vLogicUnitDiaryNote(void)
   i8 nNanoSeconds = m_pJob->pLogicUnit_job()->m_oSince.iNanoseconds();
   
   
-  i8 nQueueLength = m_pJob->pLogicUnit_job()->m_xpOp->nQueueLength();
+  i8 nQueueLength = m_pJob->pLogicUnit_job()->m_xpOp->nQueuedOperands();
   
   m_pJob->pLogicUnit_job()->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            0,0,0,nQueueLength);
@@ -415,6 +417,38 @@ void Step::vLogicUnitGenFilter(void)
   ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   eEC eError = m_pJob->pLogicUnit_job()->eGenerateFilter(pExprEval);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genHash -- generate hash asm text into file                    */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenHash(void)
+{
+  ENTRY();
+
+  ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateHash(pExprEval);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genIndexJoin -- generate indexJoin asm text into file          */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenIndexJoin(void)
+{
+  ENTRY();
+
+  ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateIndexJoin(pExprEval);
 
   m_pDataStack->vPushInt(eError);
 

@@ -19,6 +19,9 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include "SP_Pipeline.hpp"
+#include "SP_PipelineSpec.hpp"
+
 #include "Dynamo.hpp"
 #include "TagConstants.h"
 
@@ -27,61 +30,119 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobPipeline(void)
 {
-  vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
-  vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
-  vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
-  vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
-  vAddStep("Job_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
-  vAddStep("Job_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
-  vAddStep("Job_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
-  vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
-  vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
-  vAddStep("Job_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
-  vAddStep("Job_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
-  vAddStep("Job_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
+  vAddStep("Job_Pipeline::begin"_Stz,       &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline::compile"_Stz,     &Step::vJob_PipelineCompile);
+
+  vAddStep("Op_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
+  vAddStep("Op_Pipeline::deleteSpec"_Stz,   &Step::vJob_PipelineDeleteSpec);
+  vAddStep("Op_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
+  vAddStep("Op_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
+  vAddStep("Op_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
+  vAddStep("Op_Pipeline::execute"_Stz,      &Step::vJob_PipelineExecute);
+  vAddStep("Op_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
+  vAddStep("Op_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
+  vAddStep("Op_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
+  vAddStep("Op_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.begin -- begin the Pipeline job                               */
+/* Job_Pipeline::begin -- begin the Pipeline job                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineBegin(void)
 {
   ENTRY();
-  
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+    
   i8 iThisNode = AM::pGrid()->iThisNode();
-  //vTrace(">>>> vJob_PipelineBegin    This node %lld\n"_Stz, iThisNode);
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
-  pJob_Pipeline->m_pPipeline =
-    new Pipeline(pJob_Pipeline,
-                 m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec(),
-                 pJob_Pipeline->iOriginatorNode());
+  pLogicUnit->m_xpPipeline =
+    new Pipeline(m_pJob,
+                 *pLogicUnit->m_xpPipelineSpec,
+                 m_pJob->iOriginatorNode());
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
-  if (AM::bVerbose()) {
-    //if (iThisNode == 0)
-       pPipeline->vDump();
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
+    if (iThisNode == 0) {
+      SP_Pipeline spPipeline(pPipeline,true);
+      vTraceM("%s\n"_Stz,spPipeline.sz());
+      vDebugPoint();
+    }
   }
-  
-  delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-  m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
-  if (AM::bVerbose())
-    vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   
-  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
+  pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::cancelled -- set pipeline as being cancelled                 */
+/* Job_Pipeline::compile -- compile the command                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineCompile(void)
+{
+  ENTRY();
+    
+  sSTMT sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  
+  Dynamo* pDynamo = new Dynamo(sCmd,m_pJob);
+    
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+
+ 
+  if (pPipelineSpec) {
+    
+    if (AM::bPassesLowMem(m_pJob)) {
+      
+      // clean compile, passes low memory test
+      
+      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+        
+        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
+        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
+      }
+      
+      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+      m_pDataStack->vPushInt(EC_NONE);
+      
+    }
+    else {
+      
+      // clean compile, but does not pass low memory test
+
+      delete pPipelineSpec;
+      m_pDataStack->vPushInt(EC_LOW_MEMORY);
+      
+    }
+
+  }
+  else {
+    
+    // failed to compile
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+
+  }
+  
+  delete pDynamo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Op_Pipeline::cancelled -- set pipeline as being cancelled                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCancelled(void)
 {
@@ -97,67 +158,24 @@ void Step::vJob_PipelineCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::compile -- compile the command                               */
+/* Op_Pipeline::deleteSpec -- delete the pipeline spec                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineCompile(void)
+void Step::vJob_PipelineDeleteSpec(void)
 {
   ENTRY();
   
-  sSTMT sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   
-  m_pJob->pLogicUnit_job()->m_xpDynamo = new Dynamo(sCmd,m_pJob);
-  
-  bool bResult = m_pJob->pLogicUnit_job()->m_xpDynamo->bCompile();
-  
-  if ( ! bResult) {
-    PipelineSpec* pPipelineSpec = m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
-    delete pPipelineSpec;
-    
-    delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-    m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+  if (*pLogicUnit->m_xpPipelineSpec) {
+    delete *pLogicUnit->m_xpPipelineSpec;
+    pLogicUnit->m_xpPipelineSpec = nullptr;
   }
-  else {
     
-    if (! AM::bPassesLowMem(m_pJob)) {
-      PipelineSpec* pPipelineSpec = m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
-      delete pPipelineSpec;
-      
-      delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-      m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-      m_pDataStack->vPushInt(EC_LOW_MEMORY);
-    }
-    else {
-      m_pDataStack->vPushInt(EC_NONE);
-      if (AM::bVerbose()) {
-        m_pJob->pLogicUnit_job()->m_xpDynamo->vShow();
-      }
-    }
-  }
-  
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::deleteDynamo -- delete the dynamo                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineDeleteDynamo(void)
-{
-  ENTRY();
-  
-  PipelineSpec* pPipelineSpec =
-    m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
-  delete pPipelineSpec;
-  
-  delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-  m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_Pipeline::earlyExit! -- set earlyExit                                  */
+/* Op_Pipeline::earlyExit! -- set earlyExit                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineEarlyExitStore(void)
 {
@@ -173,7 +191,7 @@ void Step::vJob_PipelineEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::earlyExit@ -- has the pipeline been early exited             */
+/* Op_Pipeline::earlyExit@ -- has the pipeline been early exited              */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineEarlyExitFetch(void)
 {
@@ -190,7 +208,7 @@ void Step::vJob_PipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::errored -- set pipeline as being errored                     */
+/* Op_Pipeline::errored -- set pipeline as being errored                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineErrored(void)
 {
@@ -206,15 +224,15 @@ void Step::vJob_PipelineErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.execute -- execute                                            */
+/* Op_Pipeline::execute -- execute                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
 {
   ENTRY();
   
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
   i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -226,7 +244,7 @@ void Step::vJob_PipelineExecute(void)
   if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
+    AM::vSetAcksRmg(m_pJob->pTask(),nOps);
   
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);
@@ -246,7 +264,7 @@ void Step::vJob_PipelineExecute(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::IsCancelled -- has the pipeline been cancelled               */
+/* Op_Pipeline::IsCancelled -- has the pipeline been cancelled                */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsCancelled(void)
 {
@@ -263,7 +281,7 @@ void Step::vJob_PipelineIsCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::IsErrored -- has the pipeline been errored                   */
+/* Op_Pipeline::IsErrored -- has the pipeline been errored                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsErrored(void)
 {
@@ -280,7 +298,7 @@ void Step::vJob_PipelineIsErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::IsPulsed -- has the pipeline been pulsed                     */
+/* Op_Pipeline::IsPulsed -- has the pipeline been pulsed                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsPulsed(void)
 {
@@ -297,7 +315,7 @@ EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::pulsed -- set pipeline as being pulsed                       */
+/* Op_Pipeline::pulsed -- set pipeline as being pulsed                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelinePulsed(void)
 {

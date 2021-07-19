@@ -45,6 +45,7 @@
 
 #include "CmdLineArgs.hpp"
 #include "Locator.hpp"
+#include "LogicUnit.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -751,8 +752,8 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
     vTrace("Cancelling job %lld\n"_Stz, iJobId);
   
   // get the pipeline from the job
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
-  
+  Pipeline* pPipeline = *pJob_Pipeline->m_pLogicUnit_job->m_xpPipeline;
+
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, iJobId);
@@ -2973,7 +2974,7 @@ L_END:
     bPrompt_memoryLeaks_dump(pPrompt);
   
   if (nLeaksDetected && bFatal)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "fatal: memory leaks detected"_Stz);
   
   if (! nLeaksDetected)
@@ -4126,7 +4127,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   
   s48K sPipelineStmt;
   
-  if (Dynamo::bCmdToPipeline(sPipelineStmt,pInpTknVec)) {
+  if (AM::PROMPT::bToPipelineStmt(sPipelineStmt,pInpTknVec)) {
     
     pPrompt->pSession()->m_sToDo = sPipelineStmt;
     
@@ -5855,7 +5856,7 @@ bool PROMPT::bPrompt_with(SePrompt* pPrompt)
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
   if (! BASE::bTraceWith(szWith))
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "With: Code was not compiled with: %s"_Stz,szWith);
 
   return true;
@@ -5900,7 +5901,7 @@ bool PROMPT::bPrompt_without(SePrompt* pPrompt)
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
   if (! BASE::bTraceWithout(szWith))
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Without: Code was compiled with: %s"_Stz,szWith);
 
   return true;

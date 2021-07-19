@@ -43,10 +43,13 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExitFailure(void)
 {
-  fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
-
+  fprintf(stderr,"Process::vExitFailure()\n");
+  
   vThreadCallStackDump();
 
+  fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
+
+ 
   exit((int)EXIT_FAILURE);
 }
 

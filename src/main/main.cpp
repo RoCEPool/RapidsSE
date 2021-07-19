@@ -40,6 +40,7 @@ extern i8   giProgressPoint;
 #include "BucketMap.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -124,7 +125,12 @@ int main(int argc, char* argv[])
       Process::vExitSuccess();
     }
     
-
+    // temp for debugging hang in bamboo
+//    gxCmdLineArgs.m_xSysArgs.m_bDeveloper = true;
+//    gxCmdLineArgs.m_xSysArgs.m_oArgTagSet.vInsert(C_VB_API);
+//    gxCmdLineArgs.m_xSysArgs.m_oArgTagSet.vInsert(C_VB_OP);
+    // end temp
+    
     vHeartInit();
 
     if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {

@@ -17,7 +17,7 @@ Queue* BASE::_pQueue(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t)
 {
@@ -27,7 +27,7 @@ void* Queue::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t, Queue* pQueue)
 {
@@ -35,7 +35,7 @@ void* Queue::operator new(size_t, Queue* pQueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Queue::operator delete(void* pQueueAddress)
 {
@@ -47,11 +47,11 @@ void Queue::operator delete(void* pQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Queue::Queue(void)
-: Object(CN_QUEUE)
+Queue::Queue(eCN eClass)
+: Object(eClass)
 , m_okLock(this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClass);
   
   m_nItems = 0;
   m_pTopBuffer = nullptr;
@@ -59,7 +59,7 @@ Queue::Queue(void)
 
   _checkInitialised_(CN_QUEUE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@ Queue::Queue(void)
 /*----------------------------------------------------------------------------*/
 Queue::~Queue(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 
   vReset();
       
@@ -84,7 +84,7 @@ Queue::~Queue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Queue::vAppend(Object* pObject)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_okLock.vGrabWrite();
   
@@ -114,7 +114,7 @@ void Queue::vAppend(Object* pObject)
 /*----------------------------------------------------------------------------*/
 void Queue::vContentDump(Stz* aTab)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%sQueue: %p\n"_Stz, aTab, this);
   vTrace("%s  Count %lld\n"_Stz, aTab, m_nItems);
@@ -130,7 +130,7 @@ void Queue::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 i8 Queue::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_nItems;
 }
@@ -140,10 +140,20 @@ i8 Queue::nItems(void)
 /*----------------------------------------------------------------------------*/
 Object* Queue::pPeek(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(0);
-  return nullptr;
+  //RASSERT(0);
+  
+  Object* pObject = nullptr;
+
+  m_okLock.vGrabWrite();
+  
+  if (m_pTopBuffer)
+    pObject = m_pTopBuffer->pPeek();
+
+  m_okLock.vDropWrite();
+
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +161,7 @@ Object* Queue::pPeek(void)
 /*----------------------------------------------------------------------------*/
 Object* Queue::pPop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   
   m_okLock.vGrabWrite();
@@ -191,7 +201,7 @@ Object* Queue::pPop(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   RASSERT(0 == m_nItems);
 
@@ -214,7 +224,7 @@ void Queue::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vDiscard(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   QueueBuffer* pQueueBufferTBD = m_pTopBuffer;
   
@@ -233,7 +243,7 @@ void Queue::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vExpand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   //vTrace("Queue::vExpand\n"_Stz);
   
@@ -253,7 +263,7 @@ void Queue::vExpand(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 iCount = 0;
   
@@ -276,7 +286,7 @@ void Queue::vVerify(void)
 /*----------------------------------------------------------------------------*/
 Footer* Queue::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return &m_xFooter;
 }

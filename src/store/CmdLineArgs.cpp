@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "CmdLineArgs.hpp"
+#include "TagConstants.h"
 
 extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap*  gpAttachMap;
@@ -113,6 +114,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
+  m_xSysArgs.m_bVBlong          = false;
   m_xSysArgs.m_bVerbose         = false;
   m_xSysArgs.m_bWelcome         = true;
 
@@ -793,6 +795,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--VBlong"_Stz)) {
+      m_xSysArgs.m_bVBlong = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--verbose"_Stz)) {
       m_xSysArgs.m_bVerbose = true;
       continue;
@@ -913,6 +921,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
   }
   
+  //m_xSysArgs.m_oArgTagSet.vDumpSet(true);
+  
   return true;
 }
 
@@ -951,7 +961,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // print startup information
-  if (! AM::bVerboseProgress())
+  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
     return;
   
   

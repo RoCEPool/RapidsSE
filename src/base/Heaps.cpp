@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "TagConstants.h"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -343,7 +344,7 @@ void Heaps::vInit(void)
     new Heap(CN_LARGEVIRTUAL, C_SIZE_LARGE_OBJECT, HT_V_LARGE);
 
 
-  if (AM::bVerboseProgress()) {
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     
     //    vInfo("Created persistent tiny heap %p: %lldB objects\n"_Stz,
     //          Persistent.m_pTiny, C_SIZE_TINY_OBJECT);

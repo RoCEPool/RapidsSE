@@ -1,0 +1,248 @@
+/*============================================================================*/
+/* OP_indexJoin.sen -- Operator index join                                    */
+/*============================================================================*/
+
+" OP_indexJoin.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: indexJoin_seapi
+
+  "indexJoin_seapi" .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: IndexJoin_Xyz \handler
+
+  // delete all operands
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: indexJoin_CancelMarker \handler
+
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: indexJoin_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[] DevLftIxt.crwBuffer!
+  ZK_CRWBUFFER Counter0[] executeAsmArgs
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: indexJoin_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: indexJoin_ERRORMARKER \handler
+
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: indexJoin_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[] DevLftRow.rowBuffer!
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: indexJoin_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  <tableNm> <indexNm> op__table_index not if
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: IndexJoin_Xyz   ZK_DATAPULSE      op[].handler!
+    find: IndexJoin_Xyz   ZK_PULSEDMARKER   op[].handler!
+    true
+    exit
+  then
+
+  // new the PotRlu[]
+  PotRlu[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  // set the indexTree in the devRhtIxt
+  Index[].indexTree DevRhtIxt.indexTree!
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: indexJoin_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // new a streamDefRht from the right table
+  Table[] StreamDefRht[].new
+
+  // evaluate the expression
+  ExprEval[].new
+  StreamDefOut[].new
+
+  // evaluate the join
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[]
+        Index[].indexTree ExprEval[].evaluateIndexJoin to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__exprEvalExecErr
+    true
+    exit
+  then
+
+  // generate the asm for the filter
+  ExprEval[] LogicUnit[].genIndexJoin to eError
+  ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
+
+  // set the streamDef in the DevLftRow
+  StreamDefLft[]\clear DevLftRow.streamDef!
+
+  // set the streamDef in the devRightRow
+  StreamDefRht[]\clear DevRhtRow.streamDef!
+
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
+
+  // pipeout the streamDefOut
+  StreamDefOut[].pipeout
+
+  // create the compiler
+  Counter0[] if
+    LogicCompiler[].new
+    LogicCompiler[].compile
+  then
+
+  // execute the streamDef asm handler
+  ZK_STREAMDEF Counter0[] executeAsmArgs
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: indexJoin_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: indexJoin_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: indexJoin_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: indexJoin_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: indexJoin_ErrorMarker  ZK_ERRORMARKER  op[].handler!
+  find: indexJoin_RowBuffer    ZK_ROWBUFFER    op[].handler!
+  find: indexJoin_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: indexJoin_StreamDef    ZK_STREAMDEF    op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
+
+: indexJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

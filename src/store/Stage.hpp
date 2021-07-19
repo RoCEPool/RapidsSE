@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Stream; class StageSpec; }
+
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
@@ -26,9 +28,7 @@ namespace STORE
     
     Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
    ~Stage(void) noexcept(false);
-  
-    void vDump(Pipeline* pPipeline);
-    
+      
     void    vCancelPipeline(Task* pTriggeringTask);
     Stream* pGetPartitionStream(i8 i_Ptn);
     Stream* pGetNodeStream(i8 i_Node);

@@ -49,7 +49,7 @@ void Step::vApiAddProcedure(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
   
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
@@ -87,13 +87,6 @@ void Step::vApiExecuteNested(void)
   i8 iReqNo = m_pDataStack->iPopInt(__func__);
   i8 iReqOf = m_pDataStack->iPopInt(__func__);
 
-//  s48K sWithTagStr;
-//  m_pDataStack->vPopStr(sWithTagStr,__func__);
-//
-//  if (AM::bVerbose()) {
-//    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
-//    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -140,7 +133,7 @@ void Step::vApiExecuteNested(void)
   m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet()->vDumpSet();
   pJobTagSet->vCopy(m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet());
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -181,7 +174,7 @@ void Step::vApiExecuteRequest(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
 
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
@@ -245,7 +238,7 @@ void Step::vApiExecuteRequest(void)
 
   
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -290,7 +283,7 @@ void Step::vApiSpawnDemon(void)
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
     vTrace("WithTags: %s\n"_Stz,sTagStr.szStz());
   }
@@ -331,7 +324,7 @@ void Step::vApiSpawnDemon(void)
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
   Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -361,7 +354,7 @@ void Step::vApiSpawnThread(void)
   
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  Job* pOpJob = pOp->pOpJob();
+  Job* pOpJob = pOp->pJob();
   AM::vSpawnJob_dedicated(pOpJob);
 
   EXIT();

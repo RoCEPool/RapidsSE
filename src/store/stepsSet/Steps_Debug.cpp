@@ -17,12 +17,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Debug(void)
 {
-  vAddStep("debug::breakPoint"_Stz,  &Step::vDebugTrap);
+  vAddStep("debug::breakpoint"_Stz,  &Step::vDebugBreakpoint);
   vAddStep("debug::flag@"_Stz,       &Step::vDebugFlagFetch);
   vAddStep("debug::flag!"_Stz,       &Step::vDebugFlagStore);
-  vAddStep("debug::trap"_Stz,        &Step::vDebugTrap);
+  vAddStep("debug::trap"_Stz,        &Step::vDebugBreakpoint);
+  vAddStep("debug::throw"_Stz,       &Step::vDebugThrow);
 }
 
+/*----------------------------------------------------------------------------*/
+/* debug::trap -- call debug breakpoint                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDebugBreakpoint(void)
+{
+  ENTRY();
+
+  BASE::vDebugPoint();
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* debug::flag@ -- fetch debug flag                                           */
 /*----------------------------------------------------------------------------*/
@@ -48,13 +60,13 @@ void Step::vDebugFlagStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::trap -- call debug trap                                              */
+/* debug::throw -- throw an exception                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDebugTrap(void)
+void Step::vDebugThrow(void)
 {
   ENTRY();
-
-  BASE::vDebugPoint();
+  
+  NEVER_REACH;
   
   EXIT();
 }

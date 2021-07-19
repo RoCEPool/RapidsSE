@@ -22,10 +22,10 @@ namespace Parser
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
+    static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
     // Explains any common properties of parent definitions
-    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent);
+    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -42,6 +42,14 @@ namespace Parser
     // Set or clear the location where this planObject is supposed to run in the cluster
     static void vSetLocation(QueryNode* pNode, Location::eLO eLocation);
     static void vClearLocation(QueryNode* pNode);
+
+    // Returns the location of this node, otherwise if the node doesn't have a location
+    // then it can descend into the children until a location is found. If no location
+    // is set then LO_NONE is returned.
+    static Location::eLO eLocation(QueryNode* pNode, b1 bIncludeChildren);
+
+    // Returns true if this specific node has a location property and it's value is valid
+    static b1 bNodeHasLocation(QueryNode* pNode);
 
   protected:
     // Indent format

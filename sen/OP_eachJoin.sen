@@ -39,8 +39,10 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_CrwBuffer: got crw buffer" .
+
   Operand[].pipeIn
-  Operand[] DevLftIxt.crwBuffer!
+  Operand[] DevRhtIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
@@ -55,9 +57,11 @@
 
   0 ZK_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_EachRowBuffer: got eachRowBuffer" .
+
   Operand[].pipeIn
   Operand[] DevLftRow.eachRowBuffer!
-  ZK_EACHROWBUFFER Counter0[] executeAsmArgs
+  Operand[] DevLftRow.row!
 
   true
 ;
@@ -69,8 +73,7 @@
 
   0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // execute the eosMarker asm handler
-  ZK_EACHSCANEOSMARKER Counter0[] executeAsmArgs
+  "eachJoin_EachScanEosMarker: got each scanEosMarker_lj;" .
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutCompletedPtns
@@ -129,11 +132,13 @@
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_RowBuffer: got rowbuffer;" .
+
   Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
+  Operand[] DevRhtRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  //Operand[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -163,6 +168,8 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_StreamDef: got each streamDef_lj;" .
+
   EC_NONE locals| eError |
 
   StreamDefLft[].isNull if
@@ -182,8 +189,8 @@
   // evaluate the expression
   ExprEval[].new
   StreamDefOut[].new
-/*
-  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
+
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateLoopJoin to eError
 
   // check for error
   eError EC_NONE == not if
@@ -193,7 +200,7 @@
   then
 
   // generate the asm for the filter
-  ExprEval[] LogicUnit[].genJoin to eError
+  ExprEval[] LogicUnit[].genLoopJoin to eError
   ExprEval[].delete
 
   // check for error
@@ -204,10 +211,10 @@
   then
 
   // set the streamDef in the DevLftRow
-  StreamDefLeft[]\clear DevLftRow.streamDef!
+  StreamDefLft[]\clear DevLftRow.streamDef!
 
   // set the streamDef in the devRightRow
-  StreamDefRight[]\clear DevRhtRow.streamDef!
+  StreamDefRht[]\clear DevRhtRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
@@ -223,7 +230,7 @@
 
   // execute the streamDef asm handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
-*/
+
   true
 ;
 

@@ -23,6 +23,9 @@
 #include "eTS.h"
 #include "TagConstants.h"
 
+#include "SP_Margin.hpp"
+#include "SP_Op.hpp"
+
 Atomic gixOp;
 
 /*----------------------------------------------------------------------------*/
@@ -44,11 +47,13 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
+  m_pJob        = nullptr;
+  
   m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
   m_sStageNm    = pStream->pStage()->szStageNm();
   m_sStreamNm   = pStream->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
-  m_i_Op        = pOpSpec->i_OpSpec();
+  m_i_Op        = pOpSpec->iOpSpec();
   
   m_bTraceOp    = false;
   
@@ -56,39 +61,17 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
   m_pPipeline = pStream->pPipeline();
-
-  if (m_pStage->pStageSpec()->bNodeTopo()) {
-    m_tPtnNo = C_UNKNOWN;
-    RASSERT(pStream->tPtnNo() == m_tPtnNo);
-    m_i_Node = pStream->i_Node();
-  }
-  else {
-    m_tPtnNo = pStream->tPtnNo();
-    m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-    RASSERT(pStream->i_Node() == m_i_Node);
-  }
     
   // -- -- -- -- -- --
-
-  m_pPipelineJob  = m_pPipeline->pPipelineJob();
-  m_pOpJob        = nullptr;
-  
-  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
-  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_bAppendRight  = pOpSpec->bAppendRight();
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
+  m_pQueueOoO     = new OperandQueue;
 
-  m_eCrossTopo  = PX_NONE;
-  m_iNextStage  = C_UNKNOWN;
-  m_iNextOp     = C_UNKNOWN;
-  m_iOtherStage = C_UNKNOWN;
-  m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
   m_eSendKind   = XK_NONE;
   m_iRobin      = 0;
@@ -104,7 +87,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   Job* pPipelineJob = pStream->pPipeline()->pPipelineJob();
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
-  if (AM::bVerbose() || pJobTags->bHasName(C_TAG_TRACEOP)) {
+  if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_OP) ||
+      pJobTags->bHasName(C_TAG_TRACEOP)) {
     m_bTraceOp = true;
   }
   
@@ -139,28 +123,19 @@ Op::Op(Stz* szOpNm)
   m_pStage    = nullptr;
   m_pPipeline = nullptr;
   
-  m_tPtnNo = C_UNKNOWN;
-  m_i_Node = C_UNKNOWN;
-
     
   // -- -- -- -- -- --
 
-  m_pPipelineJob  = nullptr;
-  m_pOpJob        = nullptr;
+  m_pJob        = nullptr;
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_bAppendRight  = false;
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
+  m_pQueueOoO     = new OperandQueue;
 
-  m_eCrossTopo  = PX_NONE;
-  m_iNextStage  = C_UNKNOWN;
-  m_iNextOp     = C_UNKNOWN;
-  m_iOtherStage = C_UNKNOWN;
-  m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
   m_eSendKind   = XK_NONE;
   m_iRobin      = 0;
@@ -209,7 +184,8 @@ Op::~Op(void) noexcept(false)
 
   delete m_pQueueLeft;
   delete m_pQueueRight;
-  
+  delete m_pQueueOoO;
+
   -- gixOp;
   
   AM::LOG::vEvent(EV_DESTRUCT,"Op destructor"_Stz);
@@ -220,68 +196,57 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump contents                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vDump(i8 i_Op)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  s256 sArgs;
-  
-  TagSet* pTopologyTagSet = this->pTopologyTagSet();
-  //pTopologyTagSet->vDumpSet();
-  pTopologyTagSet->vSprint(sArgs);
-  
-  // get the next stage
-  i8 iNextStage = pTopologyTagSet->iValue(C_TAG_NEXTSTAGE);
-  Stage* pNextStage = m_pPipeline->pGet(iNextStage);
-  
-  // get the next op
-  i8 iNextOp = pTopologyTagSet->iValue(C_TAG_NEXTOP);
-  Stream* pNextStream = pNextStage->pGet(0);
-  Op* pNextOp = pNextStream->pGet(iNextOp);
-
-  // get the cross topology
-  ePX eTopology = (ePX)(pTopologyTagSet->iValue(C_TAG_TOPOLOGY));
-  
-  // get the left EOS markers for consume op
-  //! ALKA: right EOS markers ???
-  TagSet* pOpTags = this->pOpTagSet();
-  i8 iSends =  pOpTags->iValue(C_TAG_Sends);
-  i8 iLeftMarkers = iSends ? iSends : 1;
-  
-  vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s %s }\n"_Stz,
-         i_Op,
-         this->iNode(),
-         this->tPtnNo(),
-         this->szOpNm(),
-         sArgs.szStz(),
-         iLeftMarkers,
-         pNextOp->szOpNm(),
-         this->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
-         aPX[eTopology],
-         aXK[m_eSendKind]
-        );
-}
-
-/*----------------------------------------------------------------------------*/
 /* set ack job on end marker                                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAckJob(void)
+void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
-  if (m_bTraceOp)
-    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-           AM::JOB::szJobNm(m_pOpJob),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo);
+
+  if (m_bTraceOp) {
+    
+    if (AM::TRACE::bVBlong()) {
+      SP_Op spOp;
+
+      vTraceM("%s "
+              "%-18s pipelineJob=%p\n"_Stz
+             
+              ,spOp.szLeading(this)
+             
+              ,__func__
+              ,m_pJob
+             );
+    }
+    else {
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+             AM::JOB::szJobNm(m_pJob),
+             m_pStage->szStageNm(),
+             iNode(),
+             tPtnNo());
+    }
+  }
   
-  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
+
+  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
+/*----------------------------------------------------------------------------*/
+//void Op::vAckPipelineJob(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
+//
+//  if (m_bTraceOp)
+//    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+//           AM::JOB::szJobNm(m_pJob),
+//           m_pStage->szStageNm(),
+//           iNode(),
+//           tPtnNo());
+//
+//  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get ack job on end marker                                                  */
@@ -294,60 +259,75 @@ void Op::vAddWorkDone(i8 iWorkDone)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to specific operand                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vAppend(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeOut :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"vPipeOut :"_Stz);
-  }
-  
-  vAppendLeft(pOperand,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append operand to this op's operand queue                                  */
+/* append operand to this op's left operand queue                             */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-  //       m_sOpNm.szStz(),
-  //       pOperand,
-  //       aCN[pOperand->eGetClassNo()]);
-    
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  if (AM::OPERAND::bIsOoO(pOperand)) {
+    vAppendOoO(pOperand,pTriggeringTask);
+    return;
+  }
+#endif
+      
   vGrabTaskLock();
-  pQueueLeft()->vAppendOperand(pOperand);
+  RASSERT(bIsLocked());
+
+  m_pQueueLeft->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
     vDropTaskLock();
     return;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to this op's operand queue                                  */
+/* append operand to this op's operand out-of-order queue                     */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_SEPARATE_OOO_QUEUE
+void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  vGrabTaskLock();
+  RASSERT(bIsLocked());
+
+  m_pQueueOoO->vAppendOperand(pOperand);
+
+  AM::vOperandsInc();
+
+  Task* pDstTask = AM::pExecutingTask(m_pJob);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
+    vDropTaskLock();
+    return;
+  }
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* append operand to this op's right operand queue                            */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
 {
@@ -360,13 +340,14 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
     
   vGrabTaskLock();
   
-  pQueueRight()->vAppendOperand(pOperand);
+  m_pQueueRight->vAppendOperand(pOperand);
   
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING != eTaskState) {
     vDropTaskLock();
     return;
   }
@@ -374,7 +355,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,7 +365,7 @@ bool Op::bAppendRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_bAppendRight;
+  return m_pOpSpec->bAppendRight();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -394,17 +375,31 @@ ePX Op::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eCrossTopo;
+  return m_pOpSpec->eCrossTopo();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
+/* get current handler                                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vCrossTopo(ePX eCrossTopo)
+i8 Op::iCurHandler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_eCrossTopo = eCrossTopo;
+  return m_i_CurHandler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current executing word                                                 */
+/*----------------------------------------------------------------------------*/
+Word* Op::pCurWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Task* pTask = MY::pTask();
+  
+  Word* pCurWord = pTask->pCurWord();
+  
+  return pCurWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,7 +429,7 @@ void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vDropTaskLock(AM::pExecutingTask(m_pOpJob));
+  AM::vDropTaskLock(AM::pExecutingTask(m_pJob));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -448,18 +443,22 @@ void Op::vDump(void)
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
-  vTrace("m_i_Node=%lld\n"_Stz,m_i_Node);
-  vTrace("m_tPtnNo=%lld\n"_Stz,m_tPtnNo);
+  vTrace("m_i_Node=%lld\n"_Stz,iNode());
+  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
 }
 
 /*----------------------------------------------------------------------------*/
-/* outline                                                                    */
+/* get event hander                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOutline(s4K& sOutline)
+Word* Op::pEventHandler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+  
+  Task* pTask = MY::pTask();
+  
+  Word* pEventHandler = pTask->pEventHandler();
+  
+  return pEventHandler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +468,43 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vGrabTaskLock(AM::pExecutingTask(m_pOpJob));
+  AM::vGrabTaskLock(AM::pExecutingTask(m_pJob));
+}
+
+/*----------------------------------------------------------------------------*/
+/* get handler count for given handler                                        */
+/*----------------------------------------------------------------------------*/
+i8 Op::iHandlerCount(i8 i_Handler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 iCount = m_iHandlerCount[i_Handler];
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc handler count for given handler                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vIncHandlerCount(i8 i_Handler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_i_CurHandler = i_Handler;
+  
+  m_iHandlerCount[m_i_CurHandler]++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc operand count for given operand kind                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vIncOperandCount(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_i_CurOperand = i_OperandKind;
+
+  m_iOperandCount[i_OperandKind]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,15 +537,18 @@ void Op::vInitOperandHandlers(void)
     
     Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
     if (! pHandler)
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Unable to find operand handler for: %s"_Stz,
              sHandlerNm.szStz());
     
     m_iOperandCount[i_Kind] = 0;
     m_paOperandHandler[i_Kind] = pHandler;
+    m_iHandlerCount[i_Kind] = 0;
+
   }
   
-  BASE::vDebugPoint();
+  m_i_CurHandler = 0;
+  m_i_CurOperand = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,7 +558,7 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  bool bLocked = AM::bTaskIsLocked(AM::pExecutingTask(m_pOpJob));
+  bool bLocked = AM::bTaskIsLocked(AM::pExecutingTask(m_pJob));
 
   return bLocked;
 }
@@ -579,7 +617,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_CSVBUFFER:
+    case ZK_CSVBUFFER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -588,11 +626,11 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_CRWBUFFER:
-    case   ZK_EACHROWBUFFER:
-    case   ZK_ENTBUFFER:
-    case   ZK_ROWBUFFER:
-    case   ZK_SRTBUFFER:
+    case ZK_CRWBUFFER:
+    case ZK_EACHROWBUFFER:
+    case ZK_ENTBUFFER:
+    case ZK_ROWBUFFER:
+    case ZK_SRTBUFFER:
       // should have received a ZK_DATAPULSE
       if ( ! m_iOperandCount[ZK_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
@@ -616,7 +654,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_DATAPULSE:
+    case ZK_DATAPULSE:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -632,7 +670,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_EOSMARKER:
+    case ZK_EOSMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -654,7 +692,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_ERRORMARKER:
+    case ZK_ERRORMARKER:
       // should not have received a ZK_ERRORREDMARKER
       if ( m_iOperandCount[ZK_ERROREDMARKER]) {
         vTrace("%s: %s arrived after ZK_ERRORMARKER\n"_Stz, szOpNm());
@@ -662,7 +700,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_ERROREDMARKER:
+    case ZK_ERROREDMARKER:
       // Only StartOP receives an ZK_ERROREDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -715,7 +753,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDMARKER:
+    case ZK_EXITEDMARKER:
       // Only StartOP receives an ZK_EXITEDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -729,7 +767,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDEARLYMARKER:
+    case ZK_EXITEDEARLYMARKER:
       // Only StartOP receives an ZK_EXITEDEARLYMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -752,7 +790,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
   
-    case   ZK_STARTMARKER:
+    case ZK_STARTMARKER:
       // should not have received a ZK_STARTMARKER already
       if (m_iOperandCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_STARTMARKER's arrived\n"_Stz, szOpNm());
@@ -760,7 +798,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_STARTEDMARKER:
+    case ZK_STARTEDMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz, szOpNm(), aZK[i_OperandKind]);
@@ -781,7 +819,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_STREAMDEF:
+    case ZK_STREAMDEF:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("ZK_STARTEDMARKER arrived without a prior ZK_STARTMARKER\n"_Stz);
@@ -796,18 +834,28 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
   }
   
-  m_iOperandCount[i_OperandKind]++;
+  //m_iOperandCount[i_OperandKind]++;
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job                                                                */
+/* get job                                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vJobPipeline(Job* pJob)
+Job* Op::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pPipelineJob = pJob;
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void Op::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -837,7 +885,7 @@ i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iNextOp;
+  return m_pOpSpec->iNextOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -846,25 +894,16 @@ i8 Op::iNextOp(void)
 Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_iNextStage != m_pStage->pStageSpec()->i_StageSpec())
-    return nullptr;
-  
-  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+    
+  i8 i_NextStage = iNextStage();
+  i8 i_NextOp    = iNextOp();
 
-  Op* pNextOp = pStage->pGet(m_iNextStage)->pGet(m_iNextOp);
-  
-  return pNextOp;
-}
+  Stage* p_NextStage = m_pPipeline->pGet(i_NextStage);
 
-/*----------------------------------------------------------------------------*/
-/* set next stage                                                             */
-/*----------------------------------------------------------------------------*/
-void Op::vNextOp(i8 iNextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  Stream* p_NextStream = p_NextStage->pGet(0);
+  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
   
-  m_iNextOp = iNextOp;
+  return p_NextOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -874,17 +913,19 @@ i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iNextStage;
+  return m_pOpSpec->iNextStage();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set next stage                                                             */
+/* get next stage                                                             */
 /*----------------------------------------------------------------------------*/
-void Op::vNextStage(i8 iNextStage)
+Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_iNextStage = iNextStage;
+  Stage* pNextStage = m_pPipeline->pGet(iNextStage());
+  
+  return pNextStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -894,17 +935,36 @@ i8 Op::iNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_i_Node;
+  i8 i_Node;
+  
+  if (m_pStage->pStageSpec()->bNodeTopo())
+    i_Node = m_pStream->i_Node();
+  else
+    i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo());
+
+  return i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set node                                                                   */
+/* get m_i_Op                                                                 */
 /*----------------------------------------------------------------------------*/
-void Op::vNode(i8 iNode)
+i8 Op::iOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_i_Node = iNode;
+  return m_i_Op;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get operand count   for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOperandCount(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 iCount = m_iOperandCount[i_OperandKind];
+  
+  return iCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -930,36 +990,6 @@ void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc operand count for given operand kind                                   */
-/*----------------------------------------------------------------------------*/
-void Op::vIncOperandCount(i8 i_OperandKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_iOperandCount[i_OperandKind]++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* Op::pOpJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-void Op::vOpJob(Job* pOpJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pOpJob = pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get op name                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Op::szOpNm(void)
@@ -970,36 +1000,104 @@ Stz* Op::szOpNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op spec                                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec* Op::pOpSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the TagSet                                                             */
 /*----------------------------------------------------------------------------*/
 TagSet* Op::pOpTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oOpTagSet;
+  return m_pOpSpec->pArgTags();
 }
 
 /*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
+void Op::vOpTrace(Operand* pOperand
+                  ,Stz* szFunNm
+                  ,bool bHandler
+                  ,Stz* szSupplemental
+                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  if (! pOperand)
+  if (AM::TRACE::bVBlong())
+    goto L_Long_Form;
+
+  
+  if (! AM::TRACE::bVerbose(C_VB_OP))
+    return;
+
+  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
+         "%18s %-15s %p %s\n"_Stz,
+
+         m_sOpNm.szStz(),
+         m_pStage->szStageNm(),
+         iNode(),
+         tPtnNo(),
+         pPipelineJob(),
+
+         szFunNm,
+         AM::pOperandName(pOperand),
+         pOperand,
+         szSupplemental);
+  
+  return;
+  
+  L_Long_Form:
+  
+  //if (m_bTraceOp) {
+  if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
   
-  if (m_bTraceOp) {
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) %18s %-15s %p %s\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           szFunActNm,
-           AM::pOperandName(pOperand),
-           pOperand,
-           szSupplemental);
+  SP_Op spOp;
+  
+  if (pOperand) {
+    if (bHandler) {
+      vTraceM("%s "
+            "%-18s %s #%0004ld @%p %s\n"_Stz
+                    
+            ,spOp.szLeading(this)
+           
+            ,szFunNm
+            ,AM::pOperandName(pOperand)
+            ,m_iOperandCount[m_i_CurOperand]
+            ,pOperand
+            ,szSupplemental
+           );
+    }
+    else {
+      vTraceM("%s "
+              "%-18s %s @%p %s\n"_Stz
+                      
+              ,spOp.szLeading(this)
+             
+              ,szFunNm
+              ,AM::pOperandName(pOperand)
+              ,pOperand
+              ,szSupplemental
+             );
+    }
+  }
+  else {
+    vTraceM("%s "
+            "%-18s %s\n"_Stz
+                  
+           ,spOp.szLeading(this)
+         
+           ,szFunNm
+           ,szSupplemental
+         );
+
   }
 }
 
@@ -1010,34 +1108,9 @@ i8 Op::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  return m_iOtherOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get other op (in stage)                                                    */
-/*----------------------------------------------------------------------------*/
-Op* Op::pOtherOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  if (m_iOtherStage != m_pStage->pStageSpec()->i_StageSpec())
-    return nullptr;
-
-  Stage* pStage = m_pPipeline->pGet(m_iOtherStage);
-
-  Op* pNextOp = pStage->pGet(m_iOtherStage)->pGet(m_iOtherOp);
-
-  return pNextOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set other op                                                               */
-/*----------------------------------------------------------------------------*/
-void Op::vOtherOp(i8 iOtherOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  m_iOtherOp = iOtherOp;
+  i8 i_OtherOp = m_pOpSpec->iOtherOp();
+  
+  return i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1047,17 +1120,9 @@ i8 Op::iOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  return m_iOtherStage;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set other stage                                                            */
-/*----------------------------------------------------------------------------*/
-void Op::vOtherStage(i8 iOtherStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  m_iOtherStage = iOtherStage;
+  i8 i_OtherStage = m_pOpSpec->iOtherStage();
+  
+  return i_OtherStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1081,29 +1146,6 @@ void Op::vOutboundOperand(Operand* pOutboundOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition in op                                                        */
-/*----------------------------------------------------------------------------*/
-void Op::vPtnNo(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_tPtnNo = tPtnNo;
-
-  // set the node tis partition belongs to 
-  m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition from op                                                      */
-/*----------------------------------------------------------------------------*/
-tPN Op::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator is to pause?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Op::bPause(void)
@@ -1122,7 +1164,7 @@ bool Op::bPause(void)
 /*----------------------------------------------------------------------------*/
 /* peek for operand from operand queue                                        */
 /*----------------------------------------------------------------------------*/
-bool Op::bPeekQueue(void)
+bool Op::bPeekLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1130,7 +1172,7 @@ bool Op::bPeekQueue(void)
   
   vGrabTaskLock();
   
-  bOperand = pQueueLeft()->bPeekQueue();
+  bOperand = m_pQueueLeft->bPeekQueue();
   
   vDropTaskLock();
   
@@ -1140,7 +1182,7 @@ bool Op::bPeekQueue(void)
 /*----------------------------------------------------------------------------*/
 /* peek for OoO operand from operand queue                                    */
 /*----------------------------------------------------------------------------*/
-bool Op::bPeekQueueOoO(void)
+bool Op::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1148,7 +1190,7 @@ bool Op::bPeekQueueOoO(void)
   
   vGrabTaskLock();
   
-  bOperandOoO = pQueueLeft()->bPeekQueueOoO();
+  bOperandOoO = m_pQueueLeft->bPeekOoO();
   
   vDropTaskLock();
   
@@ -1172,7 +1214,10 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pPipelineJob;
+  Job* pPipelineJob = m_pPipeline->pPipelineJob();
+
+  
+  return pPipelineJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1182,32 +1227,21 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeOut :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"vPipeToNextOp :"_Stz);
-  }
+  vOpTrace(pOperand,(Stz*)__func__);
   
-  RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
+  RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
   
   RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
   // get the next stage the send is supposed to send to
-  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pStage = m_pPipeline->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                               m_tPtnNo,
-                               m_iNextOp);
-  if (m_bAppendRight)
+  Op* pOp = pStage->pPipeOutOp(eCrossTopo(),
+                               tPtnNo(),
+                               iNextOp());
+  if (bAppendRight())
     pOp->vAppendRight(pOperand,pTriggeringTask);
   else
     pOp->vAppendLeft(pOperand,pTriggeringTask);
@@ -1224,131 +1258,110 @@ void Op::vPipeToOutput(Operand* pOperand)
 
   RASSERT(pOutputQueue);
   
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeToOutput :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"vPipeToOutput :"_Stz);
-  }
+  vOpTrace(pOperand,(Stz*)__func__);
   
   pOutputQueue->vAppend(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop operand queue                                                          */
+/* pop left operand queue                                                     */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueue(void)
+Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
+  RASSERT(bIsLocked());
   
-  pOperand = pQueueLeft()->pPopQueue();
-  
-  if (! pOperand)
-    return nullptr;
+  Operand* pOperand = m_pQueueLeft->pPopQueue();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDropTaskLock();
-    
-  AM::vOperandsDec();
   
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueue :"_Stz);
+  if (pOperand) {
+    vDropTaskLock();
+    vOpTrace(pOperand,(Stz*)__func__,false);
+    AM::vOperandsDec();
+    return pOperand;
   }
-  
-  return pOperand;
+  else {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueOoO(void)
+Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
+  RASSERT(bIsLocked());
+
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
+#else
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
+#endif
   
-  pOperand = pQueueLeft()->pPopQueueOoO();
-    
   vDropTaskLock();
   
   if (pOperand)
     AM::vOperandsDec();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_bTraceOp && pOperand) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
-  }
   
   return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop operand queue A                                                        */
+/* pop operand first off OoO queue, if null then Left queue                   */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueLeft(void)
+Operand* Op::pPopOoOLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
+  RASSERT(bIsLocked());
   
-  pOperand = pQueueLeft()->pPopQueue();
+  //Operand* pOperand = m_pQueueLeft->pPopQueue();
   
-  if (pOperand) {
-    vDropTaskLock();
-    
-    AM::vOperandsDec();
+  bool bLeft = false;
+  
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
+  if (! pOperand) {
+    pOperand = m_pQueueLeft->pPopQueue();
+    bLeft = true;
   }
-    
+#else
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
+  if (! pOperand) {
+    bLeft = true;
+    pOperand = m_pQueueLeft->pPopQueue();
+  }
+#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    if (m_bTraceOp)
-      vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-             m_sOpNm.szStz(),
-             AM::pOperandName(pOperand),
-             pOperand);
+    vDropTaskLock();
+    AM::vOperandsDec();
+    vOpTrace(pOperand
+             ,(Stz*)__func__
+             ,false
+             ,bLeft ? "Left"_Stz : "OoO"_Stz);
+    return pOperand;
   }
-  
-  return pOperand;
+  else {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueRight(void)
+Operand* Op::pPopRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1356,7 +1369,7 @@ Operand* Op::pPopQueueRight(void)
   
   vGrabTaskLock();
   
-  pOperand = pQueueRight()->pPopQueue();
+  pOperand = m_pQueueRight->pPopQueue();
   
   if (pOperand) {
     vDropTaskLock();
@@ -1375,6 +1388,23 @@ Operand* Op::pPopQueueRight(void)
   }
   
   return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition from op                                                      */
+/*----------------------------------------------------------------------------*/
+tPN Op::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 tPtnNo;
+
+  if (m_pStage->pStageSpec()->bNodeTopo())
+    tPtnNo = C_UNKNOWN;
+  else
+    tPtnNo = m_pStream->tPtnNo();
+  
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1398,34 +1428,80 @@ void Op::vPulsedLimit(bool bPulsedLimit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get left operand queue                                                     */
+/* get number of operands currently queued                                    */
 /*----------------------------------------------------------------------------*/
-OperandQueue* Op::pQueueLeft(void)
+i8 Op::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pQueueLeft;
-}
+  i8 nLeft = m_pQueueLeft->nQueuedOperands();
+  i8 nOoO  = m_pQueueOoO->nQueuedOperands();
 
-/*----------------------------------------------------------------------------*/
-/* get operand queue length                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Op::nQueueLength(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  i8 nOperands = nLeft + nOoO;
   
-  i8 nOperands = m_pQueueLeft->nQueuedOperands();
   return nOperands;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get right operand queue                                                    */
+/* get robin                                                                  */
 /*----------------------------------------------------------------------------*/
-OperandQueue* Op::pQueueRight(void)
+i8 Op::iRobin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pQueueRight;
+  return m_iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set robin                                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vRobin(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iRobin = iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Op::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  eXK eSendKind = m_pOpSpec->eSendKind();
+  return eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vSendKind(eXK eSendKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  RASSERT(eSendKind == m_pOpSpec->eSendKind());
+  m_eSendKind = eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send node                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Op::iSendNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send node                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vSendNode(i8 iSendNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iSendNode = iSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1440,23 +1516,19 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new Job for the Op
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
-  m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
+  m_pJob = AM::pNewJobOp(this,&xReqTuple);
   
   // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the pipeline job tag set into the operator job tags
-  TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
+  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
   
   //pPipeLineJobTags->vDumpSet(true);
   
   pOpJobTagSet->vCopy(pPipeLineJobTags);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the hidden topology ename pairs to the job ename set
-  pOpJobTagSet->vCopy(&m_oTopologyTagSet);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the OpJob JobNM to be the same as the Opertor name
   pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
@@ -1482,7 +1554,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
   
-  eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
+  eEC eError = AM::ePopulateJob(m_pJob, pOpJobTagSet);
   UNUSED(eError);
   //RASSERT(EC_NONE != eError);
   
@@ -1491,9 +1563,9 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   delete pTknVec;
   
   if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
-    AM::vSpawnJob_dedicated(m_pOpJob);
+    AM::vSpawnJob_dedicated(m_pJob);
   else
-    AM::vSpawnJob_op(m_pOpJob);
+    AM::vSpawnJob_op(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1533,18 +1605,8 @@ Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return AM::pExecutingTask(m_pOpJob);
+  return AM::pExecutingTask(m_pJob);
 }
-
-/*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Op::vTask(Task* pTask)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  m_pTask = pTask;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
@@ -1554,18 +1616,8 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sOpNm);
-  m_oOpTagSet.vConcat(szCmdStr);
+  m_pOpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the topology TagSet                                                    */
-/*----------------------------------------------------------------------------*/
-TagSet* Op::pTopologyTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return &m_oTopologyTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1578,64 +1630,6 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   m_iWorkQuanta = iWorkQuanta;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get robin                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Op::iRobin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  return m_iRobin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set robin                                                                  */
-/*----------------------------------------------------------------------------*/
-void Op::vRobin(i8 iRobin)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  m_iRobin = iRobin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get send kind                                                              */
-/*----------------------------------------------------------------------------*/
-eXK Op::eSendKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_eSendKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send kind                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSendKind(eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_eSendKind = eSendKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get send node                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Op::iSendNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  return m_iSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send node                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSendNode(i8 iSendNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  m_iSendNode = iSendNode;
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

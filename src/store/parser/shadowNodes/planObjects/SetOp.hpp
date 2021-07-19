@@ -23,10 +23,10 @@ namespace Parser
 
   public:
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void       vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
+    static void       vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
     // Explains any common properties of parent definitions
-    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent);
+    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

@@ -37,6 +37,7 @@
 #include "Op.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
+#include "Pipeline.hpp"
 
 #include "LIB_interface.h"
 #include "DEV_interface.h"
@@ -68,6 +69,60 @@ __aFooterFunction(LogicUnit)
 /*----------------------------------------------------------------------------*/
 LogicUnit::LogicUnit(Task* pTask)
 : Object(CN_LOGICUNIT)
+, m_nRegs(0)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::bRepair,"m_xpAggTimer"_Stz)
+,       m_xpCrwToRow(this,RF_NONE,         nullptr,        "m_xpCrwToRow"_Stz)
+,           m_xpDir0(this,RF_NONE,         nullptr,        "m_xpDir0"_Stz)
+,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
+,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
+,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
+,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
+,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
+,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
+,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
+,    m_xpIndexStream(this,RF_NONE,         nullptr,        "m_xpIndexStream"_Stz)
+,        m_xpInfoSet(this,RF_NONE,         nullptr,        "m_xpInfoSet"_Stz)
+,   m_xpInfoSetTable(this,RF_NONE,         nullptr,        "m_xpInfoSetTable"_Stz)
+,           m_xpList(this,RF_NONE,         nullptr,        "m_xpList"_Stz)
+,  m_xpLogicCompiler(this,RF_NONE,         nullptr,        "m_xpLogicCompiler"_Stz)
+,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
+,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
+,            m_xpNow(this,RF_NONE,         nullptr,        "m_xpNow"_Stz)
+,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
+,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
+,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
+,       m_xpOperandC(this,RF_NONE,         nullptr,        "m_xpOperandC"_Stz)
+,     m_xpOperandOoO(this,RF_NONE,         nullptr,        "m_xpOperandOoO"_Stz)
+, m_xpPathIdentifier(this,RF_NONE,         nullptr,        "m_xpPathIdentifier"_Stz)
+,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
+,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
+,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
+,      m_xpPtnStream(this,RF_NONE,         nullptr,        "m_xpPtnStream"_Stz)
+,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
+,      m_xpRegister0(this,RF_NONE,         nullptr,        "m_xpRegister0"_Stz)
+,      m_xpRegister1(this,RF_NONE,         nullptr,        "m_xpRegister1"_Stz)
+,      m_xpRegister2(this,RF_NONE,         nullptr,        "m_xpRegister2"_Stz)
+,            m_xpRow(this,RF_NONE,         nullptr,        "m_xpRow"_Stz)
+,        m_xpRowOnce(this,RF_NONE,         nullptr,        "m_xpRowOnce"_Stz)
+,       m_xpSendNode(this,RF_NONE,         nullptr,        "m_xpSendNode"_Stz)
+,          m_xpSends(this,RF_NONE,         nullptr,        "m_xpSends"_Stz)
+,       m_xpShardDef(this,RF_NONE,         nullptr,        "m_xpShardDef"_Stz)
+,         m_xpSocket(this,RF_NONE,         nullptr,        "m_xpSocket"_Stz)
+,   m_xpStreamDefLft(this,RF_NONE,         nullptr,        "m_xpStreamDefLft"_Stz)
+,   m_xpStreamDefRht(this,RF_NONE,         nullptr,        "m_xpStreamDefRht"_Stz)
+,   m_xpStreamDefOut(this,RF_NONE,         nullptr,        "m_xpStreamDefOut"_Stz)
+,      m_xpStreamSet(this,RF_NONE,         nullptr,        "m_xpStreamSet"_Stz)
+, m_xpStreamSetTable(this,RF_NONE,         nullptr,        "m_xpStreamSetTable"_Stz)
+,         m_xpSubset(this,RF_NONE,         nullptr,        "m_xpSubset"_Stz)
+,          m_xpTable(this,RF_NONE,         nullptr,        "m_xpTable"_Stz)
+,       m_xpTablePtn(this,RF_NONE,         nullptr,        "m_xpTablePtn"_Stz)
+,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
+,       m_xpToHshCrw(this,RF_NONE,         nullptr,        "m_xpToHshCrw"_Stz)
+,       m_xpToNstRow(this,RF_NONE,         nullptr,        "m_xpToNstRow"_Stz)
+,       m_xpToPtnRow(this,RF_NONE,         nullptr,        "m_xpToPtnRow"_Stz)
+,          m_xpToRow(this,RF_NONE,         nullptr,        "m_xpToRow"_Stz)
+,             m_xpTx(this,RF_NONE,         nullptr,        "m_xpTx"_Stz)
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -188,6 +243,11 @@ LogicUnit::LogicUnit(Task* pTask)
   // m_ixRowsSkipped;
   m_eErrorCode = EC_NONE;
   
+  m_eSendKind = XK_NONE;
+  
+  for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
+    m_paReg[i_UnusedReg] = nullptr;
+  
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -223,6 +283,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
+
+  if (! m_xpPipeline.bIsNull())
+    delete *m_xpPipeline;
   
   if (m_pRluDiary) {
     vDiaryReport();
@@ -272,7 +335,7 @@ void LogicUnit::vContentDump(void)
          
          m_i_NextRnd,
          
-         m_xpSendNode,
+         *m_xpSendNode,
          m_xpSendNode.bIsNotNull() ? m_xpSendNode->szNodeNm() : ""_Stz,
          
          C_VARGS_END
@@ -294,6 +357,16 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add reg                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddReg(REG<Object>* pReg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
+
+  m_paReg[m_nRegs++] = pReg;
+}
 
 /*----------------------------------------------------------------------------*/
 /* conditional code                                                           */
@@ -517,6 +590,20 @@ void LogicUnit::vExit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* failure processing                                                         */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vFailure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+    REG<Object>* p_Reg = m_paReg[i_Reg];
+    
+    p_Reg->vRepair();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find label which is at given i_Code                                        */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(i8 i_Code)
@@ -629,7 +716,7 @@ void LogicUnit::vOptimise(eEO eOpt)
   m_bSuperFrag = true;
 }
 
-//*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* return query fragment number                                               */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQueryFragment(void)
@@ -652,6 +739,23 @@ void LogicUnit::vSetCC(i8 i_Cond, bool bState)
     m_baCondInd[i_Cond] = 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set m_xpPipein and decode into m_ePipeInOperand                            */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vSetPipein(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xpPipein = pOperand;
+  
+  if (pOperand) {
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_ePipeInOperand = eOperand;
+  }
+  else {
+    m_ePipeInOperand = ZK_NONE;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1104,7 +1208,7 @@ void LogicUnit::vDumpCode(void)
     vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
       
     if (eCode <= EO_NONE || eCode >= EO_ENUMS) {
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eo code sequence detected"_Stz);
     }
     
@@ -1365,7 +1469,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
     if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "LogicUnit data stack exhausted\n"_Stz);
 
     i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
@@ -3243,9 +3347,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_PUSH_ENT(&aiDstk);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push src ixt devive
-        dLU0(EO_PUSH_DEVIXT_SRC);
+      case EO_PUSH_DEVIXT_LFT: ArgNil(); // push lft ixt devive
+        dLU0(EO_PUSH_DEVIXT_LFT);
         P_PushPtr(aRluCommon->m_pDevLftIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_RHT: ArgNil(); // push rht ixt devive
+        dLU0(EO_PUSH_DEVIXT_RHT);
+        P_PushPtr(aRluCommon->m_pDevRhtIxt);
         break;//+endCase
 
       case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device
@@ -3265,9 +3374,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         P_PushPtr(aRluCommon->m_pDevDstRow);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_SRC: ArgNil(); // push src row device
-        dLU0(EO_PUSH_DEVROW_SRC);
+      case EO_PUSH_DEVROW_LFT: ArgNil(); // push lft row device
+        dLU0(EO_PUSH_DEVROW_LFT);
         P_PushPtr(aRluCommon->m_pDevLftRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_RHT: ArgNil(); // push rht row device
+        dLU0(EO_PUSH_DEVROW_RHT);
+        P_PushPtr(aRluCommon->m_pDevRhtRow);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -3830,8 +3944,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_COLS_TO_ROW(&aiDstk);         // devRow / devIxt
         break;//+endCase
 
+      case EO_DEVIXT_COLS_TO_ROW_OFS: ArgNil();  // inflate dev columns to dev row at offset column
+        dLU0(EO_DEVIXT_COLS_TO_ROW_OFS);
+        vDev_IXT_COLS_TO_ROW_OFS(&aiDstk);         // devRow / devIxt
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device col operators
+      case EO_DEVROW_COLS_PUSHSET_PST: ArgNil(); // push column value from dev
+        vDev_ROW_COLS_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
+        dLU0(EO_DEVROW_COLS_PUSHSET_PST);
+        break;//+endCase
+
       case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COLS_TO_LOCALS);
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
@@ -3840,6 +3964,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_COLS_TO_ROW: ArgNil(); // row buffer columns of row dev into row
         dLU0(EO_DEVROW_COLS_TO_ROW);
         vDev_ROW_COLS_TO_ROW(&aiDstk);      //  src devRow / dst devRow
+        break;//+endCase
+
+      case EO_DEVROW_COLS_TO_ROW_OFS: ArgNil(); // row buffer columns of row dev into row at offset column
+        dLU0(EO_DEVROW_COLS_TO_ROW_OFS);
+        vDev_ROW_COLS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

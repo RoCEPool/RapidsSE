@@ -10,6 +10,8 @@
 : ping_action
 
   "ping" str.toPromptOut op::pipeOut
+  //10000 str.random dup .
+  //  str.toPromptOut op::pipeOut
 
   "ping sleeps" .
   1 thread::sleepSsec

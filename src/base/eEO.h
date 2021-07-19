@@ -282,13 +282,15 @@ enum eEO : u2 // expression operators
   // ixt device pushes
   /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
   /*  S  */ EO_PUSH_DEVIXT_ENT,     // push entry of ixt device
-  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_LFT,     // push lft Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_RHT,     // push rht Ixt device
   /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
   // row device pushes
   /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
-  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
+  /*  S  */ EO_PUSH_DEVROW_LFT,     // push lft row device
+  /*  S  */ EO_PUSH_DEVROW_RHT,     // push rht row device
 
   // rlu pushes
   /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
@@ -393,10 +395,13 @@ enum eEO : u2 // expression operators
   /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
 
   // ixt device col operators
+  /*  S  */ EO_DEVROW_COLS_PUSHSET_PST,  // push column subset from dev row
   /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
   /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
+  /*  S  */ EO_DEVIXT_COLS_TO_ROW_OFS,   // push columns from ixt dev to row dev at offset column
   /*  S  */ EO_DEVROW_COLS_TO_LOCALS,    // row columns into locals
   /*  S  */ EO_DEVROW_COLS_TO_ROW,       // row columns into row
+  /*  S  */ EO_DEVROW_COLS_TO_ROW_OFS,   // row columns into row at offset column
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -793,13 +798,15 @@ static Stz* aEO[]
   // ixt device pushes
   /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
-  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_RHT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
 
   // row device pushes
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
-  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVROW_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVROW_RHT"_Stz,
 
   // rlu pushes
   /*    */ "EO_PUSH_RLU_COLSET"_Stz,
@@ -903,10 +910,13 @@ static Stz* aEO[]
   /*    */ "EO_RLU_POT_COMPLETED"_Stz,
 
   // ixt device col operators
+  /*    */ "EO_DEVROW_COLS_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
+  /*    */ "EO_DEVIXT_COLS_TO_ROW_OFS"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_ROW"_Stz,
+  /*    */ "EO_DEVROW_COLS_TO_ROW_OFS"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -1309,13 +1319,15 @@ static EoArg EoArgs[]
   // ixt device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_RHT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
   // row device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_RHT
 
   // rlu pushes
   { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET
@@ -1420,10 +1432,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
 
   // ixt device col operators
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
-  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TOROW
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW_OFS
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW_OFS
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN

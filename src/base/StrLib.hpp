@@ -154,7 +154,7 @@ namespace BASE
     //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
-    static char* sNew(const char* sFormat, ...);
+    static char* sNew(const char* azFormat, ...);
     static char* zNullTerminator(char* s);
 
     static i8    iOccurrence(char* ps, const char cArg);

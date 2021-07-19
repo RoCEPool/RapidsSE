@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "Step.hpp"
+#include "TagConstants.h"
 
 fpSTEPFN gfpDoColon = &STORE::Step::vSenDoColon;
 
@@ -32,7 +33,7 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
 void Step::vAddSteps(void)
 {
   //Dic* pDicRoot = AM::DIC::pRoot();
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   //vAddStep("word"_Stz,            &Step::vWord);

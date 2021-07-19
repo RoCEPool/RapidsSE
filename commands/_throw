@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _throw - simulate/inject exceptions into pipeline                          */
+/*============================================================================*/
+
+bc;
+
+create table nation (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load nation "../TPCH/SF1/nation.tbl" ;
+
+tablescan nation;
+
+pipeline throwTest
+begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan nation | throw | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

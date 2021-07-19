@@ -620,11 +620,12 @@ void vDev_IXT_POS_LBOUND_GE(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aEnt = nullptr;
@@ -651,11 +652,12 @@ void vDev_IXT_POS_LBOUND_GT(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aEnt = nullptr;
@@ -688,11 +690,12 @@ void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aUpperEnt = nullptr;
@@ -726,11 +729,12 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
 {
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aUpperEnt = nullptr;
@@ -1615,8 +1619,6 @@ void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  char* acStrArea_null = nullptr;
-
   // pop the ixt device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
@@ -1627,6 +1629,38 @@ void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
   HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
 
   RowInflator::vInflate_AllColumns_into_RowBuffer(pDevRow->m_pRowBuffer,aHeadLine);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate dev columns to dev row                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_COLS_TO_ROW_OFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row start col
+  i8 iAtDstCol = I_PopInt();
+
+  // pop the ixt device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
+  RowInflator::vInflate_AllColumns_into_RowBufferAt(pDevRowDst->m_pRowBuffer,
+                                                    iAtDstCol,
+                                                    aHeadLine,
+                                                    pDevRow->m_pStreamDef->nColumns());
 
   *aaiDstk = aiDstk;
 }
@@ -1651,6 +1685,7 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
 
   i8* aiDst_lcl = *aaiLocals;
   i8* ayDst = ++aiDst_lcl;
+  d8 dValue;
 
   for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
@@ -1665,7 +1700,8 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
         ayDst++;
         break;
       case CT_FLOAT:
-        *ayDst = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        dValue = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        *ayDst = *(i8*)&dValue;
         ayDst++;
         break;
       case CT_CHAR:
@@ -1690,11 +1726,11 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // pop the dst row device
-  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
-
   // pop the src row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
 
   Stz* szStr;
   char* azDst;
@@ -1732,6 +1768,112 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
   }
 
   *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* row buffer columns of row dev into row                                     */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_COLS_TO_ROW_OFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row start col
+  i8 iDstCol = I_PopInt();
+
+  // pop the src row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
+  Stz* szStr;
+  char* azDst;
+  i8 nSize;
+
+  for (i8 i_Col = 0; i_Col < pDevRow->m_pStreamDef->nColumns(); i_Col++) {
+    Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(i_Col);
+    switch (pColumn->eColumnType()) {
+      case CT_BOOLEAN:
+      case CT_INTEGER:
+      case CT_DATE:
+      case CT_TIME:
+      case CT_TIMESTAMP:
+      case CT_DECIMAL:
+        pDevRowDst->m_aRow->vColVal_int(iDstCol, pDevRow->m_aRow->iColVal_int(i_Col));
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        // get the str address
+        szStr = pDevRow->m_aRow->szColVal_ofs(i_Col);
+
+        pDevRowDst->m_pRowBuffer->vPositionOnCell(iDstCol);
+
+        azDst = pDevRowDst->m_pRowBuffer->azDepositString_begin();
+
+        StrLib::vCopy(azDst,(char*)szStr);
+        nSize = StrLib::nSize(azDst);
+
+        pDevRowDst->m_pRowBuffer->vDepositString_end(nSize);
+        break;
+
+      default:
+        ASSERT(0);
+    }
+    iDstCol++;
+  }
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from row of row device                                   */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_COLS_PUSHSET_PST(i8** aaiDstk) {
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  char *acStrArea_null = nullptr;
+
+  // pop the row device
+  DevROW *pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the column set
+  i8 *iaColSet = (i8 *) P_PopPtr();
+
+  i8* ayDst = ++aiDstk;
+  d8 dValue;
+
+  for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
+    Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
+    switch (pColumn->eColumnType()) {
+      case CT_BOOLEAN:
+      case CT_INTEGER:
+      case CT_DATE:
+      case CT_TIME:
+      case CT_TIMESTAMP:
+      case CT_DECIMAL:
+        *ayDst = pDevRow->m_aRow->iColVal_int(iaColSet[i_ColSet]);
+        ayDst++;
+        break;
+      case CT_FLOAT:
+        dValue = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        *ayDst = *(i8*)&dValue;
+        ayDst++;
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        *ayDst = (i8)pDevRow->m_aRow->szColVal_ofs(iaColSet[i_ColSet]);
+        ayDst++;
+        break;
+      default:
+        ASSERT(0);
+    }
+  }
+
+  *aaiDstk = --ayDst;
 }
 
 /*----------------------------------------------------------------------------*/

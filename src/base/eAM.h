@@ -7,8 +7,14 @@ enum eAM // ASM Macros
 {
   /*  0 */ AM_NONE=0,
 
+  /*    */ AM_CRW_FILTER_BEGIN,
   /*    */ AM_CRW_FILTER_END,
-  /*    */ AM_CRW_FILTER_ROWS,
+
+  /*    */ AM_CRW_HASHROWS_BEGIN,
+  /*    */ AM_CRW_HASHROWS_END,
+
+  /*    */ AM_CRW_INDEXJOIN_BEGIN,
+  /*    */ AM_CRW_INDEXJOIN_NEXT,
 
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
@@ -29,11 +35,13 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_CRWBUFFER_AGG,
   /*    */ AM_HANDLER_CRWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_CRWBUFFER_LIMIT,
+  /*    */ AM_HANDLER_CRWBUFFER_RHT,
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
   /*    */ AM_HANDLER_ROWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_ROWBUFFER_LIMIT,
+  /*    */ AM_HANDLER_ROWBUFFER_RHT,
 
   /*    */ AM_HANDLER_STREAMDEF_GBY,
   /*    */ AM_HANDLER_STREAMDEF_GBY_END,
@@ -51,6 +59,25 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSE_TILL_UPPER,
   /*    */ AM_INDEX_UPPER_BOUND,
 
+  /*    */ AM_JOINROWS_CRWLFT_CRWRHT,
+  /*    */ AM_JOINROWS_CRWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_CRWLFT_ROWRHT,
+  /*    */ AM_JOINROWS_ROWLFT_CRWRHT,
+  /*    */ AM_JOINROWS_ROWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_ROWLFT_ROWRHT,
+
+  /*    */ AM_JOINTEST_CRWLFT_CRWRHT,
+  /*    */ AM_JOINTEST_CRWLFT_ROWRHT,
+  /*    */ AM_JOINTEST_ROWLFT_CRWRHT,
+  /*    */ AM_JOINTEST_ROWLFT_ROWRHT,
+
+  /*    */ AM_LOOPJOIN_CRWLFT_CRWRHT,
+  /*    */ AM_LOOPJOIN_CRWLFT_ROWRHT,
+  /*    */ AM_LOOPJOIN_ROWLFT_CRWRHT,
+  /*    */ AM_LOOPJOIN_ROWLFT_ROWRHT,
+
+  /*    */ AM_LOOPJOIN_END,
+
   /*    */ AM_PAYLOAD_AGG,
   /*    */ AM_PAYLOAD_END,
   /*    */ AM_PAYLOAD_GBY,
@@ -66,17 +93,23 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_EXPR_AGG,
   /*    */ AM_ROW_EXPR_AGG_END,
 
-  /*    */ AM_ROW_FILTER_ROWS,
+  /*    */ AM_ROW_FILTER_BEGIN,
   /*    */ AM_ROW_FILTER_END,
 
-  /*    */ AM_ROWBUFFER_AGGINIT,
-  /*    */ AM_ROWBUFFER_AGGINIT_END,
-  /*    */ AM_ROWBUFFER_TRAVERSAL,
+  /*    */ AM_ROW_HASHROWS_BEGIN,
+  /*    */ AM_ROW_HASHROWS_END,
+
+  /*    */ AM_ROW_INDEXJOIN_NEXT,
+  /*    */ AM_ROW_INDEXJOIN_BEGIN,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
   /*    */ AM_ROW_PROJECT_END,
   /*    */ AM_ROW_PROJECT_STAR,
+
+  /*    */ AM_ROWBUFFER_AGGINIT,
+  /*    */ AM_ROWBUFFER_AGGINIT_END,
+  /*    */ AM_ROWBUFFER_TRAVERSAL,
 
   /*    */ AM_ENUMS
 };
@@ -88,8 +121,14 @@ static Stz* aAM[]
 {
     /*  0 */ "NONE"_Stz,
 
+    /*    */ "CRW_FILTER_BEGIN"_Stz,
     /*    */ "CRW_FILTER_END"_Stz,
-    /*    */ "CRW_FILTER_ROWS"_Stz,
+
+    /*    */ "CRW_HASHROWS_BEGIN"_Stz,
+    /*    */ "CRW_HASHROWS_END"_Stz,
+
+    /*    */ "CRW_INDEXJOIN_BEGIN"_Stz,
+    /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
@@ -110,11 +149,13 @@ static Stz* aAM[]
     /*    */ "HANDLER_CRWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_CRWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_CRWBUFFER_LIMIT"_Stz,
+    /*    */ "HANDLER_CRWBUFFER_RHT"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_ROWBUFFER_LIMIT"_Stz,
+    /*    */ "HANDLER_ROWBUFFER_RHT"_Stz,
 
     /*    */ "HANDLER_STREAMDEF_GBY"_Stz,
     /*    */ "HANDLER_STREAMDEF_GBY_END"_Stz,
@@ -132,6 +173,25 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSE_TILL_UPPER"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
+    /*    */ "JOINROWS_CRWLFT_CRWRHT"_Stz,
+    /*    */ "JOINROWS_CRWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOINROWS_ROWLFT_CRWRHT"_Stz,
+    /*    */ "JOINROWS_ROWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_ROWLFT_ROWRHT"_Stz,
+
+    /*    */ "JOINTEST_CRWLFT_CRWRHT"_Stz,
+    /*    */ "JOINTEST_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOINTEST_ROWLFT_CRWRHT"_Stz,
+    /*    */ "JOINTEST_ROWLFT_ROWRHT"_Stz,
+
+    /*    */ "LOOPJOIN_CRWLFT_CRWRHT"_Stz,
+    /*    */ "LOOPJOIN_CRWLFT_ROWRHT"_Stz,
+    /*    */ "LOOPJOIN_ROWLFT_CRWRHT"_Stz,
+    /*    */ "LOOPJOIN_ROWLFT_ROWRHT"_Stz,
+
+    /*    */ "LOOPJOIN_END"_Stz,
+
     /*    */ "PAYLOAD_AGG"_Stz,
     /*    */ "PAYLOAD_END"_Stz,
     /*    */ "PAYLOAD_GBY"_Stz,
@@ -147,17 +207,23 @@ static Stz* aAM[]
     /*    */ "ROW_EXPR_AGG"_Stz,
     /*    */ "ROW_EXPR_AGG_END"_Stz,
 
-    /*    */ "ROW_FILTER_ROWS"_Stz,
+    /*    */ "ROW_FILTER_BEGIN"_Stz,
     /*    */ "ROW_FILTER_END"_Stz,
 
-    /*    */ "ROWBUFFER_AGGINIT"_Stz,
-    /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
-    /*    */ "ROWBUFFER_TRAVERSAL"_Stz,
+    /*    */ "ROW_HASHROWS_BEGIN"_Stz,
+    /*    */ "ROW_HASHROWS_END"_Stz,
+
+    /*    */ "ROW_INDEXJOIN_BEGIN"_Stz,
+    /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
     /*    */ "ROW_PROJECT_END"_Stz,
     /*    */ "ROW_PROJECT_STAR"_Stz,
+
+    /*    */ "ROWBUFFER_AGGINIT"_Stz,
+    /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
+    /*    */ "ROWBUFFER_TRAVERSAL"_Stz,
 
     /*    */ "ENUMS"_Stz
 };

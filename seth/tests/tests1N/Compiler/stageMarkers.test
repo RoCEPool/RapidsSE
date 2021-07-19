@@ -28,7 +28,9 @@ success
 -- Test that a simple plan always starts with a StageMarker
 EXPLAIN STAGE stageMarkers SELECT * FROM nation;
 rows: (*,'stageMarkers',
-'StageMarker
+'stageMarker
+» location: all partitions
+» routing: unicast
 
 -> projectOp
    » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
@@ -37,6 +39,7 @@ rows: (*,'stageMarkers',
    » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> tableScanOp
+      » location: all partitions
       » table: (rapidsse.public.nation)'
 )
 
@@ -47,29 +50,47 @@ SELECT n_nationkey, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation;
 rows: (*,'stageMarkers',
-'StageMarker
+'stageMarker
+» location: origin
+» routing: unicast
 
 -> unionOp
+   » location: origin
    » isDistinct: (false)
 
--> -> StageMarker
+-> -> stageMarker
+      » location: origin
+      » routing: unicast
 
--> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> StageMarker
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
 
--> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> stageMarker
+      » location: origin
+      » routing: unicast
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)'
 )
+
 
 -- 3-way nested union statement
 EXPLAIN STAGE stageMarkers
@@ -80,43 +101,70 @@ UNION ALL
 SELECT n_nationkey, n_comment FROM nation;
 
 rows: (*,'stageMarkers',
-'StageMarker
+'stageMarker
+» location: origin
+» routing: unicast
 
 -> unionOp
+   » location: origin
    » isDistinct: (false)
 
--> -> StageMarker
+-> -> stageMarker
+      » location: origin
+      » routing: unicast
 
 -> -> -> unionOp
+         » location: origin
          » isDistinct: (false)
 
--> -> -> -> StageMarker
+-> -> -> -> stageMarker
+            » location: origin
+            » routing: unicast
 
--> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: unicast
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> StageMarker
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.nation)
 
--> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> -> -> stageMarker
+            » location: origin
+            » routing: unicast
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: unicast
 
--> -> StageMarker
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.nation)
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
-)
+-> -> stageMarker
+      » location: origin
+      » routing: unicast
+
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)')
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

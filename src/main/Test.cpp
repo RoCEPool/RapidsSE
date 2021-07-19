@@ -1860,8 +1860,80 @@ void vTest32(void)
 /*----------------------------------------------------------------------------*/
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
+
+#include "SP_DecVal.hpp"
+
 void vTest33(void)
 {
+  vTrace("vTest33 -- Decimal Experiments\n"_Stz);
+      
+  DecVal xArgA;
+  DecVal xArgB;
+  DecVal xResC;
+
+//  xArgA.vAssign(20000,0);
+//  xArgB.vAssign(30000,0);
+  xArgA = "20000."_Dec;
+  xArgB = "30000."_Dec;
+
+  for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
+    for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
+      vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
+      //xResC.vMultiply(xArgA,xArgB);
+      xResC = xArgA * xArgB;
+      vTrace("\n"_Stz);
+    }
+  }
+  
+  vTrace("- - - - - - -\n"_Stz);
+
+  DecVal xuResC;
+  DecVal xrResC;
+  SP_DecVal spResC;
+
+  xuResC.vAssign(12345678,4);
+  vTrace("%s | rounded down to: "_Stz,spResC.sz(xuResC));
+
+  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+    xrResC = xuResC;
+    xrResC.vRoundDown(nPlaces);
+    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
+  }
+
+  vTrace("\n"_Stz);
+  
+  xuResC.vAssign(12345678,4);
+  vTrace("%s | rounded up to  : "_Stz,spResC.sz(xuResC));
+
+  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+    xrResC = xuResC;
+    xrResC.vRoundUp(nPlaces);
+    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
+  }
+
+  vTrace("\n"_Stz);
+
+  vTrace("- - - - - - -\n"_Stz);
+  
+  xArgA = "31415."_Dec; // the first 5 digits of pi
+  xArgB = "27182."_Dec; // the first 5 digits of e
+
+  for (xArgA.m_nPlaces = 0; xArgA.m_nPlaces <= 4; xArgA.m_nPlaces++) {
+    for (xArgB.m_nPlaces = 0; xArgB.m_nPlaces <= 4; xArgB.m_nPlaces++) {
+      vTrace("%lld x %lld places: "_Stz,xArgA.m_nPlaces,xArgB.m_nPlaces);
+      
+      if (4 == xArgA.m_nPlaces && 4 == xArgB.m_nPlaces)
+        vDebugPoint();
+      
+      xResC = xArgA * xArgB;
+      vTrace("\n"_Stz);
+    }
+  }
+  
+  vTrace("- - - - - - -\n"_Stz);
+  
+  xResC = "4.8"_Dec * "2.10"_Dec;
+  vTrace("xResC = %s\n"_Stz,spResC.sz(xResC));
 }
 
 /*----------------------------------------------------------------------------*/

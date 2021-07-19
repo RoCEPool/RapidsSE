@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "TagConstants.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +278,7 @@ void Step::vWordDelete(void)
   Word* pRemovedWord = m_oDicStack.pRemoveWord(pWord->szWordNm());
   ASSERT(pRemovedWord);
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_WORD))
     m_pReturnStack->vDump(&m_oDicStack,"ReturnStack:"_Stz);
   
   delete pRemovedWord;

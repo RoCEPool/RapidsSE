@@ -1,0 +1,173 @@
+/*============================================================================*/
+/* DecVal.cpp - Decimal Value                                                 */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "DecVal.hpp"
+#include "SP_DecVal.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+DecVal::DecVal(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void DecVal::operator =(DecVal xDecVal)
+{
+  vAssign(xDecVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* multiply operator                                                          */
+/*----------------------------------------------------------------------------*/
+DecVal DecVal::operator *(DecVal xArgB)
+{
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
+  
+  DecVal xResC;
+  
+  vTrace("(( %s * %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  i16 iComputedValue  = m_iValue  * xArgB.m_iValue;
+  i8  iComputedPlaces = m_nPlaces + xArgB.m_nPlaces;
+
+  xResC.vAssign(iComputedValue,iComputedPlaces);
+
+  vTrace("= %s "_Stz,spResC.sz(xResC));
+    
+  xResC.vRoundUp(m_nPlaces);
+  vTrace("; round up (to %lld places) = %s "_Stz,m_nPlaces,spResC.sz(xResC));
+
+  vTrace(")) "_Stz);
+
+  return xResC;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign                                                                     */
+/*----------------------------------------------------------------------------*/
+void DecVal::vAssign(DecVal xArg)
+{
+  vAssign(xArg.m_iValue,xArg.m_nPlaces);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign                                                                     */
+/*----------------------------------------------------------------------------*/
+void DecVal::vAssign(i16 iValue, i8 nPlaces)
+{
+  m_iValue  = iValue;
+  m_nPlaces = nPlaces;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign                                                                     */
+/*----------------------------------------------------------------------------*/
+void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
+{
+  i16 iValue = iWhole * IntLib::iTenToPow(nPlaces) + iFraction;
+
+  vAssign(iValue,nPlaces);
+}
+
+/*----------------------------------------------------------------------------*/
+/* round down                                                                 */
+/*----------------------------------------------------------------------------*/
+void DecVal::vRoundDown(i8 nPlaces)
+{
+  // required number of places
+  if (m_nPlaces == nPlaces)
+    return;
+  
+  // too many decimal digits
+  if (m_nPlaces > nPlaces) {
+    i8 nReduce = m_nPlaces - nPlaces;         // number of places to reduce
+    m_iValue /= IntLib::iTenToPow(nReduce);   // m_iValue /= 10^nReduce
+    m_nPlaces -= nReduce;                     // reduce m_nPlaces
+    return;
+  }
+  
+  // too few decimal digits
+  i8 nIncrease = nPlaces - m_nPlaces;         // number of places to increase
+  m_iValue *= IntLib::iTenToPow(nIncrease);   // m_iValue /*= 10^nIncrease
+  m_nPlaces += nIncrease;                     // increase m_nPlaces
+}
+
+/*----------------------------------------------------------------------------*/
+/* round up                                                                   */
+/*----------------------------------------------------------------------------*/
+void DecVal::vRoundUp(i8 nPlaces)
+{
+  // required number of places
+  if (m_nPlaces == nPlaces)
+    return;
+  
+  // too many decimal digits
+  if (m_nPlaces > nPlaces) {
+    i8 nReduce = m_nPlaces - nPlaces;        // number of places to reduce
+    
+    i8 iMod = IntLib::iTenToPow(nReduce);    // calc what gets cut
+    i8 iCutVal = m_iValue % iMod;
+    
+    m_iValue /= IntLib::iTenToPow(nReduce);  // m_iValue /= 10^nReduce
+    
+    if (iCutVal >= iMod / 2)                 // round up if cut is over half
+      m_iValue += 1;
+    
+    m_nPlaces -= nReduce;                    // reduce m_nPlaces
+    return;
+  }
+  
+  // too few decimal digits
+  i8 nIncrease = nPlaces - m_nPlaces;        // number of places to increase
+  m_iValue *= IntLib::iTenToPow(nIncrease);  // m_iValue /*= 10^nIncrease
+  m_nPlaces += nIncrease;                    // increase m_nPlaces
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* _Dec literal suffix (which converts const char* to DecVal)                 */
+/*----------------------------------------------------------------------------*/
+DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
+{
+  UNUSED(nSize);
+
+  DecVal xDecVal;
+  
+  // extract the whole.fraction parts
+  i8 iWhole;
+  i8 iFraction;
+  i8 nParts = sscanf(azLiteral,"%lld.%lld",&iWhole,&iFraction);
+
+  if (1 == nParts) {
+    // whole part only, no fraction (e.g. "2000."_Dec)
+    xDecVal.vAssign(iWhole,0);
+  }
+  else {
+    // both whole and fraction parts (e.g. "12.34."_Dec)
+    s32 sFractionDigits;
+    sFractionDigits.vSprint("%lld"_Stz,iFraction);
+    i8 nFractionDigits = sFractionDigits.nLength();
+
+    xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
+  }
+    
+  return xDecVal;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

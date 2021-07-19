@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +84,8 @@ void Step::vParcelPipeOut(void)
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
-  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pParcel->m_iDstStage);
+  Stage* pStage = pPipelineJob->m_pLogicUnit_job
+                    ->m_xpPipeline->pGet(pParcel->m_iDstStage);
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
@@ -91,18 +93,30 @@ void Step::vParcelPipeOut(void)
                                pParcel->m_iDstOp);
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
-  // append to left queue
 
   if (pParcel->bIsOriginal()) {
-      pOp->vAppendLeft(pParcel,this);
+    pOp->vAppendLeft(pParcel,this);
   } else {
-    if (pParcel->pGetOperand())
-      pOp->vAppendLeft(pOperand, this);
-
-    // now delete the pParcel
-    delete pParcel;
+    if (pParcel->pGetOperand()) {
+      if (pParcel->bAppendRight())
+        pOp->vAppendRight(pOperand, this);
+      else
+        pOp->vAppendLeft(pOperand, this);
+    }
   }
+
+  /* Origin from master
+    if (pParcel->pGetOperand()) {
+      if (pParcel->bAppendRight())
+        pOp->vAppendRight(pOperand, this);
+      else
+        pOp->vAppendLeft(pOperand, this);
+    }
+    */
   
+  // now delete the pParcel
+  delete pParcel;
+
   EXIT();
 }
 

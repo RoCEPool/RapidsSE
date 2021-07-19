@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "Job.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -121,7 +122,7 @@ void Step::vDotVerbose(void)
   CellSingle xVariable;
   m_pDataStack->vPopItem(xVariable,__func__);
   
-  if (AM::bVerbose()) {
+  if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_SEN)) {
     vTrace("[%p %s] %s\n"_Stz,
            this,
            szJobName(),

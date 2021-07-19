@@ -257,6 +257,7 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
 
   Text* pFormat = nullptr;
   QueryNode* pStageList = nullptr;
+  b1 bWithNames = false;
 
   for (sqlParser::ExplainOptionsContext* pOptionsCtx : pCtx->explainOptions()) {
     if (pOptionsCtx->explainFormat()) {
@@ -275,8 +276,11 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
         pStageList = nullptr;
       }
 
-      pStageList = pOptionsCtx->explainStageList()->accept(this).as<QueryNode*>();
+      pStageList = pOptionsCtx->explainStageList()->accept(this).as<QueryNode *>();
       ASSERT(StageRangeList::bIsOfType(pStageList));
+
+    } else if (pOptionsCtx->WITH_NAMES()) {
+      bWithNames = true;
 
     } else {
       NEVER_REACH
@@ -292,7 +296,7 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   }
 
   // Create an ExplainOp and add it as a child of the ExplainMarker
-  QueryNode* pExplainOp = ExplainOp::pCreate(pStageList, pFormat == nullptr ? nullptr : pFormat->szGet());
+  QueryNode* pExplainOp = ExplainOp::pCreate(pStageList, pFormat == nullptr ? nullptr : pFormat->szGet(), bWithNames);
   pExplainMarker->vAppendChild(pExplainOp);
   delete pFormat;
 

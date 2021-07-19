@@ -27,7 +27,7 @@ void* TextLarge::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void TextLarge::operator delete(void* pTextAddress)
 {

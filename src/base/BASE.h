@@ -14,6 +14,7 @@
 
 #define _static_ EndDefine
 #define _nonProper_ EndDefine
+#define _noPreconditions_ EndDefine
 #define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
 
@@ -107,7 +108,6 @@ extern d8 C_D8_MID;
 #include "PTR.hpp"
 #include "SMA.hpp"
 #include "REF_t.hpp"
-#include "REG_t.hpp"
 
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
@@ -185,6 +185,9 @@ extern d8 C_D8_MID;
 #include "Wsp_t.hpp"
 
 #include "ShmLib.hpp"
+#include "Scanner.hpp"
+
+#include "DecVal.hpp"
 
 //------------------------------------------------------------------------------
 

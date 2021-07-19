@@ -98,8 +98,8 @@
   PipeIn[].pipeOut
 
   // pipe out a new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  //Operand[].newStreamDef
+  //Operand[].pipeOut
 
   // grab table ptn read lock
   TablePtn[].grabRead_yieldLoop
@@ -201,6 +201,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                               */
+/*----------------------------------------------------------------------------*/
+// ": eachScan_StreamDef" .
+
+: eachScan_StreamDef \handler
+
+  "piping out left stream" .
+  PipeIn[]\clear to StreamDefLft[]
+  StreamDefLft[].pipeOut
+
+  // pipe out a new a stream def
+  "piping out right stream" .
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* scan request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : eachScan_req \operator
@@ -222,6 +241,7 @@
   find: eachScan_DataMarker    ZK_DATAPULSE     op[].handler!
   find: eachScan_RowCrwBuffer  ZK_ROWBUFFER     op[].handler!
   find: eachScan_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: eachScan_StreamDef     ZK_STREAMDEF     op[].handler!
 
   op__loop
 

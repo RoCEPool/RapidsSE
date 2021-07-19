@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const i8 C_LOCALS_arguments = 32;
+  static const i8 C_LOCALS_arguments = 24;
   
   class LocalChain : public Object
   {

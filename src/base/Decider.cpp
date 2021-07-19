@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Decider::operator new(size_t, Decider* pDecider)
 {
@@ -13,7 +13,7 @@ void* Decider::operator new(size_t, Decider* pDecider)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Decider::operator delete(void* )
 {

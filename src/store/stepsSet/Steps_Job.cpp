@@ -215,27 +215,27 @@ void Step::vJobAssertBegin(void)
   if (Job::iNodeNo(pJob->iJobId()) == AM::pGrid()->iThisNode()) {
 
     if (! pJob->bWasReceived())
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertOriginator: "
              "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
     
     if (JL_NONE != pJob->eJobList())
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
     
     Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
     if (! pJobFound)
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
     
     pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
     if (pJobFound)
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
@@ -247,27 +247,27 @@ void Step::vJobAssertBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! pJob->bWasReceived())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   if (JL_NONE != pJob->eJobList())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
@@ -285,9 +285,7 @@ void Step::vJobAssertCorrectness(void)
   //Job* pJob = m_pJob;
   
   //vTrace("job::assertCorrectness\n"_Stz);
-  
-  vAssertStructure();
-  
+    
   EXIT();
 }
 
@@ -301,21 +299,21 @@ void Step::vJobAssertNeutral(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (JL_NONE != pJob->eJobList())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
 
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
@@ -333,20 +331,20 @@ void Step::vJobAssertOriginator(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (JL_ORIGINATING != pJob->eJobList())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
 
   if (pJob->bWasReceived())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (! pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
@@ -364,20 +362,20 @@ void Step::vJobAssertParticipant(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (JL_PARTICIPATING != pJob->eJobList())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   if (! pJob->bWasReceived())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
   Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (! pJobFound)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
            "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
@@ -395,7 +393,7 @@ void Step::vJobAssertReceived(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (! pJob->bWasReceived())
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());

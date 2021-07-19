@@ -26,18 +26,13 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
-  vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
-  vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("Op.otherStage!"_Stz,      &Step::vOpOtherStageStore);
-  vAddStep("Op.otherOp!"_Stz,         &Step::vOpOtherOpStore);
   vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
   vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
   vAddStep("Op.SendKind!"_Stz,        &Step::vOpSendKindStore);
 }
 
@@ -49,7 +44,7 @@ void Step::vOpAckPipelineJob(void)
   ENTRY();
   
   Op* pOp = m_pJob->m_pOp;
-  pOp->vAckJob();
+  pOp->vAckPipelineJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,30 +91,6 @@ void Step::vOpFindOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.nextOp! -- store next op in the operator                                */
-/*----------------------------------------------------------------------------*/
-void Step::vOpNextOpStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.nextStage! -- store next stage in the operator                          */
-/*----------------------------------------------------------------------------*/
-void Step::vOpNextStageStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Op.opName@ -- fetch operator name                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vOpOpNameFetch(void)
@@ -131,30 +102,6 @@ void Step::vOpOpNameFetch(void)
   
   m_pDataStack->vPushStr(sOpName);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.otherOp! -- store other op in the operator                              */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOtherOpStore(void)
-{
-  ENTRY();
-
-  m_pJob->m_pOp->vOtherOp(m_pDataStack->iPopInt(__func__));
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.otherStage! -- store next stage in the operator                         */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOtherStageStore(void)
-{
-  ENTRY();
-
-  m_pJob->m_pOp->vOtherStage(m_pDataStack->iPopInt(__func__));
-
   EXIT();
 }
 
@@ -246,7 +193,7 @@ void Step::vOpQueueLength(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  i8 nLength = pOp->nQueueLength();
+  i8 nLength = pOp->nQueuedOperands();
 
   m_pDataStack->vPushInt(nLength);
 
@@ -264,18 +211,6 @@ void Step::vOpStageNameFetch(void)
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.Topology! -- store topology in the operator                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOpTopologyStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vCrossTopo((ePX)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

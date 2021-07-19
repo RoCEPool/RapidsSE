@@ -9,38 +9,26 @@
 #include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* StageSpec::operator new(size_t)
-{
-  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(Heaps::pAllocate(CN_STAGESPEC));
-  
-  return pStageSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void StageSpec::operator delete(void* aAddr)
-{
-  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(aAddr);
-  
-  Heaps::vFree(pStageSpec);
-}
+__pCastFunction(STORE,StageSpec,CN_STAGESPEC)
+__aNewFunction(StageSpec,CN_STAGESPEC)
+__vDeleteFunction(StageSpec,CN_STAGESPEC)
+__aFooterFunction(StageSpec)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec)
+StageSpec::StageSpec(i8 i_StageSpec,
+                     Stz* szStageNm,
+                     PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sPipelineNm    = pPipelineSpec->szPipelineNm();
   m_sStageNm       = szStageNm;
   
   m_i_StageSpec    = i_StageSpec;
   
-  m_pJob           = pPipelineSpec->pJob();
   m_pPipelineSpec  = pPipelineSpec;
 
   m_eTopology      = PO_NONE;
@@ -62,21 +50,119 @@ StageSpec::~StageSpec(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology between two stages                                      */
+/*----------------------------------------------------------------------------*/
+ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec)
+{
+  _static_
+    
+  ePO eFromTopo = pFromStageSpec->eTopology();
+  ePO eToTopo   = pToStageSpec->eTopology();
+  
+  switch (eFromTopo) {
+          
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all nodes to ...
+    case PO_ALL_NODES:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          return PX_ALL_NODES_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ALL_NODES_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  RASSERT(0);
+        case PO_ORIGIN:             return PX_ALL_NODES_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ALL_NODES_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ALL_NODES_TO_SPECIFIC_PARTITION;
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all partitions to ...
+    case PO_ALL_PARTITIONS:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          return PX_ALL_PARTITIONS_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  RASSERT(0);
+        case PO_ORIGIN:             return PX_ALL_PARTITIONS_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all partitions on origin to ...
+    case PO_ALL_PARTITIONS_ON_ORIGIN:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          RASSERT(0);
+        case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             RASSERT(0);
+        case PO_SPECIFIC_NODE:      RASSERT(0);
+        case PO_SPECIFIC_PARTITION: RASSERT(0);
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from origin to ...
+    case PO_ORIGIN:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          return PX_ORIGIN_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ORIGIN_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN: return PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
+        case PO_ORIGIN:             return PX_ORIGIN_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ORIGIN_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ORIGIN_TO_SPECIFIC_PARTITION;
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from specific node to ...
+    case PO_SPECIFIC_NODE:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          return PX_SPECIFIC_NODE_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  RASSERT(0);
+        case PO_ORIGIN:             return PX_SPECIFIC_NODE_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from specific partition to ...
+    case PO_SPECIFIC_PARTITION:
+      switch(eToTopo) {
+        case PO_ALL_NODES:          return PX_SPECIFIC_PARTITION_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  RASSERT(0);
+        case PO_ORIGIN:             return PX_SPECIFIC_PARTITION_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
+        default:
+          RASSERT(0);
+      }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ugh
+    default:
+      RASSERT(0);
+  }
+  
+  return PX_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get i_Stage                                                                */
-/*----------------------------------------------------------------------------*/
-i8 StageSpec::i_StageSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-
-  return m_i_StageSpec;
-}
 
 /*----------------------------------------------------------------------------*/
 /* add op spec                                                                */
@@ -85,7 +171,7 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  pOpSpec->v_OpSpec(nItems());
+  pOpSpec->vOpSpec(nItems());
   
   vAdd(pOpSpec);
 }
@@ -122,16 +208,6 @@ OpSpec* StageSpec::pFindOpSpec(Stz* szFindNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* StageSpec::szStageNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_sStageNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bNodeTopo ?                                                            */
 /*----------------------------------------------------------------------------*/
 bool StageSpec::bNodeTopo(void)
@@ -139,6 +215,18 @@ bool StageSpec::bNodeTopo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   return m_bNodeTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op spec                                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec* StageSpec::pOpSpec(i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpec* pOpSpec = pGet(i_Op);
+  
+  return pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,28 +240,16 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepend a consumeOp spec                                                   */
+/* renumber all the op specs                                                  */
 /*----------------------------------------------------------------------------*/
-OpSpec* StageSpec::pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op)
+void StageSpec::vRenumberOpSpecs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  UNUSED(eCrossTopo);
-  UNUSED(iStage);
-  UNUSED(i_Op);
-
-  OpSpec* pOpSpec;
   
-  pOpSpec = new OpSpec("consumeOp"_Stz,0,this);
-  
-  vInsert(pOpSpec);
-  
-  // renumber the m_i_OpSpec
   for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
     OpSpec* pOpSpec = pGet(i_OpSpec);
-    pOpSpec->v_OpSpec(i_OpSpec);
+    pOpSpec->vOpSpec(i_OpSpec);
   }
-  
-  return pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +290,27 @@ void StageSpec::vSpecificPtnNo(tPN tSpecificPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_tSpecificPtnNo = tSpecificPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sStageNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_Stage                                                                */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::i_StageSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+
+  return m_i_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,53 +386,6 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
   }
 
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print stage spec                                                           */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  vTrace("\n"_Stz);
-  vTrace("stage %s "_Stz,m_sStageNm.szStz());
-  
-  switch (m_eTopology) {
-    case PO_ALL_NODES:                vTrace("on all nodes"_Stz);
-                                      break;
-    case PO_ALL_PARTITIONS:           vTrace("on all partitions"_Stz);
-                                      break;
-    case PO_ALL_PARTITIONS_ON_ORIGIN: vTrace("on all partitions_on_origin"_Stz);
-                                      break;
-    case PO_ORIGIN:                   vTrace("on origin"_Stz);
-                                      break;
-    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_i_SpecificNode);
-                                      break;
-    case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_tSpecificPtnNo);
-                                      break;
-    default:
-      ;
-  }
-  vTrace(":\n"_Stz);
-
-
-  vTrace("  "_Stz);
-  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
-    if (i_Op)
-      vTrace("| "_Stz);
-    pGet(i_Op)->vPrint();
-  }
-  vTrace("\n"_Stz);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(StageSpec)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -77,17 +77,13 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat("\n\n"_Stz);
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
-
-  // Add the local properties
-  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+  // Add the object header and local properties
+  vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
@@ -97,7 +93,7 @@ void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+      PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -107,7 +103,7 @@ void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -117,7 +113,7 @@ void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTy
     // Get the parent type and keep recursing back
     s256 sParentType;
     GraphNav::vParentType(szType, sParentType);
-    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
     // Get the tableref property

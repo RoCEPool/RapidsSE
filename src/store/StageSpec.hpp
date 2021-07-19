@@ -6,18 +6,17 @@
 #include "ePO.h"
 #include "ePX.h"
 
+#include "OpSpec.hpp"
+
 namespace STORE
 {
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {
   private:
-    s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name
-    i8   m_i_StageSpec; // this stage spec no
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
-    
-    Job*          m_pJob;          // which job
+    i8   m_i_StageSpec; // this stage spec no
 
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?
@@ -32,31 +31,34 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec);
+    StageSpec(i8 i_StageSpec, Stz* szStageNm, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
-    i8   i_StageSpec(void);
+    static ePX eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
+
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     OpSpec* pFindOpSpec(Stz* szFindNm);
-    Stz* szStageNm(void);
     bool bNodeTopo(void);
+    OpSpec* pOpSpec(i8 i_Op);
     PipelineSpec* pPipelineSpec(void);
-    OpSpec* pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op);
+    void vRenumberOpSpecs(void);
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
     tPN  tSpecificPtnNo(void);
     void vSpecificPtnNo(tPN tSpecificPtnNo);
+    Stz* szStageNm(void);
+    i8   i_StageSpec(void);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
     ePO  eTopology(void);
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);
   
-    void vPrint(void);
-
     Footer* aFooter(void);
   };
+
+  StageSpec* _pStageSpec(void* aAddr);
 }
 
 /*============================================================================*/

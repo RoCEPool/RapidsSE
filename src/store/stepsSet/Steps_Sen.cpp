@@ -247,7 +247,7 @@ void Step::vSenFind(void)
   Word* pWord = m_oDicStack.pFindWord(sWordNm);
   
   if (! pWord)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
   CellSingle xVar;
@@ -271,7 +271,7 @@ void Step::vSenHazard(void)
 {
   ENTRY();
   
-  vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
+  vThrow(FK_CHECK,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
   
   EXIT();
 }
@@ -604,7 +604,7 @@ void Step::vSenPostpone(void)
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szChars());
   if ( ! pCalledWord )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
            m_pInput->szChars()->azChar());
   
@@ -781,7 +781,7 @@ void Step::vSenThrow(void)
   
   sException.vSprint("THROW TEST"_Stz);
   
-  vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,sException);
+  vThrow(FK_CHECK,__func__,__FILE__,__LINE__,sException);
   
   EXIT();
 }

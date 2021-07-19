@@ -200,12 +200,12 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   }
   
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
-  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
   Op* pOp0 = pPipeline->pOp0();
 
   //Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vAppend(pOperand,nullptr);
+  pOp0->vAppendLeft(pOperand,nullptr);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -235,6 +235,87 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 Stz* AM::JOB::szJobNm(Job* pJob)
 {
   return pJob->szJobNm();
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  Lock                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* lock is about to be read unlocked                                         */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
+{
+  _static_
+
+#ifdef WITH_LOCK_SETS
+  Task* pUnlockingTask = MY::pTask();
+  if (! pUnlockingTask)
+    return;
+      
+  LockSet* pReadLocks = pUnlockingTask->pReadLocks();
+  
+  bool bRemoved = pReadLocks->bRemove(pLock);
+  RASSERT(bRemoved);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock has just been read locked                                             */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vJustReadLocked(Lock* pLock)
+{
+  _static_
+  
+#ifdef WITH_LOCK_SETS
+  Task* pUnlockingTask = MY::pTask();
+  if (! pUnlockingTask)
+    return;
+      
+  LockSet* pReadLocks = pUnlockingTask->pReadLocks();
+
+  i8 i_Lock = pReadLocks->iAdd(pLock);
+  RASSERT(i_Lock != C_UNKNOWN);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock is about to be write unlocked                                         */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
+{
+  _static_
+
+#ifdef WITH_LOCK_SETS
+  Task* pUnlockingTask = MY::pTask();
+  if (! pUnlockingTask)
+    return;
+      
+  LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
+  
+  bool bRemoved = pWriteLocks->bRemove(pLock);
+  RASSERT(bRemoved);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock has just been write locked                                            */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vJustWriteLocked(Lock* pLock)
+{
+  _static_
+  
+#ifdef WITH_LOCK_SETS
+  Task* pLockingTask = MY::pTask();
+  if (! pLockingTask)
+    return;
+      
+  LockSet* pWriteLocks = pLockingTask->pWriteLocks();
+  
+  i8 i_Lock = pWriteLocks->iAdd(pLock);
+  RASSERT(i_Lock != C_UNKNOWN);
+#endif
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -274,7 +355,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
   va_end(xVarArgs);
 
   
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueuedOperands = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_EVENTLOG,
                         
@@ -410,7 +491,7 @@ void AM::LOG::vOperand(i8 iPoint)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
                         
@@ -443,7 +524,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
                         
@@ -464,6 +545,41 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Log                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* add register in logic unit                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
+{
+  _static_
+
+  pLogicUnit->vAddReg(static_cast< REG<Object>* >(aReg));
+  
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   OPERAND                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* is operand an out-of-order operand?                                        */
+/*----------------------------------------------------------------------------*/
+bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
+  
+  // is it a marker ?
+  if ( ! pOperand->bIsMarker() )
+    return false;
+  
+  Marker* pMarker = _pMarker(pOperand);
+  if (pMarker->eOpMarker() == OM_CANCELMARKER)
+    return true;
+  
+  return false;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   PARCEL                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -480,6 +596,170 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   PROMPT                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* translate token vector into a pipeline statement                           */
+/*----------------------------------------------------------------------------*/
+bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
+                                TokenVec* pFromTokenVec)
+{
+  _static_
+  
+  i8 nTkns = pFromTokenVec->nTokens();
+  
+  Stz* szOpNm;
+  Stz* szOpArg;
+  
+  char cStageStart   = 'A';
+  char cStageCurrent = 'A';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCopy(
+    "pipeline unnamed\n"
+    "begin\n"
+    ""_Stz);
+
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
+    "    start\n"
+    "    | periodic once\n"
+    "    | stageB\n"
+    ""_Stz,
+  cStageStart);
+
+  ++ cStageCurrent;
+  
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on all partitions :\n"
+    ""_Stz,
+    cStageCurrent);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Tkn = 0; i_Tkn < nTkns; /*none*/) {
+
+    szOpNm = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+    // -- -- -- -- -- -- -- -- -- --
+    
+    if (szOpNm->bSame("scan"_Stz)) {
+      
+      szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+      pAsPipelineStmt->vCatSprint("    scan %s\n"_Stz,szOpArg);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+      }
+      
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("filter"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | filter 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint(" %s"_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint(" <>\"\n"_Stz);
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("project"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | project 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("aggreg"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint(
+        "    | stage%c\n"
+        ""_Stz,
+        cStageCurrent + 1);
+
+      ++ cStageCurrent;
+      
+      pAsPipelineStmt->vCatSprint(
+        "  stage stage%c on origin :\n"
+        ""_Stz,
+        cStageCurrent);
+      
+      pAsPipelineStmt->vCatSprint("    aggreg 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else {
+      
+      return false;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCatSprint(
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent + 1);
+  
+  ++ cStageCurrent;
+  
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
+    "    output\n"
+    "    | sink\n"
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent, cStageStart);
+
+  pAsPipelineStmt->vConcat(
+    "end ;\n"
+    ""_Stz);
+  
+  vTrace("bToPipelineStmt : \n%s\n"_Stz,pAsPipelineStmt->szStz());
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
@@ -619,6 +899,15 @@ bool AM::TASK::bLogResource(void)
   return bLogging;
 }
 
+/*----------------------------------------------------------------------------*/
+/* trigger biding task                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
+{
+  _static_
+  
+  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
+}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -713,6 +1002,88 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
   
   return pWriteBehind;
 }
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                    TRACE                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* long verbose format                                                        */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bVBlong(void)
+{
+  _static_
+  
+  return gxCmdLineArgs.m_xSysArgs.m_bVBlong;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tag?                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bVerbose(Stz* szVBtag)
+{
+  _static_
+  
+  if (! gpAttachMap) {
+  
+    if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
+      return true;
+    
+    TagSet* pArgTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
+    if (pArgTags) {
+      if (pArgTags->bHasName(szVBtag))
+        return true;
+    }
+
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (gpAttachMap->m_xSysArgs.m_bVerbose)
+    return true;
+  
+  if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
+    return false;
+
+  Job* pJob = MY::pJob();
+  Op* pOp = MY::pOp();
+  
+  if (! pJob)
+    return false;
+
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (pJobTags) {
+    if (pJobTags->bHasName(szVBtag))
+      return true;
+  }
+  
+  TagSet* pArgTags = AM::pDbgTagSet();
+  if (pArgTags) {
+    if (pArgTags->bHasName(szVBtag))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
+{
+  _static_
+  
+  if (AM::TRACE::bVerbose(szVBtag1))
+    return true;
+  
+  if (AM::TRACE::bVerbose(szVBtag2))
+    return true;
+
+  return false;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Word                                     */
@@ -912,13 +1283,6 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 void AM::vSendNode(Op* pOp, i8 i_SendNode) {
   pOp->vSendNode(i_SendNode);
 }
-bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
-bool AM::bVerboseProgress(void)  {
-  if (gxCmdLineArgs.m_xSysArgs.m_bVerbose || gxCmdLineArgs.m_xSysArgs.m_bProgress)
-    return true;
-  else
-    return false;
-}
 
 //
 void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
@@ -1097,9 +1461,6 @@ void AM::vSteps(Steps* pSteps) {
 }
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
-}
-void AM::vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask) {
-  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
 }
 
 //
@@ -1299,7 +1660,7 @@ void AM::vTaskDump(Task* pTask)
     if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
       pJob->pLogicUnit_job()->m_xpOp->vDump();
   
-    pJob->pLogicUnit_job()->vContentDump();
+    //pJob->pLogicUnit_job()->vContentDump();
   }
 
 }
@@ -1326,43 +1687,22 @@ void AM::vTraceDumpDropLock(void)
   oTraceDumpLock.vDropWrite();
 }
 
-void AM::vTaskOnExceptionTrace(Task* pTask)
+void AM::vTaskFullTrace(Task* pTask)
 {
   Job* pJob = pTask->pJob();
 
-  vTraceDumpGrabLock();
-
-  vTrace("\n\n"_Stz);
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
-         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-         aCN[AM::eJobClass(pJob)]
-         );
-  
-
-  // dump the call stack
-  vThreadCallStackDump();
-  
-  // write activity log
-  AM::vWriteLog();
-  
   // dump api state
   //AM::vDumpApi();
 
-  pTask->vContentDump();
+  //pTask->vContentDump();
   
   if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
 
   AM::vJobContentDump(pJob);
   
-  pJob->pLogicUnit_job()->vContentDump();
+  //pJob->pLogicUnit_job()->vContentDump();
   
   AM::pGrid()->vDsv();
-
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vTraceDumpDropLock();
 }
 
 
@@ -1915,6 +2255,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
         case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
         case OM_EACHSCANEOSMARKER: eOperand = ZK_EACHSCANEOSMARKER;  break;
+        case OM_ENDRIGHTMARKER: eOperand = ZK_ENDRIGHTMARKER; break;
         case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
         case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
         case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
@@ -1923,8 +2264,9 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_EXITEDMARKER:  eOperand = ZK_EXITEDMARKER;  break;
         case OM_EXITEDEARLYMARKER:  eOperand = ZK_EXITEDEARLYMARKER;  break;
         case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
-        case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
         case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
+        case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
+        case OM_STARTRIGHTMARKER:   eOperand = ZK_STARTRIGHTMARKER;   break;
         default:
           RASSERT(0);
       }
@@ -2015,7 +2357,7 @@ void AM::vBootCheck(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  aCN[] has CN_ENUMS\n"_Stz);
   
   bool bFoundEnum = false;
@@ -2029,11 +2371,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUMS not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in aCN (%lld) "
            "do not match the no in eCN (%lld) -- missing comma??\n\n"_Stz,
            iEntriesPCN, iEntriesECN);
@@ -2041,7 +2383,7 @@ void AM::vBootCheck(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  gxaSizeHeap[] matches aCN[]\n"_Stz);
   
   bFoundEnum = false;
@@ -2055,11 +2397,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in gxaSizeHeap\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in gxaSizeHeap (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
@@ -2067,7 +2409,7 @@ void AM::vBootCheck(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Heap assignment matches class size\n"_Stz);
   
   // check sizes are less than pool block size
@@ -2141,18 +2483,6 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
 i8 AM::iRdTickingDevice(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
-bool AM::bIsOperandOoO(Operand* pOperand)   {
-  
-  // is it a marker ?
-  if ( ! pOperand->bIsMarker() )
-    return false;
-  
-  Marker* pMarker = _pMarker(pOperand);
-  if (pMarker->eOpMarker() == OM_CANCELMARKER)
-    return true;
-  
-  return false;
-}
 
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
@@ -2551,7 +2881,6 @@ static Stz* aEG[]
   "EG_UK"_Stz,
 
   "EG_VA"_Stz,
-  "EG_VL"_Stz,
 
   "EG_WK"_Stz,
 
@@ -2682,7 +3011,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_UK: return aUK[i_Enum];
 
     case EG_VA: return aVA[i_Enum];
-    case EG_VL: return aVL[i_Enum];
+
  
     case EG_WK: return aWK[i_Enum];
 
@@ -3052,7 +3381,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
   Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
 
   if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+    vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %lld in the cluster"_Stz,
            iNode);
   }
@@ -3067,7 +3396,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
   Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
 
   if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+    vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            pszName->azChar());
   }

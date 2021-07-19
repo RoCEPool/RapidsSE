@@ -13,7 +13,8 @@ statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
 queryStatement    : query ;
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
 explainOptions    : explainStageList |
-                    explainFormat ;
+                    explainFormat    |
+                    WITH_NAMES ;
 explainStageList  : STAGE explainRange (',' explainRange)* ;
 explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
 explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
@@ -432,7 +433,7 @@ sql92TimeInterval :
 
 nonReservedWord   :
                     ANTLR | ASC
-                    | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
+                  | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
                   | CATALOG | CHARS | COALESCE | CONCAT | CORRESPONDING | COUNT | CREATE
                   | CURRENT_CATALOG | CURRENT_SCHEMA | CURRENT_TIMESTAMP | CURRENT_USER
                   | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
@@ -454,7 +455,8 @@ nonReservedWord   :
                   | TABLE | TIME | TREE | TYPE
                   | UNION | UNIQUE | UPDATE | USING
                   | VALUE | VALUES | VARYING
-                  | WEEK | WEEKS | YEAR | YEARS
+                  | WEEK | WEEKS | WITH_NAMES
+                  | YEAR | YEARS
                   | INTEGER | DECIMAL | FLOAT | TIMESTAMP | CHARACTER | CHAR | CHARS
                   | BOOLEAN | BINARY | VARBINARY
                   ;
@@ -551,6 +553,7 @@ UPDATE                : U P D A T E;
 USING                 : U S I N G;
 VALUES                : V A L U E S ;
 WHERE                 : W H E R E;
+WITH_NAMES            : W I T H '_' N A M E S;
 WITH                  : W I T H;
 XOR                   : X O R;
 

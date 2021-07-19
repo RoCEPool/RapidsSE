@@ -54,6 +54,7 @@ Parcel::Parcel(Operand* pOperand,
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
+  m_bAppendRight   = false;
   
   m_iDstNode       = iDstNode;
   m_tDstPtn        = tDstPtn; 
@@ -137,6 +138,16 @@ void Parcel::vAddObject(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append to right queue ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Parcel::bAppendRight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_bAppendRight;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
 Object* Parcel::pGetObject(i8 i_Object)
@@ -200,13 +211,16 @@ void Parcel::vSendOut(Op* pSrcOp)
   Operand* pOperand = pGetOperand();
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-  
+
+  // figure out the queue
+  m_bAppendRight = pSrcOp->bAppendRight();
+
   // figure out the send kind
   m_eSendKind = pSrcOp->eSendKind();
     
   // is the operand is a marker or a streamDef ?
   if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    m_eSendKind = XK_NORMAL;
+    m_eSendKind = XK_UNICAST;
   
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
@@ -261,10 +275,16 @@ void Parcel::vSendOut(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      if (pGetOperand()->bIsBuffer())
-        vSendToPartition(pSrcOp,tDstPtn);
-      else
+
+      if (m_eSendKind == XK_BROADCAST) {
         vSendToAllPartitions(pSrcOp);
+      }
+      else {
+        if (pGetOperand()->bIsBuffer())
+          vSendToPartition(pSrcOp, tDstPtn);
+        else
+          vSendToAllPartitions(pSrcOp);
+      }
       break;
     }
      
@@ -362,7 +382,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   
   sSupplemental.vSprint("%s %s"_Stz,pDstNode->szNodeNm(),aXK[m_eSendKind]);
   
-  //pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,sSupplemental);
+  pSrcOp->vOpTrace(this,(Stz*)__func__,true,sSupplemental);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,7 +491,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
+    case XK_UNICAST: {
       
       ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
       for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
@@ -515,9 +535,22 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   RASSERT(pNextStage);
     
   switch (m_eSendKind) {
-      
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED : {
+    case XK_BROADCAST : {
+      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
+
+        // sendNode is the partition node
+        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pSrcOp->vSendNode(iDstNode);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      }
+      break;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_HASHCAST : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
       tPtnNo = pDataBuffer->tPtnNo();
       
@@ -548,7 +581,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
+    case XK_UNICAST: {
       
       ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
@@ -631,15 +664,20 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   DataBuffer* pDataBuffer = nullptr;
   
   switch (m_eSendKind) {
-      
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED :
+    case XK_BROADCAST :
+      RASSERT(0);
+      break;
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_HASHCAST :
       pDataBuffer = _pDataBuffer(pOperand);
       tDstPtn = pDataBuffer->tPtnNo();
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL:
+    case XK_UNICAST:
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -119,7 +119,7 @@ void vLib_ERROR(void* pLU, Stz* szErr)
   
   UNUSED(pLU);
 
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,szErr);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,szErr);
 }
 
 /*----------------------------------------------------------------------------*/

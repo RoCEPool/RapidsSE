@@ -11,6 +11,8 @@
 #include "eAR.h"
 #include "eEV.h"
 
+#include "TagConstants.h"
+
 Atomic gixFile;
 
 OpenFiles* gpOpenFiles;
@@ -33,7 +35,7 @@ File* BASE::_pFile(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t)
 {
@@ -45,7 +47,7 @@ void* File::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t, i8 iViaMalloc)
 {
@@ -65,7 +67,7 @@ void* File::operator new(size_t, i8 iViaMalloc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void File::operator delete(void* pFileAddress)
 {
@@ -150,7 +152,7 @@ void File::vInitGlobals(void)
 {
   _static_
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("File::vInitGlobals\n"_Stz);
   
    if (! gpOpenFiles)

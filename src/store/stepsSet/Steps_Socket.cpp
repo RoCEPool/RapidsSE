@@ -38,6 +38,8 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include <arpa/inet.h>
+#include "TagConstants.h"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +86,7 @@ void Step::vSocketAccept(void)
   bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
   
   // return the socket
@@ -110,7 +112,7 @@ void Step::vSocketClose(void)
   bool bResult = pSocket->bClose(oSysCall);
   
   if ( ! bResult )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to close socket: Errno %d!"_Stz, oSysCall.iError());
   
   EXIT();
@@ -135,7 +137,7 @@ void Step::vSocketConnect(void)
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_SOCKET))
     vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
   
   
@@ -254,13 +256,13 @@ void Step::vSocketListen(void)
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
-      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
              "Address in use (port: %lld). "
              "Check if another instance of RAPIDSSE is running!"_Stz,
              iPort);
     }
     else
-      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
              "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
   }
   
@@ -273,13 +275,13 @@ void Step::vSocketListen(void)
 //
 //  if ( ! bResult2 ) {
 //    if (oSysCall.iError() == EADDRINUSE) {
-//      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
 //             "Address in use (port: %lld). "
 //             "Check if another instance of RAPIDSSE is running!"_Stz,
 //             iPort);
 //    }
 //    else
-//      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
 //             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
 //  }
 
@@ -305,7 +307,7 @@ void Step::vSocketNew(void)
   bool bResult = pSocket->bSocket(oSysCall);
   
   if ( ! bResult )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
   m_pDataStack->vPushPtr(pSocket);

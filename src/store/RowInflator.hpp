@@ -20,6 +20,11 @@ namespace STORE
     static void vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                    HeadLine* aHeadLine);
 
+    static void vInflate_AllColumns_into_RowBufferAt(RowBuffer* pRowBuffer,
+                                                   i8 iAtCell,
+                                                   HeadLine* aHeadLine,
+                                                   i8 nSrcCols);
+
     static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,
                                                  HeadLine* aHeadLine,
                                                  i8 i_ColToRetrieve);

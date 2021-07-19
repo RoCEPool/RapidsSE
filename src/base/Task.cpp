@@ -6,6 +6,8 @@
 
 #include "PsxThd.hpp" //?
 #include "TagConstants.h" //?
+#include "Job.hpp" //?
+#include "Grid.hpp" //?
 
 Atomic gixTask;
 
@@ -66,7 +68,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob)
 : Object(CN_TASK)
-, m_okLock(this)
+, m_okLock(this,false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -96,7 +98,7 @@ Task::Task(Job* pJob)
   m_nOperandYield = 10;
 
   m_pSeedWord       = nullptr;
-  m_pExceptionWord  = nullptr;
+  m_pRecoveryWord  = nullptr;
   
   m_bSeedInitially  = false;
   m_bDoneFinally    = false;
@@ -115,6 +117,10 @@ Task::Task(Job* pJob)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
 
+#ifdef WITH_LOCK_SETS
+  ASSERT(! m_oWriteLocks.nItems());
+#endif
+  
   _checkInitialised_(CN_TASK);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,6 +147,10 @@ Task::~Task(void) noexcept(false)
 
   RASSERT(m_bSeedInitially);
   RASSERT(m_bDoneFinally);
+  
+#ifdef WITH_LOCK_SETS
+  ASSERT(! m_oWriteLocks.nItems());
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -214,9 +224,7 @@ void Task::vTaskLoop(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAssertStructure();
-  
+    
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
@@ -224,17 +232,23 @@ void Task::vTaskLoop(void)
     //   dereference it to get the intrinsic function to be called
     fpMEMBERFN fpStepFn = * ( (m_aInxPtr ++)->m_afpStepFn );
     
-    // call the intinsic
+    // call the non-virtual member/step function against this task
     try {
       
-      ( ((Object*)this)->*fpStepFn ) ();
+      (this->*fpStepFn) ();
 
+      //
+      // for example if the step function is:
+      //   void Step::vIntAdd(void) { ... }
+      //
+      // then it is the dynamic equivalent of:
+      //   this->vIntAdd();
+      //
     }
     
     // catch exception
     catch (Exception xException) {
-      xException.vJob(m_pJob);
-      vCaught(xException);
+      vExceptionHandler(xException);
     }
   }
   
@@ -244,12 +258,79 @@ void Task::vTaskLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert task is structurally correct                                        */
+/* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStructure(void)
+void Task::vExceptionHandler(Exception xException)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _noPreconditions_
   
+  vExceptionTrace();
+  vDumpOnFailure();
+  
+  vContinueAfterFailure();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace the task on exception                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vExceptionTrace(void)
+{
+  _noPreconditions_
+  
+  //
+  // trace what is relevant for debugging.  could be quite substantial
+  //
+  
+  vTrace("\n\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("Exception Trace of Task %p\n"_Stz
+         
+         ,this
+         );
+  
+  
+  AM::vTaskDump();
+  vContentDump();
+  AM::vTaskFullTrace(this);
+  
+  
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task continues after failure                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vContinueAfterFailure(void)
+{
+  vResetSenContext();
+  
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* detailed dump of task on exception                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vDumpOnFailure(void)
+{
+  _noPreconditions_
+  
+  vTrace("\n\n"_Stz);
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("Dump of Task %p\n"_Stz
+         
+         ,this
+         );
+
+  
+  vTrace("1) TBD \n"_Stz);
+  vTrace("2) TBD \n"_Stz);
+  vTrace("3) TBD \n"_Stz);
+
+  
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("\n\n"_Stz);
 }
 
 
@@ -349,22 +430,6 @@ Object* Task::pArgObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* caught an exception in vTaskLoop catch(Exception xException) {...}         */
-/*----------------------------------------------------------------------------*/
-void Task::vCaught(Exception xException)
-{
-  xException.vCaught();
-  
-  AM::vTaskOnExceptionTrace(this);
-  
-  vReset();
-  
-  m_aInxPtr = m_pExceptionWord->aFirstCell();
-
-  //vAbortProcess();
-}
-
-/*----------------------------------------------------------------------------*/
 /* check for break point                                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vCheckBreakPt(void)
@@ -380,6 +445,18 @@ void Task::vCheckBreakPt(void)
     return;
   
   BASE::vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current executing word                                                 */
+/*----------------------------------------------------------------------------*/
+Word* Task::pCurWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pCurWord = m_oDicStack.pLocateRoutine(m_aInxPtr);;
+  
+  return pCurWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,9 +558,9 @@ void Task::vDump(void)
   vTrace("m_pSeedWord=%s %p\n"_Stz,
          m_pSeedWord->szWordNm(),
          m_pSeedWord);
-  vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
-         m_pExceptionWord);
+  vTrace("m_pRecoveryWord=%s %p\n"_Stz,
+         m_pRecoveryWord ? m_pRecoveryWord->szWordNm() : C_NO_NAME,
+         m_pRecoveryWord);
 
   m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
   m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
@@ -517,6 +594,80 @@ void Task::vEntryPoint(eEP eEntryPoint)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eEntryPoint = eEntryPoint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event hander                                                           */
+/*----------------------------------------------------------------------------*/
+Word* Task::pEventHandler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  Word* pEventHandler = nullptr;
+  CodeCell* aFip = nullptr;
+  Word* pWord = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord &&
+      pWord->pCategory() &&
+      pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+    pEventHandler = pWord;
+    
+    return pEventHandler;
+  }
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nItems = m_pReturnStack->nValues();
+  for (i8 i_Item = nItems; i_Item >= 0; i_Item--) {
+    TypedCell* aPeekedItem = m_pReturnStack->aPeekItem(i_Item);
+    eCN eType = aPeekedItem->eType();
+    if (CN_FIPVAL != eType)
+      continue;
+    
+    aFip = aPeekedItem->aFip();
+    pWord = m_oDicStack.pLocateRoutine(aFip);
+    
+    if (pWord &&
+        pWord->pCategory() &&
+        pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+      pEventHandler = pWord;
+      break;
+    }
+  }
+  
+//  if (! pEventHandler) {
+//    m_pReturnStack->vDump(&m_oDicStack,
+//                          "ReturnStack:"_Stz);
+//
+//  }
+  
+  return pEventHandler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop all locks held by this task                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDropAllLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  i8 i_Item;
+  Lock* p_Lock;
+
+  // drop write locks
+  while (C_UNKNOWN != (i_Item = m_oWriteLocks.iFirst())) {
+    p_Lock = m_oWriteLocks.pGet(i_Item);
+    p_Lock->vDropWrite();
+  }
+  
+  // drop read locks
+  while (C_UNKNOWN != (i_Item = m_oReadLocks.iFirst())) {
+   p_Lock = m_oReadLocks.pGet(i_Item);
+   p_Lock->vDropRead();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -772,21 +923,39 @@ void Task::vQueue(eQK eQueue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get read lock set                                                          */
+/*----------------------------------------------------------------------------*/
+LockSet* Task::pReadLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+#ifdef WITH_LOCK_SETS
+
+  return & m_oReadLocks;
+  
+#else
+  
+  return nullptr;
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* reseed task                                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vReseed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  vReset();
+  vResetSenContext();
 
   vSeedTask();
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset forth execution context                                              */
+/* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vReset(void)
+void Task::vResetSenContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -845,7 +1014,7 @@ void Task::vSeedTask(void)
   if (! pSeedWord) {
     AM::szJobSeed(m_pJob);
     
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
@@ -855,20 +1024,19 @@ void Task::vSeedTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
-  if (pExceptionWord) {
-    m_pExceptionWord = pExceptionWord;
+  Word* pRecoveryWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
+  if (pRecoveryWord) {
+    m_pRecoveryWord = pRecoveryWord;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionDef = pDicRoot->pFindWord("std_exceptionHook"_Stz);
-  if (pExceptionDef) {
-    m_pExceptionWord = pExceptionDef;
+  pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
+  if (pRecoveryWord) {
+    m_pRecoveryWord = pRecoveryWord;
     return;
   }
-
 
 }
 
@@ -1153,6 +1321,25 @@ u8 Task::uWakeupTime(void)
   
   return uMicroseconds;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get write lock set                                                         */
+/*----------------------------------------------------------------------------*/
+LockSet* Task::pWriteLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+#ifdef WITH_LOCK_SETS
+
+  return & m_oWriteLocks;
+  
+#else
+  
+  return nullptr;
+  
+#endif
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -28,21 +28,18 @@ namespace BASE
   [[ noreturn ]] void vAbortProcess(void);
     
   [[ noreturn ]] void vThrow(eFK   eKind,
-                             eVL   eSeverity,
-                             const char* azFunc,
+                              const char* azFunc,
                              const char* azFilePath,
                              i8    iLineNo,
-                             Stz*  szFormat,...);
+                             Stz*  szCondition,...);
   
   [[ noreturn ]] void vThrowUser(eFK   eKind,
-                             eVL   eSeverity,
                              const char* azFunc,
                              const char* azFilePath,
                              i8    iLineNo,
                              Stz*  szFormat,...);
   
   [[ noreturn ]] void vThrowType(eFK   eKind,
-                                 eVL   eSeverity,
                                  const char* azFunc,
                                  const char* azFilePath,
                                  i8    iLineNo,
@@ -50,7 +47,6 @@ namespace BASE
                                  eCN   eExpectingClass);
 
   [[ noreturn ]] void vThrowType2(eFK   eKind,
-                                  eVL   eSeverity,
                                   const char* azFunc,
                                   const char* azFilePath,
                                   i8    iLineNo,

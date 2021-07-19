@@ -140,6 +140,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCATION,
   /* */ CN_LOCATOR,
   /* */ CN_LOCK,
+  /* */ CN_LOCKSET,
   /* */ CN_LOGICCOMPILER,
   /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
@@ -156,6 +157,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__N__,
   /* */ CN_NAMEDBUFFER,
+  /* */ CN_NESTEDPIPELINESPEC,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
@@ -237,6 +239,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUWORK,
 
   /* */ CN__S__,
+  /* */ CN_SCANNER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
@@ -480,6 +483,7 @@ static Stz* aCN[]
   /* */ "LOCATION"_Stz,             // CN_LOCATION
   /* */ "LOCATOR"_Stz,              // CN_LOCATOR
   /* */ "LOCK"_Stz,                 // CN_LOCK
+  /* */ "LOCKSET"_Stz,              // CN_LOCKSET
   /* */ "LOGICCOMPILER"_Stz,        // CN_LOGICCOMPILER
   /* */ "LOGICTIMER"_Stz,           // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
@@ -496,6 +500,7 @@ static Stz* aCN[]
  
   /* */ "_N__"_Stz,                 // CN__N__
   /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
+  /* */ "NESTEDPIPELINESPEC"_Stz,   // CN_NESTEDPIPELINESPEC
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE
@@ -577,6 +582,7 @@ static Stz* aCN[]
   /* */ "RUWORK"_Stz,               // CN_RUWORK
  
   /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "SCANNER"_Stz,              // CN_SCANNER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY

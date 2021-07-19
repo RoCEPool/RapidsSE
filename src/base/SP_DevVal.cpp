@@ -1,0 +1,98 @@
+/*============================================================================*/
+/* SP_DecVal.cpp - Decimal Value sprint helper                                */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "SP_DecVal.hpp"
+#include "DecVal.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_DecVal::SP_DecVal(void)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+    
+  _checkInitialised_(CN_SPMEDIUM);
+  
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+SP_DecVal::~SP_DecVal(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint the margin                                                          */
+/*----------------------------------------------------------------------------*/
+void SP_DecVal::vDecVal(DecVal xDecVal)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+    
+  vInit();
+  
+  s32 sFormat;
+  
+  if (xDecVal.m_nPlaces) {
+  
+    sFormat.vSprint("%%lld.%%0%lldlld"_Stz
+                    ,xDecVal.m_nPlaces
+                    );
+  
+    vCatf(sFormat
+          ,(i8)xDecVal.m_iValue / IntLib::iTenToPow(xDecVal.m_nPlaces)
+          ,(i8)xDecVal.m_iValue % IntLib::iTenToPow(xDecVal.m_nPlaces)
+          );
+  }
+  else {
+    sFormat.vSprint("%%lld."_Stz);
+
+    vCatf(sFormat
+          ,(i8)xDecVal.m_iValue / IntLib::iTenToPow(xDecVal.m_nPlaces)
+          );
+  }
+//  vCatf("(%18lld,%02lld)"_Stz
+//          ,(i8)xDecVal.m_iValue
+//          ,xDecVal.m_nPlaces
+//          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_DecVal::sz(void)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_DecVal::sz(DecVal xDecVal)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+
+  vDecVal(xDecVal);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(SP_DecVal);
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

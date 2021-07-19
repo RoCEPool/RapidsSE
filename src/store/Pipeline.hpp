@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Stage; class PipelineSpec; }
+
 namespace STORE
 {
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
@@ -35,7 +37,6 @@ namespace STORE
     Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
-    void     vDump(void);
     bool     bCancel(Task* pTriggeringTask);
     void     vCancelled(bool bCancelled);
     bool     bCancelled(void);

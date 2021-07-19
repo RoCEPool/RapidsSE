@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "eWK.h"
+#include "TagConstants.h"
 
 extern Stz* gszaMungedText[];
 
@@ -20,7 +21,7 @@ void Task::vAddMunged(void)
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged()) {
 
-    if (AM::bVerbose())
+    if (AM::TRACE::bVerbose(C_VB_BOOT))
       vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
 
     vNewInput();
@@ -40,7 +41,7 @@ void Task::vAddAxioms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (AM::bVerbose())
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding axiomatic routines...\n"_Stz);
   
   vNewInput();
@@ -469,7 +470,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
           pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {
-          vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+          vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
                  "Invalid eWordType %lld"_Stz,pCalledWord->eWord());
         }
         break;
@@ -494,7 +495,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
         
       // -- -- -- -- -- -- -- -- -- --
       default:
-        vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+        vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
                "Invalid eToken %lld %s"_Stz,
                eToken,
                szChars
@@ -532,10 +533,6 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   // get string
   pInput->vReadToken();
-
-  //if (AM::bVerbose())
-  //  vTrace("CompileConstant: %s\n"_Stz,
-  //         pInput->szChars());
   
   sValue = (Stz*)pInput->szChars()->azChar();
   

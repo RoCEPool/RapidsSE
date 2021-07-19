@@ -10,11 +10,10 @@
 : pipelineLocal_req _eeh_suffix ( -- )
 
   task[] locals| pTask |
-  job[]  locals| pJob_pipeline |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile dup
+  <cmd> Job_Pipeline::compile dup
   EC_NONE != if
     //"got error" .
     job::error! !!logError DONE_REQ
@@ -22,7 +21,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  job[] job_Pipeline.begin
+  Job_Pipeline::begin
 
   // run <pre_execute>
 
@@ -54,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  pJob_pipeline job_Pipeline.execute if
+  Op_Pipeline::execute if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish

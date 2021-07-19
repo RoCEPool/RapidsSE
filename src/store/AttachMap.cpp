@@ -57,7 +57,7 @@ AttachMap::AttachMap(void)
   
   gpAttachMap = this;
   
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,
           sizeof(AttachMap));
@@ -197,7 +197,6 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nIndexEntries);
   vInfo("LvlLevels    : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nLvlLevels);
   
-  vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bTracepoint ? "true"_Stz : "false"_Stz);
   vInfo("Progress     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bProgress ? "true"_Stz : "false"_Stz);
   vInfo("Metadata     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bMetadata ? "true"_Stz : "false"_Stz);
@@ -243,7 +242,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  if (AM::bVerboseProgress())
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
   m_xSysArgs.m_nBootNodes       = pCmdLineArgs->m_xSysArgs.m_nBootNodes;

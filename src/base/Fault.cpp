@@ -16,7 +16,7 @@ void Fault::SwitchDefault(i8 eVal,
   _static_
   UNUSED(e_Enum);
   
-  vThrow(FK_CHECK,VL_FATAL,azFunc,azFilePath,iLineNo,
+  vThrow(FK_CHECK,azFunc,azFilePath,iLineNo,
          "Invalid default in switch statement: switch(%lld)"_Stz,eVal);
 }
 

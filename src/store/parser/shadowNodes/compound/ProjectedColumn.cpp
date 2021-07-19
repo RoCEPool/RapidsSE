@@ -10,6 +10,9 @@
 #include "PlanConstants.hpp"
 #include "NodeNamer.hpp"
 #include "Expr.hpp"
+#include "AvgExpr.hpp"
+#include "SumExpr.hpp"
+#include "CountExpr.hpp"
 
 #include "GraphNav.hpp"
 
@@ -145,6 +148,16 @@ b1 ProjectedColumn::bContainsAnAggregate(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the expression in this node is literal.                    */
+/*----------------------------------------------------------------------------*/
+b1 ProjectedColumn::bIsFullyLiteral(QueryNode* pNode)
+{
+  QueryNode *pExprNode = ProjectedColumn::pExprNode(pNode);
+
+  return Expr::bIsFullyLiteral(pExprNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the exprNode of the ProjectedColumn                                */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
@@ -196,6 +209,129 @@ void ProjectedColumn::vSetAlias(QueryNode* pNode, Text *pNewAlias)
 
   Value xVal(pNewAlias);
   pAliasNode->vSetValue(static_cast<Value&&>(xVal));
+}
+
+/*----------------------------------------------------------------------------*/
+/* If the given projectedColumn requires partitioning then a non-null         */
+/* QueryNodeList is returned which contains those partitioned                 */
+/* projected columns.                                                         */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
+{
+  // Some aggregate expressions need to be modified to enable partitioning.
+  // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
+  // and then in the super-aggregating ProjectOp it converts this back into an
+  // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
+  //
+  // However the expression may be more complex and partitioning it may actually
+  // require multiple columns to be projected. e.g. consider the expression:
+  //   AVG(x) + MIN(y)
+  // This would require the partition level to emit columns for:
+  //   SUM(x), COUNT(x), MIN(y)
+  // Then when all partitions are super-aggregated we can reassemble the desired
+  // result with:  SUM(SUM(x))/SUM(COUNT(x)) + MIN(MIN(y))
+
+
+  QueryNodeList* pProjectedColList = nullptr;
+  QueryNode* pExpr = pExprNode(pNode);
+
+  // Get a list of aggregate terms appearing in this expression
+  QueryNodeList* pAggList = Expr::pAggregateExprs(pExpr, false);
+
+  if (pAggList->nItems() == 0) {
+    delete pAggList;
+    return pProjectedColList;
+  }
+
+  pProjectedColList = new QueryNodeList();
+  QueryNodeIter* pIter = pAggList->pNewIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pAgg = pIter->pNext();
+
+    if (AvgExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChild = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the SUM() projected column and add it to the list
+      QueryNode* pSumExpr = SumExpr::pCreate(false, pChild->pDeepCopy(true));
+      QueryNode* pSumCol  = ProjectedColumn::pCreate(pSumExpr, nullptr);
+      pProjectedColList->vAppend(pSumCol);
+
+      // Create the COUNT() projected column and add it to the list
+      QueryNode* pCountExpr = CountExpr::pCreate(false, false, pChild->pDeepCopy(true));
+      QueryNode* pCountCol  = ProjectedColumn::pCreate(pCountExpr, nullptr);
+      pProjectedColList->vAppend(pCountCol);
+
+    } else {
+      // An aggregate that is not an AVG()
+      ASSERT(AggregateExpr::bIsOfType(pAgg));
+      QueryNode* pNewCol = ProjectedColumn::pCreate(pAgg->pDeepCopy(true), nullptr);
+      pProjectedColList->vAppend(pNewCol);
+    }
+  }
+
+  delete pIter;
+  pAggList->vRemoveAll();
+  delete pAggList;
+
+  return pProjectedColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the aggregate expression in pNode to super-aggregate results from  */
+/* each partition or node                                                     */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
+  // SUM(SUM(x))/SUM(COUNT(x))
+
+  QueryNode* pExpr = pExprNode(pNode);
+
+  Expr::vSuperAggregate(pExpr);
+  ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
+  ASSERT(Expr::bIsOfType(pExpr));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the aggregate expression in pNode to super-aggregate results from  */
+/* each partition or node. This version super-aggregates twice to factor in   */
+/* node-level aggregation.                                                    */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vDoubleSuperAggregate(QueryNode* pNode)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
+  //   SUM(SUM(x))/SUM(COUNT(x))
+  // A double-super-aggregation replaces AVG(x) with:
+  //   SUM(SUM(SUM(x)))/SUM(SUM(COUNT(x)))
+
+  QueryNode* pExpr = pExprNode(pNode);
+
+  Expr::vSuperAggregate(pExpr);
+  Expr::vSuperAggregate(pExpr);
+  ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
+  ASSERT(Expr::bIsOfType(pExpr));
 }
 
 /*============================================================================*/

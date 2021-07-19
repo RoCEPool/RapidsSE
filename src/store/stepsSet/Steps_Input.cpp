@@ -142,7 +142,7 @@ void Step::vInputOpen(void)
   bool bOpened = m_pInput->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "No such file: %s"_Stz,sFilePath.szStz());
 
   EXIT();

@@ -14,6 +14,7 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
+#include "EachRowBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
@@ -29,6 +30,8 @@ void Step::vAddSteps_DevLftRow(void)
 {
   vAddStep("DevLftRow.deleteEachRowBuffer"_Stz, &Step::vDevLftRowDeleteEachRowBuffer);
   vAddStep("DevLftRow.eachRowBuffer!"_Stz,      &Step::vDevLftRowEachRowBufferStore);
+  vAddStep("DevLftRow.row!"_Stz,                &Step::vDevLftRowRowStore);
+  vAddStep("DevLftRow.rowBuffer@"_Stz,          &Step::vDevLftRowRowBufferFetch);
   vAddStep("DevLftRow.rowBuffer!"_Stz,          &Step::vDevLftRowRowBufferStore);
   vAddStep("DevLftRow.streamDef!"_Stz,          &Step::vDevLftRowStreamDefStore);
 }
@@ -58,6 +61,34 @@ void Step::vDevLftRowEachRowBufferStore(void)
   EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pEachRowBuffer = pEachRowBuffer;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevLftRow.row! -- store row in DevLftRow                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vDevLftRowRowStore(void)
+{
+  ENTRY();
+
+  EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_aRow = pEachRowBuffer->pRowAddress(0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevLftRow.rowBuffer@ -- fetch rowBuffer in DevLftRow                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDevLftRowRowBufferFetch(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pRowBuffer;
+
+  m_pDataStack->vPushPtr(pRowBuffer);
 
   EXIT();
 }

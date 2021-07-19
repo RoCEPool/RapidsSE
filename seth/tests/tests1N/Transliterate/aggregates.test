@@ -68,10 +68,7 @@ rows:
 -- basic select of aggregation
 SELECT SUM(n_regionkey) FROM nation;
 rows: 
-  (2)
-  (20)
-  (12)
-  (19)
+  (53)
 
 -- basic select of grouped columnRef and aggregation
 -- we see INDIA twice because they are coming from different partitions (different nationKey)
@@ -94,13 +91,13 @@ rows:
   ('BRAZIL',1)
   ('CHINA',2)
   ('INDIA',4)
-  ('INDONESI',2)
+  ('INDONESIA',2)
   ('IRAN',4)
   ('RUSSIA',3)
-  ('UNITED K',3)
-  ('UNITED S',1)
+  ('UNITED KINGDOM',3)
+  ('UNITED STATES',1)
  
-  ('ARGENTIN',1)
+  ('ARGENTINA',1)
   ('ETHIOPIA',0)
   ('IRAQ',4)
   ('JAPAN',2)
@@ -108,42 +105,39 @@ rows:
   ('MOZAMBIQ',0)
   ('PERU',1)
   ('ROMANIA',3)
-  ('SAUDI AR',4)
-
+  ('SAUDI ARABIA',4)
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
 SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 rows:
- ('KENYA',14)
- ('MOROCCO',15)
+ ('MOZAMBIQUE',16)
+ ('INDONESIA',9)
  ('VIETNAM',21)
-
  ('ALGERIA',0)
- ('CANADA',3)
- ('EGYPT',4)
- ('FRANCE',6)
- ('GERMANY',7)
-
- ('ARGENTIN',1)
- ('ETHIOPIA',5)
  ('IRAQ',11)
- ('JAPAN',12)
+ ('GERMANY',7)
+ ('ARGENTINA',1)
+ ('UNITED STATES',24)
+ ('UNITED KINGDOM',23)
  ('JORDAN',13)
- ('MOZAMBIQ',16)
- ('PERU',17)
- ('ROMANIA',19)
- ('SAUDI AR',20)
-
- ('BRAZIL',2)
+ ('ETHIOPIA',5)
+ ('KENYA',14)
+ ('RUSSIA',22)
+ ('CANADA',3)
+ ('FRANCE',6)
+ ('JAPAN',12)
  ('CHINA',18)
+ ('PERU',17)
+ ('EGYPT',4)
+ ('IRAN',10)
  ('INDIA',8)
  ('INDIA',26)
- ('INDONESI	',9)
- ('IRAN',10)
- ('RUSSIA',22)
- ('UNITED K',23)
- ('UNITED S',24)
+ ('BRAZIL',2)
+ ('ROMANIA',19)
+ ('SAUDI ARABIA',20)
+ ('MOROCCO',15)
 */
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Projected superset of group by
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,135 +145,160 @@ rows:
 -- projected ColumnRef is superset of GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
 rows:
-  (30,0)
-  (32,0)
-  (44,2)
- 
-  (2,0)
-  (8,2)
-  (10,4)
-  (14,3)
-  (16,3)
- 
-  (4,1)
-  (12,0)
-  (24,4)
-  (26,2)
-  (28,4)
-  (34,0)
-  (36,1)
-  (40,3)
-  (42,4)
- 
-  (6,1)
-  (18,2)
-  (20,2)
-  (22,4)
-  (38,2)
   (46,3)
-  (48,3)
-  (50,1)
+  (24,4)
+  (20,2)
+  (32,0)
   (54,2)
-
+  (40,3)
+  (44,2)
+  (8,2)
+  (36,1)
+  (12,0)
+  (10,4)
+  (2,0)
+  (22,4)
+  (14,3)
+  (30,0)
+  (28,4)
+  (6,1)
+  (34,0)
+  (16,3)
+  (26,2)
+  (50,1)
+  (42,4)
+  (4,1)
+  (38,2)
+  (48,3)
+  (18,2)
 
 -- projected ColumnRef is equal to GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
 rows:
- (30,0)
- (32,0)
+ (22,4)
  (44,2)
-
- (2,0)
- (8,2)
- (10,4)
- (14,3)
- (16,3)
-
+ (42,4)
+ (40,3)
+ (48,3)
+ (26,2)
+ (30,0)
+ (28,4)
+ (54,2)
  (4,1)
+ (34,0)
+ (10,4)
+ (6,1)
+ (36,1)
+ (50,1)
+ (14,3)
+ (2,0)
+ (16,3)
+ (46,3)
+ (32,0)
+ (38,2)
  (12,0)
  (24,4)
- (26,2)
- (28,4)
- (34,0)
- (36,1)
- (40,3)
- (42,4)
-
- (6,1)
- (18,2)
  (20,2)
- (22,4)
- (38,2)
- (46,3)
- (48,3)
- (50,1)
- (54,2)
+ (18,2)
+ (8,2)
 
 -- select expr is a superset of group by expr
-/*
 SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
 rows:
- (1,0)
- (1,0)
- (5,2)
+  (23,3)
+  (12,2)
+  (10,3)
+  (16,4)
+  (27,3)
+  (4,1)
+  (18,4)
+  (29,2)
+  (6,0)
+  (5,2)
+  (1,0)
+  (11,5)
+  (15,6)
+  (3,1)
+  (17,0)
+  (25,4)
+  (26,4)
+  (21,2)
+  (19,1)
+  (24,2)
+  (9,4)
 
- (1,0)
- (3,2)
- (9,4)
- (7,3)
- (7,3)
-
- (3,1)
- (5,2)
- (5,2)
- (9,4)
- (5,2)
- (7,3)
- (7,3)
- (3,1)
- (5,2)
-
- (3,1)
- (1,0)
- (9,4)
- (5,2)
- (9,4)
- (1,0)
- (3,1)
- (7,3)
- (9,4)
-*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  HAVING clause
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
 -- Basic HAVING clause
+/*
 SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows:
+  ('VIETNAM',21)
+  ('PERU',17)
+  ('ARGENTINA',1)
+  ('JAPAN',12)
+  ('IRAQ',11)
+  ('CANADA',6)
+  ('INDONESIA',9)
+  ('FRANCE',6)
+  ('JORDAN',13)
+  ('MOROCCO',15)
+  ('ROMANIA',19)
+  ('IRAN',10)
+  ('EGYPT',4)
+  ('RUSSIA',22)
+  ('SAUDI ARABIA',20)
+  ('BRAZIL',2)
+  ('UNITED STATES',24)
+  ('CHINA',18)
+  ('GERMANY',7)
+  ('INDIA',34)
+  ('UNITED KINGDOM',23)
+  ('MOZAMBIQUE',16)
+  ('KENYA',14)
+  ('ETHIOPIA',5)
 
 -- HAVING clause with aggregate not in select list
 SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
 rows:
-
+  ('VIETNAM')
+  ('PERU')
+  ('ARGENTINA')
+  ('JAPAN')
+  ('IRAQ')
+  ('CANADA')
+  ('INDONESIA')
+  ('FRANCE')
+  ('JORDAN')
+  ('MOROCCO')
+  ('ROMANIA')
+  ('IRAN')
+  ('EGYPT')
+  ('RUSSIA')
+  ('SAUDI ARABIA')
+  ('BRAZIL')
+  ('UNITED STATES')
+  ('CHINA')
+  ('GERMANY')
+  ('INDIA')
+  ('UNITED KINGDOM')
+  ('MOZAMBIQUE')
+  ('KENYA')
+  ('ETHIOPIA')
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-*/
 
 SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
 rows:
  (1)
- (1)
- (1)
- (1)
 
 SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows:
- (23)
- (114)
- (142)
- (50)
+ (329)
 
 DROP TABLE nation;
 success

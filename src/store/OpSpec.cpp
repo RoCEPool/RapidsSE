@@ -10,25 +10,15 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* OpSpec::operator new(size_t)
-{
-  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(Heaps::pAllocate(CN_OPSPEC));
-  
-  return pOpSpec;
-}
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void OpSpec::operator delete(void* aAddr)
-{
-  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(aAddr);
+__pCastFunction(STORE,OpSpec,CN_OPSPEC)
+__aNewFunction(OpSpec,CN_OPSPEC)
+__vDeleteFunction(OpSpec,CN_OPSPEC)
+__aFooterFunction(OpSpec)
 
-  Heaps::vFree(pOpSpec);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -38,23 +28,23 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sPipelineNm   = pStageSpec->pPipelineSpec()->szPipelineNm();
-  m_sStageNm      = pStageSpec->szStageNm();
   m_sOpNm         = szOpNm;
-  
-  m_i_StageSpec   = pStageSpec->i_StageSpec();
-  m_i_OpSpec      = i_OpSpec;
-  
-  m_pJob          = pStageSpec->pPipelineSpec()->pJob();
-  m_pPipelineSpec = pStageSpec->pPipelineSpec();
+    
   m_pStageSpec    = pStageSpec;
+  m_i_OpSpec      = i_OpSpec;
+
+  //m_oArgTags
+  //m_oTopologyTags
+
+  m_eCrossTopo    = PX_NONE;
+  m_i_NextStage   = C_UNKNOWN;
+  m_i_NextOp      = C_UNKNOWN;
+  m_i_OtherStage  = C_UNKNOWN;
+  m_i_OtherOp     = C_UNKNOWN;
 
   m_bAppendRight  = false;
-  m_eSendKind     = XK_NORMAL;
+  m_eSendKind     = XK_UNICAST;
 
-  //m_oOpSpecTagSet
-  //m_oTopologyTagSet
-  
   _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -74,36 +64,13 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add an ename pair                                                          */
+/* set append right                                                           */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
+void OpSpec::vAppendRight(bool bRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-  
-  m_oOpSpecTagSet.vInsert(sName, sValue);
-}
 
-/*----------------------------------------------------------------------------*/
-/*add an ename pair                                                            */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oOpSpecTagSet.vInsert(sName, iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add an ename pair to hidden ename set                                      */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oTopologyTagSet.vInsert(sName, iValue);
+  m_bAppendRight = bRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,6 +81,110 @@ bool OpSpec::bAppendRight(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_bAppendRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an ename pair                                                          */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  UNUSED(eToken);
+  
+  m_oArgTags.vInsert(sName, sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/*add an ename pair                                                            */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vArgTagAdd(Stz* sName, i8 iValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  UNUSED(eToken);
+
+  m_oArgTags.vInsert(sName, iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the argument tag set                                                   */
+/*----------------------------------------------------------------------------*/
+TagSet* OpSpec::pArgTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return &m_oArgTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+ePX OpSpec::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vCrossTopo(ePX eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
+  m_i_NextStage = i_NextStage;
+  m_i_NextOp = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextOp                                                             */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::iNextOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_NextOp                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: vNextOp(i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextOp = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextStage                                                          */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::iNextStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_NextStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_NextStage                                                      */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: vNextStage(i8 i_NextStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextStage = i_NextStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +210,7 @@ void OpSpec::vOpNm(Stz* szOpNm)
 /*----------------------------------------------------------------------------*/
 /* get i_OpSpec                                                               */
 /*----------------------------------------------------------------------------*/
-i8 OpSpec::i_OpSpec(void)
+i8 OpSpec::iOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -149,7 +220,7 @@ i8 OpSpec::i_OpSpec(void)
 /*----------------------------------------------------------------------------*/
 /* set the i_opspec                                                           */
 /*----------------------------------------------------------------------------*/
-void OpSpec::v_OpSpec(i8 i_OpSpec)
+void OpSpec::vOpSpec(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -157,45 +228,43 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the TagSet                                                             */
+/* get m_i_OtherOp                                                            */
 /*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pOpSpecTagSet(void)
+i8 OpSpec::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oOpSpecTagSet;
+  return m_i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace an ename value                                                     */
+/* set the m_i_OtherOp                                                        */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oOpSpecTagSet.vReplace(szName, szValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace an ename value                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oTopologyTagSet.vReplace(szName, iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the topology TagSet                                                    */
-/*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pTopologyTagSet(void)
+void OpSpec:: vOtherOp(i8 i_OtherOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return & m_oTopologyTagSet;
+  m_i_OtherOp = i_OtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_OtherStage                                                         */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::iOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_OtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_OtherStage                                                     */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: vOtherStage(i8 i_OtherStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_OtherStage = i_OtherStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,24 +288,14 @@ void OpSpec::vSendKind(eXK eSendKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the stage spec                                                         */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print stage spec                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vPrint(void)
+StageSpec* OpSpec::pStageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
-    
-  m_oOpSpecTagSet.vDumpSet();
+  return m_pStageSpec;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(OpSpec)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -8,6 +8,7 @@ namespace BASE
   void  vInfo(Stz* szFormat,...);
   void  vTrace(Stz* szFormat,...);
   void  vTraceF(File* pFile, Stz* szFormat,...);
+  void  vTraceM(Stz* szFormat,...);
   void  vWarn(Stz* szFormat,...);
 }
 

@@ -18,6 +18,7 @@
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
+#include "SP_Stage.hpp"
 
 extern AttachMap gxAttachMap;
 
@@ -81,7 +82,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
-    RASSERT(AM::JOB::szJobNm(pOp->pOpJob())->bSame("start"_Stz));
+    RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
     // append a CANCELMARKER onto first operator
     pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
   }
@@ -129,27 +130,6 @@ Stream* Stage::pGetNodeStream(i8 i_Node)
   }
   
   return pStream;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-void Stage::vDump(Pipeline* pPipeline)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  UNUSED(pPipeline);
-  
-  i8 i_Stage = m_pStageSpec->i_StageSpec();
-  vTrace("\n[%lld] Stage %s Topology %s: \n"_Stz,
-         i_Stage,
-         m_sStageNm.szStz(),
-         aPO[m_pStageSpec->eTopology()]);
-
-  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
-    Stream* pStream = pGet(i_Stream);
-  
-    pStream->vDump();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,10 +272,10 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
-    if (! AM::JOB::szJobNm(pOp->pOpJob())->bSame("eatAll"_Stz) &&
-        ! AM::JOB::szJobNm(pOp->pOpJob())->bSame("statWrite"_Stz)) {
+    if (! AM::JOB::szJobNm(pOp->pJob())->bSame("eatAll"_Stz) &&
+        ! AM::JOB::szJobNm(pOp->pJob())->bSame("statWrite"_Stz)) {
 
-      RASSERT(AM::JOB::szJobNm(pOp->pOpJob())->bSame("start"_Stz));
+      RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
       // append a STARTMARKER onto first operator
       pOp->vAppendLeft(new Marker(OM_STARTMARKER),pTriggeringTask);
     }

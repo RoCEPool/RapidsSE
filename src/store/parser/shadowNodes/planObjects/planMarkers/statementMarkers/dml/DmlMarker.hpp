@@ -27,7 +27,7 @@ namespace Parser
     static b1 bIsExactType(Stz* pNode);
 
     // Explains any common properties of parent definitions
-    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent);
+    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent);
   };
 
 }

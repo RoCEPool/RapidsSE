@@ -88,6 +88,7 @@ namespace BASE {
   class Scheduler;
   class Socket;
   class Statistics;
+  class String;
 
   class TagSet;
   class Task;
@@ -236,6 +237,15 @@ namespace OBLIQUE
       static Stz* szJobNm(Job* pJob);
     };
   
+    class LOCK
+    {
+    public:
+      static void vIntendReadUnlocked(Lock* pLock);
+      static void vJustReadLocked(Lock* pLock);
+      static void vIntendWriteUnlocked(Lock* pLock);
+      static void vJustWriteLocked(Lock* pLock);
+    };
+  
     class LOG
     {
     public:
@@ -247,6 +257,18 @@ namespace OBLIQUE
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
 
+    class OPERAND
+    {
+    public:
+      static bool bIsOoO(Operand* pOperand);
+    };
+
+    class LOGICUNIT
+    {
+    public:
+      static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
+    };
+
     class PARCEL
     {
     public:
@@ -256,6 +278,8 @@ namespace OBLIQUE
     class PROMPT
     {
     public:
+      static bool bToPipelineStmt(String* pAsPipelineStmt,
+                                  TokenVec* pFromTokenVec);
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
@@ -273,6 +297,7 @@ namespace OBLIQUE
       static bool bLogMemory(void);
       static void vLogMemory(bool bLogMemory);
       static bool bLogResource(void);
+      static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
     class THREAD
@@ -287,6 +312,14 @@ namespace OBLIQUE
     
     };
   
+    class TRACE
+    {
+    public:
+      static bool bVBlong(void);
+      static bool bVerbose(Stz* szVBtag);
+      static bool bVerbose(Stz* szVBtag1, Stz* szVBtag2);
+    };
+
     class WORD
     {
     public:
@@ -401,8 +434,6 @@ namespace OBLIQUE
     static bool bTracepoint(void);
     static TxSet* pTxSet(void);
     static void vSendNode(Op* pOp, i8 i_SendNode);
-    static bool bVerbose(void);
-    static bool bVerboseProgress(void);
 
     //
     static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
@@ -419,7 +450,6 @@ namespace OBLIQUE
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
-    static void vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask);
 
     //
     static Task* pExecutingTask(Job* pJob);
@@ -474,9 +504,6 @@ namespace OBLIQUE
     static void vJobDelete(Job** ppJob);
     static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
-
-    static bool bIsOperandOoO(Operand* pOperand);
-
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
@@ -553,7 +580,7 @@ namespace OBLIQUE
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);
     static void vTaskMutexWait(Task* pTask);
-    static void vTaskOnExceptionTrace(Task* pTask);
+    static void vTaskFullTrace(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);

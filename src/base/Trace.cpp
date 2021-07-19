@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "SP_Margin.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */
 /*----------------------------------------------------------------------------*/
@@ -44,6 +46,23 @@ void BASE::vTraceF(File* pFile, Stz* aFormat, ...)
   }
   va_end(xVarArgs);
 }
+
+/*----------------------------------------------------------------------------*/
+/* report a trace message (with margin)                                       */
+/*----------------------------------------------------------------------------*/
+void BASE::vTraceM(Stz* aFormat, ...)
+{
+  va_list xVarArgs;
+
+  SP_Margin spMargin;
+ 
+  vTrace("%s "_Stz,spMargin.sz());
+
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+  va_end(xVarArgs);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* report a warning message                                                   */

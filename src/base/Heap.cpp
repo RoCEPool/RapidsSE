@@ -148,7 +148,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   
   m_okLock.vGrabWrite();
-
+  
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {

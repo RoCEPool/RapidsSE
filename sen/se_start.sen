@@ -38,10 +38,12 @@
   start::defProc_SqlCompiler
 
   // define the apriori system tables
+  "define the apriori system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
 
   // define the apriori infoset tables
+  "define the apriori infoset tables" .verbose
   start::defineInfoSets3
   start::defineInternalTables
 
@@ -51,6 +53,8 @@
   // and we can now spawn jobs
   //
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  "spawning demons" .verbose
 
   // spawn supervisor demon
   "" false superDemonPipeline api::spawnDemon not if

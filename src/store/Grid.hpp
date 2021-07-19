@@ -7,6 +7,9 @@
 #include <iterator>
 #include "Parcel.hpp"
 
+#include "Node.hpp" //?
+
+
 namespace STORE
 {
   class Grid : public Operand

@@ -30,8 +30,13 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
+#include "PipelineSpec.hpp"
 
 #include "eLH.h"
+#include "eXK.h"
+
+#include "REG_t.hpp"
+
 
 namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
@@ -131,11 +136,15 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
+    REF<Job>            m_xpJobRef;   // job reference
+    
+    REG<Object>*        m_paReg[C_MAX_REGS];
+    i8 m_nRegs;
+    
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
     REG<Dir>            m_xpDir1;     // dir1[]
-    REG<Dynamo>         m_xpDynamo;   // dynamo pipleine compiler
     REG<ExprEval>       m_xpExprEval; // expr eval
     REG<File>           m_xpFile0;    // file0[]
     REG<File>           m_xpFile1;    // file1[]
@@ -145,7 +154,6 @@ namespace STORE
     REG<IndexStream>    m_xpIndexStream;
     REG<InfoSet>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
-    REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
     REG<Node>           m_xpNode;      // node reference
@@ -156,8 +164,10 @@ namespace STORE
     REG<Operand>        m_xpOperandB;  // operand B
     REG<Operand>        m_xpOperandC;  // operand C
     REG<Operand>        m_xpOperandOoO; // operand OoO
-    REG<Operand>        m_xpPipein;    // Pipein
     REG<PathIdentifier> m_xpPathIdentifier;
+    REG<Operand>        m_xpPipein;    // Pipein
+    REG<Pipeline>       m_xpPipeline;  // pipeline spec generate by dynamo
+    REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
@@ -166,6 +176,7 @@ namespace STORE
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to
+    REG<Sends>          m_xpSends;     // consume Sends
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDefLft;
@@ -182,7 +193,6 @@ namespace STORE
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
-    REG<Sends>          m_xpSends;     // consume Sends
 
     bool                m_bCompilerToExit;
 
@@ -244,6 +254,10 @@ namespace STORE
     i8 m_iNextCond;
   
     bool m_bSuperFrag;
+    
+    
+    eXK  m_eSendKind;      // send kind
+
   
     // must be last
     Footer m_xFooter;
@@ -260,6 +274,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vAddReg(REG<Object>* pReg);
     void vCC(i8 i_Cond);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);
@@ -276,6 +291,7 @@ namespace STORE
     void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);
+    void vFailure(void);
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);
@@ -287,6 +303,7 @@ namespace STORE
     void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
+    void vSetPipein(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -304,8 +321,10 @@ namespace STORE
 
     eEC eGenerateAggregate(ExprEval* pExprEval);
     eEC eGenerateFilter(ExprEval* pExprEval);
-    eEC eGenerateIndexScan(ExprEval* pExprEval);
     eEC eGenerateGroupBy(ExprEval* pExprEval);
+    eEC eGenerateHash(ExprEval* pExprEval);
+    eEC eGenerateIndexJoin(ExprEval* pExprEval);
+    eEC eGenerateIndexScan(ExprEval* pExprEval);
     eEC eGenerateLimit(i8 iLimit);
     eEC eGenerateLoopJoin(ExprEval* pExprEval);
     eEC eGenerateProjection(ExprEval* pExprEva);

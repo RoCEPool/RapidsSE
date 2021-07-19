@@ -14,6 +14,7 @@ enum eOM // operator markers
   /*    */ OM_DATAPULSE,
   /*    */ OM_DESTROYMARKER,
   /*    */ OM_EACHSCANEOSMARKER,
+  /*    */ OM_ENDRIGHTMARKER,
   /*    */ OM_EOSMARKER,
   /*    */ OM_ERRORMARKER,
   /*    */ OM_ERROREDMARKER,
@@ -24,8 +25,9 @@ enum eOM // operator markers
   /*    */ OM_PULSEDMARKER,
   /*    */ OM_RETURNMARKER,
   /*    */ OM_RETURNEDMARKER,
-  /*    */ OM_STARTMARKER,
   /*    */ OM_STARTEDMARKER,
+  /*    */ OM_STARTMARKER,
+  /*    */ OM_STARTRIGHTMARKER,
 
   /*    */ OM_ENUMS,
 };
@@ -41,6 +43,7 @@ static Stz* aOM[]
   /*    */ "DATAPULSE"_Stz,
   /*    */ "DESTROYMARKER"_Stz,
   /*    */ "EACHSCANEOSMARKER"_Stz,
+  /*    */ "ENDRIGHTMARKER"_Stz,
   /*    */ "EOSMARKER"_Stz,
   /*    */ "ERRORMARKER"_Stz,
   /*    */ "ERROREDMARKER"_Stz,
@@ -51,8 +54,9 @@ static Stz* aOM[]
   /*    */ "PULSEDMARKER"_Stz,
   /*    */ "RETURNMARKER"_Stz,
   /*    */ "RETURNEDMARKER"_Stz,
-  /*    */ "STARTMARKER"_Stz,
   /*    */ "STARTEDMARKER"_Stz,
+  /*    */ "STARTMARKER"_Stz,
+  /*    */ "STARTRIGHTMARKER"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

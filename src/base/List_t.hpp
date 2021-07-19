@@ -53,7 +53,7 @@ using namespace BASE;
 template <eCN CLASSNO, class ITEM>
 void* List_t<CLASSNO,ITEM>::operator new(size_t)
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "fatal: List_t class cannot be new'd"_Stz);
   
   NEVER_REACH;

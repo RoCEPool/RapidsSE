@@ -32,31 +32,6 @@ macro AM_INDEX_SCAN
   Label INDEX_SCAN
 endMacro
 
-// LOWERBOUNDASM
-  //<lboundType> <lboundLiteral>  // C_TAG_LBOUND_TYPE , C_TAG_LBOUND_LITERAL
-  //EO_DUMP
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_SETINTELM
-  //EO_PUSH_RLU_ENTWRK
-  //EO_PUSH_DEVIXT_SRC
-  //EO_DEVIXT_LBOUND
-
-  //EO_PUSH_DEVIXT_SRC
-  //EO_DEVIXT_ENT_PRINT
-
-// UPPERBOUNDASM
-  //Label DATAPULSE_INDEXRANGE_UPD
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_RESET
-  //<uboundType> <uboundLiteral>  // C_TAG_UBOUND_TYPE , C_TAG_UBOUND_LITERAL
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_SETINTELM_OLD
-  //EO_PUSH_RLU_ENTWRK
-  //EO_PUSH_DEVIXT_SRC
-  //EO_DEVIXT_UBOUND_LT / LE
-  //EO_JMP_TRUE AM_INDEX_TRAVERSE_TILL_UPPER
-
-
 
 macro AM_INDEX_POSITION_AT_START
 //----------------------------------------------------------------------------//
@@ -64,7 +39,7 @@ macro AM_INDEX_POSITION_AT_START
 //----------------------------------------------------------------------------//
   Label INDEX_POSITION_AT_START
   // no lower key position at beginning of index
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_BEGIN
 
   // no entry return
@@ -77,12 +52,12 @@ macro AM_INDEX_TRAVERSE_TILL_END
 //----------------------------------------------------------------------------//
   // no upper key traverse till end
   Label INDEX_TRAVERSE_TILL_END
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_NEXT
   EO_JMP_FALSE INDEX_SCAN_END
 
   // projection
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE
@@ -98,15 +73,15 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
   Label INDEX_TRAVERSE_TILL_UPPER
 
   // fetch next entry from index
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_NEXT
-  EO_JMP_FALSE INDEX_SCAN_DONE
+  EO_JMP_FALSE INDEX_SCAN_END
 
     // have we reached the upper entry
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_PUSH
 
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_PUSHUPPER
 
   EO_EQ_INTINT
@@ -114,7 +89,7 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
 
   // projection
   //EO_CRW_SRC_DEREF
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE

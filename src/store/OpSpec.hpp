@@ -12,23 +12,22 @@ namespace STORE
   class OpSpec : public Object
   {
   private:
-    s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name
     s32  m_sOpNm;       // op name
   
-    i8   m_i_StageSpec; // of stage spec no
-    i8   m_i_OpSpec;    // this op spec no
-
-    Job*          m_pJob;          // which job
-    PipelineSpec* m_pPipelineSpec; // which pipeline spec
     StageSpec*    m_pStageSpec;    // which stage spec
+    i8            m_i_OpSpec;      // which op in stage
+  
+    TagSet m_oArgTags;
+    
+    ePX m_eCrossTopo;
+    i8  m_i_NextStage;
+    i8  m_i_NextOp;
+    i8  m_i_OtherStage;    // other stage in the cross topology
+    i8  m_i_OtherOp;       // next Op in the other stage
 
     bool   m_bAppendRight; // append to right queue of next operator
-    eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
-    
-    TagSet m_oOpSpecTagSet;
-    TagSet m_oTopologyTagSet;
-    
+    eXK    m_eSendKind;    // {normal, broadcast, hashcast, robin, local robin} if send op
+
     // must be last
     Footer m_xFooter;
 
@@ -39,26 +38,34 @@ namespace STORE
     OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
-    void vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken);
-    void vAddEnamePair(Stz* sName, i8 iValue, eTN eToken);
-    void vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
+    void vAppendRight(bool bRight);
+    void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
+    void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
+    TagSet* pArgTags(void);
     Stz* szOpNm(void);
+    ePX  eCrossTopo(void);
+    void vCrossTopo(ePX eCrossTopo);
+    void vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
+    i8   iNextOp(void);
+    void vNextOp(i8 i_NextOp);
+    i8   iNextStage(void);
+    void vNextStage(i8 i_NextStage);
     void vOpNm(Stz* szOpNm);
-    i8   i_OpSpec(void);
-    void v_OpSpec(i8 i_OpSpec);
-    TagSet* pOpSpecTagSet(void);
-    void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);
-    void vReplaceTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
-    TagSet* pTopologyTagSet(void);
+    i8   iOpSpec(void);
+    void vOpSpec(i8 i_OpSpec);
+    i8   iOtherOp(void);
+    void vOtherOp(i8 i_OtherOp);
+    i8   iOtherStage(void);
+    void vOtherStage(i8 i_OtherStage);
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);
-
-    void vPrint(void);
   
     Footer* aFooter(void);
   };
+
+  OpSpec* _pOpSpec(void* aAddr);
 }
 
 /*============================================================================*/

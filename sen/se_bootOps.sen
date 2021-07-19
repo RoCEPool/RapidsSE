@@ -11,6 +11,7 @@ assert::stack_0
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
   "OP_aggreg.sen"               include
+  "OP_aggregateSplit.sen"       include
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
   "OP_answer.sen"               include
@@ -21,7 +22,7 @@ assert::stack_0
 
 "c" .verbose
 
-  "OP_callPipeline.sen"         include
+  "OP_call.sen"                 include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
   "OP_chunk.sen"                include
@@ -74,6 +75,7 @@ assert::stack_0
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
+  "OP_filterRight.sen"          include
 
 "g" .verbose
 
@@ -84,16 +86,17 @@ assert::stack_0
  
 "h" .verbose
 
+  "OP_hash.sen"                include
+
 "i" .verbose
 
+  "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_input.sen"                include
   "OP_insDel.sen"               include
   "OP_insert.sen"               include
 
 "j" .verbose
-
-  "OP_loopJoin.sen"             include
 
 "k" .verbose
 
@@ -113,6 +116,7 @@ assert::stack_0
   "OP_listTables.sen"           include
   "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
+  "OP_loopJoin.sen"             include
 
 "m" .verbose
 
@@ -147,6 +151,7 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
+  "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
   "OP_pwf.sen"                  include
   "OP_python.sen"               include
@@ -174,6 +179,7 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
+  "OP_scanRight.sen"            include
   "OP_send.sen"                 include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
@@ -197,6 +203,7 @@ assert::stack_0
 "t" .verbose
 
   "OP_tableSizes.sen"           include
+  "OP_throw.sen"                include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
   "OP_toDfload.sen"             include

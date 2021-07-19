@@ -4,114 +4,299 @@
 
 bc;
 
-create table T (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INDEX JOIN
+// T.a = J.a
+// PtnKey[T] = a
+// PtnKey[J] = a
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
 );
 
-print "loading nation.csv..." ;
-<<<<<<< HEAD
-load T "../TPCH/SF1/nation.tbl" ;
-=======
-load T "../DATA/TPCH/nation1.tbl" ;
->>>>>>> master
+print "loading T1.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
 
 
-create table J (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
 );
 
-print "loading nation.csv..." ;
-<<<<<<< HEAD
-load J "../TPCH/SF1/nationAgg.tbl" ;
-=======
-load J "../TPCH/SF1/nation.tbl" ;
->>>>>>> master
+create index jidx on  T2 (a);
+print "loading T2.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+
+pipeline indexJoinP
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+
+  stage stageC on all partitions :
+    indexJoin 0  T2 jidx "EQUAL $I1 $L1 == " | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+*/
 
 trackMemory;
 
-pipeline eachRowExp
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-<<<<<<< HEAD
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | stageC
-=======
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin "L.$1 R.$1 ==" | stageC
->>>>>>> master
-
-  stage stageC on origin :
-    output | sink | stageA
-end;
-
-MemoryLeaks;
-
-/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// T.N_NATIONKEY = J.N_NATIONKEY
-// PtnKey[T] = N_NATIONKEY
-// PtnKey[J] = N_NATIONKEY
-
-pipeline loopJoinPro
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T | loopJoin | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-end;
-
-ipeline loopJoin
-begin
-  stage stageA on origin :
-    start | periodic once | eachRow | stageB
-
-  stage stageB on origin :
-    eachScan J | eachJoin | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-end;
-/*
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// T.a = J.b
+// CO-PARTITIONED JOIN
+// T.a = J.a
 // PtnKey[T] = a
-// PtnKey[J] = c
+// PtnKey[J] = a
 
-pipeline JoinTables
+//drop table  T1;
+//drop table  T2; 
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading T1.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading T2.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan TableT | filter | stageD  (default leftQ)
+    scan T1 | stageC
 
   stage stageC on all partitions :
-    scan TableJ | filter | stageD rightQ hashed (on column b)
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
-  stage D on all partitions:
-    join "type boolean L.a R.b"
-    | stageE
+  stage stageD on origin :
+    output | sink | stageA
+end
+  <vb_op> = 1
+ ;
 
-  stage stageE on origin :
+//drop table  T1;
+//drop table  T2;
+
+//MemoryLeaks;
+
+/*
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// PARTITIONABLE JOIN
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = a
+
+drop table  T1;
+drop table  T2; 
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+
+print "loading nation.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading nation.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+pipeline loopJoinPart
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight  T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
     output | sink | stageA
 
 end;
-*/
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BROADCAST JOIN
+// T.a = J.a
+// PtnKey[T] = b
+// PtnKey[J] = c
+
+drop table  T1;
+drop table  T2; 
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (b);
+
+print "loading nation.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+
+print "loading nation.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+pipeline loopJoinBroad
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC broadcast
+
+  stage stageC on all partitions :
+    scanRight  T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+NODE0 2021-07-15 10:07:22        start (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22        start (    stageA) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22     periodic (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22     periodic (    stageA) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481ead2040 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481ead2040 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageC) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481ead2040 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22    consumeOp (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead2040
+NODE0 2021-07-15 10:07:22    consumeOp (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead2040
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead2040
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToOutput : STARTMARKER     0x20481ead2040
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : STARTMARKER     0x20481ead1c40
+NODE0 2021-07-15 10:07:22         sink (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTMARKER     0x20481ead1c40
+NODE0 2021-07-15 10:07:22         sink (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : STARTEDMARKER   0x20481ead1c40
+NODE0 2021-07-15 10:07:22        start (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : STARTEDMARKER   0x20481ead1c40
+NODE0 2021-07-15 10:07:22        start (    stageA) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481ead1c40
+NODE0 2021-07-15 10:07:22     periodic (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481ead1c40
+NODE0 2021-07-15 10:07:22     periodic (    stageA) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481ead1c40
+NODE0 2021-07-15 10:07:22     periodic (    stageA) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : PULSEDMARKER    0x20481ead1840
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481ead1c40
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eae4040 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : PULSEDMARKER    0x20481ead1840
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         send (    stageA) (N0) (P-1) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eaac840 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eaac840 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204828c00040
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : CRWBUFFER       0x204827700040
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204828c00040
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : PULSEDMARKER    0x20481ead1c40
+NODE0 2021-07-15 10:07:22    consumeOp (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : PULSEDMARKER    0x20481ead1c40
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481ead1840 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : EOSMARKER       0x20481eaac840
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : CRWBUFFER       0x204827700040
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         send (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eab3c40
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481ead5040 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         send (    stageC) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eac9440 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : PULSEDMARKER    0x20481ead1c40
+NODE0 2021-07-15 10:07:22         scan (    stageB) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : PULSEDMARKER    0x20481ead1c40
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : EOSMARKER       0x20481eaac840
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eac9440 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : PULSEDMARKER    0x20481ead1c40
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204822e00040
+NODE0 2021-07-15 10:07:22         send (    stageB) (N0) (P00) (job:0x204824150040)    vSendOverSocket : PARCEL          0x20481eac9440 NODE0 XK_UNICAST
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22    consumeOp (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204821f00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STARTRIGHTMARKER 0x20481ead1c40
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : CRWBUFFER       0x204822700040
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204822e00040
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : STREAMDEF       0x204822e00040
+NODE0 2021-07-15 10:07:22     loopJoin (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STREAMDEF       0x204822e00040
+NODE0 2021-07-15 10:07:22    consumeOp (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eac9440
+NODE0 2021-07-15 10:07:22    consumeOp (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eac9440
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : CRWBUFFER       0x204828c00040
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eac9440
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : STARTRIGHTMARKER 0x20481ead1c40
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToNextOp : DATAPULSE       0x20481eac9440
+NODE0 2021-07-15 10:07:22  filterRight (    stageC) (N0) (P00) (job:0x204824150040)        pPopOoOLeft : CRWBUFFER       0x204822700040
+NODE0 2021-07-15 10:07:22       output (    stageD) (N0) (P-1) (job:0x204824150040)      vPipeToOutput : DATAPULSE       0x20481ead1c40
+NODE0 2021-07-15 10:07:22         sink (    stageD) (N0) (P-1) (job:0x204824150040)        pPopOoOLeft : DATAPULSE       0x20481eac9440
+NODE0 2021-07-15 10:07:22    scanRight (    stageC) (N0) (P00) (job:0x204824150040)      vPipeToNextOp : ENDRIGHTMARKER  0x20481ead1840
+Unknown eo opcode 0

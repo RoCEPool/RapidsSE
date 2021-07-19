@@ -2,18 +2,21 @@
 /* Post projection semantic tests                                             */
 /*----------------------------------------------------------------------------*/
 
-// This tests whether a ProjectOp is required to trim away any intermediate
-// or working columns before the columns are returned to the user.
-//
-// This tends to happen if a HAVING or ORDER BY clause contain an expression
-// that cannot be calculated from the columns in the select list.
-//
-// That is, if the expression in the HAVING/ORDER BY is equal to or a superset
-// of the columns in the select list then a post projection is not required.
-// However, the catch is that if the expression in the HAVING/ORDER BY is an
-// aggregate expression and the matching column in the project list is not
-// an aggregate then this a post projection IS required (because that aggregate
-// expression will be pushed down in the exprPushdown compilation stage).
+-- This tests whether a ProjectOp is required to trim away any intermediate
+-- or working columns before the columns are returned to the user.
+--
+-- This tends to happen if a HAVING or ORDER BY clause contain an expression
+-- that cannot be calculated from the columns in the select list. It also
+-- happens when a GROUP BY expression is a subset of a projected column (because
+-- the group by expression will be required later when the query is partitioned
+-- and the groups are rolled up at the node and origin levels).
+--
+-- That is, if the expression in the HAVING/ORDER BY is equal to or a superset
+-- of the columns in the select list then a post projection is not required.
+-- However, the catch is that if the expression in the HAVING/ORDER BY is an
+-- aggregate expression and the matching column in the project list is not
+-- an aggregate then this a post projection IS required (because that aggregate
+-- expression will be pushed down in the exprPushdown compilation stage).
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,6 +299,56 @@ rows:
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
 )
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Post projection IS required because the grouping expression
+//  is a subset of one of the projected columns
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1)
+   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+
+-> projectOp
+   » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = $1)
+   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> aggregateOp
+      » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = 2 * ($1 + 1))
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
