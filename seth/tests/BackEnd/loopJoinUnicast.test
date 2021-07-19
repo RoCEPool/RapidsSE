@@ -106,6 +106,54 @@ drop table T2;
 success
 
 //------------------------------------------------------------------------------
+// CO-PARTITIONED JOIN (NO LEFT AND RIGHT DATA)
+// T.a = J.a
+// PtnKey[T] = a
+// PtnKey[J] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
+rows:
+  0
+
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
 // CO-PARTITIONED JOIN
 // T.a = J.a
 // PtnKey[T] = a

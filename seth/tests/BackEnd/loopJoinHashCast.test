@@ -6,6 +6,150 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
+// PARTITIONABLE JOIN (NO LEFT DATA)
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+pipeline loopJoinPart
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+rows:
+  0
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// PARTITIONABLE JOIN (NO RIGHT DATA)
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+load T1 "../DATA/Joins/T1.csv" ;
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+success
+
+pipeline loopJoinPart
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+rows:
+  0
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// PARTITIONABLE JOIN (NO LEFT AND RIGHT DATA)
+// T.a = J.a
+// PtnKey[T] = c
+// PtnKey[J] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+success
+
+pipeline loopJoinPart
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+rows:
+  0
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
 // PARTITIONABLE JOIN
 // T.a = J.a
 // PtnKey[T] = c
