@@ -146,6 +146,7 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
+  "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
   "OP_pwf.sen"                  include
   "OP_python.sen"               include
