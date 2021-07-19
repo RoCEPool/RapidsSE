@@ -18,8 +18,9 @@ namespace BASE
     DecVal operator *(DecVal xDecVal);
 
     void vAssign(DecVal xArg);
-    void vAssign(i16 iValue,i8 nPlaces);
-  
+    void vAssign(i16 iValue, i8 nPlaces);
+    void vAssign(i8 iWhole, i8 iFraction, i8 nPlaces);
+
     void vMultiply(DecVal xsArgB);
     void vMultiply(DecVal xsArgA, DecVal xsArgB);
 

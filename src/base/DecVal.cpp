@@ -23,8 +23,7 @@ DecVal::DecVal(void)
 /*----------------------------------------------------------------------------*/
 void DecVal::operator =(DecVal xDecVal)
 {
-  m_iValue  = xDecVal.m_iValue;
-  m_nPlaces = xDecVal.m_nPlaces;
+  vAssign(xDecVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,17 +59,24 @@ DecVal DecVal::operator *(DecVal xArgB)
 /*----------------------------------------------------------------------------*/
 void DecVal::vAssign(DecVal xArg)
 {
-  m_iValue  = xArg.m_iValue;
-  m_nPlaces = xArg.m_nPlaces;
+  vAssign(xArg.m_iValue,xArg.m_nPlaces);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign                                                                     */
 /*----------------------------------------------------------------------------*/
-void DecVal::vAssign(i16 iValue,i8 nPlaces)
+void DecVal::vAssign(i16 iValue, i8 nPlaces)
 {
   m_iValue  = iValue;
   m_nPlaces = nPlaces;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign                                                                     */
+/*----------------------------------------------------------------------------*/
+void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
+{
+  vAssign(iWhole * IntLib::iTenToPow(nPlaces) + iFraction,nPlaces);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,35 +260,32 @@ void DecVal::vRoundUp(DecVal xsArg, i8 nPlaces)
 /*----------------------------------------------------------------------------*/
 /* _Dec literal suffix (which converts const char* to DecVal)                 */
 /*----------------------------------------------------------------------------*/
-DecVal BASE::operator "" _Dec(const char* szArg, size_t nSize)
+DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
 {
   UNUSED(nSize);
-  
+
   DecVal xDecVal;
   
-  i8 iIntDigits = 0;
-  i8 iDecDigits = -1;
-  i8 nSeen = sscanf(szArg,"%lld.%lld",&iIntDigits,&iDecDigits);
-  
-  
-  s32 sDecDigits;
-  sDecDigits.vSprint("%lld"_Stz,iDecDigits);
-  
-  i8 nDecDigits;
-  if (-1 == iDecDigits) {
-    nDecDigits = 0;
-    iDecDigits = 0;
+  // extract the whole.fraction parts
+  i8 iWhole;
+  i8 iFraction;
+  i8 nParts = sscanf(azLiteral,"%lld.%lld",&iWhole,&iFraction);
+
+  if (1 == nParts) {
+    // whole part only, no fraction (e.g. "2000."_Dec)
+    xDecVal.vAssign(iWhole,0);
   }
   else {
-    nDecDigits = sDecDigits.nLength();
+    // both whole and fraction parts (e.g. "12.34."_Dec)
+    s32 sFractionDigits;
+    sFractionDigits.vSprint("%lld"_Stz,iFraction);
+    i8 nFractionDigits = sFractionDigits.nLength();
+
+    xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
   }
-  
-  xDecVal.vAssign(iIntDigits * IntLib::iTenToPow(nDecDigits) + iDecDigits,
-                  nDecDigits);
-  
+    
   return xDecVal;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
