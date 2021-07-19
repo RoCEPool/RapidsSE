@@ -40,10 +40,30 @@ void SP_DecVal::vDecVal(DecVal xDecVal)
     
   vInit();
   
-  vCatf("(%18lld,%02lld)"_Stz
-          ,(i8)xDecVal.m_iValue
-          ,xDecVal.m_nPlaces
+  s32 sFormat;
+  
+  if (xDecVal.m_nPlaces) {
+  
+    sFormat.vSprint("%%lld.%%0%lldlld"_Stz
+                    ,xDecVal.m_nPlaces
+                    );
+  
+    vCatf(sFormat
+          ,(i8)xDecVal.m_iValue / IntLib::iTenToPow(xDecVal.m_nPlaces)
+          ,(i8)xDecVal.m_iValue % IntLib::iTenToPow(xDecVal.m_nPlaces)
           );
+  }
+  else {
+    sFormat.vSprint("%%lld."_Stz);
+
+    vCatf(sFormat
+          ,(i8)xDecVal.m_iValue / IntLib::iTenToPow(xDecVal.m_nPlaces)
+          );
+  }
+//  vCatf("(%18lld,%02lld)"_Stz
+//          ,(i8)xDecVal.m_iValue
+//          ,xDecVal.m_nPlaces
+//          );
 }
 
 /*----------------------------------------------------------------------------*/
