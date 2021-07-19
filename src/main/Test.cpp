@@ -1866,27 +1866,6 @@ struct DecVal {
   i8  m_nPlaces;
 };
 
-void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
-{
-  isVal = iuVal;
-  isVal_places = iuVal_places;
-  i8 isTest = isVal;
-  
-  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
-    
-    i8 iLastDigit = isTest % 10;
-
-    if (iLastDigit)
-      break;
-    
-    isTest /= 10;
-    
-    if (i_Place >= iuVal_places) {
-      isVal = isTest;
-      isVal_places++;
-    }
-  }
-}
 void vScaleVal(DecVal& xsVal, DecVal& xuVal)
 {
   xsVal.m_iValue  = xuVal.m_iValue;
@@ -1917,10 +1896,6 @@ void vRoundVal(DecVal& xrVal, DecVal& xsVal, i8 nPlaces)
   xrVal.m_nPlaces = xsVal.m_nPlaces;
 }
 
-void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
-{
-  iuVal = isVal * IntLib::iTenToPow(isVal_places);
-}
 void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 {
   xuVal.m_iValue  = xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces);
@@ -1930,101 +1905,91 @@ void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 
 
 /*----------------------------------------------------------------------------*/
-void vDecimalMul(i16& isResC, i8& isResC_places, DecVal& xrResC,
-                 i16  isArgA, i8  isArgA_places, DecVal& xrArgA,
-                 i16  isArgB, i8  isArgB_places, DecVal& xrArgB)
+void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
 {
-  i16 iuArgA;
-  i16 iuArgB;
-
   vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
-         ,(i8)xrArgA.m_iValue,xrArgA.m_nPlaces
-         ,(i8)xrArgB.m_iValue,xrArgB.m_nPlaces
+         ,(i8)xsArgA.m_iValue,xsArgA.m_nPlaces
+         ,(i8)xsArgB.m_iValue,xsArgB.m_nPlaces
          );
 
+  DecVal xuArgA;
+  DecVal xuArgB;
+  DecVal xuResC;
+
+  // 1) unscale arguments
+
+  vUnscaleVal(xuArgA,xsArgA);
+  vUnscaleVal(xuArgB,xsArgB);
+
+  vTrace("Unscaled (%10lld,%lld) * (%10lld,%lld) : "_Stz
+         ,(i8)xuArgA.m_iValue,xuArgA.m_nPlaces
+         ,(i8)xuArgB.m_iValue,xuArgB.m_nPlaces
+         );
+
+  // 2) calc argA * argB
   
-  // scale the arguments
-  //vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
+  xuResC.m_iValue  = xuArgA.m_iValue * xuArgB.m_iValue;
+  xuResC.m_nPlaces = 0;
 
-  vUnscaleVal(iuArgA,isArgA,isArgA_places);
-  vUnscaleVal(iuArgB,isArgB,isArgB_places);
-
-  vTrace("Unscaled Args %10lld * %10lld "_Stz
-         ,(i8)iuArgA
-         ,(i8)iuArgB
+  vTrace("| Unscaled Result (%10lld,%lld) "_Stz
+         ,(i8)xuResC.m_iValue
+         ,xuResC.m_nPlaces
          );
 
-  // calc argA * argB
-  i16 iuResC = iuArgA * iuArgB;
-  i8 nPlaces = isArgA_places + isArgB_places;
-
-  vTrace("| Unscaled Result %18lld (%lld) "_Stz
-         ,(i8)iuResC
-         ,nPlaces
-         );
-
-  vScaleVal(isResC,isResC_places,iuResC,nPlaces);
+  // 3) scale result
   
+  vScaleVal(xsResC,xuResC);
+
   vTrace("| Scaled Result (%10lld,%lld) "_Stz
-         ,(i8)isResC
-         ,isResC_places
+         ,(i8)xsResC.m_iValue
+         ,xsResC.m_nPlaces
          );
 
   vTrace("\n"_Stz);
-
-
 }
 
 /*----------------------------------------------------------------------------*/
 void vTest33(void)
 {
   vTrace("vTest33 -- Decimal Experiments\n"_Stz);
-    
-  i16 isResC; i8 isResC_places;
-  
+      
   DecVal xrArgA;
   DecVal xrArgB;
   DecVal xrResC;
 
-  for (i8 isArgA_places = 0; isArgA_places <= 4; isArgA_places++) {
-    for (i8 isArgB_places = 0; isArgB_places <= 4; isArgB_places++) {
-      
-      i16 isArgA = 20000;
-      i16 isArgB = 30000;
-      
-      xrArgA.m_iValue = 20000; xrArgA.m_nPlaces = isArgA_places;
-      xrArgB.m_iValue = 20000; xrArgB.m_nPlaces = isArgB_places;
+  xrArgA.m_iValue = 20000;
+  xrArgB.m_iValue = 30000;
 
-      vDecimalMul(isResC,isResC_places,xrResC,
-                  isArgA,isArgA_places,xrArgA,
-                  isArgB,isArgB_places,xrArgB);
+  for (xrArgA.m_nPlaces = 0; xrArgA.m_nPlaces <= 4; xrArgA.m_nPlaces++) {
+    for (xrArgB.m_nPlaces = 0; xrArgB.m_nPlaces <= 4; xrArgB.m_nPlaces++) {
+      vDecimalMul(xrResC,xrArgA,xrArgB);
     }
   }
   
-  vTrace("- - - - - - -\n"_Stz);
-  
-  isResC = 12345;
-  isResC_places = 2;
-
-  DecVal xrVal;
-  DecVal xsVal;
-  
-  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    
-    i16 irResC = -1;
-    i8 irResC_places = -1;
-    
-    xsVal.m_iValue = 12345;
-    xsVal.m_nPlaces = 2;
-
-    vRoundVal(xrVal,xsVal,nPlaces);
-
-    vTrace("(%10lld,%lld) to %lld places = (%10lld,%lld)\n"_Stz
-           ,(i8)xsVal.m_iValue,xsVal.m_nPlaces
-           ,nPlaces
-           ,(i8)xrVal.m_iValue,xrVal.m_nPlaces
-           );
-  }
+//  vTrace("- - - - - - -\n"_Stz);
+//
+//  isResC = 12345;
+//  isResC_places = 2;
+//
+//  DecVal xrVal;
+//  DecVal xsVal;
+//
+//  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+//
+//    i16 irResC = -1;
+//    i8 irResC_places = -1;
+//
+//    xsVal.m_iValue = 12345;
+//    xsVal.m_nPlaces = 2;
+//
+//    vRoundVal(xrVal,xsVal,nPlaces);
+//
+//    vTrace("(%10lld,%lld) to %lld places = (%10lld,%lld)\n"_Stz
+//           ,(i8)xsVal.m_iValue,xsVal.m_nPlaces
+//           ,nPlaces
+//           ,(i8)xrVal.m_iValue,xrVal.m_nPlaces
+//           );
+//  }
   
 }
 
