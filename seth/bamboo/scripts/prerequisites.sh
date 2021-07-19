@@ -19,7 +19,7 @@ readonly SCRIPT_NAME=$(basename "$0")
 readonly DIR="$(dirname "$0")"
 readonly PROJ_ROOT="${DIR}/../../.."
 
-readonly TPCH_DIR="${PROJ_ROOT}/TPCH"
+readonly TPCH_DIR="$(readlink -f "${PROJ_ROOT}/TPCH")"
 
 # An array of possible places the TPC-H data could be kept, depending on the environment
 readonly TPCH_LINK_DESTS=( "/mnt/spinningDisk/bamboo/TPCH"
@@ -46,6 +46,8 @@ fi
 ### Significant Global Variables                                            ###
 ###############################################################################
 
+# Did the script complete successfully or not?
+COMPLETED_SUCCESFULLY=0
 
 ###############################################################################
 ### Functions                                                               ###
@@ -56,8 +58,21 @@ fi
 ## Params: None
 
 function onExit() {
-  # not needed in this script
-  true
+
+  local statusMsg="*** Completed the Prerequisites stage                                        ***"
+  if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
+    statusMsg="*** Failed the Prerequisites stage                                           ***"
+  fi
+
+  ENDTIME="$(date +%s)"
+  ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
+
+  echo ""
+  echo "********************************************************************************"
+  echo "${statusMsg}"
+  echo "********************************************************************************"
+  echo "Elapsed time: ${ELAPSEDTIME}"
+  echo ""
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,58 +97,24 @@ function checkOS() {
   fi
 }
 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Checks that the TPC-H data can be found
+## Looks for the TPC-H SF1 data somewhere on the system. Writes the path out
+## to stdout and returns a zero exit code if the data is found.
 ## Params: None
 
-function checkTpchData() {
+function findTpchData() {
 
-  # Is the path a directory?
-  if [ -d "${TPCH_DIR}" ]; then
-    # TPCH directory exists, but does it contain the goods?
-    isTpchDir "${TPCH_DIR}" || exit 1;
-    return
-  fi
-
-  # Is the path a symlink?
-  if [ -L "${TPCH_DIR}" ]; then
-    # Check that the target exists
-    local linkedTpchDir
-    linkedTpchDir="$(readlink -fn "${TPCH_DIR}")"
-
-    if [ -e "${linkedTpchDir}" ]; then
-      # The path that the symlink points to exists, but does it contain TPCH data?
-      isTpchDir "${linkedTpchDir}" || exit 1;
-      return
-
-    else
-      # The path that the symlink points to does not exist.
-      # Can we find it somewhere and update it?
-      for destDir in "${TPCH_LINK_DESTS[@]}"; do
-        if isTpchDir "${destDir}"; then
-          rm "${TPCH_DIR}"
-          ln -s "${destDir}" "${TPCH_DIR}"
-          return 0
-        fi
-      done
-      errorExit "TPC-H SF1 data does not exist at symlink: ${TPCH_DIR}"
+  for dataDir in "${TPCH_LINK_DESTS[@]}"; do
+    if isTpchDir "${dataDir}"; then
+      echo "${dataDir}"
+      return 0
     fi
-  fi
+  done
 
-  if [ ! -e "${TPCH_DIR}" ]; then
-    # The TPCH dir doesn't exist.
-    # Can we find it somewhere and add a symlink?
-    for destDir in "${TPCH_LINK_DESTS[@]}"; do
-      if isTpchDir "${destDir}"; then
-        ln -s "${destDir}" "${TPCH_DIR}"
-        return 0
-      fi
-    done
-
-    errorExit "TPC-H SF1 data does not exist at: ${TPCH_DIR}"
-  fi
-
-  errorExit "Unable to validate the TPC-H SF1 data at path: ${TPCH_DIR}"
+  printError "Could not find TPC-H SF1 data necessary for these tests. Tried looking in the following directories:"
+  >&2 printf "  %s\n" "${TPCH_LINK_DESTS[@]}"
+  exit 1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,6 +127,11 @@ function isTpchDir() {
   [ "$#" -eq 1 ] || errorExit "Function isTpchDir() needs to be called with 1 parameter."
 
   local tpchDir="$1"
+
+  if [ ! -e "${tpchDir}" ]; then
+    echo "Looking for TPC-H data found in path: ${tpchDir}"
+    return 1;
+  fi
 
   if [ ! -d "${tpchDir}" ]; then
     echo "Path ${tpchDir} is not a TPC-H data directory because it is not a directory."
@@ -170,7 +156,7 @@ function isTpchDir() {
                    "SF1/part.tbl"
                    "SF1/partsupp.tbl"
                    "SF1/region.tbl"
-                   "SF1/supplier/tbl" )
+                   "SF1/supplier.tbl" )
 
   for file in "${files[@]}"; do
     if ! [ -f "${tpchDir}/${file}" ]; then
@@ -179,6 +165,7 @@ function isTpchDir() {
     fi
   done
 
+  echo "Found TPC-H data at path: ${tpchDir}"
   return 0
 }
 
@@ -214,13 +201,7 @@ checkOS
 checkTpchData
 
 
-ENDTIME="$(date +%s)"
-ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
-
-echo ""
-echo "********************************************************************************"
-echo "*** Completed the Prerequisites stage                                        ***"
-echo "********************************************************************************"
-echo "Elapsed time: ${ELAPSEDTIME}"
-echo ""
+# Set this flag that the script completed successfully.
+# This will be picked up in the exit hook.
+COMPLETED_SUCCESFULLY=1
 

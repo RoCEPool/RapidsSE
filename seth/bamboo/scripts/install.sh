@@ -185,11 +185,17 @@ echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
 ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
 
 #
-# Now let's do the same but for the ../TPCH symbolic link
+# Now let's do the same but for the ../TPCH symbolic link.
+# This data is much bigger (SF1) so it's not checked in.
+# Instead we must have it somewhere on the system.
 #
 
 readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
-readonly TPCH_SYMLINK_DEST="/opt/TPCH"
+
+TPCH_SYMLINK_DEST=""
+if ! TPCH_SYMLINK_DEST="$(source "${DIR}/prerequisites.sh" && findTpchData)"; then
+  errorExit "Could not find the TPC-H SF1 data on the system."
+fi
 
 # Check if the data actually exists
 if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
