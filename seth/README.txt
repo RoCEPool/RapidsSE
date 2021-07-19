@@ -16,9 +16,9 @@ a path to the testlist file which itself contains a list of tests to run.
                  Run this if there are specific tests that you want to run against
                  your local changes. You must supply parameters. See example below.
 
-./seth1N1P.sh  - A convenient shortcut to run the single node single partition tests.
+./seth1N1P.sh  - A convenient shortcut to run the single node single partition tests locally.
 
-./sethMN.sh    - A convenient shortcut to run the multi-node tests.
+./seth2N4P.sh  - A convenient shortcut to run the multi-node tests locally.
 
 
 Examples:

@@ -198,7 +198,7 @@ processArgs "$@"
 checkOS
 
 # Check that the TPCH data has been installed
-checkTpchData
+findTpchData
 
 
 # Set this flag that the script completed successfully.
