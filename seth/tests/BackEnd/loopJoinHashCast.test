@@ -55,7 +55,10 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -74,10 +77,15 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | stageC
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
-    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -93,10 +101,90 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
-    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashCast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashCast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -160,7 +248,9 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -179,7 +269,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | stageC
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -198,10 +288,87 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -243,7 +410,9 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -262,7 +431,10 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -281,7 +453,9 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | stageC
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
@@ -300,10 +474,87 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >= " | stageC
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -430,6 +681,86 @@ end;
 
 rows:
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | hash 0 "type INTEGER $1"
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows:
+  (6,'T-ROW6',6,null,666,'J-ROW6')
+  (7,'T-ROW7',7,7347,null,'J-ROW7')
+  (1,'T-ROW1',1,181,111,'J-ROW1')
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashCast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows:
+  (3,303,33993,'T-ROW3',3,'J-ROW3a')
+  (7,727,7377,'T-ROW7',7,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline loopJoinCo
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | hash 0 "type INTEGER $1"
+    | stageC hashCast
+
+  stage stageC on all partitions :
+    scanRight T2
+    | filterRight 0 "type boolean $2 500 >= "
+    | projectRight 0 "type integer $1 , type varchar $4 "
+    | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+rows:
+  (7,'T-ROW7',7,'J-ROW7')
 
 //------------------------------------------------------------------------------
 drop table T1;
