@@ -1861,6 +1861,11 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
+struct DecVal {
+  i16 m_iValue;
+  i8  m_nPlaces;
+};
+
 void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
 {
   isVal = iuVal;
@@ -1881,6 +1886,13 @@ void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
       isVal_places++;
     }
   }
+}
+
+
+void vRoundVal(DecVal& xrVal, DecVal& xsVal, i8 nPlaces)
+{
+  xrVal.m_iValue  = xsVal.m_iValue;
+  xrVal.m_nPlaces = xsVal.m_nPlaces;
 }
 
 void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
@@ -1957,14 +1969,26 @@ void vTest33(void)
   
   vTrace("- - - - - - -\n"_Stz);
   
-  i16 iuResC = 12345;
+  isResC = 12345;
+  isResC_places = 2;
+
+  DecVal xrVal;
+  DecVal xsVal;
   
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    vScaleVal(isResC,isResC_places,iuResC,nPlaces);
+    
+    i16 irResC = -1;
+    i8 irResC_places = -1;
+    
+    xsVal.m_iValue = 12345;
+    xsVal.m_nPlaces = 2;
 
-    vTrace("(%10lld,?) to %lld places = (%10lld,%lld)\n"_Stz
-           ,(i8)iuResC, nPlaces
-           ,(i8)isResC, isResC_places
+    vRoundVal(xrVal,xsVal,nPlaces);
+
+    vTrace("(%10lld,%lld) to %lld places = (%10lld,%lld)\n"_Stz
+           ,(i8)xsVal.m_iValue,xsVal.m_nPlaces
+           ,nPlaces
+           ,(i8)xrVal.m_iValue,xrVal.m_nPlaces
            );
   }
   
