@@ -32,8 +32,8 @@ readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 readonly RELATIVE_BAMBOO_DIR="${DIR}"
 readonly BAMBOO_RESULTS_DIR="${RELATIVE_BAMBOO_DIR}/results"
 readonly BAMBOO_LOGS_DIR="${RELATIVE_BAMBOO_DIR}/logs"
-readonly BAMBOO_CONFIG_DIR="${RELATIVE_BAMBOO_DIR}/config"
-readonly BAMBOO_TESTLIST_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
+readonly BAMBOO_CONFIGS_DIR="${RELATIVE_BAMBOO_DIR}/configs"
+readonly BAMBOO_TESTLISTS_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
 
 # Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
@@ -111,7 +111,7 @@ function copyLogs() {
   local buildConfig="$1"
   local buildType="$2"
 
-  local configFile="${BAMBOO_CONFIG_DIR}/${buildConfig}.config"
+  local configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}.config"
   source "${configFile}"
 
   sleep 5
@@ -172,8 +172,8 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
   for buildConfig in "${BUILD_CONFIGS[@]}"; do    # 1N4P, 1N1P, 2N4P, etc
 
     # Resolve the config file and testlist file to be used
-    configFile="${BAMBOO_CONFIG_DIR}/${buildConfig}.config"
-    testlistFile="${BAMBOO_TESTLIST_DIR}/${buildConfig}.testlist"
+    configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}.config"
+    testlistFile="${BAMBOO_TESTLISTS_DIR}/${buildConfig}.testlist"
 
     # Ensure these files exist
     if [ ! -f "${configFile}" ]; then
