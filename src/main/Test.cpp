@@ -1867,22 +1867,22 @@ void vScaleVal(DecVal& xsVal, DecVal xuVal)
 {
   xsVal.vAssign(xuVal.m_iValue,xuVal.m_nPlaces,true);
 
-  i8 isTest = xuVal.m_iValue;
-  
-  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
-    
-    i8 iLastDigit = isTest % 10;
-
-    if (iLastDigit)
-      break;
-    
-    isTest /= 10;
-    
-    if (i_Place >= xuVal.m_nPlaces) {
-      xsVal.m_iValue = isTest;
-      xsVal.m_nPlaces++;
-    }
-  }
+//  i8 isTest = xuVal.m_iValue;
+//  
+//  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
+//    
+//    i8 iLastDigit = isTest % 10;
+//
+//    if (iLastDigit)
+//      break;
+//    
+//    isTest /= 10;
+//    
+//    if (i_Place >= xuVal.m_nPlaces) {
+//      xsVal.m_iValue = isTest;
+//      xsVal.m_nPlaces++;
+//    }
+//  }
   
 }
 
@@ -1966,11 +1966,11 @@ void vTest33(void)
   SP_DecVal spResC;
   
   xsResC.vAssign(12345678,2,true);
-  vTrace("%s | rounded "_Stz,spResC.sz(xsResC));
+  vTrace("%s | rounded to "_Stz,spResC.sz(xsResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
     vRoundVal(xrResC,xsResC,nPlaces);
-    vTrace("%lld) %s; "_Stz,nPlaces,spResC.sz(xrResC));
+    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
   
   vTrace("\n"_Stz);
