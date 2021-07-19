@@ -1,4 +1,4 @@
-../../tests/Transliterate/selectTypes.test
-../../tests/Transliterate/filterInteger.test
-//../../tests/Transliterate/filterDecimal.test
-../../tests/Transliterate/project.test
+../../tests1N/Transliterate/selectTypes.test
+../../tests1N/Transliterate/filterInteger.test
+//../../tests1N/Transliterate/filterDecimal.test
+../../tests1N/Transliterate/project.test
