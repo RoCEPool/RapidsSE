@@ -28,7 +28,7 @@ readonly TPCH_LINK_DESTS=( "/mnt/spinningDisk/bamboo/TPCH"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 ###############################################################################

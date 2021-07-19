@@ -2,7 +2,7 @@
 
 # The intent of this script file is to start RapidsSE from its installed environment.
 
-# This script file is called by Jenkins after it has built RapidsSE from source,
+# This script file is called by Bamboo after it has built RapidsSE from source,
 # created the installer, and installed the software locally.
 
 ###############################################################################
@@ -30,7 +30,7 @@ readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 ###############################################################################

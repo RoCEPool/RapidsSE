@@ -2,7 +2,7 @@
 
 # The intent of this script file is to invoke SETH against the running RapidsSE.
 
-# This script file is called by Jenkins after it has built RapidsSE from source,
+# This script file is called by Bamboo after it has built RapidsSE from source,
 # created the installer, installed the software locally and started it.
 
 ###############################################################################
@@ -27,7 +27,7 @@ readonly SETH_BIN_DIR="${PROJ_ROOT}/seth/bin"
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.

@@ -2,7 +2,7 @@
 
 # The intent of this script file is to build RapidsSE and produce an installer.
 
-# This script file is called by Jenkins after it has checked out the repository.
+# This script file is called by Bamboo after it has checked out the repository.
 
 ###############################################################################
 ### Environment Variables                                                   ###
@@ -30,7 +30,7 @@ readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 ###############################################################################
