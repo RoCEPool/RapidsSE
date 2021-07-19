@@ -25,8 +25,6 @@ namespace BASE
     void vMultiply(DecVal xsArgA, DecVal xsArgB);
 
     void vRoundDown(i8 nPlaces);
-    void vRoundDown(DecVal xsVal, i8 nPlaces);
-  
     void vRoundUp(i8 nPlaces);
   };
 

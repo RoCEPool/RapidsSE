@@ -98,7 +98,7 @@ void DecVal::vMultiply(DecVal xsArgB)
   DecVal xrResC;
   vTrace("| to nPlaces %lld: "_Stz,m_nPlaces);
   
-  xrResC.vRoundDown(*this,m_nPlaces);
+  xrResC.vRoundDown(m_nPlaces);
   vTrace("roundDown %10s; "_Stz,spResC.sz(xrResC));
   
   xrResC.vRoundUp(m_nPlaces);
@@ -139,33 +139,6 @@ void DecVal::vRoundDown(i8 nPlaces)
 }
 
 /*----------------------------------------------------------------------------*/
-/* round down                                                                 */
-/*----------------------------------------------------------------------------*/
-void DecVal::vRoundDown(DecVal xsArg, i8 nPlaces)
-{
-  vAssign(xsArg.m_iValue,xsArg.m_nPlaces);
-  
-  // required number of places
-  if (xsArg.m_nPlaces == nPlaces)
-    return;
-  
-  i8 iScaleDiff;
-  
-  // too many decimal digits
-  if (xsArg.m_nPlaces > nPlaces) {
-    iScaleDiff = xsArg.m_nPlaces - nPlaces;
-    m_nPlaces -= iScaleDiff;
-    m_iValue /= IntLib::iTenToPow(iScaleDiff);
-    return;
-  }
-  
-  // too few decimal digits
-  iScaleDiff = nPlaces - xsArg.m_nPlaces;
-  m_nPlaces += iScaleDiff;
-  m_iValue *= IntLib::iTenToPow(iScaleDiff);
-}
-
-/*----------------------------------------------------------------------------*/
 /* round up                                                                   */
 /*----------------------------------------------------------------------------*/
 void DecVal::vRoundUp(i8 nPlaces)
@@ -175,16 +148,14 @@ void DecVal::vRoundUp(i8 nPlaces)
     return;
   
   i8 iScaleDiff;
-  i8 iMod ;
-  i8 iCutVal;
 
   // too many decimal digits
   if (m_nPlaces > nPlaces) {
     iScaleDiff = m_nPlaces - nPlaces;
     m_nPlaces -= iScaleDiff;
     
-    iMod = IntLib::iTenToPow(iScaleDiff);
-    iCutVal = m_iValue % iMod;
+    i8 iMod = IntLib::iTenToPow(iScaleDiff);
+    i8 iCutVal = m_iValue % iMod;
     
     m_iValue /= IntLib::iTenToPow(iScaleDiff);
     

@@ -1895,7 +1895,8 @@ void vTest33(void)
   vTrace("%s | rounded down to: "_Stz,spResC.sz(xuResC));
 
   for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    xrResC.vRoundDown(xuResC,nPlaces);
+    xrResC = xuResC;
+    xrResC.vRoundDown(nPlaces);
     vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
   }
 
