@@ -20,11 +20,10 @@ DecVal::DecVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign                                                                     */
 /*----------------------------------------------------------------------------*/
-void DecVal::vAssign(i16 iValue,i8 nPlaces, bool bScaled)
+void DecVal::vAssign(i16 iValue,i8 nPlaces)
 {
   m_iValue  = iValue;
   m_nPlaces = nPlaces;
-  m_bScaled = bScaled;
 }
 
 /*============================================================================*/

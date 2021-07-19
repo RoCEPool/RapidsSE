@@ -40,13 +40,7 @@ void SP_DecVal::vDecVal(DecVal xDecVal)
     
   vInit();
   
-  if (xDecVal.m_bScaled)
-    vCatf("%9lld (%02lld decimal places)"_Stz
-          ,(i8)xDecVal.m_iValue
-          ,xDecVal.m_nPlaces
-          );
-  else
-    vCatf("%18lld (%02lld implied places)"_Stz
+  vCatf("(%18lld,%02lld)"_Stz
           ,(i8)xDecVal.m_iValue
           ,xDecVal.m_nPlaces
           );
