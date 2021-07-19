@@ -1863,37 +1863,6 @@ void vTest32(void)
 
 #include "SP_DecVal.hpp"
 
-void vScaleVal(DecVal& xsVal, DecVal xuVal)
-{
-  xsVal.vAssign(xuVal.m_iValue,xuVal.m_nPlaces);
-
-//  i8 isTest = xuVal.m_iValue;
-//  
-//  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
-//
-//    i8 iLastDigit = isTest % 10;
-//
-//    if (iLastDigit)
-//      break;
-//
-//    isTest /= 10;
-//
-//    if (i_Place >= xuVal.m_nPlaces) {
-//      xsVal.m_iValue = isTest;
-//      xsVal.m_nPlaces++;
-//    }
-//  }
-  
-}
-
-
-void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
-{
-  xuVal.vAssign(xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces),
-                xsVal.m_nPlaces);
-}
-
-
 void vRoundDown(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
 {
   xrVal.vAssign(xsVal.m_iValue,xsVal.m_nPlaces);
@@ -2037,67 +2006,6 @@ void vTest33(void)
 
 
 }
-
-#if 0
-void vScaleArgs(i16& isArgA, i8& isArgA_places,
-                i16& isArgB, i8& isArgB_places)
-{
-  // 1) arg a & b have the same scale
-  if (isArgA_places == isArgB_places) {
-    return;
-  }
-    
-  i8 iScaleDiff;
-  i8 iScaleCorrect;
-
-  // 2) arg b needs to be scaled to arg a places
-  if (isArgA_places > isArgB_places) {
-    iScaleDiff = isArgA_places - isArgB_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    isArgB = isArgB * iScaleCorrect;
-    isArgB_places = isArgA_places;
-    return;
-  }
-
-  // 2) arg a needs to be scaled to arg a places
-  iScaleDiff = isArgB_places - isArgA_places;
-  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-  isArgA = isArgA * iScaleCorrect;
-  isArgA_places = isArgB_places;
-}
-
-/*----------------------------------------------------------------------------*/
-void vNormalizeResult(i16& inRes,
-                      i8   inRes_places,
-                      i16  isRes,
-                      i8   isRes_places
-                      )
-{
-  // 1) result has the required scale
-  if (isRes_places == inRes_places) {
-    inRes = isRes;
-    return;
-  }
-  
-  i8 iScaleDiff;
-  i8 iScaleCorrect;
-
-  // 2) result needs its scale increased
-  if (inRes_places > isRes_places) {
-    iScaleDiff = inRes_places - isRes_places;
-    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    inRes = isRes * iScaleCorrect;
-    return;
-  }
-  
-  // 3) result needs its scale decreased
-  iScaleDiff = isRes_places - inRes_places;
-  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-  inRes = isRes / iScaleCorrect;
-}
-
-#endif
-
 
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */
