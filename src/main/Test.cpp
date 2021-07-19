@@ -1887,6 +1887,28 @@ void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
     }
   }
 }
+void vScaleVal(DecVal& xsVal, DecVal& xuVal)
+{
+  xsVal.m_iValue  = xuVal.m_iValue;
+  xsVal.m_nPlaces = xuVal.m_nPlaces;
+
+  i8 isTest = xuVal.m_iValue;
+  
+  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
+    
+    i8 iLastDigit = isTest % 10;
+
+    if (iLastDigit)
+      break;
+    
+    isTest /= 10;
+    
+    if (i_Place >= xuVal.m_nPlaces) {
+      xsVal.m_iValue = isTest;
+      xsVal.m_nPlaces++;
+    }
+  }
+}
 
 
 void vRoundVal(DecVal& xrVal, DecVal& xsVal, i8 nPlaces)
@@ -1899,20 +1921,25 @@ void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
 {
   iuVal = isVal * IntLib::iTenToPow(isVal_places);
 }
+void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
+{
+  xuVal.m_iValue  = xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces);
+  xuVal.m_nPlaces = 0;
+}
 
 
 
 /*----------------------------------------------------------------------------*/
-void vDecimalMul(i16& isResC, i8& isResC_places,
-                 i16  isArgA, i8  isArgA_places,
-                 i16  isArgB, i8  isArgB_places)
+void vDecimalMul(i16& isResC, i8& isResC_places, DecVal& xrResC,
+                 i16  isArgA, i8  isArgA_places, DecVal& xrArgA,
+                 i16  isArgB, i8  isArgB_places, DecVal& xrArgB)
 {
   i16 iuArgA;
   i16 iuArgB;
 
   vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
-         ,(i8)isArgA, isArgA_places
-         ,(i8)isArgB, isArgB_places
+         ,(i8)xrArgA.m_iValue,xrArgA.m_nPlaces
+         ,(i8)xrArgB.m_iValue,xrArgB.m_nPlaces
          );
 
   
@@ -1954,6 +1981,10 @@ void vTest33(void)
   vTrace("vTest33 -- Decimal Experiments\n"_Stz);
     
   i16 isResC; i8 isResC_places;
+  
+  DecVal xrArgA;
+  DecVal xrArgB;
+  DecVal xrResC;
 
   for (i8 isArgA_places = 0; isArgA_places <= 4; isArgA_places++) {
     for (i8 isArgB_places = 0; isArgB_places <= 4; isArgB_places++) {
@@ -1961,9 +1992,12 @@ void vTest33(void)
       i16 isArgA = 20000;
       i16 isArgB = 30000;
       
-      vDecimalMul(isResC,isResC_places,
-                  isArgA,isArgA_places,
-                  isArgB,isArgB_places);
+      xrArgA.m_iValue = 20000; xrArgA.m_nPlaces = isArgA_places;
+      xrArgB.m_iValue = 20000; xrArgB.m_nPlaces = isArgB_places;
+
+      vDecimalMul(isResC,isResC_places,xrResC,
+                  isArgA,isArgA_places,xrArgA,
+                  isArgB,isArgB_places,xrArgB);
     }
   }
   
