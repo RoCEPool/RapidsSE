@@ -2,14 +2,14 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
-../tests/dummyTests/testList
-../tests/testsMN/Transliterate/testList
-../tests/tests1N/BackEnd/testList
-../tests/tests1N/Compiler/testList
-../tests/tests1N/Demo/testList
-../tests/testsMN/Datums/testList
-../tests/tests1N/Ddl/testList
-../tests/testsMN/Index/testList
-../tests/tests1N/LocalFunctions/testList
-../tests/testsMN/Misc/testList
-../tests/tests1N/Table/testList
+../../tests/dummyTests/testList
+../../tests/testsMN/Transliterate/testList
+../../tests/tests1N/BackEnd/testList
+../../tests/tests1N/Compiler/testList
+../../tests/tests1N/Demo/testList
+../../tests/testsMN/Datums/testList
+../../tests/tests1N/Ddl/testList
+../../tests/testsMN/Index/testList
+../../tests/tests1N/LocalFunctions/testList
+../../tests/testsMN/Misc/testList
+../../tests/tests1N/Table/testList

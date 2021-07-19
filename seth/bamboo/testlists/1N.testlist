@@ -1,24 +1,25 @@
-# This is the testList file for Bamboo.
+# This is the main testList file for Bamboo.
 # All test files included in here will be run in the continuous integration environment.
+# These tests are run in a single node, multi-partition configuration.
 # This is a recursive testList file.
 
-../tests/dummyTests/testList
-../tests/tests1N/Transliterate/testList
-../tests/tests1N/BackEnd/testList
-../tests/tests1N/Compiler/testList
-../tests/tests1N/Demo/testList
-../tests/tests1N/Datums/testList
-../tests/tests1N/Ddl/testList
-../tests/tests1N/Examples/testList
-../tests/tests1N/Insert/testList
-../tests/tests1N/Load/testList
-../tests/tests1N/LocalFunctions/testList
-../tests/tests1N/Misc/testList
-../tests/tests1N/Operators/testList
-../tests/tests1N/PartitionKey/testList
-../tests/tests1N/Queries/testList
-//../tests/tests1N/Retrieve/testList
-../tests/tests1N/Select/testList
-../tests/tests1N/Table/testList
-../tests/tests1N/Index/testList
-../tests/tests1N/Tpch/testList
+../../tests/dummyTests/testList
+../../tests/tests1N/Transliterate/testList
+../../tests/tests1N/BackEnd/testList
+../../tests/tests1N/Compiler/testList
+../../tests/tests1N/Demo/testList
+../../tests/tests1N/Datums/testList
+../../tests/tests1N/Ddl/testList
+../../tests/tests1N/Examples/testList
+../../tests/tests1N/Insert/testList
+../../tests/tests1N/Load/testList
+../../tests/tests1N/LocalFunctions/testList
+../../tests/tests1N/Misc/testList
+../../tests/tests1N/Operators/testList
+../../tests/tests1N/PartitionKey/testList
+../../tests/tests1N/Queries/testList
+//../../tests/tests1N/Retrieve/testList
+../../tests/tests1N/Select/testList
+../../tests/tests1N/Table/testList
+../../tests/tests1N/Index/testList
+../../tests/tests1N/Tpch/testList
