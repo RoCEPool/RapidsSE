@@ -213,12 +213,12 @@
 
 : scanRight_StreamDef \handler
 
-  "piping out left streamDef" .
+  //"piping out left streamDef" .
   PipeIn[]\clear to StreamDefLft[]
   StreamDefLft[].pipeOut
 
   // now pipe out the stream def for the right table
-  "piping out right streamDef" .
+  //"piping out right streamDef" .
   Operand[].newStreamDef
   Operand[].pipeOut
 

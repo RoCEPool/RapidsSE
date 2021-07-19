@@ -187,6 +187,8 @@ extern d8 C_D8_MID;
 #include "ShmLib.hpp"
 #include "Scanner.hpp"
 
+#include "DecVal.hpp"
+
 //------------------------------------------------------------------------------
 
 #include "PoolBuffer.hpp"

@@ -1861,15 +1861,9 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
-struct DecVal {
-  i16 m_iValue;
-  i8  m_nPlaces;
-};
-
-void vScaleVal(DecVal& xsVal, DecVal& xuVal)
+void vScaleVal(DecVal& xsVal, DecVal xuVal)
 {
-  xsVal.m_iValue  = xuVal.m_iValue;
-  xsVal.m_nPlaces = xuVal.m_nPlaces;
+  xsVal.vAssign(xuVal.m_iValue,xuVal.m_nPlaces,true);
 
   i8 isTest = xuVal.m_iValue;
   
@@ -1887,19 +1881,22 @@ void vScaleVal(DecVal& xsVal, DecVal& xuVal)
       xsVal.m_nPlaces++;
     }
   }
+  
 }
 
 
-void vRoundVal(DecVal& xrVal, DecVal& xsVal, i8 nPlaces)
+void vRoundVal(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
 {
-  xrVal.m_iValue  = xsVal.m_iValue;
-  xrVal.m_nPlaces = xsVal.m_nPlaces;
+  xrVal.vAssign(xsVal.m_iValue ,
+                xsVal.m_nPlaces,
+                xsVal.m_bScaled);
 }
 
 void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 {
-  xuVal.m_iValue  = xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces);
-  xuVal.m_nPlaces = 0;
+  xuVal.vAssign(xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces),
+                xsVal.m_nPlaces,
+                false);
 }
 
 
@@ -1928,8 +1925,8 @@ void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
 
   // 2) calc argA * argB
   
-  xuResC.m_iValue  = xuArgA.m_iValue * xuArgB.m_iValue;
-  xuResC.m_nPlaces = 0;
+  xuResC.m_iValue  = xuArgA.m_iValue  * xuArgB.m_iValue;
+  xuResC.m_nPlaces = xuArgA.m_nPlaces + xuArgB.m_nPlaces;
 
   vTrace("| Unscaled Result (%10lld,%lld) "_Stz
          ,(i8)xuResC.m_iValue

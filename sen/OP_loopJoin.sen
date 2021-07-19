@@ -186,7 +186,7 @@
   // if we have not received STARTRIGHTMARKER
   /*
   Counter1[] 0 == if
-     "loopJoin_StreamDef got left streamDef" .
+     //"loopJoin_StreamDef got left streamDef" .
      // move pipein[] to StreamDefLft[]
      Pipein[]\clear to StreamDefLft[]
     true
@@ -196,7 +196,7 @@
 
   StreamDefLft[].isNull if
 
-      "loopJoin_StreamDef got left streamDef" .
+      //"loopJoin_StreamDef got left streamDef" .
       // move pipein[] to StreamDefLft[]
       Pipein[]\clear to StreamDefLft[]
 
@@ -206,7 +206,7 @@
 
   // We have received the STARTRIGHTMARKER
   // Hence this the right table stream def
-  "loopJoin_StreamDef got right streamDef" .
+  //"loopJoin_StreamDef got right streamDef" .
 
   // move pipein[] to StreamDefRht[]
   Pipein[]\clear to StreamDefRht[]
