@@ -1861,137 +1861,107 @@ void vTest32(void)
 /* test33                                                                     */
 /*----------------------------------------------------------------------------*/
 
-struct DecVal {
-  i16 m_iValue;
-  i8  m_nPlaces;
-};
+#include "SP_DecVal.hpp"
 
-void vScaleVal(i16& isVal, i8& isVal_places, i16 iuVal, i8 iuVal_places)
+void vScaleVal(DecVal& xsVal, DecVal xuVal)
 {
-  isVal = iuVal;
-  isVal_places = iuVal_places;
-  i8 isTest = isVal;
+  xsVal.vAssign(xuVal.m_iValue,xuVal.m_nPlaces);
+
+//  i8 isTest = xuVal.m_iValue;
+//  
+//  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
+//
+//    i8 iLastDigit = isTest % 10;
+//
+//    if (iLastDigit)
+//      break;
+//
+//    isTest /= 10;
+//
+//    if (i_Place >= xuVal.m_nPlaces) {
+//      xsVal.m_iValue = isTest;
+//      xsVal.m_nPlaces++;
+//    }
+//  }
   
-  for (i8 i_Place = 0; i_Place < 10; i_Place++) {
-    
-    i8 iLastDigit = isTest % 10;
-
-    if (iLastDigit)
-      break;
-    
-    isTest /= 10;
-    
-    if (i_Place >= iuVal_places) {
-      isVal = isTest;
-      isVal_places++;
-    }
-  }
 }
 
 
-void vRoundVal(DecVal& xrVal, DecVal& xsVal, i8 nPlaces)
+void vUnscaleVal(DecVal& xuVal, DecVal xsVal)
 {
-  xrVal.m_iValue  = xsVal.m_iValue;
-  xrVal.m_nPlaces = xsVal.m_nPlaces;
+  xuVal.vAssign(xsVal.m_iValue * IntLib::iTenToPow(xsVal.m_nPlaces),
+                xsVal.m_nPlaces);
 }
 
-void vUnscaleVal(i16& iuVal, i16 isVal, i8& isVal_places)
+
+void vRoundVal(DecVal& xrVal, DecVal xsVal, i8 nPlaces)
 {
-  iuVal = isVal * IntLib::iTenToPow(isVal_places);
+  xrVal.vAssign(xsVal.m_iValue ,
+                xsVal.m_nPlaces);
+  
+  if (xsVal.m_nPlaces <= nPlaces)
+    return;
+  
+  i8 iScaleDiff = xsVal.m_nPlaces - nPlaces;
+  i8 iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+  
+  xrVal.m_iValue /= iScaleCorrect;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
-void vDecimalMul(i16& isResC, i8& isResC_places,
-                 i16  isArgA, i8  isArgA_places,
-                 i16  isArgB, i8  isArgB_places)
+void vDecimalMul(DecVal& xsResC, DecVal xsArgA, DecVal xsArgB)
 {
-  i16 iuArgA;
-  i16 iuArgB;
-
-  vTrace("(%10lld,%lld) * (%10lld,%lld) : "_Stz
-         ,(i8)isArgA, isArgA_places
-         ,(i8)isArgB, isArgB_places
-         );
-
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
   
-  // scale the arguments
-  //vScaleArgs(isArgA,isArgA_places,isArgB,isArgB_places);
+  vTrace("%s * %s "_Stz,spArgA.sz(xsArgA),spArgB.sz(xsArgB));
 
-  vUnscaleVal(iuArgA,isArgA,isArgA_places);
-  vUnscaleVal(iuArgB,isArgB,isArgB_places);
+  // 2) calc argA * argB
+  xsResC.vAssign(xsArgA.m_iValue * xsArgB.m_iValue,
+                 xsArgA.m_nPlaces + xsArgB.m_nPlaces);
+  vTrace("= %s "_Stz,spResC.sz(xsResC));
 
-  vTrace("Unscaled Args %10lld * %10lld "_Stz
-         ,(i8)iuArgA
-         ,(i8)iuArgB
-         );
-
-  // calc argA * argB
-  i16 iuResC = iuArgA * iuArgB;
-  i8 nPlaces = isArgA_places + isArgB_places;
-
-  vTrace("| Unscaled Result %18lld (%lld) "_Stz
-         ,(i8)iuResC
-         ,nPlaces
-         );
-
-  vScaleVal(isResC,isResC_places,iuResC,nPlaces);
-  
-  vTrace("| Scaled Result (%10lld,%lld) "_Stz
-         ,(i8)isResC
-         ,isResC_places
-         );
+  // 3) scale result
+  vScaleVal(xsResC,xsResC);
+  vTrace("= %s "_Stz,spResC.sz(xsResC));
 
   vTrace("\n"_Stz);
-
-
 }
 
 /*----------------------------------------------------------------------------*/
 void vTest33(void)
 {
   vTrace("vTest33 -- Decimal Experiments\n"_Stz);
-    
-  i16 isResC; i8 isResC_places;
+      
+  DecVal xrArgA;
+  DecVal xrArgB;
+  DecVal xrResC;
 
-  for (i8 isArgA_places = 0; isArgA_places <= 4; isArgA_places++) {
-    for (i8 isArgB_places = 0; isArgB_places <= 4; isArgB_places++) {
-      
-      i16 isArgA = 20000;
-      i16 isArgB = 30000;
-      
-      vDecimalMul(isResC,isResC_places,
-                  isArgA,isArgA_places,
-                  isArgB,isArgB_places);
+  xrArgA.vAssign(20000,0);
+  xrArgB.vAssign(30000,0);
+
+  for (xrArgA.m_nPlaces = 0; xrArgA.m_nPlaces <= 4; xrArgA.m_nPlaces++) {
+    for (xrArgB.m_nPlaces = 0; xrArgB.m_nPlaces <= 4; xrArgB.m_nPlaces++) {
+      vDecimalMul(xrResC,xrArgA,xrArgB);
     }
   }
   
-  vTrace("- - - - - - -\n"_Stz);
-  
-  isResC = 12345;
-  isResC_places = 2;
-
-  DecVal xrVal;
-  DecVal xsVal;
-  
-  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
-    
-    i16 irResC = -1;
-    i8 irResC_places = -1;
-    
-    xsVal.m_iValue = 12345;
-    xsVal.m_nPlaces = 2;
-
-    vRoundVal(xrVal,xsVal,nPlaces);
-
-    vTrace("(%10lld,%lld) to %lld places = (%10lld,%lld)\n"_Stz
-           ,(i8)xsVal.m_iValue,xsVal.m_nPlaces
-           ,nPlaces
-           ,(i8)xrVal.m_iValue,xrVal.m_nPlaces
-           );
-  }
-  
+//  vTrace("- - - - - - -\n"_Stz);
+//
+//  DecVal xsResC;
+//  SP_DecVal spResC;
+//  
+//  xsResC.vAssign(12345678,2);
+//  vTrace("%s | rounded to "_Stz,spResC.sz(xsResC));
+//
+//  for (i8 nPlaces = 0; nPlaces <= 4; nPlaces++) {
+//    vRoundVal(xrResC,xsResC,nPlaces);
+//    vTrace("%lld places) %s; "_Stz,nPlaces,spResC.sz(xrResC));
+//  }
+//  
+//  vTrace("\n"_Stz);
 }
 
 #if 0
