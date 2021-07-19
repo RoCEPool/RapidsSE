@@ -2,23 +2,23 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
-../dummyTests/testList
-../tests/Transliterate/testList
-../tests/BackEnd/testList
-../tests/Compiler/testList
-../tests/Demo/testList
-../tests/Datums/testList
-../tests/Ddl/testList
-../tests/Examples/testList
-../tests/Insert/testList
-../tests/Load/testList
-../tests/LocalFunctions/testList
-../tests/Misc/testList
-../tests/Operators/testList
-../tests/PartitionKey/testList
-../tests/Queries/testList
-//../tests/Retrieve/testList
-../tests/Select/testList
-../tests/Table/testList
-../tests/Index/testList
-../tests/Tpch/testList
+../tests/dummyTests/testList
+../tests/tests1N/Transliterate/testList
+../tests/tests1N/BackEnd/testList
+../tests/tests1N/Compiler/testList
+../tests/tests1N/Demo/testList
+../tests/tests1N/Datums/testList
+../tests/tests1N/Ddl/testList
+../tests/tests1N/Examples/testList
+../tests/tests1N/Insert/testList
+../tests/tests1N/Load/testList
+../tests/tests1N/LocalFunctions/testList
+../tests/tests1N/Misc/testList
+../tests/tests1N/Operators/testList
+../tests/tests1N/PartitionKey/testList
+../tests/tests1N/Queries/testList
+//../tests/tests1N/Retrieve/testList
+../tests/tests1N/Select/testList
+../tests/tests1N/Table/testList
+../tests/tests1N/Index/testList
+../tests/tests1N/Tpch/testList
