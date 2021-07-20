@@ -326,7 +326,7 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_LARGE   ,0 }, // CN_LOGICTIMER
-  { sizeof(LogicUnit),          HT_T_LARGE   ,0 }, // CN_LOGICUNIT
+  { sizeof(LogicUnit),          HT_T_MEDIUM  ,0 }, // CN_LOGICUNIT
 
   { 'M' - ('A' - 1),            HT_INVALID   ,0 }, // CN__M__
   { sizeof(Marker),             HT_T_TINY    ,0 }, // CN_MARKER
@@ -335,7 +335,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
-  { sizeof(MetaGet),            HT_T_TINY    ,0 }, // CN_METAGET
+  { sizeof(MetaGet),           HT_T_TINY    ,0 }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__

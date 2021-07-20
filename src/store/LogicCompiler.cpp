@@ -25,12 +25,11 @@ Stz* gszaEoFragments[EO_ENUMS];
 char gcaAmMacros[C_128K];
 Stz* gszaAmMacros[AM_ENUMS];
 
-const i8 C_MACRO_FILES = 12;
+const i8 C_MACRO_FILES = 11;
 char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_CrwBuffer.macro",
     "../asm/AM_DataPulse.macro",
     "../asm/AM_DefaultHandlers.macro",
-    "../asm/AM_EndRightMarker.macro",
     "../asm/AM_EosMarker.macro",
     "../asm/AM_Index.macro",
     "../asm/AM_JoinRows.macro",
@@ -908,7 +907,6 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef char i1;"
   "\n  typedef unsigned short u2;"
   "\n  typedef long long i8;"
-  "\n  typedef unsigned char byte;"
   "\n  typedef double d8;"
   "\n  typedef unsigned long long m8;"
   "\n  typedef unsigned long long u8;"
