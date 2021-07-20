@@ -1,4 +1,4 @@
-Version.h
+/Version.h
 *.o
 *.d
 .idea/
