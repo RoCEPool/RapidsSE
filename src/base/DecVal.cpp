@@ -40,10 +40,15 @@ DecVal DecVal::operator +(DecVal xArgB)
   vTrace("(( %s + %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // normalise values
+  vNormalise(m_iValue,m_nPlaces,xArgB.m_iValue,xArgB.m_nPlaces);
+  vTrace("; normalised %s + %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute result
   
   i16 iComputedValue  = m_iValue  + xArgB.m_iValue;
-  i8  iComputedPlaces = m_nPlaces + xArgB.m_nPlaces;
+  i8  iComputedPlaces = m_nPlaces;
   
   xResC.vAssign(iComputedValue,iComputedPlaces);
   vTrace("= %s "_Stz,spResC.sz(xResC));
@@ -71,6 +76,11 @@ DecVal DecVal::operator -(DecVal xArgB)
   DecVal xResC;
   
   vTrace("(( %s - %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // normalise values
+  vNormalise(m_iValue,m_nPlaces,xArgB.m_iValue,xArgB.m_nPlaces);
+  vTrace("; normalised %s + %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute result
@@ -186,6 +196,37 @@ void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
 
   vAssign(iValue,nPlaces);
 }
+
+/*----------------------------------------------------------------------------*/
+/* normalise                                                                  */
+/*----------------------------------------------------------------------------*/
+void DecVal::vNormalise(i16& isArgA, i8& isArgA_places,
+                        i16& isArgB, i8& isArgB_places)
+{
+  // 1) arg a & b have the same scale
+  if (isArgA_places == isArgB_places) {
+    return;
+  }
+    
+  i8 iScaleDiff;
+  i8 iScaleCorrect;
+
+  // 2) arg b needs to be scaled to arg a places
+  if (isArgA_places > isArgB_places) {
+    iScaleDiff = isArgA_places - isArgB_places;
+    iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+    isArgB = isArgB * iScaleCorrect;
+    isArgB_places = isArgA_places;
+    return;
+  }
+
+  // 2) arg a needs to be scaled to arg a places
+  iScaleDiff = isArgB_places - isArgA_places;
+  iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
+  isArgA = isArgA * iScaleCorrect;
+  isArgA_places = isArgB_places;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* round down to given number of places                                       */

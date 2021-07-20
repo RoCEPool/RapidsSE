@@ -25,6 +25,9 @@ namespace BASE
     void vAssign(i16 iValue, i8 nPlaces);
     void vAssign(i8 iWhole, i8 iFraction, i8 nPlaces);
 
+    void vNormalise(i16& isArgA, i8& isArgA_places,
+                    i16& isArgB, i8& isArgB_places);
+
     void vRoundDown(i8 nPlaces);
     void vRoundUp(i8 nPlaces);
   };
