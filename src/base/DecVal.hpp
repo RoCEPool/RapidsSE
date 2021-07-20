@@ -16,6 +16,7 @@ namespace BASE
   
     void operator =(DecVal xDecVal);
     DecVal operator *(DecVal xDecVal);
+    DecVal operator /(DecVal xDecVal);
 
     void vAssign(DecVal xArg);
     void vAssign(i16 iValue, i8 nPlaces);
