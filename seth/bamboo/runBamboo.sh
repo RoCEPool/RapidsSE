@@ -65,12 +65,16 @@ COMPLETED_SUCCESFULLY=0
 
 # Which build types do we wish to test?
 # Valid values are "release" and "debug".
-BUILD_TYPES=( "release" "debug" )
+BUILD_TYPES=( "release" )
+#BUILD_TYPES=( "release" "debug" )
 
 # Which configurations do we wish to run and test with.
 # These values must match the names of the files in the bamboo/config directory
 # as well as the names of the files in the bamboo/testlists directory.
 BUILD_CONFIGS=( "1N4P" "1N1P" "2N4P" )
+
+# A list of configurations that failed
+FAILED_CONFIGS=()
 
 ###############################################################################
 ### Functions                                                               ###
@@ -87,9 +91,13 @@ function onExit() {
   # Compress any large files before they get collected by Bamboo
   compressLargeFiles
 
-  local statusMsg="Complete"
+  if [ "${#FAILED_CONFIGS[@]}" -gt 0 ]; then
+    COMPLETED_SUCCESFULLY=0
+  fi
+
+  local statusMsg="Completed Successfully"
   if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
-    statusMsg="Failed  "
+    statusMsg="Failed                "
   fi
 
   ENDTIME="$(date +%s)"
@@ -102,6 +110,12 @@ function onExit() {
   echo ""
   echo "Elapsed time: ${ELAPSEDTIME}"
   echo ""
+
+  if [ "${#FAILED_CONFIGS[@]}" -gt 0 ]; then
+    echo "The following configurations failed:"
+    printf "  %s\n" "${FAILED_CONFIGS[@]}"
+  fi
+
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -180,15 +194,11 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
 
     # Ensure these files exist
     if [ ! -f "${configFile}" ]; then
-      printError "Config file does not exist: ${configFile}"
-      printError "Skipping testing of configuration: [${buildType}, ${buildConfig}]\n"
-      continue
+      errorExit "Config file does not exist: ${configFile}"
     fi
 
     if [ ! -f "${testlistFile}" ]; then
-      printError "Testlist file does not exist: ${testlistFile}"
-      printError "Skipping testing of configuration: [${buildType}, ${buildConfig}]\n"
-      continue
+      errorExit "Testlist file does not exist: ${testlistFile}"
     fi
 
 
@@ -208,7 +218,9 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
     # *** Test RapidsSE ***
     # If it fails then we continue on with testing another configuration
     testNamePrefix="${buildConfig}_${buildType}"
-    "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}" || true
+    if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}"; then
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
+    fi
 
 
     # *** Copy any log files ***

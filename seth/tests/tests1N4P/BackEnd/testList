@@ -12,7 +12,7 @@ limitRows.test
 limitRows_I.test
 
 loopJoinBroadcast.test
-loopJoinHashcast.test
+//loopJoinHashcast.test
 loopJoinUnicast.test
 
 projectColumns$_I.test
