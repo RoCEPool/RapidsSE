@@ -1315,6 +1315,35 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract value from a decimal literal                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractDecLit(char*& az, i8& iValue, i8& nFractionDigits)
+{
+  _static_
+  
+  iValue = 0;
+  nFractionDigits = 0;
+    
+  // collect whole number part (till '.')
+  while (StrLib::bIsDigit(*az))
+    iValue = iValue * 10 + StrLib::iDigitToI8(*az++);
+
+  if ('.' != *az)
+    return true;
+  
+  // skip '.'
+  az++;
+
+  // collect fraction as well
+  while (StrLib::bIsDigit(*az)) {
+    iValue = iValue * 10 + StrLib::iDigitToI8(*az++);
+    nFractionDigits++;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractFloat: extract a float from substr                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
