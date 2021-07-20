@@ -85,6 +85,10 @@ macro AM_JOINROWS_CRWLFT_NULLRHT
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
 
+  // find the row, given rowno
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_CRWBUF_CRW
+
   // inflate left row into dst row
   EO_PUSH_DEVROW_DST
   EO_PUSH_DEVROW_LFT
@@ -209,6 +213,10 @@ macro AM_JOINROWS_ROWLFT_NULLRHT
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
+
+  // find the row, given rowno
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_ROWBUF_ROW
 
   // inflate left row into dst row
   EO_PUSH_DEVROW_DST
