@@ -198,35 +198,38 @@ void DecVal::vAssign(i8 iWhole, i8 iFraction, i8 nPlaces)
 }
 
 /*----------------------------------------------------------------------------*/
-/* normalise                                                                  */
+/* normalise the places of the two given aruments                             */
 /*----------------------------------------------------------------------------*/
-void DecVal::vNormalise(i16& isArgA, i8& isArgA_places,
-                        i16& isArgB, i8& isArgB_places)
+void DecVal::vNormalise(i16& iArgA_value, i8& iArgA_places,
+                        i16& iArgB_value, i8& iArgB_places)
 {
-  // 1) arg a & b have the same scale
-  if (isArgA_places == isArgB_places) {
+  // 1) arg a & b have the same number of places
+  if (iArgA_places == iArgB_places) {
     return;
   }
     
   i8 iScaleDiff;
   i8 iScaleCorrect;
 
-  // 2) arg b needs to be scaled to arg a places
-  if (isArgA_places > isArgB_places) {
-    iScaleDiff = isArgA_places - isArgB_places;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) arg a needs to be scaled up to arg b places
+  
+  if (iArgA_places < iArgB_places) {
+    iScaleDiff    = iArgB_places - iArgA_places;
     iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-    isArgB = isArgB * iScaleCorrect;
-    isArgB_places = isArgA_places;
+    iArgA_value   = iArgA_value * iScaleCorrect;
+    iArgA_places  = iArgB_places;
     return;
   }
 
-  // 2) arg a needs to be scaled to arg a places
-  iScaleDiff = isArgB_places - isArgA_places;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) arg b needs to be scaled up to arg a places
+  
+  iScaleDiff    = iArgA_places - iArgB_places;
   iScaleCorrect = IntLib::iTenToPow(iScaleDiff);
-  isArgA = isArgA * iScaleCorrect;
-  isArgA_places = isArgB_places;
+  iArgB_value   = iArgB_value * iScaleCorrect;
+  iArgB_places  = iArgA_places;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* round down to given number of places                                       */
