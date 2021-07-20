@@ -8,8 +8,9 @@ namespace BASE
   class DecVal
   {
   public:
-    i16  m_iValue;   // numeric value
-    i8   m_nPlaces;  // number of decimal places
+                     //                             1000.00  1000.0
+    i16  m_iValue;   // numeric value               100000   10000
+    i8   m_nPlaces;  // number of decimal places    2        1
 
   public:
     DecVal(void);
