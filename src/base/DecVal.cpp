@@ -27,6 +27,73 @@ void DecVal::operator =(DecVal xDecVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add operator                                                               */
+/*----------------------------------------------------------------------------*/
+DecVal DecVal::operator +(DecVal xArgB)
+{
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
+  
+  DecVal xResC;
+  
+  vTrace("(( %s + %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute result
+  
+  i16 iComputedValue  = m_iValue  + xArgB.m_iValue;
+  i8  iComputedPlaces = m_nPlaces + xArgB.m_nPlaces;
+  
+  xResC.vAssign(iComputedValue,iComputedPlaces);
+  vTrace("= %s "_Stz,spResC.sz(xResC));
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // round up
+  
+  xResC.vRoundUp(m_nPlaces);
+  vTrace("; round up (to %lld places) = %s "_Stz,m_nPlaces,spResC.sz(xResC));
+
+  vTrace(")) "_Stz);
+
+  return xResC;
+}
+
+/*----------------------------------------------------------------------------*/
+/* subtract operator                                                           */
+/*----------------------------------------------------------------------------*/
+DecVal DecVal::operator -(DecVal xArgB)
+{
+  SP_DecVal spArgA;
+  SP_DecVal spArgB;
+  SP_DecVal spResC;
+  
+  DecVal xResC;
+  
+  vTrace("(( %s - %s "_Stz,spArgA.sz(*this),spArgB.sz(xArgB));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute result
+  
+  i16 iComputedValue  = m_iValue  - xArgB.m_iValue;
+  i8  iComputedPlaces = m_nPlaces; // + xArgB.m_nPlaces;
+  
+  xResC.vAssign(iComputedValue,iComputedPlaces);
+  vTrace("= %s "_Stz,spResC.sz(xResC));
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // round up
+  
+  xResC.vRoundUp(m_nPlaces);
+  vTrace("; round up (to %lld places) = %s "_Stz,m_nPlaces,spResC.sz(xResC));
+
+  vTrace(")) "_Stz);
+
+  return xResC;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* multiply operator                                                          */
 /*----------------------------------------------------------------------------*/
 DecVal DecVal::operator *(DecVal xArgB)
@@ -60,7 +127,7 @@ DecVal DecVal::operator *(DecVal xArgB)
 }
 
 /*----------------------------------------------------------------------------*/
-/* divide operator                                                          */
+/* divide operator                                                            */
 /*----------------------------------------------------------------------------*/
 DecVal DecVal::operator /(DecVal xArgB)
 {
@@ -198,7 +265,7 @@ DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
   char* azDecLit = (char*)azLiteral;
   StrLib::bExtractDecLit(azDecLit,iValue,nFractionDigits);
   
-  DecVal xDecVal;  
+  DecVal xDecVal;
   xDecVal.vAssign(iValue,nFractionDigits);
     
   return xDecVal;

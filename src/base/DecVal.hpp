@@ -16,6 +16,8 @@ namespace BASE
     DecVal(void);
   
     void operator =(DecVal xDecVal);
+    DecVal operator +(DecVal xDecVal);
+    DecVal operator -(DecVal xDecVal);
     DecVal operator *(DecVal xDecVal);
     DecVal operator /(DecVal xDecVal);
 

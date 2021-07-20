@@ -1953,6 +1953,14 @@ void vTest33(void)
   
   xResC = "10.00"_Dec / "3."_Dec;
   vTrace("xResC = %s\n"_Stz,spResC.sz(xResC));
+  
+  vTrace("- - - - - - -\n"_Stz);
+
+  xResC = "1."_Dec + "2."_Dec;
+  vTrace("xResC = %s\n"_Stz,spResC.sz(xResC));
+
+  xResC = "123."_Dec + "0.456"_Dec;
+  vTrace("xResC = %s\n"_Stz,spResC.sz(xResC));
 }
 
 /*----------------------------------------------------------------------------*/
