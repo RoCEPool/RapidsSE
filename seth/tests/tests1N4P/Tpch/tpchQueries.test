@@ -1,0 +1,98 @@
+--------------------------------------------------------------------------------
+-- tpch queries tests (SF1)
+--------------------------------------------------------------------------------
+
+// Query 1
+Query1 lineitem;
+rows:
+ ('A','F',37734107.00,56586554400.73,53758251078.47,55909058047.73,25.52,38273.12,0.04,1478493)
+ ('N','F',991417.00,1487504710.38,1413082009.14,1469649033.57,25.51,38284.46,0.05,38854)
+ ('N','O',74429437.00,111631834353.84,106051834626.06,110297922287.71,25.50,38249.32,0.04,2918531)
+ ('R','F',37719753.00,56568041380.90,53741286634.36,55889611947.82,25.50,38250.85,0.05,1478870)
+ 
+// Query 6
+Query6 lineitem lineitem_idx1;
+unordered rows:
+( 123140554.79 )
+
+// Query 4
+Query_4b;
+ordered rows:
+  ('1-URGENT',10594)
+  ('2-HIGH',10476)
+  ('3-MEDIUM',10410)
+  ('4-NOT SPECIFIED',10556)
+  ('5-LOW',10487)
+
+// drop the orders table
+drop table Orders;
+success;
+
+// create a table
+create table orders (
+  O_ORDERKEY        INTEGER NOT NULL,
+  O_CUSTKEY         INTEGER NOT NULL,
+  O_ORDERSTATUS     CHAR(1) NOT NULL,
+  O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+  O_ORDERDATE       DATE NOT NULL,
+  O_ORDERPRIORITY   CHAR(15) NOT NULL,
+  O_CLERK           CHAR(15) NOT NULL,
+  O_SHIPPRIORITY    INTEGER NOT NULL,
+  O_COMMENT         VARCHAR(79) NOT NULL
+) partition by (O_CUSTKEY);
+success
+ 
+//------------------------------------------------------------------------------
+// create an index on O_ORDERKEY
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
+affected: 0
+
+CREATE INDEX orders_idx2 ON Orders(O_ORDERKEY);
+affected: 0
+
+// check orders of index
+lsidx orders;
+rows:
+("orders_idx1",false,false)
+("orders_idx2",false,false)
+
+// check columns of index
+lsidxcol orders orders_idx1;
+rows:
+("O_CUSTKEY", "INTEGER", 19, 0, false, true)
+
+// check columns of index
+lsidxcol orders orders_idx2;
+rows:
+("O_ORDERKEY", "INTEGER", 19, 0, false, false)
+
+// load the table
+//load orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";
+load orders "/TPCH/SF1/orders.tbl";
+success
+
+tableScan orders;
+rows: 1500000
+ 
+// Query 3
+Query_3b;
+rows: 10
+/*
+ (4878020,0.24,DATE '1995-03-12',0)
+ (2456423,0.24,DATE '1995-03-05',0)
+ (2300070,0.24,DATE '1995-03-13',0)
+ (2020610,0.24,DATE '1995-02-05',0)
+ (2864672,0.24,DATE '1995-03-13',0)
+ (2060449,0.24,DATE '1995-03-08',0)
+ (817603,0.24,DATE '1995-03-11',0)
+ (5521732,0.24,DATE '1995-03-13',0)
+ (4129095,0.24,DATE '1995-02-17',0)
+ (612198,0.24,DATE '1995-02-07',0)
+ */
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

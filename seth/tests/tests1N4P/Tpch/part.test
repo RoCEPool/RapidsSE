@@ -1,0 +1,51 @@
+--------------------------------------------------------------------------------
+-- part table
+--------------------------------------------------------------------------------
+
+// create a table
+create table part (
+P_PARTKEY           INTEGER NOT NULL,
+P_NAME              VARCHAR(55) NOT NULL,
+P_MFGR              CHAR(25) NOT NULL,
+P_BRAND             CHAR(10) NOT NULL,
+P_TYPE              VARCHAR(25) NOT NULL,
+P_SIZE              INTEGER NOT NULL,
+P_CONTAINER         CHAR(10) NOT NULL,
+P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+P_COMMENT           VARCHAR(23) NOT NULL
+);
+success
+
+
+//------------------------------------------------------------------------------
+// create an index on p_brand
+CREATE INDEX part_idx1 ON part(p_brand);
+affected: 0
+
+// check existence of index
+lsidx part;
+rows:
+  ("part_idx1",false,false)
+
+// check columns of index
+lsidxcol part part_idx1;
+rows:
+  ("P_BRAND", "VARCHAR", 10, 0, false, false)
+
+// load the table
+//load part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
+load part "/TPCH/SF1/part.tbl";
+success
+
+tableScan part;
+rows: 200000
+
+compactidx part part_idx1;
+success
+
+CLEANUP {
+
+  bye;
+  mute
+}
+

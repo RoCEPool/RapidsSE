@@ -1,0 +1,46 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+// create a table
+create table partsupp (
+PS_PARTKEY      INTEGER NOT NULL,
+PS_SUPPKEY      INTEGER NOT NULL,
+PS_AVAILQTY     INTEGER NOT NULL,
+PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+PS_COMMENT      VARCHAR(199) NOT NULL
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on suppkey
+CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
+affected: 0
+
+// check existence of index
+lsidx partsupp;
+rows:
+  ("partsupp_idx1",false,false)
+
+// check columns of index
+lsidxcol partsupp partsupp_idx1;
+rows:
+  ("PS_SUPPKEY", "INTEGER", 19, 0, false, false)
+
+// load the table
+//load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
+load partsupp "/TPCH/SF1/partsupp.tbl";
+success
+
+tableScan partsupp;
+rows: 800000
+
+compactidx partsupp partsupp_idx1;
+success
+
+CLEANUP {
+
+  bye;
+  mute
+}
+
