@@ -4,15 +4,14 @@
 .DS_Store
 *.swp
 *.lock
-nohupSE-*.out
-nohupSE*.out
-startCluster.log
-tmp
-bin
+/nohupSE-*.out
+/nohupSE*.out
+/startCluster.log
+/tmp/
+/bin/
 .idea/
-se.ready
+/se.ready
 
 # For the Bamboo box
-TPCH/
-tpch/
-tpch
+/TPCH/
+/tpch/
