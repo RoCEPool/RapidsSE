@@ -35,6 +35,9 @@
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"
 
+#include "Node.hpp"
+#include "Grid.hpp"
+#include <arpa/inet.h>
 #include "TagConstants.h"
 
 extern SizeHeap  gxaSizeHeap[];
@@ -401,18 +404,18 @@ void Step::vSocketSendObject(void)
           _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    
+
   SysCall oSysCall;
   
   Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
-  
+
   m_pDataStack->vPushInt(bResult);
 
   EXIT();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* Socket.set -- set socket                                                   */

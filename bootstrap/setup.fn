@@ -1,5 +1,6 @@
 #!/bin/bash
-# This file contains function definitions that are imported and used by setup.sh.
+# This file contains function definitions that are imported and used
+# by setup.sh and addNode.sh.
 
 # Guard against this file being executed directly.
 if [ "${BASH_SOURCE[0]}" -ef "$0" ]
@@ -10,11 +11,20 @@ fi
 
 # Load other common functions. Order is important.
 INCLUDES=("common.fn" "envCheck.fn")
+INC_SYMBOLS=("__COMMON_FN" "__ENVCHECK_FN")
 
-for incFile in "${INCLUDES[@]}"
-do
+for ((i=0 ; i<${#INCLUDES[@]} ; i++)); do
 
-  if [ -n "${DIR}" ]; then
+  incFile="${INCLUDES[$i]}"
+  incSymbol="${INC_SYMBOLS[$i]}"
+
+  # Don't source the file if it has already been sourced. We will know this
+  # because the associated symbol will not be null.
+  if eval "[ -n \"\${${incSymbol}:-}\" ]" ; then
+    continue
+  fi
+
+  if [ -n "${DIR:-}" ]; then
     incFile="${DIR}/${incFile}"
   fi
 
@@ -30,17 +40,40 @@ do
 done
 
 
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+# Variable that can be tested to see if we have already sourced this file
+readonly __SETUP_FN=1
+
+# Default values
+readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
+readonly NODE_CFG_DEFAULT_PORT="5541"       # TCP
+readonly NODE_CFG_DEFAULT_HEARTBEAT="8888"  # UDP
+readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
+         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
+         NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
+         NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
+readonly NODE_CFG_DEFAULT_PARAMS=""
+
+readonly MINIMUM_RAM_SIZE="4"
+readonly MINIMUM_SHM_SIZE="3"
+readonly MINIMUM_NUM_THREADS="8"
+readonly MAXIMUM_NUM_PARTITIONS="32" # for now
+
+readonly RESOURCE_DIR="res"
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the acceptable arguments to the script and then exits.
 ## Params: None
 
-function printUsageAndExit() {
+function printSetupUsageAndExit() {
   echo ""
   echo "Usage: ./<install_file>.run [--node | --cluster]"
   echo "                            [--interactive | --script]"
   echo "                            [--config <file>]"
-  echo "                            [--basic | --adv/--advanced]"
+  echo "                            [--basic | --adv | --advanced]"
   echo "                            [--debug]"
   echo "Details:"
   echo "  --cluster       [Default] Installs RapidsSE on a cluster."
@@ -79,9 +112,9 @@ function printUsageAndExit() {
 ## the appropriate global variables
 ## Params: the arguments to the script
 
-function processArgs() {
+function processSetupArgs() {
 
-  # Local variables that have value 1 if that argument has been specified.
+  # Local variables have value 1 if that argument has been specified.
   local argCluster=0
   local argNode=0
   local argInteractive=0
@@ -180,17 +213,17 @@ function processArgs() {
 
       --help|-h)
         shift
-        printUsageAndExit
+        printSetupUsageAndExit
         ;;
 
       *)
         shift
-        printUsageAndExit
+        printSetupUsageAndExit
         ;;
     esac
   done
 
-  if [[ "${argConfig}" -eq 1 && -n "${CONFIG_FILE}" &&  "${CONFIG_FILE:0:1}" != "/" && -n "${USER_PWD}" ]]; then
+  if [[ "${argConfig}" -eq 1 && -n "${CONFIG_FILE:-}" &&  "${CONFIG_FILE:0:1}" != "/" && -n "${USER_PWD:-}" ]]; then
     # We've been invoked from the installer and have a relative path to 
     # the config file. The config file is relative to this directory.
     CONFIG_FILE="${USER_PWD}/${CONFIG_FILE}"
@@ -213,62 +246,62 @@ function processArgs() {
 
   if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then 
     printError "${errmsg}" "--cluster" "--node"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argNode} -eq 1     && ${INTERACTIVE_INSTALL} -eq 1 ]]; then 
     printError "${errmsg}" "--node" "--interactive"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argInteractive} -eq 1 && ${argScript} -eq 1 ]]; then 
     printError "${errmsg}" "--interactive" "--script"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argBasic} -eq 1    && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--script" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argAdvanced} -eq 1 && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--script"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argBasic} -eq 1    && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--node"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argAdvanced} -eq 1 && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--node" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then 
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argConfig} -eq 1 && ! -f "${CONFIG_FILE}" ]]; then 
     printError "Config file does not exist: ${CONFIG_FILE}"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
-  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]]; then 
+  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE:-}" ]]; then
     printError "${errmsg}" "No installation *.run file specified" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argInstaller} -eq 1 && ! -f "${INSTALL_FILE}" ]]; then 
     printError "Installation *.run file does not exist: ${INSTALL_FILE}"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
   if [[ ${argName} -eq 1 && ${CLUSTER_INSTALL} -eq 1 ]]; then 
     printError "${errmsg}" "--name" "--cluster" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
 
@@ -280,17 +313,17 @@ function processArgs() {
 
   if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --node must also specify argument --config"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argNode} -eq 1 && ${argName} -eq 0 ]]; then
     printError "Missing argument dependency: argument --node must also specify argument --name"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
   if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --script must also specify argument --config"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
 }
@@ -308,10 +341,10 @@ function findInstallFile() {
   local parentScript
   parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
 
-  if [[ -n "${parentScript}" && "${parentScript:(-4):4}" == ".run" ]]; then
+  if [[ -n "${parentScript:-}" && "${parentScript:(-4):4}" = ".run" ]]; then
 
     # Is it an absolute path?
-    if [[ "${parentScript:0:1}" == "/" && -f "${parentScript}" ]]; then
+    if [[ "${parentScript:0:1}" = "/" && -f "${parentScript}" ]]; then
       INSTALL_FILE="${parentScript}"
       return
     fi
@@ -324,7 +357,7 @@ function findInstallFile() {
   fi
 
   # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
-  if [ -n "${USER_PWD}" ]; then
+  if [ -n "${USER_PWD:-}" ]; then
 
     debugPrint "Looking for install file in directory: ${USER_PWD}"
 
@@ -338,7 +371,56 @@ function findInstallFile() {
     fi
   fi
 
-  errorExit "Could not find the installation *.run file for the purpose of copying to and installing on other nodes. Try specifying the location of this file with the --installer argument."
+  # If we are running from an installation directory then there should be a run
+  # file in the res directory.
+  if [ -d "${DIR:+${DIR}/}${RESOURCE_DIR}" ] && [ -f "${DIR:+${DIR}/}${VERSION_FILE}" ]; then
+    local -a runfiles=()
+    readarray -t runfiles < <(ls -1 "${RESOURCE_DIR}"/*.run)
+
+    # Get the current installed version
+    local currentVer
+
+    #shellcheck ignore=SC2031
+    #shellcheck source=common.fn
+    currentVer="$(source "${DIR:+${DIR}/}${VERSION_FILE}" && echo "${SE_VERSION_STR}")"
+
+    # Check that the version of each installer file matches that of the current installation
+    for runfile in "${runfiles[@]}"; do
+
+      if checkInstallFileVersion "${runfile}" "${currentVer}"; then
+        INSTALL_FILE="${runfile}"
+        return
+      fi
+    done
+  fi
+
+  errorExit "Could not find the installation *.run file for installing on other nodes. Try specifying the location of this file with the --installer argument."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the version of the install file is expected.
+## Returns a zero exit code on success and non-zero exit code on failure.
+## Params:
+##  $1 - The path to the installation file
+##  $2 - The version string from the current installed SE version (e.g. 0.8.0-SNAPSHOT)
+function checkInstallFileVersion() {
+
+  [ "$#" -ne 2 ] && errorExit "Function checkInstallFileVersion() must be called with 2 arguments"
+
+  local installFile="$1"
+  local expectedVersion="$2"
+
+  # First, strip off the ".run" off the end of the install file
+  local fileBody
+  fileBody="${installFile%%.run}"
+
+  # The $fileBody should now end with the same version from $expectedVersion
+  if [ "${fileBody: -${#expectedVersion}}" = "${expectedVersion}" ]; then
+    true
+    return
+  fi
+
+  false
 }
 
 
@@ -347,13 +429,17 @@ function findInstallFile() {
 ## Params: None
 
 function doClusterInstall() {
+
+  # First check the version of bash we are running is sufficient
+  validateLocalBash
+
   # Need to consider if this installation is interactive or scripted, or
   # whether an existing config file is being used.
 
   if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
-    displayWelcome
+    displaySetupWelcome
 
-    if [ -n "${CONFIG_FILE}" ]; then
+    if [ -n "${CONFIG_FILE:-}" ]; then
       # Interactive install but we have been given a config file.
       echo "Using the existing cluster configuration file found at:"
       echo "  ${CONFIG_FILE}"
@@ -366,13 +452,22 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
+      # Get the number of CPU cores, memory size, SHM size of each node.
+      # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+      # and will be used for default values for partitions, threads and
+      # shared memory size later on.
+      collectHostSizeInfo
+
+      # Now we can update the default values for memory size, partitions and threads.
+      updateDefaults
+
+      # Validate the installation environment
+      validateInstallationEnvironment
+
       # Write config file to the current working directory, as the user may have
       # specified a config file in an installation dir that is about to get overwritten.
       local outputConfig="${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
-
-      # Validate the installation environment
-      validateEnvironment
 
       # Install all nodes
       distributeSoftware "${outputConfig}"
@@ -391,14 +486,24 @@ function doClusterInstall() {
 
       # TODO: Present summary
       # TODO: Edit ?
+
+      # Get the number of CPU cores, memory size, SHM size of each node.
+      # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+      # and will be used for default values for partitions, threads and
+      # shared memory size later on.
+      collectHostSizeInfo
+
+      # Now we can update the default values for memory size, partitions and threads.
+      updateDefaults
+
+      # Validate the installation environment
+      validateInstallationEnvironment
+
       confirmConfig
 
       # Write config file to the directory with the installer
       local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
-
-      # Validate the installation environment
-      validateEnvironment
 
       # Distribute the software and install all nodes
       distributeSoftware "${outputConfig}"
@@ -416,12 +521,21 @@ function doClusterInstall() {
     # Load and validate config
     loadClusterConfig
 
+    # Get the number of CPU cores, memory size, SHM size of each node.
+    # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+    # and will be used for default values for partitions, threads and
+    # shared memory size later on.
+    collectHostSizeInfo
+
+    # Now we can update the default values for memory size, partitions and threads.
+    updateDefaults
+
+    # Validate the installation environment
+    validateInstallationEnvironment
+
     #  Write config file?
     local outputConfig="${DEFAULT_CONFIG_PATH}"
     writeClusterConfig "${outputConfig}"
-
-    # Validate the installation environment
-    validateEnvironment
 
     # Install all nodes
     distributeSoftware "${outputConfig}"
@@ -458,6 +572,9 @@ function createConfiguration() {
   # (advanced) port
   askPort
 
+  # (advanced) heartbeat
+  askHeartbeat
+
   # installation directory
   askInstallDir
 
@@ -472,13 +589,16 @@ function createConfiguration() {
 
   # (advanced) additional parameters
   askParams
+
+  # Set cluster ID
+  generateClusterId
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Welcomes the user to the interactive install wizard.
 ## Params: None
 
-function displayWelcome() {
+function displaySetupWelcome() {
   clear
   #shellcheck disable=1090
   source "${VERSION_FILE}"
@@ -527,7 +647,7 @@ function askNamePrefix() {
     fi
 
     # Check if using the default value
-    if [ -z "${line}" ]; then 
+    if [ -z "${line:-}" ]; then
       line="${NODE_CFG_DEFAULT_NAME_PREFIX}"
       break
     fi
@@ -546,10 +666,10 @@ function askNamePrefix() {
 
 function askHostnames() {
 
-  declare -a hostnames
+  declare -a hostnames=()
   local line
 
-  declare -a loopbackHosts
+  declare -a loopbackHosts=()
   loopbackHosts=("localhost" "127.0.0.1" "::1")
 
   local gotLoopback=0
@@ -573,7 +693,7 @@ function askHostnames() {
       continue
     fi
 
-    if [ -z "${line}" ]; then 
+    if [ -z "${line:-}" ]; then
       echo "Invalid input: must have at least one hostname."
       continue 
     fi
@@ -581,7 +701,7 @@ function askHostnames() {
     gotLoopback=0
     for addr in "${loopbackHosts[@]}"
     do
-      if [ "${line}" == "${addr}" ]; then
+      if [ "${line}" = "${addr}" ]; then
         echo "Invalid input: hostname cannot be a loopback name/address."
         gotLoopback=1
         break;
@@ -608,14 +728,14 @@ function askHostnames() {
       continue
     fi
 
-    if [ -z "${line}" ]; then 
+    if [ -z "${line:-}" ]; then
       break
     fi
 
     gotLoopback=0
     for addr in "${loopbackHosts[@]}"
     do
-      if [ "${line}" == "${addr}" ]; then
+      if [ "${line}" = "${addr}" ]; then
         echo "Invalid input: hostname cannot be a loopback name/address."
         gotLoopback=1
         break;
@@ -637,30 +757,55 @@ function askHostnames() {
   # Build the node list, now that we have the initial list & count of hosts.
   createNodeNames ${#hostnames[@]}
 
+  # We now need to create the default node configurations for each node.
+  # If we are installing then just create them all, but if we are adding
+  # a node then we only need to create node configs for the nodes we are adding.
+  # So determine which nodes.
+  local -a nodeNames
+  if [ "${#hostnames[@]}" -eq "${#NODE_LIST[@]}" ]; then
+    # Create node configs for all
+    nodeNames=("${NODE_LIST[@]}")
+  else
+    # Only create node configs for the last node(s)
+    local startIdx=$(( ${#NODE_LIST[@]} - ${#hostnames[@]} ))
+    for (( i=startIdx ; i<${#NODE_LIST[@]} ; i++ )); do
+      nodeNames+=("${NODE_LIST[$i]}")
+    done
+  fi
+
   # With the node count and the node names we can now build the 
   # node_cfg associative arrays to hold the configuration of each node.
-  createNodeConfigs "${NODE_LIST[@]}"
+  createNodeConfigs "${nodeNames[@]}"
 
   # set the hostname field in each node_cfg associative array
   local i=0
   while [ $i -lt ${#hostnames[@]}  ] 
   do
-    nodeCfgSetValue "${NODE_LIST[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
+    nodeCfgSetValue "${nodeNames[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
     i=$((i+1))
   done
-
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default port number that each SE instance will listen on.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+## Params:
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askPort() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}"   
+    specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}" "${nodeNames[@]}"
     return
   fi
 
@@ -678,10 +823,10 @@ function askPort() {
   do
 
     echo ""
-    echo -n "Enter a port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
+    echo -n "Enter a TCP port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
     IFS=$'\n' read -r line
 
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_PORT}"
       break
@@ -710,16 +855,91 @@ function askPort() {
     break
   done
 
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}" "${nodeNames[@]}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default UDP port number that each SE instance will use
+## to share status information and heartbeat messages on.
+## This only runs when ADV_WIZARD=1.
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
+
+# shellcheck disable=SC2120
+function askHeartbeat() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT}" "${nodeNames[@]}"
+    return
+  fi
+
+  echo ""
+  echo "Heartbeat Port Number"
+  echo "---------------------"
+  echo ""
+  echo "The heartbeat port number is the UDP port that RapidsSE uses to share"
+  echo "status information with other nodes in the cluster."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a UDP heartbeat port number for node communication [default: ${NODE_CFG_DEFAULT_HEARTBEAT}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line:-}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_HEARTBEAT}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: port number cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: port number must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
+      echo "Invalid input: port number out of range [1024, 65535]."
+      continue
+    fi
+
+    if [[ ${line} -lt 1024 && ${EUID} -ne 0 ]]; then
+      echo "Invalid input: Cannot use a port number less than 1024 as a non-root user."
+      continue
+    fi
+
+    break
+  done
+
   # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}"
+  specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default installation directory for each SE instance
 ## on each node.
-## Params: None
+##  $@ - (optional) a list of node names to set the install dir value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askInstallDir() {
 
   echo ""
@@ -738,7 +958,7 @@ function askInstallDir() {
     echo -n "Enter a path where RapidsSE will be installed [default: ${NODE_CFG_DEFAULT_DIR}] : "
     IFS=$'\n' read -r line
 
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_DIR}"
       break
@@ -757,17 +977,34 @@ function askInstallDir() {
     break
   done
 
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}"
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default size (in GB) for the shared memory segment
 ## for all nodes.
-## Params: None
+##  $@ - (optional) a list of node names to set the memory size value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askMemSize() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
 
   echo ""
   echo "Reserved Memory Size"
@@ -783,12 +1020,12 @@ function askMemSize() {
   local hostName
   local totalShm
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     totalShm="${NODE_TOTAL_SHM[${nodeName}]}"
 
-    if [[ -z "${totalShm}" || "${totalShm}" == "-1" ]]; then
+    if [[ -z "${totalShm:-}" || "${totalShm}" = "-1" ]]; then
       totalShm="<unknown>"
     else
       totalShm+=" GB"
@@ -808,7 +1045,7 @@ function askMemSize() {
     echo -n "Enter the desired memory segment size in GB for each node [default: ${NODE_CFG_DEFAULT_MEM}] : "
     IFS=$'\n' read -r line
 
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_MEM}"
       break
@@ -833,19 +1070,28 @@ function askMemSize() {
   done
 
   # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}"
+  specificNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default number of partitions for each SE instance.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+##  $@ - (optional) a list of node names to set the partition count value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askPartitions() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}"
+    specificNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}" "${nodeNames[@]}"
     return
   fi
 
@@ -863,12 +1109,12 @@ function askPartitions() {
   local hostName
   local nodeCoreCount
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     hostName="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeCoreCount="${NODE_CORE_COUNT[${nodeName}]}"
 
-    if [[ -z "${nodeCoreCount}" || "${nodeCoreCount}" == "-1" ]]; then
+    if [[ -z "${nodeCoreCount:-}" || "${nodeCoreCount:-}" = "-1" ]]; then
       nodeCoreCount="<unknown>"
     else
       nodeCoreCount+=" cores"
@@ -888,7 +1134,7 @@ function askPartitions() {
     echo -n "Enter the desired number of partitions for each node [default: ${NODE_CFG_DEFAULT_PARTITIONS}] : "
     IFS=$'\n' read -r line
 
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_PARTITIONS}"
       break
@@ -912,20 +1158,29 @@ function askPartitions() {
     break
   done
 
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter a default number of threads for each SE instance.
 ## This only runs when ADV_WIZARD=1.
-## Params: None
+##  $@ - (optional) a list of node names to set the thread value for.
+##       If not set then all nodes will be updated
 
+# shellcheck disable=SC2120
 function askThreads() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}"
+    specificNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}" "${nodeNames[@]}"
     return
   fi
 
@@ -948,7 +1203,7 @@ function askThreads() {
     echo -n "Enter the desired number of threads for each node [default: ${NODE_CFG_DEFAULT_THREADS}] : "
     IFS=$'\n' read -r line
     
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_THREADS}"
       break
@@ -972,8 +1227,8 @@ function askThreads() {
     break
   done
   
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -983,10 +1238,18 @@ function askThreads() {
 ## This only runs when ADV_WIZARD=1.
 ## Params: None
 
+# shellcheck disable=SC2120
 function askParams() {
 
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}"
+    specificNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}" "${nodeNames[@]}"
     return
   fi
 
@@ -1007,7 +1270,7 @@ function askParams() {
     echo -n "Enter any additional startup parameters [default: ${NODE_CFG_DEFAULT_PARAMS}] : "
     IFS=$'\n' read -r line
     
-    if [ -z "${line}" ]; then
+    if [ -z "${line:-}" ]; then
       # Accepting the default value
       line="${NODE_CFG_DEFAULT_PARAMS}"
       break
@@ -1021,10 +1284,29 @@ function askParams() {
     break
   done
   
-  # Set the value for all nodes
-  allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}" "${nodeNames[@]}"
+  echo ""
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Generates a new random cluster ID and sets it for all nodes.
+## The ID generated is a random number in the range [0, 32767].
+## It could be larger, but we're using $RANDOM here and that's what
+## it supports.
+## Params: None
+
+function generateClusterId() {
+
+  # Refer to: https://tldp.org/LDP/abs/html/randomvar.html
+
+  local clusterId
+  clusterId="${RANDOM}"
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_CLUSTERID_KEY}" "${clusterId}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Asks the user to confirm that they wish to proceed with the installation.
@@ -1045,11 +1327,11 @@ function confirmConfig() {
     echo -n "Do you wish to proceed with the installation? (y/n) [default: y] : "
     IFS=$'\n' read -r line
 
-    if [[ -z "${line}" || "${line}" == "y" || "${line}" == "Y" || "${line}" == "yes" || "${line}" == "YES" ]]; then
+    if [[ -z "${line:-}" || "${line}" = "y" || "${line}" = "Y" || "${line}" = "yes" || "${line}" = "YES" ]]; then
       break
     fi
 
-    if [[ "${line}" == "n" || "${line}" == "N" || "${line}" == "no" || "${line}" == "NO" ]]; then
+    if [[ "${line}" = "n" || "${line}" = "N" || "${line}" = "no" || "${line}" = "NO" ]]; then
       echo "Aborting installation."
       exit 1
     fi
@@ -1073,7 +1355,7 @@ function writeClusterConfig() {
   local outputFile="$1"
 
   # Check if a config file path has been specified
-  if [ -z "${outputFile}" ]; then
+  if [ -z "${outputFile:-}" ]; then
     outputFile="${DEFAULT_CONFIG_PATH}"
   fi
 
@@ -1113,6 +1395,9 @@ EOT
 
   # Write out the definition of the node list.
   (
+    echo    "NODE_NAME_PREFIX=\"${NODE_NAME_PREFIX}\""
+    echo    "NODE_SEQ_NUM=${NODE_SEQ_NUM}"
+    echo    ""
     echo    "declare -ga NODE_LIST"
     echo -n "NODE_LIST=( "
 
@@ -1153,18 +1438,118 @@ EOT
   debugPrint "\nContents of the cluster configuration file: ${outputFile}\n $(cat "${outputFile}")\n"
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Saves a copy of the existing cluster.config on each node under a separate filename.
+## Params:
+##  $1 - the backup suffix to use
+##  $@ - the list of node names this operation should occur on
+
+function backupConfig() {
+
+  [ "$#" -ge 2 ] || errorExit "Insufficient arguments to function backupConfig."
+
+  local suffix="$1"
+  shift
+  local -a nodeNames=("$@")
+
+  local nodeName
+  local hostname
+  local installDir
+  local existingConfigPath
+  local backupConfigPath
+
+  echo "Backing up the cluster configuration on each node in the cluster to file: ${DEFAULT_CONFIG_PATH}.${suffix}"
+
+  # For each node
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    [ -n "${hostname}" ]   || errorExit "Cannot backup the cluster configuration on node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot backup the cluster configuration on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+
+    existingConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}"
+    backupConfigPath="${existingConfigPath}.${suffix}"
+
+    # Build the command
+    local cmd=( "ssh" "-q" "${hostname}" "cp" "${existingConfigPath}" "${backupConfigPath}"  )
+
+    debugPrint "Backing up cluster configuration on node ${nodeName} [host: ${hostname}] to ${backupConfigPath}."
+    debugPrint "Command: ${cmd[*]}"
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error backing up the cluster configuration file to node ${nodeName} [host: ${hostname}] to ${backupConfigPath}."
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Removes a previously backed up copy of the cluster.config on each node.
+## Params:
+##  $1 - the backup suffix that was used
+##  $@ - the list of node names this operation should occur on
+
+function removeConfig() {
+
+  [ "$#" -ge 2 ] || errorExit "Insufficient arguments to function backupConfig."
+
+  local suffix="$1"
+  shift
+  local -a nodeNames=("$@")
+
+  local nodeName
+  local hostname
+  local installDir
+  local backupConfigPath
+
+  # For each node
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    [ -n "${hostname}" ]   || errorExit "Cannot backup the cluster configuration on node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot backup the cluster configuration on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+
+    backupConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}.${suffix}"
+
+    # Build the command
+    local cmd=( "ssh" "-q" "${hostname}" "rm" "-f" "${backupConfigPath}" "&>/dev/null" )
+
+    debugPrint "Removing the backed up cluster configuration on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
+    debugPrint "Command: ${cmd[*]}"
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error removing the previously backed up cluster configuration file on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
+  done
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Copies the installer and cluster.config to each node and invokes the 
 ## installer to do a single node installation.
 ## Params: 
 ##  $1 : cluster.config path
+##  $@ : The list of node names to install the software on. If not specified
+##       then all nodes in the cluster will be installed to.
 
 function distributeSoftware() {
   local configFile="$1"
+  shift
+  local -a nodeNames
+  local isFullInstallation
+
+  if [ "$#" -gt 0 ]; then
+    isFullInstallation=0
+    nodeNames=("$@")
+  else
+    isFullInstallation=1
+    nodeNames=("${NODE_LIST[@]}")
+  fi
 
   # Assert that we have a valid configuration
-  if [[ -z "${NODE_LIST}" || ${#NODE_LIST[@]} -eq 0 ]]; then
+  if [ "${nodeNames[*]:-x}" = "x" ] || [ ${#nodeNames[@]} -eq 0 ]; then
     errorExit "No nodes have been defined to install RapidsSE onto."
   fi
 
@@ -1179,23 +1564,28 @@ function distributeSoftware() {
   fi
 
   echo ""
-  echo "Installing RapidsSE to all nodes in the cluster."
+
+  if [ "${isFullInstallation}" -eq 1 ]; then
+    echo "Installing RapidsSE to all nodes in the cluster."
+  else
+    echo "Installing RapidsSE to new nodes in the cluster."
+  fi
 
   local nodeName
   local hostname
 
   # For each node
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do 
     # Extract the hostname
     hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    if [ -z "${hostname}" ]; then
+    if [ -z "${hostname:-}" ]; then
       errorExit "Cannot distribute RapidsSE to node ${nodeName} because its hostname has not been specified."
     fi
 
     # Copy the installer & cluster.config to /tmp
-    # Buid the command
+    # Build the command
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
       debugPrint "Copying installer to node ${nodeName} [host: ${hostname}]."
@@ -1215,7 +1605,17 @@ function distributeSoftware() {
     remoteConfig="/tmp/$(basename "${configFile}")"
 
     # Build the command to execute
-    local cmd=( "ssh" "-q" "${hostname}" "${remoteInstaller}" "--" "--node" "--config" "${remoteConfig}" "--name" "${nodeName}" "--installer" "${remoteInstaller}" )
+    local cmd=( "ssh"
+                "-q" "${hostname}"
+                "${remoteInstaller}"
+                "--"
+                "--node"
+                "--config"
+                "${remoteConfig}"
+                "--name"
+                "${nodeName}"
+                "--installer"
+                "${remoteInstaller}" )
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
@@ -1234,6 +1634,53 @@ function distributeSoftware() {
     
   done
   echo ""
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies a local file to the install dir on a set of nodes.
+## Params:
+##  $1 - local path of the file to be copied.
+##  $2 - remote path of the destination file, relative to each node's installation dir.
+##  $@ - the list of node names to copy the file to. If empty then the file is copied
+##       to all nodes in the cluster.
+
+function distributeFile() {
+
+  [ "$#" -ge 2 ] || errorExit "Invalid number of parameters for function distributeFile()"
+
+  local localPath="$1"
+  shift
+  local remotePath="$1"
+  shift
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=("${NODE_LIST[@]}")
+  else
+    nodeNames=("$@")
+  fi
+
+  # For each node
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    [ -n "${hostname}" ]   || errorExit "Cannot distribute the file ${localPath} to node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot distribute the file ${localPath} to node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+
+    local nodeRemotePath="${installDir}/${remotePath}"
+
+    # Build the command
+    local cmd=( "scp" "-q" "${localPath}" ""${hostname}":${nodeRemotePath}"  )
+
+    debugPrint "Distributing file ${localPath} to node ${nodeName} at ${nodeRemotePath}."
+    debugPrint "Command: ${cmd[*]}"
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error distributing the local file ${localPath} to node ${nodeName} [host: ${hostname}] at ${nodeRemotePath}."
+  done
 }
 
 
@@ -1255,7 +1702,7 @@ function doNodeInstall() {
     errorExit "Couldn't find the cluster configuration file at path: ${CONFIG_FILE}"
   fi
 
-  if [ -z "${CURRENT_NODE_NAME}" ]; then
+  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
     errorExit "Current node name was not specified."
   fi
 
@@ -1284,11 +1731,11 @@ function doNodeInstall() {
   installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 
-  if [ -z "${installDir}" ]; then
+  if [ -z "${installDir:-}" ]; then
     errorExit "The installation directory for node ${CURRENT_NODE_NAME} has not been set."
   fi
 
-  if [ -z "${hostname}" ]; then
+  if [ -z "${hostname:-}" ]; then
     errorExit "The hostname for node ${CURRENT_NODE_NAME} has not been set."
   fi
   
@@ -1350,8 +1797,11 @@ function doNodeInstall() {
 
 
   # Create a node name file in the installation directory.
-  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${DEFAULT_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
+  # Copy the installer to the installation directory
+  debugPrint "About to copy the installer run file to <installation_directory>/res."
+  cp "${INSTALL_FILE}" "${installDir}/res" || errorExit "Could not copy the installer run file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 }
 
 
@@ -1364,11 +1814,11 @@ function doNodeInstall() {
 function cleanupNodeInstall() {
 
   # Remove the installation file and cluster.config if they reside in /tmp
-  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" == "/tmp" ]]; then
+  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" = "/tmp" ]]; then
     rm -f "${INSTALL_FILE}" > /dev/null || true
   fi
 
-  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" == "/tmp" ]]; then
+  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" = "/tmp" ]]; then
     rm -f "${CONFIG_FILE}" > /dev/null || true
   fi
 }
@@ -1380,10 +1830,20 @@ function cleanupNodeInstall() {
 # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM
 # and NODE_FREE_SHM and will be used for default values for partitions, 
 # threads and  shared memory size later on.
-# Params: None
+# Params:
+#  $@ - (optional) a list of node names to collect size info for.
+#       If not set then info will be collected for all nodes.
 
+# shellcheck disable=SC2120
 function collectHostSizeInfo() {
- 
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
   local nodeName
   local tempFile
 
@@ -1391,7 +1851,7 @@ function collectHostSizeInfo() {
 
   debugPrint "About to collect the CPU/memory/SHM stats from each node and write them to ${tempFile}"
 
-  for nodeName in "${NODE_LIST[@]}"
+  for nodeName in "${nodeNames[@]}"
   do
     (
       local coreCount
@@ -1401,28 +1861,28 @@ function collectHostSizeInfo() {
 
       coreCount="$(getCpuCount "${nodeName}")" || exit 1
 
-      if [[ -z "${coreCount}" || "${coreCount}" -le 0 ]]; then
+      if [[ -z "${coreCount:-}" || "${coreCount}" -le 0 ]]; then
         coreCount=-1 # unknown
       fi
 
 
       totalMem="$(getTotalMem "${nodeName}")" || exit 1
 
-      if [ -z "${totalMem}" ]; then
+      if [ -z "${totalMem:-}" ]; then
         totalMem=-1 # unknown
       fi
 
 
       totalShm="$(getTotalShm "${nodeName}")" || exit 1
 
-      if [ -z "${totalShm}" ]; then
+      if [ -z "${totalShm:-}" ]; then
         totalShm=-1 # unknown
       fi
 
 
       freeShm="$(getFreeShm "${nodeName}")"  || exit 1
 
-      if [ -z "${freeShm}" ]; then
+      if [ -z "${freeShm:-}" ]; then
         freeShm=-1 # unknown
       fi
 
@@ -1475,10 +1935,10 @@ function updateDefaults() {
   
   # First turn the associative arrays into ascending ordered arrays of their values.
   # That way we can get the minimum value in each.
-  declare -a sortedCoreCount
-  declare -a sortedTotalMem
-  declare -a sortedTotalShm
-  declare -a sortedFreeShm
+  declare -a sortedCoreCount=()
+  declare -a sortedTotalMem=()
+  declare -a sortedTotalShm=()
+  declare -a sortedFreeShm=()
 
   readarray -t sortedCoreCount < <(printf '%s\n' "${NODE_CORE_COUNT[@]}" | sort -n)
   readarray -t sortedTotalMem < <(printf '%s\n' "${NODE_TOTAL_MEM[@]}"  | sort -n)
@@ -1639,7 +2099,7 @@ function arrayGetMinNonNegativeValue() {
       continue
     fi
 
-    if [ "$(echo "${min} == -1" | bc -l)" -eq 1 ]; then 
+    if [ "$(echo "${min} == -1" | bc -l)" -eq 1 ]; then
       # This is the first min value
       min="$i"
       continue

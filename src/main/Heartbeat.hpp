@@ -26,26 +26,33 @@ class Heartbeat {
   
 public:
   
-  i8   m_iHeader;            //   8    8
+  i8   m_iHeader;            //
 
-  u2   m_u2Version;           // version of the packet   2 10
-  u2   m_u2DataLen;           // length of data  includes size of itself  2 12
-  char m_acNodeName[32];     //  32   44
-  i8   m_iSeqNo;             //   8   52
-  i8   m_iSincePosixEpoch;   //   8   60
-  char m_acBuildGitHash[32]; //  32   92
+  u2   m_u2Version;          // version of the packet
+  i8   m_iSeqNo;             // Do we need this ? Why?
+  u2   m_u2DataLen;          // length of data  includes size of itself
+  i8   m_iClusterID;         // cluster ID (only accept node that has same cluster ID)
+  char m_acNodeName[64];     // cluster-wide unique name (IP+port)
+  i8   m_iNodeNo;            // this node number
+  char m_acAddr[32];         // IP address of where it is running
+  i4   m_iPort;              // Port number for SE
+
+  i8   m_iSincePosixEpoch;   //
+  char m_acRegionName[32];   // name of shared memory region
+  char m_acBuildGitHash[32]; //
+  i8   m_iPid;               // Do we need this ? Why?
+  bool m_bHasMetadata;       // This node has or doesn't have metadata
+  bool m_bHasData;           // This node has data or doesn't have data
 
   // data (STORE, BASE, ...)
-
   STORE_hb xStoreHeartbeat; // 40
   BASE_hb xBaseHeartbeat;   // 16
-
 
   i8   m_iChecksum;          //   8
 
 
   i8   m_iFooter;            //   8
-  char m_acSpare[64];         // 64
+  char m_acSpare[16];        // 16
                              // ---
                              // 496 bytes
 };
@@ -226,7 +233,7 @@ public:
 
 class HeartbeatSnd {
 public:
-  HeartbeatSnd(char *sAddr, int iPort);
+  HeartbeatSnd(const std::string &sAddr, int iPort);
 
   ~HeartbeatSnd();
 
@@ -275,16 +282,29 @@ public:
   Heartbeat_RTE(const char *w) : std::runtime_error(w) {}
 };
 
+class TestConnection {
+public:
+  bool m_bResult;
+  char* m_pszAddr;
+  i8 m_iPort;
+  i8 m_iSockClient;
+
+  TestConnection(Stz* pAddr, i8 iPort);
+  ~TestConnection();
+  bool bTryConnect();
+
+};
 
 
 class CheckSum {
 public:
   CheckSum(const byte *data, size_t len);
-  u2 uGetFletcher16(void) { return m_uValue;}
+  u2 uGetFletcher16(void);
+  i8 iGetBernstein(void);
 private:
-  u2 m_uValue;
-
-
+  u2          m_uValue;
+  const byte* m_pData;
+  size_t      m_iDataLen;
 };
 
 

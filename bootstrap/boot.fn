@@ -12,16 +12,20 @@ fi
 # Load other common functions
 COMMON_FN="common.fn"
 
-if [ -n "${DIR}" ]; then
+if [ -n "${DIR:-}" ]; then
   COMMON_FN="${DIR}/${COMMON_FN}"
 fi
 
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
 
 ###############################################################################
 ### Constants                                                               ###
 ###############################################################################
+# Variable that can be tested to see if we have already sourced this file
+readonly __BOOT_FN=1
 
 readonly EXE_DIR="${ROOT_DIR}/bin"
 readonly EXE="${EXE_DIR}/rapidsse"
@@ -33,8 +37,11 @@ readonly READYFILE="${ROOT_DIR}/${READY_FILENAME}"
 readonly START_SCRIPT="startSE.sh"
 readonly STOP_SCRIPT="stopSE.sh"
 #readonly STATUS_SCRIPT="status.sh"
+readonly COLLECTLOGS_SCRIPT="collectLogs.sh"
 
 readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
+readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="15"  # seconds, or -1 to wait indefinitely
+readonly DEFAULT_CLUSTER_REBALANCE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 
 ###############################################################################
 ### Functions                                                               ###
@@ -74,8 +81,8 @@ function printStartStopUsageAndExit() {
 function processStartStopArgs() {
 
   # Check that some globals are specified with defaults
-  if [ -z "${CLUSTER_OP}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
-  if [ -z "${CLUSTER_INIT}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_INIT:-}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
 
   # Indicates if a given argument was specified.
   local argCluster=0
@@ -147,7 +154,7 @@ function processStartStopArgs() {
     printStartStopUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified"
     printStartStopUsageAndExit
   fi
@@ -162,9 +169,22 @@ function processStartStopArgs() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Starts RapidsSE on all nodes in the cluster.
-## Params: None
+## Params:
+##  $@ - (optional) the array of node names to be started. If not supplied then
+##       all nodes will be started.
 
 function startCluster() {
+
+  local fullClusterStart
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    fullClusterStart=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    fullClusterStart=0
+    nodeNames=( "$@" )
+  fi
 
   echo -n "Checking node versions..."
 
@@ -177,34 +197,49 @@ function startCluster() {
   echo "All nodes are running the same version: ${verStr}"
 
   # Check if any nodes are already running
-  assertNoNodesRunning "" || errorExit "Could not start the RapidsSE cluster."
+  if [ "${fullClusterStart}" -eq 1 ]; then
+    # Full cluster start
+    assertNoNodesRunning "" || errorExit "Could not start the RapidsSE cluster."
+    echo "Starting the RapidsSE cluster."
 
-  echo "Starting the RapidsSE cluster."
-  local nodeName
+  else
+    # Add node start
+    if [ "${#nodeNames[@]}" -gt 1 ]; then
+      echo "Starting the additional nodes."
+    else
+      echo "Starting the additional node."
+    fi
+  fi
 
-  if [ -n "${SEQ_START}" ]; then
+  local row
+
+  if [ -n "${SEQ_START:-}" ]; then
     # Start the nodes sequentially
-    for nodeName in "${NODE_LIST[@]}"
+    for row in "${nodeNames[@]}"
     do
-      debugPrint "Starting ${nodeName}"
-      startRemoteNode "${nodeName}" || errorExit "Could not start all nodes in the cluster."
+      debugPrint "Starting ${row}"
+      startRemoteNode "${row}" || errorExit "Could not start node ${row} in the cluster."
     done
 
   else
     # Start the nodes in parallel. Ignore all output.
-    for nodeName in "${NODE_LIST[@]}"
+    for row in "${nodeNames[@]}"
     do
-      startRemoteNode "${nodeName}" &>/dev/null &
+      startRemoteNode "${row}" &>/dev/null &
     done
 
     # Wait for all parallel jobs to finish.
     wait
   fi
 
-  echo "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
+  if [ "${#nodeNames[@]}" -gt 1 ]; then
+    echo "Started ${#nodeNames[@]} nodes in the cluster. Waiting for them to boot"
+  else
+    echo "Started ${#nodeNames[@]} node in the cluster. Waiting for it to boot"
+  fi
 
   # Wait for all nodes to boot and become ready
-  if [ -z "${BOOT_TIMEOUT}" ]; then
+  if [ -z "${BOOT_TIMEOUT:-}" ]; then
     BOOT_TIMEOUT="${DEFAULT_BOOT_TIMEOUT}"
   fi
 
@@ -217,7 +252,7 @@ function startCluster() {
   # task returns early then we kill the "killer" task instead.
   # Inspiration from here:  https://stackoverflow.com/a/22384727
   
-  waitForClusterBoot &
+  waitForClusterBoot "${nodeNames[@]}" &
   local bootWaitPid="$!"
 
   # The timeout killer
@@ -241,34 +276,42 @@ function startCluster() {
 
   if printClusterStatus; then
 
-    # Initialise the cluster
-    remoteClusterInit
+    # Wait for the cluster to cross connect
+    remoteClusterXConnect
 
-    echo "Cluster startup complete."
+    if [ "${fullClusterStart}" -eq 1 ]; then
+      echo "Cluster startup complete."
+    else
+      echo "Added nodes have started successfully."
+    fi
     true
 
   else
-    echo "Cluster startup failed. Please stop the cluster before restarting it."
+    if [ "${fullClusterStart}" -eq 1 ]; then
+      echo "Cluster startup failed. Please stop the cluster before restarting it."
+    else
+      echo "Added nodes have failed to start up correctly."
+    fi
     false
   fi
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Remotely starts RapidsSE on a node given by the nodeName parameter.
+## Remotely starts RapidsSE on a node given by the row parameter.
 ## Params: 
 ##  $1 : The name of the node to be started.
 
 function startRemoteNode() {
 
-  local nodeName="$1"
+  local row="$1"
 
   local host
   local dir
   local remoteCmd
 
-  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+  host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
   remoteCmd="cd ${dir} && ./${START_SCRIPT} --node"
 
@@ -278,9 +321,9 @@ function startRemoteNode() {
 
   sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  debugPrint "About to start node ${nodeName} with the command: ${sshCmd[*]}"
+  debugPrint "About to start node ${row} with the command: ${sshCmd[*]}"
 
-  "${sshCmd[@]}" || errorExit "Could not start RapidsSE on node ${nodeName}."
+  "${sshCmd[@]}" || errorExit "Could not start RapidsSE on node ${row}."
 }
 
 
@@ -296,29 +339,29 @@ function startCurrentNode() {
   # Get all of the settings for the current node
   local host
   local port
+  local heartbeat 
   local dir
   local partitions
   local threads
   local mem
+  local clusterId
   local params
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
   port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PORT_KEY}")"
+  heartbeat="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_KEY}")"
   dir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   partitions="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
   threads="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
   mem="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
+  clusterId="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_CLUSTERID_KEY}")"
   params="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 
   # params above is a string. Let's turn it into an array based on spaces.
-  declare -a paramsArray
+  declare -a paramsArray=()
   IFS=' ' read -r -a paramsArray <<< "${params}"
 
-  # Get the node name/host/port arguments
-  declare -a nodeArgs
-  IFS=" " read -r -a nodeArgs <<< "$(buildNodeArguments)"
-
-  declare -a startCmd
+  declare -a startCmd=()
   startCmd+=("nohup")
   startCmd+=("${EXE}")
   startCmd+=("--partitionsPerNode")
@@ -327,20 +370,28 @@ function startCurrentNode() {
   startCmd+=("${threads}")
   startCmd+=("--size")
   startCmd+=("${mem}GB")
+  startCmd+=("--node")
+  startCmd+=("${CURRENT_NODE_NAME}")
+  startCmd+=("${host}")
+  startCmd+=("${port}")
   startCmd+=("--name")
   startCmd+=("${CURRENT_NODE_NAME}")
-  startCmd+=("${nodeArgs[@]}")
   startCmd+=("--start")
   startCmd+=("--munged")
   startCmd+=("--script")
   startCmd+=("--metadata")
   startCmd+=("--commands")
   startCmd+=("${ROOT_DIR}/commands")
+  startCmd+=("--cid")
+  startCmd+=("${clusterId}")
+  startCmd+=("--heartbeat")
+  startCmd+=("BROADCAST")
+  startCmd+=("${heartbeat}")
   startCmd+=("${paramsArray[@]}")
 
 
   # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
+  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
   # SE environment variables
   export SE_ENV_METACLUE=1
@@ -364,6 +415,7 @@ function startCurrentNode() {
   echo "${PID}" > "${PIDFILE}"
 
   echo "[Start script]: RapidsSE started as PID ${PID}." >> "${NOHUP_FILE}"
+  echo "[Start script]: RapidsSE started with the command:   ${startCmd[*]}" >> "${NOHUP_FILE}"
 }
 
 
@@ -371,13 +423,31 @@ function startCurrentNode() {
 ## Waits for all nodes in the cluster to boot and report that they are ready.
 ## There is no timeout here. 
 ## Prints a "." for every second it waits
-## Params: None
+## Params:
+##  $@ - (optional) the array of node names to be started. If not supplied then
+##       all nodes will be started.
 
+# shellcheck disable=SC2120
 function waitForClusterBoot() {
 
   local dotPid
 
-  echo -n "Waiting for cluster to boot: "
+  local fullClusterStart
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    fullClusterStart=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    fullClusterStart=0
+    nodeNames=( "$@" )
+  fi
+
+  if [ "${fullClusterStart}" -eq 0 ]; then
+    echo -n "Waiting for the added nodes to boot: "
+  else
+    echo -n "Waiting for cluster to boot: "
+  fi
 
   # Print dots to indicate progress
   ( 
@@ -394,10 +464,25 @@ function waitForClusterBoot() {
   #shellcheck disable=SC2064
   trap "kill -0 ${dotPid} &>/dev/null && kill ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null" SIGINT SIGHUP SIGTERM EXIT
 
-  for nodeName in "${NODE_LIST[@]}"; do
+  # Give a couple of seconds for SE to attempt to start up on each node.
+  # If we don't then it may look like it isn't running.
+  sleep 2
 
-    while ! isRemoteSeReady "${nodeName}"; do
-      debugPrint "Node ${nodeName} is not ready"
+  for row in "${nodeNames[@]}"; do
+
+    while true; do
+      # If SE is not running then stop waiting
+      if [ -z "$(getRemoteRunningPid "${row}")" ]; then
+        debugPrint "Node ${row} is not running"
+        break;
+      fi
+
+      # If SE is ready then stop waiting
+      if isRemoteSeReady "${row}" ; then
+        break
+      fi
+
+      debugPrint "Node ${row} is not ready"
       sleep 1
     done
 
@@ -420,12 +505,12 @@ function buildNodeArguments() {
   local host
   local port
 
-  for nodeName in "${NODE_LIST[@]}"
+  for row in "${NODE_LIST[@]}"
   do
-    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${row}" "${NODE_CFG_PORT_KEY}")"
 
-    nodeArgs+=("--node" "${nodeName}" "${host}" "${port}")
+    nodeArgs+=("--node" "${row}" "${host}" "${port}")
   done
  
   echo "${nodeArgs[@]}"
@@ -433,22 +518,22 @@ function buildNodeArguments() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Initiates all of the nodes that were launched in the cluster. All nodes in
+## Cross-connects all of the nodes that were launched in the cluster. All nodes in
 ## the cluster must have already been started successfully. This calls the
 ## first node in the cluster to start the initialisation.
 ## Params: None
 
-function remoteClusterInit() {
+function remoteClusterXConnect() {
 
-  local nodeName
+  local row
   local host
   local dir
   local remoteCmd
 
   # Let's use the first node in the list
-  nodeName="${NODE_LIST[0]}"
-  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+  row="${NODE_LIST[0]}"
+  host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
   remoteCmd="cd ${dir} && ./${START_SCRIPT} --node --clusterinit"
 
@@ -458,31 +543,32 @@ function remoteClusterInit() {
 
   sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  debugPrint "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
+  debugPrint "About to initialise the cluster on node ${row} with the command: ${sshCmd[*]}"
 
-  "${sshCmd[@]}" || errorExit "Could not initialise the RapidsSE cluster on node ${nodeName} [host ${host}]."
+  "${sshCmd[@]}" || errorExit "Could not initialise the RapidsSE cluster on node ${row} [host ${host}]."
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Initiates all of the nodes that were launched in the cluster. All nodes in
-## the cluster must have already been started successfully. This must be called
-## from a node that is participating in the cluster
+## Waits for all of the nodes that were launched in the cluster to discover 
+## each other and cross connect. All nodes in the cluster must have already been started
+## successfully. This must be called from any node that is participating in the 
+## cluster.
 ## Params: None
 
-function localClusterInit() {
-  echo -n "Initialising the cluster..."
+function localClusterXConnect() {
+  echo -n "Waiting for the cluster to cross-connect..."
 
-  if [ -z "${CURRENT_NODE_NAME}" ]; then
+  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
     errorExit "The name of the local node has not been loaded."
   fi
 
   local host
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 
-  local connectCmd="_connectCluster"
+  local statusCmd="status"
 
-  declare -a cmd
+  declare -a cmd=()
   cmd+=("${EXE}")
   cmd+=("--name")
   cmd+=("${CURRENT_NODE_NAME}")
@@ -491,55 +577,234 @@ function localClusterInit() {
   cmd+=("--commands")
   cmd+=("${ROOT_DIR}/commands")
   cmd+=("--command")
-  cmd+=("${connectCmd}")
+  cmd+=("${statusCmd}")
   cmd+=("--appendTrace")
 
-  debugPrint "\nAbout to execute the cluster initialisation command: ${cmd[*]}"
+  debugPrint "\nAbout to execute the cluster status command: ${cmd[*]}"
 
   # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
+  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
-  local startClusterOutputFile="${ROOT_DIR}/startCluster.log"
-  local startClusterExitStatus
-  local startClusterOutput
+  local cmdOutputFile="${ROOT_DIR}/clusterStatus.log"
 
-  # run the _connectCluster command but if it doesn't return after 15 seconds then
-  # kill the process. If the process is killed then the exit status will be 124
-  # so we can explicitly check for that.
-  timeout -k 15s 15s "${cmd[@]}" 1>"${startClusterOutputFile}" 2>&1 &
-  wait $!
-  startClusterExitStatus="$?"
-  startClusterOutput=$(cat "${startClusterOutputFile}" 2>/dev/null)
+  local startTime
+  local currentTime
+  local endTime
 
-  if [ "${startClusterExitStatus}" -eq 124 ]
-  then
-    printError "The cluster initialisation command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${startClusterOutput}"
+  startTime="$(date +%s)"
+  currentTime="${startTime}"
 
-    echo ""
-    echo ""
+  if [ "${DEFAULT_CLUSTER_XCONNECT_TIMEOUT}" -ge 0 ]; then
+    endTime="$((startTime + DEFAULT_CLUSTER_XCONNECT_TIMEOUT))"
+  else
+    # No timeout. Let's set a really big value instead. Say, one day.
+    endTime="$((startTime + 86400))"
+  fi
 
-    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] \n\n:" "$(cat "${NOHUP_FILE}")"
-    echo ""
-    exit 1
+  # An array of non-cross-connected node names
+  local -a nonXConnectedNodes=()
 
-  elif [ "${startClusterExitStatus}" -ne 0 ]
-  then
-    printError "Could not initialise the RapidsSE cluster. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${startClusterOutput}"
+  while [ "${currentTime}" -le "${endTime}" ]; do
+    currentTime="$(date +%s)"
 
-    echo ""
-    echo ""
+    # Run the status command but if it doesn't return after 10 seconds then
+    # kill the process. If the process is killed then the exit status will be 124
+    # so we can explicitly check for that.
+    timeout -k 10s 10s "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
+    wait $!
+    local cmdExitStatus="$?"
 
-    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "$(cat "${NOHUP_FILE}")"
-    echo ""
+    if [ "${cmdExitStatus}" -eq 124 ]
+    then
+      errorExit "The cluster status command timed out on RapidsSE. RapidsSE may have crashed or the appropriate ports may not have been opened in the firewall. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
 
-    exit 1
-  fi  
+    elif [ "${cmdExitStatus}" -ne 0 ]
+    then
+      errorExit "Could not get the status of the RapidsSE cluster. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+    fi
 
-  # Success
-  rm -f "${startClusterOutputFile}" 2>/dev/null
-  echo "Done"
+    # We got some status information, but are all of the nodes cross-connected?
+    nonXConnectedNodes=()
+    local nonXConnOutput
+
+    if ! nonXConnOutput="$(getNonXConnectedNodes "${cmdOutputFile}")" ; then
+      errorExit "Cluster startup failed during node cross-connect"
+    fi
+
+    if [ -z "${nonXConnOutput:-}" ]; then
+      # Success. Every node is cross connected
+      rm -f "${cmdOutputFile}" 2>/dev/null
+      echo "Done"
+      return
+    fi
+
+    while IFS='' read -r line; do nonXConnectedNodes+=("${line}"); done <<<"${nonXConnOutput}"
+
+    # Did we validate that each node cross connected, or did we time out?
+    if [ "${nonXConnectedNodes[*]:-x}" = "x" ] || [ "${#nonXConnectedNodes[@]}" -eq 0 ]; then
+      # Success. Every node is cross connected
+      rm -f "${cmdOutputFile}" 2>/dev/null
+      echo "Done"
+      return
+    fi
+
+    # There are still nodes that haven't connected yet. Give them a bit of time and try again.
+    sleep 1
+  done;
+
+  # We must have timed out waiting for all nodes to cross connect.
+  # Let's print which ones are affected.
+  local errMsg
+  echo "Timed out"
+  errMsg="The following nodes did not cross-connect to other nodes in the cluster:\n"
+
+  for row in "${nonXConnectedNodes[@]}" ; do
+    local hostName
+    hostName="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+    errMsg+="$(printf "  Node: %-32s  %s\n" "${row}" "[host ${hostName}]")"
+  done
+
+  errorExit "${errMsg}"
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a the node names that haven't been cross-connected, one per line.
+## Read the output of this command into an array like this:
+##    myArray=()
+##    while IFS='' read -r line; do myArray+=("${line}"); done < <(getNonXConnectedNodes "${cmdOutputFile}")
+## Returns a non-zero exit code if something goes wrong
+## Params:
+##  $1 : Name of the file with the output of the status command to be parsed
+function getNonXConnectedNodes() {
+
+  local filename="$1"
+
+  if [ -z "${filename:-}" ]; then
+    errorExit "function getNonXConnectedNodes() called without a filename parameter"
+  fi
+
+  # Get the first, fourth and fifth columns. When we get the row these will be
+  # the 1st, 2nd and 3rd values respectively.
+  local -a interestedColumns=("1" "4" "5")
+
+  local -a nodes=( "${NODE_LIST[@]}" )
+
+  local numElements
+  numElements="${#nodes[@]}"
+
+  # Parse the output of the status command
+  local rows
+  if ! rows="$(parseRowData "${filename}" "${interestedColumns[@]}")" ; then
+    false
+    return
+  fi
+
+  while IFS='' read -r row; do
+
+    if [ -z "${row:-}" ] ; then
+      continue
+    fi
+
+    # Extract out the desired column and remove string quotes
+    local hasSendSocket
+    local hasRecvSocket
+    local nodeName
+
+    nodeName="$(getColumn "${row}" "1")"        # The first  column from the original row
+    hasSendSocket="$(getColumn "${row}" "2")"   # The fourth column from the original row
+    hasRecvSocket="$(getColumn "${row}" "3")"   # The fifth  column from the original row
+
+    if [ "${hasSendSocket:-x}" != "true" ] || [ "${hasRecvSocket:-x}" != "true" ] ; then
+      # This node hasn't properly cross-connected yet.
+      continue
+    fi
+
+    # Is this nodeName in ${nodes[@]}? If so, remove that element
+    for (( i=0; i<numElements; i++ )); do
+      if [ "${nodeName:-__x}" = "${nodes[$i]}" ]; then
+        unset 'nodes[i]'
+        break
+      fi
+    done
+  done <<<"${rows}"
+
+  # Print out each non-null (unset) element in the array
+  for node in "${nodes[@]}" ; do
+    if [ -v "node" ] && [ -n "${node:-}" ] ; then
+      echo "${node}"
+    fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Issues a "rebalance" command to the local SE instance. This forces all nodes
+## to rebalance the data across all nodes.
+## All nodes in the cluster must have already been started successfully.
+## This must be called from any node that is participating in the cluster.
+## Params: None
+
+function localClusterRebalance() {
+  echo -n "Waiting for the cluster to rebalance data across all nodes..."
+
+  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
+    errorExit "The name of the local node has not been loaded."
+  fi
+
+  local host
+  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+  local rebalanceCmd="rebalance"
+
+  declare -a cmd=()
+  cmd+=("${EXE}")
+  cmd+=("--name")
+  cmd+=("${CURRENT_NODE_NAME}")
+  cmd+=("--munged")
+  cmd+=("--script")
+  cmd+=("--commands")
+  cmd+=("${ROOT_DIR}/commands")
+  cmd+=("--command")
+  cmd+=("${rebalanceCmd}")
+  cmd+=("--appendTrace")
+
+  debugPrint "\nAbout to execute the cluster rebalance command: ${cmd[*]}"
+
+  # Set the library path so the RapidsSE library can be found and loaded
+  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
+
+  local cmdOutputFile="${ROOT_DIR}/clusterRebalance.log"
+
+  if [ "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}" -gt 0 ]; then
+    # Run the rebalance command but if it doesn't return after a given number of seconds then
+    # kill the process. If the process is killed then the exit status will be 124
+    # so we can explicitly check for that.
+    timeout -k "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}s" "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
+    wait $!
+    local cmdExitStatus="$?"
+
+    if [ "${cmdExitStatus}" -eq 124 ]
+    then
+      errorExit "\nThe cluster rebalance command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+
+    elif [ "${cmdExitStatus}" -ne 0 ]
+    then
+      errorExit "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+    fi
+
+  else
+    # Run the rebalance command without a timeout.
+    if ! "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 ; then
+      errorExit "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+    fi
+  fi
+
+  # Remove the output file on success
+  rm "${cmdOutputFile}" &>/dev/null
+
+  echo "Done"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints whether each node in the cluster is running or not.
@@ -548,7 +813,7 @@ function localClusterInit() {
 ## Params: None
 
 function printClusterStatus() {
-  local nodeName
+  local row
   local host
   local pid
   local statusStr
@@ -556,16 +821,16 @@ function printClusterStatus() {
 
   echo "Cluster status:"
   
-  for nodeName in "${NODE_LIST[@]}"
+  for row in "${NODE_LIST[@]}"
   do
-    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
 
-    pid="$(getRemoteRunningPid "${nodeName}")"
+    pid="$(getRemoteRunningPid "${row}")"
 
-    if [ -n "${pid}" ]  && [ "${pid}" -gt 0 ]; then
+    if [ -n "${pid:-}" ]  && [ "${pid}" -gt 0 ]; then
 
       # Node is running, but is it ready?
-      if isRemoteSeReady "${nodeName}"; then
+      if isRemoteSeReady "${row}"; then
         statusStr="running (pid ${pid})"
       else
         statusStr="started (pid ${pid}) but not ready"
@@ -577,7 +842,7 @@ function printClusterStatus() {
       errorCount=$((errorCount+1))
     fi
 
-    printf "  %-30s  %s\n" "${nodeName} (host ${host}) :" "${statusStr}"
+    printf "  %-30s  %s\n" "${row} (host ${host}) :" "${statusStr}"
   done
 
   if [ "${errorCount}" -gt 0 ]; then
@@ -671,7 +936,7 @@ function isLocalSeRunning() {
 
   pid="$(getLocalRunningPid)"
 
-  if [ -n "${pid}" ]; then
+  if [ -n "${pid:-}" ]; then
     true
     return
 
@@ -679,6 +944,26 @@ function isLocalSeRunning() {
     false
     return
   fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit status if ANY of the SE nodes in the cluster are running,
+## otherwise it returns a non-zero exit status if ALL nodes are NOT running.
+## Params: None
+
+function isClusterRunning() {
+
+  for row in "${NODE_LIST[@]}"; do
+
+    pid="$(getRemoteRunningPid "${row}")"
+
+    if [ -n "${pid:-}" ]; then
+      true
+      return
+    fi
+  done
+
+  false
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -691,23 +976,23 @@ function isLocalSeRunning() {
 
 function assertNoNodesRunning() {
   
-  local nodeName
+  local row
   local pid
   local gotError=0
 
   local errMsg="The following node are already running:"
 
-  if [ "$1" == "stop" ]; then
+  if [ "$1" = "stop" ]; then
     errMsg="The following node are still running:"
   fi
 
-  for nodeName in "${NODE_LIST[@]}"
+  for row in "${NODE_LIST[@]}"
   do
-    pid="$(getRemoteRunningPid "${nodeName}")"
+    pid="$(getRemoteRunningPid "${row}")"
 
-    if [ -n "${pid}" ]; then
+    if [ -n "${pid:-}" ]; then
       gotError=1
-      errMsg="${errMsg}\n  ${nodeName}  (pid: ${pid})"
+      errMsg="${errMsg}\n  ${row}  (pid: ${pid})"
     fi
   done
 
@@ -729,7 +1014,7 @@ function assertNoNodesRunning() {
 
 function checkNodeVersionsAreEqual() {
 
-  local nodeName
+  local row
   local host
   local dir
   local remoteCmd
@@ -738,36 +1023,36 @@ function checkNodeVersionsAreEqual() {
   local firstNode
   local re="^[0-9]+.[0-9]+.[0-9]+.*$"
 
-  for nodeName in "${NODE_LIST[@]}"
+  for row in "${NODE_LIST[@]}"
   do
-    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+    host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
     remoteCmd="cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\""
     actualVerStr="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
-    if [ -z "${actualVerStr}" ]; then
-      printError "Got an empty version string for ${nodeName}."
+    if [ -z "${actualVerStr:-}" ]; then
+      printError "Got an empty version string for ${row}."
       false
       return
     fi
 
     if [[ ! "${actualVerStr}" =~ $re ]]; then
-      printError "Got an unrecognised version string for ${nodeName}."
+      printError "Got an unrecognised version string for ${row}."
       false
       return
     fi
 
     # if the expected version string is not set, then set it.
-    if [ -z "${expectedVerStr}" ]; then
+    if [ -z "${expectedVerStr:-}" ]; then
       expectedVerStr="${actualVerStr}"
-      firstNode="${nodeName}"
+      firstNode="${row}"
       continue
     fi
 
     # Otherwise compare actual to expected
     if [ "${actualVerStr}" != "${expectedVerStr}" ]; then
-      printError "SE version on node ${nodeName} (${actualVerStr}) does not match the version on node ${firstNode} (${expectedVerStr})."
+      printError "SE version on node ${row} (${actualVerStr}) does not match the version on node ${firstNode} (${expectedVerStr})."
       false
       return
     fi
@@ -786,19 +1071,19 @@ function stopCluster() {
   
   echo "Stopping the RapidsSE cluster."
 
-  if [ -n "${SEQ_START}" ]; then
+  if [ -n "${SEQ_START:-}" ]; then
     # Stop the nodes sequentially
-    for nodeName in "${NODE_LIST[@]}"
+    for row in "${NODE_LIST[@]}"
     do
-      debugPrint "Stopping ${nodeName}"
-      stopRemoteNode "${nodeName}" || errorExit "Could not stop all nodes in the cluster."
+      debugPrint "Stopping ${row}"
+      stopRemoteNode "${row}" || errorExit "Could not stop all nodes in the cluster."
     done
 
   else
     # Stop the nodes in parallel. Ignore all output.
-    for nodeName in "${NODE_LIST[@]}"
+    for row in "${NODE_LIST[@]}"
     do
-      stopRemoteNode "${nodeName}" &>/dev/null &
+      stopRemoteNode "${row}" &>/dev/null &
     done
 
     # Wait for all parallel jobs to finish.
@@ -831,21 +1116,21 @@ function stopCluster() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Remotely stopss RapidsSE on a node given by the nodeName parameter.
+## Remotely stopss RapidsSE on a node given by the row parameter.
 ## Params: 
 ##  $1 : The name of the node to be stopped.
 
 function stopRemoteNode() {
 
-  local nodeName="$1"
+  local row="$1"
 
   local host
   local dir
   local remoteCmd
   local sshCmd
 
-  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+  host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
   remoteCmd="cd ${dir} && ./${STOP_SCRIPT} --node"
 
@@ -855,9 +1140,9 @@ function stopRemoteNode() {
 
   sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  debugPrint "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
+  debugPrint "About to stop node ${row} with the command: ${sshCmd[*]}"
 
-  "${sshCmd[@]}" || errorExit "Could not stop RapidsSE on node ${nodeName}."
+  "${sshCmd[@]}" || errorExit "Could not stop RapidsSE on node ${row}."
 }
 
 
@@ -883,7 +1168,7 @@ function stopCurrentNode() {
     local pid
     pid="$(cat "${PIDFILE}")" 2>/dev/null
 
-    declare -a stopCmd
+    declare -a stopCmd=()
     stopCmd+=("${EXE}")
     stopCmd+=("--name")
     stopCmd+=("${CURRENT_NODE_NAME}")
@@ -894,7 +1179,7 @@ function stopCurrentNode() {
 
 
     # Set the library path so the RapidsSE library can be found and loaded
-    export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
+    export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
 
     if [ ${DEBUG} -eq 1 ]; then

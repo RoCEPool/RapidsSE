@@ -38,7 +38,7 @@
 
 #include "SizesHeaps.hpp"
 
-#include "Backend.hpp"
+#include "backend/Backend.hpp"
 
 #include "CmdLineArgs.hpp"
 
@@ -120,7 +120,10 @@
 #include "LogicUnit.hpp"
 
 #include "Metadata.hpp"
+#include <MetaGet.hpp>
+#include <backend/ExprEval.hpp>
 
+#include "Parcel.hpp"
 #include "Objects.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
@@ -332,6 +335,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
+  { sizeof(MetaGet),           HT_T_TINY    ,0 }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
@@ -339,7 +343,7 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
-  { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
+  { sizeof(Node),               HT_T_MEDIUM  ,0 }, // CN_NODE
   { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
@@ -527,7 +531,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Z' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Z__
 
-  { C_VARGS_END,                HT_INVALID   ,0 }, // CN_ENUMS
+  { C_VARGS_END,                HT_INVALID   ,0 } // CN_ENUMS
 };
 
 /*============================================================================*/

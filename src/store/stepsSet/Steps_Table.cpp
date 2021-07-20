@@ -30,6 +30,8 @@
 #include "MY.hpp"
 #include "TagConstants.h"
 
+#include <new>
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -49,9 +51,11 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
+  vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
@@ -75,7 +79,7 @@ void Step::vTableDelete(void)
   ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
+  //vTrace(">>>>>>>>>>>>Step::vTableDelete\n"_Stz);
   delete pTable;
     
   EXIT();
@@ -241,6 +245,95 @@ void Step::vTableDump(void)
     pTablePtn->vDump();
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].dumpmeta                                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpMeta(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpMeta Table: ====================================\n"_Stz;
+
+  Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpTable);
+
+
+  sDumpBuffer.vCatSprint("Table:%s\n"_Stz, pTable->szTableNm()->azChar());
+
+  i8 nCols = pTable->pStreamDef()->nColumns();
+  for (i8 iCol = 0; iCol < nCols; iCol++) {
+    Column* pCol = pTable->pStreamDef()->pGetColumn(iCol);
+    sDumpBuffer.vCatSprint("    %s   %s"_Stz,    pCol->szColNm()->azChar(), aCT[pCol->eColumnType()]);
+
+    if (pCol->iColumnLength()>0) {
+      if (pCol->iColumnScale())
+        sDumpBuffer.vCatSprint(" (%lld,%lld)"_Stz,pCol->iColumnLength(), pCol->iColumnScale());
+      else
+        sDumpBuffer.vCatSprint(" (%lld)"_Stz,pCol->iColumnLength());
+    }
+    if (pCol->bIsNullable())
+      sDumpBuffer.vCatSprint(" nullable"_Stz);
+    if (pCol->bIsUnique())
+      sDumpBuffer.vCatSprint(" Unique"_Stz);
+    if (pCol->bIsPtnKey())
+      sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+    sDumpBuffer.vConcat("\n"_Stz);
+  }
+
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+    sDumpBuffer.vCatSprint("\nPartition %lld  %lld"_Stz, i_TablePtn, pTable->pTablePtn(i_TablePtn)->tPtnNo());
+    //pTablePtn->vDump();
+  }
+
+
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
+
+  if (pIdxVec->nItems()>0) {
+    for (i8 iI = 0; iI < pIdxVec->nItems(); iI++) {
+      Index *pIdx = pIdxVec->pGet(iI);
+
+      if (pIdx->eGetClassNo()==CN_INDEX && pIdx->nColumns() > 0) {
+        Column* pCol = pIdx->pGetColumn(0);
+
+        sDumpBuffer.vCatSprint("    %s  %s"_Stz, pIdx->szIndexNm()->azChar(), pCol->szColNm()->azChar());
+
+        if (pCol->bIsUnique())
+          sDumpBuffer.vCatSprint(" Unique"_Stz);
+        if (pCol->bIsPtnKey())
+          sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+
+      } else {
+        sDumpBuffer.vCatSprint("  %s  "_Stz, aCN[pIdx->eGetClassNo()]);
+      }
+      sDumpBuffer.vConcat("\n"_Stz);
+    }
+  }
+
+  ShardDef*  pShard = pTable->pShardDef();
+  sDumpBuffer.vCatSprint("\n\nShard Name:%s\n"_Stz, pShard->szShardDefNm() ? pShard->szShardDefNm()->azChar() : "");
+  for (i8 iC=0; iC<pShard->nColumns(); iC++) {
+    sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
+  }
+
+  /*
+  pIdxVec->nColumns();
+
+      i8     nColumns(void);
+  Column* pGetColumn(i8 iColumn);
+  IndexDef* pIndexDef(void);
+  void   vIndexDef(IndexDef* pIndexDef);
+  Stz*   szIndexNm(void);
+  */
+
+
+  sDumpBuffer.vCatSprint("%s"_Stz,
+                         "\n======================================================\n\n"_Stz);
+  m_pDataStack->vPushStr(sDumpBuffer);
+
   EXIT();
 }
 
@@ -476,6 +569,24 @@ void Step::vTableListPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* table.getName -- fetch table name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableGetName(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  Stz* szTableNm = pTable->szTableNm();
+
+  vTrace("Table name = %s \n"_Stz, szTableNm->azChar());
+
+  m_pDataStack->vPushStz(szTableNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Table[].name@ -- fetch table name                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTableNameFetch(void)
@@ -490,32 +601,61 @@ void Step::vTableNameFetch(void)
   
   EXIT();
 }
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* table::new -- create a new instance of table                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTableNew(void)
-{
+void Step::vTableNew(void) {
   ENTRY();
 
   s32 sTableNm;
-  m_pDataStack->vPopStr(sTableNm,__func__);
-  
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
+  m_pDataStack->vPopStr(sTableNm, __func__);
+
+  Job *pJob = MY::pJob();
+  TagSet *pJobTags = pJob->pJobTags();
 
   eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
-  else
-  if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
+  else if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
     eTableKind = TT_INTERNAL;
-  else
-  if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
+  else if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
     eTableKind = TT_REPLICATED;
 
-  Table* pTable = new Table(sTableNm,eTableKind);
-  
+  Table *pTable = new Table(sTableNm, eTableKind);
+
+
+  // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
+#ifdef JUNK
+  if (sTableNm.bSame("bolTbl"_Stz)) {
+    pTable->iPrepareParcel();
+
+    s32 sTableName;
+
+    Table *pTbl = nullptr;
+    Table *pNewTable = nullptr;
+
+    Parcel* pParcel = pTable->pParcel();
+    i8 nObjParts = pParcel->nObjects();
+
+    for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+      Object *pObject = pParcel->pGetObject(i_Obj);
+      if (pObject->eGetClassNo() == CN_TABLE) {
+        pTbl = (Table *) pObject;
+        pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
+
+        pNewTable->iReassembleFromParcel(pTable->pParcel());
+        vTrace(">>>>>>>>>>>> (New) Table:%s with %lld parts\n"_Stz, sTableName.azChar(), nObjParts);
+        break;
+      }
+    }
+
+    // Testing the concept, passing the minimum-reassemble table works
+    m_pDataStack->vPushPtr(pNewTable);
+  } else
+  // END SAME NODE TESTING  //////////////////  END SAME NODE TESTING  /////////////////////////
+#endif
   m_pDataStack->vPushPtr(pTable);
   
   EXIT();

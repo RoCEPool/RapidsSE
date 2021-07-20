@@ -100,6 +100,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
   Constants::vAddConstant("args.help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
+  Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
   Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
   Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nMaxLoadErrors);
@@ -720,6 +721,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EXITEARLYMARKER"_Stz, ZK_EXITEARLYMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDEARLYMARKER"_Stz,ZK_EXITEDEARLYMARKER);
+  /*  0 */ vAddConstant("ZK_GRID"_Stz,            ZK_GRID);
   /*  0 */ vAddConstant("ZK_INDEX"_Stz,           ZK_INDEX);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
@@ -729,6 +731,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
   /*  0 */ vAddConstant("ZK_OP"_Stz,              ZK_OP);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
+  /*  0 */ vAddConstant("ZK_PARCEL"_Stz,          ZK_PARCEL);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
   /*  0 */ vAddConstant("ZK_PLANOPERAND"_Stz,     ZK_PLANOPERAND);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);

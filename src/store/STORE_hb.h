@@ -4,7 +4,7 @@
 #pragma once
 
 //------------------------------------------------------------------------------
-// place holder for now
+/// place holder for now
 typedef struct
 {
   i8 iStoreID;

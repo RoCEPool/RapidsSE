@@ -1,0 +1,15 @@
+# This is the testList file for Bamboo with multi-node SE.
+# All test files included in here will be run in the continuous integration environment.
+# This is a recursive testList file.
+
+../../tests/dummyTests/testList
+../../tests/tests2N4P/Transliterate/testList
+../../tests/tests1N4P/BackEnd/testList
+../../tests/tests1N4P/Compiler/testList
+../../tests/tests1N4P/Demo/testList
+../../tests/tests2N4P/Datums/testList
+../../tests/tests1N4P/Ddl/testList
+../../tests/tests2N4P/Index/testList
+../../tests/tests1N4P/LocalFunctions/testList
+../../tests/tests2N4P/Misc/testList
+../../tests/tests1N4P/Table/testList

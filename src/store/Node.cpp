@@ -55,7 +55,7 @@ void Node::operator delete(void* pNodeAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
@@ -75,8 +75,16 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
   m_qFreeSpace   = C_UNKNOWN;
   m_qFreePercent = C_UNKNOWN;
 
-  MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+  Heartbeat xHeartbeat;
+  MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
+  strcpy(xHeartbeat.m_acRegionName, szRegionNm->azChar());
+
+  m_atmHeartbeat.store(xHeartbeat,std::memory_order_release);
+  //MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+
   m_iNodeStatus = 0;
+  m_iPrevUserUsec = 0;
+  //m_sStartCmd = " "_Stz;
   
   _checkInitialised_(CN_NODE);
   
@@ -195,6 +203,31 @@ void Node::vDsv(void)
          aNS[m_eState]);
 }
 
+
+/**
+ * @brief returns a string buffer contains Node Info
+ * @details returns a string buffer contains Node Info:
+ * Node ID, Node Name, Node Address and Node Port Number
+ * <p>
+ * @param[in] s4K szBuffer
+ * @return s4K
+ *
+ */
+s16KB Node::szDumpInfo(s16KB szBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  szBuffer.vCatSprint("    [%lld] Node %s : degOfPar %d IPAddr %s portNo %lld %s\n"_Stz,
+         m_iNodeNo,
+         m_sNodeNm.szStz(),
+         m_nDegOfPar,
+         m_sIPAddr.szStz(),
+         m_iPortNo,
+         aNS[m_eState]);
+
+  return szBuffer;
+}
+
 /*----------------------------------------------------------------------------*/
 /* get node state                                                             */
 /*----------------------------------------------------------------------------*/
@@ -241,7 +274,7 @@ void Node::vRecvSocket(Socket* pSocket)
 Socket* Node::pSendSocket(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
+  //if (!m_pSendSocket) vThreadCallStackDump();
   return m_pSendSocket;
 }
 
@@ -324,7 +357,12 @@ void Node::vRegionSize(i8 qRegionSize)
 void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  m_xHeartbeat = xHeartbeat;
+
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  MemLib::vCopy((byte*)&tempHeartbeat,(byte*)&xHeartbeat,sizeof(tempHeartbeat),CN_NODE);
+  m_atmHeartbeat.store(tempHeartbeat, std::memory_order_release);
+  //MemLib::vCopy((byte*)&m_xHeartbeat,(byte*)&xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+  //m_xHeartbeat.m_iSincePosixEpoch = xHeartbeat.m_iSincePosixEpoch;
 }
 
 
@@ -334,7 +372,8 @@ void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
 Heartbeat Node::xGetHeartbeat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_xHeartbeat;
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return tempHeartbeat;
 }
 
 
@@ -355,6 +394,56 @@ i1 Node::iGetNodeStatus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_iNodeStatus;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get previous saved user usec                                               */
+/*----------------------------------------------------------------------------*/
+i8   Node::iGetPrevUserUsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iPrevUserUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to save user usec                                                      */
+/*----------------------------------------------------------------------------*/
+void   Node::vSetPrevUserUsec(i8 iUsec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  m_iPrevUserUsec = iUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to save start node cmd                                                 */
+/*----------------------------------------------------------------------------*/
+void   Node::vSetStartCmd(Stz* pCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  (void) pCmd;
+  //m_sStartCmd.vCopy(pCmd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get saved start node cmd                                                   */
+/*----------------------------------------------------------------------------*/
+Stz*   Node::pszGetStartCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  //if (m_sStartCmd.nLength() > 1)
+  //  return (Stz*)m_sStartCmd;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get saved pid from heartbeat                                               */
+/*----------------------------------------------------------------------------*/
+i8   Node::iGetPid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return (tempHeartbeat.m_iPid);
 }
 
 /*----------------------------------------------------------------------------*/

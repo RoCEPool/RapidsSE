@@ -13,28 +13,28 @@
 
   PipeIn[]\clear locals| pOperand |
   
-  
   // we do not expect to see a job
   pOperand object.class@ CN_JOB != ASSERT
-
 
   //pOperand object.preSendWord@ if
   //  pOperand object.preSendWord@ execute
   //then
-  
 
   pOperand object.class@ CN_PARCEL == if
     pOperand to pParcel
+    pParcel parcel.label
   else
     pOperand operand.toParcel to pParcel
   then
   
   pParcel parcel.sendOut
-  
+
   pParcel parcel::delete
-  
+
   // calling op_loop continues
+
   true
+  //stk
 ;
 
 /*----------------------------------------------------------------------------*/

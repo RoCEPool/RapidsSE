@@ -54,7 +54,6 @@ void Step::vJob_PipelineBegin(void)
     
   i8 iThisNode = AM::pGrid()->iThisNode();
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   pLogicUnit->m_xpPipeline =
@@ -73,7 +72,6 @@ void Step::vJob_PipelineBegin(void)
       vDebugPoint();
     }
   }
-    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))

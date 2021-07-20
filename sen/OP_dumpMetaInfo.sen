@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* OP_dumpMetaInfo.sen -- cat file                                                 */
+/*============================================================================*/
+
+" OP_dumpMetaInfo.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* dumpMetaInfo action               column                                        */
+/*----------------------------------------------------------------------------*/
+: dumpMetaInfo_action
+
+  //">>>>>>>>>>>>> dumpMetaInfo_action" .
+
+  <TableNm> op__table if
+      Table[].dumpmeta locals| pDumpBuffer |
+      // convert the string to operand to pipe out
+        pDumpBuffer str.toPromptOut op::pipeOut
+      true
+    else
+      false
+    then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dumpMetaInfo :: dumpMetaInfo <TableNm> ;
+
+: dumpMetaInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1077,6 +1077,82 @@
   end ;
   "
   api::addProcedure
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // prototype get meta object
+
+    STD_PATH
+    "
+    procedure pgetMeta
+      parameters $TableNm
+    begin
+
+      stage stageA on origin :
+        start | periodic once | pmetaGet $TableNm | stageB hashed
+
+      stage stageB on all nodes :
+        pmetaSend | stageC
+
+      stage stageC on origin :
+        pmetaRecv | output | sink | stageA
+
+    end ;
+    "
+    api::addProcedure
+
+     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     // prototype assertGrid
+
+      STD_PATH
+      "
+      procedure assertGrid
+      begin
+
+        stage stageA on origin :
+          start | periodic once | gridGet | stageB hashed
+
+          // prototyping, on the same machine
+          //stage stageB on all nodes :                gridSend | gridRecv | stageC
+          //stage stageC on origin :                noop | sink | stageA
+
+        stage stageB on all nodes :
+              gridSend | stageC
+
+        stage stageC on origin :
+              gridRecv | output | sink | stageA
+
+      end ;
+      "
+      api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump grid info
+
+  STD_PATH
+  "
+  procedure dumpGrid
+  begin
+    stage stageA on origin :
+      start | periodic once | dumpGrindInfo  | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   //  dump table meta info
+
+    STD_PATH
+    "
+    procedure dumpMeta
+      parameters $TableNm
+    begin
+      stage stageA on origin :
+        start | periodic once | dumpMetaInfo $TableNm  | output | sink | stageA
+
+    end ;
+    "
+    api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
@@ -1095,7 +1171,7 @@
 
     stage stageC on origin :
       metaRecv | output | sink | stageA
-      
+
   end ;
   "
   api::addProcedure
@@ -1116,7 +1192,7 @@
       metaSend | metaRecv | stageC
 
     stage stageC on origin :
-      noop | stageA
+      noop | sink | stageA
 
   end ;
   "

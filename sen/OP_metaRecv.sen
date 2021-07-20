@@ -5,41 +5,30 @@
 " OP_metaRecv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_TABLE ...                                                            */
+/* on ZK_PARCEL ...                                                           */
 /*----------------------------------------------------------------------------*/
-: metaRecv_Table \handler
+: metaRecv_Parcel \handler
+  " metaRecv_Parcel" .
 
-  true
-;
+  Operand[].pipein  // pop the pParcel and put in the Operand register
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                                        */
-/*----------------------------------------------------------------------------*/
-: metaRecv_StreamDef \handler
+  // returns table ptr
+  Operand[]\clear MetaRecv::putParts locals| pTable |
 
-  true
-;
+  // get table name to create folder
+  pTable table.getName locals| sTableNm |
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_INDEX ...                                                            */
-/*----------------------------------------------------------------------------*/
-: metaRecv_Index \handler
+  // sTableNm .
 
-  true
-;
+  path[].tostr .      // display the path
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_INDEXDEF ...                                                         */
-/*----------------------------------------------------------------------------*/
-: metaRecv_IndexDef \handler
+  sTableNm table::makeTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
-  true
-;
+  // put the table ptr to
+  pTable table::addToFolder
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_BUCKETMAP ...                                                        */
-/*----------------------------------------------------------------------------*/
-: metaRecv_BucketMap \handler
+  Path[].popNamedTableFolder
 
   true
 ;
@@ -50,8 +39,12 @@
 : metaRecv_req \operator
 
   LogReqEntry SEED_REQ
+  //"metaRecv_req" .
 
   op__topology
+
+  // Setup ZK_PARCEL handler here
+  find: metaRecv_Parcel ZK_PARCEL op[].handler!
 
   op__loop
 

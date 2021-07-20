@@ -41,7 +41,7 @@ LINUX_LDFLAGS_DEBUG :=
 LINUX_LIBRARY_EXT := so
 
 # Any additional linux-specific libraries to link in?
-LINUX_LIBS := -lrt
+LINUX_LIBS := -lrt -latomic
 
 # Any linux-specific library search paths to include?
 LINUX_LIB_DIRS := 

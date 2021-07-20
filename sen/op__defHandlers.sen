@@ -35,6 +35,7 @@
 : ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : ZK_EXITEARLYMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_GRID_handler             \handler STANDARD_PIPEOUT ;
 : ZK_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : ZK_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : ZK_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
@@ -44,6 +45,7 @@
 : ZK_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : ZK_OP_handler               \handler STANDARD_PIPEOUT ;
 : ZK_OTHEROPERAND_handler     \handler STANDARD_PIPEOUT ;
+: ZK_PARCEL_handler           \handler STANDARD_PIPEOUT ;
 : ZK_PATHINFO_handler         \handler STANDARD_PIPEOUT ;
 : ZK_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
 : ZK_PROFILE_handler          \handler STANDARD_PIPEOUT ;

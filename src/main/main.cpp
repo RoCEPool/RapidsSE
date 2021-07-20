@@ -133,7 +133,11 @@ int main(int argc, char* argv[])
     
     vHeartInit();
 
-    
+    if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
+      printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+      sleep(gxCmdLineArgs.m_xSysArgs.m_iDelay);
+    }
+
     // run SE
     Engine::vMainEntry();
   }

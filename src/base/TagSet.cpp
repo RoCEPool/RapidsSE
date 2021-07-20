@@ -190,7 +190,7 @@ void TagSet::vConcat(Stz* szCmd, i8 i_Ename)
 void TagSet::vContentDump(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
+
   if (m_nEnames) {
     vTrace("\n"_Stz);
     vTrace("Tag Set\n"_Stz);

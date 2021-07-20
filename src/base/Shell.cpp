@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "Node.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* execute shell command (returns exit code)                                  */
@@ -10,6 +12,12 @@
 i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
 {
   oSysCall.vClear();
+
+  char acSave[1024];
+  acSave[sizeof(acSave)-1] = 0;
+  strncpy(acSave,sCommand->azChar(), sizeof(acSave)-1);
+
+  //printf("COMMAND SHELL Execute: %s\n",sCommand->azChar() );
 
   i8 iResult = system(sCommand->azChar());
   
@@ -20,6 +28,9 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
   }
   
   oSysCall.vSuccess();
+
+
+
   
   return iResult;
 }

@@ -398,11 +398,15 @@ public:
   // grid
   void vGridBootNodes(void);
   void vGridConnectedNodes(void);
+  void vGridDumpInfo(void);
+  void vGridGetGridObject(void);
+  void vGridGetGridParts(void);
   void vGridFindNode(void);
   void vGridIncConnectedNodes(void);
   void vGridListNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
+  void vGridPutGridParts(void);
   void vGridShow(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
@@ -935,6 +939,7 @@ public:
 
   // metaGet
   void vMetaGetGetMetadata(void);
+  void vMetaGetGetTableName(void);
 
   // metaRecv
   void vMetaRecvPutParts(void);
@@ -1294,6 +1299,7 @@ public:
 
   // Parcel
   void vParcelDelete(void);
+  void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
 
@@ -1488,6 +1494,7 @@ public:
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);
 
+
   // sql compiler
   void vSqlCompilerAggregateSplit(void);
   void vSqlCompilerCorrBySquash(void);
@@ -1664,8 +1671,10 @@ public:
   void vTableDelete(void);
   void vTableDeleteIndex(void);
   void vTableDump(void);
+  void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);
+  void vTableGetName(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);

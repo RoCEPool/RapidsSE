@@ -403,6 +403,9 @@ namespace OBLIQUE
     static JobList* pParticipatingJobs(void);
     static i8   iPid(void);
     static void vProcessExit(void);
+    static i8   iSystemUsec(void);
+    static i8   iUserUsec(void);
+    static i8   iResidentSize(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
@@ -418,10 +421,14 @@ namespace OBLIQUE
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
+    static i8   iGetNodeNo(i8 i_Node);
+    static bool bFirstNode(i8 iNodeNo);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
-    static void vPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
+    static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
     static Heartbeat xGetHeartbeat(Stz* pszNodeName);
+    static void vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm);
+    static void vRemoveNode(Stz* pszName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
     static bool bTracepoint(void);
@@ -577,7 +584,9 @@ namespace OBLIQUE
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
- 
+
+    static void vTraceDumpGrabLock(void);
+    static void vTraceDumpDropLock(void);
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);

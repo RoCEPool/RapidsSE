@@ -52,7 +52,6 @@ Op* Api::pGetOperator(Stz* szOpNm)
     pOp = Api::pOpCreate(pOpWord);
     return pOp;
   }
-    
   return nullptr;
 }
 

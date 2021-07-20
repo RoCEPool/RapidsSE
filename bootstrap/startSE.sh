@@ -12,19 +12,6 @@ readonly ROOT_DIR="${DIR}"
 readonly BOOT_FN="${DIR}/boot.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
-###############################################################################
-### Significant Global Variables                                            ###
-###############################################################################
-
-# Default modes of operation
-CLUSTER_OP=1
-CLUSTER_INIT=0
-CONFIG_FILE="${DIR}/cluster.config"
-NAME_FILE="${DIR}/node.name"
-DEBUG=0
-
-# Will be set after loading node name file.
-CURRENT_NODE_NAME=""
 
 ###############################################################################
 ### Includes                                                                ###
@@ -33,6 +20,21 @@ CURRENT_NODE_NAME=""
 # Load bootstrapping functions
 #shellcheck source=boot.fn
 source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
+
+
+###############################################################################
+### Significant Global Variables                                            ###
+###############################################################################
+
+# Default modes of operation
+CLUSTER_OP=1
+CLUSTER_INIT=0
+CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
+NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
+DEBUG=0
+
+# Will be set after loading node name file.
+CURRENT_NODE_NAME=""
 
 
 ###############################################################################
@@ -60,17 +62,18 @@ loadClusterConfig
 
 if [ ${CLUSTER_OP} -eq 1 ]; then
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    remoteClusterInit
+    remoteClusterXConnect
     exit
   fi
 
+  #shellcheck disable=SC2119
   startCluster
 
 else
   loadNodeName
 
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    localClusterInit
+    localClusterXConnect
     exit
   fi
 

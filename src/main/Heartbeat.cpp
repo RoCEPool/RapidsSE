@@ -15,15 +15,21 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-/*
-*  sAddr  The address to convert to a numeric IP.
-*  iPort  The port number.
-*/
-HeartbeatSnd::HeartbeatSnd(char *szAddr, int iPort)
-    : m_iPort(iPort) {
+/**
+ * @brief HeartbeatSnd Constructor
+ * @details to create object and initialize variables
+ * <p>
+ * @param[in] pszAddr  the address to convert to a numeric IP.
+ * @param[in] iPort   the port number.
+ *
+ * @return none
+ *
+ * @throws Heartbeat_RTE
+ */
+HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
+    : m_iPort(iPort), m_sAddr(sAddr) {
 
   std::string szPort = std::to_string(iPort);
-  m_sAddr = szAddr;
 
   struct addrinfo hints;
   memset(&hints, 0, sizeof(hints));
@@ -87,10 +93,19 @@ int HeartbeatSnd::iSend(const char *pPacket, size_t iSize) {
 
 
 //===============================================================================================
-/*
+
+/**
+ * @brief HeartbeatRcv Constructor
+ * @details to create object and initialize variables
+ * <p>
+ * @param[in] szAddr  The address we receive on.
+ * @param[in] iPort   The port we receive from.
  *
- * sAddr  The address we receive on.
- * iPort  The port we receive from.
+ *
+ * @return none
+ *
+ *
+ * @throws Heartbeat_RTE
  */
 HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort)
     : m_iPort(iPort), m_sAddr(sAddr) {
@@ -192,9 +207,55 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
 }
 
 
+TestConnection::TestConnection(Stz *pAddr, i8 iPort)
+{
+  m_pszAddr = pAddr->azChar();
+  m_iPort = iPort;
+  m_iSockClient = -1;
+}
+TestConnection::~TestConnection(void)
+{
+  if (m_iSockClient != -1)
+  {
+    close(m_iSockClient);
+  }
+}
+
+
+bool TestConnection::bTryConnect(void)
+{
+  struct sockaddr_in xNodeAddr;
+
+  if ((m_iSockClient = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  {
+    vTrace("\n Socket creation error \n"_Stz);
+    return false;
+  }
+
+  xNodeAddr.sin_family = AF_INET;
+  xNodeAddr.sin_port = htons(m_iPort);
+
+  // Convert IPv4 and IPv6 addresses from text to binary form
+  if (inet_pton(AF_INET, m_pszAddr, &xNodeAddr.sin_addr)<=0)
+  {
+    vTrace("\nInvalid address/ Address not supported \n"_Stz);
+    return false;
+  }
+
+  if (connect(m_iSockClient, (struct sockaddr *)&xNodeAddr, sizeof(xNodeAddr)) < 0)
+  {
+    vTrace("\nConnection Failed \n"_Stz);
+    return false;
+  }
+  close(m_iSockClient);
+  return true;
+}
+
+
 /**
  * @brief Checksum Constructor
- * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * @details has two methods to get the checksum/hash values
+ * Fletcher16 and Bernstein
  * <p>
  * @param[in] pData  pointer to char buffer
  * @param[in] iLen   length of data
@@ -205,19 +266,34 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
  */
 CheckSum::CheckSum (const byte *pData, size_t iLen)
 {
+  m_pData = pData;
+  m_iDataLen = iLen;
+}
+
+
+/**
+ * @brief Checksum by Fletcher
+ * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * <p>
+ *
+ * @return 16-bit value
+ *
+ */
+u2 CheckSum::uGetFletcher16(void)
+{
   u4 c0 = 0, c1 = 0;
   m_uValue = 0;
   /*  Found by solving for c1 overflow: */
   /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
-  while (iLen > 0) {
-    size_t blocklen = iLen;
+  while (m_iDataLen > 0) {
+    size_t blocklen = m_iDataLen;
     if (blocklen > 5002) {
       blocklen = 5002;
     }
-    iLen -= blocklen;
+    m_iDataLen -= blocklen;
 
     do {
-      c0 = c0 + *pData++;
+      c0 = c0 + *m_pData++;
       c1 = c1 + c0;
     } while (--blocklen);
 
@@ -225,6 +301,30 @@ CheckSum::CheckSum (const byte *pData, size_t iLen)
     c1 = c1 % 255;
   }
   m_uValue = (c1 << 8 | c0);
+  return m_uValue;
+}
+
+
+/**
+ * @brief Hash by Bernstein
+ * @details An algorithm produced by Professor Daniel J. Bernstein
+ * <p>
+ *
+ * @return i8 value
+ *
+ */
+i8 CheckSum::iGetBernstein(void)
+{
+  i8 hash = 5381;
+  unsigned int i    = 0;
+
+  for (i = 0; i < m_iDataLen; ++m_pData, ++i)
+  {
+    hash = ((hash << 5) + hash) + (*m_pData);
+  }
+
+  return hash & (1024-1);
+
 }
 
 /*============================================================================*/

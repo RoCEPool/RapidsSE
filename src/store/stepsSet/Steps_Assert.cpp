@@ -41,9 +41,9 @@ void Step::vAssert(void)
   ENTRY();
   
   i8 iTrue = m_pDataStack->iPopAsInt(__func__);
-  
+
   RASSERT(iTrue);
-  
+
   EXIT();
 }
 
@@ -206,7 +206,9 @@ void Step::vAssertStack_0(void)
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  ) {
-    
+    TypedCell* pTypedCell = m_pDataStack->aPeekItem(0);
+    vTrace("\n========> assert::stack_0 Class:%s   value:%lld\n"_Stz, aCN[pTypedCell->eType()]->azChar(), pTypedCell->iInt());
+
     vContentDump();
 
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,

@@ -297,6 +297,7 @@ void Stage::vCreateStreams(void)
   i8 i_Node;
   i8 i_Stream;
   Stream* pStream;
+  i8 i_NodeNo;
   
   switch (m_pStageSpec->eTopology()) {
             
@@ -307,7 +308,8 @@ void Stage::vCreateStreams(void)
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
-        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+        i_NodeNo = AM::iGetNodeNo(i_Node);
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
         vAdd(pStream);
       }
       break;
@@ -317,6 +319,10 @@ void Stage::vCreateStreams(void)
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
+      //if (i_Node < 100) {
+      //  printf("BAD node\n");
+      //  i_Node = AM::iGetNodeNo(i_Node);
+      //}
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
       vAdd(pStream);
       break;
@@ -332,6 +338,7 @@ void Stage::vCreateStreams(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        //if (i_Node < 100) printf("1 BAD node\n");
         i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
         vAdd(pStream);
@@ -342,6 +349,7 @@ void Stage::vCreateStreams(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        //if (i_Node < 100) printf("2 BAD node\n");
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
           pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
@@ -354,6 +362,7 @@ void Stage::vCreateStreams(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      //if (i_Node < 100) printf("3 BAD node\n");
       i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
       vAdd(pStream);

@@ -1566,104 +1566,88 @@ void Engine::vStartSystem(void)
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
   
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
-    
+
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
-  
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     gpAttachMap->vPrintAttachMap();
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
-  
-   gpAttachMap->m_pSchedule = new Schedule;
-    
+
+  gpAttachMap->m_pSchedule = new Schedule;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
-  
-  gpAttachMap->m_pJobs->m_pDemonJobs         =
-    new JobList(bJobCompare,JL_DEMON);
-  gpAttachMap->m_pJobs->m_pLocalJobs         =
-    new JobList(bJobCompare,JL_LOCAL);
-  gpAttachMap->m_pJobs->m_pOriginatingJobs   =
-    new JobList(bJobCompare,JL_ORIGINATING);
+
+  gpAttachMap->m_pJobs->m_pDemonJobs =
+      new JobList(bJobCompare, JL_DEMON);
+  gpAttachMap->m_pJobs->m_pLocalJobs =
+      new JobList(bJobCompare, JL_LOCAL);
+  gpAttachMap->m_pJobs->m_pOriginatingJobs =
+      new JobList(bJobCompare, JL_ORIGINATING);
   gpAttachMap->m_pJobs->m_pParticipatingJobs =
-    new JobList(bJobCompare,JL_PARTICIPATING);
-  
+      new JobList(bJobCompare, JL_PARTICIPATING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
-  
   gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
-    
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Grid and Node's\n"_Stz);
 
-  vCreateGridOfNodes(); // newcode
 
-  /*
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
-    //ASSERT(AM::pGrid()->nNodes() == i_Node);
-    Node* pNode = new Node(i_Node,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
-                           AM::nDegOfPar(),
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
-    AM::pGrid()->vPutNode(pNode);
-    AM::pGrid()->vIncBootNodes();
-    AM::pGrid()->vIncDefinedNodes();
-
-  } */
+  vCreateGridOfNodes();
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+
   if (! pThisNode)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
-  // newcode: we might generate a unique node_no, so it can be used as part of jobid
-  // the unique node_no can be a hash of ipaddr and port number
-
-  i8 iThisNodeNo = pThisNode->iNodeNo();
-  AM::pGrid()->vThisNode(iThisNodeNo);
+  i8 iThisNode = pThisNode->iNodeNo();
+  AM::pGrid()->vThisNodeNo(iThisNode);
 
   AM::pGrid()->vSetThisNode(pThisNode); // newcode
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initialize the next id generators
-  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
-  
-  gpAttachMap->m_pObjects->vNodeNo(iThisNodeNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // initialize the next id generators
+  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNode);
+
+  gpAttachMap->m_pObjects->vNodeNo(iThisNode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Sessions\n"_Stz);
 
 
   gpAttachMap->m_pSessions = new Sessions;
-  
+
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();
-  
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vInfo("  Creating Partition Map\n"_Stz);
+
+  gpAttachMap->m_pPtnMap =
+      new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
+                 gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Creating Partition Map\n"_Stz);
-
-  gpAttachMap->m_pPtnMap =
-    new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
-               gpAttachMap->m_xSysArgs.m_nDegOfPar);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding Expressions\n"_Stz);
+
   Step::vAddSteps();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -1673,7 +1657,7 @@ void Engine::vStartSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding LowMemory Discard\n"_Stz);
   vLowMemoryDiscard();
-  
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Adding No Memory Logging\n"_Stz);
   vNoMemoryLogging();
@@ -1683,11 +1667,9 @@ void Engine::vStartSystem(void)
   Constants::vAddConstantsArgs();
   Constants::vAddConstantsCpp();
 
-  
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Boot Job\n"_Stz);
   vCallBoot();
-  
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
@@ -1696,12 +1678,13 @@ void Engine::vStartSystem(void)
   
   Scheduler::vScheduler_Boot();
   
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Start\n"_Stz);
   vCallStart();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
   
@@ -1710,41 +1693,41 @@ void Engine::vStartSystem(void)
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
-        
+
 
   s32 sResident_magn;
-  MagLib::vByteMag(Process::iResidentSize(),3,sResident_magn);
+  MagLib::vByteMag(Process::iResidentSize(), 3, sResident_magn);
   s32 sVirtual_magn;
-  MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
+  MagLib::vByteMag(Process::iVirtualSize(), 3, sVirtual_magn);
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
 
-    vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz,giProgressPoint++);
+    vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz, giProgressPoint++);
 
     vTrace("Process resident size %s Virtual Size %s\n"_Stz,
-            sResident_magn.szStz(),
-            sVirtual_magn.szStz()
-          );
-  
+           sResident_magn.szStz(),
+           sVirtual_magn.szStz()
+    );
+
     vTrace("System time %lldus User Time %lldus\n"_Stz,
            Process::iSystemUsec(),
            Process::iUserUsec()
-           );
-    
+    );
+
     BufferPool::vReport();
-    
+
     vTrace("Open: dirs %lld files %lld mutexes %lld threads %lld sockets %lld\n"_Stz,
            *gixDir,
            *gixFile,
            *gixMutex,
            *gixPsxThd,
            *gixSocket
-           );
+    );
   }
   
   // mark attachmap to be ready for connections
@@ -1755,18 +1738,51 @@ void Engine::vStartSystem(void)
   }
 }
 
-// newcode
+
+/**
+ * @brief Initial creation of a Grid of Nodes
+ * @details It uses a hash IP/Port of a node for the NodeNo
+ *
+ * <p>
+ * @note We can use Hardware::iReadTscp() for unique NodeNo,
+ *       But it seems the value is very large and somewhere int system
+ *       doesn't like it.
+ *
+ *
+ * @return none
+ */
 void Engine::vCreateGridOfNodes(void)
 {
+
+  s32 szNodeName;
+  i8 iNodeNo =0 ;
+
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
-    Node* pNode = new Node(i_Node,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
+    if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1) {
+      iNodeNo = i_Node;
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
+    } else {
+      CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.nLength());
+
+      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+
+      //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+      //                   gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
+   }
+
+
+    Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
+                           szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo,
+                           AM::szRegionName());
 
     AM::pGrid()->vPutNode(pNode);
+
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
   }
@@ -1796,7 +1812,7 @@ void Engine::vTestPort(i8 iPort)
 {
   SysCall oSysCall;
   Socket* pSocket;
-    
+
   pSocket = new Socket(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
@@ -1869,6 +1885,16 @@ void Engine::vWriteRegionName(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("REGION NAME: %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
 }
+
+
+
+
+
+
+
+
+
+
 
 /*============================================================================*/
 /* end                                                                        */

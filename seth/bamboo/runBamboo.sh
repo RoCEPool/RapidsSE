@@ -12,19 +12,7 @@
 ### Environment Variables                                                   ###
 ###############################################################################
 
-# If these environment variables are defined and are non-null then they will
-# alter how this script executes.
-#
-# NO_BUILD              Do not build the software.
-# TARGETS               The array of targets to build and test. Currently only
-#                       supporting "debug" and "release".
-# NO_SINGLE_NODE_TESTS  Do not run the single node tests.
-# NO_MULTI_NODE_TESTS   Do not run the multi-node tests.
-# NO_COMPRESS           Do not compress the large binary artifacts afterwards.
 
-# e.g. NO_BUILD=1 NO_COMPRESS=1 ./runBamboo.sh
-#
-# e.g. TARGET="debug" ./runBamboo.sh
 
 
 ###############################################################################
@@ -32,28 +20,61 @@
 ###############################################################################
 
 readonly DIR="$(dirname "$0")"
+readonly SCRIPTS_DIR="${DIR}/scripts"
 readonly PROJ_ROOT="${DIR}/../.."
 readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
+readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
-readonly TPCH_LINK_NAME="${PROJ_ROOT}/TPCH"
-readonly TPCH_LINK_DEST="/mnt/spinningDisk/bamboo/TPCH"
+readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
+readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-readonly RELATIVE_BAMBOO_DIR="seth/bamboo"  # Relative to the project root
+readonly RELATIVE_BAMBOO_DIR="${DIR}"
+readonly BAMBOO_RESULTS_DIR="${RELATIVE_BAMBOO_DIR}/results"
+readonly BAMBOO_LOGS_DIR="${RELATIVE_BAMBOO_DIR}/logs"
+readonly BAMBOO_CONFIGS_DIR="${RELATIVE_BAMBOO_DIR}/configs"
+readonly BAMBOO_TESTLISTS_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
 
 # Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 readonly NUM_CPUS="$(nproc)"
 
-# The default build targets to compile and test.
-# readonly DEFAULT_TARGETS=("debug" "release")
-readonly DEFAULT_TARGETS=("release")
+###############################################################################
+### Includes                                                                ###
+###############################################################################
+
+# Load other common functions
+
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=scripts/common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
+
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=../../bootstrap/common.fn
+  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
+fi
 
 ###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
 
+# Did the script complete successfully or not?
+COMPLETED_SUCCESFULLY=0
+
+# Which build types do we wish to test?
+# Valid values are "release" and "debug".
+BUILD_TYPES=( "release" )
+#BUILD_TYPES=( "release" "debug" )
+
+# Which configurations do we wish to run and test with.
+# These values must match the names of the files in the bamboo/config directory
+# as well as the names of the files in the bamboo/testlists directory.
+BUILD_CONFIGS=( "1N4P" "1N1P" "2N4P" )
+
+# A list of configurations that failed
+FAILED_CONFIGS=()
 
 ###############################################################################
 ### Functions                                                               ###
@@ -63,398 +84,64 @@ readonly DEFAULT_TARGETS=("release")
 ## Params: None
 
 function onExit() {
-  # kill any rogue SE and SETH instances owned by the current user.
-  killRogueInstances 
+
+  # Kill any rogue SE and SETH instances owned by the current user.
+  killRogueInstances
 
   # Compress any large files before they get collected by Bamboo
   compressLargeFiles
-}
 
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Print an error message to stderr and exit,
-## Params: 
-##   $1 : Error message
-##   $2..$n : (optional) other arguments to print.
-
-function errorExit() {
-  >&2 echo -e "ERROR: $*"
-  exit 1
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Print a warning message to stderr
-## Params:  
-##   $1 : Warning message
-##   $2..$n : (optional) other arguments to print.
-  
-function printWarning() {
-  >&2 echo -e "WARNING: $*"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-## Prints a given message if debug mode is turned on (i.e., $DEBUG == 1).
-## Params:
-##  $@ : The arguments to print
-
-function debugPrint() {
-  if [ -n "${DEBUG}" ] && [ "${DEBUG}" -eq 1 ]; then
-    echo -e "$*"
-  fi
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Kills any rogue instances of rapidsse and seth processes.
-## Params: None
-
-function killRogueInstances() {
-  # Kill all rapidsse instances
-  pkill -u $UID -x rapidsse &>/dev/null || true
-
-  # Kill SE Prompt children of SETH
-  { jps | grep Seth | cut -d ' ' -f 1 | xargs -r -n 1 ps -o pid= --ppid | xargs -I{} kill -9 {}; } &>/dev/null  || true
-
-  # Kill all SETH instances
-  { jps | grep Seth | cut -d ' ' -f 1 | xargs -r -I{}  kill -9 {}; } &>/dev/null || true
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Compresses any large artifact files that were created by building or
-## running the tests.
-## Params: None
-
-function compressLargeFiles() {
-
-  if [ "${NO_COMPRESS:+x}" == x ]; then
-    echo "Skipping compression of large files."
-    return
+  if [ "${#FAILED_CONFIGS[@]}" -gt 0 ]; then
+    COMPLETED_SUCCESFULLY=0
   fi
 
-  if [ ! -f "${BIN_DIR}" ]; then
-    echo "Skipping compression of large files because bin dir doesn't exist."
-    return
+  local statusMsg="Completed Successfully"
+  if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
+    statusMsg="Failed                "
   fi
 
-  # Run in a subshell so that we can change directory temporarily
-  (
-    # Compress the binaries
-    cd "${BIN_DIR}" 
-    local sharedObj
-
-    sharedObj="$(ls lib*.so 2>/dev/null)"
-
-    if [ -f "${sharedObj}" ]; then
-      tar cvzf "${sharedObj}.tar.gz" "${sharedObj}" &>/dev/null
-      rm "${sharedObj}" &>/dev/null
-    fi
-
-    local seBinary="rapidsse"
-    if [ -f "${seBinary}" ]; then
-      tar cvzf "${seBinary}.tar.gz" "${seBinary}" &>/dev/null
-      rm "${seBinary}" &>/dev/null
-    fi
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Builds RapidsSE for a given target.
-## Params:
-##  $1 : the target to be build ("debug" or "release")
-
-function buildSE() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
-  fi
-
-  if [ "${NO_BUILD:+x}" == x ]; then
-    echo "Skipping building RapidsSE"
-    return
-  fi
+  ENDTIME="$(date +%s)"
+  ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
   echo ""
   echo "********************************************************************************"
-  echo "*** Building RapidsSE for ${target}"
+  echo "*** Continuous Integration Script ${statusMsg}                                   ***"
   echo "********************************************************************************"
   echo ""
+  echo "Elapsed time: ${ELAPSEDTIME}"
+  echo ""
 
-  # Run in a subshell so we can change directories without any consequence.
-  (
-    cd "${SRC_DIR}"
-
-    # Enable gcc version 5. Required for antlr.
-    local gccVersion
-    local hasOldGcc
-
-    gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
-    hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
-
-    if [ "${hasOldGcc}" -eq 1 ]; then
-      scl enable devtoolset-8 "make clean && time make ${target} -j${NUM_CPUS}"
-
-    else
-      make clean && time make "${target}" "-j${NUM_CPUS}"
-    fi
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts SE in a 1 node 1 partition cluster and runs the SETH tests against it.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-function testSE1N1P() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
+  if [ "${#FAILED_CONFIGS[@]}" -gt 0 ]; then
+    echo "The following configurations failed:"
+    printf "  %s\n" "${FAILED_CONFIGS[@]}"
   fi
 
-  if [ "${NO_SINGLE_NODE_TESTS:+x}" == x ]; then
-    echo "Skipping single node tests."
-    return
-  fi
-
-  echo ""
-  echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Single Node Single Partition (${target})"
-  echo "********************************************************************************"
-  echo ""
-
-  startSE1N1P "${target}"
-  runSeth1N1P "1N1P-${target}"
-  stopSE1Node "${target}"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts up a single node single partition instance of RapidsSE.
-## Params: 
-##  $1 : the target being tested ("debug" or "release")
-
-function startSE1N1P() {
-
-  local target="$1"
-
-  echo ""
-  echo "Running single node single partition RapidsSE for ${target}."
-  echo ""
-
-  "${DIR}"/startSE_1n1p.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Runs SETH against a currently running cluster of SE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function runSeth1N1P() {
-  local target="$1"
-  
-  echo ""
-  echo "Running SETH tests again RapidsSE 1N1P for ${target}."
-  echo ""
-  
-  # Start from the project root directory so that SE can change to ./commands successfully.
-  ( 
-    cd "${PROJ_ROOT}"
-    ./"${RELATIVE_BAMBOO_DIR}"/seth1N1P.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts SE in a 1 node cluster and runs the SETH tests against it.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-function testSE1Node() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
-  fi
-
-  if [ "${NO_SINGLE_NODE_TESTS:+x}" == x ]; then
-    echo "Skipping single node tests."
-    return
-  fi
-
-  echo ""
-  echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Single Node Multiple Partitions (${target})"
-  echo "********************************************************************************"
-  echo ""
-
-  startSE1Node "${target}"
-  runSeth "${target}"
-  stopSE1Node "${target}"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts up a single node instance of RapidsSE.
-## Params: 
-##  $1 : the target being tested ("debug" or "release")
-
-function startSE1Node() {
-
-  local target="$1"
-
-  echo ""
-  echo "Running single node RapidsSE for ${target}."
-  echo ""
-
-  "${DIR}"/startSE.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Runs SETH against a currently running cluster of SE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function runSeth() {
-  local target="$1"
-
-  echo ""
-  echo "Running SETH tests again RapidsSE for ${target}."
-  echo ""
-
-  # Start from the project root directory so that SE can change to ./commands successfully.
-  (
-    cd "${PROJ_ROOT}"
-    ./"${RELATIVE_BAMBOO_DIR}"/seth.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Stops a currently running single node cluster of RapidsSE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function stopSE1Node() {
-  local target="$1"
-
-  echo ""
-  echo "Stopping single node RapidsSE for ${target}."
-  echo ""
-  
-  "${DIR}"/stopSE.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts SE in a 2 node cluster and runs the SETH tests against it.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-function testSE2Nodes() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
-  fi
-
-  if [ "${NO_MULTI_NODE_TESTS:+x}" == x ]; then
-    echo "Skipping multi-node tests."
-    return
-  fi
-
-  echo ""
-  echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Two Nodes (${target})"
-  echo "********************************************************************************"
-  echo ""
-
-  startSE2Nodes "${target}"
-  runSeth2Nodes "multinode-${target}"
-  stopSE2Nodes "${target}"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts up a two node instance of RapidsSE.
-## Params: 
-##  $1 : the target being tested ("debug" or "release")
-
-function startSE2Nodes() {
-
-  local target="$1"
-  
-  echo ""
-  echo "Running two node RapidsSE for ${target}."
-  echo ""
-  
-  "${DIR}"/startSE_2nodes.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Runs SETH against a currently running cluster of SE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function runSeth2Nodes() {
-  local target="$1"
-  
-  echo ""
-  echo "Running SETH tests again RapidsSE for ${target}."
-  echo ""
-
-  # Start from the project root directory so that SE can change to ./commands successfully.
-  (
-    cd "${PROJ_ROOT}"
-    ./"${RELATIVE_BAMBOO_DIR}"/seth_2nodes.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Stops a currently running two node cluster of RapidsSE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function stopSE2Nodes() {
-  local target="$1"
-
-  echo ""
-  echo "Stopping two node RapidsSE for ${target}."
-  echo ""
-
-  "${DIR}"/stopSE_2nodes.sh
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Pretty prints a given number of seconds as days/hours/minutes/seconds instead.
-## Params:
-##  $1 : the total number of seconds
 
-function secondsToTime() {
+function copyLogs() {
 
-  local T="$1"
-  local D="$((T/60/60/24))"
-  local H="$((T/60/60%24))"
-  local M="$((T/60%60))"
-  local S="$((T%60))"
-  (( D > 0 )) && printf '%d days ' "${D}"
-  (( H > 0 )) && printf '%d hours ' "${H}"
-  (( M > 0 )) && printf '%d minutes ' "${M}"
-  (( D > 0 || H > 0 || M > 0 )) && printf 'and '
-  printf '%d seconds' "${S}"
+  local buildConfig="$1"
+  local buildType="$2"
+
+  local configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}.config"
+  source "${configFile}"
+
+  sleep 5
+  mkdir -p "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}"
+
+  for nodeName in "${NODE_LIST[@]}"; do
+    # Get the installation directory
+    local installDir
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    cp "${installDir}/se.log" "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/se.${nodeName}.log" || true
+  done
+
+  mv "${BAMBOO_RESULTS_DIR}"/log-* "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/seth.log" || true
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ###############################################################################
 ### Main Script                                                             ###
@@ -478,49 +165,74 @@ echo ""
 # Call the exit hook, onExit(), whenever the script actually exits.
 trap onExit EXIT
 
-# First, kill any rogue SE and SETH instances owned by the current user.
-killRogueInstances
+# Check the necessary prerequisites
+"${SCRIPTS_DIR}/prerequisites.sh"
 
-# Setup a link to the TPC-H SF1 data
-if [ ! -d "${TPCH_LINK_DEST}" ]; then
-  printWarning "TPC-H SF1 data does not exist at: ${TPCH_LINK_DEST}"
-fi
+# Remove any previous result and log files
+echo "Removing any previous results from: ${BAMBOO_RESULTS_DIR}"
+rm -rf "${BAMBOO_RESULTS_DIR}" || true
 
-if [ ! -e "${TPCH_LINK_NAME}" ]; then
-  ln -s "${TPCH_LINK_DEST}" "${TPCH_LINK_NAME}"
-fi
+echo "Removing any previous logs from: ${BAMBOO_LOGS_DIR}"
+rm -rf "${BAMBOO_LOGS_DIR}"    || true
 
-#shellcheck disable=2206
-TEST_TARGETS=(${TARGETS:-})
 
-if [ "${#TEST_TARGETS[@]}" -eq 0 ]; then
-  # Use the default targets
-  TEST_TARGETS=("${DEFAULT_TARGETS[@]}")
-fi
+# Test all build types and configurations.
+# Refer to BUILD_TYPES and BUILD_CONFIGS variables above.
 
-for target in "${TEST_TARGETS[@]}"
-do
-  # Build RapidsSE for a given target type
-  buildSE "${target}"
+for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
 
-  # Test SE (single node, single partition)
-  testSE1N1P "${target}"
+  # *** Build RapidsSE ***
+  # We can then test it in a number of different configurations.
+  "${SCRIPTS_DIR}/build.sh" "${buildType}"
 
-  # Test SE (single node, multiple partitions)
-  testSE1Node "${target}"
 
-  # Test SE (two nodes)
-  testSE2Nodes "${target}"
+  for buildConfig in "${BUILD_CONFIGS[@]}"; do    # 1N4P, 1N1P, 2N4P, etc
+
+    # Resolve the config file and testlist file to be used
+    configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}.config"
+    testlistFile="${BAMBOO_TESTLISTS_DIR}/${buildConfig}.testlist"
+
+    # Ensure these files exist
+    if [ ! -f "${configFile}" ]; then
+      errorExit "Config file does not exist: ${configFile}"
+    fi
+
+    if [ ! -f "${testlistFile}" ]; then
+      errorExit "Testlist file does not exist: ${testlistFile}"
+    fi
+
+
+    # *** Install RapidsSE ***
+    "${SCRIPTS_DIR}/install.sh" "${configFile}"
+
+
+    # *** Start RapidsSE ***
+    if ! "${SCRIPTS_DIR}/start.sh" "${configFile}"; then
+      # Startup failed. Copy any logs. Stop the whole cluster and exit.
+      ( copyLogs "${buildConfig}" "${buildType}" ) || true
+      "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
+      exit 1
+    fi
+
+
+    # *** Test RapidsSE ***
+    # If it fails then we continue on with testing another configuration
+    testNamePrefix="${buildConfig}_${buildType}"
+    if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}"; then
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
+    fi
+
+
+    # *** Copy any log files ***
+    ( copyLogs "${buildConfig}" "${buildType}" ) || true
+
+    # *** Stop the cluster ***
+    "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
+
+  done
 done
 
-ENDTIME="$(date +%s)"
-ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
-
-echo ""
-echo "********************************************************************************"
-echo "*** Continuous Integration Script Complete                                   ***"
-echo "********************************************************************************"
-echo ""
-echo "Elapsed time: ${ELAPSEDTIME}"
-echo ""
+# Set this flag that the script completed successfully.
+# This will be picked up in the exit hook.
+COMPLETED_SUCCESFULLY=1
 

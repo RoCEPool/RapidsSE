@@ -211,8 +211,9 @@ void Step::vJobAssertBegin(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
+
   if (Job::iNodeNo(pJob->iJobId()) == AM::pGrid()->iThisNode()) {
-    
+
     if (! pJob->bWasReceived())
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertOriginator: "

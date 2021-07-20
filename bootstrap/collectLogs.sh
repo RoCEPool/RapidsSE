@@ -10,15 +10,6 @@ readonly COMMON_FN="${DIR}/common.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
 ###############################################################################
-### Significant Global Variables                                            ###
-###############################################################################
-
-# Default modes of operation
-CONFIG_FILE="${DIR}/cluster.config"
-
-DEBUG=0
-
-###############################################################################
 ### Includes                                                                ###
 ###############################################################################
 
@@ -26,6 +17,15 @@ DEBUG=0
 #shellcheck source=common.fn
 source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 
+
+###############################################################################
+### Significant Global Variables                                            ###
+###############################################################################
+
+# Default modes of operation
+CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
+
+DEBUG=0
 
 ###############################################################################
 ### Functions                                                               ###
@@ -98,7 +98,7 @@ function processArgs() {
   # Now check for invalid argument combinations and settings
 
   # If --config was specified then so must the config file.
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "No config file specified"
     printUsageAndExit
   fi
@@ -150,6 +150,12 @@ function collectLogs() {
   remoteCmd+="echo \"Contents of: /etc/redhat-release\"; "
   remoteCmd+="cat /etc/redhat-release; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /etc/issue\"; "
+  remoteCmd+="cat /etc/issue; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /etc/debian_version\"; "
+  remoteCmd+="cat /etc/debian_version; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="echo \"Output of: uname -a\"; "
   remoteCmd+="uname -a; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
@@ -165,6 +171,9 @@ function collectLogs() {
   remoteCmd+="echo \"Output of: lsblk\"; "
   remoteCmd+="lsblk; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: mount\"; "
+  remoteCmd+="mount; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="echo \"Output of: df -h\"; "
   remoteCmd+="df -h; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
@@ -174,8 +183,36 @@ function collectLogs() {
   remoteCmd+="echo \"Output of: ifconfig\"; "
   remoteCmd+="ifconfig || /usr/sbin/ifconfig; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: ip link\"; "
+  remoteCmd+="ip link; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: ip addr show\"; "
+  remoteCmd+="ip addr show; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: ip route\"; "
+  remoteCmd+="ip route; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="echo \"Output of: netstat -antp\"; "
   remoteCmd+="netstat -antp; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: apt list --installed\"; "
+  remoteCmd+="apt list --installed; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: yum list installed\"; "
+  remoteCmd+="yum list installed; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: systemctl status --all --full --no-pager\"; "
+  remoteCmd+="systemctl status --all --full --no-pager; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: which gcc\"; "
+  remoteCmd+="which gcc; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: gcc --version\"; "
+  remoteCmd+="gcc --version; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: bash --version\"; "
+  remoteCmd+="bash --version; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="'"
 
   # Copy logs for each node

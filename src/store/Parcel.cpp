@@ -17,6 +17,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Socket.hpp"
+#include "Node_I.hpp"
 
 extern SizeHeap      gxaSizeHeap[];
 
@@ -41,11 +42,15 @@ Parcel::Parcel(Operand* pOperand,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
+  m_bOriginalParcel = false;
+
   m_nObjects = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     vSetObject(i_Obj,nullptr);
 
-  vAddObject(pOperand);
+  if (pOperand)
+    vAddObject(pOperand);
+
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
@@ -60,6 +65,7 @@ Parcel::Parcel(Operand* pOperand,
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -91,6 +97,33 @@ void Parcel::vPostRecv(void* aParcel)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* Set label for this Parcel                                                  */
+/*----------------------------------------------------------------------------*/
+void Parcel::vLabel(i8      iPipelineJobId,
+                   i8       iDstNode,
+                   tPN      tDstPtn,
+                   ePX      eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  m_iPipelineJobId = iPipelineJobId;
+  m_eCrossTopo     = eCrossTopo;
+
+  m_iDstNode       = iDstNode;
+  m_tDstPtn        = tDstPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset item count                                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_nObjects = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
@@ -153,10 +186,11 @@ i8 Parcel::nObjects(void)
 void Parcel::vRecvContents(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-    
+  //vTrace("vRecvContents:\n"_Stz);
   for (i8 i_Object = 0; i_Object < m_nObjects; i_Object++) {
     Object* pObject = pSocket->pRecvObject();
     vSetObject(i_Object,pObject);
+    //vTrace(" %s\n"_Stz, aCN[pObject->eGetClassNo()]);
   }
 }
 
@@ -192,12 +226,12 @@ void Parcel::vSendOut(Op* pSrcOp)
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     m_eSendKind = XK_ROBIN;
  
-//  if (CN_METAGET == pOperand->eGetClassNo()) {
-//    // Send metaGet to other node, not to the origin node itself
-//    vSendToNode(pSrcOp,6078); // HACK  hardcode to the existing node for debug
-//    AM::vDeleteOperand(pOperand);
-//    return;
-//  }
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    // Send metaGet to other node, not to the origin node itself
+    vSendToNode(pSrcOp,6078); // HACK  hardcode to the existing node for debug
+    AM::vDeleteOperand(pOperand);
+    return;
+  }
 
   switch (eCrossTopo) {
       
@@ -264,6 +298,13 @@ void Parcel::vSendOut(Op* pSrcOp)
       RASSERT(0);
   }
 
+  //>>>>>>>>>>>  Need to ask Ray, after sent the Parcel, we get the operand which is the table and try to delete
+  //>>>>>>>>>>>  If we don't get the operand then we will delete the parcel
+  if (pOperand->eGetClassNo()==CN_TABLE)
+  {
+    vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
+  }
+
   // delete the operand
   AM::vDeleteOperand(pOperand);
 }
@@ -298,21 +339,41 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   
   // get preliminary information
   Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket* pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nObjects();
   
   pSocket->vGrabWrite();
-  
+
+  //vTrace("vSendOverSocket got a lock, prepared to send %lld Object(s)to Node:%lld Port:%lld \n"_Stz,nObjects, pDstNode->iNodeNo(), pDstNode->iPortNo());
+
   // send the parcel instance
   pParcel = this;
   nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
-  
+
+  //if (!bResult) {
+  //  vTrace("vSendOverSocket SENT FAILED\n"_Stz);
+  //} else {
+  //  vTrace("vSendOverSocket SENT %lld bytes Parcel:%s to Node:%lld Port:%lld \n"_Stz,nObjectSize, aCN[pParcel->pGetOperand()->eGetClassNo()], pDstNode->iNodeNo(), pDstNode->iPortNo());
+  //}
+
   // send all the objects within the parcel instance
   for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
     pObject = pParcel->pGetObject(i_Object);
     nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
+
+    if (pObject->eGetClassNo() == CN_IDXVEC) {
+      i8 iSize1 = gxaSizeHeap[CN_INDEX].m_nClassSize;
+      i8 iSize2 = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
+      vTrace("vSendOverSocket SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz,iSize2, iSize1);
+
+      //nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize + (gxaSizeHeap[CN_INDEX].m_nClassSize * 2);
+    }
+
+
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+    //vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
   }
   
   pSocket->vDropWrite();
@@ -369,9 +430,21 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-    
-  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
-    vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
+
+  //vTrace("Num of nodes:%lld\n"_Stz, pNextStage->nItems());
+
+  //for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
+    //vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
+
+  i8 iDstNode = 0;
+
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    iDstNode = pNode->iNodeNo();
+    vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
+    //vTrace("Node :%lld\n"_Stz, iDstNode);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,12 +478,15 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      ASSERT(iDstNode == pPipeline->i_Origin());
+      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
+             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::nPtnsPerTable());
+       */
+      //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
 
       if (iDstNode == pPipeline->i_Origin())
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
-  
+
       break;
     }
       
@@ -546,7 +622,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
+  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -570,7 +646,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
-  
+  //vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 
@@ -619,8 +695,27 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   
   i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
-
+  vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the state of origin (T or F)                                           */
+/*----------------------------------------------------------------------------*/
+bool Parcel::bIsOriginal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  return m_bOriginalParcel;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set the state of origin (T or F)                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSetOriginState(bool bState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  m_bOriginalParcel = bState;
 }
 
 /*============================================================================*/

@@ -56,7 +56,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
 
-  
+  m_xSysArgs.m_nHeartbeatNodes = 0;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // commands
@@ -73,10 +73,12 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bUnlink      = false;
 
   // options
+  m_xSysArgs.m_iClusterID       = 0;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
+  m_xSysArgs.m_iDelay           = 0;
   m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -234,6 +236,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bAppendTrace = true;
       continue;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Cluster ID, this is to group nodes into a cluster.
+    // Should only accept heartbeat from the same cluster.
+    if (szArg->bSame("--cid"_Stz)) {
+      m_xSysArgs.m_iClusterID = argv[++i_Arg].iToI8();
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--command"_Stz)) {
@@ -280,7 +290,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bDebugMode = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--delay"_Stz)) {
+      m_xSysArgs.m_iDelay = argv[++i_Arg].iToI8();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
@@ -347,7 +363,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
       i_HeartbeatNode++;
@@ -995,8 +1010,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   }
 
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nHeartbeatNodes; i_Index++) {
-    vTrace("  --heartbeat %s %s %lld\n"_Stz,
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_sNodeName.azChar(),
+    vTrace("  --heartbeat %s %lld\n"_Stz,
            m_xSysArgs.m_xHeartbeatNode[i_Index].m_sIPAddress.azChar(),
            m_xSysArgs.m_xHeartbeatNode[i_Index].m_iPortNo);
   }

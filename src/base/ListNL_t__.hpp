@@ -62,7 +62,7 @@ void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
 {
   ASSERT(NULL == pItem->pPrevItem());
   ASSERT(NULL == pItem->pNextItem());
-  
+
   if (m_pTail)
     m_pTail->vNextItem(pItem);
   

@@ -21,6 +21,7 @@ namespace BASE
     void  vNextItem(ITEM* pNext);
     ITEM* pPrevItem(void);
     void  vPrevItem(ITEM* pPrev);
+    void vResetPointers(void);
   };
 }
 
@@ -88,6 +89,16 @@ template <class OBJECT>
 void ListItem_t<OBJECT>::vPrevItem(OBJECT* pPrevItem)
 {
   m_pPrevItem = pPrevItem;
+}
+
+/*---------------------------------------------------------------------------*/
+/* reset pointers to null                                                    */
+/*---------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListItem_t<OBJECT>::vResetPointers(void)
+{
+  m_pNextItem = nullptr;
+  m_pPrevItem = nullptr;
 }
 
 /*============================================================================*/

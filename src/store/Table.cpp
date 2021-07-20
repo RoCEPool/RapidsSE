@@ -2,6 +2,7 @@
 /* Table.cpp -- Table                                                         */
 /*============================================================================*/
 
+#include <array>
 #include "BASE.h"
 
 #include "BucketMap.hpp"
@@ -24,7 +25,7 @@
 
 #include "Grid.hpp"
 #include "MY.hpp"
-
+extern SizeHeap  gxaSizeHeap[];
 Atomic gixTable;
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +60,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
-  
+
+  m_pParcel      = nullptr;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
   
@@ -95,7 +97,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
 Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
+  //vTrace(">>>>>>>>>>>>>>>>>>>>> ~Table gets called\n"_Stz);
   m_pIdxVec->vClear();
   
   delete m_pIdxVec;
@@ -109,9 +111,11 @@ Table::~Table(void) noexcept(false)
     delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
-  
+
   // delete the partition vector
   delete m_pTablePtnVec;
+
+  //if (m_pParcel) delete m_pParcel;
 }
 
 
@@ -225,8 +229,10 @@ i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
 tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 {
   _static_
-  
+
   tPN tPtnNo = (i_TablePtn * AM::nConnectedNodes()) + AM::iThisNodeNo();
+
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
   
   return tPtnNo;
 }
@@ -237,7 +243,8 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 void Table::vPostRecv(void* aTable)
 {
   _static_
-  
+  //vTrace("Table::PostRecv\n"_Stz); //debug only
+
   Table* pTable = _pTable(aTable);
   
   pTable->vResetPointers();
@@ -604,6 +611,11 @@ void Table::vResetPointers(void)
   m_pShardDef  = nullptr;
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
+  m_pTablePtnVec = nullptr;
+
+  //Operand::ListItem_t::vResetPointers();
+
+  m_pParcel    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -805,6 +817,168 @@ void Table::vCompactIndex(Index* pIndex)
     IndexTree *pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts includes the main                           */
+/* put each object part in a parcel                                           */
+/*----------------------------------------------------------------------------*/
+i8 Table::iPrepareParcel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
+
+  if (!m_pParcel) {
+    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+
+    // Set the state that this is created as a parcel
+    m_pParcel->vSetOriginState(true);
+  }
+
+  m_pParcel->vAddObject((Object *)this);
+
+  if ( m_pStreamDef) {
+    m_pParcel->vAddObject((Object *)m_pStreamDef);
+  }
+  m_pParcel->vAddObject((Object *)m_pShardDef);
+
+  m_pParcel->vAddObject((Object *)m_pBucketMap);
+
+  m_pParcel->vAddObject((Object *)m_pIdxVec);
+
+  return m_pParcel->nObjects();
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns pParcel                                                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Parcel* Table::pParcel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  return m_pParcel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prints location info                                                       */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Table::vDumpLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  m_oLocation.vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns object parts includes the main by index                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Object* Table::pGetParcelObject(i8 iIdx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  if (!m_pParcel) return nullptr;
+
+  return m_pParcel->pGetObject(iIdx);
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts includes the main                           */
+/* Insert each object part and put in an array                                */
+/*----------------------------------------------------------------------------*/
+i8 Table::iBuildParcelObjs(Object* pObj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  if (!m_pParcel) return 0;
+
+  m_pParcel->vAddObject(pObj);
+
+  return m_pParcel->nObjects();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* reassemble object parts from the received parcel                           */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8  Table::iReassembleFromParcel(Parcel* pParcel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nObjects());
+
+  if (!pParcel) return 0;
+  i8 nSize = pParcel->nObjects();
+
+  for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
+    Object* pObject =  pParcel->pGetObject(i_Obj);
+    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
+
+    switch (eClass) {
+      case CN_TABLE:
+        // do nothing for now
+        break;
+      case CN_STREAMDEF:
+        m_pStreamDef = (StreamDef*) pObject;
+        //m_pStreamDef = (StreamDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
+        break;
+      case CN_SHARDDEF:
+        m_pShardDef = (ShardDef*) pObject;
+        //m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
+        break;
+      case CN_BUCKETMAP:
+        m_pBucketMap = (BucketMap*) pObject;
+        //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
+        break;
+      case CN_IDXVEC: {
+        m_pIdxVec = (IdxVec *) pObject;
+        //IdxVec *pIdxVec = (IdxVec *) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
+        break;
+      }
+      default:
+        vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table partitions
+
+  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
+  //        has started). Experimentally allows new, but non-active nodes to be
+  //        added after the cluster has started
+  //        This must be fixed properly. Ray 14 Nov 2020
+
+  m_pTablePtnVec = new TablePtnVec;
+
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+
+      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+  else {
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+  }
+
+  // We are done with the received parcel, let's delete the received parcel
+  delete pParcel;
+  // Null the parcel pointer for this table
+  m_pParcel = nullptr;
+
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts                                             */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8  Table::nParcelObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  return m_pParcel ? m_pParcel->nObjects() : 0;
 }
 
 /*============================================================================*/

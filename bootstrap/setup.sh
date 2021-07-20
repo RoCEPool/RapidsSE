@@ -29,22 +29,16 @@ set -Eeu
 readonly DIR=$(dirname "$0")
 
 readonly SETUP_FN="setup.fn"
-readonly DEFAULT_CONFIG_PATH="cluster.config"
-readonly NODE_NAME_FILE="node.name"
 
-# Default values
-readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
-readonly NODE_CFG_DEFAULT_PORT="5541"
-readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
-         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const. 
-         NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
-         NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
-readonly NODE_CFG_DEFAULT_PARAMS=""
 
-readonly MINIMUM_RAM_SIZE="4"
-readonly MINIMUM_SHM_SIZE="3"
-readonly MINIMUM_NUM_THREADS="8"
-readonly MAXIMUM_NUM_PARTITIONS="32" # for now
+###############################################################################
+### Functions                                                               ###
+###############################################################################
+
+# Include a file that contains all of the functions used within.
+#shellcheck source=setup.fn
+source "${SETUP_FN}" || { >&2 echo "Could not load ${SETUP_FN}"; exit 1; }
+
 
 ###############################################################################
 ### Significant Global Variables                                            ###
@@ -66,7 +60,7 @@ CONFIG_FILE=""
 # The array of unique node names. The values here are used to help form the
 # name of the dynamic associative arrays used to hold the configuration of
 # an individual node.
-declare -ga NODE_LIST
+declare -ga NODE_LIST=()
 
 # The prefix given to each node name before its sequence number.
 NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
@@ -94,15 +88,6 @@ declare -gA NODE_FREE_SHM
 
 
 ###############################################################################
-### Functions                                                               ###
-###############################################################################
-
-# Include a file that contains all of the functions used within.
-#shellcheck source=setup.fn
-source "${SETUP_FN}" || { >&2 echo "Could not load ${SETUP_FN}"; exit 1; }
-
-
-###############################################################################
 ### Script                                                                  ###
 ###############################################################################
 
@@ -110,9 +95,9 @@ source "${SETUP_FN}" || { >&2 echo "Could not load ${SETUP_FN}"; exit 1; }
 
 
 # Process the arguments given to the script.
-processArgs "$@"
+processSetupArgs "$@"
 
-if [ -z "${INSTALL_FILE}" ]; then
+if [ -z "${INSTALL_FILE:-}" ]; then
   findInstallFile
 fi
 

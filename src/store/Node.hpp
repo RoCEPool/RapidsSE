@@ -17,6 +17,7 @@ namespace STORE
  
     i8  m_iNodeNo;    // node number
     s32 m_sNodeNm;    // name of the node
+    s32 m_sRegionNm;  // name of shared memory region
     i8  m_nDegOfPar;  // degree of parallelism
     s32 m_sIPAddr;    // ip address of node
     i8  m_iPortNo;    // port number of node
@@ -30,9 +31,12 @@ namespace STORE
     i8 m_qFreeSpace;   // last known free space
     i8 m_qFreePercent; // last known free percent
 
-    Heartbeat m_xHeartbeat; // contains heartbeat info
+    // Need to change the heartbeat into atomic heartbeat
+    std::atomic<Heartbeat> m_atmHeartbeat;
+    //Heartbeat m_xHeartbeat; // contains heartbeat info
+    i8 m_iPrevUserUsec;
     i1 m_iNodeStatus;  // One byte should be enough. enum later.
-                       // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 99=combination of 2/3/4
+                       // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 5=dead, 99=combination of 2/3/4/5
 
     // must be last
     Footer m_xFooter;
@@ -42,7 +46,7 @@ namespace STORE
     void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIPAddr, i8 iPortNo);
+    Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -56,6 +60,7 @@ namespace STORE
     i8   iPortNo(void);
   
     void vDsv(void);
+    s16KB  szDumpInfo(s16KB szBuffer);
     eNS  eState(void);
     void vState(eNS eState);
 
@@ -75,6 +80,13 @@ namespace STORE
     Heartbeat xGetHeartbeat(void);
     void vSetNodeStatus(i1 iStatus);
     i1   iGetNodeStatus(void);
+    i8   iGetPrevUserUsec(void);
+    void vSetPrevUserUsec(i8 Usec);
+    void vSetStartCmd(Stz* sCmd);
+    Stz* pszGetStartCmd(void);
+    i8   iGetPid(void);
+
+    i1   iGetPrev(void);
 
     Footer* aFooter(void);
   };

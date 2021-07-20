@@ -3,8 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+//#include <vector>
 #include "Index.hpp"
 #include "eTT.h"
+#include "Parcel.hpp"
 
 namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
@@ -23,7 +25,9 @@ namespace STORE
     IdxVec*    m_pIdxVec;     // index vector
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
-        
+
+    Parcel* m_pParcel;
+
     // must be last
     Footer m_xFooter;
     
@@ -80,6 +84,20 @@ namespace STORE
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
+
+
+    i8   iPrepareParcel(void);
+
+    Parcel* pParcel(void);
+    void vDumpLocation(void);
+
+    i8   nParcelObjects(void);
+    Object* pGetParcelObject(i8 iIdx);
+
+    i8   iBuildParcelObjs(Object* pObj);
+    i8   iBuildParcel(Parcel* pParcel);
+    i8   iReassembleObj(void);
+    i8   iReassembleFromParcel(Parcel* pParcel);
    
   private:
     Footer* aFooter(void);

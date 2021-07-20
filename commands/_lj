@@ -20,6 +20,7 @@ create table T1 (
 print "loading T1.csv..." ;
 load T1 "../DATA/Joins/T1.csv" ;
 
+
 create table  T2 (
 	 a       INTEGER,
 	 b       INTEGER,
@@ -39,6 +40,7 @@ begin
 
   stage stageB on all partitions :
     scan T1 | stageC
+
 
   stage stageC on all partitions :
     indexJoin 0  T2 jidx "EQUAL $I1 $L1 == " | stageD

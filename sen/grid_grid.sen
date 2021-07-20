@@ -1,4 +1,4 @@
-/*============================================================================*/
+ /*============================================================================*/
 /* grid.sen -- grid routines                                                  */
 /*============================================================================*/
 
@@ -35,20 +35,22 @@
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
   user::name "alka" str.same if
-    " --commands /Users/alka/rapidsse/commands" str.cat
+     " --commands /Users/alka/rapidsse/commands" str.cat
   then
 
   // user::name "craig" str.same if
   //       " --commands /Users/craig/rapidsse/commands" str.cat
-  //    then
+  // then
 
   user::name "ray" str.same if
-     " --commands /Users/ray/rapidsse/commands"  str.cat
+    " --commands /Users/ray/rapidsse/commands"  str.cat
   then
 
   user::name "myvanquoc" str.same if
      " --commands /Users/myvanquoc/dev/src/SE/rapidsse/commands" str.cat
   then
+
+
 
   args.tracepoint  if " --tracepoint"  str.cat then
   args.verbose     if " --verbose"     str.cat then
@@ -56,6 +58,7 @@
   args.freeCB      if " --freeCB"      str.cat then
   args.metadata    if " --metadata"    str.cat then
   args.munged      if " --munged"      str.cat then
+  args.heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
 
   " &" str.cat locals| sShellCmd |
  

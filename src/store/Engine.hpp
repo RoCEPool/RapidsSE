@@ -70,7 +70,6 @@ namespace STORE
     static void vWaitStop(void);
     static void vWriteRegionName(void);
     static void vCreateGridOfNodes(void); // newcode
-  
   };
 }
 

@@ -212,7 +212,7 @@ void Step::vJob__ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple); 
+  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple);
   pJobExecuted->m_xJobId = pDistJob->iJobId();
   pJobExecuted->vParticipantNode(AM::pGrid()->iThisNode());
   pJobExecuted->vNormalSides(false);

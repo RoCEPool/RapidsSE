@@ -5,13 +5,14 @@
 
 #include <list>
 #include <iterator>
+#include "Parcel.hpp"
 
 #include "Node.hpp" //?
 
 
 namespace STORE
 {
-  class Grid : public Object
+  class Grid : public Operand
   {
   private:
   
@@ -22,19 +23,20 @@ namespace STORE
     Node*  m_pThisNode;        // this node pointer
   
     bool   m_bHasStarted;      // has the cluster started ?
-    i8     m_iStartNode;       // node that started the cluster
+    i8     m_iStartNodeNo;     // node that started the cluster
 
     i8     m_nBootNodes;       // number of nodes supplied via SE -node
     i8     m_nDefinedNodes;    // number of nodes in the nodes array
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
     i8     m_nNodes;           // number of nodes in array
 
-    /* oldcode
-    Node*  m_pNodes[C_MAX_NODES]; // array of nodes
-    */
+    Parcel* m_pParcel;
 
     // newcode
-    std::list<Node*> m_lNodes;
+    //std::list<Node*> m_lNodes;
+    std::list<Node*> * m_pNodes;
+
+
   
     // must be last
     Footer m_xFooter;
@@ -47,28 +49,43 @@ namespace STORE
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
+
+    void vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm);
+
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
     void vDsv(void);
+    s16KB szDumpInfo(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
-    Node* pGetNode(i8 i_Node);
+    Node* pFindNodeByNodeNo(i8 iNodeNo);
+    Node* pGetNode(i8 i_NodeNo);
+    i8   iGetNodeNo(i8 i_Node);
     void vIncBootNodes(void);
     void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
+    void vDecConnectedNodes(void);
+    void vDecDefinedNodes(void);
+    void vDecBootNodes(void);
+    void vIncNodes(void);
+    void vDecNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);
+    void vPutNodeR(Node* pNode);
     void vRemoveNode(Node* pNode);
-    void vStartNode(i8 iStartNode);
-    i8   iStartNode(void);
+    void vStartNodeNo(i8 iStartNodeNo);
+    i8   iStartNodeNo(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
-    void vThisNode(i8 iNode);
+    void vThisNodeNo(i8 iNode);
     void vSetThisNode (Node* pNode); // newcode
+    bool bFirstNode(i8 iNodeNo);
+    i8   iPrepareParcel(void);
+    Parcel* pParcel(void);
+    i8 iReassembleFromParcel(Parcel* pParcel);
 
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);

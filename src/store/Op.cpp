@@ -7,7 +7,8 @@
 #include "ePX.h"
 
 #include "PtnMap.hpp"
-
+#include "Node.hpp"
+#include "Node_I.hpp"
 #include "Grid.hpp"
 
 #include "Op.hpp"
@@ -301,7 +302,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-      
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
@@ -1629,6 +1629,7 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   
   m_iWorkQuanta = iWorkQuanta;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

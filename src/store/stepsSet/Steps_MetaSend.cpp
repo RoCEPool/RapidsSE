@@ -8,6 +8,12 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -23,18 +29,21 @@ void Step::vAddSteps_MetaSend(void)
 void Step::vMetaSendGetParts(void)
 {
   ENTRY();
-  
-  // ... code which gets all the parts of a meta-object and pipes them out ...
 
-  // get arguments
-  // pTable = ...;
-  
-  // call get parts code
-  // pTable->vPrepareObjParts();
-  // aParts = pTable->aObjParts();
-  
-  // put results
-  // foreach part, push part
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  vTrace("C++ gets called: vMetaSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
+         pTable,
+         pTable->szTableNm()->azChar());
+
+  pTable->iPrepareParcel();
+  Parcel* pParcel = pTable->pParcel();
+
+  if (pParcel && pParcel->bIsOriginal()) {
+    vTrace("C++ prepared pParcel:%p for sending, it is originally created by Table\n"_Stz, pParcel);
+  }
+
+  m_pDataStack->vPushPtr(pParcel);
   
   EXIT();
 }

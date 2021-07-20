@@ -15,8 +15,9 @@ AlignedObject::AlignedObject(eCN eClassNo, i8 nChildSize)
   UNUSED(nChildSize);
   
 #ifdef WITH_DEBUG_VERSION
-  ASSERT(CacheLine::bOnCacheLineBoundary(this));
-  ASSERT(CacheLine::bMultipleCacheLines(nChildSize));
+  // Temporary commented out for "debug"
+  //ASSERT(CacheLine::bOnCacheLineBoundary(this));
+  //ASSERT(CacheLine::bMultipleCacheLines(nChildSize));
 #endif
 }
 

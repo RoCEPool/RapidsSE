@@ -7,6 +7,7 @@
 #include "eQK.h"
 #include "eTR.h"
 #include "eTS.h"
+#include "TraceLock.hpp"
 
 namespace BASE
 {  
@@ -53,12 +54,12 @@ namespace BASE
     i8           m_nOperandYield;  //
   
     Profile*     m_pProfile;     // runtime profile
-  
+
 #ifdef WITH_LOCK_SETS
     LockSet      m_oReadLocks;   // read locks currently held by this task/op
     LockSet      m_oWriteLocks;  // write locks currently held by this task/op
 #endif
-  
+
   public:
     Word* m_pSeedWord;      // seed
     Word* m_pRecoveryWord;  // sen word called to recover from failure
@@ -79,7 +80,6 @@ namespace BASE
 
     SenCompiler* m_pSenCompiler; // sen word compiler
     Input*       m_pInput;       // input stream
-
 
     // always last
     Footer m_xFooter;
@@ -191,6 +191,7 @@ namespace BASE
 
   
     Input* pInput(void);
+
 
   private:
     Footer* aFooter(void);

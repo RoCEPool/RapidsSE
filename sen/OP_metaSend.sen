@@ -7,9 +7,30 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_METAGET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: metaGet_table \handler
+: metaSend_metaGet \handler
+
+ //"metaSend_metaGet handler" .
+
+  Operand[].pipein  // pop the pMetaGet and put in the Operand register
+  //Operand[] MetaGet.getTableName
+  // print table name from the stack
+  //.
+
+  // pass the table name to op__table to get the table[] register
+  // then call C++ getParts to build the parcel and push the pParcel to the stack
+  // op::pipeout pipe the pParcel out
+
+  Operand[] MetaGet.getTableName op__table assert
+  table[] MetaSend::getParts Op::pipeout
+
+  // send EOSMARKER
+  nullptr to Operand[]
+  //Operand[].newEosMarker
+  //Operand[].pipeOut
 
   true
+
+  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -18,9 +39,12 @@
 : metaSend_req \operator
 
   LogReqEntry SEED_REQ
+  //"metaSend_req" .
 
   op__topology
 
+  // Setup ZK_METAGET handler
+  find: metaSend_metaGet ZK_METAGET op[].handler!
   op__loop
 
   LogReqExit

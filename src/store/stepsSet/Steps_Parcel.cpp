@@ -25,7 +25,7 @@
 void Step::vAddSteps_Parcel(void)
 {
   vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
-  
+  vAddStep("parcel.label"_Stz,      &Step::vParcelLabel);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
@@ -36,11 +36,34 @@ void Step::vAddSteps_Parcel(void)
 void Step::vParcelDelete(void)
 {
   ENTRY();
-    
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-  
-  delete pParcel;
 
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  delete pParcel;
+  //AM::vTraceDumpGrabLock();
+  //vTrace(">>>>>>>>Step::vParcelDelete %p\n"_Stz, pParcel);
+  //AM::vTraceDumpDropLock();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel::label -- label parcel                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelLabel(void)
+{
+  ENTRY();
+
+
+  Op* pSrcOp = m_pJob->m_pOp;
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  pParcel->vLabel(pSrcOp->pPipelineJob()->iJobId(),
+                  C_UNKNOWN,
+                  C_UNKNOWN,
+                  pSrcOp->eCrossTopo());
+
+  //m_pDataStack->vPushPtr(pParcel);
   EXIT();
 }
 
@@ -70,17 +93,30 @@ void Step::vParcelPipeOut(void)
                                pParcel->m_iDstOp);
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
-  // append to left queue
-  if (pParcel->pGetOperand()) {
-    if (pParcel->bAppendRight())
-      pOp->vAppendRight(pOperand, this);
-    else
-      pOp->vAppendLeft(pOperand, this);
+
+  if (pParcel->bIsOriginal()) {
+    pOp->vAppendLeft(pParcel,this);
+  } else {
+    if (pParcel->pGetOperand()) {
+      if (pParcel->bAppendRight())
+        pOp->vAppendRight(pOperand, this);
+      else
+        pOp->vAppendLeft(pOperand, this);
+    }
   }
+
+  /* Origin from master
+    if (pParcel->pGetOperand()) {
+      if (pParcel->bAppendRight())
+        pOp->vAppendRight(pOperand, this);
+      else
+        pOp->vAppendLeft(pOperand, this);
+    }
+    */
   
   // now delete the pParcel
   delete pParcel;
-  
+
   EXIT();
 }
 

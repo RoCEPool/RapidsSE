@@ -372,19 +372,21 @@ void Step::vStreamSetAddListPartitions(void)
 void Step::vStreamSetAddNodeStatus(void)
 {
   ENTRY();
-  
+
   // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
+  Table *pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
   // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  s32 sRegionNm(AM::szRegionName());
-  
+  StreamDef *pStreamDef = pTable->pStreamDef();
+
+  StreamSet *pStreamSet = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
+
+  /* commented out, the old status command which is required to go to all nodes
+   * for each node, it gets back a row and its status.
+   * With the new model, we need a grid of the requested node,
+   * each individual node in the grid will have its own status.
+   */
+  /*
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         pGrid->pThisNode()->szNodeNm(),
@@ -395,7 +397,29 @@ void Step::vStreamSetAddNodeStatus(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
-  
+  */
+  Row *pRow = nullptr;
+  for (Node_I oNode_I(0, C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+
+    pRow = pStreamSet->pAllotRow(pStreamDef,
+                                 C_VARGS_BEGIN,
+                                 (*oNode_I)->szNodeNm(),
+                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                                 (*oNode_I)->pSendSocket() ? true : false,
+                                 (*oNode_I)->pRecvSocket() ? true : false,
+                                 C_VARGS_END);
+
+    if (!pRow) {
+      // call again
+      m_pDataStack->vPushInt(oNode_I.i_Node());
+      break;
+    }
+  }
+
+  // done
+  m_pDataStack->vPushInt(pRow ? true : false);
+
   EXIT();
 }
 

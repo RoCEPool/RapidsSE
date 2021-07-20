@@ -50,7 +50,9 @@ assert::stack_0
   "OP_dropTable.sen"            include
   "OP_dropTenant.sen"           include
   "OP_dump.sen"                 include
+  "OP_dumpGridInfo.sen"         include
   "OP_dumpIndex.sen"            include
+  "OP_dumpMetaInfo.sen"         include
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
 
@@ -77,7 +79,10 @@ assert::stack_0
 
 "g" .verbose
 
+  "OP_gridGet.sen"              include
+  "OP_gridRecv.sen"             include
   "OP_gridSanity.sen"           include
+  "OP_gridSend.sen"             include
  
 "h" .verbose
 
@@ -152,6 +157,10 @@ assert::stack_0
   "OP_pwf.sen"                  include
   "OP_python.sen"               include
   "OP_pythonShell.sen"          include
+
+  "OP_pmetaGet.sen"             include
+  "OP_pmetaRecv.sen"            include
+  "OP_pmetaSend.sen"            include
 
 "q" .verbose
 

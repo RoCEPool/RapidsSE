@@ -72,7 +72,8 @@ void Step::vNodeNew(void)
                          sNodeNm,
                          nDegOfPar,
                          sIpAddr,
-                         iPortNo);
+                         iPortNo,
+                         AM::szRegionName());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -221,8 +222,10 @@ void Step::vNodeRecvSocketStore(void)
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
-  pNode->vRecvSocket(pSocket);
+
+  if (pNode && pSocket) {
+    pNode->vRecvSocket(pSocket);
+  }
   
   EXIT();
 }

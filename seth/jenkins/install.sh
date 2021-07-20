@@ -113,7 +113,7 @@ processArgs "$@"
 # Locate the installation file
 INSTALLER="$(ls -1 "${OUT_DIR}"/*.run)" || true
 
-if [ -z "${INSTALLER}" ]; then
+if [ -z "${INSTALLER:-}" ]; then
   errorExit "RapidsSE installation file could not be found in location: ${OUT_DIR}"
 fi
 
@@ -140,7 +140,7 @@ FIRST_NODE="${NODE_LIST[0]}"
 # Get the installation dir of the first node
 INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
 
-if [ -z "${INSTALL_DIR}" ]; then
+if [ -z "${INSTALL_DIR:-}" ]; then
   errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
 fi
 

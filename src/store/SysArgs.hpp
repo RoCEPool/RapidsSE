@@ -16,6 +16,7 @@ namespace STORE
     s256  m_sCommandsDir;  // commands dir
     i8    m_iConnectCode;  // connect code (not yet used)
     i8    m_nDegOfPar;     // degree of parallelism
+    i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
@@ -39,7 +40,6 @@ namespace STORE
     // Heartbeat configuration
     i8    m_nHeartbeatNodes;
     struct {
-      s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
     } m_xHeartbeatNode[C_MAX_NODES];
@@ -67,6 +67,7 @@ namespace STORE
     bool m_bConfig;          // print configuration information
     bool m_bDebugIndex;      // debug indexes
     bool m_bDebugMode;       // debug mode
+    i8   m_iDelay;           // delay in seconds to test (who's on first)
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads

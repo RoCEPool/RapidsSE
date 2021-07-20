@@ -262,7 +262,9 @@
   define table __status (
     nodeName   VARCHAR NOT NULL ,
     regionName VARCHAR NOT NULL ,
-    status     VARCHAR NOT NULL
+    status     VARCHAR NOT NULL ,
+    isSendSocket BOOLEAN NOT NULL ,
+    isRecvSocket BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
   api::executeRequest

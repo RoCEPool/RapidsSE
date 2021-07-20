@@ -2,6 +2,7 @@
 /* AM.cpp -- AttachMap helper                                                 */
 /*============================================================================*/
 
+
 #include "BASE.h"
 
 
@@ -68,6 +69,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "MetaGet.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -189,6 +191,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 //  then
 
   Dic* pRootDic = AM::DIC::pRoot();
+
   Word* pDemonWord = nullptr;
   
   while (! (pDemonWord = pRootDic->pFindWord(szDemonNm))) {
@@ -1213,6 +1216,7 @@ bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
+
 MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
@@ -1220,7 +1224,7 @@ MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMaste
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
-Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
+Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -1238,11 +1242,17 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
-// newcode
+
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
 
-void AM::vProcessExit(void)   { Process::vExitFailure();                      }
+
+void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
+
+i8   AM::iSystemUsec(void)    { return Process::iSystemUsec();                      }
+i8   AM::iUserUsec(void)      { return Process::iUserUsec();  };
+i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
+
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
@@ -1263,6 +1273,8 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
+bool AM::bFirstNode(i8 iNodeNo) { return gpAttachMap->m_pGrid->bFirstNode(iNodeNo);     }
+i8   AM::iGetNodeNo(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNodeNo(i_Node);     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -1383,8 +1395,42 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pStreamSet;
       break;
     }
+
+    case CN_METAGET: {
+      MetaGet* pMetaGet = _pMetaGet(pOperand);
+      delete pMetaGet;
+      break;
+    }
+/*
+    case CN_PARCEL: {
+      Parcel* pParcel = _pParcel(pOperand);
+      vTrace(">>>>vDeleteOperand delete pParcel, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz);
+      delete pParcel;
+      break;
+    }
+*/
+    case CN_TABLE: {
+      Table* pTable = _pTable(pOperand);
+      vTraceDumpGrabLock();
+      //vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
+      vTrace(">>>>vDeleteOperand delete pTable:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pTable->szTableNm()->azChar());
+      //delete pTable; // Question for Ray: do we need to delete ?
+      vTraceDumpDropLock();
+      break;
+    }
+
+    case CN_GRID: {
+      Grid* pGrid = _pGrid(pOperand);
+      vTraceDumpGrabLock();
+      //vTrace(">>>>vDeleteOperand delete pGrid:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pGrid);
+      vTrace(">>>>vDeleteOperand delete pGrid:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pGrid->szGridNm()->azChar());
+      //delete pTable; // Question for Ray: do we need to delete ?
+      vTraceDumpDropLock();
+      break;
+    }
       
     default: {
+      vTrace("vDeleteOperand %ld Error: %s\n"_Stz,eClass, aCN[eClass]->azChar());
       RASSERT(0);
     }
   }
@@ -1589,6 +1635,7 @@ StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   return pStreamDef;
 }
 
+static TraceLock oTraceDumpLock;
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {
@@ -1631,14 +1678,19 @@ LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   return pJob->pLogicUnit_job();
 }
 
-
+void AM::vTraceDumpGrabLock(void)
+{
+  oTraceDumpLock.vGrabWrite();
+}
+void AM::vTraceDumpDropLock(void)
+{
+  oTraceDumpLock.vDropWrite();
+}
 
 void AM::vTaskFullTrace(Task* pTask)
 {
   Job* pJob = pTask->pJob();
-    
 
-     
   // dump api state
   //AM::vDumpApi();
 
@@ -2229,8 +2281,13 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
     case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
     case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
-      
+    case CN_METAGET:      eOperand = ZK_METAGET;        break;
+    case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
+    case CN_TABLE:        eOperand = ZK_TABLE;          break;
+    case CN_GRID:         eOperand = ZK_GRID;           break;
+
     default:
+      vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
       RASSERT(0);
       break;
   }
@@ -3287,35 +3344,41 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 
 
 /*----------------------------------------------------------------------------*/
-/* update heartbeat info for a given node                                     */
+/* update heartbeat info for a given node by ID                               */
 /*----------------------------------------------------------------------------*/
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
-  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
-  if (pThisNode) {
-    pThisNode->vPutHeartbeat(xHeartbeat);
+    if (pThisNode) {
+      pThisNode->vPutHeartbeat(xHeartbeat);
+    }
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* update heartbeat for a given node by name                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
+bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
-  Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
-  if (pThisNode) {
-    pThisNode->vPutHeartbeat(xHeartbeat);
-  } 
+    if (pThisNode) {
+      pThisNode->vPutHeartbeat(xHeartbeat);
+      return true;
+    }
+  }
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get heartbeat info for a give node                                         */
+/* get heartbeat info for a given node ID                                     */
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -3330,16 +3393,69 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %s in the cluster"_Stz,
-           pszName);
+           pszName->azChar());
   }
 
   return pThisNode->xGetHeartbeat();
 
+}
+
+/**
+ * @brief Add new node into the cluster
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] iNodeNo  ID of this node
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm)
+{
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    // Check to make sure we don't have this node yet
+    if (!pThisNode) {
+      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort, pszRegionNm);
+    }
+  }
+}
+
+/**
+ * @brief Remove dead node from the cluster
+ * @details When a node went down, remove it from the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ *
+ *
+ * @return none
+ * @Todo  Must verify that we remove and delete the node here.
+ */
+void AM::vRemoveNode(Stz* pszName)
+{
+  if (AM::bHasStarted()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    // Check to make sure we have this node in the cluster/grid.
+    if (pThisNode) {
+
+      AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
+      //delete pThisNode;
+
+      AM::pGrid()->vDecConnectedNodes();
+      AM::pGrid()->vDecDefinedNodes();
+      AM::pGrid()->vDecNodes();
+      //AM::pGrid()->vDecBootNodes();
+
+    }
+  }
 }
 
 

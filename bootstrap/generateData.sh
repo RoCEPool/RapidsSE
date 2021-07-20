@@ -32,7 +32,7 @@ CHUNKS=-1
 FIRST_OFFSET=-1
 NO_RENAME=0
 
-declare -a OUTPUT_DIRS
+declare -a OUTPUT_DIRS=()
 
 CURRENT_NODE_NAME=""
 
@@ -93,7 +93,7 @@ function printUsageAndExit() {
 function processArgs() {
 
   # Check that some globals are specified with defaults
-  if [ -z "${CLUSTER_OP}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
 
   # Indicates if a given argument was specified.
   local argCluster=0
@@ -218,7 +218,7 @@ function processArgs() {
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
     printError "${errmsg}" "No config file specified"
     printUsageAndExit
   fi
@@ -349,7 +349,7 @@ function makeOutputDirs() {
   local nodeName
   local host
   local remoteCmd=""
-  declare -a sshCmd
+  declare -a sshCmd=()
 
   for nodeName in "${NODE_LIST[@]}"
   do
@@ -468,7 +468,7 @@ function removeFileChunkExt() {
   
   for dir in "${OUTPUT_DIRS[@]}"
   do
-    declare -a files
+    declare -a files=()
     mapfile -t files < <(find "${dir}" -type f -name "*.tbl.*")
 
     for f in "${files[@]}"

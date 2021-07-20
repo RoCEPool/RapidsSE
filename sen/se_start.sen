@@ -91,27 +91,33 @@
     "Error Code %v" .printf
   then
 
+
   // spawn event demon
   "" false eventDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
-  
+
   // spawn metadata demon
 //  "" false metaDemonPipeline api::spawnDemon not if
 //    "Error Code %v" .printf
 //  then
-  
+
+
+  grid::started@ not if
+    grid::setStartNode
+    true grid::started!
+    "Cluster started" .
+  then
+
   // spawn thread demon
   "" false threadDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-
   "end start_run" .verbose
 
   // delete task instead of returning to nowhere
   task::scheduleDelete
-
   HAZARD
 ;
 

@@ -7,17 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_METAGET ...                                                 */
 /*----------------------------------------------------------------------------*/
-: metaGet_getTable \handler
+: metaGet_getTable  \handler
 
-  <tableNm> .
-  
+  // pipe out ZK_STARTMARKER
+  PipeIn[].pipeOut
+  "metaGet_getTable" .
+  //stk displays what in the stack
+
   // create an instance of class MetaGet : public Operand
-  
   // set the table name in MetaGet instance
-  
+  <tableNm> metaGet::getMetaData locals| pMetaGet |
+
   // pipeout the MetaGet instance
-  
+  pMetaGet Op::pipeout
+
   true
+  //stk
+  //task::breakpoint set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -26,10 +32,11 @@
 : metaGet_req \operator
 
   LogReqEntry SEED_REQ
-
+  //"metaGet_req" .
   op__topology
 
-  //find: metaGet_getTable   ZK_METAGET   op[].handler!
+  //find: metaGet_getTable   ZK_STARTMARKER   op[].handler!
+  find: metaGet_getTable   ZK_DATAPULSE   op[].handler!
 
   op__loop
 

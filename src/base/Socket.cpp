@@ -251,11 +251,11 @@ Object* Socket::pRecvObject(void)
 //         spHeader.sz(aHeader));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the body of the obect (enough memory condition)
+  // receive the body of the object (enough memory condition)
 
   eCN eClass = pObject->eGetClassNo();
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-
+    //vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
     MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
 
@@ -641,11 +641,11 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     
     if (0 == nRecvBytes) {
       vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
-      SysCall.vError(errno);
+      SysCall.vError(errno); // don't die after this, node can come and goes
       //vTrace("ERROR2: %lld\n"_Stz, errno);
       return false;
     }
-    
+
     nSoFar += nRecvBytes;
     nMore -= nRecvBytes;
     

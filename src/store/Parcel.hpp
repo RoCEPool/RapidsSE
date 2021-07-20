@@ -25,6 +25,7 @@ namespace STORE
     i8  m_iDstOp;          // destination op in the destination stage
     
   private:
+    bool m_bOriginalParcel;
     i8 m_nObjects;                        // number of objects in the parcel
     Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
   
@@ -43,7 +44,7 @@ namespace STORE
            );
   
    ~Parcel(void) noexcept(false);
-        
+
   static void vPostRecv(void* aParcel);
 
   public:
@@ -51,10 +52,19 @@ namespace STORE
     bool bAppendRight(void);
     Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
+    void vReset(void);
     Operand* pGetOperand(void);
     void vRecvContents(Socket* pSocket);
     void vSendOut(Op* pSrcOp);
     void vSetObject(i8 i_Object, Object* pObject);
+
+    bool bIsOriginal(void);
+    void vSetOriginState(bool bState);
+
+    void vLabel(i8       iPipelineJobId,
+                i8       iDstNode,
+                tPN      tPtnNo,
+                ePX      eCrossTopo);
 
   private:
     void vSendOverSocket(Op* pSrcOp);
