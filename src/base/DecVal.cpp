@@ -192,32 +192,54 @@ DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
 {
   UNUSED(nSize);
 
-  DecVal xDecVal;
-  
-  // extract the whole.fraction parts
-  i8 iWhole;
-  i8 iFraction;
-  i8 nParts = sscanf(azLiteral,"%lld.%lld",&iWhole,&iFraction);
+  i8 iValue;
+  i8 nFractionDigits;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // whole part only, no fraction (e.g. "2000."_Dec)
+  char* azDecLit = (char*)azLiteral;
+  StrLib::bExtractDecLit(azDecLit,iValue,nFractionDigits);
   
-  if (1 == nParts) {
-    xDecVal.vAssign(iWhole,0);
-    return xDecVal;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // both whole and fraction parts (e.g. "12.34."_Dec)
-  
-  s32 sFractionDigits;
-  sFractionDigits.vSprint("%lld"_Stz,iFraction);
-  i8 nFractionDigits = sFractionDigits.nLength();
-
-  xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
+  DecVal xDecVal;  
+  xDecVal.vAssign(iValue,nFractionDigits);
     
   return xDecVal;
 }
+/*----------------------------------------------------------------------------*/
+//DecVal BASE::operator "" _Dec(const char* azLiteral, size_t nSize)
+//{
+//  UNUSED(nSize);
+//
+//  DecVal xDecVal;
+//
+//  // extract the whole.fraction parts
+//  i8 iWhole;
+//  i8 iFraction;
+//  i8 nPlaces;
+//  i8 nParts = sscanf(azLiteral,"%lld.%lld",&iWhole,&iFraction);
+//
+//  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+//
+//  char* azDecLit = (char*)azLiteral;
+//  StrLib::bExtractDecVal(azDecLit,iWhole,iFraction,nPlaces);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // whole part only, no fraction (e.g. "2000."_Dec)
+//
+//  if (1 == nParts) {
+//    xDecVal.vAssign(iWhole,0);
+//    return xDecVal;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // both whole and fraction parts (e.g. "12.34."_Dec)
+//
+//  s32 sFractionDigits;
+//  sFractionDigits.vSprint("%lld"_Stz,iFraction);
+//  i8 nFractionDigits = sFractionDigits.nLength();
+//
+//  xDecVal.vAssign(iWhole,iFraction,nFractionDigits);
+//
+//  return xDecVal;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
