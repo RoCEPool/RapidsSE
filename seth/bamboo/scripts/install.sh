@@ -73,14 +73,16 @@ function onExit() {
     statusMsg="*** Failed the Install stage                                                 ***"
   fi
 
-  ENDTIME="$(date +%s)"
-  ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
+  local endTime
+  local elapsedTime
+  endTime="$(date +%s)"
+  elapsedTime="$(secondsToTime $((endTime - STARTTIME)))"
 
   echo ""
   echo "********************************************************************************"
   echo "${statusMsg}"
   echo "********************************************************************************"
-  echo "Elapsed time: ${ELAPSEDTIME}"
+  echo "Elapsed time: ${elapsedTime}"
   echo ""
 }
 
