@@ -155,7 +155,10 @@ trap onExit EXIT
 "${SCRIPTS_DIR}/prerequisites.sh"
 
 # Remove any previous result and log files
+echo "Removing any previous results from: ${BAMBOO_RESULTS_DIR}"
 rm -rf "${BAMBOO_RESULTS_DIR}" || true
+
+echo "Removing any previous logs from: ${BAMBOO_LOGS_DIR}"
 rm -rf "${BAMBOO_LOGS_DIR}"    || true
 
 
