@@ -49,6 +49,7 @@ namespace STORE
 
     bool     m_bHasAgg;
     bool     m_bHasGby;
+    bool     m_bLeftOuter;
 
     IntStack m_xTypeStack;
     IntStack m_xStoreStack;

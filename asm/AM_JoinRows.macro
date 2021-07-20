@@ -73,6 +73,32 @@ macro AM_JOINROWS_CRWLFT_ENTRHT
 endMacro
 
 //----------------------------------------------------------------------------//
+// macro AM_JOINROWS_CRWLFT_NULRHT                                            //
+//----------------------------------------------------------------------------//
+macro AM_JOINROWS_CRWLFT_NULLRHT
+  // AM_JOINROWS_CRWLFT_NULLRHT
+  Label JOINROWS_CRWLFT_NULLRHT
+  EO_PRINTF "**JOINROWS_CRWLFT_NULLRHT**\n"
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_PUSH_DEVIXT_LFT
+  EO_INTEGER 0
+  EO_DEVIXT_COLS_TO_ROW_OFS
+
+  //EO_PUSH_DEVROW_DST
+  //EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
+endMacro
+
+//----------------------------------------------------------------------------//
 // macro AM_JOINROWS_CRWLFT_ROWRHT                                            //
 //----------------------------------------------------------------------------//
 macro AM_JOINROWS_CRWLFT_ROWRHT
@@ -164,6 +190,30 @@ macro AM_JOINROWS_ROWLFT_ENTRHT
   EO_PUSH_DEVIXT_RHT
   EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
   EO_DEVIXT_COLS_TO_ROW_OFS
+
+  //EO_PUSH_DEVROW_DST
+  //EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_JOINROWS_ROWLFT_NULRHT                                            //
+//----------------------------------------------------------------------------//
+macro AM_JOINROWS_ROWLFT_NULLRHT
+  // JOINROWS_ROWLFT_NULLRHT
+  Label JOINROWS_ROWLFT_NULLRHT
+  EO_PRINTF "**JOINROWS_ROWLFT_NULLRHT**\n"
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_ROW
 
   //EO_PUSH_DEVROW_DST
   //EO_DEVROW_ROW_PRINT

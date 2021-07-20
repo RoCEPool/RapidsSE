@@ -61,6 +61,7 @@ ExprEval::ExprEval(void)
 
   m_bHasAgg = false;
   m_bHasGby = false;
+  m_bLeftOuter = false;
 
   m_iProjections = 0;
 
@@ -1756,6 +1757,14 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
       }
       else
         pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // leftOuter ?
+    if (pTkn->bSame("leftOuter"_Stz)) {
+      m_bLeftOuter = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
 
     // found a src column
