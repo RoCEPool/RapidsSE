@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------
+-- tpch select from truncated tables (SF1)
+-------------------------------------------------------------------------------
+
+tableScan customer;
+rows: 0
+
+tableScan supplier;
+rows: 0
+
+tableScan orders;
+rows: 0
+
+tableScan partsupp;
+rows: 0
+
+tableScan part;
+rows: 0
+
+tableScan region;
+rows: 0
+
+tableScan lineitem;
+rows: 0
+
+tableScan nation;
+rows: 0
+
+CLEANUP {
+
+}
+
+

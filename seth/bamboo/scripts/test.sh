@@ -23,6 +23,7 @@ readonly DIR="$(dirname "$0")"
 readonly PROJ_ROOT="${DIR}/../../.."
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly SETH_BIN_DIR="${PROJ_ROOT}/seth/bin"
+readonly SETH_RESULTS_DIR="${DIR}/../results"
 
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
@@ -217,7 +218,7 @@ export LD_LIBRARY_PATH="${SE_BIN_DIR}:${LD_LIBRARY_PATH:-}"
 # Additional arguments for SETH. Enable as required.
 readonly SETH_ARGS=(
   "--logsteps" 
-  "--resultdir" "results"
+  "--resultdir" "${SETH_RESULTS_DIR}"
   "--resultname" "results-${TARGET}.xml"
   "--testsuffix" " (${TARGET})"
   "--resultformat" "junit" 
