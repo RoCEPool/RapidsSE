@@ -574,6 +574,18 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
 /*----------------------------------------------------------------------------*/
 void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 {
+  if (! pJob->pLogicUnit_job()) {
+    
+    RASSERT(! pTask->pLogicUnit_task());
+    
+    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+    
+
+    pJob->vLogicUnit_job(pLogicUnit);
+  }
+  else {
+    vDebugPoint();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
