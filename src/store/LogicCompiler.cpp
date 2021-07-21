@@ -217,7 +217,7 @@ __aFooterFunction(LogicCompiler)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LogicCompiler::LogicCompiler(void)
+LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
 : Object(CN_LOGICCOMPILER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -235,7 +235,7 @@ LogicCompiler::LogicCompiler(void)
 
   m_aTccState   = nullptr;
   
-  m_pLogicUnit  = nullptr;
+  m_pLogicUnit  = pLogicUnit;
   
   _checkInitialised_(CN_LOGICCOMPILER);
   
@@ -445,12 +445,10 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile the EO code into machine code                                      */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit)
+i8 LogicCompiler::iCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  m_pLogicUnit = pLogicUnit;
-  
   AM::pTccLock()->vGrabWrite();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

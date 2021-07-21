@@ -35,7 +35,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LogicCompiler(void);
+    LogicCompiler(LogicUnit* pLogicUnit);
    ~LogicCompiler(void) noexcept(false);
   
     static void vExtract(void);
@@ -48,7 +48,7 @@ namespace STORE
     static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sMacro);
 
     i8 iCall(void);
-    i8 iCompile(LogicUnit* pLogicUnit);
+    i8 iCompile(void);
     Stz* szSource(void);
 
   private:
