@@ -22,4 +22,4 @@
 ../../tests/tests1N4P/Select/testList
 ../../tests/tests1N4P/Table/testList
 ../../tests/tests1N4P/Index/testList
-../../tests/tests1N4P/Tpch/testList
+//../../tests/tests1N4P/Tpch/testList
