@@ -1,6 +1,6 @@
 anidx.test
 createLoop.test
-createUnique.test
+//createUnique.test
 emptyTable.test
 rangeQuery.test
 indexEntry.test

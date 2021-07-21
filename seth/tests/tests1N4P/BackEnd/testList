@@ -11,9 +11,9 @@ filterRows$_I.test
 limitRows.test
 limitRows_I.test
 
-loopJoinBroadcast.test
+//loopJoinBroadcast.test
 //loopJoinHashcast.test
-loopJoinUnicast.test
+//loopJoinUnicast.test
 
 projectColumns$_I.test
 projectColumns$.test
