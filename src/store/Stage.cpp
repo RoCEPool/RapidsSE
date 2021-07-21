@@ -255,9 +255,9 @@ StageSpec* Stage::pStageSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send startMarker to start op of the stage                                  */
+/* test if to send startMarker to start op of the stage                       */
 /*----------------------------------------------------------------------------*/
-void Stage::vStartPipeline(Task* pTriggeringTask)
+bool Stage::bStartPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -276,10 +276,12 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
         ! AM::JOB::szJobNm(pOp->pJob())->bSame("statWrite"_Stz)) {
 
       RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
-      // append a STARTMARKER onto first operator
-      pOp->vAppendLeft(new Marker(OM_STARTMARKER),pTriggeringTask);
+      
+      return true;
     }
   }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

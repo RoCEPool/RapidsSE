@@ -12,12 +12,15 @@
 
 #include "Grid.hpp"
 #include "Op.hpp"
+#include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+
+#include "Marker.hpp"
 
 #include "SP_Pipeline.hpp"
 #include "SP_PipelineSpec.hpp"
@@ -250,7 +253,22 @@ void Step::vJob_PipelineExecute(void)
     Stage* pStage = pPipeline->pGet(0);
     
     // send startMarker to the start Op of the first stage of the pipeline
-    pStage->vStartPipeline(this);
+    if (pStage->bStartPipeline()) {
+      //pStage->vStartPipeline(this);
+      
+      Stream*  pStream = pStage->pGet(0);
+
+      Op* pOp = pStream->pGet(0);
+
+      RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
+
+      Operand* pOperand = new Marker(OM_STARTMARKER);
+      
+      pOp->vOpTrace(nullptr,(Stz*)__func__,false,"// queue StartMarker into pipeline"_Stz);
+
+      pOp->vAppendLeft(pOperand,this);
+
+    }
     
     // pipeline job to wait for acks
     m_pDataStack->vPushInt(true);

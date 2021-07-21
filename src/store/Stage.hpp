@@ -37,7 +37,7 @@ namespace STORE
     Op*     pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
     Stz*    szStageNm(void);
     StageSpec* pStageSpec(void);
-    void    vStartPipeline(Task* pTriggeringTask);
+    bool    bStartPipeline(void);
   
   private:
     void    vCreateStreams(void);

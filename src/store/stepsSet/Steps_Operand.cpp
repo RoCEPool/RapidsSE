@@ -673,7 +673,11 @@ void Step::vOperandNewStartMarker(void)
 
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTMARKER);
+  Operand* pOperand = new Marker(OM_STARTMARKER);
+  m_pJob->pLogicUnit_job()->m_xpOperandA = pOperand;
+
+  Op* pOp = m_pJob->m_pOp;
+  pOp->vOpTrace(pOperand,(Stz*)__func__,true);
 
   EXIT();
 }
