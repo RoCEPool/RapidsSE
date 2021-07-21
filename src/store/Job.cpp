@@ -397,11 +397,11 @@ void Job::vAcksRmg(i8 nAcks)
 /*----------------------------------------------------------------------------*/
 /* decrement+decide acks remaining for this job                               */
 /*----------------------------------------------------------------------------*/
-bool Job::bAcksRmgDec(void)
+bool Job::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bAmDecider = m_oAcksRmg_2pc.bDecAndDecide();
+  bool bAmDecider = m_oAcksRmg_2pc.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }

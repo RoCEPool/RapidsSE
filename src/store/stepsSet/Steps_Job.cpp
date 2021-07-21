@@ -476,7 +476,8 @@ void Step::vJobDec2pcAcksRmg(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  bool bAmDecider = pJob->bAcksRmgDec();
+  i8 nAcksWereRemaining;
+  bool bAmDecider = pJob->bAcksRmgDec(nAcksWereRemaining);
   
   m_pDataStack->vPushInt(bAmDecider);
   

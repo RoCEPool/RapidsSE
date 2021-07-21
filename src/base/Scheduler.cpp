@@ -317,7 +317,9 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task (returns true if task was resumed)                      */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
+bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
+                                      Task* pTaskAcking,
+                                      i8& nAcksWereRemaining)
 {
   _static_
   
@@ -340,7 +342,7 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
+  bool bAmDecider = pTaskWaiting->bAcksRmgDec(nAcksWereRemaining);
     
   if (! bAmDecider)
     return false;

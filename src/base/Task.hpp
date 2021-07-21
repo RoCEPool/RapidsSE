@@ -107,7 +107,7 @@ namespace BASE
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
     void vAcksRmg(i8 nAcksRmg);
-    bool bAcksRmgDec(void);
+    bool bAcksRmgDec(i8& nAcksWereRemaining);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     void vCheckBreakPt(void);

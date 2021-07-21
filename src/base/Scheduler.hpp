@@ -30,7 +30,8 @@ namespace BASE
   
   public:
     static bool bTaskCross_AckWaiting(Task* pTaskWaiting,
-                                      Task* pAckingTask);
+                                      Task* pAckingTask,
+                                      i8& nAcksWereRemaining);
     static void vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
                                              Task* pActiviating2PcTask);
     static void vTaskCross_TriggerBiding(Task* pTaskBiding,

@@ -94,7 +94,7 @@ namespace STORE
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
-    bool bAcksRmgDec(void);
+    bool bAcksRmgDec(i8& nAcksWereRemaining);
     bool bByPromptTag(void);
     void vContentDump(void);
     bool bDiaryTag(void);

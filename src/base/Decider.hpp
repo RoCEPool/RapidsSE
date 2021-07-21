@@ -22,7 +22,7 @@ namespace BASE
     ~Decider(void) noexcept(false);
   
     void vCheckInit(void);
-    bool bDecAndDecide(void);
+    bool bDecAndDecide(i8& nAcksWereRemaining);
     bool bIsSet(void);
     i8   nOriginalAcks(void);
     i8   iPrintOnlyValue(void);

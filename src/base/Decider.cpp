@@ -61,7 +61,7 @@ void Decider::vCheckInit(void)
 /*----------------------------------------------------------------------------*/
 /* atomically dec acks remaining and test if caller is decider                */
 /*----------------------------------------------------------------------------*/
-bool Decider::bDecAndDecide(void)
+bool Decider::bDecAndDecide(i8& nAcksWereRemaining)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 
@@ -69,10 +69,10 @@ bool Decider::bDecAndDecide(void)
     vTrace("m_nAcksRemaining is %lld\n"_Stz, m_nAcksRemaining);
   
   RASSERT(m_nAcksRemaining > 0);
-  i8 iNewValueWas = Atomic::uAtomicDec(&m_nAcksRemaining);
-  RASSERT(iNewValueWas >= 0);
+  nAcksWereRemaining = Atomic::uAtomicDec(&m_nAcksRemaining);
+  RASSERT(nAcksWereRemaining >= 0);
   
-  bool bIsDecider = iNewValueWas ? false : true;
+  bool bIsDecider = nAcksWereRemaining ? false : true;
   RASSERT( (! bIsDecider) || (bIsDecider && 0 == m_nAcksRemaining) );
   
   return bIsDecider;

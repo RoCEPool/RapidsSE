@@ -228,8 +228,8 @@ void Op::vAckPipelineJob(void)
     }
   }
   
-
-  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
+  i8 nAcksWereRemaining;
+  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
 }
 /*----------------------------------------------------------------------------*/
 //void Op::vAckPipelineJob(void)

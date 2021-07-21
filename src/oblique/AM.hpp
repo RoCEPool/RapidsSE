@@ -436,7 +436,9 @@ namespace OBLIQUE
     static void vSendNode(Op* pOp, i8 i_SendNode);
 
     //
-    static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
+    static void vAckWaitingTask(Task* pTaskWaiting,
+                                Task* pTaskAcking,
+                                i8& nAcksWereRemaining);
     static void vAddConstant(Stz* szName,Stz* szValue);
     static Queue* pOutputQueue(Session* pSession);
     static void vAttachMap(Header* aHeader);

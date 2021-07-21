@@ -1285,8 +1285,12 @@ void AM::vSendNode(Op* pOp, i8 i_SendNode) {
 }
 
 //
-void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
-  IGNORE_RETURN(Scheduler::bTaskCross_AckWaiting(pTaskWaiting,pTaskAcking));
+void AM::vAckWaitingTask(Task* pTaskWaiting,
+                         Task* pTaskAcking,
+                         i8& nAcksWereRemaining) {
+  IGNORE_RETURN(Scheduler::bTaskCross_AckWaiting(pTaskWaiting,
+                                                 pTaskAcking,
+                                                 nAcksWereRemaining));
 }
 void AM::vAddConstant(Stz* szName,Stz* szValue) {
   Constants::vAddConstant(szName,szValue);

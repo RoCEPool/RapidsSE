@@ -398,11 +398,11 @@ void Task::vAcksRmg(i8 nAcksRmg)
 /*----------------------------------------------------------------------------*/
 /* decrement acks remaining and return if caller is decider                   */
 /*----------------------------------------------------------------------------*/
-bool Task::bAcksRmgDec(void)
+bool Task::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRmg.bDecAndDecide();
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
