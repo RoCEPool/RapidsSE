@@ -572,21 +572,20 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
 /*----------------------------------------------------------------------------*/
 /* new logic unit                                                             */
 /*----------------------------------------------------------------------------*/
-void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob) {
+void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* new logic unit                                                             */
+/*----------------------------------------------------------------------------*/
+LogicUnit* AM::LOGICUNIT::pLogicUnit(Job* pJob)
+{
   
-  if (! pJob->pLogicUnit_job()) {
-    
-    RASSERT(! pTask->pLogicUnit_task());
-    
-    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
-    
-
-    pJob->vLogicUnit_job(pLogicUnit);
-  }
-  else {
-    vDebugPoint();
-  }
-
+  LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+  pJob->vLogicUnit_job(pLogicUnit);
+  
+  return pLogicUnit;
 }
 
 

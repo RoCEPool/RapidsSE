@@ -79,7 +79,7 @@ Task::Task(Job* pJob)
   m_pThread      = nullptr;
   m_pJob         = pJob;
   m_pLogicUnit_task = nullptr;
-  
+
   m_bIsStart     = false;
   m_bIsImmediate = false;
 
