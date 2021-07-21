@@ -101,7 +101,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Job();
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
-  Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
   
   Step::vAddSteps_List();
