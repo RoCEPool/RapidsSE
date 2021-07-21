@@ -33,7 +33,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("Pipeline::begin"_Stz,        &Step::vPipelineBegin);
   vAddStep("Pipeline::cancelled"_Stz,    &Step::vPipelineCancelled);
   vAddStep("Pipeline::compile"_Stz,      &Step::vPipelineCompile);
   vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
@@ -44,15 +43,16 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::isErrored"_Stz,    &Step::vPipelineIsErrored);
   vAddStep("Pipeline::isPulsed"_Stz,     &Step::vPipelineIsPulsed);
   vAddStep("Pipeline::pulsed"_Stz,       &Step::vPipelinePulsed);
+  vAddStep("Pipeline::spawnOps"_Stz,     &Step::vPipelineSpawnOps);
   vAddStep("Pipeline::start"_Stz,        &Step::vPipelineStart);
 
   vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::begin -- begin the Pipeline job                                  */
+/* Pipeline::spawnOps -- begin the Pipeline job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineBegin(void)
+void Step::vPipelineSpawnOps(void)
 {
   ENTRY();
     

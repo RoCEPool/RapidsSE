@@ -760,7 +760,7 @@ public:
   void vJob_NetHogHogNoFetch(void);
 
   // job Pipeline
-  void vPipelineBegin(void);
+  void vPipelineSpawnOps(void);
   void vPipelineCancelled(void);
   void vPipelineCompile(void);
   void vPipelineDeleteSpec(void);
