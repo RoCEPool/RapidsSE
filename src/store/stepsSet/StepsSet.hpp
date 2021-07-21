@@ -761,14 +761,14 @@ public:
 
   // job Pipeline
   void vPipelineSpawnOps(void);
-  void vPipelineCancelled(void);
-  void vPipelineCompile(void);
+  void vPipelineCancelledStore(void);
+  void vPipelineCompileCmd(void);
   void vPipelineDeleteSpec(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErrored(void);
   void vPipelineStart(void);
-  void vPipelineIsCancelled(void);
+  void vPipelineCancelledFetch(void);
   void vPipelineIsErrored(void);
   void vPipelineIsPulsed(void);
   void vPipelinePulsed(void);

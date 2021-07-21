@@ -16,7 +16,7 @@
     PipeIn[].delete
   else
     // mark pipeline as being cancelled
-    true Pipeline::cancelled
+    true Pipeline::cancelled!
 
     PipeIn[].pipeOut
   then
@@ -86,7 +86,7 @@
   PipeIn[].delete
 
   // check if start has already been cancelled
-  Pipeline::isCancelled not if
+  Pipeline::cancelled@ not if
 
     // check if start has already been exited (error)
     Pipeline::isErrored not if

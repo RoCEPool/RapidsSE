@@ -33,13 +33,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("Pipeline::cancelled"_Stz,    &Step::vPipelineCancelled);
-  vAddStep("Pipeline::compile"_Stz,      &Step::vPipelineCompile);
+  vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
+  vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
+  vAddStep("Pipeline::compileCmd"_Stz,   &Step::vPipelineCompileCmd);
   vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline::errored"_Stz,      &Step::vPipelineErrored);
-  vAddStep("Pipeline::isCancelled"_Stz,  &Step::vPipelineIsCancelled);
   vAddStep("Pipeline::isErrored"_Stz,    &Step::vPipelineIsErrored);
   vAddStep("Pipeline::isPulsed"_Stz,     &Step::vPipelineIsPulsed);
   vAddStep("Pipeline::pulsed"_Stz,       &Step::vPipelinePulsed);
@@ -50,46 +50,25 @@ void Step::vAddSteps_Pipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::spawnOps -- begin the Pipeline job                                  */
+/* Pipeline::cancelled! -- set pipeline as being cancelled                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpawnOps(void)
+void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
-    
-  i8 iThisNode = AM::pGrid()->iThisNode();
-  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a pipeline
-  pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
-                 m_pJob->iOriginatorNode());
   
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-      
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the pipeline
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
-    if (iThisNode == 0) {
-      SP_Pipeline spPipeline(pPipeline,true);
-      vTraceM("%s\n"_Stz,spPipeline.sz());
-      vDebugPoint();
-    }
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn operators for this node
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+  Op* pOp = m_pJob->m_pOp;
   
-  pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::compile -- compile the command                                   */
+/* Pipeline::compileCmd -- compile the pipeline command into a pipelinesSpec  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineCompile(void)
+void Step::vPipelineCompileCmd(void)
 {
   ENTRY();
     
@@ -138,25 +117,6 @@ void Step::vPipelineCompile(void)
   }
   
   delete pDynamo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled -- set pipeline as being cancelled                     */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineCancelled(void)
-{
-  ENTRY();
-  
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
-  
-  pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -228,7 +188,44 @@ void Step::vPipelineErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::start -- execute                                                 */
+/* Pipeline::spawnOps -- spawn all ops of the pipeline for this node          */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpawnOps(void)
+{
+  ENTRY();
+    
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a pipeline
+  pLogicUnit->m_xpPipeline =
+    new Pipeline(m_pJob,
+                 *pLogicUnit->m_xpPipelineSpec,
+                 m_pJob->iOriginatorNode());
+  
+  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the pipeline
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
+    if (iThisNode == 0) {
+      SP_Pipeline spPipeline(pPipeline,true);
+      vTraceM("%s\n"_Stz,spPipeline.sz());
+      vDebugPoint();
+    }
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn operators for this node
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+  
+  pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline::start -- put StartMarker into queue of start op                  */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineStart(void)
 {
@@ -283,9 +280,9 @@ void Step::vPipelineStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::IsCancelled -- has the pipeline been cancelled                   */
+/* Pipeline::cancelled@ -- has the pipeline been cancelled                   */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineIsCancelled(void)
+void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
@@ -300,7 +297,7 @@ void Step::vPipelineIsCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::IsErrored -- has the pipeline been errored                       */
+/* Pipeline::isErrored -- has the pipeline been errored                       */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineIsErrored(void)
 {
@@ -317,7 +314,7 @@ void Step::vPipelineIsErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::IsPulsed -- has the pipeline been pulsed                         */
+/* Pipeline::isPulsed -- has the pipeline been pulsed                         */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineIsPulsed(void)
 {
@@ -349,6 +346,9 @@ void Step::vPipelinePulsed(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
