@@ -767,7 +767,7 @@ public:
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
-  void vPipelineStart(void);
+  void vPipelineEnqueueStart(void);
   void vPipelineCancelledFetch(void);
   void vPipelineErroredFetch(void);
   void vPipelinePulsedFetch(void);

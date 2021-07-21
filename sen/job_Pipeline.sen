@@ -53,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  Pipeline::start if
+  Pipeline::enqueueStart if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
