@@ -760,18 +760,18 @@ public:
   void vJob_NetHogHogNoFetch(void);
 
   // job Pipeline
-  void vJob_PipelineBegin(void);
-  void vJob_PipelineCancelled(void);
-  void vJob_PipelineCompile(void);
-  void vJob_PipelineDeleteSpec(void);
-  void vJob_PipelineEarlyExitFetch(void);
-  void vJob_PipelineEarlyExitStore(void);
-  void vJob_PipelineErrored(void);
-  void vJob_PipelineStart(void);
-  void vJob_PipelineIsCancelled(void);
-  void vJob_PipelineIsErrored(void);
-  void vJob_PipelineIsPulsed(void);
-  void vJob_PipelinePulsed(void);
+  void vPipelineBegin(void);
+  void vPipelineCancelled(void);
+  void vPipelineCompile(void);
+  void vPipelineDeleteSpec(void);
+  void vPipelineEarlyExitFetch(void);
+  void vPipelineEarlyExitStore(void);
+  void vPipelineErrored(void);
+  void vPipelineStart(void);
+  void vPipelineIsCancelled(void);
+  void vPipelineIsErrored(void);
+  void vPipelineIsPulsed(void);
+  void vPipelinePulsed(void);
 
   // job publish
   void vJob_PublishSpawnSub(void);
