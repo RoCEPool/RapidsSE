@@ -33,14 +33,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("pipeline::call"_Stz,             &Step::vPipelineCall);
-  vAddStep("pipeline::spawn"_Stz,            &Step::vPipelineSpawn);
-
-  
   vAddStep("Job_Pipeline::begin"_Stz,        &Step::vJob_PipelineBegin);
-  vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
-
   vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
+  vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteSpec"_Stz,   &Step::vJob_PipelineDeleteSpec);
   vAddStep("Job_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
   vAddStep("Job_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
@@ -52,24 +47,6 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Job_Pipeline::start"_Stz,        &Step::vJob_PipelineStart);
 
   vAddStep("pipeline.pipeout"_Stz,  &Step::vPipelinePipeout);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pipeline::call -- call nested pipeline                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineCall(void)
-{
-  ENTRY();
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pipeline::spawn -- spawn nested pipeline                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineSpawn(void)
-{
-  ENTRY();
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

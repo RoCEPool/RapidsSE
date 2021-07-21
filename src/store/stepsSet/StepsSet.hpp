@@ -1125,9 +1125,7 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vPipelineCall(void);
   void vPipelinePipeout(void);
-  void vPipelineSpawn(void);
 
   // plan
   void vPlanCompile(void);
