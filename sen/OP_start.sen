@@ -12,7 +12,7 @@
   //"Operand:- ZK_CANCELMARKER" .verbose
 
   // check if start has already been pulsed
-  Pipeline::isPulsed if
+  Pipeline::pulsed@ if
     PipeIn[].delete
   else
     // mark pipeline as being cancelled
@@ -95,7 +95,7 @@
       Pipeline::earlyExit@ not if
 
         // mark pipeline as being pulsed
-        true Pipeline::pulsed
+        true Pipeline::pulsed!
 
         // now pipeout an exit marker
         Operand[].newExitMarker

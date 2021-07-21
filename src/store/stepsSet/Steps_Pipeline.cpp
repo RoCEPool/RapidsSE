@@ -41,8 +41,8 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline::errored@"_Stz,     &Step::vPipelineErroredFetch);
   vAddStep("Pipeline::errored!"_Stz,     &Step::vPipelineErroredStore);
-  vAddStep("Pipeline::isPulsed"_Stz,     &Step::vPipelineIsPulsed);
-  vAddStep("Pipeline::pulsed"_Stz,       &Step::vPipelinePulsed);
+  vAddStep("Pipeline::pulsed@"_Stz,      &Step::vPipelinePulsedFetch);
+  vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
   vAddStep("Pipeline::spawnOps"_Stz,     &Step::vPipelineSpawnOps);
   vAddStep("Pipeline::start"_Stz,        &Step::vPipelineStart);
 
@@ -314,9 +314,9 @@ void Step::vPipelineErroredFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::isPulsed -- has the pipeline been pulsed                         */
+/* Pipeline::pulsed@ -- has the pipeline been pulsed                         */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineIsPulsed(void)
+void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
@@ -331,9 +331,9 @@ EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed -- set pipeline as being pulsed                           */
+/* Pipeline::pulsed! -- set pipeline as being pulsed                           */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelinePulsed(void)
+void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   

@@ -770,8 +770,8 @@ public:
   void vPipelineStart(void);
   void vPipelineCancelledFetch(void);
   void vPipelineErroredFetch(void);
-  void vPipelineIsPulsed(void);
-  void vPipelinePulsed(void);
+  void vPipelinePulsedFetch(void);
+  void vPipelinePulsedStore(void);
 
   // job publish
   void vJob_PublishSpawnSub(void);
