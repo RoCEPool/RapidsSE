@@ -504,7 +504,7 @@ namespace OBLIQUE
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static void vJobDelete(Job** ppJob);
-    static void vJobInitExeContext(Job* pJob);
+    static void vLogicUnitNew(Task* pTask, Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

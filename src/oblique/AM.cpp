@@ -2524,10 +2524,13 @@ void AM::vJobDelete(Job** ppJob) {
   * ppJob = nullptr;
 }
 
-void AM::vJobInitExeContext(Job* pJob) {
+void AM::vLogicUnitNew(Task* pTask, Job* pJob) {
   
   if (! pJob->pLogicUnit_job()) {
     LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+    
+    pTask->vLogicUnit_task(pLogicUnit);
+
     pJob->vLogicUnit_job( & pLogicUnit );
   }
 
