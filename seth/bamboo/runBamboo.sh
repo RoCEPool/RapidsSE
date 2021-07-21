@@ -38,8 +38,6 @@ readonly BAMBOO_TESTLISTS_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
 # Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
-readonly NUM_CPUS="$(nproc)"
-
 ###############################################################################
 ### Includes                                                                ###
 ###############################################################################
@@ -100,15 +98,17 @@ function onExit() {
     statusMsg="Failed                "
   fi
 
-  ENDTIME="$(date +%s)"
-  ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
+  local endTime
+  local elapsedTime
+  endTime="$(date +%s)"
+  elapsedTime="$(secondsToTime $((endTime - STARTTIME)))"
 
   echo ""
   echo "********************************************************************************"
   echo "*** Continuous Integration Script ${statusMsg}                                   ***"
   echo "********************************************************************************"
   echo ""
-  echo "Elapsed time: ${ELAPSEDTIME}"
+  echo "Elapsed time: ${elapsedTime}"
   echo ""
 
   if [ "${#FAILED_CONFIGS[@]}" -gt 0 ]; then
@@ -183,7 +183,10 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
 
   # *** Build RapidsSE ***
   # We can then test it in a number of different configurations.
-  "${SCRIPTS_DIR}/build.sh" "${buildType}"
+  if ! "${SCRIPTS_DIR}/build.sh" "${buildType}"; then
+    FAILED_CONFIGS+=( "[${buildType}]" )
+    exit 1
+  fi
 
 
   for buildConfig in "${BUILD_CONFIGS[@]}"; do    # 1N4P, 1N1P, 2N4P, etc
@@ -194,23 +197,31 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
 
     # Ensure these files exist
     if [ ! -f "${configFile}" ]; then
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
       errorExit "Config file does not exist: ${configFile}"
     fi
 
     if [ ! -f "${testlistFile}" ]; then
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
       errorExit "Testlist file does not exist: ${testlistFile}"
     fi
 
 
     # *** Install RapidsSE ***
-    "${SCRIPTS_DIR}/install.sh" "${configFile}"
+    if ! "${SCRIPTS_DIR}/install.sh" "${configFile}"; then
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
+      exit 1
+    fi
 
 
     # *** Start RapidsSE ***
     if ! "${SCRIPTS_DIR}/start.sh" "${configFile}"; then
       # Startup failed. Copy any logs. Stop the whole cluster and exit.
-      ( copyLogs "${buildConfig}" "${buildType}" ) || true
+      # We don't try to carry on because it is confusing if Bamboo reports
+      # the job failed but any prior tests passed.
       "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
+      ( copyLogs "${buildConfig}" "${buildType}" ) || true
+      FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
       exit 1
     fi
 
@@ -219,7 +230,13 @@ for buildType in "${BUILD_TYPES[@]}"; do          # release, debug, etc
     # If it fails then we continue on with testing another configuration
     testNamePrefix="${buildConfig}_${buildType}"
     if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}"; then
+      # Startup failed. Copy any logs. Stop the whole cluster and exit.
+      # We don't try to carry on because it is confusing if Bamboo reports
+      # the job failed but any prior tests passed.
+      "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
+      ( copyLogs "${buildConfig}" "${buildType}" ) || true
       FAILED_CONFIGS+=( "[${buildType}, ${buildConfig}]" )
+      exit 1
     fi
 
 
@@ -235,4 +252,4 @@ done
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.
 COMPLETED_SUCCESFULLY=1
-
+exit 0
