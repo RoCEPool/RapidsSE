@@ -762,7 +762,7 @@ public:
   // job Pipeline
   void vPipelineSpawnOps(void);
   void vPipelineCancelledStore(void);
-  void vPipelineCompileCmd(void);
+  void vPipelineCompileStmt(void);
   void vPipelineDeleteSpec(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);

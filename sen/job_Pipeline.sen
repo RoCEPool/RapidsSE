@@ -11,7 +11,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> Pipeline::compileCmd dup
+  <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     job::error! !!logError exit
   else
@@ -75,7 +75,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> Pipeline::compileCmd
+  <cmd> Pipeline::compileStmt
   EC_NONE == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

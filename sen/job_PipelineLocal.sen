@@ -13,7 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> Pipeline::compileCmd dup
+  <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     //"got error" .
     job::error! !!logError DONE_REQ

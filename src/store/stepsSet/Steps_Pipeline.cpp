@@ -35,7 +35,7 @@ void Step::vAddSteps_Pipeline(void)
 {
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::compileCmd"_Stz,   &Step::vPipelineCompileCmd);
+  vAddStep("Pipeline::compileStmt"_Stz,  &Step::vPipelineCompileStmt);
   vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
@@ -83,19 +83,19 @@ void Step::vPipelineCancelledStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::compileCmd -- compile the pipeline command into a pipelinesSpec  */
+/* Pipeline::compileStmt -- compile pipeline statement into a pipelines spec  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineCompileCmd(void)
+void Step::vPipelineCompileStmt(void)
 {
   ENTRY();
     
-  sSTMT sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  sSTMT sPipelineStmt;
+  m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
 
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   
-  Dynamo* pDynamo = new Dynamo(sCmd,m_pJob);
+  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
 
@@ -129,6 +129,7 @@ void Step::vPipelineCompileCmd(void)
   else {
     
     // failed to compile
+    
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
 
   }
@@ -290,7 +291,7 @@ void Step::vPipelinePulsedFetch(void)
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
 
-EXIT();
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
