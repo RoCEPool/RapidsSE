@@ -122,7 +122,7 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pLogicUnit_job(void);
-    void vLogicUnit_job(LogicUnit** ppLogicUnit);
+    void vLogicUnit_job(LogicUnit* pLogicUnit);
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     eEC ePopulateJob(TagSet* pTagSet);

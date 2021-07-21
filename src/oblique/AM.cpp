@@ -2533,7 +2533,7 @@ void AM::vLogicUnitNew(Task* pTask, Job* pJob) {
     LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
     
 
-    pJob->vLogicUnit_job( & pLogicUnit );
+    pJob->vLogicUnit_job(pLogicUnit);
   }
   else {
     vDebugPoint();

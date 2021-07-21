@@ -346,7 +346,7 @@ void Job::vPostRecv(void* aJob)
   pJob->vTask(nullptr);
     
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job( & pLogicUnit);
+  pJob->vLogicUnit_job(pLogicUnit);
 }
 
 
@@ -736,15 +736,15 @@ LogicUnit* Job::pLogicUnit_job(void)
 /*----------------------------------------------------------------------------*/
 /* set the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vLogicUnit_job(LogicUnit** ppLogicUnit)
+void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(! * ppLogicUnit || ! m_pLogicUnit_job);
-  
-  m_pLogicUnit_job = *ppLogicUnit;
-  
-  *ppLogicUnit = nullptr;
+  ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
+
+  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
+
+  m_pLogicUnit_job = pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1280,7 +1280,7 @@ void STORE::vJob_postRecv(Job* pJob)
   pJob->vTask(nullptr);
     
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job( & pLogicUnit);
+  pJob->vLogicUnit_job(pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
