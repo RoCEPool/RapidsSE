@@ -519,7 +519,13 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
     fi
 
     # Rebalance node data
-    localClusterRebalance
+    if ! localClusterRebalance; then
+      if [ ${#ADDED_NODE_LIST[@]} -eq 1 ]; then
+        errorExit "The addition of ${#ADDED_NODE_LIST[@]} node to RapidsSE is complete but the rebalance of data to that node has failed."
+      else
+        errorExit "The addition of ${#ADDED_NODE_LIST[@]} nodes to RapidsSE is complete but the rebalance of data to those nodes has failed."
+      fi
+    fi
   fi
 
   # Remove the backed up cluster.config

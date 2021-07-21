@@ -616,7 +616,7 @@ function localClusterXConnect() {
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
-      errorExit "The cluster status command timed out on RapidsSE. RapidsSE may have crashed or the appropriate ports may not have been opened in the firewall. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      errorExit "The cluster status command timed out on RapidsSE. The appropriate TCP and UDP ports may not have been opened in the firewall. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
 
     elif [ "${cmdExitStatus}" -ne 0 ]
     then
@@ -663,6 +663,8 @@ function localClusterXConnect() {
     hostName="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
     errMsg+="$(printf "  Node: %-32s  %s\n" "${row}" "[host ${hostName}]")"
   done
+
+  errMsg+="Please check that the appropriate TCP and UDP ports have been opened in the firewall for each host."
 
   errorExit "${errMsg}"
 }
@@ -743,6 +745,7 @@ function getNonXConnectedNodes() {
 ## to rebalance the data across all nodes.
 ## All nodes in the cluster must have already been started successfully.
 ## This must be called from any node that is participating in the cluster.
+## Returns a non-zero exit code if the rebalance fails.
 ## Params: None
 
 function localClusterRebalance() {
@@ -786,17 +789,20 @@ function localClusterRebalance() {
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
-      errorExit "\nThe cluster rebalance command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe cluster rebalance command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      return 1
 
     elif [ "${cmdExitStatus}" -ne 0 ]
     then
-      errorExit "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      return 1
     fi
 
   else
     # Run the rebalance command without a timeout.
     if ! "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 ; then
-      errorExit "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      return 1
     fi
   fi
 
@@ -804,6 +810,7 @@ function localClusterRebalance() {
   rm "${cmdOutputFile}" &>/dev/null
 
   echo "Done"
+  return 0
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
