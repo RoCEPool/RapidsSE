@@ -227,7 +227,9 @@ void Task::vTaskLoop(void)
   if (! bSeeded()) {
     vInitExeContext();
     
+#ifndef WITH_LOGIC_UNIT_TASK
     AM::LOGICUNIT::vNew(this,pJob());
+#endif
     
     vSeedTask();
   }

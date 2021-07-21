@@ -345,8 +345,10 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
+#ifndef WITH_LOGIC_UNIT_TASK
   LogicUnit* pLogicUnit = nullptr;
   pJob->vLogicUnit_job(pLogicUnit);
+#endif
 }
 
 

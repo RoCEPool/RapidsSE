@@ -262,7 +262,7 @@ namespace OBLIQUE
     public:
       static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
       static void vDelete(LogicUnit** ppLogicUnit);
-      static LogicUnit*  pLogicUnit(Job* pJob);
+      static LogicUnit*  pNew(Job* pJob);
       static void vNew(Task* pTask, Job* pJob);
     };
 

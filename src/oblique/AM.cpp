@@ -591,11 +591,10 @@ void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* new logic unit                                                             */
 /*----------------------------------------------------------------------------*/
-LogicUnit* AM::LOGICUNIT::pLogicUnit(Job* pJob)
+LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
 {
   
   LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
-  pJob->vLogicUnit_job(pLogicUnit);
   
   return pLogicUnit;
 }
