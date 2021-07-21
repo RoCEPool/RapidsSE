@@ -230,23 +230,20 @@ void Op::vAckPipelineJob(void)
   
   i8 nAcksWereRemaining;
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
+  
+  if (m_bTraceOp && AM::TRACE::bVBlong()) {
+      SP_Op spOp;
+
+      vTraceM("%s "
+              "%-18s nAcksWereRemaining=%lld\n"_Stz
+             
+              ,spOp.szLeading(this)
+             
+              ,__func__
+              ,nAcksWereRemaining
+             );
+   }
 }
-/*----------------------------------------------------------------------------*/
-//void Op::vAckPipelineJob(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
-//
-//  if (m_bTraceOp)
-//    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-//           AM::JOB::szJobNm(m_pJob),
-//           m_pStage->szStageNm(),
-//           iNode(),
-//           tPtnNo());
-//
-//  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get ack job on end marker                                                  */
