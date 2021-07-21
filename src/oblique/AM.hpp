@@ -262,6 +262,7 @@ namespace OBLIQUE
     public:
       static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
       static void vDelete(LogicUnit** ppLogicUnit);
+      static void vNew(Task* pTask, Job* pJob);
     };
 
     class OPERAND
@@ -505,7 +506,6 @@ namespace OBLIQUE
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static void vJobDelete(Job** ppJob);
-    static void vLogicUnitNew(Task* pTask, Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
