@@ -33,23 +33,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("pipeline::call"_Stz,    &Step::vPipelineCall);
-  vAddStep("pipeline::spawn"_Stz,   &Step::vPipelineSpawn);
+  vAddStep("pipeline::call"_Stz,             &Step::vPipelineCall);
+  vAddStep("pipeline::spawn"_Stz,            &Step::vPipelineSpawn);
 
   
-  vAddStep("Job_Pipeline::begin"_Stz,       &Step::vJob_PipelineBegin);
-  vAddStep("Job_Pipeline::compile"_Stz,     &Step::vJob_PipelineCompile);
+  vAddStep("Job_Pipeline::begin"_Stz,        &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
 
   vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
   vAddStep("Job_Pipeline::deleteSpec"_Stz,   &Step::vJob_PipelineDeleteSpec);
   vAddStep("Job_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
   vAddStep("Job_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
   vAddStep("Job_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
-  vAddStep("Job_Pipeline::execute"_Stz,      &Step::vJob_PipelineExecute);
   vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
   vAddStep("Job_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
   vAddStep("Job_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
   vAddStep("Job_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
+  vAddStep("Job_Pipeline::start"_Stz,        &Step::vJob_PipelineStart);
 
   vAddStep("pipeline.pipeout"_Stz,  &Step::vPipelinePipeout);
 }
@@ -251,9 +251,9 @@ void Step::vJob_PipelineErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::execute -- execute                                            */
+/* Job_Pipeline::start -- execute                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineExecute(void)
+void Step::vJob_PipelineStart(void)
 {
   ENTRY();
   

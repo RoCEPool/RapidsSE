@@ -767,7 +767,7 @@ public:
   void vJob_PipelineEarlyExitFetch(void);
   void vJob_PipelineEarlyExitStore(void);
   void vJob_PipelineErrored(void);
-  void vJob_PipelineExecute(void);
+  void vJob_PipelineStart(void);
   void vJob_PipelineIsCancelled(void);
   void vJob_PipelineIsErrored(void);
   void vJob_PipelineIsPulsed(void);
