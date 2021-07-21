@@ -766,10 +766,10 @@ public:
   void vPipelineDeleteSpec(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
-  void vPipelineErrored(void);
+  void vPipelineErroredStore(void);
   void vPipelineStart(void);
   void vPipelineCancelledFetch(void);
-  void vPipelineIsErrored(void);
+  void vPipelineErroredFetch(void);
   void vPipelineIsPulsed(void);
   void vPipelinePulsed(void);
 

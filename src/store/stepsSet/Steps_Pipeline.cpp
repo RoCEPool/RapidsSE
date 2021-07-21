@@ -39,8 +39,8 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
-  vAddStep("Pipeline::errored"_Stz,      &Step::vPipelineErrored);
-  vAddStep("Pipeline::isErrored"_Stz,    &Step::vPipelineIsErrored);
+  vAddStep("Pipeline::errored@"_Stz,     &Step::vPipelineErroredFetch);
+  vAddStep("Pipeline::errored!"_Stz,     &Step::vPipelineErroredStore);
   vAddStep("Pipeline::isPulsed"_Stz,     &Step::vPipelineIsPulsed);
   vAddStep("Pipeline::pulsed"_Stz,       &Step::vPipelinePulsed);
   vAddStep("Pipeline::spawnOps"_Stz,     &Step::vPipelineSpawnOps);
@@ -172,9 +172,9 @@ void Step::vPipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored -- set pipeline as being errored                         */
+/* Pipeline::errored! -- set pipeline as being errored                         */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineErrored(void)
+void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
@@ -297,9 +297,9 @@ void Step::vPipelineCancelledFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::isErrored -- has the pipeline been errored                       */
+/* Pipeline::errored@ -- has the pipeline been errored                       */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineIsErrored(void)
+void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   

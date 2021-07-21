@@ -42,12 +42,12 @@
   PipeIn[].delete
 
   // check if start has already been errored
-  Pipeline::isErrored not if
+  Pipeline::errored@ not if
 
     //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as being errored
-    true Pipeline::errored
+    true Pipeline::errored!
 
     // now pipeout an exit marker
     Operand[].newErroredMarker

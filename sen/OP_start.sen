@@ -89,7 +89,7 @@
   Pipeline::cancelled@ not if
 
     // check if start has already been exited (error)
-    Pipeline::isErrored not if
+    Pipeline::errored@ not if
 
       // check if start has already been exited (early exit)
       Pipeline::earlyExit@ not if
