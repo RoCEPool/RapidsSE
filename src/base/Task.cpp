@@ -78,8 +78,13 @@ Task::Task(Job* pJob)
 
   m_pThread      = nullptr;
   m_pJob         = pJob;
+  
+#ifdef WITH_LOGIC_UNIT_TASK
+  m_pLogicUnit_task = AM::LOGICUNIT::pNew(pJob);
+#else
   m_pLogicUnit_task = nullptr;
-
+#endif
+  
   m_bIsStart     = false;
   m_bIsImmediate = false;
 
@@ -177,6 +182,10 @@ Task::~Task(void) noexcept(false)
     AM::vJobDelete(&pJob);
   }
     
+#ifdef WITH_LOGIC_UNIT_TASK
+  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
+#endif
+  
   delete m_pProfile;
   m_pProfile = nullptr;
   

@@ -730,7 +730,11 @@ LogicUnit* Job::pLogicUnit_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifdef WITH_LOGIC_UNIT_TASK
+  return m_pTask->pLogicUnit_task();
+#else
   return m_pLogicUnit_job;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -740,11 +744,15 @@ void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifdef WITH_LOGIC_UNIT_TASK
+  NEVER_REACH;
+#else
   ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
 
   ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
 
   m_pLogicUnit_job = pLogicUnit;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
