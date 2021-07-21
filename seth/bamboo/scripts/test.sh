@@ -220,7 +220,6 @@ readonly SETH_ARGS=(
   "--logsteps" 
   "--resultdir" "${SETH_RESULTS_DIR}"
   "--resultname" "results-${TARGET}.xml"
-  "--testsuffix" " (${TARGET})"
   "--resultformat" "junit" 
   "-f" "${TESTLIST_FILE}"
 )

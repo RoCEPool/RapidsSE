@@ -4,4 +4,4 @@
 DIR=$(dirname "$0")
 TESTLIST_FILE="${DIR}/bamboo/testlists/1N1P.testlist"
 
-"${DIR}/sethTest.sh" -f "${TESTLIST_FILE}"
+"${DIR}/sethTest.sh" -f "${TESTLIST_FILE}" $@

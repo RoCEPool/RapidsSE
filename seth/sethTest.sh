@@ -3,7 +3,7 @@
 # Get the relative path to this file.
 DIR=$(dirname "$0")
 ROOT_DIR="${DIR}/.."
-CLASSPATH=".:*:${DIR}:${DIR}/*:${DIR}/bin:${DIR}/bin/*"
+CLASSPATH="${DIR}/bin:${DIR}/bin/*"
 
 SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"

@@ -7,7 +7,7 @@
 // After this we can test for memory leaks.
 
 select 1 from t;
-failure conatins: "no such table"
+failure contains: "No such table"
 
 CLEANUP {
 
