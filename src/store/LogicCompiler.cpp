@@ -445,10 +445,9 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile the EO code into machine code                                      */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
+i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  UNUSED(aDynArg);
 
   m_pLogicUnit = pLogicUnit;
   

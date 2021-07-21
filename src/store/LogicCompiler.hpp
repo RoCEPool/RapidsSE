@@ -48,7 +48,7 @@ namespace STORE
     static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sMacro);
 
     i8 iCall(void);
-    i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);
+    i8 iCompile(LogicUnit* pLogicUnit);
     Stz* szSource(void);
 
   private:

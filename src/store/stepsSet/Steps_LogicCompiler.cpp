@@ -33,7 +33,7 @@ void Step::vLogicCompilerCompile(void)
   ENTRY();
       
   i8 iResult =
-    m_pJob->pLogicUnit_job()->m_xpLogicCompiler->iCompile(( m_pJob->pLogicUnit_job() ),( m_pJob->pLogicUnit_job() ));
+    m_pJob->pLogicUnit_job()->m_xpLogicCompiler->iCompile(( m_pJob->pLogicUnit_job() ));
   
   UNUSED(iResult);
 
