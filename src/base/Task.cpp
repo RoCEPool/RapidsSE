@@ -76,9 +76,10 @@ Task::Task(Job* pJob)
   
   m_pProfile     = nullptr;
 
-  m_pJob         = pJob;
   m_pThread      = nullptr;
-
+  m_pJob         = pJob;
+  m_pLogicUnit_task = nullptr;
+  
   m_bIsStart     = false;
   m_bIsImmediate = false;
 
@@ -838,6 +839,26 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the logic unit of this task                                            */
+/*----------------------------------------------------------------------------*/
+LogicUnit* Task::pLogicUnit_task(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pLogicUnit_task;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job of this task                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicUnit_task(LogicUnit* pLogicUnit_task)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pLogicUnit_task = pLogicUnit_task;
 }
 
 /*----------------------------------------------------------------------------*/

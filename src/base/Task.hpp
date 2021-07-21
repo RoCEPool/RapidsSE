@@ -34,7 +34,8 @@ namespace BASE
 
     SMA<Thread>  m_pThread;      // current thread executing this task
     SMA<Job>     m_pJob;         // job this task is executing
-  
+    LogicUnit*   m_pLogicUnit_task; // set of registers for the task steps
+
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?
 
@@ -137,6 +138,8 @@ namespace BASE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
+    LogicUnit* pLogicUnit_task(void);
+    void vLogicUnit_task(LogicUnit* pLogicUnit_task);
     bool bLogMemory(void);
     void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
