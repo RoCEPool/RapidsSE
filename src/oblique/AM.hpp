@@ -256,17 +256,18 @@ namespace OBLIQUE
       static void vOperand(i8 iPoint);
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
+  
+    class LOGICUNIT
+    {
+    public:
+      static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
+      static void vDelete(LogicUnit** ppLogicUnit);
+    };
 
     class OPERAND
     {
     public:
       static bool bIsOoO(Operand* pOperand);
-    };
-
-    class LOGICUNIT
-    {
-    public:
-      static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
     };
 
     class PARCEL

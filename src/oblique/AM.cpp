@@ -545,7 +545,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Log                                      */
+/*                                   LogicUnit                               */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -558,6 +558,17 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
   pLogicUnit->vAddReg(static_cast< REG<Object>* >(aReg));
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* delete given logic unit                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
+  
+  delete * ppLogicUnit;
+  
+  * ppLogicUnit = nullptr;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   OPERAND                                  */
