@@ -516,32 +516,32 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 {
   _static_
   
-  Job* pJob = MY::pJob();
-  if (! pJob)
-    return;
-  
-  LogicUnit* pRLU = pJob->pLogicUnit_job();
-  if (! pRLU || pRLU->m_xpOp.bIsNull())
-    return;
-
-  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
-  
-  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
-                        
-                        MY::szPipelineNm(),
-                        MY::szOpNm(),
-                        MY::iPtn(),
-                        aZK[pRLU->m_ePipeInOperand],
-                        
-                        pResource->szClassNm(),
-                        pResource->szPath(),
-                        aAR[iAction],
-                        nBytes,
-                        
-                        MY::pThread()->iThreadNo(),
-                        AM::SYSTEM::nNanoseconds(),
-                        
-                        C_VARGS_END);
+//  Job* pJob = MY::pJob();
+//  if (! pJob)
+//    return;
+//
+//  LogicUnit* pRLU = pJob->pLogicUnit_job();
+//  if (! pRLU || pRLU->m_xpOp.bIsNull())
+//    return;
+//
+//  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
+//
+//  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+//
+//                        MY::szPipelineNm(),
+//                        MY::szOpNm(),
+//                        MY::iPtn(),
+//                        aZK[pRLU->m_ePipeInOperand],
+//
+//                        pResource->szClassNm(),
+//                        pResource->szPath(),
+//                        aAR[iAction],
+//                        nBytes,
+//
+//                        MY::pThread()->iThreadNo(),
+//                        AM::SYSTEM::nNanoseconds(),
+//
+//                        C_VARGS_END);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2527,11 +2527,16 @@ void AM::vJobDelete(Job** ppJob) {
 void AM::vLogicUnitNew(Task* pTask, Job* pJob) {
   
   if (! pJob->pLogicUnit_job()) {
+    
+    RASSERT(! pTask->pLogicUnit_task());
+    
     LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
     
-    pTask->vLogicUnit_task(pLogicUnit);
 
     pJob->vLogicUnit_job( & pLogicUnit );
+  }
+  else {
+    vDebugPoint();
   }
 
 }
