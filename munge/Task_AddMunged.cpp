@@ -28643,6 +28643,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": throw_throw \\handler\n"
     "\n"
+    "  task::seeFrameStack\n"
+    "  \n"
     "  debug::throw\n"
     "\n"
     "  PipeIn[].pipeOut\n"

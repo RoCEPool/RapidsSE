@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : throw_throw \handler
 
+  task::seeFrameStack
+  
   debug::throw
 
   PipeIn[].pipeOut

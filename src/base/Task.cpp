@@ -1060,6 +1060,17 @@ void Task::vSeeFrameStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  
+  if (pWord)
+    vTrace("=%p word %s %s\n"_Stz
+           ,pWord
+           ,pWord->szWordNm()
+           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                               : ""_Stz
+           );
+
   m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
 }
 
