@@ -21,7 +21,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan nation | stageC
+    scan nation_eek | stageC
 
   stage stageC on origin :
     output | sink | stageA

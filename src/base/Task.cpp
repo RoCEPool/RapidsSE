@@ -276,6 +276,8 @@ void Task::vExceptionHandler(Exception xException)
 {
   _noPreconditions_
   
+  m_xException = xException;
+  
   vExceptionTrace();
   vDumpOnFailure();
   
