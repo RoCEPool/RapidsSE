@@ -85,7 +85,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8 m_i_ColSet;
 
   byte m_baJoinMap[C_ROWS_PERBUFFER];
-  i8   m_nLftBufferRowCnt;
+  i8   m_nJoinMapCnt;
 
   i8 m_iCmnFooter;
 };

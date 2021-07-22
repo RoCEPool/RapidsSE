@@ -151,9 +151,13 @@ LogicUnit::LogicUnit(Task* pTask)
   for (i8 i_Local = 0; i_Local < C_LOGIC_LOCALS; i_Local++)
     m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
 
-   for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
-     m_baCondInd[i_Cond] = false;
-  
+  for (i8 i_Byte = 0; i_Byte < C_ROWS_PERBUFFER; i_Byte++)
+    m_xRluCommon.m_baJoinMap[i_Byte] = 0;
+  m_xRluCommon.m_nJoinMapCnt = 0;
+
+  for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
+    m_baCondInd[i_Cond] = false;
+
   m_iNextCond = C_UNKNOWN;
   m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
@@ -3428,10 +3432,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         P_PushPtr(&aiLocals);
         break;//+endCase
 
-      // register pushes
-      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push rlu indexTree
+      // indextree pushes
+      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push rlu indextree
         dLU0(EO_PUSH_RLU_INDEXTREE);
         P_PushPtr(aRluCommon->m_pIndexTree);
+        break;//+endCase
+
+      // joinmap push
+      case EO_PUSH_RLU_JOINMAP_BYTE: ArgNil(); // push rlu joinmap byte
+        dLU0(EO_PUSH_RLU_JOINMAP_BYTE);
+        iTopB = *(aiDstk--);
+        I_PushInt(aRluCommon->m_baJoinMap[iTopB]);
+        break;//+endCase
+
+        // joinmap count push
+      case EO_PUSH_RLU_JOINMAP_CNT: ArgNil(); // push rlu joinmap count
+        dLU0(EO_PUSH_RLU_JOINMAP_CNT);
+        I_PushInt(aRluCommon->m_nJoinMapCnt);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -3897,7 +3914,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinmap set
+      case EO_RLU_SET_JOINMAP_BYTE: ArgNil(); // set byte in joinmap
+        dLU0(EO_RLU_SET_JOINMAP_BYTE);
+        iTopA = *(aiDstk--);
+        aRluCommon->m_baJoinMap[iTopA] = 1;
+        aRluCommon->m_nJoinMapCnt++;
+        //*(++aiDstk) = iArg;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu operators
       case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDef in rlu
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
