@@ -15,6 +15,7 @@
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
+#include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "CrwTablePtn.hpp"
 #include "Table.hpp"
@@ -32,22 +33,22 @@ __aFooterFunction(CrwTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwTablePtn::CrwTablePtn(Table* pTable, tPN tPtnNo, TablePtn* pTablePtn)
-: Object(CN_CRWTABLEPTN)
+CrwTablePtn::CrwTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket)
+    : Object(CN_CRWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   m_pTable    = pTable;
-  m_pTablePtn = pTablePtn;
+  m_pBucket = pBucket;
   m_tPtnNo    = tPtnNo;
-  
+
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
-  
+
   m_pIndexTreeVec  = new IndexTreeVec;
-    
+
   _checkInitialised_(CN_CRWTABLEPTN);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 }
 

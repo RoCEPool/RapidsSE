@@ -1153,6 +1153,33 @@
     end ;
     "
     api::addProcedure
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// get bucket object
+
+  STD_PATH
+  "
+  procedure getBucket
+    parameters $TableNm $BucketNo
+  begin
+
+    // roundrobin or hash, then ask for the bucket of the table
+    stage stageA on origin :
+      start | periodic once | bucketGet $TableNm $BucketNo | stageB hashcast
+
+    // toHshCrw
+    // send the crwBuffer of the bucket table
+    stage stageB on all nodes :
+      bucketSend | stageC
+
+    // receive crwBuffer, then the bucketRecv would insert into the table
+    // insert $table
+    stage stageC on origin :
+      bucketRecv | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object

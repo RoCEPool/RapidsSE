@@ -132,6 +132,7 @@ using namespace BASE;
 namespace STORE {
   class AttachMap;
 
+  class Bucket;
   class BucketMap;
 
   class Crv;

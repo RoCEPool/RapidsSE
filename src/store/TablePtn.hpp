@@ -10,16 +10,13 @@ namespace STORE
   class TablePtn : public Object
   {
   private:
-    Lock   m_okLock;  // lock on the partition
+
+    /// will change to vector of bucket
+    Bucket* m_pBucket;
+
     Table* m_pTable;  // table this partition belongs to
     tPN    m_tPtnNo;  // partition number (in grid)
-  
-    eCN    m_eKind;   // what kind of table partition
 
-    union {
-      CrwTablePtn* m_pCrwTablePtn;
-      RowTablePtn* m_pRowTablePtn;
-    };
   
     // must be last
     Footer m_xFooter;

@@ -17,9 +17,13 @@
 #include "RowBuffer.hpp"
 
 #include "CrvBuffer.hpp"
+
 #include "TablePtn.hpp"
+
 #include "RowTablePtn.hpp"
 #include "Table.hpp"
+
+#include "Bucket.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -34,20 +38,20 @@ __aFooterFunction(RowTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowTablePtn::RowTablePtn(Table* pTable, tPN tPtnNo, TablePtn* pTablePtn)
-: Object(CN_ROWTABLEPTN)
+RowTablePtn::RowTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket)
+    : Object(CN_ROWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   m_pTable    = pTable;
-  m_pTablePtn = pTablePtn;
+  m_pBucket   = pBucket;
   m_tPtnNo    = tPtnNo;
-  
+
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
-  
+
   _checkInitialised_(CN_ROWTABLEPTN);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 }
 
