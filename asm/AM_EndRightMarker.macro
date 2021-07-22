@@ -6,8 +6,8 @@ macro HANDLER_ENDRIGHTMARKER
 //----------------------------------------------------------------------------//
 // macro HANDLER_ENDRIGHTMARKER                                               //
 //----------------------------------------------------------------------------//
-  // HANDLER_ENDCRWRIGHTMARKER
-  Label HANDLER_ENDCRWRIGHTMARKER
+  // HANDLER_ENDRIGHTMARKER
+  Label HANDLER_ENDRWRIGHTMARKER
 
   // push no of rows to in the left buffer
   EO_LFTBUFFER_ROWCNT

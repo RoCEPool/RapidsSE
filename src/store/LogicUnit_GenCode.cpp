@@ -1373,6 +1373,14 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ENDRIGHTMARKER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (pExprEval->m_bLeftOuter)
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  else
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute loop join
