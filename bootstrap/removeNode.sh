@@ -256,72 +256,182 @@ function displayRemoveNodeWelcome() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Displays a list of node names, host and installation directories.
+## Params:
+##  $@ - the list of node names
+
+function displayNodes() {
+
+  [ "$#" -gt 0 ] || errorExit "Function displayNodes() cannot have 0 arguments."
+
+  local -a nodeNames=("$@")
+
+  echo ""
+
+  printf "  %-10s  %s:%s\n" "Node Name" "Hostname" "Installation_Path"
+
+  for nodeName in "${nodeNames[@]}"; do
+
+    local host
+    local dir
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue  "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    # Assertions
+    [ "${host:-x}" != x ] || errorExit "Could not lookup the hostname for node named ${nodeName}"
+    [ "${dir:-x}"  != x ] || errorExit "Could not lookup the installation directory for node named ${nodeName}"
+
+    printf "  %-10s  %s:%s\n" "${nodeName}" "${host}" "${dir}"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks if the given node name is in the REMOVED_NODES_LIST. If so, an error
+## message is written out and a non-zero exit status is returned. If not, a zero
+## exit status is returned.
+## Params:
+##  $1 - the node name in question
+
+function validateNotInRemoveList() {
+  [ "$#" -eq 1 ] || errorExit "Function validateNotInRemoveList() must be called with 1 parameter"
+  
+  local nodeName="$1"
+  
+  for removeNode in "${REMOVED_NODE_LIST[@]}"; do
+    # Case insensitive match
+    if [ "${removeNode,,}" = "${nodeName,,}" ]; then
+      printError "Cannot remove node ${nodeName} as it is already set to be removed."
+      return 1
+    fi
+  done
+  
+  # All good
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the array key associated in NODE_LIST associated with a given node name.
+## If the node name cannot be found then -1 is returned on stdout.
+## Should be called like this:
+##   val="$(findNodeIndex "${nodeName}")"
+## Params:
+##  $1 - the node name in question
+
+function findNodeIndex() {
+  [ "$#" -eq 1 ] || errorExit "Function findNodeIndex() must be called with 1 parameter"
+
+  local searchName="$1"
+
+  for i in "${!NODE_LIST[@]}"; do
+    local nodeName
+    nodeName="${NODE_LIST[$i]}"
+
+    # Case insensitive match
+    if [ "${searchName,,}" = "${nodeName,,}" ]; then
+      echo "$i"
+      return
+    fi
+  done
+
+  # Not found
+  echo "-1"
+}
+
+
+}# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Alters the in-memory cluster configuration interactively by prompting the user.
 ## Params: None
 
 function alterConfiguration() {
-# TODO ************************************************
+
   # (advanced) node name prefix
   [ -z "${NODE_NAME_PREFIX}" ] && errorExit "NODE_NAME_PREFIX is not set"
   [ -z "${NODE_SEQ_NUM:-}" ]   && errorExit "NODE_SEQ_NUM is not set"
   [ "${NODE_SEQ_NUM}" -le 0 ]  && errorExit "NODE_SEQ_NUM must be a positive value"
 
-  # Record how many nodes we started with
+  # Record a copy of the original node name list
   ORIGINAL_NODE_LIST=("${NODE_LIST[@]}")
 
-  # hostnames
-  askHostnames
+  # Display header comments
+  echo ""
+  echo "Existing Nodes"
+  echo "--------------"
+  echo ""
+  echo "Let's choose which nodes are to be removed from the RapidsSE cluster."
 
-  # At this point ${NODE_LIST[@]} will be updated to include all the nodes
-  # in the cluster, including those we are adding.
-  # Let's work out which node names we are adding and save them in a separate array.
-  for (( i=${#ORIGINAL_NODE_LIST[@]} ; i<${#NODE_LIST[@]} ; i++ )); do
-    REMOVED_NODE_LIST+=("${NODE_LIST[$i]}")
+  local isFirst=1
+
+  while true; do
+
+    # display list of nodes
+    displayNodes "${NODE_LIST[@]}"
+    echo ""
+
+    # Capture the user input
+    if [ "${isFirst}" -eq 1 ]; then
+      echo -n "Enter the name of a node to be removed and press return : "
+    else
+      echo -n "Enter another node name, or enter an empty line to finish : "
+    fi
+
+    IFS=$'\n' read -r line
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: node name cannot contain whitespace."
+      continue
+    fi
+
+    if [ -z "${line:-}" ]; then
+
+      if [ "${isFirst}" -eq 1 ]; then
+        echo "Invalid input: must specify a first node name."
+        continue
+
+      else
+        # Empty line = exit
+        break
+      fi
+    fi
+
+    # Validate the user input
+    
+    # Validate: cannot remove a node more than once from the grid.
+    if ! validateNotInRemoveList "${line}"; then
+      continue
+    fi
+
+    # Validate/lookup node name
+    local nodeIndex
+    nodeIndex="$(findNodeIndex "${line}")"
+    if [ "${nodeIndex}" -eq -1 ]; then
+      continue
+    fi
+
+    # Validate: cannot remove all remaining nodes from the grid.
+    if [ "${#NODE_LIST[@]}" -eq 1 ]; then
+      printError "Cannot remove the last node in the RapidsSE cluster."
+      continue
+    fi
+
+
+    # remove node name from list
+    unset 'NODE_LIST[i]'
+
+    # add node name to the removed nodes list
+    REMOVED_NODE_LIST+=( "${line}" )
   done
 
-  # We need to validate hostnames and SSH access now so that we can connect
-  # to each machine and determine the number of CPUs, so we can set the
-  # number of partitions/threads appropriately.
-  validateHostsAreResolvable "${REMOVED_NODE_LIST[@]}"
-  validateHostsReachableBySsh "${REMOVED_NODE_LIST[@]}"
 
-  # Get the number of CPU cores, memory size, SHM size of each node.
-  # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
-  # and will be used for default values for partitions, threads and
-  # shared memory size later on.
-  collectHostSizeInfo "${REMOVED_NODE_LIST[@]}"
+  # Assertions
+  [ "${#REMOVED_NODE_LIST[@]}" -gt 0 ] || errorExit "Line ${LINENO}: Removed node list must not be empty"
+  [ "${#ORIGINAL_NODE_LIST[@]}" -gt "${#NODE_LIST[@]}" ] || errorExit "Line ${LINENO}: Original node list must be > current node list"
+  [ "${#NODE_LIST[@]}" -gt 0 ] || errorExit "Line ${LINENO}: Node list must not be empty"
 
-  # Now we can update the default values for memory size, partitions and threads.
-  # At the end of this the following globals will be set based on the capabilities
-  # of the new nodes being added (not all the nodes):
-  #     NODE_CFG_DEFAULT_PARTITIONS
-  #     NODE_CFG_DEFAULT_THREADS
-  #     NODE_CFG_DEFAULT_MEM
-  updateDefaults
+  # At this point ${NODE_LIST[@]} will represent the list of remaining nodes in the cluster,
+  # while ${REMOVED_NODE_LIST[@]} will represent the nodes to be removed and
+  # ${ORIGINAL_NODE_LIST[@]} represents the node list that we started with.
 
-  # (advanced) port
-  askPort "${REMOVED_NODE_LIST[@]}"
-
-  # Copy the same heartbeat value from the first node
-  copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${REMOVED_NODE_LIST[@]}"
-
-  # installation directory
-  askInstallDir "${REMOVED_NODE_LIST[@]}"
-
-  # shared memory size
-  askMemSize "${REMOVED_NODE_LIST[@]}"
-
-  # (advanced) partitions
-  askPartitions "${REMOVED_NODE_LIST[@]}"
-
-  # (advanced) threads
-  askThreads "${REMOVED_NODE_LIST[@]}"
-
-  # (advanced) additional parameters
-  askParams "${REMOVED_NODE_LIST[@]}"
-
-  # Copy the cluster ID from the first node
-  copyValue "${NODE_CFG_CLUSTERID_KEY}" "${REMOVED_NODE_LIST[@]}"
 }
 
 
@@ -334,7 +444,11 @@ function confirmNodeRemoval() {
   echo "Node Removal"
   echo "------------"
   echo ""
-  echo "RapidsSE is now ready to remove nodes from the cluster."
+  if [ "${#REMOVED_NODE_LIST[@]}" -eq 1 ]; then
+    echo "RapidsSE is now ready to remove ${#REMOVED_NODE_LIST[@]} node from the cluster."
+  else
+    echo "RapidsSE is now ready to remove ${#REMOVED_NODE_LIST[@]} nodes from the cluster."
+  fi
 
   local line
 
@@ -394,8 +508,6 @@ loadNodeName
 # Check if the cluster is running
 isClusterRunning && CLUSTER_IS_RUNNING=1
 
-# TODO: Cannot remove nodes from a stopped cluster (because it needs to rebalance)
-
 # Is this an interactive or scripted install?
 if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   displayRemoveNodeWelcome
@@ -404,12 +516,6 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   # for details on nodes being removed.
   alterConfiguration
 
-  # Validate new config
-  validateClusterConfig
-
-  #TODO: validate that you are not removing the last nodes in the cluster.
-  #TODO: Check if you are removing the current node.
-
   # Confirm config
   confirmNodeRemoval
 
@@ -417,20 +523,34 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   backupSuffix="$(date +%Y%m%dT%H%M%S)"
   backupConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
 
-  # TODO: Issue __forgetNode command
+  if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
+    # TODO: Issue __forgetNode command
 
-  # TODO: Wait until the status prompt no longer shows rows for the nodes being removed.
+    # TODO: Wait until the status prompt no longer shows rows for the nodes being removed.
 
-  # TODO: kill the nodes
+    # TODO: kill the nodes
 
-  # TODO: Remove the cluster.config on the removed nodes (so they cannot easily be started up)
+    true
+  fi
+
+  # Remove the cluster.config on the removed nodes (so they cannot easily be started up)
+  removeConfig "" "${REMOVED_NODE_LIST[@]}"
 
   # Write out new config to all existing nodes
   distributeFile "${CONFIG_FILE}" "${DEFAULT_CONFIG_PATH}" "${NODE_LIST[@]}"
 
+  # Indicate that SE installation directories can be cleaned up
+  echo ""
+  echo "The RapidsSE installations of the removed nodes can be removed, if no longer needed:"
+  for nodeName in "${REMOVED_NODE_LIST[@]}"; do
+    local hostname
+    local installDir
 
-  # Remove the backed up cluster.config
-  #removeConfig "${backupSuffix}" "${EXISTING_NODE_LIST[@]}"
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    printf "  %s:%s\n" "${hostname}" "${installDir}"
+  done
 
   echo ""
   if [ ${#REMOVED_NODE_LIST[@]} -eq 1 ]; then
@@ -438,7 +558,7 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   else
     echo "The removal of ${#REMOVED_NODE_LIST[@]} nodes from RapidsSE is complete!"
   fi
-  # TODO: Indicate that SE installation directories can be cleaned up
+
 
 else
   # TODO: Scripted removal

@@ -720,7 +720,7 @@ function askHostnames() {
   while true
   do
     echo ""
-    echo -n "Enter another hostname/IP, or an empty line to finish : "
+    echo -n "Enter another hostname/IP, or enter an empty line to finish : "
     IFS=$'\n' read -r line
 
     if [[ "${line}" = *[[:space:]]* ]]; then
@@ -1510,19 +1510,24 @@ function removeConfig() {
     hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-    [ -n "${hostname}" ]   || errorExit "Cannot backup the cluster configuration on node ${nodeName} because its hostname has not been specified."
-    [ -n "${installDir}" ] || errorExit "Cannot backup the cluster configuration on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+    [ -n "${hostname}" ]   || errorExit "Cannot remove the cluster configuration on node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot remove the cluster configuration on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
 
-    backupConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}.${suffix}"
+    if [ -z "${suffix:-}" ]; then
+      # No suffix provided
+      backupConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}"
+    else
+      backupConfigPath="${installDir}/${DEFAULT_CONFIG_PATH}.${suffix}"
+    fi
 
     # Build the command
     local cmd=( "ssh" "-q" "${hostname}" "rm" "-f" "${backupConfigPath}" "&>/dev/null" )
 
-    debugPrint "Removing the backed up cluster configuration on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
+    debugPrint "Removing the cluster configuration on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
     debugPrint "Command: ${cmd[*]}"
 
     # Execute the command
-    "${cmd[@]}" || errorExit "Error removing the previously backed up cluster configuration file on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
+    "${cmd[@]}" || errorExit "Error removing the cluster configuration file on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
   done
 }
 
