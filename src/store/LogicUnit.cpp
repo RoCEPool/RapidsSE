@@ -4005,6 +4005,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_CRWBUF_BEGIN(&aiDstk);      // devixt
         break;//+endCase
 
+      case EO_DEVIXT_CRWBUF_FINDCRW: ArgNil(); // find crw row given rowno
+        dLU0(EO_DEVIXT_CRWBUF_FINDCRW);
+        vDev_IXT_CRWBUF_FINDCRW(&aiDstk);      // devixt
+        break;//+endCase
+
       case EO_DEVIXT_CRWBUF_NEXT: ArgNil(); // move to next row
         dLU0(EO_DEVIXT_CRWBUF_NEXT);
         vDev_IXT_CRWBUF_NEXT(&aiDstk);      // devixt
@@ -4013,6 +4018,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
         vDev_IXT_CRWBUF_NULL(&aiDstk);      // devixt
+        break;//+endCase
+
+      case EO_DEVIXT_CRWBUF_ROWNO: ArgNil(); // push rowno of crwbuffer
+        dLU0(EO_DEVIXT_CRWBUF_ROWNO);
+        vDev_IXT_CRWBUF_ROWNO(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_TEST: ArgNil(); // test for crw
