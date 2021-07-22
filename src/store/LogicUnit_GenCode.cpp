@@ -417,18 +417,26 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -542,18 +550,28 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -657,18 +675,28 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -824,18 +852,28 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -944,20 +982,30 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  //vTrace("%s\n"_Stz, sText.azChar());
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
-
-  //vTrace("%s\n"_Stz, sText.azChar());
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1157,18 +1205,28 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1251,18 +1309,28 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1455,18 +1523,28 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1573,19 +1651,29 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
-
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
