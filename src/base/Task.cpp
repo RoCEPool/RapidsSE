@@ -1075,6 +1075,18 @@ void Task::vSeeFrameStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see lock sets                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vTrace("Read Lock Set\n"_Stz);
+
+  vTrace("Write Lock Set\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is task seeded to run                                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bSeeded(void)

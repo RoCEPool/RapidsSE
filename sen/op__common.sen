@@ -483,6 +483,8 @@
   "op__failureRecovery" .
   
   task::seeFrameStack
+  
+  task::seeLockSets
 
   "<recover>" job[] job.tagSet@ tagSet.hasName if
     task::exception 999 op__execErrMsg

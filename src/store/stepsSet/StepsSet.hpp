@@ -1753,6 +1753,7 @@ public:
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
   void vTaskSeeFrameStack(void);
+  void vTaskSeeLockSets(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);

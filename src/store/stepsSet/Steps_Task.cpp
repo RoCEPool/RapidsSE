@@ -30,6 +30,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
+  vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
@@ -354,6 +355,18 @@ void Step::vTaskSeeFrameStack(void)
   ENTRY();
   
   vSeeFrameStack();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seeLockSets -- see read and write lock sets                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeeLockSets(void)
+{
+  ENTRY();
+  
+  vSeeLockSets();
 
   EXIT();
 }
