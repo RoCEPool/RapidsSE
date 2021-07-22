@@ -7,6 +7,7 @@
 #define C_LOGIC_STACK 4096
 
 #define C_LOGIC_LOCALS 32
+#define C_ROWS_PERBUFFER 10000
 
 struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 {
@@ -82,6 +83,9 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   i8 m_iaColSet[64];
   i8 m_i_ColSet;
+
+  byte m_baJoinMap[C_ROWS_PERBUFFER];
+  i8   m_nLftBufferRowCnt;
 
   i8 m_iCmnFooter;
 };
