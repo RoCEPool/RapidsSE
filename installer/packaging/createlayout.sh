@@ -70,6 +70,7 @@ cp "${ROOT_DIR}/bootstrap/status.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/prompt.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
 
 # Resources
 mkdir -p "${LAYOUT_DIR}/res"
