@@ -167,7 +167,7 @@ void Step::vTaskException(void)
   s4K sException;
   
   sException.vSprint("Exception %lld %s; "
-                     "in %s (%s:%lld) "
+                     "thrown in %s (%s:%lld) "
                      "\n"_Stz
                      
                      ,m_xException.eFailure()
