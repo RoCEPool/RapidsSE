@@ -1028,7 +1028,9 @@ void Task::vRecoverSenContext(void)
 void Task::vReleaseLockSets(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
+  SP_Lock spLock;
+
   vTrace("Read Lock Set\n"_Stz);
   for (i8 i_Lock = m_oReadLocks.iFirst();
        C_UNKNOWN != i_Lock;
