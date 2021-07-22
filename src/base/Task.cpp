@@ -9,6 +9,8 @@
 #include "Job.hpp" //?
 #include "Grid.hpp" //?
 
+#include "SP_Lock.hpp" //?
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -1081,9 +1083,23 @@ void Task::vSeeLockSets(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  SP_Lock spLock;
+  
   vTrace("Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+  }
 
   vTrace("Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+  }
 }
 
 /*----------------------------------------------------------------------------*/

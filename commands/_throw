@@ -28,7 +28,7 @@ begin
 
 end
 
-//<recover> = 1
+<recover> = 1
 //<vb_op> = 1
 ;
 
