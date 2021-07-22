@@ -203,6 +203,8 @@
 : std_recoveryWord
 
   "std_recoveryWord" .
+  
+  task::exception .
 
   process::quit
 

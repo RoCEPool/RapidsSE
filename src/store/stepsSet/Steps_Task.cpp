@@ -173,7 +173,7 @@ void Step::vTaskException(void)
                      ,m_xException.eFailure()
                      ,m_xException.azText()
 
-                     ,m_xException.azFileNm()
+                     ,m_xException.azFuncNm()
                      ,m_xException.azFileNm()
                      ,m_xException.iLineNo()
 

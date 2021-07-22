@@ -12489,6 +12489,8 @@ void Task::vAddMunged(Task* )
     ": std_recoveryWord\n"
     "\n"
     "  \"std_recoveryWord\" .\n"
+    "  \n"
+    "  task::exception .\n"
     "\n"
     "  process::quit\n"
     "\n"
