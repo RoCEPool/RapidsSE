@@ -161,6 +161,7 @@ namespace BASE
     bool bLogResource(void);
     void vLogResource(bool bLogResource);
     DicStack* pSaveDicStack(void);
+    void vSeeFrameStack(void);
     bool bSeeded(void);
     void vSeedTask(void);
     void vSleepUsec(i8 iMicroSeconds);

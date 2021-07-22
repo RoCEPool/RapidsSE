@@ -1005,7 +1005,7 @@ void Task::vRecoverSenContext(void)
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
   
-  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  //Task::vSeeFrameStack();
   
   while (m_pReturnStack->nValues() > 2) {
     if (m_pLocalsFrame
@@ -1015,18 +1015,7 @@ void Task::vRecoverSenContext(void)
     m_pReturnStack->vDiscardTop();
   }
   
-  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
-
-  
-//  while (m_pLocalsFrame) {
-//
-//    LocalChain* pLocalsFrame = m_pLocalsFrame;
-//    m_pLocalsFrame = m_pLocalsFrame->pNext();
-//
-//    delete pLocalsFrame;
-//  }
-  
-
+  //Task::vSeeFrameStack();
   
   m_aInxPtr = nullptr;
 }
@@ -1062,6 +1051,16 @@ DicStack* Task::pSaveDicStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return & m_oSaveDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* see event handler frames (aka return stack)                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeFrameStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1752,6 +1752,7 @@ public:
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
+  void vTaskSeeFrameStack(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
