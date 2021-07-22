@@ -291,6 +291,9 @@ void Task::vExceptionTrace(void)
 {
   _noPreconditions_
   
+  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+    return;
+  
   //
   // trace what is relevant for debugging.  could be quite substantial
   //
@@ -317,8 +320,11 @@ void Task::vExceptionTrace(void)
 /*----------------------------------------------------------------------------*/
 void Task::vContinueAfterFailure(void)
 {
-  vResetSenContext();
+  //m_iTraceMask = C_TRACE_STEPS;
   
+  //vResetSenContext();
+  vRecoverSenContext();
+
   m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
@@ -329,7 +335,10 @@ void Task::vContinueAfterFailure(void)
 void Task::vDumpOnFailure(void)
 {
   _noPreconditions_
-  
+
+  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+    return;
+
   vTrace("\n\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz
@@ -985,6 +994,43 @@ void Task::vReseed(void)
 
   vSeedTask();
 }
+
+/*----------------------------------------------------------------------------*/
+/* reset sen execution context                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vRecoverSenContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+  
+  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  
+  while (m_pReturnStack->nValues() > 2) {
+    if (m_pLocalsFrame
+        && m_pLocalsFrame->aDiscardPoint() ==
+             (TypedCell*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+    m_pReturnStack->vDiscardTop();
+  }
+  
+  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+
+  
+//  while (m_pLocalsFrame) {
+//
+//    LocalChain* pLocalsFrame = m_pLocalsFrame;
+//    m_pLocalsFrame = m_pLocalsFrame->pNext();
+//
+//    delete pLocalsFrame;
+//  }
+  
+
+  
+  m_aInxPtr = nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */

@@ -370,7 +370,7 @@
 /*----------------------------------------------------------------------------*/
 : op__handle
 
-  0 LogicUnit[].logOperand
+  //0 LogicUnit[].logOperand
   
   //Task[] task.dropLock //OoO
 
@@ -378,7 +378,15 @@
   
   //Task[] task.grabLock //OoO
 
-  1 LogicUnit[].logOperand
+  //1 LogicUnit[].logOperand
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler recovery                                                           */
+/*----------------------------------------------------------------------------*/
+: op__handle_recover
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -480,11 +488,20 @@
 /*----------------------------------------------------------------------------*/
 : op__recover
 
-  "op__recover" .
+  //"op__recover" .
 
-  process::quit
+  "<recover>" job[] job.tagSet@ tagSet.hasName if
+    task::exception 999 op__execErrMsg
 
-  HAZARD
+    PipeIn[].isNull not if
+      PipeIn[].delete
+    then
+  
+    true
+  else
+    process::quit
+    HAZARD
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

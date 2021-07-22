@@ -2,8 +2,6 @@
 /* _throw - simulate/inject exceptions into pipeline                          */
 /*============================================================================*/
 
-bc;
-
 create table nation (
    N_NATIONKEY       INTEGER NOT NULL,
    N_NAME            CHAR(25) NOT NULL,
@@ -14,7 +12,7 @@ create table nation (
 print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
-tablescan nation;
+//tablescan nation;
 
 pipeline throwTest
 begin
@@ -28,7 +26,11 @@ begin
   stage stageC on origin :
     output | sink | stageA
 
-end ;
+end
+
+<recover> = 1
+
+;
 
 /*============================================================================*/
 /* end                                                                        */

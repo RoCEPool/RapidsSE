@@ -155,6 +155,7 @@ namespace BASE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LockSet* pReadLocks(void);
+    void vRecoverSenContext(void);
     void vResetSenContext(void);
     void vReseed(void);
     bool bLogResource(void);

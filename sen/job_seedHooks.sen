@@ -202,9 +202,9 @@
 /*----------------------------------------------------------------------------*/
 : std_recoveryWord
 
-  "std_recoveryWord" .
+  //"std_recoveryWord" .
   
-  task::exception .
+  //task::exception .
 
   "op__recover" FIND execute
   
