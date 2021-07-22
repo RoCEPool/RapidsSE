@@ -206,9 +206,11 @@
   
   task::exception .
 
-  process::quit
+  "op__recover" FIND execute
+  
+  //process::quit
 
-  HAZARD
+  //HAZARD
 ;
 
 /*============================================================================*/

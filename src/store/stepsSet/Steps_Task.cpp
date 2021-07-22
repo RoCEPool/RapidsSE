@@ -168,7 +168,7 @@ void Step::vTaskException(void)
   
   sException.vSprint("Exception %lld %s; "
                      "thrown in %s (%s:%lld) "
-                     "\n"_Stz
+                     ""_Stz
                      
                      ,m_xException.eFailure()
                      ,m_xException.azText()
