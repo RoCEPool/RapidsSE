@@ -86,6 +86,7 @@ namespace BASE
     void vPrint(va_list args, Stz* aFormat);
     void vPrint(Stz* aFormat,...);
     i8   nReadBytes(void* aDst, i8 nBytes);
+    i8   nReadFile(String* aDst);
     bool bReadLine(Stz* szDst);
     void vReset(void);
     void vSeek(i8 iOffset);

@@ -799,6 +799,43 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read file into a string                                                    */
+/*----------------------------------------------------------------------------*/
+i8 File::nReadFile(String* aDst)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+  m_oSysCall.vClear();
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.File.m_nReads++;
+#endif
+
+  i8 nFileSize = iSize();
+  i8 nStringSize = aDst->nArea();
+
+  // string size whould be > than the file size
+  RASSERT(nStringSize > nFileSize );
+
+  i8  nBytesRead = fread(aDst->azStr(),1,nFileSize,m_aFile);
+  RASSERT(nBytesRead <= nFileSize);
+
+  // null terminate the read bytes
+  char* sReadStr = aDst->azStr();
+  sReadStr[nFileSize] = '\0';
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
+#endif
+
+  AM::LOG::vEvent(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
+
+  AM::LOG::vResourceUse(this,AR_READ,nBytesRead);
+
+  return nBytesRead;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next line (terminated by \n or EOF)                                   */
 /*----------------------------------------------------------------------------*/
 bool File::bReadLine(Stz* szDst)

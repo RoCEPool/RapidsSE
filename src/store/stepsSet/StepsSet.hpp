@@ -1740,6 +1740,7 @@ public:
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskDelete(void);
+  void vTaskException(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
   void vTaskIsWaiting(void);
@@ -1751,6 +1752,8 @@ public:
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
+  void vTaskSeeFrameStack(void);
+  void vTaskSeeLockSets(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);

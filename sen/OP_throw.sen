@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : throw_throw \handler
 
+  task::seeFrameStack
+  
   debug::throw
 
   PipeIn[].pipeOut
@@ -29,7 +31,7 @@
 
   op__loop
 
-  "*** throw_req EXITS" .
+  // "*** throw_req EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP

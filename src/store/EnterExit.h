@@ -33,7 +33,7 @@
   } \
   \
   if (C_TRACE_STEPS && m_iTraceMask) \
-    vTraceStep((Stz*)__func__); \
+    printf("%s\n",__func__); \
   \
   vCheckBreakPt(); \
   \
@@ -55,7 +55,11 @@ EndDefine
 ////////////////////////////////////////////////////////////////////////////////
 #else
 
-#define ENTRY(aStepNm) EndDefine
+#define ENTRY(aStepNm) \
+  if (C_TRACE_STEPS && m_iTraceMask) \
+    printf("%s\n",__func__); \
+  \
+  EndDefine
 #define EXIT() EndDefine
 
 #endif

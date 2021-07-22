@@ -4,10 +4,12 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT CRWBUF functions
-void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk);
-void vDev_IXT_CRWBUF_NEXT (i8** aaiDstk);
-void vDev_IXT_CRWBUF_NULL (i8** aaiDstk);
-void vDev_IXT_CRWBUF_TEST (i8** aaiDstk);
+void vDev_IXT_CRWBUF_BEGIN  (i8** aaiDstk);
+void vDev_IXT_CRWBUF_FINDCRW(i8** aaiDstk);
+void vDev_IXT_CRWBUF_NEXT   (i8** aaiDstk);
+void vDev_IXT_CRWBUF_NULL   (i8** aaiDstk);
+void vDev_IXT_CRWBUF_ROWNO  (i8** aaiDstk);
+void vDev_IXT_CRWBUF_TEST   (i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT ENT functions

@@ -314,6 +314,7 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   //oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -417,18 +418,26 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -470,6 +479,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -542,18 +552,28 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -595,6 +615,7 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -657,18 +678,28 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -707,6 +738,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -824,18 +856,28 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -873,6 +915,7 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -944,20 +987,30 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  //vTrace("%s\n"_Stz, sText.azChar());
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
-
-  //vTrace("%s\n"_Stz, sText.azChar());
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -999,6 +1052,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF_HANDLER for groupBy
@@ -1157,18 +1211,28 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1207,6 +1271,7 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -1251,18 +1316,28 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1303,6 +1378,14 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ENDRIGHTMARKER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (pExprEval->m_bLeftOuter)
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  else
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -1455,18 +1538,28 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
 
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
@@ -1508,6 +1601,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -1573,19 +1667,29 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  s16KB sText;
+//  b = oFile.bOpenRead(sFileName);
+//  RASSERT(b);
+//
+//  i8 nSize = oFile.iSize();
+//  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+//  UNUSED(nBytes);
+//
+//  oFile.vClose();
+//
+//  // null terminate the read bytes
+//  char* sReadStr = sText.azChar();
+//  sReadStr[nSize] = '\0';
+//
+//  bool bResult = bGenerateAsm(sText);
+//  UNUSED(bResult);
+
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nSize = oFile.iSize();
-  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
-
+  i8 nBytes = oFile.nReadFile(sText);
   oFile.vClose();
-
-  // null terminate the read bytes
-  char* sReadStr = sText.azChar();
-  sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);

@@ -245,7 +245,7 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
-  delete m_pLogicUnit_job;
+  AM::LOGICUNIT::vDelete(&m_pLogicUnit_job);
   
   //if (m_pTask)
   //  vDebugPoint();
@@ -345,8 +345,10 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
+#ifndef WITH_LOGIC_UNIT_TASK
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job( & pLogicUnit);
+  pJob->vLogicUnit_job(pLogicUnit);
+#endif
 }
 
 
@@ -730,21 +732,29 @@ LogicUnit* Job::pLogicUnit_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifdef WITH_LOGIC_UNIT_TASK
+  return m_pTask->pLogicUnit_task();
+#else
   return m_pLogicUnit_job;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vLogicUnit_job(LogicUnit** ppLogicUnit)
+void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(! * ppLogicUnit || ! m_pLogicUnit_job);
-  
-  m_pLogicUnit_job = *ppLogicUnit;
-  
-  *ppLogicUnit = nullptr;
+#ifdef WITH_LOGIC_UNIT_TASK
+  NEVER_REACH;
+#else
+  ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
+
+  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
+
+  m_pLogicUnit_job = pLogicUnit;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1280,7 +1290,7 @@ void STORE::vJob_postRecv(Job* pJob)
   pJob->vTask(nullptr);
     
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job( & pLogicUnit);
+  pJob->vLogicUnit_job(pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/

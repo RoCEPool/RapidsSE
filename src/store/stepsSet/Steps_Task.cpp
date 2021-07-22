@@ -20,33 +20,36 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
-  vAddStep("task::acks!"_Stz,         &Step::vTaskAcksStore);
-  vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
-  vAddStep("task::scheduledelete"_Stz,&Step::vTaskDelete);
-  vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
-  vAddStep("task::dump"_Stz,          &Step::vTaskDump);
-  vAddStep("task::operandYield@"_Stz, &Step::vTaskOperandYieldFetch);
-  vAddStep("task::operandYield!"_Stz, &Step::vTaskOperandYieldStore);
-  vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
-  vAddStep("task::sleepMsec"_Stz,     &Step::vTaskSleepMsec);
-  vAddStep("task::sleepSsec"_Stz,     &Step::vTaskSleepSsec);
-  vAddStep("task::sleepUsec"_Stz,     &Step::vTaskSleepUsec);
-  vAddStep("task::wait"_Stz,          &Step::vTaskWait);
-  vAddStep("task::yield"_Stz,         &Step::vTaskYield);
-  vAddStep("task::yield_opLoop"_Stz,  &Step::vTaskYield_opLoop);
+  vAddStep("task::acks!"_Stz,          &Step::vTaskAcksStore);
+  vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
+  vAddStep("task::scheduledelete"_Stz, &Step::vTaskDelete);
+  vAddStep("task::doneFinally"_Stz,    &Step::vTaskDoneFinally);
+  vAddStep("task::dump"_Stz,           &Step::vTaskDump);
+  vAddStep("task::exception"_Stz,      &Step::vTaskException);
+  vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
+  vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
+  vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
+  vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
+  vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
+  vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
+  vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
+  vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
+  vAddStep("task::wait"_Stz,           &Step::vTaskWait);
+  vAddStep("task::yield"_Stz,          &Step::vTaskYield);
+  vAddStep("task::yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
 
-  vAddStep("task.ack"_Stz,            &Step::vTaskAck);
-  vAddStep("task.dropLock"_Stz,       &Step::vTaskDropLock);
-  vAddStep("task.grabLock"_Stz,       &Step::vTaskGrabLock);
-  vAddStep("task.isAckSet"_Stz,       &Step::vTaskIsAckSet);
-  vAddStep("task.isWaiting"_Stz,      &Step::vTaskIsWaiting);
-  vAddStep("task.job@"_Stz,           &Step::vTaskJobFetch);
-  vAddStep("task.job!"_Stz,           &Step::vTaskJobStore);
-  vAddStep("task.name@"_Stz,          &Step::vTaskNameFetch);
-  vAddStep("task.profile@"_Stz,       &Step::vTaskProfileFetch);
-  vAddStep("task.profile!"_Stz,       &Step::vTaskProfileStore);
-  vAddStep("task.state@"_Stz,         &Step::vTaskStateFetch);
-  vAddStep("task.thread"_Stz,         &Step::vTaskThread);
+  vAddStep("task.ack"_Stz,             &Step::vTaskAck);
+  vAddStep("task.dropLock"_Stz,        &Step::vTaskDropLock);
+  vAddStep("task.grabLock"_Stz,        &Step::vTaskGrabLock);
+  vAddStep("task.isAckSet"_Stz,        &Step::vTaskIsAckSet);
+  vAddStep("task.isWaiting"_Stz,       &Step::vTaskIsWaiting);
+  vAddStep("task.job@"_Stz,            &Step::vTaskJobFetch);
+  vAddStep("task.job!"_Stz,            &Step::vTaskJobStore);
+  vAddStep("task.name@"_Stz,           &Step::vTaskNameFetch);
+  vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
+  vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
+  vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
+  vAddStep("task.thread"_Stz,          &Step::vTaskThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,6 +155,33 @@ void Step::vTaskDelete(void)
   
   vGrabTaskLock();
   vScheduleDelete();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::exception -- get current exception as a string                       */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskException(void)
+{
+  ENTRY();
+    
+  s4K sException;
+  
+  sException.vSprint("Exception %lld %s; "
+                     "thrown in %s (%s:%lld) "
+                     ""_Stz
+                     
+                     ,m_xException.eFailure()
+                     ,m_xException.azText()
+
+                     ,m_xException.azFuncNm()
+                     ,m_xException.azFileNm()
+                     ,m_xException.iLineNo()
+
+                     );
+  
+  m_pDataStack->vPushStr(sException);
 
   EXIT();
 }
@@ -313,6 +343,30 @@ void Step::vTaskSeedInitially(void)
   ENTRY();
   
   m_bSeedInitially = true;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seeFrameStack -- see event handler frames (aka return stack)         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeeFrameStack(void)
+{
+  ENTRY();
+  
+  vSeeFrameStack();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seeLockSets -- see read and write lock sets                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeeLockSets(void)
+{
+  ENTRY();
+  
+  vSeeLockSets();
 
   EXIT();
 }

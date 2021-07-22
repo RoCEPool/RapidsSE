@@ -24,6 +24,17 @@ macro AM_DEFAULT_HANDLER_DATAPULSE
   EO_JMP QUERY_DONE
 endMacro
 
+macro AM_DEFAULT_HANDLER_ENDRIGHTMARKER
+//----------------------------------------------------------------------------//
+// macro AM_DEFAULT_HANDLER_ENDRIGHTMARKER                                    //
+//----------------------------------------------------------------------------//
+  // HANDLER_ENDRIGHTMARKER
+  Label HANDLER_ENDRIGHTMARKER
+  EO_PRINTF "**HANDLER_ENDRIGHTMARKER**\n"
+  EO_POP
+  EO_JMP QUERY_DONE
+endMacro
+
 macro AM_DEFAULT_HANDLER_EOSMARKER
 //----------------------------------------------------------------------------//
 // macro AM_DEFAULT_HANDLER_EOSMARKER                                         //

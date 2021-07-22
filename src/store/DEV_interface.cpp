@@ -60,6 +60,28 @@ void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find crw given row no                                                      */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_CRWBUF_FINDCRW(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the row no
+  i8 i_Row = I_PopInt();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_i_Row = i_Row;
+  (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+           + (C_CRW_HEADBYTES * pDevIxt->m_i_Row) );
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_CRWBUF_NEXT(i8** aaiDstk)
@@ -97,6 +119,23 @@ void vDev_IXT_CRWBUF_NULL(i8** aaiDstk)
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   pDevIxt->m_pCrwBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  get current row no                                                        */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_CRWBUF_ROWNO(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  I_PushInt(pDevIxt->m_i_Row);
 
   *aaiDstk = aiDstk;
 }

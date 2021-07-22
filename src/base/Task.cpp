@@ -9,6 +9,8 @@
 #include "Job.hpp" //?
 #include "Grid.hpp" //?
 
+#include "SP_Lock.hpp" //?
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -78,7 +80,12 @@ Task::Task(Job* pJob)
 
   m_pThread      = nullptr;
   m_pJob         = pJob;
+  
+#ifdef WITH_LOGIC_UNIT_TASK
+  m_pLogicUnit_task = AM::LOGICUNIT::pNew(pJob);
+#else
   m_pLogicUnit_task = nullptr;
+#endif
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
@@ -177,6 +184,10 @@ Task::~Task(void) noexcept(false)
     AM::vJobDelete(&pJob);
   }
     
+#ifdef WITH_LOGIC_UNIT_TASK
+  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
+#endif
+  
   delete m_pProfile;
   m_pProfile = nullptr;
   
@@ -218,7 +229,9 @@ void Task::vTaskLoop(void)
   if (! bSeeded()) {
     vInitExeContext();
     
-    AM::vLogicUnitNew(this,pJob());
+#ifndef WITH_LOGIC_UNIT_TASK
+    AM::LOGICUNIT::vNew(this,pJob());
+#endif
     
     vSeedTask();
   }
@@ -265,6 +278,8 @@ void Task::vExceptionHandler(Exception xException)
 {
   _noPreconditions_
   
+  m_xException = xException;
+  
   vExceptionTrace();
   vDumpOnFailure();
   
@@ -277,6 +292,9 @@ void Task::vExceptionHandler(Exception xException)
 void Task::vExceptionTrace(void)
 {
   _noPreconditions_
+  
+  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+    return;
   
   //
   // trace what is relevant for debugging.  could be quite substantial
@@ -304,8 +322,11 @@ void Task::vExceptionTrace(void)
 /*----------------------------------------------------------------------------*/
 void Task::vContinueAfterFailure(void)
 {
-  vResetSenContext();
+  //m_iTraceMask = C_TRACE_STEPS;
   
+  //vResetSenContext();
+  vRecoverSenContext();
+
   m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
@@ -316,7 +337,10 @@ void Task::vContinueAfterFailure(void)
 void Task::vDumpOnFailure(void)
 {
   _noPreconditions_
-  
+
+  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+    return;
+
   vTrace("\n\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz
@@ -976,6 +1000,60 @@ void Task::vReseed(void)
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
+void Task::vRecoverSenContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+  
+  //Task::vSeeFrameStack();
+  
+  while (m_pReturnStack->nValues() > 2) {
+    if (m_pLocalsFrame
+        && m_pLocalsFrame->aDiscardPoint() ==
+             (TypedCell*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+    m_pReturnStack->vDiscardTop();
+  }
+  
+  //Task::vSeeFrameStack();
+  
+  m_aInxPtr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* release all locks in the lock sets                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vReleaseLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vTrace("Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+    
+    // tbd...
+  }
+
+  vTrace("Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+    
+    
+    // tbd...
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset sen execution context                                                */
+/*----------------------------------------------------------------------------*/
 void Task::vResetSenContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -1003,6 +1081,53 @@ DicStack* Task::pSaveDicStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return & m_oSaveDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* see event handler frames (aka return stack)                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeFrameStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  
+  if (pWord)
+    vTrace("=%p word %s %s\n"_Stz
+           ,pWord
+           ,pWord->szWordNm()
+           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                               : ""_Stz
+           );
+
+  m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* see lock sets                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  SP_Lock spLock;
+  
+  vTrace("Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+  }
+
+  vTrace("Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+  }
 }
 
 /*----------------------------------------------------------------------------*/

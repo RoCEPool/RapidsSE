@@ -16,6 +16,8 @@ namespace BASE
     i8   m_iLineNo;       // line number
 
   public:
+    Exception(void);
+
     Exception(eFK   eFailure,
               const char* azFuncNm,
               const char* azText,
@@ -26,6 +28,7 @@ namespace BASE
   
     eFK   eFailure(void);
     char* azFileNm(void);
+    char* azFuncNm(void);
     i8    iLineNo(void);
     char* azText(void);
   

@@ -1044,7 +1044,7 @@ void Op::vOpTrace(Operand* pOperand
          pPipelineJob(),
 
          szFunNm,
-         AM::pOperandName(pOperand),
+         pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
          pOperand,
          szSupplemental);
   

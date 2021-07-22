@@ -516,36 +516,36 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 {
   _static_
   
-  Job* pJob = MY::pJob();
-  if (! pJob)
-    return;
-  
-  LogicUnit* pRLU = pJob->pLogicUnit_job();
-  if (! pRLU || pRLU->m_xpOp.bIsNull())
-    return;
-
-  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
-  
-  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
-                        
-                        MY::szPipelineNm(),
-                        MY::szOpNm(),
-                        MY::iPtn(),
-                        aZK[pRLU->m_ePipeInOperand],
-                        
-                        pResource->szClassNm(),
-                        pResource->szPath(),
-                        aAR[iAction],
-                        nBytes,
-                        
-                        MY::pThread()->iThreadNo(),
-                        AM::SYSTEM::nNanoseconds(),
-                        
-                        C_VARGS_END);
+//  Job* pJob = MY::pJob();
+//  if (! pJob)
+//    return;
+//
+//  LogicUnit* pRLU = pJob->pLogicUnit_job();
+//  if (! pRLU || pRLU->m_xpOp.bIsNull())
+//    return;
+//
+//  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
+//
+//  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+//
+//                        MY::szPipelineNm(),
+//                        MY::szOpNm(),
+//                        MY::iPtn(),
+//                        aZK[pRLU->m_ePipeInOperand],
+//
+//                        pResource->szClassNm(),
+//                        pResource->szPath(),
+//                        aAR[iAction],
+//                        nBytes,
+//
+//                        MY::pThread()->iThreadNo(),
+//                        AM::SYSTEM::nNanoseconds(),
+//
+//                        C_VARGS_END);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Log                                      */
+/*                                   LogicUnit                               */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -558,6 +558,47 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
   pLogicUnit->vAddReg(static_cast< REG<Object>* >(aReg));
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* delete given logic unit                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
+  
+  delete * ppLogicUnit;
+  
+  * ppLogicUnit = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new logic unit                                                             */
+/*----------------------------------------------------------------------------*/
+void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
+{
+  if (! pJob->pLogicUnit_job()) {
+    
+    RASSERT(! pTask->pLogicUnit_task());
+    
+    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+    
+
+    pJob->vLogicUnit_job(pLogicUnit);
+  }
+  else {
+    vDebugPoint();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* new logic unit                                                             */
+/*----------------------------------------------------------------------------*/
+LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
+{
+  
+  LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+  
+  return pLogicUnit;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   OPERAND                                  */
@@ -2524,17 +2565,6 @@ void AM::vJobDelete(Job** ppJob) {
   * ppJob = nullptr;
 }
 
-void AM::vLogicUnitNew(Task* pTask, Job* pJob) {
-  
-  if (! pJob->pLogicUnit_job()) {
-    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
-    
-    pTask->vLogicUnit_task(pLogicUnit);
-
-    pJob->vLogicUnit_job( & pLogicUnit );
-  }
-
-}
 
 
 

@@ -81,6 +81,9 @@ namespace BASE
 
     SenCompiler* m_pSenCompiler; // sen word compiler
     Input*       m_pInput;       // input stream
+  
+  
+    Exception    m_xException;
 
     // always last
     Footer m_xFooter;
@@ -152,11 +155,15 @@ namespace BASE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LockSet* pReadLocks(void);
+    void vRecoverSenContext(void);
+    void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vReseed(void);
     bool bLogResource(void);
     void vLogResource(bool bLogResource);
     DicStack* pSaveDicStack(void);
+    void vSeeFrameStack(void);
+    void vSeeLockSets(void);
     bool bSeeded(void);
     void vSeedTask(void);
     void vSleepUsec(i8 iMicroSeconds);

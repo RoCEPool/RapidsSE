@@ -202,11 +202,15 @@
 /*----------------------------------------------------------------------------*/
 : std_recoveryWord
 
-  "std_recoveryWord" .
+  //"std_recoveryWord" .
+  
+  //task::exception .
 
-  process::quit
+  "op__failureRecovery" FIND execute
+  
+  //process::quit
 
-  HAZARD
+  //HAZARD
 ;
 
 /*============================================================================*/

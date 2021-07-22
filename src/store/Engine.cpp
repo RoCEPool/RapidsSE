@@ -381,8 +381,11 @@ void Engine::vCallBoot(void)
   pBootTask->vInitExeContext();
   
   LogicUnit* pLogicUnit = new LogicUnit(pBootTask);
-  pJob->vLogicUnit_job( & pLogicUnit );
-
+  
+#ifndef WITH_LOGIC_UNIT_TASK
+  pJob->vLogicUnit_job(pLogicUnit );
+#endif
+  
   pBootTask->vAddAxioms();
 
   pBootTask->vAddMunged();
@@ -467,8 +470,10 @@ void Engine::vCallStart(void)
   pStartTask->vInitExeContext();
   LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
 
-  pJob->vLogicUnit_job( & pLogicUnit );
-
+#ifndef WITH_LOGIC_UNIT_TASK
+  pJob->vLogicUnit_job(pLogicUnit );
+#endif
+  
   pJob->vTimerStart();
   
   vCallImmmediate(pStartTask);
