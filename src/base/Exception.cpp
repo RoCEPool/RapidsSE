@@ -9,6 +9,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Exception::Exception(void)
+{
+  m_eFailure = FK_NONE;
+  MemLib::vZero(m_zFuncNm,sizeof(m_zFuncNm),CN_TASK);
+  MemLib::vZero(m_zText  ,sizeof(m_zText),  CN_TASK);
+  MemLib::vZero(m_zFileNm,sizeof(m_zFileNm),CN_TASK);
+  m_iLineNo = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor (long-form)                                                    */
 /*----------------------------------------------------------------------------*/
 Exception::Exception(eFK   eFailure,
@@ -18,9 +30,9 @@ Exception::Exception(eFK   eFailure,
                      i8    iLineNo)
 {
   m_eFailure = eFailure;
-  StrLib::vCopy(m_zFuncNm,azFuncNm);
-  StrLib::vCopy(m_zText,azText);   //! #030 this should be length delimited copy
-  StrLib::vCopy(m_zFileNm,azFileNm);
+  StrLib::vCopyLen(m_zFuncNm,azFuncNm,sizeof(m_zFuncNm)-1);
+  StrLib::vCopyLen(m_zText,  azText,  sizeof(m_zText)-1);
+  StrLib::vCopyLen(m_zFileNm,azFileNm,sizeof(m_zFileNm)-1);
   m_iLineNo = iLineNo;
 }
 
@@ -37,11 +49,19 @@ Exception::~Exception(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get name of file where exception occurred                                  */
+/* get name of file where exception was thrown                                */
 /*----------------------------------------------------------------------------*/
 char* Exception::azFileNm(void)
 {
   return m_zFileNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of function where exception was thrown                            */
+/*----------------------------------------------------------------------------*/
+char* Exception::azFuncNm(void)
+{
+  return m_zFuncNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +73,7 @@ eFK Exception::eFailure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get line number where excception occurred                                  */
+/* get line number where excception was thrown                                */
 /*----------------------------------------------------------------------------*/
 i8 Exception::iLineNo(void)
 {

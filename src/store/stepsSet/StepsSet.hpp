@@ -1740,6 +1740,7 @@ public:
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskDelete(void);
+  void vTaskException(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
   void vTaskIsWaiting(void);

@@ -25,6 +25,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::scheduledelete"_Stz,&Step::vTaskDelete);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
+  vAddStep("task::exception"_Stz,     &Step::vTaskException);
   vAddStep("task::operandYield@"_Stz, &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz, &Step::vTaskOperandYieldStore);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
@@ -152,6 +153,33 @@ void Step::vTaskDelete(void)
   
   vGrabTaskLock();
   vScheduleDelete();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::exception -- get current exception as a string                       */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskException(void)
+{
+  ENTRY();
+    
+  s4K sException;
+  
+  sException.vSprint("Exception %lld %s; "
+                     "in %s (%s:%lld) "
+                     "\n"_Stz
+                     
+                     ,m_xException.eFailure()
+                     ,m_xException.azText()
+
+                     ,m_xException.azFileNm()
+                     ,m_xException.azFileNm()
+                     ,m_xException.iLineNo()
+
+                     );
+  
+  m_pDataStack->vPushStr(sException);
 
   EXIT();
 }
