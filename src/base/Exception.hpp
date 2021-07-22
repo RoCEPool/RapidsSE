@@ -28,6 +28,7 @@ namespace BASE
   
     eFK   eFailure(void);
     char* azFileNm(void);
+    char* azFuncNm(void);
     i8    iLineNo(void);
     char* azText(void);
   

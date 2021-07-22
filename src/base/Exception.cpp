@@ -49,11 +49,19 @@ Exception::~Exception(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get name of file where exception occurred                                  */
+/* get name of file where exception was thrown                                */
 /*----------------------------------------------------------------------------*/
 char* Exception::azFileNm(void)
 {
   return m_zFileNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of function where exception was thrown                            */
+/*----------------------------------------------------------------------------*/
+char* Exception::azFuncNm(void)
+{
+  return m_zFuncNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +73,7 @@ eFK Exception::eFailure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get line number where excception occurred                                  */
+/* get line number where excception was thrown                                */
 /*----------------------------------------------------------------------------*/
 i8 Exception::iLineNo(void)
 {
