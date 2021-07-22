@@ -1751,6 +1751,7 @@ public:
   void vTaskOperandYieldStore(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
+  void vTaskReleaseLockSets(void);
   void vTaskSeedInitially(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
