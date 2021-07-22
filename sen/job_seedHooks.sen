@@ -206,7 +206,7 @@
   
   //task::exception .
 
-  "op__recover" FIND execute
+  "op__failureRecovery" FIND execute
   
   //process::quit
 

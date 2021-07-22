@@ -478,9 +478,9 @@
 /*----------------------------------------------------------------------------*/
 /* default operator recovery                                                  */
 /*----------------------------------------------------------------------------*/
-: op__recover
+: op__failureRecovery
 
-  "op__recover" .
+  "op__failureRecovery" .
   
   task::seeFrameStack
 
