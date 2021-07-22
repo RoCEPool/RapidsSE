@@ -73,6 +73,7 @@
 #include "Encoding.hpp"
 
 #include "PtnMap.hpp"
+
 #include "BucketMap.hpp"
 #include "BufferMap.hpp"
 
@@ -90,6 +91,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "CrwTablePtn.hpp"
+#include "Bucket.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
@@ -211,7 +213,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
+  { sizeof(Bucket),             HT_T_TINY   ,0 }, // CN_BUCKET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
+  { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE

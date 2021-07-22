@@ -9,7 +9,7 @@ namespace STORE
   {
   private:
     Table* m_pTable;        // table this partition belongs to
-    TablePtn* m_pTablePtn;  // table this partition belongs to
+    Bucket*   m_pBucket;    // bucket this partition belongs to
     tPN    m_tPtnNo;        // partition number (in grid)
 
     RowBuffer* m_pRootBuffer;    // the data root buffer
@@ -21,8 +21,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
-    RowTablePtn(Table* pTable, tPN tPtnNo, TablePtn* pTablePtn);
+
+    RowTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket);
    ~RowTablePtn(void) noexcept(false);
   
     void vAppendBuffer(RowBuffer* pRowBuffer);
