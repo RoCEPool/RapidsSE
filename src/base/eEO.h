@@ -410,8 +410,10 @@ enum eEO : u2 // expression operators
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
+  /*  S  */ EO_DEVIXT_CRWBUF_FINDCRW, // find crw row given rowno
   /*  S  */ EO_DEVIXT_CRWBUF_NEXT,  // move to next row in crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_NULL,  // null crw buffer
+  /*  S  */ EO_DEVIXT_CRWBUF_ROWNO, // push rowno of crwbuffer
   /*  S  */ EO_DEVIXT_CRWBUF_TEST,  // test if there is a crw buffer
 
   // ixt device entry operators
@@ -930,8 +932,10 @@ static Stz* aEO[]
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
+  /*    */ "EO_DEVIXT_CRWBUF_FINDCRW"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NEXT"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NULL"_Stz,
+  /*    */ "EO_DEVIXT_CRWBUF_ROWNO"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_TEST"_Stz,
 
   // ixt device entry operators
@@ -1457,8 +1461,10 @@ static EoArg EoArgs[]
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
+  { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_FINDROW
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NULL
+  { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_ROWNO
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_TEST
 
   // ixt device entry relational operators
