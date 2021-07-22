@@ -67,8 +67,8 @@ rows:
 ("O_ORDERKEY", "INTEGER", 19, 0, false, false)
 
 // load the table
-//load orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";
-load orders "/TPCH/SF1/orders.tbl";
+//load orders "../TPCH/SF1/orders.tbl" <field_delimiter> = "|";
+load orders "../TPCH/SF1/orders.tbl";
 success
 
 tableScan orders;

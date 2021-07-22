@@ -41,7 +41,7 @@ INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
-INCLUDE 'tpchQueries.test';
+//INCLUDE 'tpchQueries.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';

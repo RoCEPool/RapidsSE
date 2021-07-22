@@ -12,8 +12,8 @@ success
 
 -----------------------------------------------------------------------
 // load the table
-//load region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
-load region "/TPCH/SF1/region.tbl";
+//load region "../TPCH/SF1/region.tbl" <field_delimiter> = "|";
+load region "../TPCH/SF1/region.tbl";
 success
 
 tableScan region;
