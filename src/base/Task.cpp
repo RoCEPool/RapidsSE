@@ -1022,6 +1022,34 @@ void Task::vRecoverSenContext(void)
   m_aInxPtr = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* release all locks in the lock sets                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vReleaseLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vTrace("Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+    
+    // tbd...
+  }
+
+  vTrace("Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+    
+    
+    // tbd...
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
