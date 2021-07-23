@@ -58,7 +58,7 @@ Stz* SP_Node::sz(Node* pNode)
                      : pNode->pRecvSocket()
                          ? "partially-connected"
                          : "not-connected"
-
+                  
                   ,C_VARGS_END
                   );
   
