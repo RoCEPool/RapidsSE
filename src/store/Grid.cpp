@@ -580,6 +580,32 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szReg
 }
 
 /*----------------------------------------------------------------------------*/
+/* see nodes of the grid                                                      */
+/*----------------------------------------------------------------------------*/
+void Grid::vSeeNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  vTrace("Grid::\n"_Stz);
+
+  vTrace("  %lld partitions per table = "
+         "%lld total partitions in grid "
+         "\n"_Stz
+         ,AM::nPtnsPerTable()
+         ,AM::nPtnsInGrid()
+         );
+  
+  SP_Node spNode;
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = *oNode_I;
+    vTrace("  %s\n"_Stz,spNode.sz(pNode));
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get grid node where cluster was started                                    */
 /*----------------------------------------------------------------------------*/
 i8 Grid::iStartNodeNo(void)

@@ -279,35 +279,7 @@ void Step::vGridSeeNodes(void)
 {
   ENTRY();
   
-  vTrace("Grid::\n"_Stz);
-  //vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nBootNodes());
-  vTrace("  %lld partitions per table = "
-         "%lld total partitions in grid "
-         "\n"_Stz
-         ,AM::nPtnsPerTable()
-         ,AM::nPtnsInGrid()
-         );
-  
-  SP_Node spNode;
-  
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    
-    Node* pNode = *oNode_I;
-
-    vTrace("  %s\n"_Stz,spNode.sz(pNode));
-    
-//      vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
-//             (*oNode_I)->iNodeNo(),
-//             (*oNode_I)->szNodeNm(),
-//             (*oNode_I)->szIPAddr(),
-//             (*oNode_I)->iPortNo(),
-//             (*oNode_I)->pRecvSocket(),
-//             (*oNode_I)->pSendSocket(),
-//
-//             (*oNode_I)->pSendSocket() ? "connected" : "not connected");
-  }
-  
-  vTrace("\n"_Stz);
+  AM::pGrid()->vSeeNodes();
 
   EXIT();
 }
