@@ -134,10 +134,13 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ROW_ROW_ZERO"_Stz,      (const void *) vDev_ROW_ROW_ZERO      },
 
   { "vDev_ROW_ROWBUF_BEGIN"_Stz,  (const void *) vDev_ROW_ROWBUF_BEGIN  },
+  { "vDev_ROW_ROWBUF_FINDROW"_Stz,(const void *) vDev_ROW_ROWBUF_FINDROW},
   { "vDev_ROW_ROWBUF_NEXT"_Stz,   (const void *) vDev_ROW_ROWBUF_NEXT   },
   { "vDev_ROW_ROWBUF_NULL"_Stz,   (const void *) vDev_ROW_ROWBUF_NULL   },
   { "vDev_ROW_ROWBUF_RESET"_Stz,  (const void *) vDev_ROW_ROWBUF_RESET  },
-  { "vDev_ROW_ROWBUF_TEST"_Stz,    (const void *) vDev_ROW_ROWBUF_TEST  },
+  { "vDev_ROW_ROWBUF_ROWCNT"_Stz, (const void *) vDev_ROW_ROWBUF_ROWCNT },
+  { "vDev_ROW_ROWBUF_ROWNO"_Stz,  (const void *) vDev_ROW_ROWBUF_ROWNO  },
+  { "vDev_ROW_ROWBUF_TEST"_Stz,   (const void *) vDev_ROW_ROWBUF_TEST  },
 
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },

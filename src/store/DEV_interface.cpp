@@ -1191,6 +1191,27 @@ void vDev_ROW_ROWBUF_BEGIN(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find row given row no                                                      */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_ROWBUF_FINDROW(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  //pop the row no
+  i8 i_Row = I_PopInt();
+
+  pDevRow->m_i_Row = i_Row;
+  pDevRow->m_aRow = pDevRow->m_pRowBuffer->pRowAddress(pDevRow->m_i_Row );
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_ROW_NEW(i8** aaiDstk)
@@ -1251,6 +1272,40 @@ void vDev_ROW_ROWBUF_NULL(i8** aaiDstk)
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
   pDevRow->m_pRowBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  get current row cnt                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_ROWBUF_ROWCNT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  I_PushInt(pDevRow->m_nRows);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  get current row no                                                        */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_ROWBUF_ROWNO(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  I_PushInt(pDevRow->m_i_Row);
 
   *aaiDstk = aiDstk;
 }

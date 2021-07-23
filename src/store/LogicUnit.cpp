@@ -4319,6 +4319,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_ROWBUF_BEGIN(&aiDstk);      // devrow
         break;//+endCase
 
+      case EO_DEVROW_ROWBUF_FINDROW: ArgNil(); // find crw row given rowno
+        dLU0(EO_DEVROW_ROWBUF_FINDROW);
+        vDev_ROW_ROWBUF_FINDROW(&aiDstk);      // devixt
+        break;//+endCase
+
       case EO_DEVROW_ROWBUF_NEXT: ArgNil(); // move to next row
         dLU0(EO_DEVROW_ROWBUF_NEXT);
         vDev_ROW_ROWBUF_NEXT(&aiDstk);      // devrow
@@ -4332,6 +4337,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_ROWBUF_RESET: ArgNil(); // reset rowslab
         dLU0(EO_DEVROW_ROWBUF_RESET);
         vDev_ROW_ROWBUF_RESET(&aiDstk);      // devrow
+        break;//+endCase
+
+      case EO_DEVROW_ROWBUF_ROWCNT: ArgNil(); // push row count of rowbuffer
+        dLU0(EO_DEVROW_ROWBUF_ROWCNT);
+        vDev_ROW_ROWBUF_ROWCNT(&aiDstk);      // devixt
+        break;//+endCase
+
+      case EO_DEVROW_ROWBUF_ROWNO: ArgNil(); // push rowno of crwbuffer
+        dLU0(EO_DEVROW_ROWBUF_ROWNO);
+        vDev_ROW_ROWBUF_ROWNO(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVROW_ROWBUF_TEST: ArgNil(); // test for buffer

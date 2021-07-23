@@ -76,9 +76,12 @@ void vDev_ROW_ROW_TEST    (i8** aaiDstk);
 void vDev_ROW_ROW_ZERO    (i8** aaiDstk);
 
 void vDev_ROW_ROWBUF_BEGIN (i8** aaiDstk);
+void vDev_ROW_ROWBUF_FINDROW(i8** aaiDstk);
 void vDev_ROW_ROWBUF_NEXT  (i8** aaiDstk);
 void vDev_ROW_ROWBUF_NULL  (i8** aaiDstk);
 void vDev_ROW_ROWBUF_RESET (i8** aaiDstk);
+void vDev_ROW_ROWBUF_ROWCNT (i8** aaiDstk);
+void vDev_ROW_ROWBUF_ROWNO  (i8** aaiDstk);
 void vDev_ROW_ROWBUF_TEST (i8** aaiDstk);
 
 void vDev_ROW_POPCOLI    (i8** aaiDstk);

@@ -482,9 +482,12 @@ enum eEO : u2 // expression operators
 
   // row device row buffer operators
   /*     */ EO_DEVROW_ROWBUF_BEGIN,  // begin row traverse in row dev
+  /*  S  */ EO_DEVROW_ROWBUF_FINDROW, // find row row given rowno
   /*     */ EO_DEVROW_ROWBUF_NEXT,   // move to next src row in row dev
   /*     */ EO_DEVROW_ROWBUF_NULL,   // null row buffer in the row dev
   /*     */ EO_DEVROW_ROWBUF_RESET,  // reset rowslab in row dev
+  /*  S  */ EO_DEVROW_ROWBUF_ROWCNT,// push row count of rowbuffer
+  /*  S  */ EO_DEVROW_ROWBUF_ROWNO, // push rowno of rowbuffer
   /*     */ EO_DEVROW_ROWBUF_TEST,   // test if buffer in row dev
 
   // row device column pop operators
@@ -1006,9 +1009,12 @@ static Stz* aEO[]
 
   // row device row buffer operators
   /*     */ "EO_DEVROW_ROWBUF_BEGIN"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_FINDROW"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NEXT"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NULL"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_RESET"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_ROWCNT"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_ROWNO"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_TEST"_Stz,
 
   //  row device column operators
@@ -1537,9 +1543,12 @@ static EoArg EoArgs[]
 
   // row device row buffer operators
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_BEGIN
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_FINDROW
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NULL
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_RESET
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_ROWCNT
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_ROWNO
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_TEST
 
   //  row device column operators

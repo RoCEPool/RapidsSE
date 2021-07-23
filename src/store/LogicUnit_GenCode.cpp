@@ -1518,9 +1518,9 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // JOINROW_ROWLFT_NULRHT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
-  //oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_NULRHT, &oTagSet, sMacro));
-  //oTagSet.vReset();
+  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_NULRHT, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // JOINTEST_ROWLFT_ROWRHT
@@ -1568,7 +1568,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
 //  bool bResult = bGenerateAsm(sText);
 //  UNUSED(bResult);
 
-  s16KB sText;
+  s32KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
