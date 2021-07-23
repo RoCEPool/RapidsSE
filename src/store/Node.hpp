@@ -93,6 +93,8 @@ namespace STORE
   };
   
   Node* _pNode(void* aAddr);
+
+  bool bNodeCompare(void* aNodeInsert, void* aNodeScan, bool& bMatch);
 }
 
 /*============================================================================*/

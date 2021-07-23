@@ -474,6 +474,32 @@ i8   Node::iGetPid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare two nodes by their nodeNm                                          */
+/*----------------------------------------------------------------------------*/
+bool STORE::bNodeCompare(void* aNodeInsert, void* aNodeScan, bool& bMatch)
+{
+  Node* pNodeInsert = _pNode(aNodeInsert);
+  Node* pNodeScan   = _pNode(aNodeScan);
+    
+  if (! pNodeScan)
+    return false;
+  
+  // do the job id's match?
+  if (pNodeInsert->szNodeNm()->bEqual(pNodeScan->szNodeNm()))
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this node to be inserted lexicography after the scan?
+  
+  if (pNodeInsert->szNodeNm()->bGreater(pNodeScan->szNodeNm()))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
