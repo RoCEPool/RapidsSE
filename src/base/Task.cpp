@@ -9,6 +9,8 @@
 #include "Job.hpp" //?
 #include "Grid.hpp" //?
 
+#include "SP_Lock.hpp" //?
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -1005,7 +1007,7 @@ void Task::vRecoverSenContext(void)
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
   
-  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  //Task::vSeeFrameStack();
   
   while (m_pReturnStack->nValues() > 2) {
     if (m_pLocalsFrame
@@ -1015,22 +1017,40 @@ void Task::vRecoverSenContext(void)
     m_pReturnStack->vDiscardTop();
   }
   
-  //m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
-
-  
-//  while (m_pLocalsFrame) {
-//
-//    LocalChain* pLocalsFrame = m_pLocalsFrame;
-//    m_pLocalsFrame = m_pLocalsFrame->pNext();
-//
-//    delete pLocalsFrame;
-//  }
-  
-
+  //Task::vSeeFrameStack();
   
   m_aInxPtr = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* release all locks in the lock sets                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vReleaseLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  SP_Lock spLock;
+
+  vTrace("Release Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
+    
+    pLock->vDropRead();
+  }
+
+  vTrace("Release Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
+    
+    pLock->vDropWrite();
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
@@ -1062,6 +1082,53 @@ DicStack* Task::pSaveDicStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return & m_oSaveDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* see event handler frames (aka return stack)                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeFrameStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  
+  if (pWord)
+    vTrace("=%p word %s %s\n"_Stz
+           ,pWord
+           ,pWord->szWordNm()
+           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                               : ""_Stz
+           );
+
+  m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* see lock sets                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeLockSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  SP_Lock spLock;
+  
+  vTrace("Read Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oReadLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oReadLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oReadLocks.pGet(i_Lock);
+    vTrace("  Read Lock %p\n"_Stz,spLock.sz(pLock));
+  }
+
+  vTrace("Write Lock Set\n"_Stz);
+  for (i8 i_Lock = m_oWriteLocks.iFirst();
+       C_UNKNOWN != i_Lock;
+       i_Lock = m_oWriteLocks.iNext(i_Lock)) {
+    Lock* pLock = m_oWriteLocks.pGet(i_Lock);
+    vTrace("  Write Lock %p\n"_Stz,spLock.sz(pLock));
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,9 +32,7 @@ namespace STORE
 
     Parcel* m_pParcel;
 
-    // newcode
-    //std::list<Node*> m_lNodes;
-    std::list<Node*> * m_pNodes;
+    std::list<Node*> * m_pNodes_stdList;
 
 
   

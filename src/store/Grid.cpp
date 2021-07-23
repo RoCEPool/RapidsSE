@@ -10,6 +10,10 @@
 #include "PtnMap.hpp"
 #include "CmdLineArgs.hpp"
 
+#include "SP_Node.hpp"
+
+#include "TagConstants.h"
+
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap*   gpAttachMap;
 
@@ -73,11 +77,11 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_nNodes          = 0;
 
 
-  m_pNodes = new std::list<Node*>;
-  //m_pNodes = &m_lNodes;
-  //m_pNodes->clear();
+  m_pNodes_stdList = new std::list<Node*>;
+  //m_pNodes_stdList = &m_lNodes;
+  //m_pNodes_stdList->clear();
 
-  m_pNodes->clear();
+  m_pNodes_stdList->clear();
 
   m_pParcel = nullptr;
 
@@ -92,7 +96,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 Grid::~Grid(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //delete m_pNodes;
+  //delete m_pNodes_stdList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,13 +347,13 @@ bool Grid::bFirstNode(i8 iNodeNo)
 
 std::list<Node*>::const_iterator Grid::itBeginNodes(void)
 {
-  return m_pNodes->begin();
+  return m_pNodes_stdList->begin();
 }
 
 std::list<Node*>::const_iterator Grid::itEndNodes(void)
 {
-  //return m_pNodes->end();
-  return m_pNodes->end();
+  //return m_pNodes_stdList->end();
+  return m_pNodes_stdList->end();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +478,7 @@ i8 Grid::nNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  return m_pNodes->size();
+  return m_pNodes_stdList->size();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,9 +488,13 @@ void Grid::vPutNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  m_pNodes->push_back(pNode);
+  m_pNodes_stdList->push_back(pNode);
   m_nNodes++;
 
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,9 +504,13 @@ void Grid::vPutNodeR(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  m_pNodes->push_front(pNode);
+  m_pNodes_stdList->push_front(pNode);
   m_nNodes++;
 
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,7 +520,7 @@ void Grid::vRemoveNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  m_pNodes->remove(pNode);
+  m_pNodes_stdList->remove(pNode);
   m_nBootNodes--;
 }
 
@@ -530,10 +542,10 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szReg
 
 
   // Search List using Lambda function as comparator
-  std::list<Node*>::iterator itFound = std::find_if(m_pNodes->begin(), m_pNodes->end(),
+  std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
                [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
 
-  if (itFound == m_pNodes->end()) { // not found, let's add
+  if (itFound == m_pNodes_stdList->end()) { // not found, let's add
     //vTrace("NOT FOUND\n"_Stz);
 
     CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
@@ -550,7 +562,7 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szReg
     vPutNode(pNode); // this also incr m_nNodes;
 
     // Sorting List using Lambda function as comparator
-    m_pNodes->sort([](Node* pNode1, Node* pNode2)
+    m_pNodes_stdList->sort([](Node* pNode1, Node* pNode2)
                   {
                     if(pNode1->iNodeNo() == pNode2->iNodeNo())
                       return pNode1 < pNode2;
@@ -646,8 +658,8 @@ i8 Grid::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  //std::list<Node*> * m_pNodes = &m_lNodes;
-  m_pParcel->vAddObject((Object *)m_pNodes);
+  //std::list<Node*> * m_pNodes_stdList = &m_lNodes;
+  m_pParcel->vAddObject((Object *)m_pNodes_stdList);
 
   return m_pParcel->nObjects();
 }
@@ -690,14 +702,14 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
       //  break;
       //}
       default:
-        m_pNodes = (std::list<Node *> *) pObject;
+        m_pNodes_stdList = (std::list<Node *> *) pObject;
         //vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
     }
   }
 
-  if (m_pNodes) {
-    vTrace(">>>>>>>>> iReassembleFromParcel grid with %lld nodes\n"_Stz, m_pNodes ? m_pNodes->size() : 0);
-    //vTrace( ">>>>>>>>> Node:%s Port:%lld\n"_Stz, m_pNodes->begin().
+  if (m_pNodes_stdList) {
+    vTrace(">>>>>>>>> iReassembleFromParcel grid with %lld nodes\n"_Stz, m_pNodes_stdList ? m_pNodes_stdList->size() : 0);
+    //vTrace( ">>>>>>>>> Node:%s Port:%lld\n"_Stz, m_pNodes_stdList->begin().
 
     for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);

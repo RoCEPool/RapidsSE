@@ -26,6 +26,8 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+#include "SP_Node.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -35,13 +37,14 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
   vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
   vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGridObject);
-  vAddStep("grid::getParts"_Stz,           &Step::vGridGetGridParts);
+  vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::listNodes"_Stz,         &Step::vGridListNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
+  vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
@@ -266,6 +269,46 @@ void Step::vGridPartitions(void)
   
   m_pDataStack->vPushInt(AM::nPtnsInGrid());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::seeNodes -- see nodes of the grid                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vGridSeeNodes(void)
+{
+  ENTRY();
+  
+  vTrace("Grid::\n"_Stz);
+  //vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nBootNodes());
+  vTrace("  %lld partitions per table = "
+         "%lld total partitions in grid "
+         "\n"_Stz
+         ,AM::nPtnsPerTable()
+         ,AM::nPtnsInGrid()
+         );
+  
+  SP_Node spNode;
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    
+    Node* pNode = *oNode_I;
+
+    vTrace("  %s\n"_Stz,spNode.sz(pNode));
+    
+//      vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
+//             (*oNode_I)->iNodeNo(),
+//             (*oNode_I)->szNodeNm(),
+//             (*oNode_I)->szIPAddr(),
+//             (*oNode_I)->iPortNo(),
+//             (*oNode_I)->pRecvSocket(),
+//             (*oNode_I)->pSendSocket(),
+//
+//             (*oNode_I)->pSendSocket() ? "connected" : "not connected");
+  }
+  
+  vTrace("\n"_Stz);
+
   EXIT();
 }
 

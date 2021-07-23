@@ -1065,14 +1065,16 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
 {
   _static_
   
+  TagSet* pTags;
+  
   if (! gpAttachMap) {
   
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
     
-    TagSet* pArgTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
-    if (pArgTags) {
-      if (pArgTags->bHasName(szVBtag))
+    pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
+    if (pTags) {
+      if (pTags->bHasName(szVBtag))
         return true;
     }
 
@@ -1087,6 +1089,12 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
     return false;
 
+  pTags = & gpAttachMap->m_xSysArgs.m_oArgTagSet;
+  if (pTags) {
+    if (pTags->bHasName(szVBtag))
+      return true;
+  }
+
   Job* pJob = MY::pJob();
   Op* pOp = MY::pOp();
   
@@ -1094,15 +1102,15 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
     return false;
 
 
-  TagSet* pJobTags = pJob->pJobTags();
-  if (pJobTags) {
-    if (pJobTags->bHasName(szVBtag))
+  pTags = pJob->pJobTags();
+  if (pTags) {
+    if (pTags->bHasName(szVBtag))
       return true;
   }
   
-  TagSet* pArgTags = AM::pDbgTagSet();
-  if (pArgTags) {
-    if (pArgTags->bHasName(szVBtag))
+  pTags = AM::pDbgTagSet();
+  if (pTags) {
+    if (pTags->bHasName(szVBtag))
       return true;
   }
 

@@ -42,6 +42,10 @@ readonly COLLECTLOGS_SCRIPT="collectLogs.sh"
 readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
 readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="15"  # seconds, or -1 to wait indefinitely
 readonly DEFAULT_CLUSTER_REBALANCE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
+readonly DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
+
+readonly REBALANCE_COMMAND="rebalance"
+readonly FORGET_NODE_COMMAND="__forgetNode"
 
 ###############################################################################
 ### Functions                                                               ###
@@ -411,10 +415,10 @@ function startCurrentNode() {
   "${startCmd[@]}" >> "${NOHUP_FILE}" 2>&1 & 
 
   # get the last pid and save it to a file
-  PID=$!
-  echo "${PID}" > "${PIDFILE}"
+  local pid=$!
+  echo "${pid}" > "${PIDFILE}"
 
-  echo "[Start script]: RapidsSE started as PID ${PID}." >> "${NOHUP_FILE}"
+  echo "[Start script]: RapidsSE started as PID ${pid}." >> "${NOHUP_FILE}"
   echo "[Start script]: RapidsSE started with the command:   ${startCmd[*]}" >> "${NOHUP_FILE}"
 }
 
@@ -748,8 +752,62 @@ function getNonXConnectedNodes() {
 ## Returns a non-zero exit code if the rebalance fails.
 ## Params: None
 
-function localClusterRebalance() {
+function clusterRebalance() {
   echo -n "Waiting for the cluster to rebalance data across all nodes..."
+
+  if runLocalPromptCommand "${REBALANCE_COMMAND}" "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}"; then
+    echo "Done"
+    return 0
+  fi
+
+  return 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Issues a "__forgetNode" command to the local SE instance. This forces the
+## cluster to rebalance data aaway from the nodes being removed, and deactivates
+## those nodes.
+## All nodes in the cluster must have already been started successfully.
+## This must be called from any node that is participating in the cluster.
+## Returns a non-zero exit code if the command fails.
+## Params:
+##  $@ - the list of node names to be forgotten
+
+function clusterForgetNodes() {
+
+  [ "$#" -gt 0 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
+
+  local -a nodeNames=("$@")
+
+  # We need to turn the array of node names into a comma separated string
+  local forgetNodeArgs
+  forgetNodeArgs="$(arrayToCommaSeparatedString "${nodeNames[@]}")"
+
+  echo -n "Waiting for the cluster to rebalance data and deactivate the nodes being removed..."
+
+  if runLocalPromptCommand "${FORGET_NODE_COMMAND} ${forgetNodeArgs}" "${DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT}"; then
+    echo "Done"
+    return 0
+  fi
+
+  return 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Runs a command on the current node.
+## This must be called from any node that is participating in the cluster.
+## Returns a non-zero exit code if the command fails.
+## Params:
+##  $1 - the command and arguments to be run
+##  $2 - the timeout to wait, or -1 if no timeout.
+
+function runLocalPromptCommand() {
+
+  [ "$#" -ge 1 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
+
+  local promptCmd="$1"
+  local timeout=-1
+  [ "$#" -gt 1 ] && timeout="$2"
 
   if [ -z "${CURRENT_NODE_NAME:-}" ]; then
     errorExit "The name of the local node has not been loaded."
@@ -758,7 +816,6 @@ function localClusterRebalance() {
   local host
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 
-  local rebalanceCmd="rebalance"
 
   declare -a cmd=()
   cmd+=("${EXE}")
@@ -769,47 +826,45 @@ function localClusterRebalance() {
   cmd+=("--commands")
   cmd+=("${ROOT_DIR}/commands")
   cmd+=("--command")
-  cmd+=("${rebalanceCmd}")
+  cmd+=("${promptCmd}")
   cmd+=("--appendTrace")
 
-  debugPrint "\nAbout to execute the cluster rebalance command: ${cmd[*]}"
+  debugPrint "\nAbout to execute the following cluster prompt command: ${cmd[*]}"
 
   # Set the library path so the RapidsSE library can be found and loaded
   export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
-  local cmdOutputFile="${ROOT_DIR}/clusterRebalance.log"
+  local cmdOutputFile="${ROOT_DIR}/.lastPromptCommand.log"
 
-  if [ "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}" -gt 0 ]; then
-    # Run the rebalance command but if it doesn't return after a given number of seconds then
+  if [ "${timeout}" -gt 0 ]; then
+    # Run the prompt command but if it doesn't return after a given number of seconds then
     # kill the process. If the process is killed then the exit status will be 124
     # so we can explicitly check for that.
-    timeout -k "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}s" "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
+    timeout -k "${timeout}s" "${timeout}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
     wait $!
     local cmdExitStatus="$?"
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
-      printError "\nThe cluster rebalance command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe command \"${promptCmd}\" timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
       return 1
 
     elif [ "${cmdExitStatus}" -ne 0 ]
     then
-      printError "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
       return 1
     fi
 
   else
-    # Run the rebalance command without a timeout.
+    # Run the command without a timeout.
     if ! "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 ; then
-      printError "\nThe rebalance command failed. Please refer to the log files of each node as well as the output file for this cluster rebalance operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
       return 1
     fi
   fi
 
   # Remove the output file on success
   rm "${cmdOutputFile}" &>/dev/null
-
-  echo "Done"
   return 0
 }
 
@@ -1119,6 +1174,22 @@ function stopCluster() {
   else
     echo "Stopped all nodes in the cluster."
   fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remotely stops specific RapidsSE nodes based on the node names provided.
+## Params:
+##  $@ : The names of the nodes to be stopped.
+
+function stopRemoteNodes() {
+
+  [ "$#" -ge 1 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
+
+  local -a nodeNames=("$@")
+
+  for nodeName in "${nodeNames[@]}"; do
+    stopRemoteNode "${nodeName}"
+  done
 }
 
 

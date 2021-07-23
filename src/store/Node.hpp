@@ -58,7 +58,8 @@ namespace STORE
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iPortNo(void);
-  
+    Stz* szRegionNm(void);
+
     void vDsv(void);
     s16KB  szDumpInfo(s16KB szBuffer);
     eNS  eState(void);

@@ -407,6 +407,7 @@ public:
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridPutGridParts(void);
+  void vGridSeeNodes(void);
   void vGridShow(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
@@ -1751,7 +1752,10 @@ public:
   void vTaskOperandYieldStore(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
+  void vTaskReleaseLockSets(void);
   void vTaskSeedInitially(void);
+  void vTaskSeeFrameStack(void);
+  void vTaskSeeLockSets(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);

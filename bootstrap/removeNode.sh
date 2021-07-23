@@ -269,6 +269,8 @@ function displayNodes() {
   echo ""
 
   printf "  %-10s  %s:%s\n" "Node Name" "Hostname" "Installation_Path"
+  printf "  %-10s  %s\n\n"  "---------" "---------------------------------------------------"
+
 
   for nodeName in "${nodeNames[@]}"; do
 
@@ -301,7 +303,8 @@ function validateNotInRemoveList() {
   for removeNode in "${REMOVED_NODE_LIST[@]}"; do
     # Case insensitive match
     if [ "${removeNode,,}" = "${nodeName,,}" ]; then
-      printError "Cannot remove node ${nodeName} as it is already set to be removed."
+      echo "Cannot remove node ${nodeName} as it is already set to be removed."
+      echo ""
       return 1
     fi
   done
@@ -339,7 +342,7 @@ function findNodeIndex() {
 }
 
 
-}# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Alters the in-memory cluster configuration interactively by prompting the user.
 ## Params: None
 
@@ -361,12 +364,30 @@ function alterConfiguration() {
   echo "Let's choose which nodes are to be removed from the RapidsSE cluster."
 
   local isFirst=1
+  local doDisplayNodes=1
 
   while true; do
 
+    # If we are down to 1 node left then we cannot remove it!
+    if [ "${#NODE_LIST[@]}" -eq 1 ]; then
+      echo ""
+      echo "No more nodes can be removed from the cluster."
+      break
+    fi
+
     # display list of nodes
-    displayNodes "${NODE_LIST[@]}"
-    echo ""
+    if [ "${doDisplayNodes}" -eq 1 ]; then
+
+      if ! [ "${isFirst}" -eq 1 ]; then
+        echo ""
+        echo "Remaining nodes:"
+      fi
+
+      displayNodes "${NODE_LIST[@]}"
+      echo ""
+    fi
+
+    doDisplayNodes=1
 
     # Capture the user input
     if [ "${isFirst}" -eq 1 ]; then
@@ -379,6 +400,8 @@ function alterConfiguration() {
 
     if [[ "${line}" = *[[:space:]]* ]]; then
       echo "Invalid input: node name cannot contain whitespace."
+      echo ""
+      doDisplayNodes=0
       continue
     fi
 
@@ -386,6 +409,8 @@ function alterConfiguration() {
 
       if [ "${isFirst}" -eq 1 ]; then
         echo "Invalid input: must specify a first node name."
+        echo ""
+        doDisplayNodes=0
         continue
 
       else
@@ -405,21 +430,30 @@ function alterConfiguration() {
     local nodeIndex
     nodeIndex="$(findNodeIndex "${line}")"
     if [ "${nodeIndex}" -eq -1 ]; then
+      echo "Invalid node name entered: ${line}"
+      echo ""
+      doDisplayNodes=0
       continue
     fi
 
     # Validate: cannot remove all remaining nodes from the grid.
     if [ "${#NODE_LIST[@]}" -eq 1 ]; then
-      printError "Cannot remove the last node in the RapidsSE cluster."
+      echo "Cannot remove the last node in the RapidsSE cluster."
+      echo ""
+      doDisplayNodes=0
       continue
     fi
 
+    # Add node name to the removed nodes list.
+    # Use the one from NODE_LIST so we get case sensitivity right.
+    node="${NODE_LIST[$nodeIndex]}"
+    REMOVED_NODE_LIST+=( "${node}" )
 
-    # remove node name from list
-    unset 'NODE_LIST[i]'
+    # Remove node name from list
+    unset 'NODE_LIST[nodeIndex]'
 
-    # add node name to the removed nodes list
-    REMOVED_NODE_LIST+=( "${line}" )
+    isFirst=0
+    echo "${node} will be removed from the cluster."
   done
 
 
@@ -441,6 +475,7 @@ function alterConfiguration() {
 
 function confirmNodeRemoval() {
   echo ""
+  echo ""
   echo "Node Removal"
   echo "------------"
   echo ""
@@ -449,6 +484,16 @@ function confirmNodeRemoval() {
   else
     echo "RapidsSE is now ready to remove ${#REMOVED_NODE_LIST[@]} nodes from the cluster."
   fi
+
+  if [ "${#NODE_LIST[@]}" -eq 1 ]; then
+    echo "The cluster will have ${#NODE_LIST[@]} node remaining."
+  else
+    echo "The cluster will have ${#NODE_LIST[@]} nodes remaining."
+  fi
+
+  echo ""
+  echo "The following nodes will be removed:"
+  displayNodes "${REMOVED_NODE_LIST[@]}"
 
   local line
 
@@ -508,6 +553,10 @@ loadNodeName
 # Check if the cluster is running
 isClusterRunning && CLUSTER_IS_RUNNING=1
 
+if [ "${#NODE_LIST[@]}" -eq 1 ]; then
+  errorExit "Cannot remove nodes when the cluster only has 1 node."
+fi
+
 # Is this an interactive or scripted install?
 if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   displayRemoveNodeWelcome
@@ -524,28 +573,33 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   backupConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
 
   if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
-    # TODO: Issue __forgetNode command
 
+    # Issue __forgetNode command
+    if ! clusterForgetNodes "${REMOVED_NODE_LIST[@]}"; then
+      removeConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
+      errorExit "Node removal has failed while trying to inactivate nodes."
+    fi
+    
     # TODO: Wait until the status prompt no longer shows rows for the nodes being removed.
 
-    # TODO: kill the nodes
-
-    true
+    # Stop the nodes being removed
+    stopRemoteNodes "${REMOVED_NODE_LIST[@]}"
   fi
 
-  # Remove the cluster.config on the removed nodes (so they cannot easily be started up)
-  removeConfig "" "${REMOVED_NODE_LIST[@]}"
+  # Write out new config on the current node
+  writeClusterConfig "${CONFIG_FILE}"
 
   # Write out new config to all existing nodes
   distributeFile "${CONFIG_FILE}" "${DEFAULT_CONFIG_PATH}" "${NODE_LIST[@]}"
 
+  # Remove the cluster.config on the removed nodes (so they cannot easily be started up)
+  removeConfig "" "${REMOVED_NODE_LIST[@]}"
+
   # Indicate that SE installation directories can be cleaned up
   echo ""
-  echo "The RapidsSE installations of the removed nodes can be removed, if no longer needed:"
+  echo "The installation directories of the removed nodes can be deleted, if no longer needed:"
   for nodeName in "${REMOVED_NODE_LIST[@]}"; do
-    local hostname
-    local installDir
-
+    
     hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
