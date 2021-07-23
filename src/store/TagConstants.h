@@ -116,6 +116,7 @@ static Stz* C_VB_API           = "<vb_api>"_Stz;
 static Stz* C_VB_BOOT          = "<vb_boot>"_Stz;
 static Stz* C_VB_LOGICCOMPILER = "<vb_logicCompiler>"_Stz;
 static Stz* C_VB_OP            = "<vb_op>"_Stz;
+static Stz* C_VB_NODE          = "<vb_node>"_Stz;
 static Stz* C_VB_PIPELINE      = "<vb_pipeline>"_Stz;
 static Stz* C_VB_PIPELINESPEC  = "<vb_pipelineSpec>"_Stz;
 static Stz* C_VB_PROCEDURE     = "<vb_procedure>"_Stz;

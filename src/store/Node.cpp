@@ -5,8 +5,8 @@
 #include "BASE.h"
 
 #include "Node.hpp"
-
 #include "SP_Node.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -256,6 +256,12 @@ void Node::vState(eNS eState)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_eState = eState;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node State: %s\n"_Stz,spNode.sz(this));
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,6 +282,12 @@ void Node::vRecvSocket(Socket* pSocket)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_pRecvSocket = pSocket;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node RecvSocket: %s\n"_Stz,spNode.sz(this));
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,6 +308,11 @@ void Node::vSendSocket(Socket* pSocket)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_pSendSocket = pSocket;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node: SendSocket Node: %s\n"_Stz,spNode.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
