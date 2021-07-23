@@ -3441,14 +3441,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // joinmap push
       case EO_PUSH_RLU_JOINMAP_BYTE: ArgNil(); // push rlu joinmap byte
         dLU0(EO_PUSH_RLU_JOINMAP_BYTE);
-        iTopB = *(aiDstk--);
-        I_PushInt(aRluCommon->m_baJoinMap[iTopB]);
-        break;//+endCase
-
-        // joinmap count push
-      case EO_PUSH_RLU_JOINMAP_CNT: ArgNil(); // push rlu joinmap count
-        dLU0(EO_PUSH_RLU_JOINMAP_CNT);
-        I_PushInt(aRluCommon->m_nJoinMapCnt);
+        iTopA = *(aiDstk--);
+        I_PushInt(aRluCommon->m_baJoinMap[iTopA]);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -3915,6 +3909,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinmap reset
+      case EO_RLU_RESET_JOINMAP: ArgNil(); // set byte in joinmap if not already set
+        dLU0(EO_RLU_RESET_JOINMAP);
+        for (i8 i_Byte = 0; i_Byte < aRluCommon->m_nJoinMapCnt; i_Byte++)
+          m_xRluCommon.m_baJoinMap[i_Byte] = 0;
+        aRluCommon->m_nJoinMapCnt = 0;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu joinmap set
       case EO_RLU_SET_JOINMAP_BYTE: ArgNil(); // set byte in joinmap
         dLU0(EO_RLU_SET_JOINMAP_BYTE);
@@ -3998,7 +4001,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_COLS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_DEVROW_NULS_TO_ROW_OFS: ArgNil(); // row buffer columns of row dev into row at offset column
+        dLU0(EO_DEVROW_NULS_TO_ROW_OFS);
+        vDev_ROW_NULS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
+        break;//+endCase
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVIXT_CRWBUF_BEGIN);
@@ -4018,6 +4026,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
         vDev_IXT_CRWBUF_NULL(&aiDstk);      // devixt
+        break;//+endCase
+
+      case EO_DEVIXT_CRWBUF_ROWCNT: ArgNil(); // push row count of crwbuffer
+        dLU0(EO_DEVIXT_CRWBUF_ROWCNT);
+        vDev_IXT_CRWBUF_ROWCNT(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_ROWNO: ArgNil(); // push rowno of crwbuffer

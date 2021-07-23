@@ -68,6 +68,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_CRWBUF_FINDCRW"_Stz, (const void *) vDev_IXT_CRWBUF_FINDCRW    },
   { "vDev_IXT_CRWBUF_NEXT"_Stz,    (const void *) vDev_IXT_CRWBUF_NEXT       },
   { "vDev_IXT_CRWBUF_NULL"_Stz,    (const void *) vDev_IXT_CRWBUF_NULL       },
+  { "vDev_IXT_CRWBUF_ROWCNT"_Stz,  (const void *) vDev_IXT_CRWBUF_ROWCNT     },
   { "vDev_IXT_CRWBUF_ROWNO"_Stz,   (const void *) vDev_IXT_CRWBUF_ROWNO      },
   { "vDev_IXT_CRWBUF_TEST"_Stz,    (const void *) vDev_IXT_CRWBUF_TEST       },
 
@@ -87,6 +88,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ROW_COLS_TO_LOCALS"_Stz, (const void *) vDev_ROW_COLS_TO_LOCALS   },
   { "vDev_ROW_COLS_TO_ROW"_Stz,    (const void *) vDev_ROW_COLS_TO_ROW      },
   { "vDev_ROW_COLS_TO_ROW_OFS"_Stz,(const void *) vDev_ROW_COLS_TO_ROW_OFS  },
+  { "vDev_ROW_NULS_TO_ROW_OFS"_Stz,(const void *) vDev_ROW_NULS_TO_ROW_OFS  },
 
   { "vDev_ROW_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMI },
   { "vDev_ROW_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMS },

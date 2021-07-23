@@ -68,14 +68,15 @@ void vDev_IXT_CRWBUF_FINDCRW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  //pop the row no
-  i8 i_Row = I_PopInt();
-
   //pop the device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
+  //pop the row no
+  i8 i_Row = I_PopInt();
+
   pDevIxt->m_i_Row = i_Row;
-  (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+  pDevIxt->m_aCrw =
+    (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
            + (C_CRW_HEADBYTES * pDevIxt->m_i_Row) );
 
   *aaiDstk = aiDstk;
@@ -119,6 +120,23 @@ void vDev_IXT_CRWBUF_NULL(i8** aaiDstk)
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   pDevIxt->m_pCrwBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  get current row cnt                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_CRWBUF_ROWCNT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  I_PushInt(pDevIxt->m_nRows);
 
   *aaiDstk = aiDstk;
 }
@@ -1913,6 +1931,31 @@ void vDev_ROW_COLS_PUSHSET_PST(i8** aaiDstk) {
   }
 
   *aaiDstk = --ayDst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* row buffer columns of row dev null values into row                         */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_NULS_TO_ROW_OFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row start col
+  i8 iDstCol = I_PopInt();
+
+  // pop the src row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
+  for (i8 i_Col = 0; i_Col < pDevRow->m_pStreamDef->nColumns(); i_Col++) {
+    pDevRowDst->m_aRow->vSetColNull(iDstCol++);
+  }
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
