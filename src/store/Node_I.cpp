@@ -84,12 +84,6 @@ Node_I::operator Node*(void) {
   }
 
   return nullptr;
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode; */
-
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,11 +97,6 @@ Node* Node_I::operator *(void)
     return *m_itNode;
 
   return nullptr;
-
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode;  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,22 +124,6 @@ bool Node_I::bMore(void)
   else {
     return false;
   }
-
-
-  /* oldcode
-  if (m_iStipulate == C_ALL) {
-    if (m_i_Node < AM::nNodes())
-      return true;
-    else
-      return false;
-  }
-  else {
-    if (m_i_Node < AM::nBootNodes())
-      return true;
-    else
-      return false;
-  } */
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,11 +162,6 @@ Node* Node_I::pNode(void)
     return *m_itNode;
 
   return nullptr;
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode;
-  */
 }
 
 /*============================================================================*/
