@@ -93,6 +93,78 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add node                                                                   */
+/*----------------------------------------------------------------------------*/
+void Grid::vAddNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pNodes_stdList->push_back(pNode);
+
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/**
+ * @brief Add new node into the cluster/grid
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
+                    Stz* pszAddr, i8 iPort, Stz* szRegionNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+
+  // Search List using Lambda function as comparator
+  std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
+               [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
+
+  if (itFound == m_pNodes_stdList->end()) { // not found, let's add
+    //vTrace("NOT FOUND\n"_Stz);
+
+    CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
+    i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
+
+
+    Node *pNode = new Node(l_iNodeNo,
+                           pszName,
+                           AM::nDegOfPar(),
+                           pszAddr,
+                           iPort,
+                           szRegionNm);
+
+    vAddNode(pNode); // this also incr m_nNodes;
+
+    // Sorting List using Lambda function as comparator
+    m_pNodes_stdList->sort([](Node* pNode1, Node* pNode2)
+                  {
+                    if(pNode1->iNodeNo() == pNode2->iNodeNo())
+                      return pNode1 < pNode2;
+                    return pNode1->iNodeNo() < pNode2->iNodeNo();
+                  });
+
+    vIncBootNodes();
+    vIncDefinedNodes();
+
+  } //else { vTrace("FOUND\n"_Stz);}
+
+  // Found, nothing to do
+
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of defined nodes in the grid                                    */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nBootNodes(void)
@@ -169,6 +241,29 @@ void Grid::vDsv(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get node by node ID                                                        */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pFindNode(i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
+  // OK, we got recursive call between pFindNode and pFindNode, from the pNode = (*oNode_I)
+
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    if (pNode) vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
+    if (pNode && pNode->iNodeNo() == iNodeNo) {
+
+      //vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
+      return pNode;
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find node by name                                                          */
 /*----------------------------------------------------------------------------*/
 Node* Grid::pFindNode(Stz* sName)
@@ -185,28 +280,6 @@ Node* Grid::pFindNode(Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node by node ID                                                        */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
-  // OK, we got recursive call between pFindNode and pFindNodeBYNodeNo, from the pNode = (*oNode_I)
-
-
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode) vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
-    if (pNode && pNode->iNodeNo() == iNodeNo) {
-
-      //vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
-      return pNode;
-    }
-  }
-
-  return nullptr;
-}
-
 /**
  * @brief returns a string buffer contains Grid Info
  * @details returns a string buffer contains Grid Info:
@@ -255,6 +328,7 @@ s16KB Grid::szDumpInfo(void)
   return sDumpBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
 /**
  * @brief returns a node object matched the node ID
  * @details returns a node object matched the node ID
@@ -426,21 +500,6 @@ i8 Grid::nNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put node                                                                   */
-/*----------------------------------------------------------------------------*/
-void Grid::vPutNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pNodes_stdList->push_back(pNode);
-
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given node                                                          */
 /*----------------------------------------------------------------------------*/
 void Grid::vRemoveNode(Node* pNode)
@@ -449,61 +508,6 @@ void Grid::vRemoveNode(Node* pNode)
 
   m_pNodes_stdList->remove(pNode);
   m_nBootNodes--;
-}
-
-/**
- * @brief Add new node into the cluster/grid
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-
-  // Search List using Lambda function as comparator
-  std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
-               [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
-
-  if (itFound == m_pNodes_stdList->end()) { // not found, let's add
-    //vTrace("NOT FOUND\n"_Stz);
-
-    CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
-    i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
-
-
-    Node *pNode = new Node(l_iNodeNo,
-                           pszName,
-                           AM::nDegOfPar(),
-                           pszAddr,
-                           iPort,
-                           szRegionNm);
-
-    vPutNode(pNode); // this also incr m_nNodes;
-
-    // Sorting List using Lambda function as comparator
-    m_pNodes_stdList->sort([](Node* pNode1, Node* pNode2)
-                  {
-                    if(pNode1->iNodeNo() == pNode2->iNodeNo())
-                      return pNode1 < pNode2;
-                    return pNode1->iNodeNo() < pNode2->iNodeNo();
-                  });
-
-    vIncBootNodes();
-    vIncDefinedNodes();
-
-  } //else { vTrace("FOUND\n"_Stz);}
-
-  // Found, nothing to do
-
-
 }
 
 /*----------------------------------------------------------------------------*/

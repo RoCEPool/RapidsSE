@@ -54,7 +54,10 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm);
+    void vAddNode(Node* pNode);
+  
+    void vAddNode(i8 iNodeNo, Stz* pszName,
+                  Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
@@ -64,8 +67,8 @@ namespace STORE
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
+    Node* pFindNode(i8 iNodeNo);
     Node* pFindNode(Stz* pName);
-    Node* pFindNodeByNodeNo(i8 iNodeNo);
     Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
     void vIncBootNodes(void);
@@ -75,7 +78,6 @@ namespace STORE
     void vDecDefinedNodes(void);
     void vDecBootNodes(void);
     i8   nNodes(void);
-    void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
     void vStartNodeNo(i8 iStartNodeNo);

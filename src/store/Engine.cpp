@@ -1786,7 +1786,7 @@ void Engine::vCreateGridOfNodes(void)
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo,
                            AM::szRegionName());
 
-    AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vAddNode(pNode);
 
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
