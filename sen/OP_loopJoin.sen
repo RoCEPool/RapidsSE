@@ -65,6 +65,9 @@
 
   PipeIn[].delete
 
+  // execute the endRightMarker asm handler
+  ZK_ENDRIGHTMARKER Counter0[] executeAsmArgs
+
   // delete the left buffer
   DevLftIxt.crwBuffer@ to Operand[]
   Operand[].isNull not if

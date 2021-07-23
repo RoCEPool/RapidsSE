@@ -299,7 +299,6 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
   /*  S  */ EO_PUSH_RLU_JOINMAP_BYTE, // push joinmap byte from rlu
-  /*  S  */ EO_PUSH_RLU_JOINMAP_CNT,  // push joinmap count from rlu
   /*  S  */ EO_PUSH_RLU_LOCALS,     // push locals pointer from the rlu
   /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
   /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
@@ -389,7 +388,8 @@ enum eEO : u2 // expression operators
   /*  M  */ EO_RLU_SET_ITEMS,        // set number of column items
 
   // rlu joinmap set
-  /*  M  */ EO_RLU_SET_JOINMAP_BYTE,     // set the JOINMAP byte for given index
+  /*  M  */ EO_RLU_RESET_JOINMAP,      // reset the JOINMAP
+  /*  M  */ EO_RLU_SET_JOINMAP_BYTE,   // set the JOINMAP byte for given index
 
   // rlu operators
   /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
@@ -408,11 +408,14 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_DEVROW_COLS_TO_ROW,       // row columns into row
   /*  S  */ EO_DEVROW_COLS_TO_ROW_OFS,   // row columns into row at offset column
 
+  /*  S  */ EO_DEVROW_NULS_TO_ROW_OFS,   // row columns into row at offset column
+
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
   /*  S  */ EO_DEVIXT_CRWBUF_FINDCRW, // find crw row given rowno
   /*  S  */ EO_DEVIXT_CRWBUF_NEXT,  // move to next row in crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_NULL,  // null crw buffer
+  /*  S  */ EO_DEVIXT_CRWBUF_ROWCNT,// push row count of crwbuffer
   /*  S  */ EO_DEVIXT_CRWBUF_ROWNO, // push rowno of crwbuffer
   /*  S  */ EO_DEVIXT_CRWBUF_TEST,  // test if there is a crw buffer
 
@@ -479,9 +482,12 @@ enum eEO : u2 // expression operators
 
   // row device row buffer operators
   /*     */ EO_DEVROW_ROWBUF_BEGIN,  // begin row traverse in row dev
+  /*  S  */ EO_DEVROW_ROWBUF_FINDROW, // find row row given rowno
   /*     */ EO_DEVROW_ROWBUF_NEXT,   // move to next src row in row dev
   /*     */ EO_DEVROW_ROWBUF_NULL,   // null row buffer in the row dev
   /*     */ EO_DEVROW_ROWBUF_RESET,  // reset rowslab in row dev
+  /*  S  */ EO_DEVROW_ROWBUF_ROWCNT,// push row count of rowbuffer
+  /*  S  */ EO_DEVROW_ROWBUF_ROWNO, // push rowno of rowbuffer
   /*     */ EO_DEVROW_ROWBUF_TEST,   // test if buffer in row dev
 
   // row device column pop operators
@@ -822,7 +828,6 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
   /*    */ "EO_PUSH_RLU_JOINMAP_BYTE"_Stz,
-  /*    */ "EO_PUSH_RLU_JOINMAP_CNT"_Stz,
   /*    */ "EO_PUSH_RLU_LOCALS"_Stz,
   /*    */ "EO_PUSH_RLU_POT"_Stz,
   /*    */ "EO_PUSH_RLU_PTN"_Stz,
@@ -911,6 +916,7 @@ static Stz* aEO[]
   /*    */ "EO_RLU_SET_ITEMS"_Stz,
 
   // rlu joinmap set
+  /*    */ "EO_RLU_RESET_JOINMAP"_Stz,
   /*    */ "EO_RLU_SET_JOINMAP_BYTE"_Stz,
 
   // rlu operators
@@ -929,12 +935,14 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_ROW"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_ROW_OFS"_Stz,
+  /*    */ "EO_DEVROW_NULS_TO_ROW_OFS"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_FINDCRW"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NEXT"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NULL"_Stz,
+  /*    */ "EO_DEVIXT_CRWBUF_ROWCNT"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_ROWNO"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_TEST"_Stz,
 
@@ -1001,9 +1009,12 @@ static Stz* aEO[]
 
   // row device row buffer operators
   /*     */ "EO_DEVROW_ROWBUF_BEGIN"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_FINDROW"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NEXT"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NULL"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_RESET"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_ROWCNT"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_ROWNO"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_TEST"_Stz,
 
   //  row device column operators
@@ -1350,7 +1361,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
   { EA_NONE,    0 },  // EO_PUSH_RLU_JOINMAP_BYTE
-  { EA_NONE,    0 },  // EO_PUSH_RLU_JOINMAP_CNT
   { EA_NONE,    0 },  // EO_PUSH_RLU_LOCALS
   { EA_NONE,    0 },  // EO_PUSH_RLU_POT
   { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
@@ -1440,6 +1450,7 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_RLU_SET_ITEMS
 
   // rlu joinmap set
+  { EA_NONE,     0 },  // EO_RLU_RESET_JOINMAP
   { EA_NONE,     0 },  // EO_RLU_SET_JOINMAP_BYTE
 
   // rlu operators
@@ -1458,12 +1469,14 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW_OFS
+  { EA_NONE,    0 },  // EO_DEVROW_NULS_TO_ROW_OFS
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_FINDROW
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NULL
+  { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_ROWCNT
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_ROWNO
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_TEST
 
@@ -1530,9 +1543,12 @@ static EoArg EoArgs[]
 
   // row device row buffer operators
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_BEGIN
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_FINDROW
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NULL
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_RESET
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_ROWCNT
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_ROWNO
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_TEST
 
   //  row device column operators
