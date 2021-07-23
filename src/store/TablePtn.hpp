@@ -3,7 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class CrwTablePtn; class RowTablePtn; }
+
+#include "Bucket.hpp"
+
+namespace STORE { class CrwTablePtn; class RowTablePtn; class Bucket;}
 
 namespace STORE
 {
@@ -11,8 +14,9 @@ namespace STORE
   {
   private:
 
-    /// will change to vector of bucket
-    Bucket* m_pBucket;
+
+    Bucket* m_pBucket; // Temporary: Be used for now as the only 1 bucket per partition location
+    BucketVec* m_pBucketVec;
 
     Table* m_pTable;  // table this partition belongs to
     tPN    m_tPtnNo;  // partition number (in grid)
@@ -37,8 +41,11 @@ namespace STORE
     tPN  tPtnNo(void);
     Table* pTable(void);
 
+    Bucket* pGetBucket(i8 i_Bucket);
+    void vAddBucket(Table* pTable, tPN tPtnNo);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);
+    i8   nBuckets(void);
     i8   nBuffers(void);
     void vDump(void);
     IndexTree* pIndexTree(i8 iIndexNo);

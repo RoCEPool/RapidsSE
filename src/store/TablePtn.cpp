@@ -15,6 +15,7 @@
 #include "IndexTree.hpp"
 
 //#include "CrvBuffer.hpp"
+
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "CrwTablePtn.hpp"
@@ -42,7 +43,12 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
 
-  m_pBucket = new Bucket(pTable, tPtnNo);
+  m_pBucketVec = new BucketVec;
+
+  vAddBucket(pTable, tPtnNo);
+
+  // Temporary: Be used for now as the only 1 bucket per partition location
+  m_pBucket = pGetBucket(0);
 
   _checkInitialised_(CN_TABLEPTN);
   
@@ -55,7 +61,14 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
 TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  delete m_pBucket;
+
+  // delete the Buckets
+  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
+    delete m_pBucketVec->pGet(i_Bucket);
+  }
+  m_pBucketVec->vClear();
+  // delete bucket vector
+  delete m_pBucketVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +156,35 @@ Table* TablePtn::pTable(void)
 /*----------------------------------------------------------------------------*/
 /*                                CRW/ROW                                     */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add bucket                                                                 */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddBucket(Table* pTable, tPN tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  Bucket* pBucket = new Bucket(pTable, tPtnNo);
+  m_pBucketVec->vAdd(pBucket);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a bucket by number                                                     */
+/*----------------------------------------------------------------------------*/
+Bucket* TablePtn::pGetBucket(i8 i_Bucket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  return m_pBucketVec->pGet(i_Bucket);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of bucket                                                       */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nBuckets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  return m_pBucketVec->nItems();
+}
 
 /*----------------------------------------------------------------------------*/
 /* add index                                                                  */
