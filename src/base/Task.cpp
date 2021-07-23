@@ -1031,7 +1031,7 @@ void Task::vReleaseLockSets(void)
 
   SP_Lock spLock;
 
-  vTrace("Read Lock Set\n"_Stz);
+  vTrace("Release Read Lock Set\n"_Stz);
   for (i8 i_Lock = m_oReadLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
@@ -1041,7 +1041,7 @@ void Task::vReleaseLockSets(void)
     pLock->vDropRead();
   }
 
-  vTrace("Write Lock Set\n"_Stz);
+  vTrace("Release Write Lock Set\n"_Stz);
   for (i8 i_Lock = m_oWriteLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {

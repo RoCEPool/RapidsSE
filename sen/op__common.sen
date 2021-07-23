@@ -488,6 +488,8 @@
 
   task::releaseLockSets
 
+  grid::seeNodes
+
   "<recover>" job[] job.tagSet@ tagSet.hasName if
     task::exception 999 op__execErrMsg
 

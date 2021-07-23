@@ -39,19 +39,27 @@ Stz* SP_Node::sz(Node* pNode)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  StrLib::vSprint(m_caResult,
-                  "[%lld] %8s %s %lld %8s send=%p recv=%pd"_Stz,
+  StrLib::vSprint(m_caResult
+                  ,"[%lld] %8s %s %lld %8s recv=%p send=%p [%s]"_Stz
                   
-                  pNode->iNodeNo(),
-                  pNode->szNodeNm(),
-                  pNode->szIPAddr(),
-                  pNode->iPortNo(),
+                  ,pNode->iNodeNo()
+                  ,pNode->szNodeNm()
+                  ,pNode->szIPAddr()
+                  ,pNode->iPortNo()
                   
-                  aNS[pNode->eState()],
-                  pNode->pSendSocket(),
-                  pNode->pRecvSocket(),
+                  ,aNS[pNode->eState()]
+                  ,pNode->pRecvSocket()
+                  ,pNode->pSendSocket()
 
-                  C_VARGS_END
+                  ,pNode->pSendSocket()
+                     ? pNode->pRecvSocket()
+                         ? "cross-connected"
+                         : "partially-connected"
+                     : pNode->pRecvSocket()
+                         ? "partially-connected"
+                         : "not-connected"
+
+                  ,C_VARGS_END
                   );
   
   return (Stz*) &m_caResult[0];

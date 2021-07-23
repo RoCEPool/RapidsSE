@@ -407,6 +407,7 @@ public:
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridPutGridParts(void);
+  void vGridSeeNodes(void);
   void vGridShow(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
