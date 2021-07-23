@@ -481,7 +481,7 @@ bool STORE::bNodeCompare(void* aNodeInsert, void* aNodeCursor, bool& bMatch)
   Node* pNodeInsert = _pNode(aNodeInsert);
   Node* pNodeCursor = _pNode(aNodeCursor);
     
-  if (! pNodeScan)
+  if (! pNodeCursor)
     return false;
   
   // do the node names match?
