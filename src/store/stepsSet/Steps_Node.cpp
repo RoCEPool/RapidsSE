@@ -78,7 +78,7 @@ void Step::vNodeNew(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   AM::pGrid()->vAddNode(pNode);
-  AM::pGrid()->vIncDefinedNodes();
+
   
   m_pDataStack->vPushPtr(pNode);
 

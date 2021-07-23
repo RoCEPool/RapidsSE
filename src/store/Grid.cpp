@@ -46,7 +46,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_bHasStarted     = false;
       
   // initialize the node array
-  m_nDefinedNodes   = 0;
   m_nConnectedNodes = 0;
 
 
@@ -153,8 +152,6 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
                     return pNode1->iNodeNo() < pNode2->iNodeNo();
                   });
 
-    vIncDefinedNodes();
-
   } //else { vTrace("FOUND\n"_Stz);}
 
   // Found, nothing to do
@@ -177,20 +174,6 @@ i8 Grid::nConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of defined nodes                                                */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nDefinedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnConnectedNodes()\n"_Stz);
-//
-//  vThreadCallStackDump();
-
-  return m_nDefinedNodes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump distributed state vector                                              */
 /*----------------------------------------------------------------------------*/
 void Grid::vDsv(void)
@@ -210,9 +193,7 @@ void Grid::vDsv(void)
          m_iStartNodeNo
          );
   
-  vTrace("  definedNodes %lld "
-         "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nDefinedNodes,
+  vTrace("connectedNodes %lld nodes %lld \n"_Stz,
          m_nConnectedNodes,
          nNodes());
 
@@ -290,9 +271,7 @@ s16KB Grid::szDumpInfo(void)
          m_bHasStarted ? "has"_Stz : "not"_Stz,
          m_iStartNodeNo  );
 
-  sDumpBuffer.vCatSprint("  definedNodes %lld "
-                         "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nDefinedNodes,
+  sDumpBuffer.vCatSprint("connectedNodes %lld nodes %lld \n"_Stz,
          m_nConnectedNodes,
          nNodes());
 
@@ -429,27 +408,6 @@ void Grid::vDecConnectedNodes(void)
 
   --m_nConnectedNodes;
 }
-
-/*----------------------------------------------------------------------------*/
-/* increment number of defined nodes                                          */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncDefinedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_nDefinedNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of defined nodes                                         */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecDefinedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_nDefinedNodes--;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get number of nodes in the node array                                      */

@@ -3494,7 +3494,6 @@ void AM::vRemoveNode(Stz* pszName)
       //delete pThisNode;
 
       AM::pGrid()->vDecConnectedNodes();
-      AM::pGrid()->vDecDefinedNodes();
       //AM::pGrid()->vDecBootNodes();
 
     }

@@ -1788,7 +1788,6 @@ void Engine::vCreateGridOfNodes(void)
 
     AM::pGrid()->vAddNode(pNode);
 
-    AM::pGrid()->vIncDefinedNodes();
   }
 }
 
