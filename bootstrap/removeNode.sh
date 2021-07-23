@@ -370,12 +370,19 @@ function alterConfiguration() {
 
     # If we are down to 1 node left then we cannot remove it!
     if [ "${#NODE_LIST[@]}" -eq 1 ]; then
+      echo ""
       echo "No more nodes can be removed from the cluster."
       break
     fi
 
     # display list of nodes
     if [ "${doDisplayNodes}" -eq 1 ]; then
+
+      if ! [ "${isFirst}" -eq 1 ]; then
+        echo ""
+        echo "Remaining nodes:"
+      fi
+
       displayNodes "${NODE_LIST[@]}"
       echo ""
     fi
@@ -479,9 +486,9 @@ function confirmNodeRemoval() {
   fi
 
   if [ "${#NODE_LIST[@]}" -eq 1 ]; then
-    echo "The cluster will have "${#NODE_LIST[@]}" node remaining."
+    echo "The cluster will have ${#NODE_LIST[@]} node remaining."
   else
-    echo "The cluster will have "${#NODE_LIST[@]}" nodes remaining."
+    echo "The cluster will have ${#NODE_LIST[@]} nodes remaining."
   fi
 
   echo ""
@@ -566,13 +573,17 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   backupConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
 
   if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
-    # TODO: Issue __forgetNode command
 
+    # Issue __forgetNode command
+    if ! clusterForgetNodes "${REMOVED_NODE_LIST[@]}"; then
+      removeConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
+      errorExit "Node removal has failed while trying to inactivate nodes."
+    fi
+    
     # TODO: Wait until the status prompt no longer shows rows for the nodes being removed.
 
-    # TODO: kill the nodes
-
-    true
+    # Stop the nodes being removed
+    stopRemoteNodes "${REMOVED_NODE_LIST[@]}"
   fi
 
   # Write out new config on the current node

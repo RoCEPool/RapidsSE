@@ -519,7 +519,7 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
     fi
 
     # Rebalance node data
-    if ! localClusterRebalance; then
+    if ! clusterRebalance; then
       if [ ${#ADDED_NODE_LIST[@]} -eq 1 ]; then
         errorExit "The addition of ${#ADDED_NODE_LIST[@]} node to RapidsSE is complete but the rebalance of data to that node has failed."
       else
