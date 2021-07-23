@@ -103,7 +103,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   // THIS IS WHERE THE CRASH HAPPENED
   // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
-  tPN tPtnNo = (i_Stream * AM::nConnectedNodes()) + 0;//AM::iThisNodeNo();
+  tPN tPtnNo = (i_Stream * AM::nNodes()) + 0;//AM::iThisNodeNo();
 
 
 

@@ -309,7 +309,7 @@ void Stage::vCreateStreams(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
-      for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
+      for (i_Node = 0; i_Node < AM::pGrid()->nNodes(); i_Node++) {
         i_NodeNo = AM::iGetNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
         vAdd(pStream);

@@ -18141,7 +18141,7 @@ void Task::vAddMunged(Task* )
     ": grid::setStartNode ( -- )\n"
     "\n"
     "  // set this node as the grid start node\n"
-    "  grid::thisNode@ grid::StartNode!\n"
+    "  // grid::thisNode@ grid::StartNode!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

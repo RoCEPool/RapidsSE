@@ -1288,7 +1288,6 @@ JobList* AM::pOriginatingJobs(void) {
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
-i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
@@ -3492,9 +3491,6 @@ void AM::vRemoveNode(Stz* pszName)
 
       AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
       //delete pThisNode;
-
-      AM::pGrid()->vDecConnectedNodes();
-      //AM::pGrid()->vDecBootNodes();
 
     }
   }

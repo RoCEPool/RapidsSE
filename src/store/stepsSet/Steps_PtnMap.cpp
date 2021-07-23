@@ -28,7 +28,7 @@ void Step::vPtnMapAdjust(void)
   PtnMap* pPtnMap = AM::pPtnMap();
   
   pPtnMap->vDumpDataBuffers();
-  pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustDataBuffers(AM::nNodes(),AM::nDegOfPar());
   pPtnMap->vDumpDataBuffers();
 
   EXIT();

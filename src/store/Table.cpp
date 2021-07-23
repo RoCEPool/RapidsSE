@@ -218,7 +218,7 @@ i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
 {
   _static_
   
-  i8 i_TablePtn = tPtnNo / AM::nConnectedNodes();
+  i8 i_TablePtn = tPtnNo / AM::nNodes();
   
   return i_TablePtn;
 }
@@ -230,7 +230,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 {
   _static_
 
-  tPN tPtnNo = (i_TablePtn * AM::nConnectedNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_TablePtn * AM::nNodes()) + AM::iThisNodeNo();
 
   //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
   
@@ -694,7 +694,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #else
   
   // modulo the hash to get partition number
-  i8 nPartitions = AM::nPtnsPerTable() * AM::nConnectedNodes();
+  i8 nPartitions = AM::nPtnsPerTable() * AM::nNodes();
   
   i_Ptn = iRowHash % nPartitions;
 

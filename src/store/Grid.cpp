@@ -46,8 +46,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_bHasStarted     = false;
       
   // initialize the node array
-  m_nConnectedNodes = 0;
-
 
   m_pNodes_stdList = new std::list<Node*>;
   m_pNodes_stdList->clear();
@@ -166,29 +164,13 @@ void Grid::vAdjustPtnMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  ++m_nConnectedNodes;
-
   // We have to readjust partition map when new connection or dropped connection
   PtnMap* pPtnMap = AM::pPtnMap();
 
   //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustDataBuffers(AM::nNodes(),AM::nDegOfPar());
   pPtnMap->vDumpDataBuffers();
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of connected nodes                                              */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnConnectedNodes()\n"_Stz);
-//
-//  vThreadCallStackDump();
-
-  return m_nConnectedNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,9 +193,8 @@ void Grid::vDsv(void)
          m_iStartNodeNo
          );
   
-  vTrace("connectedNodes %lld nodes %lld \n"_Stz,
-         m_nConnectedNodes,
-         nNodes());
+  vTrace("nodes %lld \n"_Stz,
+          nNodes());
 
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
@@ -289,8 +270,7 @@ s16KB Grid::szDumpInfo(void)
          m_bHasStarted ? "has"_Stz : "not"_Stz,
          m_iStartNodeNo  );
 
-  sDumpBuffer.vCatSprint("connectedNodes %lld nodes %lld \n"_Stz,
-         m_nConnectedNodes,
+  sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
          nNodes());
 
 
@@ -397,16 +377,6 @@ void Grid::vHasStarted(bool bHasStarted)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_bHasStarted = bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of connected nodes                                        */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  --m_nConnectedNodes;
 }
 
 /*----------------------------------------------------------------------------*/

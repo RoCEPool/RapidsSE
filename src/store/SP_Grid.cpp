@@ -41,11 +41,10 @@ Stz* SP_Grid::sz(Grid* pGrid)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%lld nodes %lld connected nodes %lld "
+                  "%lld nodes %lld "
                   "partitions/table %lld total partitions"_Stz,
                   
                   pGrid->nNodes(),
-                  pGrid->nConnectedNodes(),
                   
                   AM::nPtnsPerTable(),
                   AM::nPtnsInGrid(),

@@ -629,7 +629,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
     vTokenAccept();
     p_StageSpec->vTopology(PO_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
-    if ( i_Node > AM::pGrid()->nConnectedNodes() )
+    if ( i_Node > AM::pGrid()->nNodes() )
       return false;
     p_StageSpec->vSpecificNode(i_Node);
     return true;
@@ -786,11 +786,11 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
   
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nNodes();
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nNodes();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
@@ -833,11 +833,11 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iIncSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nNodes();
       break;
 
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iIncSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nNodes();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:

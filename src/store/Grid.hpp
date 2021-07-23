@@ -25,8 +25,6 @@ namespace STORE
     bool   m_bHasStarted;      // has the cluster started ?
     i8     m_iStartNodeNo;     // node that started the cluster
 
-    i8     m_nConnectedNodes;  // number of connected nodes in the grid
-
     Parcel* m_pParcel;
 
 #ifdef WITH_NODE_SKIPLIST
@@ -58,7 +56,6 @@ namespace STORE
                   Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
     void vAdjustPtnMap(void);
-    i8   nConnectedNodes(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
     Stz* szGridNm(void);
@@ -68,7 +65,6 @@ namespace STORE
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
-    void vDecConnectedNodes(void);
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
