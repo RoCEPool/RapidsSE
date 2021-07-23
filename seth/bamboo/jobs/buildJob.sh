@@ -111,6 +111,8 @@ trap onExit EXIT
 # Check the arguments
 if [ "$#" -eq 0 ]; then
   BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
+else
+  BUILD_TYPE="$1"
 fi
 
 # Check the necessary prerequisites
