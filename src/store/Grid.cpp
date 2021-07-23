@@ -53,9 +53,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 
 
   m_pNodes_stdList = new std::list<Node*>;
-  //m_pNodes_stdList = &m_lNodes;
-  //m_pNodes_stdList->clear();
-
   m_pNodes_stdList->clear();
 
   m_pParcel = nullptr;
@@ -71,7 +68,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 Grid::~Grid(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //delete m_pNodes_stdList;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,17 +315,6 @@ bool Grid::bFirstNode(i8 iNodeNo)
  }
 
   return false;
-}
-
-std::list<Node*>::const_iterator Grid::itBeginNodes(void)
-{
-  return m_pNodes_stdList->begin();
-}
-
-std::list<Node*>::const_iterator Grid::itEndNodes(void)
-{
-  //return m_pNodes_stdList->end();
-  return m_pNodes_stdList->end();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -710,7 +696,6 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
 
   if (m_pNodes_stdList) {
     vTrace(">>>>>>>>> iReassembleFromParcel grid with %lld nodes\n"_Stz, m_pNodes_stdList ? m_pNodes_stdList->size() : 0);
-    //vTrace( ">>>>>>>>> Node:%s Port:%lld\n"_Stz, m_pNodes_stdList->begin().
 
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
@@ -725,6 +710,20 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
 
   return nSize;
 }
+
+#ifndef WITH_NODE_SKIPLIST
+
+std::list<Node*>::const_iterator Grid::itBeginNodes(void)
+{
+  return m_pNodes_stdList->begin();
+}
+
+std::list<Node*>::const_iterator Grid::itEndNodes(void)
+{
+  return m_pNodes_stdList->end();
+}
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
