@@ -403,7 +403,6 @@ public:
   void vGridGetGridParts(void);
   void vGridFindNode(void);
   void vGridIncConnectedNodes(void);
-  void vGridListNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridPutGridParts(void);

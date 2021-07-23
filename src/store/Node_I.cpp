@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-
-
 #include "Node_I.hpp"
 #include "Grid.hpp"
 
@@ -33,27 +31,6 @@ Node_I::Node_I(void)
   m_itNode = AM::pGrid()->itBeginNodes(); // begin
   m_itEndNode = AM::pGrid()->itEndNodes(); // end
 
-  _checkInitialised_(CN_NODE_I);
-  
-  vFirst();
-  
-  _postcondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 i_Node)
-: Object(CN_NODE_I)
-{
-  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
-  
-  m_i_Node = i_Node;
-
-  // newcode
-  m_itNode = AM::pGrid()->itBeginNodes(); // begin
-  m_itEndNode = AM::pGrid()->itEndNodes(); // end
-  
   _checkInitialised_(CN_NODE_I);
   
   vFirst();

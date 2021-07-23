@@ -24,7 +24,6 @@ namespace STORE
     void  operator delete(void*);
     
     Node_I(void);
-    Node_I(i8 i_Node);
    ~Node_I(void) noexcept(false);
     
     operator Node*(void);   // auto conversion

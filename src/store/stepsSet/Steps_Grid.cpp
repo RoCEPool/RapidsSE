@@ -40,7 +40,6 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
-  vAddStep("grid::listNodes"_Stz,         &Step::vGridListNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
@@ -203,44 +202,6 @@ void Step::vGridIncConnectedNodes(void)
   
   AM::pGrid()->vIncConnectedNodes();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::listNodes -- list nodes in this grid                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vGridListNodes(void)
-{
-  ENTRY();
-  
-  Table* pStreamSetTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpStreamSetTable);
-  StreamDef* pStreamDef  = pStreamSetTable->pStreamDef();
-  StreamSet* pStreamSet  = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
-
-  i8 i_Node = m_pDataStack->iPopAsInt(__func__);
-  for (Node_I oNode_I(i_Node); oNode_I.bMore(); oNode_I.vNext()) {
-
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                      C_VARGS_BEGIN,
-                                      (*oNode_I)->iNodeNo(),
-                                      (*oNode_I)->szNodeNm(),
-                                      (*oNode_I)->nDegOfPar(),
-                                      (*oNode_I)->szIPAddr(),
-                                      (*oNode_I)->iPortNo(),
-                                      aNS[(*oNode_I)->eState()],
-                                      C_VARGS_END);
-  
-    if (! pRow) {
-      // call again
-      m_pDataStack->vPushInt(oNode_I.i_Node());
-      break;
-    }
-    
-  }
-  
-  // done (dont call again)
-  m_pDataStack->vPushInt(0);
-
   EXIT();
 }
 
