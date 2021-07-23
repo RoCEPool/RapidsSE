@@ -32,8 +32,15 @@ namespace STORE
 
     Parcel* m_pParcel;
 
+#ifdef WITH_NODE_SKIPLIST
+
     std::list<Node*> * m_pNodes_stdList;
 
+#else
+
+    std::list<Node*> * m_pNodes_stdList;
+
+#endif
 
   
     // must be last
@@ -86,9 +93,13 @@ namespace STORE
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);
 
+#ifndef WITH_NODE_SKIPLIST
+
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);
     std::list<Node*>::const_iterator itEndNodes(void);
+
+#endif
   
     Footer* aFooter(void);
   };
