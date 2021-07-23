@@ -174,9 +174,10 @@ namespace STORE
   eEC  eJob_checkCluster(void);
   void vJob_postRecv(Job* pJob);
   void vJob_preSend(Job* pJob);
+
+  bool bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch);
 }
 
-bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 typedef void* (*pFUN)(void*);
 
