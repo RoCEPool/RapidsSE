@@ -476,24 +476,24 @@ i8   Node::iGetPid(void)
 /*----------------------------------------------------------------------------*/
 /* compare two nodes by their nodeNm                                          */
 /*----------------------------------------------------------------------------*/
-bool STORE::bNodeCompare(void* aNodeInsert, void* aNodeScan, bool& bMatch)
+bool STORE::bNodeCompare(void* aNodeInsert, void* aNodeCursor, bool& bMatch)
 {
   Node* pNodeInsert = _pNode(aNodeInsert);
-  Node* pNodeScan   = _pNode(aNodeScan);
+  Node* pNodeCursor = _pNode(aNodeCursor);
     
   if (! pNodeScan)
     return false;
   
-  // do the job id's match?
-  if (pNodeInsert->szNodeNm()->bEqual(pNodeScan->szNodeNm()))
+  // do the node names match?
+  if (pNodeInsert->szNodeNm()->bEqual(pNodeCursor->szNodeNm()))
     bMatch = true;
   else
     bMatch = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is this node to be inserted lexicography after the scan?
+  // is this node being inserted lexicography after the cursor?
   
-  if (pNodeInsert->szNodeNm()->bGreater(pNodeScan->szNodeNm()))
+  if (pNodeInsert->szNodeNm()->bGreater(pNodeCursor->szNodeNm()))
     return true;
   else
     return false;

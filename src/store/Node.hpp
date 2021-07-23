@@ -94,7 +94,7 @@ namespace STORE
   
   Node* _pNode(void* aAddr);
 
-  bool bNodeCompare(void* aNodeInsert, void* aNodeScan, bool& bMatch);
+  bool bNodeCompare(void* aNodeInsert, void* aNodeCursor, bool& bMatch);
 }
 
 /*============================================================================*/
