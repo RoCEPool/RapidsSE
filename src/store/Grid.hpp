@@ -23,7 +23,6 @@ namespace STORE
     Node*  m_pThisNode;        // this node pointer
   
     bool   m_bHasStarted;      // has the cluster started ?
-    i8     m_iStartNodeNo;     // node that started the cluster
 
     Parcel* m_pParcel;
 
@@ -68,8 +67,6 @@ namespace STORE
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
-    void vStartNodeNo(i8 iStartNodeNo);
-    i8   iStartNodeNo(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNodeNo(i8 iNode);

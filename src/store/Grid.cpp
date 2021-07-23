@@ -42,7 +42,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 
   m_pThisNode       = nullptr;
   
-  m_iStartNodeNo    = C_UNKNOWN;
   m_bHasStarted     = false;
       
   // initialize the node array
@@ -188,9 +187,8 @@ void Grid::vDsv(void)
          m_iThisNode,
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
-  vTrace("  %s started; start node %lld\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz,
-         m_iStartNodeNo
+  vTrace("  %s started\n"_Stz,
+         m_bHasStarted ? "has"_Stz : "not"_Stz
          );
   
   vTrace("nodes %lld \n"_Stz,
@@ -266,9 +264,8 @@ s16KB Grid::szDumpInfo(void)
          m_iThisNode,
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
-  sDumpBuffer.vCatSprint("  %s started; start node %lld\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz,
-         m_iStartNodeNo  );
+  sDumpBuffer.vCatSprint("  %s started\n"_Stz,
+         m_bHasStarted ? "has"_Stz : "not"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
          nNodes());
@@ -423,26 +420,6 @@ void Grid::vSeeNodes(void)
   }
   
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get grid node where cluster was started                                    */
-/*----------------------------------------------------------------------------*/
-i8 Grid::iStartNodeNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_iStartNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set grid node where cluster was started                                    */
-/*----------------------------------------------------------------------------*/
-void Grid::vStartNodeNo(i8 iStartNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_iStartNodeNo = iStartNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
