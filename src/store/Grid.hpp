@@ -28,7 +28,6 @@ namespace STORE
     i8     m_nBootNodes;       // number of nodes supplied via SE -node
     i8     m_nDefinedNodes;    // number of nodes in the nodes array
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
-    i8     m_nNodes;           // number of nodes in array
 
     Parcel* m_pParcel;
 
@@ -75,8 +74,6 @@ namespace STORE
     void vDecConnectedNodes(void);
     void vDecDefinedNodes(void);
     void vDecBootNodes(void);
-    void vIncNodes(void);
-    void vDecNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vPutNodeR(Node* pNode);

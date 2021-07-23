@@ -49,7 +49,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_nBootNodes      = 0;
   m_nDefinedNodes   = 0;
   m_nConnectedNodes = 0;
-  m_nNodes          = 0;
 
 
   m_pNodes_stdList = new std::list<Node*>;
@@ -160,7 +159,7 @@ void Grid::vDsv(void)
          m_nBootNodes,
          m_nDefinedNodes,
          m_nConnectedNodes,
-         m_nNodes);
+         nNodes());
 
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
@@ -240,7 +239,7 @@ s16KB Grid::szDumpInfo(void)
          m_nBootNodes,
          m_nDefinedNodes,
          m_nConnectedNodes,
-         m_nNodes);
+         nNodes());
 
 
 
@@ -415,22 +414,6 @@ void Grid::vDecDefinedNodes(void)
   m_nDefinedNodes--;
 }
 
-/*----------------------------------------------------------------------------*/
-/* decrement number of nodes in the node array                                */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  --m_nNodes;
-}
-
-void Grid::vIncNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  ++m_nNodes;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get number of nodes in the node array                                      */
@@ -450,7 +433,6 @@ void Grid::vPutNode(Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes_stdList->push_back(pNode);
-  m_nNodes++;
 
   if (AM::TRACE::bVerbose(C_VB_NODE)) {
     SP_Node spNode;
@@ -466,7 +448,6 @@ void Grid::vPutNodeR(Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes_stdList->push_front(pNode);
-  m_nNodes++;
 
   if (AM::TRACE::bVerbose(C_VB_NODE)) {
     SP_Node spNode;
