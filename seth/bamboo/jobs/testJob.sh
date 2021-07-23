@@ -19,6 +19,8 @@
 readonly DIR="$(dirname "$0")"
 readonly SCRIPTS_DIR="${DIR}/../scripts"
 readonly PROJ_ROOT="${DIR}/../../.."
+readonly BIN_DIR="${PROJ_ROOT}/bin"
+readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
 readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
@@ -76,10 +78,6 @@ function onExit() {
 
   # Kill any rogue SE and SETH instances owned by the current user.
   killRogueInstances
-
-  # Compress any large files before they get collected by Bamboo
-  compressLargeFiles
-
 
   local statusMsg="Completed Successfully"
   if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
