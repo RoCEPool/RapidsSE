@@ -399,7 +399,7 @@ void Step::vStreamSetAddNodeStatus(void)
   m_pDataStack->vPushInt(pRow ? true : false);
   */
   Row *pRow = nullptr;
-  for (Node_I oNode_I(0, C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
 
     pRow = pStreamSet->pAllotRow(pStreamDef,
                                  C_VARGS_BEGIN,

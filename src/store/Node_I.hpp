@@ -12,8 +12,7 @@ namespace STORE
   {
   private:
   
-    i8 m_iStipulate;
-    i8 m_i_Node;
+    i8 m_i_Nodee;
 
     std::list<Node*>::const_iterator m_itNode;
     std::list<Node*>::const_iterator m_itEndNode;
@@ -24,8 +23,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Node_I(i8 iStipulate=0);
-    Node_I(i8 i_Node,i8 iStipulate=0);
+    Node_I(void);
+    Node_I(i8 i_Node);
    ~Node_I(void) noexcept(false);
     
     operator Node*(void);   // auto conversion

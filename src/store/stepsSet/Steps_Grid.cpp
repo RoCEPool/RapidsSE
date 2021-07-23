@@ -157,7 +157,7 @@ void Step::vGridPutGridParts(void)
   Grid* pGridLocal = AM::pGrid();
 
   if (pGridLocal->nNodes() == pGridRemote->nNodes()) {
-    for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
       if (pGridRemote->pFindNodeByNodeNo(pNode->iNodeNo()) == nullptr) {
@@ -218,7 +218,7 @@ void Step::vGridListNodes(void)
   StreamSet* pStreamSet  = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
 
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
-  for (Node_I oNode_I(i_Node,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I(i_Node); oNode_I.bMore(); oNode_I.vNext()) {
 
     Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,

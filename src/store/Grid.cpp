@@ -166,7 +166,7 @@ void Grid::vDsv(void)
          m_nNodes);
 
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode) pNode->vDsv();
   }
@@ -179,7 +179,7 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
@@ -198,7 +198,7 @@ Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
   // OK, we got recursive call between pFindNode and pFindNodeBYNodeNo, from the pNode = (*oNode_I)
 
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode) vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
     if (pNode && pNode->iNodeNo() == iNodeNo) {
@@ -247,7 +247,7 @@ s16KB Grid::szDumpInfo(void)
 
 
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode) {
       sDumpBuffer = pNode->szDumpInfo(sDumpBuffer);
@@ -272,7 +272,7 @@ Node* Grid::pGetNode(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && pNode->iNodeNo() == iNodeNo)
       return pNode;
@@ -294,7 +294,7 @@ i8 Grid::iGetNodeNo(i8 i_Node)
 
   //vTrace("Grid::iGetNodeNo for this index: %lld  "_Stz, i_Node);
   i8 iSeq = 0;
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && i_Node == iSeq++) {
       //vTrace("iGetNodeNo %lld\n"_Stz, pNode->iNodeNo());
@@ -311,7 +311,7 @@ i8 Grid::iGetNodeNo(i8 i_Node)
 bool Grid::bFirstNode(i8 iNodeNo)
 {
   // Get first node, check if the same
-  Node_I oNode_I(0,C_ALL);
+  Node_I oNode_I;
   if (oNode_I.bMore()) {
     if ((*oNode_I)->iNodeNo() == iNodeNo)
       return true;
@@ -712,7 +712,7 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
     vTrace(">>>>>>>>> iReassembleFromParcel grid with %lld nodes\n"_Stz, m_pNodes_stdList ? m_pNodes_stdList->size() : 0);
     //vTrace( ">>>>>>>>> Node:%s Port:%lld\n"_Stz, m_pNodes_stdList->begin().
 
-    for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
       if (pNode) pNode->vDsv();
     }

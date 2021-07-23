@@ -21,12 +21,11 @@ __aFooterFunction(Node_I);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 iStipulate)
+Node_I::Node_I(void)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
-  m_iStipulate = iStipulate;
   m_i_Node = 0;
 
   // newcode
@@ -44,12 +43,11 @@ Node_I::Node_I(i8 iStipulate)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 i_Node,i8 iStipulate)
+Node_I::Node_I(i8 i_Node)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
-  m_iStipulate = iStipulate;
   m_i_Node = i_Node;
 
   // newcode
