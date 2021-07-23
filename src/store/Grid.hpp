@@ -57,21 +57,22 @@ namespace STORE
     void vAdjustPtnMap(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
+    Node* pFindNode(i8 iNodeNo);
+    Node* pFindNode(Stz* pName);
+    bool bFirstNode(i8 iNodeNo);
+    Node* pGetNode(i8 i_NodeNo);
+    i8   iGetNodeNo(i8 i_Node);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
-    Node* pFindNode(i8 iNodeNo);
-    Node* pFindNode(Stz* pName);
-    Node* pGetNode(i8 i_NodeNo);
-    i8   iGetNodeNo(i8 i_Node);
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
+    void vSetThisNode (Node* pNode); // newcode
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNodeNo(i8 iNode);
-    void vSetThisNode (Node* pNode); // newcode
-    bool bFirstNode(i8 iNodeNo);
+
     i8   iPrepareParcel(void);
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);

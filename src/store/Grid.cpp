@@ -202,45 +202,6 @@ void Grid::vDsv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node by node ID                                                        */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
-  // OK, we got recursive call between pFindNode and pFindNode, from the pNode = (*oNode_I)
-
-
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode) vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
-    if (pNode && pNode->iNodeNo() == iNodeNo) {
-
-      //vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
-      return pNode;
-    }
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find node by name                                                          */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(Stz* sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode && pNode->szNodeNm()->bSame(sName))
-      return pNode;
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /**
  * @brief returns a string buffer contains Grid Info
  * @details returns a string buffer contains Grid Info:
@@ -282,6 +243,45 @@ s16KB Grid::szDumpInfo(void)
   sDumpBuffer.vCatSprint("%s"_Stz,
                          "======================================================\n\n"_Stz);
   return sDumpBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node by node ID                                                        */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pFindNode(i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
+  // OK, we got recursive call between pFindNode and pFindNode, from the pNode = (*oNode_I)
+
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    if (pNode) vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
+    if (pNode && pNode->iNodeNo() == iNodeNo) {
+
+      //vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
+      return pNode;
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find node by name                                                          */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pFindNode(Stz* sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    if (pNode && pNode->szNodeNm()->bSame(sName))
+      return pNode;
+  }
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,6 +423,16 @@ void Grid::vSeeNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this node object                                                       */
+/*----------------------------------------------------------------------------*/
+void Grid::vSetThisNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pThisNode = pNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this node number                                                       */
 /*----------------------------------------------------------------------------*/
 void Grid::vThisNodeNo(i8 iNode)
@@ -431,16 +441,6 @@ void Grid::vThisNodeNo(i8 iNode)
   // iNode is no longer an index
   m_iThisNode = iNode;
   //m_pThisNode = pGetNode(iNode); oldcode
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this node object                                                       */
-/*----------------------------------------------------------------------------*/
-void Grid::vSetThisNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pThisNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/
