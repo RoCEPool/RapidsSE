@@ -14,8 +14,18 @@ namespace STORE
   
     i8 m_i_Node;
 
+#ifdef WITH_NODE_SKIPLIST
+
     std::list<Node*>::const_iterator m_itNode;
     std::list<Node*>::const_iterator m_itEndNode;
+  
+#else
+
+    std::list<Node*>::const_iterator m_itNode;
+    std::list<Node*>::const_iterator m_itEndNode;
+
+#endif
+  
     // must be last
     Footer m_xFooter;
     
