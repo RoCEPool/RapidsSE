@@ -43,7 +43,6 @@ namespace STORE
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
     Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
