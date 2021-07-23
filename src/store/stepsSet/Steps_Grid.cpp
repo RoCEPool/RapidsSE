@@ -63,7 +63,7 @@ void Step::vGridBootNodes(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nBootNodes());
+  m_pDataStack->vPushInt(AM::nNodes());
   
   EXIT();
 }
@@ -253,7 +253,7 @@ void Step::vGridShow(void)
   ENTRY();
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nBootNodes());
+  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nNodes());
   vTrace("  %lld partitions per table\n"_Stz,AM::nPtnsPerTable());
   vTrace("  %lld total partitions\n"_Stz,AM::nPtnsInGrid());
   

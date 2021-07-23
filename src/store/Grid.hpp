@@ -25,7 +25,6 @@ namespace STORE
     bool   m_bHasStarted;      // has the cluster started ?
     i8     m_iStartNodeNo;     // node that started the cluster
 
-    i8     m_nBootNodes;       // number of nodes supplied via SE -node
     i8     m_nDefinedNodes;    // number of nodes in the nodes array
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
 
@@ -59,7 +58,6 @@ namespace STORE
     void vAddNode(i8 iNodeNo, Stz* pszName,
                   Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
-    i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
     void vDsv(void);
@@ -71,12 +69,10 @@ namespace STORE
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
-    void vIncBootNodes(void);
     void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
     void vDecConnectedNodes(void);
     void vDecDefinedNodes(void);
-    void vDecBootNodes(void);
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);

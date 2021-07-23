@@ -1645,7 +1645,7 @@ void Engine::vStartSystem(void)
     vInfo("  Creating Partition Map\n"_Stz);
 
   gpAttachMap->m_pPtnMap =
-      new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
+      new PtnMap(gpAttachMap->m_pGrid->nNodes(),
                  gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1788,7 +1788,6 @@ void Engine::vCreateGridOfNodes(void)
 
     AM::pGrid()->vAddNode(pNode);
 
-    AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
   }
 }

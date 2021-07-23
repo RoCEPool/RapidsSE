@@ -46,7 +46,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_bHasStarted     = false;
       
   // initialize the node array
-  m_nBootNodes      = 0;
   m_nDefinedNodes   = 0;
   m_nConnectedNodes = 0;
 
@@ -154,7 +153,6 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
                     return pNode1->iNodeNo() < pNode2->iNodeNo();
                   });
 
-    vIncBootNodes();
     vIncDefinedNodes();
 
   } //else { vTrace("FOUND\n"_Stz);}
@@ -162,20 +160,6 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
   // Found, nothing to do
 
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of defined nodes in the grid                                    */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nBootNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnDefinedNode()\n"_Stz);
-//
-//  vThreadCallStackDump();
-  
-  return m_nBootNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,9 +210,8 @@ void Grid::vDsv(void)
          m_iStartNodeNo
          );
   
-  vTrace("  bootNodes %lld definedNodes %lld "
+  vTrace("  definedNodes %lld "
          "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nBootNodes,
          m_nDefinedNodes,
          m_nConnectedNodes,
          nNodes());
@@ -307,9 +290,8 @@ s16KB Grid::szDumpInfo(void)
          m_bHasStarted ? "has"_Stz : "not"_Stz,
          m_iStartNodeNo  );
 
-  sDumpBuffer.vCatSprint("  bootNodes %lld definedNodes %lld "
-         "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nBootNodes,
+  sDumpBuffer.vCatSprint("  definedNodes %lld "
+                         "connectedNodes %lld nodes %lld \n"_Stz,
          m_nDefinedNodes,
          m_nConnectedNodes,
          nNodes());
@@ -421,26 +403,6 @@ void Grid::vHasStarted(bool bHasStarted)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment number of boot nodes                                              */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncBootNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_nBootNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of boot nodes                                              */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecBootNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_nBootNodes--;
-}
-
-/*----------------------------------------------------------------------------*/
 /* increment number of connected nodes                                        */
 /*----------------------------------------------------------------------------*/
 void Grid::vIncConnectedNodes(void)
@@ -507,7 +469,6 @@ void Grid::vRemoveNode(Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes_stdList->remove(pNode);
-  m_nBootNodes--;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,7 +576,6 @@ i8 Grid::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  //std::list<Node*> * m_pNodes_stdList = &m_lNodes;
   m_pParcel->vAddObject((Object *)m_pNodes_stdList);
 
   return m_pParcel->nObjects();

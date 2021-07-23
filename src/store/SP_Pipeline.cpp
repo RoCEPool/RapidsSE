@@ -62,7 +62,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pPipeline
         
         ,pGrid->szGridNm()
-        ,pGrid->nBootNodes()
+        ,pGrid->nNodes()
         ,AM::nPtnsPerTable()
         
         ,pPipeline->pPipelineSpec()

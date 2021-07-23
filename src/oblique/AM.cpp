@@ -1289,7 +1289,6 @@ JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
-i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
@@ -1966,7 +1965,7 @@ Stz* AM::szSummary(s256& sSummary)
   Now spNow;
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
-                   AM::nBootNodes(),
+                   AM::nNodes(),
                    AM::nPtnsPerTable(),
                    AM::nThreads(),
                    AM::szBuild(),
@@ -1985,7 +1984,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
-                   AM::nBootNodes(),
+                   AM::nNodes(),
                    AM::nPtnsPerTable(),
                    AM::nThreads()
                    );

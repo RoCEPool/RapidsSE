@@ -44,7 +44,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
                   "%lld nodes %lld connected nodes %lld "
                   "partitions/table %lld total partitions"_Stz,
                   
-                  pGrid->nBootNodes(),
+                  pGrid->nNodes(),
                   pGrid->nConnectedNodes(),
                   
                   AM::nPtnsPerTable(),

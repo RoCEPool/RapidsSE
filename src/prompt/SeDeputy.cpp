@@ -263,7 +263,7 @@ void SeDeputy::vReportTime(void)
     Now spNow;
     vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
            szNote,
-           AM::nBootNodes(),
+           AM::nNodes(),
            AM::nPtnsPerTable(),
            AM::nThreads(),
            AM::szBuild(),
