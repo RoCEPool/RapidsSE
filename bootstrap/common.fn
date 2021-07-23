@@ -205,6 +205,31 @@ function isValueInArray() {
   return 1
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Takes an array and prints to stdout a string where each item is nicely
+## comma separated (with an additional space).
+## Params:
+##  $@ - the array of items
+
+function arrayToCommaSeparatedString() {
+
+  [ "$#" -gt 0 ] || errorExit "Function displayNodes() cannot have 0 arguments."
+
+  local -a arr=("$@")
+  local isFirst=1
+  local str=""
+
+  for item in "${arr[@]}"; do
+    if [ "${isFirst}" -eq 1 ]; then
+      isFirst=0
+      str+="${item}"
+    else
+      str+=", ${item}"
+    fi
+  done
+
+  echo "${str}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Compares two version numbers in the form x.y.z and returns a successful
