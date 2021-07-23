@@ -54,7 +54,7 @@
   then
 
   // set the send socket in the node
-  grid::incConnectedNodes
+  grid::adjustPtnMap
   Socket[] Node[] node.sendSocket!
 
  

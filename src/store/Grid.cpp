@@ -160,6 +160,24 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
 }
 
 /*----------------------------------------------------------------------------*/
+/* increment number of connected nodes                                        */
+/*----------------------------------------------------------------------------*/
+void Grid::vAdjustPtnMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  ++m_nConnectedNodes;
+
+  // We have to readjust partition map when new connection or dropped connection
+  PtnMap* pPtnMap = AM::pPtnMap();
+
+  //pPtnMap->vDumpDataBuffers(); // debug dump
+  pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
+  pPtnMap->vDumpDataBuffers();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of connected nodes                                              */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nConnectedNodes(void)
@@ -379,24 +397,6 @@ void Grid::vHasStarted(bool bHasStarted)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_bHasStarted = bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of connected nodes                                        */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  ++m_nConnectedNodes;
-
-  // We have to readjust partition map when new connection or dropped connection
-  PtnMap* pPtnMap = AM::pPtnMap();
-
-  //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
-  pPtnMap->vDumpDataBuffers();
-
 }
 
 /*----------------------------------------------------------------------------*/

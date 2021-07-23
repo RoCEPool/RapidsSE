@@ -396,13 +396,13 @@ public:
   void vFilterSet(void);
 
   // grid
+  void vGridAdjustPtnMap(void);
   void vGridBootNodes(void);
   void vGridConnectedNodes(void);
   void vGridDumpInfo(void);
   void vGridGetGridObject(void);
   void vGridGetGridParts(void);
   void vGridFindNode(void);
-  void vGridIncConnectedNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridPutGridParts(void);

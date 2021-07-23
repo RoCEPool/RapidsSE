@@ -57,6 +57,7 @@ namespace STORE
     void vAddNode(i8 iNodeNo, Stz* pszName,
                   Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
+    void vAdjustPtnMap(void);
     i8   nConnectedNodes(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
@@ -67,7 +68,6 @@ namespace STORE
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
-    void vIncConnectedNodes(void);
     void vDecConnectedNodes(void);
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
