@@ -1031,25 +1031,24 @@ void Task::vReleaseLockSets(void)
 
   SP_Lock spLock;
 
-  vTrace("Read Lock Set\n"_Stz);
+  vTrace("Release Read Lock Set\n"_Stz);
   for (i8 i_Lock = m_oReadLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
     Lock* pLock = m_oReadLocks.pGet(i_Lock);
-    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+    vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
     
-    // tbd...
+    pLock->vDropRead();
   }
 
-  vTrace("Write Lock Set\n"_Stz);
+  vTrace("Release Write Lock Set\n"_Stz);
   for (i8 i_Lock = m_oWriteLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {
     Lock* pLock = m_oWriteLocks.pGet(i_Lock);
-    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+    vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
     
-    
-    // tbd...
+    pLock->vDropWrite();
   }
 }
 
@@ -1120,7 +1119,7 @@ void Task::vSeeLockSets(void)
        C_UNKNOWN != i_Lock;
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
     Lock* pLock = m_oReadLocks.pGet(i_Lock);
-    vTrace( "Read Lock %p\n"_Stz,spLock.sz(pLock));
+    vTrace("  Read Lock %p\n"_Stz,spLock.sz(pLock));
   }
 
   vTrace("Write Lock Set\n"_Stz);
@@ -1128,7 +1127,7 @@ void Task::vSeeLockSets(void)
        C_UNKNOWN != i_Lock;
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {
     Lock* pLock = m_oWriteLocks.pGet(i_Lock);
-    vTrace( "Write Lock %p\n"_Stz,spLock.sz(pLock));
+    vTrace("  Write Lock %p\n"_Stz,spLock.sz(pLock));
   }
 }
 

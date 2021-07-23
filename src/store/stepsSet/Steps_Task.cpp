@@ -28,6 +28,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
+  vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
   vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
@@ -332,6 +333,18 @@ void Step::vTaskProfileStore(void)
   
   pThatTask->vProfile(pProfile);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::releaseLockSets -- release all locks in read and write lock sets     */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskReleaseLockSets(void)
+{
+  ENTRY();
+  
+  vReleaseLockSets();
+
   EXIT();
 }
 
