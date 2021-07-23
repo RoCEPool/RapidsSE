@@ -441,21 +441,6 @@ void Grid::vPutNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put node Reverse                                                           */
-/*----------------------------------------------------------------------------*/
-void Grid::vPutNodeR(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pNodes_stdList->push_front(pNode);
-
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given node                                                          */
 /*----------------------------------------------------------------------------*/
 void Grid::vRemoveNode(Node* pNode)
