@@ -12,7 +12,7 @@ namespace STORE
   {
   private:
   
-    i8 m_i_Nodee;
+    i8 m_i_Node;
 
     std::list<Node*>::const_iterator m_itNode;
     std::list<Node*>::const_iterator m_itEndNode;
