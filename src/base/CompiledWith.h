@@ -95,6 +95,8 @@
 
 //#define WITH_LOGIC_UNIT_TASK EndDefine     // code if logic unit is in task
 
+//#define WITH_NODE_SKIPLIST EndDefine     // code for skiplist of nodes
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
