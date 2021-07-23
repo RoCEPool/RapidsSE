@@ -96,9 +96,9 @@
 
   //grid::adjustPtnMap
 
-  3 Row[].getIntColumn grid::started@ not and if
-    true grid::started!
-  then
+  //3 Row[].getIntColumn grid::started@ not and if
+  //  true grid::started!
+  //then
 
   // delete the infoset
   InfoSet[].delete

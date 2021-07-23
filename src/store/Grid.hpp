@@ -16,13 +16,13 @@ namespace STORE
   {
   private:
   
-    s32    m_sGridNm;          // name of this grid
-    i8     m_iConnectCode;     // connect code for this grid (not yet used)
+    s32    m_sGridNm;       // name of this grid
+    i8     m_iConnectCode;  // connect code for this grid (not yet used)
     
-    i8     m_iThisNode;        // this node number
-    Node*  m_pThisNode;        // this node pointer
+    i8     m_iThisNode;     // this node number
+    Node*  m_pThisNode;     // this node pointer
   
-    bool   m_bHasStarted;      // has the cluster started ?
+    bool   m_bHasStarted;   // has the cluster started ?
 
     Parcel* m_pParcel;
 

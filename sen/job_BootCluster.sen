@@ -108,7 +108,7 @@
   task::wait
 
   // set grid as started
-  true grid::started!
+  // true grid::started!
   "Cluster started" .
 
   task::doneFinally
@@ -131,7 +131,7 @@
   // wait till all nodes connected
   grid::pause
 
-  true grid::started!
+  // true grid::started!
 ;
 
 /*----------------------------------------------------------------------------*/
