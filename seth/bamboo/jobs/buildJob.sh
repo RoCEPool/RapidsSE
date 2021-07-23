@@ -16,11 +16,11 @@
 
 readonly DIR="$(dirname "$0")"
 readonly SCRIPTS_DIR="${DIR}/../scripts"
-#readonly PROJ_ROOT="${DIR}/../../.."
-#readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
+readonly PROJ_ROOT="${DIR}/../../.."
+readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
-#readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
-#readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
+readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
+readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
 readonly RELATIVE_BAMBOO_DIR="${DIR}"
 readonly BAMBOO_RESULTS_DIR="${RELATIVE_BAMBOO_DIR}/results"
@@ -33,15 +33,15 @@ readonly BAMBOO_LOGS_DIR="${RELATIVE_BAMBOO_DIR}/logs"
 
 # Load other common functions
 
-#if [ -z "${__COMMON_FN:-}" ] ; then
-#  #shellcheck source=../scripts/common.fn
-#  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
-#fi
-#
-#if [ -z "${__COMMON_FN:-}" ] ; then
-#  #shellcheck source=../../../bootstrap/common.fn
-#  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
-#fi
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=../scripts/common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
+
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=../../../bootstrap/common.fn
+  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
+fi
 
 ###############################################################################
 ### Significant Global Variables                                            ###
