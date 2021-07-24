@@ -45,10 +45,11 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
+    void vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+                          Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
+  
     void vAddNode(Node* pNode);
   
-    void vAddNode(i8 iNodeNo, Stz* pszName,
-                  Stz* pszAddr, i8 iPort, Stz* szRegionNm);
 
     void vAdjustPtnMap(void);
     void vDsv(void);

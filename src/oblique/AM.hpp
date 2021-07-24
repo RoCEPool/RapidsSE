@@ -235,6 +235,9 @@ namespace OBLIQUE
     {
     public:
       static i8   iGetNthNodeNo(i8 i_Node);
+      static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+                                Stz* szIPAddr, i8 iPortNo,
+                                Stz* pszRegionNm);
     };
   
     class JOB
@@ -434,7 +437,6 @@ namespace OBLIQUE
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
     static Heartbeat xGetHeartbeat(Stz* pszNodeName);
-    static void vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm);
     static void vRemoveNode(Stz* pszName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);

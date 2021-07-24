@@ -229,6 +229,35 @@ i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
   return iNodeNo;
 }
 
+/**
+ * @brief Add new node into the cluster
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] iNodeNo  ID of this node
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+                       Stz* szIPAddr, i8 iPortNo,
+                       Stz* szRegionNm)
+{
+  if (AM::SYSTEM::bHasStarted()) {
+    Node *pDetectedNode = AM::pGrid()->pFindNode(szNodeNm);
+    
+    // check to make sure we haven't added the detected node yet
+    if (! pDetectedNode) {
+      AM::pGrid()->vAddDetectedNode(iNodeNo, szNodeNm,
+                                    szIPAddr, iPortNo,
+                                    szRegionNm);
+    }
+  }
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
@@ -3477,30 +3506,6 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 
   return pThisNode->xGetHeartbeat();
 
-}
-
-/**
- * @brief Add new node into the cluster
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] iNodeNo  ID of this node
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm)
-{
-  if (AM::SYSTEM::bHasStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
-    // Check to make sure we don't have this node yet
-    if (!pThisNode) {
-      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort, pszRegionNm);
-    }
-  }
 }
 
 /**

@@ -83,21 +83,6 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add node                                                                   */
-/*----------------------------------------------------------------------------*/
-void Grid::vAddNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pNodes_stdList->push_back(pNode);
-
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /**
  * @brief Add new node into the cluster/grid
  * @details When a new node comes up, add it to the cluster.
@@ -110,11 +95,10 @@ void Grid::vAddNode(Node* pNode)
  * @return none
  *
  */
-void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
-                    Stz* pszAddr, i8 iPort, Stz* szRegionNm)
+void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+                            Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
 
   // Search List using Lambda function as comparator
   std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
@@ -123,15 +107,17 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
   if (itFound == m_pNodes_stdList->end()) { // not found, let's add
     //vTrace("NOT FOUND\n"_Stz);
 
-    CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
-    i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
+    CheckSum ChecksumValue((unsigned char *)szIPAddr->azChar(),
+                           szIPAddr->nLength());
+    
+    i8 iNodeNo = (ChecksumValue.iGetBernstein() + iPortNo);
 
 
-    Node *pNode = new Node(l_iNodeNo,
-                           pszName,
+    Node *pNode = new Node(iNodeNo,
+                           szNodeNm,
                            AM::nDegOfPar(),
-                           pszAddr,
-                           iPort,
+                           szIPAddr,
+                           iPortNo,
                            szRegionNm);
 
     vAddNode(pNode); // this also incr m_nNodes;
@@ -147,9 +133,23 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName,
   } //else { vTrace("FOUND\n"_Stz);}
 
   // Found, nothing to do
-
-
 }
+
+/*----------------------------------------------------------------------------*/
+/* add node                                                                   */
+/*----------------------------------------------------------------------------*/
+void Grid::vAddNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pNodes_stdList->push_back(pNode);
+
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* increment number of connected nodes                                        */
