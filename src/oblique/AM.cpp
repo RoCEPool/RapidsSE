@@ -229,6 +229,15 @@ i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
   return iNodeNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get number of known nodes                                                  */
+/*----------------------------------------------------------------------------*/
+i8 AM::GRID::nKnownNodes(void)
+{
+  return gpAttachMap->m_pGrid->nKnownNodes();
+}
+
+/*----------------------------------------------------------------------------*/
 /**
  * @brief Add new node into the cluster
  * @details When a new node comes up, add it to the cluster.
@@ -1350,7 +1359,6 @@ JobList* AM::pOriginatingJobs(void) {
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
-i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
@@ -2024,7 +2032,7 @@ Stz* AM::szSummary(s256& sSummary)
   Now spNow;
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
-                   AM::nNodes(),
+                   AM::GRID::nKnownNodes(),
                    AM::nPtnsPerTable(),
                    AM::nThreads(),
                    AM::szBuild(),
@@ -2043,7 +2051,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
-                   AM::nNodes(),
+                   AM::GRID::nKnownNodes(),
                    AM::nPtnsPerTable(),
                    AM::nThreads()
                    );

@@ -58,7 +58,7 @@ namespace STORE
     Node* pFindNode(Stz* pName);
     Node* pGetNthNode(i8 i_Node);
     Stz* szGridNm(void);
-    i8   nNodes(void);
+    i8   nKnownNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
     i8   iThisNodeNo(void);

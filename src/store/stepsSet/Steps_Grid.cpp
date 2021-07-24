@@ -73,7 +73,7 @@ void Step::vGridBootNodes(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nNodes());
+  m_pDataStack->vPushInt(AM::GRID::nKnownNodes());
   
   EXIT();
 }
@@ -85,7 +85,7 @@ void Step::vGridConnectedNodes(void)
 {
   ENTRY();
   
-  i8 nNodes = AM::pGrid()->nNodes();
+  i8 nNodes = AM::pGrid()->nKnownNodes();
 
   m_pDataStack->vPushInt(nNodes);
   
@@ -165,7 +165,7 @@ void Step::vGridPutGridParts(void)
 
   Grid* pGridLocal = AM::pGrid();
 
-  if (pGridLocal->nNodes() == pGridRemote->nNodes()) {
+  if (pGridLocal->nKnownNodes() == pGridRemote->nKnownNodes()) {
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
@@ -251,7 +251,7 @@ void Step::vGridShow(void)
   ENTRY();
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nNodes());
+  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
   vTrace("  %lld partitions per table\n"_Stz,AM::nPtnsPerTable());
   vTrace("  %lld total partitions\n"_Stz,AM::nPtnsInGrid());
   

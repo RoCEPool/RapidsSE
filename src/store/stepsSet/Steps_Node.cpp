@@ -65,7 +65,7 @@ void Step::vNodeNew(void)
   
   i8 iPortNo = m_pDataStack->iPopInt(__func__);
 
-  i8 nNodes = AM::pGrid()->nNodes();
+  i8 nNodes = AM::pGrid()->nKnownNodes();
   i8 nDegOfPar = AM::nDegOfPar();
 
   Node* pNode = new Node(nNodes,

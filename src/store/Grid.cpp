@@ -162,7 +162,7 @@ void Grid::vAdjustPtnMap(void)
   PtnMap* pPtnMap = AM::pPtnMap();
 
   //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustDataBuffers(AM::nNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustDataBuffers(AM::GRID::nKnownNodes(),AM::nDegOfPar());
   pPtnMap->vDumpDataBuffers();
 
 }
@@ -182,7 +182,7 @@ void Grid::vDsv(void)
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
   
   vTrace("nodes %lld \n"_Stz,
-          nNodes());
+         nKnownNodes());
 
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
@@ -215,7 +215,7 @@ s16KB Grid::szDumpInfo(void)
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
-         nNodes());
+                         nKnownNodes());
 
 
 
@@ -295,7 +295,7 @@ Stz* Grid::szGridNm(void)
 /*----------------------------------------------------------------------------*/
 /* get number of nodes in the node array                                      */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nNodes(void)
+i8 Grid::nKnownNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 

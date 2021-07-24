@@ -630,7 +630,7 @@ void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
-  ASSERT(pNextStage->nItems() == AM::pGrid()->nNodes());
+  ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
   
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }

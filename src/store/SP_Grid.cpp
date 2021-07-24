@@ -44,7 +44,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
                   "%lld nodes %lld "
                   "partitions/table %lld total partitions"_Stz,
                   
-                  pGrid->nNodes(),
+                  pGrid->nKnownNodes(),
                   
                   AM::nPtnsPerTable(),
                   AM::nPtnsInGrid(),

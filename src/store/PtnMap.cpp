@@ -103,7 +103,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   // THIS IS WHERE THE CRASH HAPPENED
   // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
-  tPN tPtnNo = (i_Stream * AM::nNodes()) + 0;//AM::iThisNodeNo();
+  tPN tPtnNo = (i_Stream * AM::GRID::nKnownNodes()) + 0;//AM::iThisNodeNo();
 
 
 
@@ -212,8 +212,8 @@ i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Node = tPtnNo % AM::nNodes();
-  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::nNodes(), i_Node);
+  i8 i_Node = tPtnNo % AM::GRID::nKnownNodes();
+  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Node);
   return i_Node;
 }
 
@@ -224,8 +224,8 @@ i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Stream = tPtnNo / AM::nNodes();
-  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::nNodes(), i_Stream);
+  i8 i_Stream = tPtnNo / AM::GRID::nKnownNodes();
+  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Stream);
   return i_Stream;
 }
 

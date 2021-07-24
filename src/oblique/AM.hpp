@@ -235,6 +235,7 @@ namespace OBLIQUE
     {
     public:
       static i8   iGetNthNodeNo(i8 i_Node);
+      static i8   nKnownNodes(void);
       static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
                                 Stz* szIPAddr, i8 iPortNo,
                                 Stz* pszRegionNm);
@@ -392,7 +393,6 @@ namespace OBLIQUE
     static Format* pFmt(void);
     static Grid* pGrid(void);
     static i8   nDefinedNodes(void);
-    static i8   nNodes(void);
 
     // newcode
     static std::list<Node*>::const_iterator itBeginNodes(void);
