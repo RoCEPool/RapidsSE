@@ -338,7 +338,7 @@ void Step::vGridStartedStore(void)
   
   i8 iStarted = m_pDataStack->iPopInt(__func__);
   
-  AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
+  AM::SYSTEM::vHasStarted(iStarted == 1 ? true : false);
   
   EXIT();
 }
@@ -350,7 +350,7 @@ void Step::vGridStartedFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
+  m_pDataStack->vPushInt(AM::SYSTEM::bHasStarted());
   
   EXIT();
 }

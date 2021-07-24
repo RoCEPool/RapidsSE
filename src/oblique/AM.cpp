@@ -332,7 +332,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
   if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
     return;
 
-  if (! AM::bHasStarted())
+  if (! AM::SYSTEM::bHasStarted())
     return;
 
   Job* pJob = MY::pJob();
@@ -828,6 +828,29 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* get grid started                                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bHasStarted(void)
+{
+  _static_
+  
+  if (! gpAttachMap)
+    return false;
+
+  return gpAttachMap->m_bHasStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid started                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vHasStarted(bool bHasStarted)
+{
+  _static_
+
+  gpAttachMap->m_bHasStarted = bHasStarted;
+}
+
+/*----------------------------------------------------------------------------*/
 /* elapsed time (in nanoseconds) since boot                                   */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSTEM::nNanoseconds(void)
@@ -1188,22 +1211,6 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
 
 }
 
-
-
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* has the system been fully started?                                         */
-/*----------------------------------------------------------------------------*/
-bool AM::bHasStarted(void)
-{
-  if (! gpAttachMap || ! gpAttachMap->m_pGrid)
-    return false;
-  
-  return gpAttachMap->m_pGrid->bHasStarted();
-}
 
 
 
@@ -3391,7 +3398,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
     if (pThisNode) {
@@ -3405,7 +3412,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 /*----------------------------------------------------------------------------*/
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
     if (pThisNode) {
@@ -3421,7 +3428,7 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
+  Node *pThisNode = AM::SYSTEM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -3436,7 +3443,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
+  Node *pThisNode = AM::SYSTEM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -3463,7 +3470,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  */
 void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm)
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
     // Check to make sure we don't have this node yet
     if (!pThisNode) {
@@ -3484,7 +3491,7 @@ void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszR
  */
 void AM::vRemoveNode(Stz* pszName)
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bHasStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
     // Check to make sure we have this node in the cluster/grid.
     if (pThisNode) {

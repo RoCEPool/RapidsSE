@@ -116,7 +116,7 @@ void vHeartInit(void) {
   int iCnt = 0;
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
 
-  if (!AM::bHasStarted()) {
+  if (!AM::SYSTEM::bHasStarted()) {
     // delay receiving 5 seconds when SE not started
     // Although, no harms to receive HB, we will ignore them as SE is sot started.
     sleep(5);

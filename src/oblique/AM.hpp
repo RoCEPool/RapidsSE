@@ -290,6 +290,8 @@ namespace OBLIQUE
     class SYSTEM
     {
     public:
+      static bool bHasStarted(void);
+      static void vHasStarted(bool bHasStarted);
       static i8   nNanoseconds(void);
       static void vSystemReady(void);
     };
@@ -388,7 +390,6 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
-    static bool bHasStarted(void);
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);

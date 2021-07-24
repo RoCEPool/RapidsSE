@@ -22,8 +22,6 @@ namespace STORE
     i8     m_iThisNode;     // this node number
     Node*  m_pThisNode;     // this node pointer
   
-    bool   m_bHasStarted;   // has the cluster started ?
-
     Parcel* m_pParcel;
 
 #ifdef WITH_NODE_SKIPLIST
@@ -63,8 +61,6 @@ namespace STORE
     Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
     Stz* szGridNm(void);
-    void vHasStarted(bool bHasStarted);
-    bool bHasStarted(void);
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);

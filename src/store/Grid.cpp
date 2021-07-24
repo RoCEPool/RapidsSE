@@ -41,9 +41,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_iThisNode       = C_UNKNOWN;
 
   m_pThisNode       = nullptr;
-  
-  m_bHasStarted     = false;
-      
+        
   // initialize the node array
 
   m_pNodes_stdList = new std::list<Node*>;
@@ -186,10 +184,6 @@ void Grid::vDsv(void)
   vTrace("  this node %lld %s\n"_Stz,
          m_iThisNode,
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
-
-  vTrace("  %s started\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz
-         );
   
   vTrace("nodes %lld \n"_Stz,
           nNodes());
@@ -224,9 +218,6 @@ s16KB Grid::szDumpInfo(void)
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
          m_iThisNode,
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
-
-  sDumpBuffer.vCatSprint("  %s started\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
          nNodes());
@@ -354,26 +345,6 @@ Stz* Grid::szGridNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_sGridNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get grid started                                                           */
-/*----------------------------------------------------------------------------*/
-bool Grid::bHasStarted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set grid started                                                           */
-/*----------------------------------------------------------------------------*/
-void Grid::vHasStarted(bool bHasStarted)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_bHasStarted = bHasStarted;
 }
 
 /*----------------------------------------------------------------------------*/

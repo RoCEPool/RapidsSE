@@ -47,6 +47,7 @@ namespace STORE
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
+    bool          m_bHasStarted;
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;

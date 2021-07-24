@@ -999,16 +999,13 @@ bool PROMPT::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
-  vTrace("  Node %s ShmLib %s Free %s Nodes %lld TablePtns %lld Expressions %lld : %s\n"_Stz,
+  vTrace("  Node %s ShmLib %s Free %s Nodes %lld TablePtns %lld Expressions %lld\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),
          gxCmdLineArgs.m_xSysArgs.m_nBootNodes,
          gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable,
-         gxCmdLineArgs.m_xSysArgs.m_nThreads,
-
-         AM::pGrid()->bHasStarted() ? "cluster started"
-                                    : "cluster not started"
+         gxCmdLineArgs.m_xSysArgs.m_nThreads
          );
     
   return true;

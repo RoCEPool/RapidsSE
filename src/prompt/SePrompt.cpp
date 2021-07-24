@@ -995,7 +995,7 @@ void SePrompt::vPromptUser(void)
     return;
   }
   
-  bool bHasStarted = AM::bHasStarted();
+  bool bHasStarted = AM::SYSTEM::bHasStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
