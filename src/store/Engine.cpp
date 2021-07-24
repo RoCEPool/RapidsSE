@@ -1596,7 +1596,7 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
-  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
+  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz);
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Grid and Node's\n"_Stz);

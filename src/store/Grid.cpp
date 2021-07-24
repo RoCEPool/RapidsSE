@@ -30,17 +30,16 @@ __aFooterFunction(Grid)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(Stz* szGridNm, i8 iConnectCode)
+Grid::Grid(Stz* szGridNm)
 : Operand(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_sGridNm = szGridNm; //"SEgrid"_Stz;
-  m_iConnectCode    = iConnectCode;
+  m_sGridNm   = szGridNm; //"SEgrid"_Stz;
   
-  m_pThisNode       = nullptr;
+  m_pThisNode = nullptr;
         
-  // initialize the node array
+  // initialize the node list
 
   m_pNodes_stdList = new std::list<Node*>;
   m_pNodes_stdList->clear();
@@ -175,9 +174,8 @@ void Grid::vDsv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  vTrace("\nDsv of Grid: %s (connect code %lld)\n"_Stz,
-         m_sGridNm.szStz(),
-         m_iConnectCode);
+  vTrace("\nDsv of Grid: %s\n"_Stz,
+         m_sGridNm.szStz());
   
   vTrace("  this node %lld %s\n"_Stz,
          iThisNode(),
@@ -209,9 +207,8 @@ s16KB Grid::szDumpInfo(void)
 
   s16KB sDumpBuffer = "\n\n\n==== DumpGrid: =======================================\n"_Stz;
 
-  sDumpBuffer.vCatSprint("Dsv of Grid: %s (connect code %lld)\n"_Stz,
-         m_sGridNm.szStz(),
-         m_iConnectCode);
+  sDumpBuffer.vCatSprint("Dsv of Grid: %s (\n"_Stz,
+         m_sGridNm.szStz());
 
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
          iThisNode(),

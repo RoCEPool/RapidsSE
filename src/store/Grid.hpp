@@ -17,7 +17,6 @@ namespace STORE
   private:
   
     s32    m_sGridNm;       // name of this grid
-    i8     m_iConnectCode;  // connect code for this grid (not yet used)
     
     Node*  m_pThisNode;     // this node pointer
   
@@ -41,7 +40,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(Stz* szGridNm, i8 iConnectCode);
+    Grid(Stz* szGridNm);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
