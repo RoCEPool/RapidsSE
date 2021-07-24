@@ -338,7 +338,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   Parcel* pParcel;
   
   // get preliminary information
-  Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  Node* pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket* pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nObjects();

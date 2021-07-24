@@ -425,7 +425,6 @@ namespace OBLIQUE
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
     static i8   iGetNodeNo(i8 i_Node);
-    static bool bFirstNode(i8 iNodeNo);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);

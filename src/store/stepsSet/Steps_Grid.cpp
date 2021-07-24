@@ -212,7 +212,7 @@ void Step::vGridNode(void)
   
   i8 iNode = m_pDataStack->iPopInt(__func__);
   
-  Node* pNode = AM::pGrid()->pGetNode(iNode);
+  Node* pNode = AM::pGrid()->pFindNode(iNode);
   
   m_pDataStack->vPushPtr(pNode);
   

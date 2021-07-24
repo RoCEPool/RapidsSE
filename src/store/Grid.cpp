@@ -237,18 +237,12 @@ s16KB Grid::szDumpInfo(void)
 Node* Grid::pFindNode(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
-  // OK, we got recursive call between pFindNode and pFindNode, from the pNode = (*oNode_I)
-
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
-    if (pNode) vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
-    if (pNode && pNode->iNodeNo() == iNodeNo) {
-
-      //vTrace("pFindNode found %s"_Stz, pNode->szNodeNm()->azChar());
+    
+    if (pNode && pNode->iNodeNo() == iNodeNo)
       return pNode;
-    }
   }
 
   return nullptr;
@@ -271,30 +265,6 @@ Node* Grid::pFindNode(Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/**
- * @brief returns a node object matched the node ID
- * @details returns a node object matched the node ID
- * <p>
- * @param[in] i_NodeNo - node number
- *
- * @return Node*  if found or nullptr
- *
- */
-Node* Grid::pGetNode(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode && pNode->iNodeNo() == iNodeNo)
-      return pNode;
-  }
-
-  return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get node ID                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Grid::iGetNodeNo(i8 i_Node)
@@ -315,21 +285,6 @@ i8 Grid::iGetNodeNo(i8 i_Node)
   }
 
   return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this node number is the first node in the grid                          */
-/*----------------------------------------------------------------------------*/
-bool Grid::bFirstNode(i8 iNodeNo)
-{
-  // Get first node, check if the same
-  Node_I oNode_I;
-  if (oNode_I.bMore()) {
-    if ((*oNode_I)->iNodeNo() == iNodeNo)
-      return true;
- }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

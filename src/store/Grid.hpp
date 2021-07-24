@@ -55,8 +55,6 @@ namespace STORE
     s16KB szDumpInfo(void);
     Node* pFindNode(i8 iNodeNo);
     Node* pFindNode(Stz* pName);
-    bool bFirstNode(i8 iNodeNo);
-    Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
     Stz* szGridNm(void);
     i8   nNodes(void);

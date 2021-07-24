@@ -351,7 +351,7 @@ void Step::vStreamSetAddListPartitions(void)
   
   Grid* pGrid = AM::pGrid();
   i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-  Node* pNode = pGrid->pGetNode(i_Node);
+  Node* pNode = pGrid->pFindNode(i_Node);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -549,7 +549,7 @@ void Step::vStreamSetAddShowCluster(void)
   
   StreamSet* pStreamSet = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
   
-  Node* pNode = AM::pGrid()->pGetNode(i_Node);
+  Node* pNode = AM::pGrid()->pFindNode(i_Node);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),

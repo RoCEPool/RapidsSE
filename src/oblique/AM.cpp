@@ -1327,7 +1327,6 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
-bool AM::bFirstNode(i8 iNodeNo) { return gpAttachMap->m_pGrid->bFirstNode(iNodeNo);     }
 i8   AM::iGetNodeNo(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNodeNo(i_Node);     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
@@ -3399,7 +3398,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
   if (AM::SYSTEM::bHasStarted()) {
-    Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+    Node *pThisNode = AM::pGrid()->pFindNode(iNode);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -3428,7 +3427,7 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::SYSTEM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
+  Node *pThisNode = AM::SYSTEM::bHasStarted() ? AM::pGrid()->pFindNode(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
