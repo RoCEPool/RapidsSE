@@ -283,25 +283,6 @@ Node* Grid::pGetNthNode(i8 i_Node)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node ID                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Grid::iGetNthNodeNo(i8 i_Node)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vThreadCallStackDump();
-
-  i8 iSeq = 0;
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode && i_Node == iSeq++) {
-      return pNode->iNodeNo();
-    }
-  }
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return grid name                                                           */
 /*----------------------------------------------------------------------------*/
 Stz* Grid::szGridNm(void)

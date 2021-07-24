@@ -310,7 +310,7 @@ void Stage::vCreateStreams(void)
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nNodes(); i_Node++) {
-        i_NodeNo = AM::iGetNthNodeNo(i_Node);
+        i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
         vAdd(pStream);
       }
