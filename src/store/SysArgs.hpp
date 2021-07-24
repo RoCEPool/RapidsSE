@@ -29,7 +29,7 @@ namespace STORE
     i8    m_iLiftNo;
 
     // grid configuration at boot
-    i8    m_nNodes;
+    i8    m_nBootNodes;
     struct {
       s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node

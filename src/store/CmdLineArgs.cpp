@@ -51,7 +51,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_iLiftNo = 0;
   
   // node configuration
-  m_xSysArgs.m_nNodes = 0;
+  m_xSysArgs.m_nBootNodes = 0;
   
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
@@ -492,9 +492,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       m_xSysArgs.m_xBootNode[0].m_iPortNo    = argv[i_Arg].iToI8();
       
-      m_xSysArgs.m_nNodes = 1;
-
-       continue;
+      bDashDashNode = true;
+      
+      if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
+        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+        return false;
+      }
+      continue;
     }
         
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -865,21 +869,23 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // if --node was defined just set the m_xSysArgs.m_nNodes
-  if (m_xSysArgs.m_nNodes) {
+  // if --node was defined just set the m_xSysArgs.m_nBootNodes
+  if (bDashDashNode) {
     
+    // set no. of nodes
+    m_xSysArgs.m_nBootNodes = 1;
     
     // some basic cluster validations
     
     // there should be at aleast 2 nodes ina cluster
-    // if (m_xSysArgs.m_nNodes < 2) {
+    // if (m_xSysArgs.m_nBootNodes < 2) {
     //   vWarn("Minimum two nodes should be there in a cluster\n"_Stz);
     //   return false;
     // }
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nNodes; i_Test++) {
+    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nBootNodes; i_Test++) {
       if (m_xSysArgs.m_xBootNode[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
         bFound = true;
         m_xSysArgs.m_iThisNode = i_Test;
@@ -895,7 +901,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
   } else {
     // add a single node
-    // m_xSysArgs.m_nNodes = 1;
+    // m_xSysArgs.m_nBootNodes = 1;
     // m_xSysArgs.m_xBootNode[0].m_sNodeName = m_xSysArgs.m_sNodeName;
     // m_xSysArgs.m_xBootNode[0].m_sIPAddress = ""_Stz;
     // m_xSysArgs.m_xBootNode[0].m_iPortNo =  -1;
@@ -910,7 +916,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     m_xSysArgs.m_sRegionName.vCat(m_xSysArgs.m_sRegionPrefix,"_"_Stz,m_xSysArgs.m_sNodeName.azChar(),nullptr);
   }
   else {
-    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nNodes > 1) {
+    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nBootNodes > 1) {
       vWarn("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
@@ -997,7 +1003,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   MagLib::vByteMag(m_xSysArgs.m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
   
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nBootNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
       m_xSysArgs.m_xBootNode[i_Index].m_sNodeName.azChar(),
       m_xSysArgs.m_xBootNode[i_Index].m_sIPAddress.azChar(),
@@ -1030,7 +1036,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   
   if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
   
-  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nNodes; i_Node++)
+  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nBootNodes; i_Node++)
     vTrace("  --node %s ip %s port %lld\n"_Stz,
            m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
            m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
@@ -1074,14 +1080,14 @@ void CmdLineArgs::vSanityCheck(void)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
-  if (m_xSysArgs.m_nNodes > C_MAX_NODES) {
-    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nNodes,C_MAX_NODES);
+  if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nBootNodes,C_MAX_NODES);
     Process::vExitFailure();
   }
   
 //  i8 iRequiredThreads =
 //    1                 // 1 thread for socket answer
-//    + m_xSysArgs.m_nNodes        // n threads for socket receiver
+//    + m_xSysArgs.m_nBootNodes        // n threads for socket receiver
 //    + 1               // a thread for table loader
 //    + 1               // 1 for the pot
 //  ;

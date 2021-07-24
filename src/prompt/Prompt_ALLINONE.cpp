@@ -1003,7 +1003,7 @@ bool PROMPT::bPrompt_config(SePrompt* pPrompt)
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),
-         gxCmdLineArgs.m_xSysArgs.m_nNodes,
+         gxCmdLineArgs.m_xSysArgs.m_nBootNodes,
          gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable,
          gxCmdLineArgs.m_xSysArgs.m_nThreads,
 

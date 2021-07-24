@@ -71,7 +71,7 @@ void Step::vSupervisorCollectInfo(void)
   MemLib::vZero(xHeartbeat.m_acNodeName,sizeof(xHeartbeat.m_acNodeName),CN_NONE);
   /*
   s32 szNodeName;
-  if (gxCmdLineArgs.m_xSysArgs.m_nNodes > 1)
+  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
     szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
   else
     szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),

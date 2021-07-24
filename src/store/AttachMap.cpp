@@ -245,7 +245,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  m_xSysArgs.m_nNodes       = pCmdLineArgs->m_xSysArgs.m_nNodes;
+  m_xSysArgs.m_nBootNodes       = pCmdLineArgs->m_xSysArgs.m_nBootNodes;
   m_xSysArgs.m_iConnectCode     = pCmdLineArgs->m_xSysArgs.m_iConnectCode;
   m_xSysArgs.m_bDebugIndex      = pCmdLineArgs->m_xSysArgs.m_bDebugIndex;
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
