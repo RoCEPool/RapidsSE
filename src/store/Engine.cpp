@@ -1612,7 +1612,6 @@ void Engine::vStartSystem(void)
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
   i8 iThisNode = pThisNode->iNodeNo();
-  AM::pGrid()->vThisNodeNo(iThisNode);
 
   AM::pGrid()->vSetThisNode(pThisNode); // newcode
 
