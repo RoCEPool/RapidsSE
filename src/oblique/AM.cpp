@@ -1326,7 +1326,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
+i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
 i8   AM::iGetNthNode(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNthNode(i_Node);     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }

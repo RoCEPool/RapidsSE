@@ -120,7 +120,7 @@ void Step::vGridGetGridParts(void)
 
   vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
          pGrid->szGridNm()->azChar(),
-         pGrid->iThisNode());
+         pGrid->iThisNodeNo());
 
   pGrid->iPrepareParcel();
   Parcel* pParcel = pGrid->pParcel();
@@ -307,7 +307,7 @@ void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNode();
+  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
   
   m_pDataStack->vPushInt(iNodeNo);
   

@@ -178,7 +178,7 @@ void Grid::vDsv(void)
          m_sGridNm.szStz());
   
   vTrace("  this node %lld %s\n"_Stz,
-         iThisNode(),
+         iThisNodeNo(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
   
   vTrace("nodes %lld \n"_Stz,
@@ -211,7 +211,7 @@ s16KB Grid::szDumpInfo(void)
          m_sGridNm.szStz());
 
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
-         iThisNode(),
+                         iThisNodeNo(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
@@ -346,7 +346,7 @@ void Grid::vSeeNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iThisNode(void)
+i8 Grid::iThisNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   

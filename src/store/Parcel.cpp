@@ -574,7 +574,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       // sendNode is this node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
-      RASSERT(iDstNode == AM::pGrid()->iThisNode());
+      RASSERT(iDstNode == AM::pGrid()->iThisNodeNo());
       
       vSendParcel(pSrcOp,iDstNode,tPtnNo);
       break;

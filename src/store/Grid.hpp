@@ -60,7 +60,7 @@ namespace STORE
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
-    i8   iThisNode(void);
+    i8   iThisNodeNo(void);
     Node* pThisNode(void);
     void vThisNode(Node* pNode);
 
