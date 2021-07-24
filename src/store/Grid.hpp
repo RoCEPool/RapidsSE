@@ -62,9 +62,9 @@ namespace STORE
     i8   nNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
-    void vSetThisNode (Node* pNode); // newcode
     i8   iThisNode(void);
     Node* pThisNode(void);
+    void vThisNode(Node* pNode);
 
     i8   iPrepareParcel(void);
     Parcel* pParcel(void);

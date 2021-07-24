@@ -1611,9 +1611,8 @@ void Engine::vStartSystem(void)
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
-  i8 iThisNode = pThisNode->iNodeNo();
 
-  AM::pGrid()->vSetThisNode(pThisNode); // newcode
+  AM::pGrid()->vThisNode(pThisNode); // newcode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
@@ -1625,6 +1624,7 @@ void Engine::vStartSystem(void)
 //  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNode);
 //  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNode);
 
+  i8 iThisNode = pThisNode->iNodeNo();
   gpAttachMap->m_pObjects->vNodeNo(iThisNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

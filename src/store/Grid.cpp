@@ -389,16 +389,6 @@ void Grid::vSeeNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this node object                                                       */
-/*----------------------------------------------------------------------------*/
-void Grid::vSetThisNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pThisNode = pNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Grid::iThisNode(void)
@@ -416,6 +406,16 @@ Node* Grid::pThisNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   return m_pThisNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this node                                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vThisNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pThisNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/
