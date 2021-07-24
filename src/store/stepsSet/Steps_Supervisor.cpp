@@ -74,8 +74,8 @@ void Step::vSupervisorCollectInfo(void)
   if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
     szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
   else
-    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
-                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
+    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[0].m_sIPAddress.azChar(),
+                     gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[0].m_iPortNo);
   strncpy(xHeartbeat.m_acNodeName, szNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
    */
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);

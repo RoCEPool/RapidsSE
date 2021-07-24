@@ -109,7 +109,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_nSupervisorSleep = 10;
-  m_xSysArgs.m_iThisNode        = C_UNKNOWN;
+  m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
@@ -484,13 +484,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
-      m_xSysArgs.m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
-      m_xSysArgs.m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
         vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
-      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
       if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
@@ -886,9 +886,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nDefinedNodes; i_Test++) {
-      if (m_xSysArgs.m_xBootNode[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
+      if (m_xSysArgs.m_xNodeDefn[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
         bFound = true;
-        m_xSysArgs.m_iThisNode = i_Test;
+        m_xSysArgs.m_i_ThisNode = i_Test;
         break;
       }
     }
@@ -902,9 +902,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   } else {
     // add a single node
     // m_xSysArgs.m_nBootNodes = 1;
-    // m_xSysArgs.m_xBootNode[0].m_sNodeName = m_xSysArgs.m_sNodeName;
-    // m_xSysArgs.m_xBootNode[0].m_sIPAddress = ""_Stz;
-    // m_xSysArgs.m_xBootNode[0].m_iPortNo =  -1;
+    // m_xSysArgs.m_xNodeDefn[0].m_sNodeName = m_xSysArgs.m_sNodeName;
+    // m_xSysArgs.m_xNodeDefn[0].m_sIPAddress = ""_Stz;
+    // m_xSysArgs.m_xNodeDefn[0].m_iPortNo =  -1;
 //    if ( m_xSysArgs.m_bStart ) {
 //      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
 //      return false;
@@ -1005,9 +1005,9 @@ void CmdLineArgs::vPrintStartupInfo(void)
   
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
-      m_xSysArgs.m_xBootNode[i_Index].m_sNodeName.azChar(),
-      m_xSysArgs.m_xBootNode[i_Index].m_sIPAddress.azChar(),
-      m_xSysArgs.m_xBootNode[i_Index].m_iPortNo);
+      m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
+      m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
+      m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
   }
 
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nHeartbeatNodes; i_Index++) {
@@ -1038,9 +1038,9 @@ void CmdLineArgs::vPrintStartupInfo(void)
   
   for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nDefinedNodes; i_Node++)
     vTrace("  --node %s ip %s port %lld\n"_Stz,
-           m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
-           m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-           m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+           m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
+           m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
+           m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
     
 
   
