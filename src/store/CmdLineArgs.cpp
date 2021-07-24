@@ -212,7 +212,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
-  bool bDashDashNode = false;
+  i8 i_BootNode = 0;
   i8 i_HeartbeatNode = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
@@ -484,15 +484,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
-      m_xSysArgs.m_xBootNode[0].m_sNodeName  = (Stz*)argv[++i_Arg];;
-      m_xSysArgs.m_xBootNode[0].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xSysArgs.m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xSysArgs.m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
         vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
-      m_xSysArgs.m_xBootNode[0].m_iPortNo    = argv[i_Arg].iToI8();
-      
-      bDashDashNode = true;
+      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
+      i_BootNode++;
       
       if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
         vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
@@ -870,10 +869,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // if --node was defined just set the m_xSysArgs.m_nBootNodes
-  if (bDashDashNode) {
+  if (i_BootNode) {
     
     // set no. of nodes
-    m_xSysArgs.m_nBootNodes = 1;
+    m_xSysArgs.m_nBootNodes = i_BootNode;
     
     // some basic cluster validations
     
