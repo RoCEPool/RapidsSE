@@ -26,8 +26,6 @@ namespace STORE
     s256  m_sSenDir;       // sen dir
     i8    m_nPtnsPerTable;    // partitions per table
 
-    i8    m_iLiftNo;
-
     // nodes defined on the command line
     i8    m_nDefinedNodes;
     struct {

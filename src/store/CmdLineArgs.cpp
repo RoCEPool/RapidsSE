@@ -47,8 +47,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_sSenDir       = "../sen/"_Stz;
 #endif
   m_xSysArgs.m_nPtnsPerTable    = 4;
-
-  m_xSysArgs.m_iLiftNo = 0;
   
   // node configuration
   m_xSysArgs.m_nDefinedNodes = 0;
@@ -810,13 +808,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--welcome"_Stz)) {
       m_xSysArgs.m_bWelcome = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (szArg->bSame("--liftNo"_Stz)) {
-      m_xSysArgs.m_iLiftNo = argv[++i_Arg].iToI8();
       continue;
     }
     
