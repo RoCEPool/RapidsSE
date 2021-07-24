@@ -51,7 +51,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_iLiftNo = 0;
   
   // node configuration
-  m_xSysArgs.m_nBootNodes = 0;
+  m_xSysArgs.m_nDefinedNodes = 0;
   
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
@@ -493,8 +493,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
-      if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
-        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+      if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
+        vWarn("Maximum number of nodes defineable nodes is %lld\n"_Stz,
+              C_MAX_NODES);
         return false;
       }
       continue;
@@ -872,7 +873,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   if (i_BootNode) {
     
     // set no. of nodes
-    m_xSysArgs.m_nBootNodes = i_BootNode;
+    m_xSysArgs.m_nDefinedNodes = i_BootNode;
     
     // some basic cluster validations
     
@@ -884,7 +885,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nBootNodes; i_Test++) {
+    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nDefinedNodes; i_Test++) {
       if (m_xSysArgs.m_xBootNode[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
         bFound = true;
         m_xSysArgs.m_iThisNode = i_Test;
@@ -915,7 +916,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     m_xSysArgs.m_sRegionName.vCat(m_xSysArgs.m_sRegionPrefix,"_"_Stz,m_xSysArgs.m_sNodeName.azChar(),nullptr);
   }
   else {
-    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nBootNodes > 1) {
+    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nDefinedNodes > 1) {
       vWarn("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
@@ -1002,7 +1003,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   MagLib::vByteMag(m_xSysArgs.m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
   
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nBootNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
       m_xSysArgs.m_xBootNode[i_Index].m_sNodeName.azChar(),
       m_xSysArgs.m_xBootNode[i_Index].m_sIPAddress.azChar(),
@@ -1035,7 +1036,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   
   if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
   
-  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nBootNodes; i_Node++)
+  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nDefinedNodes; i_Node++)
     vTrace("  --node %s ip %s port %lld\n"_Stz,
            m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
            m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
@@ -1079,8 +1080,8 @@ void CmdLineArgs::vSanityCheck(void)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
-  if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
-    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nBootNodes,C_MAX_NODES);
+  if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nDefinedNodes,C_MAX_NODES);
     Process::vExitFailure();
   }
   

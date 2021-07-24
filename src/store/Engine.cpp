@@ -527,7 +527,9 @@ void Engine::vCheckGrid(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
-   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+   for (i8 i_Node = 0;
+        i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+        i_Node++) {
      
      if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
        vInfo("Checking %s %s %lld\n"_Stz,
@@ -562,7 +564,7 @@ void Engine::vCheckNodes(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
-  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes < 1)
+  if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes < 1)
     Process::vUnrecoverableError("No nodelist was supplied (via --node)"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
@@ -573,7 +575,7 @@ void Engine::vCheckNodes(void)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("This is node %lld of %lld nodes\n"_Stz,
           gxCmdLineArgs.m_xSysArgs.m_iThisNode,
-          gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
+          gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -878,7 +880,9 @@ void Engine::vKillPrev(void)
   s32 sRegionNm;
   int iFD;
   
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0;
+       i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+       i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
                         gxCmdLineArgs.m_xSysArgs.m_sRegionPrefix.azChar(),
@@ -1761,9 +1765,11 @@ void Engine::vCreateGridOfNodes(void)
   s32 szNodeName;
   i8 iNodeNo =0 ;
 
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0;
+       i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+       i_Node++) {
 
-    if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1) {
+    if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes > 1) {
       iNodeNo = i_Node;
       szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
     } else {
