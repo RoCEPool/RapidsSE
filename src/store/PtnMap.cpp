@@ -251,7 +251,7 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
       //(i4)i_LglPtnNoToInitialNode(tPtnNo);
       //(i4)tPtnNo % nNodes; // oldcode1
-      AM::iGetNthNode(iNodeIdx);  // newcode1    <<<<<<<<<<<<<<<<<
+      AM::iGetNthNodeNo(iNodeIdx);  // newcode1    <<<<<<<<<<<<<<<<<
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
       //(i4)i_LglPtnNoToInitialStream(tPtnNo);

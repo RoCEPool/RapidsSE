@@ -265,21 +265,35 @@ Node* Grid::pFindNode(Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get node by its position in the node list                                  */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pGetNthNode(i8 i_Node)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  i8 iSeq = 0;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    
+    if (pNode && i_Node == iSeq++)
+      return pNode;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get node ID                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iGetNthNode(i8 i_Node)
+i8 Grid::iGetNthNodeNo(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   //vThreadCallStackDump();
 
-  // called from  PtnMap::vPartition()
-
-  //vTrace("Grid::iGetNthNode for this index: %lld  "_Stz, i_Node);
   i8 iSeq = 0;
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && i_Node == iSeq++) {
-      //vTrace("iGetNthNode %lld\n"_Stz, pNode->iNodeNo());
       return pNode->iNodeNo();
     }
   }

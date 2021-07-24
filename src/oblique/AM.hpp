@@ -424,7 +424,7 @@ namespace OBLIQUE
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
-    static i8   iGetNthNode(i8 i_Node);
+    static i8   iGetNthNodeNo(i8 i_Node);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);

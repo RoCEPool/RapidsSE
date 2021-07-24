@@ -310,7 +310,7 @@ void Stage::vCreateStreams(void)
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nNodes(); i_Node++) {
-        i_NodeNo = AM::iGetNthNode(i_Node);
+        i_NodeNo = AM::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
         vAdd(pStream);
       }
@@ -323,7 +323,7 @@ void Stage::vCreateStreams(void)
       i_Node = m_pPipeline->i_Origin();
       //if (i_Node < 100) {
       //  printf("BAD node\n");
-      //  i_Node = AM::iGetNthNode(i_Node);
+      //  i_Node = AM::iGetNthNodeNo(i_Node);
       //}
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
       vAdd(pStream);
