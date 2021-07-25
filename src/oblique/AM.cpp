@@ -902,6 +902,13 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get number of nodes defined on command line                                */
+/*----------------------------------------------------------------------------*/
+i8 AM::PTNMAP::nPtnsPerTable(void)
+{
+  return gpAttachMap->m_pPtnMap->nPtnsPerTable();
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
@@ -1335,9 +1342,6 @@ bool AM::bRLUTimer(void)      { return gpAttachMap->m_xSysArgs.m_bRLUTimer;     
 i8   AM::iRegionSize(void)    { return gpAttachMap->m_xSysArgs.m_iRegionSize;        }
 i8   AM::nThreads(void)       { return gpAttachMap->m_xSysArgs.m_nThreads;           }
 
-i8   AM::nPtnsPerTable(void) {
-  return gpAttachMap->m_pPtnMap->nPtnsPerTable();
-}
 
 TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTagSet;       }
 
@@ -2061,7 +2065,7 @@ Stz* AM::szSummary(s256& sSummary)
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
                    AM::GRID::nKnownNodes(),
-                   AM::nPtnsPerTable(),
+                   AM::PTNMAP::nPtnsPerTable(),
                    AM::nThreads(),
                    AM::szBuild(),
                    spNow.sz()
@@ -2080,7 +2084,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
                    AM::GRID::nKnownNodes(),
-                   AM::nPtnsPerTable(),
+                   AM::PTNMAP::nPtnsPerTable(),
                    AM::nThreads()
                    );
   

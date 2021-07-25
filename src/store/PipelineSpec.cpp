@@ -794,11 +794,11 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iSends = AM::nPtnsPerTable();
+      iSends = AM::PTNMAP::nPtnsPerTable();
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iSends = AM::nPtnsPerTable();
+      iSends = AM::PTNMAP::nPtnsPerTable();
       break;
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
@@ -841,11 +841,11 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iIncSends = AM::nPtnsPerTable();
+      iIncSends = AM::PTNMAP::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iIncSends = AM::nPtnsPerTable();
+      iIncSends = AM::PTNMAP::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:

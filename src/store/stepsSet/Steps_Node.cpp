@@ -193,7 +193,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nPtnsPerTable());
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerTable());
   
   EXIT();
 }

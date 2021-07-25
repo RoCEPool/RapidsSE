@@ -324,7 +324,7 @@ void Grid::vSeeNodes(void)
   vTrace("  %lld partitions per table = "
          "%lld total partitions in grid "
          "\n"_Stz
-         ,AM::nPtnsPerTable()
+         ,AM::PTNMAP::nPtnsPerTable()
          ,AM::PTNMAP::nPtnsInGrid()
          );
   

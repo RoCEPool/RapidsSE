@@ -300,6 +300,7 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
+      static i8 nPtnsPerTable(void);
       static i8 nPtnsInGrid(void);
     };
 
@@ -381,7 +382,6 @@ namespace OBLIQUE
     static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
-    static i8   nPtnsPerTable(void);
     static i8   nThreads(void);
 
     static TagSet* pDbgTagSet(void);

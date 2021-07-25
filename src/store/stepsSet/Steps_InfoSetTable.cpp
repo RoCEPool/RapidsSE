@@ -58,7 +58,7 @@ void Step::vInfoSetTableDump(void)
   
   Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpInfoSetTable);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
     vTrace("Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vDump();

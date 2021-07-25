@@ -71,7 +71,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        This must be fixed properly. Ray 14 Nov 2020
   //if (AM::pGrid()->bHasStarted()) {
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
@@ -107,7 +107,7 @@ Table::~Table(void) noexcept(false)
   delete m_pShardDef;
   
   // delete the TablePtn's
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
@@ -273,7 +273,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexTree for the index in each partition
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
     pTablePtn->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
   }
@@ -331,7 +331,7 @@ i8 Table::nBuffers(void)
   
   i8 nBuffers = 0;
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     nBuffers += pTablePtn(i_TablePtn)->nBuffers();
   }
   
@@ -412,7 +412,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     IndexTree* pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(iIndexNo);
     
     iBuffers += pIndexTree->nEntBuffers();
@@ -433,7 +433,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRows() == 0) {
@@ -468,7 +468,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pRowBuffer->nRows() == 0) {
@@ -574,7 +574,7 @@ bool Table::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_Partn = 0; i_Partn < AM::nPtnsPerTable(); i_Partn++) {
+  for (i8 i_Partn = 0; i_Partn < AM::PTNMAP::nPtnsPerTable(); i_Partn++) {
     bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
     
     if (! bPopulated)
@@ -595,7 +595,7 @@ void Table::vRemoveIndex(Index* pIndex)
   m_pIdxVec->vRemove(pIndex);
   
   // remove the index from each tablePtn
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     m_pTablePtnVec->pGet(i_TablePtn)->vRemoveIndex(pIndex->iIndexNo());
   }
 }
@@ -694,7 +694,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #else
   
   // modulo the hash to get partition number
-  i8 nPartitions = AM::nPtnsPerTable() * AM::GRID::nKnownNodes();
+  i8 nPartitions = AM::PTNMAP::nPtnsPerTable() * AM::GRID::nKnownNodes();
   
   i_Ptn = iRowHash % nPartitions;
 
@@ -715,7 +715,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRows() == 0) {
@@ -766,7 +766,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     
     bool bVerify = true;
     
@@ -790,7 +790,7 @@ bool Table::bVerifyTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // verify all the row buffers with the r ow data
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     
     bool bVerify = true;
     
@@ -813,7 +813,7 @@ void Table::vCompactIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
     IndexTree *pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }
@@ -951,7 +951,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   m_pTablePtnVec = new TablePtnVec;
 
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerTable(); i_TablePtn++) {
 
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);

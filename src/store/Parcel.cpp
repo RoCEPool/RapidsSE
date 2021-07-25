@@ -473,13 +473,13 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       i8 i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      i_TablePtn = i_Robin % AM::nPtnsPerTable();
+      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
-             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::nPtnsPerTable());
+      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::PTNMAP::nPtnsPerTable():%lld\n"_Stz,
+             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::PTNMAP::nPtnsPerTable());
        */
       //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
@@ -493,7 +493,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_UNICAST: {
       
-      ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsPerTable());
       for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
         
         Stream* pStream = pNextStage->pGet(i_Stream);
@@ -568,7 +568,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       i_LocalRobin++;
       pSrcOp->vLocalRobin(i_LocalRobin);
 
-      i_TablePtn = i_LocalRobin % AM::nPtnsPerTable();
+      i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is this node
