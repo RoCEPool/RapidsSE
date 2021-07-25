@@ -57,7 +57,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
-  m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
+  m_pBucketMap   = new BucketMap(AM::PTNMAP::nPtnsInGrid());
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 

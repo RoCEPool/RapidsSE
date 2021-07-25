@@ -27,7 +27,7 @@ PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
   m_nPtnsInGrid   = 0;
   m_nPtnsPerTable = 0;
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
+  for (i8 i = 0; i < C_MAX_PTNSINGRID; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
     m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
   }
@@ -93,8 +93,8 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
 
-  //if (AM::nPtnsInGrid()) {
-  //  for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+  //if (AM::PTNMAP::nPtnsInGrid()) {
+  //  for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
   //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
   //  vTrace("\n"_Stz);
   //}
@@ -132,8 +132,8 @@ void PtnMap::vDumpDataBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  if (AM::nPtnsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+  if (AM::PTNMAP::nPtnsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
   }
@@ -239,7 +239,7 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
   m_nPtnsInGrid   = nNodes * nDegOfPar;
   m_nPtnsPerTable = nDegOfPar;
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
+  for (i8 i = 0; i < C_MAX_PTNSINGRID; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
     m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
   }

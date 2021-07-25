@@ -47,7 +47,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
                   pGrid->nKnownNodes(),
                   
                   AM::nPtnsPerTable(),
-                  AM::nPtnsInGrid(),
+                  AM::PTNMAP::nPtnsInGrid(),
 
                   C_VARGS_END
                   );

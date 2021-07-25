@@ -674,7 +674,7 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
     vTokenAccept();
     p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
-    if (tPtnNo >= AM::nPtnsInGrid())
+    if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
       return false;
     
     p_StageSpec->vSpecificPtnNo(tPtnNo);
@@ -803,7 +803,7 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iSends = AM::nPtnsInGrid();
+      iSends = AM::PTNMAP::nPtnsInGrid();
       break;
       
     case PX_ORIGIN_TO_ORIGIN:
@@ -850,7 +850,7 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iIncSends = AM::nPtnsInGrid();
+      iIncSends = AM::PTNMAP::nPtnsInGrid();
       break;
 
     case PX_ORIGIN_TO_ORIGIN:

@@ -887,6 +887,22 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
   return pInfoSet;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                PTNMAP                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes defined on command line                                */
+/*----------------------------------------------------------------------------*/
+i8 AM::PTNMAP::nPtnsInGrid(void)
+{
+  _static_
+  
+  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
+}
+
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1390,9 +1406,6 @@ bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;     
 
 i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 
-i8   AM::nPtnsInGrid(void) {
-  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
-}
 Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
 Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }

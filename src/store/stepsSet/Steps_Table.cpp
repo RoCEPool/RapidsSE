@@ -558,7 +558,7 @@ void Step::vTableListPartition(void)
       break;
     }
     
-    if (++tPtnNo >= AM::nPtnsInGrid()) {
+    if (++tPtnNo >= AM::PTNMAP::nPtnsInGrid()) {
       // done
       m_pDataStack->vPushInt(false);
       break;

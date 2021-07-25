@@ -325,7 +325,7 @@ void Grid::vSeeNodes(void)
          "%lld total partitions in grid "
          "\n"_Stz
          ,AM::nPtnsPerTable()
-         ,AM::nPtnsInGrid()
+         ,AM::PTNMAP::nPtnsInGrid()
          );
   
   SP_Node spNode;

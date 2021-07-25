@@ -297,6 +297,12 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+    class PTNMAP
+    {
+    public:
+      static i8 nPtnsInGrid(void);
+    };
+
     class SYSARGS
     {
     public:
@@ -425,7 +431,6 @@ namespace OBLIQUE
     static i8   iUserUsec(void);
     static i8   iResidentSize(void);
     static bool bProgress(void);
-    static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
     static Word* pConstantRoot(void);

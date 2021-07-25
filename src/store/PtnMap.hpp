@@ -20,7 +20,7 @@ namespace STORE
     i8 m_nPtnsPerTable;
 
     // which {node,tablePtn} a logical partition is in
-    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNS];
+    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNSINGRID];
   
     // must be last
     Footer m_xFooter;

@@ -41,7 +41,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pStreamDef  = pStreamDef;
   m_pBucketMap  = pBucketMap;
   m_bPtnHash    = bPtnHash;
-  m_nPtnsInGrid = AM::nPtnsInGrid();
+  m_nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
   m_nErrors = 0;
   m_i_Rec   = -1;

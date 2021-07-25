@@ -25,7 +25,7 @@ HashSet::HashSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
   
 
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNS; i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++)
     m_paBufferChain[i_Ptn] = nullptr;
     
   _checkInitialised_(CN_HASHSET);
@@ -41,7 +41,7 @@ HashSet::~HashSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPtnsInGrid(); i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++)
     RASSERT(! m_paBufferChain[i_Ptn]);
 }
 

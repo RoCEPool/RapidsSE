@@ -431,7 +431,7 @@ void Step::vInfoSetChunkFile(void)
              C_MAX_SEEKOFFSETS,
              
              AM::GRID::nKnownNodes(),
-             AM::nPtnsInGrid());
+             AM::PTNMAP::nPtnsInGrid());
       
       // set the chunk location
       m_pJob->pLogicUnit_job()->m_iCounter0 = i_ChunkLoc + nChunkBytes;

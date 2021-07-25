@@ -538,7 +538,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_BROADCAST : {
-      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
 
         // sendNode is the partition node
@@ -583,7 +583,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_UNICAST: {
       
-      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
@@ -600,7 +600,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
       
-      tPtnNo = i_Robin % AM::nPtnsInGrid();
+      tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -685,7 +685,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      tDstPtn = i_Robin % AM::nPtnsInGrid();
+      tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
