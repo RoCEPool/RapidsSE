@@ -192,7 +192,7 @@ void Step::vInfoSetAddNodeInfo(void)
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
                                     AM::nPtnsPerTable(),
-                                    (i8)AM::SYSTEM::bHasStarted(),
+                                    (i8)AM::SYSTEM::bStarted(),
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);

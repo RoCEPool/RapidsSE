@@ -1657,6 +1657,9 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
+  void vSystemStartedStore(void);
+  void vSystemStartedFetch(void);
+
   // table
   void vTableAddIndex(void);
   void vTableAsAltStreamDef(void);

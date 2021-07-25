@@ -300,8 +300,8 @@ namespace OBLIQUE
     class SYSTEM
     {
     public:
-      static bool bHasStarted(void);
-      static void vHasStarted(bool bHasStarted);
+      static bool bStarted(void);
+      static void vStarted(bool bStarted);
       static i8   nNanoseconds(void);
       static void vSystemReady(void);
     };

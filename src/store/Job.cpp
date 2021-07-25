@@ -1263,7 +1263,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 eEC STORE::eJob_checkCluster(void)
 {
-  if (AM::SYSTEM::bHasStarted())
+  if (AM::SYSTEM::bStarted())
     return EC_NONE;
   else
     return EC_CLUSTER_NOT_CONNECTED;

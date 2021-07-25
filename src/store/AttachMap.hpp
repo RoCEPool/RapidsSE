@@ -47,7 +47,6 @@ namespace STORE
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
-    bool          m_bHasStarted;
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
@@ -59,6 +58,7 @@ namespace STORE
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
+    bool          m_bStarted;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
