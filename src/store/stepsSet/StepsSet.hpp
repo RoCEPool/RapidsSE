@@ -49,10 +49,6 @@ public:
   void vApiSpawnDemon(void);
   void vApiSpawnThread(void);
 
-  // args
-  void vArgsOscillate(void);
-  void vArgsPrint(void);
-
   // arrange
   void vArrangeBegin(void);
   void vArrangeDelete(void);
@@ -397,7 +393,7 @@ public:
 
   // grid
   void vGridConnectedNodes(void);
-  void vGridDefinedNodes(void);
+  void vSysArgsDefinedNodes(void);
   void vGridDumpInfo(void);
   void vGridGetGridObject(void);
   void vGridGetGridParts(void);
@@ -1654,6 +1650,10 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
+  // args
+  void vSysArgsPrint(void);
+
+  // system
   void vSystemStartedStore(void);
   void vSystemStartedFetch(void);
 

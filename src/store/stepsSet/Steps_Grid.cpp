@@ -34,7 +34,6 @@
 void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
-  vAddStep("grid::definedNodes"_Stz,      &Step::vGridDefinedNodes);
   vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
   vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGridObject);
   vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
@@ -61,18 +60,6 @@ void Step::vGridConnectedNodes(void)
   i8 nNodes = AM::pGrid()->nKnownNodes();
 
   m_pDataStack->vPushInt(nNodes);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::definedNodes -- get number of nodes defined on command line          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridDefinedNodes(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::SYSARGS::nDefinedNodes());
   
   EXIT();
 }
