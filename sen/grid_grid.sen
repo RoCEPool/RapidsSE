@@ -127,7 +127,7 @@
 : grid::spawnOtherNodes ( -- )
 
   // test for single node grid
-  grid::bootNodes 1 == if exit then
+  grid::definedNodes 1 == if exit then
 
   0 locals| sNodeList |
   0 locals| sShellCommand |

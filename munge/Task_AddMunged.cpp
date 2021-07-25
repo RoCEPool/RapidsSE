@@ -18008,7 +18008,7 @@ void Task::vAddMunged(Task* )
     ": grid::spawnOtherNodes ( -- )\n"
     "\n"
     "  // test for single node grid\n"
-    "  grid::bootNodes 1 == if exit then\n"
+    "  grid::definedNodes 1 == if exit then\n"
     "\n"
     "  0 locals| sNodeList |\n"
     "  0 locals| sShellCommand |\n"

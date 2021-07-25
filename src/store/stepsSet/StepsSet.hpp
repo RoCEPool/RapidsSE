@@ -396,8 +396,8 @@ public:
   void vFilterSet(void);
 
   // grid
-  void vGridBootNodes(void);
   void vGridConnectedNodes(void);
+  void vGridDefinedNodes(void);
   void vGridDumpInfo(void);
   void vGridGetGridObject(void);
   void vGridGetGridParts(void);

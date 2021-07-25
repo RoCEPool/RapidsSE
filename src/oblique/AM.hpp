@@ -297,6 +297,12 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+    class SYSARGS
+    {
+    public:
+      static i8 nDefinedNodes(void);
+    };
+
     class SYSTEM
     {
     public:
