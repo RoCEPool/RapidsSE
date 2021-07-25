@@ -68,24 +68,6 @@
 /*----------------------------------------------------------------------------*/
 /* form the node list: {--node name ip port}*                                 */
 /*----------------------------------------------------------------------------*/
-//: .formNodeList ( -- sNodeList )
-//
-//  0 locals| pNode |
-//
-//  ""
-//
-//  grid::bootNodes 0 do
-//
-//    I grid::node to pNode
-//    pNode node.port
-//    pNode node.IP
-//    pNode node.name
-//    " --node %v %v %v" str.format
-//    str.cat
-//
-//  loop
-//;
-/*----------------------------------------------------------------------------*/
 : .formNodeList ( -- sNodeList )
 
   0 locals| pNode |
@@ -141,39 +123,6 @@
 
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
-/*----------------------------------------------------------------------------*/
-//: grid::spawnOtherNodes1 ( -- )
-//
-//  // test for single node grid
-//  grid::bootNodes 1 == if exit then
-//
-//  0 locals| sNodeList |
-//  0 locals| sShellCommand |
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // form the node list
-//
-//  .formNodeList to sNodeList
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // spawn all other nodes
-//
-//  grid::bootNodes 0 do
-//
-//    // all but this node
-//    I grid::thisNode@ != if
-//
-//      // spawn/start node I
-//      false  I grid::node node.name  sNodeList  .spawnNamedNode
-//
-//    then
-//
-//  loop
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  grid::StartNode@ "Cluster Start node: %v" str.format .
-//;
 /*----------------------------------------------------------------------------*/
 : grid::spawnOtherNodes ( -- )
 

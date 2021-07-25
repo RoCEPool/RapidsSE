@@ -23,18 +23,6 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-//  grid::bootNodes 0 do
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // insert a row in the infoSet for the defined node
-//    I streamSetTable[] streamSet[].addShowCluster  not if
-//      StreamSet[].pipeOut
-//      streamSetTable[] streamSet[].new
-//      I streamSetTable[] StreamSet[].addShowCluster assert
-//    then
-//
-//  loop
-
   0 locals| pNode |
 
   C_ALL node_I[].new

@@ -7,25 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-//: grid::connected ( -- t|f )
-//
-//  grid::bootNodes 0
-//  do
-//    I grid::node node.isConnected not if
-//      args.verbose if
-//        I "Node no %v not connected" .printf
-//      then
-//      unloop
-//      false
-//      exit
-//    then
-//  loop
-//
-//  "All nodes connected" .verbose
-//
-//  true
-//;
-/*----------------------------------------------------------------------------*/
 : grid::isConnected ( -- t|f )
 
   true locals| allConnected |

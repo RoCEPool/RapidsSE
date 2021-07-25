@@ -25,13 +25,6 @@
   1 task::acks!
 
   // send the job to each connected node in the grid
-//  grid::bootNodes 0 do
-//
-//    I grid::node node.sendSocket@ if
-//      I pJob job.forward
-//    then
-//
-//  loop
 
   0 locals| pNode |
 
