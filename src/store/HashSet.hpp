@@ -8,7 +8,7 @@ namespace STORE
   class HashSet : public Object
   {
   public:
-    DataBuffer*  m_paBufferChain[C_MAX_PARTITIONS];
+    DataBuffer*  m_paBufferChain[C_MAX_PTNS];
     
     // must be last
     Footer m_xFooter;

@@ -190,7 +190,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
   vAddConstant("C_MAX_PTNSPERNODE"_Stz,         C_MAX_PTNSPERNODE);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
-  vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
+  vAddConstant("C_MAX_PTNS"_Stz,    C_MAX_PTNS);
 
   vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);

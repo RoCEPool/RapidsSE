@@ -37,7 +37,7 @@ static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
 // max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
-static const i8 C_MAX_PARTITIONS    = C_MAX_PTNSPERNODE * C_MAX_NODES;
+static const i8 C_MAX_PTNS          = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;
 static const i8 C_MIN_LVL_RATIO     = 2;
