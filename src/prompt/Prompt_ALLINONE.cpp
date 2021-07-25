@@ -999,12 +999,12 @@ bool PROMPT::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
-  vTrace("  Node %s ShmLib %s Free %s Nodes %lld TablePtns %lld Expressions %lld\n"_Stz,
+  vTrace("  Node %s ShmLib %s Free %s Nodes %lld PtnsPerNode %lld Expressions %lld\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),
          gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes,
-         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable,
+         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode,
          gxCmdLineArgs.m_xSysArgs.m_nThreads
          );
     
@@ -1048,7 +1048,7 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MAX_SESSIONS      = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT   = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_PATH          = %lld\n"_Stz,C_MAX_PATH);
-  vTrace("  C_MAX_TABLEPTNS         = %lld\n"_Stz,C_MAX_TABLEPTNS);
+  vTrace("  C_MAX_PTNSPERNODE   = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_THREADS       = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS        = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("  C_MAX_VCH_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);

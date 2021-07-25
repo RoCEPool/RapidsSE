@@ -109,7 +109,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.munged"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bMunged);
   Constants::vAddConstant("args.nodeName"_Stz,          gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   Constants::vAddConstant("args.operands"_Stz,          gxCmdLineArgs.m_xSysArgs.m_nOperands);
-  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable);
+  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nPeriodicSleep);
   Constants::vAddConstant("args.progress"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bProgress);
   Constants::vAddConstant("args.prompt"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bPrompt);
@@ -125,7 +125,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.status"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bStop);
   Constants::vAddConstant("args.supervisorSleep"_Stz,   gxCmdLineArgs.m_xSysArgs.m_nSupervisorSleep);
-  Constants::vAddConstant("args.tablePtns"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable);
+  Constants::vAddConstant("args.tablePtns"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("args.threads"_Stz,           gxCmdLineArgs.m_xSysArgs.m_nThreads);
   Constants::vAddConstant("args.touch"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bTouch);
   Constants::vAddConstant("args.tracepoint"_Stz,        gxCmdLineArgs.m_xSysArgs.m_bTracepoint);
@@ -188,7 +188,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_ALL"_Stz, C_ALL);
 
   vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
-  vAddConstant("C_MAX_TABLEPTNS"_Stz,         C_MAX_TABLEPTNS);
+  vAddConstant("C_MAX_PTNSPERNODE"_Stz,         C_MAX_PTNSPERNODE);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 

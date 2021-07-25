@@ -1262,13 +1262,12 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);
-  vTrace("  C_MAX_PTNS          = %lld\n"_Stz,C_MAX_PTNS);
+  vTrace("  C_MAX_PTNSPERNODE    = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SEEKOFFSETS    = %lld\n"_Stz,C_MAX_SEEKOFFSETS);
   vTrace("  C_MAX_SESSIONS       = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT    = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_SHORTCUTS      = %lld\n"_Stz,C_MAX_SHORTCUTS);
-  vTrace("  C_MAX_TABLEPTNS          = %lld\n"_Stz,C_MAX_TABLEPTNS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);

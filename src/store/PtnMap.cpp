@@ -27,7 +27,7 @@ PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
   m_nPtnsInGrid   = 0;
   m_nPtnsPerTable = 0;
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
+  for (i8 i = 0; i < C_MAX_PARTITIONS; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
     m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
   }
@@ -239,7 +239,7 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
   m_nPtnsInGrid   = nNodes * nDegOfPar;
   m_nPtnsPerTable = nDegOfPar;
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
+  for (i8 i = 0; i < C_MAX_PARTITIONS; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
     m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
   }

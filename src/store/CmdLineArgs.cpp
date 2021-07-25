@@ -46,7 +46,7 @@ CmdLineArgs::CmdLineArgs(void)
 #else
   m_xSysArgs.m_sSenDir       = "../sen/"_Stz;
 #endif
-  m_xSysArgs.m_nPtnsPerTable    = 4;
+  m_xSysArgs.m_nPtnsPerNode  = 4;
   
   // node configuration
   m_xSysArgs.m_nDefinedNodes = 0;
@@ -186,7 +186,7 @@ void CmdLineArgs::vEnvironmentVariables(void)
 
   sVarName = "SE_PARTITIONS"_Stz;
   if (Env::bGet(sVarName,sPartitions))
-    m_xSysArgs.m_nPtnsPerTable = sPartitions.iToI8();
+    m_xSysArgs.m_nPtnsPerNode = sPartitions.iToI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -537,18 +537,19 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         return false;
       }
 
-      m_xSysArgs.m_nPtnsPerTable = argv[i_Arg].iToI8();
-      if ( m_xSysArgs.m_nPtnsPerTable <= 0 || m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS ) {
+      m_xSysArgs.m_nPtnsPerNode = argv[i_Arg].iToI8();
+      if (m_xSysArgs.m_nPtnsPerNode <= 0 ||
+          m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE ) {
         vWarn("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
-              m_xSysArgs.m_nPtnsPerTable, C_MAX_TABLEPTNS);
+              m_xSysArgs.m_nPtnsPerNode, C_MAX_PTNSPERNODE);
         return false;
       }
-      if (m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS) {
+      if (m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
-          C_MAX_TABLEPTNS);
+          C_MAX_PTNSPERNODE);
         return false;
       }
-      m_xSysArgs.m_nDegOfPar = m_xSysArgs.m_nPtnsPerTable;
+      m_xSysArgs.m_nDegOfPar = m_xSysArgs.m_nPtnsPerNode;
       
       continue;
     }
@@ -1007,7 +1008,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
            m_xSysArgs.m_xHeartbeatNode[i_Index].m_iPortNo);
   }
   
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerTable);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_xSysArgs.m_nThreads);
 
   if (m_xSysArgs.m_nDummyThreads) {

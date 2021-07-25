@@ -268,7 +268,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
   m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
-  m_xSysArgs.m_nPtnsPerTable    = pCmdLineArgs->m_xSysArgs.m_nPtnsPerTable;
+  m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;

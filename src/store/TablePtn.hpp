@@ -68,7 +68,7 @@ namespace STORE
   TablePtn* _pTablePtn(void* aAddr);
 
 
-  typedef VectorNL_t<CN_TABLEPTNVEC,STORE::TablePtn,C_MAX_TABLEPTNS>TablePtnVec;
+  typedef VectorNL_t<CN_TABLEPTNVEC,STORE::TablePtn,C_MAX_PTNSPERNODE>TablePtnVec;
 }
 
 /*============================================================================*/
