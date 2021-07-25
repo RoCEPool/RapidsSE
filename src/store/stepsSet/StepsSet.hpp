@@ -392,12 +392,11 @@ public:
   void vFilterSet(void);
 
   // grid
-  void vGridConnectedNodes(void);
-  void vSysArgsDefinedNodes(void);
   void vGridDumpInfo(void);
   void vGridGetGridObject(void);
   void vGridGetGridParts(void);
   void vGridFindNode(void);
+  void vGridKnownNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridPutGridParts(void);
@@ -1651,6 +1650,7 @@ public:
   void vScheduleWaitingLength(void);
 
   // args
+  void vSysArgsDefinedNodes(void);
   void vSysArgsPrint(void);
 
   // system

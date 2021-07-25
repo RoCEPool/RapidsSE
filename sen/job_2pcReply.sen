@@ -16,7 +16,7 @@
 
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid
-  grid::connectedNodes pJob job.acksRemaining!
+  grid::knownNodes pJob job.acksRemaining!
 
   // grab this task's lock
   task[] task.grabLock

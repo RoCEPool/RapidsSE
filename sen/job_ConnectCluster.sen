@@ -31,7 +31,7 @@
 
   node_I[].delete
 
-  grid::connectedNodes not if
+  grid::knownNodes not if
     "All nodes not fully connected yet" .
     false exit
   then
