@@ -396,7 +396,6 @@ public:
   void vFilterSet(void);
 
   // grid
-  void vGridAdjustPtnMap(void);
   void vGridBootNodes(void);
   void vGridConnectedNodes(void);
   void vGridDumpInfo(void);

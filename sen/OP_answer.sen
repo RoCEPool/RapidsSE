@@ -94,7 +94,7 @@
   // node is active
   NS_ACTIVE pAnsweredNode node.state!
 
-  //grid::adjustPtnMap
+  //ptnmap::adjust
 
   //3 Row[].getIntColumn system::started@ not and if
   //  true system::started!

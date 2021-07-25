@@ -33,7 +33,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Grid(void)
 {
-  vAddStep("grid::adjustPtnMap"_Stz,      &Step::vGridAdjustPtnMap);
   vAddStep("grid::bootNodes"_Stz,         &Step::vGridBootNodes);
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
   vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
@@ -50,18 +49,6 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::adjustPtnMap -- adjust partition map                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vGridAdjustPtnMap(void)
-{
-  ENTRY();
-  
-  AM::pGrid()->vAdjustPtnMap();
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
