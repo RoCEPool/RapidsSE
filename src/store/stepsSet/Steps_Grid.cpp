@@ -45,8 +45,6 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
-  vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
-  vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
   vAddStep("grid::tablePtns"_Stz,         &Step::vGridTablePtns);
   vAddStep("grid::tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
@@ -325,32 +323,6 @@ void Step::vGridThisNodeNameFetch(void)
   sName = AM::pGrid()->pThisNode()->szNodeNm();
   
   m_pDataStack->vPushStr(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::started! -- set grid started                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridStartedStore(void)
-{
-  ENTRY();
-  
-  i8 iStarted = m_pDataStack->iPopInt(__func__);
-  
-  AM::SYSTEM::vStarted(iStarted == 1 ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::started@ -- get grid started                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vGridStartedFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::SYSTEM::bStarted());
   
   EXIT();
 }

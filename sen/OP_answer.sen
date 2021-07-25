@@ -96,8 +96,8 @@
 
   //grid::adjustPtnMap
 
-  //3 Row[].getIntColumn grid::started@ not and if
-  //  true grid::started!
+  //3 Row[].getIntColumn system::started@ not and if
+  //  true system::started!
   //then
 
   // delete the infoset

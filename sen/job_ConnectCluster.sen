@@ -76,7 +76,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // has cluster already been started?
 
-  grid::started@ if
+  system::started@ if
                                              //! how do we set an error message?
     DONE_REQ
     exit
@@ -105,7 +105,7 @@
   task::wait
 
   // set grid as started
-  // true grid::started!
+  // true system::started!
   "Cluster started" .
 
   task::doneFinally
@@ -127,7 +127,7 @@
   // wait till all nodes connected
   grid::pause
 
-  // true grid::started!
+  // true system::started!
 ;
 
 /*----------------------------------------------------------------------------*/

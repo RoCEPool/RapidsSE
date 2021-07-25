@@ -408,8 +408,6 @@ public:
   void vGridPutGridParts(void);
   void vGridSeeNodes(void);
   void vGridShow(void);
-  void vGridStartedStore(void);
-  void vGridStartedFetch(void);
   void vGridTablePtns(void);
   void vGridTablePtnToPtnNo(void);
   void vGridThisNodeFetch(void);
