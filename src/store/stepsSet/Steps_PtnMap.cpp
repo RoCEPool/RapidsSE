@@ -15,7 +15,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PtnMap(void)
 {
-  vAddStep("ptnMap::adjust"_Stz, &Step::vPtnMapAdjust);
+  vAddStep("ptnMap::adjust"_Stz,     &Step::vPtnMapAdjust);
+  vAddStep("ptnmap::partitions"_Stz, &Step::vPtnMapPartitions);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,6 +35,19 @@ void Step::vPtnMapAdjust(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* ptnmap::partitions -- get number of partitions in the grid                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnMapPartitions(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsInGrid());
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

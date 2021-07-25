@@ -39,7 +39,6 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::knownNodes"_Stz,        &Step::vGridKnownNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
-  vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
@@ -187,18 +186,6 @@ void Step::vGridNode(void)
   Node* pNode = AM::pGrid()->pFindNode(iNode);
   
   m_pDataStack->vPushPtr(pNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::partitions -- get number of partitions in the grid                   */
-/*----------------------------------------------------------------------------*/
-void Step::vGridPartitions(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsInGrid());
   
   EXIT();
 }
