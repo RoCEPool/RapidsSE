@@ -16,6 +16,7 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    i8 m_iPtnVersion;
     i8 m_nPtnsPerNode;
   
     i8 m_nKnownNodes;

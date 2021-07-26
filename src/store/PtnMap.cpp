@@ -24,6 +24,7 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
+  m_iPtnVersion  = C_UNKNOWN;
   m_nPtnsPerNode = nPtnsPerNode;
   
   m_nKnownNodes  = C_UNKNOWN;
@@ -187,7 +188,7 @@ void PtnMap::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vTrace("PtnMap:\n"_Stz);
+  vTrace("PtnMap (version %lld):\n"_Stz,m_iPtnVersion);
   
   for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
     
@@ -245,6 +246,8 @@ void PtnMap::vRepartition(void)
     m_xaNodePtn[tPtnNo].m_iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
     m_xaNodePtn[tPtnNo].m_i_Ptn   = (i4)tPtnNo / m_nKnownNodes;
   }
+  
+  m_iPtnVersion++;
 }
 
 /*----------------------------------------------------------------------------*/
