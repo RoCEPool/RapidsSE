@@ -18,23 +18,12 @@ namespace STORE
   friend class STORE::Node_I;
   private:
   
-    s32    m_sGridNm;       // name of this grid
-    
-    Node*  m_pThisNode;     // this node pointer
-  
+    s32    m_sGridNm;      // name of this grid
+    Node*  m_pThisNode;    // this node pointer
+    SkipListNL* m_pNodes;  // skip list of jobs (ordered by job name)
+ 
     Parcel* m_pParcel;
 
-#ifdef WITH_NODE_SKIPLIST
-
-    SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
-#else
-
-    std::list<Node*> * m_pNodes_stdList;
-
-
-#endif
-
-  
     // must be last
     Footer m_xFooter;
     
@@ -49,10 +38,7 @@ namespace STORE
 
     void vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
                           Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
-  
     void vAddNode(Node* pNode);
-  
-
     void vAdjustPtnMap(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
@@ -70,19 +56,6 @@ namespace STORE
     i8   iPrepareParcel(void);
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);
-
-#ifdef WITH_NODE_SKIPLIST
-
-  // newcode
-  std::list<Node*>::const_iterator itBeginNodes(void);
-  std::list<Node*>::const_iterator itEndNodes(void);
-
-#else
-    // newcode
-    std::list<Node*>::const_iterator itBeginNodes(void);
-    std::list<Node*>::const_iterator itEndNodes(void);
-
-#endif
   
     Footer* aFooter(void);
   };
