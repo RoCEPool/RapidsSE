@@ -905,10 +905,11 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 /*----------------------------------------------------------------------------*/
 /* get number of nodes defined on command line                                */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::nPtnsPerTable(void)
+i8 AM::PTNMAP::nPtnsPerNode(void)
 {
-  return gpAttachMap->m_pPtnMap->nPtnsPerTable();
+  return gpAttachMap->m_pPtnMap->nPtnsPerNode();
 }
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
@@ -2074,7 +2075,7 @@ Stz* AM::szSummary(s256& sSummary)
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
                    AM::GRID::nKnownNodes(),
-                   AM::PTNMAP::nPtnsPerTable(),
+                   AM::PTNMAP::nPtnsPerNode(),
                    AM::nThreads(),
                    AM::szBuild(),
                    spNow.sz()
@@ -2093,7 +2094,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
                    AM::GRID::nKnownNodes(),
-                   AM::PTNMAP::nPtnsPerTable(),
+                   AM::PTNMAP::nPtnsPerNode(),
                    AM::nThreads()
                    );
   

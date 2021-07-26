@@ -42,7 +42,7 @@ namespace STORE
     void vDumpDataBuffers(void);
 
     i8 nPtnsInGrid(void);
-    i8 nPtnsPerTable(void);
+    i8 nPtnsPerNode(void);
     i8 i_WhichNode(tPN tPtnNo);
     i8 i_WhichStream(tPN tPtnNo);
     i8 i_WhichTablePtn(tPN tPtnNo);
@@ -51,7 +51,7 @@ namespace STORE
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
     i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
     Footer* aFooter(void);
-    void vPartition(i8 nKnownNodes, i8 nPtnsPerNode);
+    void vRepartition(i8 nKnownNodes);
   };
   
   PtnMap* _pPtnMap(void* aAddr);

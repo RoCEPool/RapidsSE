@@ -191,7 +191,7 @@ void Step::vInfoSetAddNodeInfo(void)
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
-                                    AM::PTNMAP::nPtnsPerTable(),
+                                    AM::PTNMAP::nPtnsPerNode(),
                                     (i8)AM::SYSTEM::bStarted(),
                                     C_VARGS_END);
   //ASSERT(pRow);

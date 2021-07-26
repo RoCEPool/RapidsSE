@@ -24,8 +24,8 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nKnownNodes  = 0;
-  m_nPtnsPerNode = 0;
+  m_nKnownNodes  = nKnownNodes;
+  m_nPtnsPerNode = nPtnsPerNode;
   m_nPtnsInGrid  = 0;
 
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
@@ -35,7 +35,7 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
   
   _checkInitialised_(CN_PTNMAP);
   
-  vPartition(nKnownNodes,nPtnsPerNode);
+  vRepartition(nKnownNodes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -122,7 +122,7 @@ void PtnMap::vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vPartition(nKnownNodes,nPtnsPerNode);
+  vRepartition(nKnownNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,9 +150,9 @@ i8 PtnMap::nPtnsInGrid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of partitions per table                                         */
+/* get number of partitions per node                                          */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::nPtnsPerTable(void)
+i8 PtnMap::nPtnsPerNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
@@ -230,15 +230,14 @@ i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* repartition the map based on new known nodes                               */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vPartition(i8 nKnownNodes, i8 nPtnsPerNode)
+void PtnMap::vRepartition(i8 nKnownNodes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   m_nKnownNodes  = nKnownNodes;
-  m_nPtnsPerNode = nPtnsPerNode;
-  m_nPtnsInGrid  = nKnownNodes * nPtnsPerNode;
+  m_nPtnsInGrid  = nKnownNodes * m_nPtnsPerNode;
   RASSERT(m_nPtnsInGrid);
 
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
