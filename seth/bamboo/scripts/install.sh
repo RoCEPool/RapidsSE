@@ -148,7 +148,7 @@ fi
 INSTALLER="$(realpath "${INSTALLER}")"
 
 # Install it
-"${INSTALLER}" -- --script --config "${CONFIG_FILE}"
+"${INSTALLER}" --quiet --noprogress -- --script --config "${CONFIG_FILE}"
 
 # We need to set up a symbolic link so that the tests can load data.
 # The test files ask SE to load files from ../DATA/TPCH/*. This path
