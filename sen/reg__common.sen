@@ -11,7 +11,7 @@
 
   PotRlu[].isNull not if
 
-    ptnmap::partitions 0
+    ptnmap::ptnsInGrid 0
     do
       begin
         I PotRlu[].danglingPtn to OperandB[]
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : PotRlu[].pipeoutCompletedPtns
 
-  ptnmap::partitions 0
+  ptnmap::ptnsInGrid 0
   do
     begin
       I PotRlu[].completedPtn to OperandB[]
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : PotRlu[].pipeoutDanglingPtns
 
-  ptnmap::partitions 0
+  ptnmap::ptnsInGrid 0
   do
     begin
       I PotRlu[].danglingPtn to OperandB[]

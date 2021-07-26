@@ -393,11 +393,11 @@ public:
 
   // grid
   void vGridDumpInfo(void);
-  void vGridGetGridObject(void);
+  void vGridGetGrid(void);
   void vGridGetGridParts(void);
-  void vGridFindNode(void);
+  void vGridFindNodeByName(void);
   void vGridKnownNodes(void);
-  void vGridNode(void);
+  void vGridFindNodeByNo(void);
   void vGridPutGridParts(void);
   void vGridSeeNodes(void);
   void vGridShow(void);
@@ -1175,7 +1175,7 @@ public:
 
   // ptnMap
   void vPtnMapAdjust(void);
-  void vPtnMapPartitions(void);
+  void vPtnMapPtnsInGrid(void);
 
   // ptnStream
   void vPtnStreamBufferNo(void);

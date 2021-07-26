@@ -34,11 +34,11 @@
 void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
-  vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGridObject);
+  vAddStep("grid::findNodeByName"_Stz,    &Step::vGridFindNodeByName);
+  vAddStep("grid::findNodeByNo"_Stz,      &Step::vGridFindNodeByNo);
+  vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGrid);
   vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
-  vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::knownNodes"_Stz,        &Step::vGridKnownNodes);
-  vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
@@ -50,14 +50,66 @@ void Step::vAddSteps_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grid::vGridDumpInfo -- display nodes in the grid                           */
+/*----------------------------------------------------------------------------*/
+void Step::vGridDumpInfo(void)
+{
+  ENTRY();
+
+  //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
+
+  s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
+
+  m_pDataStack->vPushStr(pDumpBuffer);
+
+  //m_pDataStack->vPushStz(pDumpBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::findNodeByName -- find node based on name                            */
+/*----------------------------------------------------------------------------*/
+void Step::vGridFindNodeByName(void)
+{
+  ENTRY();
+  
+  s256 sNodeNm;
+  m_pDataStack->vPopStr(sNodeNm,__func__);
+  
+  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
+  
+  m_pDataStack->vPushPtr(pNode);
+
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::findNodeByNo -- find node based on no                                */
+/*----------------------------------------------------------------------------*/
+void Step::vGridFindNodeByNo(void)
+{
+  ENTRY();
+  
+  i8 iNode = m_pDataStack->iPopInt(__func__);
+  
+  Node* pNode = AM::pGrid()->pFindNode(iNode);
+  
+  m_pDataStack->vPushPtr(pNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grid::getGrid -- get grid object                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vGridGetGridObject(void)
+void Step::vGridGetGrid(void)
 {
   ENTRY();
 
   // ... code which initiates the gridGet transfer ...
-  vTrace("C++ gets called: vGridGetGridObject\n"_Stz);
+  vTrace("C++ gets called: vGridGetGrid\n"_Stz);
 
   Grid* pGrid = AM::pGrid();
 
@@ -153,40 +205,6 @@ void Step::vGridPutGridParts(void)
 
   bMatched ? m_pDataStack->vPushInt(1) : m_pDataStack->vPushInt(0);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::findNode -- find node based on name                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vGridFindNode(void)
-{
-  ENTRY();
-  
-  s256 sNodeNm;
-  m_pDataStack->vPopStr(sNodeNm,__func__);
-  
-  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
-  
-  m_pDataStack->vPushPtr(pNode);
-
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::node -- get node from grid                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vGridNode(void)
-{
-  ENTRY();
-  
-  i8 iNode = m_pDataStack->iPopInt(__func__);
-  
-  Node* pNode = AM::pGrid()->pFindNode(iNode);
-  
-  m_pDataStack->vPushPtr(pNode);
-  
   EXIT();
 }
 
@@ -304,24 +322,6 @@ void Step::vGridToNode(void)
   
   m_pDataStack->vPushInt(i_Node);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::vGridDumpInfo -- display nodes in the grid                           */
-/*----------------------------------------------------------------------------*/
-void Step::vGridDumpInfo(void)
-{
-  ENTRY();
-
-  //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
-
-  s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
-
-  m_pDataStack->vPushStr(pDumpBuffer);
-
-  //m_pDataStack->vPushStz(pDumpBuffer);
-
   EXIT();
 }
 

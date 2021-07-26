@@ -38,7 +38,7 @@
   PipeIn[] ToPtnRow[].convert
   nullptr to Pipein[]
 
-  ptnmap::partitions 0
+  ptnmap::ptnsInGrid 0
   do
 
     I ToPtnRow[].completed to OperandB[]
@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : toPtnRow_EosMarker \handler
 
-  ptnmap::partitions 0
+  ptnmap::ptnsInGrid 0
   do
 
     I ToPtnRow[].dangling to OperandB[]

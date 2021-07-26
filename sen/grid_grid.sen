@@ -194,7 +194,7 @@
 
   params| sNodeNm |
 
-  sNodeNm grid::findNode node.forget
+  sNodeNm grid::findNodeByName node.forget
 ;
 
 
