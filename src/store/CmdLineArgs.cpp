@@ -31,9 +31,9 @@ CmdLineArgs::CmdLineArgs(void)
 #endif
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
-  m_xSysArgs.m_nDegOfPar     = 4;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
+  m_xSysArgs.m_nPtnsPerNode  = 4;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
@@ -46,15 +46,15 @@ CmdLineArgs::CmdLineArgs(void)
 #else
   m_xSysArgs.m_sSenDir       = "../sen/"_Stz;
 #endif
-  m_xSysArgs.m_nPtnsPerNode  = 4;
   
   // node configuration
-  m_xSysArgs.m_nDefinedNodes = 0;
-  
+  m_xSysArgs.m_nDefinedNodes   = 0;
+  m_xSysArgs.m_nHeartbeatNodes = 0;
+
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
 
-  m_xSysArgs.m_nHeartbeatNodes = 0;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // commands
@@ -549,7 +549,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
           C_MAX_PTNSPERNODE);
         return false;
       }
-      m_xSysArgs.m_nDegOfPar = m_xSysArgs.m_nPtnsPerNode;
       
       continue;
     }

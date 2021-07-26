@@ -15,14 +15,14 @@ namespace STORE
   {
   private:
  
-    i8  m_iNodeNo;    // node number
-    s32 m_sNodeNm;    // name of the node
-    s32 m_sRegionNm;  // name of shared memory region
-    i8  m_nDegOfPar;  // degree of parallelism
-    s32 m_sIPAddr;    // ip address of node
-    i8  m_iPortNo;    // port number of node
+    i8  m_iNodeNo;     // node number
+    s32 m_sNodeNm;     // name of the node
+    s32 m_sRegionNm;   // name of shared memory region
+    i8  m_nPtnsInNode; // degree of parallelism
+    s32 m_sIPAddr;     // ip address of node
+    i8  m_iPortNo;     // port number of node
   
-    eNS m_eState;     // node state
+    eNS m_eState;      // node state
   
     BASE::Socket* m_pRecvSocket;  // socket used for receiving from node
     BASE::Socket* m_pSendSocket;  // socket used for sending to node
@@ -45,18 +45,19 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
+    Node(i8 iNodeNo, Stz* szNodeNm, i8 nPtnsInNode,
+         Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    i8   nDegOfPar(void);
     void vInit(void);
     Stz* szIPAddr(void);
     Stz* szNodeNm(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iPortNo(void);
+    i8   nPtnsInNode(void);
     Stz* szRegionNm(void);
 
     void vDsv(void);
