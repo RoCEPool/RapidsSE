@@ -93,7 +93,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   //if (AM::PTNMAP::nPtnsInGrid()) {
   //  for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
-  //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
+  //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->iWhichNodeNo(tPtnNo));
   //  vTrace("\n"_Stz);
   //}
 
@@ -157,7 +157,7 @@ void PtnMap::vSee(void)
   
   for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
     
-    vTrace("[%lld] (Node %lld, NodePtn %lld)\n"_Stz
+    vTrace("[%lld] (NodeNo %lld, i_Ptn %lld)\n"_Stz
            
            ,i_Ptn
            ,m_xaNodePtn[i_Ptn].m_iNodeNo
@@ -171,37 +171,25 @@ void PtnMap::vSee(void)
 /*----------------------------------------------------------------------------*/
 /* get which node a logical partition is mapped to                            */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichNode(tPN tPtnNo)
+i8 PtnMap::iWhichNodeNo(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Node = m_xaNodePtn[tPtnNo].m_iNodeNo;
+  i8 iNodeNo = m_xaNodePtn[tPtnNo].m_iNodeNo;
       
-  return i_Node;
+  return iNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which stream a logical partition is mapped to                          */
+/* get which node partition a logical partition is mapped to                  */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichStream(tPN tPtnNo)
+i8 PtnMap::i_WhichPtn(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Stream = m_xaNodePtn[tPtnNo].m_i_Ptn;
+  i8 i_Ptn = m_xaNodePtn[tPtnNo].m_i_Ptn;
    
-  return i_Stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which table partition a logical partition is mapped to                 */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichTablePtn(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  
-  i8 i_TablePtn = m_xaNodePtn[tPtnNo].m_i_Ptn;
-   
-  return i_TablePtn;
+  return i_Ptn;
 }
 
 /*----------------------------------------------------------------------------*/

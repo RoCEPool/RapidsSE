@@ -268,7 +268,7 @@ void Parcel::vSendOut(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
+      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
       vSendToNode(pSrcOp,iDstNode);
       break;
     }
@@ -477,7 +477,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is the partition node
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
       /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::PTNMAP::nPtnsPerNode():%lld\n"_Stz,
              iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::PTNMAP::nPtnsPerNode());
        */
@@ -501,7 +501,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
         
         // sendNode is the partition node
     
-        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
         if ( iDstNode == pPipeline->i_Origin())
           vSendParcel(pSrcOp,iDstNode,tPtnNo);
@@ -542,7 +542,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
 
         // sendNode is the partition node
-        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
@@ -555,7 +555,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       tPtnNo = pDataBuffer->tPtnNo();
       
       // sendNode is the partition node
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
 
       vSendParcel(pSrcOp,iDstNode,tPtnNo);
@@ -572,7 +572,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is this node
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
       RASSERT(iDstNode == AM::pGrid()->iThisNodeNo());
       
@@ -587,7 +587,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
-        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
@@ -603,7 +603,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
       
       // sendNode is the partition node
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
 
       vSendParcel(pSrcOp,iDstNode,tPtnNo);
@@ -693,7 +693,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       ASSERT(0);
   }
   
-  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
+  i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
   vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);

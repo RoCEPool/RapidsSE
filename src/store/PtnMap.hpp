@@ -43,10 +43,9 @@ namespace STORE
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
-    i8   i_WhichNode(tPN tPtnNo);
-    i8   i_WhichStream(tPN tPtnNo);
-    i8   i_WhichTablePtn(tPN tPtnNo);
-
+    i8   iWhichNodeNo(tPN tPtnNo);
+    i8   i_WhichPtn(tPN tPtnNo);
+ 
   private:
     void vRepartition(void);
     void vResetNodePtnArray(void);
