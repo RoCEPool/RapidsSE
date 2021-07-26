@@ -163,6 +163,19 @@ void PtnMap::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
+  vTrace("PtnMap:\n"_Stz);
+  
+  for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
+    
+    vTrace("[%lld] (Node %lld, NodePtn %lld)\n"_Stz
+           
+           ,i_Ptn
+           ,m_xaNodePtn[i_Ptn].m_i_Node
+           ,m_xaNodePtn[i_Ptn].m_i_NodePtn
+           );
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
