@@ -95,7 +95,7 @@ __aFooterFunction(SqlPlanner)
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_pStatementStack(new QueryNodeStack()),
-  m_pTableRefStack(new QueryNodeStack()),
+  m_pTableExprStack(new QueryNodeStack()),
   m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
   m_pOrderItems(nullptr)
@@ -124,13 +124,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pStatementStack = nullptr;
   }
 
-  if (m_pTableRefStack) {
-    while (m_pTableRefStack->nItems() > 0) {
-      QueryNode* pItem = m_pTableRefStack->pPop();
+  if (m_pTableExprStack) {
+    while (m_pTableExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pTableExprStack->pPop();
       delete pItem;
     }
-    delete m_pTableRefStack;
-    m_pTableRefStack = nullptr;
+    delete m_pTableExprStack;
+    m_pTableExprStack = nullptr;
   }
 
   if (m_pExprStack) {
@@ -563,6 +563,16 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *pCtx)
 {
   visitChildren(pCtx);
+
+  if (pCtx->tableAlias()) {
+    Text* pAlias = pCleanId(pCtx->tableAlias()->identifier());
+
+    QueryNode* pTableScanOp = m_pTableExprStack->pTop();
+    ASSERT(TableScanOp::bIsOfType(pTableScanOp));
+    ASSERT(!TableScanOp::bHasAlias(pTableScanOp));
+
+    TableScanOp::vSetAlias(pTableScanOp, pAlias);
+  }
   
   return nullptr;
 }
@@ -589,7 +599,8 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
   pTableName = pCleanId(pCtx->tableName()->id);
 
   QueryNode* pTableRef = TableRef::pCreate(pCatalogName, pSchemaName, pTableName);
-  m_pTableRefStack->vPush(pTableRef);
+  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+  m_pTableExprStack->vPush(pTableScanOp);
   
   return nullptr;
 }
@@ -838,17 +849,17 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
 
   // -----------------------
-  // Table References
+  // Table Expressions
+  // (These include TableScanOps, JoinOps, table subqueries, etc.
   // -----------------------
-  // Check for a tableRef. If one exists, add it to a TableScanOp
-  // and attach the TableScanOp as a child of the ProjectOp
-  QueryNode* pTableScanOp = nullptr;
+  // Check for a table expression. If one exists, attach it as a child of the ProjectOp
+  QueryNode* pTableExprNode = nullptr;
   if (pCtx->tableExpr()) {
     // Visit the grammar rule for table expressions
     pCtx->tableExpr()->accept(this);
 
-    ASSERT(m_pTableRefStack->nItems() == 1);
-    pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
+    ASSERT(m_pTableExprStack->nItems() == 1);
+    pTableExprNode = m_pTableExprStack->pPop();
 
   } else {
 
@@ -903,11 +914,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   }
 
   /// TABLE REF
-  if (pTableScanOp) {
-    if (!pFirstOp)  pFirstOp = pTableScanOp;
-    if (pLastOp)    pLastOp->vAppendChild(pTableScanOp);
+  if (pTableExprNode) {
+    if (!pFirstOp)  pFirstOp = pTableExprNode;
+    if (pLastOp)    pLastOp->vAppendChild(pTableExprNode);
 
-    pLastOp = pTableScanOp;
+    pLastOp = pTableExprNode;
   }
 
   // Now attach the sql operator chain to the statement object.
