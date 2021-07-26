@@ -115,7 +115,7 @@ void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
 
     Node *pNode = new Node(iNodeNo,
                            szNodeNm,
-                           AM::nDegOfPar(),
+                           AM::SYSARGS::nPtnsPerNode(),
                            szIPAddr,
                            iPortNo,
                            szRegionNm);
@@ -162,7 +162,7 @@ void Grid::vAdjustPtnMap(void)
   PtnMap* pPtnMap = AM::pPtnMap();
 
   //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::SYSARGS::nPtnsPerNode());
   pPtnMap->vDumpDataBuffers();
 
 }

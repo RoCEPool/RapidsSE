@@ -19,13 +19,13 @@ namespace STORE
     i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
+    i8    m_nPtnsPerNode;  // partitions per node
     void* m_aRegionAddr;   // use this address for region
     s32   m_sRegionName;   // name of shared memory region
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
-    i8    m_nPtnsPerNode;  // partitions per node
-
+ 
     // nodes defined on the command line
     i8    m_nDefinedNodes;
     struct {

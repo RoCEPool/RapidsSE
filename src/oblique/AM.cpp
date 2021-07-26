@@ -1338,7 +1338,6 @@ i8    AM::iFormatNumber(void)   { return C_VERSION_NUMBER;  }                   
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
 bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }
-i8   AM::nDegOfPar(void)      { return gpAttachMap->m_xSysArgs.m_nDegOfPar;          }
 bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }

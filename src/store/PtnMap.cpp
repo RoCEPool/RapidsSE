@@ -239,13 +239,13 @@ void PtnMap::vPartition(i8 nKnownNodes, i8 nPtnsPerNode)
   m_nKnownNodes  = nKnownNodes;
   m_nPtnsPerNode = nPtnsPerNode;
   m_nPtnsInGrid  = nKnownNodes * nPtnsPerNode;
+  RASSERT(m_nPtnsInGrid);
 
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
     m_xaInNodeTablePtn[i_Ptn].m_i_Node     = C_UNKNOWN;
     m_xaInNodeTablePtn[i_Ptn].m_i_TablePtn = C_UNKNOWN;
   }
     
-  RASSERT(m_nPtnsInGrid);
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     // newcode1 we have to replace the node index here with node ID
     i4 iNodeIdx = (i4)tPtnNo % nKnownNodes;

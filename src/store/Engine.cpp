@@ -1648,7 +1648,7 @@ void Engine::vStartSystem(void)
 
   gpAttachMap->m_pPtnMap =
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
-                 gpAttachMap->m_xSysArgs.m_nDegOfPar);
+                 gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1785,7 +1785,7 @@ void Engine::vCreateGridOfNodes(void)
 
     Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
                            szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName,
-                           AM::nDegOfPar(),
+                           AM::SYSARGS::nPtnsPerNode(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
                            AM::szRegionName());

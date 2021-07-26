@@ -368,7 +368,6 @@ namespace OBLIQUE
     // args
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
-    static i8   nDegOfPar(void);
     static bool bDeveloper(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
