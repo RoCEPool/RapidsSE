@@ -26,7 +26,7 @@ namespace Parser
     // The query text that was entered by the user
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
-    QueryNodeStack* m_pTableRefStack;
+    QueryNodeStack* m_pTableExprStack;
     QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;
