@@ -470,20 +470,21 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
+#ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
       i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
-      
-      // sendNode is the partition node
-      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::PTNMAP::nPtnsPerNode():%lld\n"_Stz,
-             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::PTNMAP::nPtnsPerNode());
-       */
-      //ASSERT(iDstNode == pPipeline->i_Origin());
-      pSrcOp->vSendNode(iDstNode);
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#else
+      i8 i_Robin = pSrcOp->iRobinNext();
+      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
+      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#endif
+      pSrcOp->vSendNode(iDstNodeNo);
 
-      if (iDstNode == pPipeline->i_Origin())
-        vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      if (iDstNodeNo == pPipeline->i_Origin())
+        vSendParcel(pSrcOp,iDstNodeNo,tPtnNo);
 
       break;
     }
@@ -594,15 +595,18 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
+#ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
-      
       tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
-      
-      // sendNode is the partition node
-      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-      pSrcOp->vSendNode(iDstNode);
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#else
+      i8 i_Robin = pSrcOp->iRobinNext();
+      tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#endif
+      pSrcOp->vSendNode(iDstNodeNo);
 
-      vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      vSendParcel(pSrcOp,iDstNodeNo,tPtnNo);
       break;
     }
       
@@ -678,8 +682,13 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN:
+#ifdef WITH_REVISED_PTNMAP
       i_Robin = pSrcOp->iRobinNext();
       tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
+#else
+      i_Robin = pSrcOp->iRobinNext();
+      tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
+#endif
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
