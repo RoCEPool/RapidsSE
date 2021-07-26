@@ -122,6 +122,7 @@ namespace STORE
     Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
+    void vPipeToSelf(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);

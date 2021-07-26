@@ -76,6 +76,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newExitEarlyMarker"_Stz,&Step::vOperandNewExitEarlyMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
   vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
+  vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
@@ -632,6 +633,20 @@ void Step::vOperandNewExitedEarlyMarker(void)
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
   m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EXITEDEARLYMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newNextBufferMarker -- new a next buffer marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewNextBufferMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_NEXTBUFFERMARKER);
 
   EXIT();
 }

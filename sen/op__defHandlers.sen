@@ -24,7 +24,6 @@
 : ZK_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
 : ZK_COUNTINFO_handler        \handler STANDARD_PIPEOUT ;
 : ZK_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_CRWBUFFER_NEXT_handler   \handler STANDARD_PIPEOUT ;
 : ZK_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
@@ -43,6 +42,7 @@
 : ZK_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : ZK_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : ZK_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
+: ZK_NEXTBUFFERMARKER_handler \handler STANDARD_PIPEOUT ;
 : ZK_METAGET_handler          \handler STANDARD_PIPEOUT ;
 : ZK_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : ZK_OP_handler               \handler STANDARD_PIPEOUT ;

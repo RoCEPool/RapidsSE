@@ -21,6 +21,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
+  vAddStep("Op::pipeBackin"_Stz,          &Step::vOpPipeBackIn);
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
 
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
@@ -135,6 +136,22 @@ void Step::vOpPiplineJobFetch(void)
     m_pDataStack->vPushPtr(pPipelineJob);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op::pipeBackIn -- append operand back onto same operator in pipeline       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeBackIn(void)
+{
+  ENTRY();
+
+  Op* pOp = m_pJob->m_pOp;
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vPipeToSelf(pOperand,this);
+
   EXIT();
 }
 

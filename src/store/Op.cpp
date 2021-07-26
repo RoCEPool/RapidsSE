@@ -1245,6 +1245,25 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to op's operand queue                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  vOpTrace(pOperand,(Stz*)__func__);
+
+  RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
+
+  RASSERT(! szOpNm()->bSame("send"_Stz));
+
+  if (bAppendRight())
+    vAppendRight(pOperand,pTriggeringTask);
+  else
+    vAppendLeft(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to the pipeline job's buffer queue                          */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeToOutput(Operand* pOperand)

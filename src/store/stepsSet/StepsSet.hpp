@@ -1001,6 +1001,7 @@ public:
   void vOpOpNameFetch(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
+  void vOpPipeBackIn(void);
   void vOpPipeOut(void);
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
@@ -1043,6 +1044,7 @@ public:
   void vOperandNewExitEarlyMarker(void);
   void vOperandNewExitedMarker(void);
   void vOperandNewExitedEarlyMarker(void);
+  void vOperandNewNextBufferMarker(void);
   void vOperandNewPulsedMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStartMarker(void);
