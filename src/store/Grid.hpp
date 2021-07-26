@@ -30,6 +30,8 @@ namespace STORE
 
     std::list<Node*> * m_pNodes_stdList;
 
+    SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
+
 #endif
 
   
@@ -69,8 +71,13 @@ namespace STORE
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);
 
-#ifndef WITH_NODE_SKIPLIST
+#ifdef WITH_NODE_SKIPLIST
 
+  // newcode
+  std::list<Node*>::const_iterator itBeginNodes(void);
+  std::list<Node*>::const_iterator itEndNodes(void);
+
+#else
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);
     std::list<Node*>::const_iterator itEndNodes(void);

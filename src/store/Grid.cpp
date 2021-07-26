@@ -41,9 +41,19 @@ Grid::Grid(Stz* szGridNm)
         
   // initialize the node list
 
+#ifdef WITH_NODE_SKIPLIST
+
   m_pNodes_stdList = new std::list<Node*>;
   m_pNodes_stdList->clear();
 
+#else
+  
+  m_pNodes_stdList = new std::list<Node*>;
+  m_pNodes_stdList->clear();
+
+  m_pNodes_skipList = new SkipListNL;
+#endif
+  
   m_pParcel = nullptr;
 
   _checkInitialised_(CN_GRID);
@@ -57,6 +67,12 @@ Grid::Grid(Stz* szGridNm)
 Grid::~Grid(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+#ifdef WITH_NODE_SKIPLIST
+
+#else
+  
+#endif
 
 }
 
@@ -451,7 +467,19 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
   return nSize;
 }
 
-#ifndef WITH_NODE_SKIPLIST
+#ifdef WITH_NODE_SKIPLIST
+
+std::list<Node*>::const_iterator Grid::itBeginNodes(void)
+{
+  return m_pNodes_stdList->begin();
+}
+
+std::list<Node*>::const_iterator Grid::itEndNodes(void)
+{
+  return m_pNodes_stdList->end();
+}
+
+#else
 
 std::list<Node*>::const_iterator Grid::itBeginNodes(void)
 {
