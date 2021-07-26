@@ -68,7 +68,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
-  vAddStep("Operand[].newEndRightMarker"_Stz, &Step::vOperandNewEndRightMarker);
+  vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
@@ -79,7 +79,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
-  vAddStep("Operand[].newStartRightMarker"_Stz, &Step::vOperandNewStartRightMarker);
+  vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
@@ -525,15 +525,15 @@ void Step::vOperandNewEachScanEosMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEndRightMarker -- new an end right marker                     */
+/* Operand[].newEndCrwRhtMarker -- new an end right marker                     */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewEndRightMarker(void)
+void Step::vOperandNewEndCrwRhtMarker(void)
 {
   ENTRY();
 
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDRIGHTMARKER);
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDCRW_RHTMARKER);
 
   EXIT();
 }
@@ -683,15 +683,15 @@ void Step::vOperandNewStartMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newStartRightMarker -- new a start right marker                  */
+/* Operand[].newStartCrwRhtMarker -- new a start crw right marker             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStartRightMarker(void)
+void Step::vOperandNewStartCrwRhtMarker(void)
 {
   ENTRY();
 
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTRIGHTMARKER);
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTCRW_RHTMARKER);
 
   EXIT();
 }

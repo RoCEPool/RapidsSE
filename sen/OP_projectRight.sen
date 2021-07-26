@@ -39,7 +39,7 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // ignore streamDef if not received startRightMarker
+  // ignore streamDef if not received startCrwRhtMarker
   Counter1[] 0 == if
      Pipein[].pipeout
     true
@@ -56,11 +56,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ENDRIGHTMARKER ...                                              INIT */
+/* on ZK_ENDCRW_RHTMARKER ...                                           INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_EndRightMarker \handler
+: projectRight_EndCrwRhtMarker \handler
 
-  0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_ENDCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_EOSMARKER Counter0[] executeAsmArgs
@@ -116,7 +116,7 @@
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // pipeout rowBuffer if startRightMarker not received
+  // pipeout rowBuffer if startCrwRhtMarker not received
   Counter1[] 0 == if
     Pipein[].pipeout
     true
@@ -151,11 +151,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTRIGHTMARKER ...                                            INIT */
+/* on ZK_STARTCRW_RHTMARKER ...                                          INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_StartRightMarker \handler
+: projectRight_StartCrwRhtMarker \handler
 
-  0 ZK_STARTRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_STARTCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
@@ -173,15 +173,6 @@
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
-
-  // ignore streamDef if not yet received startRightMarker
-  /*
-  Counter1[] 0 == if
-    Pipein[].pipeout
-    true
-    exit
-  then
-  */
 
   // projectRight gets the left streamDef, then right streamDef
   // it needs to store the right streamDef in left
@@ -262,12 +253,12 @@
 
   find: projectRight_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: projectRight_CrwBuffer        ZK_CRWBUFFER        op[].handler!
-  find: projectRight_EndRightMarker   ZK_ENDRIGHTMARKER   op[].handler!
+  find: projectRight_EndCrwRhtMarker   ZK_ENDCRW_RHTMARKER   op[].handler!
   find: projectRight_EosMarker        ZK_EOSMARKER        op[].handler!
   find: projectRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: projectRight_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: projectRight_StartMarker      ZK_STARTMARKER      op[].handler!
-  find: projectRight_StartRightMarker ZK_STARTRIGHTMARKER op[].handler!
+  find: projectRight_StartCrwRhtMarker ZK_STARTCRW_RHTMARKER op[].handler!
   find: projectRight_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop
