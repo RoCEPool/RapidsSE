@@ -754,7 +754,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute loop join
-  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_INDEXJOIN_ROWS"_Stz);
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_INDEXJOIN_BEGIN"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
@@ -768,7 +768,6 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  //oTagSet.vAppend(C_TAG_INDEXJOIN_NEXT, "CRW_INDEXJOIN_NEXT"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_BEGIN, &oTagSet, sMacro));
   oTagSet.vReset();
 
@@ -845,7 +844,12 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
-  oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  if (pExprEval->m_bLeftOuter) {
+    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  }
+  else {
+    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  }
 
 //  oFile.vPrint("  // *** begin generated code: m_sLftRowCol *** //\n"_Stz);
 //  oFile.vPrint("%s"_Stz, pExprEval->m_sLftRowCol.azChar());
@@ -856,10 +860,18 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
+  oFile.vPrint("  EO_POP\n"_Stz);
 
-  oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT, &oTagSet, sMacro));
-  oTagSet.vReset();
+  if (pExprEval->m_bLeftOuter) {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT_LO, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
+  else {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_JOIN_ROW
