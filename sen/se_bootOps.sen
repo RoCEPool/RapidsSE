@@ -116,7 +116,6 @@ assert::stack_0
   "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
   "OP_loopJoin.sen"             include
-  "OP_loopJoinLO.sen"           include
 
 "m" .verbose
 

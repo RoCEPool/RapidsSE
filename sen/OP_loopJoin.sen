@@ -87,6 +87,36 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_END_ROWRHTMARKER ...                                            INIT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_EndRowRhtMarker \handler
+
+  0 ZK_END_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].delete
+
+  // execute the endRightMarker asm handler
+  ZK_END_ROWRHTMARKER Counter0[] executeAsmArgs
+
+  // delete the left buffer
+  DevLftIxt.crwBuffer@ to Operand[]
+  Operand[].isNull not if
+    Operand[].delete
+    nullptr DevLftIxt.crwBuffer!
+  else
+    DevLftRow.rowBuffer@ to Operand[]
+    Operand[].isNull not assert
+    Operand[].delete
+    nullptr DevLftRow.rowBuffer!
+  then
+
+  // record receipt of end right marker
+  0 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_EosMarker \handler
@@ -168,6 +198,21 @@
 : loopJoin_StartCrwRhtMarker \handler
 
   0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].delete
+
+  // record receipt of start right marker
+  1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_START_ROWRHTMARKER ...                                          INIT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_StartRowRhtMarker \handler
+
+  0 ZK_START_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -269,11 +314,13 @@
   find: loopJoin_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: loopJoin_CrwBuffer        ZK_CRWBUFFER        op[].handler!
   find: loopJoin_EndCrwRhtMarker  ZK_END_CRWRHTMARKER op[].handler!
+  find: loopJoin_EndRowRhtMarker  ZK_END_ROWRHTMARKER op[].handler!
   find: loopJoin_EosMarker        ZK_EOSMARKER        op[].handler!
   find: loopJoin_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: loopJoin_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: loopJoin_StartMarker      ZK_STARTMARKER      op[].handler!
   find: loopJoin_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
+  find: loopJoin_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
   find: loopJoin_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop

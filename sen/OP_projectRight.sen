@@ -77,6 +77,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_END_ROWRHTMARKER ...                                            INIT */
+/*----------------------------------------------------------------------------*/
+: projectRight_EndRowRhtMarker \handler
+
+  0 ZK_END_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+
+  // record receipt of end right marker
+  0 to Counter1[]
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : projectRight_EosMarker \handler
@@ -156,6 +177,21 @@
 : projectRight_StartCrwRhtMarker \handler
 
   0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
+
+  // record receipt of start right marker
+  1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_START_ROWRHTMARKER ...                                          INIT */
+/*----------------------------------------------------------------------------*/
+: projectRight_StartRowRhtMarker \handler
+
+  0 ZK_START_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
@@ -254,11 +290,13 @@
   find: projectRight_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: projectRight_CrwBuffer        ZK_CRWBUFFER        op[].handler!
   find: projectRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
+  find: projectRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER   op[].handler!
   find: projectRight_EosMarker        ZK_EOSMARKER        op[].handler!
   find: projectRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: projectRight_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: projectRight_StartMarker      ZK_STARTMARKER      op[].handler!
   find: projectRight_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
+  find: projectRight_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
   find: projectRight_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop
