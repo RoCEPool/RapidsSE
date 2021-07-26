@@ -43,9 +43,6 @@ Grid::Grid(Stz* szGridNm)
 
 #ifdef WITH_NODE_SKIPLIST
 
-  m_pNodes_stdList = new std::list<Node*>;
-  m_pNodes_stdList->clear();
-
   m_pNodes_skipList = new SkipListNL(true,STORE::bNodeCompare);
   
 #else
@@ -127,8 +124,7 @@ void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
                          szRegionNm);
 
   if (! m_pNodes_skipList->pFind(pNode)) {
-    bool b = m_pNodes_skipList->bInsert(pNode);
-    RASSERT(b);
+    vAddNode(pNode);
   }
   else {
     delete pNode;
@@ -342,22 +338,43 @@ Stz* Grid::szGridNm(void)
 /*----------------------------------------------------------------------------*/
 /* get number of nodes in the node array                                      */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
+i8 Grid::nKnownNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  return m_pNodes_skipList->nItems();
+}
+/*----------------------------------------------------------------------------*/
+#else
 i8 Grid::nKnownNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   return m_pNodes_stdList->size();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* remove given node                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
+void Grid::vRemoveNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  bool b = m_pNodes_skipList->bRemove(pNode);
+  RASSERT(b);
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Grid::vRemoveNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes_stdList->remove(pNode);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* see nodes of the grid                                                      */
@@ -419,7 +436,26 @@ void Grid::vThisNode(Node* pNode)
 /* returns number of object parts includes the main                           */
 /* put each object part in a parcel                                           */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
+i8 Grid::iPrepareParcel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_GRID, _FOOTER_);
 
+  if (!m_pParcel) {
+    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+
+    // Set the state that this is created as a parcel
+    m_pParcel->vSetOriginState(true);
+  }
+
+  m_pParcel->vAddObject((Object *)this);
+
+  //m_pParcel->vAddObject((Object *)m_pNodes_stdList);
+
+  return m_pParcel->nObjects();
+}
+/*----------------------------------------------------------------------------*/
+#else
 i8 Grid::iPrepareParcel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_GRID, _FOOTER_);
@@ -437,7 +473,8 @@ i8 Grid::iPrepareParcel(void)
 
   return m_pParcel->nObjects();
 }
-
+#endif
+  
 /*----------------------------------------------------------------------------*/
 /* returns pParcel                                                            */
 /*                                                                            */
@@ -454,6 +491,13 @@ Parcel* Grid::pParcel(void)
 /* reassemble object parts from the received parcel                           */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
+i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
+
+  return C_UNKNOWN;
+}
+/*----------------------------------------------------------------------------*/
+#else
 i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_GRID, _FOOTER_);
 
@@ -497,18 +541,10 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
 
   return nSize;
 }
+#endif
 
 #ifdef WITH_NODE_SKIPLIST
 
-std::list<Node*>::const_iterator Grid::itBeginNodes(void)
-{
-  return m_pNodes_stdList->begin();
-}
-
-std::list<Node*>::const_iterator Grid::itEndNodes(void)
-{
-  return m_pNodes_stdList->end();
-}
 
 #else
 

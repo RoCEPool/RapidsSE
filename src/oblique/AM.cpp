@@ -1407,9 +1407,6 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
 #ifdef WITH_NODE_SKIPLIST
 
-std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
-std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
-
 #else
 
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }

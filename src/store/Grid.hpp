@@ -7,13 +7,15 @@
 #include <iterator>
 #include "Parcel.hpp"
 
-#include "Node.hpp" //?
+#include "Node.hpp"
+#include "Node_I.hpp"
 
 
 namespace STORE
 {
   class Grid : public Operand
   {
+  friend class STORE::Node_I;
   private:
   
     s32    m_sGridNm;       // name of this grid
@@ -23,8 +25,6 @@ namespace STORE
     Parcel* m_pParcel;
 
 #ifdef WITH_NODE_SKIPLIST
-
-    std::list<Node*> * m_pNodes_stdList;
 
     SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
 #else

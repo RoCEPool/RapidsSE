@@ -15,9 +15,8 @@ namespace STORE
     i8 m_i_Node;
 
 #ifdef WITH_NODE_SKIPLIST
-
-    std::list<Node*>::const_iterator m_itNode;
-    std::list<Node*>::const_iterator m_itEndNode;
+  
+    SkipNode* m_pCursor;
   
 #else
 
