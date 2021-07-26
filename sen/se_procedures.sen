@@ -1454,7 +1454,7 @@
   STD_PATH
   "
   procedure forgetNode
-    parameters $NodeNm
+    parameters $NodeNm $etc
   begin
 
   stage stageA on origin :
