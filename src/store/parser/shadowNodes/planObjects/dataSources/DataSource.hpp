@@ -31,6 +31,11 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
+    // Alias operations, if applicable. Has/set/get
+    static b1   bHasAlias(QueryNode* pNode);
+    static void vSetAlias(QueryNode* pNode, Text* pAliasText);
+    static Stz* szAliasName(QueryNode* pNode);
+
     // Get the catalog/schema/table name of the data source, if applicable
     static Stz* szCatalogName(QueryNode* pNode);
     static Stz* szSchemaName(QueryNode* pNode);

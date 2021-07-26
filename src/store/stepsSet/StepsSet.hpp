@@ -1178,6 +1178,7 @@ public:
   // ptnMap
   void vPtnMapAdjust(void);
   void vPtnMapPtnsInGrid(void);
+  void vPtnMapSee(void);
 
   // ptnStream
   void vPtnStreamBufferNo(void);

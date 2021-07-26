@@ -556,6 +556,18 @@
                     {
                       name: "dataSource",
                       value: "A source of row data into the query",
+                      properties: [
+                        {
+                          // An optional alias name for the data source.
+                          name: "alias",
+                          type: "/__root__/definitions/object/valueObject/stringObject",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
+                        }
+                      ],
                       children: [
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan

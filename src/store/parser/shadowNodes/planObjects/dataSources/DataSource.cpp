@@ -10,6 +10,7 @@
 #include "GraphNav.hpp"
 
 #include "TableScanOp.hpp"
+#include "StringObject.hpp"
 
 using namespace Parser;
 
@@ -17,6 +18,8 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_DATASOURCE_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource"_Stz;
+
+static Stz* C_ALIAS_PROP = "alias"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -84,6 +87,20 @@ void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
+
+
+    // Get the tableref property
+    PlanNode* pAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_ALIAS_PROP), pNode);
+
+    if (pAliasNode && pAliasNode->szValue()) {
+      ASSERT(StringObject::bIsOfType(pAliasNode));
+
+      // Print the alias name
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("alias: (%s)"_Stz, pAliasNode->szValue());
+    }
+
     return;
   }
 
@@ -129,6 +146,53 @@ b1 DataSource::bIsExactType(PlanNode *pNode)
 b1 DataSource::bIsExactType(Stz* szType)
 {
   return ShadowNode::bIsExactType(szType, C_DATASOURCE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the data source has an alias                               */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bHasAlias(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  PlanNode* pAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_ALIAS_PROP), pNode);
+  ASSERT(!pAliasNode || StringObject::bIsOfType(pAliasNode));
+
+  return (pAliasNode && pAliasNode->szValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets an alias name into this data source                                   */
+/*----------------------------------------------------------------------------*/
+void DataSource::vSetAlias(QueryNode* pNode, Text* pAliasText)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pAliasNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_ALIAS_PROP), pNode));
+  ASSERT(!pAliasNode);
+
+  pAliasNode = StringObject::pCreate(pAliasText);
+  pAliasNode->vSetName(C_ALIAS_PROP);
+  pNode->vAppendProperty(pAliasNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Retrieves the alias name of the data source, if applicable, otherwise null */
+/*----------------------------------------------------------------------------*/
+Stz* DataSource::szAliasName(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  PlanNode* pAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_ALIAS_PROP), pNode);
+  if (!pAliasNode) {
+    return nullptr;
+  }
+
+  ASSERT(StringObject::bIsOfType(pAliasNode));
+  return pAliasNode->szValue();
 }
 
 /*----------------------------------------------------------------------------*/

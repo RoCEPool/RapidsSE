@@ -320,7 +320,8 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       pEtcTknVec->vToTknString(sEtcSubStr);
       //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
       
-      pInpArgVec->vTrimTokens(i_Etc);
+      if (i_Etc < pInpArgVec->nItems())
+        pInpArgVec->vTrimTokens(i_Etc);
       dPV("pInpArgVec(t)"_Stz,pInpArgVec);
 
       pInpArgVec->vAppendToken(sEtcSubStr,TN_STRING);

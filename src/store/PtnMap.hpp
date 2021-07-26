@@ -5,10 +5,11 @@
 
 namespace STORE
 {
-  // {i_Node,i_TablePtn} pair
-  struct NodeTablePtn {
+  // {i_Node,i_NodePtn} pair
+  struct NodePtn
+  {
     i4  m_i_Node;     // node
-    i4  m_i_TablePtn; // table partition
+    i4  m_i_NodePtn;  // node partition
   };
 
   class PtnMap : public Object
@@ -21,7 +22,7 @@ namespace STORE
     i8 m_nPtnsInGrid;
 
     // which {node,tablePtn} a logical partition is in
-    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNSINGRID];
+    NodePtn m_xaNodePtn[C_MAX_PTNSINGRID];
   
     // must be last
     Footer m_xFooter;
@@ -40,18 +41,20 @@ namespace STORE
 
     void vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode);
     void vDumpDataBuffers(void);
-
-    i8 nPtnsInGrid(void);
-    i8 nPtnsPerNode(void);
-    i8 i_WhichNode(tPN tPtnNo);
-    i8 i_WhichStream(tPN tPtnNo);
-    i8 i_WhichTablePtn(tPN tPtnNo);
+    i8   nPtnsInGrid(void);
+    i8   nPtnsPerNode(void);
+    void vSee(void);
+    i8   i_WhichNode(tPN tPtnNo);
+    i8   i_WhichStream(tPN tPtnNo);
+    i8   i_WhichTablePtn(tPN tPtnNo);
 
   private:
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
     i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
-    Footer* aFooter(void);
     void vRepartition(i8 nKnownNodes);
+    void vResetNodePtnArray(void);
+
+    Footer* aFooter(void);
   };
   
   PtnMap* _pPtnMap(void* aAddr);

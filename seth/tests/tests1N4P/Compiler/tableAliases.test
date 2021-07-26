@@ -1,0 +1,75 @@
+/*----------------------------------------------------------------------------*/
+/* Table aliases tests                                                        */
+/*----------------------------------------------------------------------------*/
+
+-- TODO: Insert description here
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic table alias tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT * FROM nation n;
+-- rows:
+--   (*, 'explainPlan',
+-- '' )
+
+EXPLAIN SELECT n_name FROM nation n;
+
+-- Can we fully reference a column name in a SELECT list using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n;
+
+-- Can we fully reference a column name in a WHERE clause using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0;
+
+-- Can we fully reference a column name in an ORDER clause using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n ORDER BY n.n_nationkey;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Ensure we cannot use the original table name once a table reference is specified.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Cannot use the original table name in a select list.
+EXPLAIN SELECT nation.n_name FROM nation n;
+failure contains: 'No such table nation'
+
+-- Cannot use the original table name in a WHERE clause
+EXPLAIN SELECT n_name FROM nation n WHERE nation.n_nationkey > 0;
+failure contains: 'No such table nation'
+
+
+-- Cannot have two table aliases that are the same
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  drop table nation ;
+  mute
+}
