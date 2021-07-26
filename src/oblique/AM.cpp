@@ -915,13 +915,23 @@ i8 AM::PTNMAP::nPtnsPerTable(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* get number of nodes defined on command line                                */
+/* get number of defines nodes as per command line                            */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nDefinedNodes(void)
 {
   _static_
   
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions per node as per command line                      */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nPtnsPerNode(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
 }
 
 

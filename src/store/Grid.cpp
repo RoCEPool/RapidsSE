@@ -162,7 +162,7 @@ void Grid::vAdjustPtnMap(void)
   PtnMap* pPtnMap = AM::pPtnMap();
 
   //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustDataBuffers(AM::GRID::nKnownNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::nDegOfPar());
   pPtnMap->vDumpDataBuffers();
 
 }

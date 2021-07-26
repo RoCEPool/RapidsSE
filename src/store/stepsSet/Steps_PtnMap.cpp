@@ -30,7 +30,7 @@ void Step::vPtnMapAdjust(void)
   PtnMap* pPtnMap = AM::pPtnMap();
   
   pPtnMap->vDumpDataBuffers();
-  pPtnMap->vAdjustDataBuffers(AM::GRID::nKnownNodes(),AM::nDegOfPar());
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::SYSARGS::nPtnsPerNode());
   pPtnMap->vDumpDataBuffers();
 
   EXIT();

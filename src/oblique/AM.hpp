@@ -308,6 +308,7 @@ namespace OBLIQUE
     {
     public:
       static i8 nDefinedNodes(void);
+      static i8 nPtnsPerNode(void);
     };
 
     class SYSTEM

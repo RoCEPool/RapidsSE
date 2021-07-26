@@ -116,15 +116,14 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* adjust partitioning                                                        */
+/* adjust partition map for given number of nodes and partitions per node     */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vAdjustDataBuffers(i8 nKnownNodes, i8 nPtnsPerNode)
+void PtnMap::vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   vPartition(nKnownNodes,nPtnsPerNode);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */

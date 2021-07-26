@@ -38,7 +38,7 @@ namespace STORE
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
-    void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
+    void vAdjustMap(i8 nConnectedNodes, i8 nDegOfPar);
     void vDumpDataBuffers(void);
 
     i8 nPtnsInGrid(void);
