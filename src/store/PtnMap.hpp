@@ -38,7 +38,7 @@ namespace STORE
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
-    void vAdjustMap(i8 nConnectedNodes, i8 nDegOfPar);
+    void vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode);
     void vDumpDataBuffers(void);
 
     i8 nPtnsInGrid(void);
@@ -51,7 +51,7 @@ namespace STORE
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
     i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
     Footer* aFooter(void);
-    void vPartition(i8 nNodes, i8 nDegOfPar);
+    void vPartition(i8 nKnownNodes, i8 nPtnsPerNode);
   };
   
   PtnMap* _pPtnMap(void* aAddr);

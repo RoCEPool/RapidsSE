@@ -65,12 +65,12 @@ void Step::vNodeNew(void)
   
   i8 iPortNo = m_pDataStack->iPopInt(__func__);
 
-  i8 nNodes = AM::pGrid()->nKnownNodes();
-  i8 nDegOfPar = AM::SYSARGS::nPtnsPerNode();
+  i8 nKnownNodes = AM::pGrid()->nKnownNodes();
+  i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
 
-  Node* pNode = new Node(nNodes,
+  Node* pNode = new Node(nKnownNodes,
                          sNodeNm,
-                         nDegOfPar,
+                         nPtnsPerNode,
                          sIpAddr,
                          iPortNo,
                          AM::szRegionName());

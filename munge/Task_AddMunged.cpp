@@ -8666,7 +8666,7 @@ void Task::vAddMunged(Task* )
     "  define table __listNodes (\n"
     "    node          INTEGER NOT NULL ,\n"
     "    nodeName      VARCHAR NOT NULL ,\n"
-    "    degOfPar      INTEGER NOT NULL ,\n"
+    "    ptnsInNode    INTEGER NOT NULL ,\n"
     "    ipAdd         VARCHAR NOT NULL ,\n"
     "    portNo        INTEGER NOT NULL ,\n"
     "    state         VARCHAR NOT NULL\n"

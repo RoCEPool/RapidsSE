@@ -158,7 +158,7 @@
   define table __listNodes (
     node          INTEGER NOT NULL ,
     nodeName      VARCHAR NOT NULL ,
-    degOfPar      INTEGER NOT NULL ,
+    ptnsInNode    INTEGER NOT NULL ,
     ipAdd         VARCHAR NOT NULL ,
     portNo        INTEGER NOT NULL ,
     state         VARCHAR NOT NULL
