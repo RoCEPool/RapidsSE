@@ -12,6 +12,8 @@ namespace STORE
   {
   private:
   
+    Grid* m_pGrid;
+  
     i8 m_i_Node;
 
     SkipNode* m_pCursor;

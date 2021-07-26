@@ -24,7 +24,8 @@ Node_I::Node_I(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
-  m_i_Node = C_UNKNOWN;
+  m_pGrid   = AM::pGrid();
+  m_i_Node  = C_UNKNOWN;
   m_pCursor = nullptr;
 
   _checkInitialised_(CN_NODE_I);
