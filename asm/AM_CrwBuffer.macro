@@ -346,6 +346,64 @@ macro AM_CRW_INDEXJOIN_NEXT
   EO_RETURN
 endMacro
 
+macro AM_CRW_INDEXJOIN_NEXT_LO
+//----------------------------------------------------------------------------//
+// macro AM_CRW_INDEXJOIN_NEXT_LO                                             //
+//----------------------------------------------------------------------------//
+  // CRW_INDEXJOIN_NEXT_LO
+  Label CRW_INDEXJOIN_NEXT_LO
+
+  // fetch next entry from index
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_IDX_NEXT
+
+  EO_JMP_FALSE INDEXJOIN_NEXT_LO_RETURN
+
+  Label INDEXJOIN_NEXT_LO
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSH
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSHUPPER
+
+  EO_EQ_INTINT
+  EO_JMP_TRUE INDEXJOIN_NEXT_LO_RETURN
+
+  // projection
+  //EO_CRW_SRC_DEREF
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_DEREF
+
+  EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
+
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_CRWBUF_ROWNO
+  EO_RLU_SET_JOINMAP_BYTE
+
+  //EO_ROW_DST_PRINT
+
+  EO_JMP CRW_INDEXJOIN_NEXT_LO
+
+  Label INDEXJOIN_NEXT_LO_RETURN
+  DeleteLabel INDEXJOIN_NEXT_LO_RETURN
+
+  // Left outer rows
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_CRWBUF_ROWNO
+  EO_PUSH_RLU_JOINMAP_BYTE
+  EO_RETURN_TRUE
+
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_CRWBUF_ROWNO
+  EO_CTR_0_POP
+  EO_PRINTF "**CALLING JOINROWS_CRWLFT_NULRHT\n"
+  EO_CALL JOINROWS_CRWLFT_NULRHT
+
+  EO_RETURN
+
+endMacro
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

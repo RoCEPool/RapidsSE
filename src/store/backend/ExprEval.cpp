@@ -1536,6 +1536,14 @@ eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // leftOuter ?
+    if (pTkn->bSame("leftOuter"_Stz)) {
+      m_bLeftOuter = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // found an index src column
     if ( ! pTkn->szChars()->bContains("$"_Stz)) {
       eError = EC_INVALID_COMMAND;
@@ -1582,7 +1590,8 @@ eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-    StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n\n"_Stz, aEO[m_eLowerBound]);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n"_Stz, aEO[m_eLowerBound]);
+    //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_POP\n\n"_Stz);
   }
 
   if (  ! m_sUpperBoundAsm.bSame(""_Stz)  ) {
@@ -1599,7 +1608,8 @@ eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-    StrLib::vSprintCat(m_sUpperBoundAsm, "  %s\n\n"_Stz, aEO[m_eUpperBound]);
+    StrLib::vSprintCat(m_sUpperBoundAsm, "  %s\n"_Stz, aEO[m_eUpperBound]);
+    //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_POP\n\n"_Stz);
   }
 
   L_RETURN:
@@ -3215,9 +3225,19 @@ void ExprEval::vCheckIsNull(Stz* szAsmBuffer, IntStack* pTypeStack) {
   eDM eParamType1 = (eDM) pTypeStack->iPop();
   eEO eCode = eMathOp_IsNullCode[eParamType1];
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
+  //StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_TRUE\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE VALUE_IS_NOT_NULL\n"_Stz);
+  if (m_bLeftOuter) {
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP INDEXJOIN_NEXT_LO_RETURN\n"_Stz);
+  }
+  else {
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
+  }
+
+  StrLib::vSprintCat(szAsmBuffer, "  Label VALUE_IS_NOT_NULL\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  deleteLabel VALUE_IS_NOT_NULL\n"_Stz);
 
   pTypeStack->vPush(eParamType1);
 }
