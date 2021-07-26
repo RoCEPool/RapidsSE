@@ -63,25 +63,25 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert hash to logical partition number                                   */
+/* convert running partition-key hash to logical partition number             */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToPtnNo(i8 iHash, i8 nPtnsInGrid)
+tPN PtnMap::tHashToPtnNo(i8 iPtnKeyHash)
 {
   _static_
   
-  i8 tPtnNo = iHash % nPtnsInGrid;
+  i8 tPtnNo = iPtnKeyHash % AM::PTNMAP::nPtnsInGrid();
 
   return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* update running hash                                                        */
+/* update running partition-key hash with given mix in value                  */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vRunningHash(i8* aiHash, i8 iMixIn)
+void PtnMap::vRunningHash(i8* aiPtnKeyHash, i8 iMixIn)
 {
   _static_
   
-  * aiHash += HshLib::iHash((byte*)&iMixIn,sizeof(w8));
+  * aiPtnKeyHash += HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
 }
 
 /*----------------------------------------------------------------------------*/
