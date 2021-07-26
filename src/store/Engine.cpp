@@ -1703,7 +1703,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
-    gpAttachMap->m_pPtnMap->vDumpDataBuffers();
+    gpAttachMap->m_pPtnMap->vSee();
   }
 
 

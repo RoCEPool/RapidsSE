@@ -127,7 +127,7 @@ void Grid::vAddNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment number of connected nodes                                        */
+/* adjust partition map after node added/removed                              */
 /*----------------------------------------------------------------------------*/
 void Grid::vAdjustPtnMap(void)
 {
@@ -136,9 +136,8 @@ void Grid::vAdjustPtnMap(void)
   // We have to readjust partition map when new connection or dropped connection
   PtnMap* pPtnMap = AM::pPtnMap();
 
-  //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::SYSARGS::nPtnsPerNode());
-  pPtnMap->vDumpDataBuffers();
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
+  pPtnMap->vSee();
 }
 
 /*----------------------------------------------------------------------------*/

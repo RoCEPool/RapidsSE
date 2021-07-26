@@ -29,9 +29,7 @@ void Step::vPtnMapAdjust(void)
   
   PtnMap* pPtnMap = AM::pPtnMap();
   
-  pPtnMap->vDumpDataBuffers();
-  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::SYSARGS::nPtnsPerNode());
-  pPtnMap->vDumpDataBuffers();
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
 
   EXIT();
 }

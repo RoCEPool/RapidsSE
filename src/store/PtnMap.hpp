@@ -5,11 +5,10 @@
 
 namespace STORE
 {
-  // {i_Node,i_NodePtn} pair
   struct NodePtn
   {
-    i4  m_i_Node;     // node
-    i4  m_i_NodePtn;  // node partition
+    i4  m_iNodeNo;  // node number
+    i4  m_i_Ptn;    // partition of node
   };
 
   class PtnMap : public Object
@@ -17,11 +16,12 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    i8 m_nKnownNodes;
     i8 m_nPtnsPerNode;
+  
+    i8 m_nKnownNodes;
     i8 m_nPtnsInGrid;
 
-    // which {node,tablePtn} a logical partition is in
+    // which {nodeNo,i_ptn} a logical partition mPtnNo is in
     NodePtn m_xaNodePtn[C_MAX_PTNSINGRID];
   
     // must be last
@@ -39,8 +39,7 @@ namespace STORE
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
-    void vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode);
-    void vDumpDataBuffers(void);
+    void vAdjustMap(i8 nKnownNodes);
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
@@ -49,9 +48,7 @@ namespace STORE
     i8   i_WhichTablePtn(tPN tPtnNo);
 
   private:
-    i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
-    i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
-    void vRepartition(i8 nKnownNodes);
+    void vRepartition(void);
     void vResetNodePtnArray(void);
 
     Footer* aFooter(void);

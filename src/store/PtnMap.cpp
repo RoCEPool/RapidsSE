@@ -24,15 +24,16 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nKnownNodes  = nKnownNodes;
   m_nPtnsPerNode = nPtnsPerNode;
-  m_nPtnsInGrid  = 0;
+  
+  m_nKnownNodes  = C_UNKNOWN;
+  m_nPtnsInGrid  = C_UNKNOWN;
 
   vResetNodePtnArray();
   
   _checkInitialised_(CN_PTNMAP);
   
-  vRepartition(nKnownNodes);
+  vAdjustMap(nKnownNodes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -43,7 +44,6 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 PtnMap::~PtnMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,25 +115,15 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 /* adjust partition map for given number of nodes and partitions per node     */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode)
+void PtnMap::vAdjustMap(i8 nKnownNodes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vRepartition(nKnownNodes);
-}
+  m_nKnownNodes = nKnownNodes;
+  m_nPtnsInGrid = m_nKnownNodes * m_nPtnsPerNode;
+  RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_PTNSINGRID);
 
-/*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
-/*----------------------------------------------------------------------------*/
-void PtnMap::vDumpDataBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  
-  if (AM::PTNMAP::nPtnsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
-      vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,i_WhichNode(tPtnNo));
-    vTrace("\n"_Stz);
-  }
+  vRepartition();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,8 +160,8 @@ void PtnMap::vSee(void)
     vTrace("[%lld] (Node %lld, NodePtn %lld)\n"_Stz
            
            ,i_Ptn
-           ,m_xaNodePtn[i_Ptn].m_i_Node
-           ,m_xaNodePtn[i_Ptn].m_i_NodePtn
+           ,m_xaNodePtn[i_Ptn].m_iNodeNo
+           ,m_xaNodePtn[i_Ptn].m_i_Ptn
            );
   }
 
@@ -185,10 +175,8 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Node = m_xaNodePtn[tPtnNo].m_i_Node;
-    
-  //RASSERT(i_Node == i_LglPtnNoToInitialNode(tPtnNo));
-  
+  i8 i_Node = m_xaNodePtn[tPtnNo].m_iNodeNo;
+      
   return i_Node;
 }
 
@@ -199,10 +187,8 @@ i8 PtnMap::i_WhichStream(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Stream = m_xaNodePtn[tPtnNo].m_i_NodePtn;
+  i8 i_Stream = m_xaNodePtn[tPtnNo].m_i_Ptn;
    
-  //RASSERT(i_Stream == i_LglPtnNoToInitialStream(tPtnNo));
-
   return i_Stream;
 }
 
@@ -213,10 +199,8 @@ i8 PtnMap::i_WhichTablePtn(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_TablePtn = m_xaNodePtn[tPtnNo].m_i_NodePtn;
+  i8 i_TablePtn = m_xaNodePtn[tPtnNo].m_i_Ptn;
    
-  RASSERT(i_TablePtn == i_LglPtnNoToInitialStream(tPtnNo));
-
   return i_TablePtn;
 }
 
@@ -225,55 +209,19 @@ i8 PtnMap::i_WhichTablePtn(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert grid partition number to initial node it is to be mapped to        */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 i_Node = tPtnNo % AM::GRID::nKnownNodes();
-  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Node);
-  return i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert grid partition number to initial node it is to be mapped to        */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 i_Stream = tPtnNo / AM::GRID::nKnownNodes();
-  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Stream);
-  return i_Stream;
-}
-
-/*----------------------------------------------------------------------------*/
 /* repartition the map based on new known nodes                               */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vRepartition(i8 nKnownNodes)
+void PtnMap::vRepartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nKnownNodes = nKnownNodes;
-  m_nPtnsInGrid = nKnownNodes * m_nPtnsPerNode;
-  RASSERT(m_nPtnsInGrid);
-
   vResetNodePtnArray();
     
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
+    i4 i_Node = (i4)tPtnNo % m_nKnownNodes;
     
-    // newcode1 we have to replace the node index here with node ID
-    i4 i_Node = (i4)tPtnNo % nKnownNodes;
-    
-    m_xaNodePtn[tPtnNo].m_i_Node =
-      //(i4)i_LglPtnNoToInitialNode(tPtnNo);
-      //(i4)tPtnNo % nNodes; // oldcode1
-      AM::GRID::iGetNthNodeNo(i_Node);  // newcode1    <<<<<<<<<<<<<<<<<
-    
-    m_xaNodePtn[tPtnNo].m_i_NodePtn =
-      //(i4)i_LglPtnNoToInitialStream(tPtnNo);
-      (i4)tPtnNo / nKnownNodes;
+    m_xaNodePtn[tPtnNo].m_iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
+    m_xaNodePtn[tPtnNo].m_i_Ptn   = (i4)tPtnNo / m_nKnownNodes;
   }
 }
 
@@ -285,8 +233,8 @@ void PtnMap::vResetNodePtnArray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
-    m_xaNodePtn[i_Ptn].m_i_Node    = C_UNKNOWN;
-    m_xaNodePtn[i_Ptn].m_i_NodePtn = C_UNKNOWN;
+    m_xaNodePtn[i_Ptn].m_iNodeNo = C_UNKNOWN;
+    m_xaNodePtn[i_Ptn].m_i_Ptn   = C_UNKNOWN;
   }
 }
 
