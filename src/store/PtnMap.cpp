@@ -18,23 +18,24 @@ __aFooterFunction(PtnMap)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
+PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 : Object(CN_PTNMAP)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nPtnsInGrid   = 0;
-  m_nPtnsPerTable = 0;
+  m_nKnownNodes  = 0;
+  m_nPtnsPerNode = 0;
+  m_nPtnsInGrid  = 0;
 
-  for (i8 i = 0; i < C_MAX_PTNSINGRID; i++) {
-    m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
-    m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
+    m_xaInNodeTablePtn[i_Ptn].m_i_Node     = C_UNKNOWN;
+    m_xaInNodeTablePtn[i_Ptn].m_i_TablePtn = C_UNKNOWN;
   }
   
   _checkInitialised_(CN_PTNMAP);
   
-  vPartition(nBootNodes,nDegOfPar);
+  vPartition(nKnownNodes,nPtnsPerNode);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -117,11 +118,11 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 /* adjust partitioning                                                        */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar)
+void PtnMap::vAdjustDataBuffers(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vPartition(nConnectedNodes,nDegOfPar);
+  vPartition(nKnownNodes,nPtnsPerNode);
 }
 
 
@@ -156,7 +157,7 @@ i8 PtnMap::nPtnsPerTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  return m_nPtnsPerTable;
+  return m_nPtnsPerNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,22 +233,23 @@ i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
+void PtnMap::vPartition(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nPtnsInGrid   = nNodes * nDegOfPar;
-  m_nPtnsPerTable = nDegOfPar;
+  m_nKnownNodes  = nKnownNodes;
+  m_nPtnsPerNode = nPtnsPerNode;
+  m_nPtnsInGrid  = nKnownNodes * nPtnsPerNode;
 
-  for (i8 i = 0; i < C_MAX_PTNSINGRID; i++) {
-    m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
-    m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
+    m_xaInNodeTablePtn[i_Ptn].m_i_Node     = C_UNKNOWN;
+    m_xaInNodeTablePtn[i_Ptn].m_i_TablePtn = C_UNKNOWN;
   }
     
   RASSERT(m_nPtnsInGrid);
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     // newcode1 we have to replace the node index here with node ID
-    i4 iNodeIdx = (i4)tPtnNo % nNodes;
+    i4 iNodeIdx = (i4)tPtnNo % nKnownNodes;
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
       //(i4)i_LglPtnNoToInitialNode(tPtnNo);
       //(i4)tPtnNo % nNodes; // oldcode1
@@ -255,7 +257,7 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
       //(i4)i_LglPtnNoToInitialStream(tPtnNo);
-      (i4)tPtnNo / nNodes;
+      (i4)tPtnNo / nKnownNodes;
   }
   
 }

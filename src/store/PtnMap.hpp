@@ -16,8 +16,9 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    i8 m_nKnownNodes;
+    i8 m_nPtnsPerNode;
     i8 m_nPtnsInGrid;
-    i8 m_nPtnsPerTable;
 
     // which {node,tablePtn} a logical partition is in
     NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNSINGRID];
@@ -29,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PtnMap(i8 nBootNodes, i8 nDegOfPar);
+    PtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
