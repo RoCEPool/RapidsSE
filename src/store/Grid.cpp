@@ -46,12 +46,13 @@ Grid::Grid(Stz* szGridNm)
   m_pNodes_stdList = new std::list<Node*>;
   m_pNodes_stdList->clear();
 
+  m_pNodes_skipList = new SkipListNL(true,STORE::bNodeCompare);
+  
 #else
   
   m_pNodes_stdList = new std::list<Node*>;
   m_pNodes_stdList->clear();
 
-  m_pNodes_skipList = new SkipListNL;
 #endif
   
   m_pParcel = nullptr;
@@ -115,6 +116,25 @@ void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
                             Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+#ifdef WITH_NODE_SKIPLIST
+  
+  Node *pNode = new Node(iNodeNo,
+                         szNodeNm,
+                         AM::SYSARGS::nPtnsPerNode(),
+                         szIPAddr,
+                         iPortNo,
+                         szRegionNm);
+
+  if (! m_pNodes_skipList->pFind(pNode)) {
+    bool b = m_pNodes_skipList->bInsert(pNode);
+    RASSERT(b);
+  }
+  else {
+    delete pNode;
+  }
+
+#else
 
   // Search List using Lambda function as comparator
   std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
@@ -146,9 +166,10 @@ void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
                     return pNode1->iNodeNo() < pNode2->iNodeNo();
                   });
 
-  } //else { vTrace("FOUND\n"_Stz);}
+  }
 
-  // Found, nothing to do
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,12 +179,22 @@ void Grid::vAddNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+#ifdef WITH_NODE_SKIPLIST
+
+  bool b = m_pNodes_skipList->bInsert(pNode);
+  RASSERT(b);
+  
+#else
+  
   m_pNodes_stdList->push_back(pNode);
+  
+#endif
 
   if (AM::TRACE::bVerbose(C_VB_NODE)) {
     SP_Node spNode;
     vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
   }
+  
 }
 
 

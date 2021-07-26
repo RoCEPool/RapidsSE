@@ -26,11 +26,11 @@ namespace STORE
 
     std::list<Node*> * m_pNodes_stdList;
 
+    SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
 #else
 
     std::list<Node*> * m_pNodes_stdList;
 
-    SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
 
 #endif
 
