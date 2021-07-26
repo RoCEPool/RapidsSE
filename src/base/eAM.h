@@ -104,8 +104,10 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_HASHROWS_BEGIN,
   /*    */ AM_ROW_HASHROWS_END,
 
-  /*    */ AM_ROW_INDEXJOIN_NEXT,
   /*    */ AM_ROW_INDEXJOIN_BEGIN,
+  /*    */ AM_ROW_INDEXJOIN_NEXT,
+
+  /*    */ AM_ROW_INDEXJOIN_NEXT_LO,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
@@ -225,6 +227,8 @@ static Stz* aAM[]
 
     /*    */ "ROW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
+
+    /*    */ "ROW_INDEXJOIN_NEXT_LO"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
