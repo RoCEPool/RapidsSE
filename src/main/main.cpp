@@ -127,8 +127,8 @@ int main(int argc, char* argv[])
     
     // temp for debugging hang in bamboo
 //    gxCmdLineArgs.m_xSysArgs.m_bDeveloper = true;
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTagSet.vInsert(C_VB_API);
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTagSet.vInsert(C_VB_OP);
+//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_API);
+//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_OP);
     // end temp
     
     vHeartInit();

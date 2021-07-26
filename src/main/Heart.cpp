@@ -33,17 +33,17 @@ RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the s
 /*----------------------------------------------------------------------------*/
 void vHeartInit(void) {
 
-  if (gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes > 0) {
+  if (gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats > 0) {
     vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
-    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_iPortNo;
+    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
     char szAddr[32];
 
     if (iPort == 0) {
       iPort = 8888;
     }
 
-    strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
+    strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
     //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888

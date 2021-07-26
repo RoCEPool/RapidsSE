@@ -230,7 +230,7 @@ void AttachMap::vPrintAttachMap(void)
         gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
   
   vInfo("\n"_Stz);
-  gpAttachMap->m_xSysArgs.m_oArgTagSet.vDumpSet();
+  gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
 
   vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
 }
@@ -272,9 +272,9 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;
 
-  m_xSysArgs.m_oArgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
+  m_xSysArgs.m_oArgTags.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
-  m_xSysArgs.m_oArgTagSet.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTagSet);
+  m_xSysArgs.m_oArgTags.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTags);
   
   
   // ray -- not sure the following should be here

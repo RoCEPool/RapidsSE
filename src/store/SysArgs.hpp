@@ -35,14 +35,14 @@ namespace STORE
   
     i8   m_i_ThisNode;     // this node no in the m_xNodeDefn list
                            
-    // Heartbeat configuration
-    i8    m_nHeartbeatNodes;
+    // heartbeat definition
+    i8    m_nDefinedHeartbeats;
     struct {
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
-    } m_xHeartbeatNode[C_MAX_NODES];
+    } m_xHeartbeatDefn[C_MAX_NODES];
 
-    TagSet m_oArgTagSet;  // arguments tag set
+    TagSet m_oArgTags;  // arguments tag set
 
     // command
     bool m_bAddNode;     // add node

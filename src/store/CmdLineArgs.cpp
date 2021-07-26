@@ -49,7 +49,7 @@ CmdLineArgs::CmdLineArgs(void)
   
   // node configuration
   m_xSysArgs.m_nDefinedNodes   = 0;
-  m_xSysArgs.m_nHeartbeatNodes = 0;
+  m_xSysArgs.m_nDefinedHeartbeats = 0;
 
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
@@ -361,8 +361,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
       i_HeartbeatNode++;
 
       if (i_HeartbeatNode > C_MAX_NODES) {
@@ -817,13 +817,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       i8 i_TagArg = i_Arg + 1;
       
       if (i_TagArg >= argc) {
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg);
+        m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
       
       Stz* szTagEqual = argv[i_TagArg];
       if ('=' != * szTagEqual->azChar()) {
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg);
+        m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
       
@@ -836,9 +836,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       Stz* szTagValue = argv[i_Arg];
 
       if (szTagValue->bIsNumeric())
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg,szTagValue->iToI8());
+        m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue->iToI8());
       else
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg,szTagValue);
+        m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue);
 
       continue;
     }
@@ -850,12 +850,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // if --heartbeat was defined just set the m_xSysArgs.m_nHeartbeatNodes
+  // if --heartbeat was defined just set the m_xSysArgs.m_nDefinedHeartbeats
   // for Broadcast mode, this is 1
   if (i_HeartbeatNode) {
 
     // set no. of HB nodes
-    m_xSysArgs.m_nHeartbeatNodes = i_HeartbeatNode;
+    m_xSysArgs.m_nDefinedHeartbeats = i_HeartbeatNode;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -913,7 +913,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
   }
   
-  //m_xSysArgs.m_oArgTagSet.vDumpSet(true);
+  //m_xSysArgs.m_oArgTags.vDumpSet(true);
   
   return true;
 }
@@ -1001,10 +1001,10 @@ void CmdLineArgs::vPrintStartupInfo(void)
       m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
   }
 
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nHeartbeatNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
     vTrace("  --heartbeat %s %lld\n"_Stz,
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_sIPAddress.azChar(),
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_iPortNo);
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerNode);

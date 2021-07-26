@@ -1208,7 +1208,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
     
-    pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
+    pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTags;
     if (pTags) {
       if (pTags->bHasName(szVBtag))
         return true;
@@ -1225,7 +1225,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
     return false;
 
-  pTags = & gpAttachMap->m_xSysArgs.m_oArgTagSet;
+  pTags = & gpAttachMap->m_xSysArgs.m_oArgTags;
   if (pTags) {
     if (pTags->bHasName(szVBtag))
       return true;
@@ -1353,14 +1353,14 @@ i8   AM::iRegionSize(void)    { return gpAttachMap->m_xSysArgs.m_iRegionSize;   
 i8   AM::nThreads(void)       { return gpAttachMap->m_xSysArgs.m_nThreads;           }
 
 
-TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTagSet;       }
+TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTags;       }
 
 bool AM::bDbgTag(Stz* szTagNm) {
   
   if (! AM::bDebugMode())
     return false;
   
-  bool bHasDbgTag = gpAttachMap->m_xSysArgs.m_oArgTagSet.bHasName(szTagNm);
+  bool bHasDbgTag = gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(szTagNm);
   
   return bHasDbgTag;
 }

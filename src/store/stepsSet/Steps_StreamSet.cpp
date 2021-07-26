@@ -213,8 +213,8 @@ void Step::vStreamSetAddGridSanity(void)
   
   // get partitions per table for this node
   bool bPartitions = false;
-  i8 nPtnsPerTable = AM::PTNMAP::nPtnsPerNode();
-  if (pNodeInfo->iColVal_int(2) == nPtnsPerTable)
+  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
+  if (pNodeInfo->iColVal_int(2) == nPtnsPerNode)
     bPartitions = true;
   
   // check if the regionSize and partitions match
