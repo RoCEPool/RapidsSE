@@ -300,6 +300,7 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
+      static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
     };

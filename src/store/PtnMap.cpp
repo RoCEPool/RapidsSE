@@ -115,7 +115,7 @@ tPN PtnMap::tRobinToPtnNo(i8 iRobin)
 {
   _static_
   
-  tPN tPtnNo = iRobin;
+  tPN tPtnNo = iRobin % AM::PTNMAP::nPtnsInGrid();
   
   return tPtnNo;
 }
@@ -127,7 +127,7 @@ i8 PtnMap::i_RobinToPtn(i8 iRobin)
 {
   _static_
   
-  i8 i_Ptn = iRobin;
+  i8 i_Ptn = iRobin % AM::PTNMAP::nPtnsPerNode();
   
   return i_Ptn;
 }
@@ -148,6 +148,16 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
   RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_PTNSINGRID);
 
   vRepartition();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes known by partition map                                 */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nKnownNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  return m_nKnownNodes;
 }
 
 /*----------------------------------------------------------------------------*/

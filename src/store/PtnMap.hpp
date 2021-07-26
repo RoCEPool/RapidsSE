@@ -44,6 +44,7 @@ namespace STORE
     static i8   i_RobinToPtn(i8 iRobin);
 
     void vAdjustMap(i8 nKnownNodes);
+    i8   nKnownNodes(void);
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
