@@ -49,10 +49,6 @@ public:
   void vApiSpawnDemon(void);
   void vApiSpawnThread(void);
 
-  // args
-  void vArgsOscillate(void);
-  void vArgsPrint(void);
-
   // arrange
   void vArrangeBegin(void);
   void vArrangeDelete(void);
@@ -396,23 +392,15 @@ public:
   void vFilterSet(void);
 
   // grid
-  void vGridBootNodes(void);
-  void vGridConnectedNodes(void);
   void vGridDumpInfo(void);
-  void vGridGetGridObject(void);
+  void vGridGetGrid(void);
   void vGridGetGridParts(void);
-  void vGridFindNode(void);
-  void vGridIncConnectedNodes(void);
-  void vGridListNodes(void);
-  void vGridNode(void);
-  void vGridPartitions(void);
+  void vGridFindNodeByName(void);
+  void vGridKnownNodes(void);
+  void vGridFindNodeByNo(void);
   void vGridPutGridParts(void);
   void vGridSeeNodes(void);
   void vGridShow(void);
-  void vGridStartedStore(void);
-  void vGridStartedFetch(void);
-  void vGridStartNodeStore(void);
-  void vGridStartNodeFetch(void);
   void vGridTablePtns(void);
   void vGridTablePtnToPtnNo(void);
   void vGridThisNodeFetch(void);
@@ -1187,6 +1175,7 @@ public:
 
   // ptnMap
   void vPtnMapAdjust(void);
+  void vPtnMapPtnsInGrid(void);
 
   // ptnStream
   void vPtnStreamBufferNo(void);
@@ -1659,6 +1648,14 @@ public:
   void vScheduleReadyLength(void);
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
+
+  // args
+  void vSysArgsDefinedNodes(void);
+  void vSysArgsPrint(void);
+
+  // system
+  void vSystemStartedStore(void);
+  void vSystemStartedFetch(void);
 
   // table
   void vTableAddIndex(void);

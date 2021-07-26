@@ -285,9 +285,9 @@ void Step::vPathIdentifierParseWhere(void)
   //
   //  i8 nPhrases = pPathIdentifier->nPhrases();
   //  if (nPhrases)
-  //    nLastBuffers = pPathIdentifier->nPhrases() * gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable;
+  //    nLastBuffers = pPathIdentifier->nPhrases() * gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode;
   //  else
-  //    nLastBuffers = gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable;
+  //    nLastBuffers = gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode;
   //
   //  m_pTask->m_pSession->vLastBuffers(nLastBuffers);
   

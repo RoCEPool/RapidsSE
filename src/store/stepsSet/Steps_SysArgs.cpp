@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Args.cpp - args step group                                           */
+/* Steps_SysArgs.cpp - SysArgs (system arguments) step group                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -12,26 +12,29 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Args(void)
+void Step::vAddSteps_SysArgs(void)
 {
-  vAddStep("args::oscillate"_Stz,  &Step::vArgsOscillate);
-  vAddStep("args.print"_Stz,      &Step::vArgsPrint);
+  vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
+  vAddStep("sysargs::print"_Stz,         &Step::vSysArgsPrint);
 }
 
 /*----------------------------------------------------------------------------*/
-/* args::oscillate -- oscillate the dummy parameters                          */
+/* sysargs::definedNodes -- get number of nodes defined on command line       */
 /*----------------------------------------------------------------------------*/
-void Step::vArgsOscillate(void)
+void Step::vSysArgsDefinedNodes(void)
 {
   ENTRY();
+  
+  m_pDataStack->vPushInt(AM::SYSARGS::nDefinedNodes());
   
   EXIT();
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* args.print -- print arguments                                              */
+/* sysargs::print -- print system arguments                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vArgsPrint(void)
+void Step::vSysArgsPrint(void)
 {
   ENTRY();
   

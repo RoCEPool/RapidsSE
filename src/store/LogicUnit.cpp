@@ -218,7 +218,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
 
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
-  m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
+  m_xRluCommon.m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
 
   m_xRluCommon.m_pPot = nullptr;
@@ -1454,7 +1454,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   }
   
   aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
-  aRluCommon->m_nPtns  = AM::nPtnsInGrid();
+  aRluCommon->m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

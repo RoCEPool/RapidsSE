@@ -58,6 +58,7 @@ namespace STORE
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
+    bool          m_bStarted;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;

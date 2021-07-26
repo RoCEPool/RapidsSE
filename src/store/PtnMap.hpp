@@ -16,11 +16,12 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    i8 m_nKnownNodes;
+    i8 m_nPtnsPerNode;
     i8 m_nPtnsInGrid;
-    i8 m_nPtnsPerTable;
 
     // which {node,tablePtn} a logical partition is in
-    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNS];
+    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNSINGRID];
   
     // must be last
     Footer m_xFooter;
@@ -29,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PtnMap(i8 nBootNodes, i8 nDegOfPar);
+    PtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
@@ -37,11 +38,11 @@ namespace STORE
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
-    void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
+    void vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode);
     void vDumpDataBuffers(void);
 
     i8 nPtnsInGrid(void);
-    i8 nPtnsPerTable(void);
+    i8 nPtnsPerNode(void);
     i8 i_WhichNode(tPN tPtnNo);
     i8 i_WhichStream(tPN tPtnNo);
     i8 i_WhichTablePtn(tPN tPtnNo);
@@ -50,7 +51,7 @@ namespace STORE
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
     i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
     Footer* aFooter(void);
-    void vPartition(i8 nNodes, i8 nDegOfPar);
+    void vRepartition(i8 nKnownNodes);
   };
   
   PtnMap* _pPtnMap(void* aAddr);

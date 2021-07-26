@@ -231,6 +231,16 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
+    class GRID
+    {
+    public:
+      static i8   iGetNthNodeNo(i8 i_Node);
+      static i8   nKnownNodes(void);
+      static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+                                Stz* szIPAddr, i8 iPortNo,
+                                Stz* pszRegionNm);
+    };
+  
     class JOB
     {
     public:
@@ -287,9 +297,25 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+    class PTNMAP
+    {
+    public:
+      static i8 nPtnsPerNode(void);
+      static i8 nPtnsInGrid(void);
+    };
+
+    class SYSARGS
+    {
+    public:
+      static i8 nDefinedNodes(void);
+      static i8 nPtnsPerNode(void);
+    };
+
     class SYSTEM
     {
     public:
+      static bool bStarted(void);
+      static void vStarted(bool bStarted);
       static i8   nNanoseconds(void);
       static void vSystemReady(void);
     };
@@ -342,7 +368,6 @@ namespace OBLIQUE
     // args
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
-    static i8   nDegOfPar(void);
     static bool bDeveloper(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
@@ -357,7 +382,6 @@ namespace OBLIQUE
     static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
-    static i8   nPtnsPerTable(void);
     static i8   nThreads(void);
 
     static TagSet* pDbgTagSet(void);
@@ -380,17 +404,13 @@ namespace OBLIQUE
     static i8   iEpoch(void);
     static Format* pFmt(void);
     static Grid* pGrid(void);
-    static i8   nBootNodes(void);
-    static i8   nConnectedNodes(void);
     static i8   nDefinedNodes(void);
-    static i8   nNodes(void);
 
     // newcode
     static std::list<Node*>::const_iterator itBeginNodes(void);
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
-    static bool bHasStarted(void);
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);
@@ -411,7 +431,6 @@ namespace OBLIQUE
     static i8   iUserUsec(void);
     static i8   iResidentSize(void);
     static bool bProgress(void);
-    static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
     static Word* pConstantRoot(void);
@@ -425,13 +444,10 @@ namespace OBLIQUE
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
-    static i8   iGetNodeNo(i8 i_Node);
-    static bool bFirstNode(i8 iNodeNo);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
     static Heartbeat xGetHeartbeat(Stz* pszNodeName);
-    static void vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm);
     static void vRemoveNode(Stz* pszName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);

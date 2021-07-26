@@ -25,15 +25,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::connectedNodes pJobOriginator job.acksRemaining!
+  grid::knownNodes pJobOriginator job.acksRemaining!
 
   // send job__execute to all nodes
-//  grid::bootNodes 0
-//  do
-//    I grid::node node.isConnected if
-//      I pJob__Execute job.forward
-//    then
-//  loop
 
   0 locals| pNode |
 

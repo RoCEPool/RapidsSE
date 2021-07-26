@@ -65,20 +65,20 @@ void Step::vNodeNew(void)
   
   i8 iPortNo = m_pDataStack->iPopInt(__func__);
 
-  i8 nNodes = AM::pGrid()->nNodes();
-  i8 nDegOfPar = AM::nDegOfPar();
+  i8 nKnownNodes = AM::pGrid()->nKnownNodes();
+  i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
 
-  Node* pNode = new Node(nNodes,
+  Node* pNode = new Node(nKnownNodes,
                          sNodeNm,
-                         nDegOfPar,
+                         nPtnsPerNode,
                          sIpAddr,
                          iPortNo,
                          AM::szRegionName());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  AM::pGrid()->vPutNode(pNode);
-  AM::pGrid()->vIncDefinedNodes();
+  AM::pGrid()->vAddNode(pNode);
+
   
   m_pDataStack->vPushPtr(pNode);
 
@@ -193,7 +193,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nPtnsPerTable());
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
   
   EXIT();
 }

@@ -33,17 +33,17 @@ RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the s
 /*----------------------------------------------------------------------------*/
 void vHeartInit(void) {
 
-  if (gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes > 0) {
+  if (gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats > 0) {
     vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
-    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_iPortNo;
+    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
     char szAddr[32];
 
     if (iPort == 0) {
       iPort = 8888;
     }
 
-    strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
+    strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
     //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
@@ -116,7 +116,7 @@ void vHeartInit(void) {
   int iCnt = 0;
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
 
-  if (!AM::bHasStarted()) {
+  if (! AM::SYSTEM::bStarted()) {
     // delay receiving 5 seconds when SE not started
     // Although, no harms to receive HB, we will ignore them as SE is sot started.
     sleep(5);
@@ -187,8 +187,12 @@ void vHeartInit(void) {
           // meaning we don't have this node in the cluster/grid yet.
           // Then we need to add this node into the cluster/grid.
           if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
-            AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
-                            xHeartbeat.m_iPort, (Stz *)xHeartbeat.m_acRegionName);
+            AM::GRID::vNodeDetected(xHeartbeat.m_iNodeNo,
+                                    (Stz *) xHeartbeat.m_acNodeName,
+                                    (Stz *) xHeartbeat.m_acAddr,
+                                    xHeartbeat.m_iPort,
+                                    (Stz *) xHeartbeat.m_acRegionName);
+            
             vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
           } else {
             vTrace("Invalid Heartbeat message version (%ld) is rejected. \n"_Stz, xHeartbeat.m_u2Version);

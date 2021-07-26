@@ -45,7 +45,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AggTimer();
   Step::vAddSteps_Address();
   Step::vAddSteps_Api();
-  Step::vAddSteps_Args();
+  Step::vAddSteps_SysArgs();
   Step::vAddSteps_Arrange();
   Step::vAddSteps_Assert();
   Step::vAddSteps_Astack();
@@ -184,7 +184,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_Subset();
-  Step::vAddSteps_Supervisor();   // step group for Supervisor
+  Step::vAddSteps_Supervisor();
+  Step::vAddSteps_System();
+  
 
   Step::vAddSteps_Table();
   Step::vAddSteps_TablePtn();

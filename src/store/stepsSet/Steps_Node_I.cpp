@@ -63,7 +63,7 @@ void Step::vNode_INew(void)
   
   i8 iStipulate = m_pDataStack->iPopInt(__func__);
   
-  Node_I* pNode_I = new Node_I(0,iStipulate);
+  Node_I* pNode_I = new Node_I;
       
   m_pJob->pLogicUnit_job()->m_xpNode_I = pNode_I;
 

@@ -995,7 +995,7 @@ void SePrompt::vPromptUser(void)
     return;
   }
   
-  bool bHasStarted = AM::bHasStarted();
+  bool bHasStarted = AM::SYSTEM::bStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
@@ -1154,7 +1154,7 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pJobTagSet->vReset();
   m_pJobTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
+  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
   m_pJobTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 

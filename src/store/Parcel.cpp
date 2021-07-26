@@ -338,7 +338,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   Parcel* pParcel;
   
   // get preliminary information
-  Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  Node* pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket* pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nObjects();
@@ -438,7 +438,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
 
   i8 iDstNode = 0;
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
@@ -473,13 +473,13 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       i8 i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      i_TablePtn = i_Robin % AM::nPtnsPerTable();
+      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
-             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::nPtnsPerTable());
+      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::PTNMAP::nPtnsPerNode():%lld\n"_Stz,
+             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::PTNMAP::nPtnsPerNode());
        */
       //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
@@ -493,7 +493,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_UNICAST: {
       
-      ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsPerNode());
       for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
         
         Stream* pStream = pNextStage->pGet(i_Stream);
@@ -538,7 +538,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_BROADCAST : {
-      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
 
         // sendNode is the partition node
@@ -568,13 +568,13 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       i_LocalRobin++;
       pSrcOp->vLocalRobin(i_LocalRobin);
 
-      i_TablePtn = i_LocalRobin % AM::nPtnsPerTable();
+      i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is this node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
-      RASSERT(iDstNode == AM::pGrid()->iThisNode());
+      RASSERT(iDstNode == AM::pGrid()->iThisNodeNo());
       
       vSendParcel(pSrcOp,iDstNode,tPtnNo);
       break;
@@ -583,7 +583,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_UNICAST: {
       
-      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
@@ -600,7 +600,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
       
-      tPtnNo = i_Robin % AM::nPtnsInGrid();
+      tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -630,7 +630,7 @@ void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
-  ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
+  ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
   
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
@@ -685,7 +685,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      tDstPtn = i_Robin % AM::nPtnsInGrid();
+      tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

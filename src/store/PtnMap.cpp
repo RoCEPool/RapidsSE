@@ -18,23 +18,24 @@ __aFooterFunction(PtnMap)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
+PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 : Object(CN_PTNMAP)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nPtnsInGrid   = 0;
-  m_nPtnsPerTable = 0;
+  m_nKnownNodes  = nKnownNodes;
+  m_nPtnsPerNode = nPtnsPerNode;
+  m_nPtnsInGrid  = 0;
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
-    m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
-    m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
+    m_xaInNodeTablePtn[i_Ptn].m_i_Node     = C_UNKNOWN;
+    m_xaInNodeTablePtn[i_Ptn].m_i_TablePtn = C_UNKNOWN;
   }
   
   _checkInitialised_(CN_PTNMAP);
   
-  vPartition(nBootNodes,nDegOfPar);
+  vRepartition(nKnownNodes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -93,8 +94,8 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
 
-  //if (AM::nPtnsInGrid()) {
-  //  for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+  //if (AM::PTNMAP::nPtnsInGrid()) {
+  //  for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
   //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
   //  vTrace("\n"_Stz);
   //}
@@ -103,7 +104,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   // THIS IS WHERE THE CRASH HAPPENED
   // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
-  tPN tPtnNo = (i_Stream * AM::nConnectedNodes()) + 0;//AM::iThisNodeNo();
+  tPN tPtnNo = (i_Stream * AM::GRID::nKnownNodes()) + 0;//AM::iThisNodeNo();
 
 
 
@@ -115,15 +116,14 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* adjust partitioning                                                        */
+/* adjust partition map for given number of nodes and partitions per node     */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar)
+void PtnMap::vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vPartition(nConnectedNodes,nDegOfPar);
+  vRepartition(nKnownNodes);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
@@ -132,8 +132,8 @@ void PtnMap::vDumpDataBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  if (AM::nPtnsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+  if (AM::PTNMAP::nPtnsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
   }
@@ -150,13 +150,13 @@ i8 PtnMap::nPtnsInGrid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of partitions per table                                         */
+/* get number of partitions per node                                          */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::nPtnsPerTable(void)
+i8 PtnMap::nPtnsPerNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  return m_nPtnsPerTable;
+  return m_nPtnsPerNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,8 +212,8 @@ i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Node = tPtnNo % AM::nBootNodes();
-  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::nBootNodes(), i_Node);
+  i8 i_Node = tPtnNo % AM::GRID::nKnownNodes();
+  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Node);
   return i_Node;
 }
 
@@ -224,38 +224,38 @@ i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Stream = tPtnNo / AM::nBootNodes();
-  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::nBootNodes(), i_Stream);
+  i8 i_Stream = tPtnNo / AM::GRID::nKnownNodes();
+  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::GRID::nKnownNodes(), i_Stream);
   return i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* repartition the map based on new known nodes                               */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
+void PtnMap::vRepartition(i8 nKnownNodes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nPtnsInGrid   = nNodes * nDegOfPar;
-  m_nPtnsPerTable = nDegOfPar;
+  m_nKnownNodes  = nKnownNodes;
+  m_nPtnsInGrid  = nKnownNodes * m_nPtnsPerNode;
+  RASSERT(m_nPtnsInGrid);
 
-  for (i8 i = 0; i < C_MAX_PTNS; i++) {
-    m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
-    m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
+    m_xaInNodeTablePtn[i_Ptn].m_i_Node     = C_UNKNOWN;
+    m_xaInNodeTablePtn[i_Ptn].m_i_TablePtn = C_UNKNOWN;
   }
     
-  RASSERT(m_nPtnsInGrid);
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     // newcode1 we have to replace the node index here with node ID
-    i4 iNodeIdx = (i4)tPtnNo % nNodes;
+    i4 iNodeIdx = (i4)tPtnNo % nKnownNodes;
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
       //(i4)i_LglPtnNoToInitialNode(tPtnNo);
       //(i4)tPtnNo % nNodes; // oldcode1
-      AM::iGetNodeNo(iNodeIdx);  // newcode1    <<<<<<<<<<<<<<<<<
+      AM::GRID::iGetNthNodeNo(iNodeIdx);  // newcode1    <<<<<<<<<<<<<<<<<
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
       //(i4)i_LglPtnNoToInitialStream(tPtnNo);
-      (i4)tPtnNo / nNodes;
+      (i4)tPtnNo / nKnownNodes;
   }
   
 }

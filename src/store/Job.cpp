@@ -766,7 +766,7 @@ Stz* Job::szNodeNm(void)
   
   i8 i_Node = iOriginatorNode();
   
-  Stz* szNodeNm = AM::pGrid()->pGetNode(i_Node)->szNodeNm();
+  Stz* szNodeNm = AM::pGrid()->pFindNode(i_Node)->szNodeNm();
   
   return szNodeNm;
 }
@@ -1263,7 +1263,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 eEC STORE::eJob_checkCluster(void)
 {
-  if (AM::pGrid()->bHasStarted())
+  if (AM::SYSTEM::bStarted())
     return EC_NONE;
   else
     return EC_CLUSTER_NOT_CONNECTED;
@@ -1296,24 +1296,27 @@ void STORE::vJob_postRecv(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* compare two jobs by their jobId                                            */
 /*----------------------------------------------------------------------------*/
-bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool STORE::bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch)
 {
-  Job* pInsertEntry = _pJob(pObjectInsert);
-  Job* pScanEntry   = _pJob(pObjectScan);
+  Job* pJobInsert = _pJob(aJobInsert);
+  Job* pJobScan   = _pJob(aJobScan);
   
-  eCN eClassScanEntry = pScanEntry->eGetClassNo();
+  eCN eClassJobScan = pJobScan->eGetClassNo();
+  RASSERT(_bIsValidJob(eClassJobScan));
   
-  RASSERT(_bIsValidJob(eClassScanEntry));
-  
-  if ( ! pObjectScan )
+  if (! pJobScan)
     return false;
   
-  if (pInsertEntry->iJobId() == pScanEntry->iJobId())
+  // do the job id's match?
+  if (pJobInsert->iJobId() == pJobScan->iJobId())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iJobId() > pScanEntry->iJobId())
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this job to be inserted lexicography after the scan?
+  
+  if (pJobInsert->iJobId() > pJobScan->iJobId())
     return true;
   else
     return false;

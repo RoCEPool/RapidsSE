@@ -69,7 +69,7 @@
   0 row[].getVchColumn to sNodeName
 
   // find the node
-  sNodeName grid::findNode to pAnsweredNode
+  sNodeName grid::findNodeByName to pAnsweredNode
 
   // set the receive socket in the answered node
 
@@ -80,7 +80,7 @@
       pAnsweredNode not
     while
       50 thread::sleepMsec
-        sNodeName grid::findNode to pAnsweredNode
+        sNodeName grid::findNodeByName to pAnsweredNode
     repeat
   pAnsweredNode not if
   ">>>>>pAnsweredNode is null<<<<<" .
@@ -94,11 +94,11 @@
   // node is active
   NS_ACTIVE pAnsweredNode node.state!
 
-  //grid::incConnectedNodes
+  //ptnmap::adjust
 
-  3 Row[].getIntColumn grid::started@ not and if
-    true grid::started!
-  then
+  //3 Row[].getIntColumn system::started@ not and if
+  //  true system::started!
+  //then
 
   // delete the infoset
   InfoSet[].delete
@@ -123,7 +123,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
-  grid::thisNode@ grid::node node.port to iPort
+  grid::thisNode@ grid::findNodeByNo node.port to iPort
 
   //args.verbose if
   //  iPort "Waiting for connections on port %v" .printf

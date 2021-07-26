@@ -129,8 +129,6 @@ cmd::fillOut_allCmds
         
         "se_proceduresB.sen"          include // third last
 
-        //"se_procs.sen"                include // third last
-
         "se_defineTables.sen"         include // second last
         
         "se_start.sen"                include // last last

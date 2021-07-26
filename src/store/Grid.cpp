@@ -21,66 +21,27 @@ extern AttachMap*   gpAttachMap;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Grid* STORE::_pGrid(void* aAddr)
-{
-  Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
-  
-  RASSERT_TYPE(pGrid,CN_GRID);
-  
-  return pGrid;
-}
+__pCastFunction(STORE,Grid,CN_GRID)
+__aNewFunction(Grid,CN_GRID)
+__vDeleteFunction(Grid,CN_GRID)
+__aFooterFunction(Grid)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Grid::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_GRID);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Grid::operator delete(void*)
-{
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Grid class cannot be deleted"_Stz);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(Stz* szGridNm, i8 iConnectCode)
+Grid::Grid(Stz* szGridNm)
 : Operand(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_sGridNm = szGridNm; //"SEgrid"_Stz;
-  m_iConnectCode    = iConnectCode;
+  m_sGridNm   = szGridNm; //"SEgrid"_Stz;
   
-  m_iThisNode       = C_UNKNOWN;
-
-  m_pThisNode       = nullptr;
-  
-  m_iStartNodeNo    = C_UNKNOWN;
-  m_bHasStarted     = false;
-      
-  // initialize the node array
-  m_nBootNodes      = 0;
-  m_nDefinedNodes   = 0;
-  m_nConnectedNodes = 0;
-  m_nNodes          = 0;
-
+  m_pThisNode = nullptr;
+        
+  // initialize the node list
 
   m_pNodes_stdList = new std::list<Node*>;
-  //m_pNodes_stdList = &m_lNodes;
-  //m_pNodes_stdList->clear();
-
   m_pNodes_stdList->clear();
 
   m_pParcel = nullptr;
@@ -96,7 +57,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 Grid::~Grid(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //delete m_pNodes_stdList;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,45 +83,88 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get number of defined nodes in the grid                                    */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nBootNodes(void)
+/**
+ * @brief Add new node into the cluster/grid
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+                            Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnDefinedNode()\n"_Stz);
-//
-//  vThreadCallStackDump();
-  
-  return m_nBootNodes;
+
+  // Search List using Lambda function as comparator
+  std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
+               [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
+
+  if (itFound == m_pNodes_stdList->end()) { // not found, let's add
+    //vTrace("NOT FOUND\n"_Stz);
+
+    CheckSum ChecksumValue((unsigned char *)szIPAddr->azChar(),
+                           szIPAddr->nLength());
+    
+    i8 iNodeNo = (ChecksumValue.iGetBernstein() + iPortNo);
+
+
+    Node *pNode = new Node(iNodeNo,
+                           szNodeNm,
+                           AM::SYSARGS::nPtnsPerNode(),
+                           szIPAddr,
+                           iPortNo,
+                           szRegionNm);
+
+    vAddNode(pNode); // this also incr m_nNodes;
+
+    // Sorting List using Lambda function as comparator
+    m_pNodes_stdList->sort([](Node* pNode1, Node* pNode2)
+                  {
+                    if(pNode1->iNodeNo() == pNode2->iNodeNo())
+                      return pNode1 < pNode2;
+                    return pNode1->iNodeNo() < pNode2->iNodeNo();
+                  });
+
+  } //else { vTrace("FOUND\n"_Stz);}
+
+  // Found, nothing to do
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of connected nodes                                              */
+/* add node                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nConnectedNodes(void)
+void Grid::vAddNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnConnectedNodes()\n"_Stz);
-//
-//  vThreadCallStackDump();
 
-  return m_nConnectedNodes;
+  m_pNodes_stdList->push_back(pNode);
+
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
+  }
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* get number of defined nodes                                                */
+/* increment number of connected nodes                                        */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nDefinedNodes(void)
+void Grid::vAdjustPtnMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-//  vTrace("/nnConnectedNodes()\n"_Stz);
-//
-//  vThreadCallStackDump();
+  // We have to readjust partition map when new connection or dropped connection
+  PtnMap* pPtnMap = AM::pPtnMap();
 
-  return m_nDefinedNodes;
+  //pPtnMap->vDumpDataBuffers(); // debug dump
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes(),AM::SYSARGS::nPtnsPerNode());
+  pPtnMap->vDumpDataBuffers();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,72 +174,24 @@ void Grid::vDsv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  vTrace("\nDsv of Grid: %s (connect code %lld)\n"_Stz,
-         m_sGridNm.szStz(),
-         m_iConnectCode);
+  vTrace("\nDsv of Grid: %s\n"_Stz,
+         m_sGridNm.szStz());
   
   vTrace("  this node %lld %s\n"_Stz,
-         m_iThisNode,
+         iThisNodeNo(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
-
-  vTrace("  %s started; start node %lld\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz,
-         m_iStartNodeNo
-         );
   
-  vTrace("  bootNodes %lld definedNodes %lld "
-         "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nBootNodes,
-         m_nDefinedNodes,
-         m_nConnectedNodes,
-         m_nNodes);
+  vTrace("nodes %lld \n"_Stz,
+         nKnownNodes());
 
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode) pNode->vDsv();
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* find node by name                                                          */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(Stz* sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode && pNode->szNodeNm()->bSame(sName))
-      return pNode;
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node by node ID                                                        */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vTrace("%lld % lld % lld %lld\n"_Stz, iNodeNo, m_nBootNodes, m_nConnectedNodes, m_nDefinedNodes);
-  // OK, we got recursive call between pFindNode and pFindNodeBYNodeNo, from the pNode = (*oNode_I)
-
-
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode) vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
-    if (pNode && pNode->iNodeNo() == iNodeNo) {
-
-      //vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
-      return pNode;
-    }
-  }
-
-  return nullptr;
-}
-
 /**
  * @brief returns a string buffer contains Grid Info
  * @details returns a string buffer contains Grid Info:
@@ -251,28 +207,19 @@ s16KB Grid::szDumpInfo(void)
 
   s16KB sDumpBuffer = "\n\n\n==== DumpGrid: =======================================\n"_Stz;
 
-  sDumpBuffer.vCatSprint("Dsv of Grid: %s (connect code %lld)\n"_Stz,
-         m_sGridNm.szStz(),
-         m_iConnectCode);
+  sDumpBuffer.vCatSprint("Dsv of Grid: %s (\n"_Stz,
+         m_sGridNm.szStz());
 
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
-         m_iThisNode,
+                         iThisNodeNo(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
-  sDumpBuffer.vCatSprint("  %s started; start node %lld\n"_Stz,
-         m_bHasStarted ? "has"_Stz : "not"_Stz,
-         m_iStartNodeNo  );
-
-  sDumpBuffer.vCatSprint("  bootNodes %lld definedNodes %lld "
-         "connectedNodes %lld nodes %lld \n"_Stz,
-         m_nBootNodes,
-         m_nDefinedNodes,
-         m_nConnectedNodes,
-         m_nNodes);
+  sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
+                         nKnownNodes());
 
 
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode) {
       sDumpBuffer = pNode->szDumpInfo(sDumpBuffer);
@@ -284,21 +231,16 @@ s16KB Grid::szDumpInfo(void)
   return sDumpBuffer;
 }
 
-/**
- * @brief returns a node object matched the node ID
- * @details returns a node object matched the node ID
- * <p>
- * @param[in] i_NodeNo - node number
- *
- * @return Node*  if found or nullptr
- *
- */
-Node* Grid::pGetNode(i8 iNodeNo)
+/*----------------------------------------------------------------------------*/
+/* get node by node ID                                                        */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pFindNode(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
+    
     if (pNode && pNode->iNodeNo() == iNodeNo)
       return pNode;
   }
@@ -306,54 +248,38 @@ Node* Grid::pGetNode(i8 iNodeNo)
   return nullptr;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get node ID                                                                */
+/* find node by name                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iGetNodeNo(i8 i_Node)
+Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  //vThreadCallStackDump();
 
-  // called from  PtnMap::vPartition()
-
-  //vTrace("Grid::iGetNodeNo for this index: %lld  "_Stz, i_Node);
-  i8 iSeq = 0;
-  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
-    if (pNode && i_Node == iSeq++) {
-      //vTrace("iGetNodeNo %lld\n"_Stz, pNode->iNodeNo());
-      return pNode->iNodeNo();
-    }
+    if (pNode && pNode->szNodeNm()->bSame(sName))
+      return pNode;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node by its position in the node list                                  */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pGetNthNode(i8 i_Node)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  i8 iSeq = 0;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    
+    if (pNode && i_Node == iSeq++)
+      return pNode;
   }
 
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this node number is the first node in the grid                          */
-/*----------------------------------------------------------------------------*/
-bool Grid::bFirstNode(i8 iNodeNo)
-{
-  // Get first node, check if the same
-  Node_I oNode_I(0,C_ALL);
-  if (oNode_I.bMore()) {
-    if ((*oNode_I)->iNodeNo() == iNodeNo)
-      return true;
- }
-
-  return false;
-}
-
-std::list<Node*>::const_iterator Grid::itBeginNodes(void)
-{
-  return m_pNodes_stdList->begin();
-}
-
-std::list<Node*>::const_iterator Grid::itEndNodes(void)
-{
-  //return m_pNodes_stdList->end();
-  return m_pNodes_stdList->end();
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,150 +293,13 @@ Stz* Grid::szGridNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get grid started                                                           */
-/*----------------------------------------------------------------------------*/
-bool Grid::bHasStarted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set grid started                                                           */
-/*----------------------------------------------------------------------------*/
-void Grid::vHasStarted(bool bHasStarted)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_bHasStarted = bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of boot nodes                                              */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncBootNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_nBootNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of boot nodes                                              */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecBootNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_nBootNodes--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of connected nodes                                        */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  ++m_nConnectedNodes;
-
-  // We have to readjust partition map when new connection or dropped connection
-  PtnMap* pPtnMap = AM::pPtnMap();
-
-  //pPtnMap->vDumpDataBuffers(); // debug dump
-  pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
-  pPtnMap->vDumpDataBuffers();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of connected nodes                                        */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  --m_nConnectedNodes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of defined nodes                                          */
-/*----------------------------------------------------------------------------*/
-void Grid::vIncDefinedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_nDefinedNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of defined nodes                                         */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecDefinedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_nDefinedNodes--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement number of nodes in the node array                                */
-/*----------------------------------------------------------------------------*/
-void Grid::vDecNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  --m_nNodes;
-}
-
-void Grid::vIncNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  ++m_nNodes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of nodes in the node array                                      */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nNodes(void)
+i8 Grid::nKnownNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   return m_pNodes_stdList->size();
-}
-
-/*----------------------------------------------------------------------------*/
-/* put node                                                                   */
-/*----------------------------------------------------------------------------*/
-void Grid::vPutNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pNodes_stdList->push_back(pNode);
-  m_nNodes++;
-
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* put node Reverse                                                           */
-/*----------------------------------------------------------------------------*/
-void Grid::vPutNodeR(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pNodes_stdList->push_front(pNode);
-  m_nNodes++;
-
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node Added: %s\n"_Stz,spNode.sz(pNode));
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,113 +310,42 @@ void Grid::vRemoveNode(Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes_stdList->remove(pNode);
-  m_nBootNodes--;
-}
-
-/**
- * @brief Add new node into the cluster/grid
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* szRegionNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-
-  // Search List using Lambda function as comparator
-  std::list<Node*>::iterator itFound = std::find_if(m_pNodes_stdList->begin(), m_pNodes_stdList->end(),
-               [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
-
-  if (itFound == m_pNodes_stdList->end()) { // not found, let's add
-    //vTrace("NOT FOUND\n"_Stz);
-
-    CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
-    i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
-
-
-    Node *pNode = new Node(l_iNodeNo,
-                           pszName,
-                           AM::nDegOfPar(),
-                           pszAddr,
-                           iPort,
-                           szRegionNm);
-
-    vPutNode(pNode); // this also incr m_nNodes;
-
-    // Sorting List using Lambda function as comparator
-    m_pNodes_stdList->sort([](Node* pNode1, Node* pNode2)
-                  {
-                    if(pNode1->iNodeNo() == pNode2->iNodeNo())
-                      return pNode1 < pNode2;
-                    return pNode1->iNodeNo() < pNode2->iNodeNo();
-                  });
-
-    vIncBootNodes();
-    vIncDefinedNodes();
-
-  } //else { vTrace("FOUND\n"_Stz);}
-
-  // Found, nothing to do
-
-
 }
 
 /*----------------------------------------------------------------------------*/
-/* get grid node where cluster was started                                    */
+/* see nodes of the grid                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iStartNodeNo(void)
+void Grid::vSeeNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_iStartNodeNo;
-}
+  vTrace("Grid::\n"_Stz);
 
-/*----------------------------------------------------------------------------*/
-/* set grid node where cluster was started                                    */
-/*----------------------------------------------------------------------------*/
-void Grid::vStartNodeNo(i8 iStartNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  vTrace("  %lld partitions per table = "
+         "%lld total partitions in grid "
+         "\n"_Stz
+         ,AM::PTNMAP::nPtnsPerNode()
+         ,AM::PTNMAP::nPtnsInGrid()
+         );
   
-  m_iStartNodeNo = iStartNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this node number                                                       */
-/*----------------------------------------------------------------------------*/
-void Grid::vThisNodeNo(i8 iNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  // iNode is no longer an index
-  m_iThisNode = iNode;
-  //m_pThisNode = pGetNode(iNode); oldcode
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this node object                                                       */
-/*----------------------------------------------------------------------------*/
-void Grid::vSetThisNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  m_pThisNode = pNode;
+  SP_Node spNode;
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = *oNode_I;
+    vTrace("  %s\n"_Stz,spNode.sz(pNode));
+  }
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iThisNode(void)
+i8 Grid::iThisNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_iThisNode;
+  return m_pThisNode->iNodeNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,6 +356,16 @@ Node* Grid::pThisNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   return m_pThisNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this node                                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vThisNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pThisNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -658,7 +386,6 @@ i8 Grid::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  //std::list<Node*> * m_pNodes_stdList = &m_lNodes;
   m_pParcel->vAddObject((Object *)m_pNodes_stdList);
 
   return m_pParcel->nObjects();
@@ -709,9 +436,8 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
 
   if (m_pNodes_stdList) {
     vTrace(">>>>>>>>> iReassembleFromParcel grid with %lld nodes\n"_Stz, m_pNodes_stdList ? m_pNodes_stdList->size() : 0);
-    //vTrace( ">>>>>>>>> Node:%s Port:%lld\n"_Stz, m_pNodes_stdList->begin().
 
-    for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
       if (pNode) pNode->vDsv();
     }
@@ -725,19 +451,19 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
   return nSize;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+#ifndef WITH_NODE_SKIPLIST
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Grid::aFooter(void)
+std::list<Node*>::const_iterator Grid::itBeginNodes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID);
-  
-  return &m_xFooter;
+  return m_pNodes_stdList->begin();
 }
+
+std::list<Node*>::const_iterator Grid::itEndNodes(void)
+{
+  return m_pNodes_stdList->end();
+}
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

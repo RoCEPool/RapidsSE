@@ -45,7 +45,7 @@
   PipeIn[] ToHshCrw[].convert
   nullptr to PipeIn[]
 
-  grid::partitions 0
+  ptnmap::ptnsInGrid 0
   do
 
     I ToHshCrw[].completed to OperandB[]
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 : toHshCrw_EosMarker \handler
 
-  grid::partitions 0
+  ptnmap::ptnsInGrid 0
   do
 
     I ToHshCrw[].dangling to OperandB[]

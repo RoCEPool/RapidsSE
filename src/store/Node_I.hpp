@@ -12,11 +12,20 @@ namespace STORE
   {
   private:
   
-    i8 m_iStipulate;
     i8 m_i_Node;
+
+#ifdef WITH_NODE_SKIPLIST
 
     std::list<Node*>::const_iterator m_itNode;
     std::list<Node*>::const_iterator m_itEndNode;
+  
+#else
+
+    std::list<Node*>::const_iterator m_itNode;
+    std::list<Node*>::const_iterator m_itEndNode;
+
+#endif
+  
     // must be last
     Footer m_xFooter;
     
@@ -24,8 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Node_I(i8 iStipulate=0);
-    Node_I(i8 i_Node,i8 iStipulate=0);
+    Node_I(void);
    ~Node_I(void) noexcept(false);
     
     operator Node*(void);   // auto conversion

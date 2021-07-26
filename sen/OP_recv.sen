@@ -11,7 +11,7 @@
 
   CN_JOB task[] task.thread thread.dedicated!
 
-  NS_ACTIVE grid::thisNode@ grid::node node.state!
+  NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!
 
   args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf

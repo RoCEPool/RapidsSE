@@ -213,8 +213,8 @@ void Step::vStreamSetAddGridSanity(void)
   
   // get partitions per table for this node
   bool bPartitions = false;
-  i8 nPtnsPerTable = AM::nPtnsPerTable();
-  if (pNodeInfo->iColVal_int(2) == nPtnsPerTable)
+  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
+  if (pNodeInfo->iColVal_int(2) == nPtnsPerNode)
     bPartitions = true;
   
   // check if the regionSize and partitions match
@@ -351,7 +351,7 @@ void Step::vStreamSetAddListPartitions(void)
   
   Grid* pGrid = AM::pGrid();
   i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-  Node* pNode = pGrid->pGetNode(i_Node);
+  Node* pNode = pGrid->pFindNode(i_Node);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -399,7 +399,7 @@ void Step::vStreamSetAddNodeStatus(void)
   m_pDataStack->vPushInt(pRow ? true : false);
   */
   Row *pRow = nullptr;
-  for (Node_I oNode_I(0, C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
 
     pRow = pStreamSet->pAllotRow(pStreamDef,
                                  C_VARGS_BEGIN,
@@ -549,7 +549,7 @@ void Step::vStreamSetAddShowCluster(void)
   
   StreamSet* pStreamSet = _pStreamSet(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
   
-  Node* pNode = AM::pGrid()->pGetNode(i_Node);
+  Node* pNode = AM::pGrid()->pFindNode(i_Node);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),

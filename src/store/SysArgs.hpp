@@ -15,36 +15,34 @@ namespace STORE
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir
     i8    m_iConnectCode;  // connect code (not yet used)
-    i8    m_nDegOfPar;     // degree of parallelism
     i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
+    i8    m_nPtnsPerNode;  // partitions per node
     void* m_aRegionAddr;   // use this address for region
     s32   m_sRegionName;   // name of shared memory region
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
-    i8    m_nPtnsPerTable;    // partitions per table
-
-    i8    m_iLiftNo;
-
-    // grid configuration at boot
-    i8    m_nBootNodes;
+ 
+    // nodes defined on the command line
+    i8    m_nDefinedNodes;
     struct {
       s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
-    } m_xBootNode[C_MAX_NODES];
-    i8   m_iThisNode;      // this node no in the m_xBootNode list       //! FIX
-
-    // Heartbeat configuration
-    i8    m_nHeartbeatNodes;
+    } m_xNodeDefn[C_MAX_NODES];
+  
+    i8   m_i_ThisNode;     // this node no in the m_xNodeDefn list
+                           
+    // heartbeat definition
+    i8    m_nDefinedHeartbeats;
     struct {
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
-    } m_xHeartbeatNode[C_MAX_NODES];
+    } m_xHeartbeatDefn[C_MAX_NODES];
 
-    TagSet m_oArgTagSet;  // arguments tag set
+    TagSet m_oArgTags;  // arguments tag set
 
     // command
     bool m_bAddNode;     // add node

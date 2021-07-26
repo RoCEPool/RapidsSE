@@ -78,7 +78,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
@@ -268,7 +268,7 @@ bool Stage::bStartPipeline(void)
   StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
@@ -309,8 +309,8 @@ void Stage::vCreateStreams(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnNo = C_UNKNOWN;
-      for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
-        i_NodeNo = AM::iGetNodeNo(i_Node);
+      for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
+        i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
         vAdd(pStream);
       }
@@ -323,7 +323,7 @@ void Stage::vCreateStreams(void)
       i_Node = m_pPipeline->i_Origin();
       //if (i_Node < 100) {
       //  printf("BAD node\n");
-      //  i_Node = AM::iGetNodeNo(i_Node);
+      //  i_Node = AM::iGetNthNodeNo(i_Node);
       //}
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
       vAdd(pStream);
@@ -338,7 +338,7 @@ void Stage::vCreateStreams(void)
 
     case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
+      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         //if (i_Node < 100) printf("1 BAD node\n");
         i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
@@ -349,7 +349,7 @@ void Stage::vCreateStreams(void)
       
     case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
+      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         //if (i_Node < 100) printf("2 BAD node\n");
         if (i_Node == m_pPipeline->i_Origin()) {

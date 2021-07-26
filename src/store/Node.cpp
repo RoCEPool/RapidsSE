@@ -12,61 +12,28 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Node* STORE::_pNode(void* aAddr)
-{
-  Node* pNode = reinterpret_cast<Node*>(aAddr);
-  
-  RASSERT_TYPE(pNode,CN_NODE);
-  
-  return pNode;
-}
+__pCastFunction(STORE,Node,CN_NODE)
+__aNewFunction(Node,CN_NODE)
+__vDeleteFunction(Node,CN_NODE)
+__aFooterFunction(Node)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Node::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_NODE);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Node::operator new(size_t, Node* pNode)
-{
-  return pNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Node::operator delete(void* pNodeAddress)
-{
-  Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
-  
-  Heaps::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
+Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nPtnsInNode,
+           Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
     
-  m_iNodeNo   = iNodeNo;
-  m_sNodeNm   = szNodeNm;
-  m_nDegOfPar = nDegOfPar;
-  m_sIPAddr   = szIpAddr;
-  m_iPortNo   = iPortNo;
+  m_iNodeNo     = iNodeNo;
+  m_sNodeNm     = szNodeNm;
+  m_nPtnsInNode = nPtnsInNode;
+  m_sIPAddr     = szIpAddr;
+  m_iPortNo     = iPortNo;
   
-  m_eState    = NS_INACTIVE;
+  m_eState      = NS_INACTIVE;
   
   m_pRecvSocket = nullptr;
   m_pSendSocket = nullptr;
@@ -130,11 +97,11 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get degree of parallelism                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Node::nDegOfPar(void)
+i8 Node::nPtnsInNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_nDegOfPar;
+  return m_nPtnsInNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,10 +171,10 @@ void Node::vDsv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 
-  vTrace("  [%lld] Node %s : degOfPar %d IPAddr %s portNo %lld %s\n"_Stz,
+  vTrace("  [%lld] Node %s : ptnsInNode %d IPAddr %s portNo %lld %s\n"_Stz,
          m_iNodeNo,
          m_sNodeNm.szStz(),
-         m_nDegOfPar,
+         m_nPtnsInNode,
          m_sIPAddr.szStz(),
          m_iPortNo,
          aNS[m_eState]);
@@ -227,10 +194,10 @@ s16KB Node::szDumpInfo(s16KB szBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 
-  szBuffer.vCatSprint("    [%lld] Node %s : degOfPar %d IPAddr %s portNo %lld %s\n"_Stz,
+  szBuffer.vCatSprint("    [%lld] Node %s : ptnsInNode %d IPAddr %s portNo %lld %s\n"_Stz,
          m_iNodeNo,
          m_sNodeNm.szStz(),
-         m_nDegOfPar,
+                      m_nPtnsInNode,
          m_sIPAddr.szStz(),
          m_iPortNo,
          aNS[m_eState]);
@@ -474,17 +441,29 @@ i8   Node::iGetPid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* compare two nodes by their nodeNm                                          */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Node::aFooter(void)
+bool STORE::bNodeCompare(void* aNodeInsert, void* aNodeCursor, bool& bMatch)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE);
+  Node* pNodeInsert = _pNode(aNodeInsert);
+  Node* pNodeCursor = _pNode(aNodeCursor);
+    
+  if (! pNodeCursor)
+    return false;
   
-  return &m_xFooter;
+  // do the node names match?
+  if (pNodeInsert->szNodeNm()->bEqual(pNodeCursor->szNodeNm()))
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this node being inserted lexicography after the cursor?
+  
+  if (pNodeInsert->szNodeNm()->bGreater(pNodeCursor->szNodeNm()))
+    return true;
+  else
+    return false;
 }
 
 /*============================================================================*/

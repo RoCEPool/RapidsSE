@@ -26,7 +26,7 @@ namespace STORE
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_Api(void);
-    static void vAddSteps_Args(void);
+    static void vAddSteps_SysArgs(void);
     static void vAddSteps_Arrange(void);
     static void vAddSteps_Assert(void);
     static void vAddSteps_Astack(void);
@@ -169,6 +169,7 @@ namespace STORE
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
+    static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);
     static void vAddSteps_TablePtn(void);

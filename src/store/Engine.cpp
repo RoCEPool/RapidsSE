@@ -527,26 +527,28 @@ void Engine::vCheckGrid(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
-   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+   for (i8 i_Node = 0;
+        i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+        i_Node++) {
      
      if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
        vInfo("Checking %s %s %lld\n"_Stz,
-             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
-             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo
              );
      
-     if (! gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
+     if (! gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
        Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
-                                    gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress);
+                                    gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress);
      
      if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
        vInfo("Loopback %s for %s is valid\n"_Stz,
-             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz());
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz());
 
      if (gxCmdLineArgs.m_xSysArgs.m_bGridTest)
-       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
    }
 
 }
@@ -562,18 +564,18 @@ void Engine::vCheckNodes(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
-  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes < 1)
+  if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes < 1)
     Process::vUnrecoverableError("No nodelist was supplied (via --node)"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  if (C_UNKNOWN == gxCmdLineArgs.m_xSysArgs.m_iThisNode)
+  if (C_UNKNOWN == gxCmdLineArgs.m_xSysArgs.m_i_ThisNode)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("This is node %lld of %lld nodes\n"_Stz,
-          gxCmdLineArgs.m_xSysArgs.m_iThisNode,
-          gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
+          gxCmdLineArgs.m_xSysArgs.m_i_ThisNode,
+          gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -592,7 +594,7 @@ void Engine::vCheckPort(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
-  iPort = gxCmdLineArgs.m_xSysArgs.m_xBootNode[gxCmdLineArgs.m_xSysArgs.m_iThisNode].m_iPortNo;
+  iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNo;
   
   vTestPort(iPort);
   
@@ -878,11 +880,13 @@ void Engine::vKillPrev(void)
   s32 sRegionNm;
   int iFD;
   
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0;
+       i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+       i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
                         gxCmdLineArgs.m_xSysArgs.m_sRegionPrefix.azChar(),
-                        gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.azChar());
+                        gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.azChar());
     
     if (! Region::bTest(sRegionNm) )
       continue;
@@ -1254,17 +1258,16 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
-  vTrace("  C_MAX_PARTITIONS     = %lld\n"_Stz,C_MAX_PARTITIONS);
+  vTrace("  C_MAX_PTNSINGRID     = %lld\n"_Stz,C_MAX_PTNSINGRID);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);
-  vTrace("  C_MAX_PTNS          = %lld\n"_Stz,C_MAX_PTNS);
+  vTrace("  C_MAX_PTNSPERNODE    = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SEEKOFFSETS    = %lld\n"_Stz,C_MAX_SEEKOFFSETS);
   vTrace("  C_MAX_SESSIONS       = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT    = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_SHORTCUTS      = %lld\n"_Stz,C_MAX_SHORTCUTS);
-  vTrace("  C_MAX_TABLEPTNS          = %lld\n"_Stz,C_MAX_TABLEPTNS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);
@@ -1586,17 +1589,17 @@ void Engine::vStartSystem(void)
   // job lists
 
   gpAttachMap->m_pJobs->m_pDemonJobs =
-      new JobList(bJobCompare, JL_DEMON);
+      new JobList(STORE::bJobCompare, JL_DEMON);
   gpAttachMap->m_pJobs->m_pLocalJobs =
-      new JobList(bJobCompare, JL_LOCAL);
+      new JobList(STORE::bJobCompare, JL_LOCAL);
   gpAttachMap->m_pJobs->m_pOriginatingJobs =
-      new JobList(bJobCompare, JL_ORIGINATING);
+      new JobList(STORE::bJobCompare, JL_ORIGINATING);
   gpAttachMap->m_pJobs->m_pParticipatingJobs =
-      new JobList(bJobCompare, JL_PARTICIPATING);
+      new JobList(STORE::bJobCompare, JL_PARTICIPATING);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
-  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
+  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz);
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Grid and Node's\n"_Stz);
@@ -1611,10 +1614,8 @@ void Engine::vStartSystem(void)
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
-  i8 iThisNode = pThisNode->iNodeNo();
-  AM::pGrid()->vThisNodeNo(iThisNode);
 
-  AM::pGrid()->vSetThisNode(pThisNode); // newcode
+  AM::pGrid()->vThisNode(pThisNode); // newcode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
@@ -1626,6 +1627,7 @@ void Engine::vStartSystem(void)
 //  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNode);
 //  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNode);
 
+  i8 iThisNode = pThisNode->iNodeNo();
   gpAttachMap->m_pObjects->vNodeNo(iThisNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1645,8 +1647,8 @@ void Engine::vStartSystem(void)
     vInfo("  Creating Partition Map\n"_Stz);
 
   gpAttachMap->m_pPtnMap =
-      new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
-                 gpAttachMap->m_xSysArgs.m_nDegOfPar);
+      new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
+                 gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1762,34 +1764,34 @@ void Engine::vCreateGridOfNodes(void)
   s32 szNodeName;
   i8 iNodeNo =0 ;
 
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0;
+       i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
+       i_Node++) {
 
-    if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1) {
+    if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes > 1) {
       iNodeNo = i_Node;
-      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName;
     } else {
-      CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.nLength());
+      CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
+                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.nLength());
 
-      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
 
-      //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
-      //                   gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
-      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
+      //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
+      //                   gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName;
    }
 
 
     Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
-                           szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
-                           AM::nDegOfPar(),
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo,
+                           szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName,
+                           AM::SYSARGS::nPtnsPerNode(),
+                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,
+                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
                            AM::szRegionName());
 
-    AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vAddNode(pNode);
 
-    AM::pGrid()->vIncBootNodes();
-    AM::pGrid()->vIncDefinedNodes();
   }
 }
 

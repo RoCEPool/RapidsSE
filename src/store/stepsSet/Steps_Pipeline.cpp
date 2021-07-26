@@ -166,7 +166,7 @@ void Step::vPipelineEnqueueStart(void)
   
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-  i8 iThisNode = AM::pGrid()->iThisNode();
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
@@ -317,7 +317,7 @@ void Step::vPipelineSpawnOps(void)
 {
   ENTRY();
     
-  i8 iThisNode = AM::pGrid()->iThisNode();
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
@@ -340,7 +340,7 @@ void Step::vPipelineSpawnOps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
   
   pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
   

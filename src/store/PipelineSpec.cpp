@@ -629,7 +629,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
     vTokenAccept();
     p_StageSpec->vTopology(PO_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
-    if ( i_Node > AM::pGrid()->nConnectedNodes() )
+    if ( i_Node > AM::pGrid()->nKnownNodes() )
       return false;
     p_StageSpec->vSpecificNode(i_Node);
     return true;
@@ -674,7 +674,7 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
     vTokenAccept();
     p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
-    if (tPtnNo >= AM::nPtnsInGrid())
+    if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
       return false;
     
     p_StageSpec->vSpecificPtnNo(tPtnNo);
@@ -786,24 +786,24 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
   
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nKnownNodes();
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nKnownNodes();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iSends = AM::nPtnsPerTable();
+      iSends = AM::PTNMAP::nPtnsPerNode();
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iSends = AM::nPtnsPerTable();
+      iSends = AM::PTNMAP::nPtnsPerNode();
       break;
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iSends = AM::nPtnsInGrid();
+      iSends = AM::PTNMAP::nPtnsInGrid();
       break;
       
     case PX_ORIGIN_TO_ORIGIN:
@@ -833,24 +833,24 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iIncSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nKnownNodes();
       break;
 
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iIncSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nKnownNodes();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iIncSends = AM::nPtnsPerTable();
+      iIncSends = AM::PTNMAP::nPtnsPerNode();
       break;
 
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iIncSends = AM::nPtnsPerTable();
+      iIncSends = AM::PTNMAP::nPtnsPerNode();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iIncSends = AM::nPtnsInGrid();
+      iIncSends = AM::PTNMAP::nPtnsInGrid();
       break;
 
     case PX_ORIGIN_TO_ORIGIN:

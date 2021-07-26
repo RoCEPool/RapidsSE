@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-
-
 #include "Node_I.hpp"
 #include "Grid.hpp"
 
@@ -21,12 +19,12 @@ __aFooterFunction(Node_I);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 iStipulate)
+#ifdef WITH_NODE_SKIPLIST
+Node_I::Node_I(void)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
-  m_iStipulate = iStipulate;
   m_i_Node = 0;
 
   // newcode
@@ -40,36 +38,43 @@ Node_I::Node_I(i8 iStipulate)
   
   _postcondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 }
-
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 i_Node,i8 iStipulate)
+#else
+Node_I::Node_I(void)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
-  m_iStipulate = iStipulate;
-  m_i_Node = i_Node;
+  m_i_Node = 0;
 
   // newcode
+  //printf("Node_I::Node_I  iStipulate:%lld\n", iStipulate);
   m_itNode = AM::pGrid()->itBeginNodes(); // begin
   m_itEndNode = AM::pGrid()->itEndNodes(); // end
-  
+
   _checkInitialised_(CN_NODE_I);
   
   vFirst();
   
   _postcondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 Node_I::~Node_I(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 }
+/*----------------------------------------------------------------------------*/
+#else
+Node_I::~Node_I(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -78,6 +83,7 @@ Node_I::~Node_I(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as Node*                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 Node_I::operator Node*(void) {
   _precondition_(_MAGIC_, CN_NODE_I, _FOOTER_);
   // newcode
@@ -86,17 +92,24 @@ Node_I::operator Node*(void) {
   }
 
   return nullptr;
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode; */
-
-
 }
+/*----------------------------------------------------------------------------*/
+#else
+Node_I::operator Node*(void) {
+  _precondition_(_MAGIC_, CN_NODE_I, _FOOTER_);
+  // newcode
+  if (m_itNode != AM::pGrid()->itEndNodes()) {
+    return *m_itNode;
+  }
+
+  return nullptr;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as Node*                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 Node* Node_I::operator *(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
@@ -105,16 +118,24 @@ Node* Node_I::operator *(void)
     return *m_itNode;
 
   return nullptr;
-
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode;  */
 }
+/*----------------------------------------------------------------------------*/
+#else
+Node* Node_I::operator *(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+  // newcode
+  if (m_itNode != AM::pGrid()->itEndNodes())
+    return *m_itNode;
+
+  return nullptr;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* first node                                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 void Node_I::vFirst(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
@@ -122,10 +143,21 @@ void Node_I::vFirst(void)
   // newcode
   m_itNode = AM::pGrid()->itBeginNodes(); // begin
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Node_I::vFirst(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+
+  // newcode
+  m_itNode = AM::pGrid()->itBeginNodes(); // begin
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* more?                                                                      */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 bool Node_I::bMore(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
@@ -137,27 +169,27 @@ bool Node_I::bMore(void)
   else {
     return false;
   }
+}
+/*----------------------------------------------------------------------------*/
+#else
+bool Node_I::bMore(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 
-
-  /* oldcode
-  if (m_iStipulate == C_ALL) {
-    if (m_i_Node < AM::nNodes())
-      return true;
-    else
-      return false;
+  // newcode
+  if (m_itNode != m_itEndNode) {
+    return true;
   }
   else {
-    if (m_i_Node < AM::nBootNodes())
-      return true;
-    else
-      return false;
-  } */
-
+    return false;
+  }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* next node                                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 void Node_I::vNext(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
@@ -169,19 +201,43 @@ void Node_I::vNext(void)
 
   ++ m_i_Node;
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Node_I::vNext(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+
+
+  if (m_itNode != m_itEndNode) {
+    ++m_itNode;
+  }
+
+  ++ m_i_Node;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get i_Node cursor                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 i8 Node_I::i_Node(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   return m_i_Node;
 }
+/*----------------------------------------------------------------------------*/
+#else
+i8 Node_I::i_Node(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+  return m_i_Node;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get current pNode                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NODE_SKIPLIST
 Node* Node_I::pNode(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
@@ -191,12 +247,20 @@ Node* Node_I::pNode(void)
     return *m_itNode;
 
   return nullptr;
-
-  /* oldcode
-  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
-  return pNode;
-  */
 }
+/*----------------------------------------------------------------------------*/
+#else
+Node* Node_I::pNode(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+
+  // newcode
+  if (m_itNode != AM::pGrid()->itEndNodes())
+    return *m_itNode;
+
+  return nullptr;
+}
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

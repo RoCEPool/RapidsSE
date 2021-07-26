@@ -132,7 +132,7 @@ extern SizeHeap      gxaSizeHeap[];
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Dic                                      */
+/*                                   DIC                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -167,8 +167,9 @@ Dic* AM::DIC::pRoot(void)
   return gpAttachMap->m_pDicRoot;
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Demon                                    */
+/*                                   DEMON                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -208,8 +209,67 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   pOp0->vAppendLeft(pOperand,nullptr);
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Job                                      */
+/*                                   GRID                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get the node number of nth node                                            */
+/*----------------------------------------------------------------------------*/
+i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
+{
+  i8 iNodeNo = 0;
+  
+  Node* pNode = gpAttachMap->m_pGrid->pGetNthNode(i_Node);
+  
+  if (pNode)
+    iNodeNo = pNode->iNodeNo();
+  
+  return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of known nodes                                                  */
+/*----------------------------------------------------------------------------*/
+i8 AM::GRID::nKnownNodes(void)
+{
+  return gpAttachMap->m_pGrid->nKnownNodes();
+}
+
+/*----------------------------------------------------------------------------*/
+/**
+ * @brief Add new node into the cluster
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] iNodeNo  ID of this node
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+                       Stz* szIPAddr, i8 iPortNo,
+                       Stz* szRegionNm)
+{
+  if (AM::SYSTEM::bStarted()) {
+    Node *pDetectedNode = AM::pGrid()->pFindNode(szNodeNm);
+    
+    // check to make sure we haven't added the detected node yet
+    if (! pDetectedNode) {
+      AM::pGrid()->vAddDetectedNode(iNodeNo, szNodeNm,
+                                    szIPAddr, iPortNo,
+                                    szRegionNm);
+    }
+  }
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   JOB                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +299,7 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                  Lock                                      */
+/*                                  LOCK                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -318,8 +378,9 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
 #endif
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Log                                      */
+/*                                   LOG                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +393,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
   if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
     return;
 
-  if (! AM::bHasStarted())
+  if (! AM::SYSTEM::bStarted())
     return;
 
   Job* pJob = MY::pJob();
@@ -544,8 +605,9 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 //                        C_VARGS_END);
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   LogicUnit                               */
+/*                                LOGICUNIT                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +663,7 @@ LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   OPERAND                                  */
+/*                                 OPERAND                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -620,8 +682,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
   return false;
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   PARCEL                                   */
+/*                               PARCEL                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -634,8 +697,9 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
   pParcel->vRecvContents(pSocket);
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   PROMPT                                   */
+/*                               PROMPT                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -823,9 +887,81 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
   return pInfoSet;
 }
 
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   System                                   */
+/*                                PTNMAP                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes defined on command line                                */
+/*----------------------------------------------------------------------------*/
+i8 AM::PTNMAP::nPtnsInGrid(void)
+{
+  _static_
+  
+  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes defined on command line                                */
+/*----------------------------------------------------------------------------*/
+i8 AM::PTNMAP::nPtnsPerNode(void)
+{
+  return gpAttachMap->m_pPtnMap->nPtnsPerNode();
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                SYSARGS                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of defines nodes as per command line                            */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nDefinedNodes(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions per node as per command line                      */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nPtnsPerNode(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 SYSTEM                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get system started                                                         */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bStarted(void)
+{
+  _static_
+  
+  if (! gpAttachMap)
+    return false;
+
+  return gpAttachMap->m_bStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set system started                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vStarted(bool bStarted)
+{
+  _static_
+
+  gpAttachMap->m_bStarted = bStarted;
+}
 
 /*----------------------------------------------------------------------------*/
 /* elapsed time (in nanoseconds) since boot                                   */
@@ -1072,7 +1208,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
     
-    pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTagSet;
+    pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTags;
     if (pTags) {
       if (pTags->bHasName(szVBtag))
         return true;
@@ -1089,7 +1225,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
     return false;
 
-  pTags = & gpAttachMap->m_xSysArgs.m_oArgTagSet;
+  pTags = & gpAttachMap->m_xSysArgs.m_oArgTags;
   if (pTags) {
     if (pTags->bHasName(szVBtag))
       return true;
@@ -1194,22 +1330,6 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-/*----------------------------------------------------------------------------*/
-/* has the system been fully started?                                         */
-/*----------------------------------------------------------------------------*/
-bool AM::bHasStarted(void)
-{
-  if (! gpAttachMap || ! gpAttachMap->m_pGrid)
-    return false;
-  
-  return gpAttachMap->m_pGrid->bHasStarted();
-}
-
-
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
 Stz*  AM::szVersionString(void) { return const_cast<Stz*>(C_VERSION_STRING); }
 i8    AM::iVersionNumber(void)  { return C_VERSION_NUMBER; }
 
@@ -1219,7 +1339,6 @@ i8    AM::iFormatNumber(void)   { return C_VERSION_NUMBER;  }                   
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
 bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }
-i8   AM::nDegOfPar(void)      { return gpAttachMap->m_xSysArgs.m_nDegOfPar;          }
 bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }
@@ -1233,18 +1352,15 @@ bool AM::bRLUTimer(void)      { return gpAttachMap->m_xSysArgs.m_bRLUTimer;     
 i8   AM::iRegionSize(void)    { return gpAttachMap->m_xSysArgs.m_iRegionSize;        }
 i8   AM::nThreads(void)       { return gpAttachMap->m_xSysArgs.m_nThreads;           }
 
-i8   AM::nPtnsPerTable(void) {
-  return gpAttachMap->m_pPtnMap->nPtnsPerTable();
-}
 
-TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTagSet;       }
+TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTags;       }
 
 bool AM::bDbgTag(Stz* szTagNm) {
   
   if (! AM::bDebugMode())
     return false;
   
-  bool bHasDbgTag = gpAttachMap->m_xSysArgs.m_oArgTagSet.bHasName(szTagNm);
+  bool bHasDbgTag = gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(szTagNm);
   
   return bHasDbgTag;
 }
@@ -1288,9 +1404,6 @@ JobList* AM::pOriginatingJobs(void) {
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
-i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
-i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
-i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
@@ -1307,9 +1420,6 @@ bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;     
 
 i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 
-i8   AM::nPtnsInGrid(void) {
-  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
-}
 Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
 Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
@@ -1321,9 +1431,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
-bool AM::bFirstNode(i8 iNodeNo) { return gpAttachMap->m_pGrid->bFirstNode(iNodeNo);     }
-i8   AM::iGetNodeNo(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNodeNo(i_Node);     }
+i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -1966,8 +2074,8 @@ Stz* AM::szSummary(s256& sSummary)
   Now spNow;
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
-                   AM::nBootNodes(),
-                   AM::nPtnsPerTable(),
+                   AM::GRID::nKnownNodes(),
+                   AM::PTNMAP::nPtnsPerNode(),
                    AM::nThreads(),
                    AM::szBuild(),
                    spNow.sz()
@@ -1985,8 +2093,8 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
-                   AM::nBootNodes(),
-                   AM::nPtnsPerTable(),
+                   AM::GRID::nKnownNodes(),
+                   AM::PTNMAP::nPtnsPerNode(),
                    AM::nThreads()
                    );
   
@@ -3393,8 +3501,8 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
-  if (AM::bHasStarted()) {
-    Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+  if (AM::SYSTEM::bStarted()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(iNode);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -3407,7 +3515,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 /*----------------------------------------------------------------------------*/
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
     if (pThisNode) {
@@ -3423,7 +3531,7 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pGetNode(iNode) : nullptr;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -3438,7 +3546,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::bHasStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -3448,30 +3556,6 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 
   return pThisNode->xGetHeartbeat();
 
-}
-
-/**
- * @brief Add new node into the cluster
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] iNodeNo  ID of this node
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm)
-{
-  if (AM::bHasStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
-    // Check to make sure we don't have this node yet
-    if (!pThisNode) {
-      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort, pszRegionNm);
-    }
-  }
 }
 
 /**
@@ -3486,18 +3570,13 @@ void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszR
  */
 void AM::vRemoveNode(Stz* pszName)
 {
-  if (AM::bHasStarted()) {
+  if (AM::SYSTEM::bStarted()) {
     Node *pThisNode = AM::pGrid()->pFindNode(pszName);
     // Check to make sure we have this node in the cluster/grid.
     if (pThisNode) {
 
       AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
       //delete pThisNode;
-
-      AM::pGrid()->vDecConnectedNodes();
-      AM::pGrid()->vDecDefinedNodes();
-      AM::pGrid()->vDecNodes();
-      //AM::pGrid()->vDecBootNodes();
 
     }
   }

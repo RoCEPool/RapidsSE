@@ -191,8 +191,8 @@ void Step::vInfoSetAddNodeInfo(void)
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
-                                    AM::nPtnsPerTable(),
-                                    (i8)AM::bHasStarted(),
+                                    AM::PTNMAP::nPtnsPerNode(),
+                                    (i8)AM::SYSTEM::bStarted(),
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -430,8 +430,8 @@ void Step::vInfoSetChunkFile(void)
              m_pJob->pLogicUnit_job()->m_iCounter2,
              C_MAX_SEEKOFFSETS,
              
-             AM::nBootNodes(),
-             AM::nPtnsInGrid());
+             AM::GRID::nKnownNodes(),
+             AM::PTNMAP::nPtnsInGrid());
       
       // set the chunk location
       m_pJob->pLogicUnit_job()->m_iCounter0 = i_ChunkLoc + nChunkBytes;

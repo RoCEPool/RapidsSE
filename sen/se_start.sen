@@ -103,11 +103,11 @@
 //  then
 
 
-  grid::started@ not if
+  //system::started@ not if
     grid::setStartNode
-    true grid::started!
+    true system::started!
     "Cluster started" .
-  then
+  //then
 
   // spawn thread demon
   "" false threadDemonPipeline api::spawnDemon not if

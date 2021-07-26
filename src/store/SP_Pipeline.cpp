@@ -62,8 +62,8 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pPipeline
         
         ,pGrid->szGridNm()
-        ,pGrid->nBootNodes()
-        ,AM::nPtnsPerTable()
+        ,pGrid->nKnownNodes()
+        ,AM::PTNMAP::nPtnsPerNode()
         
         ,pPipeline->pPipelineSpec()
         );
