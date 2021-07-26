@@ -1035,7 +1035,7 @@ public:
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);
-  void vOperandNewEndRightMarker(void);
+  void vOperandNewEndCrwRhtMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
@@ -1046,7 +1046,7 @@ public:
   void vOperandNewPulsedMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStartMarker(void);
-  void vOperandNewStartRightMarker(void);
+  void vOperandNewStartCrwRhtMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);

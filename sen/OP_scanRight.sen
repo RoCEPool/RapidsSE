@@ -97,7 +97,7 @@
   PipeIn[].pipeout
 
   // send a newRightMarker (there was no data)
-  Operand[].newStartRightMarker
+  Operand[].newStartCrwRhtMarker
   Operand[].pipeOut
 
   // open partition stream to access the crw buffers
@@ -122,7 +122,7 @@
     false to counter0[]
 
     // send an EndRightMarker (there was no data)
-    Operand[].newEndRightMarker
+    Operand[].newEndCrwRhtMarker
     Operand[].pipeOut
 
   then
@@ -158,7 +158,7 @@
     ptnStream[] ptnStream.close
 
     // send an eachScanEosMarker
-    Operand[].newEndRightMarker
+    Operand[].newEndCrwRhtMarker
     Operand[].pipeout
   then
 

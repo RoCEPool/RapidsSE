@@ -57,11 +57,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ENDRIGHTMARKER ...                                              INIT */
+/* on ZK_ENDCRW_RHTMARKER ...                                              INIT */
 /*----------------------------------------------------------------------------*/
-: loopJoinLO_EndRightMarker \handler
+: loopJoinLO_EndCrwRhtMarker \handler
 
-  0 ZK_ENDRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_ENDCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -160,11 +160,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTRIGHTMARKER ...                                            INIT */
+/* on ZK_STARTCRW_RHTMARKER ...                                          INIT */
 /*----------------------------------------------------------------------------*/
-: loopJoinLO_StartRightMarker \handler
+: loopJoinLO_StartCrwRhtMarker \handler
 
-  0 ZK_STARTRIGHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_STARTCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -183,17 +183,6 @@
 
   EC_NONE locals| eError |
 
-  // if we have not received STARTRIGHTMARKER
-  /*
-  Counter1[] 0 == if
-     //"loopJoinLO_StreamDef got left streamDef" .
-     // move pipein[] to StreamDefLft[]
-     Pipein[]\clear to StreamDefLft[]
-    true
-    exit
-  then
-  */
-
   StreamDefLft[].isNull if
 
       //"loopJoinLO_StreamDef got left streamDef" .
@@ -204,7 +193,7 @@
       exit
   then
 
-  // We have received the STARTRIGHTMARKER
+  // We have received the ZK_STARTCRW_RHTMARKER
   // Hence this the right table stream def
   //"loopJoinLO_StreamDef got right streamDef" .
 
@@ -276,12 +265,12 @@
 
   find: loopJoinLO_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: loopJoinLO_CrwBuffer        ZK_CRWBUFFER        op[].handler!
-  find: loopJoinLO_EndRightMarker   ZK_ENDRIGHTMARKER   op[].handler!
+  find: loopJoinLO_EndCrwRhtMarker   ZK_ENDCRW_RHTMARKER   op[].handler!
   find: loopJoinLO_EosMarker        ZK_EOSMARKER        op[].handler!
   find: loopJoinLO_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: loopJoinLO_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: loopJoinLO_StartMarker      ZK_STARTMARKER      op[].handler!
-  find: loopJoinLO_StartRightMarker ZK_STARTRIGHTMARKER op[].handler!
+  find: loopJoinLO_StartCrwRhtMarker ZK_STARTCRW_RHTMARKER op[].handler!
   find: loopJoinLO_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop
