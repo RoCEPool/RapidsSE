@@ -8,7 +8,7 @@ namespace STORE
   struct NodePtn
   {
     i4  m_iNodeNo;  // node number
-    i4  m_i_Ptn;    // partition of node
+    i4  m_i_Ptn;    // node partition (aka partition of node)
   };
 
   class PtnMap : public Object
@@ -37,7 +37,11 @@ namespace STORE
     static i8   iHashToBucketId(i8 iHash);
     static tPN  tHashToPtnNo(i8 iPtnKeyHash);
     static void vRunningHash(i8* aiPtnKeyHash, i8 iMixIn);
+  
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
+
+    static tPN  tRobinToPtnNo(i8 iRobin);
+    static i8   i_RobinToPtn(i8 iRobin);
 
     void vAdjustMap(i8 nKnownNodes);
     i8   nPtnsInGrid(void);
