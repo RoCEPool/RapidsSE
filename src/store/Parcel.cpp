@@ -470,9 +470,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
-      i8 i_Robin = pSrcOp->iRobin();
-      i_Robin++;
-      pSrcOp->vRobin(i_Robin);
+      i8 i_Robin = pSrcOp->iRobinNext();
       i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
@@ -596,9 +594,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
-      i8 i_Robin = pSrcOp->iRobin();
-      i_Robin++;
-      pSrcOp->vRobin(i_Robin);
+      i8 i_Robin = pSrcOp->iRobinNext();
       
       tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
       
@@ -682,9 +678,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN:
-      i_Robin = pSrcOp->iRobin();
-      i_Robin++;
-      pSrcOp->vRobin(i_Robin);
+      i_Robin = pSrcOp->iRobinNext();
       tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
       break;
       

@@ -132,8 +132,7 @@ namespace STORE
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
-    i8   iRobin(void);
-    void vRobin(i8 iRobin);
+    i8   iRobinNext(void);
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
