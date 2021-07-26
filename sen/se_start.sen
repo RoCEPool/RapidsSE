@@ -28,6 +28,7 @@
   start::defProc_Elasticity
   start::defProc_SteadyState
   start::defProc_UnloadReload
+  start::defProc_ForgetRebalance
   start::defProc_Query
   start::defProc_DynCompiler
   start::defProc_TPCH

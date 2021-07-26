@@ -1440,6 +1440,59 @@
 
 ;
 
+/*----------------------------------------------------------------------------*/
+/* forget/rebalance related procedures                                        */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_forgetRebalance" .verbose
+
+: start::defProc_ForgetRebalance
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // forgetNode
+  
+  STD_PATH
+  "
+  procedure forgetNode
+    parameters $NodeNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // rebalance
+  
+  STD_PATH
+  "
+  procedure rebalance
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
