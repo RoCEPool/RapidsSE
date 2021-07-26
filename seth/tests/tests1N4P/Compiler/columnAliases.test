@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Alias syntax & semantic tests                                              */
+/* Column alias syntax & semantic tests                                       */
 /*----------------------------------------------------------------------------*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -20,7 +20,7 @@ success
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Simple aliases
+//  Simple column aliases
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Columns are named appropriately
@@ -36,7 +36,7 @@ rows:
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Aliases cannot be used below where they are defined in the plan
+// Column aliases cannot be used below where they are defined in the plan
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Aliases cannot be used in a WHERE clause
@@ -45,7 +45,7 @@ failure contains: 'No such column: name'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Aliases can be used above where they are defined in the plan
+// Column aliases can be used above where they are defined in the plan
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- GROUP BY clause
@@ -113,7 +113,7 @@ success
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Aliases can be used in expressions too
+// Column aliases can be used in expressions too
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- An alias can be a subset of an expression
