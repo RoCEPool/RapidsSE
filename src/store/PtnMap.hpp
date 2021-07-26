@@ -41,12 +41,12 @@ namespace STORE
 
     void vAdjustMap(i8 nKnownNodes, i8 nPtnsPerNode);
     void vDumpDataBuffers(void);
-
-    i8 nPtnsInGrid(void);
-    i8 nPtnsPerNode(void);
-    i8 i_WhichNode(tPN tPtnNo);
-    i8 i_WhichStream(tPN tPtnNo);
-    i8 i_WhichTablePtn(tPN tPtnNo);
+    i8   nPtnsInGrid(void);
+    i8   nPtnsPerNode(void);
+    void vSee(void);
+    i8   i_WhichNode(tPN tPtnNo);
+    i8   i_WhichStream(tPN tPtnNo);
+    i8   i_WhichTablePtn(tPN tPtnNo);
 
   private:
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
