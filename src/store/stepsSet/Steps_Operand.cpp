@@ -69,6 +69,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
   vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
+  vAddStep("Operand[].newEndRowRhtMarker"_Stz, &Step::vOperandNewEndRowRhtMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
@@ -81,6 +82,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
+  vAddStep("Operand[].newStartRowRhtMarker"_Stz, &Step::vOperandNewStartRowRhtMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
@@ -526,7 +528,7 @@ void Step::vOperandNewEachScanEosMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEndCrwRhtMarker -- new an end right marker                     */
+/* Operand[].newEndCrwRhtMarker -- new an end crw right marker                */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEndCrwRhtMarker(void)
 {
@@ -534,7 +536,21 @@ void Step::vOperandNewEndCrwRhtMarker(void)
 
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDCRW_RHTMARKER);
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_END_CRWRHTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEndRowRhtMarker -- new an end row right marker                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndRowRhtMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_END_ROWRHTMARKER);
 
   EXIT();
 }
@@ -706,7 +722,21 @@ void Step::vOperandNewStartCrwRhtMarker(void)
 
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTCRW_RHTMARKER);
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_START_CRWRHTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartRowRhtMarker -- new a start crw right marker             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartRowRhtMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_START_ROWRHTMARKER);
 
   EXIT();
 }

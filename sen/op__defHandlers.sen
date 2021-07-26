@@ -29,8 +29,8 @@
 : ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHSCANEOSMARKER_handler \handler STANDARD_PIPEOUT ;
-: ZK_ENDCRW_RHTMARKER_handler  \handler STANDARD_PIPEOUT ;
-: ZK_ENDROW_RHTMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_END_CRWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_END_ROWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_EOSMARKER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
@@ -58,9 +58,9 @@
 : ZK_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
 : ZK_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_STARTCRW_RHTMARKER_handler    \handler STANDARD_PIPEOUT ;
+: ZK_START_CRWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_STARTMARKER_handler      \handler STANDARD_PIPEOUT ;
-: ZK_STARTROW_RHTMARKER_handler    \handler STANDARD_PIPEOUT ;
+: ZK_START_ROWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
 : ZK_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_TABLE_handler            \handler STANDARD_PIPEOUT ;

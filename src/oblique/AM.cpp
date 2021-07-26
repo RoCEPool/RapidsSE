@@ -2415,8 +2415,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
         case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
         case OM_EACHSCANEOSMARKER: eOperand = ZK_EACHSCANEOSMARKER;  break;
-        case OM_ENDCRW_RHTMARKER: eOperand = ZK_ENDCRW_RHTMARKER; break;
-        case OM_ENDROW_RHTMARKER: eOperand = ZK_ENDROW_RHTMARKER; break;
+        case OM_END_CRWRHTMARKER: eOperand = ZK_END_CRWRHTMARKER; break;
+        case OM_END_ROWRHTMARKER: eOperand = ZK_END_ROWRHTMARKER; break;
         case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
         case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
         case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
@@ -2427,9 +2427,9 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_NEXTBUFFERMARKER:   eOperand = ZK_NEXTBUFFERMARKER;  break;
         case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
         case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
-        case OM_STARTCRW_RHTMARKER:   eOperand = ZK_STARTCRW_RHTMARKER;   break;
+        case OM_START_CRWRHTMARKER:   eOperand = ZK_START_CRWRHTMARKER; break;
         case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
-        case OM_STARTROW_RHTMARKER:   eOperand = ZK_STARTROW_RHTMARKER;   break;
+        case OM_START_ROWRHTMARKER:   eOperand = ZK_START_ROWRHTMARKER; break;
         default:
           RASSERT(0);
       }

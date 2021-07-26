@@ -57,11 +57,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ENDCRW_RHTMARKER ...                                              INIT */
+/* on ZK_END_CRWRHTMARKER ...                                              INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoinLO_EndCrwRhtMarker \handler
 
-  0 ZK_ENDCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_END_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -160,11 +160,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTCRW_RHTMARKER ...                                          INIT */
+/* on ZK_START_CRWRHTMARKER ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoinLO_StartCrwRhtMarker \handler
 
-  0 ZK_STARTCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -193,7 +193,7 @@
       exit
   then
 
-  // We have received the ZK_STARTCRW_RHTMARKER
+  // We have received the ZK_START_CRWRHTMARKER
   // Hence this the right table stream def
   //"loopJoinLO_StreamDef got right streamDef" .
 
@@ -265,12 +265,12 @@
 
   find: loopJoinLO_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: loopJoinLO_CrwBuffer        ZK_CRWBUFFER        op[].handler!
-  find: loopJoinLO_EndCrwRhtMarker   ZK_ENDCRW_RHTMARKER   op[].handler!
+  find: loopJoinLO_EndCrwRhtMarker   ZK_END_CRWRHTMARKER   op[].handler!
   find: loopJoinLO_EosMarker        ZK_EOSMARKER        op[].handler!
   find: loopJoinLO_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: loopJoinLO_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: loopJoinLO_StartMarker      ZK_STARTMARKER      op[].handler!
-  find: loopJoinLO_StartCrwRhtMarker ZK_STARTCRW_RHTMARKER op[].handler!
+  find: loopJoinLO_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
   find: loopJoinLO_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop

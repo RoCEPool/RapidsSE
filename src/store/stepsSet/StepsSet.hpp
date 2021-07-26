@@ -1037,6 +1037,7 @@ public:
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);
   void vOperandNewEndCrwRhtMarker(void);
+  void vOperandNewEndRowRhtMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
@@ -1049,6 +1050,7 @@ public:
   void vOperandNewStartedMarker(void);
   void vOperandNewStartMarker(void);
   void vOperandNewStartCrwRhtMarker(void);
+  void vOperandNewStartRowRhtMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);

@@ -56,11 +56,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ENDCRW_RHTMARKER ...                                           INIT */
+/* on ZK_END_CRWRHTMARKER ...                                            INIT */
 /*----------------------------------------------------------------------------*/
 : projectRight_EndCrwRhtMarker \handler
 
-  0 ZK_ENDCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_END_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_EOSMARKER Counter0[] executeAsmArgs
@@ -151,11 +151,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTCRW_RHTMARKER ...                                          INIT */
+/* on ZK_START_CRWRHTMARKER ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : projectRight_StartCrwRhtMarker \handler
 
-  0 ZK_STARTCRW_RHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
@@ -253,12 +253,12 @@
 
   find: projectRight_CancelMarker     ZK_CANCELMARKER     op[].handler!
   find: projectRight_CrwBuffer        ZK_CRWBUFFER        op[].handler!
-  find: projectRight_EndCrwRhtMarker   ZK_ENDCRW_RHTMARKER   op[].handler!
+  find: projectRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
   find: projectRight_EosMarker        ZK_EOSMARKER        op[].handler!
   find: projectRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: projectRight_RowBuffer        ZK_ROWBUFFER        op[].handler!
   find: projectRight_StartMarker      ZK_STARTMARKER      op[].handler!
-  find: projectRight_StartCrwRhtMarker ZK_STARTCRW_RHTMARKER op[].handler!
+  find: projectRight_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
   find: projectRight_StreamDef        ZK_STREAMDEF        op[].handler!
 
   op__loop
