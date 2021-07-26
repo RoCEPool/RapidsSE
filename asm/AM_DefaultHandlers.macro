@@ -24,13 +24,24 @@ macro AM_DEFAULT_HANDLER_DATAPULSE
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_DEFAULT_HANDLER_ENDCRW_RHTMARKER
+macro AM_DEFAULT_HANDLER_END_CRWRHTMARKER
 //----------------------------------------------------------------------------//
-// macro AM_DEFAULT_HANDLER_ENDCRW_RHTMARKER                                  //
+// macro AM_DEFAULT_HANDLER_END_CRWRHTMARKER                                  //
 //----------------------------------------------------------------------------//
-  // HANDLER_ENDCRW_RHTMARKER
-  Label HANDLER_ENDCRW_RHTMARKER
-  EO_PRINTF "**HANDLER_ENDCRW_RHTMARKER**\n"
+  // HANDLER_END_CRWRHTMARKER
+  Label HANDLER_END_CRWRHTMARKER
+  EO_PRINTF "**HANDLER_END_CRWRHTMARKER**\n"
+  EO_POP
+  EO_JMP QUERY_DONE
+endMacro
+
+macro AM_DEFAULT_HANDLER_END_ROWRHTMARKER
+//----------------------------------------------------------------------------//
+// macro AM_DEFAULT_HANDLER_END_ROWRHTMARKER                                  //
+//----------------------------------------------------------------------------//
+  // HANDLER_END_ROWRHTMARKER
+  Label HANDLER_END_ROWRHTMARKER
+  EO_PRINTF "**HANDLER_END_ROWRHTMARKER**\n"
   EO_POP
   EO_JMP QUERY_DONE
 endMacro
