@@ -1405,9 +1405,14 @@ JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
+#ifdef WITH_NODE_SKIPLIST
+
+#else
+
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
 
+#endif
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
 

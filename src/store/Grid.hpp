@@ -7,13 +7,15 @@
 #include <iterator>
 #include "Parcel.hpp"
 
-#include "Node.hpp" //?
+#include "Node.hpp"
+#include "Node_I.hpp"
 
 
 namespace STORE
 {
   class Grid : public Operand
   {
+  friend class STORE::Node_I;
   private:
   
     s32    m_sGridNm;       // name of this grid
@@ -24,11 +26,11 @@ namespace STORE
 
 #ifdef WITH_NODE_SKIPLIST
 
-    std::list<Node*> * m_pNodes_stdList;
-
+    SkipListNL* m_pNodes_skipList; // skip list of jobs (ordered by job id)
 #else
 
     std::list<Node*> * m_pNodes_stdList;
+
 
 #endif
 
@@ -69,8 +71,13 @@ namespace STORE
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);
 
-#ifndef WITH_NODE_SKIPLIST
+#ifdef WITH_NODE_SKIPLIST
 
+  // newcode
+  std::list<Node*>::const_iterator itBeginNodes(void);
+  std::list<Node*>::const_iterator itEndNodes(void);
+
+#else
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);
     std::list<Node*>::const_iterator itEndNodes(void);
