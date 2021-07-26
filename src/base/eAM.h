@@ -16,6 +16,8 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_INDEXJOIN_BEGIN,
   /*    */ AM_CRW_INDEXJOIN_NEXT,
 
+  /*    */ AM_CRW_INDEXJOIN_NEXT_LO,
+
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
   /*    */ AM_CRW_PROJECT_END,
@@ -132,6 +134,8 @@ static Stz* aAM[]
 
     /*    */ "CRW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
+
+    /*    */ "CRW_INDEXJOIN_NEXT_LO"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
