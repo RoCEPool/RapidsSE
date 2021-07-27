@@ -66,15 +66,20 @@
 
   PipeIn[].delete
 
-  // execute the endRightMarker asm handler
-  ZK_END_CRWRHTMARKER Counter0[] executeAsmArgs
-
   // delete the left buffer
   LogicUnit[].IsLftCrwBuffer@ if
+
+    // execute the leftOuter asm handler for crwLft
+    ZK_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
+
     DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
     nullptr DevLftIxt.crwBuffer!
   else
+
+    // execute the leftOuter asm handler for rowLft
+    ZK_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
+
     DevLftRow.rowBuffer@ to Operand[]
     Operand[].isNull not assert
     Operand[].delete
@@ -96,15 +101,20 @@
 
   PipeIn[].delete
 
-  // execute the endRightMarker asm handler
-  ZK_END_ROWRHTMARKER Counter0[] executeAsmArgs
-
   // delete the left buffer
   LogicUnit[].IsLftCrwBuffer@ if
+
+    // execute the leftOuter asm handler for crwLft
+    ZK_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
+
     DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
     nullptr DevLftIxt.crwBuffer!
   else
+
+    // execute the leftOuter asm handler for rowLft
+    ZK_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
+
     DevLftRow.rowBuffer@ to Operand[]
     Operand[].isNull not assert
     Operand[].delete
