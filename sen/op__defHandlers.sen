@@ -39,6 +39,8 @@
 : ZK_GRID_handler             \handler STANDARD_PIPEOUT ;
 : ZK_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : ZK_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
+: ZK_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
+: ZK_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
 : ZK_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : ZK_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : ZK_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;

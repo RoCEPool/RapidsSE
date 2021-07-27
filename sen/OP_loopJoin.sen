@@ -70,8 +70,8 @@
   ZK_END_CRWRHTMARKER Counter0[] executeAsmArgs
 
   // delete the left buffer
-  DevLftIxt.crwBuffer@ to Operand[]
-  Operand[].isNull not if
+  LogicUnit[].IsLftCrwBuffer@ if
+    DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
     nullptr DevLftIxt.crwBuffer!
   else
