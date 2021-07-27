@@ -233,6 +233,12 @@ void Op::vAckPipelineJob(void)
   }
   
   i8 nAcksWereRemaining;
+  
+  SP_Op spOp;
+
+  if (m_bTraceOp && AM::TRACE::bVBlong())
+    spOp.szLeading(this);
+  
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
   
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
@@ -241,7 +247,7 @@ void Op::vAckPipelineJob(void)
       vTraceM("%s "
               "%-18s nAcksWereRemaining=%lld\n"_Stz
              
-              ,spOp.szLeading(this)
+              ,spOp.sz()
              
               ,__func__
               ,nAcksWereRemaining

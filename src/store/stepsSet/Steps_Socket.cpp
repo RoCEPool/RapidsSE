@@ -39,6 +39,8 @@
 #include "Grid.hpp"
 #include <arpa/inet.h>
 #include "TagConstants.h"
+#include "MY.hpp"
+#include "Op.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -361,8 +363,11 @@ void Step::vSocketRecvObject(void)
 
   Object* pReceivedObject = pSocket->pRecvObject();
   
-  if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo())
+  if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo()) {
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
+
+    MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
+  }
   
   pSocket->vReceivedObject(pReceivedObject);
   

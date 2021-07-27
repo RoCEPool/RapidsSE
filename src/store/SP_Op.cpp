@@ -67,17 +67,18 @@ void SP_Op::vLeading(Op* pOp)
   Word* pEventHandler = pOp->pEventHandler();
   
   vCatf("<? pipeline %-12s "
-        "[%lld] %-12s "
-        "[%02lld.%03lld] %-12s "_Stz
+        "[%lld.%02lld.%03lld] "
+        "%-12s/%-12s "_Stz
         
         ,pPipeline  ? pPipeline->szPipelineNm() : C_NO_NAME
         
         ,pStageSpec ? pStageSpec->i_StageSpec() : -1
-        ,pStageSpec ? pStageSpec->szStageNm()   : C_NO_NAME
-        
         ,pStream    ? pStream->i_Stream()       : -1
         ,pOpSpec    ? pOpSpec->iOpSpec()        : -1
+
         ,pOp->szOpNm()
+        ,pStageSpec ? pStageSpec->szStageNm()   : C_NO_NAME
+        
         );
   
   if (pEventHandler) {
