@@ -10257,7 +10257,7 @@ void Task::vAddMunged(Task* )
     "    false to counter0[]\n"
     "\n"
     "    // send an EndRightMarker (there was no data)\n"
-    "    Operand[].newEndRowRhtMarker\n"
+    "    Operand[].newEndCrwRhtMarker\n"
     "    Operand[].pipeOut\n"
     "\n"
     "  then\n"
