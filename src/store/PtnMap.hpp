@@ -36,19 +36,17 @@ namespace STORE
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
-    static tPN  tHashToPtnNo(i8 iPtnKeyHash);
-    static void vRunningHash(i8* aiPtnKeyHash, i8 iMixIn);
   
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
-    static tPN  tRobinToPtnNo(i8 iRobin);
-    static i8   i_RobinToPtn(i8 iRobin);
-
     void vAdjustMap(i8 nKnownNodes);
+    tPN  tHashToDtdPtnNo(i8 iHash);
     i8   nKnownNodes(void);
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
+    tPN  tRobinToDtdPtnNo(i8 iRobin);
+    tPN  tRobinToLclPtnNo(i8 iRobin);
     i8   iWhichNodeNo(tPN tPtnNo);
     i8   i_WhichPtn(tPN tPtnNo);
  

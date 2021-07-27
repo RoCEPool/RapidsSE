@@ -64,28 +64,6 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert running partition-key hash to logical partition number             */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToPtnNo(i8 iPtnKeyHash)
-{
-  _static_
-  
-  i8 tPtnNo = iPtnKeyHash % AM::PTNMAP::nPtnsInGrid();
-
-  return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* update running partition-key hash with given mix in value                  */
-/*----------------------------------------------------------------------------*/
-void PtnMap::vRunningHash(i8* aiPtnKeyHash, i8 iMixIn)
-{
-  _static_
-  
-  * aiPtnKeyHash += HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
 tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
@@ -109,29 +87,6 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
   return tPtnNo;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to logical partition number                      */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToPtnNo(i8 iRobin)
-{
-  _static_
-  
-  tPN tPtnNo = iRobin % AM::PTNMAP::nPtnsInGrid();
-  
-  return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to node partition (aka partition of node)        */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_RobinToPtn(i8 iRobin)
-{
-  _static_
-  
-  i8 i_Ptn = iRobin % AM::PTNMAP::nPtnsPerNode();
-  
-  return i_Ptn;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -149,6 +104,18 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
   RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_PTNSINGRID);
 
   vRepartition();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert hash to distributed partition number                               */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tHashToDtdPtnNo(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
+
+  return tDtdPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,6 +146,43 @@ i8 PtnMap::nPtnsPerNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   return m_nPtnsPerNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to distributed partition number                  */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tRobinToDtdPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  tPN tPtnNo = iRobin % m_nPtnsInGrid;
+  
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  i8 i_Ptn = iRobin % m_nPtnsPerNode;
+
+  tPN tPtnNo = C_UNKNOWN;
+  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iThisNodeNo)
+      continue;
+    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+      continue;
+    break;
+  }
+
+  RASSERT(C_UNKNOWN != tPtnNo);
+
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

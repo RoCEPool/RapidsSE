@@ -239,6 +239,7 @@ namespace OBLIQUE
       static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
                                 Stz* szIPAddr, i8 iPortNo,
                                 Stz* pszRegionNm);
+      static i8   iThisNodeNo(void);
     };
   
     class JOB
@@ -300,9 +301,12 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
-      static i8 nKnownNodes(void);
-      static i8 nPtnsPerNode(void);
-      static i8 nPtnsInGrid(void);
+      static tPN tHashToDtdPtnNo(i8 iHash);
+      static i8  nKnownNodes(void);
+      static i8  nPtnsPerNode(void);
+      static i8  nPtnsInGrid(void);
+      static tPN tRobinToDtdPtnNo(i8 iRobin);
+      static tPN tRobinToLclPtnNo(i8 iRobin);
     };
 
     class SYSARGS

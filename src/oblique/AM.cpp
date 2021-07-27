@@ -267,6 +267,15 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get this node number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 AM::GRID::iThisNodeNo(void)
+{
+  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
+    
+  return iNodeNo;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
@@ -896,6 +905,14 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* convert given hash to distributed partition number                         */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tHashToDtdPtnNo(i8 iHash)
+{
+  return gpAttachMap->m_pPtnMap->tHashToDtdPtnNo(iHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nKnownNodes(void)
@@ -921,6 +938,22 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {
   return gpAttachMap->m_pPtnMap->nPtnsPerNode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to distributed partition number                  */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
+{
+  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnNo(iRobin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
+{
+  return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
 }
 
 
