@@ -300,9 +300,11 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
-      static i8 nKnownNodes(void);
-      static i8 nPtnsPerNode(void);
-      static i8 nPtnsInGrid(void);
+      static i8  nKnownNodes(void);
+      static i8  nPtnsPerNode(void);
+      static i8  nPtnsInGrid(void);
+      static tPN tRobinToDstPtnNo(i8 iRobin);
+      static tPN tRobinToLclPtnNo(i8 iRobin);
     };
 
     class SYSARGS

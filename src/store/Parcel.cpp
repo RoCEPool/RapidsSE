@@ -472,7 +472,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     case XK_ROBIN : {
 #ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
-      tPtnNo = PtnMap::tRobinToPtnNo(i_Robin);
+      tPtnNo = AM::PTNMAP::tRobinToDstPtnNo(i_Robin);
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #else
       i8 i_Robin = pSrcOp->iRobinNext();
@@ -562,10 +562,15 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
+#ifdef WITH_REVISED_PTNMAP
       i8 i_LocalRobin = pSrcOp->iLocalRobinNext();
-
       i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+#else
+      i8 i_LocalRobin = pSrcOp->iLocalRobinNext();
+      i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerNode();
+      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+#endif
       
       // sendNode is this node
       i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
@@ -594,7 +599,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     case XK_ROBIN : {
 #ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
-      tPtnNo = PtnMap::tRobinToPtnNo(i_Robin);
+      tPtnNo = AM::PTNMAP::tRobinToDstPtnNo(i_Robin);
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #else
       i8 i_Robin = pSrcOp->iRobinNext();
@@ -681,7 +686,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
     case XK_ROBIN:
 #ifdef WITH_REVISED_PTNMAP
       i_Robin = pSrcOp->iRobinNext();
-      tDstPtn = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+      tDstPtn = AM::pPtnMap()->iWhichNodeNo(i_Robin);
 #else
       i_Robin = pSrcOp->iRobinNext();
       tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();

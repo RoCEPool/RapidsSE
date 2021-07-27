@@ -109,29 +109,6 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
   return tPtnNo;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to logical partition number                      */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToPtnNo(i8 iRobin)
-{
-  _static_
-  
-  tPN tPtnNo = iRobin % AM::PTNMAP::nPtnsInGrid();
-  
-  return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to node partition (aka partition of node)        */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_RobinToPtn(i8 iRobin)
-{
-  _static_
-  
-  i8 i_Ptn = iRobin % AM::PTNMAP::nPtnsPerNode();
-  
-  return i_Ptn;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -179,6 +156,39 @@ i8 PtnMap::nPtnsPerNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   return m_nPtnsPerNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to logical grid-wide partition number            */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tRobinToDstPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  tPN tPtnNo = iRobin % m_nPtnsInGrid;
+  
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to logical partition number                      */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  //i8 i_Ptn = iLocalRobin % m_nPtnsPerNode;
+
+  tPN tPtnNo = C_UNKNOWN;
+//  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+//    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != 0)
+//      continue;
+//    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+//      continue;
+//    break;
+//  }
+
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

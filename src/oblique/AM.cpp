@@ -923,6 +923,22 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
   return gpAttachMap->m_pPtnMap->nPtnsPerNode();
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to logical distributed partition number          */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tRobinToDstPtnNo(i8 iRobin)
+{
+  return gpAttachMap->m_pPtnMap->tRobinToDstPtnNo(iRobin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to logical local partition number                */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
+{
+  return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
