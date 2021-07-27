@@ -66,6 +66,7 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 /*----------------------------------------------------------------------------*/
 /* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
+#ifndef WITH_REVISED_PTNMAP
 tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
@@ -86,7 +87,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   return tPtnNo;
 }
-
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

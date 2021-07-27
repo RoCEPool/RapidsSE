@@ -37,7 +37,9 @@ namespace STORE
   
     static i8   iHashToBucketId(i8 iHash);
   
+#ifndef WITH_REVISED_PTNMAP
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
+#endif
 
     void vAdjustMap(i8 nKnownNodes);
     tPN  tHashToDtdPtnNo(i8 iHash);
