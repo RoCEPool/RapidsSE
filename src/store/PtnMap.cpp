@@ -64,18 +64,6 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert running partition-key hash to distributed partition number         */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToDtdPtnNo(i8 iPtnKeyHash)
-{
-  _static_
-  
-  i8 tDtdPtnNo = iPtnKeyHash % AM::PTNMAP::nPtnsInGrid();
-
-  return tDtdPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* update running partition-key hash with given mix in value                  */
 /*----------------------------------------------------------------------------*/
 void PtnMap::vRunningHash(i8* aiPtnKeyHash, i8 iMixIn)
@@ -126,6 +114,18 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
   RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_PTNSINGRID);
 
   vRepartition();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert hash to distributed partition number                               */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tHashToDtdPtnNo(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
+
+  return tDtdPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

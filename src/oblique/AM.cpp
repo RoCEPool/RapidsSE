@@ -905,6 +905,14 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* convert given hash to distributed partition number                         */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tHashToDtdPtnNo(i8 iHash)
+{
+  return gpAttachMap->m_pPtnMap->tHashToDtdPtnNo(iHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nKnownNodes(void)
@@ -933,7 +941,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given round robin to logical distributed partition number          */
+/* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
 tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
 {
@@ -941,7 +949,7 @@ tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given round robin to logical local partition number                */
+/* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
 tPN AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
 {

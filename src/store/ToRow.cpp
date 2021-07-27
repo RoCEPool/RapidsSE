@@ -2956,7 +2956,7 @@ L_RecordEndLineEnd:
   // set partition hash
   if (m_bPtnHash) {
         
-    tPtnNo = PtnMap::tHashToDtdPtnNo(iPtnKeyHash);
+    tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
     
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
