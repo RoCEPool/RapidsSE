@@ -13,6 +13,7 @@
 #include "QueryNode.hpp"
 #include "QueryNodeList.hpp"
 #include "ProjectedColumn.hpp"
+#include "DataSource.hpp"
 #include "eEC.h"
 
 namespace Parser
@@ -212,9 +213,9 @@ namespace Parser
     }
 
     static void vThrowAmbiguousColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
-                                      Stz* szColumnName, QueryNodeList* pTableDefList)
+                                      Stz* szColumnName, QueryNodeList* pDataSourceList)
     {
-      ASSERT(pTableDefList->nItems() > 1);
+      ASSERT(pDataSourceList->nItems() > 1);
 
       s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
 
@@ -230,29 +231,29 @@ namespace Parser
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
 
-      QueryNodeIter* pIter = pTableDefList->pNewIter();
+      QueryNodeIter* pIter = pDataSourceList->pNewIter();
       while (pIter->bHasNext()) {
         QueryNode* pNode = pIter->pNext();
 
-        sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
-                           TableDef::szCatalogName(pNode),
-                           TableDef::szSchemaName(pNode),
-                           TableDef::szTableName(pNode),
+        s2K sBuf;
+        DataSource::vPrintName(pNode, sBuf);
+        sErrMsg.vCatSprint("\n  %s.%s"_Stz,
+                           sBuf.szStz(),
                            szColumnName);
       }
 
       delete pIter;
-      pTableDefList->vRemoveAll();
-      delete pTableDefList;   // yes, delete the list we were passed
+      pDataSourceList->vRemoveAll();
+      delete pDataSourceList;   // yes, delete the list we were passed
 
       throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
     }
 
-    static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pTableDefList, QueryNodeList* pProjectedColumnList)
+    static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pDataSourceList, QueryNodeList* pProjectedColumnList)
     {
       ASSERT(szColumnName);
-      ASSERT(pTableDefList);
-      ASSERT(pTableDefList->nItems() >= 1);
+      ASSERT(pDataSourceList);
+      ASSERT(pDataSourceList->nItems() >= 1);
       ASSERT(pProjectedColumnList);
       ASSERT(pProjectedColumnList->nItems() >= 1);
 
@@ -260,20 +261,20 @@ namespace Parser
 
       sErrMsg.vCatSprint(": %s. Could be one of:"_Stz, szColumnName);
 
-      QueryNodeIter* pTableDefIter = pTableDefList->pNewIter();
-      while (pTableDefIter->bHasNext()) {
-        QueryNode* pNode = pTableDefIter->pNext();
+      QueryNodeIter* pDataSourceIter = pDataSourceList->pNewIter();
+      while (pDataSourceIter->bHasNext()) {
+        QueryNode* pNode = pDataSourceIter->pNext();
 
-        sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
-                           TableDef::szCatalogName(pNode),
-                           TableDef::szSchemaName(pNode),
-                           TableDef::szTableName(pNode),
+        s2K sBuf;
+        DataSource::vPrintName(pNode, sBuf);
+        sErrMsg.vCatSprint("\n  %s.%s"_Stz,
+                           sBuf.szStz(),
                            szColumnName);
       }
 
-      delete pTableDefIter;
-      pTableDefList->vRemoveAll();
-      delete pTableDefList;   // yes, delete the list we were passed
+      delete pDataSourceIter;
+      pDataSourceList->vRemoveAll();
+      delete pDataSourceList;   // yes, delete the list we were passed
 
 
       QueryNodeIter* pProjectedColIter = pProjectedColumnList->pNewIter();

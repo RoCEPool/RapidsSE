@@ -29,6 +29,9 @@ EXPLAIN SELECT * FROM nation n;
 --   (*, 'explainPlan',
 -- '' )
 
+EXPLAIN SELECT n.* FROM nation n;
+
+
 EXPLAIN SELECT n_name FROM nation n;
 
 -- Can we fully reference a column name in a SELECT list using a table reference?

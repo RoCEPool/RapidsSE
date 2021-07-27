@@ -986,7 +986,8 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
   Text* pColumnName = pCleanId(pCtx->columnName()->id);
 
-  QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
+  QueryNode* pColumnRef = ColumnRef::pCreate(nullptr,
+                                             pCatalogName, pSchemaName,
                                              pTableName, pColumnName);
 
   m_pExprStack->vPush(pColumnRef);

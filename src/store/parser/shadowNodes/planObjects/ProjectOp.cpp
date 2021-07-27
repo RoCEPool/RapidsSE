@@ -508,22 +508,25 @@ QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
 
     // Need to remove the current column and insert these ones in its place,
     // unless their expressions are already being projected.
-    pIter->vRemove();
-    delete pProjColumn;
-
     QueryNode* pNewCol;
     while ((pNewCol = pPartitionedColList->pPop()) != nullptr) {
 
       // Check if pNewCol is already being projected
       QueryNode* pNewExpr = ProjectedColumn::pExprNode(pNewCol);
-      if (pColumnWithExpr(pNewOp, pNewExpr)) {
-        // This expression is already being projected. No need to project it twice.
+      QueryNode* pMatchingProjCol = pColumnWithExpr(pNewOp, pNewExpr);
+
+      if (pMatchingProjCol && pMatchingProjCol != pProjColumn) {
+        // This expression is already being projected and not the same
+        // as the column we're about to remove. So no need to project it twice.
         delete pNewCol;
         continue;
       }
 
       pIter->vInsertBefore(pNewCol);
     }
+
+    pIter->vRemove();
+    delete pProjColumn;
 
     ASSERT(pPartitionedColList->nItems() == 0);
     delete pPartitionedColList;

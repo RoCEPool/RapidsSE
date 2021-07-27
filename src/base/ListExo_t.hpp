@@ -979,6 +979,7 @@ private:
   b1                       m_bCanRemove; // true if it is safe to call vRemove()
   ListExoNode_t<ITEM>*     m_pNextCursor;
   ListExoNode_t<ITEM>*     m_pPrevCursor;
+  ListExoNode_t<ITEM>*     m_pLastCursor;  // The cursor of the last item returned
 
   // Note: The iterator always points between items, but remembers the last item
   // returned (via m_bFwdDir). This allows for consistent operation with forward
@@ -1089,6 +1090,7 @@ void ListExoIter_t<ITEM>::vBeforeFirst(void)
   m_bCanRemove = false;
   m_pNextCursor = m_pListExot->pHeadNode();
   m_pPrevCursor = nullptr;
+  m_pLastCursor = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1103,6 +1105,7 @@ void ListExoIter_t<ITEM>::vAfterLast(void)
   m_bCanRemove = false;
   m_pNextCursor = nullptr;
   m_pPrevCursor = m_pListExot->pTailNode();
+  m_pLastCursor = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1175,10 +1178,12 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
 
   if (bIsAfterLast()) {
     m_bCanRemove = false;
+    m_pLastCursor = nullptr;
     return nullptr;
   }
 
   ASSERT(m_pNextCursor);
+  m_pLastCursor = m_pNextCursor;
   pItem = m_pNextCursor->pItem();
 
   m_pPrevCursor = m_pNextCursor;
@@ -1203,10 +1208,12 @@ ITEM* ListExoIter_t<ITEM>::pPrev(void)
 
   if (bIsBeforeFirst()) {
     m_bCanRemove = false;
+    m_pLastCursor = nullptr;
     return nullptr;
   }
 
   ASSERT(m_pPrevCursor);
+  m_pLastCursor = m_pPrevCursor;
   pItem = m_pPrevCursor->pItem();
 
   m_pNextCursor = m_pPrevCursor;
@@ -1227,27 +1234,22 @@ template <class ITEM>
 void ListExoIter_t<ITEM>::vRemove(void)
 {
   ASSERT(m_bCanRemove);
+  ASSERT(m_pLastCursor);
   ASSERT((!bIsBeforeFirst() && m_bFwdDir) || (!bIsAfterLast() && !m_bFwdDir));
 
-  if (m_bFwdDir) {
-    // The last item returned was m_pPrevCursor->pItem()
-    ASSERT(m_pPrevCursor);
-    ListExoNode_t<ITEM>* pOldNode = m_pPrevCursor;
-
+  if (m_pPrevCursor == m_pLastCursor) {
     m_pPrevCursor = m_pPrevCursor->pPrevNode();
-    m_pListExot->vRemoveNode(pOldNode);
-
-  } else {
-    // The last item returned was m_pNextCursor->pItem()
-    ASSERT(m_pNextCursor);
-    ListExoNode_t<ITEM>* pOldNode = m_pNextCursor;
-
-    m_pNextCursor = m_pNextCursor->pNextNode();
-    m_pListExot->vRemoveNode(pOldNode);
   }
+
+  if (m_pNextCursor == m_pLastCursor) {
+    m_pNextCursor = m_pNextCursor->pNextNode();
+  }
+
+  m_pListExot->vRemoveNode(m_pLastCursor);
 
   // Can't call vRemove() twice. Need to move the iterator.
   m_bCanRemove = false;
+  m_pLastCursor = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1258,28 +1260,20 @@ void ListExoIter_t<ITEM>::vInsertAfter(ITEM* pItem)
 {
   ASSERT(pItem);
 
-  if (bIsBeforeFirst()) {
-    m_pListExot->vPush(pItem);
-    m_pNextCursor = m_pListExot->pHeadNode();
+  if (m_pLastCursor) {
+    m_pListExot->vInsertAfter(pItem, m_pLastCursor);
 
-  } else if (bIsAfterLast()) {
-    m_pListExot->vAppend(pItem);
-    m_pNextCursor = m_pListExot->pTailNode();
-    m_pPrevCursor = m_pNextCursor->pPrevNode();
+    if (m_pPrevCursor == m_pLastCursor) {
+      m_pNextCursor = m_pPrevCursor->pNextNode();
+    }
+
+    // No need to compare if m_pNextCursor == m_pLastCursor because
+    // if we are inserting after it then we don't need to update m_pNextCursor
 
   } else {
-    if (m_bFwdDir) {
-      // The last item returned was m_pPrevCursor->pItem()
-      ASSERT(m_pPrevCursor);
-      m_pListExot->vInsertAfter(pItem, m_pPrevCursor);
-      m_pNextCursor = m_pPrevCursor->pNextNode();
-
-    } else {
-      // The last item returned was m_pNextCursor->pItem()
-      ASSERT(m_pNextCursor);
-      m_pListExot->vInsertAfter(pItem, m_pNextCursor);
-      // No need to move the iterator cursors
-    }
+    // m_pLastCursor must have already been removed with pIter->vRemove().
+    // Cannot insertAfter() an item that has already been removed.
+    NEVER_REACH
   }
 }
 
@@ -1291,28 +1285,20 @@ void ListExoIter_t<ITEM>::vInsertBefore(ITEM* pItem)
 {
   ASSERT(pItem);
 
-  if (bIsBeforeFirst()) {
-    m_pListExot->vPush(pItem);
-    m_pPrevCursor = m_pListExot->pHeadNode();
-    m_pNextCursor = m_pPrevCursor->pNextNode();
+  if (m_pLastCursor) {
+    m_pListExot->vInsertBefore(pItem, m_pLastCursor);
 
-  } else if (bIsAfterLast()) {
-    m_pListExot->vAppend(pItem);
-    m_pPrevCursor = m_pListExot->pTailNode();
-
-  } else {
-    if (m_bFwdDir) {
-      // The last item returned was m_pPrevCursor->pItem()
-      ASSERT(m_pPrevCursor);
-      m_pListExot->vInsertBefore(pItem, m_pPrevCursor);
-      // No need to move the iterator cursors
-
-    } else {
-      // The last item returned was m_pNextCursor->pItem()
-      ASSERT(m_pNextCursor);
-      m_pListExot->vInsertBefore(pItem, m_pNextCursor);
+    if (m_pNextCursor == m_pLastCursor) {
       m_pPrevCursor = m_pNextCursor->pPrevNode();
     }
+
+    // No need to compare if m_pPrevCursor == m_pLastCursor because
+    // if we are inserting before it then we don't need to update m_pPrevCursor
+
+  } else {
+    // m_pLastCursor must have already been removed with pIter->vRemove().
+    // Cannot insertAfter() an item that has already been removed.
+    NEVER_REACH
   }
 }
 

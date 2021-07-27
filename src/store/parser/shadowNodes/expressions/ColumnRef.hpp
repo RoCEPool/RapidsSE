@@ -17,10 +17,12 @@ namespace Parser
     ColumnRef();
 
   public:
-    static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName,
+    static QueryNode* pCreate(Text* pTableAliasName,
+                              Text* pCatalogName, Text* pSchemaName,
                               Text* pTableName, Text* pColumnName);
 
-    static QueryNode* pCreate(Stz* szCatalogName, Stz* szSchemaName,
+    static QueryNode* pCreate(Stz* szTableAliasName,
+                              Stz* szCatalogName, Stz* szSchemaName,
                               Stz* szTableName,   Stz* szColumnName);
 
     static void  vDescribe(PlanNode* pNode, s2K& sBuf);
@@ -34,12 +36,14 @@ namespace Parser
     // Returns the resulting type of the expression operation
     static eCT   eType(QueryNode* pNode, PlanNode* pRootNode);
 
+    static Stz*  szTableAlias(QueryNode* pColumnRef);
     static Stz*  szCatalog(QueryNode* pColumnRef);
     static Stz*  szSchema(QueryNode* pColumnRef);
     static Stz*  szTable(QueryNode* pColumnRef);
     static Stz*  szColumn(QueryNode* pColumnRef);
     static b1    bIsFullyQualified(QueryNode* pColumnRef);
-    static void  vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchemaName,
+    static void  vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
+                          Stz* szCatalogName, Stz* szSchemaName,
                           Stz* szTableName, Stz* szColumnName);
 
     // Compare two expression trees and return true if they are equal with

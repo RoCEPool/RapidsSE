@@ -18,6 +18,7 @@
 #include "ColumnDef.hpp"
 #include "ProjectedColumn.hpp"
 #include "NodeNamer.hpp"
+#include "TableDef.hpp"
 
 using namespace Parser;
 
@@ -255,6 +256,8 @@ QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
   QueryNodeList* pColumnRefList = new QueryNodeList();
 
+  Stz* szDataSourceAliasName = szAliasName(pNode);
+
   // Iterate the columns in the metadata and add them to the above list
   PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
                                                      szCatalogName(pNode),
@@ -265,7 +268,8 @@ QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
 
     // Create a columnRef expression object from this column definition
-    QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),
+    QueryNode* pColumnRef = ColumnRef::pCreate(szDataSourceAliasName,
+                                               ColumnDef::szCatalogName(pColumnDef),
                                                ColumnDef::szSchemaName(pColumnDef),
                                                ColumnDef::szTableName(pColumnDef),
                                                ColumnDef::szColumnName(pColumnDef));
@@ -280,6 +284,90 @@ QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 
   delete pIter;
   return pColumnRefList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this data source can resolve the given column reference    */
+/*----------------------------------------------------------------------------*/
+b1 TableScanOp::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
+                                  Stz* szCatalogName, Stz* szSchemaName,
+                                  Stz* szTableName, Stz* szColumnName)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // First let's check if the data source's alias matches.
+  // If we have an alias then we can't try to match against the underlying
+  // table name as the alias masks that.
+  Stz* szDataSourceAliasName = szAliasName(pNode);
+
+  if (szDataSourceAliasName) {
+
+    // The columnRef cannot specify a catalog or schema name to use this alias, but its
+    // tableName may match the alias or it may be left unqualified.
+    if (!szCatalogName &&
+        !szSchemaName &&
+        (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) ) {
+
+      // ColumnRef partially or fully matches the alias of this data source. But we
+      // still need to check if the DataSource exposes a column with the same name.
+
+      QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode,
+                                                     TableScanOp::szCatalogName(pNode),
+                                                     TableScanOp::szSchemaName(pNode),
+                                                     TableScanOp::szTableName(pNode));
+      ASSERT(pTableDef);
+
+      // Test if the column belongs to this table definition
+      QueryNode* pColumnDef = TableDef::pColumnDef(pTableDef, szColumnName);
+      return (pColumnDef != nullptr);
+    }
+
+    return false;
+  }
+
+  // No alias in this data source, so we try to match against the cat/sch/table names.
+
+  if ((szCatalogName == nullptr || szCatalogName->bSame(TableScanOp::szCatalogName(pNode))) &&
+      (szSchemaName == nullptr  ||  szSchemaName->bSame(TableScanOp::szSchemaName(pNode))) &&
+      (szTableName == nullptr   ||   szTableName->bSame(TableScanOp::szTableName(pNode))) ) {
+
+    // This column partially or fully matches the name of this table. Get the
+    // table definition of this table from the metadata
+    QueryNode *pTableDef = MetadataNode::pTableDef(pMetadataNode,
+                                                   TableScanOp::szCatalogName(pNode),
+                                                   TableScanOp::szSchemaName(pNode),
+                                                   TableScanOp::szTableName(pNode));
+    ASSERT(pTableDef);
+
+    // Test if the column belongs to this table definition
+    QueryNode *pColumnDef = TableDef::pColumnDef(pTableDef, szColumnName);
+    return (pColumnDef != nullptr);
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Prints into the buffer the identifier for the data source.                 */
+/* If an alias is set then that is used. Otherwise it could be a table name.  */
+/*----------------------------------------------------------------------------*/
+void TableScanOp::vPrintName(QueryNode* pNode, s2K& sBuf)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  Stz* szAlias = szAliasName(pNode);
+
+  if (szAlias) {
+    sBuf.vCopy(szAlias);
+    return;
+  }
+
+  sBuf.vSprint("%s.%s.%s"_Stz,
+               TableScanOp::szCatalogName(pNode),
+               TableScanOp::szSchemaName(pNode),
+               TableScanOp::szTableName(pNode) );
 }
 
 /*============================================================================*/

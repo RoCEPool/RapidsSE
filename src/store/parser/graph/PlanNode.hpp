@@ -396,6 +396,11 @@ namespace Parser
     // Set a string into the value, taking ownership of the Text*
     void vSet(Text *pVal)
     {
+      if (!pVal) {
+        vSetNull(VT_STRING);
+        return;
+      }
+
       vDealloc();
       m_eType = VT_STRING;
       m_bMustFree = true;
@@ -406,6 +411,11 @@ namespace Parser
     // Set a string into the value, copying it.
     void vSet(Stz *szVal)
     {
+      if (!szVal) {
+        vSetNull(VT_STRING);
+        return;
+      }
+
       vDealloc();
       m_eType = VT_STRING;
       m_bMustFree = true;

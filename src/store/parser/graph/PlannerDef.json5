@@ -649,6 +649,11 @@
                   value: "A reference to a column name",
                   properties: [
                     {
+                      name: "tableAlias",
+                      value: "Aliased name of the table that the column belongs to",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
                       name: "catalogName",
                       value: "Name of the catalog that the column belongs to",
                       type: "/__root__/definitions/object/valueObject/stringObject"
