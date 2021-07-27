@@ -195,6 +195,7 @@ namespace STORE
     REG<Tx>             m_xpTx;
 
     bool                m_bCompilerToExit;
+    bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
     i8                  m_iCounter0;   // counter
     i8                  m_iCounter1;   // counter

@@ -59,6 +59,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
+  vAddStep("LogicUnit[].IsLftCrwBuffer@"_Stz,  &Step::vLogicUnitIsLftCrwBufferFetch);
+  vAddStep("LogicUnit[].IsLftCrwBuffer!"_Stz,  &Step::vLogicUnitIsLftCrwBufferStore);
 
   vAddStep("LogicUnit[].logOperand"_Stz,    &Step::vLogicUnitLogOperand);
 
@@ -562,6 +564,34 @@ void Step::vLogicUnitInit(void)
   
   m_pJob->pLogicUnit_job()->vInit();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].IsLftCrwBuffer@ -- is the left buffer a crw buffer ?            */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitIsLftCrwBufferFetch(void)
+{
+  ENTRY();
+
+  bool bIsLftCrwBuffer = m_pJob->pLogicUnit_job()->m_bIsLftCrwBuffer;
+
+  m_pDataStack->vPushInt(bIsLftCrwBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].IsLftCrwBuffer! -- store is left buffer a crw buffer ?         */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitIsLftCrwBufferStore(void)
+{
+  ENTRY();
+
+  i8 iIsLeftCrwBuffer = m_pDataStack->iPopInt(__func__);
+
+  m_pJob->pLogicUnit_job()->m_bIsLftCrwBuffer = iIsLeftCrwBuffer;
+
   EXIT();
 }
 

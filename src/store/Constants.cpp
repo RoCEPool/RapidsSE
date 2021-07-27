@@ -725,6 +725,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_GRID"_Stz,            ZK_GRID);
   /*  0 */ vAddConstant("ZK_INDEX"_Stz,           ZK_INDEX);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
+  /*  0 */ vAddConstant("ZK_LEFTOUTER_CRWLFT"_Stz,  ZK_LEFTOUTER_CRWLFT);
+  /*  0 */ vAddConstant("ZK_LEFTOUTER_ROWLFT"_Stz,  ZK_LEFTOUTER_ROWLFT);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_METAGET"_Stz,         ZK_METAGET);
