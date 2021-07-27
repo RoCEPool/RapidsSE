@@ -7,9 +7,9 @@ success;
 
 //------------------------------------------------------------------------------
 // PARTITIONABLE JOIN (NO LEFT DATA)
-// T.a = J.a
-// PtnKey[T] = c
-// PtnKey[J] = a
+// T1.a = T2.a
+// PtnKey[T1] = c
+// PtnKey[T2] = a
 
 create table T1 (
 	 a       INTEGER,
@@ -200,9 +200,9 @@ success
 
 //------------------------------------------------------------------------------
 // PARTITIONABLE JOIN (NO RIGHT DATA)
-// T.a = J.a
-// PtnKey[T] = c
-// PtnKey[J] = a
+// T1.a = T2.a
+// PtnKey[T1] = c
+// PtnKey[T2] = a
 
 create table T1 (
 	 a       INTEGER,
@@ -384,9 +384,9 @@ success
 
 //------------------------------------------------------------------------------
 // PARTITIONABLE JOIN (NO LEFT AND RIGHT DATA)
-// T.a = J.a
-// PtnKey[T] = c
-// PtnKey[J] = a
+// T1.a = T2.a
+// PtnKey[T1] = c
+// PtnKey[T2] = a
 
 create table T1 (
 	 a       INTEGER,
@@ -570,9 +570,9 @@ success
 
 //------------------------------------------------------------------------------
 // PARTITIONABLE JOIN
-// T.a = J.a
-// PtnKey[T] = c
-// PtnKey[J] = a
+// T1.a = T2.a
+// PtnKey[T1] = c
+// PtnKey[T2] = a
 
 create table T1 (
 	 a       INTEGER,

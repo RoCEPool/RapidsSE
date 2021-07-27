@@ -6,17 +6,17 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-// CO-PARTITIONED JOIN (NO LEFT AND RIGHT DATA)
-// T.a = J.a
-// PtnKey[T] = a
-// PtnKey[J] = a
+// BROADCAST JOIN (NO LEFT AND RIGHT DATA)
+// T1.a = T2.a
+// PtnKey[T] = b
+// PtnKey[J] = c
 
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (b);
 success
 
 create table T2 (
@@ -24,7 +24,7 @@ create table T2 (
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (c);
 success
 
 pipeline loopJoinCo
@@ -188,17 +188,17 @@ drop table T2;
 success
 
 //------------------------------------------------------------------------------
-// CO-PARTITIONED JOIN ( NO LEFT DATA )
-// T.a = J.a
-// PtnKey[T] = a
-// PtnKey[J] = a
+// BROADCAST JOIN ( NO LEFT DATA )
+// T1.a = T2.a
+// PtnKey[T] = b
+// PtnKey[J] = c
 
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (b);
 success
 
 create table T2 (
@@ -206,7 +206,7 @@ create table T2 (
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (c);
 success
 
 load T2 "../DATA/Joins/T2.csv" ;
@@ -372,17 +372,17 @@ drop table T2;
 success
 
 //------------------------------------------------------------------------------
-// CO-PARTITIONED JOIN ( NO RIGHT DATA )
-// T.a = J.a
-// PtnKey[T] = a
-// PtnKey[J] = a
+// BROADCAST JOIN ( NO RIGHT DATA )
+// T1.a = T2.a
+// PtnKey[T] = b
+// PtnKey[J] = c
 
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (b);
 success
 
 create table T2 (
@@ -390,7 +390,7 @@ create table T2 (
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (c);
 success
 
 load T1 "../DATA/Joins/T1.csv" ;
@@ -604,17 +604,17 @@ drop table T2;
 success
 
 //------------------------------------------------------------------------------
-// CO-PARTITIONED JOIN
-// T.a = J.a
-// PtnKey[T] = a
-// PtnKey[J] = a
+// BROADCAST JOIN
+// T1.a = T2.a
+// PtnKey[T] = b
+// PtnKey[J] = c
 
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (b);
 success
 
 load T1 "../DATA/Joins/T1.csv" ;
@@ -625,7 +625,7 @@ create table T2 (
 	 b       INTEGER,
 	 c       INTEGER,
 	 d       VARCHAR(15)
-);
+) partition by (c);
 success
 
 load T2 "../DATA/Joins/T2.csv" ;

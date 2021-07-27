@@ -666,7 +666,35 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
+    case ZK_END_CRWRHTMARKER:
+      // should not have received a ZK_END_ROWRHTMARKER already
+      if (m_iOperandCount[ZK_END_ROWRHTMARKER]) {
+        vTrace("%s: ZK_END_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      // should have received a ~ ZK_START_CRWRHTMARKER already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_START_CRWRHTMARKER] ) {
+        vTrace("%s: ZK_START_CRWRHTMARKER not yet arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
+    case ZK_END_ROWRHTMARKER:
+      // should not have received a ZK_END_CRWRHTMARKER already
+      if (m_iOperandCount[ZK_END_CRWRHTMARKER]) {
+        vTrace("%s: ZK_END_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      // should have received a ~ ZK_START_ROWRHTMARKER already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_START_ROWRHTMARKER] ) {
+        vTrace("%s: ZK_START_ROWRHTMARKER not yet arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
     case ZK_EOSMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
@@ -786,7 +814,21 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-  
+
+    case ZK_START_CRWRHTMARKER:
+      // should not have received a ZK_START_ROWRHTMARKER already
+      if (m_iOperandCount[ZK_START_ROWRHTMARKER]) {
+        vTrace("%s: ZK_START_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      // should not have received a ~ ZK_END_CRWRHTMARKER already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_END_CRWRHTMARKER] + 1 ) {
+        vTrace("%s: ZK_END_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
     case ZK_STARTMARKER:
       // should not have received a ZK_STARTMARKER already
       if (m_iOperandCount[i_OperandKind]) {
@@ -794,7 +836,22 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
+    case ZK_START_ROWRHTMARKER:
+      // should not have received a ZK_START_CRWRHTMARKER already
+      if (m_iOperandCount[ZK_START_CRWRHTMARKER]) {
+        vTrace("%s: ZK_START_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      // should not have received a ~ ZK_START_ROWRHTMARKER already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_END_ROWRHTMARKER] + 1 ) {
+        vTrace("%s: ZK_END_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      break;
+
     case ZK_STARTEDMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
