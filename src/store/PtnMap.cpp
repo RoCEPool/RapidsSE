@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PtnMap.hpp"
+#include "Node.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -24,7 +25,7 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_iPtnVersion  = C_UNKNOWN;
+  m_iMapChange   = C_UNKNOWN;
   m_nPtnsPerNode = nPtnsPerNode;
   
   m_nKnownNodes  = C_UNKNOWN;
@@ -66,7 +67,7 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 /*----------------------------------------------------------------------------*/
 /* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
-#ifndef WITH_REVISED_PTNMAP
+//#ifndef WITH_REVISED_PTNMAP
 tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
@@ -87,7 +88,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   return tPtnNo;
 }
-#endif
+//#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -193,14 +194,18 @@ void PtnMap::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  vTrace("PtnMap (version %lld):\n"_Stz,m_iPtnVersion);
+  vTrace("PtnMap (on node %s ; map change %lld):\n"_Stz
+         ,AM::GRID::pGetThisNode()->szNodeNm()
+         ,m_iMapChange);
   
   for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
-    
-    vTrace("[%lld] (NodeNo %lld, i_Ptn %lld)\n"_Stz
+    i8 iNodeNo = m_xaNodePtn[i_Ptn].m_iNodeNo;
+
+    vTrace("  m_xaNodePtn[tPtnNo %lld] { m_iNodeNo=%lld %s, m_i_Ptn=%lld }\n"_Stz
            
            ,i_Ptn
-           ,m_xaNodePtn[i_Ptn].m_iNodeNo
+           ,iNodeNo
+           ,AM::GRID::pGetNode(iNodeNo)->szNodeNm()
            ,m_xaNodePtn[i_Ptn].m_i_Ptn
            );
   }
@@ -252,7 +257,7 @@ void PtnMap::vRepartition(void)
     m_xaNodePtn[tPtnNo].m_i_Ptn   = (i4)tPtnNo / m_nKnownNodes;
   }
   
-  m_iPtnVersion++;
+  m_iMapChange++;
 }
 
 /*----------------------------------------------------------------------------*/

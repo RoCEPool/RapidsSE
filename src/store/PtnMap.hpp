@@ -16,7 +16,7 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    i8 m_iPtnVersion;
+    i8 m_iMapChange;
     i8 m_nPtnsPerNode;
   
     i8 m_nKnownNodes;
@@ -37,9 +37,9 @@ namespace STORE
   
     static i8   iHashToBucketId(i8 iHash);
   
-#ifndef WITH_REVISED_PTNMAP
+//#ifndef WITH_REVISED_PTNMAP
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
-#endif
+//#endif
 
     void vAdjustMap(i8 nKnownNodes);
     tPN  tHashToDtdPtnNo(i8 iHash);
