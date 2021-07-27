@@ -95,7 +95,7 @@
 
 //#define WITH_LOGIC_UNIT_TASK EndDefine     // code if logic unit is in task
 
-#define WITH_REVISED_PTNMAP EndDefine      // code for revised ptn mapping
+//#define WITH_REVISED_PTNMAP EndDefine      // code for revised ptn mapping
 
 /*============================================================================*/
 /* end                                                                        */

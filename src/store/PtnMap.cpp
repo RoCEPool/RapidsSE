@@ -173,16 +173,7 @@ tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
 
   i8 i_Ptn = iRobin % m_nPtnsPerNode;
 
-  tPN tPtnNo = C_UNKNOWN;
-  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
-    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iThisNodeNo)
-      continue;
-    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
-      continue;
-    break;
-  }
-
-  RASSERT(C_UNKNOWN != tPtnNo);
+  tPN tPtnNo = tToPtnNoOfThisNode(i_Ptn);
 
   return tPtnNo;
 }
@@ -236,6 +227,33 @@ i8 PtnMap::i_WhichPtn(tPN tPtnNo)
    
   return i_Ptn;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tToPtnNoOfThisNode(i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  tPN tPtnNo = C_UNKNOWN;
+  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iThisNodeNo)
+      continue;
+    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+      continue;
+    tPtnNo = i_NodePtn;
+    break;
+  }
+
+  RASSERT(C_UNKNOWN != tPtnNo);
+
+  return tPtnNo;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

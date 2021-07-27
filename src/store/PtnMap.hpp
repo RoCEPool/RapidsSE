@@ -52,6 +52,8 @@ namespace STORE
     i8   iWhichNodeNo(tPN tPtnNo);
     i8   i_WhichPtn(tPN tPtnNo);
  
+    tPN  tToPtnNoOfThisNode(i8 i_Ptn);
+
   private:
     void vRepartition(void);
     void vResetNodePtnArray(void);

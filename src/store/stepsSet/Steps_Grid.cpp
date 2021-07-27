@@ -262,17 +262,17 @@ void Step::vGridShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::TablePtnToPtnNo -- tablePtn to ptnNo                                 */
+/* grid::TablePtnToPtnNo -- get tPtnNo { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn }  */
 /*----------------------------------------------------------------------------*/
 void Step::vGridTablePtnToPtnNo(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  tPN tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+  tPN tPtnNo = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
   
-  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(tPtnNo);
   
   EXIT();
 }

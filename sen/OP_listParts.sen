@@ -21,17 +21,16 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
+  // get a row per partition on this node
   grid::ptnsPerNode 0 do
 
-    // add nodeInfo to the infoSet
     I grid::tablePtnToPtnNo
-    streamSetTable[] streamSet[].addListPartitions  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      I grid::tablePtnToPtnNo
-      streamSetTable[] StreamSet[].addListPartitions assert
-    then
-
+      streamSetTable[] streamSet[].addListPartitions  not if
+        StreamSet[].pipeOut
+        streamSetTable[] streamSet[].new
+        I grid::tablePtnToPtnNo
+        streamSetTable[] StreamSet[].addListPartitions assert
+      then
 
   loop
 
