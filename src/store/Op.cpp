@@ -1291,29 +1291,32 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vTrace("[%s] Pipeout a CrwBuffer (%lld rows) from %s to %s\n"_Stz
+    vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
-           ,pCrwBuffer->nRows()
            ,szOpNm()
+           ,pCrwBuffer->nRows()
+           ,pDstOp->pStage()->szStageNm()
            ,pDstOp->szOpNm()
            );
   }
   else
   if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-    vTrace("[%s] Pipeout a CsvBuffer from %s to %s\n"_Stz
+    vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
+           ,pDstOp->pStage()->szStageNm()
            ,pDstOp->szOpNm()
            );
   }
   else
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace("[%s] Pipeout a RowBuffer (%lld rows) from %s to %s\n"_Stz
+    vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
-           ,pRowBuffer->nRows()
            ,szOpNm()
+           ,pRowBuffer->nRows()
+           ,pDstOp->pStage()->szStageNm()
            ,pDstOp->szOpNm()
            );
   }
@@ -1439,19 +1442,48 @@ Operand* Op::pPopOoOLeft(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOperand) {
-    vDropTaskLock();
-    AM::vOperandsDec();
-    vOpTrace(pOperand
-             ,(Stz*)__func__
-             ,false
-             ,bLeft ? "Left"_Stz : "OoO"_Stz);
-    return pOperand;
-  }
-  else {
+  if (! pOperand) {
     RASSERT(bIsLocked());
     return nullptr;
   }
+  
+  vDropTaskLock();
+  AM::vOperandsDec();
+
+  vOpTrace(pOperand
+           ,(Stz*)__func__
+           ,false
+           ,bLeft ? "Left"_Stz : "OoO"_Stz);
+
+  eCN eClassNo = pOperand->eGetClassNo();
+  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CRWBUF)) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipein  : CrwBuffer (%lld rows)\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,pCrwBuffer->nRows()
+           );
+  }
+  else
+  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CSVBUF)) {
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipein  : CsvBuffer\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           );
+  }
+  else
+  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,pRowBuffer->nRows()
+           );
+  }
+
+  return pOperand;
+
 }
 
 /*----------------------------------------------------------------------------*/
