@@ -48,6 +48,10 @@ EXPLAIN SELECT n.n_name FROM nation n ORDER BY n.n_nationkey;
 EXPLAIN SELECT nation.n_name FROM nation n;
 failure contains: 'No such table nation'
 
+-- Cannot use the original table name in a column wildcard.
+EXPLAIN SELECT nation.* FROM nation n;
+failure contains: 'No such table nation'
+
 -- Cannot use the original table name in a WHERE clause
 EXPLAIN SELECT n_name FROM nation n WHERE nation.n_nationkey > 0;
 failure contains: 'No such table nation'
