@@ -105,7 +105,7 @@
   op__topology
 
   find: toHshCrw_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toHshCrw_DataMarker ZK_DATAPULSE op[].handler!
+  find: toHshCrw_DataMarker  ZK_DATAPULSE   op[].handler!
   find: toHshCrw_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!
   find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!

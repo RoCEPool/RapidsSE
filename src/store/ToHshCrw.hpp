@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "HashSet.hpp"
+
 namespace STORE
 {
   class ToHshCrw : public Object

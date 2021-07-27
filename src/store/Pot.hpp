@@ -11,7 +11,6 @@ namespace STORE
   
     RowPix* m_pRowPix;    // condensed stream def
 
-    //HashSet    m_oHashSet; // using this as an interim step
     DataBuffer*  m_paBufferChain[C_MAX_PTNSINGRID];
 
     // must be last

@@ -112,18 +112,22 @@ static Stz* C_TAG_UBOUND_TYPE     = "<uboundType>"_Stz;
 static Stz* C_TAG_LBOUND_LITERAL = "<lboundLiteral>"_Stz;
 static Stz* C_TAG_UBOUND_LITERAL = "<uboundLiteral>"_Stz;
 
-static Stz* C_VB_API           = "<vb_api>"_Stz;
-static Stz* C_VB_BOOT          = "<vb_boot>"_Stz;
-static Stz* C_VB_LOGICCOMPILER = "<vb_logicCompiler>"_Stz;
-static Stz* C_VB_OP            = "<vb_op>"_Stz;
-static Stz* C_VB_NODE          = "<vb_node>"_Stz;
-static Stz* C_VB_PIPELINE      = "<vb_pipeline>"_Stz;
-static Stz* C_VB_PIPELINESPEC  = "<vb_pipelineSpec>"_Stz;
-static Stz* C_VB_PROCEDURE     = "<vb_procedure>"_Stz;
-static Stz* C_VB_SEN           = "<vb_sen>"_Stz;
-static Stz* C_VB_SOCKET        = "<vb_socket>"_Stz;
-static Stz* C_VB_THREAD        = "<vb_thread>"_Stz;
-static Stz* C_VB_WORD          = "<vb_word>"_Stz;
+static Stz* C_VB_API             = "<vb_api>"_Stz;
+static Stz* C_VB_BOOT            = "<vb_boot>"_Stz;
+static Stz* C_VB_LOGICCOMPILER   = "<vb_logicCompiler>"_Stz;
+static Stz* C_VB_OP              = "<vb_op>"_Stz;
+static Stz* C_VB_NODE            = "<vb_node>"_Stz;
+static Stz* C_VB_PIPELINE        = "<vb_pipeline>"_Stz;
+static Stz* C_VB_PIPELINESPEC    = "<vb_pipelineSpec>"_Stz;
+static Stz* C_VB_PIPEOUT_CRWBUF  = "<vb_pipeout_crwbuf>"_Stz;
+static Stz* C_VB_PIPEOUT_CSVBUF  = "<vb_pipeout_csvbuf>"_Stz;
+static Stz* C_VB_PIPEOUT_ROWBUF  = "<vb_pipeout_rowbuf>"_Stz;
+static Stz* C_VB_PROCEDURE       = "<vb_procedure>"_Stz;
+static Stz* C_VB_SEN             = "<vb_sen>"_Stz;
+static Stz* C_VB_SEND_CRWBUF     = "<vb_send_crwbuf>"_Stz;
+static Stz* C_VB_SOCKET          = "<vb_socket>"_Stz;
+static Stz* C_VB_THREAD          = "<vb_thread>"_Stz;
+static Stz* C_VB_WORD            = "<vb_word>"_Stz;
 
 /*============================================================================*/
 /* end                                                                        */

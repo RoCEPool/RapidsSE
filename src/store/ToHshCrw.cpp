@@ -115,7 +115,8 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
 
-  return pCrwBuffer;}
+  return pCrwBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

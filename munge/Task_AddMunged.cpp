@@ -18811,7 +18811,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  find: toHshCrw_EosMarker   ZK_EOSMARKER   op[].handler!\n"
-    "  find: toHshCrw_DataMarker ZK_DATAPULSE op[].handler!\n"
+    "  find: toHshCrw_DataMarker  ZK_DATAPULSE   op[].handler!\n"
     "  find: toHshCrw_RowBuffer   ZK_ROWBUFFER   op[].handler!\n"
     "  find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!\n"
     "  find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!\n"

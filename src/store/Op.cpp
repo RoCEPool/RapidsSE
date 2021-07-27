@@ -26,6 +26,10 @@
 #include "SP_Margin.hpp"
 #include "SP_Op.hpp"
 
+#include "CrwBuffer.hpp"
+#include "CsvBuffer.hpp"
+#include "RowBuffer.hpp"
+
 Atomic gixOp;
 
 /*----------------------------------------------------------------------------*/
@@ -1279,16 +1283,45 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Stage* pStage = m_pPipeline->pGet(iNextStage());
+  Stage* pDstStage = m_pPipeline->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(eCrossTopo(),
-                               tPtnNo(),
-                               iNextOp());
-  if (bAppendRight())
-    pOp->vAppendRight(pOperand,pTriggeringTask);
+  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnNo(),iNextOp());
+  
+  eCN eClassNo = pOperand->eGetClassNo();
+  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    vTrace("[%s] Pipeout a CrwBuffer (%lld rows) from %s to %s\n"_Stz
+           ,pStage()->szStageNm()
+           ,pCrwBuffer->nRows()
+           ,szOpNm()
+           ,pDstOp->szOpNm()
+           );
+  }
   else
-    pOp->vAppendLeft(pOperand,pTriggeringTask);
+  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    vTrace("[%s] Pipeout a CsvBuffer from %s to %s\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,pDstOp->szOpNm()
+           );
+  }
+  else
+  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    vTrace("[%s] Pipeout a RowBuffer (%lld rows) from %s to %s\n"_Stz
+           ,pStage()->szStageNm()
+           ,pRowBuffer->nRows()
+           ,szOpNm()
+           ,pDstOp->szOpNm()
+           );
+  }
+
+  if (bAppendRight())
+    pDstOp->vAppendRight(pOperand,pTriggeringTask);
+  else
+    pDstOp->vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,6 +19,10 @@
 #include "Socket.hpp"
 #include "Node_I.hpp"
 
+#include "TagConstants.h"
+
+#include "CrwBuffer.hpp"
+
 extern SizeHeap      gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -361,9 +365,10 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   // send all the objects within the parcel instance
   for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
     pObject = pParcel->pGetObject(i_Object);
-    nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
+    eCN eClassNo = pObject->eGetClassNo();
+    nObjectSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
-    if (pObject->eGetClassNo() == CN_IDXVEC) {
+    if (CN_IDXVEC == eClassNo) {
       i8 iSize1 = gxaSizeHeap[CN_INDEX].m_nClassSize;
       i8 iSize2 = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
       vTrace("vSendOverSocket SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz,iSize2, iSize1);
@@ -371,6 +376,14 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
       //nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize + (gxaSizeHeap[CN_INDEX].m_nClassSize * 2);
     }
 
+    if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_SEND_CRWBUF)) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
+      vTrace("Sending a CrwBuffer (%lld rows) to node %s tPtnNo %lld\n"_Stz
+             ,pCrwBuffer->nRows()
+             ,pDstNode->szNodeNm()
+             ,pCrwBuffer->tPtnNo()
+             );
+    }
 
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
     //vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);

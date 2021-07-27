@@ -5,8 +5,6 @@
 
 #include "RowSingle.hpp"
 
-#include "HashSet.hpp"
-
 #include "CrwToRow.hpp"
 #include "ToHshCrw.hpp"
 #include "ToNstRow.hpp"
