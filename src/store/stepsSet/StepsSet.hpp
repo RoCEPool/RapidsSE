@@ -401,7 +401,7 @@ public:
   void vGridPutGridParts(void);
   void vGridSeeNodes(void);
   void vGridShow(void);
-  void vGridTablePtns(void);
+  void vGridPtnsPerNode(void);
   void vGridTablePtnToPtnNo(void);
   void vGridThisNodeFetch(void);
   void vGridThisNodeNameFetch(void);
