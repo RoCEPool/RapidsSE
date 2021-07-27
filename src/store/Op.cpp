@@ -856,23 +856,13 @@ void Op::vJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get local robin                                                            */
+/* generate next local round robin                                            */
 /*----------------------------------------------------------------------------*/
-i8 Op::iLocalRobin(void)
+i8 Op::iLocalRobinNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iLocalRobin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set local robin                                                            */
-/*----------------------------------------------------------------------------*/
-void Op::vLocalRobin(i8 iLocalRobin)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_iLocalRobin = iLocalRobin;
+  return m_iLocalRobin++;
 }
 
 /*----------------------------------------------------------------------------*/

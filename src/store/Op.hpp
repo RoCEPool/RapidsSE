@@ -92,8 +92,7 @@ namespace STORE
     bool bIsOperandValid(i8 i_OperandKind);
     Job* pJob(void);
     void vJob(Job* pJob);
-    i8   iLocalRobin(void);
-    void vLocalRobin(i8 iLocalRobin);
+    i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);

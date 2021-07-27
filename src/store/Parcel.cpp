@@ -562,9 +562,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
-      i8 i_LocalRobin = pSrcOp->iLocalRobin();
-      i_LocalRobin++;
-      pSrcOp->vLocalRobin(i_LocalRobin);
+      i8 i_LocalRobin = pSrcOp->iLocalRobinNext();
 
       i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerNode();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
