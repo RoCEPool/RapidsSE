@@ -122,7 +122,7 @@
     false to counter0[]
 
     // send an EndRightMarker (there was no data)
-    Operand[].newEndCrwRhtMarker
+    Operand[].newEndRowRhtMarker
     Operand[].pipeOut
 
   then

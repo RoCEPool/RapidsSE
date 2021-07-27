@@ -46,7 +46,7 @@
     Operand[] DevRhtIxt.crwBuffer!
     ZK_CRWBUFFER Counter0[] executeAsmArgs
 
-    // delete the right rowbuffer
+    // delete the right crwbuffer
     Operand[].delete
     nullptr DevRhtIxt.crwBuffer!
   then
