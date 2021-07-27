@@ -39,10 +39,10 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGrid);
   vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
   vAddStep("grid::knownNodes"_Stz,        &Step::vGridKnownNodes);
+  vAddStep("grid::ptnsPerNode"_Stz,       &Step::vGridPtnsPerNode);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
-  vAddStep("grid::tablePtns"_Stz,         &Step::vGridTablePtns);
   vAddStep("grid::tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
@@ -158,6 +158,18 @@ void Step::vGridKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grid::ptnsPerNode -- get number of partitions per node                     */
+/*----------------------------------------------------------------------------*/
+void Step::vGridPtnsPerNode(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grid::putParts -- put grid parts                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vGridPutGridParts(void)
@@ -246,18 +258,6 @@ void Step::vGridShow(void)
   
   vTrace("\n"_Stz);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::tablePtns -- get number of partitions per table in the grid          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridTablePtns(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
-  
   EXIT();
 }
 

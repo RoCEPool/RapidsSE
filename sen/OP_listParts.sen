@@ -21,7 +21,7 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-  grid::tablePtns 0 do
+  grid::ptnsPerNode 0 do
 
     // add nodeInfo to the infoSet
     I grid::tablePtnToPtnNo
