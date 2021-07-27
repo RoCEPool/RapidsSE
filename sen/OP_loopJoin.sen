@@ -41,6 +41,7 @@
 
   Counter1[] 0 == if
     PipeIn[]\clear DevLftIxt.crwBuffer!
+    true LogicUnit[].IsLftCrwBuffer!
   else
     Operand[].pipein
     Operand[] DevRhtIxt.crwBuffer!
@@ -99,8 +100,8 @@
   ZK_END_ROWRHTMARKER Counter0[] executeAsmArgs
 
   // delete the left buffer
-  DevLftIxt.crwBuffer@ to Operand[]
-  Operand[].isNull not if
+  LogicUnit[].IsLftCrwBuffer@ if
+    DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
     nullptr DevLftIxt.crwBuffer!
   else
@@ -160,7 +161,8 @@
 
   Counter1[] 0 == if
     Operand[].pipeIn
-    Operand[] DevLftRow.rowBuffer!
+    Operand[]\clear DevLftRow.rowBuffer!
+    false LogicUnit[].IsLftCrwBuffer!
   else
     Operand[].pipeIn
     Operand[] DevRhtRow.rowBuffer!
@@ -233,12 +235,12 @@
 
   StreamDefLft[].isNull if
 
-      //"loopJoin_StreamDef got left streamDef" .
-      // move pipein[] to StreamDefLft[]
-      Pipein[]\clear to StreamDefLft[]
+    //"loopJoin_StreamDef got left streamDef" .
+    // move pipein[] to StreamDefLft[]
+    Pipein[]\clear to StreamDefLft[]
 
-      true
-      exit
+    true
+    exit
   then
 
   // We have received the ZK_START_CRWRHTMARKER

@@ -139,6 +139,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xpNow = new Now;
 
   m_bCompilerToExit = false;
+  m_bIsLftCrwBuffer = false;
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;

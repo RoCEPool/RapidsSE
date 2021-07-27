@@ -902,6 +902,8 @@ public:
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
+  void vLogicUnitIsLftCrwBufferFetch(void);
+  void vLogicUnitIsLftCrwBufferStore(void);
   void vLogicUnitLogOperand(void);
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
