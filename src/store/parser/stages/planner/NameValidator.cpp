@@ -188,6 +188,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
       }
     }
 
+    // Table is not in the plan's metadata.
     // Look up table in SE API
     STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
@@ -303,71 +304,68 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    b1 bRetry = true;
 
-    while (bRetry) {
-      bRetry = false;
-      PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
-      while (pIter->bHasNext()) {
-        QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+    while (pIter->bHasNext()) {
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
 
-        // Get the expr out of the ProjectedColumn
-        QueryNode *pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+      // Get the expr out of the ProjectedColumn
+      QueryNode *pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
-        if (!ColumnWildcard::bIsOfType(pExpr)) {
-          continue;
-        }
-
-        // We've got a columnWildcard. We need to remove this projectedColumn
-        // from the projectedColumns list and replace it with new projectedColumn
-        // instances that have columnRefs from the resolved tables.
-
-        // First get any catalog/schema/table scopes that may limit the wildcard
-        Stz* szCatalogName = ColumnWildcard::szCatalog(_pQueryNode(pExpr));
-        Stz* szSchemaName  = ColumnWildcard::szSchema(_pQueryNode(pExpr));
-        Stz* szTableName   = ColumnWildcard::szTable(_pQueryNode(pExpr));
-
-        // Now generate a list of ProjectedColumn instances, but importantly we can only
-        // use tableRefs that we find underneath this part of the graph, as there can be
-        // other tableRefs that are not visible to this part of the query.
-        QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
-                                                                     pRootNode,
-                                                                     szCatalogName,
-                                                                     szSchemaName,
-                                                                     szTableName);
-
-        // Ensure that the returned list is a list of ProjectedColumn instances
-#ifdef WITH_ASSERT_MACRO
-        QueryNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
-        while (pResolvedIter->bHasNext()) {
-          PlanNode* pResolvedNode = pResolvedIter->pNext();
-          ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
-        }
-        delete pResolvedIter;
-#endif
-
-        if (pResolvedWildcardList->nItems() == 0) {
-          delete pResolvedWildcardList;
-          NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
-        }
-
-        // Now replace the ProjectedColumn that contains the columnWildcard with
-        // each of the resolved ProjectedColumn instances that contain columnRefs.
-        GraphEditor::vReplaceChild(pProjectedColumns, pProjectedColumn, pResolvedWildcardList);
-
-        ASSERT(pResolvedWildcardList->nItems() == 0);
-        delete pResolvedWildcardList;
-
-        // We can't modify the projectedColumns list and keep iterating it.
-        // And there may be more columnWildcards. So we need to start again
-        // and reiterate it from the beginning with a new iterator.
-        bRetry = true;
-        break;
+      if (!ColumnWildcard::bIsOfType(pExpr)) {
+        continue;
       }
 
-      delete pIter;
-    } // while (bRetry)
+      // We've got a columnWildcard. We need to remove this projectedColumn
+      // from the projectedColumns list and replace it with new projectedColumn
+      // instances that have columnRefs from the resolved tables.
+
+      // First get any catalog/schema/table scopes that may limit the wildcard
+      Stz* szCatalogName = ColumnWildcard::szCatalog(_pQueryNode(pExpr));
+      Stz* szSchemaName  = ColumnWildcard::szSchema(_pQueryNode(pExpr));
+      Stz* szTableName   = ColumnWildcard::szTable(_pQueryNode(pExpr));
+
+      // Now generate a list of ProjectedColumn instances, but importantly we can only
+      // use tableRefs that we find underneath this part of the graph, as there can be
+      // other tableRefs that are not visible to this part of the query.
+      QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
+                                                                   pRootNode,
+                                                                   szCatalogName,
+                                                                   szSchemaName,
+                                                                   szTableName);
+
+      // Ensure that the returned list is a list of ProjectedColumn instances
+#ifdef WITH_ASSERT_MACRO
+      QueryNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
+      while (pResolvedIter->bHasNext()) {
+        PlanNode* pResolvedNode = pResolvedIter->pNext();
+        ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
+      }
+      delete pResolvedIter;
+#endif
+
+      if (pResolvedWildcardList->nItems() == 0) {
+        delete pResolvedWildcardList;
+        delete pIter;
+        NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
+      }
+
+      // Now replace the ProjectedColumn that contains the columnWildcard with
+      // each of the resolved ProjectedColumn instances that contain columnRefs.
+      pIter->vRemove();
+      delete pProjectedColumn;
+
+      QueryNode* pResolvedCol;
+      while ((pResolvedCol = pResolvedWildcardList->pPop()) != nullptr) {
+        pIter->vInsertAfter(pResolvedCol);
+      }
+
+      ASSERT(pResolvedWildcardList->nItems() == 0);
+      delete pResolvedWildcardList;
+    }
+
+    delete pIter;
 
     return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ProjectOps
   };
