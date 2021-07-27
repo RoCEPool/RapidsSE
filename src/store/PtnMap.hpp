@@ -36,7 +36,6 @@ namespace STORE
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
-    static void vRunningHash(i8* aiPtnKeyHash, i8 iMixIn);
   
     static tPN  tStreamToLglPtnNo(i8 i_Stream);
 

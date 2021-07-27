@@ -586,7 +586,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    PtnMap::vRunningHash(&iPtnKeyHash,_colVal);
+    HshLib::vRunningHash(&iPtnKeyHash,_colVal);
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -596,7 +596,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+    HshLib::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
 
 /*----------------------------------------------------------------------------*/

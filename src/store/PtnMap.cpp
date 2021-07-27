@@ -64,16 +64,6 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* update running partition-key hash with given mix in value                  */
-/*----------------------------------------------------------------------------*/
-void PtnMap::vRunningHash(i8* aiPtnKeyHash, i8 iMixIn)
-{
-  _static_
-  
-  * aiPtnKeyHash += HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
 tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)

@@ -168,7 +168,7 @@ void vLib_PTN_RUNNING(void* pLU, i8 iTopA)
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
-  PtnMap::vRunningHash(&aRluCommon->m_iHash,iTopA);
+  HshLib::vRunningHash(&aRluCommon->m_iHash,iTopA);
 }
 
 /*----------------------------------------------------------------------------*/
