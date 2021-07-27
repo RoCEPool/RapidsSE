@@ -64,15 +64,15 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert running partition-key hash to logical partition number             */
+/* convert running partition-key hash to distributed partition number         */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToPtnNo(i8 iPtnKeyHash)
+tPN PtnMap::tHashToDtdPtnNo(i8 iPtnKeyHash)
 {
   _static_
   
-  i8 tPtnNo = iPtnKeyHash % AM::PTNMAP::nPtnsInGrid();
+  i8 tDtdPtnNo = iPtnKeyHash % AM::PTNMAP::nPtnsInGrid();
 
-  return tPtnNo;
+  return tDtdPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
