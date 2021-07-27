@@ -682,15 +682,16 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN:
+    case XK_ROBIN: {
 #ifdef WITH_REVISED_PTNMAP
       i_Robin = pSrcOp->iRobinNext();
-      tDstPtn = AM::pPtnMap()->iWhichNodeNo(i_Robin);
+      tDstPtn = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
 #else
       i_Robin = pSrcOp->iRobinNext();
       tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
 #endif
       break;
+    }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
