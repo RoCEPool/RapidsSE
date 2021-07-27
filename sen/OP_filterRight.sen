@@ -39,7 +39,7 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // ignore streamDef if not received startRightMarker
+  // pipeout crwbuffer if not received startRightMarker
   Counter1[] 0 == if
      Pipein[].pipeout
     true
@@ -47,7 +47,7 @@
   then
 
   Operand[].pipeIn
-  Operand[] DevLftIxt.crwBuffer!
+  Operand[]\clear DevLftIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
@@ -71,7 +71,11 @@
   // record receipt of end right marker
   0 to Counter1[]
 
-  PipeIn[].pipeout
+  PipeIn[].delete
+
+  // pipeout an EndRowRhtMarker
+  Operand[].newEndRowRhtMarker
+  Operand[].pipeout
 
   true
 ;
@@ -145,7 +149,7 @@
   then
 
   Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
+  Operand[]\clear DevLftRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete
@@ -178,7 +182,11 @@
 
   0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
-  PipeIn[].pipeout
+  PipeIn[].delete
+
+  // pipeout a StartRowRhtMarker
+  Operand[].newStartRowRhtMarker
+  Operand[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]

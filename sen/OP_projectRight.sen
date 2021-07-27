@@ -50,6 +50,8 @@
   Operand[] DevLftIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
+  Operand[].delete
+
   PotRlu[].pipeoutCompletedPtns
 
   true
@@ -71,7 +73,11 @@
   // record receipt of end right marker
   0 to Counter1[]
 
-  PipeIn[].pipeout
+  PipeIn[].delete
+
+  // pipeout an EndRowRhtMarker
+  Operand[].newEndRowRhtMarker
+  Operand[].pipeout
 
   true
 ;
@@ -178,7 +184,11 @@
 
   0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
 
-  PipeIn[].pipeout
+  PipeIn[].delete
+
+  // pipeout a StartRowRhtMarker
+  Operand[].newStartRowRhtMarker
+  Operand[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]
