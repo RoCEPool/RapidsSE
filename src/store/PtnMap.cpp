@@ -159,9 +159,9 @@ i8 PtnMap::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given round robin to logical grid-wide partition number            */
+/* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToDstPtnNo(i8 iRobin)
+tPN PtnMap::tRobinToDtdPtnNo(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -171,22 +171,26 @@ tPN PtnMap::tRobinToDstPtnNo(i8 iRobin)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given round robin to logical partition number                      */
+/* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
 tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  //i8 i_Ptn = iLocalRobin % m_nPtnsPerNode;
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  i8 i_Ptn = iRobin % m_nPtnsPerNode;
 
   tPN tPtnNo = C_UNKNOWN;
-//  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
-//    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != 0)
-//      continue;
-//    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
-//      continue;
-//    break;
-//  }
+  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iThisNodeNo)
+      continue;
+    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+      continue;
+    break;
+  }
+
+  RASSERT(C_UNKNOWN != tPtnNo);
 
   return tPtnNo;
 }

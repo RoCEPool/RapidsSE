@@ -48,7 +48,7 @@ namespace STORE
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
-    tPN  tRobinToDstPtnNo(i8 iRobin);
+    tPN  tRobinToDtdPtnNo(i8 iRobin);
     tPN  tRobinToLclPtnNo(i8 iRobin);
     i8   iWhichNodeNo(tPN tPtnNo);
     i8   i_WhichPtn(tPN tPtnNo);

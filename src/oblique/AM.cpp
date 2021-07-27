@@ -267,6 +267,15 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get this node number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 AM::GRID::iThisNodeNo(void)
+{
+  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
+    
+  return iNodeNo;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
@@ -926,9 +935,9 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to logical distributed partition number          */
 /*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tRobinToDstPtnNo(i8 iRobin)
+tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToDstPtnNo(iRobin);
+  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnNo(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
