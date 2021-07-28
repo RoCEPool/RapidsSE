@@ -51,20 +51,18 @@ namespace STORE
     void vAddObject(Object* pObject);
     bool bAppendRight(void);
     Object* pGetObject(i8 i_Object);
-    i8 nObjects(void);
-    void vReset(void);
     Operand* pGetOperand(void);
-    void vRecvContents(Socket* pSocket);
-    void vSendOut(Op* pSrcOp);
-    void vSetObject(i8 i_Object, Object* pObject);
-
-    bool bIsOriginal(void);
-    void vSetOriginState(bool bState);
-
     void vLabel(i8       iPipelineJobId,
                 i8       iDstNode,
                 tPN      tPtnNo,
                 ePX      eCrossTopo);
+    i8 nObjects(void);
+    bool bOriginalParcel(void);
+    void vOriginalParcel(bool bOriginalParcel);
+    void vReset(void);
+    void vRecvContents(Socket* pSocket);
+    void vSendOut(Op* pSrcOp);
+    void vSetObject(i8 i_Object, Object* pObject);
 
   private:
     void vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);

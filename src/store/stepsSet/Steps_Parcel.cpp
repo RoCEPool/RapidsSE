@@ -94,7 +94,7 @@ void Step::vParcelPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 
-  if (pParcel->bIsOriginal()) {
+  if (pParcel->bOriginalParcel()) {
     pOp->vAppendLeft(pParcel,this);
   } else {
     if (pParcel->pGetOperand()) {

@@ -354,7 +354,7 @@ i8 Grid::iPrepareParcel(void)
     m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
 
     // Set the state that this is created as a parcel
-    m_pParcel->vSetOriginState(true);
+    m_pParcel->vOriginalParcel(true);
   }
 
   m_pParcel->vAddObject((Object *)this);

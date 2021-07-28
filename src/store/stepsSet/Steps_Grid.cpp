@@ -134,7 +134,7 @@ void Step::vGridGetGridParts(void)
   pGrid->iPrepareParcel();
   Parcel* pParcel = pGrid->pParcel();
 
-  if (pParcel && pParcel->bIsOriginal()) {
+  if (pParcel && pParcel->bOriginalParcel()) {
     vTrace("C++ prepared pParcel:%p for sending, it is originally created by Grid\n"_Stz, pGrid);
   }
 

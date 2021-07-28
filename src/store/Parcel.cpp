@@ -102,33 +102,6 @@ void Parcel::vPostRecv(void* aParcel)
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* Set label for this Parcel                                                  */
-/*----------------------------------------------------------------------------*/
-void Parcel::vLabel(i8      iPipelineJobId,
-                   i8       iDstNode,
-                   tPN      tDstPtn,
-                   ePX      eCrossTopo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  m_iPipelineJobId = iPipelineJobId;
-  m_eCrossTopo     = eCrossTopo;
-
-  m_iDstNode       = iDstNode;
-  m_tDstPtn        = tDstPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset item count                                                           */
-/*----------------------------------------------------------------------------*/
-void Parcel::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  m_nObjects = 0;
-}
-
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
 /*----------------------------------------------------------------------------*/
@@ -175,9 +148,25 @@ Operand* Parcel::pGetOperand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set label of this Parcel                                                   */
+/*----------------------------------------------------------------------------*/
+void Parcel::vLabel(i8      iPipelineJobId,
+                   i8       iDstNode,
+                   tPN      tDstPtn,
+                   ePX      eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  m_iPipelineJobId = iPipelineJobId;
+  m_eCrossTopo     = eCrossTopo;
+
+  m_iDstNode       = iDstNode;
+  m_tDstPtn        = tDstPtn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this parcel an original (T or F                                         */
 /*----------------------------------------------------------------------------*/
-bool Parcel::bIsOriginal(void)
+bool Parcel::bOriginalParcel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   return m_bOriginalParcel;
@@ -187,10 +176,11 @@ bool Parcel::bIsOriginal(void)
 /*----------------------------------------------------------------------------*/
 /* set the state of origin (T or F)                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSetOriginState(bool bState)
+void Parcel::vOriginalParcel(bool bOriginalParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  m_bOriginalParcel = bState;
+  
+  m_bOriginalParcel = bOriginalParcel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,6 +206,16 @@ void Parcel::vRecvContents(Socket* pSocket)
     vSetObject(i_Object,pObject);
     //vTrace(" %s\n"_Stz, aCN[pObject->eGetClassNo()]);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset item count                                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_nObjects = 0;
 }
 
 /*----------------------------------------------------------------------------*/
