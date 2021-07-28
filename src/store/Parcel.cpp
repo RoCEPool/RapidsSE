@@ -219,37 +219,45 @@ void Parcel::vRecvContents(Socket* pSocket)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send out operand as parcel                                                 */
+/* send this parcel out                                                       */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOut(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  Pipeline* pPipeline = pSrcOp->pPipeline();
-  i8 i_NextStage = pSrcOp->iNextStage();
-  ePX eCrossTopo = pSrcOp->eCrossTopo();
-  RASSERT(eCrossTopo == m_eCrossTopo);
-  tPN tDstPtn = pSrcOp->tPtnNo();
 
-  // get operand and next stage
-  Operand* pOperand = pGetOperand();
-  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
-
-  // figure out the queue
-  m_bAppendRight = pSrcOp->bAppendRight();
-
-  // figure out the send kind
-  m_eSendKind = pSrcOp->eSendKind();
-    
-  // is the operand is a marker or a streamDef ?
-  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    m_eSendKind = XK_UNICAST;
+//  Pipeline* pPipeline = pSrcOp->pPipeline();
+//  i8 i_NextStage = pSrcOp->iNextStage();
+//  ePX eCrossTopo = pSrcOp->eCrossTopo();
+//  RASSERT(eCrossTopo == m_eCrossTopo);
+//  tPN tDstPtn = pSrcOp->tPtnNo();
+//
+//  // get operand and next stage
+//  Operand* pOperand = pGetOperand();
+//  Stage* pNextStage = pPipeline->pGet(i_NextStage);
+//  RASSERT(pNextStage);
+//
+//  // figure out the queue
+//  m_bAppendRight = pSrcOp->bAppendRight();
+//
+//  // figure out the send kind
+//  m_eSendKind = pSrcOp->eSendKind();
+//
+//  // is the operand is a marker or a streamDef ?
+//  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+//    m_eSendKind = XK_UNICAST;
+//
+//  // is the operand an InfoSet ?
+//  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
+//    m_eSendKind = XK_ROBIN;
   
-  // is the operand an InfoSet ?
-  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    m_eSendKind = XK_ROBIN;
- 
+  tPN tDstPtn;
+  ePX eCrossTopo;
+  Stage* pNextStage;
+  
+  vAppraise(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
+  
+  Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
     vSendToNode(pSrcOp,6078); // HACK  hardcode to the existing node for debug
@@ -257,7 +265,7 @@ void Parcel::vSendOut(Op* pSrcOp)
     return;
   }
 
-  vSendCross(pSrcOp,eCrossTopo,pNextStage,tDstPtn);
+  vSendCross(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
   
   //>>>>>>>>>>>  Need to ask Ray, after sent the Parcel, we get the operand which is the table and try to delete
   //>>>>>>>>>>>  If we don't get the operand then we will delete the parcel
@@ -388,9 +396,43 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* determine where/how this parcel is to be sent                              */
+/*----------------------------------------------------------------------------*/
+void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
+  Pipeline* pPipeline = pSrcOp->pPipeline();
+  i8 i_NextStage = pSrcOp->iNextStage();
+  
+  eCrossTopo = pSrcOp->eCrossTopo();
+  RASSERT(eCrossTopo == m_eCrossTopo);
+  
+  tDstPtn = pSrcOp->tPtnNo();
+
+  pNextStage = pPipeline->pGet(i_NextStage);
+  RASSERT(pNextStage);
+
+  // figure out the queue
+  m_bAppendRight = pSrcOp->bAppendRight();
+
+  // figure out the send kind
+  m_eSendKind = pSrcOp->eSendKind();
+    
+  // is the operand is a marker or a streamDef ?
+  Operand* pOperand = pGetOperand();
+  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+    m_eSendKind = XK_UNICAST;
+  
+  // is the operand an InfoSet ?
+  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
+    m_eSendKind = XK_ROBIN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCross(Op* pSrcOp, ePX eCrossTopo, Stage* pNextStage, tPN tDstPtn)
+void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
