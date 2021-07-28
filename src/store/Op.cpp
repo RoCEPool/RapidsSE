@@ -272,12 +272,10 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-#ifdef WITH_SEPARATE_OOO_QUEUE
   if (AM::OPERAND::bIsOoO(pOperand)) {
     vAppendOoO(pOperand,pTriggeringTask);
     return;
   }
-#endif
       
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -305,7 +303,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand out-of-order queue                     */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_SEPARATE_OOO_QUEUE
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -331,7 +328,6 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
     return;
   }
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's right operand queue                            */
@@ -1404,11 +1400,7 @@ Operand* Op::pPopOoO(void)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-#ifdef WITH_SEPARATE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
-#else
-  Operand* pOperand = m_pQueueLeft->pPopOoO();
-#endif
   
   vDropTaskLock();
   
@@ -1432,19 +1424,11 @@ Operand* Op::pPopOoOLeft(void)
   
   bool bLeft = false;
   
-#ifdef WITH_SEPARATE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
   if (! pOperand) {
     pOperand = m_pQueueLeft->pPopQueue();
     bLeft = true;
   }
-#else
-  Operand* pOperand = m_pQueueLeft->pPopOoO();
-  if (! pOperand) {
-    bLeft = true;
-    pOperand = m_pQueueLeft->pPopQueue();
-  }
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
