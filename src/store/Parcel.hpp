@@ -14,16 +14,18 @@ namespace STORE
   {
     
   public:
-    i8   m_iPipelineJobId;  // pipeline job id
     ePX  m_eCrossTopo;      // cross topology
     eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
-    bool m_bAppendRight;    // append operand to right queue
   
-    i8  m_iDstNode;        // destination node id
-    tPN m_tDstPtn;         // destination partition (in grid)
-    i8  m_iDstStage;       // destination stage
-    i8  m_iDstOp;          // destination op in the destination stage
-    
+    i8   m_iDstNode;        // destination node id
+    tPN  m_tDstPtn;         // destination partition (in grid)
+    i8   m_iDstStage;       // destination stage
+    i8   m_iDstOp;          // destination op in the destination stage
+
+    i8   m_iPipelineJobId;  // pipeline job id
+
+    bool m_bAppendRight;    // append operand to right queue
+
   private:
     bool m_bOriginalParcel;
     i8 m_nObjects;                        // number of objects in the parcel
@@ -36,11 +38,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(Operand* pOperand,
-           i8       iPipelineJobId,
+    Parcel(ePX      eCrossTopo,
            i8       iDstNode,
            tPN      tPtnNo,
-           ePX      eCrossTopo
+           Operand* pOperand,
+           i8       iPipelineJobId
            );
   
    ~Parcel(void) noexcept(false);
@@ -52,10 +54,11 @@ namespace STORE
     bool bAppendRight(void);
     Object* pGetObject(i8 i_Object);
     Operand* pGetOperand(void);
-    void vLabel(i8       iPipelineJobId,
+    void vLabel(ePX      eCrossTopo,
                 i8       iDstNode,
-                tPN      tPtnNo,
-                ePX      eCrossTopo);
+                tPN      tDstPtn,
+                i8       iPipelineJobId
+                );
     i8 nObjects(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);

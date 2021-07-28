@@ -37,14 +37,27 @@ __aFooterFunction(Parcel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Parcel::Parcel(Operand* pOperand,
-               i8       iPipelineJobId,
+Parcel::Parcel(ePX      eCrossTopo,
                i8       iDstNode,
                tPN      tDstPtn,
-               ePX      eCrossTopo)
+               Operand* pOperand,
+               i8       iPipelineJobId
+               )
 : Operand(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_eCrossTopo     = eCrossTopo;
+  m_eSendKind      = XK_NONE;
+
+  m_iDstNode       = iDstNode;
+  m_tDstPtn        = tDstPtn;
+  m_iDstStage      = C_UNKNOWN;
+  m_iDstOp         = C_UNKNOWN;
+  
+  m_iPipelineJobId = iPipelineJobId;
+
+  m_bAppendRight   = false;
 
   m_bOriginalParcel = false;
 
@@ -55,16 +68,6 @@ Parcel::Parcel(Operand* pOperand,
   if (pOperand)
     vAddObject(pOperand);
 
-  m_iPipelineJobId = iPipelineJobId;
-  m_eCrossTopo     = eCrossTopo;
-  m_eSendKind      = XK_NONE;
-  m_bAppendRight   = false;
-  
-  m_iDstNode       = iDstNode;
-  m_tDstPtn        = tDstPtn; 
-  m_iDstStage      = C_UNKNOWN;
-  m_iDstOp         = C_UNKNOWN;
-  
   _checkInitialised_(CN_PARCEL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -150,17 +153,20 @@ Operand* Parcel::pGetOperand(void)
 /*----------------------------------------------------------------------------*/
 /* set label of this Parcel                                                   */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(i8      iPipelineJobId,
-                   i8       iDstNode,
-                   tPN      tDstPtn,
-                   ePX      eCrossTopo)
+void Parcel::vLabel(ePX      eCrossTopo,
+                    i8       iDstNode,
+                    tPN      tDstPtn,
+                    i8       iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  m_iPipelineJobId = iPipelineJobId;
+  
   m_eCrossTopo     = eCrossTopo;
 
   m_iDstNode       = iDstNode;
   m_tDstPtn        = tDstPtn;
+  
+  m_iPipelineJobId = iPipelineJobId;
+
 }
 
 /*----------------------------------------------------------------------------*/

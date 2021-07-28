@@ -351,7 +351,7 @@ i8 Grid::iPrepareParcel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_GRID, _FOOTER_);
 
   if (!m_pParcel) {
-    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+    m_pParcel = new Parcel(PX_NONE,0,0,nullptr,0);
 
     // Set the state that this is created as a parcel
     m_pParcel->vOriginalParcel(true);

@@ -58,10 +58,11 @@ void Step::vParcelLabel(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pSrcOp->pPipelineJob()->iJobId(),
+  pParcel->vLabel(pSrcOp->eCrossTopo(),
                   C_UNKNOWN,
                   C_UNKNOWN,
-                  pSrcOp->eCrossTopo());
+                  pSrcOp->pPipelineJob()->iJobId()
+                  );
 
   //m_pDataStack->vPushPtr(pParcel);
   EXIT();
