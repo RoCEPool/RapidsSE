@@ -83,9 +83,7 @@
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// temporary
-
-#define WITH_NEW_OPERAND_QUEUE EndDefine   // code for new operand queue
+// WIP
 
 #define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
 
