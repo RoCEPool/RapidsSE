@@ -33,11 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(ePX      eCrossTopo,
-           i8       iDstNode,
-           tPN      tPtnNo,
-           Operand* pOperand,
-           i8       iPipelineJobId);
+    Parcel(void);
   
    ~Parcel(void) noexcept(false);
 
@@ -67,7 +63,6 @@ namespace STORE
     void vReset(void);
     eXK  eSendKind(void);
     void vSendOut(Op* pSrcOp);
-    void vSetObject(i8 i_Object, Object* pObject);
 
   private:
     void vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);
@@ -80,7 +75,8 @@ namespace STORE
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
     void vSendToOrigin(Op* pSrcOp);
     void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
-  
+    void vSetItem(i8 i_Item, Object* pItem);
+
   public:
     Footer* aFooter(void);
   

@@ -865,14 +865,7 @@ void Step::vOperandToParcel(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-//  Parcel* pParcel = new Parcel(pSrcOp->eCrossTopo(),
-//                               C_UNKNOWN,
-//                               C_UNKNOWN,
-//                               pOperand,
-//                               pSrcOp->pPipelineJob()->iJobId()
-//                               );
-
-  Parcel* pParcel =  new Parcel(PX_NONE,0,0,nullptr,0);
+  Parcel* pParcel =  new Parcel;
 
   pParcel->vAddItem(pOperand);
   

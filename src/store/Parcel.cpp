@@ -37,34 +37,26 @@ __aFooterFunction(Parcel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Parcel::Parcel(ePX      eCrossTopo,
-               i8       iDstNode,
-               tPN      tDstPtn,
-               Operand* pOperand,
-               i8       iPipelineJobId
-               )
+Parcel::Parcel(void)
 : Operand(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_eCrossTopo     = eCrossTopo;
+  m_eCrossTopo     = PX_NONE;
   m_eSendKind      = XK_NONE;
 
-  m_iDstNode       = iDstNode;
-  m_tDstPtn        = tDstPtn;
+  m_iDstNode       = C_UNKNOWN;
+  m_tDstPtn        = C_UNKNOWN;
   m_iDstStage      = C_UNKNOWN;
   m_iDstOp         = C_UNKNOWN;
   
-  m_iPipelineJobId = iPipelineJobId;
+  m_iPipelineJobId = C_UNKNOWN;
 
   m_bOriginalParcel = false;
 
   m_nItems = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
-    vSetObject(i_Obj,nullptr);
-
-  if (pOperand)
-    vAddItem(pOperand);
+  vSetItem(i_Obj,nullptr);
 
   _checkInitialised_(CN_PARCEL);
   
@@ -95,7 +87,7 @@ void Parcel::vPostRecv(void* aParcel)
   Parcel* pParcel = _pParcel(aParcel);
   
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
-    pParcel->vSetObject(i_Obj,nullptr);
+    pParcel->vSetItem(i_Obj,nullptr);
 }
 
 
@@ -255,7 +247,7 @@ void Parcel::vRecvContents(Socket* pSocket)
   //vTrace("vRecvContents:\n"_Stz);
   for (i8 i_Object = 0; i_Object < m_nItems; i_Object++) {
     Object* pObject = pSocket->pRecvObject();
-    vSetObject(i_Object,pObject);
+    vSetItem(i_Object,pObject);
     //vTrace(" %s\n"_Stz, aCN[pObject->eGetClassNo()]);
   }
 }
@@ -309,16 +301,6 @@ void Parcel::vSendOut(Op* pSrcOp)
 
   // delete the operand
   AM::vDeleteOperand(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set object in array                                                        */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSetObject(i8 i_Object, Object* pObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  m_pItems[i_Object] = pObject;
 }
 
 
@@ -867,6 +849,16 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   pSrcOp->vSendNode(iDstNode);
   vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set item in array                                                          */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSetItem(i8 i_Item, Object* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_pItems[i_Item] = pItem;
 }
 
 /*============================================================================*/
