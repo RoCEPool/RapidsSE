@@ -86,12 +86,12 @@ void Step::vParcelPipeOut(void)
 
   // get the next stage the send is supposed to send to
   Stage* pStage = pPipelineJob->m_pLogicUnit_job
-                    ->m_xpPipeline->pGet(pParcel->m_iDstStage);
+                    ->m_xpPipeline->pGet(pParcel->iDstStage());
   
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
-                               pParcel->m_tDstPtn,
-                               pParcel->m_iDstOp);
+  Op* pOp = pStage->pPipeOutOp(pParcel->eCrossTopo(),
+                               pParcel->tDstPtn(),
+                               pParcel->iDstOp());
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 

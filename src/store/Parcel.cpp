@@ -116,6 +116,56 @@ void Parcel::vAddItem(Object* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+ePX Parcel::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destination node                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::iDstNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_iDstNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destination op                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::iDstOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_iDstOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destination ptn                                                        */
+/*----------------------------------------------------------------------------*/
+tPN Parcel::tDstPtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_tDstPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destination stage                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::iDstStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_iDstStage;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
 Object* Parcel::pGetItem(i8 i_Item)
@@ -151,10 +201,10 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* set label of this Parcel                                                   */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(ePX      eCrossTopo,
-                    i8       iDstNode,
-                    tPN      tDstPtn,
-                    i8       iPipelineJobId)
+void Parcel::vLabel(ePX eCrossTopo,
+                    i8  iDstNode,
+                    tPN tDstPtn,
+                    i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -174,7 +224,6 @@ bool Parcel::bOriginalParcel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   return m_bOriginalParcel;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set the state of origin (T or F)                                           */
@@ -219,6 +268,16 @@ void Parcel::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   m_nItems = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Parcel::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/
