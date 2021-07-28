@@ -7,9 +7,6 @@
 
 namespace STORE
 {
-  static const i8 C_MAX_PARCEL_OBJ = 16;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Parcel : public Operand
   {
     
@@ -29,7 +26,7 @@ namespace STORE
   private:
     bool m_bOriginalParcel;
     i8 m_nItems;                        // number of objects in the parcel
-    Object* m_pItems[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
+    Object* m_pItems[C_MAX_PARCEL_ITEMS];  // let's for now, a fixed size array of
   
     // must be last
     Footer m_xFooter;

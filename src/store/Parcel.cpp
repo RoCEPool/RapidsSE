@@ -62,7 +62,7 @@ Parcel::Parcel(ePX      eCrossTopo,
   m_bOriginalParcel = false;
 
   m_nItems = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
     vSetObject(i_Obj,nullptr);
 
   if (pOperand)
@@ -96,7 +96,7 @@ void Parcel::vPostRecv(void* aParcel)
   
   Parcel* pParcel = _pParcel(aParcel);
   
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
     pParcel->vSetObject(i_Obj,nullptr);
 }
 
@@ -112,7 +112,7 @@ void Parcel::vAddItem(Object* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (m_nItems < C_MAX_PARCEL_OBJ) {
+  if (m_nItems < C_MAX_PARCEL_ITEMS) {
     m_pItems[m_nItems++] = pItem;
   }
 }
@@ -134,7 +134,7 @@ Object* Parcel::pGetItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (i_Item < C_MAX_PARCEL_OBJ && i_Item < m_nItems)
+  if (i_Item < C_MAX_PARCEL_ITEMS && i_Item < m_nItems)
     return m_pItems[i_Item];
   
   return nullptr;
