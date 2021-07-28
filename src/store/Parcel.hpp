@@ -67,6 +67,7 @@ namespace STORE
                 ePX      eCrossTopo);
 
   private:
+    void vSendCross(Op* pSrcOp, ePX eCrossTopo, Stage* pNextStage, tPN tDstPtn);
     void vSendOverSocket(Op* pSrcOp);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
     void vSendToAllNodes(Op* pSrcOp);
