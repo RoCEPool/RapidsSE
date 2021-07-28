@@ -414,7 +414,7 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
     // Check if the wildcard constraints match the data source
     b1 bConstraintsMatch;
 
-    if (szSrcAlias) {
+    if (szSrcAlias && szTable) {
       bConstraintsMatch = (szTable->bSame(szSrcAlias) && !szSchema && !szCatalog);
 
     } else {
@@ -495,16 +495,13 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     Stz* szTableName      = ColumnRef::szTable(_pQueryNode(pNode));
     Stz* szColumnName     = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
 
-    // Is this column already in the metadata? It must have a fully qualified name if it does.
-    if (ColumnRef::bIsFullyQualified(pColumnRef)) {
-      QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName);
-      if (pColumnDef) {
-        // Column is in the metadata. Nothing to do here.
-        return GraphNav::WALK_CONTINUE;   // Keep walking
-      }
-    }
+    // We cannot skip columns that appear to be fully qualified here. Even if a columnRef
+    // has a catalog, schema and table specified AND all of this exists in the metadata
+    // AND that table has a matching column name, there may be an alias on the data source
+    // that means that the column cannot be resolved with that fully qualified name.
+    // Therefore this name is incorrect and should cause an error.
 
-    // We either need to match this partially-qualified column against the plan
+    // We either need to match this partially (or fully) qualified column against the plan
     // graph metadata, against an alias for a projected expression or against
     // a table alias found below it in the plan.
     //
@@ -720,12 +717,14 @@ QueryNodeList* NameValidator::pMatchingDataSourcesFor(QueryNode* pColumnRef,
     QueryNode* pDataSource = _pQueryNode(pNode);
 
     // ColumnRef properties
-    Stz* szColRefCatalogName = ColumnRef::szCatalog(pColumnRef);
-    Stz* szColRefSchemaName  = ColumnRef::szSchema(pColumnRef);
-    Stz* szColRefTableName   = ColumnRef::szTable(pColumnRef);
-    Stz* szColRefColumnName   = ColumnRef::szColumn(pColumnRef);
+    Stz* szColRefTableAliasName = ColumnRef::szTableAlias(pColumnRef);
+    Stz* szColRefCatalogName    = ColumnRef::szCatalog(pColumnRef);
+    Stz* szColRefSchemaName     = ColumnRef::szSchema(pColumnRef);
+    Stz* szColRefTableName      = ColumnRef::szTable(pColumnRef);
+    Stz* szColRefColumnName     = ColumnRef::szColumn(pColumnRef);
 
     if (DataSource::bResolvesColumnRef(pDataSource, pMetadataNode,
+                                       szColRefTableAliasName,
                                        szColRefCatalogName, szColRefSchemaName,
                                        szColRefTableName, szColRefColumnName)) {
       // Add the data source to the list

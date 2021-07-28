@@ -285,6 +285,7 @@ QueryNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /* Returns true if this data source can resolve the given column reference    */
 /*----------------------------------------------------------------------------*/
 b1 DataSource::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
+                                  Stz* szColRefTableAliasName,
                                   Stz* szCatalogName, Stz* szSchemaName,
                                   Stz* szTableName, Stz* szColumnName)
 {
@@ -292,9 +293,9 @@ b1 DataSource::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
   ASSERT(bIsOfType(pNode));
 
   // manual polymorphism here
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::bResolvesColumnRef(pNode, pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::bResolvesColumnRef(pNode, pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::bResolvesColumnRef(pNode, pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName); }
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
   else                                     {  NEVER_REACH                                       }
 }
 
