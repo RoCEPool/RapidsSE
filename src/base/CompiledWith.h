@@ -87,8 +87,6 @@
 
 #define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
 
-#define WITH_LOCK_SETS EndDefine           // code for lock sets
-
 //#define WITH_LOGIC_UNIT_TASK EndDefine     // code if logic unit is in task
 
 /*============================================================================*/

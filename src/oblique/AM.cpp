@@ -338,7 +338,6 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
 {
   _static_
 
-#ifdef WITH_LOCK_SETS
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
@@ -347,7 +346,6 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
   
   bool bRemoved = pReadLocks->bRemove(pLock);
   RASSERT(bRemoved);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,7 +355,6 @@ void AM::LOCK::vJustReadLocked(Lock* pLock)
 {
   _static_
   
-#ifdef WITH_LOCK_SETS
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
@@ -366,7 +363,6 @@ void AM::LOCK::vJustReadLocked(Lock* pLock)
 
   i8 i_Lock = pReadLocks->iAdd(pLock);
   RASSERT(i_Lock != C_UNKNOWN);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,7 +372,6 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
 {
   _static_
 
-#ifdef WITH_LOCK_SETS
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
@@ -385,7 +380,6 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
   
   bool bRemoved = pWriteLocks->bRemove(pLock);
   RASSERT(bRemoved);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +389,6 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
 {
   _static_
   
-#ifdef WITH_LOCK_SETS
   Task* pLockingTask = MY::pTask();
   if (! pLockingTask)
     return;
@@ -404,7 +397,6 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
   
   i8 i_Lock = pWriteLocks->iAdd(pLock);
   RASSERT(i_Lock != C_UNKNOWN);
-#endif
 }
 
 
