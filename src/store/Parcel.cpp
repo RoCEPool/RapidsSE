@@ -57,8 +57,6 @@ Parcel::Parcel(ePX      eCrossTopo,
   
   m_iPipelineJobId = iPipelineJobId;
 
-  m_bAppendRight   = false;
-
   m_bOriginalParcel = false;
 
   m_nItems = 0;
@@ -118,16 +116,6 @@ void Parcel::vAddItem(Object* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append to right queue ?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Parcel::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  return m_bAppendRight;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
 Object* Parcel::pGetItem(i8 i_Item)
@@ -148,6 +136,16 @@ Operand* Parcel::pGetOperand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pItems[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of objects in the parcel                                        */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,13 +187,13 @@ void Parcel::vOriginalParcel(bool bOriginalParcel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of objects in the parcel                                        */
+/* get job id of the pipeline job                                             */
 /*----------------------------------------------------------------------------*/
-i8 Parcel::nItems(void)
+i8 Parcel::iPipelineJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  return m_nItems;
+  return m_iPipelineJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,9 +357,6 @@ void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextS
 
   pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-
-  // figure out the queue
-  m_bAppendRight = pSrcOp->bAppendRight();
 
   // figure out the send kind
   m_eSendKind = pSrcOp->eSendKind();

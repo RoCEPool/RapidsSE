@@ -359,8 +359,6 @@ i8 Grid::iPrepareParcel(void)
 
   m_pParcel->vAddItem((Object *)this);
 
-  //m_pParcel->vAddObject((Object *)m_pNodes_stdList);
-
   return m_pParcel->nItems();
 }
   

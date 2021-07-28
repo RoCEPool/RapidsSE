@@ -81,7 +81,7 @@ void Step::vParcelPipeOut(void)
   Operand* pOperand = pParcel->pGetOperand();
 
   // find the pipeline participant job
-  i8 iPipelineJob = pParcel->m_iPipelineJobId;
+  i8 iPipelineJob = pParcel->iPipelineJobId();
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
@@ -99,9 +99,6 @@ void Step::vParcelPipeOut(void)
     pOp->vAppendLeft(pParcel,this);
   } else {
     if (pParcel->pGetOperand()) {
-      if (pParcel->bAppendRight())
-        pOp->vAppendRight(pOperand, this);
-      else
         pOp->vAppendLeft(pOperand, this);
     }
   }

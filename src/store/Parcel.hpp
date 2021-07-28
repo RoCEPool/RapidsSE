@@ -9,7 +9,6 @@ namespace STORE
 {
   class Parcel : public Operand
   {
-    
   public:
     ePX  m_eCrossTopo;      // cross topology
     eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
@@ -19,11 +18,9 @@ namespace STORE
     i8   m_iDstStage;       // destination stage
     i8   m_iDstOp;          // destination op in the destination stage
 
+  private:
     i8   m_iPipelineJobId;  // pipeline job id
 
-    bool m_bAppendRight;    // append operand to right queue
-
-  private:
     bool m_bOriginalParcel;
     i8 m_nItems;                        // number of objects in the parcel
     Object* m_pItems[C_MAX_PARCEL_ITEMS];  // let's for now, a fixed size array of
@@ -48,7 +45,6 @@ namespace STORE
 
   public:
     void vAddItem(Object* pItem);
-    bool bAppendRight(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     void vLabel(ePX      eCrossTopo,
@@ -59,8 +55,9 @@ namespace STORE
     i8   nItems(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
-    void vReset(void);
+    i8   iPipelineJobId(void);
     void vRecvContents(Socket* pSocket);
+    void vReset(void);
     void vSendOut(Op* pSrcOp);
     void vSetObject(i8 i_Object, Object* pObject);
 
