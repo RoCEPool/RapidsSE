@@ -51,6 +51,7 @@ namespace Parser
 
     // Returns true if this data source can resolve the given column reference
     static b1 bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
+                                 Stz* szColRefTableAliasName,
                                  Stz* szCatalogName, Stz* szSchemaName,
                                  Stz* szTableName, Stz* szColumnName);
 

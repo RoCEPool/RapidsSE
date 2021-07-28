@@ -12,4 +12,4 @@ projValidation.test
 stageMarkers.test
 partitionPlan.test
 aggregateSplit.test
-//tableAliases.test
+tableAliases.test

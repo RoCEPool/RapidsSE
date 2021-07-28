@@ -290,6 +290,7 @@ QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /* Returns true if this data source can resolve the given column reference    */
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
+                                  Stz* szColRefTableAliasName,
                                   Stz* szCatalogName, Stz* szSchemaName,
                                   Stz* szTableName, Stz* szColumnName)
 {
@@ -303,12 +304,20 @@ b1 TableScanOp::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
 
   if (szDataSourceAliasName) {
 
-    // The columnRef cannot specify a catalog or schema name to use this alias, but its
-    // tableName may match the alias or it may be left unqualified.
-    if (!szCatalogName &&
-        !szSchemaName &&
-        (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) ) {
+    // There are two conditions that we need to consider:
+    // 1. The columnRef might already be fully qualified. In that case, the columnRef's
+    //    table alias might be set. Let's check if it is and if it matches the data
+    //    source's alias name.
+    // 2. The columnRef is not fully qualified and cannot specify a catalog or schema
+    //    name to use this alias, but its tableName may match the alias or it may be left unqualified.
+    b1 bNameMatch =
+        (szColRefTableAliasName && szColRefTableAliasName->bSame(szDataSourceAliasName))  // (1)
+        ||
+        (!szCatalogName &&                                                                // (2)
+         !szSchemaName &&
+         (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) );
 
+    if (bNameMatch) {
       // ColumnRef partially or fully matches the alias of this data source. But we
       // still need to check if the DataSource exposes a column with the same name.
 
