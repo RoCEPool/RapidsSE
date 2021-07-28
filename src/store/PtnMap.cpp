@@ -65,32 +65,6 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert i_Stream to logical partition number (in grid)                     */
-/*----------------------------------------------------------------------------*/
-//#ifndef WITH_REVISED_PTNMAP
-tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
-{
-  _static_
-
-  //if (AM::PTNMAP::nPtnsInGrid()) {
-  //  for (tPN tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++)
-  //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->iWhichNodeNo(tPtnNo));
-  //  vTrace("\n"_Stz);
-  //}
-
-  //vTrace("PtnMap::tStreamToLglPtnNo %lld %lld %lld\n"_Stz, i_Stream ,AM::nConnectedNodes(),AM::iThisNodeNo());
-
-  // THIS IS WHERE THE CRASH HAPPENED
-  // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
-  tPN tPtnNo = (i_Stream * AM::GRID::nKnownNodes()) + 0;//AM::iThisNodeNo();
-
-
-
-  return tPtnNo;
-}
-//#endif
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

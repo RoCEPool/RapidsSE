@@ -487,11 +487,6 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       i8 i_Robin = pSrcOp->iRobinNext();
       tPtnNo = AM::PTNMAP::tRobinToNdePtnNo(i_Robin,pPipeline->i_Origin());
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-#else
-      i8 i_Robin = pSrcOp->iRobinNext();
-      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
-      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
-      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #endif
       pSrcOp->vSendNode(iDstNodeNo);
 
@@ -551,11 +546,6 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 #ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
       tPtnNo = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
-      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-#else
-      i8 i_Robin = pSrcOp->iRobinNext();
-      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
-      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #endif
       pSrcOp->vSendNode(iDstNodeNo);
@@ -644,10 +634,6 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 #ifdef WITH_REVISED_PTNMAP
       i8 i_LocalRobin = pSrcOp->iLocalRobinNext();
       tPtnNo = AM::PTNMAP::tRobinToLclPtnNo(i_LocalRobin);
-#else
-      i8 i_LocalRobin = pSrcOp->iLocalRobinNext();
-      i_TablePtn = i_LocalRobin % AM::PTNMAP::nPtnsPerNode();
-      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
 #endif
       
       // sendNode is this node
@@ -678,10 +664,6 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 #ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
       tPtnNo = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
-      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-#else
-      i8 i_Robin = pSrcOp->iRobinNext();
-      tPtnNo = i_Robin % AM::PTNMAP::nPtnsInGrid();
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #endif
       pSrcOp->vSendNode(iDstNodeNo);
@@ -765,9 +747,6 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
 #ifdef WITH_REVISED_PTNMAP
       i_Robin = pSrcOp->iRobinNext();
       tDstPtn = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
-#else
-      i_Robin = pSrcOp->iRobinNext();
-      tDstPtn = i_Robin % AM::PTNMAP::nPtnsInGrid();
 #endif
       break;
     }
