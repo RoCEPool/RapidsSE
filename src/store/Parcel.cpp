@@ -364,35 +364,6 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition                                        */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  m_iDstNode = iDstNode;
-  m_tDstPtn   = tDstPtn;
-  
-  m_iDstStage = pSrcOp->iNextStage();
-  m_iDstOp    = pSrcOp->iNextOp();
-  
-  vSendOverSocket(pSrcOp);
-
-  // - - - - - - - - - - - - - - - -
-  
-  i8 i_OtherStage = pSrcOp->iOtherStage();
-  i8 i_OtherOp    = pSrcOp->iOtherOp();
-  
-  if (C_UNKNOWN != i_OtherStage) {
-
-    m_iDstStage = i_OtherStage;
-    m_iDstOp    = i_OtherOp;
-
-    vSendOverSocket(pSrcOp);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -501,6 +472,35 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
       RASSERT(0);
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* send parcel to given node,partition                                        */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_iDstNode = iDstNode;
+  m_tDstPtn   = tDstPtn;
+  
+  m_iDstStage = pSrcOp->iNextStage();
+  m_iDstOp    = pSrcOp->iNextOp();
+  
+  vSendOverSocket(pSrcOp);
+
+  // - - - - - - - - - - - - - - - -
+  
+  i8 i_OtherStage = pSrcOp->iOtherStage();
+  i8 i_OtherOp    = pSrcOp->iOtherOp();
+  
+  if (C_UNKNOWN != i_OtherStage) {
+
+    m_iDstStage = i_OtherStage;
+    m_iDstOp    = i_OtherOp;
+
+    vSendOverSocket(pSrcOp);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
