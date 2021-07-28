@@ -834,18 +834,18 @@ i8 Table::iPrepareParcel(void)
     m_pParcel->vOriginalParcel(true);
   }
 
-  m_pParcel->vAddObject((Object *)this);
+  m_pParcel->vAddItem((Object *)this);
 
   if ( m_pStreamDef) {
-    m_pParcel->vAddObject((Object *)m_pStreamDef);
+    m_pParcel->vAddItem((Object *)m_pStreamDef);
   }
-  m_pParcel->vAddObject((Object *)m_pShardDef);
+  m_pParcel->vAddItem((Object *)m_pShardDef);
 
-  m_pParcel->vAddObject((Object *)m_pBucketMap);
+  m_pParcel->vAddItem((Object *)m_pBucketMap);
 
-  m_pParcel->vAddObject((Object *)m_pIdxVec);
+  m_pParcel->vAddItem((Object *)m_pIdxVec);
 
-  return m_pParcel->nObjects();
+  return m_pParcel->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,46 +872,45 @@ void Table::vDumpLocation(void)
 /* returns object parts includes the main by index                            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Object* Table::pGetParcelObject(i8 iIdx)
+Object* Table::pGetParcelObject(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   if (!m_pParcel) return nullptr;
 
-  return m_pParcel->pGetObject(iIdx);
+  return m_pParcel->pGetItem(i_Item);
 }
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts includes the main                           */
 /* Insert each object part and put in an array                                */
 /*----------------------------------------------------------------------------*/
-i8 Table::iBuildParcelObjs(Object* pObj)
+i8 Table::iBuildParcelObjs(Object* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   if (!m_pParcel) return 0;
 
-  m_pParcel->vAddObject(pObj);
+  m_pParcel->vAddItem(pItem);
 
-  return m_pParcel->nObjects();
+  return m_pParcel->nItems();
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* reassemble object parts from the received parcel                           */
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleFromParcel(Parcel* pParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nObjects());
+  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nItems());
 
   if (!pParcel) return 0;
-  i8 nSize = pParcel->nObjects();
+  i8 nItems = pParcel->nItems();
 
-  for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
-    Object* pObject =  pParcel->pGetObject(i_Obj);
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object* pObject =  pParcel->pGetItem(i_Item);
     eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
@@ -968,17 +967,17 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   // Null the parcel pointer for this table
   m_pParcel = nullptr;
 
-  return nSize;
+  return nItems;
 }
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts                                             */
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8  Table::nParcelObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  return m_pParcel ? m_pParcel->nObjects() : 0;
+  
+  return m_pParcel ? m_pParcel->nItems() : 0;
 }
 
 /*============================================================================*/

@@ -28,8 +28,8 @@ namespace STORE
 
   private:
     bool m_bOriginalParcel;
-    i8 m_nObjects;                        // number of objects in the parcel
-    Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
+    i8 m_nItems;                        // number of objects in the parcel
+    Object* m_pItems[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
   
     // must be last
     Footer m_xFooter;
@@ -50,16 +50,16 @@ namespace STORE
   static void vPostRecv(void* aParcel);
 
   public:
-    void vAddObject(Object* pObject);
+    void vAddItem(Object* pItem);
     bool bAppendRight(void);
-    Object* pGetObject(i8 i_Object);
+    Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     void vLabel(ePX      eCrossTopo,
                 i8       iDstNode,
                 tPN      tDstPtn,
                 i8       iPipelineJobId
                 );
-    i8 nObjects(void);
+    i8   nItems(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
     void vReset(void);

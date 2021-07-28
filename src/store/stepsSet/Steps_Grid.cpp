@@ -181,12 +181,12 @@ void Step::vGridPutGridParts(void)
   Grid* pGridRemote  = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
 
-  i8 nObjParts = pParcel->nObjects();
+  i8 nItems = pParcel->nItems();
 
-  vTrace("C++ gets called: vGridPutGridParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+  vTrace("C++ gets called: vGridPutGridParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nItems);
 
-  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object *pObject = pParcel->pGetObject(i_Obj);
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object *pObject = pParcel->pGetItem(i_Item);
     if (pObject && (pObject->eGetClassNo() == CN_GRID)) {
       pGridRemote = (Grid *) pObject;
       vTrace("Grid:%p reassemble from parcel, grid:%s\n"_Stz,pGridRemote, pGridRemote->szClassNm()->azChar());

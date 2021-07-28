@@ -61,12 +61,12 @@ Parcel::Parcel(ePX      eCrossTopo,
 
   m_bOriginalParcel = false;
 
-  m_nObjects = 0;
+  m_nItems = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     vSetObject(i_Obj,nullptr);
 
   if (pOperand)
-    vAddObject(pOperand);
+    vAddItem(pOperand);
 
   _checkInitialised_(CN_PARCEL);
   
@@ -108,12 +108,12 @@ void Parcel::vPostRecv(void* aParcel)
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAddObject(Object* pObject)
+void Parcel::vAddItem(Object* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (m_nObjects < C_MAX_PARCEL_OBJ) {
-    m_pObjects[m_nObjects++] = pObject;
+  if (m_nItems < C_MAX_PARCEL_OBJ) {
+    m_pItems[m_nItems++] = pItem;
   }
 }
 
@@ -130,12 +130,12 @@ bool Parcel::bAppendRight(void)
 /*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
-Object* Parcel::pGetObject(i8 i_Object)
+Object* Parcel::pGetItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (i_Object < C_MAX_PARCEL_OBJ && i_Object < m_nObjects)
-    return m_pObjects[i_Object];
+  if (i_Item < C_MAX_PARCEL_OBJ && i_Item < m_nItems)
+    return m_pItems[i_Item];
   
   return nullptr;
 }
@@ -147,7 +147,7 @@ Operand* Parcel::pGetOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  return (Operand*) m_pObjects[0];
+  return (Operand*) m_pItems[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,11 +192,11 @@ void Parcel::vOriginalParcel(bool bOriginalParcel)
 /*----------------------------------------------------------------------------*/
 /* get number of objects in the parcel                                        */
 /*----------------------------------------------------------------------------*/
-i8 Parcel::nObjects(void)
+i8 Parcel::nItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  return m_nObjects;
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +207,7 @@ void Parcel::vRecvContents(Socket* pSocket)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
   //vTrace("vRecvContents:\n"_Stz);
-  for (i8 i_Object = 0; i_Object < m_nObjects; i_Object++) {
+  for (i8 i_Object = 0; i_Object < m_nItems; i_Object++) {
     Object* pObject = pSocket->pRecvObject();
     vSetObject(i_Object,pObject);
     //vTrace(" %s\n"_Stz, aCN[pObject->eGetClassNo()]);
@@ -221,7 +221,7 @@ void Parcel::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_nObjects = 0;
+  m_nItems = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,7 +291,7 @@ void Parcel::vSetObject(i8 i_Object, Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_pObjects[i_Object] = pObject;
+  m_pItems[i_Object] = pObject;
 }
 
 
@@ -316,7 +316,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   Node* pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket* pSocket = pDstNode->pSendSocket();
-  i8 nObjects = this->nObjects();
+  i8 nObjects = this->nItems();
   
   pSocket->vGrabWrite();
 
@@ -334,8 +334,8 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   //}
 
   // send all the objects within the parcel instance
-  for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
-    pObject = pParcel->pGetObject(i_Object);
+  for (i8 i_Item = 0; i_Item < nObjects; i_Item++) {
+    pObject = pParcel->pGetItem(i_Item);
     eCN eClassNo = pObject->eGetClassNo();
     nObjectSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
