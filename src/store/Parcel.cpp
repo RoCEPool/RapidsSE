@@ -485,6 +485,71 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     case XK_ROBIN : {
 #ifdef WITH_REVISED_PTNMAP
       i8 i_Robin = pSrcOp->iRobinNext();
+      tPtnNo = AM::PTNMAP::tRobinToNdePtnNo(i_Robin,pPipeline->i_Origin());
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#else
+      i8 i_Robin = pSrcOp->iRobinNext();
+      i_TablePtn = i_Robin % AM::PTNMAP::nPtnsPerNode();
+      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#endif
+      pSrcOp->vSendNode(iDstNodeNo);
+
+      RASSERT(iDstNodeNo == pPipeline->i_Origin());
+      vSendParcel(pSrcOp,iDstNodeNo,tPtnNo);
+
+      break;
+    }
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_UNICAST: {
+      
+      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsPerNode());
+      for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
+        
+        Stream* pStream = pNextStage->pGet(i_Stream);
+        tPtnNo = pStream->tPtnNo();
+        
+        // sendNode is the partition node
+    
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+        pSrcOp->vSendNode(iDstNode);
+        if ( iDstNode == pPipeline->i_Origin())
+          vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      }
+    }
+    break;
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    default:
+      ASSERT(0);
+  }
+}
+/*----------------------------------------------------------------------------*/
+// discuss with alka
+#if 0
+void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  tPN tPtnNo;
+  i8 i_TablePtn;
+  
+  Pipeline* pPipeline = pSrcOp->pPipeline();
+  i8 i_NextStage = pSrcOp->iNextStage();
+
+  
+  // get the next stage
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
+  RASSERT(pNextStage);
+    
+  // check the SendKind
+  switch (m_eSendKind) {
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_ROBIN : {
+#ifdef WITH_REVISED_PTNMAP
+      i8 i_Robin = pSrcOp->iRobinNext();
       tPtnNo = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
       i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
 #else
@@ -525,6 +590,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       ASSERT(0);
   }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* send parcel to all partitions                                              */

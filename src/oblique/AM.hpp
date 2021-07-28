@@ -309,6 +309,7 @@ namespace OBLIQUE
       static i8  nPtnsInGrid(void);
       static tPN tRobinToDtdPtnNo(i8 iRobin);
       static tPN tRobinToLclPtnNo(i8 iRobin);
+      static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     };
 
     class SYSARGS

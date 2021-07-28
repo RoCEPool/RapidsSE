@@ -179,6 +179,22 @@ tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  i8 i_Ptn = iRobin % m_nPtnsPerNode;
+
+  tPN tPtnNo = tToPtnNoOfThisNode(i_Ptn);
+
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* see ptnmap                                                                 */
 /*----------------------------------------------------------------------------*/
 void PtnMap::vSee(void)
@@ -228,6 +244,28 @@ i8 PtnMap::i_WhichPtn(tPN tPtnNo)
   return i_Ptn;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert given i_ptn to partition number of given node                      */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  tPN tPtnNo = C_UNKNOWN;
+  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iNodeNo)
+      continue;
+    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+      continue;
+    tPtnNo = i_NodePtn;
+    break;
+  }
+
+  RASSERT(C_UNKNOWN != tPtnNo);
+
+  return tPtnNo;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -239,17 +277,7 @@ tPN PtnMap::tToPtnNoOfThisNode(i8 i_Ptn)
 
   i8 iThisNodeNo = AM::GRID::iThisNodeNo();
 
-  tPN tPtnNo = C_UNKNOWN;
-  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
-    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iThisNodeNo)
-      continue;
-    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
-      continue;
-    tPtnNo = i_NodePtn;
-    break;
-  }
-
-  RASSERT(C_UNKNOWN != tPtnNo);
+  tPN tPtnNo = tToPtnNoOfNode(i_Ptn,iThisNodeNo);
 
   return tPtnNo;
 }

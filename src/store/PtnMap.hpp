@@ -49,9 +49,11 @@ namespace STORE
     void vSee(void);
     tPN  tRobinToDtdPtnNo(i8 iRobin);
     tPN  tRobinToLclPtnNo(i8 iRobin);
+    tPN  tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     i8   iWhichNodeNo(tPN tPtnNo);
     i8   i_WhichPtn(tPN tPtnNo);
  
+    tPN  tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
     tPN  tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:
