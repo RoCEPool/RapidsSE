@@ -870,8 +870,6 @@ void Step::vOperandToParcel(void)
   pParcel->vAddItem(pOperand);
   
   pParcel->vLabel(pSrcOp->eCrossTopo(),
-                  C_UNKNOWN,
-                  C_UNKNOWN,
                   pSrcOp->pPipelineJob()->iJobId());
   
   m_pDataStack->vPushPtr(pParcel);

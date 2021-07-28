@@ -23,8 +23,8 @@ namespace STORE
 
     eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
 
-    i8 m_nItems;                        // number of objects in the parcel
-    Object* m_pItems[C_MAX_PARCEL_ITEMS];  // let's for now, a fixed size array of
+    i8 m_nItems;            // number of items in this parcel
+    Object* m_pItems[C_MAX_PARCEL_ITEMS];
   
     // must be last
     Footer m_xFooter;
@@ -34,27 +34,20 @@ namespace STORE
     void  operator delete(void*);
   
     Parcel(void);
-  
    ~Parcel(void) noexcept(false);
 
   public:
     static void vPostRecv(void* aParcel);
 
     void vAddItem(Object* pItem);
-  
     ePX  eCrossTopo(void);
-
-    i8  iDstNode(void);
-    i8  iDstOp(void);
-    tPN tDstPtn(void);
-    i8  iDstStage(void);
-
+    i8   iDstNode(void);
+    i8   iDstOp(void);
+    tPN  tDstPtn(void);
+    i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-    void vLabel(ePX eCrossTopo,
-                i8  iDstNode,
-                tPN tDstPtn,
-                i8  iPipelineJobId);
+    void vLabel(ePX eCrossTopo, i8  iPipelineJobId);
     i8   nItems(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);

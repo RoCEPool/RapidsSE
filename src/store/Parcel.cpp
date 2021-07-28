@@ -191,20 +191,13 @@ i8 Parcel::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set label of this Parcel                                                   */
+/* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(ePX eCrossTopo,
-                    i8  iDstNode,
-                    tPN tDstPtn,
-                    i8  iPipelineJobId)
+void Parcel::vLabel(ePX eCrossTopo, i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
   m_eCrossTopo     = eCrossTopo;
-
-  m_iDstNode       = iDstNode;
-  m_tDstPtn        = tDstPtn;
-  
   m_iPipelineJobId = iPipelineJobId;
 }
 
