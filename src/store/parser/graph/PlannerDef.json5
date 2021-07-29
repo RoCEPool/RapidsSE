@@ -570,16 +570,24 @@
                       ],
                       children: [
 
-// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
                         {
-                          name: "tableScanOp",
-                          value: "Linearly reads all rows in a table",
+                          name: "tableSource",
+                          value: "A data source that reads from a table",
                           properties: [
                             { name: "tableRef", type: "/__root__/definitions/object/compound/tableRef" },
-                          ]
-                        },
+                          ],
+                          children: [
 
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/indexScanOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp
+                            {
+                              name: "tableScanOp",
+                              value: "Linearly reads all rows in a table",
+                            },
+
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
+                          ] // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
+                        },
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
