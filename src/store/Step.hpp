@@ -95,6 +95,7 @@ namespace STORE
 
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
+    static void vAddSteps_Marker();
     static void vAddSteps_MetaGet(void);
     static void vAddSteps_MetaRecv(void);
     static void vAddSteps_MetaSend(void);

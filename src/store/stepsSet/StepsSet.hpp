@@ -918,10 +918,39 @@ public:
   void vMachineMemory(void);
 
   // magnitude
-
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
   void vToDigitName(void);
+
+// marker[]
+  void vMarkerDelete(void);
+  void vMarkerGet(void);
+  void vMarkerGetAndClear(void);
+  void vMarkerIsNotNull(void);
+  void vMarkerIsNull(void);
+  void vMarkerNewCancelMarker(void);
+  void vMarkerNewDataPulse(void);
+  void vMarkerNewDestroyMarker(void);
+  void vMarkerNewEachScanEosMarker(void);
+  void vMarkerNewEndCrwRhtMarker(void);
+  void vMarkerNewEndRowRhtMarker(void);
+  void vMarkerNewEosMarker(void);
+  void vMarkerNewErrorMarker(void);
+  void vMarkerNewErroredMarker(void);
+  void vMarkerNewExitMarker(void);
+  void vMarkerNewExitEarlyMarker(void);
+  void vMarkerNewExitedMarker(void);
+  void vMarkerNewExitedEarlyMarker(void);
+  void vMarkerNewNextBufferMarker(void);
+  void vMarkerNewPulsedMarker(void);
+  void vMarkerNewStartedMarker(void);
+  void vMarkerNewStartMarker(void);
+  void vMarkerNewStartCrwRhtMarker(void);
+  void vMarkerNewStartRowRhtMarker(void);
+  void vMarkerPipeIn(void);
+  void vMarkerPipeOutSet(void);
+  void vMarkerPipeToOutput(void);
+  void vMarkerSet(void);
 
   // memory
   void vMemoryByteDump(void);

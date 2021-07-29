@@ -113,6 +113,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
+  Step::vAddSteps_Marker();
   Step::vAddSteps_MetaGet();
   Step::vAddSteps_MetaRecv();
   Step::vAddSteps_MetaSend();
