@@ -948,7 +948,7 @@ public:
   void vMarkerNewStartCrwRhtMarker(void);
   void vMarkerNewStartRowRhtMarker(void);
   void vMarkerPipeIn(void);
-  void vMarkerPipeOutSet(void);
+  void vMarkerPipeOut(void);
   void vMarkerPipeToOutput(void);
   void vMarkerSet(void);
 
