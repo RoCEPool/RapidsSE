@@ -105,9 +105,8 @@ void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
   }
 
   // Manual polymorphism here
-  // TableScanOp
-  if        (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
-  //else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+  if        (TableSource::bIsOfType(szType))   { TableSource::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  //else if (   Subquery::bIsOfType(szType))   {    Subquery::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
 
   else {
     // Need to add in manual polymorphism here

@@ -17,11 +17,31 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Debug(void)
 {
+  vAddStep("debug::bloat"_Stz,       &Step::vDebugBloat);
   vAddStep("debug::breakpoint"_Stz,  &Step::vDebugBreakpoint);
   vAddStep("debug::flag@"_Stz,       &Step::vDebugFlagFetch);
   vAddStep("debug::flag!"_Stz,       &Step::vDebugFlagStore);
   vAddStep("debug::trap"_Stz,        &Step::vDebugBreakpoint);
   vAddStep("debug::throw"_Stz,       &Step::vDebugThrow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* debug::bloat -- throw an exception                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vDebugBloat(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = new RowBuffer();
+  m_pJob->pLogicUnit_job()->m_xpOperandA = pRowBuffer;
+
+  while (true) {
+    RowBuffer* pNewRowBuffer = new RowBuffer();
+    pRowBuffer->vNextRowBuffer(pNewRowBuffer);
+    pRowBuffer = pNewRowBuffer;
+  }
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
