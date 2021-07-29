@@ -14,9 +14,39 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_System(void)
 {
+  vAddStep("system::open@"_Stz,    &Step::vSystemOpenFetch);
+  vAddStep("system::open!"_Stz,    &Step::vSystemOpenStore);
   vAddStep("system::see"_Stz,      &Step::vSystemSee);
   vAddStep("system::started@"_Stz, &Step::vSystemStartedFetch);
   vAddStep("system::started!"_Stz, &Step::vSystemStartedStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* system::open@ -- fetch system open indicator                               */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemOpenFetch(void)
+{
+  ENTRY();
+  
+  b8 bSystemOpen = AM::SYSTEM::bSystemOpen();
+  
+  m_pDataStack->vPushInt(AM::SYSTEM::bSystemOpen());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* system::open! -- store system open indicator                               */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemOpenStore(void)
+{
+  ENTRY();
+  
+  b8 bSystemOpen = m_pDataStack->iPopInt(__func__);
+  
+  AM::SYSTEM::vSystemOpen(bSystemOpen);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
