@@ -17,7 +17,8 @@
 
     stage stageB on all nodes :
     
-      stageC
+        sysClose
+      | stageC
 
     stage stageC on origin :
     

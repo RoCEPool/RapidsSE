@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : sysOpen_sysOpen \handler
 
+  true system::open!
+  
   PipeIn[].pipeOut
   
   true
@@ -23,7 +25,7 @@
 
   op__topology
 
-  find: sysOpen_sysOpen  ZK_CRWBUFFER  op[].handler!
+  find: sysOpen_sysOpen  ZK_STARTMARKER  op[].handler!
 
   op__loop
 
