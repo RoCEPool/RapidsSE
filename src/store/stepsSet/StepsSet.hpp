@@ -1691,6 +1691,7 @@ public:
   void vSysArgsPrint(void);
 
   // system
+  void vSystemSee(void);
   void vSystemStartedStore(void);
   void vSystemStartedFetch(void);
 

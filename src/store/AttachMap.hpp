@@ -29,7 +29,6 @@ namespace STORE
     Now   m_oNow;
     i8    m_iPid;
     Timer m_oSince;
-    b8    m_bSystemOpen;
     i8    m_iTimePoint;
   
     s256  m_sTraceFile;
@@ -64,6 +63,7 @@ namespace STORE
     i8            m_iStop;
     bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
+    b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;

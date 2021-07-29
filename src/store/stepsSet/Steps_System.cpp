@@ -14,8 +14,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_System(void)
 {
-  vAddStep("system::started@"_Stz,          &Step::vSystemStartedFetch);
-  vAddStep("system::started!"_Stz,          &Step::vSystemStartedStore);
+  vAddStep("system::see"_Stz,      &Step::vSystemSee);
+  vAddStep("system::started@"_Stz, &Step::vSystemStartedFetch);
+  vAddStep("system::started!"_Stz, &Step::vSystemStartedStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* system::see -- see system                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemSee(void)
+{
+  ENTRY();
+  
+  vTrace("%s Pid %lld %s\n"_Stz
+         ,AM::szNodeNm()
+         ,AM::iPid()
+         ,AM::SYSTEM::bSystemOpen() ? "open" : "closed"
+         );
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
