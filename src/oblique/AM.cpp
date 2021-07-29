@@ -1007,6 +1007,20 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* elapsed time (in nanoseconds) since boot                                   */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSTEM::nNanoseconds(void)
+{
+  _static_
+  
+  gpAttachMap->m_oSince.vUpdate();
+  
+  i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
+    
+  return nElapsed;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
@@ -1030,17 +1044,26 @@ void AM::SYSTEM::vStarted(bool bStarted)
 }
 
 /*----------------------------------------------------------------------------*/
-/* elapsed time (in nanoseconds) since boot                                   */
+/* is system open?                                                            */
 /*----------------------------------------------------------------------------*/
-i8 AM::SYSTEM::nNanoseconds(void)
+bool AM::SYSTEM::bSystemOpen(void)
 {
   _static_
   
-  gpAttachMap->m_oSince.vUpdate();
-  
-  i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
-    
-  return nElapsed;
+  if (! gpAttachMap)
+    return false;
+
+  return gpAttachMap->m_bSystemOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set system open                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vSystemOpen(bool bSystemOpen)
+{
+  _static_
+
+  gpAttachMap->m_bSystemOpen = bSystemOpen;
 }
 
 /*----------------------------------------------------------------------------*/
