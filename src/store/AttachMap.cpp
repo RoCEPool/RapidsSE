@@ -64,51 +64,43 @@ AttachMap::AttachMap(void)
   
   m_uAttachMapState = C_CREATED;
   
-
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
-  
-  m_iTimePoint = AM::iRdTickingDevice();
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+  // m_oBirth
+  // m_oNow
+  // m_iPid
   m_oSince.vStart();
-    
-  // create the transient heaps
+  m_bSystemOpen = true;
+  m_iTimePoint  = AM::iRdTickingDevice();
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // create the heaps
   m_xHeaps.vInit();
 
+  m_pBucketMap      = nullptr;
+  m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
-  
-  m_pJobs = new Jobs;
+  m_pJobs           = new Jobs;
+  m_pObjects        = new Objects;
+  m_pPtnMap         = nullptr;
+  m_pTxSet          = new TxSet;
 
-  m_pObjects = new Objects;
   
-  m_pDicRoot = new Dic("__dicRoot"_Stz);
-      
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   
-  // create the persistent heaps
-//  m_xHeaps.Persistent.m_pTiny  =
-//    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
-//  m_xHeaps.Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  m_xHeaps.Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  m_xHeaps.Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
-
-
-  m_pTxSet = new TxSet;
 
   _checkInitialised_(CN_ATTACHMAP);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pBucketMap = nullptr;
-  m_pPtnMap    = nullptr;
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 
