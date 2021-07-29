@@ -18,6 +18,7 @@ assert::stack_0
 
 "b" .verbose
 
+  "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
 
 "c" .verbose

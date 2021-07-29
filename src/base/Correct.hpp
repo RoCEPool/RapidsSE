@@ -32,7 +32,13 @@ namespace BASE
                              const char* azFilePath,
                              i8    iLineNo,
                              Stz*  szCondition,...);
-  
+
+  [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
+                                 const char* azFunc,
+                                 const char* azFilePath,
+                                 i8    iLineNo,
+                                 Stz*  szFormat,...);
+
   [[ noreturn ]] void vThrowUser(eFK   eKind,
                              const char* azFunc,
                              const char* azFilePath,

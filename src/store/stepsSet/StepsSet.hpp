@@ -187,6 +187,7 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
+  void vDebugBloat(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
   void vDebugThrow(void);
