@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : sysClosed_sysClosed \handler
 
+  true Session::systemCloser!
+  
   "system closed" .
 
   PipeIn[].pipeOut
@@ -25,7 +27,7 @@
 
   op__topology
 
-  find: sysClosed_sysClosed  ZK_STARTMARKER  op[].handler!
+  find: sysClosed_sysClosed  ZK_DATAPULSE  op[].handler!
 
   op__loop
 

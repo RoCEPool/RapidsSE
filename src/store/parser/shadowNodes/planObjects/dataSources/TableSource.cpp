@@ -45,7 +45,7 @@ QueryNode* TableSource::pCreate(Stz* szDefn, QueryNode* pTableRef)
   ASSERT(szDefn);
   ASSERT(TableSource::bIsOfType(szDefn));
   ASSERT(pTableRef);
-  ASSERT(pTableRef->szType()->bEqual(C_TABLEREF_DEFN));
+  ASSERT(TableRef::bIsExactType(pTableRef));
 
   // Create a unique name for this ProjectOp object
   s256 sName;

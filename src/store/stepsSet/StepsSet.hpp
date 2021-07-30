@@ -1461,8 +1461,10 @@ public:
   void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
-  void vSessionTagSetFetch(void);
+  void vSessionSystemCloserFetch(void);
+  void vSessionSystemCloserStore(void);
   void vSessionPid(void);
+  void vSessionTagSetFetch(void);
   void vSessionTablePtnFetch(void);
   void vSessionThis(void);
   void vSessionToDoFetch(void);
