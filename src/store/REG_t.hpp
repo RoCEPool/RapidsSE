@@ -61,7 +61,36 @@ namespace STORE
     
       AM::LOGICUNIT::vAddReg(pLogicUnit,this);
     }
-  
+
+    /*------------------------------------------------------------------------*/
+    /* constructor                                                            */
+    /*------------------------------------------------------------------------*/
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
+                   eRF eRepair,
+                   bool (*fpRepair)(Object* pObject, eRF eRepair),
+                   bool bNullOnDelete,
+                   bool bDeleteOnFailure,
+                   Stz* szRegNm)
+    {
+      m_pLogicUnit = pLogicUnit;
+      m_szRegNm    = szRegNm;
+      m_eRepair    = eRepair;
+      m_fpRepair   = fpRepair;
+
+      m_pComponent = nullptr;
+
+      m_bUseAllowed      = true;
+      m_bInitialised     = true;
+      m_bFinalised       = true;
+
+      m_bNullOnDelete    = bNullOnDelete;
+      m_bDeleteOnFailure = bDeleteOnFailure;
+
+      m_uSpare = 0;
+
+      AM::LOGICUNIT::vAddReg(pLogicUnit,this);
+    }
+
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
@@ -118,7 +147,20 @@ namespace STORE
       delete m_pComponent;
       m_pComponent = nullptr;
     }
-  
+
+    /*------------------------------------------------------------------------*/
+    /* dump the register                                                      */
+    /*------------------------------------------------------------------------*/
+    void vDump(void)
+    {
+      if (m_pComponent) {
+        vTrace("%20s : %p ; \n"_Stz,
+               m_szRegNm,
+               m_pComponent
+        );
+      }
+    }
+
     /*------------------------------------------------------------------------*/
     /* is there a pointer?                                                    */
     /*------------------------------------------------------------------------*/

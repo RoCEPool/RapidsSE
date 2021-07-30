@@ -62,9 +62,9 @@ void Step::vErrorMarkerDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
   
-  m_pJob->pLogicUnit_job()->m_xpMarker = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = nullptr;
   
   EXIT();
 }
@@ -76,7 +76,7 @@ void Step::vErrorMarkerGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
   
   EXIT();
 }
@@ -88,9 +88,9 @@ void Step::vErrorMarkerGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
   
-  m_pJob->pLogicUnit_job()->m_xpMarker = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = nullptr;
 
   EXIT();
 }
@@ -102,7 +102,7 @@ void Step::vErrorMarkerIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpMarker.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpErrorMarker.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -114,7 +114,7 @@ void Step::vErrorMarkerIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpMarker.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpErrorMarker.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -126,9 +126,9 @@ void Step::vErrorMarkerNewErrorMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpMarker.bIsNull());
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpErrorMarker.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpMarker = new Marker(OM_ERRORMARKER);
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = new Marker(OM_ERRORMARKER);
   
   EXIT();
 }
@@ -144,7 +144,7 @@ void Step::vErrorMarkerPipeIn(void)
 
   m_pJob->pLogicUnit_job()->m_xpPipein = nullptr;
     
-  m_pJob->pLogicUnit_job()->m_xpMarker = pOperand;
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = pOperand;
   
   EXIT();
 }
@@ -156,13 +156,13 @@ void Step::vErrorMarkerPipeOut(void)
 {
   ENTRY();
 
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
 
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
-  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpMarker,this);
+  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpErrorMarker,this);
 
-  m_pJob->pLogicUnit_job()->m_xpMarker = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = nullptr;
 
   EXIT();
 }
@@ -174,13 +174,13 @@ void Step::vErrorMarkerPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToOutput(*m_pJob->pLogicUnit_job()->m_xpMarker);
+  pOp->vPipeToOutput(*m_pJob->pLogicUnit_job()->m_xpErrorMarker);
   
-  m_pJob->pLogicUnit_job()->m_xpMarker = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = nullptr;
   
   EXIT();
 }
@@ -194,9 +194,9 @@ void Step::vErrorMarkerSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpMarker.bIsNull());
+  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpErrorMarker.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpMarker = _pOperand(pOperand);
+  m_pJob->pLogicUnit_job()->m_xpErrorMarker = _pOperand(pOperand);
   
   EXIT();
 }

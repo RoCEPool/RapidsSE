@@ -10,6 +10,7 @@
 #include "Grid.hpp" //?
 
 #include "SP_Lock.hpp" //?
+#include "LogicUnit.hpp" //?
 
 Atomic gixTask;
 
@@ -308,7 +309,6 @@ void Task::vExceptionTrace(void)
   vContentDump();
   AM::vTaskFullTrace(this);
   
-  
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("\n\n"_Stz);
 }
@@ -592,7 +592,10 @@ void Task::vDump(void)
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack);
 
-  
+
+  // dump the logicUnit registers
+  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+
   vTrace("== End Task Dump ============================================\n"_Stz);
   AM::vTraceDumpDropLock();
 }
