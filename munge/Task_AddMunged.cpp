@@ -23917,6 +23917,8 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  task::seeLockSets\n"
     "\n"
+    "  task::seeLogicUnitRegisters\n"
+    "\n"
     "  task::releaseLockSets\n"
     "\n"
     "  grid::seeNodes\n"

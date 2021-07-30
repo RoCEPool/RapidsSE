@@ -1123,6 +1123,16 @@ void Task::vSeeLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see lock sets                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeLogicUnitRegisters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is task seeded to run                                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bSeeded(void)
