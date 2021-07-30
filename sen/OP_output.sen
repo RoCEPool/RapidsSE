@@ -92,8 +92,8 @@
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   PipeIn[].pipeToOutput
-  Marker[].newErrorMarker
-  Marker[].pipeOut
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
 
   true
 ;

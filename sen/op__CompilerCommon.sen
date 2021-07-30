@@ -41,8 +41,8 @@
     then
 
     InfoSet[].pipeOut
-    Marker[].newErrorMarker
-    Marker[].pipeOut
+    ErrorMarker[].newErrorMarker
+    ErrorMarker[].pipeOut
     true
     exit
   then

@@ -33,7 +33,7 @@ void Step::vDebugBloat(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = new RowBuffer();
-  m_pJob->pLogicUnit_job()->m_xpOperandA = pRowBuffer;
+  m_pJob->pLogicUnit_job()->m_xpMemoryHog = pRowBuffer;
 
   while (true) {
     RowBuffer* pNewRowBuffer = new RowBuffer();
