@@ -34,9 +34,10 @@ namespace STORE
     bool   bGrabLock(void);
     bool   bHasJobClass(eCN eJobClass);
     bool   bIsLocked(void);
-    bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
-    
+    bool   bRemoveJob(Job* pJob);
+    void   vSee(void);
+
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);

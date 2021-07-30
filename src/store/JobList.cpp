@@ -229,6 +229,32 @@ bool JobList::bRemoveJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void JobList::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  vTrace("\n"_Stz);
+  
+  for (SkipNode* pNode = m_pJobsSkipList->pFirst(0);
+       pNode;
+       pNode = m_pJobsSkipList->pNext(pNode, 0)) {
+    Job* pJob = (Job*)(pNode->m_pObject);
+    
+    vTrace("  Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           aCN[pJob->eGetClassNo()],
+           pJob->iJobId(),
+           pJob->iParticipantNode(),
+           pNode->m_nRight);
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of jobs in jobs skip list                                       */
 /*----------------------------------------------------------------------------*/
 i8 JobList::nJobs(void)

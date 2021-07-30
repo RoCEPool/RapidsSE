@@ -749,20 +749,6 @@ public:
   // job NetHog
   void vJob_NetHogHogNoFetch(void);
 
-  // job Pipeline
-  void vPipelineSpawnOps(void);
-  void vPipelineCancelledStore(void);
-  void vPipelineCompileStmt(void);
-  void vPipelineDeleteSpec(void);
-  void vPipelineEarlyExitFetch(void);
-  void vPipelineEarlyExitStore(void);
-  void vPipelineErroredStore(void);
-  void vPipelineEnqueueStart(void);
-  void vPipelineCancelledFetch(void);
-  void vPipelineErroredFetch(void);
-  void vPipelinePulsedFetch(void);
-  void vPipelinePulsedStore(void);
-
   // job publish
   void vJob_PublishSpawnSub(void);
   void vJob_PublishTableStore(void);
@@ -804,6 +790,12 @@ public:
   void vJob_SortBegin(void);
   void vJob_SortEnd(void);
   void vJob_SortExecute(void);
+
+  // jobs
+  void vJobsSeeDlist(void);
+  void vJobsSeeLlist(void);
+  void vJobsSeeOlist(void);
+  void vJobsSeePlist(void);
 
   // kbase
   void vKbaseCallSchedule(void);
@@ -1133,6 +1125,21 @@ public:
 
   // pipeline
   void vPipelinePipeout(void);
+
+  // job Pipeline
+  void vPipelineSpawnOps(void);
+  void vPipelineCancelledStore(void);
+  void vPipelineCompileStmt(void);
+  void vPipelineDeleteSpec(void);
+  void vPipelineEarlyExitFetch(void);
+  void vPipelineEarlyExitStore(void);
+  void vPipelineErroredStore(void);
+  void vPipelineEnqueueStart(void);
+  void vPipelineCancelledFetch(void);
+  void vPipelineErroredFetch(void);
+  void vPipelinePulsedFetch(void);
+  void vPipelinePulsedStore(void);
+
 
   // plan
   void vPlanCompile(void);

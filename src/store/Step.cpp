@@ -102,7 +102,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobRef();
-  
+  Step::vAddSteps_Jobs();
+
   Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
