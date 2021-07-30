@@ -200,7 +200,9 @@ assert::stack_0
   "OP_syntaxTable.sen"          include
   "OP_syntaxUniqueIndex.sen"    include
   "OP_sysClose.sen"             include
+  "OP_sysClosed.sen"            include
   "OP_sysOpen.sen"              include
+  "OP_sysOpened.sen"            include
 
 "t" .verbose
 

@@ -22,7 +22,8 @@
 
     stage stageC on origin :
     
-        output
+        sysOpened
+      | output
       | sink
       | stageA
 
