@@ -29,17 +29,55 @@
 void Step::vAddSteps_Jobs(void)
 {
   vAddStep("jobs::seeDlist"_Stz,       &Step::vJobsSeeDlist);
- 
+  vAddStep("jobs::seeLlist"_Stz,       &Step::vJobsSeeLlist);
+  vAddStep("jobs::seeOlist"_Stz,       &Step::vJobsSeeOlist);
+  vAddStep("jobs::seePlist"_Stz,       &Step::vJobsSeePlist);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.acksRemaining! -- set acks remaining for this job                      */
+/* jobs::seeDlist! -- see contents of m_pDemonJobs                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeeDlist(void)
 {
   ENTRY();
   
   AM::pDemonJobs()->vSee();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::seeLlist! -- see contents of m_pLocalJobs                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsSeeLlist(void)
+{
+  ENTRY();
+  
+  AM::pLocalJobs()->vSee();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::seeOlist! -- see contents of m_pOriginatingJobs                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsSeeOlist(void)
+{
+  ENTRY();
+  
+  AM::pOriginatingJobs()->vSee();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::seePlist! -- see contents of m_pParticipatingJobs                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsSeePlist(void)
+{
+  ENTRY();
+  
+  AM::pParticipatingJobs()->vSee();
 
   EXIT();
 }
