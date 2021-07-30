@@ -1775,6 +1775,7 @@ public:
   void vTaskSeedInitially(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
+  void vTaskSeeLogicUnitRegisters(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);

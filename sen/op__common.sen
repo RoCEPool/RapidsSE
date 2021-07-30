@@ -486,6 +486,8 @@
   
   task::seeLockSets
 
+  task::seeLogicUnitRegisters
+
   task::releaseLockSets
 
   grid::seeNodes

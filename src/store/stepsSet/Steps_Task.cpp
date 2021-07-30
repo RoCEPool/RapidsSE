@@ -32,6 +32,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
+  vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
@@ -380,6 +381,18 @@ void Step::vTaskSeeLockSets(void)
   ENTRY();
   
   vSeeLockSets();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seeLogicUnitRegisters -- see logic Unit registers                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeeLogicUnitRegisters(void)
+{
+  ENTRY();
+
+  vSeeLogicUnitRegisters();
 
   EXIT();
 }

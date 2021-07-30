@@ -162,6 +162,7 @@ namespace BASE
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
+    void vSeeLogicUnitRegisters(void);
     bool bSeeded(void);
     void vSeedTask(void);
     void vSleepUsec(i8 iMicroSeconds);
