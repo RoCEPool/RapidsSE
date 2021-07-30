@@ -515,10 +515,47 @@
                       ],
                       children: []
                     },
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/nestedLoopJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp
+                    {
+                      name: "joinOp",
+                      value: "Base definition of a join operation",
+                      properties: [
+                        {
+                          name: "joinType",
+                          value: "Is this an inner join, semi join, right outer join, etc",
+                          type: "/__root__/definitions/types/joinType"
+                        },
+                        {
+                          name: "joinPredicate",
+                          value: "An expression that determines if a given left/right row are to be joined",
+                          type: "/__root__/definitions/object/expr"
+                        }
+                      ],
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/nestedLoopJoinOp
+                        {
+                          name: "nestedLoopJoinOp",
+                          value: "A basic (and largely inefficient) join algorithm that uses two nested loops"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/hashJoinOp
+                        {
+                          name: "hashJoinOp",
+                          value: "A join algorithm that uses a hashmap to equate left and right predicate values"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/sortMergeJoinOp
+                        {
+                          name: "sortMergeJoinOp",
+                          value: "An efficient join algorithm that relies on the left and right rows to be in sorted order"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp
+                        {
+                          name: "indexLookupJoinOp",
+                          value: "A join algorithm that uses an index to look up individual rows by their indexed predicate"
+                        }
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/joinOp
+
 // Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
                     {
                       name: "orderOp",
@@ -586,8 +623,8 @@
                             },
 
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
-                          ] // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
-                        },
+                          ]
+                        }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
@@ -2315,7 +2352,48 @@
                   value: "Data is sent to a pipeline stage running on the same node"
                 }
               ]
-            },
+            }, // EndPath: /__root__/definitions/types/routing
+
+// Path: /__root__/definitions/types/joinType
+            {
+              name: "joinType",
+              value: "Whether the join is an inner join, left outer join, full outer join, etc",
+              children: [
+// Path: /__root__/definitions/types/joinType/innerJoin
+                {
+                  name: "innerJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true"
+                },
+                {
+                  name: "crossJoin",
+                  value: "Emits combined left/right row for all left/right combinations"
+                },
+                {
+                  name: "naturalJoin",
+                  value: "Emits combined left/right row based on common column names. Only 1 copy of common columns is emitted."
+                },
+                {
+                  name: "semiJoin",
+                  value: "Emits only left row if join predicate evaluates true"
+                },
+                {
+                  name: "antiJoin",
+                  value: "Emits only left row if join predicate never evaluated to true for all right row combinations"
+                },
+                {
+                  name: "leftOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row for any previously unmatched left rows"
+                },
+                {
+                  name: "rightOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined right/null row for any previously unmatched right rows"
+                },
+                {
+                  name: "fullOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows"
+                }
+              ]
+            } // EndPath: /__root__/definitions/types/joinType
           ]
         }, // EndPath: /__root__/definitions/types
       ]
