@@ -138,7 +138,9 @@ namespace STORE
     
     REG<Object>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -154,7 +156,6 @@ namespace STORE
     REG<Table>          m_xpInfoSetTable;
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
-    REG<Operand>        m_xpMarker;  // marker
     REG<Operand>        m_xpMemoryHog; // memoryHog
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
@@ -193,6 +194,12 @@ namespace STORE
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    REG<Operand>        m_xpErrorMarker;  // error marker
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool                m_bCompilerToExit;
     bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
@@ -288,6 +295,7 @@ namespace STORE
                     i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum, i8 nQueueLength);
     void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
+    void vDumpRegisters(void);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
     void vEnter(void);

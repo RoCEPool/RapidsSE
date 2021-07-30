@@ -74,6 +74,7 @@ LogicUnit::LogicUnit(Task* pTask)
 ,       m_xpCrwToRow(this,RF_NONE,         nullptr,        "m_xpCrwToRow"_Stz)
 ,           m_xpDir0(this,RF_NONE,         nullptr,        "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
+,    m_xpErrorMarker(this,RF_NONE,         nullptr,        "m_xpErrorMarker"_Stz)
 ,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
 ,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
@@ -85,8 +86,7 @@ LogicUnit::LogicUnit(Task* pTask)
 ,   m_xpInfoSetTable(this,RF_NONE,         nullptr,        "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_NONE,         nullptr,        "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_NONE,         nullptr,        "m_xpLogicCompiler"_Stz)
-,         m_xpMarker(this,RF_NONE,         nullptr,        "m_xpMarker"_Stz)
-,      m_xpMemoryHog(this,RF_NONE,         nullptr,        "m_xpMemoryHog"_Stz)
+,      m_xpMemoryHog(this,RF_NONE,         nullptr,         "m_xpMemoryHog"_Stz)
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 ,            m_xpNow(this,RF_NONE,         nullptr,        "m_xpNow"_Stz)
@@ -316,6 +316,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pDevRhtIxt;
   
   delete m_pLogicTimer;
+
+//  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
+//    m_paReg[i_Reg]->vDump();
+
 }
 
 
@@ -530,6 +534,22 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
   i8 iRes = m_afDynFun(this,nOuterArgs,iOuterArg0);
 
   return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the logicUnit registers                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDumpRegisters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  vTrace("\n------------------------------------------------------------\n"_Stz);
+  vTrace("LogicUnit RegisterDump\n"_Stz);
+
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
+    m_paReg[i_Reg]->vDump();
+
+  vTrace("------------------------------------------------------------\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
