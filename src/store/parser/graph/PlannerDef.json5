@@ -2364,30 +2364,37 @@
                   name: "innerJoin",
                   value: "Emits combined left/right row if join predicate evaluates true"
                 },
+// Path: /__root__/definitions/types/joinType/crossJoin
                 {
                   name: "crossJoin",
                   value: "Emits combined left/right row for all left/right combinations"
                 },
+// Path: /__root__/definitions/types/joinType/naturalJoin
                 {
                   name: "naturalJoin",
                   value: "Emits combined left/right row based on common column names. Only 1 copy of common columns is emitted."
                 },
+// Path: /__root__/definitions/types/joinType/semiJoin
                 {
                   name: "semiJoin",
                   value: "Emits only left row if join predicate evaluates true"
                 },
+// Path: /__root__/definitions/types/joinType/antiJoin
                 {
                   name: "antiJoin",
                   value: "Emits only left row if join predicate never evaluated to true for all right row combinations"
                 },
+// Path: /__root__/definitions/types/joinType/leftOuterJoin
                 {
                   name: "leftOuterJoin",
                   value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row for any previously unmatched left rows"
                 },
+// Path: /__root__/definitions/types/joinType/rightOuterJoin
                 {
                   name: "rightOuterJoin",
                   value: "Emits combined left/right row if join predicate evaluates true as well as combined right/null row for any previously unmatched right rows"
                 },
+// Path: /__root__/definitions/types/joinType/fullOuterJoin
                 {
                   name: "fullOuterJoin",
                   value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows"
