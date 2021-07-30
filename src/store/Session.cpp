@@ -475,18 +475,17 @@ void Session::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  vTrace("Session %llx:\n"_Stz
-         ,this
-         );
+  vTrace("See Session::\n"_Stz);
   
-  vTrace("  job %llx %s\n"_Stz
-         
-         ,m_pSsnJob
-         
-         ,m_bSystemCloser ? "system-closer" : ""
-         );
+  vTrace("  this %p\n"_Stz
+         ,this);
   
-  vTrace("\n"_Stz);
+  vTrace("  pid  %lld (%s)\n"_Stz
+         ,m_iPid
+         ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
+        );
+  
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

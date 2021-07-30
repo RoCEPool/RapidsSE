@@ -62,8 +62,9 @@ void Step::vSystemSee(void)
         ,AM::szNodeNm()
          );
 
-  vTrace("  pid %lld\n"_Stz
+  vTrace("  pid %lld (%s)\n"_Stz
          ,AM::iPid()
+         ,Process::bTestPid(AM::iPid()) ? "exists"_Stz : "non-existant"_Stz
          );
 
   vTrace("  state %s\n"_Stz
