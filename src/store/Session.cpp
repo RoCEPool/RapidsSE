@@ -463,6 +463,27 @@ void Session::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see this session                                                           */
+/*----------------------------------------------------------------------------*/
+void Session::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vTrace("Session %llx:\n"_Stz
+         ,this
+         );
+  
+  vTrace("  job %llx %s\n"_Stz
+         
+         ,m_pSsnJob
+         
+         ,m_bSystemCloser ? "system-closer" : ""
+         );
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace                                                                      */
 /*----------------------------------------------------------------------------*/
 void Session::vTraceSession(void)

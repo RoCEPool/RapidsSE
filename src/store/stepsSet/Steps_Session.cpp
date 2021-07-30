@@ -28,6 +28,7 @@ void Step::vAddSteps_Session(void)
   vAddStep("session::hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
   vAddStep("session::hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
   vAddStep("session::pid"_Stz,           &Step::vSessionPid);
+  vAddStep("session::see"_Stz,           &Step::vSessionSee);
   vAddStep("session::systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
   vAddStep("session::systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
   vAddStep("session::tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
@@ -132,6 +133,20 @@ void Step::vSessionPid(void)
   Session* pSession = MY::pSession();
 
   m_pDataStack->vPushInt(pSession->m_iPid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session::see -- see session                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionSee(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  pSession->vSee();
   
   EXIT();
 }
