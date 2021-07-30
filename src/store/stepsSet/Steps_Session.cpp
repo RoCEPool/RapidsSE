@@ -19,23 +19,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session::this"_Stz,        &Step::vSessionThis);
+  vAddStep("session::this"_Stz,          &Step::vSessionThis);
   
-  vAddStep("session::cascade@"_Stz,    &Step::vSessionCascadeFetch);
-  vAddStep("session::cascade!"_Stz,    &Step::vSessionCascadeStore);
-
-  vAddStep("session::hasCascade@"_Stz, &Step::vSessionHasCascadeFetch);
-  vAddStep("session::hasCascade!"_Stz, &Step::vSessionHasCascadeStore);
-
-  vAddStep("session::dicStack@"_Stz,   &Step::vSessionDicStackFetch);
-  vAddStep("session::dump"_Stz,        &Step::vSessionDump);
-  vAddStep("session::tagSet@"_Stz,     &Step::vSessionTagSetFetch);
-  vAddStep("session::pid"_Stz,         &Step::vSessionPid);
-  vAddStep("session::tablePtn@"_Stz,   &Step::vSessionTablePtnFetch);
-  vAddStep("session::todo@"_Stz,       &Step::vSessionToDoFetch);
-  vAddStep("session::todo!"_Stz,       &Step::vSessionToDoStore);
-  vAddStep("session::tx@"_Stz,         &Step::vSessionTxFetch);
-  vAddStep("session::tx!"_Stz,         &Step::vSessionTxStore);
+  vAddStep("session::cascade@"_Stz,      &Step::vSessionCascadeFetch);
+  vAddStep("session::cascade!"_Stz,      &Step::vSessionCascadeStore);
+  vAddStep("session::dicStack@"_Stz,     &Step::vSessionDicStackFetch);
+  vAddStep("session::dump"_Stz,          &Step::vSessionDump);
+  vAddStep("session::hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
+  vAddStep("session::hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
+  vAddStep("session::pid"_Stz,           &Step::vSessionPid);
+  vAddStep("session::systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
+  vAddStep("session::systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
+  vAddStep("session::tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
+  vAddStep("session::tagSet@"_Stz,       &Step::vSessionTagSetFetch);
+  vAddStep("session::todo@"_Stz,         &Step::vSessionToDoFetch);
+  vAddStep("session::todo!"_Stz,         &Step::vSessionToDoStore);
+  vAddStep("session::tx@"_Stz,           &Step::vSessionTxFetch);
+  vAddStep("session::tx!"_Stz,           &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,6 +132,34 @@ void Step::vSessionPid(void)
   Session* pSession = MY::pSession();
 
   m_pDataStack->vPushInt(pSession->m_iPid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session::systemCloser@ -- fetch m_bSystemCloser from session               */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionSystemCloserFetch(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPushInt(pSession->m_bSystemCloser);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ssession::systemCloser! -- store m_bSystemCloser into session              */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionSystemCloserStore(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  pSession->m_bSystemCloser = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

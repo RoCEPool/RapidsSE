@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: sysOpen_sysOpen  ZK_STARTMARKER  op[].handler!
+  find: sysOpen_sysOpen  ZK_DATAPULSE  op[].handler!
 
   op__loop
 

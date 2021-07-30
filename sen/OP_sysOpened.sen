@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : sysOpened_sysOpened \handler
 
+  false Session::systemCloser!
+
   "system opened" .
   
   PipeIn[].pipeOut
@@ -25,7 +27,7 @@
 
   op__topology
 
-  find: sysOpened_sysOpened  ZK_EXITMARKER  op[].handler!
+  find: sysOpened_sysOpened  ZK_DATAPULSE  op[].handler!
 
   op__loop
 
