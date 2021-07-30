@@ -10,7 +10,7 @@
 : sleep_sleep \handler
 
   "sleeping" .
-  <nSeconds> task::sleepSsec
+  <nSeconds> >int task::sleepSsec
   "awake" .
 
   PipeIn[].pipeOut

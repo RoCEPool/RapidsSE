@@ -24671,7 +24671,7 @@ void Task::vAddMunged(Task* )
     ": sleep_sleep \\handler\n"
     "\n"
     "  \"sleeping\" .\n"
-    "  <nSeconds> task::sleepSsec\n"
+    "  <nSeconds> >int task::sleepSsec\n"
     "  \"awake\" .\n"
     "\n"
     "  PipeIn[].pipeOut\n"
