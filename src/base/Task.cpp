@@ -289,8 +289,8 @@ void Task::vExceptionTrace(void)
 {
   _noPreconditions_
   
-  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-    return;
+//  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+//    return;
   
   //
   // trace what is relevant for debugging.  could be quite substantial

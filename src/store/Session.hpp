@@ -46,6 +46,8 @@ namespace STORE
     bool     m_bHasCascade;   // is there a cascading statement to execute?
     s16KB    m_sCascade;      // the cascade statement
   
+    bool     m_bSystemCloser; // is this session the system closer?
+  
     // -- -- -- -- -- --
 
     Timer m_oTimer;      // call timer

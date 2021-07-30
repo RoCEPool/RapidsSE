@@ -96,6 +96,7 @@ Session::Session(void)
   m_bHasCascade = false;
   m_sCascade    = ""_Stz;
   
+  m_bSystemCloser = false;
   
   // -- -- -- -- -- --
   m_pOutput           = nullptr;
