@@ -25,13 +25,12 @@ namespace STORE
       char  m_caAttachMapState[8];
     };
   
-    i8    m_iPid;
     Birth m_oBirth;
     Now   m_oNow;
-    i8    m_iTimePoint;
-    
+    i8    m_iPid;
     Timer m_oSince;
-
+    i8    m_iTimePoint;
+  
     s256  m_sTraceFile;
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
@@ -64,6 +63,7 @@ namespace STORE
     i8            m_iStop;
     bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
+    b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;

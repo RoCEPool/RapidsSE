@@ -1673,6 +1673,9 @@ public:
   void vSysArgsPrint(void);
 
   // system
+  void vSystemOpenFetch(void);
+  void vSystemOpenStore(void);
+  void vSystemSee(void);
   void vSystemStartedStore(void);
   void vSystemStartedFetch(void);
 
