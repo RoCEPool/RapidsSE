@@ -293,15 +293,11 @@ void Grid::vSeeNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  vTrace("Grid::\n"_Stz);
+  vTrace("See Grid::\n"_Stz);
 
-  vTrace("  %lld partitions per table = "
-         "%lld total partitions in grid "
-         "\n"_Stz
-         ,AM::PTNMAP::nPtnsPerNode()
-         ,AM::PTNMAP::nPtnsInGrid()
-         );
-  
+  vTrace("  ptns per node %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+  vTrace("  ptns in grid  %lld\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+
   SP_Node spNode;
   
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {

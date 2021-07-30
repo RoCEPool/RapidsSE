@@ -235,8 +235,8 @@ void JobList::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  vTrace("\n"_Stz);
-  
+  vTrace("See JobList %s::\n"_Stz,aJL[m_eJobsList]);
+
   for (SkipNode* pNode = m_pJobsSkipList->pFirst(0);
        pNode;
        pNode = m_pJobsSkipList->pNext(pNode, 0)) {
@@ -251,7 +251,7 @@ void JobList::vSee(void)
            pNode->m_nRight);
   }
   
-  vTrace("\n"_Stz);
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

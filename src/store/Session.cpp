@@ -138,11 +138,17 @@ void Session::vContentDump(void)
 {
   _static_
   
-  vTrace("Session %p: pid %lld (%s)\n"_Stz,
-         this,
-         m_iPid,
-         Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
-         );
+  vTrace("See Session::\n"_Stz);
+  
+  vTrace("  this %p\n"_Stz
+         ,this);
+  
+  vTrace("  pid  %lld %s\n"_Stz
+         ,m_iPid
+         ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
+        );
+  
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

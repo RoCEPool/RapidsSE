@@ -256,7 +256,7 @@ void Step::vGridShow(void)
              (*oNode_I)->pSendSocket() ? "connected" : "not connected");
   
   
-  vTrace("\n"_Stz);
+  vTrace(";;\n\n"_Stz);
 
   EXIT();
 }

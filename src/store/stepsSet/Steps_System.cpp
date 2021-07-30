@@ -56,15 +56,21 @@ void Step::vSystemSee(void)
 {
   ENTRY();
   
-  vTrace("System::\n"_Stz);
+  vTrace("See System::\n"_Stz);
 
-  vTrace("  %s Pid %lld %s\n"_Stz
+  vTrace("  name %s\n"_Stz
         ,AM::szNodeNm()
+         );
+
+  vTrace("  pid %lld\n"_Stz
          ,AM::iPid()
+         );
+
+  vTrace("  state %s\n"_Stz
          ,AM::SYSTEM::bSystemOpen() ? "open" : "closed"
          );
 
-  vTrace("\n"_Stz);
+  vTrace(";;\n\n"_Stz);
   
   EXIT();
 }
