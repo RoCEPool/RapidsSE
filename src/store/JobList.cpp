@@ -8,6 +8,9 @@
 #include "Job__Find.hpp"
 #include "JobList.hpp"
 
+#include "PipelineSpec.hpp"
+#include "LogicUnit.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -254,10 +257,17 @@ void JobList::vSee(void)
            );
 
     if (C_UNKNOWN != pJob->iParticipantNode())
-      vTrace("partNode %lld"_Stz
+      vTrace("partNode %lld "_Stz
              ,pJob->iParticipantNode()
              );
 
+    LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+    if (pLogicUnit && pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+      vTrace("%s "_Stz
+             ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+             );
+    }
+    
     vTrace("\n"_Stz);
   }
   
