@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : sysClosed_sysClosed \handler
 
+  system::activeJobs "$$$ ActiveJobs %v" .printf
+  
   true Session::systemCloser!
   
   "system closed" .

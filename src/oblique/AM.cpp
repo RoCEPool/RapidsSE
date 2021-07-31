@@ -1007,6 +1007,21 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* get number of active jobs in the system                                    */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSTEM::nActiveJobs(void)
+{
+  _static_
+    
+  i8 nActiveJobs =   gpAttachMap->m_pJobs->m_pLocalJobs->nJobs()
+                   + gpAttachMap->m_pJobs->m_pOriginatingJobs->nJobs()
+                   + gpAttachMap->m_pJobs->m_pParticipatingJobs->nJobs()
+                   ;
+  
+  return nActiveJobs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* elapsed time (in nanoseconds) since boot                                   */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSTEM::nNanoseconds(void)

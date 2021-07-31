@@ -29,7 +29,9 @@ void Step::vSystemActiveJobs(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(0);
+  i8 nActiveJobs = AM::SYSTEM::nActiveJobs();
+  
+  m_pDataStack->vPushInt(nActiveJobs);
 
   EXIT();
 }

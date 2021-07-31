@@ -7683,6 +7683,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": sysClosed_sysClosed \\handler\n"
     "\n"
+    "  system::activeJobs \"$$$ ActiveJobs %v\" .printf\n"
+    "  \n"
     "  true Session::systemCloser!\n"
     "  \n"
     "  \"system closed\" .\n"

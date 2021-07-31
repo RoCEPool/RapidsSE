@@ -322,6 +322,7 @@ namespace OBLIQUE
     class SYSTEM
     {
     public:
+      static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
       static bool bStarted(void);
       static void vStarted(bool bStarted);
