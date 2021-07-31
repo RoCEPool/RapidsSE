@@ -242,8 +242,14 @@ void JobList::vSee(void)
        pNode = m_pJobsSkipList->pNext(pNode, 0)) {
     Job* pJob = (Job*)(pNode->m_pObject);
     
-    vTrace("  Job %lld name %s "_Stz
-           ,pJob->iJobId()
+    i8 iJobId = pJob->iJobId();
+
+    i8 iNodeNo = Job::iNodeNo(iJobId);
+    i8 iJobNo  = Job::iJobNo(iJobId);
+
+    vTrace("  Job %lld.%lld %s "_Stz
+           ,iNodeNo
+           ,iJobNo
            ,pJob->szJobNm()
            );
 
