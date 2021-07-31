@@ -436,7 +436,8 @@ void Constants::vAddConstantsCpp(void)
   /* 52 */ vAddConstant("EC_SE_NOT_RUNNING"_Stz,     EC_SE_NOT_RUNNING);
   /* 53 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Stz,   EC_SE_UNKNOWN_ERROR);
   /* 54 */ vAddConstant("EC_SEND_FAILURE"_Stz,       EC_SEND_FAILURE);
-  
+  /*    */ vAddConstant("EC_SYSTEM_CLOSED"_Stz,      EC_SYSTEM_CLOSED);
+
   /*    */ vAddConstant("EC_TABLE_ALREADY_LOADED"_Stz, EC_TABLE_ALREADY_LOADED);
   /* 55 */ vAddConstant("EC_TABLE_EXISTS"_Stz,       EC_TABLE_EXISTS);
   /* 56 */ vAddConstant("EC_TABLE_IN_USE"_Stz,       EC_TABLE_IN_USE);

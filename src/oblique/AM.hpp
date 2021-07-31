@@ -249,6 +249,7 @@ namespace OBLIQUE
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static eEC  ePreExecuteTest(Job* pJob);
     };
   
     class LOCK

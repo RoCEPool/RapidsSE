@@ -190,6 +190,7 @@ enum eEC // error code
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
+  EC_SYSTEM_CLOSED,
 
   /* _T_ */
   EC_TABLE_ALREADY_LOADED,
@@ -410,6 +411,7 @@ static Stz* aEC[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem
+  /* EC_SYSTEM_CLOSED                 */ "system is closed"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "table already loaded"_Stz,
@@ -632,6 +634,7 @@ static Stz* aEC2[] // error code
   /* EC_SEMANTIC_ERROR                */ "EC_SEMANTIC_ERROR"_Stz,                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "EC_SEND_FAILURE"_Stz,
   /* EC_SYNTAX_ERROR                  */ "EC_SYNTAX_ERROR"_Stz,                   // SQL Compiler Subsystem
+  /* EC_SYSTEM_CLOSED                 */ "EC_SYSTEM_CLOSED"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "EC_TABLE_ALREADY_LOADED"_Stz,
@@ -863,6 +866,7 @@ static Stz* aErrorMsg[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem. Custom error string from ANTLR.
+  /* EC_SYSTEM_CLOSED                 */ "system closed"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "table already loaded"_Stz,

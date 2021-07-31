@@ -326,6 +326,22 @@ Stz* AM::JOB::szJobNm(Job* pJob)
   return pJob->szJobNm();
 }
 
+/*----------------------------------------------------------------------------*/
+/* test if the job passes all pre-execution requirements                      */
+/*----------------------------------------------------------------------------*/
+eEC AM::JOB::ePreExecuteTest(Job* pJob)
+{
+  _static_
+
+  if (! AM::SYSTEM::bPassesLowMem(pJob))
+    return EC_LOW_MEMORY;
+
+  if (! AM::SYSTEM::bPassesOpenSystem(pJob))
+    return EC_SYSTEM_CLOSED;
+
+  return EC_NONE;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  LOCK                                      */
