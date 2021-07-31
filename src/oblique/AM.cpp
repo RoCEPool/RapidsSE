@@ -1054,6 +1054,22 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* passes the open-system condition?                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
+{
+  _static_
+
+  if (bSystemOpen())
+    return true;
+    
+  if (MY::pSession()->m_bSystemCloser)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
