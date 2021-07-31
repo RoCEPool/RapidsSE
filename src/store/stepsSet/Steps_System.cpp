@@ -14,11 +14,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_System(void)
 {
-  vAddStep("system::open@"_Stz,    &Step::vSystemOpenFetch);
-  vAddStep("system::open!"_Stz,    &Step::vSystemOpenStore);
-  vAddStep("system::see"_Stz,      &Step::vSystemSee);
-  vAddStep("system::started@"_Stz, &Step::vSystemStartedFetch);
-  vAddStep("system::started!"_Stz, &Step::vSystemStartedStore);
+  vAddStep("system::activeJobs"_Stz, &Step::vSystemActiveJobs);
+  vAddStep("system::open@"_Stz,      &Step::vSystemOpenFetch);
+  vAddStep("system::open!"_Stz,      &Step::vSystemOpenStore);
+  vAddStep("system::see"_Stz,        &Step::vSystemSee);
+  vAddStep("system::started@"_Stz,   &Step::vSystemStartedFetch);
+  vAddStep("system::started!"_Stz,   &Step::vSystemStartedStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* system::activeJobs -- get number of active jobs                            */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemActiveJobs(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushInt(0);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

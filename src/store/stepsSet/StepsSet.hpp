@@ -1683,6 +1683,7 @@ public:
   void vSysArgsPrint(void);
 
   // system
+  void vSystemActiveJobs(void);
   void vSystemOpenFetch(void);
   void vSystemOpenStore(void);
   void vSystemSee(void);
