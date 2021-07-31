@@ -82,7 +82,7 @@ void Step::vSystemSee(void)
          ,Process::bTestPid(AM::iPid()) ? "exists"_Stz : "non-existant"_Stz
          );
 
-  vTrace("  state %s\n"_Stz
+  vTrace("  system %s\n"_Stz
          ,AM::SYSTEM::bSystemOpen() ? "open" : "closed"
          );
 
