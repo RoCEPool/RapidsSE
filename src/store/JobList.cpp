@@ -242,13 +242,17 @@ void JobList::vSee(void)
        pNode = m_pJobsSkipList->pNext(pNode, 0)) {
     Job* pJob = (Job*)(pNode->m_pObject);
     
-    vTrace("  Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
-           pJob,
-           pJob->szJobNm(),
-           aCN[pJob->eGetClassNo()],
-           pJob->iJobId(),
-           pJob->iParticipantNode(),
-           pNode->m_nRight);
+    vTrace("  Job %lld name %s "_Stz
+           ,pJob->iJobId()
+           ,pJob->szJobNm()
+           );
+
+    if (C_UNKNOWN != pJob->iParticipantNode())
+      vTrace("partNode %lld"_Stz
+             ,pJob->iParticipantNode()
+             );
+
+    vTrace("\n"_Stz);
   }
   
   vTrace(";;\n\n"_Stz);
