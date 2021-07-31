@@ -324,6 +324,7 @@ namespace OBLIQUE
     public:
       static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
+      static bool bPassesLowMem(Job* pJob);
       static bool bStarted(void);
       static void vStarted(bool bStarted);
       static bool bSystemOpen(void);
@@ -560,7 +561,6 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);
-    static bool bPassesLowMem(Job* pJob);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);

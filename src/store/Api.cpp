@@ -378,7 +378,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   if ( ! AM::bParseCmd(pCmdTknVec,pJobCtlTagSet) )
     return EC_INVALID_COMMAND;
   
-  //if (! AM::bPassesLowMem())
+  //if (! AM::SYSTEM::bPassesLowMem())
   //  return EC_LOW_MEMORY;
   
   pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);

@@ -1036,6 +1036,24 @@ i8 AM::SYSTEM::nNanoseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bPassesLowMem(Job* pJob)
+{
+  _static_
+
+  if (! gpBufferPool->bLowMemory())
+    return true;
+  
+  pJob->pJobTags()->vContentDump();
+  
+  if (pJob->bHasTag(C_TAG_LOWMEMORY))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
@@ -2559,43 +2577,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   }
   
   return (i8)eOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* passes the low-memory condition?                                           */
-/*----------------------------------------------------------------------------*/
-bool AM::bPassesLowMem(Job* pJob)
-{
-  _static_
-
-  if (! gpBufferPool->bLowMemory())
-    return true;
-  
-  pJob->pJobTags()->vContentDump();
-  
-  if (pJob->bHasTag(C_TAG_LOWMEMORY))
-    return true;
-  
-  return false;
-  
-  //! ALKA: while cleaning up JobClass all jobs had m_eFlags
-  //! as JF_LOWMEM hence returning true
-  //return true;
-  
-//  if (aJobCLass->m_eFlags != JF_LOWMEM)
-//    return true;
-//
-//  if (! gpBufferPool->bLowMemory())
-//    return true;
-//
-//  if (aJobCLass->m_aCommand2)
-//    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
-//           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
-//  else
-//    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
-//           aJobCLass->m_aCommand1);
-
-//  return false;
 }
 
 /*----------------------------------------------------------------------------*/

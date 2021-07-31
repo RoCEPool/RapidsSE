@@ -102,7 +102,7 @@ void Step::vPipelineCompileStmt(void)
  
   if (pPipelineSpec) {
     
-    if (AM::bPassesLowMem(m_pJob)) {
+    if (AM::SYSTEM::bPassesLowMem(m_pJob)) {
       
       // clean compile, passes low memory test
       
