@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Id.h -- Node.Object identifier                                             */
+/* Id.hpp -- Node.Object identifier                                           */
 /*============================================================================*/
 #pragma once
 
@@ -18,6 +18,15 @@ class Id
     i8 m_iAsI8;
   };
   
+  public:
+
+  Id(void);
+  
+  u8   uNodeNo(void);
+  void vNodeNo(u8 uNodeNo);
+
+  u8   uObjectNo(void);
+  void vObjectNo(u8 uObjectNo);
 };
 
 /*============================================================================*/
