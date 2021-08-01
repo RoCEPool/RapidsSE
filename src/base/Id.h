@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* Gid.h -- Grid-Wide Unique Identifier                                       */
+/* Id.h -- Grid-Wide Unique Identifier                                       */
 /*============================================================================*/
 #pragma once
 
-class Gid {
-  
+class Id
+{
   public:
   
   union {

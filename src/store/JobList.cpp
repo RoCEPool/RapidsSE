@@ -262,7 +262,7 @@ void JobList::vSee(void)
              );
 
     LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
-    if (pLogicUnit && pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+    if (pLogicUnit && pLogicUnit->m_xpPipelineSpec. bIsNotNull()) {
       vTrace("%s "_Stz
              ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
              );
