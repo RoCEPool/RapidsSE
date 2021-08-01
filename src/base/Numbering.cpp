@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Objects.cpp -- Object Numbering                                            */
+/* Numbering.cpp -- Object Numbering                                          */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -10,15 +10,15 @@
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Objects,CN_OBJECTS)
-__aNewFunction(Objects,CN_OBJECTS)
-__vDeleteFunction(Objects,CN_OBJECTS)
-__aFooterFunction(Objects)
+__pCastFunction(STORE,Numbering,CN_OBJECTS)
+__aNewFunction(Numbering,CN_OBJECTS)
+__vDeleteFunction(Numbering,CN_OBJECTS)
+__aFooterFunction(Numbering)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Objects::Objects(void)
+Numbering::Numbering(void)
 : Object(CN_OBJECTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
@@ -29,7 +29,7 @@ Objects::Objects(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Objects::~Objects(void) noexcept(false)
+Numbering::~Numbering(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS,_FOOTER_);
   
@@ -43,7 +43,7 @@ Objects::~Objects(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get next object no for given class                                         */
 /*----------------------------------------------------------------------------*/
-i8 Objects::iNextNo(eCN eClassNo)
+i8 Numbering::iNextNo(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
   
@@ -57,7 +57,7 @@ i8 Objects::iNextNo(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* set node no's where appropriate                                            */
 /*----------------------------------------------------------------------------*/
-void Objects::vNodeNo(i8 iThisNodeNo)
+void Numbering::vNodeNo(i8 iThisNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
 

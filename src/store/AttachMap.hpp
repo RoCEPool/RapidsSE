@@ -5,7 +5,7 @@
 
 #include "Resources.hpp" //?
 
-namespace STORE { class InternalTables; class Jobs; class Objects; }
+namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
 namespace STORE
 {
@@ -50,7 +50,7 @@ namespace STORE
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
     Locks         m_oLocks;
-    Objects*      m_pObjects;
+    Numbering*    m_pObjects;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;

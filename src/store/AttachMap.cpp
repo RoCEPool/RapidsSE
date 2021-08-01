@@ -85,7 +85,7 @@ AttachMap::AttachMap(void)
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
-  m_pObjects        = new Objects;
+  m_pObjects        = new Numbering;
   m_pPtnMap         = nullptr;
   m_pTxSet          = new TxSet;
 
