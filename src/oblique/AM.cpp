@@ -704,6 +704,26 @@ LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* get next object number                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::OBJECT::iNextNo(eCN eClassNo)
+{
+  i8 iObjectNo;
+    
+  if (gpAttachMap && gpAttachMap->m_pObjects)
+    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
+  else
+    iObjectNo = 1;
+  
+  return iObjectNo;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 OPERAND                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
 /* is operand an out-of-order operand?                                        */
 /*----------------------------------------------------------------------------*/
 bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
@@ -2400,21 +2420,6 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next object number                                                     */
-/*----------------------------------------------------------------------------*/
-i8 AM::iNextObjectNo(eCN eClassNo)
-{
-  i8 iObjectNo ;
-    
-  if (gpAttachMap && gpAttachMap->m_pObjects)
-    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
-  else
-    iObjectNo = 1;
-  
-  return iObjectNo;
 }
 
 /*----------------------------------------------------------------------------*/

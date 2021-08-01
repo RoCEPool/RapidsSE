@@ -281,6 +281,12 @@ namespace OBLIQUE
       static void vNew(Task* pTask, Job* pJob);
     };
 
+    class OBJECT
+    {
+    public:
+      static i8 iNextNo(eCN eClassNo);
+    };
+
     class OPERAND
     {
     public:
@@ -547,7 +553,6 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static i8   iNextObjectNo(eCN eClassNo);
     static Operand* pDuplicateOperand(Operand* pOperand);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
