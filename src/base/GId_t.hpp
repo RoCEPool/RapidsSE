@@ -10,7 +10,7 @@ namespace BASE
   {
   private:
   
-    i8 m_iObjectId; // id of this object
+    i8 m_iId; // id of this object
   
   public:
   
@@ -19,7 +19,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     Gid<CLASSNO>(void)
     {
-      m_iObjectId = AM::iNextObjectNo(CLASSNO);
+      m_iId = AM::iNextObjectNo(CLASSNO);
     }
     
     /*------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     Gid<CLASSNO>(eCN eClassNo)
     {
-      m_iObjectId = AM::iNextObjectNo(eClassNo);
+      m_iId = AM::iNextObjectNo(eClassNo);
     }
   
     /*------------------------------------------------------------------------*/
@@ -44,9 +44,9 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* member operator =                                                      */
     /*------------------------------------------------------------------------*/
-    void operator = (i8 iGid)
+    void operator = (i8 iId)
     {
-      m_iObjectId = iGid;
+      m_iId = iId;
     }
 
     /*------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     i8 operator * (void)
     {
-      return m_iObjectId;
+      return m_iId;
     }
   
     /*------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     i8 iObjectId(void)
     {
-      return m_iObjectId;
+      return m_iId;
     }
   
   };
