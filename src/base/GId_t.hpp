@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* ObjId_t.hpp -- Object Id                                                   */
+/* Gid_t.hpp -- Gride-wide unique id (by class)                               */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
   template <eCN CLASSNO>
-  class ObjId
+  class Gid
   {
   private:
   
@@ -17,7 +17,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    ObjId<CLASSNO>(void)
+    Gid<CLASSNO>(void)
     {
       m_iObjectId = AM::iNextObjectNo(CLASSNO);
     }
@@ -25,7 +25,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    ObjId<CLASSNO>(eCN eClassNo)
+    Gid<CLASSNO>(eCN eClassNo)
     {
       m_iObjectId = AM::iNextObjectNo(eClassNo);
     }
@@ -33,7 +33,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~ObjId<CLASSNO>(void)
+    ~Gid<CLASSNO>(void)
     {
 
     }
@@ -44,9 +44,9 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* member operator =                                                      */
     /*------------------------------------------------------------------------*/
-    void operator = (i8 iObjId)
+    void operator = (i8 iGid)
     {
-      m_iObjectId = iObjId;
+      m_iObjectId = iGid;
     }
 
     /*------------------------------------------------------------------------*/

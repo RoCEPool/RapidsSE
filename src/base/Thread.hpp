@@ -13,7 +13,7 @@ namespace BASE
   private:
     Mutex    m_oMutex;        // this threads mutex
   
-    ObjId<CN_THREAD> m_xThreadId; // threads object id
+    Gid<CN_THREAD> m_xThreadId; // threads object id
 
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
     eHS      m_eThreadState;  // thread state

@@ -30,7 +30,7 @@ namespace BASE
   private:
     Lock         m_okLock;       // lock for this task
   
-    ObjId<CN_TASK> m_xTaskId;    // tasks object id
+    Gid<CN_TASK> m_xTaskId;    // tasks object id
 
     SMA<Thread>  m_pThread;      // current thread executing this task
     SMA<Job>     m_pJob;         // job this task is executing
