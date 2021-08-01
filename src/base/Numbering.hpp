@@ -9,7 +9,7 @@ namespace STORE
   {
 
   private:
-    Atomic  m_ixaNextObjectId[CN_ENUMS];
+    Atomic  m_inaNextNo[CN_ENUMS];
   
     // must be last
     Footer m_xFooter;

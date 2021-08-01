@@ -1619,16 +1619,9 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
-  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNode);
-//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNode);
 
   i8 iThisNode = pThisNode->iNodeNo();
-  gpAttachMap->m_pObjects->vNodeNo(iThisNode);
+  gpAttachMap->m_pNumbering->vNodeNo(iThisNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

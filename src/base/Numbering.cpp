@@ -10,20 +10,20 @@
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Numbering,CN_OBJECTS)
-__aNewFunction(Numbering,CN_OBJECTS)
-__vDeleteFunction(Numbering,CN_OBJECTS)
+__pCastFunction(STORE,Numbering,CN_NUMBERING)
+__aNewFunction(Numbering,CN_NUMBERING)
+__vDeleteFunction(Numbering,CN_NUMBERING)
 __aFooterFunction(Numbering)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Numbering::Numbering(void)
-: Object(CN_OBJECTS)
+: Object(CN_NUMBERING)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NUMBERING);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_NUMBERING,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ Numbering::Numbering(void)
 /*----------------------------------------------------------------------------*/
 Numbering::~Numbering(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NUMBERING,_FOOTER_);
   
   NEVER_REACH;
 }
@@ -45,13 +45,13 @@ Numbering::~Numbering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Numbering::iNextNo(eCN eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NUMBERING);
   
-  i8 iObjectNo;
+  i8 iNo;
   
-  iObjectNo = ++ m_ixaNextObjectId[eClassNo];
+  iNo = ++ m_inaNextNo[eClassNo];
   
-  return iObjectNo;
+  return iNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,9 +59,9 @@ i8 Numbering::iNextNo(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 void Numbering::vNodeNo(i8 iThisNodeNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NUMBERING);
 
-  m_ixaNextObjectId[CN_JOB] = iThisNodeNo << 48;
+  m_inaNextNo[CN_JOB] = iThisNodeNo << 48;
 }
 
 /*============================================================================*/

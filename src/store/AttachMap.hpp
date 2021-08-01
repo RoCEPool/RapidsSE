@@ -50,7 +50,7 @@ namespace STORE
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
     Locks         m_oLocks;
-    Numbering*    m_pObjects;
+    Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;

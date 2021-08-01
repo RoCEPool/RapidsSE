@@ -708,14 +708,14 @@ LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
 /*----------------------------------------------------------------------------*/
 i8 AM::OBJECT::iNextNo(eCN eClassNo)
 {
-  i8 iObjectNo;
+  i8 iNo;
     
-  if (gpAttachMap && gpAttachMap->m_pObjects)
-    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
+  if (gpAttachMap && gpAttachMap->m_pNumbering)
+    iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
   else
-    iObjectNo = 1;
+    iNo = 1;
   
-  return iObjectNo;
+  return iNo;
 }
 
 
