@@ -9,8 +9,6 @@ namespace STORE
   {
 
   private:
-    NextGid m_inNextJobId;
-
     Atomic  m_ixaNextObjectId[CN_ENUMS];
   
     // must be last

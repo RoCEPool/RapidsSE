@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Objects.cpp -- Object Numbering                                    */
+/* Objects.cpp -- Object Numbering                                            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -49,10 +49,7 @@ i8 Objects::iNextNo(eCN eClassNo)
   
   i8 iObjectNo;
   
-  if (CN_JOB == eClassNo)
-    iObjectNo = ++ m_inNextJobId;
-  else
-    iObjectNo = ++ m_ixaNextObjectId[eClassNo];
+  iObjectNo = ++ m_ixaNextObjectId[eClassNo];
   
   return iObjectNo;
 }
@@ -64,7 +61,6 @@ void Objects::vNodeNo(i8 iThisNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
 
-  m_inNextJobId.vNodeNo(iThisNodeNo);
   m_ixaNextObjectId[CN_JOB] = iThisNodeNo << 48;
 }
 
