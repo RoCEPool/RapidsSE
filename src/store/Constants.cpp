@@ -704,6 +704,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_COMMANDERRORS"_Stz,   ZK_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
   /*  0 */ vAddConstant("ZK_CANCELLEDMARKER"_Stz, ZK_CANCELLEDMARKER);
+  /*  0 */ vAddConstant("ZK_CLEANUPMARKER"_Stz,   ZK_CLEANUPMARKER);
+  /*  0 */ vAddConstant("ZK_CLEANEDUPMARKER"_Stz, ZK_CLEANEDUPMARKER);
   /*  0 */ vAddConstant("ZK_COUNTINFO"_Stz,       ZK_COUNTINFO);
   /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
@@ -752,6 +754,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_START_ROWRHTMARKER"_Stz,ZK_START_ROWRHTMARKER);
   /*  0 */ vAddConstant("ZK_STARTEDMARKER"_Stz,   ZK_STARTEDMARKER);
   /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
+  /*  0 */ vAddConstant("ZK_STREAMDEFRHT"_Stz,    ZK_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_STREAMSET"_Stz,       ZK_STREAMSET);
   /*  0 */ vAddConstant("ZK_TABLE"_Stz,           ZK_TABLE);
   /*  0 */ vAddConstant("ZK_TOTALUNITS"_Stz,      ZK_TOTALUNITS);

@@ -2563,6 +2563,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
         case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
+        case OM_CLEANUPMARKER: eOperand = ZK_CLEANUPMARKER; break;
+        case OM_CLEANEDUPMARKER: eOperand = ZK_CLEANEDUPMARKER; break;
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
         case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
         case OM_EACHSCANEOSMARKER: eOperand = ZK_EACHSCANEOSMARKER;  break;
@@ -2583,6 +2585,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_START_CRWRHTMARKER:   eOperand = ZK_START_CRWRHTMARKER; break;
         case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
         case OM_START_ROWRHTMARKER:   eOperand = ZK_START_ROWRHTMARKER; break;
+        //case OM_STREAMDEFRHT:   eOperand = ZK_STREAMDEFRHT; break;
         default:
           RASSERT(0);
       }

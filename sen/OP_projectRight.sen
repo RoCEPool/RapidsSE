@@ -39,7 +39,7 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // ignore streamDef if not received startCrwRhtMarker
+  // ignore crwBuffer if not received startCrwRhtMarker
   Counter1[] 0 == if
      Pipein[].pipeout
     true

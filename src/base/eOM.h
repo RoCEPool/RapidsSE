@@ -9,6 +9,8 @@ enum eOM // operator markers
   
   /*    */ OM_CALLMARKER,
   /*    */ OM_CANCELMARKER,
+  /*    */ OM_CLEANUPMARKER,
+  /*    */ OM_CLEANEDUPMARKER,
   /*    */ OM_COMMENCEMARKER,
   /*    */ OM_COMMENCEDMARKER,
   /*    */ OM_DATAPULSE,
@@ -43,6 +45,8 @@ static Stz* aOM[]
   
   /*    */ "CALLMARKER"_Stz,
   /*    */ "CANCELMARKER"_Stz,
+  /*    */ "CLEANUPMARKER"_Stz,
+  /*    */ "CLEANEDUPMARKER"_Stz,
   /*    */ "COMMENCEMARKER"_Stz,
   /*    */ "COMMENCEDMARKER"_Stz,
   /*    */ "DATAPULSE"_Stz,
