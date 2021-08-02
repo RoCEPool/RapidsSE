@@ -232,7 +232,7 @@ void Step::vApiExecuteRequest(void)
   pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
   pJobTagSet->vInsert(C_TAG_HOST,sHostName);
   pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_xReqTuple.m_iReqNo);
+  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_xReqTuple.m_iReqNo_tuple);
   pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
   pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
 

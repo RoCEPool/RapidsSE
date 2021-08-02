@@ -383,7 +383,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   
   pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
   
-  pSession->m_xReqTuple.m_iReqNo++;
+  pSession->m_xReqTuple.m_iReqNo_tuple++;
 
   // To GO : For DEMO
   // create tags in the job for the params from the literal token vector

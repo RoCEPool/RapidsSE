@@ -48,7 +48,7 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
                   "<i_Session=%lld ReqId=%s >"_Stz,
                   
                   aReqTuple->m_i_Session,
-                  spId.sz(IK_REQUEST,aReqTuple->m_iReqNo)
+                  spId.sz(IK_REQUEST,aReqTuple->m_iReqNo_tuple)
                   );
   
   return (Stz*) &m_caResult[0];
