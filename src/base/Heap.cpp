@@ -192,8 +192,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //    }
 //
 //  }
-  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
-    AM::LOG::vMemoryAllocation(pObject,eAllocClass);
 
   //vVerify();
   
@@ -296,9 +294,6 @@ void Heap::vFreeObject(Object* pObject)
 
   eCN eFreeClass = pObject->eGetClassNo();
   
-  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eFreeClass].m_bDontMemLog)
-    AM::LOG::vMemoryFree(pObject);
-
   if (CN_LARGETRANSIENT == eGetClassNo()) {
     
     if (m_nFreeChunks > 10) {
