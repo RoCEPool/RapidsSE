@@ -40,20 +40,16 @@ ReqTuple::ReqTuple(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ReqTuple::ReqTuple(Stz* szService, bool bFlag)
+ReqTuple::ReqTuple(Stz* szService)
 {
-  UNUSED(bFlag);
-  
   vSet(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ReqTuple::ReqTuple(Stz* szService, i8 iSessionId, bool bFlag)
+ReqTuple::ReqTuple(Stz* szService, i8 iSessionId)
 {
-  UNUSED(bFlag);
-  
   vSet(nullptr);
   
   m_i_Session = iSessionId;

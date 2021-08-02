@@ -17,8 +17,8 @@ namespace BASE
   
     ReqTuple(void);
     ReqTuple(ReqTuple* aReqTuple);
-    ReqTuple(Stz* szService, bool bFlag);
-    ReqTuple(Stz* szService, i8 iSessionId, bool bFlag);
+    ReqTuple(Stz* szService);
+    ReqTuple(Stz* szService, i8 iSessionId);
    ~ReqTuple(void) noexcept(false);
 
     void vContentDump(void);

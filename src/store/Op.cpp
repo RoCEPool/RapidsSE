@@ -1623,7 +1623,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new Job for the Op
-  ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
+  ReqTuple xReqTuple(m_sOpNm,iSessionId);
   m_pJob = AM::pNewJobOp(this,&xReqTuple);
   
   // get the operator job tag set
