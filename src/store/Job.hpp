@@ -27,9 +27,6 @@ namespace STORE
   
     Gid<CN_JOB> m_xJobId;    // this job's id
 
-  
-    //ReqTuple m_xReqTuple_jobNotUsed;    // the request tuple
-
     // -- a -------------------
   
     i8 m_i_Origin;           // originated on which node
@@ -83,8 +80,7 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(//ReqTuple* aReqTuple,
-        i8 i_Origin,     // originated on which node
+    Job(i8 i_Origin,     // originated on which node
         i8 i_Session,    // which session in session array
         i8 iCmdNo_tuple  // the sequence no of the request from that session
        );

@@ -115,11 +115,8 @@ Job::Job(//ReqTuple* aReqTuple,
         )
 : Object(CN_JOB)
 , CRM<Job>(this)
-//, m_xReqTuple_jobNotUsed(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-
-  // m_xReqTuple_job
 
   // -- a -------------------
   
@@ -179,15 +176,9 @@ Job::Job(//ReqTuple* aReqTuple,
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-//, m_xReqTuple_jobNotUsed()
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-
-  //vTrace("%s: CREATING JOB %p %s\n"_Stz,
-  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eGetClassNo()]);
-  
-  // m_xReqTuple_job
-  
+    
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo_tuple = C_UNKNOWN;
