@@ -1626,7 +1626,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   ReqTuple xReqTuple(m_sOpNm,iSessionId);
   
   m_pJob = AM::pNewJobOp(this,
-                         xReqTuple.m_i_Origin,
+                         AM::GRID::iThisNodeNo(),
                          xReqTuple.m_i_Session,
                          xReqTuple.m_iCmdNo
                          );

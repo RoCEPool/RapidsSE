@@ -820,7 +820,7 @@ void vTest11(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
                       xImmReqTuple.m_iCmdNo
                       );
@@ -893,7 +893,7 @@ void vTest14(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
                       xImmReqTuple.m_iCmdNo
                       );
@@ -939,7 +939,7 @@ void vTest15(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
                       xImmReqTuple.m_iCmdNo
                       );
@@ -984,7 +984,7 @@ void vTest16(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
                       xImmReqTuple.m_iCmdNo
                       );
@@ -1033,7 +1033,7 @@ void vTest16(void)
   \
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
   Job* pJob = new Job(\
-                      xImmReqTuple.m_i_Origin, \
+                      AM::GRID::iThisNodeNo(), \
                       xImmReqTuple.m_i_Session, \
                       xImmReqTuple.m_iCmdNo \
                       ); \

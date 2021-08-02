@@ -381,12 +381,12 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   //if (! AM::SYSTEM::bPassesLowMem())
   //  return EC_LOW_MEMORY;
   
-  pSession->m_pSsnJob = new Job(pSession->m_xReqTuple_ssn.m_i_Origin,
-                                pSession->m_xReqTuple_ssn.m_i_Session,
-                                pSession->m_xReqTuple_ssn.m_iCmdNo
+  pSession->m_pSsnJob = new Job(AM::GRID::iThisNodeNo(),
+                                pSession->m_i_Session,
+                                pSession->m_iCmdNo
                                 );
   
-  pSession->m_xReqTuple_ssn.m_iCmdNo++;
+  pSession->m_iCmdNo++;
 
   // To GO : For DEMO
   // create tags in the job for the params from the literal token vector
@@ -983,7 +983,7 @@ Op* Api::pOpCreate(Word* pOpWord)
   ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId);
   
   Job* pJob = AM::pNewJobOp(pOp,
-                            xReqTuple.m_i_Origin,
+                            AM::GRID::iThisNodeNo(),
                             xReqTuple.m_i_Session,
                             xReqTuple.m_iCmdNo
                             );

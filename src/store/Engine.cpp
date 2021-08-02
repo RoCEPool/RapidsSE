@@ -368,7 +368,7 @@ void Engine::vCallBoot(void)
 {
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
-  Job* pJob = new Job(xReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xReqTuple.m_i_Session,
                       xReqTuple.m_iCmdNo
                       );
@@ -460,7 +460,7 @@ void Engine::vCallStart(void)
   
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
-  Job* pJob = new Job(xReqTuple.m_i_Origin,
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xReqTuple.m_i_Session,
                       xReqTuple.m_iCmdNo
                       );
