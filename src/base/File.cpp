@@ -319,8 +319,6 @@ void File::vClose(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-  AM::LOG::vResourceUse(this,AR_CLOSE,(i8)-1);
-
   i8 iResult = fclose(m_aFile);
   m_aFile = nullptr;
 
@@ -680,8 +678,6 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
     
   AM::LOG::vEvent(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
        m_sPath.szStz(),m_sOpenMode.szStz());
-
-  AM::LOG::vResourceUse(this,AR_OPEN,(i8)-1);
   
   return true;
 }
@@ -793,8 +789,6 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   
   AM::LOG::vEvent(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
 
-  AM::LOG::vResourceUse(this,AR_READ,nBytesRead);
-
   return nBytesRead;
 }
 
@@ -829,8 +823,6 @@ i8 File::nReadFile(String* aDst)
 #endif
 
   AM::LOG::vEvent(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
-
-  AM::LOG::vResourceUse(this,AR_READ,nBytesRead);
 
   return nBytesRead;
 }
@@ -920,8 +912,6 @@ void File::vSeek(i8 iOffset)
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
 #endif
   
-  AM::LOG::vResourceUse(this,AR_SEEK,iOffset);
-
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {

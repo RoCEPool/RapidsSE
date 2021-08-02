@@ -268,7 +268,7 @@ namespace OBLIQUE
       static void vMemoryAllocation(Object* pObject, eCN eClassNo);
       static void vMemoryFree(Object* pObject);
       static void vOperand(i8 iPoint);
-      static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
+      //static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
   
     class LOGICUNIT

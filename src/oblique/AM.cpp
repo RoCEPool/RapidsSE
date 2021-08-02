@@ -610,10 +610,10 @@ void AM::LOG::vOperand(i8 iPoint)
 /*----------------------------------------------------------------------------*/
 /* log resource usage                                                         */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
-{
-  _static_
-  
+//void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
+//{
+//  _static_
+//
 //  Job* pJob = MY::pJob();
 //  if (! pJob)
 //    return;
@@ -640,7 +640,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 //                        AM::SYSTEM::nNanoseconds(),
 //
 //                        C_VARGS_END);
-}
+//}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
