@@ -979,12 +979,10 @@ Op* Api::pOpCreate(Word* pOpWord)
   i8 iSessionId = 1;
   
   Op* pOp = new Op(pOpWord->szWordNm());
-  
-  ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId);
-  
+    
   Job* pJob = AM::pNewJobOp(pOp,
                             AM::GRID::iThisNodeNo(),
-                            xReqTuple.m_i_Session,
+                            iSessionId,
                             1
                             );
   

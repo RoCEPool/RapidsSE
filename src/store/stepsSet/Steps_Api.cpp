@@ -79,7 +79,6 @@ void Step::vApiExecuteNested(void)
   //m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
-  ReqTuple xReqTuple;
 
   s48K sRequest;
   m_pDataStack->vPopStr(sRequest,__func__);
@@ -96,7 +95,6 @@ void Step::vApiExecuteNested(void)
 
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
 
-  xReqTuple.m_i_Session = pSession->m_i_Session;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -163,7 +161,6 @@ void Step::vApiExecuteRequest(void)
   ENTRY();
 
   eEC eError;
-  ReqTuple xReqTuple;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop request and tag string
@@ -185,8 +182,6 @@ void Step::vApiExecuteRequest(void)
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
   eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
-  xReqTuple.m_i_Session = pSession->m_i_Session;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request

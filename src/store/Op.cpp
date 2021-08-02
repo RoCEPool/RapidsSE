@@ -1623,11 +1623,10 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new Job for the Op
-  ReqTuple xReqTuple(m_sOpNm,iSessionId);
   
   m_pJob = AM::pNewJobOp(this,
                          AM::GRID::iThisNodeNo(),
-                         xReqTuple.m_i_Session,
+                         iSessionId,
                          1
                          );
   
