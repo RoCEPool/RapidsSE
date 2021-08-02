@@ -17,7 +17,6 @@ namespace BASE
   
     ReqTuple(void);
     ReqTuple(ReqTuple* aReqTuple);
-    ReqTuple(Stz* szService);
     ReqTuple(Stz* szService, i8 iSessionId);
    ~ReqTuple(void) noexcept(false);
 

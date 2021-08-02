@@ -169,7 +169,7 @@ Job::Job(ReqTuple* aReqTuple)
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-, m_xReqTuple((Stz*)nullptr)
+, m_xReqTuple()
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
