@@ -31,7 +31,7 @@ namespace STORE
   
     i8 m_i_Origin;           // originated on which node
     i8 m_i_Session;          // which session in session array
-    i8 m_iCmdNo_tuple;       // the sequence no of the request from that session
+    i8 m_iCmdNo;       // the sequence no of the request from that session
 
   
   
@@ -82,7 +82,7 @@ namespace STORE
     
     Job(i8 i_Origin,     // originated on which node
         i8 i_Session,    // which session in session array
-        i8 iCmdNo_tuple  // the sequence no of the request from that session
+        i8 iCmdNo  // the sequence no of the request from that session
        );
 
     // FIND CASE -- TO BE REMOVED

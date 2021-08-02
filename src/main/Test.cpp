@@ -820,10 +820,9 @@ void vTest11(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(//&xImmReqTuple,
-                      xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo_tuple
+                      xImmReqTuple.m_iCmdNo
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -894,10 +893,9 @@ void vTest14(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(//&xImmReqTuple,
-                      xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo_tuple
+                      xImmReqTuple.m_iCmdNo
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -941,10 +939,9 @@ void vTest15(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(//&xImmReqTuple,
-                      xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo_tuple
+                      xImmReqTuple.m_iCmdNo
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -987,10 +984,9 @@ void vTest16(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(//&xImmReqTuple,
-                      xImmReqTuple.m_i_Origin,
+  Job* pJob = new Job(xImmReqTuple.m_i_Origin,
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo_tuple
+                      xImmReqTuple.m_iCmdNo
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -1039,7 +1035,7 @@ void vTest16(void)
   Job* pJob = new Job(\
                       xImmReqTuple.m_i_Origin, \
                       xImmReqTuple.m_i_Session, \
-                      xImmReqTuple.m_iCmdNo_tuple \
+                      xImmReqTuple.m_iCmdNo \
                       ); \
   \
   TagSet* pJobTags = pJob->pJobTags(); \

@@ -256,7 +256,7 @@ void JobList::vSee(void)
     vTrace("origin %lld session %lld command %lld "_Stz
            ,pJob->m_i_Origin
            ,pJob->m_i_Session
-           ,pJob->m_iCmdNo_tuple
+           ,pJob->m_iCmdNo
            );
 
     if (C_UNKNOWN != pJob->iParticipantNode())

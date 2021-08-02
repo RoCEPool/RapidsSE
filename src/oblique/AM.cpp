@@ -2450,7 +2450,7 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 Job* AM::pNewJobOp(Op* pOp,
                    i8 i_Origin,     // originated on which node
                    i8 i_Session,    // which session in session array
-                   i8 iCmdNo_tuple)
+                   i8 iCmdNo)
 {
   Job* pNewJob;
   
@@ -2463,7 +2463,7 @@ Job* AM::pNewJobOp(Op* pOp,
 
   pNewJob = new Job(i_Origin,
                     i_Session,
-                    iCmdNo_tuple
+                    iCmdNo
                     );
 
   pNewJob->m_pOp = pOp;

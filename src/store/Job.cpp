@@ -108,10 +108,9 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(//ReqTuple* aReqTuple,
-         i8 i_Origin,     // originated on which node
+Job::Job(i8 i_Origin,     // originated on which node
          i8 i_Session,    // which session in session array
-         i8 iCmdNo_tuple  // the sequence no of the request from that session)
+         i8 iCmdNo        // the sequence no of the request from that session)
         )
 : Object(CN_JOB)
 , CRM<Job>(this)
@@ -122,7 +121,7 @@ Job::Job(//ReqTuple* aReqTuple,
   
   m_i_Origin     = i_Origin;
   m_i_Session    = i_Session;
-  m_iCmdNo_tuple = iCmdNo_tuple;
+  m_iCmdNo = iCmdNo;
 
   // m_sJobNm;
   m_iParentId = C_UNKNOWN;
@@ -181,7 +180,7 @@ Job::Job(eCN eClassNo)
     
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
-  m_iCmdNo_tuple = C_UNKNOWN;
+  m_iCmdNo = C_UNKNOWN;
 
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
@@ -985,7 +984,6 @@ void Job::vResetForReuse(Session* pSession)
   vDebugPoint();
   
   // -- a -------------------
-  // m_xReqTuple_job
   // m_sJobNm;
   // m_iParentId = C_UNKNOWN;
   // m_oTimer.vStart();

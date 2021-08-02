@@ -558,7 +558,7 @@ namespace OBLIQUE
     static Job* pNewJobOp(Op* pOp,
                           i8 i_Origin,     // originated on which node
                           i8 i_Session,    // which session in session array
-                          i8 iCmdNo_tuple);
+                          i8 iCmdNo);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
