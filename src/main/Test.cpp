@@ -818,10 +818,8 @@ void vTest11(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xImmReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
 
@@ -891,10 +889,8 @@ void vTest14(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xImmReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
 
@@ -937,10 +933,8 @@ void vTest15(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xImmReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
 
@@ -982,10 +976,8 @@ void vTest16(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xImmReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
 
@@ -1031,10 +1023,9 @@ void vTest16(void)
   \
   SeApi* pSeApi = new SeApi; \
   \
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
   Job* pJob = new Job(\
                       AM::GRID::iThisNodeNo(), \
-                      xImmReqTuple.m_i_Session, \
+                      AM::SESSION::iInternalSession(), \
                       1 \
                       ); \
   \

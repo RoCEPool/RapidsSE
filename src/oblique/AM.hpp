@@ -80,7 +80,6 @@ namespace BASE {
 
   class Queue;
 
-  class ReqTuple;
   class Resource;
   class Resources;
 
