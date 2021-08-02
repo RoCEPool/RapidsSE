@@ -35,10 +35,10 @@ void Step::vJob__BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobBegun = new Job(&pDistJob->m_xReqTuple_job,
-                           pDistJob->m_xReqTuple_job.m_i_Origin,
-                           pDistJob->m_xReqTuple_job.m_i_Session,
-                           pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobBegun = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                           pDistJob->m_i_Origin,
+                           pDistJob->m_i_Session,
+                           pDistJob->m_iCmdNo_tuple
                            );
   
   pJobBegun->m_xJobId = pDistJob->iJobId();
@@ -70,10 +70,10 @@ void Step::vJob__CancelNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobCancel = new Job(&pDistJob->m_xReqTuple_job,
-                            pDistJob->m_xReqTuple_job.m_i_Origin,
-                            pDistJob->m_xReqTuple_job.m_i_Session,
-                            pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobCancel = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                            pDistJob->m_i_Origin,
+                            pDistJob->m_i_Session,
+                            pDistJob->m_iCmdNo_tuple
                             );
   
   pJobCancel->m_xJobId = pDistJob->iJobId();
@@ -104,10 +104,10 @@ void Step::vJob__CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple_job,
-                               pDistJob->m_xReqTuple_job.m_i_Origin,
-                               pDistJob->m_xReqTuple_job.m_i_Session,
-                               pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                               pDistJob->m_i_Origin,
+                               pDistJob->m_i_Session,
+                               pDistJob->m_iCmdNo_tuple
                                );
   
   pJobCancelled->m_xJobId = pDistJob->iJobId();
@@ -139,10 +139,10 @@ void Step::vJob__EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnd = new Job(&pDistJob->m_xReqTuple_job,
-                         pDistJob->m_xReqTuple_job.m_i_Origin,
-                         pDistJob->m_xReqTuple_job.m_i_Session,
-                         pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobEnd = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                         pDistJob->m_i_Origin,
+                         pDistJob->m_i_Session,
+                         pDistJob->m_iCmdNo_tuple
                          ); // new Job__End(pDistJob);
   
   pJobEnd->m_xJobId = pDistJob->iJobId();
@@ -173,10 +173,10 @@ void Step::vJob__EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job(&pDistJob->m_xReqTuple_job,
-                           pDistJob->m_xReqTuple_job.m_i_Origin,
-                           pDistJob->m_xReqTuple_job.m_i_Session,
-                           pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobEnded = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                           pDistJob->m_i_Origin,
+                           pDistJob->m_i_Session,
+                           pDistJob->m_iCmdNo_tuple
                            );
   
   pJobEnded->m_xJobId = pDistJob->iJobId();
@@ -208,10 +208,10 @@ void Step::vJob__ExecuteNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecute = new Job(&pDistJob->m_xReqTuple_job,
-                             pDistJob->m_xReqTuple_job.m_i_Origin,
-                             pDistJob->m_xReqTuple_job.m_i_Session,
-                             pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobExecute = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                             pDistJob->m_i_Origin,
+                             pDistJob->m_i_Session,
+                             pDistJob->m_iCmdNo_tuple
                              );
   pJobExecute->m_xJobId = pDistJob->iJobId();
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNodeNo());
@@ -241,10 +241,10 @@ void Step::vJob__ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple_job,
-                              pDistJob->m_xReqTuple_job.m_i_Origin,
-                              pDistJob->m_xReqTuple_job.m_i_Session,
-                              pDistJob->m_xReqTuple_job.m_iCmdNo_tuple
+  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple_jobNotUsed,
+                              pDistJob->m_i_Origin,
+                              pDistJob->m_i_Session,
+                              pDistJob->m_iCmdNo_tuple
                               );
   pJobExecuted->m_xJobId = pDistJob->iJobId();
   pJobExecuted->vParticipantNode(AM::pGrid()->iThisNodeNo());

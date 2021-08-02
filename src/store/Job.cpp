@@ -115,7 +115,7 @@ Job::Job(ReqTuple* aReqTuple,
         )
 : Object(CN_JOB)
 , CRM<Job>(this)
-, m_xReqTuple_job(aReqTuple)
+, m_xReqTuple_jobNotUsed(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 
@@ -123,9 +123,9 @@ Job::Job(ReqTuple* aReqTuple,
 
   // -- a -------------------
   
-  m_i_Origin     = aReqTuple->m_i_Origin;
-  m_i_Session    = aReqTuple->m_i_Session;
-  m_iCmdNo_tuple = aReqTuple->m_iCmdNo_tuple;
+  m_i_Origin     = i_Origin;
+  m_i_Session    = i_Session;
+  m_iCmdNo_tuple = iCmdNo_tuple;
 
   // m_sJobNm;
   m_iParentId = C_UNKNOWN;
@@ -179,7 +179,7 @@ Job::Job(ReqTuple* aReqTuple,
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-, m_xReqTuple_job()
+, m_xReqTuple_jobNotUsed()
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
@@ -188,6 +188,10 @@ Job::Job(eCN eClassNo)
   
   // m_xReqTuple_job
   
+  m_i_Origin     = C_UNKNOWN;
+  m_i_Session    = C_UNKNOWN;
+  m_iCmdNo_tuple = C_UNKNOWN;
+
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_TablePtn    = C_UNKNOWN;
@@ -1094,7 +1098,9 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
-  Session* pSession = AM::pSessionGet(&m_xReqTuple_job);
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Session* pSession = AM::pSessionGet(m_i_Origin,m_i_Session);
 
   return pSession;
 }
@@ -1178,7 +1184,7 @@ void Job::vShow(void)
          m_iParentId,
          aSS[m_eSeed],
          
-         m_xReqTuple_job.m_i_Session,
+         m_i_Session,
          m_i_TablePtn,
          (i8)m_bWasReceived
          );

@@ -1056,7 +1056,7 @@ void Step::vJobSessionFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 iSessionId = pJob->m_xReqTuple_job.m_i_Session;
+  i8 iSessionId = pJob->m_i_Session;
   
   Session* pSession = nullptr;
   
@@ -1077,7 +1077,7 @@ void Step::vJobSessionStateFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_xReqTuple_job.m_i_Session);
+  m_pDataStack->vPushInt(pJob->m_i_Session);
   
   EXIT();
 }
@@ -1125,7 +1125,7 @@ void Step::vJobSignalSession(void)
   
   pJob->vJobState(JS_SIGNALLED);
 
-  i8 i_Session = pJob->m_xReqTuple_job.m_i_Session;
+  i8 i_Session = pJob->m_i_Session;
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);

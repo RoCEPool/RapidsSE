@@ -1836,7 +1836,7 @@ Stz* AM::szJobSeed(Job* pJob)
 
 Session* AM::pJobSession(Job* pJob)
 {
-  i8 iSessionId = pJob->m_xReqTuple_job.m_i_Session;
+  i8 iSessionId = pJob->m_i_Session;
   
   Session* pSession = nullptr;
   
@@ -2167,15 +2167,15 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(ReqTuple* aReqTuple)
+Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
 {
-  if (aReqTuple->m_i_Origin != AM::iThisNodeNo())
+  if (i_Origin != AM::iThisNodeNo())
     return nullptr;
   
-  if (C_UNKNOWN == aReqTuple->m_i_Session)
+  if (C_UNKNOWN == i_Session)
     return nullptr;
   
-  Session* pSession = AM::pSessions()->pGetSession(aReqTuple->m_i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
   return pSession;
 }

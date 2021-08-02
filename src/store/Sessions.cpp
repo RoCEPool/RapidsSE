@@ -323,7 +323,7 @@ void Sessions::vApiJob(Session* pSession, Job* pJob)
 
   pSession->m_nJobNew++;
   
-  pJob->m_xReqTuple_job.m_i_Session = pSession->m_i_Session;
+  pJob->m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
