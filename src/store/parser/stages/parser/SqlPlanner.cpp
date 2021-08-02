@@ -30,6 +30,7 @@
 #include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
 #include "store/parser/shadowNodes/planObjects/OrderOp.hpp"
+#include "store/parser/shadowNodes/planObjects/joins/NestedLoopJoinOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
@@ -39,6 +40,7 @@
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
 #include "store/parser/shadowNodes/compound/OrderItem.hpp"
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
+#include "eJT.h"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -574,6 +576,76 @@ antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *pCtx)
     TableScanOp::vSetAlias(pTableScanOp, pAlias);
   }
   
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Join On node                                                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
+{
+  // Setup for join predicate
+  b1 bFreeExprStack = false;
+  if (!m_pExprStack) {
+    m_pExprStack = new QueryNodeList;
+    bFreeExprStack = true;
+  }
+
+  visitChildren(pCtx);
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // Extract join type
+  eJT eJoinType = eExtractJoinType(pCtx->joinType());
+
+  // TODO: Extract join hint
+
+  // Extract join predicate
+  ASSERT(m_pExprStack->nItems() >= 1);
+  QueryNode* pJoinPredicate = m_pExprStack->pPop();
+
+  if (bFreeExprStack) {
+    ASSERT(m_pExprStack->nItems() == 0);
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Cross Join node                                                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCrossJoin(sqlParser::CrossJoinContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // Join type
+  eJT eJoinType = JT_CROSS;
+
+  // A cross join is the same as an inner join with join predicate of TRUE.
+  QueryNode* pJoinPredicate = BooleanLiteral::pCreate(true);
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
   return nullptr;
 }
 
@@ -1870,6 +1942,25 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   Tsp xVal;
   xVal.vSet(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro);
   return xVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract the join type enumeration                                          */
+/*----------------------------------------------------------------------------*/
+eJT SqlPlanner::eExtractJoinType(sqlParser::JoinTypeContext *pCtx)
+{
+  // The null/default case
+  if (!pCtx || pCtx->INNER()) {
+    return JT_INNER;
+  }
+
+  if (pCtx->LEFT())   return JT_LEFT_OUTER;
+  if (pCtx->RIGHT())  return JT_RIGHT_OUTER;
+  if (pCtx->FULL())   return JT_FULL_OUTER;
+
+  // TODO: Add support for NATURAL joins
+  // TODO: Add support for explicit SEMI/ANTI joins
+  NEVER_REACH
 }
 
 /*============================================================================*/

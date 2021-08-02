@@ -24,57 +24,55 @@ success
 //  Basic join tests
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- Join 2 tables: inner join
--- Join 2 tables: cross join
--- Join 2 tables: natural join
--- Join 2 tables: semi join
--- Join 2 tables: anti join
--- Join 2 tables: left outer join
--- Join 2 tables: right outer join
--- Join 2 tables: full outer join
-
--- Self join: inner join
--- Self join: cross join
--- Self join: natural join
--- Self join: semi join
--- Self join: anti join
--- Self join: left outer join
--- Self join: right outer join
--- Self join: full outer join
-
--- 3 way join
-
--- 4 way join
-
--- Join with no predicate: inner join
--- Join with no predicate: cross join
--- Join with no predicate: natural join
--- Join with no predicate: semi join
--- Join with no predicate: anti join
--- Join with no predicate: left outer join
--- Join with no predicate: right outer join
--- Join with no predicate: full outer join
-
--- ON clause
--- USING clause
-
--- Semi/anti joins return left columns only
--- Natural join only returns distinct column names
--- Inner/cross/outer joins return all columns
-
--- join syntax:
---    JOIN keyword
---    ','
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Negative tests
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 -- left table doesn't exist
 -- right table doesn't exist
 
--- expressions in join predicate not on joined tables
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  n-way join tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Join 2 tables
+-- Join 3 tables
+-- Join 4 tables
+-- Self join
+  -- ambiguous column in self join
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Join type tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- explicit join types:
+  -- inner join
+  -- cross join
+  -- natural join
+  -- semi join
+  -- anti join
+  -- left outer join
+  -- right outer join
+  -- full outer join
+
+-- Implicit join types ("JOIN" vs ",")
+  -- inner
+  -- cross
+
+-- Validate columns returned:
+  -- Semi/anti joins return left columns only
+  -- Natural join only returns distinct column names
+  -- Inner/cross/outer joins return all columns
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Join predicate tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- JOIN ON
+-- JOIN USING
+-- no predicate
+
+-- expression in join predicate not on joined tables
+-- expression in join predicate not a boolean expression
 -- non-equi-joins not yet supported
+
 
 
 

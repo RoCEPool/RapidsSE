@@ -43,10 +43,16 @@ namespace Parser
 
     // Return the node representing the join predicate expression
     static QueryNode* pJoinPredicate(PlanNode* pNode);
+    static QueryNode* pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode);
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns the number of projected columns from each child.
+    // Useful for working with ordinals.
+    static i8 iColumnsOfChild1(QueryNode* pNode, PlanNode* pRootNode);
+    static i8 iColumnsOfChild2(QueryNode* pNode, PlanNode* pRootNode);
 
   private:
     static QueryNodeList* pUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);

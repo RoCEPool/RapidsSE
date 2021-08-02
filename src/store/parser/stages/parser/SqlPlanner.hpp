@@ -7,6 +7,7 @@
 #include "QueryNodeStack.hpp"
 #include "QueryNodeList.hpp"
 #include "SqlException.hpp"
+#include "eJT.h"
 
 #define __NOT_IMPL(FEATURE) \
   SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
@@ -26,7 +27,7 @@ namespace Parser
     // The query text that was entered by the user
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
-    QueryNodeStack* m_pTableExprStack;
+    QueryNodeStack* m_pTableExprStack;  // Could be DataSources, could be Joins, Subqueries, etc
     QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;
@@ -58,6 +59,9 @@ namespace Parser
     antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)             override;
     antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *pCtx)                   override;
     antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                       override;
+    antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *pCtx)                     override;
+    antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *pCtx)               override { __NOT_IMPL("USING")};
+    antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *pCtx)               override;
     antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)     override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
     antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
@@ -97,9 +101,6 @@ namespace Parser
     // distinct is handled in visitSelectExpr
 
     // tableExprs not implemented
-    antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *pCtx)                      override { __NOT_IMPL("JOIN ON")}
-    antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *pCtx)                override { __NOT_IMPL("JOIN USING")}
-    antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *pCtx)                override { __NOT_IMPL("CROSS JOIN")}
     antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                  override { __NOT_IMPL("subqueries")}
     antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *pCtx)      override { __NOT_IMPL("VALUES")}
 
@@ -146,6 +147,7 @@ namespace Parser
     Tme   xCleanTime(sqlParser::StringLiteralContext* pCtx);
     Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
 //  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
+    eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
 
   };
   
