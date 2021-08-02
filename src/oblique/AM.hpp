@@ -582,7 +582,6 @@ namespace OBLIQUE
     static Index* pReadApiIndex(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static ReqTuple* aReqTuple_tls(void);
   
     static RU_Cpu* pRU_Cpu(void);
     static RU_Memory* pRU_Memory(void);

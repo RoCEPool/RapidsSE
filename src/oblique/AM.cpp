@@ -1989,10 +1989,7 @@ void AM::vTaskDump(void) {
 void AM::vTaskDump(Task* pTask)
 {
   Job* pJob = pTask->pJob();
-  
-  if (AM::aReqTuple_tls())
-    AM::aReqTuple_tls()->vContentDump();
-  
+    
   AM::vJobContentDump(pJob);
   
   if (pJob->pLogicUnit_job()) {
@@ -2035,8 +2032,6 @@ void AM::vTaskFullTrace(Task* pTask)
 
   //pTask->vContentDump();
   
-  if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
-
   AM::vJobContentDump(pJob);
   
   //pJob->pLogicUnit_job()->vContentDump();
@@ -2856,15 +2851,6 @@ void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-ReqTuple* AM::aReqTuple_tls(void) {
-  
-  Job* pJob_tls = AM::pThisTLSJob();
-  
-  if (pJob_tls)
-    return &pJob_tls->m_xReqTuple;
-  else
-    return nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get RU_Cpu                                                                 */
