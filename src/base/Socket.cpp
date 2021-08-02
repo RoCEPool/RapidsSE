@@ -50,8 +50,6 @@ Socket::Socket(Object* pIsFor)
   
   ++ gixSocket;
 
-  AM::LOG::vEvent(EV_CONSTRUCT,"Socket constructor"_Stz);
-
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
@@ -81,8 +79,6 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   
   ++ gixSocket;
   
-  AM::LOG::vEvent(EV_CONSTRUCT,"Socket constructor"_Stz);
-  
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
@@ -100,8 +96,6 @@ Socket::~Socket(void) noexcept(false)
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Socket destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -653,8 +647,6 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::LOG::vEvent(EV_RECV,"Socket recv: %lld bytes"_Stz,nRecvBytes);
-
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
   
@@ -687,8 +679,6 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSentBytes += nSentBytes;
 #endif
   
-  AM::LOG::vEvent(EV_SEND,"Socket send: %lld bytes"_Stz,nSentBytes);
-
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();
     return true;
@@ -1030,10 +1020,7 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSentBytes += nSentBytes;
 #endif
-  
-  AM::LOG::vEvent(EV_SEND,"Socket send: %lld bytes"_Stz,nSentBytes);
-
-  
+    
   if (nSentBytes < nBytes)
   {
     vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz

@@ -101,8 +101,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   ++ gixOp;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Op constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,8 +153,6 @@ Op::Op(Stz* szOpNm)
   ++ gixOp;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Op constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,8 +187,6 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueOoO;
 
   -- gixOp;
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Op destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

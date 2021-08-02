@@ -165,8 +165,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,9 +218,6 @@ Job::Job(eCN eClassNo)
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,9 +250,6 @@ Job::~Job(void) noexcept(false)
   //  vDebugPoint();
   
   //AM::vTaskDelete(m_pTask);
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Job destructor"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

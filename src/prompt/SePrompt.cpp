@@ -90,8 +90,6 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pPrintOp = nullptr;
   
   _checkInitialised_(CN_SEPROMPT);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"SePrompt constructor"_Stz);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,8 +144,6 @@ SePrompt::~SePrompt(void) noexcept(false)
   //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
-
-  AM::LOG::vEvent(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

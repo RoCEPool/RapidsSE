@@ -420,95 +420,45 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
 /*                                   LOG                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-/*----------------------------------------------------------------------------*/
-/* log events                                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
-{
-  _static_
-  
-  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
-    return;
-
-  if (! AM::SYSTEM::bStarted())
-    return;
-
-  Job* pJob = MY::pJob();
-  if (! pJob)
-    return;
-  
-  LogicUnit* pRLU = pJob->pLogicUnit_job();
-  if (! pRLU || pRLU->m_xpOp.bIsNull())
-    return;
-
-  
-  s4K sNote;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  sNote.vSprintVA(szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-
-  
-  i8 nQueuedOperands = pRLU->m_xpOp->nQueuedOperands();
-  
-  AM::LOG::vLogInternal((i8)TI_EVENTLOG,
-                        
-                        MY::szPipelineNm(),
-                        MY::szOpNm(),
-                        MY::iPtn(),
-                        aZK[pRLU->m_ePipeInOperand],
-                        
-                        (i8)eEvent,
-                        sNote.azChar(),
-
-                        MY::pThread()->iThreadNo(),
-                        AM::SYSTEM::nNanoseconds(),
-                        
-                        C_VARGS_END);
-}
 
 /*----------------------------------------------------------------------------*/
 /* log entry into internal table                                              */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vLogInternal(i8 iTable, ...)
-{
-  _static_
-
-  bool bSetLogMemory = false;
-  if (AM::TASK::bLogMemory()) {
-    bSetLogMemory = true;
-    AM::TASK::vLogMemory(false);
-  }
-  
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
-  if (! pWriteBehind)
-    return;
-
-  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
-  if (! pStreamDef)
-    return;
-  
-  pWriteBehind->vGrabLock();
-
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iTable);
-
-  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
-  pRow->vDeposit(xVarArgs);
-
-  va_end(xVarArgs);
-
-
-  pWriteBehind->vDropLock();
-  
-  if (bSetLogMemory)
-    AM::TASK::vLogMemory(true);
-}
+//void AM::LOG::vLogInternal(i8 iTable, ...)
+//{
+//  _static_
+//
+//  bool bSetLogMemory = false;
+//  if (AM::TASK::bLogMemory()) {
+//    bSetLogMemory = true;
+//    AM::TASK::vLogMemory(false);
+//  }
+//
+//  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+//  if (! pWriteBehind)
+//    return;
+//
+//  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+//  if (! pStreamDef)
+//    return;
+//
+//  pWriteBehind->vGrabLock();
+//
+//
+//  va_list xVarArgs;
+//  va_start(xVarArgs,iTable);
+//
+//  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+//  pRow->vDeposit(xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//
+//  pWriteBehind->vDropLock();
+//
+//  if (bSetLogMemory)
+//    AM::TASK::vLogMemory(true);
+//}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

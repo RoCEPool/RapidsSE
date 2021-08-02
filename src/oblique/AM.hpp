@@ -259,18 +259,7 @@ namespace OBLIQUE
       static void vIntendWriteUnlocked(Lock* pLock);
       static void vJustWriteLocked(Lock* pLock);
     };
-  
-    class LOG
-    {
-    public:
-      static void vEvent(eEV eEvent, Stz* szFormat, ...);
-      static void vLogInternal(i8 iTable, ...);
-      //static void vMemoryAllocation(Object* pObject, eCN eClassNo);
-      //static void vMemoryFree(Object* pObject);
-      //static void vOperand(i8 iPoint);
-      //static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
-    };
-  
+    
     class LOGICUNIT
     {
     public:

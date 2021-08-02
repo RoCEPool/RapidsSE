@@ -25,8 +25,6 @@ OperandQueue::OperandQueue(void)
   _checkInitialised_(CN_OPERANDQUEUE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,8 +33,6 @@ OperandQueue::OperandQueue(void)
 OperandQueue::~OperandQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"OperandQueue destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

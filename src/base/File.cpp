@@ -109,8 +109,6 @@ File::File(Object* pIsFor)
   
   if (! m_iViaMalloc)
     gpOpenFiles->vAppend(this);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"File constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,8 +134,6 @@ File::~File(void) noexcept(false)
   
   if (! m_iViaMalloc)
     gpOpenFiles->vRemove(this);
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"File destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,8 +329,6 @@ void File::vClose(void)
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vDecFileOpen();
   
-  AM::LOG::vEvent(EV_CLOSE,"File closed: path=%s"_Stz,m_sPath.szStz());
-
   vReset();
   
   m_oSysCall.vSuccess();
@@ -383,8 +377,6 @@ void File::vFlush(void)
     return;
   }
   
-  AM::LOG::vEvent(EV_FLUSH,"File flushed: path=%s"_Stz,m_sPath.szStz());
-
   m_oSysCall.vSuccess();
 }
 
@@ -675,10 +667,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
-    
-  AM::LOG::vEvent(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
-       m_sPath.szStz(),m_sOpenMode.szStz());
-  
+      
   return true;
 }
 
@@ -787,8 +776,6 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
   
-  AM::LOG::vEvent(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
-
   return nBytesRead;
 }
 
@@ -821,8 +808,6 @@ i8 File::nReadFile(String* aDst)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
-
-  AM::LOG::vEvent(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
 
   return nBytesRead;
 }

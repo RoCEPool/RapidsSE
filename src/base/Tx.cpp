@@ -29,8 +29,6 @@ Tx::Tx(void)
   _checkInitialised_(CN_TX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Tx constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,8 +37,6 @@ Tx::Tx(void)
 Tx::~Tx(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Tx destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

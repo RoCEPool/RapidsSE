@@ -67,8 +67,7 @@ Lock::Lock(Object* pObjectLocked, bool bLockSet)
   _checkInitialised_(CN_LOCK);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Lock constructor"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,8 +78,6 @@ Lock::~Lock(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
    
   RASSERT(! m_uLockWord);
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Lock destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
