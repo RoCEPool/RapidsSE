@@ -10,6 +10,7 @@
 
 #include "PipelineSpec.hpp"
 #include "LogicUnit.hpp"
+#include "SP_Gid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -238,6 +239,8 @@ void JobList::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
+  SP_Gid spJobGid;
+  
   vTrace("See JobList %s::\n"_Stz,aJL[m_eJobsList]);
 
   for (SkipNode* pNode = m_pJobsSkipList->pFirst(0);
@@ -245,14 +248,8 @@ void JobList::vSee(void)
        pNode = m_pJobsSkipList->pNext(pNode, 0)) {
     Job* pJob = (Job*)(pNode->m_pObject);
     
-    i8 iJobId = pJob->iJobId();
-
-    i8 iNodeNo = Job::iNodeNo(iJobId);
-    i8 iJobNo  = Job::iJobNo(iJobId);
-
-    vTrace("  Job %lld.%lld %s "_Stz
-           ,iNodeNo
-           ,iJobNo
+    vTrace("  Job %s %s "_Stz
+           ,spJobGid.sz(pJob->iJobId())
            ,pJob->szJobNm()
            );
 
@@ -262,7 +259,7 @@ void JobList::vSee(void)
              );
 
     LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
-    if (pLogicUnit && pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+    if (pLogicUnit && pLogicUnit->m_xpPipelineSpec. bIsNotNull()) {
       vTrace("%s "_Stz
              ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
              );

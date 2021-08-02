@@ -92,7 +92,7 @@
 #include "Session.hpp"
 #include "Sessions.hpp"
 #include "Parcel.hpp"
-#include "Objects.hpp"
+#include "Numbering.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -696,6 +696,34 @@ LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
   LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
   
   return pLogicUnit;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 OBJECT                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get next object number                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::OBJECT::iNextNo(eCN eClassNo)
+{
+  i8 iNo;
+    
+  if (gpAttachMap && gpAttachMap->m_pNumbering) {
+    iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
+    if (CN_JOB == eClassNo) {
+      i8 iNodeNo = AM::GRID::iThisNodeNo();
+      
+      iNo = iNodeNo << 48 | iNo;
+    }
+  }
+  else {
+    RASSERT(CN_FILE == eClassNo);
+    iNo = 0;
+  }
+  
+  return iNo;
 }
 
 
@@ -2400,21 +2428,6 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next object number                                                     */
-/*----------------------------------------------------------------------------*/
-i8 AM::iNextObjectNo(eCN eClassNo)
-{
-  i8 iObjectNo ;
-    
-  if (gpAttachMap && gpAttachMap->m_pObjects)
-    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
-  else
-    iObjectNo = 1;
-  
-  return iObjectNo;
 }
 
 /*----------------------------------------------------------------------------*/

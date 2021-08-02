@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* Gid.h -- Grid-Wide Unique Identifier                                       */
+/* Id.hpp -- Node.Object identifier                                           */
 /*============================================================================*/
 #pragma once
 
-class Gid {
-  
+class Id
+{
   public:
   
   union {
     struct {
-      u8 m_uIdNo      : 48 ; // 0..256T
+      u8 m_uObjectNo  : 48 ; // 0..256T
       u8 m_uNodeNo    : 16 ; // 0..65,535
       //               ---
       //                64
@@ -18,6 +18,15 @@ class Gid {
     i8 m_iAsI8;
   };
   
+  public:
+
+  Id(void);
+  
+  u8   uNodeNo(void);
+  void vNodeNo(u8 uNodeNo);
+
+  u8   uObjectNo(void);
+  void vObjectNo(u8 uObjectNo);
 };
 
 /*============================================================================*/

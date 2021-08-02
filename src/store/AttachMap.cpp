@@ -12,7 +12,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
-#include "Objects.hpp"
+#include "Numbering.hpp"
 #include "Jobs.hpp"
 #include "InternalTables.hpp"
 
@@ -85,7 +85,7 @@ AttachMap::AttachMap(void)
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
-  m_pObjects        = new Objects;
+  m_pNumbering      = new Numbering;
   m_pPtnMap         = nullptr;
   m_pTxSet          = new TxSet;
 

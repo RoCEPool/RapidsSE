@@ -1,39 +1,39 @@
 /*============================================================================*/
-/* ObjId_t.hpp -- Object Id                                                   */
+/* Gid_t.hpp -- Grid-wide unique id (by class)                                */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
   template <eCN CLASSNO>
-  class ObjId
+  class Gid
   {
   private:
   
-    i8 m_iObjectId; // id of this object
-  
+    Id m_xId; // id of this object
+
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    ObjId<CLASSNO>(void)
+    Gid<CLASSNO>(void)
     {
-      m_iObjectId = AM::iNextObjectNo(CLASSNO);
+      m_xId.m_iAsI8 = AM::OBJECT::iNextNo(CLASSNO);
     }
     
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    ObjId<CLASSNO>(eCN eClassNo)
+    Gid<CLASSNO>(eCN eClassNo)
     {
-      m_iObjectId = AM::iNextObjectNo(eClassNo);
+      m_xId.m_iAsI8 = AM::OBJECT::iNextNo(eClassNo);
     }
   
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~ObjId<CLASSNO>(void)
+    ~Gid<CLASSNO>(void)
     {
 
     }
@@ -44,9 +44,9 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* member operator =                                                      */
     /*------------------------------------------------------------------------*/
-    void operator = (i8 iObjId)
+    void operator = (i8 iId)
     {
-      m_iObjectId = iObjId;
+      m_xId.m_iAsI8 = iId;
     }
 
     /*------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     i8 operator * (void)
     {
-      return m_iObjectId;
+      return m_xId.m_iAsI8;
     }
   
     /*------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     i8 iObjectId(void)
     {
-      return m_iObjectId;
+      return m_xId.m_iAsI8;
     }
   
   };

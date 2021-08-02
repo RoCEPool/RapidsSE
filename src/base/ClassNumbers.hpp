@@ -166,10 +166,10 @@ enum eCN : u2 // Class Number
   /* */ CN_NODE_I,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
-  
+  /* */ CN_NUMBERING,
+
   /* */ CN__O__,
   /* */ CN_OBJBUFFER,
-  /* */ CN_OBJECTS,
   /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
@@ -511,10 +511,10 @@ static Stz* aCN[]
   /* */ "NODE_I"_Stz,               // CN_NODE_I
   /* */ "NOW"_Stz,                  // CN_NOW
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
-   
+  /* */ "NUMBERING"_Stz,            // CN_NUMBERING
+
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OBJBUFFER"_Stz,            // CN_OBJBUFFER
-  /* */ "OBJECTS"_Stz,              // CN_OBJECTS
   /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP

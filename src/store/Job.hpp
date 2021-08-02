@@ -25,7 +25,7 @@ namespace STORE
   
   public:
   
-    ObjId<CN_JOB> m_xJobId; // this job's id
+    Gid<CN_JOB> m_xJobId;    // this job's id
   
     // -- a -------------------
     ReqTuple m_xReqTuple;    // the request tuple

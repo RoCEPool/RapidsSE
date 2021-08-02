@@ -45,14 +45,14 @@ Stz* SP_Gid::sz(i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Gid wGid;
+  Id wGid;
   wGid.m_iAsI8 = iGid;
   
   StrLib::vSprint(m_caResult,
                   "%lld.%03lld"_Stz,
                   
                   wGid.m_uNodeNo,
-                  wGid.m_uIdNo);
+                  wGid.m_uObjectNo);
 
   return (Stz*) &m_caResult[0];
 }
@@ -72,7 +72,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Gid wGid;
+  Id wGid;
   wGid.m_iAsI8 = iGid;
 
   StrLib::vSprint(m_caResult,
@@ -80,7 +80,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
                   
                   aIK_3c[eKind],
                   wGid.m_uNodeNo,
-                  wGid.m_uIdNo);
+                  wGid.m_uObjectNo);
   
   return (Stz*) &m_caResult[0];
 }
@@ -100,7 +100,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Gid wGid;
+  Id wGid;
   wGid.m_iAsI8 = iGid;
 
   StrLib::vSprint(m_caResult,
@@ -108,7 +108,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
                   
                   aLG[eKind],
                   wGid.m_uNodeNo,
-                  wGid.m_uIdNo);
+                  wGid.m_uObjectNo);
   
   return (Stz*) &m_caResult[0];
 }

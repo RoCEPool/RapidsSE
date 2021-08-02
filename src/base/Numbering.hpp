@@ -1,17 +1,15 @@
 /*============================================================================*/
-/* Objects.hpp -- Object Numbering                                    */
+/* Numbering.hpp -- Object Numbering                                    */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class Objects : public Object
+  class Numbering : public Object
   {
 
   private:
-    NextGid m_inNextJobId;
-
-    Atomic  m_ixaNextObjectId[CN_ENUMS];
+    Atomic  m_inaNextNo[CN_ENUMS];
   
     // must be last
     Footer m_xFooter;
@@ -20,18 +18,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Objects(void);
-   ~Objects(void) noexcept(false);
+    Numbering(void);
+   ~Numbering(void) noexcept(false);
   
     i8 iNextNo(eCN eClassNo);
   
-    void vNodeNo(i8 iThisNodeNo);
-
   private:
     Footer* aFooter(void);
   };
   
-  Objects* _pObjects(void* aAddr);
+Numbering* _pNumbering(void* aAddr);
 }
 
 /*============================================================================*/
