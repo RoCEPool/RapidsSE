@@ -108,14 +108,14 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(ReqTuple* aReqTuple,
+Job::Job(//ReqTuple* aReqTuple,
          i8 i_Origin,     // originated on which node
          i8 i_Session,    // which session in session array
          i8 iCmdNo_tuple  // the sequence no of the request from that session)
         )
 : Object(CN_JOB)
 , CRM<Job>(this)
-, m_xReqTuple_jobNotUsed(aReqTuple)
+//, m_xReqTuple_jobNotUsed(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 
@@ -179,7 +179,7 @@ Job::Job(ReqTuple* aReqTuple,
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-, m_xReqTuple_jobNotUsed()
+//, m_xReqTuple_jobNotUsed()
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
