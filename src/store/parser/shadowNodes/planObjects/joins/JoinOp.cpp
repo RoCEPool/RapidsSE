@@ -15,6 +15,8 @@
 #include "ProjectedColumn.hpp"
 #include "ColumnRef.hpp"
 #include "NodeNamer.hpp"
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
 
 #include "NestedLoopJoinOp.hpp"
 #include "HashJoinOp.hpp"
@@ -43,7 +45,7 @@ QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate)
   ASSERT(eJoinType > JT_NONE);
   ASSERT(eJoinType < JT_NENUMS);
   ASSERT(pPredicate);
-  ASSERT(Expr::bIsExactType(pPredicate));
+  ASSERT(Expr::bIsOfType(pPredicate));
 
   // Create a unique name for this JoinOp object
   s256 sName;
@@ -122,7 +124,7 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("join type: (%s)"_Stz, aJT_pretty[eJoinType]);
+    sBuf.vCatSprint("join type: %s"_Stz, aJT_pretty[eJoinType]);
 
 
     // Get the joinPredicate property
@@ -136,6 +138,23 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
     sBuf.vCatSprint("predicate: (%s)"_Stz, sPredicateBuf.szStz());
+
+    // Explaining very early plans are difficult because we cannot resolve the column expressions.
+    // We don't want to retrieve any ordinal expressions below before we have been able
+    // to resolve all table/column names in the system.
+    // When we resolve names we also add metadata into plan. So if the metadata node has
+    // no children then we probably haven't resolved any names yet (except for the case of
+    // the plan only containing literals).
+
+    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+      QueryNode* pOrdinalExpr = pOrdinalJoinPredicate(_pQueryNode(pNode), pRootNode);
+      sPredicateBuf.vReset();
+      Expr::vDescribe(pOrdinalExpr, sPredicateBuf);
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("ordinal predicate: (%s)"_Stz, sPredicateBuf.szStz());
+      delete pOrdinalExpr;
+    }
 
     return;
   }
@@ -222,6 +241,50 @@ QueryNode* JoinOp::pJoinPredicate(PlanNode* pNode)
   ASSERT(pPredicate);
   ASSERT(Expr::bIsOfType(pPredicate))
   return pPredicate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new copy of the join predicate expression relative to column     */
+/* ordinals. Must be freed after use.                                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* JoinOp::pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  // Get the symbolic join predicate expression
+  QueryNode *pSymbolicPredicate = pJoinPredicate(pNode);
+  ASSERT(pSymbolicPredicate);
+
+  // Get the list of column expressions being given to this plan from its child.
+  // This is the list of expression symbols that represent each column of
+  // each row that this sql operator will receive.
+  //
+  // NB: Normally we get the column expressions from the child operator.
+  //     However with this being a join operator there are two children
+  //     and the ordinals can refer to columns from either child.
+  //     So let's get a *combined* column expression list and then create
+  //     an ordinal representation based on that *combined* column list.
+  //     e.g. if child1 has 3 columns and child2 has 4 columns and we are
+  //     trying to create an ordinal representation of the 2nd column from
+  //     child2 then we would represent that as $5, being 3 columns from
+  //     child1 plus 2 columns from child2.
+
+  ASSERT(pNode->nChildren() == 2);
+  QueryNodeList* pColExprList = pUnionedColumnExprs(_pQueryNode(pNode), pRootNode);
+  ASSERT(pColExprList);
+  ASSERT(pColExprList->nItems() > 0);
+
+  // Use the column expression list and the symbolic filter expression to
+  // generate an ordinal filter expression (one that is relative to column
+  // ordinals only).
+  QueryNode* pOrdinalPredicate = Expr::pSymbolicToOrdinal(pSymbolicPredicate, pColExprList, pRootNode);
+  ASSERT(pOrdinalPredicate);
+
+  pColExprList->vDeleteAll();
+  delete pColExprList;
+
+  return pOrdinalPredicate;
 }
 
 
@@ -385,6 +448,52 @@ b1 JoinOp::bHasSameNamedColumn(QueryNodeList* pProjColList, QueryNode* pProjecte
   return bResult;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of projected columns from the first child.              */
+/* Useful for working with ordinals.                                          */
+/*----------------------------------------------------------------------------*/
+i8 JoinOp::iColumnsOfChild1(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 2);
+
+  // Unfortunately we need to actually get the list of columns from the first child,
+  // get the count and then deallocate it. The child could another join operator
+  // where it may not be straight forward to determine how many columns are being
+  // projected (e.g. see the case of a NATURAL JOIN).
+
+  QueryNodeList* pColumnList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  i8 iCount = pColumnList->nItems();
+  pColumnList->vDeleteAll();
+  delete pColumnList;
+
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of projected columns from the second child.             */
+/* Useful for working with ordinals.                                          */
+/*----------------------------------------------------------------------------*/
+i8 JoinOp::iColumnsOfChild2(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 2);
+
+  // Unfortunately we need to actually get the list of columns from the first child,
+  // get the count and then deallocate it. The child could another join operator
+  // where it may not be straight forward to determine how many columns are being
+  // projected (e.g. see the case of a NATURAL JOIN).
+
+  QueryNodeList* pColumnList = PlanObject::pColumnExprs(_pQueryNode(pNode->pSecondChild()), pRootNode);
+  i8 iCount = pColumnList->nItems();
+  pColumnList->vDeleteAll();
+  delete pColumnList;
+
+  return iCount;
+}
 
 /*============================================================================*/
 /* end                                                                        */

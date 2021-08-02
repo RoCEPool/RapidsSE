@@ -17,7 +17,8 @@
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/OrderOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
-#include "UnionOp.hpp"
+#include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
+#include "store/parser/shadowNodes/planObjects/joins/JoinOp.hpp"
 
 using namespace Parser;
 
@@ -50,6 +51,7 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
   else if (    UnionOp::bIsExactType(pNode))   {     UnionOp::vDescribe(pNode, sBuf); }
   else if (    OrderOp::bIsExactType(pNode))   {     OrderOp::vDescribe(pNode, sBuf); }
   else if (  ExplainOp::bIsExactType(pNode))   {   ExplainOp::vDescribe(pNode, sBuf); }
+  else if (     JoinOp::bIsOfType(pNode))      {      JoinOp::vDescribe(pNode, sBuf); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -73,6 +75,7 @@ void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExp
   else if (    UnionOp::bIsExactType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else if (    OrderOp::bIsExactType(pNode)) {     OrderOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else if (  ExplainOp::bIsExactType(pNode)) {   ExplainOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (     JoinOp::bIsOfType(pNode))    {      JoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -107,6 +110,7 @@ void SqlOperator::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
   else if (      SetOp::bIsOfType(szType))    {       SetOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else if (    OrderOp::bIsExactType(szType)) {     OrderOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else if (  ExplainOp::bIsExactType(szType)) {   ExplainOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (     JoinOp::bIsOfType(szType))    {      JoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -165,6 +169,7 @@ QueryNodeList* SqlOperator::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   else if (    UnionOp::bIsOfType(pNode)) { return     UnionOp::pColumnExprs(pNode, pRootNode); }
   else if (    OrderOp::bIsOfType(pNode)) { return     OrderOp::pColumnExprs(pNode, pRootNode); }
   else if (  ExplainOp::bIsOfType(pNode)) { return   ExplainOp::pColumnExprs(pNode, pRootNode); }
+  else if (     JoinOp::bIsOfType(pNode)) { return      JoinOp::pColumnExprs(pNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
