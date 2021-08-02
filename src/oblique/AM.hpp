@@ -555,7 +555,10 @@ namespace OBLIQUE
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static Operand* pDuplicateOperand(Operand* pOperand);
     
-    static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
+    static Job* pNewJobOp(Op* pOp,
+                          i8 i_Origin,     // originated on which node
+                          i8 i_Session,    // which session in session array
+                          i8 iCmdNo_tuple);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);

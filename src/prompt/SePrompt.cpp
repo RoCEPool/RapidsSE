@@ -1136,16 +1136,6 @@ bool SePrompt::bRedirectFromFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command id                                                             */
-/*----------------------------------------------------------------------------*/
-//i8 SePrompt::iRequestId(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-//
-//  return m_xReqTuple_job.m_iReqNo;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* init the extracted tag set                                                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vResetExtractedTagSet(void)

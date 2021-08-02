@@ -2447,7 +2447,10 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new a universal job for op                                                 */
 /*----------------------------------------------------------------------------*/
-Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
+Job* AM::pNewJobOp(Op* pOp,
+                   i8 i_Origin,     // originated on which node
+                   i8 i_Session,    // which session in session array
+                   i8 iCmdNo_tuple)
 {
   Job* pNewJob;
   
@@ -2458,10 +2461,9 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 //  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
 //  UNUSED(eJobKind);
 
-  pNewJob = new Job(//pReqTuple,
-                    pReqTuple->m_i_Origin,
-                    pReqTuple->m_i_Session,
-                    pReqTuple->m_iCmdNo_tuple
+  pNewJob = new Job(i_Origin,
+                    i_Session,
+                    iCmdNo_tuple
                     );
 
   pNewJob->m_pOp = pOp;

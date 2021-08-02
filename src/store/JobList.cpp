@@ -253,7 +253,7 @@ void JobList::vSee(void)
            ,pJob->szJobNm()
            );
 
-    vTrace("  origin %lld session %lld command %lld "_Stz
+    vTrace("origin %lld session %lld command %lld "_Stz
            ,pJob->m_i_Origin
            ,pJob->m_i_Session
            ,pJob->m_iCmdNo_tuple

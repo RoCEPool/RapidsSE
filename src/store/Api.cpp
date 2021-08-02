@@ -982,7 +982,13 @@ Op* Api::pOpCreate(Word* pOpWord)
   Op* pOp = new Op(pOpWord->szWordNm());
   
   ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId);
-  Job* pJob = AM::pNewJobOp(pOp,&xReqTuple);
+  
+  Job* pJob = AM::pNewJobOp(pOp,
+                            xReqTuple.m_i_Origin,
+                            xReqTuple.m_i_Session,
+                            xReqTuple.m_iCmdNo_tuple
+                            );
+  
   pOp->vJob(pJob);
   
   TagSet* pJobTags = pJob->pJobTags();
