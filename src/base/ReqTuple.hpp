@@ -8,7 +8,7 @@ namespace BASE
   class ReqTuple
   {
   public:
-    i8   m_i_Origin;   // originated on which node
+    //i8   m_i_Origin;   // originated on which node
     i8   m_i_Session;  // which session in session array
     i8   m_iCmdNo;     // the sequence no of the request from that session
 
