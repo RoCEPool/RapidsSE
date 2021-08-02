@@ -319,6 +319,13 @@ namespace OBLIQUE
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     };
 
+    class SESSION
+    {
+    public:
+      static i8 iInternalSession(void);
+      static Session* pInternalSession(void);
+    };
+
     class SYSARGS
     {
     public:
