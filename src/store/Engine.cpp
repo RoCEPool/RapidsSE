@@ -1630,6 +1630,7 @@ void Engine::vStartSystem(void)
 
 
   gpAttachMap->m_pSessions = new Sessions;
+  gpAttachMap->m_pSessions->vAllocInternal();
 
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();

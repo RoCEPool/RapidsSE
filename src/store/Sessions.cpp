@@ -58,6 +58,8 @@ Sessions::Sessions(void)
   m_nDataBuffersSoFar = 0;
   m_iFirstFree = 0;
 
+  m_pInternalSession = nullptr;
+  
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     Session* pSession = new Session;
     
@@ -172,6 +174,30 @@ void Sessions::vMarkSignalled(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allocate an internal session                                               */
+/*----------------------------------------------------------------------------*/
+void Sessions::vAllocInternal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  RASSERT(-1 != m_iFirstFree);
+  RASSERT(! m_pInternalSession);
+
+  i8 i_Session = m_iFirstFree;
+  m_pInternalSession = m_paSession[i_Session];
+  
+  m_iFirstFree = m_pInternalSession->m_i_NextFree;
+  
+  m_nDataBuffersSoFar++;
+
+  m_pInternalSession->m_eSession = SK_INTERNAL;
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
 Session* Sessions::pAllocSession(eSK eSession)
@@ -265,6 +291,17 @@ Session* Sessions::pGetSession(i8 i_Session)
   return pSession;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the internal session                                                   */
+/*----------------------------------------------------------------------------*/
+Session* Sessions::pInternalSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  RASSERT(m_pInternalSession);
+
+  return m_pInternalSession;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
