@@ -700,7 +700,7 @@ LogicUnit* AM::LOGICUNIT::pNew(Job* pJob)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                 OPERAND                                    */
+/*                                 OBJECT                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -710,10 +710,16 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
 {
   i8 iNo;
     
-  if (gpAttachMap && gpAttachMap->m_pNumbering)
+  if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
-  else
-    iNo = 1;
+    if (CN_JOB == eClassNo) {
+      i8 iNodeNo = AM::GRID::iThisNodeNo();
+    }
+  }
+  else {
+    RASSERT(CN_FILE == eClassNo);
+    iNo = 0;
+  }
   
   return iNo;
 }
