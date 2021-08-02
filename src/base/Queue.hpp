@@ -28,17 +28,19 @@ namespace BASE
     
 
     void vAppend(Object* pObject);
-    void  vContentDump(Stz* aTab);
-    i8    nItems(void);
+    void vContentDump(Stz* aTab);
+    i8   nItems(void);
     Object* pPeek(void);
     Object* pPop(void);
-    void  vReset(void);
+    void vReset(void);
 
   private:
-    void vExpand(void);
     void vDiscard(void);
+    void vExpand(void);
     void vVerify(void);
-    
+
+    void vPostMortem(void);
+  
     Footer* aFooter(void);
   };
   

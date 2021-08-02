@@ -69,6 +69,9 @@ Queue::~Queue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  if (m_nItems)
+    vPostMortem();
+  
   vReset();
       
   ASSERT( ! m_pEndBuffer );
@@ -216,7 +219,7 @@ void Queue::vReset(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -275,6 +278,27 @@ void Queue::vVerify(void)
   }
   
   ASSERT(iCount == m_nItems);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* something has gone wrong at ~Queue                                         */
+/*----------------------------------------------------------------------------*/
+void Queue::vPostMortem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("PostMortem Queue::\n"_Stz);
+  
+  vContentDump(Stz::szTab(1));
+  
+  while (Object* pObj = pPop() ) {
+    vTrace("  object %p class %s\n"_Stz
+           ,pObj
+           ,pObj ? pObj->szClassNm() : "none"_Stz);
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
