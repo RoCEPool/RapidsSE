@@ -14,7 +14,7 @@ namespace BASE
     i8   m_iForId;     // id of prompt or api
   
     //i8   m_iDetail;    // level of detail
-    s32  m_sPurpose;   // purpose of request
+    //s32  m_sPurpose;   // purpose of request
 
   public:
     void* operator new(size_t);

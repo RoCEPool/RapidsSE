@@ -29,7 +29,6 @@ ReqTuple::ReqTuple(void)
   m_iReqNo     = C_UNKNOWN;
   m_iForId     = C_UNKNOWN;
   
-  m_sPurpose   = "?"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,8 +47,6 @@ ReqTuple::ReqTuple(Stz* szService, bool bFlag)
   UNUSED(bFlag);
   
   vSet(nullptr);
-  
-  m_sPurpose = szService;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +59,6 @@ ReqTuple::ReqTuple(Stz* szService, i8 iSessionId, bool bFlag)
   vSet(nullptr);
   
   m_i_Session = iSessionId;
-  m_sPurpose  = szService;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,11 +81,10 @@ void ReqTuple::vContentDump(void)
   vTrace("ReqTuple\n"_Stz);
   vTrace("--------\n"_Stz);
   
-  vTrace("%p: m_sPurpose=%s\n"
+  vTrace("%p: \n"
          "m_i_Origin=%lld m_i_Session=%lld m_iReqNo=%lld m_iForId=%lld\n"_Stz,
 
          this,
-         m_sPurpose.azChar(),
          
          m_i_Origin,
          m_i_Session,
@@ -112,8 +107,6 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
     m_iReqNo     = aReqTuple->m_iReqNo;
     m_iForId     = aReqTuple->m_iForId;
     m_i_Session  = aReqTuple->m_i_Session;
-
-    m_sPurpose   = aReqTuple->m_sPurpose;
     
     return;
   }
