@@ -1,70 +1,6 @@
 /*============================================================================*/
-/* _LoopJoin - loop join                                                      */
+/* _lj - loop join                                                            */
 /*============================================================================*/
-
-/*
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// INDEX JOIN
-// T.a = J.a
-// PtnKey[T] = a
-// PtnKey[J] = a
-create table T1 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-);
-
-print "loading T1.csv..." ;
-load T1 "../DATA/Joins/T1.csv" ;
-
-
-create table  T2 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-);
-
-create index jidx on  T2 (a);
-print "loading T2.csv..." ;
-load  T2 "../DATA/Joins/T2.csv" ;
-
-pipeline indexJoinP
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T1 | stageC
-
-
-  stage stageC on all partitions :
-    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 == " | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-end;
-
-
-pipeline indexJoinP
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    scan T1 | filter 0 "type boolean $2 500 >=" | stageC
-
-
-  stage stageC on all partitions :
-    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 ==" | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-end;
-
-
-trackMemory;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CO-PARTITIONED JOIN
@@ -101,22 +37,6 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | stageC
-
-  stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "leftOuter $L1 $R1 == " | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-end
- ;
-
-pipeline loopJoinCo
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >=  " | stageC
 
   stage stageC on all partitions :
@@ -127,23 +47,21 @@ begin
 end
  ;
 
-
 pipeline loopJoinCo
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T1 | stageC broadcast
+    scan T1 | stageC
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "leftOuter $L1 $R1 ==" | stageD
+    scanRight T2 | loopJoin 0 "leftOuter $L1 $R1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
-
-end;
-
+end
+ ;
 
 pipeline loopJoinCo
 begin
@@ -229,7 +147,7 @@ begin
     output | sink | stageA
 
 end;
-*/
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST JOIN
@@ -267,6 +185,27 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
+    scan T1 | stageC broadcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end;
+
+
+
+//key 1 T1 P1 .... P3
+//key 1 T2 p2 ..... P3
+
+pipeline loopJoinEXPCAST
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
@@ -286,32 +225,63 @@ end
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
 /*
-pipeline loopJoinCo
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INDEX JOIN
+// T.a = J.a
+// PtnKey[T] = a
+// PtnKey[J] = a
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+
+print "loading T1.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+
+create index jidx on  T2 (a);
+print "loading T2.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+pipeline indexJoinP
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan customer | stageC
+    scan T1 | stageC
+
 
   stage stageC on all partitions :
-    scanRight orders | loopJoin 0 "$L1 $R2 == " | stageD
+    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
 end;
 
-pipeline loopJoinCo
+
+pipeline indexJoinP
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan customer | stageC
+    scan T1 | filter 0 "type boolean $2 500 >=" | stageC
+
 
   stage stageC on all partitions :
-    scanRight orders | loopJoin 0 "leftOuter $L1 $R2 == " | stageD
+    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
