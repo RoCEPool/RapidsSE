@@ -1628,7 +1628,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   m_pJob = AM::pNewJobOp(this,
                          AM::GRID::iThisNodeNo(),
                          xReqTuple.m_i_Session,
-                         xReqTuple.m_iCmdNo
+                         1
                          );
   
   // get the operator job tag set

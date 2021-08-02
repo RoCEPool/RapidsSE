@@ -25,7 +25,6 @@ void* ReqTuple::operator new(size_t)
 ReqTuple::ReqTuple(void)
 {
   m_i_Session  = C_UNKNOWN;
-  m_iCmdNo     = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,20 +61,6 @@ ReqTuple::~ReqTuple(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ReqTuple::vContentDump(void)
 {
-  vTrace("\n"_Stz);
-  vTrace("ReqTuple\n"_Stz);
-  vTrace("--------\n"_Stz);
-  
-  vTrace("%p: \n"
-         "m_i_Session=%lld m_iCmdNo=%lld\n"_Stz,
-
-         this,
-         
-         m_i_Session,
-         m_iCmdNo,
-         
-         C_VARGS_END
-         );
 
 }
 
@@ -84,16 +69,6 @@ void ReqTuple::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void ReqTuple::vSet(ReqTuple* aReqTuple)
 {
-  if (aReqTuple) {
-    m_i_Session  = aReqTuple->m_i_Session;
-    m_iCmdNo     = aReqTuple->m_iCmdNo;
-    m_i_Session  = aReqTuple->m_i_Session;
-    
-    return;
-  }
-  
-  m_i_Session  = C_UNKNOWN;
-  m_iCmdNo     = C_UNKNOWN;
 }
 
 

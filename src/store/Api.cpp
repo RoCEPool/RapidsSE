@@ -985,7 +985,7 @@ Op* Api::pOpCreate(Word* pOpWord)
   Job* pJob = AM::pNewJobOp(pOp,
                             AM::GRID::iThisNodeNo(),
                             xReqTuple.m_i_Session,
-                            xReqTuple.m_iCmdNo
+                            1
                             );
   
   pOp->vJob(pJob);

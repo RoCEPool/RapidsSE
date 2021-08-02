@@ -822,7 +822,7 @@ void vTest11(void)
 
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo
+                      1
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -895,7 +895,7 @@ void vTest14(void)
 
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo
+                      1
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -941,7 +941,7 @@ void vTest15(void)
 
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo
+                      1
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -986,7 +986,7 @@ void vTest16(void)
 
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xImmReqTuple.m_i_Session,
-                      xImmReqTuple.m_iCmdNo
+                      1
                       );
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -1035,7 +1035,7 @@ void vTest16(void)
   Job* pJob = new Job(\
                       AM::GRID::iThisNodeNo(), \
                       xImmReqTuple.m_i_Session, \
-                      xImmReqTuple.m_iCmdNo \
+                      1 \
                       ); \
   \
   TagSet* pJobTags = pJob->pJobTags(); \

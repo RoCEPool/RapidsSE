@@ -370,7 +370,7 @@ void Engine::vCallBoot(void)
   
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xReqTuple.m_i_Session,
-                      xReqTuple.m_iCmdNo
+                      1
                       );
   
   pJob->vSeed(SS_SEED_RUN);
@@ -462,7 +462,7 @@ void Engine::vCallStart(void)
   
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
                       xReqTuple.m_i_Session,
-                      xReqTuple.m_iCmdNo
+                      1
                       );
   
   pJob->vSeed(SS_SEED_RUN);
