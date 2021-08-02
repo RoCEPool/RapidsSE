@@ -28,8 +28,6 @@ ReqTuple::ReqTuple(void)
   m_i_Session  = C_UNKNOWN;
   m_iReqNo     = C_UNKNOWN;
   m_iForId     = C_UNKNOWN;
-
-  m_iDetail    = 0;
   
   m_sPurpose   = "?"_Stz;
 }
@@ -115,7 +113,6 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
     m_iForId     = aReqTuple->m_iForId;
     m_i_Session  = aReqTuple->m_i_Session;
 
-    m_iDetail    = aReqTuple->m_iDetail;
     m_sPurpose   = aReqTuple->m_sPurpose;
     
     return;
@@ -126,7 +123,6 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   m_iReqNo     = C_UNKNOWN;
   m_iForId     = C_UNKNOWN;
 
-  m_iDetail    = 0;
   
   //m_sPurpose   = "?"_Stz;
 }
