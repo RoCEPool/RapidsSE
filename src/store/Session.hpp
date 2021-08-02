@@ -30,7 +30,6 @@ namespace STORE
 
     Tx*      m_pTx;           // current transaction
   
-    //ReqTuple m_xReqTuple_ssn; // request information
     i8       m_iCmdNo;        // the sequence no of the request from that session
 
   
