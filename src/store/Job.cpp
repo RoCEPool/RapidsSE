@@ -118,9 +118,15 @@ Job::Job(ReqTuple* aReqTuple,
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-    
-  // -- a -------------------
+
   // m_xReqTuple
+
+  // -- a -------------------
+  
+  m_i_Origin     = aReqTuple->m_i_Origin;
+  m_i_Session    = aReqTuple->m_i_Session;
+  m_iCmdNo_tuple = aReqTuple->m_iCmdNo_tuple;
+
   // m_sJobNm;
   m_iParentId = C_UNKNOWN;
   m_oTimer.vStart();

@@ -26,9 +26,18 @@ namespace STORE
   public:
   
     Gid<CN_JOB> m_xJobId;    // this job's id
+
   
-    // -- a -------------------
     ReqTuple m_xReqTuple;    // the request tuple
+
+    // -- a -------------------
+  
+    i8 m_i_Origin;           // originated on which node
+    i8 m_i_Session;          // which session in session array
+    i8 m_iCmdNo_tuple;       // the sequence no of the request from that session
+
+  
+  
     s32      m_sJobNm;       // name of job
     i8       m_iParentId;    // job id of parent job which spawned this job
     Timer    m_oTimer;       // timer
