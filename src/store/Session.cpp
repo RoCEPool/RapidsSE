@@ -100,6 +100,10 @@ Session::Session(void)
   
   // -- -- -- -- -- --
   m_pOutput           = nullptr;
+  
+  
+  
+  m_iCmdNo = 0;
 
   _checkInitialised_(CN_SESSION);
   
