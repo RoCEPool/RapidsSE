@@ -366,10 +366,8 @@ void Engine::vBootCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallBoot(void)
 {
-  ReqTuple xReqTuple("!!BootSE"_Stz,false);
-  
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
   
@@ -458,10 +456,8 @@ void Engine::vCallStart(void)
   
   PsxThd::vMarkNonSeThread();
   
-  ReqTuple xReqTuple("!!StartSE"_Stz,false);
-  
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      xReqTuple.m_i_Session,
+                      AM::SESSION::iInternalSession(),
                       1
                       );
   
