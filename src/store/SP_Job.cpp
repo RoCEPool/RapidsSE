@@ -78,7 +78,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   pJob->bHasTag_noWait()   ? ""_Stz       : " wait"_Stz,
                   pJob->bWasReceived() ? " recvd"_Stz : ""_Stz,
 
-                  spReqTuple.sz(&pJob->m_xReqTuple),
+                  spReqTuple.sz(&pJob->m_xReqTuple_job),
                   
                   C_VARGS_END);
   
@@ -100,7 +100,7 @@ Stz* SP_Job::sz_recv(Job* pJob)
                   "Header %s ReqTuple %s ... Footer %s"_Stz,
                   
                   spHeader.sz(pJob),
-                  spReqTuple.sz(&pJob->m_xReqTuple),
+                  spReqTuple.sz(&pJob->m_xReqTuple_job),
                   spFooter.sz(pJob)
                   );
   

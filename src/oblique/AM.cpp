@@ -1836,7 +1836,7 @@ Stz* AM::szJobSeed(Job* pJob)
 
 Session* AM::pJobSession(Job* pJob)
 {
-  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  i8 iSessionId = pJob->m_xReqTuple_job.m_i_Session;
   
   Session* pSession = nullptr;
   

@@ -1142,7 +1142,7 @@ bool SePrompt::bRedirectFromFile(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 //
-//  return m_xReqTuple.m_iReqNo;
+//  return m_xReqTuple_job.m_iReqNo;
 //}
 
 /*----------------------------------------------------------------------------*/

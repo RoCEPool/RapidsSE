@@ -115,11 +115,11 @@ Job::Job(ReqTuple* aReqTuple,
         )
 : Object(CN_JOB)
 , CRM<Job>(this)
-, m_xReqTuple(aReqTuple)
+, m_xReqTuple_job(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 
-  // m_xReqTuple
+  // m_xReqTuple_job
 
   // -- a -------------------
   
@@ -179,14 +179,14 @@ Job::Job(ReqTuple* aReqTuple,
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-, m_xReqTuple()
+, m_xReqTuple_job()
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eGetClassNo()]);
   
-  // m_xReqTuple
+  // m_xReqTuple_job
   
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
@@ -990,7 +990,7 @@ void Job::vResetForReuse(Session* pSession)
   vDebugPoint();
   
   // -- a -------------------
-  // m_xReqTuple
+  // m_xReqTuple_job
   // m_sJobNm;
   // m_iParentId = C_UNKNOWN;
   // m_oTimer.vStart();
@@ -1094,7 +1094,7 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
-  Session* pSession = AM::pSessionGet(&m_xReqTuple);
+  Session* pSession = AM::pSessionGet(&m_xReqTuple_job);
 
   return pSession;
 }
@@ -1178,7 +1178,7 @@ void Job::vShow(void)
          m_iParentId,
          aSS[m_eSeed],
          
-         m_xReqTuple.m_i_Session,
+         m_xReqTuple_job.m_i_Session,
          m_i_TablePtn,
          (i8)m_bWasReceived
          );

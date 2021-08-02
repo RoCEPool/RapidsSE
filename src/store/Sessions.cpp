@@ -63,7 +63,7 @@ Sessions::Sessions(void)
     
     m_paSession[i_Session] = pSession;
     pSession->m_i_Session  = i_Session;
-    pSession->m_xReqTuple.m_i_Session = i_Session;
+    pSession->m_xReqTuple_ssn.m_i_Session = i_Session;
     pSession->m_i_NextFree = i_Session + 1;
   }
   m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;
@@ -323,7 +323,7 @@ void Sessions::vApiJob(Session* pSession, Job* pJob)
 
   pSession->m_nJobNew++;
   
-  pJob->m_xReqTuple.m_i_Session = pSession->m_i_Session;
+  pJob->m_xReqTuple_job.m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,7 +28,7 @@ namespace STORE
     Gid<CN_JOB> m_xJobId;    // this job's id
 
   
-    ReqTuple m_xReqTuple;    // the request tuple
+    ReqTuple m_xReqTuple_job;    // the request tuple
 
     // -- a -------------------
   

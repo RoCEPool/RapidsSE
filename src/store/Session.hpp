@@ -29,7 +29,7 @@ namespace STORE
     Output*  m_pOutput;       // output processor
 
     Tx*      m_pTx;           // current transaction
-    ReqTuple m_xReqTuple;     // request information
+    ReqTuple m_xReqTuple_ssn; // request information
     bool     m_bExamined;     // has command been examined?
     Job*     m_pSsnJob;       // job currently being executing
     Mutex    m_oMutex;        //
