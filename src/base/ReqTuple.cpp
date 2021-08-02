@@ -27,8 +27,6 @@ ReqTuple::ReqTuple(void)
   m_i_Origin   = AM::bAttached() && AM::pGrid() ? AM::iThisNodeNo() : C_UNKNOWN;
   m_i_Session  = C_UNKNOWN;
   m_iReqNo     = C_UNKNOWN;
-  m_iForId     = C_UNKNOWN;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,14 +80,13 @@ void ReqTuple::vContentDump(void)
   vTrace("--------\n"_Stz);
   
   vTrace("%p: \n"
-         "m_i_Origin=%lld m_i_Session=%lld m_iReqNo=%lld m_iForId=%lld\n"_Stz,
+         "m_i_Origin=%lld m_i_Session=%lld m_iReqNo=%lld\n"_Stz,
 
          this,
          
          m_i_Origin,
          m_i_Session,
          m_iReqNo,
-         m_iForId,
          
          C_VARGS_END
          );
@@ -105,7 +102,6 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
     m_i_Origin   = aReqTuple->m_i_Origin;
     m_i_Session  = aReqTuple->m_i_Session;
     m_iReqNo     = aReqTuple->m_iReqNo;
-    m_iForId     = aReqTuple->m_iForId;
     m_i_Session  = aReqTuple->m_i_Session;
     
     return;
@@ -114,10 +110,6 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   m_i_Origin   = AM::bAttached() && AM::pGrid() ? AM::iThisNodeNo() : C_UNKNOWN;
   m_i_Session  = C_UNKNOWN;
   m_iReqNo     = C_UNKNOWN;
-  m_iForId     = C_UNKNOWN;
-
-  
-  //m_sPurpose   = "?"_Stz;
 }
 
 
