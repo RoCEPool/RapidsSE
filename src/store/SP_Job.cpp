@@ -7,7 +7,6 @@
 #include "SP_Footer.hpp"
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"
-#include "SP_ReqTuple.hpp"
 
 #include "Job.hpp"
 
@@ -60,11 +59,9 @@ Stz* SP_Job::sz_api(Job* pJob)
 Stz* SP_Job::sz_log(Job* pJob)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-  
-  SP_ReqTuple spReqTuple;
-  
+    
   StrLib::vSprint(m_caResult,
-                  "{%s %lld %lld %s %s %s %s%s%s}%s"_Stz,
+                  "{%s %lld %lld %s %s %s %s%s}%s"_Stz,
                   
                   aCN[pJob->eGetClassNo()],
                   pJob->i_TablePtn(),
@@ -77,8 +74,6 @@ Stz* SP_Job::sz_log(Job* pJob)
                   
                   pJob->bHasTag_noWait()   ? ""_Stz       : " wait"_Stz,
                   pJob->bWasReceived() ? " recvd"_Stz : ""_Stz,
-
-                  spReqTuple.sz(&pJob->m_xReqTuple_job),
                   
                   C_VARGS_END);
   
@@ -93,15 +88,13 @@ Stz* SP_Job::sz_recv(Job* pJob)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   SP_Header   spHeader;
-  SP_ReqTuple spReqTuple;
   SP_Footer   spFooter;
   
   StrLib::vSprint(m_caResult,
-                  "Header %s ReqTuple %s ... Footer %s"_Stz,
+                  "Header %s ... Footer %s"_Stz,
                   
                   spHeader.sz(pJob),
-                  spReqTuple.sz(&pJob->m_xReqTuple_job),
-                  spFooter.sz(pJob)
+                   spFooter.sz(pJob)
                   );
   
   return (Stz*) &m_caResult[0];
