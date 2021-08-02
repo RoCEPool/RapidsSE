@@ -23,8 +23,6 @@ namespace STORE
   
     i8 iNextNo(eCN eClassNo);
   
-    void vNodeNo(i8 iThisNodeNo);
-
   private:
     Footer* aFooter(void);
   };

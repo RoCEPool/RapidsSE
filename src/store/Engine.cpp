@@ -1618,12 +1618,6 @@ void Engine::vStartSystem(void)
   AM::pGrid()->vThisNode(pThisNode); // newcode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initialize the next id generators
-
-  i8 iThisNode = pThisNode->iNodeNo();
-  gpAttachMap->m_pNumbering->vNodeNo(iThisNode);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Creating Sessions\n"_Stz);

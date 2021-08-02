@@ -714,6 +714,8 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
       i8 iNodeNo = AM::GRID::iThisNodeNo();
+      
+      iNo = iNodeNo << 48 | iNo;
     }
   }
   else {
