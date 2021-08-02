@@ -267,7 +267,7 @@ namespace OBLIQUE
       static void vLogInternal(i8 iTable, ...);
       static void vMemoryAllocation(Object* pObject, eCN eClassNo);
       static void vMemoryFree(Object* pObject);
-      static void vOperand(i8 iPoint);
+      //static void vOperand(i8 iPoint);
       //static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
   

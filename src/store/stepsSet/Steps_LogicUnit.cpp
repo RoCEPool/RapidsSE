@@ -62,8 +62,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].IsLftCrwBuffer@"_Stz,  &Step::vLogicUnitIsLftCrwBufferFetch);
   vAddStep("LogicUnit[].IsLftCrwBuffer!"_Stz,  &Step::vLogicUnitIsLftCrwBufferStore);
 
-  vAddStep("LogicUnit[].logOperand"_Stz,    &Step::vLogicUnitLogOperand);
-
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
   
@@ -592,23 +590,6 @@ void Step::vLogicUnitIsLftCrwBufferStore(void)
 
   m_pJob->pLogicUnit_job()->m_bIsLftCrwBuffer = iIsLeftCrwBuffer;
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].logOperand -- log operand                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitLogOperand(void)
-{
-  ENTRY();
-  
-  i8 iPoint = m_pDataStack->iPopInt(__func__);
-
-  if (! m_pJob->bHasTag(C_TAG_OPERANDLOG))
-    return;
- 
-  AM::LOG::vOperand(iPoint);
-  
   EXIT();
 }
 

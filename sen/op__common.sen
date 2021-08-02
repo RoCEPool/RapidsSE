@@ -369,16 +369,12 @@
 /* call event handler                                                        */
 /*----------------------------------------------------------------------------*/
 : op__callHandler
-
-  //0 LogicUnit[].logOperand
   
   //Task[] task.dropLock //OoO
 
   LogicUnit[].handler@ execute
   
   //Task[] task.grabLock //OoO
-
-  //1 LogicUnit[].logOperand
 ;
 
 /*----------------------------------------------------------------------------*/
