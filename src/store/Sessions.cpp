@@ -55,7 +55,7 @@ Sessions::Sessions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
   
-  m_nDataBuffersSoFar = 0;
+  m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
   m_pInternalSession = nullptr;
@@ -190,7 +190,7 @@ void Sessions::vAllocInternal(void)
   
   m_iFirstFree = m_pInternalSession->m_i_NextFree;
   
-  m_nDataBuffersSoFar++;
+  m_nSessionsSoFar++;
 
   m_pInternalSession->m_eSession = SK_INTERNAL;
   
@@ -213,7 +213,7 @@ Session* Sessions::pAllocSession(eSK eSession)
   
   m_iFirstFree = pSession->m_i_NextFree;
   
-  m_nDataBuffersSoFar++;
+  m_nSessionsSoFar++;
 
   pSession->m_eSession = eSession;
   
@@ -237,12 +237,12 @@ void Sessions::vDump(void)
 
   vTrace("%p: DataBuffersSoFar %lld:\n"_Stz,
          this,
-         m_nDataBuffersSoFar);
+         m_nSessionsSoFar);
   
   i8 iDataBuffers = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    if (iDataBuffers == m_nDataBuffersSoFar)
+    if (iDataBuffers == m_nSessionsSoFar)
       break;
     
     Session* pSession = m_paSession[i_Session];
