@@ -139,7 +139,6 @@ extern d8 C_D8_MID;
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
-#include "ReqTuple.hpp"
 
 #include "IntLib.hpp"
 #include "MagLib.hpp"
