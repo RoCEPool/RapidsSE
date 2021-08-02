@@ -820,7 +820,11 @@ void vTest11(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(&xImmReqTuple,
+                      xImmReqTuple.m_i_Origin,
+                      xImmReqTuple.m_i_Session,
+                      xImmReqTuple.m_iCmdNo_tuple
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -890,7 +894,11 @@ void vTest14(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(&xImmReqTuple,
+                      xImmReqTuple.m_i_Origin,
+                      xImmReqTuple.m_i_Session,
+                      xImmReqTuple.m_iCmdNo_tuple
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -933,7 +941,11 @@ void vTest15(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(&xImmReqTuple,
+                      xImmReqTuple.m_i_Origin,
+                      xImmReqTuple.m_i_Session,
+                      xImmReqTuple.m_iCmdNo_tuple
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -975,7 +987,11 @@ void vTest16(void)
   
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
 
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(&xImmReqTuple,
+                      xImmReqTuple.m_i_Origin,
+                      xImmReqTuple.m_i_Session,
+                      xImmReqTuple.m_iCmdNo_tuple
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -1020,7 +1036,11 @@ void vTest16(void)
   SeApi* pSeApi = new SeApi; \
   \
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
-  Job* pJob = new Job(&xImmReqTuple); \
+  Job* pJob = new Job(&xImmReqTuple, \
+                      xImmReqTuple.m_i_Origin, \
+                      xImmReqTuple.m_i_Session, \
+                      xImmReqTuple.m_iCmdNo_tuple \
+                      ); \
   \
   TagSet* pJobTags = pJob->pJobTags(); \
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz); \

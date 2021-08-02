@@ -108,7 +108,11 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(ReqTuple* aReqTuple)
+Job::Job(ReqTuple* aReqTuple,
+         i8 i_Origin,     // originated on which node
+         i8 i_Session,    // which session in session array
+         i8 iCmdNo_tuple  // the sequence no of the request from that session)
+        )
 : Object(CN_JOB)
 , CRM<Job>(this)
 , m_xReqTuple(aReqTuple)

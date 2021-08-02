@@ -45,10 +45,10 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
   SP_Gid spIdFor;
 
   StrLib::vSprint(m_caResult,
-                  "<i_Session=%lld ReqId=%s >"_Stz,
+                  "<i_Session=%lld CmdId=%s >"_Stz,
                   
                   aReqTuple->m_i_Session,
-                  spId.sz(IK_REQUEST,aReqTuple->m_iReqNo_tuple)
+                  spId.sz(IK_REQUEST,aReqTuple->m_iCmdNo_tuple)
                   );
   
   return (Stz*) &m_caResult[0];

@@ -2463,7 +2463,11 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 //  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
 //  UNUSED(eJobKind);
 
-  pNewJob = new Job(pReqTuple);
+  pNewJob = new Job(pReqTuple,
+                    pReqTuple->m_i_Origin,
+                    pReqTuple->m_i_Session,
+                    pReqTuple->m_iCmdNo_tuple
+                    );
 
   pNewJob->m_pOp = pOp;
   pNewJob->vSeed(SS_SEED_REQ);

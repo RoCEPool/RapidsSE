@@ -74,7 +74,11 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(ReqTuple* aReqTuple);
+    Job(ReqTuple* aReqTuple,
+        i8 i_Origin,     // originated on which node
+        i8 i_Session,    // which session in session array
+        i8 iCmdNo_tuple  // the sequence no of the request from that session
+       );
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClass);

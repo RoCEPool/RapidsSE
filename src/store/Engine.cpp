@@ -368,7 +368,11 @@ void Engine::vCallBoot(void)
 {
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
-  Job* pJob = new Job(&xReqTuple);
+  Job* pJob = new Job(&xReqTuple,
+                      xReqTuple.m_i_Origin,
+                      xReqTuple.m_i_Session,
+                      xReqTuple.m_iCmdNo_tuple
+                      );
   
   pJob->vSeed(SS_SEED_RUN);
   
@@ -457,7 +461,11 @@ void Engine::vCallStart(void)
   
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
-  Job* pJob = new Job(&xReqTuple);
+  Job* pJob = new Job(&xReqTuple,
+                      xReqTuple.m_i_Origin,
+                      xReqTuple.m_i_Session,
+                      xReqTuple.m_iCmdNo_tuple
+                      );
   
   pJob->vSeed(SS_SEED_RUN);
   

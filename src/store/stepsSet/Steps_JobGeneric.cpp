@@ -35,7 +35,12 @@ void Step::vJob__BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobBegun = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobBegun = new Job(&pDistJob->m_xReqTuple,
+                           pDistJob->m_xReqTuple.m_i_Origin,
+                           pDistJob->m_xReqTuple.m_i_Session,
+                           pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                           );
+  
   pJobBegun->m_xJobId = pDistJob->iJobId();
   pJobBegun->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobBegun->vNormalSides(false);
@@ -65,7 +70,12 @@ void Step::vJob__CancelNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobCancel = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobCancel = new Job(&pDistJob->m_xReqTuple,
+                            pDistJob->m_xReqTuple.m_i_Origin,
+                            pDistJob->m_xReqTuple.m_i_Session,
+                            pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                            );
+  
   pJobCancel->m_xJobId = pDistJob->iJobId();
   pJobCancel->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobCancel->vJobKind(JK_GENERIC);
@@ -94,7 +104,12 @@ void Step::vJob__CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple,
+                               pDistJob->m_xReqTuple.m_i_Origin,
+                               pDistJob->m_xReqTuple.m_i_Session,
+                               pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                               );
+  
   pJobCancelled->m_xJobId = pDistJob->iJobId();
   pJobCancelled->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobCancelled->vNormalSides(false);
@@ -124,7 +139,12 @@ void Step::vJob__EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnd = new Job(&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
+  Job* pJobEnd = new Job(&pDistJob->m_xReqTuple,
+                         pDistJob->m_xReqTuple.m_i_Origin,
+                         pDistJob->m_xReqTuple.m_i_Session,
+                         pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                         ); // new Job__End(pDistJob);
+  
   pJobEnd->m_xJobId = pDistJob->iJobId();
   pJobEnd->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobEnd->vJobKind(JK_GENERIC);
@@ -153,7 +173,12 @@ void Step::vJob__EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobEnded = new Job(&pDistJob->m_xReqTuple,
+                           pDistJob->m_xReqTuple.m_i_Origin,
+                           pDistJob->m_xReqTuple.m_i_Session,
+                           pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                           );
+  
   pJobEnded->m_xJobId = pDistJob->iJobId();
   pJobEnded->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobEnded->vNormalSides(false);
@@ -183,7 +208,11 @@ void Step::vJob__ExecuteNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecute = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobExecute = new Job(&pDistJob->m_xReqTuple,
+                             pDistJob->m_xReqTuple.m_i_Origin,
+                             pDistJob->m_xReqTuple.m_i_Session,
+                             pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                             );
   pJobExecute->m_xJobId = pDistJob->iJobId();
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobExecute->vJobKind(JK_GENERIC);
@@ -212,7 +241,11 @@ void Step::vJob__ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple);
+  Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple,
+                              pDistJob->m_xReqTuple.m_i_Origin,
+                              pDistJob->m_xReqTuple.m_i_Session,
+                              pDistJob->m_xReqTuple.m_iCmdNo_tuple
+                              );
   pJobExecuted->m_xJobId = pDistJob->iJobId();
   pJobExecuted->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobExecuted->vNormalSides(false);
