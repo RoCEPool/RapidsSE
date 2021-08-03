@@ -53,6 +53,7 @@ Sends::Sends(i8 iSends)
   m_iSends  = iSends;
   
   m_iCancelMarkers  = 0;
+  m_iCleanupMarkers = 0;
   m_iDataPulses     = 0;
   m_iDestroyMarkers = 0;
   m_iExitMarkers    = 0;
@@ -98,11 +99,11 @@ bool Sends::bCleanupDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  vTrace("Warning: ConsumeOp received ZK_CLEANUPMARKER %lld; expected %lld\n"_Stz,
-         m_iCleanupMarkers, m_iSends);
+  //vTrace("Warning: ConsumeOp received ZK_CLEANUPMARKER %lld; expected %lld\n"_Stz,
+  //       m_iCleanupMarkers, m_iSends);
 
   if (m_iCleanupMarkers == m_iSends) {
-    //m_iCleanupMarkers = 0;
+    m_iCleanupMarkers = 0;
     return true;
   }
   else

@@ -414,7 +414,17 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           goto L_EXIT;
           break;
         }
-          
+
+        case OM_CLEANUPMARKER: {
+          AM::vDeleteOperand(pOperand);
+
+          // ALKA: I think these should go soon
+          m_bCmdErr = false;
+          m_bExecErr = false;
+          goto L_EXIT;
+          break;
+        }
+
         case OM_DATAPULSE: {
           //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);

@@ -30,6 +30,7 @@
 : start_CleanedupMarker \handler
 
   //"ZK_CLEANEDUPMARKER_handler" .verbose
+  Pipein[].delete
 
   // now pipeout an exit marker
   Operand[].newExitMarker
@@ -46,8 +47,8 @@
   //"Operand:- ZK_ERROREDMARKER" .verbose
   PipeIn[].delete
 
-  // now pipeout an exit marker
-  Operand[].newCancelMarker
+  // now pipeout a cleanup marker
+  Operand[].newCleanupMarker
   Operand[].pipeOut
 
   true

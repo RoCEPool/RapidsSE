@@ -65,6 +65,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].newCancelMarker"_Stz,&Step::vOperandNewCancelMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
+  vAddStep("Operand[].newCleanupMarker"_Stz,&Step::vOperandNewCleanupMarker);
   vAddStep("Operand[].newCleanedupMarker"_Stz,&Step::vOperandNewCleanedupMarker);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
@@ -483,6 +484,20 @@ void Step::vOperandNewCsvBuffer(void)
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = new CsvBuffer;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCleanupMarker -- new a cleanup marker                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCleanupMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_CLEANUPMARKER);
+
   EXIT();
 }
 
