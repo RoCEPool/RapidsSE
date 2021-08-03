@@ -74,8 +74,8 @@
   //"Operand:- ZK_EXITEDEARLYMARKER" .verbose
   PipeIn[].delete
 
-  // now pipeout a cancel marker
-  Operand[].newCancelMarker
+  // now pipeout a cleanup marker
+  Operand[].newCleanupMarker
   Operand[].pipeOut
 
   true
