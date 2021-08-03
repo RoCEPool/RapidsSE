@@ -70,9 +70,9 @@ void Step::vRegSendsHandleCancel(void)
   
   Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
  
-  pSends->vIncExit();
+  pSends->vIncCancel();
   
-  m_pDataStack->vPushInt(pSends->bExitDone());
+  m_pDataStack->vPushInt(pSends->bCancelDone());
   
   EXIT();
 }

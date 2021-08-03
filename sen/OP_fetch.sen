@@ -110,20 +110,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: fetch_CancelMarker \handler
-
-  //"ZK_CANCELMARKER_handler" .verbose
-  nullptr to Operand[]
-  PipeIn[].pipeOut
-  //Op.ackPipelineJob
-
-  //false
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : fetch_CleanupMarker \handler
@@ -286,7 +272,6 @@
 
   op__topology
 
-  find: fetch_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: fetch_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: fetch_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: fetch_DataMarker    ZK_DATAPULSE     op[].handler!

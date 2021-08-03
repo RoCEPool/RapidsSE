@@ -5,14 +5,6 @@
 " OP_explainPlan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: explainPlan_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : explainPlan_CleanupMarker \handler
@@ -53,8 +45,7 @@
   find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
-  find: explainPlan_CleanupMarker ZK_CLEANUPMARKER op[].handler!
-  find: explainPlan_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: explainPlan_CleanupMarker ZK_CANCELMARKER  op[].handler!
   find: explainPlan_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop

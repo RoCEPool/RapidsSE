@@ -5,14 +5,6 @@
 " OP_projValidation.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: projValidation_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : projValidation_CleanupMarker \handler
@@ -53,7 +45,6 @@
   find: compiler_StreamSet         ZK_STREAMSET      op[].handler!
 
   // specific handlers
-  find: projValidation_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: projValidation_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: projValidation_PlanOperand   ZK_PLANOPERAND   op[].handler!
 

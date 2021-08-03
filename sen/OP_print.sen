@@ -10,9 +10,8 @@
 : print_exitMarker \handler
 
   "print_exitMarker:- ZK_EXITMARKER" .
-  PipeIn[].delete
 
-  false
+  ZK_EXITMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -5,14 +5,6 @@
 " OP_compilerOpEg.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: compilerOpEg_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_CleanupMarker \handler
@@ -65,7 +57,6 @@
 
   op__topology
 
-  find: compilerOpEg_CancelMarker  ZK_CANCELMARKER op[].handler!
   find: compilerOpEg_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: compilerOpEg_DataMarker    ZK_DATAPULSE    op[].handler!
   find: compilerOpEg_EosMarker     ZK_EOSMARKER    op[].handler!

@@ -9,22 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                 END */
-/*----------------------------------------------------------------------------*/
-: project_CancelMarker \handler
-
-  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
-
-  // cleanup the pot
-  PotRlu[].cleanup
-
-  Counter0[] cleanUpAsm
-
-  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CLEANUPMARKER ...                                                END */
 /*----------------------------------------------------------------------------*/
 : project_CleanupMarker \handler
@@ -208,7 +192,6 @@
 
   op__topology
 
-  find: project_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: project_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: project_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: project_EosMarker     ZK_EOSMARKER     op[].handler!

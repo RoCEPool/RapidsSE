@@ -5,14 +5,6 @@
 " OP_parser.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: parser_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : parser_CleanupMarker \handler
@@ -96,7 +88,6 @@
 
   op__topology
 
-  find: parser_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: parser_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: parser_DataPulse     ZK_DATAPULSE     op[].handler!
 

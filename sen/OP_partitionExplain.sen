@@ -5,14 +5,6 @@
 " OP_partitionExplain.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: partitionExplain_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : partitionExplain_CleanupMarker \handler
@@ -53,7 +45,6 @@
   find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
-  find: partitionExplain_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: partitionExplain_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: partitionExplain_PlanOperand   ZK_PLANOPERAND   op[].handler!
 

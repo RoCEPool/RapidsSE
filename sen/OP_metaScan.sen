@@ -37,14 +37,13 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
-: metaScan_CancelMarker \handler
+: metaScan_CleanupMarker \handler
 
   nullptr to Operand[]
+
   PipeIn[].pipeOut
-  //Op.ackPipelineJob
-  //false
   true
 ;
 
@@ -108,9 +107,9 @@
 
   op__topology
 
-  find: metaScan_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: metaScan_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: metaScan_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: metaScan_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: metaScan_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: metaScan_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

@@ -23,8 +23,7 @@
   //"Operand:- ZK_CANCELMARKER" .verbose
   PipeIn[].pipeToOutput
   Operand[].newCancelledMarker
-  Operand[] to Pipein[]
-  nullptr to Operand[]
+  Operand[]\clear to Pipein[]
 
   Pipein[].pipeOut
   true

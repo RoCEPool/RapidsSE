@@ -9,18 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                INIT */
-/*----------------------------------------------------------------------------*/
-: EOAsm_CancelMarker \handler
-
-  potRlu[].isNull not if
-    potRlu[].delete
-  then
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CLEANUPMARKER ...                                                INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_CleanupMarker \handler
@@ -287,7 +275,6 @@
 
   op__topology
 
-  find: EOAsm_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: EOAsm_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: EOAsm_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: EOAsm_EosMarker     ZK_EOSMARKER     op[].handler!

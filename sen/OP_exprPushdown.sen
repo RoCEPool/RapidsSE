@@ -5,14 +5,6 @@
 " OP_exprPushdown.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: exprPushdown_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : exprPushdown_CleanupMarker \handler
@@ -54,7 +46,6 @@
 
   // specific handlers
   find: exprPushdown_CleanupMarker ZK_CLEANUPMARKER op[].handler!
-  find: exprPushdown_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: exprPushdown_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop

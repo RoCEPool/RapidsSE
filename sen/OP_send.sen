@@ -43,6 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER operand                                        */
 /*----------------------------------------------------------------------------*/
+/*
 : send_CANCELMARKER \handler
 
   PipeIn[].sendTo discard
@@ -52,6 +53,15 @@
   Op.ackPipelineJob
   
   false // calling op_loop exits
+;
+*/
+: send_CANCELMARKER \handler
+
+  PipeIn[].sendTo discard
+
+  PipeIn[].drain
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

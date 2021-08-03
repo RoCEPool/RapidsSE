@@ -5,14 +5,6 @@
 " OP_stageMarkers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: stageMarkers_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : stageMarkers_CleanupMarker \handler
@@ -53,7 +45,6 @@
   find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
-  find: stageMarkers_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: stageMarkers_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: stageMarkers_PlanOperand   ZK_PLANOPERAND   op[].handler!
 

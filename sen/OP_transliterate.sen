@@ -29,16 +29,6 @@
   true session::hasCascade!
 ;
 
-
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: transliterate_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
@@ -151,7 +141,6 @@
 
   op__topology
 
-  find: transliterate_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: transliterate_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: transliterate_DataMarker    ZK_DATAPULSE     op[].handler!
   find: transliterate_EosMarker     ZK_EOSMARKER     op[].handler!

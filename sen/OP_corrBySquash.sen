@@ -6,14 +6,6 @@
 " OP_corrBySquash.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: corrBySquash_CancelMarker \handler
-
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : corrBySquash_CleanupMarker \handler
@@ -55,7 +47,6 @@
 
   // specific handlers
   find: corrBySquash_CleanupMarker ZK_CLEANUPMARKER op[].handler!
-  find: corrBySquash_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: corrBySquash_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop
