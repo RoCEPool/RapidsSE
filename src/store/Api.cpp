@@ -980,15 +980,15 @@ Op* Api::pOpCreate(Word* pOpWord)
   
   Op* pOp = new Op(pOpWord->szWordNm());
     
-  Job* pJob = AM::pNewJobOp(pOp,
+  Job* pOpJob = AM::pNewJobOp(pOp,
                             AM::GRID::iThisNodeNo(),
                             iSessionId,
                             1
                             );
   
-  pOp->vJob(pJob);
+  pOp->vOpJob(pOpJob);
   
-  TagSet* pJobTags = pJob->pJobTags();
+  TagSet* pJobTags = pOpJob->pJobTags();
   
   pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);

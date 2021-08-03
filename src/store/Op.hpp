@@ -14,7 +14,7 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    Job* m_pJob;        // job of this operator
+    Job* m_pOpJob;        // job of this operator
   
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
@@ -96,8 +96,8 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    Job* pJob(void);
-    void vJob(Job* pJob);
+    Job* pOpJob(void);
+    void vOpJob(Job* pOpJob);
     i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
