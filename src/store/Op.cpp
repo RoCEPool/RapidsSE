@@ -209,7 +209,7 @@ void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
+  Task* pPipelineTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
 
   if (m_bTraceOp) {
@@ -242,7 +242,8 @@ void Op::vAckPipelineJob(void)
   if (m_bTraceOp && AM::TRACE::bVBlong())
     spOp.szLeading(this);
   
-  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
+  RASSERT(AM::pExecutingTask(m_pJob) == m_pTask);
+  AM::vAckWaitingTask(pPipelineTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
   
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
       SP_Op spOp;
@@ -288,7 +289,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   AM::vOperandsInc();
 
   Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
+  RASSERT(pDstTask == m_pTask);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
@@ -317,7 +319,8 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   AM::vOperandsInc();
 
   Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
+  RASSERT(pDstTask == m_pTask);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
@@ -351,7 +354,8 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   AM::vOperandsInc();
 
   Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
+  RASSERT(pDstTask == m_pTask);
+
   eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
   if (TS_BIDING != eTaskState) {
     vDropTaskLock();
@@ -435,7 +439,10 @@ void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vDropTaskLock(AM::pExecutingTask(m_pJob));
+  Task* pTask = AM::pExecutingTask(m_pJob);
+  RASSERT(pTask == m_pTask);
+  
+  AM::vDropTaskLock(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +481,10 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vGrabTaskLock(AM::pExecutingTask(m_pJob));
+  Task* pTask = AM::pExecutingTask(m_pJob);
+  RASSERT(pTask == m_pTask);
+
+  AM::vGrabTaskLock(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,7 +574,10 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  bool bLocked = AM::bTaskIsLocked(AM::pExecutingTask(m_pJob));
+  Task* pTask = AM::pExecutingTask(m_pJob);
+  RASSERT(pTask == m_pTask);
+
+  bool bLocked = AM::bTaskIsLocked(pTask);
 
   return bLocked;
 }
