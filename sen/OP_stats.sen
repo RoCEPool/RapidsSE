@@ -53,15 +53,6 @@
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
 : stats_ExitMarker \handler
-/*
-  Expressions::lockSample // to operandC[]
-  //OperandC[].pipeOut
-
-  PipeIn[].pipeOut
- 
- Op.ackPipelineJob
- false
-*/
 
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert

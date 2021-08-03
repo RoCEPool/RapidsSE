@@ -5,21 +5,6 @@
 " OP_periodic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-/*
-: periodic_ErrorMarker \handler
-
-  //"Operand:- ZK_ERRORMARKER" .verbose
-  PipeIn[].delete
-  Operand[].newExitMarker
-  Operand[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : periodic_DataMarker \handler
@@ -86,7 +71,6 @@
 
   op__topology
 
-  //find: periodic_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: periodic_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop

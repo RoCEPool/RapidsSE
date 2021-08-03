@@ -43,8 +43,9 @@
 
   nullptr to Operand[]
   PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
+  //Op.ackPipelineJob
+  //false
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
