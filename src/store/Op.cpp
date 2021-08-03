@@ -1613,7 +1613,9 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
-  
+
+  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new Job for the Op
   
@@ -1625,23 +1627,13 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // get the operator job tag set
   TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy the pipeline job tag set into the operator job tags
-  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-  
-  //pPipeLineJobTags->vDumpSet(true);
-  
   pOpJobTagSet->vCopy(pPipeLineJobTags);
+  pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_oOpTags.vCopy(pPipeLineJobTags);
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the OpJob JobNM to be the same as the Opertor name
-  pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
   m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
-
-  //pOpJobTags->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
