@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "Job.hpp"
+#include "Op.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -30,10 +31,17 @@ void Step::vTagGet(void)
 
   TagSet* pTagSet = nullptr;
 
+  if (m_pJob)
+    pTagSet = m_pJob->pJobTags();
+  else
+  if (m_pOp)
+    pTagSet = m_pOp->pOpTagSet();
+  else {
+    NEVER_REACH;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pTagSet = m_pJob->pJobTags();
-
   i8 i_Tag = pTagSet->i_Find(sTagNm.szStz());
   
   if (C_UNKNOWN == i_Tag) {
