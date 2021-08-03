@@ -6,6 +6,12 @@
 
 #include <sys/mman.h>
 
+#include "TagConstants.h"
+
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -17,6 +23,9 @@ bool ShmLib::bClose(int iShmFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bClose : %lld\n"_Stz,iShmFd);
+
   int iResult = close(iShmFd);
   
   if (0 != iResult) {
@@ -36,6 +45,10 @@ bool ShmLib::bClose(int iShmFd, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 bool ShmLib::bExtend(int iShmFd, i8 iSize, SysCall& oSysCall)
 {
+  
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bExtend : %lld to %lldB\n"_Stz,iShmFd,iSize);
+
   // extend segment to given length (will be filled with zero's)
   int iResult = ftruncate(iShmFd, iSize);
   
@@ -54,6 +67,9 @@ bool ShmLib::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
   
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bLock: %p of %lldB\n"_Stz,aAddress,iBytes);
+
   if (mlock(aAddress,iBytes) != 0) {
     SysCall.vError(errno);
     return false;
@@ -68,7 +84,10 @@ bool ShmLib::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 bool ShmLib::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
-  
+ 
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bOpenCreate : %s\n"_Stz,sShmNm.azChar());
+
   // open shared memory region and get a file descriptor
   int    iFlags = O_CREAT | O_EXCL | O_RDWR;
   mode_t iMode  = S_IRUSR | S_IWUSR;
@@ -90,6 +109,9 @@ bool ShmLib::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 bool ShmLib::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
+  
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bOpenExisting : %s\n"_Stz,sShmNm.azChar());
   
   // open shared memory region and get a file descriptor
   int    iFlags = O_RDWR;
@@ -113,6 +135,9 @@ void* ShmLib::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall
 {
   SysCall.vClear();
   
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::aMap : %lld to %p %lldB\n"_Stz,iShmFd,aAddress,iBytes);
+
   bool bShared = true;
   
   int iProt = PROT_READ | PROT_WRITE;
@@ -154,6 +179,9 @@ bool ShmLib::bTest(s32& sShmNm)
   int iShmFd;
   SysCall oSysCall;
   
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bTest : %s\n"_Stz,sShmNm.azChar());
+
   // open existing shm region
   bool bResult = ShmLib::bOpenExisting(iShmFd,sShmNm,oSysCall);
   if ( ! bResult )
@@ -171,6 +199,10 @@ bool ShmLib::bTest(s32& sShmNm)
 bool ShmLib::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 {
   oSysCall.vClear();
+  
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bUnmap: %p of %lldB\n"_Stz,aAddress,iBytes);
+
   
   int iResult = munmap(aAddress, // starting address
                      iBytes    // length of the region
@@ -193,6 +225,9 @@ bool ShmLib::bUnlink(s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
+  if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+    vTrace("ShmLib::bUnlink : %s\n"_Stz,sShmNm.azChar());
+
   int iResult = shm_unlink(sShmNm.azChar());
 
   if (0 != iResult) {
