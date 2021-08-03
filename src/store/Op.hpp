@@ -27,7 +27,10 @@ namespace STORE
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
-    TagSet    m_oOpTags;   // tags for the op
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    TagSet    m_oOpTags; // tags for the op
+    Task*     m_pTask;   // which task
 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

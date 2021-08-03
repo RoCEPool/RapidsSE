@@ -65,7 +65,12 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
   m_pPipeline = pStream->pPipeline();
-    
+
+  // -- -- -- -- -- --
+
+  // m_oOpTags
+  m_pTask = nullptr;
+  
   // -- -- -- -- -- --
 
   m_bPulsedLimit  = false;
@@ -125,9 +130,11 @@ Op::Op(Stz* szOpNm)
   m_pStage    = nullptr;
   m_pPipeline = nullptr;
   
-    
+  // -- -- -- -- -- --
+
   // m_oOpTags
-  
+  m_pTask = nullptr;
+
   // -- -- -- -- -- --
 
   m_pJob        = nullptr;
@@ -1677,6 +1684,9 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
     AM::vSpawnJob_dedicated(m_pJob);
   else
     AM::vSpawnJob_op(m_pJob);
+  
+  m_pTask = AM::pExecutingTask(m_pJob);
+  RASSERT(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1716,7 +1726,9 @@ Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return AM::pExecutingTask(m_pJob);
+  RASSERT(m_pTask == AM::pExecutingTask(m_pJob));
+
+  return m_pTask;
 }
 
 /*----------------------------------------------------------------------------*/
