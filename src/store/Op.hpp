@@ -147,6 +147,7 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     Task* pTask(void);
+    void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
 
     void vWorkQuanta(i8 iWorkQuanta);

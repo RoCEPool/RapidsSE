@@ -48,9 +48,6 @@ namespace BASE
     Decider      m_oAcksRmg;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
-    bool         m_bLogMemory;   // log memory usage?
-    bool         m_bLogResource; // log resources usage?
-
     i8           m_iTraceMask;   // tracing mask
   
     i8           m_nOperandYield;  //
@@ -91,7 +88,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob);
+    Task(void);
    ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
@@ -142,8 +139,6 @@ namespace BASE
     void vLocalsPush(void);
     LogicUnit* pLogicUnit_task(void);
     void vLogicUnit_task(LogicUnit* pLogicUnit_task);
-    bool bLogMemory(void);
-    void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
@@ -160,8 +155,6 @@ namespace BASE
     void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vReseed(void);
-    bool bLogResource(void);
-    void vLogResource(bool bLogResource);
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);

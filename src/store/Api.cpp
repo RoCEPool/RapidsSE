@@ -970,6 +970,25 @@ void Api::vCreateTaskForJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create task for given op                                                   */
+/*----------------------------------------------------------------------------*/
+void Api::vCreateTaskForOp(Op* pOp)
+{
+  _static_
+    
+  Task* pTask = pOp->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
+  }
+  else {
+    pTask = AM::pTaskNew(pOp);
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* create operator for given word                                             */
 /*----------------------------------------------------------------------------*/
 Op* Api::pOpCreate(Word* pOpWord)
