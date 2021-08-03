@@ -892,8 +892,8 @@ void Engine::vKillPrev(void)
     if (! Region::bTest(sRegionNm) )
       continue;
 
-    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
-      vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.szStz());
+    if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+      vTrace("Engine::vKillPrev: region %s exists\n"_Stz,sRegionNm.szStz());
     
     if (! (aRegion = Region::aOpen(sRegionNm,gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,iFD)))
       continue;
@@ -901,19 +901,19 @@ void Engine::vKillPrev(void)
     AttachMap* pAttachMap = (AttachMap*)aAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
     i8 iPid = pAttachMap->iPid();
-    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
-      vTrace("vKillPrev: prev pid %lld\n"_Stz,iPid);
+    if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+       vTrace("Engine::vKillPrev: prev pid %lld\n"_Stz,iPid);
 
     if (iPid &&
         iPid != Process::iGetPid() &&
         Process::bTestPid(iPid)) {
       
       bool bResult = Process::bKillPid(iPid);
-      if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+      if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM)) {
         if (bResult)
-          vTrace("vKillPrev: process %lld killed\n"_Stz,iPid);
+          vTrace("Engine::vKillPrev: process %lld killed\n"_Stz,iPid);
         else
-          vTrace("vKillPrev: process %lld not killed\n"_Stz,iPid);
+          vTrace("Engine::vKillPrev: process %lld not killed\n"_Stz,iPid);
       }
     }
     

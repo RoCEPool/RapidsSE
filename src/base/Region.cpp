@@ -4,8 +4,13 @@
 
 #include "BASE.h"
 
-
 extern Header*    gaSeShmRegion;
+
+#include "TagConstants.h"
+
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
@@ -180,8 +185,10 @@ void Region::vUnlink(s32& sRegionName)
 {
   SysCall oSysCall;
   
-  if (! ShmLib::bUnlink(sRegionName,oSysCall))
-    vTrace("Region %s not unlinked\n"_Stz,sRegionName.azChar());
+  if (! ShmLib::bUnlink(sRegionName,oSysCall)) {
+    if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
+      vTrace("Region %s not unlinked\n"_Stz,sRegionName.azChar());
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

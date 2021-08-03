@@ -132,6 +132,8 @@ static Stz* C_VB_SOCKET          = "<vb_socket>"_Stz;
 static Stz* C_VB_THREAD          = "<vb_thread>"_Stz;
 static Stz* C_VB_WORD            = "<vb_word>"_Stz;
 
+static Stz* C_SEE_SHM            = "<see_shm>"_Stz;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
