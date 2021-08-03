@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_compilerOpEg.sen -- Compiler Op Example                                  */
+/* OP_compilerOpEg.sen -- Compiler Op Example                                 */
 /*============================================================================*/
 
 " OP_compilerOpEg.sen" .verbose
@@ -10,6 +10,15 @@
 : compilerOpEg_CancelMarker \handler
 
   ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: compilerOpEg_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,11 +65,12 @@
 
   op__topology
 
-  find: compilerOpEg_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: compilerOpEg_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: compilerOpEg_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: compilerOpEg_PlanNode  ZK_PLANOPERAND  op[].handler!
-  find: compilerOpEg_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: compilerOpEg_CancelMarker  ZK_CANCELMARKER op[].handler!
+  find: compilerOpEg_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: compilerOpEg_DataMarker    ZK_DATAPULSE    op[].handler!
+  find: compilerOpEg_EosMarker     ZK_EOSMARKER    op[].handler!
+  find: compilerOpEg_PlanNode      ZK_PLANOPERAND  op[].handler!
+  find: compilerOpEg_StartMarker   ZK_STARTMARKER  op[].handler!
 
   op__loop
 

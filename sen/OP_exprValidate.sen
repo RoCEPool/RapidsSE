@@ -13,6 +13,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: exprValidate_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : exprValidate_PlanOperand \handler
@@ -45,8 +54,9 @@ PipeIn[]\clear to Operand[]
   find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
-  find: exprValidate_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: exprValidate_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: exprValidate_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: exprValidate_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: exprValidate_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop
 

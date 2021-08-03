@@ -29,6 +29,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                END */
+/*----------------------------------------------------------------------------*/
+: aggreg_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  //indexTreeRlu[].isNull not if
+  //  indexTreeRlu[].delete
+  //then
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : aggreg_CrwBuffer \handler
@@ -186,13 +208,14 @@
 
   op__topology
 
-  find: aggreg_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: aggreg_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: aggreg_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: aggreg_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: aggreg_RowBuffer    ZK_ROWBUFFER    op[].handler!
-  find: aggreg_StartMarker  ZK_STARTMARKER  op[].handler!
-  find: aggreg_StreamDef    ZK_STREAMDEF    op[].handler!
+  find: aggreg_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: aggreg_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: aggreg_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: aggreg_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: aggreg_ErrorMarker   ZK_ERRORMARKER   op[].handler!
+  find: aggreg_RowBuffer     ZK_ROWBUFFER     op[].handler!
+  find: aggreg_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: aggreg_StreamDef     ZK_STREAMDEF     op[].handler!
 
   op__loop
 

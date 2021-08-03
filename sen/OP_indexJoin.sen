@@ -44,6 +44,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                END */
+/*----------------------------------------------------------------------------*/
+: indexJoin_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+
+  Pipein[].pipeOut
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : indexJoin_CrwBuffer \handler
@@ -221,13 +240,14 @@
 
   op__topology
 
-  find: indexJoin_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: indexJoin_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: indexJoin_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: indexJoin_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: indexJoin_RowBuffer    ZK_ROWBUFFER    op[].handler!
-  find: indexJoin_StartMarker  ZK_STARTMARKER  op[].handler!
-  find: indexJoin_StreamDef    ZK_STREAMDEF    op[].handler!
+  find: indexJoin_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: indexJoin_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: indexJoin_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: indexJoin_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: indexJoin_ErrorMarker   ZK_ERRORMARKER   op[].handler!
+  find: indexJoin_RowBuffer     ZK_ROWBUFFER     op[].handler!
+  find: indexJoin_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: indexJoin_StreamDef     ZK_STREAMDEF     op[].handler!
 
   op__loop
 

@@ -33,6 +33,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                END */
+/*----------------------------------------------------------------------------*/
+: hashRight_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : hashRight_CrwBuffer \handler
@@ -305,17 +322,18 @@
 
   op__topology
 
-  find: hashRight_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: hashRight_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: hashRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
-  find: hashRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER   op[].handler!
-  find: hashRight_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: hashRight_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: hashRight_RowBuffer    ZK_ROWBUFFER    op[].handler!
-  find: hashRight_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: hashRight_CancelMarker    ZK_CANCELMARKER     op[].handler!
+  find: hashRight_CleanupMarker   ZK_CLEANUPMARKER    op[].handler!
+  find: hashRight_CrwBuffer       ZK_CRWBUFFER        op[].handler!
+  find: hashRight_EndCrwRhtMarker ZK_END_CRWRHTMARKER op[].handler!
+  find: hashRight_EndRowRhtMarker ZK_END_ROWRHTMARKER op[].handler!
+  find: hashRight_EosMarker       ZK_EOSMARKER        op[].handler!
+  find: hashRight_ErrorMarker     ZK_ERRORMARKER      op[].handler!
+  find: hashRight_RowBuffer       ZK_ROWBUFFER        op[].handler!
+  find: hashRight_StartMarker     ZK_STARTMARKER      op[].handler!
   find: hashRight_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
   find: hashRight_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
-  find: hashRight_StreamDef    ZK_STREAMDEF    op[].handler!
+  find: hashRight_StreamDef         ZK_STREAMDEF          op[].handler!
 
   op__loop
 

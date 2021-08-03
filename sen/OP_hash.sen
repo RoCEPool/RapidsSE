@@ -33,6 +33,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                END */
+/*----------------------------------------------------------------------------*/
+: hash_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+  Pipein[].pipeOut
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : hash_CrwBuffer \handler
@@ -191,13 +209,14 @@
 
   op__topology
 
-  find: hash_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: hash_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: hash_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: hash_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: hash_RowBuffer    ZK_ROWBUFFER    op[].handler!
-  find: hash_StartMarker  ZK_STARTMARKER  op[].handler!
-  find: hash_StreamDef    ZK_STREAMDEF    op[].handler!
+  find: hash_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: hash_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: hash_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: hash_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: hash_ErrorMarker   ZK_ERRORMARKER   op[].handler!
+  find: hash_RowBuffer     ZK_ROWBUFFER     op[].handler!
+  find: hash_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: hash_StreamDef     ZK_STREAMDEF     op[].handler!
 
   op__loop
 

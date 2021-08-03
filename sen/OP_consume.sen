@@ -19,6 +19,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: consumeOp_CleanupMarker \handler
+
+  //"Operand:- ZK_CLEANUPMARKER" .verbose
+  Sends[].handleCleanup if
+    Pipein[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EosMarker \handler
@@ -145,15 +160,16 @@
   // set topology, next stage and op
   op__topology
 
-  find: consumeOp_CancelMarker   ZK_CANCELMARKER op[].handler!
-  find: consumeOp_EosMarker      ZK_EOSMARKER    op[].handler!
-  //find: consumeOp_ErrorMarker  ZK_ERRORMARKER  op[].handler!
-  find: consumeOp_ExitMarker     ZK_EXITMARKER   op[].handler!
+  find: consumeOp_CancelMarker   ZK_CANCELMARKER  op[].handler!
+  find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER op[].handler!
+  find: consumeOp_EosMarker      ZK_EOSMARKER     op[].handler!
+  //find: consumeOp_ErrorMarker  ZK_ERRORMARKER   op[].handler!
+  find: consumeOp_ExitMarker     ZK_EXITMARKER    op[].handler!
   find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
-  find: consumeOp_DataPulse      ZK_DATAPULSE    op[].handler!
-  find: consumeOp_PulsedMarker   ZK_PULSEDMARKER op[].handler!
-  find: consumeOp_StartMarker    ZK_STARTMARKER  op[].handler!
-  find: consumeOp_StreamDef      ZK_STREAMDEF    op[].handler!
+  find: consumeOp_DataPulse      ZK_DATAPULSE     op[].handler!
+  find: consumeOp_PulsedMarker   ZK_PULSEDMARKER  op[].handler!
+  find: consumeOp_StartMarker    ZK_STARTMARKER   op[].handler!
+  find: consumeOp_StreamDef      ZK_STREAMDEF     op[].handler!
 
   op__loop
 

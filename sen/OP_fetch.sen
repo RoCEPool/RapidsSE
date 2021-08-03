@@ -123,6 +123,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: fetch_CleanupMarker \handler
+
+  nullptr to Operand[]  // ???? ALKA
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : fetch_CrwBuffer \handler
@@ -275,10 +285,11 @@
 
   op__topology
 
-  find: fetch_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: fetch_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: fetch_DataMarker  ZK_DATAPULSE  op[].handler!
-  find: fetch_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: fetch_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: fetch_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: fetch_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: fetch_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: fetch_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

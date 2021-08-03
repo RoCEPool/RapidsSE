@@ -142,6 +142,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: delete_CleanupMarker \handler
+
+  //"ZK_CLEANUPMARKER_handler" .verbose
+  nullptr to Operand[]
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for delete_rows ...                                                */
 /*----------------------------------------------------------------------------*/
 : delete_rows \handler
@@ -275,10 +286,11 @@
 
   op__topology
 
-  find: delete_CancelMarker ZK_CANCELMARKER op[].handler!
-  //find: delete_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: delete_DataMarker  ZK_DATAPULSE  op[].handler!
-  find: delete_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: delete_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: delete_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  //find: delete_CrwBuffer   ZK_CRWBUFFER     op[].handler!
+  find: delete_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: delete_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

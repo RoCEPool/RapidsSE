@@ -14,6 +14,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: corrBySquash_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : corrBySquash_PlanOperand \handler
@@ -45,8 +54,9 @@
   find: compiler_StreamSet         ZK_STREAMSET      op[].handler!
 
   // specific handlers
-  find: corrBySquash_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: corrBySquash_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: corrBySquash_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: corrBySquash_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: corrBySquash_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop
 

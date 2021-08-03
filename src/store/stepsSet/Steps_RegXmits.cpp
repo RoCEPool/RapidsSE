@@ -21,6 +21,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[]"_Stz,                &Step::vRegSendsGet);
   vAddStep("Sends[].delete"_Stz,         &Step::vRegSendsDelete);
   vAddStep("Sends[].handleCancel"_Stz,   &Step::vRegSendsHandleCancel);
+  vAddStep("Sends[].handleCleanup"_Stz,  &Step::vRegSendsHandleCleanup);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleError"_Stz,    &Step::vRegSendsHandleError);
@@ -73,6 +74,22 @@ void Step::vRegSendsHandleCancel(void)
   
   m_pDataStack->vPushInt(pSends->bExitDone());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleCleanup -- handle consume of cleanup marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleCleanup(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+
+  pSends->vIncCleanup();
+
+  m_pDataStack->vPushInt(pSends->bCleanupDone());
+
   EXIT();
 }
 

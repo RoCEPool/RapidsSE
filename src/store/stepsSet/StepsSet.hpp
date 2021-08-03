@@ -1259,6 +1259,7 @@ public:
   void vRegSendsDelete(void);
   void vRegSendsGet(void);
   void vRegSendsHandleCancel(void);
+  void vRegSendsHandleCleanup(void);
   void vRegSendsHandleDestroy(void);
   void vRegSendsHandleEos(void);
   void vRegSendsHandleError(void);

@@ -92,6 +92,24 @@ bool Sends::bCancelDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cleaup done ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Sends::bCleanupDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  vTrace("Warning: ConsumeOp received ZK_CLEANUPMARKER %lld; expected %lld\n"_Stz,
+         m_iCleanupMarkers, m_iSends);
+
+  if (m_iCleanupMarkers == m_iSends) {
+    //m_iCleanupMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* data pulse done ?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Sends::bDataPulseDone(void)
@@ -247,6 +265,16 @@ void Sends::vIncCancel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   m_iCancelMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc cleanup                                                                */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iCleanupMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/
