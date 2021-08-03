@@ -13,4 +13,4 @@ stageMarkers.test
 partitionPlan.test
 aggregateSplit.test
 tableAliases.test
-//joins.test
+joins.test

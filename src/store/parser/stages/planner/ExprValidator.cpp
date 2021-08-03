@@ -23,6 +23,10 @@
 #include "OrderItemList.hpp"
 #include "StatementMarker.hpp"
 #include "SetOp.hpp"
+#include "JoinOp.hpp"
+
+#include "ComparisonExpr.hpp"
+#include "EqExpr.hpp"
 
 
 using namespace Parser;
@@ -77,6 +81,12 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
 
     // Validate that all predicate expressions have a boolean result type
     vValidatePredicatesAreBoolean(pRootNode, pStatementMarker);
+
+    // Validate that all join predicate expressions have a boolean result type
+    vValidateJoinPredicatesAreBoolean(pRootNode, pStatementMarker);
+
+    // Validate that all join predicate expressions produce equi-joins
+    vValidateJoinPredicatesAreEquiJoins(pRootNode, pStatementMarker);
 
     // Validate any aggregate/group-by expressions
     vValidateGroupByExprs(pRootNode, pStatementMarker);
@@ -180,6 +190,112 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 
   // Walk the /plan node and its children. We're not interested in walking
   // the properties because we are looking for filterOps
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate that all join predicate expressions (e.g. in JoinOps) return a    */
+/* boolean expression.                                                        */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the graph looking for all JoinOps
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!JoinOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pJoinNode = _pQueryNode(pNode);
+    QueryNode* pExprNode = JoinOp::pJoinPredicate(pJoinNode);
+
+    eCT eType = Expr::eType(pExprNode, pRootNode);
+
+    if (eType == CT_BOOLEAN) {
+      // All good, keep looking for more JoinOps
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Throw an error
+    s2K sBuf;
+    Expr::vDescribe(pExprNode, sBuf);
+
+    SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
+                              " : %s"_Stz,
+                              sBuf.szStz());
+
+    return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
+  };
+
+  // Walk the /plan node and its children. We're not interested in walking
+  // the properties because we are looking for JoinOps
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate that all join predicate expressions are equi-joins                */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the graph looking for all JoinOps
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!JoinOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pJoinNode = _pQueryNode(pNode);
+    QueryNode* pExprNode = JoinOp::pJoinPredicate(pJoinNode);
+
+    // Walk the expression tree looking for ComparisonExpr.
+    // If we get one that isn't an EqExpr then we have a non-equi-join
+    auto fExprVisitor = [pExprNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      UNUSED(sPath);
+      UNUSED(iDepth);
+      UNUSED(pvArg);
+
+      if (!ComparisonExpr::bIsOfType(pNode)) {
+        return GraphNav::WALK_CONTINUE;   // Keep walking
+      }
+
+      if (!EqExpr::bIsOfType(pNode)) {
+        // Throw an error
+        s2K sBuf;
+        Expr::vDescribe(pExprNode, sBuf);
+
+        SemanticException::vThrow(EC_EXPR_MUST_BE_EQUIJOIN,
+                                  " : %s"_Stz,
+                                  sBuf.szStz());
+
+        return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
+      }
+
+      return GraphNav::WALK_CONTINUE;
+    };
+
+    // Walk the expression tree
+    GraphNav::bGlobalWalk(pExprNode, false, true, fExprVisitor, nullptr);
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the /plan node and its children. We're not interested in walking
+  // the properties because we are looking for JoinOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
