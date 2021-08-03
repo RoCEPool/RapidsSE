@@ -75,6 +75,7 @@ enum eEC // error code
   EC_EXPR_IS_AGG_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
+  EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
 
@@ -297,6 +298,7 @@ static Stz* aEC[]
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,         // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,           // SQL Compiler Subsystem
 
@@ -519,6 +521,7 @@ static Stz* aEC2[] // error code
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,             // SQL Compiler Subsystem
 
@@ -752,6 +755,7 @@ static Stz* aErrorMsg[]
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "Cannot have an aggregate expression in the GROUP BY list"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "Cannot have a literal expression in the GROUP BY list"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,          // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "Join predicate expression must be an equi-join"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "Invalid expression because it is not being projected"_Stz,     // SQL Compiler Subsystem
 

@@ -591,15 +591,29 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
     bFreeExprStack = true;
   }
 
-  visitChildren(pCtx);
+  eJT eJoinType;
+
+  try {
+    visitChildren(pCtx);
+
+    // Extract join type. It can also throw an exception
+    eJoinType = eExtractJoinType(pCtx->joinType());
+
+  } catch (SqlException& e) {
+
+    if (bFreeExprStack) {
+      m_pExprStack->vDeleteAll();
+      delete m_pExprStack;
+      m_pExprStack = nullptr;
+    }
+
+    throw;
+  }
 
   // Extract the join table expressions
   ASSERT(m_pTableExprStack->nItems() >=2);
   QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
   QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
-
-  // Extract join type
-  eJT eJoinType = eExtractJoinType(pCtx->joinType());
 
   // TODO: Extract join hint
 
@@ -928,7 +942,16 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pTableExprNode = nullptr;
   if (pCtx->tableExpr()) {
     // Visit the grammar rule for table expressions
-    pCtx->tableExpr()->accept(this);
+    try {
+      pCtx->tableExpr()->accept(this);
+
+    } catch (SqlException& e) {
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      if (pHavingFilterOp)  delete pHavingFilterOp;
+      if (pWhereFilterOp)   delete pWhereFilterOp;
+      throw;
+    }
 
     ASSERT(m_pTableExprStack->nItems() == 1);
     pTableExprNode = m_pTableExprStack->pPop();
@@ -1954,12 +1977,27 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::JoinTypeContext *pCtx)
     return JT_INNER;
   }
 
-  if (pCtx->LEFT())   return JT_LEFT_OUTER;
-  if (pCtx->RIGHT())  return JT_RIGHT_OUTER;
-  if (pCtx->FULL())   return JT_FULL_OUTER;
+  if (pCtx->outer) {
+    if (pCtx->LEFT())   return JT_LEFT_OUTER;
+    if (pCtx->RIGHT())  return JT_RIGHT_OUTER;
+    if (pCtx->FULL())   return JT_FULL_OUTER;
+  }
 
-  // TODO: Add support for NATURAL joins
-  // TODO: Add support for explicit SEMI/ANTI joins
+  if (pCtx->NATURAL()) {
+    // TODO: Add support for NATURAL joins
+    __NOT_IMPL3("natural join");
+  }
+
+  if (pCtx->SEMI()) {
+    // TODO: Add support for explicit SEMI/ANTI joins
+    __NOT_IMPL3("semi-join");
+  }
+
+  if (pCtx->ANTI()) {
+    // TODO: Add support for explicit SEMI/ANTI joins
+    __NOT_IMPL3("anti-join");
+  }
+
   NEVER_REACH
 }
 

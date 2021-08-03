@@ -34,6 +34,12 @@ namespace Parser
     // Validate that all predicate expressions give a boolean result type
     static void vValidatePredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pStartNode);
 
+    // Validate that all join predicate expressions give a boolean result type
+    static void vValidateJoinPredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // Validate that all join predicates are equijoins
+    static void vValidateJoinPredicatesAreEquiJoins(PlanNode* pRootNode, QueryNode* pStartNode);
+
     // Validate that the aggregate and group-by expressions are correctly specified
     static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pStartNode);
 
