@@ -242,8 +242,7 @@ void Op::vAckPipelineJob(void)
   if (m_bTraceOp && AM::TRACE::bVBlong())
     spOp.szLeading(this);
   
-  RASSERT(AM::pExecutingTask(m_pJob) == m_pTask);
-  AM::vAckWaitingTask(pPipelineTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
+  AM::vAckWaitingTask(pPipelineTask,m_pTask,nAcksWereRemaining);
   
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
       SP_Op spOp;
@@ -288,15 +287,12 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pDstTask == m_pTask);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
     return;
   }
   else {
@@ -318,15 +314,12 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pDstTask == m_pTask);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
     return;
   }
   else {
@@ -353,10 +346,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pDstTask == m_pTask);
-
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING != eTaskState) {
     vDropTaskLock();
     return;
@@ -365,7 +355,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,11 +428,8 @@ void Op::vDownstreamOp(Op* pDownstreamOp)
 void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Task* pTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pTask == m_pTask);
-  
-  AM::vDropTaskLock(pTask);
+    
+  AM::vDropTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,10 +468,7 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pTask == m_pTask);
-
-  AM::vGrabTaskLock(pTask);
+  AM::vGrabTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -574,10 +558,7 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pTask = AM::pExecutingTask(m_pJob);
-  RASSERT(pTask == m_pTask);
-
-  bool bLocked = AM::bTaskIsLocked(pTask);
+  bool bLocked = AM::bTaskIsLocked(m_pTask);
 
   return bLocked;
 }
