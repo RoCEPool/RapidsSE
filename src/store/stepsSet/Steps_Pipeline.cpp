@@ -250,7 +250,7 @@ void Step::vPipelineEnqueueStart(void)
 
       Op* pOp = pStream->pGet(0);
 
-      RASSERT(AM::JOB::szJobNm(pOp->pOpJob())->bSame("start"_Stz));
+      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
 
       Operand* pOperand = new Marker(OM_STARTMARKER);
       

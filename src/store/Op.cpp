@@ -1275,9 +1275,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   vOpTrace(pOperand,(Stz*)__func__);
-  
-  RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
-  
+    
   RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
@@ -1334,8 +1332,6 @@ void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   vOpTrace(pOperand,(Stz*)__func__);
-
-  RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
 
   RASSERT(! szOpNm()->bSame("send"_Stz));
 
@@ -1680,7 +1676,6 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
     AM::vSpawnJob_op(m_pOpJob);
   
   m_pTask = AM::pExecutingTask(m_pOpJob);
-  RASSERT(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
