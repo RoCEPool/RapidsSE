@@ -13,6 +13,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: sqlInit_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : sqlInit_DataMarker \handler
@@ -50,10 +59,11 @@
 
   op__topology
 
-  find: sqlInit_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sqlInit_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: sqlInit_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: sqlInit_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: sqlInit_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: sqlInit_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: sqlInit_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: sqlInit_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: sqlInit_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

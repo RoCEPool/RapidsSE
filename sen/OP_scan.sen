@@ -35,6 +35,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: Scan_CleanupMarker \handler
+
+  // drop the tablePtn lock if held
+  counter0[] true == if
+    TablePtn[].dropRead
+    false to counter0[]
+  then
+
+  // delete the ptn stream
+  ptnStream[].isNull not if
+    ptnStream[] ptnStream.delete
+  then
+
+  Pipein[].pipeOut
+  true
+
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_NEXTBUFFERMARKER...                                         */
 /*----------------------------------------------------------------------------*/
 // ": scan_NextBufferMarker" .
@@ -196,6 +218,7 @@
   op__topology
 
   find: scan_CancelMarker      ZK_CANCELMARKER     op[].handler!
+  find: scan_CleanupMarker     ZK_CLEANUPMARKER    op[].handler!
   find: scan_DataMarker        ZK_DATAPULSE        op[].handler!
   find: scan_NextBufferMarker  ZK_NEXTBUFFERMARKER op[].handler!
   find: scan_StartMarker       ZK_STARTMARKER      op[].handler!

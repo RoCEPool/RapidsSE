@@ -33,6 +33,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                END */
+/*----------------------------------------------------------------------------*/
+: orderBy_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : orderBy_StartMarker \handler
@@ -59,8 +77,9 @@
 
   op__topology
 
-  find: orderBy_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: orderBy_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: orderBy_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: orderBy_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: orderBy_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

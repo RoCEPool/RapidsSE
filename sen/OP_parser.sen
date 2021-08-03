@@ -13,6 +13,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: parser_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : parser_DataPulse \handler
@@ -87,8 +96,9 @@
 
   op__topology
 
-  find: parser_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: parser_DataPulse    ZK_DATAPULSE    op[].handler!
+  find: parser_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: parser_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: parser_DataPulse     ZK_DATAPULSE     op[].handler!
 
   op__loop
 

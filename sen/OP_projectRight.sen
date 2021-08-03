@@ -33,6 +33,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: projectRight_CleanupMarker \handler
+
+  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+
+  Pipein[].pipeOut
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : projectRight_CrwBuffer \handler
@@ -298,9 +317,10 @@
   op__topology
 
   find: projectRight_CancelMarker     ZK_CANCELMARKER     op[].handler!
+  find: projectRight_CleanupMarker    ZK_CLEANUPMARKER    op[].handler!
   find: projectRight_CrwBuffer        ZK_CRWBUFFER        op[].handler!
-  find: projectRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
-  find: projectRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER   op[].handler!
+  find: projectRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER op[].handler!
+  find: projectRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER op[].handler!
   find: projectRight_EosMarker        ZK_EOSMARKER        op[].handler!
   find: projectRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
   find: projectRight_RowBuffer        ZK_ROWBUFFER        op[].handler!

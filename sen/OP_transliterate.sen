@@ -40,6 +40,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: transliterate_CleanupMarker \handler
+
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : transliterate_DataMarker \handler
@@ -142,11 +151,12 @@
 
   op__topology
 
-  find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: transliterate_PlanOperand  ZK_PLANOPERAND  op[].handler!
-  find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: transliterate_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: transliterate_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: transliterate_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: transliterate_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: transliterate_PlanOperand   ZK_PLANOPERAND   op[].handler!
+  find: transliterate_StartMarker   ZK_STARTMARKER   op[].handler!
 
   find: transliterate_StreamSet    ZK_STREAMSET    op[].handler!
   find: transliterate_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!

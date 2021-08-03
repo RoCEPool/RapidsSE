@@ -34,6 +34,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CLEANUPMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: sink_CleanupMarker \handler
+
+  //"Operand:- ZK_CLEANUPMARKER" .verbose
+  PipeIn[].pipeToOutput
+  Operand[].newExitedMarker
+  Operand[] to Pipein[]
+  nullptr to Operand[]
+
+  //Operand[].pipeOut
+  //Op.ackPipelineJob
+  //false
+
+  Pipein[].pipeOut
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : sink_ErrorMarker \handler
@@ -139,12 +159,13 @@
 
   find: sink_Xyz op[].handlerAll!
 
-  find: sink_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sink_ErrorMarker  ZK_ERRORMARKER op[].handler!
-  find: sink_ExitMarker   ZK_EXITMARKER  op[].handler!
+  find: sink_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: sink_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: sink_ErrorMarker   ZK_ERRORMARKER   op[].handler!
+  find: sink_ExitMarker    ZK_EXITMARKER    op[].handler!
   find: sink_ExitEarlyMarker ZK_EXITEARLYMARKER  op[].handler!
-  find: sink_PulsedMarker ZK_PULSEDMARKER  op[].handler!
-  find: sink_StartMarker  ZK_STARTMARKER op[].handler!
+  find: sink_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
+  find: sink_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 
