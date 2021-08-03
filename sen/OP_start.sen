@@ -116,8 +116,8 @@
         // mark pipeline as being pulsed
         true Pipeline::pulsed!
 
-        // now pipeout an exit marker
-        Operand[].newExitMarker
+        // now pipeout a cleanup marker
+        Operand[].newCleanupMarker
         Operand[].pipeOut
 
       then
