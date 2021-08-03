@@ -1684,10 +1684,10 @@ bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
 
 Job* AM::pPipelineJob(void)
 {
+  Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pOpJob = AM::pTaskJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
-  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pPipelineJob();
   return pPipelineJob;
 }
 
