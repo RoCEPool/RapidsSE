@@ -2376,6 +2376,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
         case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
+        case OM_CANCELLEDMARKER:  eOperand = ZK_CANCELLEDMARKER;  break;
         case OM_CLEANUPMARKER: eOperand = ZK_CLEANUPMARKER; break;
         case OM_CLEANEDUPMARKER: eOperand = ZK_CLEANEDUPMARKER; break;
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;

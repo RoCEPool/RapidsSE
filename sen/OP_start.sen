@@ -25,6 +25,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLEDMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: start_CancelledMarker \handler
+
+  //"Operand:- ZK_CANCELLEDMARKER" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleanup marker
+  Operand[].newCleanupMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANEDUPMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
 : start_CleanedupMarker \handler

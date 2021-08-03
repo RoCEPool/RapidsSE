@@ -4,7 +4,7 @@
 
 // boot cluster
 bc;
-
+/*
 trackMemory;
 
 /time create table LineItem                 // SF * 6,000,000 rows
@@ -33,12 +33,12 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //oldLoad lineitem "/TPCH/SF1/lineitem.csv";
-/time oldLoad lineitem "/DATA/TPCH/lineitem20K.csv";
+///time oldLoad lineitem "/DATA/TPCH/lineitem20K.csv";
 
 //drop table lineitem;
 
 //memoryLeaks;
-/*
+
 
  
  pipeline cancelTest
@@ -55,7 +55,8 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
  
  end
  ;
-/*
+*/
+
 // begin tracking memory
 trackMemory;
 
@@ -63,14 +64,14 @@ pipeline forever
 begin
 
   stage stageA on origin:
-    start | periodic min 1 | print "hello" | stageB
+    start | periodic min 1 | print | stageB
 
   stage stageB on origin:
     sink | stageA
 
 end
 ;
-*/
+
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/

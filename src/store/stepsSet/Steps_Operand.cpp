@@ -64,6 +64,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].newCancelMarker"_Stz,&Step::vOperandNewCancelMarker);
+  vAddStep("Operand[].newCancelledMarker"_Stz,&Step::vOperandNewCancelledMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
   vAddStep("Operand[].newCleanupMarker"_Stz,&Step::vOperandNewCleanupMarker);
   vAddStep("Operand[].newCleanedupMarker"_Stz,&Step::vOperandNewCleanedupMarker);
@@ -470,6 +471,20 @@ void Step::vOperandNewCancelMarker(void)
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_CANCELMARKER);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCancelledMarker -- new a cancelled marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCancelledMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_CANCELLEDMARKER);
+
   EXIT();
 }
 

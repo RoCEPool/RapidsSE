@@ -1038,6 +1038,7 @@ public:
   void vOperandKind(void);
   void vOperandMorphClass(void);
   void vOperandNewCancelMarker(void);
+  void vOperandNewCancelledMarker(void);
   void vOperandNewCsvBuffer(void);
   void vOperandNewCleanupMarker(void);
   void vOperandNewCleanedupMarker(void);
