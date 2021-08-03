@@ -1676,6 +1676,8 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
     AM::vSpawnJob_op(m_pOpJob);
   
   m_pTask = AM::pExecutingTask(m_pOpJob);
+  
+  m_pTask->vOp(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -30,10 +30,11 @@ namespace BASE
   private:
     Lock         m_okLock;       // lock for this task
   
-    Gid<CN_TASK> m_xTaskId;    // tasks object id
+    Gid<CN_TASK> m_xTaskId;      // tasks object id
 
     SMA<Thread>  m_pThread;      // current thread executing this task
     SMA<Job>     m_pJob;         // job this task is executing
+    SMA<Op>      m_pOp;          // job this task is executing
     LogicUnit*   m_pLogicUnit_task; // set of registers for the task steps
 
     bool         m_bIsStart;     // is this the start task?
@@ -148,6 +149,8 @@ namespace BASE
     void vMutexUnlock(void);
     void vMutexWait(void);
     void vNewInput(void);
+    Op*  pOp(void);
+    void vOp(Op* pOp);
     Profile* pProfile(void);
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);

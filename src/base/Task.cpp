@@ -81,7 +81,8 @@ Task::Task(Job* pJob)
 
   m_pThread      = nullptr;
   m_pJob         = pJob;
-  
+  m_pOp          = nullptr;
+
 #ifdef WITH_LOGIC_UNIT_TASK
   m_pLogicUnit_task = AM::LOGICUNIT::pNew(pJob);
 #else
@@ -920,6 +921,26 @@ void Task::vNewInput(void)
   RASSERT(! m_pInput);
     
   m_pInput = new Input;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the oo of this task                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Task::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the op of this task                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vOp(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pOp = pOp;
 }
 
 /*----------------------------------------------------------------------------*/
