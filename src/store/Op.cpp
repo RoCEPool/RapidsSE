@@ -126,6 +126,8 @@ Op::Op(Stz* szOpNm)
   m_pPipeline = nullptr;
   
     
+  // m_oOpTags
+  
   // -- -- -- -- -- --
 
   m_pJob        = nullptr;
@@ -1634,11 +1636,14 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   //pPipeLineJobTags->vDumpSet(true);
   
   pOpJobTagSet->vCopy(pPipeLineJobTags);
+  
+  m_oOpTags.vCopy(pPipeLineJobTags);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the OpJob JobNM to be the same as the Opertor name
   pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
-  
+  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+
   //pOpJobTags->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -27,6 +27,9 @@ namespace STORE
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
+    TagSet    m_oOpTags;   // tags for the op
+
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // working variables. these are not copies of variables from opSpec
   
