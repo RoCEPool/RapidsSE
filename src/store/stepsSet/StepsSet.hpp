@@ -1039,6 +1039,7 @@ public:
   void vOperandMorphClass(void);
   void vOperandNewCancelMarker(void);
   void vOperandNewCsvBuffer(void);
+  void vOperandNewCleanedupMarker(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);

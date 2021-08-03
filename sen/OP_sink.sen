@@ -40,13 +40,9 @@
 
   //"Operand:- ZK_CLEANUPMARKER" .verbose
   PipeIn[].pipeToOutput
-  Operand[].newExitedMarker
+  Operand[].newCleanedupMarker
   Operand[] to Pipein[]
   nullptr to Operand[]
-
-  //Operand[].pipeOut
-  //Op.ackPipelineJob
-  //false
 
   Pipein[].pipeOut
   true
