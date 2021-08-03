@@ -186,12 +186,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   bool bSetLogMemory = false;
   
-//  if (AM::TASK::bLogMemory() {
-//    if (CN_WRITEBEHIND == eAllocClass) {
-//      bSetLogMemory = true;
-//    }
-//
-//  }
 
   //vVerify();
   

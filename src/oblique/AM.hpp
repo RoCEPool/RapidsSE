@@ -190,7 +190,6 @@ namespace STORE {
   class TablePtn;
   class TailLine;
   
-  class WriteBehind;
   class Parcel;
   
   class Sends;
@@ -351,10 +350,7 @@ namespace OBLIQUE
       static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
       static ThreadVec* pGeneralThreadVec(void);
-      static Thread* pNewThread(void);
-      static WriteBehind* pWriteBehind(void);
-      static WriteBehind* pWriteBehind(Thread* pThread);
-    
+      static Thread* pNewThread(void);    
     };
   
     class TRACE

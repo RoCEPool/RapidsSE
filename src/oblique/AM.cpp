@@ -113,7 +113,6 @@
 #include "SP_Word.hpp"
 
 #include "TraceLock.hpp"
-#include "WriteBehind.hpp"
 #include "InternalTables.hpp"
 
 #include "Version.h"
@@ -1133,12 +1132,7 @@ ThreadVec* AM::THREAD::pDedicatedThreadVec(void)
 void AM::THREAD::vDeleteThread(Thread* pThread)
 {
   _static_
-  
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
-  pThread->vObject0(nullptr);
-
-  delete pWriteBehind;
-  
+    
   delete pThread;
 }
 
@@ -1162,47 +1156,10 @@ Thread* AM::THREAD::pNewThread(void)
   _static_
   
   Thread* pThread = new Thread;
-
-  //WriteBehind* pWriteBehind = new WriteBehind;
-  
-  //pThread->vObject0(pWriteBehind);
   
   return pThread;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get write behind of current thread                                         */
-/*----------------------------------------------------------------------------*/
-WriteBehind* AM::THREAD::pWriteBehind(void)
-{
-  _static_
-  
-  Thread* pThread = AM::pThisTLSThread();
-  
-  if (! pThread)
-    return nullptr;
-  
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
-  
-  return pWriteBehind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get write behind of given thread (lazy creation of write behind)           */
-/*----------------------------------------------------------------------------*/
-WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
-{
-  _static_
-  
-  WriteBehind* pWriteBehind = _pWriteBehind(pThread->pObject0());
-  
-  if (! pWriteBehind) {
-    pWriteBehind = new WriteBehind;
-    pThread->vObject0(pWriteBehind);
-  }
-  
-  return pWriteBehind;
-}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    TRACE                                   */

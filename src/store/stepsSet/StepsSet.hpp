@@ -2022,9 +2022,6 @@ public:
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
 
-  // write behind
-  void vWriteBehindFlush(void);
-
   // zero
   void vZeroLess(void);
   void vZeroLessEqual(void);
