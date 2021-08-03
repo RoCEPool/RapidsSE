@@ -21,6 +21,7 @@
 
 : ZK_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
 : ZK_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
+: ZK_CANCELMARKER_handler     \handler STANDARD_PIPEOUT ;
 : ZK_CLEANUPMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_CLEANEDUPMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
@@ -76,22 +77,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELMARKER operand                    (pipes out) */
-/*----------------------------------------------------------------------------*/
-: ZK_CANCELMARKER_handler \handler
-
-  //"ZK_CANCELMARKER_handler" .verbose
-
-  PipeIn[].pipeOut
-
-  PipeIn[].drain
-
-  Op.ackPipelineJob
-  
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
 /* default handler for ZK_EXITMARKER operand                      (pipes out) */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITMARKER_handler \handler
@@ -104,7 +89,6 @@
   
   false // calling op_loop exits
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* handler for eating operand                        (deletes pipein operand) */
