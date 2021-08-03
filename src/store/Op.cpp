@@ -223,12 +223,12 @@ void Op::vAckPipelineJob(void)
               ,spOp.szLeading(this)
              
               ,__func__
-              ,m_pOpJob
+              ,pPipelineJob()
              );
     }
     else {
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-             AM::JOB::szJobNm(m_pOpJob),
+             szOpNm(),
              m_pStage->szStageNm(),
              iNode(),
              tPtnNo());
