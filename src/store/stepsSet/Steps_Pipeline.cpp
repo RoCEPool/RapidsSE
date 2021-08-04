@@ -225,17 +225,9 @@ void Step::vPipelineEnqueueStart(void)
   
   
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
-  
-#ifdef WITH_PIPELINE_IN_JOB
-
-  Pipeline* pPipeline = m_pJob->m_pPipeline_job;
-  
-#else
-  
+    
   Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
-  
-#endif
-  
+    
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -392,22 +384,12 @@ void Step::vPipelineSpawnOps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
-#ifdef WITH_PIPELINE_IN_JOB
-  m_pJob->m_pPipeline_job =
-    new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
-                 m_pJob->iOriginatorNode());
-  
-  Pipeline* pPipeline = m_pJob->m_pPipeline_job;
-
-#else
   pLogicUnit->m_xpPipeline =
     new Pipeline(m_pJob,
                  *pLogicUnit->m_xpPipelineSpec,
                  m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
@@ -446,12 +428,7 @@ void Step::vPipelinePipeout(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef WITH_PIPELINE_IN_JOB
-  Pipeline* pPipeline = pPipelineJob->m_pPipeline_job;
-#else
   Pipeline* pPipeline = pPipelineJob->pPipeline();
-
-#endif
   
   Stage*    pStage0   = pPipeline->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
