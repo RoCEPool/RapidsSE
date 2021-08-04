@@ -1005,7 +1005,7 @@ Op* Api::pOpCreate(Word* pOpWord)
                             1
                             );
   
-  pOp->vOpJob(pOpJob);
+  pOp->vOpJob_(pOpJob);
   
   TagSet* pJobTags = pOpJob->pJobTags();
   

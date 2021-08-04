@@ -96,8 +96,8 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    Job* pOpJob(void);
-    void vOpJob(Job* pOpJob);
+    Job* pOpJob_(void);
+    void vOpJob_(Job* pOpJob);
     i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);

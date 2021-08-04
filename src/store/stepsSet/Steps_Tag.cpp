@@ -33,6 +33,8 @@ void Step::vTagGet(void)
 
   i8 i_Tag = C_UNKNOWN;
   
+  //RASSERT( (m_pOp && ! m_pJob) || (! m_pOp && m_pJob) );
+  
   if (C_UNKNOWN == i_Tag && m_pOp) {
     pTags = m_pOp->pOpTags();
     i_Tag = pTags->i_Find(sTagNm.szStz());

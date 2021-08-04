@@ -898,7 +898,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* get job                                                                    */
 /*----------------------------------------------------------------------------*/
-Job* Op::pOpJob(void)
+Job* Op::pOpJob_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -908,7 +908,7 @@ Job* Op::pOpJob(void)
 /*----------------------------------------------------------------------------*/
 /* set job                                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vOpJob(Job* pOpJob)
+void Op::vOpJob_(Job* pOpJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
