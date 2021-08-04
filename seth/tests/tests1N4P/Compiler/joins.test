@@ -508,8 +508,8 @@ rows: (*,'explainPlan',
   -- natural join, not yet supported
 EXPLAIN SELECT n_name, r_name
 FROM region
-NATURAL JOIN nation ON r_regionkey = n_regionkey;
-failure contains: 'Feature not yet implemented: natural join'
+NATURAL JOIN nation;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
 
   -- semi join
 EXPLAIN SELECT n_name, r_name
@@ -594,6 +594,41 @@ rows: (*,'explainPlan',
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
 )
+
+  -- natural inner join
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL INNER JOIN t2;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
+
+  -- natural left outer join
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL LEFT OUTER JOIN t2;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
+
+  -- natural right outer join
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL RIGHT OUTER JOIN t2;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
+
+  -- natural full outer join
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL FULL OUTER JOIN t2;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
+
+  -- Can't have a NATURAL SEMI/ANTI join
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL SEMI JOIN t2;
+failure contains: 'EC_SYNTAX_ERROR'
+
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL ANTI JOIN t2;
+failure contains: 'EC_SYNTAX_ERROR'
 
   -- mixed (1)
 EXPLAIN SELECT n_name, r_name, s_name
@@ -701,8 +736,8 @@ rows: (*,'explainPlan',
 EXPLAIN SELECT n_name, r_name, s_name
 FROM region
 LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
-NATURAL JOIN supplier ON s_nationkey = n_nationkey;
-failure contains: 'Feature not yet implemented: natural join'
+NATURAL JOIN supplier;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
 
   -- mixed (5)
 EXPLAIN SELECT n_name, r_name, s_name
@@ -717,6 +752,18 @@ FROM region
 SEMI JOIN nation ON r_regionkey = n_regionkey
 ANTI JOIN supplier ON s_nationkey = n_nationkey;
 failure contains: 'Feature not yet implemented: semi-join'
+
+
+  -- natural joins can't have ON or USING clauses
+EXPLAIN SELECT n_name, r_name
+FROM region
+NATURAL JOIN nation ON n_regionkey = r_regionkey;
+failure contains: 'EC_SYNTAX_ERROR'
+
+EXPLAIN SELECT t1.colA, t2.colX
+FROM t1
+NATURAL JOIN t2 USING (colA);
+failure contains: 'EC_SYNTAX_ERROR'
 
 
 
@@ -1028,8 +1075,8 @@ failure contains: 'Feature not yet implemented: anti-join'
   -- Natural join only returns distinct column names
 EXPLAIN SELECT *
 FROM t1
-NATURAL JOIN t2 ON t1.colA = t2.colA;
-failure contains: 'Feature not yet implemented: natural join'
+NATURAL JOIN t2;
+failure contains: 'Feature not yet implemented: NATURAL JOIN'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1118,7 +1165,7 @@ failure contains: 'Predicate expression must have a boolean result : rapidsse.pu
 EXPLAIN SELECT *
 FROM t1
 FULL OUTER JOIN t2 ON t1.colA = t2.colB;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: rapidsse.public.t1.colA = rapidsse.public.t2.colB'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 -- non-equi-joins not yet supported
 EXPLAIN SELECT *

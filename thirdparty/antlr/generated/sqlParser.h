@@ -59,28 +59,28 @@ public:
     RuleStatisticsStatement = 9, RuleQuery = 10, RuleQueryHint = 11, RuleHint = 12, 
     RuleSelectQuery = 13, RuleSelectExpr = 14, RuleSetQuery = 15, RuleSetExpr = 16, 
     RuleCorrClause = 17, RuleWithQuery = 18, RuleTableExpr = 19, RuleTableReference = 20, 
-    RuleJoinType = 21, RuleJoinHint = 22, RuleValuesExpr = 23, RuleInsertQuery = 24, 
-    RuleDeleteQuery = 25, RuleUpdateQuery = 26, RuleCreateQuery = 27, RuleCreateTableQuery = 28, 
-    RuleCreateIndexQuery = 29, RuleDropQuery = 30, RuleTruncateQuery = 31, 
-    RuleTableDefinition = 32, RuleTablePartitioning = 33, RuleColumnDefinition = 34, 
-    RuleColumnNameList = 35, RuleTableConstraint = 36, RuleIndexDefinition = 37, 
-    RuleIndexMethod = 38, RuleDataType = 39, RuleSqlDataType = 40, RuleAsSubquery = 41, 
-    RuleSelectOrValues = 42, RuleSelectList = 43, RuleSelectListItem = 44, 
-    RuleGroupByList = 45, RuleGroupByListItem = 46, RuleOrderByList = 47, 
-    RuleOrderByListItem = 48, RuleJoinUsingList = 49, RuleJoinUsingListItem = 50, 
-    RuleCorrList = 51, RuleCorrListItem = 52, RulePropertyList = 53, RuleProperty = 54, 
-    RuleValueList = 55, RulePredicate = 56, RuleJoinPredicate = 57, RuleCasePredicate = 58, 
-    RuleExpr = 59, RuleVariableName = 60, RuleColumnRef = 61, RuleColumnWildcard = 62, 
-    RuleClassName = 63, RuleFunctionName = 64, RuleMethodName = 65, RuleCatalogName = 66, 
-    RuleSchemaName = 67, RuleTableName = 68, RuleTableAlias = 69, RuleColumnName = 70, 
-    RuleColumnAlias = 71, RuleCollationName = 72, RuleIndexName = 73, RulePropertyName = 74, 
-    RuleHintName = 75, RulePropertyValue = 76, RuleHintValue = 77, RuleIdentifier = 78, 
-    RuleQualifier = 79, RulePrecision = 80, RuleScale = 81, RuleSize = 82, 
-    RuleLiteral = 83, RuleSimpleLiteral = 84, RuleBooleanLiteral = 85, RuleIntegerLiteral = 86, 
-    RuleDecimalLiteral = 87, RuleFloatLiteral = 88, RuleDateLiteral = 89, 
-    RuleTimeLiteral = 90, RuleTimestampLiteral = 91, RuleStringLiteral = 92, 
-    RuleIntervalLiteral = 93, RuleLooseInterval = 94, RuleSql92CalendarInterval = 95, 
-    RuleSql92TimeInterval = 96, RuleNonReservedWord = 97
+    RuleJoinType = 21, RuleExtendedJoinType = 22, RuleJoinHint = 23, RuleValuesExpr = 24, 
+    RuleInsertQuery = 25, RuleDeleteQuery = 26, RuleUpdateQuery = 27, RuleCreateQuery = 28, 
+    RuleCreateTableQuery = 29, RuleCreateIndexQuery = 30, RuleDropQuery = 31, 
+    RuleTruncateQuery = 32, RuleTableDefinition = 33, RuleTablePartitioning = 34, 
+    RuleColumnDefinition = 35, RuleColumnNameList = 36, RuleTableConstraint = 37, 
+    RuleIndexDefinition = 38, RuleIndexMethod = 39, RuleDataType = 40, RuleSqlDataType = 41, 
+    RuleAsSubquery = 42, RuleSelectOrValues = 43, RuleSelectList = 44, RuleSelectListItem = 45, 
+    RuleGroupByList = 46, RuleGroupByListItem = 47, RuleOrderByList = 48, 
+    RuleOrderByListItem = 49, RuleJoinUsingList = 50, RuleJoinUsingListItem = 51, 
+    RuleCorrList = 52, RuleCorrListItem = 53, RulePropertyList = 54, RuleProperty = 55, 
+    RuleValueList = 56, RulePredicate = 57, RuleJoinPredicate = 58, RuleCasePredicate = 59, 
+    RuleExpr = 60, RuleVariableName = 61, RuleColumnRef = 62, RuleColumnWildcard = 63, 
+    RuleClassName = 64, RuleFunctionName = 65, RuleMethodName = 66, RuleCatalogName = 67, 
+    RuleSchemaName = 68, RuleTableName = 69, RuleTableAlias = 70, RuleColumnName = 71, 
+    RuleColumnAlias = 72, RuleCollationName = 73, RuleIndexName = 74, RulePropertyName = 75, 
+    RuleHintName = 76, RulePropertyValue = 77, RuleHintValue = 78, RuleIdentifier = 79, 
+    RuleQualifier = 80, RulePrecision = 81, RuleScale = 82, RuleSize = 83, 
+    RuleLiteral = 84, RuleSimpleLiteral = 85, RuleBooleanLiteral = 86, RuleIntegerLiteral = 87, 
+    RuleDecimalLiteral = 88, RuleFloatLiteral = 89, RuleDateLiteral = 90, 
+    RuleTimeLiteral = 91, RuleTimestampLiteral = 92, RuleStringLiteral = 93, 
+    RuleIntervalLiteral = 94, RuleLooseInterval = 95, RuleSql92CalendarInterval = 96, 
+    RuleSql92TimeInterval = 97, RuleNonReservedWord = 98
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -115,6 +115,7 @@ public:
   class TableExprContext;
   class TableReferenceContext;
   class JoinTypeContext;
+  class ExtendedJoinTypeContext;
   class JoinHintContext;
   class ValuesExprContext;
   class InsertQueryContext;
@@ -567,18 +568,32 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  NaturalJoinContext : public TableExprContext {
+  public:
+    NaturalJoinContext(TableExprContext *ctx);
+
+    sqlParser::JoinTypeContext *type = nullptr;
+    std::vector<TableExprContext *> tableExpr();
+    TableExprContext* tableExpr(size_t i);
+    antlr4::tree::TerminalNode *NATURAL();
+    antlr4::tree::TerminalNode *JOIN();
+    JoinTypeContext *joinType();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  JoinUsingContext : public TableExprContext {
   public:
     JoinUsingContext(TableExprContext *ctx);
 
-    sqlParser::JoinTypeContext *type = nullptr;
+    sqlParser::ExtendedJoinTypeContext *type = nullptr;
     sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *USING();
     JoinUsingListContext *joinUsingList();
-    JoinTypeContext *joinType();
+    ExtendedJoinTypeContext *extendedJoinType();
     JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -588,14 +603,14 @@ public:
   public:
     JoinOnContext(TableExprContext *ctx);
 
-    sqlParser::JoinTypeContext *type = nullptr;
+    sqlParser::ExtendedJoinTypeContext *type = nullptr;
     sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *ON();
     JoinPredicateContext *joinPredicate();
-    JoinTypeContext *joinType();
+    ExtendedJoinTypeContext *extendedJoinType();
     JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -668,7 +683,19 @@ public:
     antlr4::tree::TerminalNode *RIGHT();
     antlr4::tree::TerminalNode *FULL();
     antlr4::tree::TerminalNode *OUTER();
-    antlr4::tree::TerminalNode *NATURAL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  JoinTypeContext* joinType();
+
+  class  ExtendedJoinTypeContext : public antlr4::ParserRuleContext {
+  public:
+    ExtendedJoinTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    JoinTypeContext *joinType();
     antlr4::tree::TerminalNode *SEMI();
     antlr4::tree::TerminalNode *ANTI();
 
@@ -677,7 +704,7 @@ public:
    
   };
 
-  JoinTypeContext* joinType();
+  ExtendedJoinTypeContext* extendedJoinType();
 
   class  JoinHintContext : public antlr4::ParserRuleContext {
   public:

@@ -10,7 +10,10 @@
 
 #include "InnerJoin.hpp"
 #include "CrossJoin.hpp"
-#include "NaturalJoin.hpp"
+#include "NaturalInnerJoin.hpp"
+#include "NaturalLeftOuterJoin.hpp"
+#include "NaturalRightOuterJoin.hpp"
+#include "NaturalFullOuterJoin.hpp"
 #include "SemiJoin.hpp"
 #include "AntiJoin.hpp"
 #include "LeftOuterJoin.hpp"
@@ -44,9 +47,6 @@ QueryNode* JoinType::pCreate(eJT eJoinType)
     case JT_CROSS:
       return _pQueryNode(CrossJoin::pCreate());
 
-    case JT_NATURAL:
-      return _pQueryNode(NaturalJoin::pCreate());
-
     case JT_SEMI:
       return _pQueryNode(SemiJoin::pCreate());
 
@@ -61,6 +61,18 @@ QueryNode* JoinType::pCreate(eJT eJoinType)
 
     case JT_FULL_OUTER:
       return _pQueryNode(FullOuterJoin::pCreate());
+
+    case JT_NATURAL_INNER:
+      return _pQueryNode(NaturalInnerJoin::pCreate());
+
+    case JT_NATURAL_LEFT_OUTER:
+      return _pQueryNode(NaturalLeftOuterJoin::pCreate());
+
+    case JT_NATURAL_RIGHT_OUTER:
+      return _pQueryNode(NaturalRightOuterJoin::pCreate());
+
+    case JT_NATURAL_FULL_OUTER:
+      return _pQueryNode(NaturalFullOuterJoin::pCreate());
 
     case JT_NONE:
     case JT_NENUMS:
@@ -131,14 +143,17 @@ eJT JoinType::eJoinType(PlanNode* pNode)
   }
 
   // Manual Polymorphism
-  if      (     InnerJoin::bIsOfType(pNode))  { return JT_INNER; }
-  else if (     CrossJoin::bIsOfType(pNode))  { return JT_CROSS; }
-  else if (   NaturalJoin::bIsOfType(pNode))  { return JT_NATURAL; }
-  else if (      SemiJoin::bIsOfType(pNode))  { return JT_SEMI; }
-  else if (      AntiJoin::bIsOfType(pNode))  { return JT_ANTI; }
-  else if ( LeftOuterJoin::bIsOfType(pNode))  { return JT_LEFT_OUTER; }
-  else if (RightOuterJoin::bIsOfType(pNode))  { return JT_RIGHT_OUTER; }
-  else if ( FullOuterJoin::bIsOfType(pNode))  { return JT_FULL_OUTER; }
+  if      (            InnerJoin::bIsOfType(pNode))  { return JT_INNER;               }
+  else if (            CrossJoin::bIsOfType(pNode))  { return JT_CROSS;               }
+  else if (             SemiJoin::bIsOfType(pNode))  { return JT_SEMI;                }
+  else if (             AntiJoin::bIsOfType(pNode))  { return JT_ANTI;                }
+  else if (        LeftOuterJoin::bIsOfType(pNode))  { return JT_LEFT_OUTER;          }
+  else if (       RightOuterJoin::bIsOfType(pNode))  { return JT_RIGHT_OUTER;         }
+  else if (        FullOuterJoin::bIsOfType(pNode))  { return JT_FULL_OUTER;          }
+  else if (     NaturalInnerJoin::bIsOfType(pNode))  { return JT_NATURAL_INNER;       }
+  else if ( NaturalLeftOuterJoin::bIsOfType(pNode))  { return JT_NATURAL_LEFT_OUTER;  }
+  else if (NaturalRightOuterJoin::bIsOfType(pNode))  { return JT_NATURAL_RIGHT_OUTER; }
+  else if ( NaturalFullOuterJoin::bIsOfType(pNode))  { return JT_NATURAL_FULL_OUTER;  }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

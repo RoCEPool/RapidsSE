@@ -597,7 +597,7 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
     visitChildren(pCtx);
 
     // Extract join type. It can also throw an exception
-    eJoinType = eExtractJoinType(pCtx->joinType());
+    eJoinType = eExtractJoinType(pCtx->extendedJoinType());
 
   } catch (SqlException& e) {
 
@@ -661,6 +661,38 @@ antlrcpp::Any SqlPlanner::visitCrossJoin(sqlParser::CrossJoinContext *pCtx)
   // Put it back on the table expr stack so that visitSelectExpr() can pop it off
   m_pTableExprStack->vPush(pJoinOp);
   return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Natural join node                                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitNaturalJoin(sqlParser::NaturalJoinContext *pCtx)
+{
+  __NOT_IMPL("NATURAL JOIN")
+  visitChildren(pCtx);
+
+  // Extract join type. It can also throw an exception
+  eJT eJoinType = eExtractJoinType(pCtx->joinType());
+
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // TODO: Extract join hint
+
+  // TODO: create a join predicate
+//  QueryNode* pJoinPredicate = ????
+//
+//
+//  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+//  pJoinOp->vAppendChild(pTableExpr1);
+//  pJoinOp->vAppendChild(pTableExpr2);
+//
+//  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+//  m_pTableExprStack->vPush(pJoinOp);
+//  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -1983,9 +2015,21 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::JoinTypeContext *pCtx)
     if (pCtx->FULL())   return JT_FULL_OUTER;
   }
 
-  if (pCtx->NATURAL()) {
-    // TODO: Add support for NATURAL joins
-    __NOT_IMPL3("natural join");
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract the join type enumeration                                          */
+/*----------------------------------------------------------------------------*/
+eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
+{
+  // The null/default case
+  if (!pCtx) {
+    return JT_INNER;
+  }
+
+  if (pCtx->joinType()) {
+    return eExtractJoinType(pCtx->joinType());
   }
 
   if (pCtx->SEMI()) {
