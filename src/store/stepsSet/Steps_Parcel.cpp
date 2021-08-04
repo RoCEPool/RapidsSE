@@ -89,8 +89,9 @@ void Step::vParcelPipeOut(void)
 
 #else
   
-  Stage* pStage = pPipelineJob->m_pLogicUnit_job
-                    ->m_xpPipeline->pGet(pParcel->iDstStage());
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
+  
+  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
 
 #endif
   

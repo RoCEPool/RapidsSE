@@ -141,6 +141,7 @@ namespace STORE
     void vLogicUnit_job(LogicUnit* pLogicUnit);
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);
+    Pipeline* pPipeline(void);
     eEC ePopulateJob(TagSet* pTagSet);
     void vResetForReuse(Session* pSession);
     void vSetFromCascade(Stz* szCascade);

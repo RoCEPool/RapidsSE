@@ -232,7 +232,7 @@ void Step::vPipelineEnqueueStart(void)
   
 #else
   
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
+  Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
   
 #endif
   
@@ -449,7 +449,7 @@ void Step::vPipelinePipeout(void)
 #ifdef WITH_PIPELINE_IN_JOB
   Pipeline* pPipeline = pPipelineJob->m_pPipeline_job;
 #else
-  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
 
 #endif
   
