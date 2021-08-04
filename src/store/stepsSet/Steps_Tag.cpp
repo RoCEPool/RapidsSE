@@ -33,16 +33,16 @@ void Step::vTagGet(void)
 
   i8 i_Tag = C_UNKNOWN;
   
+//  if (C_UNKNOWN == i_Tag && m_pOp) {
+//    pTagSet = m_pOp->pOpTagSet();
+//    i_Tag = pTagSet->i_Find(sTagNm.szStz());
+//  }
+
   if (C_UNKNOWN == i_Tag && m_pJob) {
     pTagSet = m_pJob->pJobTags();
     i_Tag = pTagSet->i_Find(sTagNm.szStz());
   }
   
-  if (C_UNKNOWN == i_Tag && m_pOp) {
-    pTagSet = m_pOp->pOpTagSet();
-    i_Tag = pTagSet->i_Find(sTagNm.szStz());
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   if (C_UNKNOWN == i_Tag) {
@@ -56,10 +56,12 @@ void Step::vTagGet(void)
   
   if (TN_STRING == pTagSet->eToken(i_Tag)) {
     Stz* szValue = pTagSet->szValue(i_Tag);
+    //vTrace("TagGet %s stz %s\n"_Stz,sTagNm.azChar(),szValue);
     m_pDataStack->vPushStz(szValue);
   }
   else {
     i8 iValue = pTagSet->iValue(i_Tag);
+    //vTrace("TagGet %s int %lld\n"_Stz,sTagNm.azChar(),iValue);
     m_pDataStack->vPushInt(iValue);
   }
 

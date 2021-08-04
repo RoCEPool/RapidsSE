@@ -820,7 +820,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
                 
         i8 nOpdLeft = pOp->nQueuedOperands();
         
-        pOp->pOpTagSet()->vSprint(sOpTags);
+        pOp->pOpSpec()->pArgTags()->vSprint(sOpTags);
 
         if (bStdOut)
           vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz
