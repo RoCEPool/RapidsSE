@@ -132,6 +132,28 @@
 : sink_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
+
+  // check if sink has already been errored
+  Pipeline::errored@ if
+    Pipein[].delete
+    true
+    exit
+  then
+
+  // check if sink has already been exitEarly
+  Pipeline::earlyExit@ if
+    Pipein[].delete
+    true
+    exit
+  then
+
+  // check if sink has already been cancelled
+  Pipeline::cancelled@ if
+    Pipein[].delete
+    true
+    exit
+  then
+
   PipeIn[].pipeOut
   true
 ;

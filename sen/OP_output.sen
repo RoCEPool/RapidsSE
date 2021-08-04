@@ -117,7 +117,7 @@
   //"Operand:- ZK_EXITEARLYMARKER" .verbose
   //PipeIn[].pipeToOutput
   Pipein[].pipeout
-true
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -193,10 +193,10 @@ true
 /*----------------------------------------------------------------------------*/
 : output_StreamSet \handler
 
-//"Operand:- ZK_STREAMSET" .verbose
-PipeIn[].pipeToOutput
+  //"Operand:- ZK_STREAMSET" .verbose
+  PipeIn[].pipeToOutput
 
-true
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

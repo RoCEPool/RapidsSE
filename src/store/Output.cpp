@@ -457,9 +457,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         }
 
         case OM_EXITEARLYMARKER: {
-          AM::vDeleteOperand(pOperand);
-          m_bExitEarlyMarker = true;
-          vPrintResult();
+          NEVER_REACH
           break;
         }
 
