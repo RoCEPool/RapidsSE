@@ -1637,14 +1637,19 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
-  sSTMT szCmdStr;
-  vToCmdStr(szCmdStr);
+  sSTMT sOpCmd;
+  vToCmdStr(sOpCmd);
+  
+  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
   TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(szCmdStr);
+  pTknVec->vTokenise(sOpCmd);
 
   bool b = AM::bParseCmd(pTknVec,pOpJobTagSet);
   RASSERT(b);
+  
+  //pOpJobTagSet->vDumpSet();
+  
 //  if (! b) {
 //    //vTrace("Unable to match job syntax\n"_Stz);
 //    vParticipantHasError(true);
@@ -1654,8 +1659,8 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
   
-  eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
-  UNUSED(eError);
+  //eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
+  //UNUSED(eError);
   //RASSERT(EC_NONE != eError);
   
   // delete the tokenVec
