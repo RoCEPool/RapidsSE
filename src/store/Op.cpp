@@ -51,8 +51,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
-  m_pOpJob      = nullptr;
+  m_pOpJob       = nullptr;
   
+  m_pOpLogicUnit = nullptr;
+
   m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
   m_sStageNm    = pStream->pStage()->szStageNm();
   m_sStreamNm   = pStream->szStreamNm();
@@ -116,7 +118,10 @@ Op::Op(Stz* szOpNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  m_pOpJob       = nullptr;
   
+  m_pOpLogicUnit = nullptr;
+
   m_sPipelineNm = C_NO_NAME;
   m_sStageNm    = C_NO_NAME;
   m_sStreamNm   = C_NO_NAME;

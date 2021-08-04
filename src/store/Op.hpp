@@ -16,6 +16,8 @@ namespace STORE
   private:
     Job* m_pOpJob;        // job of this operator
   
+    LogicUnit* m_pOpLogicUnit;
+  
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // stream name within stream within pipeline

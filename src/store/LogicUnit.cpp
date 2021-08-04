@@ -67,7 +67,7 @@ __aFooterFunction(LogicUnit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LogicUnit::LogicUnit(Task* pTask)
+LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::bRepair,"m_xpAggTimer"_Stz)
@@ -128,7 +128,7 @@ LogicUnit::LogicUnit(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pTask = pTask;
+  m_pTask = nullptr;
   
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
@@ -783,6 +783,26 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   else {
     m_ePipeInOperand = ZK_NONE;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task                                                                   */
+/*----------------------------------------------------------------------------*/
+Task* LogicUnit::pTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/

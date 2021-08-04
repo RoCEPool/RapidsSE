@@ -275,7 +275,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LogicUnit(Task* pTask);
+    LogicUnit(void);
    ~LogicUnit(void) noexcept(false);
   
     void vContentDump(void);
@@ -314,6 +314,8 @@ namespace STORE
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
     void vSetPipein(Operand* pOperand);
+    Task* pTask(void);
+    void vTask(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
