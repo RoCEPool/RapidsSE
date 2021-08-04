@@ -18,7 +18,7 @@ pipeline longRunner
 begin
 
   stage stageA on origin :
-    start | periodic once | sleep 15 | stageB
+    start | periodic once | sleep 60 | stageB
 
   stage stageB on all partitions :
     scan nation | stageC
