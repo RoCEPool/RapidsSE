@@ -26,24 +26,21 @@ void Step::vTagGet(void)
 {
   ENTRY();
   
-  i8 i_Tag;
-  
   s32 sTagNm;
   m_pDataStack->vPopStr(sTagNm,__func__);
 
   TagSet* pTagSet = nullptr;
 
-  if (m_pJob) {
+  i8 i_Tag = C_UNKNOWN;
+  
+  if (C_UNKNOWN == i_Tag && m_pJob) {
     pTagSet = m_pJob->pJobTags();
     i_Tag = pTagSet->i_Find(sTagNm.szStz());
   }
-  else
-  if (m_pOp) {
+  
+  if (C_UNKNOWN == i_Tag && m_pOp) {
     pTagSet = m_pOp->pOpTagSet();
     i_Tag = pTagSet->i_Find(sTagNm.szStz());
-  }
-  else {
-    NEVER_REACH;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
