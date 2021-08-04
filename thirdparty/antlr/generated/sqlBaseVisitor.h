@@ -97,6 +97,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -122,6 +126,10 @@ public:
   }
 
   virtual antlrcpp::Any visitJoinType(sqlParser::JoinTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 

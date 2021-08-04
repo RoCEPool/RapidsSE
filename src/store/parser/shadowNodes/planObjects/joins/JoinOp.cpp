@@ -313,7 +313,10 @@ QueryNodeList* JoinOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
       // return a union of left/right row columns
       return pUnionedColumnExprs(pNode, pRootNode);
 
-    case JT_NATURAL:
+    case JT_NATURAL_INNER:
+    case JT_NATURAL_LEFT_OUTER:
+    case JT_NATURAL_RIGHT_OUTER:
+    case JT_NATURAL_FULL_OUTER:
       // return distinct union of left/right row columns where there is
       // only one copy of common columns
       return pDistinctUnionedColumnExprs(pNode, pRootNode);

@@ -75,17 +75,16 @@ withQuery         : name = tableName
 
 tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
                   | tableExpr
-                    type = joinType?  joint = joinHint?
+                    type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr ON joinPredicate                            #joinOn
                   | tableExpr
-                    type = joinType?  joint = joinHint?
+                    type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr
                     USING '(' joinUsingList ')'                           #joinUsing
-                  | tableExpr
-                    (',' | (CROSS JOIN))
-                    tableExpr                                             #crossJoin
+                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
+                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
                   | '(' query ')'       (AS? as = tableAlias)?            #subquery
                   | '(' valuesExpr ')'  (AS? as = tableAlias)?            #valuesSubquery
                   ;
@@ -93,8 +92,9 @@ tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
 tableReference  : ( (catalog = catalogName '.')? schema = schemaName '.')? table = tableName ;
 
 joinType          : INNER |
-                    (outer = (LEFT | RIGHT | FULL) OUTER?) |
-                    NATURAL |
+                    (outer = (LEFT | RIGHT | FULL) OUTER?);
+
+extendedJoinType  : joinType |
                     SEMI |
                     ANTI;
 
