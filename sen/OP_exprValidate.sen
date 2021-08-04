@@ -42,7 +42,7 @@ PipeIn[]\clear to Operand[]
   op__topology
 
   // common compiler handlers
-  find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
+  find: compiler_EarlyExitMarker  ZK_EARLYEXITMARKER op[].handler!
   find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers

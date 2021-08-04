@@ -110,11 +110,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
+/* handler for ZK_EARLYEXITMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
-: output_ExitEarlyMarker \handler
+: output_EarlyExitMarker \handler
 
-  //"Operand:- ZK_EXITEARLYMARKER" .verbose
+  //"Operand:- ZK_EARLYEXITMARKER" .verbose
   //PipeIn[].pipeToOutput
   Pipein[].pipeout
   true
@@ -217,7 +217,7 @@
   find: output_EosMarker     ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker   ZK_ERRORMARKER op[].handler!
   find: output_ExecErrors    ZK_EXECERRORS  op[].handler!
-  find: output_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
+  find: output_EarlyExitMarker ZK_EARLYEXITMARKER op[].handler!
   find: output_LoadResult    ZK_LOADRESULT  op[].handler!
   find: output_PromptOut     ZK_PROMPTOUT   op[].handler!
   find: output_RowBuffer     ZK_ROWBUFFER   op[].handler!

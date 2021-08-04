@@ -84,9 +84,9 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EARLYEXITEDMARKER ...                                       */
 /*----------------------------------------------------------------------------*/
-: start_ExitedEarlyMarker \handler
+: start_EarlyExitedMarker \handler
 
-  //"Operand:- ZK_EXITEDEARLYMARKER" .verbose
+  //"Operand:- ZK_EARLYEXITEDMARKER" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
@@ -104,27 +104,21 @@
   //"Operand:- ZK_PULSEDMARKER" .verbose
   PipeIn[].delete
 
-  // check if start has already been cancelled
-  Pipeline::cancelled@ not if
+  // pipeline should not be cancelled
+  Pipeline::cancelled@ not assert
 
-    // check if start has already been exited (error)
-    Pipeline::errored@ not if
+  // pipeline should not be errored
+  Pipeline::errored@ not assert
 
-      // check if start has already been exited (early exit)
-      Pipeline::earlyExit@ not if
+  // pipeline should not have exited early
+  Pipeline::earlyExit@ not assert
 
-        // mark pipeline as being pulsed
-        true Pipeline::pulsed!
+  // mark pipeline as being pulsed
+  true Pipeline::pulsed!
 
-        // now pipeout a cleanup marker
-        Operand[].newCleanupMarker
-        Operand[].pipeOut
-
-      then
-
-    then
-
-  then
+  // now pipeout a cleanup marker
+  Operand[].newCleanupMarker
+  Operand[].pipeOut
 
   true
 ;
@@ -154,9 +148,9 @@
   find: start_CancelMarker      ZK_CANCELMARKER      op[].handler!
   find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
   find: start_CleanedupMarker   ZK_CLEANEDUPMARKER   op[].handler!
+  find: start_EarlyExitedMarker ZK_EARLYEXITEDMARKER op[].handler!
   find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
   find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
-  find: start_ExitedEarlyMarker ZK_EXITEDEARLYMARKER op[].handler!
   find: start_PulsedMarker      ZK_PULSEDMARKER      op[].handler!
   find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
 

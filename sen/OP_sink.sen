@@ -90,9 +90,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
+/* handler for ZK_EARLYEXITMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
-: sink_ExitEarlyMarker \handler
+: sink_EarlyExitMarker \handler
 
   //"Operand:- ZK_EARLYEXITMARKER" .verbose
   PipeIn[].delete
@@ -186,7 +186,7 @@
   find: sink_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: sink_ErrorMarker   ZK_ERRORMARKER   op[].handler!
   find: sink_ExitMarker    ZK_EXITMARKER    op[].handler!
-  find: sink_ExitEarlyMarker ZK_EXITEARLYMARKER  op[].handler!
+  find: sink_EarlyExitMarker ZK_EARLYEXITMARKER  op[].handler!
   find: sink_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
   find: sink_StartMarker   ZK_STARTMARKER   op[].handler!
 
