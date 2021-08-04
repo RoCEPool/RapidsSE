@@ -83,16 +83,9 @@ void Step::vParcelPipeOut(void)
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
-#ifdef WITH_PIPELINE_IN_JOB
-
-  Stage* pStage = pPipelineJob->m_pPipeline_job->pGet(pParcel->iDstStage());
-
-#else
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
   
-  Stage* pStage = pPipelineJob->m_pLogicUnit_job
-                    ->m_xpPipeline->pGet(pParcel->iDstStage());
-
-#endif
+  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->eCrossTopo(),

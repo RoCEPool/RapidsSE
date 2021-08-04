@@ -91,8 +91,6 @@
 
 //#define WITH_NO_JOB_FOR_OP EndDefine      // op's do not have jobs
 
-//#define WITH_PIPELINE_IN_JOB EndDefine    // op's do not have jobs
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -253,15 +253,8 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
-#ifdef WITH_PIPELINE_IN_JOB
-  if (m_pPipeline_job) {
-    delete m_pPipeline_job;
-    m_pPipeline_job = nullptr;
-  }
-#else
   AM::LOGICUNIT::vDelete(&m_pLogicUnit_job);
-#endif
-  
+
   //if (m_pTask)
   //  vDebugPoint();
   
@@ -818,11 +811,8 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
-#ifdef WITH_PIPELINE_IN_JOB
-  Pipeline* pPipeline = m_pPipeline_job;
-#else
-  Pipeline* pPipeline = *m_pLogicUnit_job->m_xpPipeline;
-#endif
+  Pipeline* pPipeline = this->pPipeline();
+
   if (! pPipeline)
     return;
   
@@ -929,6 +919,18 @@ i8 Job::iParticipantNode(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iParticipantNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Job::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Pipeline* pPipeline = * m_pLogicUnit_job->m_xpPipeline;
+  
+  return pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
