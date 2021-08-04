@@ -117,6 +117,8 @@ Job::Job(i8 i_Origin,     // originated on which node
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 
+  m_pPipeline_job = nullptr;
+  
   // -- a -------------------
   
   m_i_Origin     = i_Origin;
@@ -140,7 +142,12 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eError    = EC_NONE;
   
   // -- d -------------------
+#ifdef WITH_LOGIC_UNIT_TASK
   m_pLogicUnit_job = nullptr;
+#else
+  m_pLogicUnit_job = nullptr;
+#endif
+  
   // m_oJobTags
   // m_xResult
 
@@ -176,6 +183,8 @@ Job::Job(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
+  m_pPipeline_job = nullptr;
+
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
@@ -244,7 +253,14 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
+#ifdef WITH_PIPELINE_IN_JOB
+  if (m_pPipeline_job) {
+    delete m_pPipeline_job;
+    m_pPipeline_job = nullptr;
+  }
+#else
   AM::LOGICUNIT::vDelete(&m_pLogicUnit_job);
+#endif
   
   //if (m_pTask)
   //  vDebugPoint();
@@ -341,7 +357,10 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
-#ifndef WITH_LOGIC_UNIT_TASK
+#ifdef WITH_LOGIC_UNIT_TASK
+  LogicUnit* pLogicUnit = nullptr;
+  pJob->vLogicUnit_job(pLogicUnit);
+#else
   LogicUnit* pLogicUnit = nullptr;
   pJob->vLogicUnit_job(pLogicUnit);
 #endif
@@ -729,7 +748,8 @@ LogicUnit* Job::pLogicUnit_job(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_LOGIC_UNIT_TASK
-  return m_pTask->pLogicUnit_task();
+  //return m_pTask->pLogicUnit_task();
+  return m_pLogicUnit_job;
 #else
   return m_pLogicUnit_job;
 #endif
@@ -743,7 +763,11 @@ void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_LOGIC_UNIT_TASK
-  NEVER_REACH;
+  ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
+
+  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
+
+  m_pLogicUnit_job = pLogicUnit;
 #else
   ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
 

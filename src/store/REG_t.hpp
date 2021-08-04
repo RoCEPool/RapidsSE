@@ -12,9 +12,9 @@ namespace STORE
   {
   public:
   
-    LogicUnit* m_pLogicUnit; // which logic unit
-    Stz*       m_szRegNm;    // register name
-    eRF        m_eRepair;    // how to repair
+    LogicUnit* m_p_LogicUnit; // which logic unit
+    Stz*       m_szRegNm;     // register name
+    eRF        m_eRepair;     // how to repair
   
     bool (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
@@ -43,7 +43,7 @@ namespace STORE
                    bool (*fpRepair)(Object* pObject, eRF eRepair),
                    Stz* szRegNm)
     {
-      m_pLogicUnit = pLogicUnit;
+      m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
       m_eRepair    = eRepair;
       m_fpRepair   = fpRepair;
@@ -72,7 +72,7 @@ namespace STORE
                    bool bDeleteOnFailure,
                    Stz* szRegNm)
     {
-      m_pLogicUnit = pLogicUnit;
+      m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
       m_eRepair    = eRepair;
       m_fpRepair   = fpRepair;
@@ -271,7 +271,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void vLogicUnit(LogicUnit* pLogicUnit)
     {
-      m_pLogicUnit = pLogicUnit;
+      m_p_LogicUnit = pLogicUnit;
     }
 
   };

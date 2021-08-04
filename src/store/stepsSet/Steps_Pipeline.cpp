@@ -58,7 +58,7 @@ void Step::vPipelineCancelledFetch(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been cancelled
   m_pDataStack->vPushInt(pPipeline->bCancelled());
@@ -75,7 +75,7 @@ void Step::vPipelineCancelledStore(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
@@ -280,7 +280,7 @@ void Step::vPipelineEarlyExitFetch(void)
 
   Op* pOp = m_pJob->m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
 
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bEarlyExit());
@@ -297,7 +297,7 @@ void Step::vPipelineEarlyExitStore(void)
 
   Op* pOp = m_pJob->m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
 
   pPipeline->vEarlyExit(m_pDataStack->iPopInt(__func__));
 
@@ -313,7 +313,7 @@ void Step::vPipelineErroredFetch(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bErrored());
@@ -330,7 +330,7 @@ void Step::vPipelineErroredStore(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
   
@@ -346,7 +346,7 @@ void Step::vPipelinePulsedFetch(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
@@ -363,7 +363,7 @@ void Step::vPipelinePulsedStore(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));
   

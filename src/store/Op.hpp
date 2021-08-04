@@ -25,7 +25,7 @@ namespace STORE
     OpSpec*   m_pOpSpec;   // specification of this operator
     Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
-    Pipeline* m_pPipeline; // which pipeline
+    Pipeline* m_p_Pipeline_op; // which pipeline
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -124,7 +124,7 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipeline(void);
+    Pipeline* pPipeline_op(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToSelf(Operand* pOperand, Task* pTriggeringTask);

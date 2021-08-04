@@ -27,6 +27,8 @@ namespace STORE
   
     Gid<CN_JOB> m_xJobId;    // this job's id
 
+    Pipeline* m_pPipeline_job; // which pipeline
+
     // -- a -------------------
   
     i8 m_i_Origin;           // originated on which node
@@ -52,7 +54,12 @@ namespace STORE
     eEC m_eError;            // error when starting job
   
     // -- d -------------------
+#ifdef WITH_LOGIC_UNIT_TASK
     LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+#else
+    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+#endif
+  
     TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------

@@ -382,7 +382,9 @@ void Engine::vCallBoot(void)
   
   LogicUnit* pLogicUnit = new LogicUnit(pBootTask);
   
-#ifndef WITH_LOGIC_UNIT_TASK
+#ifdef WITH_LOGIC_UNIT_TASK
+  pJob->vLogicUnit_job(pLogicUnit );
+#else
   pJob->vLogicUnit_job(pLogicUnit );
 #endif
   
@@ -470,7 +472,9 @@ void Engine::vCallStart(void)
   pStartTask->vIsStart(true);
   LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
 
-#ifndef WITH_LOGIC_UNIT_TASK
+#ifdef WITH_LOGIC_UNIT_TASK
+  pJob->vLogicUnit_job(pLogicUnit );
+#else
   pJob->vLogicUnit_job(pLogicUnit );
 #endif
   

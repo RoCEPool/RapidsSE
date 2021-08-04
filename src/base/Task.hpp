@@ -78,7 +78,6 @@ namespace BASE
     SenCompiler* m_pSenCompiler; // sen word compiler
     Input*       m_pInput;       // input stream
   
-  
     Exception    m_xException;
 
     // always last

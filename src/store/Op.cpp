@@ -64,7 +64,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
-  m_pPipeline = pStream->pPipeline();
+  m_p_Pipeline_op = pStream->pPipeline();
 
   // -- -- -- -- -- --
 
@@ -128,7 +128,7 @@ Op::Op(Stz* szOpNm)
   m_pOpSpec   = nullptr;
   m_pStream   = nullptr;
   m_pStage    = nullptr;
-  m_pPipeline = nullptr;
+  m_p_Pipeline_op = nullptr;
   
   // -- -- -- -- -- --
 
@@ -209,7 +209,7 @@ void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pPipelineTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
+  Task* pPipelineTask = AM::pExecutingTask(m_p_Pipeline_op->pPipelineJob());
     
 
   if (m_bTraceOp) {
@@ -945,7 +945,7 @@ Op* Op::pNextOp(void)
   i8 i_NextStage = iNextStage();
   i8 i_NextOp    = iNextOp();
 
-  Stage* p_NextStage = m_pPipeline->pGet(i_NextStage);
+  Stage* p_NextStage = m_p_Pipeline_op->pGet(i_NextStage);
 
   Stream* p_NextStream = p_NextStage->pGet(0);
   Op* p_NextOp = p_NextStream->pGet(i_NextOp);
@@ -970,7 +970,7 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Stage* pNextStage = m_pPipeline->pGet(iNextStage());
+  Stage* pNextStage = m_p_Pipeline_op->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -1247,11 +1247,11 @@ bool Op::bPeekOoO(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline from op                                                       */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pPipeline(void)
+Pipeline* Op::pPipeline_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pPipeline;
+  return m_p_Pipeline_op;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1261,7 +1261,7 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Job* pPipelineJob = m_pPipeline->pPipelineJob();
+  Job* pPipelineJob = m_p_Pipeline_op->pPipelineJob();
 
   
   return pPipelineJob;
@@ -1280,7 +1280,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Stage* pDstStage = m_pPipeline->pGet(iNextStage());
+  Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
   Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnNo(),iNextOp());

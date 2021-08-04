@@ -268,6 +268,13 @@ Job* MY::pJob(void)
 LogicUnit* MY::pLogicUnit(void)
 {
   _static_
+  
+#ifdef WITH_LOGIC_UNIT_TASK
+//  Task* pTask = MY::pTask();
+//  if (pTask)
+//    return pTask->m_pLogicUnit_task;
+//  else
+//    return nullptr;
 
   Job* pJob = MY::pJob();
 
@@ -275,6 +282,15 @@ LogicUnit* MY::pLogicUnit(void)
     return pJob->m_pLogicUnit_job;
   else
     return nullptr;
+
+#else
+  Job* pJob = MY::pJob();
+
+  if (pJob)
+    return pJob->m_pLogicUnit_job;
+  else
+    return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,7 +352,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipeline();
+  return pOp->pPipeline_op();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -97,7 +97,9 @@ LogicUnit::LogicUnit(Task* pTask)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,        "m_xpOperandOoO"_Stz)
 , m_xpPathIdentifier(this,RF_NONE,         nullptr,        "m_xpPathIdentifier"_Stz)
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
+#ifndef WITH_PIPELINE_IN_JOB
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
+#endif
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
 ,      m_xpPtnStream(this,RF_NONE,         nullptr,        "m_xpPtnStream"_Stz)
 ,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
@@ -291,8 +293,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
 
+#ifndef WITH_PIPELINE_IN_JOB
   if (! m_xpPipeline.bIsNull())
     delete *m_xpPipeline;
+#endif
   
   if (m_pRluDiary) {
     vDiaryReport();

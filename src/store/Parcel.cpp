@@ -381,7 +381,7 @@ void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextS
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
   eCrossTopo = pSrcOp->eCrossTopo();
@@ -528,7 +528,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
 
   // get the next stage
@@ -560,7 +560,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
   tPN tPtnNo;
   i8 i_TablePtn;
   
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
 
   
@@ -681,7 +681,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   
   Operand* pOperand = pGetOperand();
   
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
   // get the next stage
@@ -769,7 +769,7 @@ void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
   // get the next stage
@@ -788,7 +788,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  Pipeline* pPipeline = pSrcOp->pPipeline();
+  Pipeline* pPipeline = pSrcOp->pPipeline_op();
 
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);

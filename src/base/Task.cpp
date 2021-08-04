@@ -117,6 +117,8 @@ Task::Task(void)
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
+  
+  m_pLogicUnit_task = nullptr;
 
   ASSERT(! m_oWriteLocks.nItems());
   
@@ -173,6 +175,8 @@ Task::~Task(void) noexcept(false)
     
 #ifdef WITH_LOGIC_UNIT_TASK
   AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
+#else
+  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
 #endif
   
   delete m_pProfile;
@@ -213,7 +217,9 @@ void Task::vTaskLoop(void)
   
   if (! bSeeded()) {
 
-#ifndef WITH_LOGIC_UNIT_TASK
+#ifdef WITH_LOGIC_UNIT_TASK
+    AM::LOGICUNIT::vNew(this,pJob());
+#else
     AM::LOGICUNIT::vNew(this,pJob());
 #endif
     
@@ -581,8 +587,12 @@ void Task::vDump(void)
 
 
   // dump the logicUnit registers
+#ifdef WITH_LOGIC_UNIT_TASK
   m_pJob->m_pLogicUnit_job->vDumpRegisters();
-
+#else
+  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+#endif
+  
   vTrace("== End Task Dump ============================================\n"_Stz);
   AM::vTraceDumpDropLock();
 }
