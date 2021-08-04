@@ -831,7 +831,6 @@ void vTest11(void)
 
   
   Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
   
   Engine::vCallImmmediate(pImmTask);
 
@@ -902,8 +901,6 @@ void vTest14(void)
 
   
   Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
-  
   
   
   SeApi* pSeApi = new SeApi;
@@ -946,8 +943,6 @@ void vTest15(void)
 
   
   Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
-  
   
   
   SeApi* pSeApi = new SeApi;
@@ -989,7 +984,6 @@ void vTest16(void)
 
   
   Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
   
   LogicUnit* pLogicUnit = new LogicUnit(pImmTask);
   pJob->vLogicUnit_job(pLogicUnit );
@@ -1035,7 +1029,6 @@ void vTest16(void)
   pJob->vSeed(SS_SEED_RUN); \
   \
   Task* pImmTask = AM::pTaskNew(pJob); \
-  pImmTask->vInitExeContext(); \
   \
   LogicUnit* pLogicUnit = new LogicUnit(pImmTask); \
   pJob->vLogicUnit_job(pLogicUnit);\

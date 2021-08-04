@@ -30,10 +30,10 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM nation n"
 
 -> projectOp
-   » column: (Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Expr = n.N_NAME ; Ordinal Expr = $2)
-   » column: (Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Expr = n.N_COMMENT ; Ordinal Expr = $4)
+   » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
+   » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
+   » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
+   » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> tableScanOp
       » alias: (n)
@@ -46,10 +46,10 @@ rows: (*,'explainPlan',
 » queryText: "SELECT n.* FROM nation n"
 
 -> projectOp
-   » column: (Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Expr = n.N_NAME ; Ordinal Expr = $2)
-   » column: (Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Expr = n.N_COMMENT ; Ordinal Expr = $4)
+   » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
+   » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
+   » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
+   » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> tableScanOp
       » alias: (n)
@@ -131,10 +131,10 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM nation nation"
 
 -> projectOp
-   » column: (Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Expr = nation.N_NAME ; Ordinal Expr = $2)
-   » column: (Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+   » column: (Alias = N_NATIONKEY ; Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
+   » column: (Alias = N_NAME ; Expr = nation.N_NAME ; Ordinal Expr = $2)
+   » column: (Alias = N_REGIONKEY ; Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
+   » column: (Alias = N_COMMENT ; Expr = nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> tableScanOp
       » alias: (nation)

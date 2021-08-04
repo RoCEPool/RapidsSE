@@ -329,7 +329,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
       // Now generate a list of ProjectedColumn instances, but importantly we can only
       // use tableRefs that we find underneath this part of the graph, as there can be
       // other tableRefs that are not visible to this part of the query.
-      QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
+      QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode->pFirstChild()),
                                                                    pRootNode,
                                                                    szCatalogName,
                                                                    szSchemaName,
@@ -389,81 +389,56 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
   ASSERT(pStartNode);
   ASSERT(PlanObject::bIsOfType(pStartNode));
 
-  QueryNodeList* pProjectedColumnList = new QueryNodeList();
+  QueryNodeList* pProjectedColumnList = PlanObject::pColumnExprs(pStartNode, pRootNode);
 
+  // If there are no constraints then we use all projected columns
+  if (!szCatalog && !szSchema && !szTable) {
+    return pProjectedColumnList;
+  }
 
-  // Walk the graph from here on down, looking for all data sources.
-  auto fVisitor =
-      [&pProjectedColumnList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  // There are some constraints that we need to match against
+  QueryNodeIter* pIter = pProjectedColumnList->pNewIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedColumn = pIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-    UNUSED(sPath);
-    UNUSED(iDepth);
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pExpr));
 
-    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
-
-    if (!DataSource::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;   // Keep walking
+    // We can only match cat/schm/tbl constraints against columnRefs,
+    // so if it isn't a ColumnRef then it can't be matched and we won't include it.
+    if (!ColumnRef::bIsOfType(pExpr)) {
+      pIter->vRemove();
+      delete pProjectedColumn;
+      continue;
     }
 
-    QueryNode* pDataSourceOp = _pQueryNode(pNode);
-    Stz* szSrcAlias   = DataSource::szAliasName(pDataSourceOp);
-    Stz* szSrcCatalog = DataSource::szCatalogName(pDataSourceOp);
-    Stz* szSrcSchema  = DataSource::szSchemaName(pDataSourceOp);
-    Stz* szSrcTable   = DataSource::szTableName(pDataSourceOp);
+    Stz* szColRefTblAlias = ColumnRef::szTableAlias(pExpr);
+    Stz* szColRefCatalog  = ColumnRef::szCatalog(pExpr);
+    Stz* szColRefSchema   = ColumnRef::szSchema(pExpr);
+    Stz* szColRefTable    = ColumnRef::szTable(pExpr);
 
-    // Check if the wildcard constraints match the data source
     b1 bConstraintsMatch;
 
-    if (szSrcAlias && szTable) {
-      bConstraintsMatch = (szTable->bSame(szSrcAlias) && !szSchema && !szCatalog);
+    if (szColRefTblAlias && szTable) {
+      bConstraintsMatch = (szTable->bSame(szColRefTblAlias) && !szSchema && !szCatalog);
 
     } else {
       bConstraintsMatch =
-          (!szCatalog || (szSrcCatalog && szCatalog->bSame(szSrcCatalog))) &&
-          (!szSchema  || (szSrcSchema  && szSchema->bSame(szSrcSchema))  ) &&
-          (!szTable   || (szSrcTable   && szTable->bSame(szSrcTable))    );
+          (!szCatalog || (szColRefCatalog && szCatalog->bSame(szColRefCatalog))) &&
+          (!szSchema  || (szColRefSchema  && szSchema->bSame(szColRefSchema))  ) &&
+          (!szTable   || (szColRefTable   && szTable->bSame(szColRefTable))    );
     }
-
 
     if (!bConstraintsMatch) {
-      // Don't include these columns
-      return GraphNav::WALK_CONTINUE;   // Keep walking
+      // ColumnRef doesn't match
+      pIter->vRemove();
+      delete pProjectedColumn;
+      continue;
     }
+  }
 
-    // We do want to include these columns
-    // Get the column definitions of the data source and convert them to columnRefs
-    QueryNodeList* pColumnDefList = DataSource::pColumnDefs(pDataSourceOp, pRootNode);
-
-    // Iterate through the columnDefs, convert them to columnRefs and add them to the list
-    QueryNodeIter* pIter = pColumnDefList->pNewIter();
-    while (pIter->bHasNext()) {
-      QueryNode* pColumnDef = pIter->pNext();
-
-      QueryNode* pColumnRef = ColumnRef::pCreate( DataSource::szAliasName(pDataSourceOp),
-                                                  ColumnDef::szCatalogName(pColumnDef),
-                                                  ColumnDef::szSchemaName(pColumnDef),
-                                                  ColumnDef::szTableName(pColumnDef),
-                                                  ColumnDef::szColumnName(pColumnDef) );
-
-      // Make a projectedColumn from the columnRef.
-      // We're not going to give the column an alias.
-      QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef, nullptr);
-
-      // Add it to the list
-      pProjectedColumnList->vAppend(pProjectedColumn);
-    }
-
-    // Clean up
-    delete pIter;
-    pColumnDefList->vRemoveAll();
-    delete pColumnDefList;
-
-    return GraphNav::WALK_CONTINUE;   // Keep walking
-  };
-
-
-  GraphNav::bBoundedWalk(pStartNode, false, true, fVisitor, pRootNode);
-
+  delete pIter;
   return pProjectedColumnList;
 }
 

@@ -212,8 +212,7 @@ void Task::vTaskLoop(void)
   //RASSERT(! bIsLocked());
   
   if (! bSeeded()) {
-    vInitExeContext();
-    
+
 #ifndef WITH_LOGIC_UNIT_TASK
     AM::LOGICUNIT::vNew(this,pJob());
 #endif
@@ -700,21 +699,6 @@ void Task::vGrabTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_okLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialise the execution context of this task                              */
-/*----------------------------------------------------------------------------*/
-void Task::vInitExeContext(void)
-{
-  if (m_aInxPtr)
-    return;
-  
-  Stz* szProfileNm = AM::szJobOpNm(m_pJob);
-  if (!szProfileNm)
-    szProfileNm = AM::JOB::szJobNm(m_pJob);
-  
-  m_pProfile = new Profile(szProfileNm);
 }
 
 /*----------------------------------------------------------------------------*/

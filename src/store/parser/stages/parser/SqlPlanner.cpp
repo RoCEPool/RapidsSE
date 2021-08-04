@@ -2033,13 +2033,13 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
   }
 
   if (pCtx->SEMI()) {
-    // TODO: Add support for explicit SEMI/ANTI joins
-    __NOT_IMPL3("semi-join");
+//    __NOT_IMPL3("semi-join");
+    return JT_SEMI;
   }
 
   if (pCtx->ANTI()) {
-    // TODO: Add support for explicit SEMI/ANTI joins
-    __NOT_IMPL3("anti-join");
+//    __NOT_IMPL3("anti-join");
+    return JT_ANTI;
   }
 
   NEVER_REACH
