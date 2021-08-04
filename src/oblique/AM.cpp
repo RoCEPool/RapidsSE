@@ -1054,52 +1054,6 @@ DicStack* AM::TASK::pDicStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is current task logging memory?                                            */
-/*----------------------------------------------------------------------------*/
-bool AM::TASK::bLogMemory(void)
-{
-  _static_
-  
-  Task* pTask = pThisTLSTask();
-  if (! pTask)
-    return false;
-  
-  bool bLogging = pTask->bLogMemory();
-  
-  return bLogging;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set current task logging memory?                                           */
-/*----------------------------------------------------------------------------*/
-void AM::TASK::vLogMemory(bool bLogMemory)
-{
-  _static_
-  
-  Task* pTask = pThisTLSTask();
-  if (! pTask)
-    return;
-  
-  pTask->vLogMemory(bLogMemory);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is current task logging resource usage?                                    */
-/*----------------------------------------------------------------------------*/
-bool AM::TASK::bLogResource(void)
-{
-  _static_
-  
-  Task* pTask = pThisTLSTask();
-  if (! pTask)
-    return false;
-  
-  bool bLogging = pTask->bLogResource();
-  
-  return bLogging;
-}
-
-/*----------------------------------------------------------------------------*/
 /* trigger biding task                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
@@ -1684,10 +1638,10 @@ bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
 
 Job* AM::pPipelineJob(void)
 {
+  Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pOpJob = AM::pTaskJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
-  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pPipelineJob();
   return pPipelineJob;
 }
 
@@ -2621,8 +2575,15 @@ void AM::vJobDelete(Job** ppJob) {
 
 
 Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task(pJob);
+  Task* pTask = new Task;
+  pTask->vJob(pJob);
   pJob->vTask(pTask);
+  return pTask;
+}
+Task* AM::pTaskNew(Op* pOp) {
+  Task* pTask = new Task;
+  pTask->vOp(pOp);
+  pOp->vTask(pTask);
   return pTask;
 }
 bool AM::bTaskIsLocked(Task* pTask) {

@@ -1641,8 +1641,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Adding Expressions\n"_Stz);
-
+    vInfo("  Adding Steps\n"_Stz);
   Step::vAddSteps();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))

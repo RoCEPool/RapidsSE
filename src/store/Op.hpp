@@ -14,7 +14,7 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    Job* m_pJob;        // job of this operator
+    Job* m_pOpJob;        // job of this operator
   
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
@@ -26,6 +26,12 @@ namespace STORE
     Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    TagSet    m_oOpTags; // tags for the op
+    Task*     m_pTask;   // which task
+
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // working variables. these are not copies of variables from opSpec
@@ -90,8 +96,8 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    Job* pJob(void);
-    void vJob(Job* pJob);
+    Job* pOpJob(void);
+    void vOpJob(Job* pOpJob);
     i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
@@ -104,7 +110,7 @@ namespace STORE
     i8   iOp(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
-    TagSet* pOpTagSet(void);
+    TagSet* pOpTags(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
@@ -141,6 +147,7 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     Task* pTask(void);
+    void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
 
     void vWorkQuanta(i8 iWorkQuanta);

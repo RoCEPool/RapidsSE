@@ -1747,7 +1747,6 @@ public:
 
   // tag
   void vTagGet(void);
-  void vTagSet(void);
 
   // tag-set
   void vTagSetAppendInt(void);

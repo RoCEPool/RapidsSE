@@ -82,7 +82,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
-    RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
+    RASSERT(pOp->szOpNm()->bSame("start"_Stz));
     // append a CANCELMARKER onto first operator
     pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
   }
@@ -272,10 +272,10 @@ bool Stage::bStartPipeline(void)
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
-    if (! AM::JOB::szJobNm(pOp->pJob())->bSame("eatAll"_Stz) &&
-        ! AM::JOB::szJobNm(pOp->pJob())->bSame("statWrite"_Stz)) {
+    if (! pOp->szOpNm()->bSame("eatAll"_Stz) &&
+        ! pOp->szOpNm()->bSame("statWrite"_Stz)) {
 
-      RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
+      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
       
       return true;
     }

@@ -89,6 +89,8 @@
 
 //#define WITH_LOGIC_UNIT_TASK EndDefine     // code if logic unit is in task
 
+//#define WITH_NO_JOB_FOR_OP EndDefine      // op's do not have jobs
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

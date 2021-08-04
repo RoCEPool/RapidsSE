@@ -557,8 +557,8 @@ bool Job::bIsPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (AM::JOB::szJobNm(this)->bSame("pipeline"_Stz) ||
-      AM::JOB::szJobNm(this)->bSame("pipelineLocal"_Stz))
+  if (m_sJobNm.bSame("pipeline"_Stz) ||
+      m_sJobNm.bSame("pipelineLocal"_Stz))
     return true;
   else
     return false;
@@ -820,7 +820,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
                 
         i8 nOpdLeft = pOp->nQueuedOperands();
         
-        pOp->pOpTagSet()->vSprint(sOpTags);
+        pOp->pOpSpec()->pArgTags()->vSprint(sOpTags);
 
         if (bStdOut)
           vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz

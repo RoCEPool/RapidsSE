@@ -66,6 +66,7 @@ namespace Parser
     antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *pCtx)                     override;
     antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *pCtx)               override { __NOT_IMPL("USING")};
     antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *pCtx)               override;
+    antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *pCtx)           override;
     antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)     override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
     antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
@@ -152,6 +153,7 @@ namespace Parser
     Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
 //  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
     eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
+    eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
 
   };
   

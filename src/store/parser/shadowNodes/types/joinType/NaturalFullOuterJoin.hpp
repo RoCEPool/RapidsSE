@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* NaturalJoin.hpp - represents a SQL natural join                            */
+/* NaturalFullOuterJoin.hpp - represents a SQL natural full outer join        */
 /*============================================================================*/
 #pragma once
 
@@ -10,12 +10,12 @@ namespace Parser
   class PlanNode;
   class QueryNode;
 
-  class NaturalJoin : public JoinType
+  class NaturalFullOuterJoin : public JoinType
   {
 
   private:
     // Shalt never be instantiated. Static functions only.
-    NaturalJoin();
+    NaturalFullOuterJoin();
 
   public:
     static PlanNode* pCreate();

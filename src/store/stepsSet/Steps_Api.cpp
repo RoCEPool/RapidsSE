@@ -16,6 +16,7 @@
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Op.hpp"
+#include "OpSpec.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -128,8 +129,8 @@ void Step::vApiExecuteNested(void)
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
-  m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet()->vDumpSet();
-  pJobTagSet->vCopy(m_pJob->pLogicUnit_job()->m_xpOp->pOpTagSet());
+  m_pJob->pLogicUnit_job()->m_xpOp->pOpSpec()->pArgTags()->vDumpSet();
+  pJobTagSet->vCopy(m_pJob->pLogicUnit_job()->m_xpOp->pOpSpec()->pArgTags());
   
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     pJobTagSet->vDumpSet();
@@ -349,7 +350,7 @@ void Step::vApiSpawnThread(void)
   
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  Job* pOpJob = pOp->pJob();
+  Job* pOpJob = pOp->pOpJob();
   AM::vSpawnJob_dedicated(pOpJob);
 
   EXIT();

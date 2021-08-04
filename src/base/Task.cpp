@@ -69,24 +69,19 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob)
+Task::Task(void)
 : Object(CN_TASK)
 , m_okLock(this,false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  RASSERT(pJob);
-  
   m_pProfile     = nullptr;
 
   m_pThread      = nullptr;
-  m_pJob         = pJob;
-  
-#ifdef WITH_LOGIC_UNIT_TASK
-  m_pLogicUnit_task = AM::LOGICUNIT::pNew(pJob);
-#else
+  m_pJob         = nullptr;
+  m_pOp          = nullptr;
+
   m_pLogicUnit_task = nullptr;
-#endif
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
@@ -99,9 +94,6 @@ Task::Task(Job* pJob)
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
-  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
-  m_bLogResource = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
-
   m_iTraceMask   = C_TRACE_NONE;
  
   m_nOperandYield = 10;
@@ -881,36 +873,6 @@ void Task::vLogicUnit_task(LogicUnit* pLogicUnit_task)
 }
 
 /*----------------------------------------------------------------------------*/
-/* log memory?                                                                */
-/*----------------------------------------------------------------------------*/
-bool Task::bLogMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bLogMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set log memory                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLogMemory(bool bLogMemory)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bLogMemory = bLogMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* log resource usage?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Task::bLogResource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bLogResource;
-}
-
-/*----------------------------------------------------------------------------*/
 /* new input                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vNewInput(void)
@@ -920,6 +882,26 @@ void Task::vNewInput(void)
   RASSERT(! m_pInput);
     
   m_pInput = new Input;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the oo of this task                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Task::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the op of this task                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vOp(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pOp = pOp;
 }
 
 /*----------------------------------------------------------------------------*/

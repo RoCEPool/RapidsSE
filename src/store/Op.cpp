@@ -51,7 +51,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
-  m_pJob        = nullptr;
+  m_pOpJob      = nullptr;
   
   m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
   m_sStageNm    = pStream->pStage()->szStageNm();
@@ -65,7 +65,12 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
   m_pPipeline = pStream->pPipeline();
-    
+
+  // -- -- -- -- -- --
+
+  // m_oOpTags
+  m_pTask = nullptr;
+  
   // -- -- -- -- -- --
 
   m_bPulsedLimit  = false;
@@ -125,10 +130,14 @@ Op::Op(Stz* szOpNm)
   m_pStage    = nullptr;
   m_pPipeline = nullptr;
   
-    
   // -- -- -- -- -- --
 
-  m_pJob        = nullptr;
+  // m_oOpTags
+  m_pTask = nullptr;
+
+  // -- -- -- -- -- --
+
+  m_pOpJob        = nullptr;
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
@@ -200,7 +209,7 @@ void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
+  Task* pPipelineTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
     
 
   if (m_bTraceOp) {
@@ -214,12 +223,12 @@ void Op::vAckPipelineJob(void)
               ,spOp.szLeading(this)
              
               ,__func__
-              ,m_pJob
+              ,pPipelineJob()
              );
     }
     else {
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-             AM::JOB::szJobNm(m_pJob),
+             szOpNm(),
              m_pStage->szStageNm(),
              iNode(),
              tPtnNo());
@@ -233,7 +242,7 @@ void Op::vAckPipelineJob(void)
   if (m_bTraceOp && AM::TRACE::bVBlong())
     spOp.szLeading(this);
   
-  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob),nAcksWereRemaining);
+  AM::vAckWaitingTask(pPipelineTask,m_pTask,nAcksWereRemaining);
   
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
       SP_Op spOp;
@@ -278,14 +287,12 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
     return;
   }
   else {
@@ -307,14 +314,12 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
     return;
   }
   else {
@@ -341,9 +346,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   
   AM::vOperandsInc();
 
-  Task* pDstTask = AM::pExecutingTask(m_pJob);
-  
-  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING != eTaskState) {
     vDropTaskLock();
     return;
@@ -352,7 +355,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,8 +428,8 @@ void Op::vDownstreamOp(Op* pDownstreamOp)
 void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  AM::vDropTaskLock(AM::pExecutingTask(m_pJob));
+    
+  AM::vDropTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,7 +468,7 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vGrabTaskLock(AM::pExecutingTask(m_pJob));
+  AM::vGrabTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -555,7 +558,7 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  bool bLocked = AM::bTaskIsLocked(AM::pExecutingTask(m_pJob));
+  bool bLocked = AM::bTaskIsLocked(m_pTask);
 
   return bLocked;
 }
@@ -895,21 +898,21 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* get job                                                                    */
 /*----------------------------------------------------------------------------*/
-Job* Op::pJob(void)
+Job* Op::pOpJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pJob;
+  return m_pOpJob;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set job                                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vJob(Job* pJob)
+void Op::vOpJob(Job* pOpJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pJob = pJob;
+  m_pOpJob = pOpJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1054,13 +1057,13 @@ OpSpec* Op::pOpSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the TagSet                                                             */
+/* get op tag set                                                             */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pOpTagSet(void)
+TagSet* Op::pOpTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->pArgTags();
+  return & m_oOpTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1272,9 +1275,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   vOpTrace(pOperand,(Stz*)__func__);
-  
-  RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
-  
+    
   RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
@@ -1331,8 +1332,6 @@ void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   vOpTrace(pOperand,(Stz*)__func__);
-
-  RASSERT((AM::JOB::szJobNm(m_pJob)->bSame(szOpNm())));
 
   RASSERT(! szOpNm()->bSame("send"_Stz));
 
@@ -1614,43 +1613,45 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
-  
+
+  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new Job for the Op
   
-  m_pJob = AM::pNewJobOp(this,
+  m_pOpJob = AM::pNewJobOp(this,
                          AM::GRID::iThisNodeNo(),
                          iSessionId,
                          1
                          );
   
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pJob);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy the pipeline job tag set into the operator job tags
-  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
   
-  //pPipeLineJobTags->vDumpSet(true);
-  
-  pOpJobTagSet->vCopy(pPipeLineJobTags);
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the OpJob JobNM to be the same as the Opertor name
-  pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
-  
-  //pOpJobTags->vDumpSet();
+  m_oOpTags.vCopy(pPipeLineJobTags);
+  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
-  sSTMT szCmdStr;
-  vToCmdStr(szCmdStr);
+  sSTMT sOpCmd;
+  vToCmdStr(sOpCmd);
+  
+  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
   TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(szCmdStr);
+  pTknVec->vTokenise(sOpCmd);
 
-  bool b = AM::bParseCmd(pTknVec,pOpJobTagSet);
+  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
   RASSERT(b);
+  
+  // get the operator job tag set
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  pOpJobTagSet->vCopy(&m_oOpTags);
+  
+  
+  
+  //pOpJobTagSet->vDumpSet();
+  
 //  if (! b) {
 //    //vTrace("Unable to match job syntax\n"_Stz);
 //    vParticipantHasError(true);
@@ -1660,8 +1661,8 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
   
-  eEC eError = AM::ePopulateJob(m_pJob, pOpJobTagSet);
-  UNUSED(eError);
+  //eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
+  //UNUSED(eError);
   //RASSERT(EC_NONE != eError);
   
   // delete the tokenVec
@@ -1669,9 +1670,13 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   delete pTknVec;
   
   if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
-    AM::vSpawnJob_dedicated(m_pJob);
+    AM::vSpawnJob_dedicated(m_pOpJob);
   else
-    AM::vSpawnJob_op(m_pJob);
+    AM::vSpawnJob_op(m_pOpJob);
+  
+  m_pTask = AM::pExecutingTask(m_pOpJob);
+  
+  m_pTask->vOp(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1711,7 +1716,17 @@ Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return AM::pExecutingTask(m_pJob);
+  return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
