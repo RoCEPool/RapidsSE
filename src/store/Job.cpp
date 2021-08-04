@@ -818,7 +818,11 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
+#ifdef WITH_PIPELINE_IN_JOB
+  Pipeline* pPipeline = m_pPipeline_job;
+#else
   Pipeline* pPipeline = *m_pLogicUnit_job->m_xpPipeline;
+#endif
   if (! pPipeline)
     return;
   

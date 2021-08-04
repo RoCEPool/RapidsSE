@@ -201,8 +201,8 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
   
-#ifdef WITH_LOGIC_UNIT_TASK
-  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
+#ifdef WITH_PIPELINE_IN_JOB
+  Pipeline* pPipeline = pPipelineJob->m_pPipeline_job;
 #else
   Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
 #endif
