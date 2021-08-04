@@ -1625,10 +1625,6 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
                          1
                          );
   
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  pOpJobTagSet->vCopy(pPipeLineJobTags);
-  pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1645,8 +1641,14 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTknVec->vTokenise(sOpCmd);
 
-  bool b = AM::bParseCmd(pTknVec,pOpJobTagSet);
+  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
   RASSERT(b);
+  
+  // get the operator job tag set
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  pOpJobTagSet->vCopy(&m_oOpTags);
+  
+  
   
   //pOpJobTagSet->vDumpSet();
   
