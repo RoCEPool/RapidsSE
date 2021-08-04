@@ -129,7 +129,9 @@ LogicUnit::LogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   m_pTask = nullptr;
-  
+  m_pJob  = nullptr;
+  m_pOp   = nullptr;
+
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_xpSendNode  = nullptr;
@@ -670,6 +672,30 @@ void LogicUnit::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* LogicUnit::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pOp);
+
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pOp);
+  
+  m_pJob = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get code point of label                                                    */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iLabelCode(i8 i_Label)
@@ -725,6 +751,30 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
   Stz* szLblNm = m_xaJumpLabel[i_Label].m_sLabelNm;
   
   return szLblNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op                                                                     */
+/*----------------------------------------------------------------------------*/
+Op* LogicUnit::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pJob);
+
+  return m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op                                                                     */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vOp(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pJob);
+  
+  m_pOp = pOp;
 }
 
 /*----------------------------------------------------------------------------*/

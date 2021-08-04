@@ -129,7 +129,11 @@ namespace STORE
   class LogicUnit : public Object
   {  
   public:
+    
     Task* m_pTask;      // which task
+    Job*  m_pJob;       // which job
+    Op*   m_pOp;        // which op
+    
     eLH   m_eDdlLocked; // this task has the ddl lock?
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
@@ -305,11 +309,15 @@ namespace STORE
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     i8   iLabelCode(i8 i_Label);
     bool bLabelIsDst(i8 i_Label);
     bool bLabelIsSbr(i8 i_Label);
     i8   nLabels(void);
     Stz* szLabelNm(i8 i_Label);
+    Op*  pOp(void);
+    void vOp(Op* pOp);
     void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
