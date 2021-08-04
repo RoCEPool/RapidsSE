@@ -48,7 +48,6 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
   m_bExitEarlyMarker  = false;
-  m_bCancelMarker     = false;
   m_bCmdErr           = false;
   m_bExecErr          = false;
 
@@ -90,7 +89,6 @@ void Output::vAssertEmptyQueue(void)
   RASSERT(! m_pOutputQueue->nItems());
   
   RASSERT(! m_bExitMarker);
-  RASSERT(! m_bCancelMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +99,6 @@ void Output::vDrainBufferQueue(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
   while (! m_bExitMarker   &&
-         ! m_bCancelMarker &&
          ! pSession->m_pSsnJob->bJobHasError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking(pSession);
@@ -117,9 +114,6 @@ void Output::vDrainBufferQueue(Session* pSession)
       Marker *pMarker = _pMarker(pOperand);
       eOM eOpMarker = pMarker->eOpMarker();
 
-      if (eOpMarker == OM_CANCELMARKER)
-        m_bCancelMarker = true;
-      else
       if (eOpMarker == OM_EXITMARKER)
         m_bExitMarker = true;
     }
