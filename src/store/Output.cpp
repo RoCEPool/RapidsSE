@@ -404,24 +404,12 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       switch (eOpMarker) {
           
         case OM_CANCELMARKER: {
-          //vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-          //       *m_ixRowsProcessed);
-          AM::vDeleteOperand(pOperand);
-          m_bExitMarker = true;
-          m_bCmdErr = false;
-          m_bExecErr = false;
-          bContinue = false;
-          goto L_EXIT;
+          NEVER_REACH
           break;
         }
 
         case OM_CLEANUPMARKER: {
-          AM::vDeleteOperand(pOperand);
-
-          // ALKA: I think these should go soon
-          m_bCmdErr = false;
-          m_bExecErr = false;
-          goto L_EXIT;
+          NEVER_REACH
           break;
         }
 
@@ -465,8 +453,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
-          ASSERT( !m_bCmdErr );
-          ASSERT( !m_bExecErr );
+          m_bCmdErr = false;
+          m_bExecErr = false;
           if ( ! m_bExitEarlyMarker )
             vPrintResult();
           bContinue = false;
