@@ -110,6 +110,7 @@ namespace STORE
     i8   iOp(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
+    TagSet* pOpTags(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
