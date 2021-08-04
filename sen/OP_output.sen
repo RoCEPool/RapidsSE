@@ -115,8 +115,8 @@
 : output_ExitEarlyMarker \handler
 
   //"Operand:- ZK_EXITEARLYMARKER" .verbose
-  PipeIn[].pipeToOutput
-
+  //PipeIn[].pipeToOutput
+  Pipein[].pipeout
 true
 ;
 

@@ -97,7 +97,8 @@
   //"Operand:- ZK_EARLYEXITMARKER" .verbose
   PipeIn[].delete
 
-  // check if start has already been errored
+/*
+  // check if start has already been exited early
   Pipeline::earlyExit@ not if
 
     //grid::thisNodeName@ "(%v) sinkOP got early exit marker" .printf
@@ -110,6 +111,14 @@
     Operand[].pipeOut
 
   then
+*/
+
+   // mark pipeline as being earlyExit
+   true Pipeline::earlyExit!
+
+   // now pipeout an exit marker
+   Operand[].newExitedEarlyMarker
+   Operand[].pipeOut
 
   find: sink_Xyz  ZK_STARTMARKER op[].handler!
   find: sink_Xyz  ZK_DATAPULSE op[].handler!
