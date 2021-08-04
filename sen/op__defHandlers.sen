@@ -32,13 +32,17 @@
 : ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHSCANEOSMARKER_handler \handler STANDARD_PIPEOUT ;
+: ZK_ENDMARKER_handler         \handler STANDARD_PIPEOUT ;
+: ZK_ENDEDMARKER_handler       \handler STANDARD_PIPEOUT ;
 : ZK_END_CRWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_END_ROWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_EOSMARKER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
+: ZK_ERRORINGMARKER_handler   \handler STANDARD_PIPEOUT ;
 : ZK_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
-: ZK_EXITEARLYMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_EARLYEXITMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_EARLYEXITINGMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_GRID_handler             \handler STANDARD_PIPEOUT ;
 : ZK_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : ZK_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
@@ -132,11 +136,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDEARLYMARKER operand  (deletes pipein operand) */
+/* default handler for ZK_EARLYEXITEDMARKER operand  (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
-: ZK_EXITEDEARLYMARKER_handler \handler
+: ZK_EARLYEXITEDMARKER_handler \handler
 
-  //"ZK_EXITEARLYMARKER_handler" .verbose
+  //"ZK_EARLYEXITEDMARKER_handler" .verbose
 
   PipeIn[].delete
 

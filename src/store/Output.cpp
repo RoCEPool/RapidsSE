@@ -456,7 +456,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           break;
         }
 
-        case OM_EXITEARLYMARKER: {
+        case OM_EARLYEXITMARKER: {
           NEVER_REACH
           break;
         }

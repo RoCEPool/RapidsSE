@@ -771,7 +771,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_EXITEARLYMARKER:
+    case ZK_EARLYEXITMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -800,8 +800,8 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_EXITEDEARLYMARKER:
-      // Only StartOP receives an ZK_EXITEDEARLYMARKER
+    case ZK_EARLYEXITEDMARKER:
+      // Only StartOP receives an ZK_EARLYEXITEDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);

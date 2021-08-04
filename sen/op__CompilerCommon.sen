@@ -5,15 +5,15 @@
 " op__Compilercommon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
+/* handler for ZK_EARLYEXITMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
-: compiler_ExitEarlyMarker \handler
+: compiler_EarlyExitMarker \handler
 
   // save the pipein in streamSet[]
   StreamSet[].isNull not assert
   StreamSet[].pipeout
 
-  ZK_EXITEARLYMARKER_handler
+  ZK_EARLYEXITMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
 
     LogicUnit[].compilerToExit if
       Operand[].delete
-      Operand[].newExitEarlyMarker
+      Operand[].newEarlyExitMarker
       Operand[].pipeout
       true
       exit

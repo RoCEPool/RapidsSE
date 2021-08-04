@@ -78,7 +78,7 @@
 
     // Always exit at this point
     Operand[].delete
-    Operand[].newExitEarlyMarker
+    Operand[].newEarlyExitMarker
     Operand[].pipeout
     true
     exit
@@ -107,15 +107,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
+/* handler for ZK_EARLYEXITMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
-: transliterate_ExitEarlyMarker \handler
+: transliterate_EarlyExitMarker \handler
 
   // save the pipein in streamSet[]
   StreamSet[].isNull not assert
   StreamSet[].pipeout
 
-  ZK_EXITEARLYMARKER_handler
+  ZK_EARLYEXITMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@
   find: transliterate_StartMarker   ZK_STARTMARKER   op[].handler!
 
   find: transliterate_StreamSet    ZK_STREAMSET    op[].handler!
-  find: transliterate_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
+  find: transliterate_EarlyExitMarker ZK_EARLYEXITMARKER op[].handler!
 
   op__loop
 
