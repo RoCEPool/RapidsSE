@@ -21,7 +21,7 @@
 : sink_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  PipeIn[].pipeToOutput
+  PipeIn[].delete
   Operand[].newCancelledMarker
   Operand[]\clear to Pipein[]
 
@@ -35,7 +35,7 @@
 : sink_CleanupMarker \handler
 
   //"Operand:- ZK_CLEANUPMARKER" .verbose
-  PipeIn[].pipeToOutput
+  PipeIn[].delete
   Operand[].newCleanedupMarker
   Operand[] to Pipein[]
   nullptr to Operand[]

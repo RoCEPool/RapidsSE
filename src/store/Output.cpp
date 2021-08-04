@@ -48,7 +48,6 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
   m_bExitEarlyMarker  = false;
-  m_bCancelMarker     = false;
   m_bCmdErr           = false;
   m_bExecErr          = false;
 
@@ -90,7 +89,6 @@ void Output::vAssertEmptyQueue(void)
   RASSERT(! m_pOutputQueue->nItems());
   
   RASSERT(! m_bExitMarker);
-  RASSERT(! m_bCancelMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +99,6 @@ void Output::vDrainBufferQueue(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
   while (! m_bExitMarker   &&
-         ! m_bCancelMarker &&
          ! pSession->m_pSsnJob->bJobHasError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking(pSession);
@@ -117,9 +114,6 @@ void Output::vDrainBufferQueue(Session* pSession)
       Marker *pMarker = _pMarker(pOperand);
       eOM eOpMarker = pMarker->eOpMarker();
 
-      if (eOpMarker == OM_CANCELMARKER)
-        m_bCancelMarker = true;
-      else
       if (eOpMarker == OM_EXITMARKER)
         m_bExitMarker = true;
     }
@@ -404,24 +398,12 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       switch (eOpMarker) {
           
         case OM_CANCELMARKER: {
-          //vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-          //       *m_ixRowsProcessed);
-          AM::vDeleteOperand(pOperand);
-          m_bExitMarker = true;
-          m_bCmdErr = false;
-          m_bExecErr = false;
-          bContinue = false;
-          goto L_EXIT;
+          NEVER_REACH
           break;
         }
 
         case OM_CLEANUPMARKER: {
-          AM::vDeleteOperand(pOperand);
-
-          // ALKA: I think these should go soon
-          m_bCmdErr = false;
-          m_bExecErr = false;
-          goto L_EXIT;
+          NEVER_REACH
           break;
         }
 
@@ -465,8 +447,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
-          ASSERT( !m_bCmdErr );
-          ASSERT( !m_bExecErr );
+          m_bCmdErr = false;
+          m_bExecErr = false;
           if ( ! m_bExitEarlyMarker )
             vPrintResult();
           bContinue = false;

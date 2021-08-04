@@ -1612,27 +1612,13 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
-
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a new Job for the Op
-  
-  m_pOpJob = AM::pNewJobOp(this,
-                         AM::GRID::iThisNodeNo(),
-                         iSessionId,
-                         1
-                         );
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   m_oOpTags.vCopy(pPipeLineJobTags);
   m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the command string using the parameter ename pairs
+  // form and parse op command string
+  
   sSTMT sOpCmd;
   vToCmdStr(sOpCmd);
   
@@ -1644,11 +1630,8 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
   RASSERT(b);
   
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  pOpJobTagSet->vCopy(&m_oOpTags);
-  
-  
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
   
   //pOpJobTagSet->vDumpSet();
   
@@ -1659,16 +1642,19 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the job
   
-  //eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
-  //UNUSED(eError);
-  //RASSERT(EC_NONE != eError);
+  // create a new Job for the Op
+  m_pOpJob = AM::pNewJobOp(this,
+                         AM::GRID::iThisNodeNo(),
+                         iSessionId,
+                         1
+                         );
   
-  // delete the tokenVec
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
-  
+  // get the operator job tag set
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  pOpJobTagSet->vCopy(&m_oOpTags);
+
+
   if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
     AM::vSpawnJob_dedicated(m_pOpJob);
   else
