@@ -588,7 +588,9 @@ namespace OBLIQUE
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static void vSpawnJob_dedicated(Job* pJob);
-    static void vSpawnJob_op(Job* pJob);    
+    static void vSpawnOp_dedicated(Op* pOp);
+    static void vSpawnJob_op(Job* pJob);
+    static void vSpawnOp_op(Op* pOp);
     static void vSpawnJob_received(Job* pJob);
     static void vSpawnJob_service(Job* pJob);
     static Stz* szSummary(s256& sSummary);

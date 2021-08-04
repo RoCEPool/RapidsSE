@@ -1657,9 +1657,11 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 
   if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
     AM::vSpawnJob_dedicated(m_pOpJob);
+    //AM::vSpawnOp_dedicated(this);
   else
     AM::vSpawnJob_op(m_pOpJob);
-  
+    //AM::vSpawnOp_op(this);
+
   m_pTask = AM::pExecutingTask(m_pOpJob);
   
   m_pTask->vOp(this);

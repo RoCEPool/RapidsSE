@@ -765,6 +765,19 @@ void Api::vSpawnJob_dedicated(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
+void Api::vSpawnOp_dedicated(Op* pOp)
+{
+  _static_
+  
+  //RASSERT(! pJob->pTask());
+  
+  vCreateTaskForOp(pOp);
+  Scheduler::vTaskApi_AddDedicated(pOp->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
 void Api::vSpawnJob_op(Job* pJob)
 {
   _static_
@@ -772,6 +785,18 @@ void Api::vSpawnJob_op(Job* pJob)
   
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddOp(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given op                                                             */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnOp_op(Op* pOp)
+{
+  _static_
+  
+  vCreateTaskForOp(pOp);
+  
+  Scheduler::vTaskApi_AddOp(pOp->pTask());
 }
 
 /*----------------------------------------------------------------------------*/

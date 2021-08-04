@@ -48,7 +48,10 @@ namespace STORE
   
   // internal
   static void vSpawnJob_dedicated(Job* pJob);
+  static void vSpawnOp_dedicated(Op* pOp);
   static void vSpawnJob_op(Job* pJob);
+  static void vSpawnOp_op(Op* pop);
+  
   static void vSpawnJob_received(Job* pJob);
   static void vSpawnJob_service(Job* pJob);
   static void vSpawnJob_system(Job* pJob);
