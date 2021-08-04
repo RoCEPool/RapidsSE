@@ -898,7 +898,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* get job                                                                    */
 /*----------------------------------------------------------------------------*/
-Job* Op::pOpJob(void)
+Job* Op::pOpJob_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -908,7 +908,7 @@ Job* Op::pOpJob(void)
 /*----------------------------------------------------------------------------*/
 /* set job                                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vOpJob(Job* pOpJob)
+void Op::vOpJob_(Job* pOpJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1612,27 +1612,13 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
-
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a new Job for the Op
-  
-  m_pOpJob = AM::pNewJobOp(this,
-                         AM::GRID::iThisNodeNo(),
-                         iSessionId,
-                         1
-                         );
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   m_oOpTags.vCopy(pPipeLineJobTags);
   m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the command string using the parameter ename pairs
+  // form and parse op command string
+  
   sSTMT sOpCmd;
   vToCmdStr(sOpCmd);
   
@@ -1644,11 +1630,8 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
   RASSERT(b);
   
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  pOpJobTagSet->vCopy(&m_oOpTags);
-  
-  
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
   
   //pOpJobTagSet->vDumpSet();
   
@@ -1659,24 +1642,31 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the job
   
-  //eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
-  //UNUSED(eError);
-  //RASSERT(EC_NONE != eError);
+  // create a new Job for the Op
+  m_pOpJob = AM::pNewJobOp(this,
+                         AM::GRID::iThisNodeNo(),
+                         iSessionId,
+                         1
+                         );
   
-  // delete the tokenVec
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
-  
-  if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
+  // get the operator job tag set
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  pOpJobTagSet->vCopy(&m_oOpTags);
+
+  if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
     AM::vSpawnJob_dedicated(m_pOpJob);
-  else
+    m_pTask = AM::pExecutingTask(m_pOpJob);
+    m_pTask->vOp(this);
+    //AM::vSpawnOp_dedicated(this);
+  }
+  else {
     AM::vSpawnJob_op(m_pOpJob);
+    m_pTask = AM::pExecutingTask(m_pOpJob);
+    m_pTask->vOp(this);
+    //AM::vSpawnOp_op(this);
+  }
   
-  m_pTask = AM::pExecutingTask(m_pOpJob);
-  
-  m_pTask->vOp(this);
 }
 
 /*----------------------------------------------------------------------------*/

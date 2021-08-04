@@ -512,16 +512,52 @@ NATURAL JOIN nation;
 failure contains: 'Feature not yet implemented: NATURAL JOIN'
 
   -- semi join
-EXPLAIN SELECT n_name, r_name
+EXPLAIN SELECT r_name, r_name
 FROM region
 SEMI JOIN nation ON r_regionkey = n_regionkey;
-failure contains: 'Feature not yet implemented: semi-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT r_name, r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+
+-> -> nestedLoopJoinOp
+      » join type: Semi Join
+      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+      » ordinal predicate: ($1 = $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.region)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
 
   -- anti join
-EXPLAIN SELECT n_name, r_name
+EXPLAIN SELECT r_name, r_name
 FROM region
 ANTI JOIN nation ON r_regionkey = n_regionkey;
-failure contains: 'Feature not yet implemented: anti-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT r_name, r_name FROM region ANTI JOIN nation ON r_regionkey = n_regionkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+
+-> -> nestedLoopJoinOp
+      » join type: Anti Join
+      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+      » ordinal predicate: ($1 = $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.region)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
 
   -- left outer join
 EXPLAIN SELECT n_name, r_name
@@ -740,18 +776,69 @@ NATURAL JOIN supplier;
 failure contains: 'Feature not yet implemented: NATURAL JOIN'
 
   -- mixed (5)
-EXPLAIN SELECT n_name, r_name, s_name
+EXPLAIN SELECT r_name, s_name
 FROM region
 SEMI JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
-failure contains: 'Feature not yet implemented: semi-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT r_name, s_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $5)
+
+-> -> nestedLoopJoinOp
+      » join type: Inner Join
+      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
+      » ordinal predicate: ($7 = rapidsse.public.nation.n_nationkey)
+
+-> -> -> nestedLoopJoinOp
+         » join type: Semi Join
+         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+         » ordinal predicate: ($1 = $6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.supplier)'
+)
 
   -- mixed (6)
-EXPLAIN SELECT n_name, r_name, s_name
+EXPLAIN SELECT r_name
 FROM region
 SEMI JOIN nation ON r_regionkey = n_regionkey
 ANTI JOIN supplier ON s_nationkey = n_nationkey;
-failure contains: 'Feature not yet implemented: semi-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey ANTI JOIN supplier ON s_nationkey = n_nationkey"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+
+-> -> nestedLoopJoinOp
+      » join type: Anti Join
+      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
+      » ordinal predicate: ($7 = rapidsse.public.nation.n_nationkey)
+
+-> -> -> nestedLoopJoinOp
+         » join type: Semi Join
+         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+         » ordinal predicate: ($1 = $6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.supplier)'
+)
 
 
   -- natural joins can't have ON or USING clauses
@@ -914,16 +1001,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 INNER JOIN t2 ON t1.colA = t2.colA"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Inner Join
@@ -945,16 +1032,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 CROSS JOIN t2"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Cross Join
@@ -976,16 +1063,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 LEFT OUTER JOIN t2 ON t1.colA = t2.colA"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Left Outer Join
@@ -1007,16 +1094,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 RIGHT OUTER JOIN t2 ON t1.colA = t2.colA"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Right Outer Join
@@ -1038,16 +1125,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Full Outer Join
@@ -1065,12 +1152,65 @@ rows: (*,'explainPlan',
 EXPLAIN SELECT *
 FROM t1
 SEMI JOIN t2 ON t1.colA = t2.colA;
-failure contains: 'Feature not yet implemented: semi-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 SEMI JOIN t2 ON t1.colA = t2.colA"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+
+-> -> nestedLoopJoinOp
+      » join type: Semi Join
+      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
+      » ordinal predicate: ($1 = $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t2)'
+)
 
 EXPLAIN SELECT *
 FROM t1
 ANTI JOIN t2 ON t1.colA = t2.colA;
-failure contains: 'Feature not yet implemented: anti-join'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 ANTI JOIN t2 ON t1.colA = t2.colA"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+
+-> -> nestedLoopJoinOp
+      » join type: Anti Join
+      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
+      » ordinal predicate: ($1 = $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t2)'
+)
+
+
+  -- semi join doesn't project the right hand table columns
+EXPLAIN SELECT n_name, r_name
+FROM region
+SEMI JOIN nation ON r_regionkey = n_regionkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_name'
+
+-- anti join doesn't project the right hand table columns
+EXPLAIN SELECT n_name, r_name
+FROM region
+ANTI JOIN nation ON r_regionkey = n_regionkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_name'
 
   -- Natural join only returns distinct column names
 EXPLAIN SELECT *
@@ -1100,16 +1240,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA AND t1.colB = t2.colB"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Full Outer Join
@@ -1132,16 +1272,16 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA OR t1.colB = t2.colB"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
 -> -> nestedLoopJoinOp
       » join type: Full Outer Join

@@ -379,7 +379,6 @@ void Engine::vCallBoot(void)
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
   Task* pBootTask = AM::pTaskNew(pJob);
-  pBootTask->vInitExeContext();
   
   LogicUnit* pLogicUnit = new LogicUnit(pBootTask);
   
@@ -469,7 +468,6 @@ void Engine::vCallStart(void)
   
   Task* pStartTask = AM::pTaskNew(pJob);
   pStartTask->vIsStart(true);
-  pStartTask->vInitExeContext();
   LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
 
 #ifndef WITH_LOGIC_UNIT_TASK

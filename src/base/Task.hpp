@@ -125,7 +125,6 @@ namespace BASE
     eEP  eEntryPoint(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(void);
-    void vInitExeContext(void);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
