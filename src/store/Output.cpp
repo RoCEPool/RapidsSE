@@ -447,10 +447,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
+          if ( !m_bCmdErr && !m_bExecErr )
+            vPrintResult();
           m_bCmdErr = false;
           m_bExecErr = false;
-          if ( ! m_bExitEarlyMarker )
-            vPrintResult();
           bContinue = false;
           goto L_EXIT;
           break;
