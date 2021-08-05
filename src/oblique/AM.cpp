@@ -494,13 +494,11 @@ void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 {
   if (! pJob->pLogicUnit_job()) {
     
-    RASSERT(! pTask->pLogicUnit_task());
-    
     LogicUnit* pLogicUnit = new LogicUnit;
 
     pLogicUnit->vJob(pJob);
 
-    pJob->vLogicUnit_job(pLogicUnit);
+    pJob->vJobLogicUnit(pLogicUnit);
   }
   else {
     vDebugPoint();
@@ -1061,6 +1059,45 @@ DicStack* AM::TASK::pDicStack(void)
   DicStack* pDicStack = pTask->pDicStack();
   
   return pDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new task                                                                   */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(void)
+{
+  Task* pTask = new Task;
+
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTranstionRequest());
+
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new task (for job)                                                         */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(Job* pJob)
+{
+  Task* pTask = AM::TASK::pNew();
+
+  pTask->vJob(pJob);
+  pJob->vTask(pTask);
+
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new task (for op)                                                          */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(Op* pOp)
+{
+  Task* pTask = AM::TASK::pNew();
+
+  pTask->vOp(pOp);
+  pOp->vTask(pTask);
+
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2606,18 +2643,6 @@ void AM::vJobDelete(Job** ppJob) {
 
 
 
-Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task;
-  pTask->vJob(pJob);
-  pJob->vTask(pTask);
-  return pTask;
-}
-Task* AM::pTaskNew(Op* pOp) {
-  Task* pTask = new Task;
-  pTask->vOp(pOp);
-  pOp->vTask(pTask);
-  return pTask;
-}
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;

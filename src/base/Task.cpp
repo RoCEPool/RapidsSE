@@ -80,8 +80,6 @@ Task::Task(void)
   m_pThread      = nullptr;
   m_pJob         = nullptr;
   m_pOp          = nullptr;
-
-  m_pLogicUnit_task = nullptr;
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
@@ -118,8 +116,6 @@ Task::Task(void)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
-  m_pLogicUnit_task = nullptr;
-
   ASSERT(! m_oWriteLocks.nItems());
   
   _checkInitialised_(CN_TASK);
@@ -172,13 +168,7 @@ Task::~Task(void) noexcept(false)
     m_pJob = nullptr;
     AM::vJobDelete(&pJob);
   }
-    
-#ifdef WITH_LOGIC_UNIT_TASK
-  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
-#else
-  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
-#endif
-  
+      
   delete m_pProfile;
   m_pProfile = nullptr;
   
@@ -217,8 +207,7 @@ void Task::vTaskLoop(void)
   
   if (! bSeeded()) {
 
-#ifdef WITH_LOGIC_UNIT_TASK
-    AM::LOGICUNIT::vNew(this,pJob());
+#ifdef WITH_NO_JOB_FOR_OP
 #else
     AM::LOGICUNIT::vNew(this,pJob());
 #endif
@@ -587,8 +576,7 @@ void Task::vDump(void)
 
 
   // dump the logicUnit registers
-#ifdef WITH_LOGIC_UNIT_TASK
-  m_pJob->m_pJobLogicUnit->vDumpRegisters();
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   m_pJob->m_pJobLogicUnit->vDumpRegisters();
 #endif
@@ -844,26 +832,6 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the logic unit of this task                                            */
-/*----------------------------------------------------------------------------*/
-LogicUnit* Task::pLogicUnit_task(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pLogicUnit_task;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job of this task                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLogicUnit_task(LogicUnit* pLogicUnit_task)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  m_pLogicUnit_task = pLogicUnit_task;
 }
 
 /*----------------------------------------------------------------------------*/

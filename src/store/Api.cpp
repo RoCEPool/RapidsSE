@@ -970,16 +970,10 @@ void Api::vCreateTaskForJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = pJob->pTask();
-  if ( pTask) {
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  else {
-    pTask = AM::pTaskNew(pJob);
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  
+  RASSERT(! pTask);
+
+  pTask = AM::TASK::pNew(pJob);
+
   Job* pThisJob = AM::pThisTLSJob();
   
   if (pJob->bHasTag(C_TAG_TAGS) ||
@@ -1000,15 +994,9 @@ void Api::vCreateTaskForOp(Op* pOp)
   _static_
     
   Task* pTask = pOp->pTask();
-  if ( pTask) {
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  else {
-    pTask = AM::pTaskNew(pOp);
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
+  RASSERT(! pTask);
+
+  pTask = AM::TASK::pNew(pOp);
 }
 
 /*----------------------------------------------------------------------------*/

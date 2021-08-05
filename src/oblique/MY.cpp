@@ -269,20 +269,7 @@ LogicUnit* MY::pLogicUnit(void)
 {
   _static_
   
-#ifdef WITH_LOGIC_UNIT_TASK
-//  Task* pTask = MY::pTask();
-//  if (pTask)
-//    return pTask->m_pLogicUnit_task;
-//  else
-//    return nullptr;
-
-  Job* pJob = MY::pJob();
-
-  if (pJob)
-    return pJob->m_pJobLogicUnit;
-  else
-    return nullptr;
-
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   Job* pJob = MY::pJob();
 
@@ -317,12 +304,16 @@ Op* MY::pOp(void)
 {
   _static_
 
+#ifdef WITH_NO_JOB_FOR_OP
+#else
+
   Job* pJob = MY::pJob();
 
   if (pJob)
     return pJob->m_pOp;
   else
     return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

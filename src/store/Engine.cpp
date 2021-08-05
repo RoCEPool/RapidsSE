@@ -378,16 +378,15 @@ void Engine::vCallBoot(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
-  Task* pBootTask = AM::pTaskNew(pJob);
+  Task* pBootTask = AM::TASK::pNew(pJob);
   
   LogicUnit* pLogicUnit = new LogicUnit;
   
   pLogicUnit->vJob(pJob);
 
-#ifdef WITH_LOGIC_UNIT_TASK
-  pJob->vLogicUnit_job(pLogicUnit );
+#ifdef WITH_NO_JOB_FOR_OP
 #else
-  pJob->vLogicUnit_job(pLogicUnit );
+  pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
   pBootTask->vAddAxioms();
@@ -470,15 +469,14 @@ void Engine::vCallStart(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
-  Task* pStartTask = AM::pTaskNew(pJob);
+  Task* pStartTask = AM::TASK::pNew(pJob);
   pStartTask->vIsStart(true);
   LogicUnit* pLogicUnit = new LogicUnit;
   pLogicUnit->vJob(pJob);
 
-#ifdef WITH_LOGIC_UNIT_TASK
-  pJob->vLogicUnit_job(pLogicUnit );
+#ifdef WITH_NO_JOB_FOR_OP
 #else
-  pJob->vLogicUnit_job(pLogicUnit );
+  pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
   pJob->vTimerStart();

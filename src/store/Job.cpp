@@ -142,8 +142,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eError    = EC_NONE;
   
   // -- d -------------------
-#ifdef WITH_LOGIC_UNIT_TASK
-  m_pJobLogicUnit = nullptr;
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   m_pJobLogicUnit = nullptr;
 #endif
@@ -350,12 +349,10 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
-#ifdef WITH_LOGIC_UNIT_TASK
-  LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job(pLogicUnit);
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job(pLogicUnit);
+  pJob->vJobLogicUnit(pLogicUnit);
 #endif
 }
 
@@ -740,9 +737,7 @@ LogicUnit* Job::pLogicUnit_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_LOGIC_UNIT_TASK
-  //return m_pTask->pLogicUnit_task();
-  return m_pJobLogicUnit;
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   return m_pJobLogicUnit;
 #endif
@@ -751,16 +746,11 @@ LogicUnit* Job::pLogicUnit_job(void)
 /*----------------------------------------------------------------------------*/
 /* set the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
+void Job::vJobLogicUnit(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_LOGIC_UNIT_TASK
-  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
-
-  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
-
-  m_pJobLogicUnit = pLogicUnit;
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
 
@@ -1317,7 +1307,7 @@ void STORE::vJob_postRecv(Job* pJob)
   pJob->vTask(nullptr);
     
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit_job(pLogicUnit);
+  pJob->vJobLogicUnit(pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
