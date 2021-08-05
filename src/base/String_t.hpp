@@ -161,6 +161,8 @@ void String_t<AREA>::operator =(i8 iArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::wToString(iArg,m_caCharArea);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,6 +174,8 @@ void String_t<AREA>::operator =(Stz* szArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +218,8 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 template <i8 AREA>
 bool String_t<AREA>::bBeginsWith(Stz* szArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   return StrLib::bBeginsWith(m_caCharArea,szArg->azChar());
 }
 
@@ -252,7 +258,7 @@ byte* String_t<AREA>::ayByte(void)
 template <i8 AREA>
 void String_t<AREA>::vCat(Stz* szArg, ...)
 {
-  //_precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vConcat(m_caCharArea,szArg->azChar());
   
@@ -268,7 +274,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
   
   va_end(xVarArgs);
   
-  //_postcondition_(_MAGIC_,_FOOTER_);
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,6 +291,8 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
   va_start(vaArgs,szFormat);
   vsprintf(aEnd,(char*)szFormat,vaArgs);
   va_end(vaArgs);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,7 +426,11 @@ i8 String_t<AREA>::nLength(void)
 template <i8 AREA>
 void String_t<AREA>::vMaxValue(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vCopy(m_caCharArea,"Z");
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,7 +439,11 @@ void String_t<AREA>::vMaxValue(void)
 template <i8 AREA>
 void String_t<AREA>::vMidValue(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vCopy(m_caCharArea,"M");
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,7 +452,11 @@ void String_t<AREA>::vMidValue(void)
 template <i8 AREA>
 void String_t<AREA>::vMinValue(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vCopy(m_caCharArea,"A");
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,6 +509,8 @@ void String_t<AREA>::vSizeMax(i8 nChars)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_caCharArea[nChars - 1] = '\0';
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,11 +530,15 @@ i8 String_t<AREA>::nSpace(void)
 template <i8 AREA>
 void String_t<AREA>::vSprint(Stz* szFormat, ...)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
   StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
   va_end(vaArgs);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,11 +547,15 @@ void String_t<AREA>::vSprint(Stz* szFormat, ...)
 template <i8 AREA>
 void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
   StrLib::vSprintCat(azChar(),vaArgs,szFormat->azChar());
   va_end(vaArgs);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,7 +564,11 @@ void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
 template <i8 AREA>
 void String_t<AREA>::vSprintVA(Stz* szFormat, va_list vaArgs)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -576,7 +610,11 @@ i8 String_t<AREA>::iToI8(void)
 template <i8 AREA>
 void String_t<AREA>::vToLower(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vToLower(m_caCharArea);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,7 +623,11 @@ void String_t<AREA>::vToLower(void)
 template <i8 AREA>
 void String_t<AREA>::vToUpper(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   StrLib::vToUpper(m_caCharArea);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

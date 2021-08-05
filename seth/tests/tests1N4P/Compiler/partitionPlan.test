@@ -3806,7 +3806,36 @@ rows: (*,'partitionExplain',
                                  » table: (rapidsse.public.t2)'
 )
 
-
+--  (505) Really big UNION ALL with ORDER BY and LIMIT of two selects with GROUP BY aggregates, WHERE & HAVING clauses.
+--        This helps test long paths in the plan.
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c2 > 0
+  GROUP BY c1
+  HAVING   max2 > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   maxB > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   maxB > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   maxB > 0
+ORDER BY   max2
+LIMIT      10
+;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  JOINS
