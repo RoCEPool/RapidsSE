@@ -584,8 +584,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Session* pSessionGet(i8 i_Origin,  i8 i_Session);
     
-    static bool bSpawnJob_connector(Job* pJob);
-    static bool bSpawnJob_session(Job* pJob);
+    static bool bSpawnTask_session(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static void vSpawnTaskDedicated_job(Job* pJob);

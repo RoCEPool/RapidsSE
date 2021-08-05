@@ -196,7 +196,7 @@ void Api::vExecuteJob(Session* pSession)
   
   for (;;) {
   
-    bool bSpawned = Api::bSpawnJob_session(pJob);
+    bool bSpawned = Api::bSpawnTask_session(pJob);
     UNUSED(bSpawned);
 
     if (! pSession->bHasCascade())
@@ -724,32 +724,6 @@ void Api::vIncStatistics(eAC eApiCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_connector(Job* pJob)
-{
-  _static_
-  
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  vCreateTaskForJob(pJob);
-  
-  Scheduler::vTaskApi_AddConnector(pJob->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn task for given job                                                   */
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnTask_job(Job* pJob)
@@ -828,7 +802,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_session(Job* pJob)
+bool Api::bSpawnTask_session(Job* pJob)
 {
   _static_
   

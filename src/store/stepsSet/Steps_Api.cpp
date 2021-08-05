@@ -138,7 +138,7 @@ void Step::vApiExecuteNested(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
   pJobTagSet->vReplace(C_TAG_NOWAIT,1);
-  bool bSpawned = Api::bSpawnJob_session(pJob);
+  bool bSpawned = Api::bSpawnTask_session(pJob);
   UNUSED(bSpawned);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +240,7 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
-//  bool bSpawned = Api::bSpawnJob_session(pJob);
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
 //  UNUSED(bSpawned);
   Api::vExecuteJob(pSession);
   

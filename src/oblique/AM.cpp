@@ -1983,16 +1983,6 @@ Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_connector(Job* pJob)
-{
-  bool bResult = Api::bSpawnJob_connector(pJob);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 void AM::vSpawnTaskDedicated_job(Job* pJob)
 {
   Api::vSpawnTaskDedicated_job(pJob);
@@ -2025,9 +2015,9 @@ void AM::vSpawnTask_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_session(Job* pJob)
+bool AM::bSpawnTask_session(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_session(pJob);
+  bool bResult = Api::bSpawnTask_session(pJob);
   
   return bResult;
 }

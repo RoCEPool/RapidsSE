@@ -43,8 +43,7 @@ namespace STORE
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   // external
-  static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_session(Job* pJob);
+  static bool bSpawnTask_session(Job* pJob);
   
   // internal
   static void vSpawnTask_job(Job* pJob);
