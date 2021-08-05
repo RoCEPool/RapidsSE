@@ -128,7 +128,6 @@ LogicUnit::LogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pTask = nullptr;
   m_pJob  = nullptr;
   m_pOp   = nullptr;
 
@@ -678,8 +677,6 @@ Job* LogicUnit::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  RASSERT(! m_pOp);
-
   return m_pJob;
 }
 
@@ -689,9 +686,7 @@ Job* LogicUnit::pJob(void)
 void LogicUnit::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  RASSERT(! m_pOp);
-  
+    
   m_pJob = pJob;
 }
 
@@ -835,25 +830,6 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get task                                                                   */
-/*----------------------------------------------------------------------------*/
-Task* LogicUnit::pTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return m_pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_pTask = pTask;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

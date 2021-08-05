@@ -127,10 +127,11 @@ namespace STORE
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object
-  {  
+  {
+  private:
+  
   public:
     
-    Task* m_pTask;      // which task
     Job*  m_pJob;       // which job
     Op*   m_pOp;        // which op
     
@@ -322,8 +323,7 @@ namespace STORE
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
     void vSetPipein(Operand* pOperand);
-    Task* pTask(void);
-    void vTask(Task* pTask);
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

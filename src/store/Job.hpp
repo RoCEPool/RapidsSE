@@ -55,9 +55,9 @@ namespace STORE
   
     // -- d -------------------
 #ifdef WITH_LOGIC_UNIT_TASK
-    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
 #else
-    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
 #endif
   
     TagSet     m_oJobTags;   // tags for the job

@@ -588,9 +588,9 @@ void Task::vDump(void)
 
   // dump the logicUnit registers
 #ifdef WITH_LOGIC_UNIT_TASK
-  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+  m_pJob->m_pJobLogicUnit->vDumpRegisters();
 #else
-  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+  m_pJob->m_pJobLogicUnit->vDumpRegisters();
 #endif
   
   vTrace("== End Task Dump ============================================\n"_Stz);
@@ -1101,7 +1101,7 @@ void Task::vSeeLogicUnitRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pJob->m_pLogicUnit_job->vDumpRegisters();
+  m_pJob->m_pJobLogicUnit->vDumpRegisters();
 }
 
 /*----------------------------------------------------------------------------*/

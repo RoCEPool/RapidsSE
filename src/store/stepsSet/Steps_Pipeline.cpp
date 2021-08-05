@@ -405,7 +405,7 @@ void Step::vPipelineSpawnOps(void)
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
     vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
   
-  pPipeline->vSpawnOperatorJobs(m_pJob->m_i_Session, iThisNode);
+  pPipeline->vSpawnOperators(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }
