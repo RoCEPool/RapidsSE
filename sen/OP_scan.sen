@@ -16,6 +16,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLINGMARKER ...                                        */
+/*----------------------------------------------------------------------------*/
+: Scan_CancellingMarker \handler
+
+  Pipein[]\clear to Operand[]
+
+  "Scan_CancellingMarker DRAINING PIPEIN" .
+  PipeIn[].drain
+
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CLEANUPMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : Scan_CleanupMarker \handler
@@ -33,7 +47,6 @@
 
   Pipein[].pipeOut
   true
-
 ;
 
 
@@ -198,6 +211,7 @@
 
   op__topology
 
+  find: scan_CancellingMarker  ZK_CANCELMARKER     op[].handler!
   find: scan_CleanupMarker     ZK_CLEANUPMARKER    op[].handler!
   find: scan_DataMarker        ZK_DATAPULSE        op[].handler!
   find: scan_NextBufferMarker  ZK_NEXTBUFFERMARKER op[].handler!
