@@ -1062,6 +1062,27 @@ DicStack* AM::TASK::pDicStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new task                                                                   */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(void)
+{
+  Task* pTask = new Task;
+
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTranstionRequest());
+
+  return pTask;
+}
+
+Task* AM::pTaskNew(Job* pJob) {
+  Task* pTask = new Task;
+  pTask->vJob(pJob);
+  pJob->vTask(pTask);
+  return pTask;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* trigger biding task                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
@@ -2603,18 +2624,6 @@ void AM::vJobDelete(Job** ppJob) {
 
 
 
-Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task;
-  pTask->vJob(pJob);
-  pJob->vTask(pTask);
-  return pTask;
-}
-Task* AM::pTaskNew(Op* pOp) {
-  Task* pTask = new Task;
-  pTask->vOp(pOp);
-  pOp->vTask(pTask);
-  return pTask;
-}
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;

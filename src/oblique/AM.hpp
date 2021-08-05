@@ -338,6 +338,7 @@ namespace OBLIQUE
     {
     public:
       static DicStack* pDicStack(void);
+      static Task* pNew(void);
       static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
@@ -479,7 +480,6 @@ namespace OBLIQUE
     static void vSteps(Steps* pSteps);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
-    static Task* pTaskNew(Op* pOp);
     static void vTenants(Word* pTenants);
 
     //
