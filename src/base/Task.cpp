@@ -208,10 +208,11 @@ void Task::vTaskLoop(void)
 //    vSeedTask();
 //  }
 
-  RASSERT(bSeeded());
+  vVerifyTaskComposition();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+  
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
@@ -242,6 +243,31 @@ void Task::vTaskLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   PsxThd::vTlsSet(giTLS_TaskKey,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify task is composed correctly and therefore capable of being executed  */
+/*----------------------------------------------------------------------------*/
+void Task::vVerifyTaskComposition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(EC_NONE == eValidHeader());
+  RASSERT(CN_TASK == eGetClassNo());
+  aFooter()->vAssertFooter();
+  
+  if (*m_pJob) {
+    RASSERT(m_pJob->m_pJobLogicUnit);
+  }
+  else
+  if (*m_pOp) {
+    NEVER_REACH;
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  RASSERT(bSeeded());
 }
 
 /*----------------------------------------------------------------------------*/

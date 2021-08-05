@@ -192,6 +192,8 @@ namespace BASE
   
     Input* pInput(void);
 
+  private:
+    void vVerifyTaskComposition(void);
 
   private:
     Footer* aFooter(void);
