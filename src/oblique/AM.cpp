@@ -494,8 +494,6 @@ void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 {
   if (! pJob->pLogicUnit_job()) {
     
-    RASSERT(! pTask->pLogicUnit_task());
-    
     LogicUnit* pLogicUnit = new LogicUnit;
 
     pLogicUnit->vJob(pJob);

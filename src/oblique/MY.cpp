@@ -304,12 +304,16 @@ Op* MY::pOp(void)
 {
   _static_
 
+#ifdef WITH_NO_JOB_FOR_OP
+#else
+
   Job* pJob = MY::pJob();
 
   if (pJob)
     return pJob->m_pOp;
   else
     return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
