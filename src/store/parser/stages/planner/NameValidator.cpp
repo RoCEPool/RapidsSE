@@ -80,7 +80,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   // to be qualified first.
 
   auto fTableVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -108,7 +108,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
 
   auto fColumnVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -161,7 +161,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
   ASSERT(pStartNode);
 
   // Walk the graph looking for TableRefs
-  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -283,7 +283,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnWildcards
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -452,7 +452,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
 
@@ -651,7 +651,7 @@ QueryNodeList* NameValidator::pMatchingDataSourcesFor(QueryNode* pColumnRef,
 
   // Lambda called for each node under SqlOp, to look for TableRefs.
   auto fVisitor = [pColumnRef, pRootNode, pMetadataNode, &pDataSourceList]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -766,7 +766,7 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
   //  - TableRef that is not fully resolved
   // then assert an error.
 
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

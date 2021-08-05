@@ -68,7 +68,7 @@ void PostProject::vCheckPostProject(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Visits all nodes, looking for StatementMarkers                             */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   UNUSED(sPath);
   UNUSED(iDepth);
@@ -130,7 +130,7 @@ GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath
 /* Visits all nodes within a StatementMarker subsection and record those      */
 /* operators that contain expressions and sit above a project/aggregate op    */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   UNUSED(sPath);
   UNUSED(iDepth);

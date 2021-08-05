@@ -77,7 +77,7 @@ void ExplainMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
   if (bIsExactType(szType)) {
     // Explain any common attributes of this object
     // Get the parent type and keep recursing back
-    s256 sParentType;
+    s2K sParentType;
     GraphNav::vParentType(szType, sParentType);
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 

@@ -47,7 +47,7 @@ void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
 
   // Iterate each node, looking for a StatementMarker
   auto fVisitor = [pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -158,7 +158,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
 
   // Because we wish to skip over StatementMarkers we need to do a global walk
   auto fVisitor = [&bSquashed, pProjectOp, pStartingNode, pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
     UNUSED(pvArg);

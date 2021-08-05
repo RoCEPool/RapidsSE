@@ -36,7 +36,7 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
 
 
   // Lambda called as we walk the graph
-  auto fVisitor = [pRootNode](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pRootNode](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

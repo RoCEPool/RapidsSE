@@ -127,7 +127,7 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
   if (bIsExactType(szType)) {
     // Explain any common attributes of this object
     // Get the parent type and keep recursing back
-    s256 sParentType;
+    s2K sParentType;
     GraphNav::vParentType(szType, sParentType);
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
@@ -404,7 +404,7 @@ void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNo
     QueryNode* pNewExpr = ProjectedColumn::pExprNode(pNewProjCol);
 
     auto fVisitor = []
-        (PlanNode *pExpr, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+        (PlanNode *pExpr, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
       UNUSED(sPath);
       UNUSED(iDepth);

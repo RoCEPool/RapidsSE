@@ -78,7 +78,7 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 
   // Iterate each node, looking for a StatementMarker
   auto fVisitor = [pRootNode, pPlanRoot, pStmtSectionStack]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -152,7 +152,7 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
 
   // A lambda that will modify/populate the pPartitionChainStack, pNodeChain and pOriginChain
   auto fVisitor = [pStmtSectionStack, &xChains]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
