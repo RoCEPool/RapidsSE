@@ -987,7 +987,8 @@ void vTest16(void)
   
   LogicUnit* pLogicUnit = new LogicUnit;
   pLogicUnit->vTask(pImmTask);
-  
+  pLogicUnit->vJob(pJob);
+
   pJob->vLogicUnit_job(pLogicUnit );
 
   pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
@@ -1034,6 +1035,7 @@ void vTest16(void)
   \
   LogicUnit* pLogicUnit = new LogicUnit; \
   pLogicUnit->vTask(pImmTask); \
+  pLogicUnit->vJob(pJob); \
   pJob->vLogicUnit_job(pLogicUnit);\
   \
   RowSingleList* pRowSingleList = nullptr;
