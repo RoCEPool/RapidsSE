@@ -378,7 +378,7 @@ void Engine::vCallBoot(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
-  Task* pBootTask = AM::pTaskNew(pJob);
+  Task* pBootTask = AM::TASK::pNew(pJob);
   
   LogicUnit* pLogicUnit = new LogicUnit;
   
@@ -469,7 +469,7 @@ void Engine::vCallStart(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
-  Task* pStartTask = AM::pTaskNew(pJob);
+  Task* pStartTask = AM::TASK::pNew(pJob);
   pStartTask->vIsStart(true);
   LogicUnit* pLogicUnit = new LogicUnit;
   pLogicUnit->vJob(pJob);

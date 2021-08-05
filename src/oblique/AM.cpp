@@ -1074,13 +1074,31 @@ Task* AM::TASK::pNew(void)
   return pTask;
 }
 
-Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task;
+/*----------------------------------------------------------------------------*/
+/* new task (for job)                                                         */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(Job* pJob)
+{
+  Task* pTask = AM::TASK::pNew();
+
   pTask->vJob(pJob);
   pJob->vTask(pTask);
+
   return pTask;
 }
 
+/*----------------------------------------------------------------------------*/
+/* new task (for op)                                                          */
+/*----------------------------------------------------------------------------*/
+Task* AM::TASK::pNew(Op* pOp)
+{
+  Task* pTask = AM::TASK::pNew();
+
+  pTask->vOp(pOp);
+  pOp->vTask(pTask);
+
+  return pTask;
+}
 
 /*----------------------------------------------------------------------------*/
 /* trigger biding task                                                        */

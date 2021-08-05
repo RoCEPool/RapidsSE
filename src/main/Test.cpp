@@ -830,7 +830,7 @@ void vTest11(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   Engine::vCallImmmediate(pImmTask);
 
@@ -900,7 +900,7 @@ void vTest14(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   
   SeApi* pSeApi = new SeApi;
@@ -942,7 +942,7 @@ void vTest15(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   
   SeApi* pSeApi = new SeApi;
@@ -983,7 +983,7 @@ void vTest16(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   LogicUnit* pLogicUnit = new LogicUnit;
   pLogicUnit->vJob(pJob);
@@ -1030,7 +1030,7 @@ void vTest16(void)
   pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz); \
   pJob->vSeed(SS_SEED_RUN); \
   \
-  Task* pImmTask = AM::pTaskNew(pJob); \
+  Task* pImmTask = AM::TASK::pNew(pJob); \
   \
   LogicUnit* pLogicUnit = new LogicUnit; \
   pLogicUnit->vJob(pJob); \

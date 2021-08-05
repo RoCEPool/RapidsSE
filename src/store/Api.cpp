@@ -972,9 +972,7 @@ void Api::vCreateTaskForJob(Job* pJob)
   Task* pTask = pJob->pTask();
   RASSERT(! pTask);
 
-  pTask = AM::TASK::pNew();
-  pTask->vJob(pJob);
-  pJob->vTask(pTask);
+  pTask = AM::TASK::pNew(pJob);
 
   Job* pThisJob = AM::pThisTLSJob();
   
@@ -998,9 +996,7 @@ void Api::vCreateTaskForOp(Op* pOp)
   Task* pTask = pOp->pTask();
   RASSERT(! pTask);
 
-  pTask = AM::TASK::pNew();
-  pTask->vOp(pOp);
-  pOp->vTask(pTask);
+  pTask = AM::TASK::pNew(pOp);
 }
 
 /*----------------------------------------------------------------------------*/
