@@ -31,9 +31,9 @@ static Stz* C_INDEXLOOKUPJOIN_DEFN = "/__root__/definitions/object/planObject/sq
 /*----------------------------------------------------------------------------*/
 /* Helper function to create this join operator.                              */
 /*----------------------------------------------------------------------------*/
-QueryNode* IndexLookupJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate)
+QueryNode* IndexLookupJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pIndexLookupJoinOp = JoinOp::pCreate(C_INDEXLOOKUPJOIN_DEFN, eJoinType, pJoinPredicate);
+  QueryNode* pIndexLookupJoinOp = JoinOp::pCreate(C_INDEXLOOKUPJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 

@@ -18,7 +18,7 @@ namespace Parser
     IndexLookupJoinOp();
 
   public:
-    static QueryNode* pCreate(eJT eJoinType, QueryNode* pJoinPredicate);
+    static QueryNode* pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 

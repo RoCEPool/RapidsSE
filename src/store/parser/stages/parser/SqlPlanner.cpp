@@ -42,6 +42,8 @@
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
 #include "eJT.h"
 
+#include "Text.hpp"
+
 // Expressions
 #include "ColumnRef.hpp"
 #include "ColumnWildcard.hpp"
@@ -627,7 +629,46 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
     m_pExprStack = nullptr;
   }
 
-  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Join Using node                                                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // Extract join type. It can also throw an exception
+  eJT eJoinType = eExtractJoinType(pCtx->extendedJoinType());
+
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // TODO: Extract join hint
+
+  // Extract the USING column identifiers into a StringList node
+  QueryNode* pUsingList = StringList::pCreate();
+
+  for (sqlParser::JoinUsingListItemContext* pItemCtx : pCtx->joinUsingList()->joinUsingListItem()) {
+    Text* pColumnName = pCleanId(pItemCtx->identifier());
+
+    QueryNode* pColumnNode = StringObject::pCreate(pColumnName);
+    pUsingList->vAppendChild(pColumnNode);
+  }
+
+  ASSERT(pUsingList->nChildren() > 0);
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, nullptr, pUsingList);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 
@@ -654,7 +695,7 @@ antlrcpp::Any SqlPlanner::visitCrossJoin(sqlParser::CrossJoinContext *pCtx)
   // A cross join is the same as an inner join with join predicate of TRUE.
   QueryNode* pJoinPredicate = BooleanLiteral::pCreate(true);
 
-  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 

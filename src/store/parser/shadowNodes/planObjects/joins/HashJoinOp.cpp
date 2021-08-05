@@ -31,9 +31,9 @@ static Stz* C_HASHJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperat
 /*----------------------------------------------------------------------------*/
 /* Helper function to create this join operator.                              */
 /*----------------------------------------------------------------------------*/
-QueryNode* HashJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate)
+QueryNode* HashJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pHashJoinOp = JoinOp::pCreate(C_HASHJOIN_DEFN, eJoinType, pJoinPredicate);
+  QueryNode* pHashJoinOp = JoinOp::pCreate(C_HASHJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 

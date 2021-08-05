@@ -18,7 +18,7 @@ namespace Parser
     JoinOp();
 
   protected:
-    static QueryNode* pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate);
+    static QueryNode* pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate, QueryNode* pUsingList);
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
@@ -44,6 +44,9 @@ namespace Parser
     // Return the node representing the join predicate expression
     static QueryNode* pJoinPredicate(PlanNode* pNode);
     static QueryNode* pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode);
+
+    // Return the internal node that represents the USING column list. May be null.
+    static QueryNode* pUsingListNode(PlanNode* pNode);
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.

@@ -17,6 +17,8 @@
 #include "NodeNamer.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
+#include "StringList.hpp"
+#include "NullLiteral.hpp"
 
 #include "NestedLoopJoinOp.hpp"
 #include "HashJoinOp.hpp"
@@ -33,19 +35,21 @@ static Stz* C_JOINOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator
 
 static Stz* C_JOINTYPE_PROP = "joinType"_Stz;
 static Stz* C_JOINPREDICATE_PROP = "joinPredicate"_Stz;
+static Stz* C_USINGLIST_PROP = "usingList"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate)
+QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate, QueryNode* pUsingList)
 {
   ASSERT(szDefn);
   ASSERT(JoinOp::bIsOfType(szDefn));
   ASSERT(eJoinType > JT_NONE);
   ASSERT(eJoinType < JT_NENUMS);
-  ASSERT(pPredicate);
-  ASSERT(Expr::bIsOfType(pPredicate));
+  ASSERT(pPredicate || pUsingList);
+  ASSERT(!pPredicate || Expr::bIsOfType(pPredicate));
+  ASSERT(!pUsingList || StringList::bIsOfType(pUsingList));
 
   // Create a unique name for this JoinOp object
   s256 sName;
@@ -59,8 +63,17 @@ QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate)
   pJoinType->vSetName(C_JOINTYPE_PROP);
   pJoinOp->vAppendProperty(pJoinType);
 
+  if (!pPredicate) {
+    pPredicate = NullLiteral::pCreate();  // A temporary measure until the using list is converted to a predicate
+  }
+
   pPredicate->vSetName(C_JOINPREDICATE_PROP);
   pJoinOp->vAppendProperty(pPredicate);
+
+  if (pUsingList) {
+    pUsingList->vSetName(C_USINGLIST_PROP);
+    pJoinOp->vAppendProperty(pUsingList);
+  }
 
   return pJoinOp;
 }
@@ -287,6 +300,20 @@ QueryNode* JoinOp::pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode)
   return pOrdinalPredicate;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return the internal node that represents the USING column list. May be null*/
+/*----------------------------------------------------------------------------*/
+QueryNode* JoinOp::pUsingListNode(PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode *pUsingListNode =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_USINGLIST_PROP), pNode));
+
+  ASSERT(!pUsingListNode || StringList::bIsOfType(pUsingListNode))
+  return pUsingListNode;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedColumns that represent the column expressions    */

@@ -24,6 +24,7 @@
 #include "OrderOp.hpp"
 #include "ProjectOp.hpp"
 #include "UnionOp.hpp"
+#include "JoinOp.hpp"
 
 #include "Expr.hpp"
 
@@ -170,6 +171,7 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
     else if (    OrderOp::bIsExactType(pNode) ) { vPartitionOrderOp(        pCurNode, &xChains, pStmtSectionStack); }
     else if (  ProjectOp::bIsExactType(pNode) ) { vPartitionProjectOp(      pCurNode, &xChains, pStmtSectionStack); }
     else if (    UnionOp::bIsExactType(pNode) ) { vPartitionUnionOp(        pCurNode, &xChains, pStmtSectionStack); }
+    else if (     JoinOp::bIsOfType(pNode) )    { vPartitionJoinOp(         pCurNode, &xChains, pStmtSectionStack); }
     else                                        { NEVER_REACH }
 
     return GraphNav::WALK_CONTINUE;
@@ -477,6 +479,23 @@ void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains, Qu
   vPushOnOriginChain(pOriginUnion, pChains);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Handles the partitioning of a JoinOp                                       */
+/*----------------------------------------------------------------------------*/
+void PartitionPlan::vPartitionJoinOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
+{
+  ASSERT(JoinOp::bIsOfType(pNode));
+
+  // Joins only run on the partitions
+  QueryNode* pPartitionJoin = pNode->pDeepCopy(true, nullptr);
+
+
+  ASSERT(pChains->m_pPartitionChainStack->nItems() >= 2);
+  pPartitionJoin->vPushChild(pChains->m_pPartitionChainStack->pPop());
+  pPartitionJoin->vPushChild(pChains->m_pPartitionChainStack->pPop());
+
+  vPushOnPartitionChain(pPartitionJoin, pChains);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if this projectOp is occurring after an OrderOp, LimitOp or   */
@@ -605,11 +624,15 @@ void PartitionPlan::vPushOnPartitionChain(QueryNode* pNode, GraphChains* pChains
 {
   ASSERT(pNode);
   ASSERT(pChains);
-  ASSERT(pChains->m_pPartitionChainStack->nItems() > 0);
 
-  QueryNode* pPartitionChain = pChains->m_pPartitionChainStack->pPop();
-  pNode->vAppendChild(pPartitionChain);
-  pChains->m_pPartitionChainStack->vPush(pNode);
+  if (pChains->m_pPartitionChainStack->nItems() == 0) {
+   pChains->m_pPartitionChainStack->vPush(pNode);
+
+  } else {
+    QueryNode* pPartitionChain = pChains->m_pPartitionChainStack->pPop();
+    pNode->vAppendChild(pPartitionChain);
+    pChains->m_pPartitionChainStack->vPush(pNode);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

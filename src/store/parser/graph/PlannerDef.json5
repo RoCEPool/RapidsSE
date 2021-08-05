@@ -530,6 +530,16 @@
                           name: "joinPredicate",
                           value: "An expression that determines if a given left/right row are to be joined",
                           type: "/__root__/definitions/object/expr"
+                        },
+                        {
+                          name: "usingList",
+                          value: "A temporary and optional list of column names that will be turned into a join predicate during planning.",
+                          type: "/__root__/definitions/object/list/stringList",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
                         }
                       ],
                       children: [
