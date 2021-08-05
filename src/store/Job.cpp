@@ -143,11 +143,9 @@ Job::Job(i8 i_Origin,     // originated on which node
   
   // -- d -------------------
 #ifdef WITH_NO_JOB_FOR_OP
-  m_pJobLogicUnit = new LogicUnit;
-  m_pJobLogicUnit->vJob(this);
+  m_pJobLogicUnit = nullptr;
 #else
-  m_pJobLogicUnit = new LogicUnit;
-  m_pJobLogicUnit->vJob(this);
+  m_pJobLogicUnit = nullptr;
 #endif
   
   // m_oJobTags
@@ -171,6 +169,8 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   // -- -- -- -- -- --
       
+  vNewJobLogicUnit();
+
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -769,6 +769,19 @@ void Job::vJobLogicUnit(LogicUnit* pLogicUnit)
 
   m_pJobLogicUnit = pLogicUnit;
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* new the logic unit for this job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vNewJobLogicUnit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(! m_pJobLogicUnit);
+
+  m_pJobLogicUnit = new LogicUnit;
+  m_pJobLogicUnit->vJob(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -151,6 +151,7 @@ namespace STORE
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
+    void vNewJobLogicUnit(void);
     Stz* szNodeNm(void);
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
