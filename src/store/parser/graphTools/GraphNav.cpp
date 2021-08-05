@@ -46,7 +46,7 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
 /* e.g. given a defn path of /a/b/c this will write '/a/b' into the buffer.   */
 /* This path must not contain a property separator (':').                     */
 /*----------------------------------------------------------------------------*/
-void GraphNav::vParentType(Stz* szTypePath, s256& buf)
+void GraphNav::vParentType(Stz* szTypePath, s2K& buf)
 {
   char* ps = szTypePath->azChar() + szTypePath->nSize() - 1;
 
@@ -92,7 +92,7 @@ void GraphNav::vPrintNode(PlanNode* pNode, b1 bPrintProperties)
 
   vTrace("\n\nPlan Graph:\n-----------\n\n"_Stz);
 
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
     UNUSED(pvArg);
@@ -120,7 +120,7 @@ void GraphNav::vPrintNode(PlanNode* pNode, b1 bPrintProperties)
  *   pNode    - The node of the graph to start with (may not be the root).
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  * Returns: false if the function aborted the walk prematurely otherwise true.
@@ -133,7 +133,7 @@ void GraphNav::vPrintNode(PlanNode* pNode, b1 bPrintProperties)
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bGlobalWalk(PlanNode* pNode,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                          void* pvArg)
 {
   return bGlobalWalk(pNode, true, true, fVisitor, pvArg);
@@ -155,7 +155,7 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  *   fEnterEvent - A function that is called when the node is visited and before
  *                 any properties or children of the node are visited. This function
  *                 must have the following definition:
- *                   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
+ *                   eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
  *                 The function should return the appropriate enum value to control
  *                 the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the callback functions.
@@ -167,8 +167,8 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  * the operator(). The same lambda can be used for both events, if desired.   */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bGlobalWalk(PlanNode* pNode,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                          void* pvArg)
 {
   return bGlobalWalk(pNode, true, true, fEnterEvent, fExitEvent, pvArg);
@@ -188,7 +188,7 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  *   pNode    - The node of the graph to start with (may not be the root).
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  * Returns: false if the function aborted the walk prematurely otherwise true.
@@ -201,7 +201,7 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bBoundedWalk(PlanNode* pNode,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                          void* pvArg)
 {
   return bBoundedWalk(pNode, true, true, fVisitor, pvArg);
@@ -225,7 +225,7 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  *   fEnterEvent - A function that is called when the node is visited and before
  *                 any properties or children of the node are visited. This function
  *                 must have the following definition:
- *                   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
+ *                   eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
  *                 The function should return the appropriate enum value to control
  *                 the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the callback functions.
@@ -237,8 +237,8 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  * the operator(). The same lambda can be used for both events, if desired.   */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bBoundedWalk(PlanNode* pNode,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                           void* pvArg)
 {
   return bBoundedWalk(pNode, true, true, fEnterEvent, fExitEvent, pvArg);
@@ -257,7 +257,7 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  *   pNode    - The node of the graph to start with (may not be the root).
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 b1 func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 b1 func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  * Returns: false if the function aborted the walk prematurely otherwise true.
@@ -270,7 +270,7 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode,
-                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                                 std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                                  void* pvArg)
 {
   return bGlobalWalkBottomUp(pNode, true, true, fVisitor, pvArg);
@@ -290,7 +290,7 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode,
  *   pNode    - The node of the graph to start with (may not be the root).
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 b1 func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 b1 func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  * Returns: false if the function aborted the walk prematurely otherwise true.
@@ -303,7 +303,7 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode,
-                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                                 std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                                  void* pvArg)
 {
   return bBoundedWalkBottomUp(pNode, true, true, fVisitor, pvArg);
@@ -326,7 +326,7 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode,
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -338,13 +338,13 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -378,7 +378,7 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  *   fEnterEvent - A function that is called when the node is visited and before
  *                 any properties or children of the node are visited. This function
  *                 must have the following definition:
- *                   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
+ *                   eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
  *                 The function should return the appropriate enum value to control
  *                 the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the callback functions.
@@ -392,15 +392,15 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
 b1 GraphNav::bGlobalWalk(PlanNode* pNode,
                          b1 bWalkProperties,
                          b1 bWalkChildren,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                          void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -432,7 +432,7 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -444,13 +444,13 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -485,7 +485,7 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  *   fEnterEvent - A function that is called when the node is visited and before
  *                 any properties or children of the node are visited. This function
  *                 must have the following definition:
- *                   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
+ *                   eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, eWalkEvent eEventType, void* pvArg)
  *                 The function should return the appropriate enum value to control
  *                 the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the callback functions.
@@ -499,15 +499,15 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
 b1 GraphNav::bBoundedWalk(PlanNode* pNode,
                          b1 bWalkProperties,
                          b1 bWalkChildren,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                         std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                         std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                          void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -538,7 +538,7 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -550,13 +550,13 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+                                 std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -588,7 +588,7 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkCh
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -600,13 +600,13 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkCh
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                                  std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+                                  std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
   }
 
-  s256 sPath;
+  s2K sPath;
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
@@ -638,7 +638,7 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkC
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -657,8 +657,8 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkC
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                   void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk)
+                   std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
+                   void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk)
 {
   if (!pNode) {
     return true;
@@ -761,7 +761,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -780,8 +780,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                           void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk)
+                           std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
+                           void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk)
 {
   if (!pNode) {
     return true;
@@ -895,7 +895,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *                 eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
  *              The function should return the appropriate enum value to control
  *              the continuing traversal of the graph.
  *   pvArg - An optional argument to be passed to the visitor function.
@@ -914,9 +914,9 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                   std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                   std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
-                   void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk)
+                   std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                   std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
+                   void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk)
 {
   if (!pNode) {
     return true;
@@ -1207,7 +1207,7 @@ PlanNode* GraphNav::pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1
 
   PlanNode* pResult = nullptr;
 
-  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -1244,7 +1244,7 @@ PlanNode* GraphNav::pGlobalSearchBottomUp(PlanNode* pStartNode, b1 bSearchProper
 
   PlanNode* pResult = nullptr;
 
-  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -1281,7 +1281,7 @@ PlanNode* GraphNav::pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b
 
   PlanNode* pResult = nullptr;
 
-  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -1318,7 +1318,7 @@ PlanNode* GraphNav::pBoundedSearchBottomUp(PlanNode* pStartNode, b1 bSearchPrope
 
   PlanNode* pResult = nullptr;
 
-  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -1441,7 +1441,7 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
 /*----------------------------------------------------------------------------*/
 /* Walks the plan graph to find the given query node. Saves the path and depth*/
 /*----------------------------------------------------------------------------*/
-void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth)
+void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth)
 {
   UNUSED(pRootNode);
 
@@ -1450,7 +1450,7 @@ void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256&
 
   iDepth = -1;
 
-  auto fVisitor = [pPlanNode, &sPathBuf, &iDepth](Parser::PlanNode *pNode, s256 &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+  auto fVisitor = [pPlanNode, &sPathBuf, &iDepth](Parser::PlanNode *pNode, s2K &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
 
     UNUSED(pvArg);
 

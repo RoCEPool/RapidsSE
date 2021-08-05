@@ -80,7 +80,7 @@ void GraphValidator::vValidatePlanNode(QueryNode* pQueryNode, PlanNode* pRootNod
   ASSERT(pQueryNode);
   ASSERT(pQueryNode->eGetClassNo() == CN_QUERYNODE);
 
-  s256 sPathBuf;
+  s2K sPathBuf;
   i8 iDepth = 0;
   GraphNav::vGetPathAndDepth(pQueryNode, pRootNode, sPathBuf, iDepth);
 
@@ -166,7 +166,7 @@ void GraphValidator::vValidateRootNode(PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Called when walking each node of the graph under /primitives               */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // *********************************
   // Primitive Node Validation Rules:
@@ -240,7 +240,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
 /*----------------------------------------------------------------------------*/
 /* Called when walking each node of the graph under /definitions              */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-1: Validate the name field:
   //    DEFN-1.1: the name field must not be null.
@@ -578,7 +578,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
 /*----------------------------------------------------------------------------*/
 /* Called when walking each node of the graph under /plan                     */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
 
   // *********************************
@@ -894,7 +894,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
 /*----------------------------------------------------------------------------*/
 /* Called when walking each node of the graph under /metadata                 */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl GraphValidator::eValidateMetadataNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl GraphValidator::eValidateMetadataNode(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   UNUSED(pNode);
   UNUSED(sPath);
@@ -925,7 +925,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateMetadataNode(PlanNode* pNode, s256&
 /*----------------------------------------------------------------------------*/
 /* Called when walking each node of the graph under /statistics               */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl GraphValidator::eValidateStatisticsNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl GraphValidator::eValidateStatisticsNode(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   UNUSED(pNode);
   UNUSED(sPath);
@@ -1164,7 +1164,7 @@ void GraphValidator::vRoot_6_2(PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-1.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_1_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-1: Validate the name field:
   // PRIM-1.1: the name field must not be null.
@@ -1180,7 +1180,7 @@ void GraphValidator::vPrim_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-2.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_2_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-2: Validate the value field:
   // PRIM-2.1: the value field must not be null and it contains a string.
@@ -1199,7 +1199,7 @@ void GraphValidator::vPrim_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-3.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_3_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-3: Validate the type field:
   // PRIM-3.1: validate that the type field is empty.
@@ -1223,7 +1223,7 @@ void GraphValidator::vPrim_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-4.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_4_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-4: Validate the properties:
   // PRIM-4.1: validate that the properties field is null.
@@ -1239,7 +1239,7 @@ void GraphValidator::vPrim_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-5.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_5_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-5: Validate the constraints:
   //    Nothing needed here due to PRIM-4.1.
@@ -1253,7 +1253,7 @@ void GraphValidator::vPrim_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PRIM-6.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPrim_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPrim_6_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PRIM-6: Validate the children:
   // PRIM-6.1: validate that the children field is either null or has 1 or more children.
@@ -1271,7 +1271,7 @@ void GraphValidator::vPrim_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-1.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_1_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-1: Validate the name field:
   // DEFN-1.1: the name field must not be null.
@@ -1287,7 +1287,7 @@ void GraphValidator::vDefn_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-2.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_2_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-2: Validate the value field:
   // DEFN-2.1: has a non-null string value if the type field is null.
@@ -1309,7 +1309,7 @@ void GraphValidator::vDefn_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-2.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_2_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_2_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-2: Validate the value field:
   // DEFN-2.2: has a null or non-null value if the type field is not null.
@@ -1327,7 +1327,7 @@ void GraphValidator::vDefn_2_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-3.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_3_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-3: Validate the type field:
   // DEFN-3.1: has a null type field when the node is not a direct or indirect property
@@ -1347,7 +1347,7 @@ void GraphValidator::vDefn_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-3.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_3_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-3: Validate the type field:
   // DEFN-3.2: has a non-null type field when the node (or any parent above it) is
@@ -1368,7 +1368,7 @@ void GraphValidator::vDefn_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-3.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_3_3(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-3: Validate the type field:
   // DEFN-3.3: when the type field is non-null, it must be an absolute path.
@@ -1385,7 +1385,7 @@ void GraphValidator::vDefn_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-3.4                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_3_4(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-3: Validate the type field:
   // DEFN-3.4: when the type field is non-null, the path must be resolvable to another
@@ -1405,7 +1405,7 @@ void GraphValidator::vDefn_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-3.5                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_3_5(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-3: Validate the type field:
   // DEFN-3.5: when the type field is non-null, the node that it resolves to must be
@@ -1430,7 +1430,7 @@ void GraphValidator::vDefn_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-4.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_4_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-4: Validate the properties:
   // DEFN-4.1: all properties of the node must have a unique name with respect to
@@ -1467,7 +1467,7 @@ void GraphValidator::vDefn_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-4.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_4_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-4: Validate the properties:
   // DEFN-4.2: all properties of the node must have a unique name with respect to
@@ -1526,7 +1526,7 @@ void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-4.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_4_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_4_3(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
 
@@ -1557,7 +1557,7 @@ void GraphValidator::vDefn_4_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.1: any constraints must exist under a node named "__constraints" which
@@ -1628,7 +1628,7 @@ void GraphValidator::vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.2: if a __constraints container exists then it must have 1 or more children.
@@ -1649,7 +1649,7 @@ void GraphValidator::vDefn_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_3(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.3: validate that if any of the following constraints exist as children
@@ -1692,7 +1692,7 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.4                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_4(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.4: if any of the constraints specified in DEFN-5.3 exist, then validate that
@@ -1763,7 +1763,7 @@ void GraphValidator::vDefn_5_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.5                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_5(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.5: If the childType constraint is used then validate that its child parameter
@@ -1814,7 +1814,7 @@ void GraphValidator::vDefn_5_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.6                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_6(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.6: If the valueType constraint is used then validate that its child parameter
@@ -1870,7 +1870,7 @@ void GraphValidator::vDefn_5_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.7                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_7(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.7: validate that the following combinations of constraints cannot be applied
@@ -1920,7 +1920,7 @@ void GraphValidator::vDefn_5_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.8                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_8(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.8: validate that the constraints combinations specified in DEFN-5.7 cannot occur
@@ -2032,7 +2032,7 @@ void GraphValidator::vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.9                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_9(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.9: validate that the same constraint cannot be specified more than once
@@ -2086,7 +2086,7 @@ void GraphValidator::vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.10                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_10(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.10: validate that the same constraint cannot be specified more than once
@@ -2166,7 +2166,7 @@ void GraphValidator::vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.11                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_11(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2223,7 +2223,7 @@ void GraphValidator::vDefn_5_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.12                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_12(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2262,7 +2262,7 @@ void GraphValidator::vDefn_5_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.13                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_13(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2322,7 +2322,7 @@ void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.14                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_14(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2389,7 +2389,7 @@ void GraphValidator::vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.15                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_15(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2462,7 +2462,7 @@ void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.16                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_16(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2535,7 +2535,7 @@ void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.17                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_17(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2609,7 +2609,7 @@ void GraphValidator::vDefn_5_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.18                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_18(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2721,7 +2721,7 @@ void GraphValidator::vDefn_5_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.19                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_19(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2789,7 +2789,7 @@ void GraphValidator::vDefn_5_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-5.20                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_5_20(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_5_20(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
   //    (Indirect constraints follow. Refer to Note1 below)
@@ -2876,7 +2876,7 @@ void GraphValidator::vDefn_5_20(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                DEFN-6.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vDefn_6_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-6: Validate the children:
   // DEFN-6.1: validate that all children of a given definition node must have unique names.
@@ -2919,7 +2919,7 @@ void GraphValidator::vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-1.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_1_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-1: Validate the name field:
   //    PLAN-1.1: the name field must not be null.
@@ -2935,7 +2935,7 @@ void GraphValidator::vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-2.1                                    */
 /*----------------------------------------------------------------------------*/
-//void GraphValidator::vPlan_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+//void GraphValidator::vPlan_2_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 //{
 //  // PLAN-2: Validate the value field:
 //  //    No validations here as it is largely dependent on constraints
@@ -2944,7 +2944,7 @@ void GraphValidator::vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-3.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_3_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.1: the type field must not be null.
@@ -2960,7 +2960,7 @@ void GraphValidator::vPlan_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-3.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_3_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.2: the type field must be an absolute path (start with a '/').
@@ -2975,7 +2975,7 @@ void GraphValidator::vPlan_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-3.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_3_3(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.3: the path in the type field must be resolvable to another node in the system.
@@ -2993,7 +2993,7 @@ void GraphValidator::vPlan_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-3.4                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_3_4(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.4: the path in the type field must be resolve to a node in /__root__/definitions.
@@ -3012,7 +3012,7 @@ void GraphValidator::vPlan_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-3.5                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_3_5(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.5: the path in the type field must not be a property path
@@ -3028,7 +3028,7 @@ void GraphValidator::vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-4.1                                    */
 /*----------------------------------------------------------------------------*/
-//void GraphValidator::vPlan_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+//void GraphValidator::vPlan_4_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 //{
 //  // PLAN-4: Validate the properties:
 //  //    No validations here as it is largely dependent on constraints
@@ -3037,7 +3037,7 @@ void GraphValidator::vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-5.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_5_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-5: Validate the constraints:
   //    PLAN-5.1: Validate that there is no __constraint container in this objects properties.
@@ -3053,7 +3053,7 @@ void GraphValidator::vPlan_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-5.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_5_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-5: Validate the constraints:
   //    PLAN-5.2: Validate that there are no properties that derive from a constraint definition.
@@ -3079,7 +3079,7 @@ void GraphValidator::vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-6.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_6_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-6: Validate the children:
   //    PLAN-6.1: the children must each have a unique name (so they have a unique path).
@@ -3117,7 +3117,7 @@ void GraphValidator::vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-6.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_6_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_6_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-6: Validate the children:
   //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
@@ -3137,7 +3137,7 @@ void GraphValidator::vPlan_6_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-7.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_7_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-7: Validate the object against its definition properties (excluding constraints):
   //    PLAN-7.1: the node must have properties with names and types that represent all the properties
@@ -3212,7 +3212,7 @@ void GraphValidator::vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-7.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_7_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_7_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-7: Validate the object against its definition properties (excluding constraints):
   //    PLAN-7.2: the current node must not have any additional properties that
@@ -3277,7 +3277,7 @@ void GraphValidator::vPlan_7_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.1                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) {
+void GraphValidator::vPlan_8_1(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.1: If a node's definition contains the "noChildren" constraint
   //              then validate that the node has no children.
@@ -3316,7 +3316,7 @@ void GraphValidator::vPlan_8_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.2                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_2(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.2: If a node's definition contains the "alwaysChildren" constraint
@@ -3356,7 +3356,7 @@ void GraphValidator::vPlan_8_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.3                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_3(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.3: If a node's definition contains the "nullable" constraint
@@ -3372,7 +3372,7 @@ void GraphValidator::vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.4                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_4(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.4: If a node's definition contains the "nonNullable" constraint
@@ -3408,7 +3408,7 @@ void GraphValidator::vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.5                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_5(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.5: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
@@ -3423,7 +3423,7 @@ void GraphValidator::vPlan_8_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.6                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_6(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.6: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
@@ -3438,7 +3438,7 @@ void GraphValidator::vPlan_8_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.7                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_7(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.7: If a node's definition contains the "childType" constraint
@@ -3509,7 +3509,7 @@ void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.8                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_8(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.8: If a node's definition contains the "valueType" constraint
@@ -3578,7 +3578,7 @@ void GraphValidator::vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.9                                    */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_9(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.9: If a node's definition contains the "childCount" constraint
@@ -3637,7 +3637,7 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.10                                    */
 /*----------------------------------------------------------------------------*/
-//void GraphValidator::vPlan_8_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+//void GraphValidator::vPlan_8_10(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 //{
 //  // Not used. This exists so that the direct and indirect constraint
 //  // validation rule numbers align. e.g. 8.1 <--> 8.11
@@ -3646,7 +3646,7 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.11                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_11(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.11: If a node's definition has a property with a non-null type field, and that
@@ -3705,7 +3705,7 @@ void GraphValidator::vPlan_8_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.12                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_12(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.12: If a node's definition has a property with a non-null type field, and that
@@ -3764,7 +3764,7 @@ void GraphValidator::vPlan_8_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.13                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_13(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.13: If a node's definition has a property with a non-null type field, and that
@@ -3781,7 +3781,7 @@ void GraphValidator::vPlan_8_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.14                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_14(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.14: If a node's definition has a property with a non-null type field, and that
@@ -3840,7 +3840,7 @@ void GraphValidator::vPlan_8_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.15                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_15(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
@@ -3855,7 +3855,7 @@ void GraphValidator::vPlan_8_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.16                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_16(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
@@ -3871,7 +3871,7 @@ void GraphValidator::vPlan_8_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.17                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_17(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.17: If a node's definition has a property with a non-null type field, and that
@@ -3953,7 +3953,7 @@ void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.18                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_18(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.18: If a node's definition has a property with a non-null type field, and that
@@ -4047,7 +4047,7 @@ void GraphValidator::vPlan_8_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.19                                   */
 /*----------------------------------------------------------------------------*/
-void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+void GraphValidator::vPlan_8_19(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.19: If a node's definition has a property with a non-null type field, and that

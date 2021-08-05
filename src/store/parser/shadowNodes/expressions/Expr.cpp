@@ -129,7 +129,7 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
 
   // Walk the graph, looking at the children only and return if any of them
   // are aggregate expressions.
-  auto fVisitor = [&bIsAgg](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&bIsAgg](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
@@ -169,7 +169,7 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
 
   // Walk the graph, looking at the children only and return if any of them
   // are aggregate expressions.
-  auto fVisitor = [&bHasNonAggColumnRef](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&bHasNonAggColumnRef](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -210,7 +210,7 @@ b1 Expr::bIsFullyLiteral(PlanNode *pNode)
 
   // Walk the graph, looking at the children only and return if any of them
   // are ColumnRefs or ColumnOrdinals expressions.
-  auto fVisitor = [&bIsLit](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&bIsLit](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -402,7 +402,7 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
 
   // Now we can walk the copied expression and replace any ColumnOrdinals
   // with their symbolic equivalent
-  auto fVisitor = [pColumnExprList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pColumnExprList](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -618,7 +618,7 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
 
   // Walk the expression graph (children only), looking for ColumnRef.
   // Lambda to execute on each node:
-  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -653,7 +653,7 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
 
   // Walk the expression graph (children only), looking for OrdinalRef.
   // Lambda to execute on each node:
-  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -696,7 +696,7 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
   QueryNode* pNonOrdExpr = nullptr;
 
   auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition, fHasAggregateCondition]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -734,7 +734,7 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
   QueryNodeList* pList = new QueryNodeList();
 
   auto fVisitor = [pList, bDescendAggregates]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

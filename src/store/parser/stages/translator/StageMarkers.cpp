@@ -51,7 +51,7 @@ void StageMarkers::vRemoveStatementMarkers(QueryNode *pPlanNode, PlanNode* pRoot
   };
 
   // Lambda called as we walk the graph
-  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -83,7 +83,7 @@ void StageMarkers::vRemoveStatementMarkers(QueryNode *pPlanNode, PlanNode* pRoot
 void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 {
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -156,7 +156,7 @@ void StageMarkers::vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanN
   // "origin". If they don't then we will add in a StageMarker with that location.
 
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
