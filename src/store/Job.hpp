@@ -171,7 +171,7 @@ namespace STORE
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
-  void vVerifyJobComposition(void);
+    void vVerifyJobComposition(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 

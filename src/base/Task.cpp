@@ -7,6 +7,7 @@
 #include "PsxThd.hpp" //?
 #include "TagConstants.h" //?
 #include "Job.hpp" //?
+#include "Op.hpp" //?
 #include "Grid.hpp" //?
 
 #include "SP_Lock.hpp" //?
@@ -257,11 +258,13 @@ void Task::vVerifyTaskComposition(void)
   aFooter()->vAssertFooter();
   
   if (*m_pJob) {
+    //RASSERT(! *m_pOp);
     m_pJob->vVerifyJobComposition();
   }
   else
   if (*m_pOp) {
-    NEVER_REACH;
+    RASSERT(! *m_pJob);
+    m_pOp->vVerifyOpComposition();
   }
   else {
     NEVER_REACH;

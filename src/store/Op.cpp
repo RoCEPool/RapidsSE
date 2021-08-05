@@ -1753,6 +1753,21 @@ void Op::vToCmdStr(Stz* szCmdStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify op is composed correctly and therefore capable of being executed    */
+/*----------------------------------------------------------------------------*/
+void Op::vVerifyOpComposition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  RASSERT(EC_NONE == eValidHeader());
+  RASSERT(CN_OP == eGetClassNo());
+  aFooter()->vAssertFooter();
+  
+  RASSERT(m_pOpLogicUnit);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vWorkQuanta(i8 iWorkQuanta)
