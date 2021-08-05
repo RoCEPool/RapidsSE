@@ -257,7 +257,7 @@ void Task::vVerifyTaskComposition(void)
   aFooter()->vAssertFooter();
   
   if (*m_pJob) {
-    RASSERT(m_pJob->m_pJobLogicUnit);
+    m_pJob->vVerifyJobComposition();
   }
   else
   if (*m_pOp) {

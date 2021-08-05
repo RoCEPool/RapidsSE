@@ -1251,6 +1251,20 @@ void Job::vTimerUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify job is composed correctly and therefore capable of being executed   */
+/*----------------------------------------------------------------------------*/
+void Job::vVerifyJobComposition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+
+  RASSERT(EC_NONE == eValidHeader());
+  RASSERT(CN_JOB == eGetClassNo());
+  aFooter()->vAssertFooter();
+  
+  RASSERT(m_pJobLogicUnit);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get was received flag                                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bWasReceived(void)
