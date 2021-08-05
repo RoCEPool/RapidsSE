@@ -1187,7 +1187,7 @@ void Step::vJobSpawn(void)
 //    RASSERT(TR_NONE == pTask->eTranstionRequest());
 //  }
   
-  Api::vSpawnJob_received(pJob);
+  Api::vSpawnTask_receivedJob(pJob);
   
   EXIT();
 }

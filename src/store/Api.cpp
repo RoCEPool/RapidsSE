@@ -803,19 +803,7 @@ void Api::vSpawnTaskDedicated_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnJob_received(Job* pJob)
-{
-  _static_
-  
-  
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddReceived(pJob->pTask());
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnJob_service(Job* pJob)
+void Api::vSpawnTask_demonJob(Job* pJob)
 {
   _static_
   
@@ -823,6 +811,18 @@ void Api::vSpawnJob_service(Job* pJob)
 
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddService(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnTask_receivedJob(Job* pJob)
+{
+  _static_
+  
+  
+  vCreateTaskForJob(pJob);
+  Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -869,18 +869,6 @@ bool Api::bSpawnJob_session(Job* pJob)
   Api::vMutexUnlock(pSession,pJob);
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnJob_system(Job* pJob)
-{
-  _static_
-  
-  
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddSystem(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/

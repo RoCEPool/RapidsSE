@@ -2035,17 +2035,17 @@ bool AM::bSpawnJob_session(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnJob_received(Job* pJob)
+void AM::vSpawnTask_receivedJob(Job* pJob)
 {
-  Api::vSpawnJob_received(pJob);
+  Api::vSpawnTask_receivedJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnJob_service(Job* pJob)
+void AM::vSpawnTask_demonJob(Job* pJob)
 {
-  Api::vSpawnJob_service(pJob);
+  Api::vSpawnTask_demonJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

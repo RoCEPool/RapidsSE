@@ -52,9 +52,8 @@ namespace STORE
   static void vSpawnTaskDedicated_job(Job* pJob);
   static void vSpawnTaskDedicated_op(Op* pOp);
 
-  static void vSpawnJob_received(Job* pJob);
-  static void vSpawnJob_service(Job* pJob);
-  static void vSpawnJob_system(Job* pJob);
+  static void vSpawnTask_demonJob(Job* pJob);
+  static void vSpawnTask_receivedJob(Job* pJob);
   
   static void vSpinTillAllJobsCompleted(void);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
