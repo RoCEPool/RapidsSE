@@ -380,12 +380,13 @@ void Engine::vCallBoot(void)
   
   Task* pBootTask = AM::TASK::pNew(pJob);
   
-  LogicUnit* pLogicUnit = new LogicUnit;
-  
-  pLogicUnit->vJob(pJob);
 
 #ifdef WITH_NO_JOB_FOR_OP
 #else
+  LogicUnit* pLogicUnit = new LogicUnit;
+  
+  pLogicUnit->vJob(pJob);
+  
   pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
@@ -471,11 +472,11 @@ void Engine::vCallStart(void)
   
   Task* pStartTask = AM::TASK::pNew(pJob);
   pStartTask->vIsStart(true);
-  LogicUnit* pLogicUnit = new LogicUnit;
-  pLogicUnit->vJob(pJob);
 
 #ifdef WITH_NO_JOB_FOR_OP
 #else
+  LogicUnit* pLogicUnit = new LogicUnit;
+  pLogicUnit->vJob(pJob);
   pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
