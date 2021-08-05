@@ -33,7 +33,7 @@ void Step::vDebugBloat(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = new RowBuffer();
-  m_pJob->pLogicUnit_job()->m_xpMemoryHog = pRowBuffer;
+  m_pJob->pJobLogicUnit()->m_xpMemoryHog = pRowBuffer;
 
   while (true) {
     RowBuffer* pNewRowBuffer = new RowBuffer();
@@ -62,7 +62,7 @@ void Step::vDebugFlagFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_iDebugFlag);
+  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_iDebugFlag);
   
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vDebugFlagStore(void)
 {
   ENTRY();
 
-  m_pJob->pLogicUnit_job()->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
+  m_pJob->pJobLogicUnit()->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

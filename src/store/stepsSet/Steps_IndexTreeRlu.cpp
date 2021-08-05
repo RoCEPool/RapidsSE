@@ -40,9 +40,9 @@ void Step::vIndexTreeRluAsAlt(void)
 {
   ENTRY();
 
-  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree);
 
-  m_pJob->pLogicUnit_job()->m_pDevAltIxt->m_pIdxTree = pIndexTree;
+  m_pJob->pJobLogicUnit()->m_pDevAltIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
@@ -54,9 +54,9 @@ void Step::vIndexTreeRluAsSrc(void)
 {
   ENTRY();
 
-  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree);
 
-  m_pJob->pLogicUnit_job()->m_pDevLftIxt->m_pIdxTree = pIndexTree;
+  m_pJob->pJobLogicUnit()->m_pDevLftIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
@@ -68,9 +68,9 @@ void Step::vIndexTreeRluAsTmp(void)
 {
   ENTRY();
 
-  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree);
 
-  m_pJob->pLogicUnit_job()->m_pDevTmpIxt->m_pIdxTree = pIndexTree;
+  m_pJob->pJobLogicUnit()->m_pDevTmpIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
@@ -82,9 +82,9 @@ void Step::vIndexTreeRluDelete(void)
 {
   ENTRY();
 
-  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree);
 
-  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = nullptr;
+  m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree = nullptr;
   
   delete pIndexTree;
   
@@ -98,7 +98,7 @@ void Step::vIndexTreeRluGet(void)
 {
   ENTRY();
 
-  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree);
 
   m_pDataStack->vPushPtr(pIndexTree);
   
@@ -112,7 +112,7 @@ void Step::vIndexTreeRluIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree ? 0 : 1);
+  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree ? 0 : 1);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vIndexTreeRluNew(void)
   ENTRY();
   
   IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }
@@ -137,7 +137,7 @@ void Step::vIndexTreeRluSet(void)
 {
   ENTRY();
 
-  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  m_pJob->pJobLogicUnit()->m_xRluCommon.m_pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

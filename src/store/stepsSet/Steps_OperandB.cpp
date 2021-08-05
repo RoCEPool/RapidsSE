@@ -44,7 +44,7 @@ void Step::vOperandBAppendClose(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandB);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pJobLogicUnit()->m_xpOperandB);
   pCrwBuffer->vAppendClose();
   
   EXIT();
@@ -57,9 +57,9 @@ void Step::vOperandBDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpOperandB);
+  AM::vDeleteOperand(*m_pJob->pJobLogicUnit()->m_xpOperandB);
   
-  m_pJob->pLogicUnit_job()->m_xpOperandB = nullptr;
+  m_pJob->pJobLogicUnit()->m_xpOperandB = nullptr;
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vOperandBGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandB);
+  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpOperandB);
   
   EXIT();
 }
@@ -83,9 +83,9 @@ void Step::vOperandBGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandB);
+  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpOperandB);
   
-  m_pJob->pLogicUnit_job()->m_xpOperandB = nullptr;
+  m_pJob->pJobLogicUnit()->m_xpOperandB = nullptr;
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vOperandBIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandB.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_xpOperandB.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vOperandBIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandB.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_xpOperandB.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -123,9 +123,9 @@ void Step::vOperandBSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpOperandB.bIsNull());
+  ASSERT(! pOperand || m_pJob->pJobLogicUnit()->m_xpOperandB.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandB = _pOperand(pOperand);
+  m_pJob->pJobLogicUnit()->m_xpOperandB = _pOperand(pOperand);
 
   EXIT();
 }

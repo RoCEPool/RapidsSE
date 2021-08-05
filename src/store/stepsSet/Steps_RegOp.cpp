@@ -40,7 +40,7 @@ void Step::vRegOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOp);
+  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpOp);
 
   EXIT();
 }
@@ -56,8 +56,8 @@ void Step::vRegOpHandlerEntry(void)
 
     Op* pOp = m_pJob->m_pOp;
     
-    if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull()) {
-      Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
+    if (m_pJob->pJobLogicUnit()->m_xpPipein.bIsNotNull()) {
+      Operand* pOperand = *m_pJob->pJobLogicUnit()->m_xpPipein;
     
       pOp->vOpTrace(pOperand,(Stz*)__func__,true);
     }
@@ -76,8 +76,8 @@ void Step::vRegOpHandlerExit(void)
   
 //  Op* pOp = m_pJob->m_pOp;
 //
-//  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull()) {
-//    Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
+//  if (m_pJob->pJobLogicUnit()->m_xpPipein.bIsNotNull()) {
+//    Operand* pOperand = *m_pJob->pJobLogicUnit()->m_xpPipein;
 //
 //    pOp->vOpTrace(pOperand,(Stz*)__func__,true);
 //  }
@@ -97,7 +97,7 @@ void Step::vRegOpHandlerFetch(void)
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
-  Word* pHandler = m_pJob->pLogicUnit_job()->m_xpOp->pOperandHandler(i_OperandKind);
+  Word* pHandler = m_pJob->pJobLogicUnit()->m_xpOp->pOperandHandler(i_OperandKind);
     
   m_pDataStack->vPushPtr(pHandler);
 
@@ -115,7 +115,7 @@ void Step::vRegOpHandlerStore(void)
   
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  m_pJob->pLogicUnit_job()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+  m_pJob->pJobLogicUnit()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vRegOpHandlerAllStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
-    m_pJob->pLogicUnit_job()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+    m_pJob->pJobLogicUnit()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -144,7 +144,7 @@ void Step::vRegOpInit(void)
 
   Op* pOp = m_pJob->m_pOp;
 
-  m_pJob->pLogicUnit_job()->m_xpOp = pOp;
+  m_pJob->pJobLogicUnit()->m_xpOp = pOp;
 
   EXIT();
 }
@@ -161,8 +161,8 @@ void Step::vRegOpIsOperandValid(void)
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
   // skip consumeOp operand validation
-  if ( ! m_pJob->pLogicUnit_job()->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = m_pJob->pLogicUnit_job()->m_xpOp->bIsOperandValid(i_OperandKind);
+  if ( ! m_pJob->pJobLogicUnit()->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = m_pJob->pJobLogicUnit()->m_xpOp->bIsOperandValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
@@ -181,7 +181,7 @@ void Step::vRegOpIncHandlerCount(void)
   
   i8 i_Handler = m_pDataStack->iPopInt(__func__);
   
-  m_pJob->pLogicUnit_job()->m_xpOp->vIncHandlerCount(i_Handler);
+  m_pJob->pJobLogicUnit()->m_xpOp->vIncHandlerCount(i_Handler);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ void Step::vRegOpIncOperandCount(void)
   
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
-  m_pJob->pLogicUnit_job()->m_xpOp->vIncOperandCount(i_OperandKind);
+  m_pJob->pJobLogicUnit()->m_xpOp->vIncOperandCount(i_OperandKind);
   
   EXIT();
 }

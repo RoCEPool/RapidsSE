@@ -492,7 +492,7 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
 /*----------------------------------------------------------------------------*/
 void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 {
-  if (! pJob->pLogicUnit_job()) {
+  if (! pJob->pJobLogicUnit()) {
     
     LogicUnit* pLogicUnit = new LogicUnit;
 
@@ -1730,7 +1730,7 @@ i8 AM::nRndSkipLevel(void) {
     nLevels =
       RndLib::iSkipLevel(nLvlLevels,
                          iLvlRatio,
-                         pTask->pJob()->pLogicUnit_job()->m_i_NextRnd);
+                         pTask->pJob()->pJobLogicUnit()->m_i_NextRnd);
   }
   else {
     nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio);
@@ -1792,11 +1792,11 @@ void AM::vTaskDump(Task* pTask)
     
   AM::vJobContentDump(pJob);
   
-  if (pJob->pLogicUnit_job()) {
-    if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
-      pJob->pLogicUnit_job()->m_xpOp->vDump();
+  if (pJob->pJobLogicUnit()) {
+    if (pJob->pJobLogicUnit()->m_xpOp.bIsNotNull())
+      pJob->pJobLogicUnit()->m_xpOp->vDump();
   
-    //pJob->pLogicUnit_job()->vContentDump();
+    //pJob->pJobLogicUnit()->vContentDump();
   }
 
 }
@@ -1811,7 +1811,7 @@ void AM::vTaskDump(Task* pTask)
 
 LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   Job* pJob = pTask->pJob();
-  return pJob->pLogicUnit_job();
+  return pJob->pJobLogicUnit();
 }
 
 void AM::vTraceDumpGrabLock(void)
@@ -1834,7 +1834,7 @@ void AM::vTaskFullTrace(Task* pTask)
   
   AM::vJobContentDump(pJob);
   
-  //pJob->pLogicUnit_job()->vContentDump();
+  //pJob->pJobLogicUnit()->vContentDump();
   
   AM::pGrid()->vDsv();
 }
@@ -1883,7 +1883,7 @@ t8 AM::tThisTLSPespective(void)
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
   Job* pJob = pTask->pJob();
-  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
 
   return pLogicUnit;
 }
@@ -1911,7 +1911,7 @@ Tx* AM::pThisTLSTx(void) {
     return nullptr;
   
   Job* pJob = pTask->pJob();
-  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
 
   Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;

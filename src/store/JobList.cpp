@@ -265,7 +265,7 @@ void JobList::vSee(void)
              ,pJob->iParticipantNode()
              );
 
-    LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+    LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
     
     if (pLogicUnit) {
       if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())

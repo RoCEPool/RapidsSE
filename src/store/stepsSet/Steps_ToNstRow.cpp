@@ -32,7 +32,7 @@ void Step::vToNstRowRegConvert(void)
 {
   ENTRY();
 
-  ToNstRow* pToNstRow = *m_pJob->pLogicUnit_job()->m_xpToNstRow;
+  ToNstRow* pToNstRow = *m_pJob->pJobLogicUnit()->m_xpToNstRow;
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -52,7 +52,7 @@ void Step::vToNstRowRegCreate(void)
     
   ToNstRow* pToNstRow = new ToNstRow;
       
-  m_pJob->pLogicUnit_job()->m_xpToNstRow = pToNstRow;
+  m_pJob->pJobLogicUnit()->m_xpToNstRow = pToNstRow;
 
   EXIT();
 }
@@ -64,9 +64,9 @@ void Step::vToNstRowRegDelete(void)
 {
   ENTRY();
   
-  ToNstRow* pToNstRow = *m_pJob->pLogicUnit_job()->m_xpToNstRow;
+  ToNstRow* pToNstRow = *m_pJob->pJobLogicUnit()->m_xpToNstRow;
   
-  m_pJob->pLogicUnit_job()->m_xpToNstRow = nullptr;
+  m_pJob->pJobLogicUnit()->m_xpToNstRow = nullptr;
   
   delete pToNstRow;
   

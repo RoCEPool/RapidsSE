@@ -32,7 +32,7 @@ void Step::vSendNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpSendNode);
+  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpSendNode);
 
   EXIT();
 }
@@ -46,9 +46,9 @@ void Step::vSendNodeSet(void)
   
   Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pSendNode || m_pJob->pLogicUnit_job()->m_xpSendNode.bIsNull());
+  ASSERT(! pSendNode || m_pJob->pJobLogicUnit()->m_xpSendNode.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpSendNode = pSendNode;
+  m_pJob->pJobLogicUnit()->m_xpSendNode = pSendNode;
 
   EXIT();
 }

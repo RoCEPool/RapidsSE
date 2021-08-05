@@ -54,11 +54,14 @@ namespace STORE
     eEC m_eError;            // error when starting job
   
     // -- d -------------------
+  private:
 #ifdef WITH_NO_JOB_FOR_OP
+    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
 #else
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
 #endif
   
+  public:
     TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
@@ -136,7 +139,7 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    LogicUnit* pLogicUnit_job(void);
+    LogicUnit* pJobLogicUnit(void);
     void vJobLogicUnit(LogicUnit* pLogicUnit);
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);

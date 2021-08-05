@@ -299,7 +299,7 @@ LogicUnit* MY::pLogicUnit(void)
   Job* pJob = MY::pJob();
 
   if (pJob)
-    return pJob->m_pJobLogicUnit;
+    return pJob->pJobLogicUnit();
   else
     return nullptr;
 #endif

@@ -143,8 +143,11 @@ Job::Job(i8 i_Origin,     // originated on which node
   
   // -- d -------------------
 #ifdef WITH_NO_JOB_FOR_OP
+  m_pJobLogicUnit = new LogicUnit;
+  m_pJobLogicUnit->vJob(this);
 #else
-  m_pJobLogicUnit = nullptr;
+  m_pJobLogicUnit = new LogicUnit;
+  m_pJobLogicUnit->vJob(this);
 #endif
   
   // m_oJobTags
@@ -350,6 +353,8 @@ void Job::vPostRecv(void* aJob)
   pJob->vTask(nullptr);
     
 #ifdef WITH_NO_JOB_FOR_OP
+  LogicUnit* pLogicUnit = nullptr;
+  pJob->vJobLogicUnit(pLogicUnit);
 #else
   LogicUnit* pLogicUnit = nullptr;
   pJob->vJobLogicUnit(pLogicUnit);
@@ -733,11 +738,12 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* get the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-LogicUnit* Job::pLogicUnit_job(void)
+LogicUnit* Job::pJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_NO_JOB_FOR_OP
+  return m_pJobLogicUnit;
 #else
   return m_pJobLogicUnit;
 #endif
@@ -751,6 +757,11 @@ void Job::vJobLogicUnit(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_NO_JOB_FOR_OP
+  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
+
+  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
+
+  m_pJobLogicUnit = pLogicUnit;
 #else
   ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
 
