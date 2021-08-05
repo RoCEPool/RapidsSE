@@ -720,6 +720,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENDMARKER"_Stz,       ZK_ENDMARKER);
   /*  0 */ vAddConstant("ZK_ENDEDMARKER"_Stz,     ZK_ENDEDMARKER);
+  /*  0 */ vAddConstant("ZK_ENDINGMARKER"_Stz,     ZK_ENDINGMARKER);
   /*  0 */ vAddConstant("ZK_END_CRWRHTMARKER"_Stz,  ZK_END_CRWRHTMARKER);
   /*  0 */ vAddConstant("ZK_END_ROWRHTMARKER"_Stz,  ZK_END_ROWRHTMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);

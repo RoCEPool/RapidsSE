@@ -23,6 +23,8 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleCancel"_Stz,   &Step::vRegSendsHandleCancel);
   vAddStep("Sends[].handleCleanup"_Stz,  &Step::vRegSendsHandleCleanup);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
+  vAddStep("Sends[].handleEnded"_Stz,    &Step::vRegSendsHandleEnded);
+  vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleError"_Stz,    &Step::vRegSendsHandleError);
   vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
@@ -106,6 +108,38 @@ void Step::vRegSendsHandleDestroy(void)
   
   m_pDataStack->vPushInt(pSends->bDestroyDone());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleEnded -- handle consume of ended marker                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleEnded(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+
+  pSends->vIncEnded();
+
+  m_pDataStack->vPushInt(pSends->bEndedDone());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleEnding -- handle consume of ending marker                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleEnding(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+
+  pSends->vIncEnding();
+
+  m_pDataStack->vPushInt(pSends->bEndingDone());
+
   EXIT();
 }
 

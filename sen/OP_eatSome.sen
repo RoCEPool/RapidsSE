@@ -34,6 +34,7 @@
 //  pEatSomeHandler ZK_EARLYEXITINGMARKER op[].handler!
 //  pEatSomeHandler ZK_ENDMARKER        op[].handler!
 //  pEatSomeHandler ZK_ENDEDMARKER      op[].handler!
+//  pEatSomeHandler ZK_ENDINGMARKER     op[].handler!
 //  pEatSomeHandler ZK_ENTBUFFER        op[].handler!
 //  pEatSomeHandler ZK_EOSMARKER        op[].handler!
 //  pEatSomeHandler ZK_ERRORMARKER      op[].handler!

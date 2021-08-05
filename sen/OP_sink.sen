@@ -37,8 +37,20 @@
   //"Operand:- ZK_CLEANUPMARKER" .verbose
   PipeIn[].delete
   Operand[].newCleanedupMarker
-  Operand[] to Pipein[]
-  nullptr to Operand[]
+  Operand[].pipeOut
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ENDINGMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: sink_EndingMarker \handler
+
+  //"Operand:- ZK_ENDINGMARKER" .verbose
+  PipeIn[].delete
+  Operand[].newEndedMarker
+  Operand[]\clear to Pipein[]
 
   Pipein[].pipeOut
   true
@@ -184,6 +196,7 @@
 
   find: sink_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: sink_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: sink_EndingMarker  ZK_ENDINGMARKER  op[].handler!
   find: sink_ErrorMarker   ZK_ERRORMARKER   op[].handler!
   find: sink_ExitMarker    ZK_EXITMARKER    op[].handler!
   find: sink_EarlyExitMarker ZK_EARLYEXITMARKER  op[].handler!

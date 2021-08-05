@@ -71,6 +71,8 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
+  vAddStep("Operand[].newEndingMarker"_Stz, &Step::vOperandNewEndingMarker);
+  vAddStep("Operand[].newEndedMarker"_Stz, &Step::vOperandNewEndedMarker);
   vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
   vAddStep("Operand[].newEndRowRhtMarker"_Stz, &Step::vOperandNewEndRowRhtMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
@@ -568,6 +570,34 @@ void Step::vOperandNewEachScanEosMarker(void)
   ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
 
   m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EACHSCANEOSMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEnded -- new an ended marker                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndedMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDEDMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEnding -- new an ending marker                                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndingMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDINGMARKER);
 
   EXIT();
 }

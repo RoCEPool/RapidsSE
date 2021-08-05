@@ -1045,6 +1045,8 @@ public:
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);
+  void vOperandNewEndedMarker(void);
+  void vOperandNewEndingMarker(void);
   void vOperandNewEndCrwRhtMarker(void);
   void vOperandNewEndRowRhtMarker(void);
   void vOperandNewEosMarker(void);
@@ -1264,6 +1266,8 @@ public:
   void vRegSendsHandleCancel(void);
   void vRegSendsHandleCleanup(void);
   void vRegSendsHandleDestroy(void);
+  void vRegSendsHandleEnded(void);
+  void vRegSendsHandleEnding(void);
   void vRegSendsHandleEos(void);
   void vRegSendsHandleError(void);
   void vRegSendsHandleExit(void);

@@ -55,6 +55,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_ENDEDMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: start_EndedMarker \handler
+
+  //"Operand:- ZK_ENDEDMARKER" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleanup marker
+  Operand[].newCleanupMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ERROREDMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_ErroredMarker \handler
@@ -116,8 +131,8 @@
   // mark pipeline as being pulsed
   true Pipeline::pulsed!
 
-  // now pipeout a cleanup marker
-  Operand[].newCleanupMarker
+  // now pipeout a ending marker
+  Operand[].newEndingMarker
   Operand[].pipeOut
 
   true
@@ -149,6 +164,7 @@
   find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
   find: start_CleanedupMarker   ZK_CLEANEDUPMARKER   op[].handler!
   find: start_EarlyExitedMarker ZK_EARLYEXITEDMARKER op[].handler!
+  find: start_EndedMarker       ZK_ENDEDMARKER       op[].handler!
   find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
   find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
   find: start_PulsedMarker      ZK_PULSEDMARKER      op[].handler!

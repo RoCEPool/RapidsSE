@@ -34,6 +34,7 @@
 : ZK_EACHSCANEOSMARKER_handler \handler STANDARD_PIPEOUT ;
 : ZK_ENDMARKER_handler         \handler STANDARD_PIPEOUT ;
 : ZK_ENDEDMARKER_handler       \handler STANDARD_PIPEOUT ;
+: ZK_ENDINGMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_END_CRWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_END_ROWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;

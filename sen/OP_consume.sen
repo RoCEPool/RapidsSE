@@ -34,6 +34,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_ENDINGMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: consumeOp_EndingMarker \handler
+
+  //"Operand:- ZK_ENDINGMARKER" .verbose
+  Sends[].handleEnding if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EosMarker \handler
@@ -46,6 +60,7 @@
   then
   true
 ;
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
@@ -162,6 +177,7 @@
 
   find: consumeOp_CancelMarker   ZK_CANCELMARKER  op[].handler!
   find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER op[].handler!
+  find: consumeOp_EndingMarker   ZK_EndingMARKER     op[].handler!
   find: consumeOp_EosMarker      ZK_EOSMARKER     op[].handler!
   //find: consumeOp_ErrorMarker  ZK_ERRORMARKER   op[].handler!
   find: consumeOp_ExitMarker     ZK_EXITMARKER    op[].handler!
