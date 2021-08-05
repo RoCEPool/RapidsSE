@@ -255,11 +255,23 @@ Job* MY::pJob(void)
 {
   _static_
 
+#ifdef WITH_NO_JOB_FOR_OP
+
+  Task* pTask = MY::pTask();
+  
+  Job* pJob = pTask->pJob();
+
+  return pJob;
+  
+#else
+  
   Task* pTask = MY::pTask();
   
   Job* pJob = AM::pTaskJob(pTask);
   
   return pJob;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,6 +282,19 @@ LogicUnit* MY::pLogicUnit(void)
   _static_
   
 #ifdef WITH_NO_JOB_FOR_OP
+  
+  Task* pTask = MY::pTask();
+  
+  Job* pJob = pTask->pJob();
+  if (pJob)
+    return pJob->m_pJobLogicUnit;
+
+  Op* pOp = pTask->pOp();
+  if (pOp)
+    return pOp->m_pJobLogicUnit;
+
+  return nullptr;
+
 #else
   Job* pJob = MY::pJob();
 
@@ -305,6 +330,13 @@ Op* MY::pOp(void)
   _static_
 
 #ifdef WITH_NO_JOB_FOR_OP
+  
+  Task* pTask = MY::pTask();
+  
+  Op* pOp = pTask->pOp();
+  
+  return pOp;
+
 #else
 
   Job* pJob = MY::pJob();
