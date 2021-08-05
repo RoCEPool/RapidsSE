@@ -951,9 +951,6 @@ void Api::vCreateTaskForJob(Job* pJob)
   //AM::LOGICUNIT::vNew(pTask,pJob);
   
   if (! pJob->pJobLogicUnit()) {
-//    LogicUnit* pLogicUnit = new LogicUnit;
-//    pLogicUnit->vJob(pJob);
-//    pJob->vJobLogicUnit(pLogicUnit);
     pJob->vNewJobLogicUnit();
   }
   

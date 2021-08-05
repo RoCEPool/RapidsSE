@@ -353,11 +353,9 @@ void Job::vPostRecv(void* aJob)
   pJob->vTask(nullptr);
     
 #ifdef WITH_NO_JOB_FOR_OP
-  LogicUnit* pLogicUnit = nullptr;
-  pJob->vJobLogicUnit(pLogicUnit);
+  pJob->vNullJobLogicUnit();
 #else
-  LogicUnit* pLogicUnit = nullptr;
-  pJob->vJobLogicUnit(pLogicUnit);
+  pJob->vNullJobLogicUnit();
 #endif
 }
 
@@ -750,28 +748,6 @@ LogicUnit* Job::pJobLogicUnit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the logic unit                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vJobLogicUnit(LogicUnit* pLogicUnit)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-#ifdef WITH_NO_JOB_FOR_OP
-  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
-
-  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
-
-  m_pJobLogicUnit = pLogicUnit;
-#else
-  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
-
-  ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
-
-  m_pJobLogicUnit = pLogicUnit;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* new the logic unit for this job                                            */
 /*----------------------------------------------------------------------------*/
 void Job::vNewJobLogicUnit(void)
@@ -782,6 +758,16 @@ void Job::vNewJobLogicUnit(void)
 
   m_pJobLogicUnit = new LogicUnit;
   m_pJobLogicUnit->vJob(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* null the logic unit for this job                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vNullJobLogicUnit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pJobLogicUnit = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1344,8 +1330,7 @@ void STORE::vJob_postRecv(Job* pJob)
   
   pJob->vTask(nullptr);
     
-  LogicUnit* pLogicUnit = nullptr;
-  pJob->vJobLogicUnit(pLogicUnit);
+   pJob->vNullJobLogicUnit();
 }
 
 /*----------------------------------------------------------------------------*/

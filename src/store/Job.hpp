@@ -140,7 +140,6 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pJobLogicUnit(void);
-    void vJobLogicUnit(LogicUnit* pLogicUnit);
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     Pipeline* pPipeline(void);
@@ -152,6 +151,7 @@ namespace STORE
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
     void vNewJobLogicUnit(void);
+    void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
