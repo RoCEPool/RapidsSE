@@ -202,19 +202,13 @@ void Task::vTaskLoop(void)
 
   PsxThd::vTlsSet(giTLS_TaskKey,this);
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
-
-  //RASSERT(! bIsLocked());
   
-  if (! bSeeded()) {
+//  if (! bSeeded()) {
+//    AM::LOGICUNIT::vNew(this,pJob());
+//    vSeedTask();
+//  }
 
-#ifdef WITH_NO_JOB_FOR_OP
-#else
-    AM::LOGICUNIT::vNew(this,pJob());
-#endif
-    
-    vSeedTask();
-  }
-  
+  RASSERT(bSeeded());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

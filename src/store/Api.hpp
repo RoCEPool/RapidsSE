@@ -15,7 +15,7 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parsimonious API
   
-  static Op* pGetOperator(Stz* szOpNm);
+  //static Op* pGetOperator(Stz* szOpNm);
   static Operand* pGetOperand(eZK eOperand);
 
   

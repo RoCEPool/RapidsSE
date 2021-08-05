@@ -30,30 +30,30 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* get a new instance of an operator/pipeline                                 */
 /*----------------------------------------------------------------------------*/
-Op* Api::pGetOperator(Stz* szOpNm)
-{
-  _static_
-  
-  s32 sWordNm;
-  Word* pOpWord = nullptr;
-  Op* pOp = nullptr;
-
-  // find szOpNm in dictionary
-  Dic* pRootDic = AM::DIC::pRoot();
-  
-  sWordNm = szOpNm;
-  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-    pOp = Api::pOpCreate(pOpWord);
-    return pOp;
-  }
-  
-  sWordNm.vConcat("_req"_Stz);
-  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-    pOp = Api::pOpCreate(pOpWord);
-    return pOp;
-  }
-  return nullptr;
-}
+//Op* Api::pGetOperator(Stz* szOpNm)
+//{
+//  _static_
+//  
+//  s32 sWordNm;
+//  Word* pOpWord = nullptr;
+//  Op* pOp = nullptr;
+//
+//  // find szOpNm in dictionary
+//  Dic* pRootDic = AM::DIC::pRoot();
+//  
+//  sWordNm = szOpNm;
+//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
+//    pOp = Api::pOpCreate(pOpWord);
+//    return pOp;
+//  }
+//  
+//  sWordNm.vConcat("_req"_Stz);
+//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
+//    pOp = Api::pOpCreate(pOpWord);
+//    return pOp;
+//  }
+//  return nullptr;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get a new instance of an operand                                           */
@@ -936,6 +936,7 @@ void Api::vCreateTaskForJob(Job* pJob)
   RASSERT(! pTask);
 
   pTask = AM::TASK::pNew(pJob);
+  
 
   Job* pThisJob = AM::pThisTLSJob();
   
@@ -945,7 +946,10 @@ void Api::vCreateTaskForJob(Job* pJob)
 
   if (! pJob->bHasTag(C_TAG_TAGS))
     BASE::vDebugPoint();
-  
+
+  AM::LOGICUNIT::vNew(pTask,pJob);
+  pTask->vSeedTask();
+
   pJob->vTimerStart();
 }
 
