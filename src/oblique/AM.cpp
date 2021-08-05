@@ -1993,33 +1993,33 @@ bool AM::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnJob_dedicated(Job* pJob)
+void AM::vSpawnTaskDedicated_job(Job* pJob)
 {
-  Api::vSpawnJob_dedicated(pJob);
+  Api::vSpawnTaskDedicated_job(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnOp_dedicated(Op* pOp)
+void AM::vSpawnTaskDedicated_op(Op* pOp)
 {
-  Api::vSpawnOp_dedicated(pOp);
+  Api::vSpawnTaskDedicated_op(pOp);
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
+/* spawn task for given job                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnJob_op(Job* pJob)
+void AM::vSpawnTask_job(Job* pJob)
 {
-  Api::vSpawnJob_op(pJob);
+  Api::vSpawnTask_job(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn op                                                                   */
+/* spawn task for given op                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnOp_op(Op* pOp)
+void AM::vSpawnTask_op(Op* pOp)
 {
-  Api::vSpawnOp_op(pOp);
+  Api::vSpawnTask_op(pOp);
 }
 
 /*----------------------------------------------------------------------------*/

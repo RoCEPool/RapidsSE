@@ -326,7 +326,7 @@ void Step::vApiSpawnDemon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDedicated)
-    Api::vSpawnJob_dedicated(pJob);
+    Api::vSpawnTaskDedicated_job(pJob);
   else
     Api::vSpawnJob_service(pJob);
 
@@ -351,7 +351,7 @@ void Step::vApiSpawnThread(void)
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
   Job* pOpJob = pOp->pOpJob_();
-  AM::vSpawnJob_dedicated(pOpJob);
+  AM::vSpawnTaskDedicated_job(pOpJob);
 
   EXIT();
 }

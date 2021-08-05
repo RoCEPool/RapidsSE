@@ -1676,16 +1676,16 @@ void Op::vSpawnOperator(i8 iSessionId)
   pOpJobTagSet->vCopy(&m_oOpTags);
 
   if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
-    AM::vSpawnJob_dedicated(m_pOpJob);
+    AM::vSpawnTaskDedicated_job(m_pOpJob);
     m_pTask = AM::pExecutingTask(m_pOpJob);
+    RASSERT(m_pTask->pJob() == m_pOpJob);
     m_pTask->vOp(this);
-    //AM::vSpawnOp_dedicated(this);
   }
   else {
-    AM::vSpawnJob_op(m_pOpJob);
+    AM::vSpawnTask_job(m_pOpJob);
     m_pTask = AM::pExecutingTask(m_pOpJob);
+    RASSERT(m_pTask->pJob() == m_pOpJob);
     m_pTask->vOp(this);
-    //AM::vSpawnOp_op(this);
   }
   
 }
