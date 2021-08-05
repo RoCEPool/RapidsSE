@@ -985,10 +985,6 @@ void vTest16(void)
   
   Task* pImmTask = AM::TASK::pNew(pJob);
   
-  LogicUnit* pLogicUnit = new LogicUnit;
-  pLogicUnit->vJob(pJob);
-
-  pJob->vJobLogicUnit(pLogicUnit );
 
   pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
   
@@ -1031,10 +1027,6 @@ void vTest16(void)
   pJob->vSeed(SS_SEED_RUN); \
   \
   Task* pImmTask = AM::TASK::pNew(pJob); \
-  \
-  LogicUnit* pLogicUnit = new LogicUnit; \
-  pLogicUnit->vJob(pJob); \
-  pJob->vJobLogicUnit(pLogicUnit);\
   \
   RowSingleList* pRowSingleList = nullptr;
   

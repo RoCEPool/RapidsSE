@@ -12,6 +12,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Op.hpp"
+#include "LogicUnit.hpp"
 #include "Procedure.hpp"
 #include "Sessions.hpp"
 #include "Output.hpp"
@@ -947,7 +948,14 @@ void Api::vCreateTaskForJob(Job* pJob)
   if (! pJob->bHasTag(C_TAG_TAGS))
     BASE::vDebugPoint();
 
-  AM::LOGICUNIT::vNew(pTask,pJob);
+  //AM::LOGICUNIT::vNew(pTask,pJob);
+  
+  if (! pJob->pJobLogicUnit()) {
+    LogicUnit* pLogicUnit = new LogicUnit;
+    pLogicUnit->vJob(pJob);
+    pJob->vJobLogicUnit(pLogicUnit);
+  }
+  
   pTask->vSeedTask();
 
   pJob->vTimerStart();
