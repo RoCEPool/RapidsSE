@@ -138,7 +138,7 @@ StageSpec* Stream::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
+void Stream::vSpawnOperators(i8 iSessionId, i8 i_ThisNode)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -154,7 +154,7 @@ void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
       
       Op* pOp = pGet(i_Op);
       
-      pOp->vSpawnOperatorJob(iSessionId);
+      pOp->vSpawnOperator(iSessionId);
     }
   }
   

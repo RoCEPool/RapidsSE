@@ -678,8 +678,6 @@ Job* LogicUnit::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  RASSERT(! m_pOp);
-
   return m_pJob;
 }
 
@@ -689,9 +687,7 @@ Job* LogicUnit::pJob(void)
 void LogicUnit::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  RASSERT(! m_pOp);
-  
+    
   m_pJob = pJob;
 }
 

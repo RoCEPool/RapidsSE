@@ -30,6 +30,8 @@
 #include "CsvBuffer.hpp"
 #include "RowBuffer.hpp"
 
+#include "LogicUnit.hpp"
+
 Atomic gixOp;
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +178,14 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  if (m_pOpLogicUnit) {
+    RASSERT(this == m_pOpLogicUnit->pOp());
+    RASSERT(! m_pOpLogicUnit->pJob());
 
+    delete m_pOpLogicUnit;
+    m_pOpLogicUnit = nullptr;
+  }
+  
   if (m_pQueueLeft->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
     Operand *pOperand = m_pQueueLeft->pPopQueue();
@@ -1611,9 +1620,9 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn a job for this operator                                              */
+/* spawn this operator                                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vSpawnOperatorJob(i8 iSessionId)
+void Op::vSpawnOperator(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1645,6 +1654,13 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 //    vParticipantHasError(true);
 //    return EC_INVALID_COMMAND;
 //  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pOpLogicUnit = new LogicUnit;
+  m_pOpLogicUnit->vOp(this);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

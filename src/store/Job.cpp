@@ -143,9 +143,9 @@ Job::Job(i8 i_Origin,     // originated on which node
   
   // -- d -------------------
 #ifdef WITH_LOGIC_UNIT_TASK
-  m_pLogicUnit_job = nullptr;
+  m_pJobLogicUnit = nullptr;
 #else
-  m_pLogicUnit_job = nullptr;
+  m_pJobLogicUnit = nullptr;
 #endif
   
   // m_oJobTags
@@ -217,7 +217,7 @@ Job::Job(eCN eClassNo)
   m_pInputOp  = nullptr;
   
   
-  m_pLogicUnit_job = nullptr;
+  m_pJobLogicUnit = nullptr;
 
   //m_xResult
   // -- -- -- -- -- --
@@ -253,7 +253,7 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
-  AM::LOGICUNIT::vDelete(&m_pLogicUnit_job);
+  AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
 
   //if (m_pTask)
   //  vDebugPoint();
@@ -742,9 +742,9 @@ LogicUnit* Job::pLogicUnit_job(void)
   
 #ifdef WITH_LOGIC_UNIT_TASK
   //return m_pTask->pLogicUnit_task();
-  return m_pLogicUnit_job;
+  return m_pJobLogicUnit;
 #else
-  return m_pLogicUnit_job;
+  return m_pJobLogicUnit;
 #endif
 }
 
@@ -756,17 +756,17 @@ void Job::vLogicUnit_job(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_LOGIC_UNIT_TASK
-  ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
+  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
 
   ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
 
-  m_pLogicUnit_job = pLogicUnit;
+  m_pJobLogicUnit = pLogicUnit;
 #else
-  ASSERT(! pLogicUnit || ! m_pLogicUnit_job);
+  ASSERT(! pLogicUnit || ! m_pJobLogicUnit);
 
   ASSERT( (pLogicUnit && m_pTask) || (! pLogicUnit && ! m_pTask) );
 
-  m_pLogicUnit_job = pLogicUnit;
+  m_pJobLogicUnit = pLogicUnit;
 #endif
 }
 
@@ -928,7 +928,7 @@ Pipeline* Job::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Pipeline* pPipeline = * m_pLogicUnit_job->m_xpPipeline;
+  Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
   
   return pPipeline;
 }
@@ -1022,7 +1022,7 @@ void Job::vResetForReuse(Session* pSession)
   m_eJobState = JS_RUNNING;
 
   // -- d -------------------
-  delete m_pLogicUnit_job; m_pLogicUnit_job = nullptr;
+  delete m_pJobLogicUnit; m_pJobLogicUnit = nullptr;
   // m_oJobTags
   // m_xResult ???
   
