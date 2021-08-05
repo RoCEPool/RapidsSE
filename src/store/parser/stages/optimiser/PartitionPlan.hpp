@@ -43,6 +43,7 @@ namespace Parser
     static void vPartitionOrderOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
     static void vPartitionProjectOp(      QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
     static void vPartitionUnionOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
+    static void vPartitionJoinOp(         QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
 
     // Returns true if a given ProjectOp is a "post-project" that simply
     // trims the select list

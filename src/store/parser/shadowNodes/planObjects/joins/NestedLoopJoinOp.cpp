@@ -31,9 +31,9 @@ static Stz* C_NESTEDLOOPJOIN_DEFN = "/__root__/definitions/object/planObject/sql
 /*----------------------------------------------------------------------------*/
 /* Helper function to create this join operator.                              */
 /*----------------------------------------------------------------------------*/
-QueryNode* NestedLoopJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate)
+QueryNode* NestedLoopJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pNestedLoopJoinOp = JoinOp::pCreate(C_NESTEDLOOPJOIN_DEFN, eJoinType, pJoinPredicate);
+  QueryNode* pNestedLoopJoinOp = JoinOp::pCreate(C_NESTEDLOOPJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 

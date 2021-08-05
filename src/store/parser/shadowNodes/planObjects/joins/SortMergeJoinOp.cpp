@@ -31,9 +31,9 @@ static Stz* C_SORTMERGEJOIN_DEFN = "/__root__/definitions/object/planObject/sqlO
 /*----------------------------------------------------------------------------*/
 /* Helper function to create this join operator.                              */
 /*----------------------------------------------------------------------------*/
-QueryNode* SortMergeJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate)
+QueryNode* SortMergeJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pSortMergeJoinOp = JoinOp::pCreate(C_SORTMERGEJOIN_DEFN, eJoinType, pJoinPredicate);
+  QueryNode* pSortMergeJoinOp = JoinOp::pCreate(C_SORTMERGEJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 
