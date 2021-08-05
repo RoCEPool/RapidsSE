@@ -986,7 +986,6 @@ void vTest16(void)
   Task* pImmTask = AM::pTaskNew(pJob);
   
   LogicUnit* pLogicUnit = new LogicUnit;
-  pLogicUnit->vTask(pImmTask);
   pLogicUnit->vJob(pJob);
 
   pJob->vLogicUnit_job(pLogicUnit );
@@ -1034,7 +1033,6 @@ void vTest16(void)
   Task* pImmTask = AM::pTaskNew(pJob); \
   \
   LogicUnit* pLogicUnit = new LogicUnit; \
-  pLogicUnit->vTask(pImmTask); \
   pLogicUnit->vJob(pJob); \
   pJob->vLogicUnit_job(pLogicUnit);\
   \
