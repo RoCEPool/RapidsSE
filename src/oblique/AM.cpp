@@ -500,7 +500,7 @@ void AM::LOGICUNIT::vNew(Task* pTask, Job* pJob)
 
     pLogicUnit->vJob(pJob);
 
-    pJob->vLogicUnit_job(pLogicUnit);
+    pJob->vJobLogicUnit(pLogicUnit);
   }
   else {
     vDebugPoint();

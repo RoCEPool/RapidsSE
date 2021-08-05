@@ -173,8 +173,7 @@ Task::~Task(void) noexcept(false)
     AM::vJobDelete(&pJob);
   }
     
-#ifdef WITH_LOGIC_UNIT_TASK
-  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
 #endif
@@ -217,8 +216,7 @@ void Task::vTaskLoop(void)
   
   if (! bSeeded()) {
 
-#ifdef WITH_LOGIC_UNIT_TASK
-    AM::LOGICUNIT::vNew(this,pJob());
+#ifdef WITH_NO_JOB_FOR_OP
 #else
     AM::LOGICUNIT::vNew(this,pJob());
 #endif
@@ -587,8 +585,7 @@ void Task::vDump(void)
 
 
   // dump the logicUnit registers
-#ifdef WITH_LOGIC_UNIT_TASK
-  m_pJob->m_pJobLogicUnit->vDumpRegisters();
+#ifdef WITH_NO_JOB_FOR_OP
 #else
   m_pJob->m_pJobLogicUnit->vDumpRegisters();
 #endif

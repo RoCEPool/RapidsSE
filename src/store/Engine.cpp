@@ -384,10 +384,9 @@ void Engine::vCallBoot(void)
   
   pLogicUnit->vJob(pJob);
 
-#ifdef WITH_LOGIC_UNIT_TASK
-  pJob->vLogicUnit_job(pLogicUnit );
+#ifdef WITH_NO_JOB_FOR_OP
 #else
-  pJob->vLogicUnit_job(pLogicUnit );
+  pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
   pBootTask->vAddAxioms();
@@ -475,10 +474,9 @@ void Engine::vCallStart(void)
   LogicUnit* pLogicUnit = new LogicUnit;
   pLogicUnit->vJob(pJob);
 
-#ifdef WITH_LOGIC_UNIT_TASK
-  pJob->vLogicUnit_job(pLogicUnit );
+#ifdef WITH_NO_JOB_FOR_OP
 #else
-  pJob->vLogicUnit_job(pLogicUnit );
+  pJob->vJobLogicUnit(pLogicUnit );
 #endif
   
   pJob->vTimerStart();
