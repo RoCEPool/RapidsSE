@@ -77,7 +77,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
   vAddStep("Operand[].newEndRowRhtMarker"_Stz, &Step::vOperandNewEndRowRhtMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
-  vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
+  vAddStep("Operand[].newErroringMarker"_Stz, &Step::vOperandNewErroringMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vOperandNewExitMarker);
   vAddStep("Operand[].newEarlyExitMarker"_Stz,&Step::vOperandNewEarlyExitMarker);
@@ -583,7 +583,7 @@ void Step::vOperandNewEndMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
 
   m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_ENDMARKER);
 
@@ -661,15 +661,15 @@ void Step::vOperandNewEosMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newErrorMarker -- new an error marker                            */
+/* Operand[].newErroringMarker -- new an erroring marker                      */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewErrorMarker(void)
+void Step::vOperandNewErroringMarker(void)
 {
   ENTRY();
   
   ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
   
-  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_ERRORMARKER);
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_ERRORINGMARKER);
   
   EXIT();
 }
@@ -856,7 +856,7 @@ void Step::vOperandNewTrigger(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
 
   m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_TRIGGER);
 
