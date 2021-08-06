@@ -33,7 +33,7 @@ success
 pipeline loopJoinPart
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -52,7 +52,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -74,7 +74,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -98,7 +98,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -123,7 +123,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -146,7 +146,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -171,7 +171,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -226,7 +226,7 @@ success
 pipeline loopJoinPart
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -245,7 +245,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -266,7 +266,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -285,7 +285,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -307,7 +307,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -330,7 +330,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -355,7 +355,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -407,7 +407,7 @@ success
 pipeline loopJoinPart
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -428,7 +428,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -450,7 +450,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -471,7 +471,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -493,7 +493,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -516,7 +516,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -541,7 +541,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -599,7 +599,7 @@ success
 pipeline loopJoinPart
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -624,7 +624,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | hash 0 "type INTEGER $1" | stageC hashcast
@@ -646,7 +646,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -667,7 +667,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | hash 0 "type INTEGER $1" | stageC hashcast
@@ -687,7 +687,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -713,7 +713,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -740,7 +740,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1

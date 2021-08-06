@@ -156,8 +156,8 @@ bool Sends::bEndedDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  if (m_iEndingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_ENDINGMARKER %lld; expected %lld\n"_Stz,
+  if (m_iEndedMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_ENDEDMARKER %lld; expected %lld\n"_Stz,
            m_iEndedMarkers, m_iSends);
 
   if (m_iEndedMarkers == m_iSends) {

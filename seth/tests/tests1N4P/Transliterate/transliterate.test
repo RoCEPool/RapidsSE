@@ -30,7 +30,7 @@ rows: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker4122
   stage stageMarker4122 on all partitions :
     scan rapidsse public datums
@@ -49,7 +49,7 @@ row: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker3358
   stage stageMarker3358 on all partitions :
     scan rapidsse public datums
@@ -68,7 +68,7 @@ row: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker3497
   stage stageMarker3497 on all partitions :
     scan rapidsse public datums
@@ -88,7 +88,7 @@ row: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker3917
   stage stageMarker3917 on all partitions :
     scan rapidsse public datums
@@ -108,7 +108,7 @@ row: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker3668
   stage stageMarker3668 on all partitions :
     scan rapidsse public datums
@@ -127,7 +127,7 @@ row: (*,'transliterate','pipeline unnamed
 begin
   stage startStage on origin :
     start
-    | periodic once
+    | pulse once
     |     stageMarker3212
   stage stageMarker3212 on all partitions :
     scan rapidsse public datums

@@ -24,7 +24,7 @@ load rt "../JTEST/rightTable.csv" ;
 pipeline mergeJoinExp
 begin
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     indexScan 0 lt li | stageD

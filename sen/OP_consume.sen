@@ -106,6 +106,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_ENDMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: consumeOp_EndMarker \handler
+
+  //"Operand:- ZK_ENDMARKER" .verbose
+  Sends[].handlePulsed if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
 : consumeOp_ExitMarker \handler
@@ -177,7 +191,8 @@
 
   find: consumeOp_CancelMarker   ZK_CANCELMARKER  op[].handler!
   find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER op[].handler!
-  find: consumeOp_EndingMarker   ZK_EndingMARKER     op[].handler!
+  find: consumeOp_EndMarker      ZK_ENDMARKER     op[].handler!
+  find: consumeOp_EndingMarker   ZK_ENDINGMARKER     op[].handler!
   find: consumeOp_EosMarker      ZK_EOSMARKER     op[].handler!
   //find: consumeOp_ErrorMarker  ZK_ERRORMARKER   op[].handler!
   find: consumeOp_ExitMarker     ZK_EXITMARKER    op[].handler!

@@ -34,7 +34,7 @@ load  T2 "../DATA/Joins/T2.csv" ;
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >=  " | stageC
@@ -50,7 +50,7 @@ end
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC
@@ -66,7 +66,7 @@ end
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >=  " | stageC
@@ -82,7 +82,7 @@ end
  pipeline loopJoinCo
  begin
    stage stageA on origin :
-     start | periodic once | stageB
+     start | pulse once | stageB
 
    stage stageB on all partitions :
      scan T1 | stageC
@@ -135,7 +135,7 @@ load  T2 "../DATA/Joins/T2.csv" ;
 pipeline loopJoinPart
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -182,7 +182,7 @@ load  T2 "../DATA/Joins/T2.csv" ;
 pipeline loopJoinBroad
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -203,7 +203,7 @@ end;
 pipeline loopJoinEXPCAST
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
@@ -257,7 +257,7 @@ load  T2 "../DATA/Joins/T2.csv" ;
 pipeline indexJoinP
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC
@@ -274,7 +274,7 @@ end;
 pipeline indexJoinP
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >=" | stageC

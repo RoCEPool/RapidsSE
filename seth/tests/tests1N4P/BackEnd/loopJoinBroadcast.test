@@ -33,7 +33,7 @@ success
 pipeline loopJoinBroad
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -53,7 +53,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -72,7 +72,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -91,7 +91,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -110,7 +110,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -132,7 +132,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -157,7 +157,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -213,7 +213,7 @@ success
 pipeline loopJoinBroad
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -233,7 +233,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -252,7 +252,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -271,7 +271,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -290,7 +290,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -312,7 +312,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -337,7 +337,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -389,7 +389,7 @@ success
 pipeline loopJoinBroad
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -409,7 +409,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -428,7 +428,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC
@@ -447,7 +447,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -466,7 +466,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -488,7 +488,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -513,7 +513,7 @@ rows: 0
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -571,7 +571,7 @@ success
 pipeline loopJoinBroad
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -597,7 +597,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -619,7 +619,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | stageC broadcast
@@ -640,7 +640,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1 | filter 0 "type boolean $2 500 >= " | stageC broadcast
@@ -660,7 +660,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -685,7 +685,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1
@@ -712,7 +712,7 @@ rows:
 pipeline loopJoinCo
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T1

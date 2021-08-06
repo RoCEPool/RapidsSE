@@ -58,7 +58,7 @@
   begin
 
     stage stageA on origin :
-      start | periodic once | stageB
+      start | pulse once | stageB
 
     stage stageB on all nodes :
       /liteOp/ | stageC
@@ -82,7 +82,7 @@
   begin
 
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all nodes :
     /liteOp/ $param | stageC
@@ -106,7 +106,7 @@
   begin
 
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all nodes :
     /liteOp/ $param0 $param1 | stageC

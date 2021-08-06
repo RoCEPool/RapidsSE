@@ -139,34 +139,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEDMARKER ...                                            */
+/* handler for ZK_ENDMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: sink_PulsedMarker \handler
+: sink_EndMarker \handler
 
-  //"Operand:- ZK_PULSEDMARKER" .verbose
+  //"Operand:- ZK_ENDMARKER" .verbose
+  Pipein[].delete
 
   // check if sink has already been errored
   Pipeline::errored@ if
-    Pipein[].delete
     true
     exit
   then
 
   // check if sink has already been exitEarly
   Pipeline::earlyExit@ if
-    Pipein[].delete
     true
     exit
   then
 
   // check if sink has already been cancelled
   Pipeline::cancelled@ if
-    Pipein[].delete
     true
     exit
   then
 
-  PipeIn[].pipeOut
+  Operand[].newEndingMarker
+  Operand[].pipeOut
   true
 ;
 
@@ -196,11 +195,11 @@
 
   find: sink_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: sink_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: sink_EndMarker     ZK_ENDMARKER  op[].handler!
   find: sink_EndingMarker  ZK_ENDINGMARKER  op[].handler!
   find: sink_ErrorMarker   ZK_ERRORMARKER   op[].handler!
   find: sink_ExitMarker    ZK_EXITMARKER    op[].handler!
   find: sink_EarlyExitMarker ZK_EARLYEXITMARKER  op[].handler!
-  find: sink_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
   find: sink_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop

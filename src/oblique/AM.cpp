@@ -591,7 +591,7 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on origin :\n"
     "    start\n"
-    "    | periodic once\n"
+    "    | pulse once\n"
     "    | stageB\n"
     ""_Stz,
   cStageStart);
@@ -2383,6 +2383,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_STARTMARKER:        eOperand = ZK_STARTMARKER;        break;
         case OM_START_ROWRHTMARKER: eOperand = ZK_START_ROWRHTMARKER; break;
         //case OM_STREAMDEFRHT:   eOperand = ZK_STREAMDEFRHT;    break;
+        case OM_TRIGGER:            eOperand = ZK_TRIGGER;            break;
         default:
           RASSERT(0);
       }

@@ -12,7 +12,7 @@
     stage stageA on origin :
     
         start
-      | periodic once
+      | pulse once
       | stageB
 
     stage stageB on all nodes :

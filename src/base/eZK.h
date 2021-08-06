@@ -70,6 +70,7 @@ enum eZK // operand kind
   /*    */ ZK_STREAMSET,
   /*    */ ZK_TABLE,
   /*    */ ZK_TOTALUNITS,
+  /*    */ ZK_TRIGGER,
   /*    */ ZK_ENUMS
 };
 
@@ -140,6 +141,7 @@ static Stz* aZK[]
   /*    */ "ZK_STREAMSET"_Stz,
   /*    */ "ZK_TABLE"_Stz,
   /*    */ "ZK_TOTALUNITS"_Stz,
+  /*    */ "ZK_TRIGGER"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

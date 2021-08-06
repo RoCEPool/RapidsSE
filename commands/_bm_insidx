@@ -43,7 +43,7 @@ print "** 4/7) execute bm_insidx pipeline";
 pipeline bm_insidx
 begin
   stage stageA on origin:
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions:
       BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int 10

@@ -8,7 +8,7 @@ pipeline nestTest
 begin
 
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan Left | filter | nested | stageC
@@ -23,7 +23,7 @@ begin
   begin
 
     stage stageA on origin :
-      start | periodic once | eachRow | stageB
+      start | pulse once | eachRow | stageB
 
     stage stageB on origin :
       eachScan Right | filter | eachJoin | stageC

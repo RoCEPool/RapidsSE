@@ -71,6 +71,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
+  vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
   vAddStep("Operand[].newEndingMarker"_Stz, &Step::vOperandNewEndingMarker);
   vAddStep("Operand[].newEndedMarker"_Stz, &Step::vOperandNewEndedMarker);
   vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
@@ -89,6 +90,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
   vAddStep("Operand[].newStartRowRhtMarker"_Stz, &Step::vOperandNewStartRowRhtMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
+  vAddStep("Operand[].newTrigger"_Stz,     &Step::vOperandNewTrigger);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
@@ -575,6 +577,20 @@ void Step::vOperandNewEachScanEosMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newEnd -- new an end marker                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_ENDMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newEnded -- new an ended marker                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEndedMarker(void)
@@ -830,6 +846,20 @@ void Step::vOperandNewStreamDef(void)
   else
     m_pJob->pJobLogicUnit()->m_xpOperandA = new StreamDef(m_pJob->pJobLogicUnit()->m_xpTable->pStreamDef());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newTrigger -- new a trigger marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewTrigger(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_TRIGGER);
+
   EXIT();
 }
 

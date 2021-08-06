@@ -15,7 +15,7 @@ pipeline p_passthru
 begin
 
   stage stageA on origin:
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on origin:
     bufferGen 10 | passThru | stageC

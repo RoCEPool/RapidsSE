@@ -11,7 +11,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
@@ -59,7 +59,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
@@ -97,7 +97,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
@@ -126,7 +126,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
@@ -168,7 +168,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
@@ -205,7 +205,7 @@ pipeline unionAll
    begin
 
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
     scan lineitem
