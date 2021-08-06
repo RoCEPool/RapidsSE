@@ -1122,13 +1122,20 @@ void Task::vSeedTask(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = AM::szJobSeed(m_pJob);
+  Stz* szSeed = nullptr;
+  if (m_pJob.bIsNotNull())
+    szSeed = AM::JOB::szJobSeed(m_pJob);
+  else
+  if (m_pOp.bIsNotNull())
+    szSeed = AM::OP::szOpSeed(m_pOp);
+  else
+    NEVER_REACH;
   
   //vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
   
   if (! pSeedWord) {
-    AM::szJobSeed(m_pJob);
+    AM::JOB::szJobSeed(m_pJob);
     
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);

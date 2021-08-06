@@ -248,6 +248,7 @@ namespace OBLIQUE
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static Stz* szJobSeed(Job* pJob);
       static eEC  ePreExecuteTest(Job* pJob);
     };
   
@@ -271,6 +272,12 @@ namespace OBLIQUE
     {
     public:
       static i8 iNextNo(eCN eClassNo);
+    };
+
+    class OP
+    {
+    public:
+      static Stz* szOpSeed(Op* pOp);
     };
 
     class OPERAND
@@ -526,7 +533,6 @@ namespace OBLIQUE
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);
     static Stz* szJobOpNm(Job* pJob);
-    static Stz* szJobSeed(Job* pJob);
     static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
