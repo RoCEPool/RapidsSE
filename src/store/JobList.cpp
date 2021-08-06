@@ -277,6 +277,12 @@ void JobList::vSee(void)
              );
     }
     
+    vTrace("Acks %lld/%lld"_Stz
+           ,pJob->iAcksOriginal()
+           ,pJob->iAcksRmg_printOnlyValue()
+           );
+
+
     vTrace("\n"_Stz);
   }
   
