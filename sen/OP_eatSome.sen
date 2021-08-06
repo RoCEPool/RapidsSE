@@ -30,8 +30,9 @@
 //  pEatSomeHandler ZK_CANCELLEDMARKER  op[].handler!
     pEatSomeHandler ZK_CRWBUFFER        op[].handler!
     pEatSomeHandler ZK_CSVBUFFER        op[].handler!
-//  pEatSomeHandler ZK_EARLYEXITEDMARKER  op[].handler!
-//  pEatSomeHandler ZK_EARLYEXITINGMARKER op[].handler!
+//  pEatSomeHandler ZK_LEAVEMARKER      op[].handler!
+//  pEatSomeHandler ZK_LEAVINGMARKER    op[].handler!
+//  pEatSomeHandler ZK_LEFTMARKER       op[].handler!
 //  pEatSomeHandler ZK_ENDMARKER        op[].handler!
 //  pEatSomeHandler ZK_ENDEDMARKER      op[].handler!
 //  pEatSomeHandler ZK_ENDINGMARKER     op[].handler!

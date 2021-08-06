@@ -811,8 +811,8 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_EARLYEXITEDMARKER:
-      // Only StartOP receives an ZK_EARLYEXITEDMARKER
+    case ZK_LEFTMARKER:
+      // Only StartOP receives an ZK_LEFTMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);

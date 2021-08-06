@@ -97,16 +97,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EARLYEXITEDMARKER ...                                       */
+/* handler for ZK_LEFTMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: start_EarlyExitedMarker \handler
+: start_LeftMarker \handler
 
-  //"Operand:- ZK_EARLYEXITEDMARKER" .verbose
+  //"Operand:- ZK_LEFTMARKER" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
   Operand[].newCleanupMarker
   Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_LEAVINGMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: start_LeavingMarker \handler
+
+  //"Operand:- ZK_LEAVINGMARKER" .verbose
+
+  // pipeline should not be cancelled
+  Pipeline::cancelled@ not assert
+
+  // pipeline should not be errored
+  Pipeline::errored@ not assert
+
+  // pipeline should have exited early
+  Pipeline::earlyExit@ assert
+
+  // mark pipeline as being pulsed
+  true Pipeline::pulsed!
+
+  // now pipeout the leaving marker
+  Pipein[].pipeOut
 
   true
 ;
@@ -161,11 +186,12 @@
   find: start_CancelMarker      ZK_CANCELMARKER      op[].handler!
   find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
   find: start_CleanedupMarker   ZK_CLEANEDUPMARKER   op[].handler!
-  find: start_EarlyExitedMarker ZK_EARLYEXITEDMARKER op[].handler!
   find: start_EndingMarker      ZK_ENDINGMARKER      op[].handler!
   find: start_EndedMarker       ZK_ENDEDMARKER       op[].handler!
   find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
   find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
+  find: start_LeavingMarker     ZK_LEAVINGMARKER     op[].handler!
+  find: start_LeftMarker        ZK_LEFTMARKER        op[].handler!
   find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
 
   find: INVALID_OPERAND_handler ZK_CRWBUFFER       op[].handler!

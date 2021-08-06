@@ -530,13 +530,13 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
     return false;
   
   Marker* pMarker = _pMarker(pOperand);
-  if (pMarker->eOpMarker() == OM_CANCELMARKER) // OM_CANCELLINGMARKER
+  if (pMarker->eOpMarker() == OM_CANCELMARKER)
     return true;
 
   if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
     return true;
 
-  if (pMarker->eOpMarker() == OM_EARLYEXITINGMARKER) // LEAVINGMARKER
+  if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
     return true;
 
   if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)

@@ -124,31 +124,30 @@
   //"Operand:- ZK_LEAVEMARKER" .verbose
   PipeIn[].delete
 
-/*
-  // check if start has already been exited early
-  Pipeline::earlyExit@ not if
-
-    //grid::thisNodeName@ "(%v) sinkOP got early exit marker" .printf
-
-    // mark pipeline as being earlyExit
-    true Pipeline::earlyExit!
-
-    // now pipeout an exit marker
-    Operand[].newExitedEarlyMarker
-    Operand[].pipeOut
-
-  then
-*/
-
    // mark pipeline as being earlyExit
    true Pipeline::earlyExit!
 
-   // now pipeout an exit marker
-   Operand[].newExitedEarlyMarker
+   // now pipeout a leaving marker
+   Operand[].newLeavingMarker
    Operand[].pipeOut
 
   find: sink_Xyz  ZK_STARTMARKER op[].handler!
   find: sink_Xyz  ZK_DATAPULSE op[].handler!
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_LEAVINGMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: sink_LeavingMarker \handler
+
+  //"Operand:- ZK_LEAVINGMARKER" .verbose
+  PipeIn[].delete
+
+  // now pipeout an exit marker
+  Operand[].newLeftMarker
+  Operand[].pipeOut
 
   true
 ;
@@ -216,6 +215,7 @@
   find: sink_ErroringMarker  ZK_ERRORINGMARKER  op[].handler!
   find: sink_ExitMarker      ZK_EXITMARKER      op[].handler!
   find: sink_LeaveMarker     ZK_LEAVEMARKER     op[].handler!
+  find: sink_LeavingMarker   ZK_LEAVINGMARKER   op[].handler!
   find: sink_StartMarker     ZK_STARTMARKER     op[].handler!
 
   op__loop
