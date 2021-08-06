@@ -5,6 +5,21 @@
 " OP_bloat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CLEANUPMARKER ...                                                    */
+/*----------------------------------------------------------------------------*/
+: bloat_cleanup \handler
+
+  task::seeFrameStack
+
+  debug::bloatCleanup
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_Xyz ...                                                              */
 /*----------------------------------------------------------------------------*/
 : bloat_bloat \handler
@@ -27,7 +42,8 @@
 
   op__topology
 
-  find: bloat_bloat  ZK_CRWBUFFER  op[].handler!
+  find: bloat_bloat    ZK_CRWBUFFER     op[].handler!
+  find: bloat_cleanup  ZK_CLEANUPMARKER op[].handler!
 
   op__loop
 

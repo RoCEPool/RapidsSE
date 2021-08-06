@@ -188,6 +188,7 @@ public:
 
   // debug
   void vDebugBloat(void);
+  void vDebugBloatCleanup(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
   void vDebugThrow(void);
@@ -1051,7 +1052,7 @@ public:
   void vOperandNewEndCrwRhtMarker(void);
   void vOperandNewEndRowRhtMarker(void);
   void vOperandNewEosMarker(void);
-  void vOperandNewErrorMarker(void);
+  void vOperandNewErroringMarker(void);
   void vOperandNewErroredMarker(void);
   void vOperandNewExitMarker(void);
   void vOperandNewEarlyExitMarker(void);
@@ -1271,7 +1272,7 @@ public:
   void vRegSendsHandleEnded(void);
   void vRegSendsHandleEnding(void);
   void vRegSendsHandleEos(void);
-  void vRegSendsHandleError(void);
+  void vRegSendsHandleErroring(void);
   void vRegSendsHandleExit(void);
   void vRegSendsHandleDataPulse(void);
   void vRegSendsHandlePulsed(void);

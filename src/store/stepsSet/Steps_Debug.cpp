@@ -18,6 +18,7 @@
 void Step::vAddSteps_Debug(void)
 {
   vAddStep("debug::bloat"_Stz,       &Step::vDebugBloat);
+  vAddStep("debug::bloatCleanup"_Stz, &Step::vDebugBloatCleanup);
   vAddStep("debug::breakpoint"_Stz,  &Step::vDebugBreakpoint);
   vAddStep("debug::flag@"_Stz,       &Step::vDebugFlagFetch);
   vAddStep("debug::flag!"_Stz,       &Step::vDebugFlagStore);
@@ -26,7 +27,7 @@ void Step::vAddSteps_Debug(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::bloat -- throw an exception                                         */
+/* debug::bloat -- hog memory and bloat                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vDebugBloat(void)
 {
@@ -34,12 +35,40 @@ void Step::vDebugBloat(void)
 
   RowBuffer* pRowBuffer = new RowBuffer();
   m_pJob->pJobLogicUnit()->m_xpMemoryHog = pRowBuffer;
+  i8 i = 0;
 
   while (true) {
     RowBuffer* pNewRowBuffer = new RowBuffer();
+    i++;
     pRowBuffer->vNextRowBuffer(pNewRowBuffer);
     pRowBuffer = pNewRowBuffer;
   }
+
+  vTrace("HOGGED %lld\n"_Stz, i);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* debug::bloatCleanup -- cleanup the bloat                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vDebugBloatCleanup(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pJobLogicUnit()->m_xpMemoryHog);
+  RowBuffer* pNextRowBuffer;
+  i8 i = 0;
+
+  while (pRowBuffer) {
+    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
+    delete pRowBuffer;
+    i++;
+    pRowBuffer = pNextRowBuffer;
+  }
+
+  vTrace("DELETED %lld\n"_Stz, i);
+
+  m_pJob->pJobLogicUnit()->m_xpMemoryHog = nullptr;
 
   EXIT();
 }
