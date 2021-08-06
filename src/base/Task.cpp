@@ -261,13 +261,13 @@ void Task::vVerifyTaskComposition(void)
   RASSERT(CN_TASK == eGetClassNo());
   aFooter()->vAssertFooter();
   
-  if (*m_pJob) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
     m_pJob->vVerifyJobComposition();
   }
   else
-  if (*m_pOp) {
-    RASSERT(! *m_pJob);
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
     m_pOp->vVerifyOpComposition();
   }
   else {

@@ -6,6 +6,7 @@
 #include "ePX.h"
 #include "eXK.h"
 #include "eZK.h"
+#include "eSS.h"
 
 namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
@@ -33,6 +34,7 @@ namespace STORE
   
     TagSet    m_oOpTags; // tags for the op
     Task*     m_pTask;   // which task
+    eSS       m_eSeed;   // seed to spawn
 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

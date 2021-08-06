@@ -75,6 +75,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // m_oOpTags
   m_pTask = nullptr;
   
+  m_eSeed = SS_SEED_REQ;
+  
   // -- -- -- -- -- --
 
   m_bPulsedLimit  = false;
@@ -1677,27 +1679,27 @@ void Op::vSpawnTaskForOp(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // create a new Job for the Op
-  m_pOpJob = AM::pNewJobOp(this,
-                         AM::GRID::iThisNodeNo(),
-                         iSessionId,
-                         1
-                         );
-  
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  pOpJobTagSet->vCopy(&m_oOpTags);
+//  m_pOpJob = AM::pNewJobOp(this,
+//                         AM::GRID::iThisNodeNo(),
+//                         iSessionId,
+//                         1
+//                         );
+//
+//  // get the operator job tag set
+//  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+//  pOpJobTagSet->vCopy(&m_oOpTags);
 
   if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
-    AM::vSpawnTaskDedicated_job(m_pOpJob);
-    m_pTask = AM::pExecutingTask(m_pOpJob);
-    RASSERT(m_pTask->pJob() == m_pOpJob);
-    m_pTask->vOp(this);
+    AM::vSpawnTaskDedicated_op(this);
+//    m_pTask = AM::pExecutingTask(m_pOpJob);
+//    RASSERT(m_pTask->pJob() == m_pOpJob);
+//    m_pTask->vOp(this);
   }
   else {
-    AM::vSpawnTask_job(m_pOpJob);
-    m_pTask = AM::pExecutingTask(m_pOpJob);
-    RASSERT(m_pTask->pJob() == m_pOpJob);
-    m_pTask->vOp(this);
+    AM::vSpawnTask_op(this);
+//    m_pTask = AM::pExecutingTask(m_pOpJob);
+//    RASSERT(m_pTask->pJob() == m_pOpJob);
+//    m_pTask->vOp(this);
   }
   
 }
