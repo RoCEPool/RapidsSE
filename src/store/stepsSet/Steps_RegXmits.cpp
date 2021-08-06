@@ -43,10 +43,10 @@ void Step::vRegSendsDelete(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   delete pSends;
   
-  m_pJob->pJobLogicUnit()->m_xpSends = nullptr;
+  m_p_TaskLogicUnit->m_xpSends = nullptr;
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vRegSendsGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpSends);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpSends);
   
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vRegSendsHandleCancel(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
  
   pSends->vIncCancel();
   
@@ -86,7 +86,7 @@ void Step::vRegSendsHandleCleanup(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
 
   pSends->vIncCleanup();
 
@@ -102,7 +102,7 @@ void Step::vRegSendsHandleDestroy(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncDestroy();
   
@@ -118,7 +118,7 @@ void Step::vRegSendsHandleEnded(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
 
   pSends->vIncEnded();
 
@@ -134,7 +134,7 @@ void Step::vRegSendsHandleEnding(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
 
   pSends->vIncEnding();
 
@@ -150,7 +150,7 @@ void Step::vRegSendsHandleEos(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncEos();
   
@@ -166,7 +166,7 @@ void Step::vRegSendsHandleErroring(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncErroring();
   
@@ -182,7 +182,7 @@ void Step::vRegSendsHandleExit(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncExit();
   
@@ -198,7 +198,7 @@ void Step::vRegSendsHandleDataPulse(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   m_pDataStack->vPushInt(pSends->bDataPulseDone());
   pSends->vIncDataPulse();
@@ -213,7 +213,7 @@ void Step::vRegSendsHandlePulsed(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncPulsed();
   
@@ -229,7 +229,7 @@ void Step::vRegSendsHandleStart(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   bool bStartDone = pSends->bStartDone();
   pSends->vIncStart();
@@ -246,7 +246,7 @@ void Step::vRegSendsHandleStreamDef(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   bool bStreamDefDone = pSends->bStreamDefDone();
   
@@ -264,7 +264,7 @@ void Step::vRegSendsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_xpSends.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -276,11 +276,11 @@ void Step::vRegSendsNew(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pJobLogicUnit()->m_xpSends.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpSends.bIsNull());
   
   i8 iSends = m_pDataStack->iPopInt(__func__);
   
-  m_pJob->pJobLogicUnit()->m_xpSends = new Sends(iSends);
+  m_p_TaskLogicUnit->m_xpSends = new Sends(iSends);
   
   EXIT();
 }

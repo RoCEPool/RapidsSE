@@ -35,7 +35,7 @@ void Step::vExprEvalGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpExprEval);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpExprEval);
 
   EXIT();
 }
@@ -47,8 +47,8 @@ void Step::vExprEvalDelete(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_pJob->pJobLogicUnit()->m_xpExprEval;
-  m_pJob->pJobLogicUnit()->m_xpExprEval = nullptr;
+  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
+  m_p_TaskLogicUnit->m_xpExprEval = nullptr;
   delete pExprEval;
   
   EXIT();
@@ -61,7 +61,7 @@ void Step::vExprEvalEvaluate(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_pJob->pJobLogicUnit()->m_xpExprEval;
+  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -84,7 +84,7 @@ void Step::vExprEvalEvaluateIndexJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_pJob->pJobLogicUnit()->m_xpExprEval;
+  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -109,7 +109,7 @@ void Step::vExprEvalEvaluateIndexScan(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_pJob->pJobLogicUnit()->m_xpExprEval;
+  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
@@ -131,7 +131,7 @@ void Step::vExprEvalEvaluateLoopJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_pJob->pJobLogicUnit()->m_xpExprEval;
+  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -154,7 +154,7 @@ void Step::vExprEvalNew(void)
 {
   ENTRY();
 
-  m_pJob->pJobLogicUnit()->m_xpExprEval = new ExprEval;
+  m_p_TaskLogicUnit->m_xpExprEval = new ExprEval;
 
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vExprEvalSet(void)
 {
   ENTRY();
 
-  m_pJob->pJobLogicUnit()->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+  m_p_TaskLogicUnit->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

@@ -44,9 +44,9 @@ void Step::vStreamDefRhtDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pJob->pJobLogicUnit()->m_xpStreamDefRht);
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpStreamDefRht);
   
-  m_pJob->pJobLogicUnit()->m_xpStreamDefRht = nullptr;
+  m_p_TaskLogicUnit->m_xpStreamDefRht = nullptr;
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vStreamDefRhtGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpStreamDefRht);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpStreamDefRht);
   
   EXIT();
 }
@@ -70,9 +70,9 @@ void Step::vStreamDefRhtGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pJob->pJobLogicUnit()->m_xpStreamDefRht);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpStreamDefRht);
 
-  m_pJob->pJobLogicUnit()->m_xpStreamDefRht = nullptr;
+  m_p_TaskLogicUnit->m_xpStreamDefRht = nullptr;
 
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vStreamDefRhtIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_xpStreamDefRht.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -96,11 +96,11 @@ void Step::vStreamDefRhtNew(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pJobLogicUnit()->m_xpStreamDefRht.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  m_pJob->pJobLogicUnit()->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
+  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
 
   EXIT();
 }
@@ -112,7 +112,7 @@ void Step::vStreamDefRhtPrint(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pJobLogicUnit()->m_xpStreamDefRht);
+  StreamDef* pStreamDef = _pStreamDef(*m_p_TaskLogicUnit->m_xpStreamDefRht);
   
   pStreamDef->vPrint();
 
@@ -126,7 +126,7 @@ void Step::vStreamDefRhtSet(void)
 {
   ENTRY();
   
-  m_pJob->pJobLogicUnit()->m_xpStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_p_TaskLogicUnit->m_xpStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

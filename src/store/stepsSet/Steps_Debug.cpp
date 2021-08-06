@@ -34,7 +34,7 @@ void Step::vDebugBloat(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = new RowBuffer();
-  m_pJob->pJobLogicUnit()->m_xpMemoryHog = pRowBuffer;
+  m_p_TaskLogicUnit->m_xpMemoryHog = pRowBuffer;
   i8 i = 0;
 
   while (true) {
@@ -55,7 +55,7 @@ void Step::vDebugBloatCleanup(void)
 {
   ENTRY();
 
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pJobLogicUnit()->m_xpMemoryHog);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpMemoryHog);
   RowBuffer* pNextRowBuffer;
   i8 i = 0;
 
@@ -68,7 +68,7 @@ void Step::vDebugBloatCleanup(void)
 
   vTrace("DELETED %lld\n"_Stz, i);
 
-  m_pJob->pJobLogicUnit()->m_xpMemoryHog = nullptr;
+  m_p_TaskLogicUnit->m_xpMemoryHog = nullptr;
 
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vDebugFlagFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pJob->pJobLogicUnit()->m_iDebugFlag);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_iDebugFlag);
   
   EXIT();
 }
@@ -103,7 +103,7 @@ void Step::vDebugFlagStore(void)
 {
   ENTRY();
 
-  m_pJob->pJobLogicUnit()->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
+  m_p_TaskLogicUnit->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

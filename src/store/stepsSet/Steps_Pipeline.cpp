@@ -92,7 +92,7 @@ void Step::vPipelineCompileStmt(void)
   sSTMT sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
-  LogicUnit* pLogicUnit = m_pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
@@ -153,7 +153,7 @@ void Step::vPipelineCompileStmt(void)
 //  m_pDataStack->vPopStr(sPipelineStmt,__func__);
 //
 //
-//  LogicUnit* pLogicUnit = m_pJob->pJobLogicUnit();
+//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
 //
 //  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
 //
@@ -206,7 +206,7 @@ void Step::vPipelineDeleteSpec(void)
 {
   ENTRY();
   
-  LogicUnit* pLogicUnit = m_pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
   if (*pLogicUnit->m_xpPipelineSpec) {
     delete *pLogicUnit->m_xpPipelineSpec;
@@ -224,7 +224,7 @@ void Step::vPipelineEnqueueStart(void)
   ENTRY();
   
   
-  LogicUnit* pLogicUnit = m_pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
     
   Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
     
@@ -380,7 +380,7 @@ void Step::vPipelineSpawnOps(void)
   ENTRY();
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  LogicUnit* pLogicUnit = m_pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
