@@ -720,9 +720,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENDMARKER"_Stz,       ZK_ENDMARKER);
   /*  0 */ vAddConstant("ZK_ENDEDMARKER"_Stz,     ZK_ENDEDMARKER);
-  /*  0 */ vAddConstant("ZK_ENDINGMARKER"_Stz,     ZK_ENDINGMARKER);
-  /*  0 */ vAddConstant("ZK_END_CRWRHTMARKER"_Stz,  ZK_END_CRWRHTMARKER);
-  /*  0 */ vAddConstant("ZK_END_ROWRHTMARKER"_Stz,  ZK_END_ROWRHTMARKER);
+  /*  0 */ vAddConstant("ZK_ENDINGMARKER"_Stz,    ZK_ENDINGMARKER);
+  /*  0 */ vAddConstant("ZK_END_CRWRHTMARKER"_Stz,ZK_END_CRWRHTMARKER);
+  /*  0 */ vAddConstant("ZK_END_ROWRHTMARKER"_Stz,ZK_END_ROWRHTMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
   /*  0 */ vAddConstant("ZK_ERROREDMARKER"_Stz,   ZK_ERROREDMARKER);
@@ -733,6 +733,10 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_GRID"_Stz,            ZK_GRID);
   /*  0 */ vAddConstant("ZK_INDEX"_Stz,           ZK_INDEX);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
+  /*  0 */ vAddConstant("ZK_LEAVEMARKER"_Stz,     ZK_LEAVEMARKER);
+  /*  0 */ vAddConstant("ZK_LEAVINGMARKER"_Stz,  ZK_LEAVINGMARKER);
+  /*  0 */ vAddConstant("ZK_LEFTMARKER"_Stz,     ZK_LEFTMARKER);
+
   /*  0 */ vAddConstant("ZK_LEFTOUTER_CRWLFT"_Stz,  ZK_LEFTOUTER_CRWLFT);
   /*  0 */ vAddConstant("ZK_LEFTOUTER_ROWLFT"_Stz,  ZK_LEFTOUTER_ROWLFT);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
