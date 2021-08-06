@@ -62,7 +62,7 @@
     LogicUnit[].compilerToExit if
       Pipein[].delete
       Operand[].delete
-      Operand[].newEarlyExitMarker
+      Operand[].newLeaveMarker
       Operand[].pipeout
       true
       exit
