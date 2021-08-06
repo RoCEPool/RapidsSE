@@ -1055,9 +1055,7 @@ public:
   void vOperandNewErroringMarker(void);
   void vOperandNewErroredMarker(void);
   void vOperandNewExitMarker(void);
-  void vOperandNewEarlyExitMarker(void);
   void vOperandNewExitedMarker(void);
-  void vOperandNewExitedEarlyMarker(void);
   void vOperandNewLeaveMarker(void);
   void vOperandNewLeavingMarker(void);
   void vOperandNewLeftMarker(void);

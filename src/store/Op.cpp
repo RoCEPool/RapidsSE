@@ -782,7 +782,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_EARLYEXITMARKER:
+    case ZK_LEAVEMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,

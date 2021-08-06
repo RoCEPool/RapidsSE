@@ -456,11 +456,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           break;
         }
 
-        case OM_EARLYEXITMARKER: {
-          NEVER_REACH
-          break;
-        }
-
         case OM_PULSEDMARKER: {
           //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);

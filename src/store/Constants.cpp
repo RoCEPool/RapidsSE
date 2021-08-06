@@ -714,9 +714,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EACHROWMARKER"_Stz,   ZK_EACHROWBUFFER);
   /*  0 */ vAddConstant("ZK_EACHSCANEOSMARKER"_Stz,ZK_EACHSCANEOSMARKER);
   /*  0 */ vAddConstant("ZK_EACHROWBUFFER"_Stz,   ZK_EACHROWBUFFER);
-  /*  0 */ vAddConstant("ZK_EARLYEXITMARKER"_Stz, ZK_EARLYEXITMARKER);
-  /*  0 */ vAddConstant("ZK_EARLYEXITINGMARKER"_Stz,ZK_EARLYEXITINGMARKER);
-  /*  0 */ vAddConstant("ZK_EARLYEXITEDMARKER"_Stz,ZK_EARLYEXITEDMARKER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENDMARKER"_Stz,       ZK_ENDMARKER);
   /*  0 */ vAddConstant("ZK_ENDEDMARKER"_Stz,     ZK_ENDEDMARKER);

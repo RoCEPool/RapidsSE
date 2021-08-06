@@ -2416,9 +2416,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_ERROREDMARKER:      eOperand = ZK_ERROREDMARKER;      break;
         case OM_ERRORINGMARKER:     eOperand = ZK_ERRORINGMARKER;     break;
         case OM_EXITMARKER:         eOperand = ZK_EXITMARKER;         break;
-        case OM_EARLYEXITMARKER:    eOperand = ZK_EARLYEXITMARKER;    break;
-        case OM_EARLYEXITEDMARKER:  eOperand = ZK_EARLYEXITEDMARKER;  break;
-        case OM_EARLYEXITINGMARKER: eOperand = ZK_EARLYEXITINGMARKER; break;
         case OM_EXITEDMARKER:       eOperand = ZK_EXITEDMARKER;       break;
         case OM_LEAVEMARKER:        eOperand = ZK_LEAVEMARKER;        break;
         case OM_LEAVINGMARKER:      eOperand = ZK_LEAVINGMARKER;      break;

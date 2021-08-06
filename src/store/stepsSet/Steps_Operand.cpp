@@ -80,9 +80,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newErroringMarker"_Stz, &Step::vOperandNewErroringMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vOperandNewExitMarker);
-  vAddStep("Operand[].newEarlyExitMarker"_Stz,&Step::vOperandNewEarlyExitMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
-  vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
   vAddStep("Operand[].newLeaveMarker"_Stz,&Step::vOperandNewLeaveMarker);
   vAddStep("Operand[].newLeavingMarker"_Stz,&Step::vOperandNewLeavingMarker);
   vAddStep("Operand[].newLeftMarker"_Stz,&Step::vOperandNewLeftMarker);
@@ -706,20 +704,6 @@ void Step::vOperandNewExitMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEarlyExitMarker -- new an exit early marker                   */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewEarlyExitMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EARLYEXITMARKER);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].newExitedMarker -- new an exited marker                          */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewExitedMarker(void)
@@ -730,20 +714,6 @@ void Step::vOperandNewExitedMarker(void)
   
   m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITEDMARKER);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newExitedEarlyMarker -- new an exited early marker               */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewExitedEarlyMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EARLYEXITEDMARKER);
-
   EXIT();
 }
 
