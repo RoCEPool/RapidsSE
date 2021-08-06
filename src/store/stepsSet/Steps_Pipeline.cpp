@@ -56,8 +56,12 @@ void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been cancelled
@@ -73,8 +77,12 @@ void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
@@ -280,7 +288,11 @@ void Step::vPipelineEarlyExitFetch(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
 
@@ -297,7 +309,11 @@ void Step::vPipelineEarlyExitStore(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
 
@@ -313,8 +329,12 @@ void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been errored
@@ -330,8 +350,12 @@ void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
@@ -346,8 +370,12 @@ void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been pulsed
@@ -363,8 +391,12 @@ void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));

@@ -158,7 +158,11 @@ void Step::vErrorMarkerPipeOut(void)
 
   ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
 
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpErrorMarker,this);
 
@@ -176,8 +180,12 @@ void Step::vErrorMarkerPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpErrorMarker);
   
   m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;

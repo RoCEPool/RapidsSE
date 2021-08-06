@@ -810,10 +810,15 @@ void Step::vOperandNewStartMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Operand* pOperand = new Marker(OM_STARTMARKER);
   m_p_TaskLogicUnit->m_xpOperandA = pOperand;
 
-  Op* pOp = m_pJob->m_pOp;
   pOp->vOpTrace(pOperand,(Stz*)__func__,true);
 
   EXIT();
@@ -903,8 +908,12 @@ void Step::vOperandPipeOutSet(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
   
   m_p_TaskLogicUnit->m_xpOperandA = nullptr;
@@ -921,8 +930,12 @@ void Step::vOperandPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
   
   m_p_TaskLogicUnit->m_xpOperandA = nullptr;
@@ -981,7 +994,11 @@ void Step::vOperandToParcel(void)
 {
   ENTRY();
   
-  Op* pSrcOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -989,8 +1006,8 @@ void Step::vOperandToParcel(void)
 
   pParcel->vAddItem(pOperand);
   
-  pParcel->vLabel(pSrcOp->eCrossTopo(),
-                  pSrcOp->pPipelineJob()->iJobId());
+  pParcel->vLabel(pOp->eCrossTopo(),
+                  pOp->pPipelineJob()->iJobId());
   
   m_pDataStack->vPushPtr(pParcel);
   

@@ -116,7 +116,12 @@ void Step::vApiExecuteNested(void)
 
   Job* pJob = pSession->m_pSsnJob;
 
-  pJob->m_pOuterOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  pJob->m_pOuterOp = pOp;
   
   TagSet* pJobTagSet = pJob->pJobTags();
   

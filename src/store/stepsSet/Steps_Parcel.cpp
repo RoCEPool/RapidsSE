@@ -54,12 +54,16 @@ void Step::vParcelLabel(void)
   ENTRY();
 
 
-  Op* pSrcOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pSrcOp->eCrossTopo(),
-                  pSrcOp->pPipelineJob()->iJobId()
+  pParcel->vLabel(pOp->eCrossTopo(),
+                  pOp->pPipelineJob()->iJobId()
                   );
 
   //m_pDataStack->vPushPtr(pParcel);
@@ -126,9 +130,13 @@ void Step::vParcelSendOut(void)
     
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  Op* pSrcOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
-  pParcel->vSendOut(pSrcOp);
+  pParcel->vSendOut(pOp);
 
   EXIT();
 }

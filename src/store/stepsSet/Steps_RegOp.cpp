@@ -137,15 +137,12 @@ void Step::vRegOpInit(void)
 
 #ifdef WITH_NO_JOB_FOR_OP
   Op* pOp = *m_pOp;
-
-  m_p_TaskLogicUnit->m_xpOp = pOp;
-
 #else
   Op* pOp = m_pJob->m_pOp;
+#endif
 
   m_p_TaskLogicUnit->m_xpOp = pOp;
-#endif
-  
+
   EXIT();
 }
 

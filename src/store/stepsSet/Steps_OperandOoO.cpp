@@ -92,7 +92,11 @@ void Step::vOperandOoONext(void)
   
   ASSERT(m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull());
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   m_p_TaskLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
   
@@ -112,8 +116,12 @@ void Step::vOperandOoOPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandOoO);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandOoO);
   
   m_p_TaskLogicUnit->m_xpOperandOoO = nullptr;
