@@ -525,6 +525,34 @@ i8 JoinOp::iColumnsOfChild2(QueryNode* pNode, PlanNode* pRootNode)
   return iCount;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Replace the USING column list with a join predicate                        */
+/*----------------------------------------------------------------------------*/
+void JoinOp::vReplaceUsing(QueryNode* pNode, QueryNode* pJoinPredicate)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 2);
+  ASSERT(pJoinPredicate);
+  ASSERT(Expr::bIsOfType(pJoinPredicate));
+
+  // Remove the existing USING list
+  QueryNode* pUsingList = pNode->pRemoveProperty(C_USINGLIST_PROP);
+  ASSERT(pUsingList);
+  delete pUsingList;
+
+  // The join predicate definition is non-optional, so a dummy null literal expr
+  // was inserted as a temporary value. We need to remove and delete it.
+  QueryNode* pExistingPredicate = pNode->pRemoveProperty(C_JOINPREDICATE_PROP);
+  ASSERT(pExistingPredicate);
+  ASSERT(NullLiteral::bIsOfType(pExistingPredicate));
+  delete pExistingPredicate;
+
+  // Add in the new join predicate
+  pJoinPredicate->vSetName(C_JOINPREDICATE_PROP);
+  pNode->vAppendProperty(pJoinPredicate);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

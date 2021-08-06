@@ -249,6 +249,15 @@ namespace Parser
       throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
     }
 
+    static void vThrowAmbiguousUsingColumn(Stz* szUsingColName, Stz* szColRef1, Stz* szColRef2)
+    {
+      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_USING_COLUMN]);
+
+      sErrMsg.vCatSprint(" (%s). Could be one of:\n  %s\n  %s"_Stz, szUsingColName, szColRef1, szColRef2);
+
+      throw NameValidationException(EC_AMBIGUOUS_USING_COLUMN, sErrMsg.szStz());
+                                      }
+
     static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pDataSourceList, QueryNodeList* pProjectedColumnList)
     {
       ASSERT(szColumnName);
