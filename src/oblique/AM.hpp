@@ -23,6 +23,7 @@
 #include "eQA.h"
 #include "eRA.h"
 #include "eSL.h"
+#include "eSS.h"
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
@@ -302,6 +303,12 @@ namespace OBLIQUE
       static tPN tRobinToDtdPtnNo(i8 iRobin);
       static tPN tRobinToLclPtnNo(i8 iRobin);
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    };
+
+    class SEED
+    {
+    public:
+      static Stz* szDecodeSeed(eSS eSeed, TagSet* pTags);
     };
 
     class SESSION
