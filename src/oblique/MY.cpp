@@ -262,9 +262,17 @@ Job* MY::pJob(void)
     return nullptr;
   
   Job* pJob = pTask->pJob();
+  if (pJob)
+    return pJob;
 
-  return pJob;
+  Op* pOp = pTask->pOp();
+  if (pOp) {
+    pJob = pOp->pPipelineJob();
+    return pJob;
+  }
   
+  return nullptr;
+
 #else
   
   Task* pTask = MY::pTask();

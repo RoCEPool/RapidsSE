@@ -1374,7 +1374,9 @@ void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Queue* pOutputQueue = AM::pOutputQueue(MY::pSession());
+  Session* pSession = MY::pSession();
+  
+  Queue* pOutputQueue = AM::pOutputQueue(pSession);
 
   RASSERT(pOutputQueue);
   
