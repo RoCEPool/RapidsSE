@@ -42,7 +42,10 @@ void Step::vPipeinBide(void)
 {
   ENTRY();
   
-  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
+  Op* pOp = m_pJob->m_pOp;
+
+  
+  Operand* pOperand = pOp->pPopOoOLeft();
   m_p_TaskLogicUnit->vSetPipein(pOperand);
     
   if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
@@ -62,9 +65,11 @@ void Step::vPipeinBideNext(void)
  
   Operand* pOperand;
   
+  Op* pOp = m_pJob->m_pOp;
+
   if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
     
-    if ( (pOperand = m_pJob->m_pOp->pPopOoOLeft()) ) {
+    if ( (pOperand = pOp->pPopOoOLeft()) ) {
       m_p_TaskLogicUnit->vSetPipein(pOperand);
     }
     else {
@@ -150,7 +155,9 @@ void Step::vPipeinNext(void)
   
   RASSERT(m_p_TaskLogicUnit->m_xpPipein.bIsNull());
       
-  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
+  Op* pOp = m_pJob->m_pOp;
+
+  Operand* pOperand = pOp->pPopOoOLeft();
   
   m_p_TaskLogicUnit->vSetPipein(pOperand);
   
@@ -166,7 +173,9 @@ void Step::vPipeinPeek(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->m_pOp->bPeekLeft() ? true : false);
+  Op* pOp = m_pJob->m_pOp;
+
+  m_pDataStack->vPushInt(pOp->bPeekLeft() ? true : false);
   
   EXIT();
 }
