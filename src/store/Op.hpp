@@ -6,6 +6,7 @@
 #include "ePX.h"
 #include "eXK.h"
 #include "eZK.h"
+#include "eSS.h"
 
 namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
@@ -33,6 +34,7 @@ namespace STORE
   
     TagSet    m_oOpTags; // tags for the op
     Task*     m_pTask;   // which task
+    eSS       m_eSeed;   // seed to spawn
 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -145,7 +147,7 @@ namespace STORE
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOperator(i8 iSessionId);
+    void vSpawnTaskForOp(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);

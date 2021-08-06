@@ -77,7 +77,7 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
-  //m_pJob->pJobLogicUnit()->m_xpOp->pOpTagSet()->vDumpSet();
+  //m_p_TaskLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
 
@@ -129,8 +129,8 @@ void Step::vApiExecuteNested(void)
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
-  m_pJob->pJobLogicUnit()->m_xpOp->pOpSpec()->pArgTags()->vDumpSet();
-  pJobTagSet->vCopy(m_pJob->pJobLogicUnit()->m_xpOp->pOpSpec()->pArgTags());
+  m_p_TaskLogicUnit->m_xpOp->pOpSpec()->pArgTags()->vDumpSet();
+  pJobTagSet->vCopy(m_p_TaskLogicUnit->m_xpOp->pOpSpec()->pArgTags());
   
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     pJobTagSet->vDumpSet();

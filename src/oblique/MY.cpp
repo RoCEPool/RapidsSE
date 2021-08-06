@@ -258,6 +258,8 @@ Job* MY::pJob(void)
 #ifdef WITH_NO_JOB_FOR_OP
 
   Task* pTask = MY::pTask();
+  if (! pTask)
+    return nullptr;
   
   Job* pJob = pTask->pJob();
 
@@ -287,11 +289,11 @@ LogicUnit* MY::pLogicUnit(void)
   
   Job* pJob = pTask->pJob();
   if (pJob)
-    return pJob->m_pJobLogicUnit;
+    return pJob->pJobLogicUnit();
 
   Op* pOp = pTask->pOp();
   if (pOp)
-    return pOp->m_pJobLogicUnit;
+    return pOp->pOpLogicUnit();
 
   return nullptr;
 
@@ -332,6 +334,8 @@ Op* MY::pOp(void)
 #ifdef WITH_NO_JOB_FOR_OP
   
   Task* pTask = MY::pTask();
+  if (! pTask)
+    return nullptr;
   
   Op* pOp = pTask->pOp();
   

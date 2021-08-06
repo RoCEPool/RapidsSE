@@ -33,7 +33,7 @@ void Step::vToPtnRowRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pJob->pJobLogicUnit()->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -51,7 +51,7 @@ void Step::vToPtnRowRegConvert(void)
 {
   ENTRY();
 
-  ToPtnRow* pToPtnRow = *m_pJob->pJobLogicUnit()->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -71,7 +71,7 @@ void Step::vToPtnRowRegCreate(void)
     
   ToPtnRow* pToPtnRow = new ToPtnRow;
       
-  m_pJob->pJobLogicUnit()->m_xpToPtnRow = pToPtnRow;
+  m_p_TaskLogicUnit->m_xpToPtnRow = pToPtnRow;
 
   EXIT();
 }
@@ -83,7 +83,7 @@ void Step::vToPtnRowRegDangling(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pJob->pJobLogicUnit()->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -101,8 +101,8 @@ void Step::vToPtnRowRegDelete(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pJob->pJobLogicUnit()->m_xpToPtnRow;
-  m_pJob->pJobLogicUnit()->m_xpToPtnRow = nullptr;
+  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
+  m_p_TaskLogicUnit->m_xpToPtnRow = nullptr;
   
   delete pToPtnRow;
   
