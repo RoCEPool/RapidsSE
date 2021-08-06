@@ -1196,7 +1196,7 @@ void Backend::vAppendStartStage() {
   m_sPipeline->vCatSprint(
       "  stage startStage on origin :\n"
       "    start\n"
-      "    | periodic once"
+      "    | pulse once"
       ""_Stz
       );
 }

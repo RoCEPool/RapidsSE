@@ -1,38 +1,42 @@
 /*============================================================================*/
-/* OP_periodic.sen -- Operator periodic                                       */
+/* OP_pulse.sen -- Operator pulse                                             */
 /*============================================================================*/
 
-" OP_periodic.sen" .verbose
+" OP_pulse.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_TRIGGER ...                                                 */
 /*----------------------------------------------------------------------------*/
-: periodic_DataMarker \handler
+: pulse_Trigger \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
-  PipeIn[].pipeOut
+  //"Operand:- ZK_TRIGGER" .verbose
+  PipeIn[].delete
 
-   Counter1[] if
+  // pipe out a datapulse
+  Operand[].newDataPulse
+  Operand[].pipeOut
+
+ Counter1[] if
+  begin
     begin
-      begin
-         Counter1[]  Counter0[] >
-      while
-        task::yield
-        assert::stack_0
-        "sleeping for 1 min" .
-        60 task::sleepSsec
-        Counter0[] 1 + to Counter0[]
-      repeat
-      0 to  Counter0[]
-       Counter1[] "Sending PULSEMARKER after %v mins" str.format .
-      Operand[].newDataPulse
-      Operand[].pipeOut
-      true
+       Counter1[]  Counter0[] >
+    while
+      task::yield
+      assert::stack_0
+      "sleeping for 1 min" .
+      60 task::sleepSsec
+      Counter0[] 1 + to Counter0[]
+    repeat
+    0 to  Counter0[]
+     Counter1[] "Sending DATAPULSE after %v mins" str.format .
+     Operand[].newDataPulse
+     Operand[].pipeOut
+     true
     while assert::stack_0 repeat
   then
 
-  Operand[].newPulsedMarker
-  //"piping out a pulsedMarker" .
+  Operand[].newEndMarker
+  //"piping out a endMarker" .
   Operand[].pipeOut
   //Op.ackPipelineJob
 
@@ -40,9 +44,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for periodic request                       (on node where spawned) */
+/* execute for pulse request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : periodic_req \operator
+ : pulse_req \operator
  
   LogReqEntry SEED_REQ
 
@@ -71,7 +75,7 @@
 
   op__topology
 
-  find: periodic_DataMarker ZK_DATAPULSE op[].handler!
+  find: pulse_Trigger   ZK_TRIGGER   op[].handler!
 
   op__loop
 
@@ -83,11 +87,11 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: periodic :: periodic once ;
-cmdSyntax: periodic :: periodic min <minutes> ;
-cmdSyntax: periodic :: periodic hour <hours> ;
+cmdSyntax: pulse :: pulse once ;
+cmdSyntax: pulse :: pulse min <minutes> ;
+cmdSyntax: pulse :: pulse hour <hours> ;
 
-: periodic_cmdTags _cmdTags tagCopy: op_tags
+: pulse_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

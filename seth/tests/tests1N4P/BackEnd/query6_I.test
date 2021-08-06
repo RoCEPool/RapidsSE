@@ -9,7 +9,7 @@ success;
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -51,7 +51,7 @@ success
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -74,7 +74,7 @@ success
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -92,7 +92,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -111,7 +111,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -129,7 +129,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -148,7 +148,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -165,7 +165,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -184,7 +184,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -204,7 +204,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -223,7 +223,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
@@ -242,7 +242,7 @@ rows:
 pipeline Query6
 begin
  stage stageA on origin :
-   start | periodic once | stageB
+   start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem

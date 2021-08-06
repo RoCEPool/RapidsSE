@@ -25,7 +25,7 @@ load rt "../JTEST/rightTable.csv" ;
 pipeline indexJoinExp
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lt | stageC
@@ -68,7 +68,7 @@ load course "../DATA/Joins/course_Dataset.csv" ;
 pipeline indexJoinX
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan student | stageC
@@ -106,7 +106,7 @@ create index idx on j (n_nationkey);
 pipeline indexJoinX
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan T | project 0 "type integer $1 " |

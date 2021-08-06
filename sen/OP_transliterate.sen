@@ -16,7 +16,7 @@
 
   stage stageA on origin :
     start
-    | periodic once
+    | pulse once
     | metaScan tables
     | rowToList
     | output

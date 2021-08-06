@@ -112,12 +112,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEDMARKER ...                                            */
+/* handler for ZK_ENDINGMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: start_PulsedMarker \handler
+: start_EndingMarker \handler
 
-  //"Operand:- ZK_PULSEDMARKER" .verbose
-  PipeIn[].delete
+  //"Operand:- ZK_ENDINGMARKER" .verbose
 
   // pipeline should not be cancelled
   Pipeline::cancelled@ not assert
@@ -131,9 +130,8 @@
   // mark pipeline as being pulsed
   true Pipeline::pulsed!
 
-  // now pipeout a ending marker
-  Operand[].newEndingMarker
-  Operand[].pipeOut
+  // now pipeout the ending marker
+  Pipein[].pipeOut
 
   true
 ;
@@ -145,7 +143,7 @@
 
   //"Operand:- ZK_STARTEDMARKER" .verbose
   PipeIn[].delete
-  Operand[].newDataPulse
+  Operand[].newTrigger
   Operand[].pipeOut
 
   true
@@ -164,10 +162,10 @@
   find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
   find: start_CleanedupMarker   ZK_CLEANEDUPMARKER   op[].handler!
   find: start_EarlyExitedMarker ZK_EARLYEXITEDMARKER op[].handler!
+  find: start_EndingMarker      ZK_ENDINGMARKER      op[].handler!
   find: start_EndedMarker       ZK_ENDEDMARKER       op[].handler!
   find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
   find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
-  find: start_PulsedMarker      ZK_PULSEDMARKER      op[].handler!
   find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
 
   find: INVALID_OPERAND_handler ZK_CRWBUFFER       op[].handler!

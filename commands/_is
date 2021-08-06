@@ -81,7 +81,7 @@ range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= ";
 pipeline is
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     indexScan 0 nation idx "LBOUND $I1 1 > LBOUND $I2 3 > " | stageC
@@ -98,7 +98,7 @@ end;
 pipeline is
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     indexScan 0 nation idx "LBOUND $I1 1 > LBOUND $I2 3 >= " | stageC
@@ -115,7 +115,7 @@ end;
 pipeline is
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     indexScan 0 nation idx "UBOUND $I1 10 <= UBOUND $I2 3 <" | stageC
@@ -132,7 +132,7 @@ end;
 pipeline is
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I2 2 > UBOUND $I2 20 <=" | stageC
@@ -149,7 +149,7 @@ end;
 pipeline is
 begin
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I2 2 >= UBOUND $I2 20 <=" | stageC

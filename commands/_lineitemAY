@@ -80,7 +80,7 @@ begin
 
 stage stageA on origin :
   start
-  | periodic once
+  | pulse once
   | stageB robin
 
 stage stageB on all partitions :
@@ -103,7 +103,7 @@ begin
 
 stage stageA on origin :
   start
-  | periodic once
+  | pulse once
   | stageB robin
 
 stage stageB on all partitions :
@@ -199,7 +199,7 @@ partitionScan lineitem 1;
 begin
 
 stage stageA on origin:
-start | periodic once | stageB
+start | pulse once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | stageC
@@ -215,7 +215,7 @@ end
 begin
 
   stage stageA on origin:
-  start | periodiconce | stageB
+  start | pulse once | stageB
 
   stage stageB on all partitions:
   scan lineitem | toCsv | stageC
@@ -233,7 +233,7 @@ python "sample" "printString" | sink | stageA
 begin
 
 stage stageA on origin:
-start | periodic once | stageB
+start | pulse once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | toCrw lineitem2 | stageC

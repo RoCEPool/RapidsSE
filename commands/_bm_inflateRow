@@ -29,7 +29,7 @@ stepTiming start;
 pipeline bm_inflateRow
 begin
   stage stageA on origin:
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions:
     BM_GenCrwOp ALLCOLS_TABLE 500 |

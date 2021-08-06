@@ -52,17 +52,18 @@ Sends::Sends(i8 iSends)
 
   m_iSends  = iSends;
   
-  m_iCancelMarkers  = 0;
-  m_iCleanupMarkers = 0;
-  m_iDataPulses     = 0;
-  m_iDestroyMarkers = 0;
-  m_iEndedMarkers   = 0;
-  m_iEndingMarkers  = 0;
-  m_iExitMarkers    = 0;
-  m_iEosMarkers     = 0;
-  m_iPulsedMarkers  = 0;
-  m_iStartMarkers   = 0;
-  m_iStreamDefs     = 0;
+  m_iCancelMarkers   = 0;
+  m_iCleanupMarkers  = 0;
+  m_iDataPulses      = 0;
+  m_iDestroyMarkers  = 0;
+  m_iEndedMarkers    = 0;
+  m_iEndingMarkers   = 0;
+  m_iErroringMarkers = 0;
+  m_iExitMarkers     = 0;
+  m_iEosMarkers      = 0;
+  m_iPulsedMarkers   = 0;
+  m_iStartMarkers    = 0;
+  m_iStreamDefs      = 0;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 }
@@ -156,8 +157,8 @@ bool Sends::bEndedDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  if (m_iEndingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_ENDINGMARKER %lld; expected %lld\n"_Stz,
+  if (m_iEndedMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_ENDEDMARKER %lld; expected %lld\n"_Stz,
            m_iEndedMarkers, m_iSends);
 
   if (m_iEndedMarkers == m_iSends) {
@@ -219,6 +220,25 @@ bool Sends::bErrorDone(void)
   
   if (m_iEosMarkers == m_iSends) {
     //m_iEosMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ending done ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Sends::bErroringDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iErroringMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_ERRORINGMARKER %lld; expected %lld\n"_Stz,
+           m_iErroringMarkers, m_iSends);
+
+  if (m_iErroringMarkers == m_iSends) {
+    //m_iErroringMarkers = 0;
     return true;
   }
   else
@@ -376,6 +396,16 @@ void Sends::vIncError(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   m_iEosMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc erroring                                                               */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncErroring(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iErroringMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

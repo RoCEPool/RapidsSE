@@ -145,7 +145,6 @@ assert::stack_0
   "OP_partitionExplain.sen"     include
   "OP_partitionPlan.sen"        include
   "OP_passThru.sen"             include
-  "OP_periodic.sen"             include
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
   "OP_postProject.sen"          include
@@ -154,6 +153,7 @@ assert::stack_0
   "OP_project.sen"              include
   "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
+  "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
   "OP_python.sen"               include
   "OP_pythonShell.sen"          include

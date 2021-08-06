@@ -763,6 +763,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_STREAMSET"_Stz,       ZK_STREAMSET);
   /*  0 */ vAddConstant("ZK_TABLE"_Stz,           ZK_TABLE);
   /*  0 */ vAddConstant("ZK_TOTALUNITS"_Stz,      ZK_TOTALUNITS);
+  /*  0 */ vAddConstant("ZK_TRIGGER"_Stz,         ZK_TRIGGER);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

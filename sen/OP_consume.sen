@@ -62,20 +62,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_ERRORINGMARKER ...                                          */
 /*----------------------------------------------------------------------------*/
-/*
-: consumeOp_ErrorMarker \handler
+: consumeOp_ErroringMarker \handler
 
-  //"Operand:- ZK_ERRORMARKER" .verbose
-  Sends[].handleError if
+  //"Operand:- ZK_ERRORINGMARKER" .verbose
+  Sends[].handleErroring if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
   then
   true
 ;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
@@ -98,6 +96,20 @@
 
   //"Operand:- ZK_DESTROYMARKER" .verbose
   Sends[].handleDestroy if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ENDMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: consumeOp_EndMarker \handler
+
+  //"Operand:- ZK_ENDMARKER" .verbose
+  Sends[].handlePulsed if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -175,17 +187,18 @@
   // set topology, next stage and op
   op__topology
 
-  find: consumeOp_CancelMarker   ZK_CANCELMARKER  op[].handler!
-  find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER op[].handler!
-  find: consumeOp_EndingMarker   ZK_EndingMARKER     op[].handler!
-  find: consumeOp_EosMarker      ZK_EOSMARKER     op[].handler!
-  //find: consumeOp_ErrorMarker  ZK_ERRORMARKER   op[].handler!
-  find: consumeOp_ExitMarker     ZK_EXITMARKER    op[].handler!
+  find: consumeOp_CancelMarker   ZK_CANCELMARKER   op[].handler!
+  find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER  op[].handler!
+  find: consumeOp_EndMarker      ZK_ENDMARKER      op[].handler!
+  find: consumeOp_EndingMarker   ZK_ENDINGMARKER   op[].handler!
+  find: consumeOp_EosMarker      ZK_EOSMARKER      op[].handler!
+  find: consumeOp_ErroringMarker ZK_ERRORINGMARKER op[].handler!
+  find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
   find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
-  find: consumeOp_DataPulse      ZK_DATAPULSE     op[].handler!
-  find: consumeOp_PulsedMarker   ZK_PULSEDMARKER  op[].handler!
-  find: consumeOp_StartMarker    ZK_STARTMARKER   op[].handler!
-  find: consumeOp_StreamDef      ZK_STREAMDEF     op[].handler!
+  find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
+  find: consumeOp_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
+  find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
+  find: consumeOp_StreamDef      ZK_STREAMDEF      op[].handler!
 
   op__loop
 

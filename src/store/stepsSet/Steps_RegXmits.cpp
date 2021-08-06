@@ -26,7 +26,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleEnded"_Stz,    &Step::vRegSendsHandleEnded);
   vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
-  vAddStep("Sends[].handleError"_Stz,    &Step::vRegSendsHandleError);
+  vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
   vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
   vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
   vAddStep("Sends[].handlePulsed"_Stz,   &Step::vRegSendsHandlePulsed);
@@ -160,17 +160,17 @@ void Step::vRegSendsHandleEos(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleError -- handle consume of error marker                      */
+/* Sends[].handleErroring -- handle consume of erroring marker                */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleError(void)
+void Step::vRegSendsHandleErroring(void)
 {
   ENTRY();
   
   Sends* pSends = _pSends(*m_pJob->pJobLogicUnit()->m_xpSends);
   
-  pSends->vIncError();
+  pSends->vIncErroring();
   
-  m_pDataStack->vPushInt(pSends->bErrorDone());
+  m_pDataStack->vPushInt(pSends->bErroringDone());
   
   EXIT();
 }

@@ -71,7 +71,7 @@ begin
 
   stage stageA on origin :
     start
-    | periodic once
+    | pulse once
     | stageB
 
   stage StageB on all partitions:

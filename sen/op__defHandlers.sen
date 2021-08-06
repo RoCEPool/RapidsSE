@@ -76,6 +76,7 @@
 : ZK_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : ZK_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
+: ZK_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
