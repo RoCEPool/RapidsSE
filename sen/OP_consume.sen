@@ -134,6 +134,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_LEAVINGMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: consumeOp_LeavingMarker \handler
+
+  //"Operand:- ZK_LEAVINGMARKER" .verbose
+  Sends[].handleLeaving if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StartMarker \handler
@@ -175,13 +189,14 @@
 
   find: consumeOp_CancelMarker   ZK_CANCELMARKER   op[].handler!
   find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER  op[].handler!
+  find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
+  find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
   find: consumeOp_EndMarker      ZK_ENDMARKER      op[].handler!
   find: consumeOp_EndingMarker   ZK_ENDINGMARKER   op[].handler!
   find: consumeOp_EosMarker      ZK_EOSMARKER      op[].handler!
   find: consumeOp_ErroringMarker ZK_ERRORINGMARKER op[].handler!
   find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
-  find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
-  find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
+  find: consumeOp_LeavingMarker  ZK_LEAVINGMARKER  op[].handler!
   find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
   find: consumeOp_StreamDef      ZK_STREAMDEF      op[].handler!
 
