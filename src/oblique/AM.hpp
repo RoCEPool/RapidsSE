@@ -23,6 +23,7 @@
 #include "eQA.h"
 #include "eRA.h"
 #include "eSL.h"
+#include "eSS.h"
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
@@ -247,6 +248,7 @@ namespace OBLIQUE
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static Stz* szJobSeed(Job* pJob);
       static eEC  ePreExecuteTest(Job* pJob);
     };
   
@@ -270,6 +272,12 @@ namespace OBLIQUE
     {
     public:
       static i8 iNextNo(eCN eClassNo);
+    };
+
+    class OP
+    {
+    public:
+      static Stz* szOpSeed(Op* pOp);
     };
 
     class OPERAND
@@ -302,6 +310,12 @@ namespace OBLIQUE
       static tPN tRobinToDtdPtnNo(i8 iRobin);
       static tPN tRobinToLclPtnNo(i8 iRobin);
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    };
+
+    class SEED
+    {
+    public:
+      static Stz* szDecodeSeed(eSS eSeed, TagSet* pTags);
     };
 
     class SESSION
@@ -519,7 +533,6 @@ namespace OBLIQUE
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);
     static Stz* szJobOpNm(Job* pJob);
-    static Stz* szJobSeed(Job* pJob);
     static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);

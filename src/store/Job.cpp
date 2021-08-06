@@ -1077,19 +1077,19 @@ Stz* Job::szSeed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* szSeed;
+  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oJobTags);
   
-  switch (m_eSeed) {
-    case SS_SEED_RUN: szSeed = m_oJobTags.szValue("<seedRun>"_Stz); break;
-    case SS_SEED_REQ: szSeed = m_oJobTags.szValue("<seedReq>"_Stz); break;
-    case SS_SEED_RCV: szSeed = m_oJobTags.szValue("<seedRcv>"_Stz); break;
-    case SS_SEED_EXE: szSeed = m_oJobTags.szValue("<seedExe>"_Stz); break;
-    case SS_SEED_END: szSeed = m_oJobTags.szValue("<seedEnd>"_Stz); break;
-    case SS_SEED_CAN: szSeed = m_oJobTags.szValue("<seedCan>"_Stz); break;
-    default: NEVER_REACH;
-  }
-
-  ASSERT(szSeed)
+//  switch (m_eSeed) {
+//    case SS_SEED_RUN: szSeed = m_oJobTags.szValue("<seedRun>"_Stz); break;
+//    case SS_SEED_REQ: szSeed = m_oJobTags.szValue("<seedReq>"_Stz); break;
+//    case SS_SEED_RCV: szSeed = m_oJobTags.szValue("<seedRcv>"_Stz); break;
+//    case SS_SEED_EXE: szSeed = m_oJobTags.szValue("<seedExe>"_Stz); break;
+//    case SS_SEED_END: szSeed = m_oJobTags.szValue("<seedEnd>"_Stz); break;
+//    case SS_SEED_CAN: szSeed = m_oJobTags.szValue("<seedCan>"_Stz); break;
+//    default: NEVER_REACH;
+//  }
+//
+//  ASSERT(szSeed)
   
   return szSeed;
 }

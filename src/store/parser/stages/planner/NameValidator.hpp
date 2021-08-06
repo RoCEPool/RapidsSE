@@ -66,6 +66,16 @@ namespace Parser
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan
     static void vAssertNamesResolved(PlanNode* pRootNode, QueryNode* pPlanNode);
+
+    // Validate the column names of any join USING clauses
+    static void vValidateJoinUsingColumns(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // Replace the USING list with a join predicate in a JoinOp
+    static void vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoinOp, QueryNode* pUsingList);
+
+    // Tries to resolve a column name in a given projected column list.
+    // Returns a ColumnRef/AliasRef that can be used to form a join predicate.
+    static QueryNode* pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList);
   };
 }
 

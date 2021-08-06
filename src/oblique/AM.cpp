@@ -35,6 +35,7 @@
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
+#include "eSS.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
@@ -328,6 +329,15 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job seed                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* AM::JOB::szJobSeed(Job* pJob)
+{
+  return pJob->szSeed();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* test if the job passes all pre-execution requirements                      */
 /*----------------------------------------------------------------------------*/
 eEC AM::JOB::ePreExecuteTest(Job* pJob)
@@ -513,6 +523,20 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
   }
   
   return iNo;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   OP                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+
+/*----------------------------------------------------------------------------*/
+/* get op seed                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* AM::OP::szOpSeed(Op* pOp)
+{
+  return pOp->szSeed();
 }
 
 
@@ -813,6 +837,33 @@ tPN AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
 tPN AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
 {
   return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 SEED                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get the seed to be spawned                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
+{
+  Stz* szSeed;
+  
+  switch (eSeed) {
+    case SS_SEED_RUN: szSeed = pTags->szValue("<seedRun>"_Stz); break;
+    case SS_SEED_REQ: szSeed = pTags->szValue("<seedReq>"_Stz); break;
+    case SS_SEED_RCV: szSeed = pTags->szValue("<seedRcv>"_Stz); break;
+    case SS_SEED_EXE: szSeed = pTags->szValue("<seedExe>"_Stz); break;
+    case SS_SEED_END: szSeed = pTags->szValue("<seedEnd>"_Stz); break;
+    case SS_SEED_CAN: szSeed = pTags->szValue("<seedCan>"_Stz); break;
+    default: NEVER_REACH;
+  }
+
+  ASSERT(szSeed)
+  
+  return szSeed;
 }
 
 
@@ -1596,11 +1647,6 @@ Stz* AM::szJobOpNm(Job* pJob)
     return pJob->m_pOp->szOpNm();
   else
     return nullptr;
-}
-
-Stz* AM::szJobSeed(Job* pJob)
-{
-  return pJob->szSeed();
 }
 
 

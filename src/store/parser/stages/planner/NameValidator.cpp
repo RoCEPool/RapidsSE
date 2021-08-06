@@ -33,6 +33,11 @@
 #include "StatementMarker.hpp"
 #include "SqlOperator.hpp"
 #include "SetOp.hpp"
+#include "JoinOp.hpp"
+#include "StringObject.hpp"
+#include "StringList.hpp"
+#include "EqExpr.hpp"
+#include "AndExpr.hpp"
 
 
 using namespace Parser;
@@ -127,6 +132,9 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
       // Now resolve the columns against the known tables in the plan.
       vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
+
+      // Validate the column names of any join USING clauses
+      vValidateJoinUsingColumns(pRootNode, pStatementMarker);
 
     } catch (SqlException& e) {
       delete pSeApi;
@@ -788,6 +796,208 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
   };
 
   GraphNav::bGlobalWalk(pPlanNode, true, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Validate the column names of any join USING clauses                        */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateJoinUsingColumns(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the graph looking for JoinOps
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!JoinOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pJoinOp = _pQueryNode(pNode);
+    QueryNode* pUsingList = JoinOp::pUsingListNode(pJoinOp);
+
+    if (!pUsingList) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    ASSERT(StringList::bIsOfType(pUsingList));
+    ASSERT(pUsingList->nChildren() > 0);
+    ASSERT(pJoinOp->nChildren() == 2);
+
+    // Replace the USING list with a join predicate in this join operator
+    vReplaceJoinUsingColumn(pRootNode, pJoinOp, pUsingList);
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
+  };
+
+  // Walk the /plan node, its children but not its properties.
+  GraphNav::bBoundedWalkBottomUp(pStartNode, true, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Replace the USING list with a join predicate in a JoinOp                   */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoinOp, QueryNode* pUsingList)
+{
+  QueryNode* pLeftTable  = _pQueryNode(pJoinOp->pFirstChild());
+  QueryNode* pRightTable = _pQueryNode(pJoinOp->pSecondChild());
+
+  ASSERT(pLeftTable);
+  ASSERT(pRightTable);
+
+  // Get the projected columns of both the left and right tables.
+  QueryNodeList* pLeftProjCols  = PlanObject::pColumnExprs(pLeftTable, pRootNode);
+  QueryNodeList* pRightProjCols = PlanObject::pColumnExprs(pRightTable, pRootNode);
+
+  // The join predicate we will form
+  QueryNode* pJoinPredicate = nullptr;
+
+  // Iterate the USING columns and see if we can find the column in the left and right
+  // projected column lists
+  PlanNodeIter* pUsingIter = pUsingList->pNewChildrenIter();
+  while (pUsingIter->bHasNext()) {
+    QueryNode* pUsingCol = _pQueryNode(pUsingIter->pNext());
+    ASSERT(StringObject::bIsOfType(pUsingCol));
+
+    Stz* szUsingCol = pUsingCol->szValue();
+    ASSERT(szUsingCol);
+
+    QueryNode* pLeftResolvedExpr  = nullptr;
+    QueryNode* pRightResolvedExpr = nullptr;
+
+    // Can we find this name in each projected column list?
+    // Check the left then the right projected column lists.
+    try {
+      pLeftResolvedExpr = pResolveUsingColumn(szUsingCol, pLeftProjCols);
+
+      if (pLeftResolvedExpr) {
+        pRightResolvedExpr = pResolveUsingColumn(szUsingCol, pRightProjCols);
+      }
+
+    } catch (SqlException& e) {
+      pLeftProjCols->vDeleteAll();
+      pRightProjCols->vDeleteAll();
+      delete pLeftProjCols;
+      delete pRightProjCols;
+
+      delete pLeftResolvedExpr;
+      delete pRightResolvedExpr;
+      delete pJoinPredicate;
+
+      delete pUsingIter;
+      throw;
+    }
+
+    if (!pLeftResolvedExpr || !pRightResolvedExpr) {
+      pLeftProjCols->vDeleteAll();
+      pRightProjCols->vDeleteAll();
+      delete pLeftProjCols;
+      delete pRightProjCols;
+
+      delete pLeftResolvedExpr;
+      delete pRightResolvedExpr;
+      delete pJoinPredicate;
+
+      delete pUsingIter;
+
+      // throw exception
+      SemanticException::vThrow(EC_USING_COLUMN_NOT_FOUND, ": %s"_Stz, szUsingCol);
+      return; // For avoiding wrongful code-highlighting/analysis errors
+    }
+
+    // Form a join predicate
+    QueryNode* pEqualityExpr = EqExpr::pCreate(pLeftResolvedExpr, pRightResolvedExpr);
+
+    // Set it as the join predicate, or AND it with any existing join predicate
+    if (pJoinPredicate) {
+      pJoinPredicate = AndExpr::pCreate(pJoinPredicate, pEqualityExpr);
+
+    } else {
+      pJoinPredicate = pEqualityExpr;
+    }
+  }
+
+  // Replace the USING list in the JoinOp with the join predicate
+  JoinOp::vReplaceUsing(pJoinOp, pJoinPredicate);
+
+  pLeftProjCols->vDeleteAll();
+  pRightProjCols->vDeleteAll();
+  delete pLeftProjCols;
+  delete pRightProjCols;
+  delete pUsingIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to resolve a column name in a given projected column list.           */
+/* Returns a ColumnRef/AliasRef that can be used to form a join predicate.    */
+/* May throw an exception if the column name is ambiguous                     */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList)
+{
+  QueryNode* pResolvedExpr = nullptr;
+
+  // Let's iterate the projected column list
+  QueryNodeIter* pProjColIter = pProjColList->pNewIter();
+
+  // Iterate each projected column from the current list
+  while (pProjColIter->bHasNext()) {
+    QueryNode* pProjectedColumn = pProjColIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+    // Get the expression of this projected column
+    QueryNode* pProjExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pProjExpr));
+
+    // The alias of this projected column, if one exists
+    Stz* szAliasName = ProjectedColumn::szAliasName(pProjExpr);
+
+    if (ColumnRef::bIsOfType(pProjExpr) && ColumnRef::szColumn(pProjExpr)->bSame(szUsingCol)) {
+      // We got a match.
+      // First check if we got a previous match. i.e. an ambiguous column name
+      if (pResolvedExpr) {
+        s2K sBuf1;
+        s2K sBuf2;
+        Expr::vDescribe(pResolvedExpr, sBuf1);
+        ColumnRef::vDescribe(pProjExpr, sBuf2);
+
+        delete pResolvedExpr;
+        delete pProjColIter;
+        NameValidationException::vThrowAmbiguousUsingColumn(szUsingCol, sBuf1.szStz(), sBuf2.szStz());
+        return nullptr;  // to avoid code analysis giving false warnings
+      }
+
+      // Save a copy of the ColumnRef to use in a join predicate
+      pResolvedExpr = pProjExpr->pDeepCopy(true);
+      // Keep checking for ambiguous columns
+
+    } else if (szAliasName && szAliasName->bSame(szUsingCol)) {
+      // We got a match on the projected column's alias
+      // First check if we got a previous match. i.e. an ambiguous column name
+      if (pResolvedExpr) {
+        s2K sBuf1;
+        s2K sBuf2;
+        Expr::vDescribe(pResolvedExpr, sBuf1);
+        ProjectedColumn::vDescribe(pProjectedColumn, sBuf2);
+
+        delete pResolvedExpr;
+        delete pProjColIter;
+        NameValidationException::vThrowAmbiguousUsingColumn(szUsingCol, sBuf1.szStz(), sBuf2.szStz());
+        return nullptr;  // to avoid code analysis giving false warnings
+      }
+
+      pResolvedExpr = AliasRef::pCreate(new Text(szAliasName), pProjExpr->pDeepCopy(true));
+      // Keep checking for ambiguous columns
+    }
+  }
+
+  delete pProjColIter;
+  return pResolvedExpr;
 }
 
 /*============================================================================*/

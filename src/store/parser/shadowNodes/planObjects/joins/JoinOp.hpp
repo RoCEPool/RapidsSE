@@ -57,6 +57,9 @@ namespace Parser
     static i8 iColumnsOfChild1(QueryNode* pNode, PlanNode* pRootNode);
     static i8 iColumnsOfChild2(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Replace the USING column list with a join predicate
+    static void vReplaceUsing(QueryNode* pNode, QueryNode* pJoinPredicate);
+
   private:
     static QueryNodeList* pUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
     static QueryNodeList* pDistinctUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);

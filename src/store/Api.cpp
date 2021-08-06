@@ -970,6 +970,8 @@ void Api::vCreateTaskForOp(Op* pOp)
   RASSERT(! pTask);
 
   pTask = AM::TASK::pNew(pOp);
+  
+  pTask->vSeedTask();
 }
 
 /*----------------------------------------------------------------------------*/
