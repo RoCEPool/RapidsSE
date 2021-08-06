@@ -55,6 +55,8 @@ namespace BASE
 
     LockSet      m_oReadLocks;   // read locks currently held by this task/op
     LockSet      m_oWriteLocks;  // write locks currently held by this task/op
+  
+    LogicUnit*   m_p_TaskLogicUnit; // logic unit from job or op
 
   public:
     Word* m_pSeedWord;      // seed

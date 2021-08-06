@@ -110,6 +110,7 @@ namespace STORE
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     i8   iOp(void);
+    LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
