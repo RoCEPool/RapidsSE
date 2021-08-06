@@ -117,6 +117,8 @@ Task::Task(void)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
+  m_p_TaskLogicUnit = nullptr;
+  
   ASSERT(! m_oWriteLocks.nItems());
   
   _checkInitialised_(CN_TASK);
@@ -204,15 +206,17 @@ void Task::vTaskLoop(void)
   PsxThd::vTlsSet(giTLS_TaskKey,this);
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
   
-//  if (! bSeeded()) {
-//    AM::LOGICUNIT::vNew(this,pJob());
-//    vSeedTask();
-//  }
-
   vVerifyTaskComposition();
+  
+  if (*m_pJob)
+    m_p_TaskLogicUnit = m_pJob->pJobLogicUnit();
+  else
+  if (*m_pOp)
+    m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
+  else
+    NEVER_REACH;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
   
   while (TR_NONE == m_eTransition) {
     
