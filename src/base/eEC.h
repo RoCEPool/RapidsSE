@@ -15,6 +15,7 @@ enum eEC // error code
   EC_AMBIGUOUS_ALIAS,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_COLUMN,              // SQL Compiler Subsystem
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
+  EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
   EC_ASSERT,
 
   /* _B_ */
@@ -206,6 +207,7 @@ enum eEC // error code
 
   /* _U_ */
   EC_UNRESOLVED_COLUMN_WILDCARD,    // SQL Compiler Subsystem
+  EC_USING_COLUMN_NOT_FOUND,        // SQL Compiler Subsystem
 
   /* _V_ */
   EC_VALIDATION_FAILURE,
@@ -238,6 +240,7 @@ static Stz* aEC[]
   /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,          // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,   // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -428,6 +431,7 @@ static Stz* aEC[]
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz, // SQL Compiler Subsystem
+  /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,     // SQL Compiler Subsystem
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
@@ -460,6 +464,7 @@ static Stz* aEC2[] // error code
   /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,               // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,                // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "EC_ASSERT"_Stz,
 
   /* _B_ */
@@ -652,6 +657,7 @@ static Stz* aEC2[] // error code
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz,     // SQL Compiler Subsystem
+  /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,         // SQL Compiler Subsystem
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "EC_VALIDATION_FAILURE"_Stz,
@@ -694,6 +700,7 @@ static Stz* aErrorMsg[]
   /* EC_AMBIGUOUS_ALIAS               */ "Ambiguous alias name"_Stz,      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "Ambiguous column name"_Stz,     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "Ambiguous table name"_Stz,      // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "Ambiguous column name in USING clause"_Stz,     // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -885,6 +892,7 @@ static Stz* aErrorMsg[]
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "Column wildcard does not resolve to any tables in the query"_Stz,
+  /* EC_USING_COLUMN_NOT_FOUND        */ "Column name in USING clause is not found"_Stz,
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,

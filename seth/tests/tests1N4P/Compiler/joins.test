@@ -28,6 +28,9 @@ success
 CREATE TABLE t2 (colA INTEGER, colB VARCHAR, colC DECIMAL, colX DATE, colY TIME, colZ TIMESTAMP);
 success
 
+CREATE TABLE t3 (colA INTEGER, colB VARCHAR, colC DECIMAL);
+success
+
 trackmemory;
 success
 
@@ -1314,13 +1317,181 @@ FULL OUTER JOIN t2 ON t1.colA < t2.colA;
 failure contains: 'Join predicate expression must be an equi-join'
 
 
--- TODO: JOIN USING
+-- JOIN USING
   -- Single USING column
-  -- Multiple USING columns
-  -- USING column not found
-  -- USING column ambiguous
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 JOIN t2 USING (colB)"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+
+-> -> nestedLoopJoinOp
+      » join type: Inner Join
+      » predicate: (rapidsse.public.t1.colB = rapidsse.public.t2.colB)
+      » ordinal predicate: ($2 = $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t2)'
+)
 
 
+  -- Multiple USING 2 columns
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colC);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC)"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+
+-> -> nestedLoopJoinOp
+      » join type: Inner Join
+      » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
+      » ordinal predicate: (($2 = $6) AND ($3 = $7))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t2)'
+)
+
+
+  -- Multiple USING 3 columns
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colC, colA);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC, colA)"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+
+-> -> nestedLoopJoinOp
+      » join type: Inner Join
+      » predicate: (((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC)) AND (rapidsse.public.t1.colA = rapidsse.public.t2.colA))
+      » ordinal predicate: ((($2 = $6) AND ($3 = $7)) AND ($1 = $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t2)'
+)
+
+  -- USING column not found in left table
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colX);
+failure contains: 'Column name in USING clause is not found: colX'
+
+  -- USING column not found in right table
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colD);
+failure contains: 'Column name in USING clause is not found: colD'
+
+  -- USING column not found in both tables
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colM);
+failure contains: 'Column name in USING clause is not found: colM'
+
+  -- USING column is ambiguous
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colC)
+JOIN t3 USING (colA);
+failure contains: 'Ambiguous column name in USING clause (colA)'
+
+
+-- Mixed JOIN ON and JOIN USING
+EXPLAIN SELECT *
+FROM t1
+JOIN t2 USING (colB, colC)
+JOIN t3 ON (t1.colA = t3.colC);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC) JOIN t3 ON (t1.colA = t3.colC)"
+
+-> projectOp
+   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.t3.colA ; Ordinal Expr = $11)
+   » column: (Alias = colB ; Expr = rapidsse.public.t3.colB ; Ordinal Expr = $12)
+   » column: (Alias = colC ; Expr = rapidsse.public.t3.colC ; Ordinal Expr = $13)
+
+-> -> nestedLoopJoinOp
+      » join type: Inner Join
+      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t3.colC)
+      » ordinal predicate: ($1 = $13)
+
+-> -> -> nestedLoopJoinOp
+         » join type: Inner Join
+         » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
+         » ordinal predicate: (($2 = $6) AND ($3 = $7))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.t3)'
+)
+
+-- Order swapped around
+EXPLAIN SELECT *
+FROM t1
+JOIN t3 ON (t1.colA = t3.colC)
+JOIN t2 USING (colB, colC);
+failure contains: 'Ambiguous column name in USING clause (colB)'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1351,5 +1522,8 @@ CLEANUP {
   mute
 
   drop table t2;
+  mute
+
+  drop table t3;
   mute
 }
