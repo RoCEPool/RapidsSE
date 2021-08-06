@@ -44,7 +44,13 @@ void Step::vOpAckPipelineJob(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  
+  
   pOp->vAckPipelineJob();
 }
 
@@ -55,10 +61,14 @@ void Step::vOpDownstreamOpStore(void)
 {
   ENTRY();
     
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
   Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
   
-  Op* pOp = m_pJob->m_pOp;
-
   pOp->vDownstreamOp(pDownstreamOp);
 
   EXIT();
@@ -98,7 +108,12 @@ void Step::vOpOpNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  
   s256 sOpName = pOp->szOpNm();
   
   m_pDataStack->vPushStr(sOpName);
@@ -113,7 +128,13 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->m_pOp->tPtnNo());
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  
+  m_pDataStack->vPushInt(pOp->tPtnNo());
   
   EXIT();
 }
@@ -125,7 +146,12 @@ void Step::vOpPiplineJobFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   if (! pPipeline) {
@@ -146,7 +172,11 @@ void Step::vOpPipeBackIn(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -162,7 +192,11 @@ void Step::vOpPipeOut(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -178,7 +212,11 @@ void Step::vOpOutboundOperandFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
   
   m_pDataStack->vPushPtr(pOp->pOutboundOperand());
   
@@ -192,7 +230,11 @@ void Step::vOpOutboundOperandStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -208,7 +250,11 @@ void Step::vOpQueueLength(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
   
   i8 nLength = pOp->nQueuedOperands();
 
@@ -224,7 +270,12 @@ void Step::vOpStageNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+  
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
@@ -239,7 +290,13 @@ void Step::vOpSendKindStore(void)
 {
   ENTRY();
   
-  m_pJob->m_pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
+    Op* pOp = m_pJob->m_pOp;
+#endif
+
+  pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
