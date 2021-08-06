@@ -83,6 +83,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newEarlyExitMarker"_Stz,&Step::vOperandNewEarlyExitMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
   vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
+  vAddStep("Operand[].newLeaveMarker"_Stz,&Step::vOperandNewLeaveMarker);
+  vAddStep("Operand[].newLeavingMarker"_Stz,&Step::vOperandNewLeavingMarker);
+  vAddStep("Operand[].newLeftMarker"_Stz,&Step::vOperandNewLeftMarker);
   vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
@@ -740,6 +743,48 @@ void Step::vOperandNewExitedEarlyMarker(void)
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
   m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EARLYEXITEDMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newLeaveMarker -- new a leave marker                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewLeaveMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
+
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEAVEMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newLeavingMarker -- new a leaving marker                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewLeavingMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
+
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEAVINGMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newLeftMarker -- new a left marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewLeftMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
+
+  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEFTMARKER);
 
   EXIT();
 }

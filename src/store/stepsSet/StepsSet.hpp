@@ -1058,6 +1058,9 @@ public:
   void vOperandNewEarlyExitMarker(void);
   void vOperandNewExitedMarker(void);
   void vOperandNewExitedEarlyMarker(void);
+  void vOperandNewLeaveMarker(void);
+  void vOperandNewLeavingMarker(void);
+  void vOperandNewLeftMarker(void);
   void vOperandNewNextBufferMarker(void);
   void vOperandNewPulsedMarker(void);
   void vOperandNewStartedMarker(void);
