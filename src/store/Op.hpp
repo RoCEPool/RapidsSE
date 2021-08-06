@@ -145,7 +145,7 @@ namespace STORE
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOperator(i8 iSessionId);
+    void vSpawnTaskForOp(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);

@@ -154,7 +154,7 @@ void Stream::vSpawnOperators(i8 iSessionId, i8 i_ThisNode)
       
       Op* pOp = pGet(i_Op);
       
-      pOp->vSpawnOperator(iSessionId);
+      pOp->vSpawnTaskForOp(iSessionId);
     }
   }
   

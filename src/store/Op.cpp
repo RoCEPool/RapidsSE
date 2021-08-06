@@ -1634,7 +1634,7 @@ void Op::vSendNode(i8 iSendNode)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NO_JOB_FOR_OP
 
-void Op::vSpawnOperator(i8 iSessionId)
+void Op::vSpawnTaskForOp(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1707,7 +1707,7 @@ void Op::vSpawnOperator(i8 iSessionId)
 /*----------------------------------------------------------------------------*/
 #else
 
-void Op::vSpawnOperator(i8 iSessionId)
+void Op::vSpawnTaskForOp(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
