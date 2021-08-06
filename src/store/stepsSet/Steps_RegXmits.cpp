@@ -29,6 +29,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
   vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
+  vAddStep("Sends[].handleLeaving"_Stz,  &Step::vRegSendsHandleLeaving);
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
   vAddStep("Sends[].isNull"_Stz,         &Step::vRegSendsIsNull);
@@ -90,6 +91,21 @@ void Step::vRegSendsHandleCleanup(void)
   pSends->vIncCleanup();
 
   m_pDataStack->vPushInt(pSends->bCleanupDone());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleDataPulse -- handle consume of data pulse                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleDataPulse(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  m_pDataStack->vPushInt(pSends->bDataPulseDone());
+  pSends->vIncDataPulse();
 
   EXIT();
 }
@@ -175,21 +191,6 @@ void Step::vRegSendsHandleExit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleDataPulse -- handle consume of data pulse                    */
-/*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleDataPulse(void)
-{
-  ENTRY();
-  
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
-  
-  m_pDataStack->vPushInt(pSends->bDataPulseDone());
-  pSends->vIncDataPulse();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Sends[].handleEnd -- handle consume of end marker                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegSendsHandleEnd(void)
@@ -202,6 +203,23 @@ void Step::vRegSendsHandleEnd(void)
   
   m_pDataStack->vPushInt(pSends->bEndDone());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleLeaving -- handle consume of leaving marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleLeaving(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  bool bLeavingDone = pSends->bLeavingDone();
+  pSends->vIncLeaving();
+
+  m_pDataStack->vPushInt(bLeavingDone);
+
   EXIT();
 }
 

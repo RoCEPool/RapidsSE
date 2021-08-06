@@ -61,6 +61,7 @@ Sends::Sends(i8 iSends)
   m_iExitMarkers     = 0;
   m_iEosMarkers      = 0;
   m_iEndMarkers      = 0;
+  m_iLeavingMarkers  = 0;
   m_iStartMarkers    = 0;
   m_iStreamDefs      = 0;
   
@@ -263,6 +264,25 @@ bool Sends::bExitDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* leaving done ?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Sends::bLeavingDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iLeavingMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_LEAVINGMARKER %lld; expected %lld\n"_Stz,
+           m_iLeavingMarkers, m_iSends);
+
+  if (m_iLeavingMarkers == m_iSends) {
+    //m_iExitMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* start done ?                                                               */
 /*----------------------------------------------------------------------------*/
 bool Sends::bStartDone(void)
@@ -396,6 +416,16 @@ void Sends::vIncExit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   m_iExitMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc leaving                                                                */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncLeaving(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iLeavingMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

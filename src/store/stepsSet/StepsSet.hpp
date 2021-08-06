@@ -1269,13 +1269,14 @@ public:
   void vRegSendsGet(void);
   void vRegSendsHandleCancel(void);
   void vRegSendsHandleCleanup(void);
+  void vRegSendsHandleDataPulse(void);
   void vRegSendsHandleDestroy(void);
   void vRegSendsHandleEnd(void);
   void vRegSendsHandleEnding(void);
   void vRegSendsHandleEos(void);
   void vRegSendsHandleErroring(void);
   void vRegSendsHandleExit(void);
-  void vRegSendsHandleDataPulse(void);
+  void vRegSendsHandleLeaving(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
   void vRegSendsIsNull(void);
