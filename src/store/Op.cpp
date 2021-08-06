@@ -1637,9 +1637,7 @@ void Op::vSendNode(i8 iSendNode)
 void Op::vSpawnTaskForOp(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  NEVER_REACH; // temp
-  
+    
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
   m_oOpTags.vCopy(pPipeLineJobTags);
   m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
