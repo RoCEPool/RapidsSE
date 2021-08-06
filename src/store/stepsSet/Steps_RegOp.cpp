@@ -54,7 +54,11 @@ void Step::vRegOpHandlerEntry(void)
   
   if (AM::TRACE::bVBlong()) {
 
+#ifdef WITH_NO_JOB_FOR_OP
+    Op* pOp = *m_pOp;
+#else
     Op* pOp = m_pJob->m_pOp;
+#endif
     
     if (m_p_TaskLogicUnit->m_xpPipein.bIsNotNull()) {
       Operand* pOperand = *m_p_TaskLogicUnit->m_xpPipein;
@@ -73,18 +77,7 @@ void Step::vRegOpHandlerEntry(void)
 void Step::vRegOpHandlerExit(void)
 {
   ENTRY();
-  
-//  Op* pOp = m_pJob->m_pOp;
-//
-//  if (m_p_TaskLogicUnit->m_xpPipein.bIsNotNull()) {
-//    Operand* pOperand = *m_p_TaskLogicUnit->m_xpPipein;
-//
-//    pOp->vOpTrace(pOperand,(Stz*)__func__,true);
-//  }
-//  else {
-//    pOp->vOpTrace(nullptr,(Stz*)__func__,true);
-//  }
-  
+    
   EXIT();
 }
 
@@ -142,10 +135,17 @@ void Step::vRegOpInit(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+#ifdef WITH_NO_JOB_FOR_OP
+  Op* pOp = *m_pOp;
 
   m_p_TaskLogicUnit->m_xpOp = pOp;
 
+#else
+  Op* pOp = m_pJob->m_pOp;
+
+  m_p_TaskLogicUnit->m_xpOp = pOp;
+#endif
+  
   EXIT();
 }
 

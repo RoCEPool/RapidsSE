@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "Job.hpp"
+#include "Op.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,8 +26,29 @@ void Step::vRegJobGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(m_pJob);
+#ifdef WITH_NO_JOB_FOR_OP
 
+  Job* pJob = nullptr;
+  
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  m_pDataStack->vPushPtr(pJob);
+
+#else
+  m_pDataStack->vPushPtr(m_pJob);
+#endif
+  
   EXIT();
 }
 
