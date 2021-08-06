@@ -1271,7 +1271,6 @@ public:
   void vRegSendsHandleCleanup(void);
   void vRegSendsHandleDestroy(void);
   void vRegSendsHandleEnd(void);
-  void vRegSendsHandleEnded(void);
   void vRegSendsHandleEnding(void);
   void vRegSendsHandleEos(void);
   void vRegSendsHandleErroring(void);

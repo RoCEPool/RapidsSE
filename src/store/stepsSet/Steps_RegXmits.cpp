@@ -25,7 +25,6 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
   vAddStep("Sends[].handleEnd"_Stz,      &Step::vRegSendsHandleEnd);
-  vAddStep("Sends[].handleEnded"_Stz,    &Step::vRegSendsHandleEnded);
   vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
@@ -108,22 +107,6 @@ void Step::vRegSendsHandleDestroy(void)
   
   m_pDataStack->vPushInt(pSends->bDestroyDone());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Sends[].handleEnded -- handle consume of ended marker                      */
-/*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleEnded(void)
-{
-  ENTRY();
-
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
-
-  pSends->vIncEnded();
-
-  m_pDataStack->vPushInt(pSends->bEndedDone());
-
   EXIT();
 }
 

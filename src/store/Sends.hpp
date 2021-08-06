@@ -14,7 +14,6 @@ namespace STORE
     i8             m_iCleanupMarkers; // cleanup markers received by consumeOp
     i8             m_iDestroyMarkers; // destroy markers received by consumeOp
     i8             m_iEndMarkers;     // end markers received by consumeOp
-    i8             m_iEndedMarkers;   // ended markers received by consumeOp
     i8             m_iEndingMarkers;   // ending markers received by consumeOp
     i8             m_iErroringMarkers;   // erroring markers received by consumeOp
     i8             m_iExitMarkers;    // exit markers received by consumeOp
@@ -38,7 +37,6 @@ namespace STORE
     bool bDataPulseDone(void);
     bool bDestroyDone(void);
     bool bEndDone(void);
-    bool bEndedDone(void);
     bool bEndingDone(void);
     bool bEosDone(void);
     bool bErrorDone(void);
@@ -52,7 +50,6 @@ namespace STORE
     void vIncDataPulse(void);
     void vIncDestroy(void);
     void vIncEnd(void);
-    void vIncEnded(void);
     void vIncEnding(void);
     void vIncEos(void);
     void vIncError(void);
