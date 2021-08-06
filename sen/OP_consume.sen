@@ -109,7 +109,7 @@
 : consumeOp_EndMarker \handler
 
   //"Operand:- ZK_ENDMARKER" .verbose
-  Sends[].handlePulsed if
+  Sends[].handleEnd if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -131,20 +131,6 @@
     PipeIn[].delete
     true
   then
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEDMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: consumeOp_PulsedMarker \handler
-
-  //"Operand:- ZK_PULSEDMARKER" .verbose
-  Sends[].handlePulsed if
-    PipeIn[].pipeOut
-  else
-    PipeIn[].delete
-  then
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +182,6 @@
   find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
   find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
   find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
-  find: consumeOp_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
   find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
   find: consumeOp_StreamDef      ZK_STREAMDEF      op[].handler!
 

@@ -61,7 +61,7 @@ Sends::Sends(i8 iSends)
   m_iErroringMarkers = 0;
   m_iExitMarkers     = 0;
   m_iEosMarkers      = 0;
-  m_iPulsedMarkers   = 0;
+  m_iEndMarkers      = 0;
   m_iStartMarkers    = 0;
   m_iStreamDefs      = 0;
   
@@ -144,6 +144,24 @@ bool Sends::bDestroyDone(void)
          m_iDestroyMarkers, m_iSends);
   
   if (m_iDestroyMarkers == m_iSends) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end done ?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Sends::bEndDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iEndMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp ZK_ENDMARKER received %lld; expected %lld\n"_Stz,
+           m_iEndMarkers, m_iSends);
+
+  if (m_iEndMarkers == m_iSends) {
     return true;
   }
   else
@@ -265,24 +283,6 @@ bool Sends::bExitDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pulsed done ?                                                              */
-/*----------------------------------------------------------------------------*/
-bool Sends::bPulsedDone(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  if (m_iPulsedMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %lld; expected %lld\n"_Stz,
-           m_iPulsedMarkers, m_iSends);
-  
-  if (m_iPulsedMarkers == m_iSends) {
-    return true;
-  }
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* start done ?                                                               */
 /*----------------------------------------------------------------------------*/
 bool Sends::bStartDone(void)
@@ -369,6 +369,16 @@ void Sends::vIncEnding(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inc end                                                                    */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iEndMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc ended                                                                  */
 /*----------------------------------------------------------------------------*/
 void Sends::vIncEnded(void)
@@ -416,16 +426,6 @@ void Sends::vIncExit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   m_iExitMarkers++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc pulsed                                                                 */
-/*----------------------------------------------------------------------------*/
-void Sends::vIncPulsed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  m_iPulsedMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,14 +22,14 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].delete"_Stz,         &Step::vRegSendsDelete);
   vAddStep("Sends[].handleCancel"_Stz,   &Step::vRegSendsHandleCancel);
   vAddStep("Sends[].handleCleanup"_Stz,  &Step::vRegSendsHandleCleanup);
+  vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
+  vAddStep("Sends[].handleEnd"_Stz,      &Step::vRegSendsHandleEnd);
   vAddStep("Sends[].handleEnded"_Stz,    &Step::vRegSendsHandleEnded);
   vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
   vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
-  vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
-  vAddStep("Sends[].handlePulsed"_Stz,   &Step::vRegSendsHandlePulsed);
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
   vAddStep("Sends[].isNull"_Stz,         &Step::vRegSendsIsNull);
@@ -207,17 +207,17 @@ void Step::vRegSendsHandleDataPulse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handlePulsed -- handle consume of pulsed marker                    */
+/* Sends[].handleEnd -- handle consume of end marker                          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandlePulsed(void)
+void Step::vRegSendsHandleEnd(void)
 {
   ENTRY();
   
   Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
-  pSends->vIncPulsed();
+  pSends->vIncEnd();
   
-  m_pDataStack->vPushInt(pSends->bPulsedDone());
+  m_pDataStack->vPushInt(pSends->bEndDone());
   
   EXIT();
 }

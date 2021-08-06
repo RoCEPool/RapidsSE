@@ -13,13 +13,13 @@ namespace STORE
     i8             m_iCancelMarkers;  // cancel markers received by consumeOp
     i8             m_iCleanupMarkers; // cleanup markers received by consumeOp
     i8             m_iDestroyMarkers; // destroy markers received by consumeOp
+    i8             m_iEndMarkers;     // end markers received by consumeOp
     i8             m_iEndedMarkers;   // ended markers received by consumeOp
     i8             m_iEndingMarkers;   // ending markers received by consumeOp
     i8             m_iErroringMarkers;   // erroring markers received by consumeOp
     i8             m_iExitMarkers;    // exit markers received by consumeOp
     i8             m_iEosMarkers;     // eos / error markers received by consumeOp
     i8             m_iDataPulses;     // data pulses received by consumeOp
-    i8             m_iPulsedMarkers;  // pulsed markers received by consumeOp
     i8             m_iStartMarkers;   // start markers received by consumeOp
     i8             m_iStreamDefs;     // stream def's received by consumeOp
     
@@ -37,13 +37,13 @@ namespace STORE
     bool bCleanupDone(void);
     bool bDataPulseDone(void);
     bool bDestroyDone(void);
+    bool bEndDone(void);
     bool bEndedDone(void);
     bool bEndingDone(void);
     bool bEosDone(void);
     bool bErrorDone(void);
     bool bErroringDone(void);
     bool bExitDone(void);
-    bool bPulsedDone(void);
     bool bStartDone(void);
     bool bStreamDefDone(void);
     
@@ -51,13 +51,13 @@ namespace STORE
     void vIncCleanup(void);
     void vIncDataPulse(void);
     void vIncDestroy(void);
+    void vIncEnd(void);
     void vIncEnded(void);
     void vIncEnding(void);
     void vIncEos(void);
     void vIncError(void);
     void vIncErroring(void);
     void vIncExit(void);
-    void vIncPulsed(void);
     void vIncStart(void);
     void vIncStreamDef(void);
     
