@@ -208,10 +208,10 @@ void Task::vTaskLoop(void)
   
   vVerifyTaskComposition();
   
-  if (*m_pJob)
+  if (m_pJob.bIsNotNull())
     m_p_TaskLogicUnit = m_pJob->pJobLogicUnit();
   else
-  if (*m_pOp)
+  if (m_pOp.bIsNotNull())
     m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
   else
     NEVER_REACH;
