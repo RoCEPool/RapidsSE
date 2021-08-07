@@ -33,20 +33,10 @@ void Step::vDot(void)
   m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal()) {
-//    vTrace("[%s %s] %lld\n"_Stz,
-//           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
-//           xVariable.iInt());
-    
-    m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
-    
+    vDotPrint("%lld"_Stz,xVariable.iGetColVal());
   }
   else {
-//    vTrace("[%s %s] %s\n"_Stz,
-//           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
-//           xVariable.szStz());
-    m_pJob->vPrint("%s"_Stz,xVariable.szStz());
+    vDotPrint("%s"_Stz,xVariable.szStz());
   }
   
   EXIT();

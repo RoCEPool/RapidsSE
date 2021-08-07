@@ -116,6 +116,7 @@ namespace STORE
     bool bByPromptTag(void);
     void vContentDump(void);
     bool bDiaryTag(void);
+    void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     bool bHasTag_bg(void);
@@ -160,7 +161,6 @@ namespace STORE
     void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
-    void vPrint(Stz* szFormat, ...);
     void vReport(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
