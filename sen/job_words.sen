@@ -85,6 +85,7 @@
 /*----------------------------------------------------------------------------*/
 : job::deleteThis ( -- )
 
+/* NOT TO BE EXECUTED IN REVISED JOB/Op MODEL
   0 locals| pThisTask |
   0 locals| pThisJob  |
 
@@ -98,6 +99,7 @@
   //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
 
   pThisJob job.delete
+*/
 ;
 
 /*----------------------------------------------------------------------------*/
