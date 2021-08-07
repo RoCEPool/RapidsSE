@@ -478,7 +478,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   Thread* pThread = AM::THREAD::pNewThread();
   
   pThread->vTask(pNewTask);
-  pThread->vDedicated(AM::eJobClass(pNewTask->pJob()));
+  pThread->vDedicated(CN_JOB);
   
   pThread->vSpawnPsxThd_dedicated();
 }
