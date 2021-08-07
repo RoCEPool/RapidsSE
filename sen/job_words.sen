@@ -85,7 +85,6 @@
 /*----------------------------------------------------------------------------*/
 : job::deleteThis ( -- )
 
-/* DO NOT CHECK THIS IN
   0 locals| pThisTask |
   0 locals| pThisJob  |
 
@@ -99,7 +98,6 @@
   //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
 
   pThisJob job.delete
-*/
 ;
 
 /*----------------------------------------------------------------------------*/
