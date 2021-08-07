@@ -1091,7 +1091,7 @@ bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("  DdlLock : %016x\n"_Stz,AM::pDdlLock()->uLockWord());
+  vTrace("  DdlLock : %016x\n"_Stz,AM::MASTERLOCK::pDdlLock()->uLockWord());
 
   return true;
 }

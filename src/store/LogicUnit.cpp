@@ -271,13 +271,13 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (LH_HAVE_READ_LOCK == m_eDdlLocked) {
     
-    AM::pDdlLock()->vDropRead();
+    AM::MASTERLOCK::pDdlLock()->vDropRead();
     m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   else
   if (LH_HAVE_WRITE_LOCK == m_eDdlLocked) {
     
-    AM::pDdlLock()->vDropWrite();
+    AM::MASTERLOCK::pDdlLock()->vDropWrite();
     m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
 

@@ -490,11 +490,24 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 /*----------------------------------------------------------------------------*/
 /* delete given logic unit                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
+void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
+{
   
   delete * ppLogicUnit;
   
   * ppLogicUnit = nullptr;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                MASTERLOCK                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get ddl master lock                                                        */
+/*----------------------------------------------------------------------------*/
+MasterLock* AM::MASTERLOCK::pDdlLock(void)
+{
+  return & gpAttachMap->m_oLocks.m_oDdlMasterLock;
 }
 
 
@@ -1385,7 +1398,6 @@ i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
-MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
 MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }

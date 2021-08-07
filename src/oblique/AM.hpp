@@ -268,6 +268,12 @@ namespace OBLIQUE
       static void vDelete(LogicUnit** ppLogicUnit);
     };
 
+    class MASTERLOCK
+    {
+    public:
+      static MasterLock* pDdlLock(void);
+    };
+  
     class OBJECT
     {
     public:
@@ -420,7 +426,6 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static MasterLock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
