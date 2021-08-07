@@ -32,6 +32,7 @@
 #include "LogicUnit.hpp"
 
 #include "Parcel.hpp"
+#include "MY.hpp"
 
 
 #ifdef WITH_PYTHON_SUPPORT
@@ -724,9 +725,8 @@ void Step::vOperandNewLeaveMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
-
-  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEAVEMARKER);
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEAVEMARKER);
 
   EXIT();
 }
@@ -738,9 +738,9 @@ void Step::vOperandNewLeavingMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEAVINGMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEAVINGMARKER);
 
   EXIT();
 }
@@ -752,9 +752,9 @@ void Step::vOperandNewLeftMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pJobLogicUnit()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_pJob->pJobLogicUnit()->m_xpOperandA = new Marker(OM_LEFTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEFTMARKER);
 
   EXIT();
 }
