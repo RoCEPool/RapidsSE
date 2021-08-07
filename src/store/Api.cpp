@@ -444,7 +444,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
 
   if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
-    pSession->m_pSsnJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pSession->m_pSsnJob->pJobTags()));
+    vTrace("Job New: %s"_Stz,spTagSet.sz(pSession->m_pSsnJob->pJobTags()));
     //pJob->pTagSet()->vPrint();
   }
   

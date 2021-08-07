@@ -960,23 +960,6 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vPrint(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  sSTMT sFormatted;
-    
-  va_list vaArgs;
-  va_start(vaArgs,szFormat);
-  sFormatted.vSprintVA(szFormat,vaArgs);
-  va_end(vaArgs);
-  
-  vDotPrint(sFormatted);
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
 eEC Job::ePopulateJob(TagSet* pTagSet)

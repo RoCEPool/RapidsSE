@@ -569,38 +569,11 @@ void Task::vDotPrint(Stz* szFormat, ...)
   va_end(vaArgs);
   
   if (m_pJob.bIsNotNull()) {
-    
     m_pJob->vDotPrint(sFormatted);
-    
-//    SP_Timer spTimer;
-//    m_pJob->m_oTimer.vUpdate();
-//
-//
-//  vTrace("[%s %s %s %s] %s\n"_Stz,
-//         AM::pGrid()->pThisNode()->szNodeNm(),
-//         m_pJob->szSide(),
-//         m_pJob->szJobNm(),
-//         spTimer.sz(&m_pJob->m_oTimer),
-//
-//         sFormatted.szStz(),
-//
-//         C_VARGS_END);
   }
   else
   {
-  
     m_pOp->vDotPrint(sFormatted);
-
-//    vTrace("[%s] "
-//           "%s"
-//           "\n"_Stz
-//
-//           ,AM::pGrid()->pThisNode()->szNodeNm()
-//
-//           ,sFormatted.szStz()
-//
-//           ,C_VARGS_END
-//           );
   }
 
 }
