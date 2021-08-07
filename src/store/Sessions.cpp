@@ -253,7 +253,7 @@ void Sessions::vDump(void)
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  vTrace("  DdlLock %llx\n"_Stz,AM::pDdlLock()->uLockWord());
+  vTrace("  DdlLock %llx\n"_Stz,AM::MASTERLOCK::uDdlLockWord());
   
   m_okLock.vDropRead();
 }

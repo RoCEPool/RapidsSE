@@ -490,12 +490,93 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 /*----------------------------------------------------------------------------*/
 /* delete given logic unit                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit) {
+void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
+{
   
   delete * ppLogicUnit;
   
   * ppLogicUnit = nullptr;
 }
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                MASTERLOCK                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* drop ddl read lock                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
+{
+  RASSERT(LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked);
+
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
+  
+  pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab ddl read lock                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
+{
+  RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
+  
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
+  
+  pLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop ddl write lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
+{
+  RASSERT(LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked);
+  
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
+  
+  pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab ddl write lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
+{
+  RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
+
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
+  
+  pLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for ddl lock and drop if currently locked by given logic unit         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
+{
+  if (LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked) {
+    
+    AM::MASTERLOCK::vDropDdlReadLock(pLogicUnit);
+  }
+  else
+  if (LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked) {
+    
+    AM::MASTERLOCK::vDropDdlWriteLock(pLogicUnit);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* return ddl lock word (i.e. its current value)                              */
+/*----------------------------------------------------------------------------*/
+u8 AM::MASTERLOCK::uDdlLockWord(void)
+{
+  u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
+  
+  return uLockWord;
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1385,7 +1466,6 @@ i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
-MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
 MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }
