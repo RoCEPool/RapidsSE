@@ -510,6 +510,49 @@ MasterLock* AM::MASTERLOCK::pDdlLock(void)
   return & gpAttachMap->m_oLocks.m_oDdlMasterLock;
 }
 
+/*----------------------------------------------------------------------------*/
+/* drop ddl read lock                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropDdlReadLock(void)
+{
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab ddl read lock                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabDdlReadLock(void)
+{
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop ddl write lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropDdlWriteLock(void)
+{
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab ddl write lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabDdlWriteLock(void)
+{
+  gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* return ddl lock word (i.e. its current value)                              */
+/*----------------------------------------------------------------------------*/
+u8 AM::MASTERLOCK::uDdlLockWord(void)
+{
+  u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
+  
+  return uLockWord;
+}
+
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OBJECT                                     */

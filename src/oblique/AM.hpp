@@ -272,6 +272,15 @@ namespace OBLIQUE
     {
     public:
       static MasterLock* pDdlLock(void);
+    
+      static void vDropDdlReadLock(void);
+      static void vGrabDdlReadLock(void);
+    
+      static void vDropDdlWriteLock(void);
+      static void vGrabDdlWriteLock(void);
+    
+      static u8 uDdlLockWord(void);
+
     };
   
     class OBJECT
