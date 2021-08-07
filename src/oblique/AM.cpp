@@ -552,7 +552,7 @@ void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for ddl lock and drop if locked by logic unit                         */
+/* test for ddl lock and drop if currently locked by given logic unit         */
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 {
