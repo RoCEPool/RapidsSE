@@ -11,6 +11,7 @@
 #include "Grid.hpp" //?
 
 #include "SP_Lock.hpp" //?
+#include "SP_Timer.hpp" //?
 #include "LogicUnit.hpp" //?
 
 Atomic gixTask;
@@ -551,6 +552,57 @@ void Task::vDeleteInput(void)
   delete m_pInput;
   
   m_pInput = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* . print                                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vDotPrint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  sSTMT sFormatted;
+  
+  va_list vaArgs;
+  va_start(vaArgs,szFormat);
+  sFormatted.vSprintVA(szFormat,vaArgs);
+  va_end(vaArgs);
+  
+  if (m_pJob.bIsNotNull()) {
+    
+    m_pJob->vDotPrint(sFormatted);
+    
+//    SP_Timer spTimer;
+//    m_pJob->m_oTimer.vUpdate();
+//
+//
+//  vTrace("[%s %s %s %s] %s\n"_Stz,
+//         AM::pGrid()->pThisNode()->szNodeNm(),
+//         m_pJob->szSide(),
+//         m_pJob->szJobNm(),
+//         spTimer.sz(&m_pJob->m_oTimer),
+//
+//         sFormatted.szStz(),
+//
+//         C_VARGS_END);
+  }
+  else
+  {
+  
+    m_pOp->vDotPrint(sFormatted);
+
+//    vTrace("[%s] "
+//           "%s"
+//           "\n"_Stz
+//
+//           ,AM::pGrid()->pThisNode()->szNodeNm()
+//
+//           ,sFormatted.szStz()
+//
+//           ,C_VARGS_END
+//           );
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -484,6 +484,32 @@ bool Job::bDiaryTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sen . print                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vDotPrint(Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  SP_Timer spTimer;
+  
+  m_oTimer.vUpdate();
+  
+  vTrace("[%s: job %s %s %s] "
+         "%s"
+         "\n"_Stz
+         
+         ,AM::pGrid()->pThisNode()->szNodeNm()
+         ,szSide()
+         ,m_sJobNm.szStz()
+         ,spTimer.sz(&m_oTimer)
+         
+         ,szText
+         
+         ,C_VARGS_END
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* outline                                                                    */
 /*----------------------------------------------------------------------------*/
 void Job::vOutline(s4K& sOutline)
@@ -941,28 +967,13 @@ void Job::vPrint(Stz* szFormat, ...)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   sSTMT sFormatted;
-  
-  SP_Timer spTimer;
-  
+    
   va_list vaArgs;
-  
   va_start(vaArgs,szFormat);
-  
-  m_oTimer.vUpdate();
-  
   sFormatted.vSprintVA(szFormat,vaArgs);
-  
-  vTrace("[%s %s %s %s] %s\n"_Stz,
-         AM::pGrid()->pThisNode()->szNodeNm(),
-         szSide(),
-         m_sJobNm.szStz(),
-         spTimer.sz(&m_oTimer),
-         
-         sFormatted.szStz(),
-         
-         C_VARGS_END);
-
   va_end(vaArgs);
+  
+  vDotPrint(sFormatted);
 }
 
 /*----------------------------------------------------------------------------*/
