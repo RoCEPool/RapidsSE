@@ -31,12 +31,8 @@ void Step::vAddSteps_DdlLock(void)
 void Step::vDdlLockDropRead(void)
 {
   ENTRY();
-  
-  ASSERT(LH_HAVE_READ_LOCK == m_p_TaskLogicUnit->m_eDdlLocked);
-
 
   AM::MASTERLOCK::vDropDdlReadLock(m_p_TaskLogicUnit);
-  m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -47,11 +43,8 @@ void Step::vDdlLockDropRead(void)
 void Step::vDdlLockDropWrite(void)
 {
   ENTRY();
-  
-  ASSERT(LH_HAVE_WRITE_LOCK == m_p_TaskLogicUnit->m_eDdlLocked);
-  
+    
   AM::MASTERLOCK::vDropDdlWriteLock(m_p_TaskLogicUnit);
-  m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -62,11 +55,8 @@ void Step::vDdlLockDropWrite(void)
 void Step::vDdlLockGrabRead(void)
 {
   ENTRY();
-  
-  ASSERT(! m_p_TaskLogicUnit->m_eDdlLocked);
-  
+    
   AM::MASTERLOCK::vGrabDdlReadLock(m_p_TaskLogicUnit);
-  m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
 
   EXIT();
 }
@@ -77,11 +67,8 @@ void Step::vDdlLockGrabRead(void)
 void Step::vDdlLockGrabWrite(void)
 {
   ENTRY();
-  
-  ASSERT(! m_p_TaskLogicUnit->m_eDdlLocked);
-  
+    
   AM::MASTERLOCK::vGrabDdlWriteLock(m_p_TaskLogicUnit);
-  m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
 
   EXIT();
 }
@@ -119,13 +106,11 @@ void Step::vDdlLockTestDrop(void)
   if (LH_HAVE_READ_LOCK == m_p_TaskLogicUnit->m_eDdlLocked) {
     
     AM::MASTERLOCK::vDropDdlReadLock(m_p_TaskLogicUnit);
-    m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   else
   if (LH_HAVE_WRITE_LOCK == m_p_TaskLogicUnit->m_eDdlLocked) {
     
     AM::MASTERLOCK::vDropDdlWriteLock(m_p_TaskLogicUnit);
-    m_p_TaskLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   
   EXIT();
