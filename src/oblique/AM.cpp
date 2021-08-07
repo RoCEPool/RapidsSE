@@ -508,6 +508,8 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 {
+  RASSERT(LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked);
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
 }
 
@@ -516,6 +518,8 @@ void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 {
+  RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
+  
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
 }
 
@@ -524,6 +528,8 @@ void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 {
+  RASSERT(LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked);
+  
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
 }
 
@@ -532,6 +538,8 @@ void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 {
+  RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
 }
 
