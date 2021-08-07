@@ -506,7 +506,7 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 /*----------------------------------------------------------------------------*/
 /* drop ddl read lock                                                         */
 /*----------------------------------------------------------------------------*/
-void AM::MASTERLOCK::vDropDdlReadLock(void)
+void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 {
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
 }
@@ -514,7 +514,7 @@ void AM::MASTERLOCK::vDropDdlReadLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab ddl read lock                                                         */
 /*----------------------------------------------------------------------------*/
-void AM::MASTERLOCK::vGrabDdlReadLock(void)
+void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 {
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
 }
@@ -522,7 +522,7 @@ void AM::MASTERLOCK::vGrabDdlReadLock(void)
 /*----------------------------------------------------------------------------*/
 /* drop ddl write lock                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::MASTERLOCK::vDropDdlWriteLock(void)
+void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 {
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
 }
@@ -530,7 +530,7 @@ void AM::MASTERLOCK::vDropDdlWriteLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab ddl write lock                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::MASTERLOCK::vGrabDdlWriteLock(void)
+void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 {
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
 }

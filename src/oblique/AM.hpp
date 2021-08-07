@@ -270,14 +270,14 @@ namespace OBLIQUE
 
     class MASTERLOCK
     {
-    public:    
-      static void vDropDdlReadLock(void);
-      static void vGrabDdlReadLock(void);
+    public:
+      static void vDropDdlReadLock(LogicUnit* pLogicUnit);
+      static void vGrabDdlReadLock(LogicUnit* pLogicUnit);
     
-      static void vDropDdlWriteLock(void);
-      static void vGrabDdlWriteLock(void);
+      static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
+      static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     
-      static u8 uDdlLockWord(void);
+      static u8   uDdlLockWord(void);
 
     };
   
