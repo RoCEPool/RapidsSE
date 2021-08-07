@@ -45,7 +45,7 @@
   find: compiler_StreamSet        ZK_STREAMSET     op[].handler!
 
   // specific handlers
-  find: explainPlan_CleanupMarker ZK_CANCELMARKER  op[].handler!
+  find: explainPlan_CleanupMarker ZK_CLEANUPMARKER op[].handler!
   find: explainPlan_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop

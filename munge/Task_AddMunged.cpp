@@ -7669,7 +7669,7 @@ void Task::vAddMunged(Task* )
     "  find: compiler_StreamSet        ZK_STREAMSET     op[].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: explainPlan_CleanupMarker ZK_CANCELMARKER  op[].handler!\n"
+    "  find: explainPlan_CleanupMarker ZK_CLEANUPMARKER op[].handler!\n"
     "  find: explainPlan_PlanOperand   ZK_PLANOPERAND   op[].handler!\n"
     "\n"
     "  op__loop\n"
