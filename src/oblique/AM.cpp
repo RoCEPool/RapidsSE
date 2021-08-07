@@ -1826,7 +1826,7 @@ i8 AM::nRndSkipLevel(void) {
     nLevels =
       RndLib::iSkipLevel(nLvlLevels,
                          iLvlRatio,
-                         pTask->pJob()->pJobLogicUnit()->m_i_NextRnd);
+                         MY::pLogicUnit()->m_i_NextRnd);
   }
   else {
     nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio);

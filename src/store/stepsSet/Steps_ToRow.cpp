@@ -22,6 +22,8 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+#include "MY.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -79,7 +81,7 @@ void Step::vToRowCreate(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
+  Job* pJob = MY::pJob();
   
   TagSet* pJobTags = pJob->pJobTags();
   
