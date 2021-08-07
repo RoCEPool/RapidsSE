@@ -277,8 +277,9 @@ namespace OBLIQUE
       static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
       static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     
-      static u8   uDdlLockWord(void);
+      static void vDdlLockTestDrop(LogicUnit* pLogicUnit);
 
+      static u8   uDdlLockWord(void);
     };
   
     class OBJECT

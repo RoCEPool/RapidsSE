@@ -268,16 +268,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  
-  if (LH_HAVE_READ_LOCK == m_eDdlLocked) {
-    
-    AM::MASTERLOCK::vDropDdlReadLock(this);
-  }
-  else
-  if (LH_HAVE_WRITE_LOCK == m_eDdlLocked) {
-    
-    AM::MASTERLOCK::vDropDdlWriteLock(this);
-  }
+  AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
   

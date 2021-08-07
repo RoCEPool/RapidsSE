@@ -552,6 +552,22 @@ void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for ddl lock and drop if locked by logic unit                         */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
+{
+  if (LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked) {
+    
+    AM::MASTERLOCK::vDropDdlReadLock(pLogicUnit);
+  }
+  else
+  if (LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked) {
+    
+    AM::MASTERLOCK::vDropDdlWriteLock(pLogicUnit);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* return ddl lock word (i.e. its current value)                              */
 /*----------------------------------------------------------------------------*/
 u8 AM::MASTERLOCK::uDdlLockWord(void)

@@ -103,16 +103,8 @@ void Step::vDdlLockTestDrop(void)
     return;
   }
   
-  if (LH_HAVE_READ_LOCK == m_p_TaskLogicUnit->m_eDdlLocked) {
+  AM::MASTERLOCK::vDdlLockTestDrop(m_p_TaskLogicUnit);
     
-    AM::MASTERLOCK::vDropDdlReadLock(m_p_TaskLogicUnit);
-  }
-  else
-  if (LH_HAVE_WRITE_LOCK == m_p_TaskLogicUnit->m_eDdlLocked) {
-    
-    AM::MASTERLOCK::vDropDdlWriteLock(m_p_TaskLogicUnit);
-  }
-  
   EXIT();
 }
 
