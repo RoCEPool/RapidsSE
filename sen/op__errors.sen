@@ -88,6 +88,9 @@
 
   errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
 
+  // toggle to default handlers in case of error
+  "default_errorHandlers" FIND execute
+
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut
 
