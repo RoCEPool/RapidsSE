@@ -342,11 +342,9 @@ void Step::vIndexIndexTree(void)
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
-  Job* pJob = m_pJob;
-  
   Table* pTable = pIndex->pTable();
  
-  i8 i_Ptn = pJob->m_pOp->tPtnNo();
+  i8 i_Ptn = m_pOp->tPtnNo();
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
 
