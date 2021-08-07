@@ -28,7 +28,7 @@
   
   debug::bloat
 
-  PipeIn[].pipeOut
+  PipeIn[].delete
   
   true
 ;

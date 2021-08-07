@@ -474,6 +474,14 @@
 /*----------------------------------------------------------------------------*/
 /* operator recovery                                                          */
 /*----------------------------------------------------------------------------*/
+: error__handler \handler
+  Pipein[].delete
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* operator recovery                                                          */
+/*----------------------------------------------------------------------------*/
 : op__failureRecovery
 
   "op__failureRecovery" .
@@ -494,7 +502,9 @@
     PipeIn[].isNull not if
       PipeIn[].delete
     then
-  
+
+    // toggle to default handlers in case of error
+    find: error__handler   ZK_CRWBUFFER      op[].handler!
     true
   else
     process::quit

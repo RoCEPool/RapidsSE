@@ -85,7 +85,7 @@
 
     //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
 
-    // mark pipeline as being errored
+    // mark pipeline as having an errored
     true Pipeline::errored!
 
     // now pipeout an exit marker
