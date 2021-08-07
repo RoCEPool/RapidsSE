@@ -22,6 +22,7 @@
 
 #include "Procedure.hpp"
 
+#include "MY.hpp"
 #include "ePP.h"
 #include "TagConstants.h"
 
@@ -316,24 +317,26 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pJob = pSession->m_pSsnJob;
-
-  TagSet* pJobTagSet = pJob->pJobTags();
+  Job* pSsnJob = pSession->m_pSsnJob;
+  TagSet* pSsnJobTags = pSsnJob->pJobTags();
   
-  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-  pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  Job* pPipelineJob = MY::pJob();
+  TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
+  
+  Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
+  pSsnJobTags->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
+  Api::vPopulateTagSet(pSsnJobTags,pTagStrTknVec);
   if (AM::TRACE::bVerbose(C_VB_API))
-    pJobTagSet->vDumpSet();
+    pSsnJobTags->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDedicated)
-    Api::vSpawnTaskDedicated_job(pJob);
+    Api::vSpawnTaskDedicated_job(pSsnJob);
   else
-    Api::vSpawnTask_demonJob(pJob);
+    Api::vSpawnTask_demonJob(pSsnJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
