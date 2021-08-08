@@ -32,7 +32,6 @@
 void Step::vAddSteps_Api(void)
 {
   vAddStep("api::addProcedure"_Stz,   &Step::vApiAddProcedure);
-  vAddStep("api::executeNested"_Stz,  &Step::vApiExecuteNested);
   vAddStep("api::executeRequest"_Stz, &Step::vApiExecuteRequest);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
 }
@@ -68,93 +67,6 @@ void Step::vApiAddProcedure(void)
   //Stz* ssProcNm = pDmnTknVec->pGet(1)->szChars();
   
   Procedure::vAddProcedure(pDmnTknVec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::executeNested -- execute a nested request (internally)                */
-/*----------------------------------------------------------------------------*/
-void Step::vApiExecuteNested(void)
-{
-  ENTRY();
-
-  //m_p_TaskLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
-  
-  eEC eError;
-
-  s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
-
-  i8 iReqNo = m_pDataStack->iPopInt(__func__);
-  i8 iReqOf = m_pDataStack->iPopInt(__func__);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
-  eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
-  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCmdTknVec->vTokenise(sRequest);
-  
-  TagSet* pTagSet =  & pSession->m_oJobTagSet;
-  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
-
-  eError = Api::ePrepareJob(pSession);
-
-  if (eError) {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Job* pJob = pSession->m_pSsnJob;
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pJob->m_pOuterOp = pOp;
-  
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-  pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
-
-  pJobTagSet->vReplace(C_TAG_REQNO,iReqNo);
-  pJobTagSet->vReplace(C_TAG_REQOF,iReqOf);
-
-//  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
-//  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
-  
-  m_p_TaskLogicUnit->m_xpOp->pOpSpec()->pArgTags()->vDumpSet();
-  pJobTagSet->vCopy(m_p_TaskLogicUnit->m_xpOp->pOpSpec()->pArgTags());
-  
-  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
-    pJobTagSet->vDumpSet();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
-  pJobTagSet->vReplace(C_TAG_NOWAIT,1);
-  bool bSpawned = Api::bSpawnTask_session(pJob);
-  UNUSED(bSpawned);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //  Api::vDeleteJob(&pJob);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pDataStack->vPushInt(true);
-  
-//  Api::vFreeSession(pSession);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
