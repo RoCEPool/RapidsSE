@@ -15,6 +15,7 @@ namespace STORE
   class Session : public Object
   {
   public:
+    Gid<CN_SESSION> m_xSessionId;  // session id in grid
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   

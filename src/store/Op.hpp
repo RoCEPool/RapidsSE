@@ -15,7 +15,8 @@ namespace STORE
   class Op : public Operand
   {
   private:
-  
+    Gid<CN_OP> m_xOpId;  // op id in grid
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     s32  m_sPipelineNm; // pipeline name

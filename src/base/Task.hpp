@@ -28,8 +28,7 @@ namespace BASE
   friend class STORE::Step;
   
   private:
-    Gid<CN_TASK> m_xTaskId;      // tasks object id
-
+    Gid<CN_TASK> m_xTaskId;  // task id in grid
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
