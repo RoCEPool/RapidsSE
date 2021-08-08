@@ -150,7 +150,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   // m_xResult
 
   // -- e -------------------
-  m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
 
   // -- f -------------------
@@ -211,7 +210,6 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
   
   
@@ -1011,7 +1009,6 @@ void Job::vResetForReuse(Session* pSession)
   // m_xResult ???
   
   // -- e -------------------
-  delete m_pOuterOp;  m_pOuterOp  = nullptr;
   delete m_pInputOp;  m_pInputOp  = nullptr;
 
   // -- f -------------------

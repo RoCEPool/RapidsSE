@@ -61,7 +61,6 @@ namespace STORE
     TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
-    Op*        m_pOuterOp;   // Op that called the pipeline
     Op*        m_pInputOp;   // The optional input op of the pipeline
 
     // -- f -------------------
