@@ -24,8 +24,13 @@ namespace STORE
    */
   
   public:
+    // -- id and name
     Gid<CN_JOB> m_xJobId;  // this job's id
     s32         m_sJobNm;  // name of job
+
+    // -- belongs to
+    i8 m_i_Session;  // which session in session array
+    i8 m_i_Origin;   //   on which node
 
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -35,8 +40,6 @@ namespace STORE
 
     // -- a -------------------
   
-    i8 m_i_Origin;     // originated on which node
-    i8 m_i_Session;    // which session in session array
     i8 m_iCmdNo;       // the sequence no of the request from that session
 
   

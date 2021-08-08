@@ -15,10 +15,14 @@ namespace STORE
   class Op : public Operand
   {
   private:
+    // -- id and name
     Gid<CN_OP> m_xOpId;  // op id in grid
     s32        m_sOpNm;  // name of this operator
   
+    // -- belongs to
+    Stream*    m_pStream;  // which stream of stage of pipeline of job
 
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     s32  m_sPipelineNm; // pipeline name
@@ -27,7 +31,6 @@ namespace STORE
     i8   m_i_Op;        // [op] in stream
   
     OpSpec*   m_pOpSpec;   // specification of this operator
-    Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_p_Pipeline_op; // which pipeline
   

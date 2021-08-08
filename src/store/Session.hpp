@@ -15,17 +15,20 @@ namespace STORE
   class Session : public Object
   {
   public:
+    // -- id and name
     Gid<CN_SESSION> m_xSessionId;  // session id in grid
     s32             m_sSessionNm;  // name of this session
   
+    // -- belongs to
+    i8 m_i_Session;  // which session in sessions on this node
+    i8 m_iPid;       // which process created this session
+
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
-    i8       m_i_Session;     // session index
     i8       m_i_NextFree;    // next state in free chain
     
     eSK      m_eSession;      // session kind
-    i8       m_iPid;          // process which created this session
     i8       m_i_FixedPtn;    // specific partition being processed
 
     DicStack m_oDicStack;     // dictionary stack
