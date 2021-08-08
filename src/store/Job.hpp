@@ -24,19 +24,22 @@ namespace STORE
    */
   
   public:
-    // -- id and name
-    Gid<CN_JOB> m_xJobId;  // this job's id
-    s32         m_sJobNm;  // name of job
+    // -- id, name and kind
+    Gid<CN_JOB> m_xJobId;    // this job's id
+    s32         m_sJobNm;    // name of job
+    eJK         m_eJobKind;  // kind of job
 
     // -- belongs to
     i8 m_i_Session;  // which session in session array
     i8 m_i_Origin;   //   on which node
 
+    // -- refers to
+    Pipeline* m_pPipeline_job; // which pipeline
+    Op*       m_pSingularOp;   //   or api input op for a pipeline
+
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
-    Pipeline* m_pPipeline_job; // which pipeline
-    Op*       m_pSingularOp;   // e.g. api input op for a pipeline
 
     // -- a -------------------
   
@@ -52,7 +55,6 @@ namespace STORE
     bool m_bNormalSides;     // side semantics
 
     // -- c -------------------
-    eJK m_eJobKind;          // kind of job
     eJL m_eJobList;          // which job list the job is currently in
     eJP m_eJobPhase;         // which job phase the job is currently in
     eJS m_eJobState;         // current state of the job

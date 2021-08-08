@@ -28,21 +28,23 @@ namespace BASE
   friend class STORE::Step;
   
   private:
-    // -- id and name
+    // -- id, name and kind
     Gid<CN_TASK> m_xTaskId;  // task id in grid
     s32          m_sTaskNm;  // name of this task
+    // no kind               // kind
 
     // -- belongs to
     SMA<Job> m_pJob; // which job this task is executing
     SMA<Op>  m_pOp;  // whic this task is executing
   
+    // -- refers to
+    SMA<Thread>  m_pThread;  // current thread executing this task
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     Lock         m_okLock;       // lock for this task
    
 
-    SMA<Thread>  m_pThread;      // current thread executing this task
 
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?
