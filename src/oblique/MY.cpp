@@ -255,7 +255,7 @@ Job* MY::pJob(void)
 {
   _static_
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
 
   Task* pTask = MY::pTask();
   if (! pTask)
@@ -273,10 +273,6 @@ Job* MY::pJob(void)
   
   return nullptr;
 
-#else
-  
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +282,7 @@ LogicUnit* MY::pLogicUnit(void)
 {
   _static_
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   
   Task* pTask = MY::pTask();
   
@@ -299,10 +295,6 @@ LogicUnit* MY::pLogicUnit(void)
     return pOp->pOpLogicUnit();
 
   return nullptr;
-
-#else
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,7 +321,7 @@ Op* MY::pOp(void)
 {
   _static_
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   
   Task* pTask = MY::pTask();
   if (! pTask)
@@ -338,10 +330,6 @@ Op* MY::pOp(void)
   Op* pOp = pTask->pOp();
   
   return pOp;
-
-#else
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

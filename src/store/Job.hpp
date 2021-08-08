@@ -55,11 +55,8 @@ namespace STORE
   
     // -- d -------------------
   private:
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
-#else
-
-#endif
   
   public:
     TagSet     m_oJobTags;   // tags for the job

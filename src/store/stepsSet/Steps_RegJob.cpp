@@ -26,7 +26,7 @@ void Step::vRegJobGet(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
 
   Job* pJob = nullptr;
   
@@ -45,9 +45,6 @@ void Step::vRegJobGet(void)
   
   m_pDataStack->vPushPtr(pJob);
 
-#else
-
-#endif
   
   EXIT();
 }

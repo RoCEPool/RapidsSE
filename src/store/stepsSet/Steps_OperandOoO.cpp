@@ -92,11 +92,8 @@ void Step::vOperandOoONext(void)
   
   ASSERT(m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull());
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   m_p_TaskLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
   
@@ -116,11 +113,8 @@ void Step::vOperandOoOPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandOoO);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandOoO);
   

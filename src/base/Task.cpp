@@ -628,11 +628,8 @@ void Task::vDump(void)
 
 
   // dump the logicUnit registers
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   m_pJob->pJobLogicUnit()->vDumpRegisters();
-#else
-
-#endif
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   AM::vTraceDumpDropLock();

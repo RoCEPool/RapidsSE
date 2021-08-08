@@ -87,8 +87,6 @@
 
 #define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
 
-#define WITH_NO_JOB_FOR_OP EndDefine     // code no job for an op
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

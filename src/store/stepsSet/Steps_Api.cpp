@@ -117,11 +117,8 @@ void Step::vApiExecuteNested(void)
 
   Job* pJob = pSession->m_pSsnJob;
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pJob->m_pOuterOp = pOp;
   

@@ -810,11 +810,8 @@ void Step::vOperandNewStartMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Operand* pOperand = new Marker(OM_STARTMARKER);
   m_p_TaskLogicUnit->m_xpOperandA = pOperand;
@@ -908,11 +905,8 @@ void Step::vOperandPipeOutSet(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
   
@@ -930,11 +924,8 @@ void Step::vOperandPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
   
@@ -994,11 +985,8 @@ void Step::vOperandToParcel(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 

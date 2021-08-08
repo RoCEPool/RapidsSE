@@ -158,11 +158,8 @@ void Step::vErrorMarkerPipeOut(void)
 
   ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpErrorMarker,this);
 
@@ -180,11 +177,8 @@ void Step::vErrorMarkerPipeToOutput(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpErrorMarker);
   

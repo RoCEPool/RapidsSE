@@ -56,11 +56,8 @@ void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   
@@ -77,11 +74,8 @@ void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   
@@ -288,11 +282,8 @@ void Step::vPipelineEarlyExitFetch(void)
 {
   ENTRY();
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
 
@@ -309,11 +300,8 @@ void Step::vPipelineEarlyExitStore(void)
 {
   ENTRY();
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
 
@@ -329,11 +317,8 @@ void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   
@@ -350,12 +335,8 @@ void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
-
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
@@ -370,11 +351,8 @@ void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   
@@ -391,11 +369,8 @@ void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-
-#endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   

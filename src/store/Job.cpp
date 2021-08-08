@@ -142,11 +142,9 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eError    = EC_NONE;
   
   // -- d -------------------
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   m_pJobLogicUnit = nullptr;
-#else
 
-#endif
   
   // m_oJobTags
   // m_xResult
@@ -352,11 +350,8 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   pJob->vNullJobLogicUnit();
-#else
-
-#endif
 }
 
 
@@ -766,11 +761,8 @@ LogicUnit* Job::pJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   return m_pJobLogicUnit;
-#else
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
