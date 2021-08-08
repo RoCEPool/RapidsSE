@@ -16,6 +16,8 @@ namespace STORE
   {
   public:
     Gid<CN_SESSION> m_xSessionId;  // session id in grid
+    s32             m_sSessionNm;  // name of this session
+  
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   

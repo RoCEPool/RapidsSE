@@ -29,6 +29,8 @@ namespace BASE
   
   private:
     Gid<CN_TASK> m_xTaskId;  // task id in grid
+    s32          m_sTaskNm;  // name of this task
+
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   

@@ -24,7 +24,8 @@ namespace STORE
    */
   
   public:
-    Gid<CN_JOB> m_xJobId;    // this job's id
+    Gid<CN_JOB> m_xJobId;  // this job's id
+    s32         m_sJobNm;  // name of job
 
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -40,7 +41,6 @@ namespace STORE
 
   
   
-    s32      m_sJobNm;       // name of job
     Timer    m_oTimer;       // timer
 
     // -- b -------------------

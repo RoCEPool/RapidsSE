@@ -16,13 +16,14 @@ namespace STORE
   {
   private:
     Gid<CN_OP> m_xOpId;  // op id in grid
+    s32        m_sOpNm;  // name of this operator
+  
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // stream name within stream within pipeline
-    s32  m_sOpNm;       // name of this operator
     i8   m_i_Op;        // [op] in stream
   
     OpSpec*   m_pOpSpec;   // specification of this operator

@@ -11,9 +11,10 @@ namespace STORE
   {
   private:
     Gid<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
+    s32              m_sPipelineNm;  // name of this pipeline
+  
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    s32  m_sPipelineNm; // name of this pipeline
     i8   m_i_Origin;    // originating node
 
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
