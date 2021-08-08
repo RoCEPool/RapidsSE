@@ -190,7 +190,6 @@ assert::stack_0
   "OP_sleep.sen"                include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
-  "OP_spawnThread.sen"          include
   "OP_sqlInit.sen"              include
   "OP_stageMarkers.sen"         include
   "OP_start.sen"                include
