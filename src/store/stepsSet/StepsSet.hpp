@@ -47,7 +47,6 @@ public:
   void vApiExecuteNested(void);
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
-  void vApiSpawnThread(void);
 
   // arrange
   void vArrangeBegin(void);
