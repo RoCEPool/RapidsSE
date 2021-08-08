@@ -47,7 +47,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-  vAddStep("job.tagSet@"_Stz,        &Step::vJobTagSetFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
 
@@ -57,9 +56,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
-  vAddStep("job.input@"_Stz,           &Step::vJobInputFetch);
-  vAddStep("job.input!"_Stz,           &Step::vJobInputStore);
-  vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
+  vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
@@ -95,10 +92,13 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
+  vAddStep("job.singularOp@"_Stz,      &Step::vJobSingularOpFetch);
+  vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
 
+  vAddStep("job.tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
 }
@@ -600,9 +600,9 @@ void Step::vJobIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.input@ -- fetch the input op                                           */
+/* job.singularOp@ -- fetch the input op                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobInputFetch(void)
+void Step::vJobSingularOpFetch(void)
 {
   ENTRY();
   
@@ -614,9 +614,9 @@ void Step::vJobInputFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.input! -- store the input op                                           */
+/* job.singularOp! -- store the input op                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobInputStore(void)
+void Step::vJobSingularOpStore(void)
 {
   ENTRY();
   

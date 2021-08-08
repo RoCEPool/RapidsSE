@@ -613,8 +613,8 @@ public:
   void vJobHasError(void);
 
   void vJobIdFetch(void);
-  void vJobInputFetch(void);
-  void vJobInputStore(void);
+  void vJobSingularOpFetch(void);
+  void vJobSingularOpStore(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
