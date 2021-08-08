@@ -354,10 +354,6 @@ void Step::vApiSpawnThread(void)
 {
   ENTRY();
   
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  Job* pOpJob = pOp->pOpJob_();
-  AM::vSpawnTaskDedicated_job(pOpJob);
 
   EXIT();
 }

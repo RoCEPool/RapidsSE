@@ -53,8 +53,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
-  m_pOpJob       = nullptr;
-  
   m_pOpLogicUnit = nullptr;
 
   m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
@@ -121,9 +119,7 @@ Op::Op(Stz* szOpNm)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pOpJob       = nullptr;
-  
+    
   m_pOpLogicUnit = nullptr;
 
   m_sPipelineNm = C_NO_NAME;
@@ -145,8 +141,6 @@ Op::Op(Stz* szOpNm)
   m_pTask = nullptr;
 
   // -- -- -- -- -- --
-
-  m_pOpJob        = nullptr;
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
@@ -929,26 +923,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
   
   //m_iOperandCount[i_OperandKind]++;
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* Op::pOpJob_(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-void Op::vOpJob_(Job* pOpJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pOpJob = pOpJob;
 }
 
 /*----------------------------------------------------------------------------*/

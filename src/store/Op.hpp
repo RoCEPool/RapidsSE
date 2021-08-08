@@ -15,7 +15,7 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    Job* m_pOpJob;        // job of this operator
+    //Job* m_pOpJob;        // job of this operator
   
     LogicUnit* m_pOpLogicUnit;
   
@@ -101,8 +101,6 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    Job* pOpJob_(void);
-    void vOpJob_(Job* pOpJob);
     i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);

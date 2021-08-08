@@ -975,33 +975,6 @@ void Api::vCreateTaskForOp(Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create operator for given word                                             */
-/*----------------------------------------------------------------------------*/
-Op* Api::pOpCreate(Word* pOpWord)
-{
-  _static_
-  
-  i8 iSessionId = 1;
-  
-  Op* pOp = new Op(pOpWord->szWordNm());
-    
-  Job* pOpJob = AM::pNewJobOp(pOp,
-                            AM::GRID::iThisNodeNo(),
-                            iSessionId,
-                            1
-                            );
-  
-  pOp->vOpJob_(pOpJob);
-  
-  TagSet* pJobTags = pOpJob->pJobTags();
-  
-  pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
-  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* lock mutex and mark job as locked                                          */
 /*----------------------------------------------------------------------------*/
 void Api::vMutexLock(Session* pSession, Job* pJob)
