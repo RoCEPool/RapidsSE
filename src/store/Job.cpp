@@ -160,7 +160,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   // -- g -------------------
   m_oAcksRmg_2pc.vCheckInit();
   m_eSeed      = SS_ENUMS;
-  m_i_TablePtn = C_UNKNOWN;
   m_pTask     = nullptr;
 
   // -- -- -- -- -- --
@@ -189,7 +188,6 @@ Job::Job(eCN eClassNo)
 
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
-  m_i_TablePtn    = C_UNKNOWN;
   
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -1019,7 +1017,6 @@ void Job::vResetForReuse(Session* pSession)
   // -- g -------------------
   m_oAcksRmg_2pc.vReset();
   m_eSeed      = SS_ENUMS;
-  m_i_TablePtn = C_UNKNOWN;
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
@@ -1131,25 +1128,6 @@ Stz* Job::szSide(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get table partition on this node this sub job processes                    */
-/*----------------------------------------------------------------------------*/
-i8 Job::i_TablePtn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_i_TablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table partition on this node this sub job processes                    */
-/*----------------------------------------------------------------------------*/
-void Job::vTablePtn(i8 i_TablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_i_TablePtn = i_TablePtn;
-}
 
 
 
@@ -1170,13 +1148,12 @@ void Job::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vTrace("%s parentId %03lld seed %s "
-         "i_Session %03lld i_TablePtn %lld WasReceived %lld\n"_Stz,
+         "i_Session %03lld WasReceived %lld\n"_Stz,
          aCN[eGetClassNo()],
          m_iParentId,
          aSS[m_eSeed],
          
          m_i_Session,
-         m_i_TablePtn,
          (i8)m_bWasReceived
          );
 }

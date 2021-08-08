@@ -653,7 +653,6 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
-  void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);

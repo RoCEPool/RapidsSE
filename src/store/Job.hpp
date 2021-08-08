@@ -71,7 +71,6 @@ namespace STORE
     // -- g -------------------
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
     eSS     m_eSeed;         // seed to spawn
-    i8      m_i_TablePtn;    // table ptn on its node this job processes
     Task*   m_pTask;         // task executing this job
 
     // must be last
@@ -161,8 +160,6 @@ namespace STORE
     void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
-    i8   i_TablePtn(void);
-    void vTablePtn(i8 i_TablePtn);
     bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);

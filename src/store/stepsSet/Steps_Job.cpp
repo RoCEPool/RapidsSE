@@ -96,8 +96,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
-  vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
-
+  
   vAddStep("job.tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
@@ -1169,20 +1168,6 @@ void Step::vJobSpawn(void)
 //  }
   
   Api::vSpawnTask_receivedJob(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.tablePtb@ -- fetch tablePtn                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTablePtnFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->i_TablePtn());
   
   EXIT();
 }
