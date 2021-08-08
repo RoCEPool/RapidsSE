@@ -15,9 +15,6 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    //Job* m_pOpJob;        // job of this operator
-  
-    LogicUnit* m_pOpLogicUnit;
   
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
@@ -36,7 +33,8 @@ namespace STORE
     Task*     m_pTask;   // which task
     eSS       m_eSeed;   // seed to spawn
 
-  
+    LogicUnit* m_pOpLogicUnit;
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // working variables. these are not copies of variables from opSpec
   
