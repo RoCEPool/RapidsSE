@@ -32,7 +32,7 @@ namespace BASE
   
     Gid<CN_TASK> m_xTaskId;      // tasks object id
     SMA<Job>     m_pJob;         // job this task is executing
-    SMA<Op>      m_pOp;          // job this task is executing
+    SMA<Op>      m_pOp;          // op this task is executing
 
     SMA<Thread>  m_pThread;      // current thread executing this task
 

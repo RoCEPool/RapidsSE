@@ -1686,16 +1686,6 @@ void Op::vSpawnTaskForOp(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // create a new Job for the Op
-//  m_pOpJob = AM::pNewJobOp(this,
-//                         AM::GRID::iThisNodeNo(),
-//                         iSessionId,
-//                         1
-//                         );
-//
-//  // get the operator job tag set
-//  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-//  pOpJobTagSet->vCopy(&m_oOpTags);
 
   if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
     AM::vSpawnTaskDedicated_op(this);
