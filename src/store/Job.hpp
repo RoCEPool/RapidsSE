@@ -24,9 +24,11 @@ namespace STORE
    */
   
   public:
-  
     Gid<CN_JOB> m_xJobId;    // this job's id
 
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  
     Pipeline* m_pPipeline_job; // which pipeline
     Op*       m_pSingularOp;   // e.g. api input op for a pipeline
 

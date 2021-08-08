@@ -26,11 +26,15 @@ namespace BASE
                public ListItem_t<Task>
   {
   friend class STORE::Step;
-
-  private:
-    Lock         m_okLock;       // lock for this task
   
+  private:
     Gid<CN_TASK> m_xTaskId;      // tasks object id
+
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  
+    Lock         m_okLock;       // lock for this task
+   
     SMA<Job>     m_pJob;         // job this task is executing
     SMA<Op>      m_pOp;          // op this task is executing
 

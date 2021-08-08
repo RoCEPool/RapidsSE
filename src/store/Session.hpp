@@ -15,6 +15,9 @@ namespace STORE
   class Session : public Object
   {
   public:
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  
     i8       m_i_Session;     // session index
     i8       m_i_NextFree;    // next state in free chain
     
