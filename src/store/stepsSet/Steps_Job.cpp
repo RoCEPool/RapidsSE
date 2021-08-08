@@ -84,8 +84,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.queueReturn"_Stz,      &Step::vJobQueueReturn);
-
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -900,23 +898,6 @@ void Step::vJobPreSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   STORE::vJob_preSend(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.queueReturn -- queue a return piepline on outer waiting op             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobQueueReturn(void)
-{
-  ENTRY();
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  Op* pOuterOp = m_pJob->m_pOuterOp;
-  Op* pDownstreamOp = pOuterOp->pDownstreamOp();
-  
-  pDownstreamOp->vAppendLeft(pOperand,this);
   
   EXIT();
 }

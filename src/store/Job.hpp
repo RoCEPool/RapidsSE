@@ -55,7 +55,6 @@ namespace STORE
   
     // -- d -------------------
   private:
-  // revised job/op model
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
   
   public:
