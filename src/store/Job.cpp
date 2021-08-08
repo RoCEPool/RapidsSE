@@ -126,7 +126,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_iCmdNo = iCmdNo;
 
   // m_sJobNm;
-  m_iParentId = C_UNKNOWN;
   m_oTimer.vStart();
 
   // -- b -------------------
@@ -186,7 +185,6 @@ Job::Job(eCN eClassNo)
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
 
-  m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   
   m_eJobKind  = JK_NONE;
@@ -433,7 +431,7 @@ void Job::vContentDump(void)
          "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_iParentId=%lld m_iOriginatingId=%lld\n"
+         "m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
          this,
          aCN[eGetClassNo()],
@@ -449,7 +447,6 @@ void Job::vContentDump(void)
          bHasTag_noWait(),
          m_bWasReceived,
          
-         m_iParentId,
          m_iOriginatingId,
          
          nReferences(),
@@ -894,26 +891,6 @@ i8 Job::iOriginatorNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the parent job id                                                      */
-/*----------------------------------------------------------------------------*/
-i8 Job::iParentId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iParentId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the parent job id                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vParentId(i8 iParentId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iParentId = iParentId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vParticipantNode(i8 iNode)
@@ -987,7 +964,6 @@ void Job::vResetForReuse(Session* pSession)
   
   // -- a -------------------
   // m_sJobNm;
-  // m_iParentId = C_UNKNOWN;
   // m_oTimer.vStart();
 
   // -- b -------------------
@@ -1147,10 +1123,9 @@ void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("%s parentId %03lld seed %s "
+  vTrace("%s %03lld seed %s "
          "i_Session %03lld WasReceived %lld\n"_Stz,
          aCN[eGetClassNo()],
-         m_iParentId,
          aSS[m_eSeed],
          
          m_i_Session,

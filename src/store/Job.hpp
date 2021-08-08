@@ -28,18 +28,17 @@ namespace STORE
     Gid<CN_JOB> m_xJobId;    // this job's id
 
     Pipeline* m_pPipeline_job; // which pipeline
-    Op*       m_pSingularOp;   // The optional input op of the pipeline
+    Op*       m_pSingularOp;   // e.g. api input op for a pipeline
 
     // -- a -------------------
   
-    i8 m_i_Origin;           // originated on which node
-    i8 m_i_Session;          // which session in session array
+    i8 m_i_Origin;     // originated on which node
+    i8 m_i_Session;    // which session in session array
     i8 m_iCmdNo;       // the sequence no of the request from that session
 
   
   
     s32      m_sJobNm;       // name of job
-    i8       m_iParentId;    // job id of parent job which spawned this job
     Timer    m_oTimer;       // timer
 
     // -- b -------------------
@@ -148,8 +147,6 @@ namespace STORE
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
-    i8   iParentId(void);
-    void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);

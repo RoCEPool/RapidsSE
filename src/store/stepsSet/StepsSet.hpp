@@ -631,7 +631,7 @@ public:
   void vJobOriginatingTaskStore(void);
   void vJobOriginatorFetch(void);
 
-  void vJobParentIdFetch(void);
+
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);

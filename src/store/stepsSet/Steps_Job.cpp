@@ -72,7 +72,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
-  vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
@@ -793,20 +792,6 @@ void Step::vJobOriginatorFetch(void)
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
   m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.parentId@ -- fetch job parent id                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParentIdFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->iParentId());
   
   EXIT();
 }
