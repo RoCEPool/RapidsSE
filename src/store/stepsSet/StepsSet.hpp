@@ -44,7 +44,7 @@ public:
 
   // api
   void vApiAddProcedure(void);
-  void vApiExecuteRequest(void);
+  void vApiExecuteCommand(void);
   void vApiSpawnDemon(void);
 
   // arrange

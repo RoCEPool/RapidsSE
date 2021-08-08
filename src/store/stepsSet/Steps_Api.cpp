@@ -32,7 +32,7 @@
 void Step::vAddSteps_Api(void)
 {
   vAddStep("api::addProcedure"_Stz,   &Step::vApiAddProcedure);
-  vAddStep("api::executeRequest"_Stz, &Step::vApiExecuteRequest);
+  vAddStep("api::executeCommand"_Stz, &Step::vApiExecuteCommand);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
 }
 
@@ -70,9 +70,9 @@ void Step::vApiAddProcedure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::executeRequest -- execute a request (internally)                      */
+/* api::executeCommand -- execute a command (internally)                      */
 /*----------------------------------------------------------------------------*/
-void Step::vApiExecuteRequest(void)
+void Step::vApiExecuteCommand(void)
 {
   ENTRY();
 
