@@ -608,7 +608,7 @@ void Step::vJobInputFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pJob->pInputOp());
+  m_pDataStack->vPushPtr(pJob->pSingularOp());
   
   EXIT();
 }
@@ -624,12 +624,12 @@ void Step::vJobInputStore(void)
   
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  pJob->vInputOp(pOp);
+  pJob->vSingularOp(pOp);
   
   // get the job in the session
   Job* pJob_Originating = pOp->pPipelineJob()->m_pOriginatingTask->pJob();
 
-  pJob_Originating->vInputOp(pOp);
+  pJob_Originating->vSingularOp(pOp);
 
   EXIT();
 }

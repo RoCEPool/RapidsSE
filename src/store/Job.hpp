@@ -28,6 +28,7 @@ namespace STORE
     Gid<CN_JOB> m_xJobId;    // this job's id
 
     Pipeline* m_pPipeline_job; // which pipeline
+    Op*       m_pSingularOp;   // The optional input op of the pipeline
 
     // -- a -------------------
   
@@ -61,7 +62,6 @@ namespace STORE
     TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
-    Op*        m_pInputOp;   // The optional input op of the pipeline
 
     // -- f -------------------
     Atomic m_ixErrors;
@@ -116,8 +116,6 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
-    Op*  pInputOp(void);
-    void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
@@ -161,6 +159,8 @@ namespace STORE
     void vSeed(eSS eSeed);
     Session* pSession(void);
     void vShow(void);
+    Op*  pSingularOp(void);
+    void vSingularOp(Op* pSingularOp);
     i8   i_TablePtn(void);
     void vTablePtn(i8 i_TablePtn);
     bool bSummaryTag(void);

@@ -150,7 +150,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   // m_xResult
 
   // -- e -------------------
-  m_pInputOp  = nullptr;
+  m_pSingularOp  = nullptr;
 
   // -- f -------------------
   // m_ixErrors;
@@ -210,7 +210,7 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pInputOp  = nullptr;
+  m_pSingularOp  = nullptr;
   
   
   m_pJobLogicUnit = nullptr;
@@ -560,23 +560,23 @@ bool Job::bHasTag_time(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the input operator                                                     */
+/* get the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
-Op* Job::pInputOp(void)
+Op* Job::pSingularOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pInputOp;
+  return m_pSingularOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the input operator                                                     */
+/* set the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vInputOp(Op* pInputOp)
+void Job::vSingularOp(Op* pSingularOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pInputOp = pInputOp;
+  m_pSingularOp = pSingularOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1009,7 +1009,7 @@ void Job::vResetForReuse(Session* pSession)
   // m_xResult ???
   
   // -- e -------------------
-  delete m_pInputOp;  m_pInputOp  = nullptr;
+  delete m_pSingularOp;  m_pSingularOp  = nullptr;
 
   // -- f -------------------
   m_ixErrors = 0;
