@@ -95,7 +95,7 @@ void Step::vOperandOoONext(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   m_p_TaskLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
@@ -119,7 +119,7 @@ void Step::vOperandOoOPipeToOutput(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandOoO);

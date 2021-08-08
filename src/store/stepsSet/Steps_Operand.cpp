@@ -813,7 +813,7 @@ void Step::vOperandNewStartMarker(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Operand* pOperand = new Marker(OM_STARTMARKER);
@@ -911,7 +911,7 @@ void Step::vOperandPipeOutSet(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
@@ -933,7 +933,7 @@ void Step::vOperandPipeToOutput(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
@@ -997,7 +997,7 @@ void Step::vOperandToParcel(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));

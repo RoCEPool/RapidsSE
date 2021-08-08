@@ -58,7 +58,7 @@ namespace STORE
 #ifdef WITH_NO_JOB_FOR_OP
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
 #else
-    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
+
 #endif
   
   public:

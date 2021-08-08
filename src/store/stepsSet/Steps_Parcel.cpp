@@ -57,7 +57,7 @@ void Step::vParcelLabel(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
@@ -133,7 +133,7 @@ void Step::vParcelSendOut(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pParcel->vSendOut(pOp);

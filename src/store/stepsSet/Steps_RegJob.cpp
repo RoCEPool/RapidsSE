@@ -46,7 +46,7 @@ void Step::vRegJobGet(void)
   m_pDataStack->vPushPtr(pJob);
 
 #else
-  m_pDataStack->vPushPtr(m_pJob);
+
 #endif
   
   EXIT();

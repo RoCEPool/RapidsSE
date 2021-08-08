@@ -161,7 +161,7 @@ void Step::vErrorMarkerPipeOut(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpErrorMarker,this);
@@ -183,7 +183,7 @@ void Step::vErrorMarkerPipeToOutput(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpErrorMarker);

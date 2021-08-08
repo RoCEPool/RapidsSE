@@ -275,11 +275,6 @@ Job* MY::pJob(void)
 
 #else
   
-  Task* pTask = MY::pTask();
-  
-  Job* pJob = AM::pTaskJob(pTask);
-  
-  return pJob;
   
 #endif
 }
@@ -306,12 +301,7 @@ LogicUnit* MY::pLogicUnit(void)
   return nullptr;
 
 #else
-  Job* pJob = MY::pJob();
 
-  if (pJob)
-    return pJob->pJobLogicUnit();
-  else
-    return nullptr;
 #endif
 }
 
@@ -351,12 +341,6 @@ Op* MY::pOp(void)
 
 #else
 
-  Job* pJob = MY::pJob();
-
-  if (pJob)
-    return pJob->m_pOp;
-  else
-    return nullptr;
 #endif
 }
 

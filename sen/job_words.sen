@@ -85,21 +85,6 @@
 /*----------------------------------------------------------------------------*/
 : job::deleteThis ( -- )
 
-/* NOT TO BE EXECUTED IN REVISED JOB/Op MODEL
-  0 locals| pThisTask |
-  0 locals| pThisJob  |
-
-  // get this task and job
-  task[] to pThisTask
-  pThisTask task.job@ to pThisJob
-
-  // now delete the ended job
-  nullptr pThisTask task.job!
-
-  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
-
-  pThisJob job.delete
-*/
 ;
 
 /*----------------------------------------------------------------------------*/

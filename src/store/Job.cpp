@@ -145,7 +145,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 #ifdef WITH_NO_JOB_FOR_OP
   m_pJobLogicUnit = nullptr;
 #else
-  m_pJobLogicUnit = nullptr;
+
 #endif
   
   // m_oJobTags
@@ -355,7 +355,7 @@ void Job::vPostRecv(void* aJob)
 #ifdef WITH_NO_JOB_FOR_OP
   pJob->vNullJobLogicUnit();
 #else
-  pJob->vNullJobLogicUnit();
+
 #endif
 }
 
@@ -769,7 +769,7 @@ LogicUnit* Job::pJobLogicUnit(void)
 #ifdef WITH_NO_JOB_FOR_OP
   return m_pJobLogicUnit;
 #else
-  return m_pJobLogicUnit;
+
 #endif
 }
 

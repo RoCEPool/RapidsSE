@@ -59,7 +59,7 @@ void Step::vPipelineCancelledFetch(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -80,7 +80,7 @@ void Step::vPipelineCancelledStore(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -291,7 +291,7 @@ void Step::vPipelineEarlyExitFetch(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -312,7 +312,7 @@ void Step::vPipelineEarlyExitStore(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -332,7 +332,7 @@ void Step::vPipelineErroredFetch(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -353,7 +353,7 @@ void Step::vPipelineErroredStore(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -373,7 +373,7 @@ void Step::vPipelinePulsedFetch(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();
@@ -394,7 +394,7 @@ void Step::vPipelinePulsedStore(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   Pipeline* pPipeline = pOp->pPipeline_op();

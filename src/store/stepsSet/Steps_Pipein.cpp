@@ -45,7 +45,7 @@ void Step::vPipeinBide(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   
@@ -72,7 +72,7 @@ void Step::vPipeinBideNext(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
@@ -166,7 +166,7 @@ void Step::vPipeinNext(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+ 
 #endif
 
   Operand* pOperand = pOp->pPopOoOLeft();
@@ -188,7 +188,7 @@ void Step::vPipeinPeek(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   m_pDataStack->vPushInt(pOp->bPeekLeft() ? true : false);
@@ -208,7 +208,7 @@ void Step::vPipeinPipeToOutput(void)
 #ifdef WITH_NO_JOB_FOR_OP
     Op* pOp = *m_pOp;
 #else
-    Op* pOp = m_pJob->m_pOp;
+
 #endif
 
   pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpPipein);

@@ -631,7 +631,7 @@ void Task::vDump(void)
 #ifdef WITH_NO_JOB_FOR_OP
   m_pJob->pJobLogicUnit()->vDumpRegisters();
 #else
-  m_pJob->pJobLogicUnit()->vDumpRegisters();
+
 #endif
   
   vTrace("== End Task Dump ============================================\n"_Stz);
