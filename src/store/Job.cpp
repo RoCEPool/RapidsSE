@@ -156,7 +156,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_iOriginatingId   = C_UNKNOWN;
 
   // -- g -------------------
-  m_oAcksRmg_2pc.vCheckInit();
+  m_oAcksRmg_job.vCheckInit();
   m_eSeed      = SS_ENUMS;
   m_pTask     = nullptr;
 
@@ -209,7 +209,7 @@ Job::Job(eCN eClassNo)
   m_iOriginatingId   = C_UNKNOWN;
 
   m_iParticipantNode = C_UNKNOWN;
-  m_oAcksRmg_2pc.vCheckInit();
+  m_oAcksRmg_job.vCheckInit();
   
   m_pSingularOp  = nullptr;
   
@@ -366,7 +366,7 @@ i8 Job::iAcksOriginal(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksOriginal = m_oAcksRmg_2pc.nOriginalAcks();
+  i8 iAcksOriginal = m_oAcksRmg_job.nOriginalAcks();
   
   return iAcksOriginal;
 }
@@ -380,7 +380,7 @@ i8 Job::iAcksRmg_printOnlyValue(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksRmg = m_oAcksRmg_2pc.iPrintOnlyValue();
+  i8 iAcksRmg = m_oAcksRmg_job.iPrintOnlyValue();
   
   return iAcksRmg;
 }
@@ -394,7 +394,7 @@ void Job::vAcksRmg(i8 nAcks)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  m_oAcksRmg_2pc.vSetRemaining(nAcks);
+  m_oAcksRmg_job.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,7 +404,7 @@ bool Job::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bAmDecider = m_oAcksRmg_2pc.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg_job.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -956,7 +956,7 @@ void Job::vResetForReuse(Session* pSession)
   m_iOriginatingId   = C_UNKNOWN;
 
   // -- g -------------------
-  m_oAcksRmg_2pc.vReset();
+  m_oAcksRmg_job.vReset();
   m_eSeed      = SS_ENUMS;
   m_pTask = nullptr;
 
@@ -975,7 +975,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          iJobId(),
-         m_oAcksRmg_2pc.iPrintOnlyValue());
+         m_oAcksRmg_job.iPrintOnlyValue());
 }
 
 /*----------------------------------------------------------------------------*/
