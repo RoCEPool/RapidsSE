@@ -216,7 +216,8 @@ Job::Job(eCN eClassNo)
   
   
   m_pJobLogicUnit = nullptr;
-
+  m_eError    = EC_NONE;
+ 
   //m_xResult
   // -- -- -- -- -- --
   

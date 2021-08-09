@@ -10,92 +10,134 @@
 #include "eRS.h"
 #include "eSS.h"
 
+/*                      IMPORTANT NOTE
+ 
+    If you add a pointer member into this class then modify
+      JOBS_fn(vJob_postRecv) to set it to null when the job is received
+ 
+ */
+
+/*
+ 
+  origin \         ORIGIN          / wasReceived
+  session \                       / participantNode
+   command \                     / normalside
+            >-------------------<
+           / jobid jobNm jobKind \
+          /   cmd jobtags         \
+      ---+-------------------------+----
+         | jobState                |
+         | jobPhase                |
+         | jobList                 |
+      ---+-------------------------+----
+          \ timer                 /
+           \                     /
+            >-------------------<
+            >     seed task`    <
+            >-------------------<
+           /      logicUnit`     \
+          /                       \
+         /                         \
+
+
+                            origin \       PARTICIPANT       / wasReceived
+                            session \                       / participantNode
+                             command \                     / normalside
+                                      >-------------------<
+                                     / jobid jobNm jobKind \
+                                    /   cmd jobTags         \
+                                ---+-------------------------+----
+                                   | jobState                |
+                                   | jobPhase                |
+                                   | jobList                 |
+                                ---+-------------------------+----
+                                    \ pipeline`|singularOp`  /
+                                     \                      /
+                                      >--------------------<
+                                      >     seed task`     <
+                                      > acksRmg            <
+                                      >--------------------<
+                                     /      logicUnit`      \
+                                    /                        \
+                                   /                          \
+ 
+ */
+
 namespace STORE
 {
   class Job : public Object,
               public CRM<Job>
   {
   public:
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // a) id
+    // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
     Gid<CN_JOB> m_xJobId;    // this job's id
     s32         m_sJobNm;    // name of job
-    eJK         m_eJobKind;  // kind of job
+    eJK         m_eJobKind;  // job kind: (needs work)
 
-    // -- belongs to
-    i8 m_i_Session;  // which session in session array
-    i8 m_i_Origin;   //   on which node
-
-    // -- refers to
-    Pipeline* m_pPipeline_job; // pipeline the job represents
-    Op*       m_pSingularOp;   //   or op (api input op for a pipeline)
-
-    // -- state
-    eJS m_eJobState;  // current state of the job
-
-    // -- tags, seeding and tasking
+    // -- command and tags
+    s4K    m_sCmd;      // the command
     TagSet m_oJobTags;  // tags for the job
-    eSS    m_eSeed;     // seed to spawn
-    Task*  m_pTask;     // task executing this job
 
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
-
+    // -- home is
+    i8 m_i_Origin;   // which node
+    i8 m_i_Session;  // which session in node's session array
+    i8 m_iCmdNo;     // sequence no of the command from that session
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c) in
-
-    s4K m_sCmd; // the command
+    // information depending on job instance/location           NODAL
+  
+    // -- postage
+    bool m_bWasReceived;      // was job received over a socket?
+    i8   m_iParticipantNode;  // participant node no (FromNodeNo?)
+    bool m_bNormalSides;      // normal side semantics?
+  
+    // -- state
+    eJS m_eJobState;  // current state: JS_RUNNING, _LOCKED, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
+    eJL m_eJobList;   // current list : JP_DEMON, _LOCAL, _ORIGINATING, ...
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
-
-    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-
-  /*                      IMPORTANT NOTE
-   
-      If you add a pointer member into this class then modify
-        JOBS_fn(vJob_postRecv) to set it to null when the job is received
-   
-   */
-
-    // -- a -------------------
+    // job running as originator on origin                 ORIGINATOR
   
-    i8 m_iCmdNo;       // the sequence no of the request from that session
-
-  
-  
-    Timer    m_oTimer;       // timer
-
-    // -- b -------------------
-    bool m_bWasReceived;     // job was received over a socket
-    i8   m_iParticipantNode; // participant node no (FromNodeNo?)
-    bool m_bNormalSides;     // side semantics
-
-    // -- c -------------------
-    eJL m_eJobList;          // which job list the job is currently in
-    eJP m_eJobPhase;         // which job phase the job is currently in
-    eEC m_eError;            // error when starting job
-  
-    // -- d -------------------
-  private:
-    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
-  
-  public:
-    
-    // -- e -------------------
-
-    // -- f -------------------
-    Atomic m_ixErrors;
-    Task*  m_pOriginatingTask; // originating task of the request
-    i8     m_iOriginatingId;   // job id of originating job
-    
-    // -- g -------------------
+    // -- timer
+    Timer   m_oTimer;        // timer (on origin only)
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
 
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job running on participant node                    PARTICIPANT
+
+    // -- participating job maintains
+    Pipeline* m_pPipeline_job;  // pipeline the job represents
+    Op*       m_pSingularOp;    //   or op (api input op for a pipeline)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job running as responder on origin                   RESPONDER
+  
+    // -- responding to which originator
+    Task*  m_pOriginatingTask;  // originating task of the request
+    i8     m_iOriginatingId;    // job id of originating job
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job execution                                        execution
+
+    // -- tasking
+    eSS   m_eSeed;  // sen word to start execution
+    Task* m_pTask;  // task executing this job
+
+    // -- logic unit
+    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
+
+    // ??????????????????????????????????????????????????????????????
+
+    eEC    m_eError;         // error when starting job
+    Atomic m_ixErrors;
+
+  private:
+    
     // must be last
     Footer m_xFooter;
     
@@ -216,3 +258,45 @@ typedef void* (*pFUN)(void*);
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+/*
+                          \                       /
+                           \                     /
+                            >-------------------<
+                           /                     \
+                          /                       \
+                      ---+-------------------------+----
+                         |                         |
+                         |          (o-o)          |
+                         |                         |
+                      ---+-------------------------+----
+                          \                       /
+                           \                     /
+                            >-------------------<
+                           /                     \
+                          /                       \
+
+ 
+ */
+
+/*
+                        14\3                      /4
+                           \                     /
+                            >-------------------<
+                         13/0                    \5
+                          /                       \
+                      ---+-------------------------+----
+                       12|1                        |6
+                         | jobid jobNm jobKind     |
+                         |                         |
+                      ---+-------------------------+----
+                        11\2                      /7
+                           \                     /
+                            >-------------------<
+                         10/9                    \8
+                          /                       \
+
+ 
+ */
+
