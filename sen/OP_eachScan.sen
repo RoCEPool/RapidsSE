@@ -5,18 +5,7 @@
 " OP_eachScan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: eachScan_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                            */
+/* handler for ZK_M_CLEANUP ...                                               */
 /*----------------------------------------------------------------------------*/
 : eachScan_CleanupMarker \handler
 
@@ -36,7 +25,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER...                                 */
+/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER...                             */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_RowCrwBuffer" .
 
@@ -177,7 +166,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StartMarker" .
 
@@ -186,12 +175,6 @@
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
-  else
-    // is possible that a PULSEDMARKER arrives after this STARTMARKER
-    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
-    // we need eat the pulsedmarker here
-    find: eachScan_Xyz   ZK_M_DATAPULSE      op[].handler!
-    find: eachScan_Xyz   ZK_M_PULSED   op[].handler!
   then
 
   //args.developer if
@@ -202,7 +185,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StreamDef" .
 

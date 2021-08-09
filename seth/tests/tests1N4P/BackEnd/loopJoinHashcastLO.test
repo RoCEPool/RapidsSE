@@ -640,7 +640,7 @@ begin
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight T2 | loopJoin 0 "leftOuter $L1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA

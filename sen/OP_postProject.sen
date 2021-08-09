@@ -14,7 +14,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : postProject_PlanOperand \handler
 
@@ -25,7 +25,7 @@
 
   Operand[] nullptr to Operand[] sqlCompiler::postProject to Operand[]
 
-   "postProject" compiler_planOperand
+  "postProject" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -5,11 +5,14 @@
 " OP_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CANCEL ...                                            */
+/* handler for ZK_M_CANCEL ...                                                */
 /*----------------------------------------------------------------------------*/
 : start_CancelMarker \handler
 
   //"Operand:- ZK_M_CANCEL" .verbose
+
+  // toggle to default abnormal handlers for all data operands
+  "default_abnormalHandlers" FIND execute
 
   // check if start has already been pulsed
   Pipeline::pulsed@ if
@@ -25,7 +28,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CANCELLED ...                                         */
+/* handler for ZK_M_CANCELLED ...                                             */
 /*----------------------------------------------------------------------------*/
 : start_CancelledMarker \handler
 
@@ -40,7 +43,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANEDUP ...                                         */
+/* handler for ZK_M_CLEANEDUP ...                                             */
 /*----------------------------------------------------------------------------*/
 : start_CleanedupMarker \handler
 

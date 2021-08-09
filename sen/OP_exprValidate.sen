@@ -5,7 +5,7 @@
 " OP_exprValidate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                           */
+/* handler for ZK_M_CLEANUP ...                                              */
 /*----------------------------------------------------------------------------*/
 : exprValidate_CleanupMarker \handler
 
@@ -14,7 +14,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : exprValidate_PlanOperand \handler
 
@@ -42,11 +42,11 @@ PipeIn[]\clear to Operand[]
   op__topology
 
   // common compiler handlers
-  find: compiler_LeaveMarker  ZK_M_LEAVE op[].handler!
+  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!
   find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!
 
   // specific handlers
-  find: exprValidate_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: exprValidate_CleanupMarker ZK_M_CLEANUP       op[].handler!
   find: exprValidate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
 
   op__loop

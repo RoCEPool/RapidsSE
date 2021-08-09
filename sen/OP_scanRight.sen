@@ -5,17 +5,6 @@
 " OP_scanRight.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: scanRight_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_CLEANUP ...                                            */
 /*----------------------------------------------------------------------------*/
 : scanRight_CleanupMarker \handler
@@ -193,12 +182,6 @@
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
-  else
-    // is possible that a PULSEDMARKER arrives after this STARTMARKER
-    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
-    // we need eat the pulsedmarker here
-    find: scanRight_Xyz   ZK_M_DATAPULSE      op[].handler!
-    find: scanRight_Xyz   ZK_M_PULSED   op[].handler!
   then
 
   //args.developer if
