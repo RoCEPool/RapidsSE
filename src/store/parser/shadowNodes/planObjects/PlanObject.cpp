@@ -14,6 +14,7 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "SqlOperator.hpp"
 #include "ExplainOp.hpp"
+#include "JoinOp.hpp"
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -253,6 +254,14 @@ Parser::Location::eLO PlanObject::eLocation(QueryNode* pNode, b1 bIncludeChildre
   // No location set on this node.
   if (!bIncludeChildren) {
     return Location::LO_NONE;
+  }
+
+  // If it's a JoinOp, then try the right child only.
+  // This is because the join runs in the same location
+  // as the right side (second) child.
+  if (JoinOp::bIsOfType(pNode)) {
+    ASSERT(pNode->nChildren() == 2);
+    return eLocation(_pQueryNode(pNode->pSecondChild()), bIncludeChildren);
   }
 
   // Try each child.
