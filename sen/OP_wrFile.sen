@@ -33,20 +33,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : wrFile_StartMarker \handler
 
+  PipeIn[].pipeOut
+
   // open the file for writing
-  <fileNm> OPEN_WRITE op__file if
-    PipeIn[].pipeOut
-  then
+  <fileNm> OPEN_WRITE op__file discard
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                              */
+/* handler for ZK_M_EXIT ...                                                  */
 /*----------------------------------------------------------------------------*/
 : wrFile_ExitMarker \handler
 

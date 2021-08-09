@@ -55,6 +55,8 @@
 
     File0[].get file.close
     File0[].get file.delete
+  else
+    Pipein[].delete
   then
 
   true
@@ -76,6 +78,8 @@
 
     File0[].get file.close
     File0[].get file.delete
+  else
+    Pipein[].delete
   then
 
   true

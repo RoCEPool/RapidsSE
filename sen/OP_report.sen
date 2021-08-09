@@ -96,10 +96,10 @@
 
   //"Operand:- ZK_M_START" .verbose
 
+  PipeIn[].pipeOut
+
   // open the file for writing
-  <fileNm> OPEN_WRITE op__file if
-    PipeIn[].pipeOut
-  then
+  <fileNm> OPEN_WRITE op__file discard
 
   true
 ;

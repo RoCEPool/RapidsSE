@@ -41,7 +41,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                      */
+/* on ZK_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : chunk_StartMarker \handler
 
@@ -49,10 +49,10 @@
 
   0 locals| iFileSizeMb |
 
+  PipeIn[].pipeOut
+
   // open the file for reading
   <fileNm> OPEN_READ op__file if
-
-    PipeIn[].pipeOut
 
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb

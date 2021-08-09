@@ -58,10 +58,10 @@
 
   // 0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
+  PipeIn[].pipeOut
+
   // open the file for reading
-  <fileNm> OPEN_READ op__file if
-    PipeIn[].pipeOut
-  then
+  <fileNm> OPEN_READ op__file discard
 
   // 1 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
