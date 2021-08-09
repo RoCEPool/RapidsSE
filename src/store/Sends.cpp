@@ -84,7 +84,7 @@ bool Sends::bCancelDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
-  vTrace("Warning: ConsumeOp received ZK_CANCELMARKER %lld; expected %lld\n"_Stz,
+  vTrace("Warning: ConsumeOp received ZK_M_CANCEL %lld; expected %lld\n"_Stz,
          m_iCancelMarkers, m_iSends);
   
   if (m_iCancelMarkers == m_iSends) {
@@ -102,7 +102,7 @@ bool Sends::bCleanupDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  //vTrace("Warning: ConsumeOp received ZK_CLEANUPMARKER %lld; expected %lld\n"_Stz,
+  //vTrace("Warning: ConsumeOp received ZK_M_CLEANUP %lld; expected %lld\n"_Stz,
   //       m_iCleanupMarkers, m_iSends);
 
   if (m_iCleanupMarkers == m_iSends) {

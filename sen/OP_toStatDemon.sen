@@ -5,7 +5,7 @@
 " OP_toStatDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_LOCKSTATS ...                                                        */
+/* on ZK_I_LOCKSTATS ...                                                        */
 /*----------------------------------------------------------------------------*/
 : OP_toStatDemon_LockStats \handler
 
@@ -60,7 +60,7 @@
 
   op__topology
 
-  find: OP_toStatDemon_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_toStatDemon_LockStats ZK_I_LOCKSTATS op[].handler!
   find: OP_toStatDemon_Profile   ZK_PROFILE   op[].handler!
 
   op__loop

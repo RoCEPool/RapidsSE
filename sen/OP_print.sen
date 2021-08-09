@@ -15,11 +15,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PROMPTOUT ...                                               */
+/* handler for ZK_I_PROMPTOUT ...                                               */
 /*----------------------------------------------------------------------------*/
 : print_promptOut \handler
 
-  "print_promptOut:- ZK_PROMPTOUT" .
+  "print_promptOut:- ZK_I_PROMPTOUT" .
   PipeIn[].delete
 
   true
@@ -49,7 +49,7 @@
   op__topology
 
   find: print_exitMarker   ZK_EXITMARKER    op[].handler!
-  find: print_promptOut    ZK_PROMPTOUT     op[].handler!
+  find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!
   find: print_startMarker  ZK_STARTMARKER   op[].handler!
 
   op__loop

@@ -110,7 +110,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : fetch_CleanupMarker \handler
 
@@ -272,7 +272,7 @@
 
   op__topology
 
-  find: fetch_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: fetch_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: fetch_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: fetch_DataMarker    ZK_DATAPULSE     op[].handler!
   find: fetch_StartMarker   ZK_STARTMARKER   op[].handler!

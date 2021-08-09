@@ -26,7 +26,7 @@
   // set topology, next stage and op
   op__topology
 
-//  pEatSomeHandler ZK_CANCELMARKER     op[].handler!
+//  pEatSomeHandler ZK_M_CANCEL     op[].handler!
 //  pEatSomeHandler ZK_CANCELLEDMARKER  op[].handler!
     pEatSomeHandler ZK_CRWBUFFER        op[].handler!
     pEatSomeHandler ZK_CSVBUFFER        op[].handler!
@@ -43,21 +43,21 @@
 //  pEatSomeHandler ZK_ERRORINGMARKER   op[].handler!
 //  pEatSomeHandler ZK_EXITMARKER       op[].handler!
 //  pEatSomeHandler ZK_EXITEDMARKER     op[].handler!
-//  pEatSomeHandler ZK_LOCKSTATS        op[].handler!
+//  pEatSomeHandler ZK_I_LOCKSTATS        op[].handler!
 //  pEatSomeHandler ZK_NAMEDBUFFER      op[].handler!
-//  pEatSomeHandler ZK_NODEINFO         op[].handler!
+//  pEatSomeHandler ZK_I_NODEINFO         op[].handler!
 //  pEatSomeHandler ZK_PROFILE          op[].handler!
-//  pEatSomeHandler ZK_PROGRESSUNITS    op[].handler!
+//  pEatSomeHandler ZK_I_PROGRESSUNITS    op[].handler!
 //  pEatSomeHandler ZK_DATAPULSE        op[].handler!
 //  pEatSomeHandler ZK_PULSEDMARKER     op[].handler!
     pEatSomeHandler ZK_ROWBUFFER        op[].handler!
-//  pEatSomeHandler ZK_SEEKOFFSETS      op[].handler!
+//  pEatSomeHandler ZK_I_SEEKOFFSETS      op[].handler!
 //  pEatSomeHandler ZK_SRTBUFFER        op[].handler!
 //  pEatSomeHandler ZK_STARTMARKER      op[].handler!
 //  pEatSomeHandler ZK_STARTEDMARKER    op[].handler!
 //  pEatSomeHandler ZK_STREAMDEF        op[].handler!
 //  pEatSomeHandler ZK_STREAMSET        op[].handler!
-//  pEatSomeHandler ZK_TOTALUNITS       op[].handler!
+//  pEatSomeHandler ZK_I_TOTALUNITS       op[].handler!
 
   op__loop
 

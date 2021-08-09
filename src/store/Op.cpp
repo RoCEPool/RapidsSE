@@ -608,7 +608,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
   
   switch(i_OperandKind) {
 
-    case ZK_CANCELMARKER:
+    case ZK_M_CANCEL:
       // should have received an ZK_ERROREDMARKER
       if (m_iOperandCount[ZK_ERROREDMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_ERROREDMARKER\n"_Stz,
@@ -616,9 +616,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should not have received a ZK_CANCELMARKER already
+      // should not have received a ZK_M_CANCEL already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_CANCELMARKER arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_CANCEL arrived\n"_Stz, szOpNm());
         return false;
       }
       
@@ -638,9 +638,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should have received a ZK_CANCELMARKER
-      if ( ! m_iOperandCount[ZK_CANCELMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_CANCELMARKER\n"_Stz,
+      // should have received a ZK_M_CANCEL
+      if ( ! m_iOperandCount[ZK_M_CANCEL]) {
+        vTrace("%s: %s arrived without a prior ZK_M_CANCEL\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }

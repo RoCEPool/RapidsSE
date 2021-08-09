@@ -5,7 +5,7 @@
 " OP_bloat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                    */
+/* on ZK_M_CLEANUP ...                                                    */
 /*----------------------------------------------------------------------------*/
 : bloat_cleanup \handler
 
@@ -43,7 +43,7 @@
   op__topology
 
   find: bloat_bloat    ZK_CRWBUFFER     op[].handler!
-  find: bloat_cleanup  ZK_CLEANUPMARKER op[].handler!
+  find: bloat_cleanup  ZK_M_CLEANUP op[].handler!
 
   op__loop
 

@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                END */
+/* on ZK_M_CLEANUP ...                                                END */
 /*----------------------------------------------------------------------------*/
 : aggreg_CleanupMarker \handler
 
-  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
@@ -24,7 +24,7 @@
 
   Counter0[] cleanUpAsm
 
-  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_M_CLEANUP EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryAction
 
   Pipein[].pipeOut
   true
@@ -188,7 +188,7 @@
 
   op__topology
 
-  find: aggreg_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: aggreg_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: aggreg_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: aggreg_EosMarker     ZK_EOSMARKER     op[].handler!
   find: aggreg_ErrorMarker   ZK_ERRORMARKER   op[].handler!

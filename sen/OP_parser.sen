@@ -5,7 +5,7 @@
 " OP_parser.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : parser_CleanupMarker \handler
 
@@ -88,7 +88,7 @@
 
   op__topology
 
-  find: parser_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: parser_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: parser_DataPulse     ZK_DATAPULSE     op[].handler!
 
   op__loop

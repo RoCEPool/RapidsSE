@@ -16,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CALLPIPELINE ...                                            */
+/* handler for ZK_I_CALLPIPELINE ...                                            */
 /*----------------------------------------------------------------------------*/
 : call_CallPipeline \handler
 
@@ -35,7 +35,7 @@
 
   op__topology
 
-  find: call_CallPipeline ZK_CALLPIPELINE op[].handler!
+  find: call_CallPipeline ZK_I_CALLPIPELINE op[].handler!
   find: call_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

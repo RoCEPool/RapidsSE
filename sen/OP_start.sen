@@ -5,11 +5,11 @@
 " OP_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CANCEL ...                                            */
 /*----------------------------------------------------------------------------*/
 : start_CancelMarker \handler
 
-  //"Operand:- ZK_CANCELMARKER" .verbose
+  //"Operand:- ZK_M_CANCEL" .verbose
 
   // check if start has already been pulsed
   Pipeline::pulsed@ if
@@ -40,11 +40,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANEDUPMARKER ...                                         */
+/* handler for ZK_M_CLEANEDUP ...                                         */
 /*----------------------------------------------------------------------------*/
 : start_CleanedupMarker \handler
 
-  //"ZK_CLEANEDUPMARKER_handler" .verbose
+  //"ZK_M_CLEANEDUP_handler" .verbose
   Pipein[].delete
 
   // now pipeout an exit marker
@@ -183,9 +183,9 @@
 
   op__topology
 
-  find: start_CancelMarker      ZK_CANCELMARKER      op[].handler!
+  find: start_CancelMarker      ZK_M_CANCEL      op[].handler!
   find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
-  find: start_CleanedupMarker   ZK_CLEANEDUPMARKER   op[].handler!
+  find: start_CleanedupMarker   ZK_M_CLEANEDUP   op[].handler!
   find: start_EndingMarker      ZK_ENDINGMARKER      op[].handler!
   find: start_EndedMarker       ZK_ENDEDMARKER       op[].handler!
   find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!

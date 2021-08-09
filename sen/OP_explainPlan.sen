@@ -5,7 +5,7 @@
 " OP_explainPlan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : explainPlan_CleanupMarker \handler
 
@@ -45,7 +45,7 @@
   find: compiler_StreamSet        ZK_STREAMSET     op[].handler!
 
   // specific handlers
-  find: explainPlan_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: explainPlan_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: explainPlan_PlanOperand   ZK_PLANOPERAND   op[].handler!
 
   op__loop

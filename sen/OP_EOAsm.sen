@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                INIT */
+/* on ZK_M_CLEANUP ...                                                INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_CleanupMarker \handler
 
@@ -275,7 +275,7 @@
 
   op__topology
 
-  find: EOAsm_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: EOAsm_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: EOAsm_CrwBuffer     ZK_CRWBUFFER     op[].handler!
   find: EOAsm_EosMarker     ZK_EOSMARKER     op[].handler!
   find: EOAsm_DataMarker    ZK_DATAPULSE     op[].handler!

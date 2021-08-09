@@ -5,11 +5,11 @@
 " OP_rdCsvChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_SEEKOFFSETS ...                                                      */
+/* on ZK_I_SEEKOFFSETS ...                                                      */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
-  // 0 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -44,7 +44,7 @@
 
   InfoSet[].delete
 
-  // 1 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
@@ -106,7 +106,7 @@
   op__topology
 
   find: rdCsvChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_SEEKOFFSETS   op[].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS   op[].handler!
   find: rdCsvChunk_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop

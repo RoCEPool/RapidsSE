@@ -2454,19 +2454,19 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
-        case OI_CALLPIPELINE:   eOperand = ZK_CALLPIPELINE;   break;
-        case OI_COMMANDERRORS:  eOperand = ZK_COMMANDERRORS;  break;
-        case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
-        case OI_EXECERRORS:     eOperand = ZK_EXECERRORS;     break;
-        case OI_LOADRESULT:     eOperand = ZK_LOADRESULT;     break;
-        case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
-        case OI_PATHINFO:       eOperand = ZK_PATHINFO;       break;
-        case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
-        case OI_PROMPTOUT:      eOperand = ZK_PROMPTOUT;      break;
-        case OI_RETURNPIPELINE: eOperand = ZK_RETURNPIPELINE; break;
-        case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
+        case OI_CALLPIPELINE:   eOperand = ZK_I_CALLPIPELINE;   break;
+        case OI_COMMANDERRORS:  eOperand = ZK_I_COMMANDERRORS;  break;
+        case OI_COUNTINFO:      eOperand = ZK_I_COUNTINFO;      break;
+        case OI_EXECERRORS:     eOperand = ZK_I_EXECERRORS;     break;
+        case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
+        case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
+        case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;
+        case OI_PATHINFO:       eOperand = ZK_I_PATHINFO;       break;
+        case OI_PROGRESSUNITS:  eOperand = ZK_I_PROGRESSUNITS;  break;
+        case OI_PROMPTOUT:      eOperand = ZK_I_PROMPTOUT;      break;
+        case OI_RETURNPIPELINE: eOperand = ZK_I_RETURNPIPELINE; break;
+        case OI_SEEKOFFSETS:    eOperand = ZK_I_SEEKOFFSETS;    break;
+        case OI_TOTALUNITS:     eOperand = ZK_I_TOTALUNITS;     break;
         default:
           RASSERT(0);
       }
@@ -2479,10 +2479,10 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
-        case OM_CANCELMARKER:       eOperand = ZK_CANCELMARKER;       break;
+        case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
         case OM_CANCELLEDMARKER:    eOperand = ZK_CANCELLEDMARKER;    break;
-        case OM_CLEANUPMARKER:      eOperand = ZK_CLEANUPMARKER;      break;
-        case OM_CLEANEDUPMARKER:    eOperand = ZK_CLEANEDUPMARKER;    break;
+        case OM_CLEANUPMARKER:      eOperand = ZK_M_CLEANUP;      break;
+        case OM_CLEANEDUPMARKER:    eOperand = ZK_M_CLEANEDUP;    break;
         case OM_DATAPULSE:          eOperand = ZK_DATAPULSE;          break;
         case OM_DESTROYMARKER:      eOperand = ZK_DESTROYMARKER;      break;
         case OM_EACHSCANEOSMARKER:  eOperand = ZK_EACHSCANEOSMARKER;  break;

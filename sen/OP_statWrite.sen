@@ -5,7 +5,7 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LOCKSTATS ...                                               */
+/* handler for ZK_I_LOCKSTATS ...                                               */
 /*----------------------------------------------------------------------------*/
 : OP_statWrite_LockStats \handler
 
@@ -90,7 +90,7 @@
 
   op__topology
 
-  find: OP_statWrite_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_statWrite_LockStats ZK_I_LOCKSTATS op[].handler!
   find: OP_statWrite_Profile   ZK_PROFILE   op[].handler!
 
   op__loop

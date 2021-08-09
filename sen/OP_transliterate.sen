@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_CleanupMarker \handler
 
@@ -141,7 +141,7 @@
 
   op__topology
 
-  find: transliterate_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: transliterate_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: transliterate_DataMarker    ZK_DATAPULSE     op[].handler!
   find: transliterate_EosMarker     ZK_EOSMARKER     op[].handler!
   find: transliterate_PlanOperand   ZK_PLANOPERAND   op[].handler!

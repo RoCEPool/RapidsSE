@@ -17,18 +17,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                END */
+/* on ZK_M_CLEANUP ...                                                END */
 /*----------------------------------------------------------------------------*/
 : eachJoin_CleanupMarker \handler
 
-  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_M_CLEANUP EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryAction
   Pipein[].pipeOut
 
   true
@@ -251,7 +251,7 @@
 
   op__topology
 
-  find: eachJoin_CleanupMarker ZK_CLEANUPMARKER  op[].handler!
+  find: eachJoin_CleanupMarker ZK_M_CLEANUP  op[].handler!
   find: eachJoin_CrwBuffer     ZK_CRWBUFFER      op[].handler!
   find: eachJoin_EachRowBuffer ZK_EACHROWBUFFER op[].handler!
   find: eachJoin_EachScanEosMarker ZK_EACHSCANEOSMARKER op[].handler!
