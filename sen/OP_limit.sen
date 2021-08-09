@@ -70,20 +70,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-: limit_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : limit_RowBuffer \handler
@@ -179,7 +165,6 @@
   find: limit_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: limit_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: limit_EosMarker     ZK_M_EOS     op[].handler!
-  find: limit_ErrorMarker   ZK_M_ERROR   op[].handler!
   find: limit_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: limit_StartMarker   ZK_M_START   op[].handler!
   find: limit_StreamDef     ZK_D_STREAMDEF     op[].handler!

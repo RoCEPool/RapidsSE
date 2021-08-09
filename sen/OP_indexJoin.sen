@@ -73,20 +73,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-: indexJoin_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : indexJoin_RowBuffer \handler
@@ -211,7 +197,6 @@
   find: indexJoin_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: indexJoin_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: indexJoin_EosMarker     ZK_M_EOS     op[].handler!
-  find: indexJoin_ErrorMarker   ZK_M_ERROR   op[].handler!
   find: indexJoin_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: indexJoin_StartMarker   ZK_M_START   op[].handler!
   find: indexJoin_StreamDef     ZK_D_STREAMDEF     op[].handler!

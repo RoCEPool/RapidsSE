@@ -19,19 +19,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-/*
-: python_ErrorMarker \handler
-
-  //"Operand:- ZK_M_ERROR" .verbose
-  PipeIn[].pipeOut
-
-  true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* execute for python request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : python_req \operator
@@ -41,7 +28,6 @@
   op__topology
 
   find: python_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  //find: python_ErrorMarker ZK_M_ERROR op[].handler!
 
   op__loop
 

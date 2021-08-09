@@ -72,20 +72,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-: hash_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : hash_RowBuffer \handler
@@ -196,7 +182,6 @@
   find: hash_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: hash_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: hash_EosMarker     ZK_M_EOS     op[].handler!
-  find: hash_ErrorMarker   ZK_M_ERROR   op[].handler!
   find: hash_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: hash_StartMarker   ZK_M_START   op[].handler!
   find: hash_StreamDef     ZK_D_STREAMDEF     op[].handler!

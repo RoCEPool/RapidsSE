@@ -27,20 +27,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-: indexScan_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : indexScan_StartMarker \handler
@@ -186,7 +172,6 @@
 
   find: indexScan_CleanupMarker ZK_M_CLEANUP  op[].handler!
   find: indexScan_DataPulse     ZK_M_DATAPULSE      op[].handler!
-  find: indexScan_ErrorMarker   ZK_M_ERROR    op[].handler!
   find: indexScan_StartMarker   ZK_M_START    op[].handler!
 
   op__loop

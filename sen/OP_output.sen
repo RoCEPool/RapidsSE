@@ -5,7 +5,7 @@
 " OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_COMMANDERRORS ...                                           */
+/* handler for ZK_I_COMMANDERRORS ...                                         */
 /*----------------------------------------------------------------------------*/
 : output_CommandErrors \handler
 
@@ -16,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_CrwBuffer \handler
 
@@ -27,7 +27,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_CsvBuffer \handler
 
@@ -38,7 +38,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_DataMarker \handler
 
@@ -51,7 +51,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_EACHROWBUFFER ...                                           */
+/* handler for ZK_D_EACHROWBUFFER ...                                         */
 /*----------------------------------------------------------------------------*/
 : output_EachRowBuffer \handler
 
@@ -62,7 +62,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ENTBUFFER ...                                               */
+/* handler for ZK_D_ENTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_EntBuffer \handler
 
@@ -73,7 +73,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : output_EosMarker \handler
 
@@ -86,7 +86,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
+/* handler for ZK_M_ERROR ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_ErrorMarker \handler
 
@@ -99,7 +99,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_EXECERRORS ...                                              */
+/* handler for ZK_I_EXECERRORS ...                                            */
 /*----------------------------------------------------------------------------*/
 : output_ExecErrors \handler
 
@@ -110,7 +110,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEAVE ...                                             */
+/* handler for ZK_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_LeaveMarker \handler
 
@@ -121,7 +121,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_LOADRESULT ...                                              */
+/* handler for ZK_I_LOADRESULT ...                                            */
 /*----------------------------------------------------------------------------*/
 : output_LoadResult \handler
 
@@ -132,7 +132,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PROMPTOUT ...                                               */
+/* handler for ZK_I_PROMPTOUT ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_promptOut \handler
 
@@ -143,7 +143,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                               */
+/* handler for ZK_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
 
@@ -154,7 +154,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_SRTBUFFER ...                                               */
+/* handler for ZK_D_SRTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_SrtBuffer \handler
 
@@ -165,7 +165,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_StartMarker \handler
 
@@ -178,7 +178,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamDef \handler
 
@@ -189,7 +189,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMSET ...                                               */
+/* handler for ZK_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamSet \handler
 
@@ -214,15 +214,15 @@
   find: output_DataMarker    ZK_M_DATAPULSE   op[].handler!
   find: output_EachRowBuffer ZK_EACHROWMARKER op[].handler!
   find: output_EntBuffer     ZK_D_ENTBUFFER   op[].handler!
-  find: output_EosMarker     ZK_M_EOS   op[].handler!
-  find: output_ErrorMarker   ZK_M_ERROR op[].handler!
+  find: output_EosMarker     ZK_M_EOS         op[].handler!
+  find: output_ErrorMarker   ZK_M_ERROR       op[].handler!
   find: output_ExecErrors    ZK_I_EXECERRORS  op[].handler!
-  find: output_LeaveMarker   ZK_M_LEAVE op[].handler!
+  find: output_LeaveMarker   ZK_M_LEAVE       op[].handler!
   find: output_LoadResult    ZK_I_LOADRESULT  op[].handler!
   find: output_PromptOut     ZK_I_PROMPTOUT   op[].handler!
   find: output_RowBuffer     ZK_D_ROWBUFFER   op[].handler!
   find: output_SrtBuffer     ZK_D_SRTBUFFER   op[].handler!
-  find: output_StartMarker   ZK_M_START op[].handler!
+  find: output_StartMarker   ZK_M_START       op[].handler!
   find: output_StreamDef     ZK_D_STREAMDEF   op[].handler!
   find: output_StreamDef     ZK_D_STREAMSET   op[].handler!
 

@@ -126,20 +126,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-: projectRight_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : projectRight_RowBuffer \handler
@@ -305,7 +291,6 @@
   find: projectRight_EndCrwRhtMarker  ZK_M_END_CRWRHT op[].handler!
   find: projectRight_EndRowRhtMarker  ZK_M_END_ROWRHT op[].handler!
   find: projectRight_EosMarker        ZK_M_EOS        op[].handler!
-  find: projectRight_ErrorMarker      ZK_M_ERROR      op[].handler!
   find: projectRight_RowBuffer        ZK_D_ROWBUFFER        op[].handler!
   find: projectRight_StartMarker      ZK_M_START      op[].handler!
   find: projectRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!

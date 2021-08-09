@@ -20,19 +20,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                             */
-/*----------------------------------------------------------------------------*/
-/*
-: pythonShell_ErrorMarker \handler
-
-  //"Operand:- ZK_M_ERROR" .verbose
-  PipeIn[].pipeOut
-
-  true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* execute for pythonShell request                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : pythonShell_req \operator
@@ -42,7 +29,6 @@
   op__topology
 
   find: pythonShell_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  //find: pythonShell_ErrorMarker ZK_M_ERROR op[].handler!
 
   op__loop
 
