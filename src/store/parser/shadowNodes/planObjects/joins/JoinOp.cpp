@@ -352,7 +352,7 @@ QueryNodeList* JoinOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     case JT_ANTI:
       // return left row columns only
       pChild = _pQueryNode(pNode->pFirstChild());
-      return SqlOperator::pColumnExprs(pChild, pRootNode);
+      return PlanObject::pColumnExprs(pChild, pRootNode);
 
     default:
       NEVER_REACH
@@ -372,11 +372,11 @@ QueryNodeList* JoinOp::pUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode
 
   // Get the list of ProjectedColumns from the left table
   QueryNode* pLeftChild = _pQueryNode(pNode->pFirstChild());
-  QueryNodeList* pLeftColumnExprs = SqlOperator::pColumnExprs(pLeftChild, pRootNode);
+  QueryNodeList* pLeftColumnExprs = PlanObject::pColumnExprs(pLeftChild, pRootNode);
 
   // Get the list of ProjectedColumns from the right table
   QueryNode* pRightChild = _pQueryNode(pNode->pSecondChild());
-  QueryNodeList* pRightColumnExprs = SqlOperator::pColumnExprs(pRightChild, pRootNode);
+  QueryNodeList* pRightColumnExprs = PlanObject::pColumnExprs(pRightChild, pRootNode);
 
   // Remove all of the columnExprs from the right list and append them to the left list.
   QueryNode* pItem;
@@ -405,11 +405,11 @@ QueryNodeList* JoinOp::pDistinctUnionedColumnExprs(QueryNode* pNode, PlanNode* p
 
   // Get the list of ProjectedColumns from the left table
   QueryNode* pLeftChild = _pQueryNode(pNode->pFirstChild());
-  QueryNodeList* pLeftColumnExprs = SqlOperator::pColumnExprs(pLeftChild, pRootNode);
+  QueryNodeList* pLeftColumnExprs = PlanObject::pColumnExprs(pLeftChild, pRootNode);
 
   // Get the list of ProjectedColumns from the right table
   QueryNode* pRightChild = _pQueryNode(pNode->pSecondChild());
-  QueryNodeList* pRightColumnExprs = SqlOperator::pColumnExprs(pRightChild, pRootNode);
+  QueryNodeList* pRightColumnExprs = PlanObject::pColumnExprs(pRightChild, pRootNode);
 
   // Remove all of the columnExprs from the right list and append them to the left list
   // only if they are uniquely named.

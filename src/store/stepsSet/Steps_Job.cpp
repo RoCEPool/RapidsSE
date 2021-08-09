@@ -481,20 +481,6 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.tagSet@ -- push ptr to job TagSet                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTagSetFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->pJobTags());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(void)
@@ -1153,6 +1139,20 @@ void Step::vJobSpawn(void)
 //  }
   
   Api::vSpawnTask_receivedJob(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.tagSet@ -- push ptr to job TagSet                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTagSetFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pJob->pJobTags());
   
   EXIT();
 }

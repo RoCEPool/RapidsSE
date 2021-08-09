@@ -1010,6 +1010,7 @@ public:
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpSendKindStore(void);
+  void vOpTagSetFetch(void);
 
   // operand
   void vOperandToParcel(void);
