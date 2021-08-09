@@ -163,8 +163,14 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   // -- -- -- -- -- --
       
-  vNewJobLogicUnit();
+  
+  _checkInitialised_(CN_JOB);
 
+  vNewJobLogicUnit();
+  
+  m_oJobTags.vInsert(C_TAG_DISTID,iJobId());
+  
+  
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -920,34 +926,6 @@ Pipeline* Job::pPipeline(void)
   Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
   
   return pPipeline;
-}
-
-/*----------------------------------------------------------------------------*/
-/* populate node                                                              */
-/*----------------------------------------------------------------------------*/
-eEC Job::ePopulateJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-  //  bool b = CmdHelper::bParseCmd(pJobTags(),pTknVec);
-  //  if (! b) {
-  //    //vTrace("Unable to match job syntax\n"_Stz);
-  //    vParticipantHasError(true);
-  //    return EC_INVALID_COMMAND;
-  //  }
-  //pTagSet->vDumpSet();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the distid
-  pJobTags()->vInsert(C_TAG_DISTID,iJobId());
-    
-  eJK eJobKind = (eJK) pJobTags()->iValue(C_TAG_JOBKIND);
-  vJobKind(eJobKind);
-  
-  Stz* szJobNm = pJobTags()->szValue(C_TAG_JOBNM);
-  vJobNm(szJobNm);
-  
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

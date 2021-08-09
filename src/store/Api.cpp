@@ -333,7 +333,7 @@ bool Api::bExtractTags(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a job in the session and prepare it for execution                      */
+/* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 {
@@ -342,7 +342,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
     
-  // get the command prpoer and the tag set
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
   TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
@@ -373,9 +374,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //if (! AM::SYSTEM::bPassesLowMem())
-  //  return EC_LOW_MEMORY;
   
   Job* pPrepareJob =
          pSession->m_pSsnJob =
@@ -391,9 +389,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
 
   
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /  //
-  //                            To GO : For DEMO                              //
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /  //
+  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
+  //                          For DEMO (to be removed)                        //
+  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
   // create tags in the job for the params from the literal token vector
   if (pDemoLiterals && pDemoLiterals->nItems()) {
     
@@ -425,28 +423,28 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
     }
     
-    //pPrepareJobTags->vContentDump();
   }
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
+  pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->m_sCmd);
+  
   pPrepareJob->vSeed(SS_SEED_REQ);
 
-  
+  pPrepareJobTags->vCopy(pSsnTags);
+
   pPrepareJobTags->vCopy(pCmdTags);
-
-  pPrepareJob->ePopulateJob();
   
-  sSTMT sCmd;
-  pCmdTknVec->vVecToString(sCmd,0,true);
+  eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
+  pPrepareJob->vJobKind(eJobKind);
   
-  //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
-
-  pPrepareJob->m_sCmd = sCmd;
-  pPrepareJobTags->vInsert(C_TAG_CMD,sCmd);
+  Stz* szJobNm = pPrepareJobTags->szValue(C_TAG_JOBNM);
+  pPrepareJob->vJobNm(szJobNm);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
@@ -456,10 +454,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     vTrace("Job New: %s"_Stz,spTagSet.sz(pPrepareJobTags));
     //pJob->pTagSet()->vPrint();
   }
-  
-  
-  TagSet* pSsnTagSet = &pSession->m_oSsnTagSet;
-  pPrepareJobTags->vCopy(pSsnTagSet);
   
   if ( pPrepareJob->bHasTag(C_TAG_TAGS))
     pPrepareJobTags->vDumpSet();
