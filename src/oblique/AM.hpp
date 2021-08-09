@@ -581,7 +581,6 @@ namespace OBLIQUE
     static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
-    static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
 

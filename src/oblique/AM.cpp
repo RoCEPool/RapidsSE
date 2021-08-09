@@ -1782,15 +1782,9 @@ Job* AM::pPipelineJob(void)
 
 
 
-void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
-
-eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)
-{
-  eEC eError = pJob->ePopulateJob(pTagSet);
-
-  return eError;
+void AM::vPoolAnalyze(void) {
+  return PoolHelper::vPoolAnalyze();
 }
-
 void AM::vPrintArguments(void) {
   gxCmdLineArgs.vPrint();
 }
@@ -1800,7 +1794,6 @@ void AM::vPrintAttachMap(void) {
 void AM::vPrintStartupInfo(void) {
   gxCmdLineArgs.vPrintStartupInfo();
 }
-
 PtnMap* AM::pPtnMap(void) {
   return gpAttachMap->m_pPtnMap;
 }
