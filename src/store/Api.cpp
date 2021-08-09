@@ -213,7 +213,7 @@ void Api::vExecuteJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractPaths(Session* pSession)
+void Api::vExtractCmdPaths(Session* pSession)
 {
   _static_
   
@@ -244,7 +244,7 @@ void Api::vExtractPaths(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool Api::bExtractTags(Session* pSession)
+bool Api::bExtractCmdTags(Session* pSession)
 {
   _static_
   
@@ -338,10 +338,10 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vExtractPaths(pSession);
+  vExtractCmdPaths(pSession);
   
-  bExtractTags(pSession);
-
+  bool b = bExtractCmdTags(pSession);
+  
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
       return EC_INVALID_COMMAND;
@@ -360,7 +360,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     }
   }
     
-  if ( ! AM::bParseCmd(pCmdTknVec,pCmdTags) )
+  if (! AM::bParseCmd(pCmdTknVec,pCmdTags))
     return EC_INVALID_COMMAND;
 
 
@@ -459,20 +459,20 @@ void Api::vSubmitJob(Session* pSession)
 {
   _static_
   
-  Job* pJob = pSession->m_pSsnJob;
+  Job* pSubmitJob = pSession->m_pSsnJob;
 
-  Api::vMutexLock(pSession,pJob);
+  Api::vMutexLock(pSession,pSubmitJob);
 
-  RASSERT(JS_LOCKED == pJob->eJobState());
+  RASSERT(JS_LOCKED == pSubmitJob->eJobState());
 
   
-  RASSERT(! pJob->pTask());
+  RASSERT(! pSubmitJob->pTask());
   
-  vCreateTaskForJob(pJob);
+  vCreateTaskForJob(pSubmitJob);
   
-  pJob->vTimerStart();
+  pSubmitJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/

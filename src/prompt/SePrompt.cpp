@@ -348,8 +348,8 @@ bool SePrompt::bExamineCommand(void)
   while (bSubSsnTags())
     {;}
 
-  Api::vExtractPaths(m_pCurrentDeputy->pSession());
-  if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
+  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession());
+  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession()))
     return false;
 
   if (bIsPromptWord())
