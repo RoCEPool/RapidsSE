@@ -202,7 +202,7 @@ Job::Job(eCN eClassNo)
   
   m_oTimer.vStart();
   
-  //m_oAcksRmg
+  //m_oAcksRmg_task
   
   m_pTask           = nullptr;
   m_pOriginatingTask = nullptr;

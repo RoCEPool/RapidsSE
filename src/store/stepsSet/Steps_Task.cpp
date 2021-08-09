@@ -77,7 +77,7 @@ void Step::vTaskAck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::acks! -- store value into given tasks m_oAcksRmg                      */
+/* task::acks! -- store value into given tasks m_oAcksRmg_task                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(void)
 {
@@ -85,7 +85,7 @@ void Step::vTaskAcksStore(void)
     
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
+  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
 
   RASSERT(bIsLocked());
   
@@ -211,7 +211,7 @@ void Step::vTaskIsAckSet(void)
   
   Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg_task.bIsSet();
     
   m_pDataStack->vPushInt(iIsAckSet);
 

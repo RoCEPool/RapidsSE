@@ -91,7 +91,7 @@ Task::Task(void)
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
 
-  m_oAcksRmg.vCheckInit();
+  m_oAcksRmg_task.vCheckInit();
   // m_oWakeup
   
   m_iTraceMask   = C_TRACE_NONE;
@@ -397,7 +397,7 @@ i8 Task::iAcksOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iOriginal = m_oAcksRmg.nOriginalAcks();
+  i8 iOriginal = m_oAcksRmg_task.nOriginalAcks();
   
   return iOriginal;
 }
@@ -409,7 +409,7 @@ i8 Task::iAcksRmg_assert_only_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iRmg = m_oAcksRmg.iPrintOnlyValue();
+  i8 iRmg = m_oAcksRmg_task.iPrintOnlyValue();
   
   return iRmg;
 }
@@ -423,7 +423,7 @@ void Task::vAcksRmg(i8 nAcksRmg)
   
   ASSERT(bIsTaskLocked());
   
-  m_oAcksRmg.vSetRemaining(nAcksRmg);
+  m_oAcksRmg_task.vSetRemaining(nAcksRmg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +433,7 @@ bool Task::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg_task.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -1288,7 +1288,7 @@ void Task::vTracePoint(Stz* aMark)
          AM::szNodeNm(),
          AM::iThisNodeNo(),
          szJobName(),
-         m_oAcksRmg.iPrintOnlyValue(),
+         m_oAcksRmg_task.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),
          aMark,
