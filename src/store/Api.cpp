@@ -435,7 +435,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pPrepareJob->vSeed(SS_SEED_REQ);
 
   
-  pPrepareJob->ePopulateJob(pCmdTags);
+  pPrepareJobTags->vCopy(pCmdTags);
+
+  pPrepareJob->ePopulateJob();
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);

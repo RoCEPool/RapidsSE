@@ -925,7 +925,7 @@ Pipeline* Job::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job::ePopulateJob(TagSet* pTagSet)
+eEC Job::ePopulateJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
   
@@ -940,10 +940,7 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the distid
   pJobTags()->vInsert(C_TAG_DISTID,iJobId());
-  
-  // copy the tagset into the job tag set
-  pJobTags()->vCopy(pTagSet);
-  
+    
   eJK eJobKind = (eJK) pJobTags()->iValue(C_TAG_JOBKIND);
   vJobKind(eJobKind);
   
