@@ -82,7 +82,7 @@
 
   find: totalCount_EosMarker   ZK_EOSMARKER   op[].handler!
   find: totalCount_DataMarker ZK_DATAPULSE op[].handler!
-  find: totalCount_countInfo   ZK_COUNTINFO   op[].handler!
+  find: totalCount_countInfo   ZK_I_COUNTINFO   op[].handler!
 
   op__loop
 

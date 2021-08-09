@@ -17,29 +17,29 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                END */
+/* on ZK_M_CLEANUP ...                                                END */
 /*----------------------------------------------------------------------------*/
 : filterRight_CleanupMarker \handler
 
-  0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_CLEANUPMARKER EG_ZK PD_PIPE_OUT 0 ZK_CLEANUPMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_M_CLEANUP EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryAction
   Pipein[].pipeOut
   true
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : filterRight_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   // pipeout crwbuffer if not received startRightMarker
   Counter1[] 0 == if
@@ -50,7 +50,7 @@
 
   Operand[].pipeIn
   Operand[]\clear DevLftIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -127,8 +127,8 @@
 /*----------------------------------------------------------------------------*/
 : filterRight_ERRORMARKER \handler
 
-  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
   find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
 
   PipeIn[].pipeout
@@ -137,11 +137,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : filterRight_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   // pipeout rowBuffer if startRightMarker not received
   Counter1[] 0 == if
@@ -152,7 +152,7 @@
 
   Operand[].pipeIn
   Operand[]\clear DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete
 
@@ -212,11 +212,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : filterRight_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -277,7 +277,7 @@
   then
 
   // execute the streamDef asm handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   true
 ;
@@ -297,17 +297,17 @@
 
   op__topology
 
-  find: filterRight_CleanupMarker    ZK_CLEANUPMARKER    op[].handler!
-  find: filterRight_CrwBuffer        ZK_CRWBUFFER        op[].handler!
+  find: filterRight_CleanupMarker    ZK_M_CLEANUP    op[].handler!
+  find: filterRight_CrwBuffer        ZK_D_CRWBUFFER        op[].handler!
   find: filterRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
   find: filterRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER   op[].handler!
   find: filterRight_EosMarker        ZK_EOSMARKER        op[].handler!
   find: filterRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
-  find: filterRight_RowBuffer        ZK_ROWBUFFER        op[].handler!
+  find: filterRight_RowBuffer        ZK_D_ROWBUFFER        op[].handler!
   find: filterRight_StartMarker      ZK_STARTMARKER      op[].handler!
   find: filterRight_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
   find: filterRight_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
-  find: filterRight_StreamDef        ZK_STREAMDEF        op[].handler!
+  find: filterRight_StreamDef        ZK_D_STREAMDEF        op[].handler!
 
   op__loop
 

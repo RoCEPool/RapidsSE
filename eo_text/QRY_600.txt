@@ -19,9 +19,9 @@ Routine QRY_600
   EO_EQ_INTINT
   EO_JMP_TRUE DATAPULSE_HANDLER
 
-  // check for ZK_STREAMDEF
+  // check for ZK_D_STREAMDEF
   EO_DUP
-  EO_INTEGER  ZK_STREAMDEF
+  EO_INTEGER  ZK_D_STREAMDEF
   EO_EQ_INTINT
   EO_JMP_TRUE STREAMDEF_HANDLER
 
@@ -52,7 +52,7 @@ Label STARTMARKER_HANDLER
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STREAMDEF handler
+  // ZK_D_STREAMDEF handler
 Label STREAMDEF_HANDLER
   EO_PRINTF "**STREAMDEF_HANDLER : 600**\n"
   EO_POP

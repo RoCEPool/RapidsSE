@@ -5,13 +5,13 @@
 " OP_consume.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CANCEL ...                                            */
 /*----------------------------------------------------------------------------*/
 : consumeOp_CancelMarker \handler
 
-  //"Operand:- ZK_CANCELMARKER" .verbose
+  //"Operand:- ZK_M_CANCEL" .verbose
   Sends[].handleCancel if
-    ZK_CANCELMARKER_handler
+    ZK_M_CANCEL_handler
   else
     PipeIn[].delete
     true
@@ -19,11 +19,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : consumeOp_CleanupMarker \handler
 
-  //"Operand:- ZK_CLEANUPMARKER" .verbose
+  //"Operand:- ZK_M_CLEANUP" .verbose
   Sends[].handleCleanup if
     Pipein[].pipeout
   else
@@ -162,11 +162,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StreamDef \handler
 
-  //"Operand:- ZK_STREAMDEF" .verbose
+  //"Operand:- ZK_D_STREAMDEF" .verbose
   Sends[].handleStreamDef if
     PipeIn[].pipeOut
   else
@@ -187,8 +187,8 @@
   // set topology, next stage and op
   op__topology
 
-  find: consumeOp_CancelMarker   ZK_CANCELMARKER   op[].handler!
-  find: consumeOp_CleanupMarker  ZK_CLEANUPMARKER  op[].handler!
+  find: consumeOp_CancelMarker   ZK_M_CANCEL   op[].handler!
+  find: consumeOp_CleanupMarker  ZK_M_CLEANUP  op[].handler!
   find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
   find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
   find: consumeOp_EndMarker      ZK_ENDMARKER      op[].handler!
@@ -198,7 +198,7 @@
   find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
   find: consumeOp_LeavingMarker  ZK_LEAVINGMARKER  op[].handler!
   find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
-  find: consumeOp_StreamDef      ZK_STREAMDEF      op[].handler!
+  find: consumeOp_StreamDef      ZK_D_STREAMDEF      op[].handler!
 
   op__loop
 

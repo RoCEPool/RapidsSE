@@ -5,7 +5,7 @@
 " OP_compilerOpEg.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_CleanupMarker \handler
 
@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_PlanNode \handler
  
@@ -57,10 +57,10 @@
 
   op__topology
 
-  find: compilerOpEg_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: compilerOpEg_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: compilerOpEg_DataMarker    ZK_DATAPULSE    op[].handler!
   find: compilerOpEg_EosMarker     ZK_EOSMARKER    op[].handler!
-  find: compilerOpEg_PlanNode      ZK_PLANOPERAND  op[].handler!
+  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  op[].handler!
   find: compilerOpEg_StartMarker   ZK_STARTMARKER  op[].handler!
 
   op__loop

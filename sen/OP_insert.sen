@@ -5,11 +5,11 @@
 " OP_insert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : insert_CrwBuffer \handler
 
-  //"Operand:- ZK_CRWBUFFER" .verbose
+  //"Operand:- ZK_D_CRWBUFFER" .verbose
 
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
@@ -105,12 +105,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 /*
 : insert_StreamDef \handler
 
-  //"Operand:- ZK_STREAMDEF" .verbose
+  //"Operand:- ZK_D_STREAMDEF" .verbose
   PipeIn[].delete
   Operand[].newStreamDef
   Operand[].pipeOut
@@ -131,10 +131,10 @@
 
   op__topology
 
-  find: insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: insert_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: insert_EosMarker   ZK_EOSMARKER   op[].handler!
   find: insert_ExitMarker  ZK_EXITMARKER  op[].handler!
-  //find: insert_StreamDef   ZK_STREAMDEF   op[].handler!
+  //find: insert_StreamDef   ZK_D_STREAMDEF   op[].handler!
   find: insert_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

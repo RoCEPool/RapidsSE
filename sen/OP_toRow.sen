@@ -33,7 +33,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_D_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toRow_CsvBuffer \handler
 
@@ -115,7 +115,7 @@
 
   op__topology
 
-  find: toRow_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
   find: toRow_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toRow_StartMarker ZK_STARTMARKER op[].handler!
 

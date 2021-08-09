@@ -2398,12 +2398,14 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   eCN eClass_opd = pOperand->eGetClassNo();
   
   switch (eClass_opd) {
-    
-    case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
-    case CN_EACHROWBUFFER: eOperand = ZK_EACHROWBUFFER; break;
-    case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
-    case CN_INDEXDEF:  eOperand = ZK_INDEXDEF;  break;
+
+    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP; break;
+    case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
+    case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
+    case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;
+    case CN_ENTBUFFER: eOperand = ZK_D_ENTBUFFER; break;
+    case CN_INDEX:     eOperand = ZK_D_INDEX;  break;
+    case CN_INDEXDEF:  eOperand = ZK_D_INDEXDEF;  break;
       
     case CN_INFOSET:
     {
@@ -2411,19 +2413,19 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
-        case OI_CALLPIPELINE:   eOperand = ZK_CALLPIPELINE;   break;
-        case OI_COMMANDERRORS:  eOperand = ZK_COMMANDERRORS;  break;
-        case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
-        case OI_EXECERRORS:     eOperand = ZK_EXECERRORS;     break;
-        case OI_LOADRESULT:     eOperand = ZK_LOADRESULT;     break;
-        case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
-        case OI_PATHINFO:       eOperand = ZK_PATHINFO;       break;
-        case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
-        case OI_PROMPTOUT:      eOperand = ZK_PROMPTOUT;      break;
-        case OI_RETURNPIPELINE: eOperand = ZK_RETURNPIPELINE; break;
-        case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
+        case OI_CALLPIPELINE:   eOperand = ZK_I_CALLPIPELINE;   break;
+        case OI_COMMANDERRORS:  eOperand = ZK_I_COMMANDERRORS;  break;
+        case OI_COUNTINFO:      eOperand = ZK_I_COUNTINFO;      break;
+        case OI_EXECERRORS:     eOperand = ZK_I_EXECERRORS;     break;
+        case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
+        case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
+        case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;
+        case OI_PATHINFO:       eOperand = ZK_I_PATHINFO;       break;
+        case OI_PROGRESSUNITS:  eOperand = ZK_I_PROGRESSUNITS;  break;
+        case OI_PROMPTOUT:      eOperand = ZK_I_PROMPTOUT;      break;
+        case OI_RETURNPIPELINE: eOperand = ZK_I_RETURNPIPELINE; break;
+        case OI_SEEKOFFSETS:    eOperand = ZK_I_SEEKOFFSETS;    break;
+        case OI_TOTALUNITS:     eOperand = ZK_I_TOTALUNITS;     break;
         default:
           RASSERT(0);
       }
@@ -2436,10 +2438,10 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
-        case OM_CANCELMARKER:       eOperand = ZK_CANCELMARKER;       break;
+        case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
         case OM_CANCELLEDMARKER:    eOperand = ZK_CANCELLEDMARKER;    break;
-        case OM_CLEANUPMARKER:      eOperand = ZK_CLEANUPMARKER;      break;
-        case OM_CLEANEDUPMARKER:    eOperand = ZK_CLEANEDUPMARKER;    break;
+        case OM_CLEANUPMARKER:      eOperand = ZK_M_CLEANUP;      break;
+        case OM_CLEANEDUPMARKER:    eOperand = ZK_M_CLEANEDUP;    break;
         case OM_DATAPULSE:          eOperand = ZK_DATAPULSE;          break;
         case OM_DESTROYMARKER:      eOperand = ZK_DESTROYMARKER;      break;
         case OM_EACHSCANEOSMARKER:  eOperand = ZK_EACHSCANEOSMARKER;  break;
@@ -2465,7 +2467,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_START_CRWRHTMARKER: eOperand = ZK_START_CRWRHTMARKER; break;
         case OM_STARTMARKER:        eOperand = ZK_STARTMARKER;        break;
         case OM_START_ROWRHTMARKER: eOperand = ZK_START_ROWRHTMARKER; break;
-        //case OM_STREAMDEFRHT:   eOperand = ZK_STREAMDEFRHT;    break;
+        //case OM_STREAMDEFRHT:   eOperand = ZK_D_STREAMDEFRHT;    break;
         case OM_TRIGGER:            eOperand = ZK_TRIGGER;            break;
         default:
           RASSERT(0);
@@ -2473,18 +2475,19 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
-    case CN_OP:           eOperand = ZK_OP;             break;
-    case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
-    case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
-    case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
-    case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
-    case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
-    case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
-    case CN_METAGET:      eOperand = ZK_METAGET;        break;
-    case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
-    case CN_TABLE:        eOperand = ZK_TABLE;          break;
-    case CN_GRID:         eOperand = ZK_GRID;           break;
+    case CN_NAMEDBUFFER:  eOperand = ZK_D_NAMEDBUFFER;    break;
+    case CN_OP:           eOperand = ZK_D_OP;             break;
+    case CN_OTHEROPERAND: eOperand = ZK_D_OTHEROPERAND;   break;
+    case CN_PLANOPERAND:  eOperand = ZK_D_PLANOPERAND;    break;
+    case CN_PROFILE:      eOperand = ZK_D_PROFILE;        break;
+    case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
+    //case CN_SRTBUFFER:    eOperand = ZK_D_SRTBUFFER;      break;
+    case CN_STREAMDEF:    eOperand = ZK_D_STREAMDEF;      break;
+    case CN_STREAMSET:    eOperand = ZK_D_STREAMSET;      break;
+    case CN_METAGET:      eOperand = ZK_D_METAGET;        break;
+    case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
+    case CN_TABLE:        eOperand = ZK_D_TABLE;          break;
+    case CN_GRID:         eOperand = ZK_D_GRID;           break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

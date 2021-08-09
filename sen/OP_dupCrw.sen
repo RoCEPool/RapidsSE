@@ -5,11 +5,11 @@
 " OP_dupCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                     CRWBUFFER */
+/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : dupCrw_CrwBuffer \handler
 
-  //"Operand:- ZK_CRWBUFFER" .verbose
+  //"Operand:- ZK_D_CRWBUFFER" .verbose
 
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
@@ -34,7 +34,7 @@
 
   op__topology
 
-  find: dupCrw_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER op[].handler!
  
   op__loop
 

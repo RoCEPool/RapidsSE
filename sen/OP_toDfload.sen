@@ -7,7 +7,7 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PATHINFO ...                                                */
+/* handler for ZK_I_PATHINFO ...                                                */
 /*----------------------------------------------------------------------------*/
 : toDfload_PathInfo \handler
  
@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: toDfload_PathInfo ZK_PATHINFO op[].handler!
+  find: toDfload_PathInfo ZK_I_PATHINFO op[].handler!
 
   op__loop
 

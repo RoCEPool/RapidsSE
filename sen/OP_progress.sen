@@ -18,13 +18,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PROGRESSUNITS...                                                     */
+/* on ZK_I_PROGRESSUNITS...                                                     */
 /*----------------------------------------------------------------------------*/
 : progress_ProgressUnits \handler
 
   0 0 0 locals| nodeName partitionNo iPercent |
 
-  //"Operand:- ZK_PROGRESSUNITS" .verbose
+  //"Operand:- ZK_I_PROGRESSUNITS" .verbose
 
   // get operand into InfoSet[]
   PipeIn[] to InfoSet[]
@@ -60,13 +60,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_TOTALUNITS...                                                        */
+/* on ZK_I_TOTALUNITS...                                                        */
 /*----------------------------------------------------------------------------*/
 : progress_TotalUnits \handler
 
   0 locals| iPercent |
 
-  //"Operand:- ZK_TOTALUNITS" .verbose
+  //"Operand:- ZK_I_TOTALUNITS" .verbose
 
   // get operand into InfoSet[]
   PipeIn[] to InfoSet[]
@@ -97,8 +97,8 @@
   op__topology
 
   find: Progress_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: Progress_ProgressUnits ZK_PROGRESSUNITS op[].handler!
-  find: Progress_TotalUnits    ZK_TOTALUNITS    op[].handler!
+  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS op[].handler!
+  find: Progress_TotalUnits    ZK_I_TOTALUNITS    op[].handler!
 
   op__loop
 

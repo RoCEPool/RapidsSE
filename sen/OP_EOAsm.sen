@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CLEANUPMARKER ...                                                INIT */
+/* on ZK_M_CLEANUP ...                                                INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_CleanupMarker \handler
 
@@ -169,15 +169,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
   Operand[] DevLftIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
 
@@ -185,16 +185,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
   Operand[] DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
 
@@ -238,17 +238,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   Pipein[] to StreamDefLft[]
   nullptr to Pipein[]
 
   // execute plan STREAMDEF_handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   //StreamDefLft[].asSrcStreamDef
 
@@ -275,13 +275,13 @@
 
   op__topology
 
-  find: EOAsm_CleanupMarker ZK_CLEANUPMARKER op[].handler!
-  find: EOAsm_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: EOAsm_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: EOAsm_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: EOAsm_EosMarker     ZK_EOSMARKER     op[].handler!
   find: EOAsm_DataMarker    ZK_DATAPULSE     op[].handler!
-  find: EOAsm_RowBuffer     ZK_ROWBUFFER     op[].handler!
+  find: EOAsm_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: EOAsm_StartMarker   ZK_STARTMARKER   op[].handler!
-  find: EOAsm_StreamDef     ZK_STREAMDEF     op[].handler!
+  find: EOAsm_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 

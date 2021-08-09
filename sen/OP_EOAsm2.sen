@@ -124,11 +124,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   // read next buffer from ptn stream
   ptnStream[] ptnStream.read to Operand[]
@@ -137,7 +137,7 @@
     // read a next crw buffer
 
     Operand[] DevLftIxt.crwBuffer!
-    ZK_CRWBUFFER Counter0[] executeAsmArgs
+    ZK_D_CRWBUFFER Counter0[] executeAsmArgs
     Operand[].delete
 
     // call this handler again to process next buffer
@@ -166,16 +166,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
   Operand[] DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
 
@@ -208,14 +208,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // execute plan STREAMDEF_handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
   StreamDefOut[].pipeout
 
   true
@@ -236,12 +236,12 @@
 
   op__topology
 
-  find: EOAsm2_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: EOAsm2_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: EOAsm2_EosMarker   ZK_EOSMARKER   op[].handler!
   find: EOAsm2_DataPulse   ZK_DATAPULSE   op[].handler!
-  find: EOAsm2_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: EOAsm2_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
   find: EOAsm2_StartMarker ZK_STARTMARKER op[].handler!
-  find: EOAsm2_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: EOAsm2_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop
 

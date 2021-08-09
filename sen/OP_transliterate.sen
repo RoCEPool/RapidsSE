@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_CleanupMarker \handler
 
@@ -55,7 +55,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
@@ -119,7 +119,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMSET ...                                               */
+/* handler for ZK_D_STREAMSET ...                                               */
 /*----------------------------------------------------------------------------*/
 : transliterate_StreamSet \handler
 
@@ -141,13 +141,13 @@
 
   op__topology
 
-  find: transliterate_CleanupMarker ZK_CLEANUPMARKER op[].handler!
+  find: transliterate_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: transliterate_DataMarker    ZK_DATAPULSE     op[].handler!
   find: transliterate_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: transliterate_PlanOperand   ZK_PLANOPERAND   op[].handler!
+  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
   find: transliterate_StartMarker   ZK_STARTMARKER   op[].handler!
 
-  find: transliterate_StreamSet    ZK_STREAMSET      op[].handler!
+  find: transliterate_StreamSet    ZK_D_STREAMSET      op[].handler!
   find: transliterate_LeaveMarker  ZK_LEAVEMARKER    op[].handler!
 
   op__loop

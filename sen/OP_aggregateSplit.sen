@@ -5,7 +5,7 @@
 " OP_aggregateSplit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CLEANUPMARKER ...                                           */
+/* handler for ZK_M_CLEANUP ...                                           */
 /*----------------------------------------------------------------------------*/
 : aggregateSplit_CleanupMarker \handler
 
@@ -14,7 +14,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : aggregateSplit_PlanOperand \handler
 
@@ -42,11 +42,11 @@
 
   // common compiler handlers
   find: compiler_LeaveMarker   ZK_LEAVEMARKER op[].handler!
-  find: compiler_StreamSet     ZK_STREAMSET   op[].handler!
+  find: compiler_StreamSet     ZK_D_STREAMSET   op[].handler!
 
   // specific handlers
-  find: aggregateSplit_CleanupMarker ZK_CLEANUPMARKER op[].handler!
-  find: aggregateSplit_PlanOperand   ZK_PLANOPERAND   op[].handler!
+  find: aggregateSplit_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: aggregateSplit_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
 
   op__loop
 

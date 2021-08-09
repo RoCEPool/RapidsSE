@@ -30,63 +30,67 @@
 /*                          STANDARD EVENT HANDLERS                           */
 /*----------------------------------------------------------------------------*/
 
-: ZK_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
-: ZK_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
-: ZK_CANCELMARKER_handler     \handler STANDARD_PIPEOUT ;
-: ZK_CLEANUPMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_CLEANEDUPMARKER_handler  \handler STANDARD_PIPEOUT ;
-: ZK_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
-: ZK_COUNTINFO_handler        \handler STANDARD_PIPEOUT ;
-: ZK_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
+: ZK_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
+: ZK_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
+: ZK_D_GRID_handler             \handler STANDARD_PIPEOUT ;
+: ZK_D_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
+: ZK_D_METAGET_handler          \handler STANDARD_PIPEOUT ;
+: ZK_D_OP_handler               \handler STANDARD_PIPEOUT ;
+: ZK_D_OTHEROPERAND_handler     \handler STANDARD_PIPEOUT ;
+: ZK_D_PARCEL_handler           \handler STANDARD_PIPEOUT ;
+: ZK_D_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
+: ZK_D_PROFILE_handler          \handler STANDARD_PIPEOUT ;
+: ZK_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_D_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
+
+
+: ZK_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
+: ZK_I_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
+: ZK_I_COUNTINFO_handler        \handler STANDARD_PIPEOUT ;
+: ZK_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
+: ZK_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
+: ZK_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
+: ZK_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
+: ZK_I_PATHINFO_handler         \handler STANDARD_PIPEOUT ;
+: ZK_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
+: ZK_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
+: ZK_I_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
+: ZK_I_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
+: ZK_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
+
+: ZK_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
+: ZK_M_CLEANUP_handler          \handler STANDARD_PIPEOUT ;
+: ZK_M_CLEANEDUP_handler        \handler STANDARD_PIPEOUT ;
+
 : ZK_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHSCANEOSMARKER_handler \handler STANDARD_PIPEOUT ;
 : ZK_ENDMARKER_handler         \handler STANDARD_PIPEOUT ;
 : ZK_ENDEDMARKER_handler       \handler STANDARD_PIPEOUT ;
 : ZK_ENDINGMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_END_CRWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
 : ZK_END_ROWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
-: ZK_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_EOSMARKER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_ERRORINGMARKER_handler   \handler STANDARD_PIPEOUT ;
-: ZK_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
-: ZK_GRID_handler             \handler STANDARD_PIPEOUT ;
-: ZK_INDEX_handler            \handler STANDARD_PIPEOUT ;
-: ZK_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : ZK_LEAVEMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_LEAVINGMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
 : ZK_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
-: ZK_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
-: ZK_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
-: ZK_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_NEXTBUFFERMARKER_handler \handler STANDARD_PIPEOUT ;
-: ZK_METAGET_handler          \handler STANDARD_PIPEOUT ;
-: ZK_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
-: ZK_OP_handler               \handler STANDARD_PIPEOUT ;
-: ZK_OTHEROPERAND_handler     \handler STANDARD_PIPEOUT ;
-: ZK_PARCEL_handler           \handler STANDARD_PIPEOUT ;
-: ZK_PATHINFO_handler         \handler STANDARD_PIPEOUT ;
-: ZK_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
-: ZK_PROFILE_handler          \handler STANDARD_PIPEOUT ;
-: ZK_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
-: ZK_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
 : ZK_PULSEDMARKER_handler     \handler STANDARD_PIPEOUT ;
-: ZK_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
-: ZK_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
-: ZK_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_START_CRWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_STARTMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_START_ROWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
-: ZK_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
-: ZK_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
-: ZK_TABLE_handler            \handler STANDARD_PIPEOUT ;
-: ZK_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
 : ZK_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +224,7 @@
 /*----------------------------------------------------------------------------*/
 : default_errorHandlers
 
-  find: STANDARD_PIPEIN_DELETE   ZK_CRWBUFFER   op[].handler!
+  find: STANDARD_PIPEIN_DELETE   ZK_D_CRWBUFFER   op[].handler!
   ;
 
 /*============================================================================*/

@@ -285,8 +285,8 @@
         OP_1 EOAsm -> STREAMDEFOUT -> RSBBUFFER
 
 	     ../handlers /* + */
-	       ZK_CRWBUFFER FETCH_ROW
- 	       ZK_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut, POT_USE
+	       ZK_D_CRWBUFFER FETCH_ROW
+ 	       ZK_D_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut, POT_USE
        
 	     ../project
 	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
@@ -320,8 +320,8 @@
         OP_1 EOAsm -> STREAMDEFOUT -> RSBBUFFER
 
 	     ../handlers
-	       ZK_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut , POT_USE
-	       ZK_CRWBUFFER template FETCH_ROW <call>=SUBROUTINE_PROCESS_CRWROW
+	       ZK_D_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut , POT_USE
+	       ZK_D_CRWBUFFER template FETCH_ROW <call>=SUBROUTINE_PROCESS_CRWROW
         
 	     ../subroutines /* + */
 	       SUBROUTINE_PROCESS_CRWROW call=<SUBROUTINE_PROJECT_COLUMNS> 

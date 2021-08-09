@@ -93,7 +93,7 @@
 
   find: waitPipeline_DataMarker    ZK_DATAPULSE    op[].handler!
   find: waitPipeline_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
-  find: waitPipeline_ReturnPipeline ZK_RETURNPIPELINE op[].handler!
+  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE op[].handler!
   find: waitPipeline_StartMarker    ZK_STARTMARKER    op[].handler!
 
   op__loop

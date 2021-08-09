@@ -22,15 +22,15 @@ Routine QRY_401
   EO_EQ_INTINT
   EO_JMP_TRUE DATAPULSE_HANDLER
 
-  // check for ZK_STREAMDEF
+  // check for ZK_D_STREAMDEF
   EO_DUP
-  EO_INTEGER  ZK_STREAMDEF
+  EO_INTEGER  ZK_D_STREAMDEF
   EO_EQ_INTINT
   EO_JMP_TRUE STREAMDEF_HANDLER
 
-  // check for ZK_CRWBUFFER
+  // check for ZK_D_CRWBUFFER
   EO_DUP
-  EO_INTEGER ZK_ROWBUFFER
+  EO_INTEGER ZK_D_ROWBUFFER
   EO_EQ_INTINT
   EO_JMP_TRUE ROWBUFFER_HANDLER
 
@@ -81,7 +81,7 @@ Label DATAPULSE_HANDLER
   EO_JMP QRY_401_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STREAMDEF handler
+  // ZK_D_STREAMDEF handler
 Label STREAMDEF_HANDLER
   //EO_PRINTF "**STREAMDEF_HANDLER : 401**\n"
   EO_POP
@@ -114,7 +114,7 @@ Label EOSMARKER_HANDLER
   EO_JMP QRY_401_DONE
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_ROWBUFFER handler
+// ZK_D_ROWBUFFER handler
 Label ROWBUFFER_HANDLER
   //EO_PRINTF "**ROWBUFFER_HANDLER : 401**\n"
   EO_POP
