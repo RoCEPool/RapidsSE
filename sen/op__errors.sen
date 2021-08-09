@@ -88,8 +88,8 @@
 
   errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
 
-  // toggle to default handlers in case of error
-  "default_errorHandlers" FIND execute
+  // toggle to default handlers in the abnormal case of error
+  "default_abnormalHandlers" FIND execute
 
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut

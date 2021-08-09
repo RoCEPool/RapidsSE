@@ -5,23 +5,23 @@
 " op__defHandlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* perform a simple pipein delete on behalf of an abnormal handler            */
+/*----------------------------------------------------------------------------*/
+: ABNORMAL_PIPEIN_DELETE
+
+  PipeIn[].delete
+
+  // calling op_loop continues
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* perform a simple pipeout on behalf of a standard handler                   */
 /*----------------------------------------------------------------------------*/
 : STANDARD_PIPEOUT
 
   PipeIn[]\clear op::pipeout
   
-  // calling op_loop continues
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* perform a simple pipein delete on behalf of a standard error handler       */
-/*----------------------------------------------------------------------------*/
-: STANDARD_PIPEIN_DELETE
-
-  PipeIn[].delete
-
   // calling op_loop continues
   true
 ;
@@ -183,7 +183,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_M_STARTED operand      (deletes pipein operand) */
+/* default handler for ZK_M_STARTED operand      (deletes pipein operand)     */
 /*----------------------------------------------------------------------------*/
 : ZK_M_STARTED_handler \handler
 
@@ -220,12 +220,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                          ERROR EVENT HANDLERS                              */
+/*                       ABNORMAL EVENT HANDLERS                              */
 /*----------------------------------------------------------------------------*/
-: default_errorHandlers
+: default_abnormalHandlers
 
-  find: STANDARD_PIPEIN_DELETE   ZK_D_CRWBUFFER   op[].handler!
-  ;
+  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
+  
+  abnormalHandler ZK_D_BUCKETMAP     op[].handler!
+  abnormalHandler ZK_D_CRWBUFFER     op[].handler!
+  abnormalHandler ZK_D_CSVBUFFER     op[].handler!
+  abnormalHandler ZK_D_EACHROWBUFFER op[].handler!
+  abnormalHandler ZK_D_ENTBUFFER     op[].handler!
+  abnormalHandler ZK_D_GRID          op[].handler!
+  abnormalHandler ZK_D_INDEX         op[].handler!
+  abnormalHandler ZK_D_INDEXDEF      op[].handler!
+  abnormalHandler ZK_D_METAGET       op[].handler!
+  abnormalHandler ZK_D_NAMEDBUFFER   op[].handler!
+  abnormalHandler ZK_D_OP            op[].handler!
+  abnormalHandler ZK_D_OTHEROPERAND  op[].handler!
+  abnormalHandler ZK_D_PARCEL        op[].handler!
+  abnormalHandler ZK_D_PLANOPERAND   op[].handler!
+  abnormalHandler ZK_D_PROFILE       op[].handler!
+  abnormalHandler ZK_D_ROWBUFFER     op[].handler!
+  abnormalHandler ZK_D_SRTBUFFER     op[].handler!
+  abnormalHandler ZK_D_STREAMDEF     op[].handler!
+  abnormalHandler ZK_D_STREAMSET     op[].handler!
+  abnormalHandler ZK_D_TABLE         op[].handler!
+;
 
 /*============================================================================*/
 /* end                                                                        */
