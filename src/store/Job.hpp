@@ -42,7 +42,7 @@ namespace STORE
     i8 m_iCmdNo;     // sequence no of the command from that session
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // information depending on job instance/location           NODAL
+    // information depending on job instance/location           MODAL
   
     // -- postage
     bool m_bWasReceived;      // was job received over a socket?
@@ -87,8 +87,7 @@ namespace STORE
 
     // ??????????????????????????????????????????????????????????????
 
-    eEC    m_eError;         // error when starting job
-    Atomic m_ixErrors;
+    eEC    m_eError_job;  // error when starting job
 
   private:
     

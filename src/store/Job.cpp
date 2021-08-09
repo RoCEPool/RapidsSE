@@ -138,7 +138,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_RUNNING;
-  m_eError    = EC_NONE;
+  m_eError_job    = EC_NONE;
   
   // -- d -------------------
   // revised job/op model
@@ -152,7 +152,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_pSingularOp  = nullptr;
 
   // -- f -------------------
-  // m_ixErrors;
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
 
@@ -216,7 +215,7 @@ Job::Job(eCN eClassNo)
   
   
   m_pJobLogicUnit = nullptr;
-  m_eError    = EC_NONE;
+  m_eError_job    = EC_NONE;
  
   //m_xResult
   // -- -- -- -- -- --
@@ -602,16 +601,7 @@ void Job::vJobError(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_eError = eErrorCode;
-
-//  if (m_xResult.m_xJobResponse.m_bJobHasError) {
-//    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
-//    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
-//  }
-//  else {
-//    m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
-//    m_xResult.m_xJobResponse.m_bJobHasError = true;
-//  }
+  m_eError_job = eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -621,7 +611,7 @@ eEC Job::eJobError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_eError;
+  return m_eError_job;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -629,7 +619,7 @@ eEC Job::eJobError(void)
 /*----------------------------------------------------------------------------*/
 bool Job::bJobHasError(void)
 {
-  return m_eError == EC_NONE ? false : true;
+  return m_eError_job == EC_NONE ? false : true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -962,7 +952,6 @@ void Job::vResetForReuse(Session* pSession)
   delete m_pSingularOp;  m_pSingularOp  = nullptr;
 
   // -- f -------------------
-  m_ixErrors = 0;
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
 
