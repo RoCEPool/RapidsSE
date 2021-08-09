@@ -25,16 +25,24 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
 
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
+  
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
   vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
+  
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
+  
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
+  
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.SendKind!"_Stz,        &Step::vOpSendKindStore);
+  vAddStep("Op.sendKind!"_Stz,        &Step::vOpSendKindStore);
+  
+  vAddStep("op::tagSet@"_Stz,         &Step::vOpTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,6 +269,20 @@ void Step::vOpSendKindStore(void)
     Op* pOp = *m_pOp;
 
   pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op::tagSet@ -- push ptr to op TagSet                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpTagSetFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+
+  m_pDataStack->vPushPtr(pOp->pOpTags());
   
   EXIT();
 }
