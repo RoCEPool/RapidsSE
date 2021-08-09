@@ -5,7 +5,7 @@
 " OP_toHshCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                    DEFINITION */
+/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
 /*----------------------------------------------------------------------------*/
 : toHshCrw_StreamDef \handler
 
@@ -38,7 +38,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toHshCrw_RowBuffer \handler
 
@@ -106,9 +106,9 @@
 
   find: toHshCrw_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toHshCrw_DataMarker  ZK_DATAPULSE   op[].handler!
-  find: toHshCrw_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: toHshCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
   find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!
-  find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: toHshCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop
 

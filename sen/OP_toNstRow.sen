@@ -23,7 +23,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toNstRow_RowBuffer \handler
 
@@ -60,7 +60,7 @@
 
   find: toNstRow_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toNstRow_DataMarker  ZK_DATAPULSE   op[].handler!
-  find: toNstRow_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
   find: toNstRow_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

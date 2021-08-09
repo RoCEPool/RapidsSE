@@ -5,11 +5,11 @@
 " OP_passThru.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : passThru_CsvBuffer \handler
 
-  //"Operand:- ZK_CSVBUFFER" .verbose
+  //"Operand:- ZK_D_CSVBUFFER" .verbose
   Counter0[] 1 + to  Counter0[]
   Operand[].delete
 
@@ -78,7 +78,7 @@
 
   op__topology
 
-  find: passThru_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: passThru_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
   find: passThru_EosMarker   ZK_EOSMARKER   op[].handler!
   find: passThru_DataMarker ZK_DATAPULSE op[].handler!
   find: passThru_StartMarker ZK_STARTMARKER op[].handler!

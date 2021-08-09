@@ -308,7 +308,7 @@ bool Sends::bStreamDefDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iStreamDefs > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_STREAMDEF received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp ZK_D_STREAMDEF received %lld; expected %lld\n"_Stz,
            m_iStreamDefs, m_iSends);
   
   if (m_iStreamDefs == 0) {

@@ -2405,12 +2405,14 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   eCN eClass_opd = pOperand->eGetClassNo();
   
   switch (eClass_opd) {
-    
-    case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
-    case CN_EACHROWBUFFER: eOperand = ZK_EACHROWBUFFER; break;
-    case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
-    case CN_INDEXDEF:  eOperand = ZK_INDEXDEF;  break;
+
+    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP; break;
+    case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
+    case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
+    case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;
+    case CN_ENTBUFFER: eOperand = ZK_D_ENTBUFFER; break;
+    case CN_INDEX:     eOperand = ZK_D_INDEX;  break;
+    case CN_INDEXDEF:  eOperand = ZK_D_INDEXDEF;  break;
       
     case CN_INFOSET:
     {
@@ -2472,7 +2474,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_START_CRWRHTMARKER: eOperand = ZK_START_CRWRHTMARKER; break;
         case OM_STARTMARKER:        eOperand = ZK_STARTMARKER;        break;
         case OM_START_ROWRHTMARKER: eOperand = ZK_START_ROWRHTMARKER; break;
-        //case OM_STREAMDEFRHT:   eOperand = ZK_STREAMDEFRHT;    break;
+        //case OM_STREAMDEFRHT:   eOperand = ZK_D_STREAMDEFRHT;    break;
         case OM_TRIGGER:            eOperand = ZK_TRIGGER;            break;
         default:
           RASSERT(0);
@@ -2480,18 +2482,19 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
-    case CN_OP:           eOperand = ZK_OP;             break;
-    case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
-    case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
-    case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
-    case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
-    case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
-    case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
-    case CN_METAGET:      eOperand = ZK_METAGET;        break;
-    case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
-    case CN_TABLE:        eOperand = ZK_TABLE;          break;
-    case CN_GRID:         eOperand = ZK_GRID;           break;
+    case CN_NAMEDBUFFER:  eOperand = ZK_D_NAMEDBUFFER;    break;
+    case CN_OP:           eOperand = ZK_D_OP;             break;
+    case CN_OTHEROPERAND: eOperand = ZK_D_OTHEROPERAND;   break;
+    case CN_PLANOPERAND:  eOperand = ZK_D_PLANOPERAND;    break;
+    case CN_PROFILE:      eOperand = ZK_D_PROFILE;        break;
+    case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
+    //case CN_SRTBUFFER:    eOperand = ZK_D_SRTBUFFER;      break;
+    case CN_STREAMDEF:    eOperand = ZK_D_STREAMDEF;      break;
+    case CN_STREAMSET:    eOperand = ZK_D_STREAMSET;      break;
+    case CN_METAGET:      eOperand = ZK_D_METAGET;        break;
+    case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
+    case CN_TABLE:        eOperand = ZK_D_TABLE;          break;
+    case CN_GRID:         eOperand = ZK_D_GRID;           break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

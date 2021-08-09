@@ -5,11 +5,11 @@
 " OP_report.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_CrwBuffer \handler
 
-  //"Operand:- ZK_CRWBUFFER" .verbose
+  //"Operand:- ZK_D_CRWBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to Operand[]
 
@@ -23,11 +23,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_CsvBuffer \handler
 
-  //"Operand:- ZK_CSVBUFFER" .verbose
+  //"Operand:- ZK_D_CSVBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to Operand[]
 
@@ -41,11 +41,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENTBUFFER ...                                               */
+/* handler for ZK_D_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_EntBuffer \handler
 
-  //"Operand:- ZK_ENTBUFFER" .verbose
+  //"Operand:- ZK_D_ENTBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to Operand[]
 
@@ -72,11 +72,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_SRTBUFFER ...                                               */
+/* handler for ZK_D_SRTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_SrtBuffer \handler
 
-  //"Operand:- ZK_SRTBUFFER" .verbose
+  //"Operand:- ZK_D_SRTBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to Operand[]
 
@@ -113,11 +113,11 @@
 
   op__topology
 
-  find: report_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: report_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: report_EntBuffer   ZK_ENTBUFFER   op[].handler!
+  find: report_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
+  find: report_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
+  find: report_EntBuffer   ZK_D_ENTBUFFER   op[].handler!
   find: report_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: report_SrtBuffer   ZK_SRTBUFFER   op[].handler!
+  find: report_SrtBuffer   ZK_D_SRTBUFFER   op[].handler!
   find: report_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

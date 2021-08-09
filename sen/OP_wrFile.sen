@@ -5,7 +5,7 @@
 " OP_wrFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : wrFile_CrwBuffer \handler
 
@@ -19,7 +19,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : wrFile_CsvBuffer \handler
 
@@ -71,8 +71,8 @@
 
   op__topology
 
-  find: wrFile_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: wrFile_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
+  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
   find: wrFile_StartMarker ZK_STARTMARKER op[].handler!
   find: wrFile_ExitMarker  ZK_EXITMARKER  op[].handler!
 

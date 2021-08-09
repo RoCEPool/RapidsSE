@@ -5,7 +5,7 @@
 " OP_metaSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_METAGET ...                                                          */
+/* on ZK_D_METAGET ...                                                          */
 /*----------------------------------------------------------------------------*/
 : metaSend_metaGet \handler
 
@@ -43,8 +43,8 @@
 
   op__topology
 
-  // Setup ZK_METAGET handler
-  find: metaSend_metaGet ZK_METAGET op[].handler!
+  // Setup ZK_D_METAGET handler
+  find: metaSend_metaGet ZK_D_METAGET op[].handler!
   op__loop
 
   LogReqExit

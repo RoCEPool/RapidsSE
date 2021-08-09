@@ -88,7 +88,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                               */
+/* handler for ZK_D_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_LeftCrwRowBuffer" .
 
@@ -133,7 +133,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ... (of right table)                              */
+/* handler for ZK_D_CRWBUFFER ... (of right table)                              */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_RightCrwBuffer" .
 
@@ -209,7 +209,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_StreamDef" .
 
@@ -245,10 +245,10 @@
   find: scanRight_CleanupMarker    ZK_M_CLEANUP op[].handler!
   find: scanRight_DataMarker       ZK_DATAPULSE     op[].handler!
   find: scanRight_EosMarker        ZK_EOSMARKER     op[].handler!
-  find: scanRight_LeftCrwRowBuffer ZK_CRWBUFFER     op[].handler!
-  find: scanRight_LeftCrwRowBuffer ZK_ROWBUFFER     op[].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER     op[].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_D_ROWBUFFER     op[].handler!
   find: scanRight_StartMarker      ZK_STARTMARKER   op[].handler!
-  find: scanRight_StreamDef        ZK_STREAMDEF     op[].handler!
+  find: scanRight_StreamDef        ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 

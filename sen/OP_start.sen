@@ -194,11 +194,11 @@
   find: start_LeftMarker        ZK_LEFTMARKER        op[].handler!
   find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
 
-  find: INVALID_OPERAND_handler ZK_CRWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_CSVBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_ENTBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_ROWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_STREAMDEF       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       op[].handler!
 
   op__loop
 

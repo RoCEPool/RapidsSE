@@ -28,15 +28,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : project_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
   Operand[] DevLftIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -69,8 +69,8 @@
 /*----------------------------------------------------------------------------*/
 : project_ERRORMARKER \handler
 
-  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
   find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
 
   PipeIn[].pipeout
@@ -79,15 +79,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : project_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
   Operand[] DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete
 
@@ -113,11 +113,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : project_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -172,7 +172,7 @@
   then
 
   // execute the streamDef asm handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   true
 ;
@@ -193,12 +193,12 @@
   op__topology
 
   find: project_CleanupMarker ZK_M_CLEANUP op[].handler!
-  find: project_CrwBuffer     ZK_CRWBUFFER     op[].handler!
+  find: project_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: project_EosMarker     ZK_EOSMARKER     op[].handler!
   find: project_ErrorMarker   ZK_ERRORMARKER   op[].handler!
-  find: project_RowBuffer     ZK_ROWBUFFER     op[].handler!
+  find: project_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: project_StartMarker   ZK_STARTMARKER   op[].handler!
-  find: project_StreamDef     ZK_STREAMDEF     op[].handler!
+  find: project_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 

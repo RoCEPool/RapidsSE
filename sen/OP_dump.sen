@@ -5,7 +5,7 @@
 " OP_dump.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                        */
+/* on ZK_D_CRWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_CrwBuffer \handler
 
@@ -15,11 +15,11 @@
     <detail> >int PipeIn[] crwBuffer.operandDump
   then
 
-  ZK_CRWBUFFER_handler
+  ZK_D_CRWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                        */
+/* on ZK_D_CSVBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_CsvBuffer \handler
 
@@ -29,11 +29,11 @@
     <detail> >int PipeIn[] csvBuffer.operandDump
   then
 
-  ZK_CSVBUFFER_handler
+  ZK_D_CSVBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                        */
+/* on ZK_D_ROWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_RowBuffer \handler
 
@@ -43,7 +43,7 @@
     <detail> >int PipeIn[] rowBuffer.operandDump
   then
 
-  ZK_ROWBUFFER_handler
+  ZK_D_ROWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,9 +69,9 @@
 
   op__topology
 
-  find: dump_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: dump_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: dump_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: dump_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
+  find: dump_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
+  find: dump_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
   find: dump_SeekOffsets ZK_I_SEEKOFFSETS op[].handler!
 
   op__loop

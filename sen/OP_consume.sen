@@ -162,11 +162,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StreamDef \handler
 
-  //"Operand:- ZK_STREAMDEF" .verbose
+  //"Operand:- ZK_D_STREAMDEF" .verbose
   Sends[].handleStreamDef if
     PipeIn[].pipeOut
   else
@@ -198,7 +198,7 @@
   find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
   find: consumeOp_LeavingMarker  ZK_LEAVINGMARKER  op[].handler!
   find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
-  find: consumeOp_StreamDef      ZK_STREAMDEF      op[].handler!
+  find: consumeOp_StreamDef      ZK_D_STREAMDEF      op[].handler!
 
   op__loop
 

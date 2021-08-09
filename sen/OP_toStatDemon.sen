@@ -32,7 +32,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PROFILE ...                                                          */
+/* on ZK_D_PROFILE ...                                                          */
 /*----------------------------------------------------------------------------*/
 : OP_toStatDemon_Profile \handler
 
@@ -61,7 +61,7 @@
   op__topology
 
   find: OP_toStatDemon_LockStats ZK_I_LOCKSTATS op[].handler!
-  find: OP_toStatDemon_Profile   ZK_PROFILE   op[].handler!
+  find: OP_toStatDemon_Profile   ZK_D_PROFILE   op[].handler!
 
   op__loop
 

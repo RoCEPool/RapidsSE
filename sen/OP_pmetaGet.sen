@@ -5,7 +5,7 @@
 " OP_pmetaGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_METAGET ...                                                 */
+/* handler for ZK_D_METAGET ...                                                 */
 /*----------------------------------------------------------------------------*/
 : pmetaGet_getTable \handler
 
@@ -29,7 +29,7 @@
 
   op__topology
 
-  //find: pmetaGet_getTable   ZK_METAGET   op[].handler!
+  //find: pmetaGet_getTable   ZK_D_METAGET   op[].handler!
 
   op__loop
 

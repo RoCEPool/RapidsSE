@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PROFILE ...                                                 */
+/* handler for ZK_D_PROFILE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : OP_statWrite_Profile \handler
 
@@ -91,7 +91,7 @@
   op__topology
 
   find: OP_statWrite_LockStats ZK_I_LOCKSTATS op[].handler!
-  find: OP_statWrite_Profile   ZK_PROFILE   op[].handler!
+  find: OP_statWrite_Profile   ZK_D_PROFILE   op[].handler!
 
   op__loop
 

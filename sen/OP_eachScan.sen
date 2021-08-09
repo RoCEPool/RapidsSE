@@ -36,7 +36,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER / ZK_ROWBUFFER...                                 */
+/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER...                                 */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_RowCrwBuffer" .
 
@@ -115,7 +115,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EACHROWBUFFER ...                                           */
+/* handler for ZK_D_EACHROWBUFFER ...                                           */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_EachRowBuffer" .
 
@@ -202,7 +202,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StreamDef" .
 
@@ -237,12 +237,12 @@
 
   find: eachScan_CleanupMarker ZK_M_CLEANUP op[].handler!
   find: eachScan_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: eachScan_EachRowBuffer ZK_EACHROWBUFFER op[].handler!
-  find: eachScan_RowCrwBuffer  ZK_CRWBUFFER     op[].handler!
+  find: eachScan_EachRowBuffer ZK_D_EACHROWBUFFER op[].handler!
+  find: eachScan_RowCrwBuffer  ZK_D_CRWBUFFER     op[].handler!
   find: eachScan_DataMarker    ZK_DATAPULSE     op[].handler!
-  find: eachScan_RowCrwBuffer  ZK_ROWBUFFER     op[].handler!
+  find: eachScan_RowCrwBuffer  ZK_D_ROWBUFFER     op[].handler!
   find: eachScan_StartMarker   ZK_STARTMARKER   op[].handler!
-  find: eachScan_StreamDef     ZK_STREAMDEF     op[].handler!
+  find: eachScan_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 
