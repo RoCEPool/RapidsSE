@@ -53,7 +53,6 @@
 : _Cancelled_run _run_suffix
 
   LogEntry SEED_RUN
-  actLog::seed_rcv
 
   job[] locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
