@@ -26,20 +26,48 @@ namespace BASE
                public ListItem_t<Task>
   {
   friend class STORE::Step;
-
-  private:
-    Lock         m_okLock;       // lock for this task
   
-    Gid<CN_TASK> m_xTaskId;      // tasks object id
-    SMA<Job>     m_pJob;         // job this task is executing
-    SMA<Op>      m_pOp;          // job this task is executing
+  private:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
 
-    SMA<Thread>  m_pThread;      // current thread executing this task
+    // -- id, name and kind
+    Gid<CN_TASK> m_xTaskId;  // task id in grid
+    s32          m_sTaskNm;  // name of this task
+    // n/a                   // kind
+
+    // -- belongs to
+    SMA<Job> m_pJob; // which job this task is executing
+    SMA<Op>  m_pOp;  // whic this task is executing
+  
+    // -- refers to
+    SMA<Thread>  m_pThread;  // current thread executing this task
+
+    // -- state
+    eTS m_eState;  // task state (running, sleeping, ...)
+
+    // -- tags, seeding and tasking
+    Word* m_pSeedWord;  // seed
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+  
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  Lock         m_okLock;       // lock for this task
+   
+
 
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?
 
-    eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
     eQK          m_eQueue;       // which queue the task is currently in
     eEP          m_eEntryPoint;  // task entry point
@@ -59,7 +87,6 @@ namespace BASE
     LogicUnit*   m_p_TaskLogicUnit; // logic unit from job or op
 
   public:
-    Word* m_pSeedWord;      // seed
     Word* m_pRecoveryWord;  // sen word called to recover from failure
 
     bool  m_bSeedInitially; // seed_initially sentinel has been executed

@@ -15,30 +15,56 @@ namespace STORE
   class Job : public Object,
               public CRM<Job>
   {
-  
+  public:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
+    // -- id, name and kind
+    Gid<CN_JOB> m_xJobId;    // this job's id
+    s32         m_sJobNm;    // name of job
+    eJK         m_eJobKind;  // kind of job
+
+    // -- belongs to
+    i8 m_i_Session;  // which session in session array
+    i8 m_i_Origin;   //   on which node
+
+    // -- refers to
+    Pipeline* m_pPipeline_job; // pipeline the job represents
+    Op*       m_pSingularOp;   //   or op (api input op for a pipeline)
+
+    // -- state
+    eJS m_eJobState;  // current state of the job
+
+    // -- tags, seeding and tasking
+    TagSet m_oJobTags;  // tags for the job
+    eSS    m_eSeed;     // seed to spawn
+    Task*  m_pTask;     // task executing this job
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
   /*                      IMPORTANT NOTE
    
       If you add a pointer member into this class then modify
         JOBS_fn(vJob_postRecv) to set it to null when the job is received
    
    */
-  
-  public:
-  
-    Gid<CN_JOB> m_xJobId;    // this job's id
-
-    Pipeline* m_pPipeline_job; // which pipeline
 
     // -- a -------------------
   
-    i8 m_i_Origin;           // originated on which node
-    i8 m_i_Session;          // which session in session array
     i8 m_iCmdNo;       // the sequence no of the request from that session
 
   
   
-    s32      m_sJobNm;       // name of job
-    i8       m_iParentId;    // job id of parent job which spawned this job
     Timer    m_oTimer;       // timer
 
     // -- b -------------------
@@ -47,27 +73,17 @@ namespace STORE
     bool m_bNormalSides;     // side semantics
 
     // -- c -------------------
-    eJK m_eJobKind;          // kind of job
     eJL m_eJobList;          // which job list the job is currently in
     eJP m_eJobPhase;         // which job phase the job is currently in
-    eJS m_eJobState;         // current state of the job
     eEC m_eError;            // error when starting job
   
     // -- d -------------------
   private:
-#ifdef WITH_NO_JOB_FOR_OP
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
-#else
-    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
-#endif
   
   public:
-    TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
-    Op*        m_pOp;        // Op this job is executing
-    Op*        m_pOuterOp;   // Op that called the pipeline
-    Op*        m_pInputOp;   // The optional input op of the pipeline
 
     // -- f -------------------
     Atomic m_ixErrors;
@@ -76,9 +92,6 @@ namespace STORE
     
     // -- g -------------------
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
-    eSS     m_eSeed;         // seed to spawn
-    i8      m_i_TablePtn;    // table ptn on its node this job processes
-    Task*   m_pTask;         // task executing this job
 
     // must be last
     Footer m_xFooter;
@@ -122,8 +135,6 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
-    Op*  pInputOp(void);
-    void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
@@ -157,8 +168,6 @@ namespace STORE
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
-    i8   iParentId(void);
-    void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);
@@ -167,8 +176,8 @@ namespace STORE
     void vSeed(eSS eSeed);
     Session* pSession(void);
     void vShow(void);
-    i8   i_TablePtn(void);
-    void vTablePtn(i8 i_TablePtn);
+    Op*  pSingularOp(void);
+    void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);

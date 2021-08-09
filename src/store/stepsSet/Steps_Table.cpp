@@ -362,9 +362,9 @@ void Step::vTableTablePtnFetch(void)
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
   
-  Job* pJob = m_pJob;
+  Op* pOp = MY::pOp();
   
-  tPN tPtnNo = pJob->m_pOp->tPtnNo();
+  tPN tPtnNo = pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   

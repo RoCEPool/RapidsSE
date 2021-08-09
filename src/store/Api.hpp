@@ -73,8 +73,6 @@ namespace STORE
   
   static void vCreateTaskForJob(Job* pJob);
   static void vCreateTaskForOp(Op* pOp);
-
-  static Op* pOpCreate(Word* pOpWord);
   
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);

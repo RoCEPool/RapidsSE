@@ -74,6 +74,8 @@ withQuery         : name = tableName
                     AS '(' query ')' ;
 
 tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
+                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
+                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
                   | tableExpr
                     type = extendedJoinType?  joint = joinHint?
                     JOIN
@@ -83,8 +85,6 @@ tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
                     JOIN
                     tableExpr
                     USING '(' joinUsingList ')'                           #joinUsing
-                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
-                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
                   | '(' query ')'       (AS? as = tableAlias)?            #subquery
                   | '(' valuesExpr ')'  (AS? as = tableAlias)?            #valuesSubquery
                   ;

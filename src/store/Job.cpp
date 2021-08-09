@@ -126,7 +126,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_iCmdNo = iCmdNo;
 
   // m_sJobNm;
-  m_iParentId = C_UNKNOWN;
   m_oTimer.vStart();
 
   // -- b -------------------
@@ -142,19 +141,15 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eError    = EC_NONE;
   
   // -- d -------------------
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   m_pJobLogicUnit = nullptr;
-#else
-  m_pJobLogicUnit = nullptr;
-#endif
+
   
   // m_oJobTags
   // m_xResult
 
   // -- e -------------------
-  m_pOp       = nullptr;
-  m_pOuterOp  = nullptr;
-  m_pInputOp  = nullptr;
+  m_pSingularOp  = nullptr;
 
   // -- f -------------------
   // m_ixErrors;
@@ -164,7 +159,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   // -- g -------------------
   m_oAcksRmg_2pc.vCheckInit();
   m_eSeed      = SS_ENUMS;
-  m_i_TablePtn = C_UNKNOWN;
   m_pTask     = nullptr;
 
   // -- -- -- -- -- --
@@ -191,9 +185,7 @@ Job::Job(eCN eClassNo)
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
 
-  m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
-  m_i_TablePtn    = C_UNKNOWN;
   
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -214,9 +206,7 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pOp       = nullptr;
-  m_pOuterOp  = nullptr;
-  m_pInputOp  = nullptr;
+  m_pSingularOp  = nullptr;
   
   
   m_pJobLogicUnit = nullptr;
@@ -352,11 +342,8 @@ void Job::vPostRecv(void* aJob)
   
   pJob->vTask(nullptr);
     
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   pJob->vNullJobLogicUnit();
-#else
-  pJob->vNullJobLogicUnit();
-#endif
 }
 
 
@@ -444,7 +431,7 @@ void Job::vContentDump(void)
          "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_iParentId=%lld m_iOriginatingId=%lld\n"
+         "m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
          this,
          aCN[eGetClassNo()],
@@ -460,7 +447,6 @@ void Job::vContentDump(void)
          bHasTag_noWait(),
          m_bWasReceived,
          
-         m_iParentId,
          m_iOriginatingId,
          
          nReferences(),
@@ -569,23 +555,23 @@ bool Job::bHasTag_time(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the input operator                                                     */
+/* get the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
-Op* Job::pInputOp(void)
+Op* Job::pSingularOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pInputOp;
+  return m_pSingularOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the input operator                                                     */
+/* set the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vInputOp(Op* pInputOp)
+void Job::vSingularOp(Op* pSingularOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pInputOp = pInputOp;
+  m_pSingularOp = pSingularOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -766,11 +752,8 @@ LogicUnit* Job::pJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   return m_pJobLogicUnit;
-#else
-  return m_pJobLogicUnit;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -908,26 +891,6 @@ i8 Job::iOriginatorNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the parent job id                                                      */
-/*----------------------------------------------------------------------------*/
-i8 Job::iParentId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iParentId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the parent job id                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vParentId(i8 iParentId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iParentId = iParentId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vParticipantNode(i8 iNode)
@@ -1001,7 +964,6 @@ void Job::vResetForReuse(Session* pSession)
   
   // -- a -------------------
   // m_sJobNm;
-  // m_iParentId = C_UNKNOWN;
   // m_oTimer.vStart();
 
   // -- b -------------------
@@ -1021,9 +983,7 @@ void Job::vResetForReuse(Session* pSession)
   // m_xResult ???
   
   // -- e -------------------
-  delete m_pOp;       m_pOp       = nullptr;
-  delete m_pOuterOp;  m_pOuterOp  = nullptr;
-  delete m_pInputOp;  m_pInputOp  = nullptr;
+  delete m_pSingularOp;  m_pSingularOp  = nullptr;
 
   // -- f -------------------
   m_ixErrors = 0;
@@ -1033,7 +993,6 @@ void Job::vResetForReuse(Session* pSession)
   // -- g -------------------
   m_oAcksRmg_2pc.vReset();
   m_eSeed      = SS_ENUMS;
-  m_i_TablePtn = C_UNKNOWN;
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
@@ -1145,25 +1104,6 @@ Stz* Job::szSide(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get table partition on this node this sub job processes                    */
-/*----------------------------------------------------------------------------*/
-i8 Job::i_TablePtn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_i_TablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table partition on this node this sub job processes                    */
-/*----------------------------------------------------------------------------*/
-void Job::vTablePtn(i8 i_TablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_i_TablePtn = i_TablePtn;
-}
 
 
 
@@ -1183,14 +1123,12 @@ void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("%s parentId %03lld seed %s "
-         "i_Session %03lld i_TablePtn %lld WasReceived %lld\n"_Stz,
+  vTrace("%s %03lld seed %s "
+         "i_Session %03lld WasReceived %lld\n"_Stz,
          aCN[eGetClassNo()],
-         m_iParentId,
          aSS[m_eSeed],
          
          m_i_Session,
-         m_i_TablePtn,
          (i8)m_bWasReceived
          );
 }

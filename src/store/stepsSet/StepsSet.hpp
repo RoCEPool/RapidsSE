@@ -44,10 +44,8 @@ public:
 
   // api
   void vApiAddProcedure(void);
-  void vApiExecuteNested(void);
-  void vApiExecuteRequest(void);
+  void vApiExecuteCommand(void);
   void vApiSpawnDemon(void);
-  void vApiSpawnThread(void);
 
   // arrange
   void vArrangeBegin(void);
@@ -615,8 +613,8 @@ public:
   void vJobHasError(void);
 
   void vJobIdFetch(void);
-  void vJobInputFetch(void);
-  void vJobInputStore(void);
+  void vJobSingularOpFetch(void);
+  void vJobSingularOpStore(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
@@ -633,7 +631,7 @@ public:
   void vJobOriginatingTaskStore(void);
   void vJobOriginatorFetch(void);
 
-  void vJobParentIdFetch(void);
+
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
@@ -641,8 +639,6 @@ public:
   void vJobPostRecv(void);
   void vJobPreSend(void);
   void vJobPrintMember(void);
-
-  void vJobQueueReturn(void);
 
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
@@ -657,7 +653,6 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
-  void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);

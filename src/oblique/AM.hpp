@@ -545,7 +545,6 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);
-    static Stz* szJobOpNm(Job* pJob);
     static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
@@ -568,12 +567,7 @@ namespace OBLIQUE
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static Operand* pDuplicateOperand(Operand* pOperand);
-    
-    static Job* pNewJobOp(Op* pOp,
-                          i8 i_Origin,     // originated on which node
-                          i8 i_Session,    // which session in session array
-                          i8 iCmdNo);
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);

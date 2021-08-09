@@ -85,19 +85,6 @@
 /*----------------------------------------------------------------------------*/
 : job::deleteThis ( -- )
 
-  0 locals| pThisTask |
-  0 locals| pThisJob  |
-
-  // get this task and job
-  task[] to pThisTask
-  pThisTask task.job@ to pThisJob
-
-  // now delete the ended job
-  nullptr pThisTask task.job!
-
-  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
-
-  pThisJob job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -240,16 +227,17 @@
 : job::informInvokerOfCompletion
 
   <plProtocol> PP_SIGNAL_SESSION == if
-//"signalling session" .
+    //"signalling session" .
     job[] job.signalSession
-  else
-    <plProtocol> PP_RETURN_PIPELINE == if
-//"return pipeline" .
-    "op__returnPipeline" find execute
-    job.queueReturn
+
+  else <plProtocol> PP_RETURN_PIPELINE == if
+    "unused plProtocol" .
+    HAZARD
+
   else
     "unknown plProtocol" .
     HAZARD
+    
   then then
 ;
 

@@ -1721,14 +1721,6 @@ eCN AM::eJobClass(Job* pJob)
   return pJob->eGetClassNo();
 }
 
-Stz* AM::szJobOpNm(Job* pJob)
-{
-  if (pJob->m_pOp)
-    return pJob->m_pOp->szOpNm();
-  else
-    return nullptr;
-}
-
 
 Session* AM::pJobSession(Job* pJob)
 {
@@ -1826,7 +1818,7 @@ i8 AM::nRndSkipLevel(void) {
     nLevels =
       RndLib::iSkipLevel(nLvlLevels,
                          iLvlRatio,
-                         pTask->pJob()->pJobLogicUnit()->m_i_NextRnd);
+                         MY::pLogicUnit()->m_i_NextRnd);
   }
   else {
     nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio);
@@ -2345,34 +2337,6 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
     return pNewStreamDef;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a universal job for op                                                 */
-/*----------------------------------------------------------------------------*/
-Job* AM::pNewJobOp(Op* pOp,
-                   i8 i_Origin,     // originated on which node
-                   i8 i_Session,    // which session in session array
-                   i8 iCmdNo)
-{
-  Job* pNewJob;
-  
-  // get the CmdTag words tagSet
-//  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
-//
-//  // get the jobKind from the cmdTagSet
-//  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
-//  UNUSED(eJobKind);
-
-  pNewJob = new Job(i_Origin,
-                    i_Session,
-                    iCmdNo
-                    );
-
-  pNewJob->m_pOp = pOp;
-  pNewJob->vSeed(SS_SEED_REQ);
-
-  return pNewJob;
 }
 
 /*----------------------------------------------------------------------------*/

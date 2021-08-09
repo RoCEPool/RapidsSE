@@ -61,10 +61,9 @@ Stz* SP_Job::sz_log(Job* pJob)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
-                  "{%s %lld %lld %s %s %s %s%s}%s"_Stz,
+                  "{%s %lld %s %s %s %s%s}%s"_Stz,
                   
                   aCN[pJob->eGetClassNo()],
-                  pJob->i_TablePtn(),
                   pJob->iAcksRmg_printOnlyValue(),
 
                   aSS[pJob->eSeed()],

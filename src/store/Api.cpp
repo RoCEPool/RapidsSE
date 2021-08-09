@@ -513,7 +513,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 {
   Job* pJob = pSession->m_pSsnJob;
 
-  Op* pInputOp = pJob->m_pInputOp;
+  Op* pInputOp = pJob->m_pSingularOp;
 
   pInputOp->vOutboundOperand(pOperand);
   pOperand = nullptr;
@@ -972,33 +972,6 @@ void Api::vCreateTaskForOp(Op* pOp)
   pTask = AM::TASK::pNew(pOp);
   
   pTask->vSeedTask();
-}
-
-/*----------------------------------------------------------------------------*/
-/* create operator for given word                                             */
-/*----------------------------------------------------------------------------*/
-Op* Api::pOpCreate(Word* pOpWord)
-{
-  _static_
-  
-  i8 iSessionId = 1;
-  
-  Op* pOp = new Op(pOpWord->szWordNm());
-    
-  Job* pOpJob = AM::pNewJobOp(pOp,
-                            AM::GRID::iThisNodeNo(),
-                            iSessionId,
-                            1
-                            );
-  
-  pOp->vOpJob_(pOpJob);
-  
-  TagSet* pJobTags = pOpJob->pJobTags();
-  
-  pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
-  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-
-  return pOp;
 }
 
 /*----------------------------------------------------------------------------*/

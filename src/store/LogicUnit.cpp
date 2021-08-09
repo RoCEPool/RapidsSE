@@ -50,6 +50,8 @@
 #include "SN_Tme.hpp"
 #include "SN_Tsp.hpp"
 
+#include "MY.hpp"
+
 
 extern EoArg EoArgs[];
 
@@ -656,7 +658,7 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
+  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1512,7 +1514,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
+  aRluCommon->m_i_TablePtn = MY::pOp()->tPtnNo();
   aRluCommon->m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 

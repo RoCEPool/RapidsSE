@@ -53,8 +53,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
-  m_pOpJob       = nullptr;
-  
   m_pOpLogicUnit = nullptr;
 
   m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
@@ -121,9 +119,7 @@ Op::Op(Stz* szOpNm)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pOpJob       = nullptr;
-  
+    
   m_pOpLogicUnit = nullptr;
 
   m_sPipelineNm = C_NO_NAME;
@@ -145,8 +141,6 @@ Op::Op(Stz* szOpNm)
   m_pTask = nullptr;
 
   // -- -- -- -- -- --
-
-  m_pOpJob        = nullptr;
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
@@ -932,26 +926,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* Op::pOpJob_(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-void Op::vOpJob_(Job* pOpJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pOpJob = pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate next local round robin                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iLocalRobinNext(void)
@@ -1668,7 +1642,7 @@ void Op::vSendNode(i8 iSendNode)
 /*----------------------------------------------------------------------------*/
 /* spawn this operator                                                        */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
 
 void Op::vSpawnTaskForOp(i8 iSessionId)
 {
@@ -1712,16 +1686,6 @@ void Op::vSpawnTaskForOp(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // create a new Job for the Op
-//  m_pOpJob = AM::pNewJobOp(this,
-//                         AM::GRID::iThisNodeNo(),
-//                         iSessionId,
-//                         1
-//                         );
-//
-//  // get the operator job tag set
-//  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-//  pOpJobTagSet->vCopy(&m_oOpTags);
 
   if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
     AM::vSpawnTaskDedicated_op(this);
@@ -1737,79 +1701,6 @@ void Op::vSpawnTaskForOp(i8 iSessionId)
   }
   
 }
-
-/*----------------------------------------------------------------------------*/
-#else
-
-void Op::vSpawnTaskForOp(i8 iSessionId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-  m_oOpTags.vCopy(pPipeLineJobTags);
-  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form and parse op command string
-  
-  sSTMT sOpCmd;
-  vToCmdStr(sOpCmd);
-  
-  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-
-  TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(sOpCmd);
-
-  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
-  RASSERT(b);
-  
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
-  
-  //pOpJobTagSet->vDumpSet();
-  
-//  if (! b) {
-//    //vTrace("Unable to match job syntax\n"_Stz);
-//    vParticipantHasError(true);
-//    return EC_INVALID_COMMAND;
-//  }
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pOpLogicUnit = new LogicUnit;
-  m_pOpLogicUnit->vOp(this);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // create a new Job for the Op
-  m_pOpJob = AM::pNewJobOp(this,
-                         AM::GRID::iThisNodeNo(),
-                         iSessionId,
-                         1
-                         );
-  
-  // get the operator job tag set
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  pOpJobTagSet->vCopy(&m_oOpTags);
-
-  if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
-    AM::vSpawnTaskDedicated_job(m_pOpJob);
-    m_pTask = AM::pExecutingTask(m_pOpJob);
-    RASSERT(m_pTask->pJob() == m_pOpJob);
-    m_pTask->vOp(this);
-  }
-  else {
-    AM::vSpawnTask_job(m_pOpJob);
-    m_pTask = AM::pExecutingTask(m_pOpJob);
-    RASSERT(m_pTask->pJob() == m_pOpJob);
-    m_pTask->vOp(this);
-  }
-  
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get operator stage name                                                    */

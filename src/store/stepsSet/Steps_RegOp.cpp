@@ -54,11 +54,8 @@ void Step::vRegOpHandlerEntry(void)
   
   if (AM::TRACE::bVBlong()) {
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
     
     if (m_p_TaskLogicUnit->m_xpPipein.bIsNotNull()) {
       Operand* pOperand = *m_p_TaskLogicUnit->m_xpPipein;
@@ -135,11 +132,8 @@ void Step::vRegOpInit(void)
 {
   ENTRY();
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
   Op* pOp = *m_pOp;
-#else
-  Op* pOp = m_pJob->m_pOp;
-#endif
 
   m_p_TaskLogicUnit->m_xpOp = pOp;
 

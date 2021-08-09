@@ -15,15 +15,44 @@ namespace STORE
   class Session : public Object
   {
   public:
-    i8       m_i_Session;     // session index
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+  
+    // -- id, name and kind
+    Gid<CN_SESSION> m_xSessionId;  // session id in grid
+    s32             m_sSessionNm;  // name of this session
+    eSK             m_eSession;    // session kind
+
+    // -- belongs to
+    i8 m_i_Session;  // which session in sessions on this node
+    i8 m_iPid;       // which process created this session
+
+    // -- refers to
+    Job* m_pSsnJob;  // job currently being executing
+
+    // -- state
+    // n/a
+
+    // -- tags, seeding and tasking
+    TagSet m_oSsnTagSet;  // session level tags
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+  
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
     i8       m_i_NextFree;    // next state in free chain
     
-    eSK      m_eSession;      // session kind
-    i8       m_iPid;          // process which created this session
     i8       m_i_FixedPtn;    // specific partition being processed
 
     DicStack m_oDicStack;     // dictionary stack
-    TagSet   m_oSsnTagSet;    // session level tags
     TagSet   m_oJobTagSet;    // extra tags gleaned from the command
     Input*   m_pInput;        // input processor
     Output*  m_pOutput;       // output processor
@@ -34,7 +63,6 @@ namespace STORE
 
   
     bool     m_bExamined;     // has command been examined?
-    Job*     m_pSsnJob;       // job currently being executing
     Mutex    m_oMutex;        //
     bool     m_bRunning;      // api call still running?
     bool     m_bSignalled;    // calling thread has been signalled?

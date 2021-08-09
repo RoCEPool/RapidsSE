@@ -44,11 +44,8 @@ void Step::vOpAckPipelineJob(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   
   pOp->vAckPipelineJob();
@@ -61,11 +58,8 @@ void Step::vOpDownstreamOpStore(void)
 {
   ENTRY();
     
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
 
   Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
   
@@ -108,11 +102,8 @@ void Step::vOpOpNameFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   s256 sOpName = pOp->szOpNm();
   
@@ -128,11 +119,8 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   m_pDataStack->vPushInt(pOp->tPtnNo());
   
@@ -146,11 +134,8 @@ void Step::vOpPiplineJobFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   Pipeline* pPipeline = pOp->pPipeline_op();
   
@@ -172,11 +157,8 @@ void Step::vOpPipeBackIn(void)
 {
   ENTRY();
 
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -192,11 +174,8 @@ void Step::vOpPipeOut(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -212,11 +191,8 @@ void Step::vOpOutboundOperandFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   m_pDataStack->vPushPtr(pOp->pOutboundOperand());
   
@@ -230,11 +206,8 @@ void Step::vOpOutboundOperandStore(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -250,11 +223,8 @@ void Step::vOpQueueLength(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   i8 nLength = pOp->nQueuedOperands();
 
@@ -270,11 +240,8 @@ void Step::vOpStageNameFetch(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
   
   s256 sStageName = pOp->szStageName();
   
@@ -290,11 +257,8 @@ void Step::vOpSendKindStore(void)
 {
   ENTRY();
   
-#ifdef WITH_NO_JOB_FOR_OP
+  // revised job/op model
     Op* pOp = *m_pOp;
-#else
-    Op* pOp = m_pJob->m_pOp;
-#endif
 
   pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
   

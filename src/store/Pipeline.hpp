@@ -10,14 +10,44 @@ namespace STORE
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
   {
   private:
-    s32  m_sPipelineNm; // name of this pipeline
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
+    // -- id, name and kind
+    Gid<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
+    s32              m_sPipelineNm;  // name of this pipeline
+    // n/a                           // kind
+
+    // -- belongs to
+    Job* m_pPipelineJob;  // which job
+  
+    // -- refers to
+    PipelineSpec* m_pPipelineSpec; // specification of this pipeline
+
+    // -- state
+    // n/a
+
+    // -- tags, seeding and tasking
+    // n/a
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  
     i8   m_i_Origin;    // originating node
 
-    PipelineSpec* m_pPipelineSpec; // specification of this pipeline
   
     // -- -- -- -- -- --
 
-    Job* m_pPipelineJob; // job this pipeline belongs to
   
     bool m_bPulsed;
     bool m_bEarlyExit;
