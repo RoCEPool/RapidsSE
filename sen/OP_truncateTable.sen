@@ -24,16 +24,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : truncateTable_StartMarker \handler
 
   //"Operand:- ZK_M_START" .verbose
 
+  PipeIn[].pipeOut
+
   // check if we can truncate the table
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   true

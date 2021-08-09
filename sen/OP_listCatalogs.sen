@@ -16,7 +16,6 @@
   folder[].checkIsCatalogs not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     false
     exit
   then

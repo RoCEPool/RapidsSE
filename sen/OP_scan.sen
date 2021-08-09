@@ -162,18 +162,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": scan_StartMarker" .
 
 : scan_StartMarker \handler
 
+  PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
-  else
-    Operand[].newStartMarker
-    Operand[].pipeout
   then
 
   //args.developer if

@@ -15,6 +15,8 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
+  Pipein[].pipeout
+
   // new the PotRlu[]
   PotRlu[].new
 

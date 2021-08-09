@@ -106,8 +106,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -120,8 +118,6 @@
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
-
-    PipeIn[].delete
 
     false
     exit
@@ -207,8 +203,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -221,8 +215,6 @@
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
-
-    PipeIn[].delete
 
     false
     exit
@@ -245,8 +237,6 @@
 
     // create an exec error infoset
     errorCode op__execErr
-
-    PipeIn[].delete
 
     Path[].popNamedTableFolder
     Path[].popIndexesFolder

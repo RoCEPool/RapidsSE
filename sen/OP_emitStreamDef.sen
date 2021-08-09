@@ -22,17 +22,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : emitStreamDef_StartMarker \handler
 
   //"Operand:- ZK_M_START" .verbose
 
+  Operand[].pipeOut
+
   <tableNm> op__table if
 
     // new a stream def
     Operand[].newStreamDef
-    Operand[].pipeOut
 
     PipeIn[].pipeOut
   then

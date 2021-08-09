@@ -5,9 +5,12 @@
 " OP_toRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : toRow_StartMarker \handler
+
+  // pipeout the (StartMarker)
+  PipeIn[].pipeOut
 
   // test and create Table[] using <tableNm>
   <tableNm> op__table if
@@ -15,20 +18,15 @@
     // create a ToRow using Table[].streamDef
     ToRow[].create
 
-    // pipeout the (StartMarker)
-    PipeIn[].pipeOut
-
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Operand[].newStreamDef
     Operand[].pipeOut
 
   then
-  
-  
+
   // find the __loadResult table def
   C_TDEF_LOADRESULT op__tableDef_infoSet assert
-  
-  
+
   true
 ;
 

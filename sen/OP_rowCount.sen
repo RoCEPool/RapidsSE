@@ -31,15 +31,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START...                                                       */
+/* on ZK_M_START...                                                           */
 /*----------------------------------------------------------------------------*/
 : rowCount_StartMarker \handler
 
   //"Operand:- ZK_M_START" .verbose
+  PipeIn[].pipeOut
 
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   true
