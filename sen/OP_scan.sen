@@ -51,7 +51,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_NEXTBUFFERMARKER...                                         */
+/* handler for ZK_M_NEXTBUFFER...                                         */
 /*----------------------------------------------------------------------------*/
 // ": scan_NextBufferMarker" .
 
@@ -68,7 +68,7 @@
     // pipe out the read crw buffer
     Operand[].pipeOut
 
-    // requeue ZK_NEXTBUFFERMARKER
+    // requeue ZK_M_NEXTBUFFER
     Pipein[].pipeBackin
 
     // call this handler again to process next buffer
@@ -115,7 +115,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": scan_DataMarker" .
 
@@ -142,7 +142,7 @@
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
-    // pipe in ZK_NEXTBUFFERMARKER
+    // pipe in ZK_M_NEXTBUFFER
     Operand[].newNextBufferMarker
     Operand[].pipeBackIn
 
@@ -172,7 +172,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 // ": scan_StartMarker" .
 
@@ -185,8 +185,8 @@
     // is possible that a PULSEDMARKER arrives after this STARTMARKER
     // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
     // we need eat the pulsedmarker here
-    find: Scan_Xyz   ZK_DATAPULSE      op[].handler!
-    find: Scan_Xyz   ZK_PULSEDMARKER   op[].handler!
+    find: Scan_Xyz   ZK_M_DATAPULSE      op[].handler!
+    find: Scan_Xyz   ZK_M_PULSED   op[].handler!
   then
 
   //args.developer if
@@ -213,9 +213,9 @@
 
   find: scan_CancellingMarker  ZK_M_CANCEL     op[].handler!
   find: scan_CleanupMarker     ZK_M_CLEANUP    op[].handler!
-  find: scan_DataMarker        ZK_DATAPULSE        op[].handler!
-  find: scan_NextBufferMarker  ZK_NEXTBUFFERMARKER op[].handler!
-  find: scan_StartMarker       ZK_STARTMARKER      op[].handler!
+  find: scan_DataMarker        ZK_M_DATAPULSE        op[].handler!
+  find: scan_NextBufferMarker  ZK_M_NEXTBUFFER op[].handler!
+  find: scan_StartMarker       ZK_M_START      op[].handler!
 
   op__loop
 

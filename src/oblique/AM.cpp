@@ -1782,9 +1782,8 @@ Job* AM::pPipelineJob(void)
 
 
 
-void AM::vPoolAnalyze(void) {
-  return PoolHelper::vPoolAnalyze();
-}
+void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
+
 void AM::vPrintArguments(void) {
   gxCmdLineArgs.vPrint();
 }
@@ -1794,6 +1793,7 @@ void AM::vPrintAttachMap(void) {
 void AM::vPrintStartupInfo(void) {
   gxCmdLineArgs.vPrintStartupInfo();
 }
+
 PtnMap* AM::pPtnMap(void) {
   return gpAttachMap->m_pPtnMap;
 }
@@ -2439,36 +2439,36 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
         case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
-        case OM_CANCELLEDMARKER:    eOperand = ZK_CANCELLEDMARKER;    break;
+        case OM_CANCELLEDMARKER:    eOperand = ZK_M_CANCELLED;    break;
         case OM_CLEANUPMARKER:      eOperand = ZK_M_CLEANUP;      break;
         case OM_CLEANEDUPMARKER:    eOperand = ZK_M_CLEANEDUP;    break;
-        case OM_DATAPULSE:          eOperand = ZK_DATAPULSE;          break;
-        case OM_DESTROYMARKER:      eOperand = ZK_DESTROYMARKER;      break;
-        case OM_EACHSCANEOSMARKER:  eOperand = ZK_EACHSCANEOSMARKER;  break;
-        case OM_ENDMARKER:          eOperand = ZK_ENDMARKER;          break;
-        case OM_ENDEDMARKER:        eOperand = ZK_ENDEDMARKER;        break;
-        case OM_ENDINGMARKER:       eOperand = ZK_ENDINGMARKER;       break;
-        case OM_END_CRWRHTMARKER:   eOperand = ZK_END_CRWRHTMARKER;   break;
-        case OM_END_ROWRHTMARKER:   eOperand = ZK_END_ROWRHTMARKER;   break;
-        case OM_EOSMARKER:          eOperand = ZK_EOSMARKER;          break;
-        case OM_ERRORMARKER:        eOperand = ZK_ERRORMARKER;        break;
-        case OM_ERROREDMARKER:      eOperand = ZK_ERROREDMARKER;      break;
-        case OM_ERRORINGMARKER:     eOperand = ZK_ERRORINGMARKER;     break;
-        case OM_EXITMARKER:         eOperand = ZK_EXITMARKER;         break;
-        case OM_EXITEDMARKER:       eOperand = ZK_EXITEDMARKER;       break;
-        case OM_LEAVEMARKER:        eOperand = ZK_LEAVEMARKER;        break;
-        case OM_LEAVINGMARKER:      eOperand = ZK_LEAVINGMARKER;      break;
-        case OM_LEFTMARKER:         eOperand = ZK_LEFTMARKER;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_LEFTOUTER_CRWLFT;   break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_LEFTOUTER_ROWLFT;   break;
-        case OM_NEXTBUFFERMARKER:   eOperand = ZK_NEXTBUFFERMARKER;   break;
-        case OM_PULSEDMARKER:       eOperand = ZK_PULSEDMARKER;       break;
-        case OM_STARTEDMARKER:      eOperand = ZK_STARTEDMARKER;      break;
-        case OM_START_CRWRHTMARKER: eOperand = ZK_START_CRWRHTMARKER; break;
-        case OM_STARTMARKER:        eOperand = ZK_STARTMARKER;        break;
-        case OM_START_ROWRHTMARKER: eOperand = ZK_START_ROWRHTMARKER; break;
-        //case OM_STREAMDEFRHT:   eOperand = ZK_D_STREAMDEFRHT;    break;
-        case OM_TRIGGER:            eOperand = ZK_TRIGGER;            break;
+        case OM_DATAPULSE:          eOperand = ZK_M_DATAPULSE;          break;
+        case OM_DESTROYMARKER:      eOperand = ZK_M_DESTROY;      break;
+        case OM_EACHSCANEOSMARKER:  eOperand = ZK_M_EACHSCANEOS;  break;
+        case OM_ENDMARKER:          eOperand = ZK_M_END;          break;
+        case OM_ENDEDMARKER:        eOperand = ZK_M_ENDED;        break;
+        case OM_ENDINGMARKER:       eOperand = ZK_M_ENDING;       break;
+        case OM_END_CRWRHTMARKER:   eOperand = ZK_M_END_CRWRHT;   break;
+        case OM_END_ROWRHTMARKER:   eOperand = ZK_M_END_ROWRHT;   break;
+        case OM_EOSMARKER:          eOperand = ZK_M_EOS;          break;
+        case OM_ERRORMARKER:        eOperand = ZK_M_ERROR;        break;
+        case OM_ERROREDMARKER:      eOperand = ZK_M_ERRORED;      break;
+        case OM_ERRORINGMARKER:     eOperand = ZK_M_ERRORING;     break;
+        case OM_EXITMARKER:         eOperand = ZK_M_EXIT;         break;
+        case OM_EXITEDMARKER:       eOperand = ZK_M_EXITED;       break;
+        case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
+        case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
+        case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;
+        case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_M_LEFTOUTER_CRWLFT;   break;
+        case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT;   break;
+        case OM_NEXTBUFFERMARKER:   eOperand = ZK_M_NEXTBUFFER;   break;
+        case OM_PULSEDMARKER:       eOperand = ZK_M_PULSED;       break;
+        case OM_STARTEDMARKER:      eOperand = ZK_M_STARTED;      break;
+        case OM_START_CRWRHTMARKER: eOperand = ZK_M_START_CRWRHT; break;
+        case OM_STARTMARKER:        eOperand = ZK_M_START;        break;
+        case OM_START_ROWRHTMARKER: eOperand = ZK_M_START_ROWRHT; break;
+        //case OM_STREAMDEFRHT:   eOperand = ZK_M_STREAMDEFRHT;    break;
+        case OM_TRIGGER:            eOperand = ZK_M_TRIGGER;            break;
         default:
           RASSERT(0);
       }

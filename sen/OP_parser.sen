@@ -14,7 +14,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : parser_DataPulse \handler
 
@@ -70,7 +70,7 @@
 
   then
 
-  ZK_DATAPULSE_handler
+  ZK_M_DATAPULSE_handler
   Operand[].pipeOut
   Operand[].newEosMarker
   Operand[].pipeOut
@@ -89,7 +89,7 @@
   op__topology
 
   find: parser_CleanupMarker ZK_M_CLEANUP op[].handler!
-  find: parser_DataPulse     ZK_DATAPULSE     op[].handler!
+  find: parser_DataPulse     ZK_M_DATAPULSE     op[].handler!
 
   op__loop
 

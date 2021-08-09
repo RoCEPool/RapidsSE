@@ -87,7 +87,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_DataMarker" .
 
@@ -154,7 +154,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_EosMarker" .
 
@@ -177,7 +177,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StartMarker" .
 
@@ -190,8 +190,8 @@
     // is possible that a PULSEDMARKER arrives after this STARTMARKER
     // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
     // we need eat the pulsedmarker here
-    find: eachScan_Xyz   ZK_DATAPULSE      op[].handler!
-    find: eachScan_Xyz   ZK_PULSEDMARKER   op[].handler!
+    find: eachScan_Xyz   ZK_M_DATAPULSE      op[].handler!
+    find: eachScan_Xyz   ZK_M_PULSED   op[].handler!
   then
 
   //args.developer if
@@ -236,12 +236,12 @@
   op__topology
 
   find: eachScan_CleanupMarker ZK_M_CLEANUP op[].handler!
-  find: eachScan_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: eachScan_EosMarker     ZK_M_EOS     op[].handler!
   find: eachScan_EachRowBuffer ZK_D_EACHROWBUFFER op[].handler!
   find: eachScan_RowCrwBuffer  ZK_D_CRWBUFFER     op[].handler!
-  find: eachScan_DataMarker    ZK_DATAPULSE     op[].handler!
+  find: eachScan_DataMarker    ZK_M_DATAPULSE     op[].handler!
   find: eachScan_RowCrwBuffer  ZK_D_ROWBUFFER     op[].handler!
-  find: eachScan_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: eachScan_StartMarker   ZK_M_START   op[].handler!
   find: eachScan_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop

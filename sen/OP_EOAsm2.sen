@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   // new the PotRlu[]
   PotRlu[].new
@@ -32,7 +32,7 @@
   then
 
   // execute plan generated STARTMARKER_handler
-  ZK_STARTMARKER Counter0[] executeAsmArgs
+  ZK_M_START Counter0[] executeAsmArgs
 
   // do we have a table ?
   logicUnit[].srcTable@ "null" str.equal not if
@@ -95,21 +95,21 @@
 
   then
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_DataPulse \handler
 
   PipeIn[].isNull not if
-    ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
-    PipeIn[].pipeOut // ZK_DATAPULSE_handler
+    ZK_M_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_M_DATAPULSE EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_M_DATAPULSE_handler
   then
 
   // execute plan DATAPULSE_HANDLER
-  ZK_DATAPULSE Counter0[] executeAsmArgs
+  ZK_M_DATAPULSE Counter0[] executeAsmArgs
 
   LogicUnit[].callAgain@ not if
 
@@ -183,11 +183,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -200,11 +200,11 @@
   then
 
   // handle EOSMARKER
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -237,10 +237,10 @@
   op__topology
 
   find: EOAsm2_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: EOAsm2_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: EOAsm2_DataPulse   ZK_DATAPULSE   op[].handler!
+  find: EOAsm2_EosMarker   ZK_M_EOS   op[].handler!
+  find: EOAsm2_DataPulse   ZK_M_DATAPULSE   op[].handler!
   find: EOAsm2_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: EOAsm2_StartMarker ZK_STARTMARKER op[].handler!
+  find: EOAsm2_StartMarker ZK_M_START op[].handler!
   find: EOAsm2_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop

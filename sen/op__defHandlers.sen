@@ -47,7 +47,7 @@
 : ZK_D_PROFILE_handler          \handler STANDARD_PIPEOUT ;
 : ZK_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
-: ZK_D_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
 : ZK_D_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 
@@ -70,39 +70,39 @@
 : ZK_M_CLEANUP_handler          \handler STANDARD_PIPEOUT ;
 : ZK_M_CLEANEDUP_handler        \handler STANDARD_PIPEOUT ;
 
-: ZK_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
-: ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_EACHSCANEOSMARKER_handler \handler STANDARD_PIPEOUT ;
-: ZK_ENDMARKER_handler         \handler STANDARD_PIPEOUT ;
-: ZK_ENDEDMARKER_handler       \handler STANDARD_PIPEOUT ;
-: ZK_ENDINGMARKER_handler      \handler STANDARD_PIPEOUT ;
-: ZK_END_CRWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
-: ZK_END_ROWRHTMARKER_handler  \handler STANDARD_PIPEOUT ;
-: ZK_EOSMARKER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
-: ZK_ERRORINGMARKER_handler   \handler STANDARD_PIPEOUT ;
-: ZK_LEAVEMARKER_handler      \handler STANDARD_PIPEOUT ;
-: ZK_LEAVINGMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
-: ZK_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
-: ZK_NEXTBUFFERMARKER_handler \handler STANDARD_PIPEOUT ;
-: ZK_PULSEDMARKER_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
+: ZK_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
+: ZK_M_EACHSCANEOS_handler      \handler STANDARD_PIPEOUT ;
+: ZK_M_END_handler              \handler STANDARD_PIPEOUT ;
+: ZK_M_ENDED_handler            \handler STANDARD_PIPEOUT ;
+: ZK_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
+: ZK_M_END_CRWRHT_handler       \handler STANDARD_PIPEOUT ;
+: ZK_M_END_ROWRHT_handler       \handler STANDARD_PIPEOUT ;
+: ZK_M_EOS_handler              \handler STANDARD_PIPEOUT ;
+: ZK_M_ERROR_handler            \handler STANDARD_PIPEOUT ;
+: ZK_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
+: ZK_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
+: ZK_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
+: ZK_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
+: ZK_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
+: ZK_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
+: ZK_M_PULSED_handler           \handler STANDARD_PIPEOUT ;
 : ZK_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_START_CRWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_STARTMARKER_handler      \handler STANDARD_PIPEOUT ;
-: ZK_START_ROWRHTMARKER_handler    \handler STANDARD_PIPEOUT ;
-: ZK_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
+: ZK_M_START_CRWRHT_handler    \handler STANDARD_PIPEOUT ;
+: ZK_M_START_handler           \handler STANDARD_PIPEOUT ;
+: ZK_M_START_ROWRHT_handler    \handler STANDARD_PIPEOUT ;
+: ZK_M_TRIGGER_handler         \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITMARKER operand                      (pipes out) */
+/* default handler for ZK_M_EXIT operand                      (pipes out) */
 /*----------------------------------------------------------------------------*/
-: ZK_EXITMARKER_handler \handler
+: ZK_M_EXIT_handler \handler
 
-  //"ZK_EXITMARKER_handler" .verbose
+  //"ZK_M_EXIT_handler" .verbose
   
   PipeIn[].pipeOut
   
@@ -123,11 +123,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELLEDMARKER operand    (deletes pipein operand) */
+/* default handler for ZK_M_CANCELLED operand    (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
-: ZK_CANCELLEDMARKER_handler \handler
+: ZK_M_CANCELLED_handler \handler
 
-  //"ZK_CANCELLEDMARKER_handler" .verbose
+  //"ZK_M_CANCELLED_handler" .verbose
   
   Pipein[].delete
 
@@ -138,11 +138,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_ERROREDMARKER operand      (deletes pipein operand) */
+/* default handler for ZK_M_ERRORED operand      (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
-: ZK_ERROREDMARKER_handler \handler
+: ZK_M_ERRORED_handler \handler
 
-  //"ZK_ERROREDMARKER_handler" .verbose
+  //"ZK_M_ERRORED_handler" .verbose
   
   PipeIn[].delete
 
@@ -153,11 +153,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_LEFTMARKER operand  (deletes pipein operand)        */
+/* default handler for ZK_M_LEFT operand  (deletes pipein operand)        */
 /*----------------------------------------------------------------------------*/
-: ZK_LEFTMARKER_handler \handler
+: ZK_M_LEFT_handler \handler
 
-  //"ZK_LEFTMARKER_handler" .verbose
+  //"ZK_M_LEFT_handler" .verbose
 
   PipeIn[].delete
 
@@ -168,11 +168,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDMARKER operand       (deletes pipein operand) */
+/* default handler for ZK_M_EXITED operand       (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
-: ZK_EXITEDMARKER_handler \handler
+: ZK_M_EXITED_handler \handler
 
-  //"ZK_EXITEDMARKER_handler" .verbose
+  //"ZK_M_EXITED_handler" .verbose
   
   PipeIn[].delete
 
@@ -183,11 +183,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_STARTEDMARKER operand      (deletes pipein operand) */
+/* default handler for ZK_M_STARTED operand      (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
-: ZK_STARTEDMARKER_handler \handler
+: ZK_M_STARTED_handler \handler
 
-  "ZK_STARTEDMARKER_handler" .verbose
+  "ZK_M_STARTED_handler" .verbose
 
   // Only OP_Start can get a STARTEDMARKER
   PipeIn[].delete

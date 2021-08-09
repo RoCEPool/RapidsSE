@@ -24,13 +24,13 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_StartMarker \handler
 
   List[].new
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                         EXIT */
+/* handler for ZK_M_EXIT ...                                         EXIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_ExitMarker \handler
 
@@ -69,7 +69,7 @@
 
   List[].delete
 
-  ZK_EXITMARKER_handler
+  ZK_M_EXIT_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -84,9 +84,9 @@
 
   op__topology
 
-  find: rowToList_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: rowToList_ExitMarker  ZK_M_EXIT  op[].handler!
   find: rowToList_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: rowToList_StartMarker ZK_STARTMARKER op[].handler!
+  find: rowToList_StartMarker ZK_M_START op[].handler!
   find: rowToList_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop

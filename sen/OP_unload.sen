@@ -5,19 +5,19 @@
 " OP_unload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : unload_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
 : unload_DataMarker \handler
 
-  ZK_PULSEDMARKER_handler
+  ZK_M_PULSED_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -29,11 +29,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : unload_EosMarker \handler
 
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,9 +49,9 @@
   op__topology
 
   find: unload_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: unload_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: unload_DataMarker ZK_DATAPULSE op[].handler!
-  find: unload_StartMarker ZK_STARTMARKER op[].handler!
+  find: unload_EosMarker   ZK_M_EOS   op[].handler!
+  find: unload_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: unload_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

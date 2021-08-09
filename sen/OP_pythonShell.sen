@@ -20,12 +20,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_M_ERROR ...                                             */
 /*----------------------------------------------------------------------------*/
 /*
 : pythonShell_ErrorMarker \handler
 
-  //"Operand:- ZK_ERRORMARKER" .verbose
+  //"Operand:- ZK_M_ERROR" .verbose
   PipeIn[].pipeOut
 
   true
@@ -42,7 +42,7 @@
   op__topology
 
   find: pythonShell_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  //find: pythonShell_ErrorMarker ZK_ERRORMARKER op[].handler!
+  //find: pythonShell_ErrorMarker ZK_M_ERROR op[].handler!
 
   op__loop
 

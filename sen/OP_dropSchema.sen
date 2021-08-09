@@ -5,7 +5,7 @@
 " OP_dropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : dropSchema_DataMarker
 
@@ -39,7 +39,7 @@
 
   op__topology
 
-  find: dropSchema_DataMarker ZK_DATAPULSE op[].handler!
+  find: dropSchema_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

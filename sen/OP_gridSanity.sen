@@ -43,11 +43,11 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER...                                                       */
+/* on ZK_M_START...                                                       */
 /*----------------------------------------------------------------------------*/
 : gridSanity_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   PipeIn[].pipeOut
 
@@ -73,7 +73,7 @@
 
   op__topology
 
-  find: gridSanity_StartMarker ZK_STARTMARKER op[].handler!
+  find: gridSanity_StartMarker ZK_M_START op[].handler!
   find: gridSanity_NodeInfo    ZK_I_NODEINFO    op[].handler!
 
   op__loop

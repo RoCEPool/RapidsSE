@@ -5,11 +5,11 @@
 " OP_pulse.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_TRIGGER ...                                                 */
+/* handler for ZK_M_TRIGGER ...                                                 */
 /*----------------------------------------------------------------------------*/
 : pulse_Trigger \handler
 
-  //"Operand:- ZK_TRIGGER" .verbose
+  //"Operand:- ZK_M_TRIGGER" .verbose
   PipeIn[].delete
 
   // pipe out a datapulse
@@ -75,7 +75,7 @@
 
   op__topology
 
-  find: pulse_Trigger   ZK_TRIGGER   op[].handler!
+  find: pulse_Trigger   ZK_M_TRIGGER   op[].handler!
 
   op__loop
 

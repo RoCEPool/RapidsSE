@@ -25,11 +25,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELLEDMARKER ...                                         */
+/* handler for ZK_M_CANCELLED ...                                         */
 /*----------------------------------------------------------------------------*/
 : start_CancelledMarker \handler
 
-  //"Operand:- ZK_CANCELLEDMARKER" .verbose
+  //"Operand:- ZK_M_CANCELLED" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
@@ -55,11 +55,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDEDMARKER ...                                             */
+/* handler for ZK_M_ENDED ...                                             */
 /*----------------------------------------------------------------------------*/
 : start_EndedMarker \handler
 
-  //"Operand:- ZK_ENDEDMARKER" .verbose
+  //"Operand:- ZK_M_ENDED" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
@@ -70,11 +70,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERROREDMARKER ...                                           */
+/* handler for ZK_M_ERRORED ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_ErroredMarker \handler
 
-  //"Operand:- ZK_ERROREDMARKER" .verbose
+  //"Operand:- ZK_M_ERRORED" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
@@ -85,11 +85,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEDMARKER ...                                            */
+/* handler for ZK_M_EXITED ...                                            */
 /*----------------------------------------------------------------------------*/
 : start_ExitedMarker \handler
 
-  //"Operand:- ZK_EXITEDMARKER" .verbose
+  //"Operand:- ZK_M_EXITED" .verbose
   PipeIn[].delete
   Op.ackPipelineJob
 
@@ -97,11 +97,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LEFTMARKER ...                                              */
+/* handler for ZK_M_LEFT ...                                              */
 /*----------------------------------------------------------------------------*/
 : start_LeftMarker \handler
 
-  //"Operand:- ZK_LEFTMARKER" .verbose
+  //"Operand:- ZK_M_LEFT" .verbose
   PipeIn[].delete
 
   // now pipeout a cleanup marker
@@ -112,11 +112,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LEAVINGMARKER ...                                           */
+/* handler for ZK_M_LEAVING ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_LeavingMarker \handler
 
-  //"Operand:- ZK_LEAVINGMARKER" .verbose
+  //"Operand:- ZK_M_LEAVING" .verbose
 
   // pipeline should not be cancelled
   Pipeline::cancelled@ not assert
@@ -137,11 +137,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDINGMARKER ...                                            */
+/* handler for ZK_M_ENDING ...                                            */
 /*----------------------------------------------------------------------------*/
 : start_EndingMarker \handler
 
-  //"Operand:- ZK_ENDINGMARKER" .verbose
+  //"Operand:- ZK_M_ENDING" .verbose
 
   // pipeline should not be cancelled
   Pipeline::cancelled@ not assert
@@ -162,11 +162,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTEDMARKER ...                                           */
+/* handler for ZK_M_STARTED ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_StartedMarker \handler
 
-  //"Operand:- ZK_STARTEDMARKER" .verbose
+  //"Operand:- ZK_M_STARTED" .verbose
   PipeIn[].delete
   Operand[].newTrigger
   Operand[].pipeOut
@@ -184,15 +184,15 @@
   op__topology
 
   find: start_CancelMarker      ZK_M_CANCEL      op[].handler!
-  find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
+  find: start_CancelledMarker   ZK_M_CANCELLED   op[].handler!
   find: start_CleanedupMarker   ZK_M_CLEANEDUP   op[].handler!
-  find: start_EndingMarker      ZK_ENDINGMARKER      op[].handler!
-  find: start_EndedMarker       ZK_ENDEDMARKER       op[].handler!
-  find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
-  find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
-  find: start_LeavingMarker     ZK_LEAVINGMARKER     op[].handler!
-  find: start_LeftMarker        ZK_LEFTMARKER        op[].handler!
-  find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
+  find: start_EndingMarker      ZK_M_ENDING      op[].handler!
+  find: start_EndedMarker       ZK_M_ENDED       op[].handler!
+  find: start_ErroredMarker     ZK_M_ERRORED     op[].handler!
+  find: start_ExitedMarker      ZK_M_EXITED      op[].handler!
+  find: start_LeavingMarker     ZK_M_LEAVING     op[].handler!
+  find: start_LeftMarker        ZK_M_LEFT        op[].handler!
+  find: start_StartedMarker     ZK_M_STARTED     op[].handler!
 
   find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       op[].handler!
   find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       op[].handler!

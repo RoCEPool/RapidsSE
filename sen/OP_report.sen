@@ -59,11 +59,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_EosMarker \handler
 
-  //"Operand:- ZK_EOSMARKER" .verbose
+  //"Operand:- ZK_M_EOS" .verbose
   File0[].get file.close
   File0[].get file.delete
   PipeIn[].pipeOut
@@ -90,11 +90,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   // open the file for writing
   <fileNm> OPEN_WRITE op__file if
@@ -116,9 +116,9 @@
   find: report_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: report_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
   find: report_EntBuffer   ZK_D_ENTBUFFER   op[].handler!
-  find: report_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: report_EosMarker   ZK_M_EOS   op[].handler!
   find: report_SrtBuffer   ZK_D_SRTBUFFER   op[].handler!
-  find: report_StartMarker ZK_STARTMARKER op[].handler!
+  find: report_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

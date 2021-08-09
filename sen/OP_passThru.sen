@@ -17,11 +17,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 : passThru_EosMarker \handler
 
-  //"Operand:- ZK_EOSMARKER" .verbose
+  //"Operand:- ZK_M_EOS" .verbose
   PipeIn[].delete
   Operand[].newCsvBuffer
   Operand[].report
@@ -35,11 +35,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : passThru_DataMarker \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
+  //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -50,11 +50,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : passThru_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   "__REPORT" locals| sReportTable |
 
@@ -79,9 +79,9 @@
   op__topology
 
   find: passThru_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: passThru_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: passThru_DataMarker ZK_DATAPULSE op[].handler!
-  find: passThru_StartMarker ZK_STARTMARKER op[].handler!
+  find: passThru_EosMarker   ZK_M_EOS   op[].handler!
+  find: passThru_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: passThru_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

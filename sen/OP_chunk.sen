@@ -5,11 +5,11 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                        */
+/* on ZK_M_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
 : chunk_DataMarker \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
+  //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __seekOffsets table
@@ -41,11 +41,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_M_START ...                                                      */
 /*----------------------------------------------------------------------------*/
 : chunk_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   0 locals| iFileSizeMb |
 
@@ -75,11 +75,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EXITMARKER ...                                                       */
+/* on ZK_M_EXIT ...                                                       */
 /*----------------------------------------------------------------------------*/
 : chunk_ExitMarker \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
+  //"Operand:- ZK_M_EXIT" .verbose
   File0[].isNull not if
     File0[].get file.close
     File0[].get file.delete
@@ -101,9 +101,9 @@
 
   op__topology
 
-  find: chunk_DataMarker ZK_DATAPULSE op[].handler!
-  find: chunk_StartMarker ZK_STARTMARKER op[].handler!
-  find: chunk_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: chunk_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: chunk_StartMarker ZK_M_START op[].handler!
+  find: chunk_ExitMarker  ZK_M_EXIT  op[].handler!
 
   op__loop
 

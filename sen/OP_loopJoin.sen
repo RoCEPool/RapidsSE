@@ -60,11 +60,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_END_CRWRHTMARKER ...                                            INIT */
+/* on ZK_M_END_CRWRHT ...                                            INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_EndCrwRhtMarker \handler
 
-  0 ZK_END_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -72,7 +72,7 @@
   LogicUnit[].IsLftCrwBuffer@ if
 
     // execute the leftOuter asm handler for crwLft
-    ZK_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
+    ZK_M_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
 
     DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
@@ -80,7 +80,7 @@
   else
 
     // execute the leftOuter asm handler for rowLft
-    ZK_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
+    ZK_M_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
 
     DevLftRow.rowBuffer@ to Operand[]
     Operand[].isNull not assert
@@ -95,11 +95,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_END_ROWRHTMARKER ...                                            INIT */
+/* on ZK_M_END_ROWRHT ...                                            INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_EndRowRhtMarker \handler
 
-  0 ZK_END_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -107,7 +107,7 @@
   LogicUnit[].IsLftCrwBuffer@ if
 
     // execute the leftOuter asm handler for crwLft
-    ZK_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
+    ZK_M_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
 
     DevLftIxt.crwBuffer@ to Operand[]
     Operand[].delete
@@ -115,7 +115,7 @@
   else
 
     // execute the leftOuter asm handler for rowLft
-    ZK_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
+    ZK_M_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
 
     DevLftRow.rowBuffer@ to Operand[]
     Operand[].isNull not assert
@@ -130,14 +130,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -146,18 +146,18 @@
   // cleanup compiler
   Counter0[] cleanUpAsm
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_M_ERROR ...                                             */
 /*----------------------------------------------------------------------------*/
 : loopJoin_ERRORMARKER \handler
 
   find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
   find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
 
   PipeIn[].pipeout
 
@@ -191,11 +191,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   // new the PotRlu[]
   PotRlu[].new
@@ -203,15 +203,15 @@
   // init the logicUnit[]
   LogicUnit[].init
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_START_CRWRHTMARKER ...                                          INIT */
+/* on ZK_M_START_CRWRHT ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StartCrwRhtMarker \handler
 
-  0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START_CRWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -222,11 +222,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_START_ROWRHTMARKER ...                                          INIT */
+/* on ZK_M_START_ROWRHT ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StartRowRhtMarker \handler
 
-  0 ZK_START_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -255,7 +255,7 @@
     exit
   then
 
-  // We have received the ZK_START_CRWRHTMARKER
+  // We have received the ZK_M_START_CRWRHT
   // Hence this the right table stream def
   "loopJoin_StreamDef got right streamDef" .
 
@@ -327,14 +327,14 @@
 
   find: loopJoin_CleanupMarker    ZK_M_CLEANUP     op[].handler!
   find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER         op[].handler!
-  find: loopJoin_EndCrwRhtMarker  ZK_END_CRWRHTMARKER  op[].handler!
-  find: loopJoin_EndRowRhtMarker  ZK_END_ROWRHTMARKER  op[].handler!
-  find: loopJoin_EosMarker        ZK_EOSMARKER         op[].handler!
-  find: loopJoin_ErrorMarker      ZK_ERRORMARKER       op[].handler!
+  find: loopJoin_EndCrwRhtMarker  ZK_M_END_CRWRHT  op[].handler!
+  find: loopJoin_EndRowRhtMarker  ZK_M_END_ROWRHT  op[].handler!
+  find: loopJoin_EosMarker        ZK_M_EOS         op[].handler!
+  find: loopJoin_ErrorMarker      ZK_M_ERROR       op[].handler!
   find: loopJoin_RowBuffer        ZK_D_ROWBUFFER         op[].handler!
-  find: loopJoin_StartMarker      ZK_STARTMARKER       op[].handler!
-  find: loopJoin_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
-  find: loopJoin_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
+  find: loopJoin_StartMarker      ZK_M_START       op[].handler!
+  find: loopJoin_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
+  find: loopJoin_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
   find: loopJoin_StreamDef        ZK_D_STREAMDEF         op[].handler!
 
   op__loop

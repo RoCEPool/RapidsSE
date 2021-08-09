@@ -52,7 +52,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : crwToRow_EosMarker \handler
 
@@ -89,7 +89,7 @@
 
   find: crwToRow_StreamDef ZK_D_STREAMDEF  op[].handler!
   find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  op[].handler!
-  find: crwToRow_EosMarker ZK_EOSMARKER  op[].handler!
+  find: crwToRow_EosMarker ZK_M_EOS  op[].handler!
 
   op__loop
 

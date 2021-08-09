@@ -5,7 +5,7 @@
 " OP_verifyIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : VerifyIndexPtn_DataMarker \handler
 
@@ -34,11 +34,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : VerifyIndexPtn_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   // check if we can scan the table
   <tableNm> <indexNm> op__table_index if
@@ -58,8 +58,8 @@
 
   op__topology
 
-  find: VerifyIndexPtn_DataMarker ZK_DATAPULSE op[].handler!
-  find: VerifyIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
+  find: VerifyIndexPtn_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: VerifyIndexPtn_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

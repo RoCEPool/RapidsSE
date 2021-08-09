@@ -5,21 +5,21 @@
 " OP_toNstRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : toNstRow_StartMarker \handler
 
   ToNstRow[].create
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
 : toNstRow_DataMarker \handler
 
-  ZK_DATAPULSE_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -36,14 +36,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : toNstRow_EosMarker \handler
 
   // delete ToNstRow
   ToNstRow[].delete
 
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -58,10 +58,10 @@
 
   op__topology
 
-  find: toNstRow_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toNstRow_DataMarker  ZK_DATAPULSE   op[].handler!
+  find: toNstRow_EosMarker   ZK_M_EOS   op[].handler!
+  find: toNstRow_DataMarker  ZK_M_DATAPULSE   op[].handler!
   find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: toNstRow_StartMarker ZK_STARTMARKER op[].handler!
+  find: toNstRow_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

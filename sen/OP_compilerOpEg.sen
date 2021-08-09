@@ -14,19 +14,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_DataMarker \handler
  
-  ZK_DATAPULSE_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_EosMarker \handler
  
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -34,15 +34,15 @@
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_PlanNode \handler
  
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -58,10 +58,10 @@
   op__topology
 
   find: compilerOpEg_CleanupMarker ZK_M_CLEANUP op[].handler!
-  find: compilerOpEg_DataMarker    ZK_DATAPULSE    op[].handler!
-  find: compilerOpEg_EosMarker     ZK_EOSMARKER    op[].handler!
+  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    op[].handler!
+  find: compilerOpEg_EosMarker     ZK_M_EOS    op[].handler!
   find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  op[].handler!
-  find: compilerOpEg_StartMarker   ZK_STARTMARKER  op[].handler!
+  find: compilerOpEg_StartMarker   ZK_M_START  op[].handler!
 
   op__loop
 

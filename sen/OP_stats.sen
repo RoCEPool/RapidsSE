@@ -5,7 +5,7 @@
 " OP_stats.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : stats_StartMarker \handler
 
@@ -50,7 +50,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : stats_ExitMarker \handler
 
@@ -80,8 +80,8 @@
 
   op__topology
 
-  find: stats_StartMarker ZK_STARTMARKER op[].handler!
-  find: stats_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: stats_StartMarker ZK_M_START op[].handler!
+  find: stats_ExitMarker  ZK_M_EXIT  op[].handler!
 
   op__loop
 

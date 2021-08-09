@@ -58,14 +58,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_END_CRWRHTMARKER ...                                            INIT */
+/* on ZK_M_END_CRWRHT ...                                            INIT */
 /*----------------------------------------------------------------------------*/
 : filterRight_EndCrwRhtMarker \handler
 
-  0 ZK_END_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -83,14 +83,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_END_ROWRHTMARKER ...                                            INIT */
+/* on ZK_M_END_ROWRHT ...                                            INIT */
 /*----------------------------------------------------------------------------*/
 : filterRight_EndRowRhtMarker \handler
 
-  0 ZK_END_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -104,11 +104,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : filterRight_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // Arrival of EOSMARKER implies left is all done
 
@@ -118,18 +118,18 @@
   // cleanup compiler
   Counter0[] cleanUpAsm
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_M_ERROR ...                                             */
 /*----------------------------------------------------------------------------*/
 : filterRight_ERRORMARKER \handler
 
   find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
   find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
 
   PipeIn[].pipeout
 
@@ -162,11 +162,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : filterRight_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   // new the PotRlu[]
   PotRlu[].new
@@ -174,15 +174,15 @@
   // init the logicUnit[]
   LogicUnit[].init
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_START_CRWRHTMARKER ...                                          INIT */
+/* on ZK_M_START_CRWRHT ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : filterRight_StartCrwRhtMarker \handler
 
-  0 ZK_START_CRWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START_CRWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
@@ -197,11 +197,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_START_ROWRHTMARKER ...                                          INIT */
+/* on ZK_M_START_ROWRHT ...                                          INIT */
 /*----------------------------------------------------------------------------*/
 : filterRight_StartRowRhtMarker \handler
 
-  0 ZK_START_ROWRHTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
@@ -299,14 +299,14 @@
 
   find: filterRight_CleanupMarker    ZK_M_CLEANUP    op[].handler!
   find: filterRight_CrwBuffer        ZK_D_CRWBUFFER        op[].handler!
-  find: filterRight_EndCrwRhtMarker  ZK_END_CRWRHTMARKER   op[].handler!
-  find: filterRight_EndRowRhtMarker  ZK_END_ROWRHTMARKER   op[].handler!
-  find: filterRight_EosMarker        ZK_EOSMARKER        op[].handler!
-  find: filterRight_ErrorMarker      ZK_ERRORMARKER      op[].handler!
+  find: filterRight_EndCrwRhtMarker  ZK_M_END_CRWRHT   op[].handler!
+  find: filterRight_EndRowRhtMarker  ZK_M_END_ROWRHT   op[].handler!
+  find: filterRight_EosMarker        ZK_M_EOS        op[].handler!
+  find: filterRight_ErrorMarker      ZK_M_ERROR      op[].handler!
   find: filterRight_RowBuffer        ZK_D_ROWBUFFER        op[].handler!
-  find: filterRight_StartMarker      ZK_STARTMARKER      op[].handler!
-  find: filterRight_StartCrwRhtMarker ZK_START_CRWRHTMARKER op[].handler!
-  find: filterRight_StartRowRhtMarker ZK_START_ROWRHTMARKER op[].handler!
+  find: filterRight_StartMarker      ZK_M_START      op[].handler!
+  find: filterRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
+  find: filterRight_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
   find: filterRight_StreamDef        ZK_D_STREAMDEF        op[].handler!
 
   op__loop

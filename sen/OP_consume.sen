@@ -34,11 +34,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDINGMARKER ...                                            */
+/* handler for ZK_M_ENDING ...                                            */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EndingMarker \handler
 
-  //"Operand:- ZK_ENDINGMARKER" .verbose
+  //"Operand:- ZK_M_ENDING" .verbose
   Sends[].handleEnding if
     PipeIn[].pipeOut
   else
@@ -48,11 +48,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EosMarker \handler
 
-  //"Operand:- ZK_EOSMARKER" .verbose
+  //"Operand:- ZK_M_EOS" .verbose
   Sends[].handleEos if
     PipeIn[].pipeOut
   else
@@ -62,11 +62,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORINGMARKER ...                                          */
+/* handler for ZK_M_ERRORING ...                                          */
 /*----------------------------------------------------------------------------*/
 : consumeOp_ErroringMarker \handler
 
-  //"Operand:- ZK_ERRORINGMARKER" .verbose
+  //"Operand:- ZK_M_ERRORING" .verbose
   Sends[].handleErroring if
     PipeIn[].pipeOut
   else
@@ -76,11 +76,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_DataPulse \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
+  //"Operand:- ZK_M_DATAPULSE" .verbose
   Sends[].handleDataPulse if
     PipeIn[].pipeOut
   else
@@ -90,11 +90,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DESTROYMARKER ...                                           */
+/* handler for ZK_M_DESTROY ...                                           */
 /*----------------------------------------------------------------------------*/
 : consumeOp_DESTROYMARKER \handler
 
-  //"Operand:- ZK_DESTROYMARKER" .verbose
+  //"Operand:- ZK_M_DESTROY" .verbose
   Sends[].handleDestroy if
     PipeIn[].pipeOut
   else
@@ -104,11 +104,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDMARKER ...                                               */
+/* handler for ZK_M_END ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EndMarker \handler
 
-  //"Operand:- ZK_ENDMARKER" .verbose
+  //"Operand:- ZK_M_END" .verbose
   Sends[].handleEnd if
     PipeIn[].pipeOut
   else
@@ -118,11 +118,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : consumeOp_ExitMarker \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
+  //"Operand:- ZK_M_EXIT" .verbose
   Sends[].handleExit if
     PipeIn[].pipeOut
     Op.ackPipelineJob
@@ -134,11 +134,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LEAVINGMARKER ...                                           */
+/* handler for ZK_M_LEAVING ...                                           */
 /*----------------------------------------------------------------------------*/
 : consumeOp_LeavingMarker \handler
 
-  //"Operand:- ZK_LEAVINGMARKER" .verbose
+  //"Operand:- ZK_M_LEAVING" .verbose
   Sends[].handleLeaving if
     PipeIn[].pipeOut
   else
@@ -148,11 +148,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
   Sends[].handleStart if
     PipeIn[].pipeOut
   else
@@ -189,15 +189,15 @@
 
   find: consumeOp_CancelMarker   ZK_M_CANCEL   op[].handler!
   find: consumeOp_CleanupMarker  ZK_M_CLEANUP  op[].handler!
-  find: consumeOp_DestroyMarker  ZK_DESTROYMARKER  op[].handler!
-  find: consumeOp_DataPulse      ZK_DATAPULSE      op[].handler!
-  find: consumeOp_EndMarker      ZK_ENDMARKER      op[].handler!
-  find: consumeOp_EndingMarker   ZK_ENDINGMARKER   op[].handler!
-  find: consumeOp_EosMarker      ZK_EOSMARKER      op[].handler!
-  find: consumeOp_ErroringMarker ZK_ERRORINGMARKER op[].handler!
-  find: consumeOp_ExitMarker     ZK_EXITMARKER     op[].handler!
-  find: consumeOp_LeavingMarker  ZK_LEAVINGMARKER  op[].handler!
-  find: consumeOp_StartMarker    ZK_STARTMARKER    op[].handler!
+  find: consumeOp_DestroyMarker  ZK_M_DESTROY  op[].handler!
+  find: consumeOp_DataPulse      ZK_M_DATAPULSE      op[].handler!
+  find: consumeOp_EndMarker      ZK_M_END      op[].handler!
+  find: consumeOp_EndingMarker   ZK_M_ENDING   op[].handler!
+  find: consumeOp_EosMarker      ZK_M_EOS      op[].handler!
+  find: consumeOp_ErroringMarker ZK_M_ERRORING op[].handler!
+  find: consumeOp_ExitMarker     ZK_M_EXIT     op[].handler!
+  find: consumeOp_LeavingMarker  ZK_M_LEAVING  op[].handler!
+  find: consumeOp_StartMarker    ZK_M_START    op[].handler!
   find: consumeOp_StreamDef      ZK_D_STREAMDEF      op[].handler!
 
   op__loop

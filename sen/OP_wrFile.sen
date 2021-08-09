@@ -33,7 +33,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_StartMarker \handler
 
@@ -46,7 +46,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : wrFile_ExitMarker \handler
 
@@ -73,8 +73,8 @@
 
   find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: wrFile_StartMarker ZK_STARTMARKER op[].handler!
-  find: wrFile_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: wrFile_StartMarker ZK_M_START op[].handler!
+  find: wrFile_ExitMarker  ZK_M_EXIT  op[].handler!
 
   op__loop
 

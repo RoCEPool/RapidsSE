@@ -5,13 +5,13 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : print_exitMarker \handler
 
-  "print_exitMarker:- ZK_EXITMARKER" .
+  "print_exitMarker:- ZK_M_EXIT" .
 
-  ZK_EXITMARKER_handler
+  ZK_M_EXIT_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -26,11 +26,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : print_startMarker \handler
 
-  "print_startMarker:- ZK_STARTMARKER" .
+  "print_startMarker:- ZK_M_START" .
   PipeIn[].delete
 
   true
@@ -48,9 +48,9 @@
 
   op__topology
 
-  find: print_exitMarker   ZK_EXITMARKER    op[].handler!
+  find: print_exitMarker   ZK_M_EXIT    op[].handler!
   find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!
-  find: print_startMarker  ZK_STARTMARKER   op[].handler!
+  find: print_startMarker  ZK_M_START   op[].handler!
 
   op__loop
 

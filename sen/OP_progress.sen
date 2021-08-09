@@ -5,7 +5,7 @@
 " OP_progress.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER...                                                         */
+/* on ZK_M_EOS...                                                         */
 /*----------------------------------------------------------------------------*/
 : progress_EosMarker \handler
 
@@ -96,7 +96,7 @@
 
   op__topology
 
-  find: Progress_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: Progress_EosMarker     ZK_M_EOS     op[].handler!
   find: Progress_ProgressUnits ZK_I_PROGRESSUNITS op[].handler!
   find: Progress_TotalUnits    ZK_I_TOTALUNITS    op[].handler!
 

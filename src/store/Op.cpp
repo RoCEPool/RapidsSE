@@ -603,9 +603,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
   switch(i_OperandKind) {
 
     case ZK_M_CANCEL:
-      // should have received an ZK_ERROREDMARKER
-      if (m_iOperandCount[ZK_ERROREDMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_ERROREDMARKER\n"_Stz,
+      // should have received an ZK_M_ERRORED
+      if (m_iOperandCount[ZK_M_ERRORED]) {
+        vTrace("%s: %s arrived without a prior ZK_M_ERRORED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
@@ -616,16 +616,16 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should not have received a ZK_CANCELLEDMARKER
-      if ( m_iOperandCount[ZK_CANCELLEDMARKER]) {
-        vTrace("%s: %s  arrived after ZK_CANCELLEDMARKER\n"_Stz,
+      // should not have received a ZK_M_CANCELLED
+      if ( m_iOperandCount[ZK_M_CANCELLED]) {
+        vTrace("%s: %s  arrived after ZK_M_CANCELLED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
       
-    case ZK_CANCELLEDMARKER:
-      // Only StartOP receives an ZK_CANCELLEDMARKER
+    case ZK_M_CANCELLED:
+      // Only StartOP receives an ZK_M_CANCELLED
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
@@ -639,18 +639,18 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should not have received a ZK_CANCELLEDMARKER already
+      // should not have received a ZK_M_CANCELLED already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("multiple ZK_CANCELLEDMARKER arrived\n"_Stz);
+        vTrace("multiple ZK_M_CANCELLED arrived\n"_Stz);
         return false;
       }
       
       break;
 
     case ZK_D_CSVBUFFER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
@@ -661,9 +661,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
     case ZK_D_ENTBUFFER:
     case ZK_D_ROWBUFFER:
     case ZK_D_SRTBUFFER:
-      // should have received a ZK_DATAPULSE
-      if ( ! m_iOperandCount[ZK_DATAPULSE]) {
-        vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
+      // should have received a ZK_M_DATAPULSE
+      if ( ! m_iOperandCount[ZK_M_DATAPULSE]) {
+        vTrace("%s: %s arrived without a prior ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
@@ -675,230 +675,230 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should not have received ZK_EOSMARKER's > ZK_DATAPULSE's
-      if ( m_iOperandCount[ZK_EOSMARKER] > m_iOperandCount[ZK_DATAPULSE]) {
-        vTrace("%s: %s arrived after ZK_EOSMARKER and no new ZK_DATAPULSE\n"_Stz,
+      // should not have received ZK_M_EOS's > ZK_M_DATAPULSE's
+      if ( m_iOperandCount[ZK_M_EOS] > m_iOperandCount[ZK_M_DATAPULSE]) {
+        vTrace("%s: %s arrived after ZK_M_EOS and no new ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       break;
 
-    case ZK_DATAPULSE:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+    case ZK_M_DATAPULSE:
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
-      // should not have received a ZK_PULSEDMARKER
-      if ( m_iOperandCount[ZK_PULSEDMARKER]) {
-        vTrace("%s: %s arrived after ZK_PULSEDMARKER\n"_Stz,
+      // should not have received a ZK_M_PULSED
+      if ( m_iOperandCount[ZK_M_PULSED]) {
+        vTrace("%s: %s arrived after ZK_M_PULSED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
 
-    case ZK_END_CRWRHTMARKER:
-      // should not have received a ZK_END_ROWRHTMARKER already
-      if (m_iOperandCount[ZK_END_ROWRHTMARKER]) {
-        vTrace("%s: ZK_END_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+    case ZK_M_END_CRWRHT:
+      // should not have received a ZK_M_END_ROWRHT already
+      if (m_iOperandCount[ZK_M_END_ROWRHT]) {
+        vTrace("%s: ZK_M_END_ROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should have received a ~ ZK_START_CRWRHTMARKER already
-      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_START_CRWRHTMARKER] ) {
-        vTrace("%s: ZK_START_CRWRHTMARKER not yet arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
-
-    case ZK_END_ROWRHTMARKER:
-      // should not have received a ZK_END_CRWRHTMARKER already
-      if (m_iOperandCount[ZK_END_CRWRHTMARKER]) {
-        vTrace("%s: ZK_END_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ ZK_START_ROWRHTMARKER already
-      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_START_ROWRHTMARKER] ) {
-        vTrace("%s: ZK_START_ROWRHTMARKER not yet arrived\n"_Stz, szOpNm());
+      // should have received a ~ ZK_M_START_CRWRHT already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_M_START_CRWRHT] ) {
+        vTrace("%s: ZK_M_START_CRWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_EOSMARKER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+    case ZK_M_END_ROWRHT:
+      // should not have received a ZK_M_END_CRWRHT already
+      if (m_iOperandCount[ZK_M_END_CRWRHT]) {
+        vTrace("%s: ZK_M_END_CRWRHT already arrived\n"_Stz, szOpNm());
+        return false;
+      }
+
+      // should have received a ~ ZK_M_START_ROWRHT already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_M_START_ROWRHT] ) {
+        vTrace("%s: ZK_M_START_ROWRHT not yet arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
+    case ZK_M_EOS:
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
-      // should not have received a ZK_EOSMARKER
-      if ( m_iOperandCount[ZK_EOSMARKER]) {
-        vTrace("%s: multiple ZK_EOSMARKER arrived\n"_Stz, szOpNm());
+      // should not have received a ZK_M_EOS
+      if ( m_iOperandCount[ZK_M_EOS]) {
+        vTrace("%s: multiple ZK_M_EOS arrived\n"_Stz, szOpNm());
         return false;
       }
       
-      // should not have received a ZK_DATAPULSE
-      if ( ! m_iOperandCount[ZK_DATAPULSE]) {
-        vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
+      // should not have received a ZK_M_DATAPULSE
+      if ( ! m_iOperandCount[ZK_M_DATAPULSE]) {
+        vTrace("%s: %s arrived without a prior ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
 
-    case ZK_ERRORMARKER:
+    case ZK_M_ERROR:
       // should not have received a ZK_ERRORREDMARKER
-      if ( m_iOperandCount[ZK_ERROREDMARKER]) {
-        vTrace("%s: %s arrived after ZK_ERRORMARKER\n"_Stz, szOpNm());
+      if ( m_iOperandCount[ZK_M_ERRORED]) {
+        vTrace("%s: %s arrived after ZK_M_ERROR\n"_Stz, szOpNm());
         return false;
       }
       break;
       
-    case ZK_ERROREDMARKER:
-      // Only StartOP receives an ZK_ERROREDMARKER
+    case ZK_M_ERRORED:
+      // Only StartOP receives an ZK_M_ERRORED
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
-      // should have received an ZK_ERRORMARKER
-      if (m_iOperandCount[ZK_ERRORMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_ERRORMARKER\n"_Stz,
+      // should have received an ZK_M_ERROR
+      if (m_iOperandCount[ZK_M_ERROR]) {
+        vTrace("%s: %s arrived without a prior ZK_M_ERROR\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
 
-    case ZK_EXITMARKER:
-      // should have received a ZK_STARTMARKER
-//      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-//        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+    case ZK_M_EXIT:
+      // should have received a ZK_M_START
+//      if ( ! m_iOperandCount[ZK_M_START]) {
+//        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
 //               szOpNm(), aZK[i_OperandKind]);
 //        return false;
 //      }
       
-      // should not have received a ZK_EXITMARKER already
+      // should not have received a ZK_M_EXIT already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_EXITMARKER arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXIT arrived\n"_Stz, szOpNm());
         return false;
       }
       
-      // should not have received a ZK_EXITEDMARKER
-      if ( m_iOperandCount[ZK_EXITEDMARKER]) {
-        vTrace("%s: %s arrived after ZK_EXITEDMARKER\n"_Stz,
+      // should not have received a ZK_M_EXITED
+      if ( m_iOperandCount[ZK_M_EXITED]) {
+        vTrace("%s: %s arrived after ZK_M_EXITED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
 
-    case ZK_LEAVEMARKER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+    case ZK_M_LEAVE:
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
 
-      // should not have received a ZK_EXITMARKER already
+      // should not have received a ZK_M_EXIT already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_EXITMARKER arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXIT arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_EXITEDMARKER:
-      // Only StartOP receives an ZK_EXITEDMARKER
+    case ZK_M_EXITED:
+      // Only StartOP receives an ZK_M_EXITED
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
-      // should not have received an ZK_EXITEDMARKER already
+      // should not have received an ZK_M_EXITED already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_EXITEDMARKER arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXITED arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_LEFTMARKER:
-      // Only StartOP receives an ZK_LEFTMARKER
+    case ZK_M_LEFT:
+      // Only StartOP receives an ZK_M_LEFT
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
-      // should not have received an ZK_EXITEDMARKER already
+      // should not have received an ZK_M_EXITED already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_EXITEDMARKER arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXITED arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_PULSEDMARKER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+    case ZK_M_PULSED:
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       break;
 
-    case ZK_START_CRWRHTMARKER:
-      // should not have received a ZK_START_ROWRHTMARKER already
-      if (m_iOperandCount[ZK_START_ROWRHTMARKER]) {
-        vTrace("%s: ZK_START_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+    case ZK_M_START_CRWRHT:
+      // should not have received a ZK_M_START_ROWRHT already
+      if (m_iOperandCount[ZK_M_START_ROWRHT]) {
+        vTrace("%s: ZK_M_START_ROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should not have received a ~ ZK_END_CRWRHTMARKER already
-      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_END_CRWRHTMARKER] + 1 ) {
-        vTrace("%s: ZK_END_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
+      // should not have received a ~ ZK_M_END_CRWRHT already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_M_END_CRWRHT] + 1 ) {
+        vTrace("%s: ZK_M_END_CRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_STARTMARKER:
-      // should not have received a ZK_STARTMARKER already
+    case ZK_M_START:
+      // should not have received a ZK_M_START already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_STARTMARKER's arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_START's arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_START_ROWRHTMARKER:
-      // should not have received a ZK_START_CRWRHTMARKER already
-      if (m_iOperandCount[ZK_START_CRWRHTMARKER]) {
-        vTrace("%s: ZK_START_CRWRHTMARKER already arrived\n"_Stz, szOpNm());
+    case ZK_M_START_ROWRHT:
+      // should not have received a ZK_M_START_CRWRHT already
+      if (m_iOperandCount[ZK_M_START_CRWRHT]) {
+        vTrace("%s: ZK_M_START_CRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should not have received a ~ ZK_START_ROWRHTMARKER already
-      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_END_ROWRHTMARKER] + 1 ) {
-        vTrace("%s: ZK_END_ROWRHTMARKER already arrived\n"_Stz, szOpNm());
+      // should not have received a ~ ZK_M_START_ROWRHT already
+      if (m_iOperandCount[i_OperandKind] == m_iOperandCount[ZK_M_END_ROWRHT] + 1 ) {
+        vTrace("%s: ZK_M_END_ROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
       break;
 
-    case ZK_STARTEDMARKER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz, szOpNm(), aZK[i_OperandKind]);
+    case ZK_M_STARTED:
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz, szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
-      // should not have received a ZK_STARTEDMARKER already
+      // should not have received a ZK_M_STARTED already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_STARTEDMARKER's arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_STARTED's arrived\n"_Stz, szOpNm());
         return false;
       }
     
-      // Only StartOP/SinkOP receives an ZK_STARTEDMARKER
+      // Only StartOP/SinkOP receives an ZK_M_STARTED
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
@@ -907,9 +907,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
 
     case ZK_D_STREAMDEF:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("ZK_STARTEDMARKER arrived without a prior ZK_STARTMARKER\n"_Stz);
+      // should have received a ZK_M_START
+      if ( ! m_iOperandCount[ZK_M_START]) {
+        vTrace("ZK_M_STARTED arrived without a prior ZK_M_START\n"_Stz);
         return false;
       }
       break;

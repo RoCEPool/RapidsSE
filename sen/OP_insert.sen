@@ -43,11 +43,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 : insert_EosMarker \handler
 
-  //"Operand:- ZK_EOSMARKER" .verbose
+  //"Operand:- ZK_M_EOS" .verbose
 
   // send out final progress units
 
@@ -66,11 +66,11 @@
   ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : insert_ExitMarker \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
+  //"Operand:- ZK_M_EXIT" .verbose
 
   // get the profile from the task
   //task[] task.profile@ to Operand[]
@@ -85,11 +85,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : insert_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   // create the infoSetTable for C_TDEF_PROGRESSUNITS
   C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
@@ -132,10 +132,10 @@
   op__topology
 
   find: insert_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: insert_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: insert_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: insert_EosMarker   ZK_M_EOS   op[].handler!
+  find: insert_ExitMarker  ZK_M_EXIT  op[].handler!
   //find: insert_StreamDef   ZK_D_STREAMDEF   op[].handler!
-  find: insert_StartMarker ZK_STARTMARKER op[].handler!
+  find: insert_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

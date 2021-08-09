@@ -5,7 +5,7 @@
 " OP_createTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : createTenant_DataMarker
 
@@ -59,7 +59,7 @@
 
   op__topology
 
-  find: createTenant_DataMarker ZK_DATAPULSE op[].handler!
+  find: createTenant_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

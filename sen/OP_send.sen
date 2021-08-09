@@ -65,7 +65,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER operand                                          */
+/* handler for ZK_M_EXIT operand                                          */
 /*----------------------------------------------------------------------------*/
 : send_EXITMARKER \handler
 
@@ -93,7 +93,7 @@
   find: PipeIn[].sendTo op[].handlerAll!
 
   find: send_CANCELMARKER  ZK_M_CANCEL  op[].handler!
-  find: send_EXITMARKER    ZK_EXITMARKER    op[].handler!
+  find: send_EXITMARKER    ZK_M_EXIT    op[].handler!
 
   op__loop
 

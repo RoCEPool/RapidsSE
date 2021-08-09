@@ -5,7 +5,7 @@
 " OP_createCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : createCatalog_DataMarker
 
@@ -59,7 +59,7 @@
 
   op__topology
 
-  find: createCatalog_DataMarker ZK_DATAPULSE op[].handler!
+  find: createCatalog_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

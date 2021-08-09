@@ -108,7 +108,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : answer_StartMarker \handler
 
@@ -186,7 +186,7 @@
 
   op__topology
 
-  find: answer_StartMarker ZK_STARTMARKER op[].handler!
+  find: answer_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

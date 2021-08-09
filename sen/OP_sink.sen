@@ -43,11 +43,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDINGMARKER ...                                            */
+/* handler for ZK_M_ENDING ...                                            */
 /*----------------------------------------------------------------------------*/
 : sink_EndingMarker \handler
 
-  //"Operand:- ZK_ENDINGMARKER" .verbose
+  //"Operand:- ZK_M_ENDING" .verbose
   PipeIn[].delete
   Operand[].newEndedMarker
   Operand[]\clear to Pipein[]
@@ -58,11 +58,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORINGMARKER ...                                           */
+/* handler for ZK_M_ERRORING ...                                           */
 /*----------------------------------------------------------------------------*/
 : sink_ErroringMarker \handler
 
-  //"Operand:- ZK_ERROREDMARKER" .verbose
+  //"Operand:- ZK_M_ERRORED" .verbose
   PipeIn[].delete
 
   // now pipeout an exit marker
@@ -73,11 +73,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_M_ERROR ...                                             */
 /*----------------------------------------------------------------------------*/
 : sink_ErrorMarker \handler
 
-  //"Operand:- ZK_ERRORMARKER" .verbose
+  //"Operand:- ZK_M_ERROR" .verbose
   PipeIn[].delete
 
   // check if sink has already been errored
@@ -96,18 +96,18 @@
   //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
   then
 
-  find: sink_Xyz  ZK_STARTMARKER op[].handler!
-  find: sink_Xyz  ZK_DATAPULSE op[].handler!
+  find: sink_Xyz  ZK_M_START op[].handler!
+  find: sink_Xyz  ZK_M_DATAPULSE op[].handler!
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXIT ...                                              */
 /*----------------------------------------------------------------------------*/
 : sink_ExitMarker \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
+  //"Operand:- ZK_M_EXIT" .verbose
   PipeIn[].pipeToOutput
   Operand[].newExitedMarker
   Operand[].pipeOut
@@ -117,11 +117,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LEAVEMARKER ...                                             */
+/* handler for ZK_M_LEAVE ...                                             */
 /*----------------------------------------------------------------------------*/
 : sink_LeaveMarker \handler
 
-  //"Operand:- ZK_LEAVEMARKER" .verbose
+  //"Operand:- ZK_M_LEAVE" .verbose
   PipeIn[].delete
 
    // mark pipeline as being earlyExit
@@ -131,18 +131,18 @@
    Operand[].newLeavingMarker
    Operand[].pipeOut
 
-  find: sink_Xyz  ZK_STARTMARKER op[].handler!
-  find: sink_Xyz  ZK_DATAPULSE op[].handler!
+  find: sink_Xyz  ZK_M_START op[].handler!
+  find: sink_Xyz  ZK_M_DATAPULSE op[].handler!
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LEAVINGMARKER ...                                           */
+/* handler for ZK_M_LEAVING ...                                           */
 /*----------------------------------------------------------------------------*/
 : sink_LeavingMarker \handler
 
-  //"Operand:- ZK_LEAVINGMARKER" .verbose
+  //"Operand:- ZK_M_LEAVING" .verbose
   PipeIn[].delete
 
   // now pipeout an exit marker
@@ -153,11 +153,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENDMARKER ...                                               */
+/* handler for ZK_M_END ...                                               */
 /*----------------------------------------------------------------------------*/
 : sink_EndMarker \handler
 
-  //"Operand:- ZK_ENDMARKER" .verbose
+  //"Operand:- ZK_M_END" .verbose
   Pipein[].delete
 
   // check if sink has already been errored
@@ -184,11 +184,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : sink_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
   PipeIn[].delete
   Operand[].newStartedMarker
   Operand[].pipeOut
@@ -209,14 +209,14 @@
 
   find: sink_CancelMarker    ZK_M_CANCEL  op[].handler!
   find: sink_CleanupMarker   ZK_M_CLEANUP op[].handler!
-  find: sink_EndMarker       ZK_ENDMARKER     op[].handler!
-  find: sink_EndingMarker    ZK_ENDINGMARKER  op[].handler!
-  find: sink_ErrorMarker     ZK_ERRORMARKER   op[].handler!
-  find: sink_ErroringMarker  ZK_ERRORINGMARKER  op[].handler!
-  find: sink_ExitMarker      ZK_EXITMARKER      op[].handler!
-  find: sink_LeaveMarker     ZK_LEAVEMARKER     op[].handler!
-  find: sink_LeavingMarker   ZK_LEAVINGMARKER   op[].handler!
-  find: sink_StartMarker     ZK_STARTMARKER     op[].handler!
+  find: sink_EndMarker       ZK_M_END     op[].handler!
+  find: sink_EndingMarker    ZK_M_ENDING  op[].handler!
+  find: sink_ErrorMarker     ZK_M_ERROR   op[].handler!
+  find: sink_ErroringMarker  ZK_M_ERRORING  op[].handler!
+  find: sink_ExitMarker      ZK_M_EXIT      op[].handler!
+  find: sink_LeaveMarker     ZK_M_LEAVE     op[].handler!
+  find: sink_LeavingMarker   ZK_M_LEAVING   op[].handler!
+  find: sink_StartMarker     ZK_M_START     op[].handler!
 
   op__loop
 

@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : eachRow_EosMarker \handler
 
@@ -82,7 +82,7 @@
 
   find: eachRow_CrwBuffer ZK_D_CRWBUFFER  op[].handler!
   find: eachRow_RowBuffer ZK_D_ROWBUFFER  op[].handler!
-  find: eachRow_EosMarker ZK_EOSMARKER  op[].handler!
+  find: eachRow_EosMarker ZK_M_EOS  op[].handler!
 
   op__loop
 

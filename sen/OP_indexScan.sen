@@ -38,13 +38,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* handler for ZK_M_ERROR ...                                             */
 /*----------------------------------------------------------------------------*/
 : indexScan_ERRORMARKER \handler
 
   find: EATOPERAND_handler   ZK_D_CRWBUFFER   op[].handler!
   find: EATOPERAND_handler   ZK_D_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+  find: EATOPERAND_handler   ZK_M_EOS   op[].handler!
 
   PipeIn[].pipeout
 
@@ -52,11 +52,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : indexScan_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -64,8 +64,8 @@
     // is possible that a PULSEDMARKER arrives after this STARTMARKER
     // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
     // we need eat the pulsedmarker here
-    find: Index_Xyz   ZK_DATAPULSE      op[].handler!
-    find: Index_Xyz   ZK_PULSEDMARKER   op[].handler!
+    find: Index_Xyz   ZK_M_DATAPULSE      op[].handler!
+    find: Index_Xyz   ZK_M_PULSED   op[].handler!
     true
     exit
   then
@@ -132,14 +132,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : indexScan_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -152,16 +152,16 @@
   // cleanup compiler
   Counter0[] cleanUpAsm
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                              DATAPULSE */
+/* on ZK_M_DATAPULSE ...                                              DATAPULSE */
 /*----------------------------------------------------------------------------*/
 : indexScan_Datapulse \handler
 
-  0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_DATAPULSE EG_ZK LogicUnit[].diaryNote
 
   //Pipein[].isNull if
     // create a new eos marker
@@ -170,7 +170,7 @@
   //then
 
   PipeIn[].pipeOut
-  ZK_DATAPULSE Counter0[] executeAsmArgs
+  ZK_M_DATAPULSE Counter0[] executeAsmArgs
 
   LogicUnit[].callAgain@ not if
 
@@ -201,9 +201,9 @@
   op__topology
 
   find: indexScan_CleanupMarker ZK_M_CLEANUP  op[].handler!
-  find: indexScan_DataPulse     ZK_DATAPULSE      op[].handler!
-  find: indexScan_ErrorMarker   ZK_ERRORMARKER    op[].handler!
-  find: indexScan_StartMarker   ZK_STARTMARKER    op[].handler!
+  find: indexScan_DataPulse     ZK_M_DATAPULSE      op[].handler!
+  find: indexScan_ErrorMarker   ZK_M_ERROR    op[].handler!
+  find: indexScan_StartMarker   ZK_M_START    op[].handler!
 
   op__loop
 

@@ -27,7 +27,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                   INIT */
+/* on ZK_M_DATAPULSE ...                                                   INIT */
 /*----------------------------------------------------------------------------*/
 : rdCsvCyclic_DataMarker \handler
 
@@ -88,7 +88,7 @@
 
   op__topology
 
-  find: rdCsvCyclic_DataMarker ZK_DATAPULSE op[].handler!
+  find: rdCsvCyclic_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 
