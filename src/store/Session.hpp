@@ -62,7 +62,6 @@ namespace STORE
     i8       m_iCmdNo;        // the sequence no of the request from that session
 
   
-    bool     m_bExamined;     // has command been examined?
     Mutex    m_oMutex;        //
     bool     m_bRunning;      // api call still running?
     bool     m_bSignalled;    // calling thread has been signalled?

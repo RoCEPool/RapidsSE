@@ -115,8 +115,6 @@ void Api::vDeleteJob(Session* pSession)
 {
   _static_
     
-  pSession->m_bExamined = false;
-
   Job* pJob = pSession->m_pSsnJob;
 
   if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
@@ -148,14 +146,9 @@ void Api::vDeleteJob(Session* pSession)
 void Api::vExamineCommand(Session* pSession)
 {
   _static_
-  
-  if (pSession->m_bExamined)
-    return;
-  
+    
   vExtractPaths(pSession);
   bExtractTags(pSession);
-  
-  pSession->m_bExamined = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,8 +250,6 @@ bool Api::bExtractTags(Session* pSession)
 {
   _static_
   
-  pSession->m_bExamined = true;
-
   TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
 
@@ -349,8 +340,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! pSession->m_bExamined)
-    vExamineCommand(pSession);
+  vExamineCommand(pSession);
     
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -379,12 +369,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
          pSession->m_pSsnJob =
            new Job(AM::GRID::iThisNodeNo(),
                    pSession->m_i_Session,
-                   pSession->m_iCmdNo);
+                   pSession->m_iCmdNo++
+                   );
   
   ASSERT(! pPrepareJob->pTask());
   RASSERT(JS_LOCKED != pPrepareJob->eJobState());
-
-  pSession->m_iCmdNo++;
   
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
 

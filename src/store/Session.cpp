@@ -87,7 +87,6 @@ Session::Session(void)
   m_i_FixedPtn  = C_UNKNOWN;
   
   //m_oDicStack;
-  m_bExamined   = false;
   m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
 
@@ -281,7 +280,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_bExamined  = false;
   m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
   
