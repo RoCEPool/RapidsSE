@@ -11,6 +11,9 @@
 
   DdlLock[].testDrop
 
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
 
@@ -27,6 +30,9 @@
   params| errorCode errorMsg |
 
   DdlLock[].testDrop
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
 
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
@@ -52,6 +58,9 @@
   params| errorCode |
 
   DdlLock[].testDrop
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
@@ -79,6 +88,9 @@
 
   DdlLock[].testDrop
 
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
 
@@ -87,9 +99,6 @@
   OI_EXECERRORS infoSet[].opInfoset!
 
   errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
-
-  // toggle to default handlers in case of error
-  "default_errorHandlers" FIND execute
 
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut
