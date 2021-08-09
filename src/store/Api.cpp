@@ -147,8 +147,6 @@ void Api::vExamineCommand(Session* pSession)
 {
   _static_
     
-  vExtractPaths(pSession);
-  bExtractTags(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,8 +338,10 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vExamineCommand(pSession);
-    
+  vExtractPaths(pSession);
+  
+  bExtractTags(pSession);
+
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
       return EC_INVALID_COMMAND;
@@ -363,6 +363,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   if ( ! AM::bParseCmd(pCmdTknVec,pCmdTags) )
     return EC_INVALID_COMMAND;
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pPrepareJob =
@@ -375,9 +376,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   ASSERT(! pPrepareJob->pTask());
   RASSERT(JS_LOCKED != pPrepareJob->eJobState());
   
+  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
+
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
 
-  
+
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
   //                          For DEMO (to be removed)                        //
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
@@ -418,7 +421,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
   pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->m_sCmd);
   
   pPrepareJob->vSeed(SS_SEED_REQ);
