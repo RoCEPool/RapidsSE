@@ -959,8 +959,6 @@ rows: (*,'explainPlan',
 )
 
   -- mixed implicit join types (2)
-  -- TODO: The shape of this graph is different from the one above.
-  --       Seems to be due to the parsing rules/ordering.
 EXPLAIN SELECT n_name, r_name, s_name
 FROM region, nation
 JOIN supplier ON s_nationkey = n_nationkey;
@@ -974,23 +972,23 @@ rows: (*,'explainPlan',
    » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
 
 -> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
+      » join type: Inner Join
+      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
+      » ordinal predicate: ($11 = $4)
 
 -> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-         » ordinal predicate: ($8 = $1)
+         » join type: Cross Join
+         » predicate: (true)
+         » ordinal predicate: (true)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.supplier)'
+-> -> -> tableScanOp
+         » table: (rapidsse.public.supplier)'
 )
 
 
