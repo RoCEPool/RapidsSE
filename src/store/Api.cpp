@@ -342,18 +342,15 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
     
- 
+  // get the command prpoer and the tag set
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-      
-  TagSet*  pCmdTagSet = & pSession->m_oJobTagSet;
+  TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! pSession->m_bExamined)
     vExamineCommand(pSession);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
       return EC_INVALID_COMMAND;
@@ -371,12 +368,12 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
       }
     }
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if ( ! AM::bParseCmd(pCmdTknVec,pCmdTagSet) )
+    
+  if ( ! AM::bParseCmd(pCmdTknVec,pCmdTags) )
     return EC_INVALID_COMMAND;
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   //if (! AM::SYSTEM::bPassesLowMem())
   //  return EC_LOW_MEMORY;
   
@@ -386,6 +383,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
                    pSession->m_i_Session,
                    pSession->m_iCmdNo);
   
+  ASSERT(! pPrepareJob->pTask());
+  RASSERT(JS_LOCKED != pPrepareJob->eJobState());
+
   pSession->m_iCmdNo++;
   
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
@@ -430,21 +430,21 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
-  pPrepareJob->ePopulateJob(pCmdTagSet);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add <cmd> into job ename-set
+  
+  pPrepareJob->vSeed(SS_SEED_REQ);
+
+  
+  pPrepareJob->ePopulateJob(pCmdTags);
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   
   //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
 
+  pPrepareJob->m_sCmd = sCmd;
   pPrepareJobTags->vInsert(C_TAG_CMD,sCmd);
   
-  pPrepareJob->m_sCmd = sCmd;
-  
-  ASSERT(! pPrepareJob->pTask());
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
@@ -454,13 +454,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     vTrace("Job New: %s"_Stz,spTagSet.sz(pPrepareJobTags));
     //pJob->pTagSet()->vPrint();
   }
-  
-  RASSERT(JS_LOCKED != pPrepareJob->eJobState());
-        
-  pPrepareJob->vSeed(SS_SEED_REQ);
-        
-  //! ALKA: Come back to this : 3 feb 2020
-  //pJob->vJobClass(nullptr, (char*)__func__);
   
   
   TagSet* pSsnTagSet = &pSession->m_oSsnTagSet;
