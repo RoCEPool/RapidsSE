@@ -10,10 +10,13 @@ namespace STORE
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
   {
   private:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
     // -- id, name and kind
     Gid<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32              m_sPipelineNm;  // name of this pipeline
-    // no kind                       // kind
+    // n/a                           // kind
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
@@ -21,8 +24,25 @@ namespace STORE
     // -- refers to
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
 
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // -- state
+    // n/a
 
+    // -- tags, seeding and tasking
+    // n/a
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  
     i8   m_i_Origin;    // originating node
 
   

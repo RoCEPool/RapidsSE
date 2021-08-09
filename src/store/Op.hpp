@@ -15,20 +15,44 @@ namespace STORE
   class Op : public Operand
   {
   private:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
     // -- id, name and kind
     Gid<CN_OP> m_xOpId;  // op id in grid
     s32        m_sOpNm;  // name of this operator
-    // no kind           // kind
+    // n/a               // kind
   
     // -- belongs to
     Stream* m_pStream;  // which stream of stage of pipeline of job
 
     // -- refers to
-    OpSpec* m_pOpSpec;   // specification of this operator
+    OpSpec* m_pOpSpec;  // specification of this operator
 
+    // -- state
+    // n/a
+
+    // -- tags and tasking
+    TagSet m_oOpTags ; // tags for the op
+    Task*  m_pTask;    // which task
+    eSS    m_eSeed;    // seed to spawn
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
   
+    OperandQueue* m_pQueueLeft;   // left input queue
+    OperandQueue* m_pQueueRight;  // right input queue
+    OperandQueue* m_pQueueOoO;    // out-of-order queue
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+  
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // stream name within stream within pipeline
@@ -37,15 +61,10 @@ namespace STORE
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_p_Pipeline_op; // which pipeline
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    TagSet    m_oOpTags; // tags for the op
-    Task*     m_pTask;   // which task
-    eSS       m_eSeed;   // seed to spawn
-
+   
+ 
     LogicUnit* m_pOpLogicUnit;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // working variables. these are not copies of variables from opSpec
   
     bool m_bTraceOp;    // tracing this operator
@@ -54,9 +73,6 @@ namespace STORE
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
-    OperandQueue*  m_pQueueLeft;     // left input queue
-    OperandQueue*  m_pQueueRight;    // right input queue
-    OperandQueue*  m_pQueueOoO;      // out-of-order queue
 
     i8             m_iSendNode;      // send node (for send)
     eXK            m_eSendKind;      // send kind

@@ -15,15 +15,10 @@ namespace STORE
   class Job : public Object,
               public CRM<Job>
   {
-  
-  /*                      IMPORTANT NOTE
-   
-      If you add a pointer member into this class then modify
-        JOBS_fn(vJob_postRecv) to set it to null when the job is received
-   
-   */
-  
   public:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
     // -- id, name and kind
     Gid<CN_JOB> m_xJobId;    // this job's id
     s32         m_sJobNm;    // name of job
@@ -34,12 +29,35 @@ namespace STORE
     i8 m_i_Origin;   //   on which node
 
     // -- refers to
-    Pipeline* m_pPipeline_job; // which pipeline
-    Op*       m_pSingularOp;   //   or api input op for a pipeline
+    Pipeline* m_pPipeline_job; // pipeline the job represents
+    Op*       m_pSingularOp;   //   or op (api input op for a pipeline)
 
+    // -- state
+    eJS m_eJobState;  // current state of the job
+
+    // -- tags, seeding and tasking
+    TagSet m_oJobTags;  // tags for the job
+    eSS    m_eSeed;     // seed to spawn
+    Task*  m_pTask;     // task executing this job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-  
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  /*                      IMPORTANT NOTE
+   
+      If you add a pointer member into this class then modify
+        JOBS_fn(vJob_postRecv) to set it to null when the job is received
+   
+   */
 
     // -- a -------------------
   
@@ -57,7 +75,6 @@ namespace STORE
     // -- c -------------------
     eJL m_eJobList;          // which job list the job is currently in
     eJP m_eJobPhase;         // which job phase the job is currently in
-    eJS m_eJobState;         // current state of the job
     eEC m_eError;            // error when starting job
   
     // -- d -------------------
@@ -65,7 +82,6 @@ namespace STORE
     LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
   
   public:
-    TagSet     m_oJobTags;   // tags for the job
     
     // -- e -------------------
 
@@ -76,8 +92,6 @@ namespace STORE
     
     // -- g -------------------
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
-    eSS     m_eSeed;         // seed to spawn
-    Task*   m_pTask;         // task executing this job
 
     // must be last
     Footer m_xFooter;
