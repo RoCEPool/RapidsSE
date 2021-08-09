@@ -16,7 +16,6 @@
   check::folderIsTables not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then

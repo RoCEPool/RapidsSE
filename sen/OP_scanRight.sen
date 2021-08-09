@@ -173,15 +173,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_StartMarker" .
 
 : scanRight_StartMarker \handler
 
+  PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   //args.developer if
@@ -192,7 +193,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_StreamDef" .
 

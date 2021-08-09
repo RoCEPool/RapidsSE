@@ -172,9 +172,10 @@
 
 : eachScan_StartMarker \handler
 
+   PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   //args.developer if

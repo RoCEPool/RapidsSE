@@ -50,7 +50,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : passThru_StartMarker \handler
 
@@ -58,10 +58,12 @@
 
   "__REPORT" locals| sReportTable |
 
+  PipeIn[].pipeOut
+
   sReportTable op__table if
     sReportTable Path[].pushNamedTableFolder
     sReportTable find execute to Table[]
-    PipeIn[].pipeOut
+
   then
 
   true

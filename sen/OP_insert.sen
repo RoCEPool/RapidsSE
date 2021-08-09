@@ -85,11 +85,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : insert_StartMarker \handler
 
   //"Operand:- ZK_M_START" .verbose
+  PipeIn[].pipeOut
 
   // create the infoSetTable for C_TDEF_PROGRESSUNITS
   C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
@@ -98,14 +99,14 @@
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
     //Table[].tablePtnZero to TablePtn[] // hack by ray to simulate insert lock collision
-    PipeIn[].pipeOut
+
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 /*
 : insert_StreamDef \handler

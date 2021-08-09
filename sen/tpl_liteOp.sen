@@ -5,15 +5,16 @@
 " tpl_liteOp.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                        */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : tpl_liteOp_DataMarker
 
 "
 : /liteOp/_DataMarker \\handler
 
+  PipeIn[].pipeOut
+
   /liteOp/_action if
-    PipeIn[].pipeOut
     Operand[].newEosMarker
     Operand[].pipeOut
   then

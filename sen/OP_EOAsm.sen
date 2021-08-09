@@ -22,11 +22,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
 
   // new the PotRlu[]
   PotRlu[].new
@@ -37,7 +39,6 @@
   // generate asm from query text
   Counter0[] <queryText> genAsm not if
     EC_INVALID_COMMAND op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -105,12 +106,14 @@
 
   then
 
-  ZK_M_START_handler
+  //ZK_M_START_handler
 
   // pipeout streamDefout if any (q3)
   //StreamDefOut[].isNull not if
   //  StreamDefOut[].pipeout
   //then
+
+  true
 
 ;
 
