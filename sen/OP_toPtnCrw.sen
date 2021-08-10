@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_toHshCrw.sen -- Convert ptn nst row buffers to hashed crw buffers       */
+/* OP_toPtnCrw.sen -- Convert ptn nst row buffers to hashed crw buffers       */
 /*============================================================================*/
 
-" OP_toHshCrw.sen" .verbose
+" OP_toPtnCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
