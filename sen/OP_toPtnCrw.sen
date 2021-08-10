@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* OP_toPtnCrw.sen -- Convert ptn nst row buffers to hashed crw buffers       */
+/* OP_toPtnCrw.sen -- Convert ptn nst row buffers to ptn crw buffers          */
 /*============================================================================*/
 
 " OP_toPtnCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
+/* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_StreamDef \handler
+: toPtnCrw_StreamDef \handler
 
   PipeIn[] to StreamDefLft[]
   nullptr to PipeIn[]
 
   StreamDefLft[].duplicate to OperandB[]
 
-  ToHshCrw[].create
+  toPtnCrw[].create
 
   OperandB[].pipeOut
 
@@ -22,40 +22,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_StartMarker \handler
+: toPtnCrw_StartMarker \handler
 
   ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_DataMarker \handler
+: toPtnCrw_DataMarker \handler
 
   ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_RowBuffer \handler
+: toPtnCrw_RowBuffer \handler
 
-  PipeIn[] ToHshCrw[].convert
+  PipeIn[] toPtnCrw[].convert
   nullptr to PipeIn[]
 
   ptnmap::ptnsInGrid 0
   do
 
-    I ToHshCrw[].completed to OperandB[]
+    I toPtnCrw[].completed to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I ToHshCrw[].completed to OperandB[]
+      I toPtnCrw[].completed to OperandB[]
     repeat
 
   loop
@@ -64,28 +64,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_EosMarker \handler
+: toPtnCrw_EosMarker \handler
 
   ptnmap::ptnsInGrid 0
   do
 
-    I ToHshCrw[].dangling to OperandB[]
+    I toPtnCrw[].dangling to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I ToHshCrw[].dangling to OperandB[]
+      I toPtnCrw[].dangling to OperandB[]
     repeat
 
   loop
 
   StreamDefLft[].delete
 
-  ToHshCrw[].delete
+  toPtnCrw[].delete
 
   PipeIn[].pipeOut
 
@@ -98,17 +98,17 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_req \operator
+: toPtnCrw_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: toHshCrw_EosMarker   ZK_M_EOS   op[].handler!
-  find: toHshCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!
-  find: toHshCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: toHshCrw_StartMarker ZK_M_START op[].handler!
-  find: toHshCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!
+  find: toPtnCrw_EosMarker   ZK_M_EOS         op[].handler!
+  find: toPtnCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!
+  find: toPtnCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: toPtnCrw_StartMarker ZK_M_START       op[].handler!
+  find: toPtnCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -120,9 +120,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toHshCrw :: toHshCrw ;
+cmdSyntax: toPtnCrw :: toPtnCrw ;
 
-: toHshCrw_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toPtnCrw_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -666,7 +666,7 @@
         toRow $table      // (csvBuffer) => (rowBuffer w row+hash)
       | toPtnRow          // (rowBuffer) => (ptn rowBuffer)
       | toNstRow          // (rowBuffer) => (ptn rowBuffer w nst)
-      | toHshCrw          // (rowBuffer) => (ptn crwBuffer)
+      | toPtnCrw          // (rowBuffer) => (ptn crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :
