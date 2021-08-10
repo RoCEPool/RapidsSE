@@ -655,56 +655,30 @@
     parameters $table $file
   begin
 
-  stage stageA on origin :
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | stageB robin
 
-    start              |
+    stage stageB on all partitions on origin :
+        toRow $table      // (csvBuffer)  => (rowBuffer)
+      | toPtnRow          // (rowBuffer)  => (rowBuffer 'ptn)
+      | toNstRow          // (rowBuffer)  => (rowBuffer 'nst)
+      | toHshCrw          // (rowBuffer)  => (crwBuffer 'hsh)
+      | stageC hashcast
 
-    pulse once    |
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | stageD
 
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    stageB robin
-
-
-  stage stageB on all partitions on origin :
-
-    toRow $table       | // (csvBuffer)  => (rowBuffer)
-    // dump rowBuffer 1   |
-
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
-    // dump rowBuffer 1   |
-
-    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
-    //dump rowBuffer 1   |
-
-    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
-    //dump rowBuffer 1   |
-
-    stageC hashcast
-
-  stage stageC on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
-    stageD
-
-  stage stageD on origin :
-
-    progress 'Load'    |
-    
-    output             |
-
-    toStatDemon        |
-
-    sink               |
-
-    stageA
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
 
   end ;
   "
