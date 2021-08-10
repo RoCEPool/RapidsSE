@@ -663,10 +663,10 @@
       | stageB robin
 
     stage stageB on all partitions on origin :
-        toRow $table      // (csvBuffer)  => (rowBuffer)
-      | toPtnRow          // (rowBuffer)  => (rowBuffer 'ptn)
-      | toNstRow          // (rowBuffer)  => (rowBuffer 'nst)
-      | toHshCrw          // (rowBuffer)  => (crwBuffer 'hsh)
+        toRow $table      // (csvBuffer) => (rowBuffer w row+hash)
+      | toPtnRow          // (rowBuffer) => (ptn rowBuffer)
+      | toNstRow          // (rowBuffer) => (ptn rowBuffer w nst)
+      | toHshCrw          // (rowBuffer) => (ptn crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :
