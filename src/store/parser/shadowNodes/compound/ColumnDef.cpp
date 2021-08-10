@@ -106,17 +106,17 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
   pColumnDef->vAppendProperty(pNotNull);
 
   // Create the ordinal property
-  Value xOrdinalVal(bNotNull);
+  Value xOrdinalVal(iOrdinal);
   QueryNode* pOrdinal = new QueryNode(C_ORDINAL_PROP, C_ORDINAL_DEFN, static_cast<Value&&>(xOrdinalVal));
   pColumnDef->vAppendProperty(pOrdinal);
 
   // Create the precision property
-  Value xPrecisionVal(bNotNull);
+  Value xPrecisionVal(iPrecision);
   QueryNode* pPrecision = new QueryNode(C_PRECISION_PROP, C_PRECISION_DEFN, static_cast<Value&&>(xPrecisionVal));
   pColumnDef->vAppendProperty(pPrecision);
 
   // Create the scale property
-  Value xScaleVal(bNotNull);
+  Value xScaleVal(iScale);
   QueryNode* pScale = new QueryNode(C_SCALE_PROP, C_SCALE_DEFN, static_cast<Value&&>(xScaleVal));
   pColumnDef->vAppendProperty(pScale);
 

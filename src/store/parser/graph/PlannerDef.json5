@@ -1986,6 +1986,11 @@
                       name: "indexes",
                       value: "A list of indexes that belong to this table",
                       type: "/__root__/definitions/object/list/indexDefs"
+                    },
+                    {
+                      name: "partitioning",
+                      value: "A list of columnDefs that this table is partitioned on. May be an empty list",
+                      type: "/__root__/definitions/object/list/columnDefs"
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/tableDef

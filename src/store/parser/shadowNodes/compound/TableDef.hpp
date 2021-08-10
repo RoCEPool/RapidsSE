@@ -19,7 +19,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
-                              QueryNode* pColumnDefs, QueryNode* pIndexDefs);
+                              QueryNode* pColumnDefs, QueryNode* pIndexDefs, QueryNode* pPartitionDef);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -37,6 +37,9 @@ namespace Parser
 
     static QueryNode* pIndexDef(QueryNode* pNode, Stz* szIndexName);
     static PlanNodeIter* pIndexDefIter(QueryNode* pNode);
+
+    static QueryNode* pPartitionDef(QueryNode* pNode);
+    static PlanNodeIter* pPartitionDefIter(QueryNode* pNode);
   };
 
 }
