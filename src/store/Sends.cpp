@@ -119,16 +119,15 @@ bool Sends::bCleaningDone(void)
 bool Sends::bDataPulseDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  if (m_iDataPulses > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_M_DATAPULSE received %lld; expected %lld\n"_Stz,
-           m_iDataPulses, m_iSends);
 
   if (m_iDataPulses == 0) {
     return true;
   }
-  else
+  else {
+    //if (m_iDataPulses == m_iSends)
+    //  m_iDataPulses = 0;
     return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

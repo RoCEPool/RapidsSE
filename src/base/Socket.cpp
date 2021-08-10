@@ -235,6 +235,7 @@ Object* Socket::pRecvObject(void)
   if (! bResult) {
     //m_pDataStack->vPushInt(false);
     //vReceivedObject(nullptr);
+    vTrace("Socket::pRecvObject (header) : bRecvBytes returned false\n"_Stz);
     vSuccess(false);
     return nullptr;
   }
@@ -260,6 +261,7 @@ Object* Socket::pRecvObject(void)
     if (! bResult) {
      //m_pDataStack->vPushInt(false);
      //vReceivedObject(nullptr);
+     vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
      vSuccess(false);
      return nullptr;
     }
@@ -273,6 +275,7 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive and discard the body of the object (low memory condition)
+  vTrace("Socket::pRecvObject : LOW MEMORY\n"_Stz);
 
   void* aLowBuff = m_aLowBuff;
 
