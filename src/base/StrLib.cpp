@@ -2680,9 +2680,9 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 i8 StrLib::iMatch(char *text, char *regexp)
 {
   if (regexp[0] == '^')
-    return iMatchHere(regexp+1, text);
+    return iMatchHere(text, regexp+1);
   do {    /* must look even if string is empty */
-    if (iMatchHere(regexp, text))
+    if (iMatchHere(text, regexp))
       return 1;
   } while (*text++ != '\0');
   return 0;
@@ -2691,7 +2691,7 @@ i8 StrLib::iMatch(char *text, char *regexp)
 /*----------------------------------------------------------------------------*/
 /* iMatchHere: search for regexp at beginning of text                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iMatchHere(char *regexp, char *text)
+i8 StrLib::iMatchHere(char *text, char *regexp)
 {
   if (regexp[0] == '\0')
     return 1;
@@ -2700,7 +2700,7 @@ i8 StrLib::iMatchHere(char *regexp, char *text)
   if (regexp[0] == '$' && regexp[1] == '\0')
     return *text == '\0';
   if (*text!='\0' && (regexp[0]=='.' || regexp[0]==*text))
-    return iMatchHere(regexp+1, text+1);
+    return iMatchHere(text+1, regexp+1);
   return 0;
 }
 
@@ -2710,7 +2710,7 @@ i8 StrLib::iMatchHere(char *regexp, char *text)
 i8 StrLib::iMatchStar(int c, char *regexp, char *text)
 {
   do {    /* a * matches zero or more instances */
-    if (iMatchHere(regexp, text))
+    if (iMatchHere(text, regexp))
       return 1;
   } while (*text != '\0' && (*text++ == c || c == '.'));
   return 0;
