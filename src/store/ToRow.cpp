@@ -2963,7 +2963,12 @@ L_RecordEndLineEnd:
     //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
     //tPtnNo = tPtnNo_byBkt;
     
+#ifdef WITH_KEEP_ROW_HASH
     m_pRowBuffer->vDepositColVal(tPtnNo);
+#else
+    m_pRowBuffer->vDepositColVal(tPtnNo);
+#endif
+    
     iPtnKeyHash = 0;
   }
   

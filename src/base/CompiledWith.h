@@ -87,6 +87,9 @@
 
 #define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
 
+#define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
+                                           //   instead of partition no
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
