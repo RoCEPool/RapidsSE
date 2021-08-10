@@ -66,6 +66,7 @@
   0 0 0 locals| sTableNm sSmt errorCode |
 
   //job[] job.tagSet@ tagSet.asStr .
+  Pipein[].pipeout
 
   <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
   
@@ -76,7 +77,6 @@
   sTableNm "" str.equal if
     job[] job.error@ to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -85,7 +85,6 @@
   sTableNm syntaxUniqueIndex::checkCreate not if ( errorCode )
     to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -95,7 +94,6 @@
   indexDef[].isNull if
     job[] job.error@ to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -104,7 +102,6 @@
   // should be in tables
   folder[].isTables assert
 
-  Pipein[].pipeout
   indexDef[].pipeout
 
   // should be in tables

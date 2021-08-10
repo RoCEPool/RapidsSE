@@ -18,6 +18,8 @@
 /*----------------------------------------------------------------------------*/
 : parser_DataPulse \handler
 
+  Pipein[].pipeout
+
   // create the command error info set
   op__cmdErrInfoSet
 
@@ -25,7 +27,6 @@
 
   Operand[].isNull if
     InfoSet[].pipeOut
-    Pipein[].delete
     ErrorMarker[].newErrorMarker
     ErrorMarker[].pipeOut
     true
@@ -60,7 +61,6 @@
     StreamSet[].pipeout
 
     LogicUnit[].compilerToExit if
-      Pipein[].delete
       Operand[].delete
       Operand[].newLeaveMarker
       Operand[].pipeout
@@ -70,10 +70,11 @@
 
   then
 
-  ZK_M_DATAPULSE_handler
   Operand[].pipeOut
   Operand[].newEosMarker
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
