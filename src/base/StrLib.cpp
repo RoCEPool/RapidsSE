@@ -2677,43 +2677,66 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in given string                          */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iMatch(char* azStr, char* azRegExp)
+bool StrLib::bMatch(char* azStr, char* azRegExp)
 {
+  /*
+  
+    Current set of metacharacters:
+   
+      c  matches any literal character c
+      .  matches any single character
+      ^  matches the beginning of the input string
+      $  matches the end of the input string
+      *  matches zero or more occurrences of the previous character
+
+   */
+  
   if (azRegExp[0] == '^')
-    return iMatchHere(azStr, azRegExp+1);
-  do {    /* must look even if string is empty */
-    if (iMatchHere(azStr, azRegExp))
-      return 1;
+    return bMatchHere(azStr,azRegExp+1);
+  
+  do { /* must look even if string is empty */
+    
+    if (bMatchHere(azStr,azRegExp))
+      return true;
+    
   } while (*azStr++ != '\0');
-  return 0;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* iMatchHere: search for regexp at beginning of string                       */
+/* bMatchHere: search for regexp at beginning of string                       */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iMatchHere(char* azStr, char* azRegExp)
+bool StrLib::bMatchHere(char* azStr, char* azRegExp)
 {
   if (azRegExp[0] == '\0')
-    return 1;
+    return true;
+  
   if (azRegExp[1] == '*')
-    return iMatchStar(azStr, azRegExp+2, azRegExp[0]);
+    return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
+  
   if (azRegExp[0] == '$' && azRegExp[1] == '\0')
-    return *azStr == '\0';
-  if (*azStr!='\0' && (azRegExp[0]=='.' || azRegExp[0]==*azStr))
-    return iMatchHere(azStr+1, azRegExp+1);
-  return 0;
+    return (*azStr == '\0');
+  
+  if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
+    return bMatchHere(azStr+1,azRegExp+1);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* iMatchStar: search for c*regexp at beginning of string                     */
+/* bMatchStar: search for c*regexp at beginning of string                     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iMatchStar(char* azStr, char* azRegExp, char cChr)
+bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
 {
-  do {    /* a * matches zero or more instances */
-    if (iMatchHere(azStr, azRegExp))
-      return 1;
+  do { /* a * matches zero or more instances */
+    
+    if (bMatchHere(azStr,azRegExp))
+      return true;
+    
   } while (*azStr != '\0' && (*azStr++ == cChr || cChr == '.'));
-  return 0;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

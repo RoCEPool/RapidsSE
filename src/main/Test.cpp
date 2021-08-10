@@ -1141,7 +1141,7 @@ void vTest19(void)
         return;
     }
     vTrace("%lld : %s\n"_Stz
-           ,StrLib::iMatch((char*)szText,(char*)szRegExp)
+           ,(i8)StrLib::bMatch((char*)szText,(char*)szRegExp)
            ,szRegExp);
   }
 }
