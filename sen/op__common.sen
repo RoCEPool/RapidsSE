@@ -148,8 +148,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -167,8 +165,6 @@
 
     // create an exec error infoset
     errorCode op__execErr
-
-    PipeIn[].delete
 
     Path[].popNamedTableFolder
     Path[].popIndexesFolder
