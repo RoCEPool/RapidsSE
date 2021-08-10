@@ -157,7 +157,7 @@ namespace BASE
     
     static i8    iMatch(char *text, char *regexp);
     static i8    iMatchHere(char *text, char *regexp);
-    static i8    iMatchStar(int c, char *regexp, char *text);
+    static i8    iMatchStar(char *text, char *regexp, int c);
 
     static char* sNew(const char* azFormat, ...);
     static char* zNullTerminator(char* s);

@@ -2696,7 +2696,7 @@ i8 StrLib::iMatchHere(char *text, char *regexp)
   if (regexp[0] == '\0')
     return 1;
   if (regexp[1] == '*')
-    return iMatchStar(regexp[0], regexp+2, text);
+    return iMatchStar(text, regexp+2, regexp[0]);
   if (regexp[0] == '$' && regexp[1] == '\0')
     return *text == '\0';
   if (*text!='\0' && (regexp[0]=='.' || regexp[0]==*text))
@@ -2707,7 +2707,7 @@ i8 StrLib::iMatchHere(char *text, char *regexp)
 /*----------------------------------------------------------------------------*/
 /* iMatchStar: search for c*regexp at beginning of text                       */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iMatchStar(int c, char *regexp, char *text)
+i8 StrLib::iMatchStar(char *text, char *regexp, int c)
 {
   do {    /* a * matches zero or more instances */
     if (iMatchHere(text, regexp))
