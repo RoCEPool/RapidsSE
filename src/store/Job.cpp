@@ -336,20 +336,25 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vPostRecv(void* aJob)
+void Job::vPostRecv(void* aReceivedJob)
 {
   _static_
   
-  Job* pJob = _pJob(aJob);
+  Job* pReceivedJob = _pJob(aReceivedJob);
   
-  pJob->vWasReceived(true);
+  pReceivedJob->vWasReceived(true);
   
-  pJob->vJobList(JL_NONE);
+  pReceivedJob->vJobList(JL_NONE);
   
-  pJob->vTask(nullptr);
+  pReceivedJob->vTask(nullptr);
     
   // revised job/op model
-  pJob->vNullJobLogicUnit();
+  pReceivedJob->vNullJobLogicUnit();
+  
+  if (pReceivedJob->bHasTag(C_SEE_JOB))
+    pReceivedJob->vSee();
+  
+  vDebugPoint();
 }
 
 
@@ -514,11 +519,11 @@ void Job::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* test if this job has given ename tag                                       */
 /*----------------------------------------------------------------------------*/
-bool Job::bHasTag(Stz* szEnameTag)
+bool Job::bHasTag(Stz* szTagNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oJobTags.bHasName(szEnameTag))
+  if (m_oJobTags.bHasName(szTagNm))
     return true;
   
   return false;
@@ -1059,6 +1064,8 @@ void Job::vSee(void)
          
          );
   
+  m_oJobTags.vContentDump();
+
   vTrace(";;\n\n"_Stz);
 }
 
