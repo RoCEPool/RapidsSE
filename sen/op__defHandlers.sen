@@ -69,13 +69,11 @@
 : ZK_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
 : ZK_M_CANCELLING_handler       \handler STANDARD_PIPEOUT ;
 : ZK_M_CLEANING_handler         \handler STANDARD_PIPEOUT ;
-: ZK_M_CLEANED_handler          \handler STANDARD_PIPEOUT ;
 
 : ZK_M_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : ZK_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
 : ZK_M_EACHSCANEOS_handler      \handler STANDARD_PIPEOUT ;
 : ZK_M_END_handler              \handler STANDARD_PIPEOUT ;
-: ZK_M_ENDED_handler            \handler STANDARD_PIPEOUT ;
 : ZK_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
 : ZK_M_END_CRWRHT_handler       \handler STANDARD_PIPEOUT ;
 : ZK_M_END_ROWRHT_handler       \handler STANDARD_PIPEOUT ;
