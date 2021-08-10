@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_BUCKETGET,
   /*    */ ZK_BUCKETMAP,
   /*    */ ZK_CALLPIPELINE,
   /*    */ ZK_COMMANDERRORS,
@@ -45,6 +46,7 @@ enum eZK // operand kind
   /*    */ ZK_PROFILE,
   /*    */ ZK_PROGRESSUNITS,
   /*    */ ZK_PROMPTOUT,
+  /*    */ ZK_PTNSTREAM,
   /*    */ ZK_PULSEDMARKER,
   /*    */ ZK_RETURNPIPELINE,
   /*    */ ZK_ROWBUFFER,
@@ -63,7 +65,8 @@ enum eZK // operand kind
 static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
-  
+
+  /*    */ "ZK_BUCKETGET"_Stz,
   /*    */ "ZK_BUCKETMAP"_Stz,
   /*    */ "ZK_CALLPIPELINE"_Stz,
   /*    */ "ZK_COMMANDERRORS"_Stz,
@@ -102,6 +105,7 @@ static Stz* aZK[]
   /*    */ "ZK_PROFILE"_Stz,
   /*    */ "ZK_PROGRESSUNITS"_Stz,
   /*    */ "ZK_PROMPTOUT"_Stz,
+  /*    */ "ZK_PTNSTREAM"_Stz,
   /*    */ "ZK_PULSEDMARKER"_Stz,
   /*    */ "ZK_RETURNPIPELINE"_Stz,
   /*    */ "ZK_ROWBUFFER"_Stz,

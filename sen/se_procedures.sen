@@ -1154,28 +1154,45 @@
     "
     api::addProcedure
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// get bucket object
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
   STD_PATH
   "
   procedure getBucket
-    parameters $TableNm $BucketNo
+    parameters $TableNm1 $TableNm2
   begin
 
-    // roundrobin or hash, then ask for the bucket of the table
     stage stageA on origin :
-      start | periodic once | bucketGet $TableNm $BucketNo | stageB hashcast
+        start | periodic once | bucketGet $TableNm1 | stageB
 
-    // toHshCrw
-    // send the crwBuffer of the bucket table
-    stage stageB on all nodes :
-      bucketSend | stageC
+    // toHshCrw , send the crwBuffer of the bucket table scan $TableNm1 | dupCrw | insert $TableNm2 | stageC
+    stage stageB on all partitions :
+      scan $TableNm1 | insert $TableNm2 | stageC
 
-    // receive crwBuffer, then the bucketRecv would insert into the table
-    // insert $table
+    //stage stageC on origin :
+    //  insert $TableNm2 | stageD
+
     stage stageC on origin :
-      bucketRecv | output | sink | stageA
+       sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  STD_PATH
+  "
+  procedure getBucket1
+    parameters $TableNm1 $TableNm2
+  begin
+
+    stage stageA on origin :
+        start | periodic once | bucketGet $TableNm1 | stageB robin
+
+    stage stageB on all partitions :
+        scan $TableNm1 | dupCrw | insert $TableNm2 | stageC
+
+    stage stageC on origin :
+        sink | stageA
 
   end ;
   "
@@ -1194,36 +1211,16 @@
       start | periodic once | metaGet $TableNm | stageB hashcast
 
     stage stageB on all nodes :
-      metaSend | stageC
-
-    stage stageC on origin :
-      metaRecv | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get meta object 2
-  
-  STD_PATH
-  "
-  procedure getMeta2
-    parameters $TableNm
-  begin
-
-    stage stageA on origin :
-      start | metaGet $TableNm | stageB hashcast
-
-    stage stageB on all nodes :
       metaSend | metaRecv | stageC
 
     stage stageC on origin :
+      //metaRecv | output | sink | stageA
       noop | sink | stageA
 
   end ;
   "
   api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -43,6 +43,7 @@ namespace STORE
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vAddBucket(Table* pTable, tPN tPtnNo);
+    void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuckets(void);

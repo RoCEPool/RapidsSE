@@ -19,6 +19,9 @@ assert::stack_0
 "b" .verbose
 
   "OP_bufferGen.sen"            include
+  "OP_bucketGet.sen"            include
+  "OP_bucketRecv.sen"           include
+  "OP_bucketSend.sen"           include
 
 "c" .verbose
 

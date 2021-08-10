@@ -40,7 +40,7 @@
 // ": scan_RowCrwBuffer" .
 
 : scan_RowCrwBuffer \handler
-  
+  ": scan_RowCrwBuffer" .
   debug::flag@ if "(Revised) scan_RowCrwBuffer handler" . then
 
   // read next buffer from ptn stream
@@ -100,7 +100,7 @@
 // ": scan_DataMarker" .
 
 : scan_DataMarker \handler
- 
+ ": scan_DataMarker" .
   debug::flag@ if "(Revised) scan_DataMarker handler" . then
 
   // pipe out the pulse marker
@@ -154,7 +154,7 @@
 // ": scan_StartMarker" .
 
 : scan_StartMarker \handler
-
+": scan_StartMarker" .
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
@@ -177,7 +177,7 @@
 /* scan request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : scan_req \operator
-
+  "scan_req" .
   LogReqEntry SEED_REQ
 
   "<catalogNm>"  job[] job.tagSet@ tagSet.hasName if

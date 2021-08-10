@@ -185,7 +185,7 @@ template<int LENGTH>
 void Wsp_t<LENGTH>::vTake(i8 nBytes)
 {
   m_nAreaUsed += nBytes;
-  
+
   if (m_nAreaUsed > LENGTH) {
     vDebugPoint();
   }

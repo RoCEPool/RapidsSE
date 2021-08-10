@@ -31,7 +31,7 @@
  : dupCrw_req \operator
 
   LogReqEntry SEED_REQ
-
+  "dupCrw_req" .
   op__topology
 
   find: dupCrw_CrwBuffer  ZK_CRWBUFFER op[].handler!

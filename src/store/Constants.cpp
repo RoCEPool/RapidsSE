@@ -698,6 +698,7 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
+  /*  0 */ vAddConstant("ZK_BUCKETGET"_Stz,       ZK_BUCKETGET);
   /*  0 */ vAddConstant("ZK_BUCKETMAP"_Stz,       ZK_BUCKETMAP);
   /*  0 */ vAddConstant("ZK_CALLPIPELINE"_Stz,    ZK_CALLPIPELINE);
   /*  0 */ vAddConstant("ZK_COMMANDERRORS"_Stz,   ZK_COMMANDERRORS);
@@ -737,6 +738,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PROMPTOUT"_Stz,       ZK_PROMPTOUT);
+  /*  0 */ vAddConstant("ZK_PTNSTREAM"_Stz,       ZK_PROMPTOUT);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
   /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
   /*  0 */ vAddConstant("ZK_ROWBUFFER"_Stz,       ZK_ROWBUFFER);

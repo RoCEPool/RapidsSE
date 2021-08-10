@@ -32,7 +32,7 @@
 : metaGet_req \operator
 
   LogReqEntry SEED_REQ
-  //"metaGet_req" .
+  "metaGet_req" .
   op__topology
 
   //find: metaGet_getTable   ZK_STARTMARKER   op[].handler!

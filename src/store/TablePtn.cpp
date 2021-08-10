@@ -168,6 +168,20 @@ void TablePtn::vAddBucket(Table* pTable, tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove bucket                                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vRemoveBucket(i8 i_Bucket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  Bucket* pBucket = m_pBucketVec->pGet(i_Bucket);
+
+  if (pBucket) {
+    m_pBucketVec->vRemove(pBucket);
+    delete pBucket;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a bucket by number                                                     */
 /*----------------------------------------------------------------------------*/
 Bucket* TablePtn::pGetBucket(i8 i_Bucket)

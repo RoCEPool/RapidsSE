@@ -20,6 +20,7 @@
 /*----------------------------------------------------------------------------*/
 
 : ZK_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
+: ZK_BUCKETGET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : ZK_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
 : ZK_COUNTINFO_handler        \handler STANDARD_PIPEOUT ;
@@ -51,6 +52,7 @@
 : ZK_PROFILE_handler          \handler STANDARD_PIPEOUT ;
 : ZK_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : ZK_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
+: ZK_PTNSTREAM_handler        \handler STANDARD_PIPEOUT ;
 : ZK_PULSEDMARKER_handler     \handler STANDARD_PIPEOUT ;
 : ZK_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
 : ZK_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;

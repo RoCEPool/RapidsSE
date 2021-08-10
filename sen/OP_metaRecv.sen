@@ -39,7 +39,7 @@
 : metaRecv_req \operator
 
   LogReqEntry SEED_REQ
-  //"metaRecv_req" .
+  "metaRecv_req" .
 
   op__topology
 
