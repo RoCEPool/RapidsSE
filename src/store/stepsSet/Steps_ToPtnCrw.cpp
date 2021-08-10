@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToHshCrw(void)
+void Step::vAddSteps_ToPtnCrw(void)
 {
   vAddStep("toPtnCrw[].completed"_Stz, &Step::vToPtnCrwRegCompleted);
   vAddStep("toPtnCrw[].convert"_Stz,   &Step::vToPtnCrwRegConvert);
@@ -40,11 +40,11 @@ void Step::vToPtnCrwRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToHshCrw = *m_p_TaskLogicUnit->m_xpToHshCrw;
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  CrwBuffer* pCrwBuffer = pToHshCrw->pCompleted(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToPtnCrw->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pCrwBuffer);
 
@@ -58,11 +58,11 @@ void Step::vToPtnCrwRegConvert(void)
 {
   ENTRY();
 
-  ToPtnCrw* pToHshCrw = *m_p_TaskLogicUnit->m_xpToHshCrw;
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToHshCrw->vConvert(pRowBuffer);
+  pToPtnCrw->vConvert(pRowBuffer);
   
   EXIT();
 }
@@ -74,9 +74,9 @@ void Step::vToPtnCrwRegCreate(void)
 {
   ENTRY();
     
-  ToPtnCrw* pToHshCrw = new ToPtnCrw(* m_p_TaskLogicUnit->m_xpStreamDefLft);
+  ToPtnCrw* pToPtnCrw = new ToPtnCrw(* m_p_TaskLogicUnit->m_xpStreamDefLft);
       
-  m_p_TaskLogicUnit->m_xpToHshCrw = pToHshCrw;
+  m_p_TaskLogicUnit->m_xpToPtnCrw = pToPtnCrw;
 
   EXIT();
 }
@@ -88,11 +88,11 @@ void Step::vToPtnCrwRegDangling(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToHshCrw = *m_p_TaskLogicUnit->m_xpToHshCrw;
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  CrwBuffer* pCrwBuffer = pToHshCrw->pDangling(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToPtnCrw->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pCrwBuffer);
 
@@ -106,10 +106,10 @@ void Step::vToPtnCrwRegDelete(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToHshCrw = *m_p_TaskLogicUnit->m_xpToHshCrw;
-  m_p_TaskLogicUnit->m_xpToHshCrw = nullptr;
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  m_p_TaskLogicUnit->m_xpToPtnCrw = nullptr;
   
-  delete pToHshCrw;
+  delete pToPtnCrw;
   
   EXIT();
 }

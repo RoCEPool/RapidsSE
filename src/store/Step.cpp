@@ -202,9 +202,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();
-  Step::vAddSteps_ToHshCrw();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_ToNstRow();
+  Step::vAddSteps_ToPtnCrw();
   Step::vAddSteps_ToPtnRow();
   Step::vAddSteps_ToRow();
   Step::vAddSteps_Trace();
