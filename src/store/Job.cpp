@@ -29,6 +29,8 @@
 #include "SP_Gid.hpp"
 #include "SP_Timer.hpp"
 
+#include "SP_Verify.hpp"
+
 Atomic gixJob;
 
 /*----------------------------------------------------------------------------*/
@@ -985,7 +987,13 @@ void Job::vSee(void)
     
   SP_Gid spJobId;
   SP_Timer spTimer;
-  
+
+  SP_Verify spvPipeline;
+  SP_Verify spvSingularOp;
+  SP_Verify spvOriginatingTask;
+  SP_Verify spvTask;
+  SP_Verify spvJobLogicUnit;
+
   vTrace("See Job %p::\n"_Stz,this);
 
   vTrace(
@@ -1012,16 +1020,16 @@ void Job::vSee(void)
          "          oAcksRmg "  "%lld"  " \n"  // 14
          "            eError "  "%s"    " \n"  // 15
 
-         "         pPipeline "  "%p"    " \n"  // 16
-         "       pSingularOp "  "%p"    " \n"  // 17
+         "         pPipeline "  "%s"    " \n"  // 16
+         "       pSingularOp "  "%s"    " \n"  // 17
 
-         "  pOriginatingTask "  "%p"    " \n"  // 18
+         "  pOriginatingTask "  "%s"    " \n"  // 18
          "    iOriginatingId "  "%lld"  " \n"  // 19
  
          "             eSeed "  "%s"    " \n"  // 20
-         "             pTask "  "%p"    " \n"  // 21
+         "             pTask "  "%s"    " \n"  // 21
         
-         "     pJobLogicUnit "  "%p"    " \n"  // 22
+         "     pJobLogicUnit "  "%s"    " \n"  // 22
 
          ""_Stz
          
@@ -1032,22 +1040,23 @@ void Job::vSee(void)
          ,m_i_Origin                 // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
-         ,m_bWasReceived ? "T" : "F" // 7
+         ,m_bWasReceived ? "true" : "false" // 7
          ,m_i_Participant            // 8
-         ,m_bNormalSides ? "T" : "F" // 9
+         ,m_bNormalSides ? "true" : "false" // 9
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oTimer)     // 13
          ,m_oAcksRmg_job.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
-         ,m_pPipeline_job            // 16
-         ,m_pSingularOp              // 17
-         ,m_pOriginatingTask         // 18
+         ,spvPipeline.sz(m_pPipeline_job)  // 16
+         ,spvSingularOp.sz(m_pSingularOp)  // 17
+         ,spvOriginatingTask.sz(m_pOriginatingTask) // 18
          ,m_iOriginatingId           // 19
          ,aSS[m_eSeed]               // 20
-         ,m_pTask                    // 21
-         ,m_pJobLogicUnit            // 22
+         ,spvTask.sz(m_pTask)        // 21
+         ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
+         
          );
   
   vTrace(";;\n\n"_Stz);
