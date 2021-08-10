@@ -123,8 +123,7 @@ bool Sends::bDataPulseDone(void)
   if (m_iDataPulses > m_iSends)
     vTrace("Warning: ConsumeOp ZK_M_DATAPULSE received %lld; expected %lld\n"_Stz,
            m_iDataPulses, m_iSends);
-  
-  //if (m_iDataPulses == m_iSends) {
+
   if (m_iDataPulses == 0) {
     return true;
   }
@@ -195,25 +194,6 @@ bool Sends::bEosDone(void)
   
   if (m_iEosMarkers > m_iSends)
     vTrace("Warning: ConsumeOp received ZK_M_EOS %lld; expected %lld\n"_Stz,
-           m_iEosMarkers, m_iSends);
-  
-  if (m_iEosMarkers == m_iSends) {
-    //m_iEosMarkers = 0;
-    return true;
-  }
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* error done ?                                                               */
-/*----------------------------------------------------------------------------*/
-bool Sends::bErrorDone(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  if (m_iEosMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_ERROR %lld; expected %lld\n"_Stz,
            m_iEosMarkers, m_iSends);
   
   if (m_iEosMarkers == m_iSends) {
@@ -378,16 +358,6 @@ void Sends::vIncEnd(void)
 /* inc eos                                                                    */
 /*----------------------------------------------------------------------------*/
 void Sends::vIncEos(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  m_iEosMarkers++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc error                                                                  */
-/*----------------------------------------------------------------------------*/
-void Sends::vIncError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   

@@ -40,7 +40,6 @@ namespace STORE
     bool bEndDone(void);
     bool bEndingDone(void);
     bool bEosDone(void);
-    bool bErrorDone(void);
     bool bErroringDone(void);
     bool bExitingDone(void);
     bool bLeavingDone(void);
@@ -54,7 +53,6 @@ namespace STORE
     void vIncEnd(void);
     void vIncEnding(void);
     void vIncEos(void);
-    void vIncError(void);
     void vIncErroring(void);
     void vIncExiting(void);
     void vIncLeaving(void);
