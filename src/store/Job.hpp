@@ -45,9 +45,9 @@ namespace STORE
     // information depending on job instance/location           MODAL
   
     // -- postage
-    bool m_bWasReceived;      // was job received over a socket?
-    i8   m_iParticipantNode;  // participant node no (FromNodeNo?)
-    bool m_bNormalSides;      // normal side semantics?
+    bool m_bWasReceived;   // was job received over a socket?
+    i8   m_i_Participant;  // participant node no (FromNodeNo?)
+    bool m_bNormalSides;   // normal side semantics?
   
     // -- state
     eJS m_eJobState;  // current state: JS_RUNNING, _LOCKED, ...
@@ -168,6 +168,7 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);
+    void vSee(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);

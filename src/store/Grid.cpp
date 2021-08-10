@@ -305,7 +305,7 @@ void Grid::vSeeNodes(void)
     vTrace("  %s\n"_Stz,spNode.sz(pNode));
   }
   
-  vTrace("\n"_Stz);
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

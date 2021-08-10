@@ -130,7 +130,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_bNormalSides     = true;
   
   // -- c -------------------
@@ -208,7 +208,7 @@ Job::Job(eCN eClassNo)
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
 
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_oAcksRmg_job.vCheckInit();
   
   m_pSingularOp  = nullptr;
@@ -894,7 +894,7 @@ void Job::vParticipantNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iParticipantNode = iNode;
+  m_i_Participant = iNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -904,7 +904,7 @@ i8 Job::iParticipantNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iParticipantNode;
+  return m_i_Participant;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -934,7 +934,7 @@ void Job::vResetForReuse(Session* pSession)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_bNormalSides     = true;
 
   // -- c -------------------
@@ -976,6 +976,48 @@ void Job::vReport(void)
          this,
          iJobId(),
          m_oAcksRmg_job.iPrintOnlyValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* see job dump                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("See Job::\n"_Stz);
+
+  vTrace("%p: %s\n"
+         
+         "m_eJobType=%s m_eJobKind=%s\n"
+         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
+         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
+         "m_iOriginatingId=%lld\n"
+         "m_nxReferences=%lld\n"_Stz,
+         this,
+         aCN[eGetClassNo()],
+         
+         m_sJobNm.azChar(),
+         aJK[m_eJobKind]->azChar(),
+         
+         aJL[m_eJobList],
+         aJP[m_eJobPhase],
+         aJS[m_eJobState],
+         
+         bByPromptTag(),
+         bHasTag_noWait(),
+         m_bWasReceived,
+         
+         m_iOriginatingId,
+         
+         nReferences(),
+         C_VARGS_END
+         );
+  
+  
+  m_oJobTags.vContentDump();
+  
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
