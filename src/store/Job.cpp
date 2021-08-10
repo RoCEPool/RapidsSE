@@ -130,7 +130,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_bNormalSides     = true;
   
   // -- c -------------------
@@ -208,7 +208,7 @@ Job::Job(eCN eClassNo)
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
 
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_oAcksRmg_job.vCheckInit();
   
   m_pSingularOp  = nullptr;
@@ -894,7 +894,7 @@ void Job::vParticipantNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iParticipantNode = iNode;
+  m_i_Participant = iNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -904,7 +904,7 @@ i8 Job::iParticipantNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iParticipantNode;
+  return m_i_Participant;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -934,7 +934,7 @@ void Job::vResetForReuse(Session* pSession)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNode = C_UNKNOWN;
+  m_i_Participant = C_UNKNOWN;
   m_bNormalSides     = true;
 
   // -- c -------------------
