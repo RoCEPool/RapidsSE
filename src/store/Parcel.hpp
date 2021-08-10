@@ -7,27 +7,24 @@
 
 namespace STORE
 {
-  static const i8 C_MAX_PARCEL_OBJ = 16;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Parcel : public Operand
   {
-    
-  public:
-    i8   m_iPipelineJobId;  // pipeline job id
-    ePX  m_eCrossTopo;      // cross topology
-    eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
-    bool m_bAppendRight;    // append operand to right queue
-  
-    i8  m_iDstNode;        // destination node id
-    tPN m_tDstPtn;         // destination partition (in grid)
-    i8  m_iDstStage;       // destination stage
-    i8  m_iDstOp;          // destination op in the destination stage
-    
   private:
+    ePX  m_eCrossTopo;      // cross topology
+  
+    i8   m_iDstNode;        // destination node id
+    tPN  m_tDstPtn;         // destination partition (in grid)
+    i8   m_iDstStage;       // destination stage
+    i8   m_iDstOp;          // destination op in the destination stage
+
     bool m_bOriginalParcel;
-    i8 m_nObjects;                        // number of objects in the parcel
-    Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
+  
+    i8   m_iPipelineJobId;  // pipeline job id
+
+    eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
+
+    i8 m_nItems;            // number of items in this parcel
+    Object* m_pItems[C_MAX_PARCEL_ITEMS];
   
     // must be last
     Footer m_xFooter;
@@ -36,37 +33,33 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(Operand* pOperand,
-           i8       iPipelineJobId,
-           i8       iDstNode,
-           tPN      tPtnNo,
-           ePX      eCrossTopo
-           );
-  
+    Parcel(void);
    ~Parcel(void) noexcept(false);
 
-  static void vPostRecv(void* aParcel);
-
   public:
-    void vAddObject(Object* pObject);
-    bool bAppendRight(void);
-    Object* pGetObject(i8 i_Object);
-    i8 nObjects(void);
-    void vReset(void);
+    static void vPostRecv(void* aParcel);
+
+    void vAddItem(Object* pItem);
+    ePX  eCrossTopo(void);
+    i8   iDstNode(void);
+    i8   iDstOp(void);
+    tPN  tDstPtn(void);
+    i8   iDstStage(void);
+    Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
+    void vLabel(ePX eCrossTopo, i8  iPipelineJobId);
+    i8   nItems(void);
+    bool bOriginalParcel(void);
+    void vOriginalParcel(bool bOriginalParcel);
+    i8   iPipelineJobId(void);
     void vRecvContents(Socket* pSocket);
+    void vReset(void);
+    eXK  eSendKind(void);
     void vSendOut(Op* pSrcOp);
-    void vSetObject(i8 i_Object, Object* pObject);
-
-    bool bIsOriginal(void);
-    void vSetOriginState(bool bState);
-
-    void vLabel(i8       iPipelineJobId,
-                i8       iDstNode,
-                tPN      tPtnNo,
-                ePX      eCrossTopo);
 
   private:
+    void vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);
+    void vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextStage);
     void vSendOverSocket(Op* pSrcOp);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
     void vSendToAllNodes(Op* pSrcOp);
@@ -75,7 +68,8 @@ namespace STORE
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
     void vSendToOrigin(Op* pSrcOp);
     void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
-  
+    void vSetItem(i8 i_Item, Object* pItem);
+
   public:
     Footer* aFooter(void);
   

@@ -51,10 +51,10 @@ namespace Parser
 
     // Return a list of TableDef nodes that are reachable from a given sql operator
     // and that contain a column as referenced by pColumnRef.
-    static QueryNodeList* pMatchingTableDefsFor(QueryNode* pColumnRef,
-                                                QueryNode* pSqlOp,
-                                                PlanNode*  pRootNode,
-                                                QueryNode* pMetadataNode);
+    static QueryNodeList* pMatchingDataSourcesFor(QueryNode* pColumnRef,
+                                                  QueryNode* pSqlOp,
+                                                  PlanNode*  pRootNode,
+                                                  QueryNode* pMetadataNode);
 
     // Return a list of ProjectedColumn nodes that are reachable from a given sql operator
     // and that contain a given alias name. Need to free the list and nodes returned.
@@ -66,6 +66,16 @@ namespace Parser
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan
     static void vAssertNamesResolved(PlanNode* pRootNode, QueryNode* pPlanNode);
+
+    // Validate the column names of any join USING clauses
+    static void vValidateJoinUsingColumns(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // Replace the USING list with a join predicate in a JoinOp
+    static void vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoinOp, QueryNode* pUsingList);
+
+    // Tries to resolve a column name in a given projected column list.
+    // Returns a ColumnRef/AliasRef that can be used to form a join predicate.
+    static QueryNode* pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList);
   };
 }
 

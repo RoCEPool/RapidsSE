@@ -7,36 +7,23 @@
 #include <iterator>
 #include "Parcel.hpp"
 
-#include "Node.hpp" //?
+#include "Node.hpp"
+#include "Node_I.hpp"
 
 
 namespace STORE
 {
   class Grid : public Operand
   {
+  friend class STORE::Node_I;
   private:
   
-    s32    m_sGridNm;       // name of this grid
-    i8     m_iConnectCode;  // connect code for this grid (not yet used)
-    
-    i8     m_iThisNode;     // this node number
-    Node*  m_pThisNode;     // this node pointer
-  
-    bool   m_bHasStarted;   // has the cluster started ?
-
+    s32    m_sGridNm;      // name of this grid
+    Node*  m_pThisNode;    // this node pointer
+    SkipListNL* m_pNodes;  // skip list of jobs (ordered by job name)
+ 
     Parcel* m_pParcel;
 
-#ifdef WITH_NODE_SKIPLIST
-
-    std::list<Node*> * m_pNodes_stdList;
-
-#else
-
-    std::list<Node*> * m_pNodes_stdList;
-
-#endif
-
-  
     // must be last
     Footer m_xFooter;
     
@@ -44,46 +31,31 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(Stz* szGridNm, i8 iConnectCode);
+    Grid(Stz* szGridNm);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
+    void vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+                          Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
     void vAddNode(Node* pNode);
-  
-    void vAddNode(i8 iNodeNo, Stz* pszName,
-                  Stz* pszAddr, i8 iPort, Stz* szRegionNm);
-
     void vAdjustPtnMap(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
     Node* pFindNode(i8 iNodeNo);
     Node* pFindNode(Stz* pName);
-    bool bFirstNode(i8 iNodeNo);
-    Node* pGetNode(i8 i_NodeNo);
-    i8   iGetNodeNo(i8 i_Node);
+    Node* pGetNthNode(i8 i_Node);
     Stz* szGridNm(void);
-    void vHasStarted(bool bHasStarted);
-    bool bHasStarted(void);
-    i8   nNodes(void);
+    i8   nKnownNodes(void);
     void vRemoveNode(Node* pNode);
     void vSeeNodes(void);
-    void vSetThisNode (Node* pNode); // newcode
-    i8   iThisNode(void);
+    i8   iThisNodeNo(void);
     Node* pThisNode(void);
-    void vThisNodeNo(i8 iNode);
+    void vThisNode(Node* pNode);
 
     i8   iPrepareParcel(void);
     Parcel* pParcel(void);
     i8 iReassembleFromParcel(Parcel* pParcel);
-
-#ifndef WITH_NODE_SKIPLIST
-
-    // newcode
-    std::list<Node*>::const_iterator itBeginNodes(void);
-    std::list<Node*>::const_iterator itEndNodes(void);
-
-#endif
   
     Footer* aFooter(void);
   };

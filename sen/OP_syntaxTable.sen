@@ -5,13 +5,14 @@
 " OP_syntaxTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : syntaxTable_DataMarker
 
   0 locals| errorCode |
 
   //job[] job.tagSet@ tagSet.asStr .
+  Pipein[].pipeout
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
   job[] streamDef::parse to StreamDefLft[]
@@ -19,7 +20,6 @@
   StreamDefLft[].isNull if
     job[] job.error@ to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -28,7 +28,6 @@
   // should be in tables
   folder[].isTables assert
 
-  Pipein[].pipeout
   StreamDefLft[].pipeout
 
   // should be in tables
@@ -46,7 +45,7 @@
 
   op__topology
 
-  find: syntaxTable_DataMarker ZK_DATAPULSE op[].handler!
+  find: syntaxTable_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

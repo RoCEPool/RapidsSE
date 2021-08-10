@@ -64,7 +64,7 @@ namespace STORE
   Bucket* _pBucket(void* aAddr);
 
 
-  typedef VectorNL_t<CN_BUCKETVEC,STORE::Bucket,C_MAX_TABLEPTNS>BucketVec;
+  typedef VectorNL_t<CN_BUCKETVEC,STORE::Bucket,C_MAX_PTNSPERNODE>BucketVec;
 }
 
 /*============================================================================*/

@@ -5,7 +5,7 @@
 
 #include "Resources.hpp" //?
 
-namespace STORE { class InternalTables; class Jobs; class Objects; }
+namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
 namespace STORE
 {
@@ -25,13 +25,12 @@ namespace STORE
       char  m_caAttachMapState[8];
     };
   
-    i8    m_iPid;
     Birth m_oBirth;
     Now   m_oNow;
-    i8    m_iTimePoint;
-    
+    i8    m_iPid;
     Timer m_oSince;
-
+    i8    m_iTimePoint;
+  
     s256  m_sTraceFile;
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
@@ -51,18 +50,20 @@ namespace STORE
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
     Locks         m_oLocks;
-    Objects*      m_pObjects;
+    Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
+    bool          m_bStarted;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
     bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
+    b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;

@@ -5,18 +5,19 @@
 " OP_createCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : createCatalog_DataMarker
 
   0 locals| errorCode |
+
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -26,7 +27,6 @@
   folder[].checkIsCatalogs not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -36,7 +36,6 @@
   <catalogNm> name::isNotKnownCatalog not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -44,8 +43,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   <catalogNm> :makeCatalogFolder ( )
-
-  PipeIn[].pipeOut
 
   true
 ;
@@ -59,7 +56,7 @@
 
   op__topology
 
-  find: createCatalog_DataMarker ZK_DATAPULSE op[].handler!
+  find: createCatalog_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

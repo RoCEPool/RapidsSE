@@ -52,7 +52,7 @@ extern d8 C_D8_MID;
 #include "ByteLiterals.hpp"
 #include "CommonTypes.h"
 #include "EnvFlags.h"
-#include "Gid.h"
+#include "Id.hpp"
 #include "Null.hpp"
 
 #include "PadWord.hpp"
@@ -130,7 +130,7 @@ extern d8 C_D8_MID;
 #include "String_t.hpp"
 #include "Atomic.hpp"
 #include "NextGid.hpp"
-#include "Objects.hpp"
+#include "Numbering.hpp"
 
 #include "SP.hpp"
 #include "SPmedium.hpp"
@@ -139,7 +139,6 @@ extern d8 C_D8_MID;
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
-#include "ReqTuple.hpp"
 
 #include "IntLib.hpp"
 #include "MagLib.hpp"
@@ -162,7 +161,7 @@ extern d8 C_D8_MID;
 #include "Process.hpp"
 #include "Shell.hpp"
 
-#include "ObjId_t.hpp"
+#include "Gid_t.hpp"
 #include "Lock.hpp"
 #include "MasterLock.hpp"
 #include "DdlLock.hpp"

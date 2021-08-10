@@ -13,9 +13,11 @@ namespace STORE
   public:
   
     Lock m_okLock;
-    i8   m_nDataBuffersSoFar;
+    i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   
+    Session* m_pInternalSession;
+
     Session* m_paSession[C_MAX_SESSIONS];
   
     Footer m_xFooter;
@@ -39,10 +41,14 @@ namespace STORE
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
     static void vMarkSignalled(Session* pSession);
   
+    void     vAllocInternal(void);
     Session* pAllocSession(eSK eSssion);
+  
     void vDump(void);
     void vFreeSession(Session* pSession);
     Session* pGetSession(i8 i_Session);
+  
+    Session* pInternalSession(void);
 
     
   private:

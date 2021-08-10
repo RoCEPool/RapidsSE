@@ -167,10 +167,10 @@ enum eCN : u2 // Class Number
   /* */ CN_NODE_I,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
-  
+  /* */ CN_NUMBERING,
+
   /* */ CN__O__,
   /* */ CN_OBJBUFFER,
-  /* */ CN_OBJECTS,
   /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
@@ -323,10 +323,10 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TINYVIRTUAL,
   /* */ CN_TMEVAL,
-  /* */ CN_TOHSHCRW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
   /* */ CN_TONSTROW,
+  /* */ CN_TOPTNCRW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
   /* */ CN_TRACELOCK,
@@ -342,7 +342,6 @@ enum eCN : u2 // Class Number
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
-  /* */ CN_WRITEBEHIND,
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
@@ -513,10 +512,10 @@ static Stz* aCN[]
   /* */ "NODE_I"_Stz,               // CN_NODE_I
   /* */ "NOW"_Stz,                  // CN_NOW
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
-   
+  /* */ "NUMBERING"_Stz,            // CN_NUMBERING
+
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OBJBUFFER"_Stz,            // CN_OBJBUFFER
-  /* */ "OBJECTS"_Stz,              // CN_OBJECTS
   /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
@@ -669,10 +668,10 @@ static Stz* aCN[]
   /* */ "TINYTRANSIENT"_Stz,        // CN_TINYTRANSIENT
   /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
-  /* */ "TOHSHCRW"_Stz,             // CN_TOHSHCRW
   /* */ "TOKEN"_Stz,                // CN_TOKEN
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
+  /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
@@ -688,7 +687,6 @@ static Stz* aCN[]
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
-  /* */ "WRITEBEHIND"_Stz,          // CN_WRITEBEHIND
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
  
   /* */ "_X__"_Stz,                 // CN__X__

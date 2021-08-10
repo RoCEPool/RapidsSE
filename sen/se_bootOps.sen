@@ -18,6 +18,7 @@ assert::stack_0
 
 "b" .verbose
 
+  "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bucketGet.sen"            include
   "OP_bucketRecv.sen"           include
@@ -90,12 +91,12 @@ assert::stack_0
 "h" .verbose
 
   "OP_hash.sen"                include
+  "OP_hashRight.sen"           include
 
 "i" .verbose
 
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
-  "OP_input.sen"                include
   "OP_insDel.sen"               include
   "OP_insert.sen"               include
 
@@ -119,7 +120,6 @@ assert::stack_0
   "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
   "OP_loopJoin.sen"             include
-  "OP_loopJoinLO.sen"           include
 
 "m" .verbose
 
@@ -147,7 +147,6 @@ assert::stack_0
   "OP_partitionExplain.sen"     include
   "OP_partitionPlan.sen"        include
   "OP_passThru.sen"             include
-  "OP_periodic.sen"             include
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
   "OP_postProject.sen"          include
@@ -156,6 +155,7 @@ assert::stack_0
   "OP_project.sen"              include
   "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
+  "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
   "OP_python.sen"               include
   "OP_pythonShell.sen"          include
@@ -189,9 +189,9 @@ assert::stack_0
   "OP_sink.sen"                 include
   "OP_sizeIndex.sen"            include
   "OP_sizeTable.sen"            include
+  "OP_sleep.sen"                include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
-  "OP_spawnThread.sen"          include
   "OP_sqlInit.sen"              include
   "OP_stageMarkers.sen"         include
   "OP_start.sen"                include
@@ -202,6 +202,10 @@ assert::stack_0
   "OP_syntaxIndex.sen"          include
   "OP_syntaxTable.sen"          include
   "OP_syntaxUniqueIndex.sen"    include
+  "OP_sysClose.sen"             include
+  "OP_sysClosed.sen"            include
+  "OP_sysOpen.sen"              include
+  "OP_sysOpened.sen"            include
 
 "t" .verbose
 
@@ -210,8 +214,8 @@ assert::stack_0
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
   "OP_toDfload.sen"             include
-  "OP_toHshCrw.sen"             include
   "OP_toNstRow.sen"             include
+  "OP_toPtnCrw.sen"             include
   "OP_toPtnRow.sen"             include
   "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include

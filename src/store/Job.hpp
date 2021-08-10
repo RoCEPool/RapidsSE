@@ -10,61 +10,87 @@
 #include "eRS.h"
 #include "eSS.h"
 
+/*                      IMPORTANT NOTE
+ 
+    If you add a pointer member into this class then modify
+      JOBS_fn(vJob_postRecv) to set it to null when the job is received
+ 
+ */
+
 namespace STORE
 {
   class Job : public Object,
               public CRM<Job>
   {
-  
-  /*                      IMPORTANT NOTE
-   
-      If you add a pointer member into this class then modify
-        JOBS_fn(vJob_postRecv) to set it to null when the job is received
-   
-   */
-  
   public:
   
-    ObjId<CN_JOB> m_xJobId; // this job's id
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // universally immutable information                    UNIVERSAL
+
+    // -- id, name and kind
+    Gid<CN_JOB> m_xJobId;    // this job's id
+    s32         m_sJobNm;    // name of job
+    eJK         m_eJobKind;  // job kind: (needs work)
+
+    // -- command and tags
+    s4K    m_sCmd;      // the command
+    TagSet m_oJobTags;  // tags for the job
+
+    // -- home is
+    i8 m_i_Origin;   // which node
+    i8 m_i_Session;  // which session in node's session array
+    i8 m_iCmdNo;     // sequence no of the command from that session
   
-    // -- a -------------------
-    ReqTuple m_xReqTuple;    // the request tuple
-    s32      m_sJobNm;       // name of job
-    i8       m_iParentId;    // job id of parent job which spawned this job
-    Timer    m_oTimer;       // timer
-
-    // -- b -------------------
-    bool m_bWasReceived;     // job was received over a socket
-    i8   m_iParticipantNode; // participant node no (FromNodeNo?)
-    bool m_bNormalSides;     // side semantics
-
-    // -- c -------------------
-    eJK m_eJobKind;          // kind of job
-    eJL m_eJobList;          // which job list the job is currently in
-    eJP m_eJobPhase;         // which job phase the job is currently in
-    eJS m_eJobState;         // current state of the job
-    eEC m_eError;            // error when starting job
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // information depending on job instance/location           MODAL
   
-    // -- d -------------------
-    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
-    TagSet     m_oJobTags;   // tags for the job
-    
-    // -- e -------------------
-    Op*        m_pOp;        // Op this job is executing
-    Op*        m_pOuterOp;   // Op that called the pipeline
-    Op*        m_pInputOp;   // The optional input op of the pipeline
+    // -- postage
+    bool m_bWasReceived;   // was job received over a socket?
+    i8   m_i_Participant;  // participant node no (FromNodeNo?)
+    bool m_bNormalSides;   // normal side semantics?
+  
+    // -- state
+    eJS m_eJobState;  // current state: JS_RUNNING, _LOCKED, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
+    eJL m_eJobList;   // current list : JP_DEMON, _LOCAL, _ORIGINATING, ...
 
-    // -- f -------------------
-    Atomic m_ixErrors;
-    Task*  m_pOriginatingTask; // originating task of the request
-    i8     m_iOriginatingId;   // job id of originating job
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job running as originator on origin                 ORIGINATOR
+  
+    // -- timer
+    Timer   m_oTimer;        // timer (on origin only)
+    Decider m_oAcksRmg_job;  // acks remaining for coordinating 2pc job
     
-    // -- g -------------------
-    Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
-    eSS     m_eSeed;         // seed to spawn
-    i8      m_i_TablePtn;    // table ptn on its node this job processes
-    Task*   m_pTask;         // task executing this job
+    eEC     m_eError_job;    // error when starting job
+                             // DOUBLE CHECK THIS BELONGS HERE
 
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job running on participant node                    PARTICIPANT
+
+    // -- participating job maintains
+    Pipeline* m_pPipeline_job;  // pipeline the job represents
+    Op*       m_pSingularOp;    //   or op (api input op for a pipeline)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job running as responder on origin                   RESPONDER
+  
+    // -- responding to which originator
+    Task*  m_pOriginatingTask;  // originating task of the request
+    i8     m_iOriginatingId;    // job id of originating job
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // job execution                                        execution
+
+    // -- tasking
+    eSS   m_eSeed;  // sen word to start execution
+    Task* m_pTask;  // task executing this job
+
+    // -- logic unit
+    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
+
+
+  private:
+    
     // must be last
     Footer m_xFooter;
     
@@ -74,7 +100,10 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(ReqTuple* aReqTuple);
+    Job(i8 i_Origin,     // originated on which node
+        i8 i_Session,    // which session in session array
+        i8 iCmdNo  // the sequence no of the request from that session
+       );
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClass);
@@ -98,13 +127,12 @@ namespace STORE
     bool bByPromptTag(void);
     void vContentDump(void);
     bool bDiaryTag(void);
+    void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
-    Op*  pInputOp(void);
-    void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
@@ -121,40 +149,40 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    LogicUnit* pLogicUnit_job(void);
-    void vLogicUnit_job(LogicUnit* pLogicUnit);
+    LogicUnit* pJobLogicUnit(void);
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);
-    eEC ePopulateJob(TagSet* pTagSet);
+    Pipeline* pPipeline(void);
     void vResetForReuse(Session* pSession);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
+    void vNewJobLogicUnit(void);
+    void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
-    i8   iParentId(void);
-    void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
-    void vPrint(Stz* szFormat, ...);
     void vReport(void);
+    void vSee(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
     Session* pSession(void);
     void vShow(void);
-    i8   i_TablePtn(void);
-    void vTablePtn(i8 i_TablePtn);
+    Op*  pSingularOp(void);
+    void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
+    void vVerifyJobComposition(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 

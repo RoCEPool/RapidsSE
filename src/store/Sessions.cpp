@@ -55,15 +55,16 @@ Sessions::Sessions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
   
-  m_nDataBuffersSoFar = 0;
+  m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
+  m_pInternalSession = nullptr;
+  
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     Session* pSession = new Session;
     
     m_paSession[i_Session] = pSession;
     pSession->m_i_Session  = i_Session;
-    pSession->m_xReqTuple.m_i_Session = i_Session;
     pSession->m_i_NextFree = i_Session + 1;
   }
   m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;
@@ -173,6 +174,30 @@ void Sessions::vMarkSignalled(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allocate an internal session                                               */
+/*----------------------------------------------------------------------------*/
+void Sessions::vAllocInternal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  RASSERT(-1 != m_iFirstFree);
+  RASSERT(! m_pInternalSession);
+
+  i8 i_Session = m_iFirstFree;
+  m_pInternalSession = m_paSession[i_Session];
+  
+  m_iFirstFree = m_pInternalSession->m_i_NextFree;
+  
+  m_nSessionsSoFar++;
+
+  m_pInternalSession->m_eSession = SK_INTERNAL;
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
 Session* Sessions::pAllocSession(eSK eSession)
@@ -188,7 +213,7 @@ Session* Sessions::pAllocSession(eSK eSession)
   
   m_iFirstFree = pSession->m_i_NextFree;
   
-  m_nDataBuffersSoFar++;
+  m_nSessionsSoFar++;
 
   pSession->m_eSession = eSession;
   
@@ -212,12 +237,12 @@ void Sessions::vDump(void)
 
   vTrace("%p: DataBuffersSoFar %lld:\n"_Stz,
          this,
-         m_nDataBuffersSoFar);
+         m_nSessionsSoFar);
   
   i8 iDataBuffers = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    if (iDataBuffers == m_nDataBuffersSoFar)
+    if (iDataBuffers == m_nSessionsSoFar)
       break;
     
     Session* pSession = m_paSession[i_Session];
@@ -228,7 +253,7 @@ void Sessions::vDump(void)
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  vTrace("  DdlLock %llx\n"_Stz,AM::pDdlLock()->uLockWord());
+  vTrace("  DdlLock %llx\n"_Stz,AM::MASTERLOCK::uDdlLockWord());
   
   m_okLock.vDropRead();
 }
@@ -266,6 +291,17 @@ Session* Sessions::pGetSession(i8 i_Session)
   return pSession;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the internal session                                                   */
+/*----------------------------------------------------------------------------*/
+Session* Sessions::pInternalSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  RASSERT(m_pInternalSession);
+
+  return m_pInternalSession;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -323,7 +359,7 @@ void Sessions::vApiJob(Session* pSession, Job* pJob)
 
   pSession->m_nJobNew++;
   
-  pJob->m_xReqTuple.m_i_Session = pSession->m_i_Session;
+  pJob->m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/

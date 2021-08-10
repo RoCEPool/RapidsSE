@@ -54,7 +54,7 @@
   then
 
   // set the send socket in the node
-  grid::adjustPtnMap
+  ptnmap::adjust
   Socket[] Node[] node.sendSocket!
 
  
@@ -94,7 +94,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : connector_StartMarker \handler
 
@@ -132,7 +132,7 @@
 
   op__topology
 
-  find: connector_StartMarker ZK_STARTMARKER op[].handler!
+  find: connector_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

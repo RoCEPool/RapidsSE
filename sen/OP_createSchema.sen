@@ -13,18 +13,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : createSchema_DataMarker
 
   0 locals| errorCode |
+
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -34,7 +35,6 @@
   folder[].checkIsSchemas not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -44,7 +44,6 @@
   <schemaNm> name::isNotKnownSchema not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -52,8 +51,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the schema
   <schemaNm> :makeSchemaFolder ( )
-
-  PipeIn[].pipeOut
 
   true
 ;
@@ -67,7 +64,7 @@
 
   op__topology
 
-  find: createSchema_DataMarker ZK_DATAPULSE op[].handler!
+  find: createSchema_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

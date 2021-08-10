@@ -7,9 +7,12 @@
 #include "PsxThd.hpp" //?
 #include "TagConstants.h" //?
 #include "Job.hpp" //?
+#include "Op.hpp" //?
 #include "Grid.hpp" //?
 
 #include "SP_Lock.hpp" //?
+#include "SP_Timer.hpp" //?
+#include "LogicUnit.hpp" //?
 
 Atomic gixTask;
 
@@ -68,24 +71,17 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob)
+Task::Task(void)
 : Object(CN_TASK)
 , m_okLock(this,false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  RASSERT(pJob);
-  
   m_pProfile     = nullptr;
 
   m_pThread      = nullptr;
-  m_pJob         = pJob;
-  
-#ifdef WITH_LOGIC_UNIT_TASK
-  m_pLogicUnit_task = AM::LOGICUNIT::pNew(pJob);
-#else
-  m_pLogicUnit_task = nullptr;
-#endif
+  m_pJob         = nullptr;
+  m_pOp          = nullptr;
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
@@ -95,12 +91,9 @@ Task::Task(Job* pJob)
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
 
-  m_oAcksRmg.vCheckInit();
+  m_oAcksRmg_task.vCheckInit();
   // m_oWakeup
   
-  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
-  m_bLogResource = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
-
   m_iTraceMask   = C_TRACE_NONE;
  
   m_nOperandYield = 10;
@@ -124,10 +117,10 @@ Task::Task(Job* pJob)
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
-
-#ifdef WITH_LOCK_SETS
+  
+  m_p_TaskLogicUnit = nullptr;
+  
   ASSERT(! m_oWriteLocks.nItems());
-#endif
   
   _checkInitialised_(CN_TASK);
     
@@ -136,8 +129,6 @@ Task::Task(Job* pJob)
   ++ gixTask;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Task constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,9 +147,7 @@ Task::~Task(void) noexcept(false)
   RASSERT(m_bSeedInitially);
   RASSERT(m_bDoneFinally);
   
-#ifdef WITH_LOCK_SETS
   ASSERT(! m_oWriteLocks.nItems());
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -183,17 +172,11 @@ Task::~Task(void) noexcept(false)
     m_pJob = nullptr;
     AM::vJobDelete(&pJob);
   }
-    
-#ifdef WITH_LOGIC_UNIT_TASK
-  AM::LOGICUNIT::vDelete(&m_pLogicUnit_task);
-#endif
-  
+      
   delete m_pProfile;
   m_pProfile = nullptr;
   
   -- gixTask;
-
-  AM::LOG::vEvent(EV_DESTRUCT,"Task destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,22 +206,19 @@ void Task::vTaskLoop(void)
 
   PsxThd::vTlsSet(giTLS_TaskKey,this);
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
-
-  //RASSERT(! bIsLocked());
   
-  if (! bSeeded()) {
-    vInitExeContext();
-    
-#ifndef WITH_LOGIC_UNIT_TASK
-    AM::LOGICUNIT::vNew(this,pJob());
-#endif
-    
-    vSeedTask();
-  }
+  vVerifyTaskComposition();
   
+  if (m_pJob.bIsNotNull())
+    m_p_TaskLogicUnit = m_pJob->pJobLogicUnit();
+  else
+  if (m_pOp.bIsNotNull())
+    m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
+  else
+    NEVER_REACH;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
@@ -272,6 +252,33 @@ void Task::vTaskLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify task is composed correctly and therefore capable of being executed  */
+/*----------------------------------------------------------------------------*/
+void Task::vVerifyTaskComposition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(EC_NONE == eValidHeader());
+  RASSERT(CN_TASK == eGetClassNo());
+  aFooter()->vAssertFooter();
+  
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    m_pJob->vVerifyJobComposition();
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    m_pOp->vVerifyOpComposition();
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  RASSERT(bSeeded());
+}
+
+/*----------------------------------------------------------------------------*/
 /* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
 void Task::vExceptionHandler(Exception xException)
@@ -293,8 +300,8 @@ void Task::vExceptionTrace(void)
 {
   _noPreconditions_
   
-  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-    return;
+//  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+//    return;
   
   //
   // trace what is relevant for debugging.  could be quite substantial
@@ -311,7 +318,6 @@ void Task::vExceptionTrace(void)
   AM::vTaskDump();
   vContentDump();
   AM::vTaskFullTrace(this);
-  
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("\n\n"_Stz);
@@ -391,7 +397,7 @@ i8 Task::iAcksOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iOriginal = m_oAcksRmg.nOriginalAcks();
+  i8 iOriginal = m_oAcksRmg_task.nOriginalAcks();
   
   return iOriginal;
 }
@@ -403,7 +409,7 @@ i8 Task::iAcksRmg_assert_only_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iRmg = m_oAcksRmg.iPrintOnlyValue();
+  i8 iRmg = m_oAcksRmg_task.iPrintOnlyValue();
   
   return iRmg;
 }
@@ -417,7 +423,7 @@ void Task::vAcksRmg(i8 nAcksRmg)
   
   ASSERT(bIsTaskLocked());
   
-  m_oAcksRmg.vSetRemaining(nAcksRmg);
+  m_oAcksRmg_task.vSetRemaining(nAcksRmg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,7 +433,7 @@ bool Task::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg_task.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -549,6 +555,30 @@ void Task::vDeleteInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* . print                                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vDotPrint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  sSTMT sFormatted;
+  
+  va_list vaArgs;
+  va_start(vaArgs,szFormat);
+  sFormatted.vSprintVA(szFormat,vaArgs);
+  va_end(vaArgs);
+  
+  if (m_pJob.bIsNotNull()) {
+    m_pJob->vDotPrint(sFormatted);
+  }
+  else
+  {
+    m_pOp->vDotPrint(sFormatted);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vDump(void)
@@ -596,6 +626,10 @@ void Task::vDump(void)
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack);
 
+
+  // dump the logicUnit registers
+  // revised job/op model
+  m_pJob->pJobLogicUnit()->vDumpRegisters();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   AM::vTraceDumpDropLock();
@@ -713,21 +747,6 @@ void Task::vGrabTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_okLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialise the execution context of this task                              */
-/*----------------------------------------------------------------------------*/
-void Task::vInitExeContext(void)
-{
-  if (m_aInxPtr)
-    return;
-  
-  Stz* szProfileNm = AM::szJobOpNm(m_pJob);
-  if (!szProfileNm)
-    szProfileNm = AM::JOB::szJobNm(m_pJob);
-  
-  m_pProfile = new Profile(szProfileNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,56 +885,6 @@ void Task::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the logic unit of this task                                            */
-/*----------------------------------------------------------------------------*/
-LogicUnit* Task::pLogicUnit_task(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pLogicUnit_task;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job of this task                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLogicUnit_task(LogicUnit* pLogicUnit_task)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  m_pLogicUnit_task = pLogicUnit_task;
-}
-
-/*----------------------------------------------------------------------------*/
-/* log memory?                                                                */
-/*----------------------------------------------------------------------------*/
-bool Task::bLogMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bLogMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set log memory                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLogMemory(bool bLogMemory)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bLogMemory = bLogMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* log resource usage?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Task::bLogResource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bLogResource;
-}
-
-/*----------------------------------------------------------------------------*/
 /* new input                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vNewInput(void)
@@ -925,6 +894,26 @@ void Task::vNewInput(void)
   RASSERT(! m_pInput);
     
   m_pInput = new Input;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the oo of this task                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Task::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the op of this task                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vOp(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pOp = pOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,15 +963,7 @@ LockSet* Task::pReadLocks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-#ifdef WITH_LOCK_SETS
-
   return & m_oReadLocks;
-  
-#else
-  
-  return nullptr;
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1132,6 +1113,16 @@ void Task::vSeeLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see lock sets                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeeLogicUnitRegisters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pJob->pJobLogicUnit()->vDumpRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is task seeded to run                                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bSeeded(void)
@@ -1153,13 +1144,20 @@ void Task::vSeedTask(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = AM::szJobSeed(m_pJob);
+  Stz* szSeed = nullptr;
+  if (m_pJob.bIsNotNull())
+    szSeed = AM::JOB::szJobSeed(m_pJob);
+  else
+  if (m_pOp.bIsNotNull())
+    szSeed = AM::OP::szOpSeed(m_pOp);
+  else
+    NEVER_REACH;
   
   //vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
   
   if (! pSeedWord) {
-    AM::szJobSeed(m_pJob);
+    AM::JOB::szJobSeed(m_pJob);
     
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
@@ -1290,7 +1288,7 @@ void Task::vTracePoint(Stz* aMark)
          AM::szNodeNm(),
          AM::iThisNodeNo(),
          szJobName(),
-         m_oAcksRmg.iPrintOnlyValue(),
+         m_oAcksRmg_task.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),
          aMark,
@@ -1476,15 +1474,7 @@ LockSet* Task::pWriteLocks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-#ifdef WITH_LOCK_SETS
-
   return & m_oWriteLocks;
-  
-#else
-  
-  return nullptr;
-  
-#endif
 }
 
 

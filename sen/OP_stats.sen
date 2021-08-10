@@ -5,7 +5,7 @@
 " OP_stats.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : stats_StartMarker \handler
 
@@ -50,18 +50,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* handler for ZK_M_EXITING ...                                               */
 /*----------------------------------------------------------------------------*/
-: stats_ExitMarker \handler
-/*
-  Expressions::lockSample // to operandC[]
-  //OperandC[].pipeOut
-
-  PipeIn[].pipeOut
- 
- Op.ackPipelineJob
- false
-*/
+: stats_Exiting \handler
 
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
@@ -69,15 +60,13 @@
   // create an infoSet operand
   infoSetTable[] InfoSet[].new
 
-  // add lock  to the infoSet
+  // add lock to the infoSet
   infoSetTable[] InfoSet[].addLockStats assert
 
   // pipeout the infoset
   InfoSet[].pipeOut
 
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
+  ZK_M_EXITING_handler // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,8 +78,8 @@
 
   op__topology
 
-  find: stats_StartMarker ZK_STARTMARKER op[].handler!
-  find: stats_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: stats_StartMarker ZK_M_START op[].handler!
+  find: stats_Exiting     ZK_M_EXITING  op[].handler!
 
   op__loop
 

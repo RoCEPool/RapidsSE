@@ -33,21 +33,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Grid(void)
 {
-  vAddStep("grid::adjustPtnMap"_Stz,      &Step::vGridAdjustPtnMap);
-  vAddStep("grid::bootNodes"_Stz,         &Step::vGridBootNodes);
-  vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
   vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
-  vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGridObject);
+  vAddStep("grid::findNodeByName"_Stz,    &Step::vGridFindNodeByName);
+  vAddStep("grid::findNodeByNo"_Stz,      &Step::vGridFindNodeByNo);
+  vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGrid);
   vAddStep("grid::getParts"_Stz,          &Step::vGridGetGridParts);
-  vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
-  vAddStep("grid::node"_Stz,              &Step::vGridNode);
-  vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
+  vAddStep("grid::knownNodes"_Stz,        &Step::vGridKnownNodes);
+  vAddStep("grid::ptnsPerNode"_Stz,       &Step::vGridPtnsPerNode);
   vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
-  vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
-  vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
-  vAddStep("grid::tablePtns"_Stz,         &Step::vGridTablePtns);
   vAddStep("grid::tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
@@ -55,39 +50,53 @@ void Step::vAddSteps_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::adjustPtnMap -- adjust partition map                                 */
+/* grid::vGridDumpInfo -- display nodes in the grid                           */
 /*----------------------------------------------------------------------------*/
-void Step::vGridAdjustPtnMap(void)
+void Step::vGridDumpInfo(void)
+{
+  ENTRY();
+
+  //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
+
+  s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
+
+  m_pDataStack->vPushStr(pDumpBuffer);
+
+  //m_pDataStack->vPushStz(pDumpBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::findNodeByName -- find node based on name                            */
+/*----------------------------------------------------------------------------*/
+void Step::vGridFindNodeByName(void)
 {
   ENTRY();
   
-  AM::pGrid()->vAdjustPtnMap();
+  s256 sNodeNm;
+  m_pDataStack->vPopStr(sNodeNm,__func__);
+  
+  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
+  
+  m_pDataStack->vPushPtr(pNode);
+
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::bootNodes -- get number of nodes in the grid                         */
+/* grid::findNodeByNo -- find node based on no                                */
 /*----------------------------------------------------------------------------*/
-void Step::vGridBootNodes(void)
+void Step::vGridFindNodeByNo(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nNodes());
+  i8 iNode = m_pDataStack->iPopInt(__func__);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::connectedNodes -- get number of connected nodes in the grid          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridConnectedNodes(void)
-{
-  ENTRY();
+  Node* pNode = AM::pGrid()->pFindNode(iNode);
   
-  i8 nNodes = AM::pGrid()->nNodes();
-
-  m_pDataStack->vPushInt(nNodes);
+  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }
@@ -95,12 +104,12 @@ void Step::vGridConnectedNodes(void)
 /*----------------------------------------------------------------------------*/
 /* grid::getGrid -- get grid object                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vGridGetGridObject(void)
+void Step::vGridGetGrid(void)
 {
   ENTRY();
 
   // ... code which initiates the gridGet transfer ...
-  vTrace("C++ gets called: vGridGetGridObject\n"_Stz);
+  vTrace("C++ gets called: vGridGetGrid\n"_Stz);
 
   Grid* pGrid = AM::pGrid();
 
@@ -120,17 +129,43 @@ void Step::vGridGetGridParts(void)
 
   vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
          pGrid->szGridNm()->azChar(),
-         pGrid->iThisNode());
+         pGrid->iThisNodeNo());
 
   pGrid->iPrepareParcel();
   Parcel* pParcel = pGrid->pParcel();
 
-  if (pParcel && pParcel->bIsOriginal()) {
+  if (pParcel && pParcel->bOriginalParcel()) {
     vTrace("C++ prepared pParcel:%p for sending, it is originally created by Grid\n"_Stz, pGrid);
   }
 
   m_pDataStack->vPushPtr(pParcel);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::knownNodes -- get number of connected nodes in the grid              */
+/*----------------------------------------------------------------------------*/
+void Step::vGridKnownNodes(void)
+{
+  ENTRY();
+  
+  i8 nNodes = AM::pGrid()->nKnownNodes();
+
+  m_pDataStack->vPushInt(nNodes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::ptnsPerNode -- get number of partitions per node                     */
+/*----------------------------------------------------------------------------*/
+void Step::vGridPtnsPerNode(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
+  
   EXIT();
 }
 
@@ -146,12 +181,12 @@ void Step::vGridPutGridParts(void)
   Grid* pGridRemote  = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
 
-  i8 nObjParts = pParcel->nObjects();
+  i8 nItems = pParcel->nItems();
 
-  vTrace("C++ gets called: vGridPutGridParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+  vTrace("C++ gets called: vGridPutGridParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nItems);
 
-  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object *pObject = pParcel->pGetObject(i_Obj);
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object *pObject = pParcel->pGetItem(i_Item);
     if (pObject && (pObject->eGetClassNo() == CN_GRID)) {
       pGridRemote = (Grid *) pObject;
       vTrace("Grid:%p reassemble from parcel, grid:%s\n"_Stz,pGridRemote, pGridRemote->szClassNm()->azChar());
@@ -165,7 +200,7 @@ void Step::vGridPutGridParts(void)
 
   Grid* pGridLocal = AM::pGrid();
 
-  if (pGridLocal->nNodes() == pGridRemote->nNodes()) {
+  if (pGridLocal->nKnownNodes() == pGridRemote->nKnownNodes()) {
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
@@ -182,52 +217,6 @@ void Step::vGridPutGridParts(void)
 
   bMatched ? m_pDataStack->vPushInt(1) : m_pDataStack->vPushInt(0);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::findNode -- find node based on name                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vGridFindNode(void)
-{
-  ENTRY();
-  
-  s256 sNodeNm;
-  m_pDataStack->vPopStr(sNodeNm,__func__);
-  
-  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
-  
-  m_pDataStack->vPushPtr(pNode);
-
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::node -- get node from grid                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vGridNode(void)
-{
-  ENTRY();
-  
-  i8 iNode = m_pDataStack->iPopInt(__func__);
-  
-  Node* pNode = AM::pGrid()->pGetNode(iNode);
-  
-  m_pDataStack->vPushPtr(pNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::partitions -- get number of partitions in the grid                   */
-/*----------------------------------------------------------------------------*/
-void Step::vGridPartitions(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::nPtnsInGrid());
-  
   EXIT();
 }
 
@@ -251,9 +240,9 @@ void Step::vGridShow(void)
   ENTRY();
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nNodes());
-  vTrace("  %lld partitions per table\n"_Stz,AM::nPtnsPerTable());
-  vTrace("  %lld total partitions\n"_Stz,AM::nPtnsInGrid());
+  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
+  vTrace("  %lld partitions per table\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+  vTrace("  %lld total partitions\n"_Stz,AM::PTNMAP::nPtnsInGrid());
   
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
       vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
@@ -267,35 +256,23 @@ void Step::vGridShow(void)
              (*oNode_I)->pSendSocket() ? "connected" : "not connected");
   
   
-  vTrace("\n"_Stz);
+  vTrace(";;\n\n"_Stz);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::tablePtns -- get number of partitions per table in the grid          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridTablePtns(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::nPtnsPerTable());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::TablePtnToPtnNo -- tablePtn to ptnNo                                 */
+/* grid::TablePtnToPtnNo -- get tPtnNo { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn }  */
 /*----------------------------------------------------------------------------*/
 void Step::vGridTablePtnToPtnNo(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  tPN tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
+  tPN tPtnNo = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
   
-  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(tPtnNo);
   
   EXIT();
 }
@@ -307,7 +284,7 @@ void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNode();
+  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
   
   m_pDataStack->vPushInt(iNodeNo);
   
@@ -330,32 +307,6 @@ void Step::vGridThisNodeNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::started! -- set grid started                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vGridStartedStore(void)
-{
-  ENTRY();
-  
-  i8 iStarted = m_pDataStack->iPopInt(__func__);
-  
-  AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::started@ -- get grid started                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vGridStartedFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* grid::toNode -- convert partition id to node no                            */
 /*----------------------------------------------------------------------------*/
 void Step::vGridToNode(void)
@@ -367,28 +318,10 @@ void Step::vGridToNode(void)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
   
-  i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
+  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
   
   m_pDataStack->vPushInt(i_Node);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::vGridDumpInfo -- display nodes in the grid                           */
-/*----------------------------------------------------------------------------*/
-void Step::vGridDumpInfo(void)
-{
-  ENTRY();
-
-  //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
-
-  s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
-
-  m_pDataStack->vPushStr(pDumpBuffer);
-
-  //m_pDataStack->vPushStz(pDumpBuffer);
-
   EXIT();
 }
 

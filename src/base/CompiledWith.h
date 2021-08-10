@@ -83,19 +83,12 @@
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// temporary
-
-#define WITH_NEW_OPERAND_QUEUE EndDefine   // code for new operand queue
-
-#define WITH_SEPARATE_OOO_QUEUE EndDefine  // code for use separate ooo queue
+// WIP
 
 #define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
 
-#define WITH_LOCK_SETS EndDefine           // code for lock sets
-
-//#define WITH_LOGIC_UNIT_TASK EndDefine     // code if logic unit is in task
-
-//#define WITH_NODE_SKIPLIST EndDefine     // code for skiplist of nodes
+#define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
+                                           //   instead of partition no
 
 /*============================================================================*/
 /* end                                                                        */

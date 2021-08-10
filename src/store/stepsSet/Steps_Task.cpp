@@ -32,6 +32,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
+  vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
@@ -76,7 +77,7 @@ void Step::vTaskAck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::acks! -- store value into given tasks m_oAcksRmg                      */
+/* task::acks! -- store value into given tasks m_oAcksRmg_task                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(void)
 {
@@ -84,7 +85,7 @@ void Step::vTaskAcksStore(void)
     
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
+  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
 
   RASSERT(bIsLocked());
   
@@ -210,7 +211,7 @@ void Step::vTaskIsAckSet(void)
   
   Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg_task.bIsSet();
     
   m_pDataStack->vPushInt(iIsAckSet);
 
@@ -380,6 +381,18 @@ void Step::vTaskSeeLockSets(void)
   ENTRY();
   
   vSeeLockSets();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seeLogicUnitRegisters -- see logic Unit registers                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeeLogicUnitRegisters(void)
+{
+  ENTRY();
+
+  vSeeLogicUnitRegisters();
 
   EXIT();
 }

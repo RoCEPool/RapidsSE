@@ -5,17 +5,20 @@
 " OP_parser.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: parser_CancelMarker \handler
+: parser_Cleaning \handler
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : parser_DataPulse \handler
+
+  Pipein[].pipeout
 
   // create the command error info set
   op__cmdErrInfoSet
@@ -24,9 +27,8 @@
 
   Operand[].isNull if
     InfoSet[].pipeOut
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    ErrorMarker[].newErrorMarker
+    ErrorMarker[].pipeOut
     true
     exit
   then
@@ -59,9 +61,8 @@
     StreamSet[].pipeout
 
     LogicUnit[].compilerToExit if
-      Pipein[].delete
       Operand[].delete
-      Operand[].newExitEarlyMarker
+      Operand[].newLeaveMarker
       Operand[].pipeout
       true
       exit
@@ -69,10 +70,11 @@
 
   then
 
-  ZK_DATAPULSE_handler
   Operand[].pipeOut
   Operand[].newEosMarker
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,8 +89,8 @@
 
   op__topology
 
-  find: parser_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: parser_DataPulse    ZK_DATAPULSE    op[].handler!
+  find: parser_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: parser_DataPulse     ZK_M_DATAPULSE     op[].handler!
 
   op__loop
 

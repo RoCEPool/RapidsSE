@@ -38,8 +38,8 @@ void Step::vOperandCCollect(void)
 
   Operand* pCollectingTail = nullptr;
   
-  if (! m_pJob->pLogicUnit_job()->m_xpOperandC.bIsNull())
-    pCollectingTail = *m_pJob->pLogicUnit_job()->m_xpOperandC;
+  if (! m_p_TaskLogicUnit->m_xpOperandC.bIsNull())
+    pCollectingTail = *m_p_TaskLogicUnit->m_xpOperandC;
 
   if (pCollectingTail) {
     DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollectingTail);
@@ -54,7 +54,7 @@ void Step::vOperandCCollect(void)
     pCollectingTail = pOperand;
   }
 
-  m_pJob->pLogicUnit_job()->m_xpOperandC = pCollectingTail;
+  m_p_TaskLogicUnit->m_xpOperandC = pCollectingTail;
   
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vOperandCGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandC);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandC);
   
   EXIT();
 }
@@ -78,9 +78,9 @@ void Step::vOperandCGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandC);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandC);
   
-  m_pJob->pLogicUnit_job()->m_xpOperandC = nullptr;
+  m_p_TaskLogicUnit->m_xpOperandC = nullptr;
 
   EXIT();
 }
@@ -94,9 +94,9 @@ void Step::vOperandCSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpOperandC.bIsNull());
+  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpOperandC.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandC = _pOperand(pOperand);
+  m_p_TaskLogicUnit->m_xpOperandC = _pOperand(pOperand);
 
   EXIT();
 }

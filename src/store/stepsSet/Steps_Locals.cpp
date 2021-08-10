@@ -246,6 +246,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("ErrorMarker[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ErrorMarker[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("MemoryHog[]"_Stz)) {
+    pCurrentWord->vEncodeCall("MemoryHog[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Node[]"_Stz)) {
     pCurrentWord->vEncodeCall("Node[].set"_Stz);
     EXIT();

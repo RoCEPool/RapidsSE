@@ -22,6 +22,8 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+#include "MY.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -42,8 +44,8 @@ void Step::vToRowCompleted(void)
 {
   ENTRY();
   
-  //ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
-  ToRow* pToRow = * m_pJob->pLogicUnit_job()->m_xpToRow;
+  //ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+  ToRow* pToRow = * m_p_TaskLogicUnit->m_xpToRow;
 
   RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();
   
@@ -59,9 +61,9 @@ void Step::vToRowConvert(void)
 {
   ENTRY();
 
-  ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
+  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
 
   char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
@@ -79,7 +81,7 @@ void Step::vToRowCreate(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
+  Job* pJob = MY::pJob();
   
   TagSet* pJobTags = pJob->pJobTags();
   
@@ -91,13 +93,13 @@ void Step::vToRowCreate(void)
   bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
   UNUSED(b);
 
-  StreamDef* pStreamDef = m_pJob->pLogicUnit_job()->m_xpTable->pStreamDef();
-  BucketMap* pBucketMap = m_pJob->pLogicUnit_job()->m_xpTable->pBucketMap();
+  StreamDef* pStreamDef = m_p_TaskLogicUnit->m_xpTable->pStreamDef();
+  BucketMap* pBucketMap = m_p_TaskLogicUnit->m_xpTable->pBucketMap();
 
   bool bPtnHash = true;
   ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);
       
-  m_pJob->pLogicUnit_job()->m_xpToRow = pToRow;
+  m_p_TaskLogicUnit->m_xpToRow = pToRow;
   
   delete pFmt;
   
@@ -111,11 +113,11 @@ void Step::vToRowDangling(void)
 {
   ENTRY();
   
-  if (m_pJob->pLogicUnit_job()->m_xpToRow.bIsNull()) {
+  if (m_p_TaskLogicUnit->m_xpToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
+    ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
     RowBuffer* pRowBuffer = pToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
@@ -130,8 +132,8 @@ void Step::vToRowDelete(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
-  m_pJob->pLogicUnit_job()->m_xpToRow = nullptr;
+  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+  m_p_TaskLogicUnit->m_xpToRow = nullptr;
   
   delete pToRow;
   
@@ -145,7 +147,7 @@ void Step::vToRowRowCountersFetch(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
+  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
 
   m_pDataStack->vPushInt(pToRow->iRowsSkipped());
   m_pDataStack->vPushInt(pToRow->iRowsInvalid());

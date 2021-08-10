@@ -9,12 +9,13 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
-  N_NATIONKEY       INTEGER NOT NULL,
-  N_NAME            CHAR(25) NOT NULL,
-  N_REGIONKEY       INTEGER NOT NULL,
-  N_COMMENT         VARCHAR(152)
-);
+_nation;
+success
+
+_region;
+success
+
+_supplier;
 success
 
 -- memory leak testing not enabled due to memory leaks in the transliteration / back end
@@ -33,10 +34,10 @@ rows: (*,'stageMarkers',
 » routing: unicast
 
 -> projectOp
-   » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+   » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+   » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+   » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+   » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> tableScanOp
       » location: all partitions
@@ -167,6 +168,150 @@ rows: (*,'stageMarkers',
 
 
 
+-- Test that the left child of a join is a StageMarker with a routing (single join)
+EXPLAIN STAGE stageMarkers
+SELECT n_name, r_name
+FROM region, nation;
+rows: (*,'stageMarkers',
+'stageMarker
+» location: all partitions
+» routing: unicast
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+
+-> -> stageMarker
+      » location: all partitions
+      » routing: local partition
+
+-> -> -> nestedLoopJoinOp
+         » join type: Cross Join
+         » predicate: (true)
+         » ordinal predicate: (true)
+
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: broadcast
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)'
+)
+
+
+-- Test that the left child of a join is a StageMarker with a routing (nested join)
+-- Also test that the parent of a join is a StageMarker
+EXPLAIN STAGE stageMarkers
+SELECT n_name, r_name, s_name
+FROM region, nation
+JOIN supplier ON s_nationkey = n_nationkey;
+rows: (*,'stageMarkers',
+'stageMarker
+» location: all partitions
+» routing: unicast
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
+
+-> -> stageMarker
+      » location: all partitions
+      » routing: local partition
+
+-> -> -> nestedLoopJoinOp
+         » join type: Inner Join
+         » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
+         » ordinal predicate: ($11 = $4)
+
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: broadcast
+
+-> -> -> -> -> nestedLoopJoinOp
+               » join type: Cross Join
+               » predicate: (true)
+               » ordinal predicate: (true)
+
+-> -> -> -> -> -> stageMarker
+                  » location: all partitions
+                  » routing: broadcast
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.region)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.supplier)'
+)
+
+-- Appropriate StageMarkers are set when we have a join with aggregates
+EXPLAIN STAGE stageMarkers
+SELECT r_name, COUNT(n_name)
+FROM region JOIN nation ON r_regionkey = n_regionkey
+GROUP BY r_name;
+rows: (*,'stageMarkers',
+'stageMarker
+» location: origin
+» routing: unicast
+
+-> aggregateOp
+   » location: origin
+   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
+   » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_name))) ; Ordinal Expr = SUM($2))
+   » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+
+-> -> stageMarker
+      » location: all nodes
+      » routing: unicast
+
+-> -> -> aggregateOp
+         » location: all nodes
+         » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
+         » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_name)) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: local node
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+               » column: (Expr = COUNT(rapidsse.public.nation.n_name) ; Ordinal Expr = COUNT($5))
+               » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($2)
+
+-> -> -> -> -> -> stageMarker
+                  » location: all partitions
+                  » routing: local partition
+
+-> -> -> -> -> -> -> nestedLoopJoinOp
+                     » join type: Inner Join
+                     » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+                     » ordinal predicate: ($1 = $6)
+
+-> -> -> -> -> -> -> -> stageMarker
+                        » location: all partitions
+                        » routing: broadcast
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.region)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.nation)'
+)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -180,5 +325,11 @@ rows: 0
 
 CLEANUP {
   DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  DROP TABLE supplier;
   mute
 }

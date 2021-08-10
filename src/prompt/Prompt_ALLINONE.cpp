@@ -356,7 +356,7 @@ void vRapidsSE_ApiDemo_putRows(void)
       break;
         
     // exit marker?
-    if (OM_EXITMARKER == eOpMarker) {
+    if (OM_EXITING == eOpMarker) {
       RapidsSE::eDeleteOperand(aSession,&aOperand);
       break;
     }
@@ -741,9 +741,9 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   i8 iJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob_Pipeline = AM::pJob_FindParticipating(iJobId);
+  Job* pPipelineJob = AM::pJob_FindParticipating(iJobId);
   
-  if ( ! pJob_Pipeline ) {
+  if ( ! pPipelineJob ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
     AM::vJob_DumpParticipating();
     return false;
@@ -752,7 +752,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
     vTrace("Cancelling job %lld\n"_Stz, iJobId);
   
   // get the pipeline from the job
-  Pipeline* pPipeline = *pJob_Pipeline->m_pLogicUnit_job->m_xpPipeline;
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
@@ -999,16 +999,13 @@ bool PROMPT::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
-  vTrace("  Node %s ShmLib %s Free %s Nodes %lld TablePtns %lld Expressions %lld : %s\n"_Stz,
+  vTrace("  Node %s ShmLib %s Free %s Nodes %lld PtnsPerNode %lld Expressions %lld\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),
-         gxCmdLineArgs.m_xSysArgs.m_nBootNodes,
-         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable,
-         gxCmdLineArgs.m_xSysArgs.m_nThreads,
-
-         AM::pGrid()->bHasStarted() ? "cluster started"
-                                    : "cluster not started"
+         gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes,
+         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode,
+         gxCmdLineArgs.m_xSysArgs.m_nThreads
          );
     
   return true;
@@ -1046,12 +1043,12 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_INT_PRECISION = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_NODES         = %lld\n"_Stz,C_MAX_NODES);
-  vTrace("  C_MAX_PARTITIONS    = %lld\n"_Stz,C_MAX_PARTITIONS);
+  vTrace("  C_MAX_PTNSINGRID    = %lld\n"_Stz,C_MAX_PTNSINGRID);
   vTrace("  C_MAX_RECORD        = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SESSIONS      = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT   = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_PATH          = %lld\n"_Stz,C_MAX_PATH);
-  vTrace("  C_MAX_TABLEPTNS         = %lld\n"_Stz,C_MAX_TABLEPTNS);
+  vTrace("  C_MAX_PTNSPERNODE   = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_THREADS       = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS        = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("  C_MAX_VCH_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
@@ -1094,7 +1091,7 @@ bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("  DdlLock : %016x\n"_Stz,AM::pDdlLock()->uLockWord());
+  vTrace("  DdlLock : %016x\n"_Stz,AM::MASTERLOCK::uDdlLockWord());
 
   return true;
 }

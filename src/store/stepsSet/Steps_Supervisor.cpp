@@ -74,8 +74,8 @@ void Step::vSupervisorCollectInfo(void)
   if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
     szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
   else
-    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
-                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
+    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[0].m_sIPAddress.azChar(),
+                     gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[0].m_iPortNo);
   strncpy(xHeartbeat.m_acNodeName, szNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
    */
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
@@ -126,7 +126,7 @@ void Step::vSupervisorCollectInfo(void)
 
     // Adding Address and Port
     //
-    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNode();
+    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNodeNo();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();

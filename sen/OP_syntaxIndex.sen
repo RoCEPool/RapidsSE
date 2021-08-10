@@ -59,13 +59,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : syntaxIndex_DataMarker
 
   0 0 0 locals| sTableNm sSmt errorCode |
 
   //job[] job.tagSet@ tagSet.asStr .
+  Pipein[].pipeout
 
   // is it a unique index ?
   "<unique>" job[] job.tagSet@ tagSet.hasName if
@@ -82,7 +83,6 @@
   sTableNm "" str.equal if
     job[] job.error@ to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -91,7 +91,6 @@
   sTableNm syntaxIndex::checkCreate not if ( errorCode )
     to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -101,7 +100,6 @@
   indexDef[].isNull if
     job[] job.error@ to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -110,7 +108,6 @@
   // should be in tables
   folder[].isTables assert
 
-  Pipein[].pipeout
   indexDef[].pipeout
 
   // should be in tables
@@ -128,7 +125,7 @@
 
   op__topology
 
-  find: syntaxIndex_DataMarker ZK_DATAPULSE op[].handler!
+  find: syntaxIndex_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

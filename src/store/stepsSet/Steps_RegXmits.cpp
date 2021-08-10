@@ -20,13 +20,16 @@ void Step::vAddSteps_RegSends(void)
 {
   vAddStep("Sends[]"_Stz,                &Step::vRegSendsGet);
   vAddStep("Sends[].delete"_Stz,         &Step::vRegSendsDelete);
-  vAddStep("Sends[].handleCancel"_Stz,   &Step::vRegSendsHandleCancel);
-  vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
-  vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
-  vAddStep("Sends[].handleError"_Stz,    &Step::vRegSendsHandleError);
-  vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
+  vAddStep("Sends[].handleCancelling"_Stz, &Step::vRegSendsHandleCancelling);
+  vAddStep("Sends[].handleCleaning"_Stz,  &Step::vRegSendsHandleCleaning);
   vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
-  vAddStep("Sends[].handlePulsed"_Stz,   &Step::vRegSendsHandlePulsed);
+  vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
+  vAddStep("Sends[].handleEnd"_Stz,      &Step::vRegSendsHandleEnd);
+  vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
+  vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
+  vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
+  vAddStep("Sends[].handleExiting"_Stz,  &Step::vRegSendsHandleExiting);
+  vAddStep("Sends[].handleLeaving"_Stz,  &Step::vRegSendsHandleLeaving);
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
   vAddStep("Sends[].isNull"_Stz,         &Step::vRegSendsIsNull);
@@ -40,10 +43,10 @@ void Step::vRegSendsDelete(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   delete pSends;
   
-  m_pJob->pLogicUnit_job()->m_xpSends = nullptr;
+  m_p_TaskLogicUnit->m_xpSends = nullptr;
   
   EXIT();
 }
@@ -55,24 +58,55 @@ void Step::vRegSendsGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpSends);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpSends);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleCancel -- handle consume of cancel marker                    */
+/* Sends[].handleCancelling -- handle consume of cancelling marker            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleCancel(void)
+void Step::vRegSendsHandleCancelling(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
  
-  pSends->vIncExit();
+  pSends->vIncCancelling();
   
-  m_pDataStack->vPushInt(pSends->bExitDone());
+  m_pDataStack->vPushInt(pSends->bCancellingDone());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleCleaning -- handle consume of cleaningp marker               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleCleaning(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  pSends->vIncCleaning();
+
+  m_pDataStack->vPushInt(pSends->bCleaningDone());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleDataPulse -- handle consume of data pulse                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleDataPulse(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  m_pDataStack->vPushInt(pSends->bDataPulseDone());
+  pSends->vIncDataPulse();
+
   EXIT();
 }
 
@@ -83,12 +117,28 @@ void Step::vRegSendsHandleDestroy(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncDestroy();
   
   m_pDataStack->vPushInt(pSends->bDestroyDone());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleEnding -- handle consume of ending marker                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleEnding(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  pSends->vIncEnding();
+
+  m_pDataStack->vPushInt(pSends->bEndingDone());
+
   EXIT();
 }
 
@@ -99,7 +149,7 @@ void Step::vRegSendsHandleEos(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   pSends->vIncEos();
   
@@ -109,65 +159,67 @@ void Step::vRegSendsHandleEos(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleError -- handle consume of error marker                      */
+/* Sends[].handleErroring -- handle consume of erroring marker                */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleError(void)
+void Step::vRegSendsHandleErroring(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
-  pSends->vIncError();
+  pSends->vIncErroring();
   
-  m_pDataStack->vPushInt(pSends->bErrorDone());
+  m_pDataStack->vPushInt(pSends->bErroringDone());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleExit -- handle consume of exit marker                        */
+/* Sends[].handleExiting -- handle consume of exiting marker                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleExit(void)
+void Step::vRegSendsHandleExiting(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
-  pSends->vIncExit();
+  pSends->vIncExiting();
   
-  m_pDataStack->vPushInt(pSends->bExitDone());
+  m_pDataStack->vPushInt(pSends->bExitingDone());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleDataPulse -- handle consume of data pulse                    */
+/* Sends[].handleEnd -- handle consume of end marker                          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleDataPulse(void)
+void Step::vRegSendsHandleEnd(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
-  m_pDataStack->vPushInt(pSends->bDataPulseDone());
-  pSends->vIncDataPulse();
+  pSends->vIncEnd();
+  
+  m_pDataStack->vPushInt(pSends->bEndDone());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handlePulsed -- handle consume of pulsed marker                    */
+/* Sends[].handleLeaving -- handle consume of leaving marker                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandlePulsed(void)
+void Step::vRegSendsHandleLeaving(void)
 {
   ENTRY();
-  
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
-  
-  pSends->vIncPulsed();
-  
-  m_pDataStack->vPushInt(pSends->bPulsedDone());
-  
+
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+
+  bool bLeavingDone = pSends->bLeavingDone();
+  pSends->vIncLeaving();
+
+  m_pDataStack->vPushInt(bLeavingDone);
+
   EXIT();
 }
 
@@ -178,7 +230,7 @@ void Step::vRegSendsHandleStart(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   bool bStartDone = pSends->bStartDone();
   pSends->vIncStart();
@@ -195,7 +247,7 @@ void Step::vRegSendsHandleStreamDef(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_pJob->pLogicUnit_job()->m_xpSends);
+  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
   bool bStreamDefDone = pSends->bStreamDefDone();
   
@@ -213,7 +265,7 @@ void Step::vRegSendsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpSends.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -225,11 +277,11 @@ void Step::vRegSendsNew(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpSends.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpSends.bIsNull());
   
   i8 iSends = m_pDataStack->iPopInt(__func__);
   
-  m_pJob->pLogicUnit_job()->m_xpSends = new Sends(iSends);
+  m_p_TaskLogicUnit->m_xpSends = new Sends(iSends);
   
   EXIT();
 }

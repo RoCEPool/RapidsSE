@@ -16,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
@@ -44,7 +44,7 @@
 
   op__topology
 
-  find: monitor_StartMarker ZK_STARTMARKER op[].handler!
+  find: monitor_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

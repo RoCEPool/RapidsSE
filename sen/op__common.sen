@@ -25,8 +25,6 @@
     EC_INVALID_FILE
     op__execErrMsg
 
-    PipeIn[].delete
-
     false
   then
  ;
@@ -108,8 +106,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -122,8 +118,6 @@
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
-
-    PipeIn[].delete
 
     false
     exit
@@ -154,8 +148,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -173,8 +165,6 @@
 
     // create an exec error infoset
     errorCode op__execErr
-
-    PipeIn[].delete
 
     Path[].popNamedTableFolder
     Path[].popIndexesFolder
@@ -209,8 +199,6 @@
     // create an exec error infoset
     errorCode op__execErr
 
-    PipeIn[].delete
-
     false
     exit
   then
@@ -223,8 +211,6 @@
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
-
-    PipeIn[].delete
 
     false
     exit
@@ -247,8 +233,6 @@
 
     // create an exec error infoset
     errorCode op__execErr
-
-    PipeIn[].delete
 
     Path[].popNamedTableFolder
     Path[].popIndexesFolder
@@ -369,16 +353,12 @@
 /* call event handler                                                        */
 /*----------------------------------------------------------------------------*/
 : op__callHandler
-
-  //0 LogicUnit[].logOperand
   
   //Task[] task.dropLock //OoO
 
   LogicUnit[].handler@ execute
   
   //Task[] task.grabLock //OoO
-
-  //1 LogicUnit[].logOperand
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -486,6 +466,8 @@
   
   task::seeLockSets
 
+  task::seeLogicUnitRegisters
+
   task::releaseLockSets
 
   grid::seeNodes
@@ -496,7 +478,7 @@
     PipeIn[].isNull not if
       PipeIn[].delete
     then
-  
+
     true
   else
     process::quit

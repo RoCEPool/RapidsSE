@@ -31,12 +31,8 @@ void Step::vAddSteps_DdlLock(void)
 void Step::vDdlLockDropRead(void)
 {
   ENTRY();
-  
-  ASSERT(LH_HAVE_READ_LOCK == m_pJob->pLogicUnit_job()->m_eDdlLocked);
 
-
-  AM::pDdlLock()->vDropRead();
-  m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  AM::MASTERLOCK::vDropDdlReadLock(m_p_TaskLogicUnit);
 
   EXIT();
 }
@@ -47,11 +43,8 @@ void Step::vDdlLockDropRead(void)
 void Step::vDdlLockDropWrite(void)
 {
   ENTRY();
-  
-  ASSERT(LH_HAVE_WRITE_LOCK == m_pJob->pLogicUnit_job()->m_eDdlLocked);
-  
-  AM::pDdlLock()->vDropWrite();
-  m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_NO_LOCK;
+    
+  AM::MASTERLOCK::vDropDdlWriteLock(m_p_TaskLogicUnit);
 
   EXIT();
 }
@@ -62,11 +55,8 @@ void Step::vDdlLockDropWrite(void)
 void Step::vDdlLockGrabRead(void)
 {
   ENTRY();
-  
-  ASSERT(! m_pJob->pLogicUnit_job()->m_eDdlLocked);
-  
-  AM::pDdlLock()->vGrabRead();
-  m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_READ_LOCK;
+    
+  AM::MASTERLOCK::vGrabDdlReadLock(m_p_TaskLogicUnit);
 
   EXIT();
 }
@@ -77,11 +67,8 @@ void Step::vDdlLockGrabRead(void)
 void Step::vDdlLockGrabWrite(void)
 {
   ENTRY();
-  
-  ASSERT(! m_pJob->pLogicUnit_job()->m_eDdlLocked);
-  
-  AM::pDdlLock()->vGrabWrite();
-  m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
+    
+  AM::MASTERLOCK::vGrabDdlWriteLock(m_p_TaskLogicUnit);
 
   EXIT();
 }
@@ -93,12 +80,12 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (! pJob() || ! pJob()->pLogicUnit_job()) {
+  if (! pJob() || ! pJob()->pJobLogicUnit()) {
     EXIT();
     return;
   }
 
-  if (LH_HAVE_NO_LOCK != m_pJob->pLogicUnit_job()->m_eDdlLocked)
+  if (LH_HAVE_NO_LOCK != m_p_TaskLogicUnit->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
   EXIT();
@@ -111,23 +98,14 @@ void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
   
-  if (! pJob() || ! pJob()->pLogicUnit_job()) {
-    EXIT();
-    return;
-  }
+//  if (! pJob() || ! pJob()->pJobLogicUnit()) {
+//    EXIT();
+//    return;
+//  }
   
-  if (LH_HAVE_READ_LOCK == m_pJob->pLogicUnit_job()->m_eDdlLocked) {
+  if (m_p_TaskLogicUnit)
+    AM::MASTERLOCK::vDdlLockTestDrop(m_p_TaskLogicUnit);
     
-    AM::pDdlLock()->vDropRead();
-    m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_NO_LOCK;
-  }
-  else
-  if (LH_HAVE_WRITE_LOCK == m_pJob->pLogicUnit_job()->m_eDdlLocked) {
-    
-    AM::pDdlLock()->vDropWrite();
-    m_pJob->pLogicUnit_job()->m_eDdlLocked = LH_HAVE_NO_LOCK;
-  }
-  
   EXIT();
 }
 

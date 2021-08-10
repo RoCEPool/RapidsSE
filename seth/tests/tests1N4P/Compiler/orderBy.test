@@ -26,10 +26,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -46,10 +46,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC, ($1) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -66,10 +66,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC, ($1) DESC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -86,10 +86,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) DESC, ($1) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -106,10 +106,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($1 + 1) DESC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -126,10 +126,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) DESC, ($1 + $3) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'

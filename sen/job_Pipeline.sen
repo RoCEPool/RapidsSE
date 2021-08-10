@@ -13,7 +13,7 @@
   // compile the pipeline command
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
-    job::error! !!logError exit
+    job::error! exit
   else
     Pipeline::deleteSpec
     discard

@@ -30,7 +30,7 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_CrwBuffer.macro",
     "../asm/AM_DataPulse.macro",
     "../asm/AM_DefaultHandlers.macro",
-    "../asm/AM_EndRightMarker.macro",
+    "../asm/AM_LeftOuterMarker.macro",
     "../asm/AM_EosMarker.macro",
     "../asm/AM_Index.macro",
     "../asm/AM_JoinRows.macro",

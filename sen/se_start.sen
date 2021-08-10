@@ -12,7 +12,7 @@
 
 : start_run ( -- <R> )
 
-  LogEntry SEED_RUN
+  SEED_RUN
 
   nullptr locals| pParentJob |
 
@@ -28,6 +28,7 @@
   start::defProc_Elasticity
   start::defProc_SteadyState
   start::defProc_UnloadReload
+  start::defProc_ForgetRebalance
   start::defProc_Query
   start::defProc_DynCompiler
   start::defProc_TPCH
@@ -103,16 +104,11 @@
 //  then
 
 
-  //grid::started@ not if
+  //system::started@ not if
     grid::setStartNode
-    true grid::started!
+    true system::started!
     "Cluster started" .
   //then
-
-  // spawn thread demon
-  "" false threadDemonPipeline api::spawnDemon not if
-    "Error Code %v" .printf
-  then
 
   "end start_run" .verbose
 

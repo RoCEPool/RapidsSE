@@ -5,7 +5,7 @@
 " OP_insDel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : insDel_CrwBuffer \handler
 
@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                               */
+/* handler for ZK_D_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : insDel_RowBuffer \handler
 
@@ -41,20 +41,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : insDel_StartMarker \handler
 
+  PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
+
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_StreamDef \handler
 
@@ -74,10 +76,10 @@
 
   op__topology
 
-  find: insDel_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: insDel_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: insDel_StartMarker ZK_STARTMARKER op[].handler!
-  find: insDel_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
+  find: insDel_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: insDel_StartMarker ZK_M_START op[].handler!
+  find: insDel_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop
 

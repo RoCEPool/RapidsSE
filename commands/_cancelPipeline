@@ -32,38 +32,39 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // create indexes
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
-//oldLoad lineitem "/TPCH/SF1/lineitem.csv";
-/time oldLoad lineitem "/DATA/TPCH/lineitem20K.csv";
+load lineitem "../TPCH/SF1/lineitem.tbl";
+//load lineitem "../DATA/TPCH/lineitem10K.csv";
 
-//drop table lineitem;
-
-//memoryLeaks;
-/*
 
  
  pipeline cancelTest
  begin
  
  stage stageA on origin:
- start | periodic once | stageB
+ start | pulse once | stageB
  
  stage stageB on all partitions:
- scan lineitem 30 | stageC
+ scan lineitem 10 | stageC
  
  stage stageC on origin:
  output | sink | stageA
  
  end
+ <vb_op> = 1
  ;
-/*
+
+drop table lineitem;
+
+
 // begin tracking memory
 trackMemory;
 
+/*
 pipeline forever
 begin
 
   stage stageA on origin:
-    start | periodic min 1 | print "hello" | stageB
+    start | pulse min 1 | print | stageB
 
   stage stageB on origin:
     sink | stageA
@@ -71,6 +72,13 @@ begin
 end
 ;
 */
+
+memoryLeaks;
+//create table t ( x char);
+//explain stage transliterate select 1 from t;
+
+
+
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/

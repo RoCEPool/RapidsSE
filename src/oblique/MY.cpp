@@ -255,11 +255,24 @@ Job* MY::pJob(void)
 {
   _static_
 
+  // revised job/op model
+
   Task* pTask = MY::pTask();
+  if (! pTask)
+    return nullptr;
   
-  Job* pJob = AM::pTaskJob(pTask);
+  Job* pJob = pTask->pJob();
+  if (pJob)
+    return pJob;
+
+  Op* pOp = pTask->pOp();
+  if (pOp) {
+    pJob = pOp->pPipelineJob();
+    return pJob;
+  }
   
-  return pJob;
+  return nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,13 +281,20 @@ Job* MY::pJob(void)
 LogicUnit* MY::pLogicUnit(void)
 {
   _static_
-
-  Job* pJob = MY::pJob();
-
+  
+  // revised job/op model
+  
+  Task* pTask = MY::pTask();
+  
+  Job* pJob = pTask->pJob();
   if (pJob)
-    return pJob->m_pLogicUnit_job;
-  else
-    return nullptr;
+    return pJob->pJobLogicUnit();
+
+  Op* pOp = pTask->pOp();
+  if (pOp)
+    return pOp->pOpLogicUnit();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,12 +321,15 @@ Op* MY::pOp(void)
 {
   _static_
 
-  Job* pJob = MY::pJob();
-
-  if (pJob)
-    return pJob->m_pOp;
-  else
+  // revised job/op model
+  
+  Task* pTask = MY::pTask();
+  if (! pTask)
     return nullptr;
+  
+  Op* pOp = pTask->pOp();
+  
+  return pOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,7 +359,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipeline();
+  return pOp->pPipeline_op();
 }
 
 /*----------------------------------------------------------------------------*/

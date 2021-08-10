@@ -515,10 +515,57 @@
                       ],
                       children: []
                     },
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/nestedLoopJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp
+                    {
+                      name: "joinOp",
+                      value: "Base definition of a join operation",
+                      properties: [
+                        {
+                          name: "joinType",
+                          value: "Is this an inner join, semi join, right outer join, etc",
+                          type: "/__root__/definitions/types/joinType"
+                        },
+                        {
+                          name: "joinPredicate",
+                          value: "An expression that determines if a given left/right row are to be joined",
+                          type: "/__root__/definitions/object/expr"
+                        },
+                        {
+                          name: "usingList",
+                          value: "A temporary and optional list of column names that will be turned into a join predicate during planning.",
+                          type: "/__root__/definitions/object/list/stringList",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
+                        }
+                      ],
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/nestedLoopJoinOp
+                        {
+                          name: "nestedLoopJoinOp",
+                          value: "A basic (and largely inefficient) join algorithm that uses two nested loops"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/hashJoinOp
+                        {
+                          name: "hashJoinOp",
+                          value: "A join algorithm that uses a hashmap to equate left and right predicate values"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/sortMergeJoinOp
+                        {
+                          name: "sortMergeJoinOp",
+                          value: "An efficient join algorithm that relies on the left and right rows to be in sorted order"
+                        },
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp
+                        {
+                          name: "indexLookupJoinOp",
+                          value: "A join algorithm that uses an index to look up individual rows by their indexed predicate"
+                        }
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/joinOp
+
 // Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
                     {
                       name: "orderOp",
@@ -556,18 +603,38 @@
                     {
                       name: "dataSource",
                       value: "A source of row data into the query",
+                      properties: [
+                        {
+                          // An optional alias name for the data source.
+                          name: "alias",
+                          type: "/__root__/definitions/object/valueObject/stringObject",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
+                        }
+                      ],
                       children: [
 
-// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
                         {
-                          name: "tableScanOp",
-                          value: "Linearly reads all rows in a table",
+                          name: "tableSource",
+                          value: "A data source that reads from a table",
                           properties: [
                             { name: "tableRef", type: "/__root__/definitions/object/compound/tableRef" },
-                          ]
-                        },
+                          ],
+                          children: [
 
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/indexScanOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp
+                            {
+                              name: "tableScanOp",
+                              value: "Linearly reads all rows in a table",
+                            },
+
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
+                          ]
+                        }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
@@ -636,6 +703,11 @@
                   name: "columnRef",
                   value: "A reference to a column name",
                   properties: [
+                    {
+                      name: "tableAlias",
+                      value: "Aliased name of the table that the column belongs to",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
                     {
                       name: "catalogName",
                       value: "Name of the catalog that the column belongs to",
@@ -1914,6 +1986,11 @@
                       name: "indexes",
                       value: "A list of indexes that belong to this table",
                       type: "/__root__/definitions/object/list/indexDefs"
+                    },
+                    {
+                      name: "partitioning",
+                      value: "A list of columnDefs that this table is partitioned on. May be an empty list",
+                      type: "/__root__/definitions/object/list/columnDefs"
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/tableDef
@@ -2290,7 +2367,70 @@
                   value: "Data is sent to a pipeline stage running on the same node"
                 }
               ]
-            },
+            }, // EndPath: /__root__/definitions/types/routing
+
+// Path: /__root__/definitions/types/joinType
+            {
+              name: "joinType",
+              value: "Whether the join is an inner join, left outer join, full outer join, etc",
+              children: [
+// Path: /__root__/definitions/types/joinType/innerJoin
+                {
+                  name: "innerJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true"
+                },
+// Path: /__root__/definitions/types/joinType/crossJoin
+                {
+                  name: "crossJoin",
+                  value: "Emits combined left/right row for all left/right combinations"
+                },
+// Path: /__root__/definitions/types/joinType/semiJoin
+                {
+                  name: "semiJoin",
+                  value: "Emits only left row if join predicate evaluates true"
+                },
+// Path: /__root__/definitions/types/joinType/antiJoin
+                {
+                  name: "antiJoin",
+                  value: "Emits only left row if join predicate never evaluated to true for all right row combinations"
+                },
+// Path: /__root__/definitions/types/joinType/leftOuterJoin
+                {
+                  name: "leftOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row for any previously unmatched left rows"
+                },
+// Path: /__root__/definitions/types/joinType/rightOuterJoin
+                {
+                  name: "rightOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined right/null row for any previously unmatched right rows"
+                },
+// Path: /__root__/definitions/types/joinType/fullOuterJoin
+                {
+                  name: "fullOuterJoin",
+                  value: "Emits combined left/right row if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows"
+                },
+// Path: /__root__/definitions/types/joinType/naturalInnerJoin
+                {
+                  name: "naturalInnerJoin",
+                  value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true. Only 1 copy of common columns is emitted."
+                },
+// Path: /__root__/definitions/types/joinType/naturalLeftOuterJoin
+                {
+                  name: "naturalLeftOuterJoin",
+                  value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true as well as combined left/null row for any previously unmatched left rows. Only 1 copy of common columns is emitted."
+                },
+// Path: /__root__/definitions/types/joinType/naturalRightOuterJoin
+                {
+                  name: "naturalRightOuterJoin",
+                  value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true as well as combined right/null row for any previously unmatched right rows. Only 1 copy of common columns is emitted."
+                },
+// Path: /__root__/definitions/types/joinType/naturalFullOuterJoin
+                {
+                  name: "naturalFullOuterJoin",
+                  value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows. Only 1 copy of common columns is emitted."
+                }
+              ]
+            } // EndPath: /__root__/definitions/types/joinType
           ]
         }, // EndPath: /__root__/definitions/types
       ]

@@ -69,6 +69,9 @@ Queue::~Queue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  if (m_nItems)
+    vPostMortem();
+  
   vReset();
       
   ASSERT( ! m_pEndBuffer );
@@ -202,7 +205,10 @@ Object* Queue::pPop(void)
 void Queue::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
+  if (m_nItems)
+    vPostMortem();
+
   RASSERT(0 == m_nItems);
 
   while (m_pTopBuffer)
@@ -216,7 +222,7 @@ void Queue::vReset(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -275,6 +281,32 @@ void Queue::vVerify(void)
   }
   
   ASSERT(iCount == m_nItems);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* something has gone wrong at ~Queue                                         */
+/*----------------------------------------------------------------------------*/
+void Queue::vPostMortem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("PostMortem Queue::\n"_Stz);
+  
+  vContentDump(Stz::szTab(1));
+  
+  while (Object* pObj = pPop() ) {
+    i8 iOperandKind = ZK_NONE;
+    if (pObj) {
+      iOperandKind = AM::iOperandZkKind((Operand *) pObj);
+    }
+    vTrace("  object %p class %s Operand %s\n"_Stz
+           ,pObj
+           ,pObj ? pObj->szClassNm() : "none"_Stz
+           ,aZK[(eZK)iOperandKind]);
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

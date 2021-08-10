@@ -22,10 +22,11 @@ static const i8 C_MAX_NESTED_PIPELINES = 16;
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
+static const i8 C_MAX_PARCEL_ITEMS  = 16;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
-static const i8 C_MAX_PTNS          = C_64KB;
+static const i8 C_MAX_PTNSPERNODE   = 128;    // max partitions per node
 static const i8 C_MAX_REGS          = 64;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;     // max number of sessions
@@ -33,12 +34,11 @@ static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
-static const i8 C_MAX_TABLEPTNS     = 128;    // max tablePtn's per table
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
 // max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
-static const i8 C_MAX_PARTITIONS    = C_MAX_TABLEPTNS * C_MAX_NODES;
+static const i8 C_MAX_PTNSINGRID    = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;
 static const i8 C_MIN_LVL_RATIO     = 2;

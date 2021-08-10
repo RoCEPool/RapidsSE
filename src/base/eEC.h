@@ -15,6 +15,7 @@ enum eEC // error code
   EC_AMBIGUOUS_ALIAS,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_COLUMN,              // SQL Compiler Subsystem
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
+  EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
   EC_ASSERT,
 
   /* _B_ */
@@ -75,6 +76,7 @@ enum eEC // error code
   EC_EXPR_IS_AGG_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
+  EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
 
@@ -190,6 +192,7 @@ enum eEC // error code
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
+  EC_SYSTEM_CLOSED,
 
   /* _T_ */
   EC_TABLE_ALREADY_LOADED,
@@ -204,6 +207,7 @@ enum eEC // error code
 
   /* _U_ */
   EC_UNRESOLVED_COLUMN_WILDCARD,    // SQL Compiler Subsystem
+  EC_USING_COLUMN_NOT_FOUND,        // SQL Compiler Subsystem
 
   /* _V_ */
   EC_VALIDATION_FAILURE,
@@ -236,6 +240,7 @@ static Stz* aEC[]
   /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,          // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,   // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -296,6 +301,7 @@ static Stz* aEC[]
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,         // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,           // SQL Compiler Subsystem
 
@@ -410,6 +416,7 @@ static Stz* aEC[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem
+  /* EC_SYSTEM_CLOSED                 */ "system is closed"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "table already loaded"_Stz,
@@ -424,6 +431,7 @@ static Stz* aEC[]
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz, // SQL Compiler Subsystem
+  /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,     // SQL Compiler Subsystem
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
@@ -456,6 +464,7 @@ static Stz* aEC2[] // error code
   /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,               // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,                // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "EC_ASSERT"_Stz,
 
   /* _B_ */
@@ -517,6 +526,7 @@ static Stz* aEC2[] // error code
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,             // SQL Compiler Subsystem
 
@@ -632,6 +642,7 @@ static Stz* aEC2[] // error code
   /* EC_SEMANTIC_ERROR                */ "EC_SEMANTIC_ERROR"_Stz,                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "EC_SEND_FAILURE"_Stz,
   /* EC_SYNTAX_ERROR                  */ "EC_SYNTAX_ERROR"_Stz,                   // SQL Compiler Subsystem
+  /* EC_SYSTEM_CLOSED                 */ "EC_SYSTEM_CLOSED"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "EC_TABLE_ALREADY_LOADED"_Stz,
@@ -646,6 +657,7 @@ static Stz* aEC2[] // error code
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz,     // SQL Compiler Subsystem
+  /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,         // SQL Compiler Subsystem
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "EC_VALIDATION_FAILURE"_Stz,
@@ -688,6 +700,7 @@ static Stz* aErrorMsg[]
   /* EC_AMBIGUOUS_ALIAS               */ "Ambiguous alias name"_Stz,      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "Ambiguous column name"_Stz,     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "Ambiguous table name"_Stz,      // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_USING_COLUMN        */ "Ambiguous column name in USING clause"_Stz,     // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -749,6 +762,7 @@ static Stz* aErrorMsg[]
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "Cannot have an aggregate expression in the GROUP BY list"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "Cannot have a literal expression in the GROUP BY list"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,          // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "Join predicate expression must be an equi-join"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "Invalid expression because it is not being projected"_Stz,     // SQL Compiler Subsystem
 
@@ -863,6 +877,7 @@ static Stz* aErrorMsg[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem. Custom error string from ANTLR.
+  /* EC_SYSTEM_CLOSED                 */ "system closed"_Stz,
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ "table already loaded"_Stz,
@@ -877,6 +892,7 @@ static Stz* aErrorMsg[]
 
   /* _U_ */
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "Column wildcard does not resolve to any tables in the query"_Stz,
+  /* EC_USING_COLUMN_NOT_FOUND        */ "Column name in USING clause is not found"_Stz,
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,

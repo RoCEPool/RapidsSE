@@ -17,31 +17,33 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                 END */
+/* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: orderBy_CancelMarker \handler
+: orderBy_Cleaning \handler
 
-  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_CANCELMARKER_handler
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : orderBy_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   EC_ORDERBY_NOT_SUPPORTED op__execErr
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,8 +61,8 @@
 
   op__topology
 
-  find: orderBy_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: orderBy_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: orderBy_Cleaning      ZK_M_CLEANING op[].handler!
+  find: orderBy_StartMarker   ZK_M_START    op[].handler!
 
   op__loop
 

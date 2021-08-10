@@ -5,10 +5,10 @@
 
 namespace STORE
 {
-  // {i_Node,i_TablePtn} pair
-  struct NodeTablePtn {
-    i4  m_i_Node;     // node
-    i4  m_i_TablePtn; // table partition
+  struct NodePtn
+  {
+    i4  m_iNodeNo;  // node number
+    i4  m_i_Ptn;    // node partition (aka partition of node)
   };
 
   class PtnMap : public Object
@@ -16,11 +16,14 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    i8 m_iMapChange;
+    i8 m_nPtnsPerNode;
+  
+    i8 m_nKnownNodes;
     i8 m_nPtnsInGrid;
-    i8 m_nPtnsPerTable;
 
-    // which {node,tablePtn} a logical partition is in
-    NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNS];
+    // which {nodeNo,i_ptn} a logical partition mPtnNo is in
+    NodePtn m_xaNodePtn[C_MAX_PTNSINGRID];
   
     // must be last
     Footer m_xFooter;
@@ -29,28 +32,31 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PtnMap(i8 nBootNodes, i8 nDegOfPar);
+    PtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
-    static tPN  tHashToPtnNo(i8 iHash, i8 nPtnsInGrid);
-    static void vRunningHash(i8* aiHash, i8 iMixIn);
-    static tPN  tStreamToLglPtnNo(i8 i_Stream);
-
-    void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
-    void vDumpDataBuffers(void);
-
-    i8 nPtnsInGrid(void);
-    i8 nPtnsPerTable(void);
-    i8 i_WhichNode(tPN tPtnNo);
-    i8 i_WhichStream(tPN tPtnNo);
-    i8 i_WhichTablePtn(tPN tPtnNo);
+  
+    void vAdjustMap(i8 nKnownNodes);
+    tPN  tHashToDtdPtnNo(i8 iHash);
+    i8   nKnownNodes(void);
+    i8   nPtnsInGrid(void);
+    i8   nPtnsPerNode(void);
+    void vSee(void);
+    tPN  tRobinToDtdPtnNo(i8 iRobin);
+    tPN  tRobinToLclPtnNo(i8 iRobin);
+    tPN  tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    i8   iWhichNodeNo(tPN tPtnNo);
+    i8   i_WhichPtn(tPN tPtnNo);
+ 
+    tPN  tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
+    tPN  tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:
-    i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
-    i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
+    void vRepartition(void);
+    void vResetNodePtnArray(void);
+
     Footer* aFooter(void);
-    void vPartition(i8 nNodes, i8 nDegOfPar);
   };
   
   PtnMap* _pPtnMap(void* aAddr);

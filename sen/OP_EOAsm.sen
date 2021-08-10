@@ -9,23 +9,26 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                INIT */
+/* on ZK_M_CLEANING ...                                                INIT */
 /*----------------------------------------------------------------------------*/
-: EOAsm_CancelMarker \handler
+: EOAsm_Cleaning \handler
 
   potRlu[].isNull not if
     potRlu[].delete
   then
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
 
   // new the PotRlu[]
   PotRlu[].new
@@ -36,13 +39,12 @@
   // generate asm from query text
   Counter0[] <queryText> genAsm not if
     EC_INVALID_COMMAND op__execErr
-    PipeIn[].delete
     true
     exit
   then
 
   // execute plan generated STARTMARKER_handler
-  ZK_STARTMARKER Counter0[] executeAsmArgs
+  ZK_M_START Counter0[] executeAsmArgs
 
   // do we have a table ?
   logicUnit[].srcTable@ "" str.equal not if
@@ -104,17 +106,19 @@
 
   then
 
-  ZK_STARTMARKER_handler
+  //ZK_M_START_handler
 
   // pipeout streamDefout if any (q3)
   //StreamDefOut[].isNull not if
   //  StreamDefOut[].pipeout
   //then
 
+  true
+
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
 : EOAsm_DataMarker \handler
 
@@ -139,12 +143,12 @@
   //
 
   PipeIn[].isNull not if
-    ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
-    PipeIn[].pipeOut // ZK_DATAPULSE_handler
+    ZK_M_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_M_DATAPULSE EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_M_DATAPULSE_handler
   then
 
   // execute plan DATAPULSE_HANDLER
-  ZK_DATAPULSE Counter0[] executeAsmArgs
+  ZK_M_DATAPULSE Counter0[] executeAsmArgs
 
   false LogicUnit[].calledAgain!
 
@@ -168,15 +172,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
   Operand[] DevLftIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
 
@@ -184,16 +188,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
   Operand[] DevLftRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
 
@@ -201,11 +205,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : EOAsm_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // Invoked from PULSEMARKER call again?
   Operand[].isNull not if
@@ -224,30 +228,30 @@
   then
 
   // handle EOSMARKER
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   Pipein[] to StreamDefLft[]
   nullptr to Pipein[]
 
   // execute plan STREAMDEF_handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   //StreamDefLft[].asSrcStreamDef
 
@@ -274,13 +278,13 @@
 
   op__topology
 
-  find: EOAsm_CancelMarker ZK_CANCELMARKER   op[].handler!
-  find: EOAsm_CrwBuffer    ZK_CRWBUFFER   op[].handler!
-  find: EOAsm_EosMarker    ZK_EOSMARKER   op[].handler!
-  find: EOAsm_DataMarker   ZK_DATAPULSE op[].handler!
-  find: EOAsm_RowBuffer    ZK_ROWBUFFER   op[].handler!
-  find: EOAsm_StartMarker  ZK_STARTMARKER op[].handler!
-  find: EOAsm_StreamDef    ZK_STREAMDEF   op[].handler!
+  find: EOAsm_Cleaning      ZK_M_CLEANING op[].handler!
+  find: EOAsm_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: EOAsm_EosMarker     ZK_M_EOS     op[].handler!
+  find: EOAsm_DataMarker    ZK_M_DATAPULSE     op[].handler!
+  find: EOAsm_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+  find: EOAsm_StartMarker   ZK_M_START   op[].handler!
+  find: EOAsm_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 

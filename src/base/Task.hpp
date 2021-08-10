@@ -26,29 +26,54 @@ namespace BASE
                public ListItem_t<Task>
   {
   friend class STORE::Step;
-
-  private:
-    Lock         m_okLock;       // lock for this task
   
-    ObjId<CN_TASK> m_xTaskId;    // tasks object id
+  private:
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
 
-    SMA<Thread>  m_pThread;      // current thread executing this task
-    SMA<Job>     m_pJob;         // job this task is executing
-    LogicUnit*   m_pLogicUnit_task; // set of registers for the task steps
+    // -- id, name and kind
+    Gid<CN_TASK> m_xTaskId;  // task id in grid
+    s32          m_sTaskNm;  // name of this task
+    // n/a                   // kind
+
+    // -- belongs to
+    SMA<Job> m_pJob; // which job this task is executing
+    SMA<Op>  m_pOp;  // whic this task is executing
+  
+    // -- refers to
+    SMA<Thread>  m_pThread;  // current thread executing this task
+
+    // -- state
+    eTS m_eState;  // task state (running, sleeping, ...)
+
+    // -- tags, seeding and tasking
+    Word* m_pSeedWord;  // seed
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+  
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  Lock         m_okLock;       // lock for this task
+   
+
 
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?
 
-    eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
     eQK          m_eQueue;       // which queue the task is currently in
     eEP          m_eEntryPoint;  // task entry point
     
-    Decider      m_oAcksRmg;     // number of acks still waiting for
+    Decider      m_oAcksRmg_task;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping
-
-    bool         m_bLogMemory;   // log memory usage?
-    bool         m_bLogResource; // log resources usage?
 
     i8           m_iTraceMask;   // tracing mask
   
@@ -56,13 +81,12 @@ namespace BASE
   
     Profile*     m_pProfile;     // runtime profile
 
-#ifdef WITH_LOCK_SETS
     LockSet      m_oReadLocks;   // read locks currently held by this task/op
     LockSet      m_oWriteLocks;  // write locks currently held by this task/op
-#endif
+  
+    LogicUnit*   m_p_TaskLogicUnit; // logic unit from job or op
 
   public:
-    Word* m_pSeedWord;      // seed
     Word* m_pRecoveryWord;  // sen word called to recover from failure
 
     bool  m_bSeedInitially; // seed_initially sentinel has been executed
@@ -82,7 +106,6 @@ namespace BASE
     SenCompiler* m_pSenCompiler; // sen word compiler
     Input*       m_pInput;       // input stream
   
-  
     Exception    m_xException;
 
     // always last
@@ -92,7 +115,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob);
+    Task(void);
    ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
@@ -122,6 +145,7 @@ namespace BASE
     void vDeleteInput(void);
     static void vDebug(void);
     DicStack* pDicStack(void);
+    void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);
     void vDropTaskLock(void);
     void vDump(void);
@@ -129,7 +153,6 @@ namespace BASE
     eEP  eEntryPoint(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(void);
-    void vInitExeContext(void);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
@@ -141,15 +164,13 @@ namespace BASE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    LogicUnit* pLogicUnit_task(void);
-    void vLogicUnit_task(LogicUnit* pLogicUnit_task);
-    bool bLogMemory(void);
-    void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
     void vNewInput(void);
+    Op*  pOp(void);
+    void vOp(Op* pOp);
     Profile* pProfile(void);
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
@@ -159,11 +180,10 @@ namespace BASE
     void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vReseed(void);
-    bool bLogResource(void);
-    void vLogResource(bool bLogResource);
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
+    void vSeeLogicUnitRegisters(void);
     bool bSeeded(void);
     void vSeedTask(void);
     void vSleepUsec(i8 iMicroSeconds);
@@ -202,6 +222,8 @@ namespace BASE
   
     Input* pInput(void);
 
+  private:
+    void vVerifyTaskComposition(void);
 
   private:
     Footer* aFooter(void);

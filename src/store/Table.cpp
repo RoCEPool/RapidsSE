@@ -57,7 +57,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
-  m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
+  m_pBucketMap   = new BucketMap(AM::PTNMAP::nPtnsInGrid());
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 
@@ -71,7 +71,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        This must be fixed properly. Ray 14 Nov 2020
   //if (AM::pGrid()->bHasStarted()) {
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
@@ -107,7 +107,7 @@ Table::~Table(void) noexcept(false)
   delete m_pShardDef;
   
   // delete the TablePtn's
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
@@ -218,7 +218,7 @@ i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
 {
   _static_
   
-  i8 i_TablePtn = tPtnNo / AM::nNodes();
+  i8 i_TablePtn = tPtnNo / AM::GRID::nKnownNodes();
   
   return i_TablePtn;
 }
@@ -230,7 +230,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 {
   _static_
 
-  tPN tPtnNo = (i_TablePtn * AM::nNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
 
   //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
   
@@ -273,7 +273,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexTree for the index in each partition
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
     pTablePtn->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
   }
@@ -331,7 +331,7 @@ i8 Table::nBuffers(void)
   
   i8 nBuffers = 0;
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     nBuffers += pTablePtn(i_TablePtn)->nBuffers();
   }
   
@@ -412,7 +412,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     IndexTree* pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(iIndexNo);
     
     iBuffers += pIndexTree->nEntBuffers();
@@ -433,7 +433,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerNode());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRows() == 0) {
@@ -468,7 +468,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerNode());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pRowBuffer->nRows() == 0) {
@@ -574,7 +574,7 @@ bool Table::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_Partn = 0; i_Partn < AM::nPtnsPerTable(); i_Partn++) {
+  for (i8 i_Partn = 0; i_Partn < AM::PTNMAP::nPtnsPerNode(); i_Partn++) {
     bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
     
     if (! bPopulated)
@@ -595,7 +595,7 @@ void Table::vRemoveIndex(Index* pIndex)
   m_pIdxVec->vRemove(pIndex);
   
   // remove the index from each tablePtn
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     m_pTablePtnVec->pGet(i_TablePtn)->vRemoveIndex(pIndex->iIndexNo());
   }
 }
@@ -694,7 +694,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #else
   
   // modulo the hash to get partition number
-  i8 nPartitions = AM::nPtnsPerTable() * AM::nNodes();
+  i8 nPartitions = AM::PTNMAP::nPtnsPerNode() * AM::GRID::nKnownNodes();
   
   i_Ptn = iRowHash % nPartitions;
 
@@ -715,7 +715,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nPtnsPerTable());
+//  ASSERT(i_TablePtn < AM::PTNMAP::nPtnsPerNode());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRows() == 0) {
@@ -766,7 +766,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     
     bool bVerify = true;
     
@@ -790,7 +790,7 @@ bool Table::bVerifyTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // verify all the row buffers with the r ow data
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     
     bool bVerify = true;
     
@@ -813,7 +813,7 @@ void Table::vCompactIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     IndexTree *pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }
@@ -828,24 +828,24 @@ i8 Table::iPrepareParcel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
 
   if (!m_pParcel) {
-    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+    m_pParcel = new Parcel;
 
     // Set the state that this is created as a parcel
-    m_pParcel->vSetOriginState(true);
+    m_pParcel->vOriginalParcel(true);
   }
 
-  m_pParcel->vAddObject((Object *)this);
+  m_pParcel->vAddItem((Object *)this);
 
   if ( m_pStreamDef) {
-    m_pParcel->vAddObject((Object *)m_pStreamDef);
+    m_pParcel->vAddItem((Object *)m_pStreamDef);
   }
-  m_pParcel->vAddObject((Object *)m_pShardDef);
+  m_pParcel->vAddItem((Object *)m_pShardDef);
 
-  m_pParcel->vAddObject((Object *)m_pBucketMap);
+  m_pParcel->vAddItem((Object *)m_pBucketMap);
 
-  m_pParcel->vAddObject((Object *)m_pIdxVec);
+  m_pParcel->vAddItem((Object *)m_pIdxVec);
 
-  return m_pParcel->nObjects();
+  return m_pParcel->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,46 +872,45 @@ void Table::vDumpLocation(void)
 /* returns object parts includes the main by index                            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Object* Table::pGetParcelObject(i8 iIdx)
+Object* Table::pGetParcelObject(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   if (!m_pParcel) return nullptr;
 
-  return m_pParcel->pGetObject(iIdx);
+  return m_pParcel->pGetItem(i_Item);
 }
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts includes the main                           */
 /* Insert each object part and put in an array                                */
 /*----------------------------------------------------------------------------*/
-i8 Table::iBuildParcelObjs(Object* pObj)
+i8 Table::iBuildParcelObjs(Object* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   if (!m_pParcel) return 0;
 
-  m_pParcel->vAddObject(pObj);
+  m_pParcel->vAddItem(pItem);
 
-  return m_pParcel->nObjects();
+  return m_pParcel->nItems();
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* reassemble object parts from the received parcel                           */
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleFromParcel(Parcel* pParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nObjects());
+  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nItems());
 
   if (!pParcel) return 0;
-  i8 nSize = pParcel->nObjects();
+  i8 nItems = pParcel->nItems();
 
-  for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
-    Object* pObject =  pParcel->pGetObject(i_Obj);
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object* pObject =  pParcel->pGetItem(i_Item);
     eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
@@ -951,7 +950,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   m_pTablePtnVec = new TablePtnVec;
 
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
@@ -968,17 +967,17 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   // Null the parcel pointer for this table
   m_pParcel = nullptr;
 
-  return nSize;
+  return nItems;
 }
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts                                             */
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8  Table::nParcelObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  return m_pParcel ? m_pParcel->nObjects() : 0;
+  
+  return m_pParcel ? m_pParcel->nItems() : 0;
 }
 
 /*============================================================================*/

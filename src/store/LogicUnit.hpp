@@ -5,10 +5,8 @@
 
 #include "RowSingle.hpp"
 
-#include "HashSet.hpp"
-
 #include "CrwToRow.hpp"
-#include "ToHshCrw.hpp"
+#include "ToPtnCrw.hpp"
 #include "ToNstRow.hpp"
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
@@ -129,9 +127,14 @@ namespace STORE
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object
-  {  
+  {
+  private:
+  
   public:
-    Task* m_pTask;      // which task
+    
+    Job*  m_pJob;       // which job
+    Op*   m_pOp;        // which op
+    
     eLH   m_eDdlLocked; // this task has the ddl lock?
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
@@ -140,7 +143,9 @@ namespace STORE
     
     REG<Object>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -156,6 +161,7 @@ namespace STORE
     REG<Table>          m_xpInfoSetTable;
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
+    REG<Operand>        m_xpMemoryHog; // memoryHog
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
@@ -188,13 +194,21 @@ namespace STORE
     REG<Table>          m_xpTable;
     REG<TablePtn>       m_xpTablePtn;
     REG<Timer>          m_xpTimer;     // timer
-    REG<ToHshCrw>       m_xpToHshCrw;
     REG<ToNstRow>       m_xpToNstRow;
+    REG<ToPtnCrw>       m_xpToPtnCrw;
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
 
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    REG<Operand>        m_xpErrorMarker;  // error marker
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     bool                m_bCompilerToExit;
+    bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
     i8                  m_iCounter0;   // counter
     i8                  m_iCounter1;   // counter
@@ -266,7 +280,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LogicUnit(Task* pTask);
+    LogicUnit(void);
    ~LogicUnit(void) noexcept(false);
   
     void vContentDump(void);
@@ -287,6 +301,7 @@ namespace STORE
                     i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum, i8 nQueueLength);
     void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
+    void vDumpRegisters(void);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
     void vEnter(void);
@@ -295,15 +310,20 @@ namespace STORE
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     i8   iLabelCode(i8 i_Label);
     bool bLabelIsDst(i8 i_Label);
     bool bLabelIsSbr(i8 i_Label);
     i8   nLabels(void);
     Stz* szLabelNm(i8 i_Label);
+    Op*  pOp(void);
+    void vOp(Op* pOp);
     void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
     void vSetPipein(Operand* pOperand);
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

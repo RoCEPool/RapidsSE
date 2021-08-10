@@ -261,7 +261,7 @@ void Thread::vLoop_dedicated(void)
 
   Scheduler::vTaskApi_BeginExecutingDedicated(this);
   
-  while (m_pTask && m_pTask->pJob())
+  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob()))
     m_pTask->vTaskLoop();
 
   Scheduler::vThread_EndThreadLoop(this);

@@ -16,7 +16,7 @@
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     //"got error" .
-    job::error! !!logError DONE_REQ
+    job::error! DONE_REQ
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,7 +71,7 @@
   then
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
-  LogExit DONE_REQ
+  DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

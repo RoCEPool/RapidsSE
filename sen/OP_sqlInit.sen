@@ -5,37 +5,38 @@
 " OP_sqlInit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: sqlInit_CancelMarker \handler
+: sqlInit_Cleaning \handler
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : sqlInit_DataMarker \handler
  
-  ZK_DATAPULSE_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : sqlInit_EosMarker \handler
  
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : sqlInit_StartMarker \handler
 
   "sqlInit_StartMarker" .
   
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -50,10 +51,10 @@
 
   op__topology
 
-  find: sqlInit_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sqlInit_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: sqlInit_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: sqlInit_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: sqlInit_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: sqlInit_DataMarker    ZK_M_DATAPULSE     op[].handler!
+  find: sqlInit_EosMarker     ZK_M_EOS           op[].handler!
+  find: sqlInit_StartMarker   ZK_M_START         op[].handler!
 
   op__loop
 

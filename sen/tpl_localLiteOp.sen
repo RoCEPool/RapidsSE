@@ -5,15 +5,16 @@
 " tpl_localLiteOp.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                        */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : tpl_localLiteOp_DataMarker
 
 "
   : /localLiteOp/_DataMarker \\handler
 
+    PipeIn[].pipeOut
+
     /localLiteOp/_action if
-      PipeIn[].pipeOut
       Operand[].newEosMarker
       Operand[].pipeOut
     then
@@ -35,7 +36,7 @@
 
     op__topology
 
-    find: /localLiteOp/_DataMarker  ZK_DATAPULSE op[].handler!
+    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!
 
     op__loop
 
@@ -58,7 +59,7 @@
   begin
 
   stage stageA on origin :
-    start | periodic once | /localLiteOp/ |
+    start | pulse once | /localLiteOp/ |
       output | sink | stageA
 
   end
@@ -77,7 +78,7 @@
   begin
 
   stage stageA on origin :
-    start | periodic once | /localLiteOp/ $param |
+    start | pulse once | /localLiteOp/ $param |
       output | sink | stageA
 
   end
@@ -96,7 +97,7 @@
     begin
 
     stage stageA on origin :
-      start | periodic once | /localLiteOp/ $param0 $param1 |
+      start | pulse once | /localLiteOp/ $param0 $param1 |
         output | sink | stageA
 
     end

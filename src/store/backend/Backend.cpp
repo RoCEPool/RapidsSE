@@ -188,7 +188,7 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 
   // Lambda visitor function to print the graph
 
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(pvArg);
     
@@ -587,7 +587,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   // check for a stagemarker
   PlanNode* pLeafStageMarker = nullptr;
 
-  auto fLeafStageMarker = [&pLeafStageMarker](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl  {
+  auto fLeafStageMarker = [&pLeafStageMarker](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl  {
     if (StageMarker::bIsExactType(pNode)) {
       pLeafStageMarker = pNode;
       return GraphNav::WALK_ABORT;
@@ -637,7 +637,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
 {
   _static_
       UNUSED(sPath);
@@ -937,7 +937,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
@@ -1007,7 +1007,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
@@ -1077,7 +1077,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 /*----------------------------------------------------------------------------*/
 /* visitor function for the stage                                             */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
@@ -1139,7 +1139,7 @@ void Backend::vAppendLastStage(Stz* szLocation) {
       "end ;\n"
       ""_Stz);
 
-  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+ // vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1196,7 +1196,7 @@ void Backend::vAppendStartStage() {
   m_sPipeline->vCatSprint(
       "  stage startStage on origin :\n"
       "    start\n"
-      "    | periodic once"
+      "    | pulse once"
       ""_Stz
       );
 }

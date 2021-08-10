@@ -15,7 +15,7 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parsimonious API
   
-  static Op* pGetOperator(Stz* szOpNm);
+  //static Op* pGetOperator(Stz* szOpNm);
   static Operand* pGetOperand(eZK eOperand);
 
   
@@ -29,9 +29,9 @@ namespace STORE
   static void vDeleteJob(Session* pSession);
   static void vExamineCommand(Session* pSession);
   static void vExecuteJob(Session* pSession);
-  static void vExtractPaths(Session*  pSession);
-  static bool bExtractTags(Session*  pSession);
-  static eEC  ePrepareJob(Session*  pSession, TokenVec* pLitTknVec = nullptr);
+  static void vExtractCmdPaths(Session*  pSession);
+  static bool bExtractCmdTags(Session*  pSession);
+  static eEC  ePrepareJob(Session*  pSession, TokenVec* pDemoLiterals = nullptr);
 
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);
@@ -43,15 +43,16 @@ namespace STORE
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   // external
-  static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_session(Job* pJob);
+  static bool bSpawnTask_session(Job* pJob);
   
   // internal
-  static void vSpawnJob_dedicated(Job* pJob);
-  static void vSpawnJob_op(Job* pJob);
-  static void vSpawnJob_received(Job* pJob);
-  static void vSpawnJob_service(Job* pJob);
-  static void vSpawnJob_system(Job* pJob);
+  static void vSpawnTask_job(Job* pJob);
+  static void vSpawnTask_op(Op* pop);
+  static void vSpawnTaskDedicated_job(Job* pJob);
+  static void vSpawnTaskDedicated_op(Op* pOp);
+
+  static void vSpawnTask_demonJob(Job* pJob);
+  static void vSpawnTask_receivedJob(Job* pJob);
   
   static void vSpinTillAllJobsCompleted(void);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
@@ -71,8 +72,7 @@ namespace STORE
   private:
   
   static void vCreateTaskForJob(Job* pJob);
-  
-  static Op* pOpCreate(Word* pOpWord);
+  static void vCreateTaskForOp(Op* pOp);
   
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);

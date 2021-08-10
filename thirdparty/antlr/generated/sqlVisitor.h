@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -60,6 +60,8 @@ public:
 
     virtual antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *context) = 0;
 
+    virtual antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *context) = 0;
+
     virtual antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *context) = 0;
 
     virtual antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *context) = 0;
@@ -73,6 +75,8 @@ public:
     virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *context) = 0;
 
     virtual antlrcpp::Any visitJoinType(sqlParser::JoinTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *context) = 0;
 
     virtual antlrcpp::Any visitJoinHint(sqlParser::JoinHintContext *context) = 0;
 

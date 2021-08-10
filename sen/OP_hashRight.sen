@@ -1,0 +1,322 @@
+/*============================================================================*/
+/* OP_hashRight.sen -- Operator hash                                          */
+/*============================================================================*/
+
+" OP_hashRight.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: hashRight_seapi
+
+  "hashRight_seapi" .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: hashRight_Cleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: hashRight_CrwBuffer \handler
+
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  // ignore crwBuffer if not received startCrwRhtMarker
+  Counter1[] 0 == if
+     Pipein[].pipeout
+    true
+    exit
+  then
+
+  Operand[].pipeIn
+  Operand[] DevLftIxt.crwBuffer!
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_END_CRWRHT ...                                            INIT */
+/*----------------------------------------------------------------------------*/
+: hashRight_EndCrwRhtMarker \handler
+
+  0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_M_EOS Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+
+  // record receipt of end right marker
+  0 to Counter1[]
+
+  PipeIn[].delete
+
+  // pipeout an EndRowRhtMarker
+  Operand[].newEndRowRhtMarker
+  Operand[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_END_ROWRHT ...                                            INIT */
+/*----------------------------------------------------------------------------*/
+: hashRight_EndRowRhtMarker \handler
+
+  0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_M_EOS Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+
+  // record receipt of end right marker
+  0 to Counter1[]
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: hashRight_EosMarker \handler
+
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+
+  // Arrival of EOSMARKER implies left is all done
+
+  // pipeout all PotRlu[]
+  PotRlu[].delete
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: hashRight_RowBuffer \handler
+
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  // pipeout rowBuffer if startCrwRhtMarker not received
+  Counter1[] 0 == if
+    Pipein[].pipeout
+    true
+    exit
+  then
+
+  Operand[].pipeIn
+  Operand[] DevLftRow.rowBuffer!
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: hashRight_StartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  // new the PotRlu[]
+  PotRlu[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START_CRWRHT ...                                          INIT */
+/*----------------------------------------------------------------------------*/
+: hashRight_StartCrwRhtMarker \handler
+
+  0 ZK_M_START_CRWRHT EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].delete
+
+  // pipeout a StartRowRhtMarker
+  Operand[].newStartRowRhtMarker
+  Operand[].pipeout
+
+  // record receipt of start right marker
+  1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START_ROWRHT ...                                          INIT */
+/*----------------------------------------------------------------------------*/
+: hashRight_StartRowRhtMarker \handler
+
+  0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
+
+  // record receipt of start right marker
+  1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: hashRight_StreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+"TADA1" .
+
+  // hashRight gets the left streamDef, then right streamDef
+  // it needs to store the right streamDef in left
+  // and left in right (which it will ignore)
+  StreamDefRht[].isNull if
+
+    //"loopJoin_StreamDef got left streamDef" .
+    // move pipein[] to StreamDefRht[]
+    Pipein[]\clear to StreamDefRht[]
+
+    "TADA2" .
+
+    true
+    exit
+  then
+
+"TADA3" .
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // evaluate the expression
+  ExprEval[].new
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__exprEvalExecErr
+    true
+    exit
+  then
+
+"TADA4" .
+
+  // generate the asm for the hash
+  ExprEval[] LogicUnit[].genHash to eError
+  ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
+
+  // set the streamDef in the DevLftRow
+  StreamDefLft[]\clear DevLftRow.streamDef!
+
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
+
+  // pipeout the StreamDefRht and streamDefOut
+  StreamDefRht[].pipeout
+  StreamDefOut[].pipeout
+
+  // create the compiler
+  Counter0[] if
+    LogicCompiler[].new
+    LogicCompiler[].compile
+  then
+
+  // execute the streamDef asm handler
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* hash request                                                         SPAWN */
+/*----------------------------------------------------------------------------*/
+: hashRight_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: hashRight_Cleaning        ZK_M_CLEANING   op[].handler!
+  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  op[].handler!
+  find: hashRight_EndCrwRhtMarker ZK_M_END_CRWRHT op[].handler!
+  find: hashRight_EndRowRhtMarker ZK_M_END_ROWRHT op[].handler!
+  find: hashRight_EosMarker       ZK_M_EOS        op[].handler!
+  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  op[].handler!
+  find: hashRight_StartMarker     ZK_M_START      op[].handler!
+  find: hashRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
+  find: hashRight_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
+  find: hashRight_StreamDef         ZK_D_STREAMDEF    op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: hashRight :: hashRight <compiled> <etc> ;
+
+: hashRight_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

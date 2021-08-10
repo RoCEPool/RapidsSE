@@ -5,40 +5,26 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: print_exitMarker \handler
-
-  "print_exitMarker:- ZK_EXITMARKER" .
-  PipeIn[].delete
-
-  false
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_PROMPTOUT ...                                               */
+/* handler for ZK_I_PROMPTOUT ...                                             */
 /*----------------------------------------------------------------------------*/
 : print_promptOut \handler
 
-  "print_promptOut:- ZK_PROMPTOUT" .
+  "print_promptOut:- ZK_I_PROMPTOUT" .
   PipeIn[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : print_startMarker \handler
 
-  "print_startMarker:- ZK_STARTMARKER" .
+  "print_startMarker:- ZK_M_START" .
   PipeIn[].delete
 
   true
 ;
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* print request                                      (on node where spawned) */
@@ -49,9 +35,8 @@
 
   op__topology
 
-  find: print_exitMarker   ZK_EXITMARKER    op[].handler!
-  find: print_promptOut    ZK_PROMPTOUT     op[].handler!
-  find: print_startMarker  ZK_STARTMARKER   op[].handler!
+  find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!
+  find: print_startMarker  ZK_M_START   op[].handler!
 
   op__loop
 

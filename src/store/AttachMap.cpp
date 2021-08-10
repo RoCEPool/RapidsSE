@@ -12,7 +12,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
-#include "Objects.hpp"
+#include "Numbering.hpp"
 #include "Jobs.hpp"
 #include "InternalTables.hpp"
 
@@ -64,51 +64,43 @@ AttachMap::AttachMap(void)
   
   m_uAttachMapState = C_CREATED;
   
-
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
-  
-  m_iTimePoint = AM::iRdTickingDevice();
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+  // m_oBirth
+  // m_oNow
+  // m_iPid
   m_oSince.vStart();
-    
-  // create the transient heaps
+  m_bSystemOpen = true;
+  m_iTimePoint  = AM::iRdTickingDevice();
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // create the heaps
   m_xHeaps.vInit();
 
+  m_pBucketMap      = nullptr;
+  m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
-  
-  m_pJobs = new Jobs;
+  m_pJobs           = new Jobs;
+  m_pNumbering      = new Numbering;
+  m_pPtnMap         = nullptr;
+  m_pTxSet          = new TxSet;
 
-  m_pObjects = new Objects;
   
-  m_pDicRoot = new Dic("__dicRoot"_Stz);
-      
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   
-  // create the persistent heaps
-//  m_xHeaps.Persistent.m_pTiny  =
-//    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
-//  m_xHeaps.Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  m_xHeaps.Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  m_xHeaps.Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
-
-
-  m_pTxSet = new TxSet;
 
   _checkInitialised_(CN_ATTACHMAP);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pBucketMap = nullptr;
-  m_pPtnMap    = nullptr;
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 
@@ -230,7 +222,7 @@ void AttachMap::vPrintAttachMap(void)
         gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
   
   vInfo("\n"_Stz);
-  gpAttachMap->m_xSysArgs.m_oArgTagSet.vDumpSet();
+  gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
 
   vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
 }
@@ -245,11 +237,10 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  m_xSysArgs.m_nBootNodes       = pCmdLineArgs->m_xSysArgs.m_nBootNodes;
+  m_xSysArgs.m_nDefinedNodes    = pCmdLineArgs->m_xSysArgs.m_nDefinedNodes;
   m_xSysArgs.m_iConnectCode     = pCmdLineArgs->m_xSysArgs.m_iConnectCode;
   m_xSysArgs.m_bDebugIndex      = pCmdLineArgs->m_xSysArgs.m_bDebugIndex;
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
-  m_xSysArgs.m_nDegOfPar        = pCmdLineArgs->m_xSysArgs.m_nDegOfPar;
   m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
@@ -268,14 +259,14 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
   m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
-  m_xSysArgs.m_nPtnsPerTable    = pCmdLineArgs->m_xSysArgs.m_nPtnsPerTable;
+  m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;
 
-  m_xSysArgs.m_oArgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
+  m_xSysArgs.m_oArgTags.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
-  m_xSysArgs.m_oArgTagSet.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTagSet);
+  m_xSysArgs.m_oArgTags.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTags);
   
   
   // ray -- not sure the following should be here
@@ -348,7 +339,7 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
   vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
   vTrace("  --size %lld\n"_Stz,m_xSysArgs.m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,AM::nPtnsPerTable());
+  vTrace("  --partitionsPerNode %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
 }
 
 /*----------------------------------------------------------------------------*/

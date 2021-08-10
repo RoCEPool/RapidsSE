@@ -54,14 +54,15 @@ void Step::vParcelLabel(void)
   ENTRY();
 
 
-  Op* pSrcOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pSrcOp->pPipelineJob()->iJobId(),
-                  C_UNKNOWN,
-                  C_UNKNOWN,
-                  pSrcOp->eCrossTopo());
+  pParcel->vLabel(pOp->eCrossTopo(),
+                  pOp->pPipelineJob()->iJobId()
+                  );
 
   //m_pDataStack->vPushPtr(pParcel);
   EXIT();
@@ -80,27 +81,25 @@ void Step::vParcelPipeOut(void)
   Operand* pOperand = pParcel->pGetOperand();
 
   // find the pipeline participant job
-  i8 iPipelineJob = pParcel->m_iPipelineJobId;
+  i8 iPipelineJob = pParcel->iPipelineJobId();
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
-  Stage* pStage = pPipelineJob->m_pLogicUnit_job
-                    ->m_xpPipeline->pGet(pParcel->m_iDstStage);
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
+  
+  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
   
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
-                               pParcel->m_tDstPtn,
-                               pParcel->m_iDstOp);
+  Op* pOp = pStage->pPipeOutOp(pParcel->eCrossTopo(),
+                               pParcel->tDstPtn(),
+                               pParcel->iDstOp());
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 
-  if (pParcel->bIsOriginal()) {
+  if (pParcel->bOriginalParcel()) {
     pOp->vAppendLeft(pParcel,this);
   } else {
     if (pParcel->pGetOperand()) {
-      if (pParcel->bAppendRight())
-        pOp->vAppendRight(pOperand, this);
-      else
         pOp->vAppendLeft(pOperand, this);
     }
   }
@@ -129,9 +128,10 @@ void Step::vParcelSendOut(void)
     
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  Op* pSrcOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
 
-  pParcel->vSendOut(pSrcOp);
+  pParcel->vSendOut(pOp);
 
   EXIT();
 }

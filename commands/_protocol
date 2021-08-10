@@ -18,7 +18,7 @@ pipeline protocolTest
 begin
 
   stage stageA on origin :
-    start | periodic once | stageB
+    start | pulse once | stageB
 
   stage stageB on all partitions :
     scan nation_eek | stageC

@@ -48,8 +48,6 @@ Dir::Dir(Object* pIsFor)
   ++ gixDir;
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Dir constructor"_Stz);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -70,8 +68,6 @@ Dir::~Dir(void) noexcept(false)
 
   
   -- gixDir;
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Dir destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,8 +196,6 @@ void Dir::vClose(void)
   
   m_aDir = nullptr;
   
-  AM::LOG::vEvent(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sPath.szStz());
-
   ASSERT(bIsClosed());
 }
 
@@ -289,8 +283,6 @@ bool Dir::bOpen(Stz* szDirPath)
 
   if (AM::bAttached()) AM::pResources()->vIncDirOpen();
   
-  AM::LOG::vEvent(EV_OPEN,"Dir opened: path=%s"_Stz,m_sPath.szStz());
-
   ASSERT(bIsOpen());
   return true;
 }

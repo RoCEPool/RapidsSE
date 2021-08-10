@@ -314,7 +314,8 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   //oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -479,7 +480,8 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -615,7 +617,8 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -738,7 +741,8 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -754,7 +758,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute loop join
-  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_INDEXJOIN_ROWS"_Stz);
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_INDEXJOIN_BEGIN"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
@@ -768,7 +772,6 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  //oTagSet.vAppend(C_TAG_INDEXJOIN_NEXT, "CRW_INDEXJOIN_NEXT"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_BEGIN, &oTagSet, sMacro));
   oTagSet.vReset();
 
@@ -782,7 +785,13 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
-  oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT\n"_Stz);
+  if (pExprEval->m_bLeftOuter) {
+    oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
+  }
+  else {
+    oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT\n"_Stz);
+  }
+
 
 //  oFile.vPrint("  // *** begin generated code: m_sLftCrwCol *** //\n"_Stz);
 //  oFile.vPrint("%s"_Stz, pExprEval->m_sLftCrwCol.azChar());
@@ -793,16 +802,31 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
+  oFile.vPrint("  EO_POP\n"_Stz);
 
-  oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_CRWLFT_ENTRHT"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_NEXT, &oTagSet, sMacro));
-  oTagSet.vReset();
+  if (pExprEval->m_bLeftOuter) {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_CRWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_NEXT_LO, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
+  else {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_CRWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_NEXT, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_JOIN_ROW
+  // JOINROWS_CRWLFT_ENTRHT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_CRWLFT_ENTRHT, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // JOINROW_CRWLFT_NULRHT
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_CRWLFT_NULRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -824,7 +848,12 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
-  oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  if (pExprEval->m_bLeftOuter) {
+    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  }
+  else {
+    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+  }
 
 //  oFile.vPrint("  // *** begin generated code: m_sLftRowCol *** //\n"_Stz);
 //  oFile.vPrint("%s"_Stz, pExprEval->m_sLftRowCol.azChar());
@@ -835,16 +864,31 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
+  oFile.vPrint("  EO_POP\n"_Stz);
 
-  oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT, &oTagSet, sMacro));
-  oTagSet.vReset();
+  if (pExprEval->m_bLeftOuter) {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT_LO, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
+  else {
+    oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_INDEXJOIN_NEXT, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_JOIN_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_ENTRHT, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // JOINROWS_ROWLFT_NULRHT
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_NULRHT, &oTagSet, sMacro));
   oTagSet.vReset();
 
 
@@ -915,7 +959,8 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -1052,7 +1097,8 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF_HANDLER for groupBy
@@ -1271,7 +1317,8 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
@@ -1382,10 +1429,14 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ENDRIGHTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pExprEval->m_bLeftOuter)
-    oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
-  else
-    oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  if (pExprEval->m_bLeftOuter) {
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
+  }
+  else {
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -1615,7 +1666,8 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ENDRIGHTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 

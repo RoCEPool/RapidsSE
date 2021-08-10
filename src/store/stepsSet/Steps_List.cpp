@@ -38,14 +38,14 @@ void Step::vListAddRowBuffer(void)
   
   RowBuffer* pRowBuffer = _pRowBuffer( m_pDataStack->pPopPtr(__func__) );
 
-  RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
+  RowSingleList* pRowSingleList = * m_p_TaskLogicUnit->m_xpList;
 
   for (Row* aRow = pRowBuffer->pFirstRow();
        aRow;
        aRow = pRowBuffer->pNextRow(aRow)) {
 
     RowSingle* pRowSingle =
-      new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDefLft );
+      new RowSingle( * m_p_TaskLogicUnit->m_xpStreamDefLft );
 
     pRowSingle->vCopyRow(aRow);
     //pRowSingle->vPrintRow();
@@ -65,9 +65,9 @@ void Step::vListDelete(void)
   
   //vTrace("vListDelete\n"_Stz);
   
-  delete * m_pJob->pLogicUnit_job()->m_xpList;
+  delete * m_p_TaskLogicUnit->m_xpList;
 
-  m_pJob->pLogicUnit_job()->m_xpList = nullptr;
+  m_p_TaskLogicUnit->m_xpList = nullptr;
 
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vListGet(void)
   
   //vTrace("vListGet\n"_Stz);
   
-  m_pDataStack->vPushPtr(* m_pJob->pLogicUnit_job()->m_xpList);
+  m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpList);
 
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vListNew(void)
   
   //vTrace("vListNew\n"_Stz);
   
-  m_pJob->pLogicUnit_job()->m_xpList = new RowSingleList;
+  m_p_TaskLogicUnit->m_xpList = new RowSingleList;
 
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vListPrint(void)
   
   //vTrace("vListPrint\n"_Stz);
   
-  RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
+  RowSingleList* pRowSingleList = * m_p_TaskLogicUnit->m_xpList;
 
 
   ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();

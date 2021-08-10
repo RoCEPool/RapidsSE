@@ -16,6 +16,7 @@ static Stz* aJL[]
 {
   /* 0 */ "None"_Stz,
   /* 1 */ "Demon"_Stz,
+  /* 1 */ "Local"_Stz,
   /* 2 */ "Originating"_Stz,
   /* 3 */ "Participating"_Stz
 };

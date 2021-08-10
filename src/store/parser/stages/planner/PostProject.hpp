@@ -31,10 +31,10 @@ namespace Parser
 
   private:
     // Visits all nodes, looking for StatementMarkers
-    static GraphNav::eWalkCtrl eStmtMarkerVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static GraphNav::eWalkCtrl eStmtMarkerVisitor(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
 
     // Visits all nodes within a StatementMarker subsection
-    static GraphNav::eWalkCtrl eStmtSectionVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static GraphNav::eWalkCtrl eStmtSectionVisitor(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
 
     // Checks if there are any expressions in sql operators that are in excess
     // of the project list and adds a post project if required

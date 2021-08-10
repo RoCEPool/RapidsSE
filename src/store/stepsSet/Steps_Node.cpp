@@ -65,12 +65,12 @@ void Step::vNodeNew(void)
   
   i8 iPortNo = m_pDataStack->iPopInt(__func__);
 
-  i8 nNodes = AM::pGrid()->nNodes();
-  i8 nDegOfPar = AM::nDegOfPar();
+  i8 nKnownNodes = AM::pGrid()->nKnownNodes();
+  i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
 
-  Node* pNode = new Node(nNodes,
+  Node* pNode = new Node(nKnownNodes,
                          sNodeNm,
-                         nDegOfPar,
+                         nPtnsPerNode,
                          sIpAddr,
                          iPortNo,
                          AM::szRegionName());
@@ -114,7 +114,7 @@ void Step::vNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpNode);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpNode);
 
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nPtnsPerTable());
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
   
   EXIT();
 }
@@ -287,9 +287,9 @@ void Step::vNodeSet(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pNode || m_pJob->pLogicUnit_job()->m_xpNode.bIsNull());
+  ASSERT(! pNode || m_p_TaskLogicUnit->m_xpNode.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpNode = pNode;
+  m_p_TaskLogicUnit->m_xpNode = pNode;
 
   EXIT();
 }

@@ -15,7 +15,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PtnMap(void)
 {
-  vAddStep("ptnMap::adjust"_Stz, &Step::vPtnMapAdjust);
+  vAddStep("ptnMap::adjust"_Stz,     &Step::vPtnMapAdjust);
+  vAddStep("ptnmap::ptnsInGrid"_Stz, &Step::vPtnMapPtnsInGrid);
+  vAddStep("ptnmap::see"_Stz,        &Step::vPtnMapSee);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,10 +29,34 @@ void Step::vPtnMapAdjust(void)
   
   PtnMap* pPtnMap = AM::pPtnMap();
   
-  pPtnMap->vDumpDataBuffers();
-  pPtnMap->vAdjustDataBuffers(AM::nNodes(),AM::nDegOfPar());
-  pPtnMap->vDumpDataBuffers();
+  pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ptnmap::ptnsInGrid -- get number of partitions in the grid                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnMapPtnsInGrid(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsInGrid());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ptnmap::see -- see the ptnmap                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnMapSee(void)
+{
+  ENTRY();
+  
+  PtnMap* pPtnMap = AM::pPtnMap();
+  
+  pPtnMap->vSee();
+    
   EXIT();
 }
 

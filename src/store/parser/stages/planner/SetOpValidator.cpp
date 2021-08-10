@@ -74,7 +74,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -121,7 +121,7 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

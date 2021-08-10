@@ -129,16 +129,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: delete_CancelMarker \handler
+: delete_Cleaning \handler
 
-  //"ZK_CANCELMARKER_handler" .verbose
+  //"ZK_M_CLEANING_handler" .verbose
   nullptr to Operand[]
   PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -204,13 +202,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : delete_DataMarker \handler
 
   0 locals| iPhrases |
 
-  //"Operand:- ZK_DATAPULSE" .verbose
+  //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -240,17 +238,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : delete_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   0 locals| iPhrases |
 
+  PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -275,10 +274,10 @@
 
   op__topology
 
-  find: delete_CancelMarker ZK_CANCELMARKER op[].handler!
-  //find: delete_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: delete_DataMarker  ZK_DATAPULSE  op[].handler!
-  find: delete_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: delete_Cleaning      ZK_M_CLEANING      op[].handler!
+  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     op[].handler!
+  find: delete_DataMarker    ZK_M_DATAPULSE     op[].handler!
+  find: delete_StartMarker   ZK_M_START         op[].handler!
 
   op__loop
 

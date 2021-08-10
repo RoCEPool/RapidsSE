@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_INDEXDEF ...                                                */
+/* handler for ZK_D_INDEXDEF ...                                              */
 /*----------------------------------------------------------------------------*/
 : createIndex_IndexDef
 
@@ -92,7 +92,6 @@
   sTableNm createIndex::checkCreate not if ( errorCode )
     to errorCode
     errorCode op__execErr
-    Pipein[].delete
     true
     exit
   then
@@ -130,7 +129,7 @@
 
   op__topology
 
-  find: createIndex_IndexDef ZK_INDEXDEF op[].handler!
+  find: createIndex_IndexDef ZK_D_INDEXDEF op[].handler!
 
   op__loop
 

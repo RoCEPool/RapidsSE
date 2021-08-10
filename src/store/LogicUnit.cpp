@@ -50,6 +50,8 @@
 #include "SN_Tme.hpp"
 #include "SN_Tsp.hpp"
 
+#include "MY.hpp"
+
 
 extern EoArg EoArgs[];
 
@@ -67,13 +69,14 @@ __aFooterFunction(LogicUnit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LogicUnit::LogicUnit(Task* pTask)
+LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::bRepair,"m_xpAggTimer"_Stz)
 ,       m_xpCrwToRow(this,RF_NONE,         nullptr,        "m_xpCrwToRow"_Stz)
 ,           m_xpDir0(this,RF_NONE,         nullptr,        "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
+,    m_xpErrorMarker(this,RF_NONE,         nullptr,        "m_xpErrorMarker"_Stz)
 ,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
 ,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
@@ -85,6 +88,7 @@ LogicUnit::LogicUnit(Task* pTask)
 ,   m_xpInfoSetTable(this,RF_NONE,         nullptr,        "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_NONE,         nullptr,        "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_NONE,         nullptr,        "m_xpLogicCompiler"_Stz)
+,      m_xpMemoryHog(this,RF_NONE,         nullptr,         "m_xpMemoryHog"_Stz)
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 ,            m_xpNow(this,RF_NONE,         nullptr,        "m_xpNow"_Stz)
@@ -117,8 +121,8 @@ LogicUnit::LogicUnit(Task* pTask)
 ,          m_xpTable(this,RF_NONE,         nullptr,        "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_NONE,         nullptr,        "m_xpTablePtn"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
-,       m_xpToHshCrw(this,RF_NONE,         nullptr,        "m_xpToHshCrw"_Stz)
 ,       m_xpToNstRow(this,RF_NONE,         nullptr,        "m_xpToNstRow"_Stz)
+,       m_xpToPtnCrw(this,RF_NONE,         nullptr,        "m_xpToPtnCrw"_Stz)
 ,       m_xpToPtnRow(this,RF_NONE,         nullptr,        "m_xpToPtnRow"_Stz)
 ,          m_xpToRow(this,RF_NONE,         nullptr,        "m_xpToRow"_Stz)
 ,             m_xpTx(this,RF_NONE,         nullptr,        "m_xpTx"_Stz)
@@ -126,8 +130,9 @@ LogicUnit::LogicUnit(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pTask = pTask;
-  
+  m_pJob  = nullptr;
+  m_pOp   = nullptr;
+
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_xpSendNode  = nullptr;
@@ -139,6 +144,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xpNow = new Now;
 
   m_bCompilerToExit = false;
+  m_bIsLftCrwBuffer = false;
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;
@@ -218,7 +224,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
 
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
-  m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
+  m_xRluCommon.m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
 
   m_xRluCommon.m_pPot = nullptr;
@@ -264,18 +270,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  
-  if (LH_HAVE_READ_LOCK == m_eDdlLocked) {
-    
-    AM::pDdlLock()->vDropRead();
-    m_eDdlLocked = LH_HAVE_NO_LOCK;
-  }
-  else
-  if (LH_HAVE_WRITE_LOCK == m_eDdlLocked) {
-    
-    AM::pDdlLock()->vDropWrite();
-    m_eDdlLocked = LH_HAVE_NO_LOCK;
-  }
+  AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
   
@@ -288,6 +283,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
 
+  // PROBLEM
   if (! m_xpPipeline.bIsNull())
     delete *m_xpPipeline;
   
@@ -313,6 +309,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pDevRhtIxt;
   
   delete m_pLogicTimer;
+
+//  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
+//    m_paReg[i_Reg]->vDump();
+
 }
 
 
@@ -530,6 +530,22 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the logicUnit registers                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDumpRegisters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  vTrace("\n------------------------------------------------------------\n"_Stz);
+  vTrace("LogicUnit RegisterDump\n"_Stz);
+
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
+    m_paReg[i_Reg]->vDump();
+
+  vTrace("------------------------------------------------------------\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* optimise with super fragent                                                */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vEndOptimise(void)
@@ -642,7 +658,27 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
+  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnNo();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* LogicUnit::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+    
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,6 +740,30 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op                                                                     */
+/*----------------------------------------------------------------------------*/
+Op* LogicUnit::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pJob);
+
+  return m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op                                                                     */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vOp(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  RASSERT(! m_pJob);
+  
+  m_pOp = pOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* optimise with super fragent                                                */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vOptimise(eEO eOpt)
@@ -760,6 +820,7 @@ void LogicUnit::vSetPipein(Operand* pOperand)
     m_ePipeInOperand = ZK_NONE;
   }
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1453,8 +1514,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
-  aRluCommon->m_nPtns  = AM::nPtnsInGrid();
+  aRluCommon->m_i_TablePtn = MY::pOp()->tPtnNo();
+  aRluCommon->m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

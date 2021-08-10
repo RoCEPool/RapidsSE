@@ -53,7 +53,7 @@ class GraphNav
     static Stz* szLeafType(Stz* szTypePath);
 
     // Returns the parent of the type definition path given.
-    static void vParentType(Stz* szTypePath, s256& buf);
+    static void vParentType(Stz* szTypePath, s2K& buf);
 
     // Print a graph structure to the console, starting from some node
     static void vPrintPlan(PlanNode* pRootNode);
@@ -86,7 +86,7 @@ class GraphNav
     };
 
     // The following functions require a visitor function with the definition:
-    //   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+    //   eWalkCtrl func(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
     // Params:
     //   pNode - the current node being walked
     //   sPath - the path of the current node being walked
@@ -103,12 +103,12 @@ class GraphNav
     // Returns false if the walk was aborted or true if it completed normally.
     // A global walk traverses all nodes in the graph.
     static b1 bGlobalWalk(PlanNode* pNode,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                           void* pvArg);
     static b1 bGlobalWalk(PlanNode* pNode,
                           b1 bWalkProperties,
                           b1 bWalkChildren,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                           void* pvArg);
 
     // Event-based implementation of bGlobalWalk. For each node in the graph
@@ -117,14 +117,14 @@ class GraphNav
     // Note that the callback definition is slightly different to the visitor-
     // implementation above.
     static b1 bGlobalWalk(PlanNode* pNode,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                           void* pvArg);
     static b1 bGlobalWalk(PlanNode* pNode,
                           b1 bWalkProperties,
                           b1 bWalkChildren,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                           void* pvArg);
 
 
@@ -133,12 +133,12 @@ class GraphNav
     // Starting on a StatementMarker will walk until the subsequent StatementMarker
     // node is encountered.
     static b1 bBoundedWalk(PlanNode* pNode,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                            void* pvArg);
     static b1 bBoundedWalk(PlanNode* pNode,
                            b1 bWalkProperties,
                            b1 bWalkChildren,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
                            void* pvArg);
 
     // Event-based implementation of bBoundedWalk. For each node in the graph
@@ -147,14 +147,14 @@ class GraphNav
     // Note that the callback definition is slightly different to the visitor-
     // implementation above.
     static b1 bBoundedWalk(PlanNode* pNode,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                           void* pvArg);
     static b1 bBoundedWalk(PlanNode* pNode,
                           b1 bWalkProperties,
                           b1 bWalkChildren,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                           void* pvArg);
 
     // Walk the current node and (potenitially) its properties and children,
@@ -162,17 +162,17 @@ class GraphNav
     // bottom-up, depth-first traversal.
     // Returns false if the walk was aborted or true if it completed normally.
     // A global walk traverses all nodes in the graph.
-    static b1 bGlobalWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bGlobalWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
     static b1 bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                                  std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+                                  std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
 
     // As per bGlobalWalkBottomUp() above except a bounded walk will stop when it hits a
     // StatementMarker node as this represents the start of another logical sub-graph.
     // Starting on a StatementMarker will walk until the subsequent StatementMarker
     // node is encountered.
-    static b1 bBoundedWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bBoundedWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
     static b1 bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+                                   std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -229,22 +229,22 @@ class GraphNav
     static PlanNode* pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode);
 
     // Walks the plan graph to find the given query node. Saves the path and depth
-    static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth);
+    static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth);
 
   private:
     // Visitor walk implementation
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                    std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                    void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
+                    std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
+                    void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk);
     static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                            std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                            void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
+                            std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
+                            void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk);
 
     // Event walk implementation
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                    std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
-                    std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
-                    void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
+                    std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
+                    std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
+                    void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk);
 
     static i8 iNextSeparator(Stz* szPath);
 

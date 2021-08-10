@@ -9,25 +9,25 @@ Routine QRY_600
 
   // check for STARTMARKER
   EO_DUP
-  EO_INTEGER ZK_STARTMARKER
+  EO_INTEGER ZK_M_START
   EO_EQ_INTINT
   EO_JMP_TRUE STARTMARKER_HANDLER
 
   // check for PULSEMARKER
   EO_DUP
-  EO_INTEGER ZK_DATAPULSE
+  EO_INTEGER ZK_M_DATAPULSE
   EO_EQ_INTINT
   EO_JMP_TRUE DATAPULSE_HANDLER
 
-  // check for ZK_STREAMDEF
+  // check for ZK_D_STREAMDEF
   EO_DUP
-  EO_INTEGER  ZK_STREAMDEF
+  EO_INTEGER  ZK_D_STREAMDEF
   EO_EQ_INTINT
   EO_JMP_TRUE STREAMDEF_HANDLER
 
   // check for EOSMARKER
   EO_DUP
-  EO_INTEGER ZK_EOSMARKER
+  EO_INTEGER ZK_M_EOS
   EO_EQ_INTINT
   EO_JMP_TRUE EOSMARKER_HANDLER
 
@@ -36,7 +36,7 @@ Routine QRY_600
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STARTMARKER handler
+  // ZK_M_START handler
 Label STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER : 600**\n"
   EO_POP
@@ -52,21 +52,21 @@ Label STARTMARKER_HANDLER
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STREAMDEF handler
+  // ZK_D_STREAMDEF handler
 Label STREAMDEF_HANDLER
   EO_PRINTF "**STREAMDEF_HANDLER : 600**\n"
   EO_POP
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_EOSMARKER handler
+  // ZK_M_EOS handler
 Label EOSMARKER_HANDLER
   EO_PRINTF "**EOSMARKER_HANDLER : 600**\n"
   EO_POP
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_DATAPULSE handler
+  // ZK_M_DATAPULSE handler
 Label DATAPULSE_HANDLER
   EO_PRINTF "**DATAPULSE_HANDLER : 600**\n"
   EO_POP

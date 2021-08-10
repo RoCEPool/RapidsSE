@@ -87,7 +87,6 @@ Session::Session(void)
   m_i_FixedPtn  = C_UNKNOWN;
   
   //m_oDicStack;
-  m_bExamined   = false;
   m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
 
@@ -96,9 +95,14 @@ Session::Session(void)
   m_bHasCascade = false;
   m_sCascade    = ""_Stz;
   
+  m_bSystemCloser = false;
   
   // -- -- -- -- -- --
   m_pOutput           = nullptr;
+  
+  
+  
+  m_iCmdNo = 0;
 
   _checkInitialised_(CN_SESSION);
   
@@ -110,8 +114,6 @@ Session::Session(void)
   ++ gixSession;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Session constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,8 +128,6 @@ Session::~Session(void) noexcept(false)
   AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Session destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,11 +137,17 @@ void Session::vContentDump(void)
 {
   _static_
   
-  vTrace("Session %p: pid %lld (%s)\n"_Stz,
-         this,
-         m_iPid,
-         Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
-         );
+  vTrace("See Session::\n"_Stz);
+  
+  vTrace("  this %p\n"_Stz
+         ,this);
+  
+  vTrace("  pid  %lld %s\n"_Stz
+         ,m_iPid
+         ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
+        );
+  
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +280,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_bExamined  = false;
   m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
   
@@ -459,6 +464,28 @@ void Session::vReport(void)
   vTrace("Session %llx job %llx\n"_Stz,
          this,
          m_pSsnJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* see this session                                                           */
+/*----------------------------------------------------------------------------*/
+void Session::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vTrace("See Session::\n"_Stz);
+  
+  vTrace("  this %p\n"_Stz
+         ,this);
+  
+  vTrace("  pid  %lld (%s)\n"_Stz
+         ,m_iPid
+         ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
+        );
+  if (m_bSystemCloser)
+    vTrace("  system closer\n"_Stz);
+
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

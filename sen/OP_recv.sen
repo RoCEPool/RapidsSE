@@ -11,7 +11,7 @@
 
   CN_JOB task[] task.thread thread.dedicated!
 
-  NS_ACTIVE grid::thisNode@ grid::node node.state!
+  NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!
 
   args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf
@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : recv_StartMarker \handler
 
@@ -103,7 +103,7 @@
 
   op__topology
 
-  find: recv_StartMarker ZK_STARTMARKER op[].handler!
+  find: recv_StartMarker ZK_M_START op[].handler!
 
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |

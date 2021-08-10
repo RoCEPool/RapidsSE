@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -16,39 +16,40 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    ALL = 21, AND = 22, ANTLR = 23, ANY = 24, AS = 25, ASC = 26, AVG = 27, 
-    BETWEEN = 28, BOTH = 29, BY = 30, CATALOG = 31, COLLATE = 32, CORRESPONDING = 33, 
-    CREATE = 34, CROSS = 35, CURRENT_CATALOG = 36, CURRENT_SCHEMA = 37, 
-    CURRENT_TIMESTAMP = 38, CURRENT_USER = 39, DATA = 40, DATE = 41, DELETE = 42, 
-    DESC = 43, DETAIL = 44, DISTINCT = 45, DROP = 46, ESCAPE = 47, EXCEPT = 48, 
-    EXPLAIN = 49, SQL_FALSE = 50, FEDERATION = 51, FOR = 52, FORMAT = 53, 
-    FULL = 54, FROM = 55, GROUP = 56, HAVING = 57, IN = 58, INDEX = 59, 
-    INNER = 60, INSERT = 61, INTERSECT = 62, INTO = 63, IS = 64, JOIN = 65, 
-    KEY = 66, LEADING = 67, LEFT = 68, LIKE = 69, LIMIT = 70, MAX = 71, 
-    MIN = 72, MONOTONIC = 73, NO = 74, NODE = 75, NOT = 76, NOW = 77, SQL_NULL = 78, 
-    OFFSET = 79, ON = 80, OR = 81, ORDER = 82, OUTER = 83, OVER = 84, OVERLAY = 85, 
-    PARTITION = 86, PLACING = 87, PRETTY = 88, PRIMARY = 89, REFERENCE = 90, 
-    RIGHT = 91, ROW = 92, SCHEMA = 93, SELECT = 94, SET = 95, STAGE = 96, 
-    STATS = 97, STATISTICS = 98, SUM = 99, TABLE = 100, TO = 101, TOP = 102, 
-    TRAILING = 103, TRUNCATE = 104, SQL_TRUE = 105, TYPE = 106, UNION = 107, 
-    UNIQUE = 108, UPDATE = 109, USING = 110, VALUES = 111, WHERE = 112, 
-    WITH_NAMES = 113, WITH = 114, XOR = 115, BOOLEAN = 116, INTEGER = 117, 
-    DECIMAL = 118, FLOAT = 119, TIME = 120, TIMESTAMP = 121, INTERVAL = 122, 
-    CHAR = 123, CHARACTER = 124, VARCHAR = 125, TEXT = 126, BINARY = 127, 
-    VARBINARY = 128, BLOB = 129, VARYING = 130, BIT = 131, BITS = 132, BYTE = 133, 
-    BYTES = 134, CHARS = 135, DIGITS = 136, CASE = 137, CAST = 138, COALESCE = 139, 
-    CONCAT = 140, COUNT = 141, DECODE = 142, EXTRACT = 143, EXISTS = 144, 
-    IF = 145, IFNULL = 146, NULLIF = 147, POSITION = 148, SUBSTR = 149, 
-    SUBSTRING = 150, TRIM = 151, TYPEOF = 152, WHEN = 153, THEN = 154, ELSE = 155, 
-    END = 156, DAY = 157, DAYS = 158, HOUR = 159, HOURS = 160, MINUTE = 161, 
-    MINUTES = 162, MONTH = 163, MONTHS = 164, QUARTER = 165, QUARTERS = 166, 
-    SECOND = 167, SECONDS = 168, WEEK = 169, WEEKS = 170, YEAR = 171, YEARS = 172, 
-    BLOCK = 173, BLOOM = 174, BTREE = 175, HASH = 176, LOOP = 177, SKIPLIST = 178, 
-    TREE = 179, VALUE = 180, IDENTIFIER = 181, PLAIN_IDENTIFIER = 182, BAKTIKD_IDENTIFIER = 183, 
-    DUBLQUOTED_IDENTIFIER = 184, STRING_LITERAL = 185, SINGLQUOTED_STRING = 186, 
-    DUBLQUOTED_STRING = 187, FLOAT_LITERAL = 188, DECIMAL_LITERAL = 189, 
-    INTEGER_LITERAL = 190, HINT_START = 191, HINT_END = 192, SLASH_COMMENT = 193, 
-    SQL_COMMENT = 194, BLOCK_COMMENT = 195, WHITESPACE = 196
+    ALL = 21, AND = 22, ANTI = 23, ANTLR = 24, ANY = 25, AS = 26, ASC = 27, 
+    AVG = 28, BETWEEN = 29, BOTH = 30, BY = 31, CATALOG = 32, COLLATE = 33, 
+    CORRESPONDING = 34, CREATE = 35, CROSS = 36, CURRENT_CATALOG = 37, CURRENT_SCHEMA = 38, 
+    CURRENT_TIMESTAMP = 39, CURRENT_USER = 40, DATA = 41, DATE = 42, DELETE = 43, 
+    DESC = 44, DETAIL = 45, DISTINCT = 46, DROP = 47, ESCAPE = 48, EXCEPT = 49, 
+    EXPLAIN = 50, SQL_FALSE = 51, FEDERATION = 52, FOR = 53, FORMAT = 54, 
+    FULL = 55, FROM = 56, GROUP = 57, HAVING = 58, IN = 59, INDEX = 60, 
+    INNER = 61, INSERT = 62, INTERSECT = 63, INTO = 64, IS = 65, JOIN = 66, 
+    KEY = 67, LEADING = 68, LEFT = 69, LIKE = 70, LIMIT = 71, MAX = 72, 
+    MIN = 73, MONOTONIC = 74, NATURAL = 75, NO = 76, NODE = 77, NOT = 78, 
+    NOW = 79, SQL_NULL = 80, OFFSET = 81, ON = 82, OR = 83, ORDER = 84, 
+    OUTER = 85, OVER = 86, OVERLAY = 87, PARTITION = 88, PLACING = 89, PRETTY = 90, 
+    PRIMARY = 91, REFERENCE = 92, RIGHT = 93, ROW = 94, SCHEMA = 95, SELECT = 96, 
+    SEMI = 97, SET = 98, STAGE = 99, STATS = 100, STATISTICS = 101, SUM = 102, 
+    TABLE = 103, TO = 104, TOP = 105, TRAILING = 106, TRUNCATE = 107, SQL_TRUE = 108, 
+    TYPE = 109, UNION = 110, UNIQUE = 111, UPDATE = 112, USING = 113, VALUES = 114, 
+    WHERE = 115, WITH_NAMES = 116, WITH = 117, XOR = 118, BOOLEAN = 119, 
+    INTEGER = 120, DECIMAL = 121, FLOAT = 122, TIME = 123, TIMESTAMP = 124, 
+    INTERVAL = 125, CHAR = 126, CHARACTER = 127, VARCHAR = 128, TEXT = 129, 
+    BINARY = 130, VARBINARY = 131, BLOB = 132, VARYING = 133, BIT = 134, 
+    BITS = 135, BYTE = 136, BYTES = 137, CHARS = 138, DIGITS = 139, CASE = 140, 
+    CAST = 141, COALESCE = 142, CONCAT = 143, COUNT = 144, DECODE = 145, 
+    EXTRACT = 146, EXISTS = 147, IF = 148, IFNULL = 149, NULLIF = 150, POSITION = 151, 
+    SUBSTR = 152, SUBSTRING = 153, TRIM = 154, TYPEOF = 155, WHEN = 156, 
+    THEN = 157, ELSE = 158, END = 159, DAY = 160, DAYS = 161, HOUR = 162, 
+    HOURS = 163, MINUTE = 164, MINUTES = 165, MONTH = 166, MONTHS = 167, 
+    QUARTER = 168, QUARTERS = 169, SECOND = 170, SECONDS = 171, WEEK = 172, 
+    WEEKS = 173, YEAR = 174, YEARS = 175, BLOCK = 176, BLOOM = 177, BTREE = 178, 
+    HASH = 179, LOOP = 180, SKIPLIST = 181, TREE = 182, VALUE = 183, IDENTIFIER = 184, 
+    PLAIN_IDENTIFIER = 185, BAKTIKD_IDENTIFIER = 186, DUBLQUOTED_IDENTIFIER = 187, 
+    STRING_LITERAL = 188, SINGLQUOTED_STRING = 189, DUBLQUOTED_STRING = 190, 
+    FLOAT_LITERAL = 191, DECIMAL_LITERAL = 192, INTEGER_LITERAL = 193, HINT_START = 194, 
+    HINT_END = 195, SLASH_COMMENT = 196, SQL_COMMENT = 197, BLOCK_COMMENT = 198, 
+    WHITESPACE = 199
   };
 
   enum {
@@ -58,28 +59,28 @@ public:
     RuleStatisticsStatement = 9, RuleQuery = 10, RuleQueryHint = 11, RuleHint = 12, 
     RuleSelectQuery = 13, RuleSelectExpr = 14, RuleSetQuery = 15, RuleSetExpr = 16, 
     RuleCorrClause = 17, RuleWithQuery = 18, RuleTableExpr = 19, RuleTableReference = 20, 
-    RuleJoinType = 21, RuleJoinHint = 22, RuleValuesExpr = 23, RuleInsertQuery = 24, 
-    RuleDeleteQuery = 25, RuleUpdateQuery = 26, RuleCreateQuery = 27, RuleCreateTableQuery = 28, 
-    RuleCreateIndexQuery = 29, RuleDropQuery = 30, RuleTruncateQuery = 31, 
-    RuleTableDefinition = 32, RuleTablePartitioning = 33, RuleColumnDefinition = 34, 
-    RuleColumnNameList = 35, RuleTableConstraint = 36, RuleIndexDefinition = 37, 
-    RuleIndexMethod = 38, RuleDataType = 39, RuleSqlDataType = 40, RuleAsSubquery = 41, 
-    RuleSelectOrValues = 42, RuleSelectList = 43, RuleSelectListItem = 44, 
-    RuleGroupByList = 45, RuleGroupByListItem = 46, RuleOrderByList = 47, 
-    RuleOrderByListItem = 48, RuleJoinUsingList = 49, RuleJoinUsingListItem = 50, 
-    RuleCorrList = 51, RuleCorrListItem = 52, RulePropertyList = 53, RuleProperty = 54, 
-    RuleValueList = 55, RulePredicate = 56, RuleJoinPredicate = 57, RuleCasePredicate = 58, 
-    RuleExpr = 59, RuleVariableName = 60, RuleColumnRef = 61, RuleColumnWildcard = 62, 
-    RuleClassName = 63, RuleFunctionName = 64, RuleMethodName = 65, RuleCatalogName = 66, 
-    RuleSchemaName = 67, RuleTableName = 68, RuleTableAlias = 69, RuleColumnName = 70, 
-    RuleColumnAlias = 71, RuleCollationName = 72, RuleIndexName = 73, RulePropertyName = 74, 
-    RuleHintName = 75, RulePropertyValue = 76, RuleHintValue = 77, RuleIdentifier = 78, 
-    RuleQualifier = 79, RulePrecision = 80, RuleScale = 81, RuleSize = 82, 
-    RuleLiteral = 83, RuleSimpleLiteral = 84, RuleBooleanLiteral = 85, RuleIntegerLiteral = 86, 
-    RuleDecimalLiteral = 87, RuleFloatLiteral = 88, RuleDateLiteral = 89, 
-    RuleTimeLiteral = 90, RuleTimestampLiteral = 91, RuleStringLiteral = 92, 
-    RuleIntervalLiteral = 93, RuleLooseInterval = 94, RuleSql92CalendarInterval = 95, 
-    RuleSql92TimeInterval = 96, RuleNonReservedWord = 97
+    RuleJoinType = 21, RuleExtendedJoinType = 22, RuleJoinHint = 23, RuleValuesExpr = 24, 
+    RuleInsertQuery = 25, RuleDeleteQuery = 26, RuleUpdateQuery = 27, RuleCreateQuery = 28, 
+    RuleCreateTableQuery = 29, RuleCreateIndexQuery = 30, RuleDropQuery = 31, 
+    RuleTruncateQuery = 32, RuleTableDefinition = 33, RuleTablePartitioning = 34, 
+    RuleColumnDefinition = 35, RuleColumnNameList = 36, RuleTableConstraint = 37, 
+    RuleIndexDefinition = 38, RuleIndexMethod = 39, RuleDataType = 40, RuleSqlDataType = 41, 
+    RuleAsSubquery = 42, RuleSelectOrValues = 43, RuleSelectList = 44, RuleSelectListItem = 45, 
+    RuleGroupByList = 46, RuleGroupByListItem = 47, RuleOrderByList = 48, 
+    RuleOrderByListItem = 49, RuleJoinUsingList = 50, RuleJoinUsingListItem = 51, 
+    RuleCorrList = 52, RuleCorrListItem = 53, RulePropertyList = 54, RuleProperty = 55, 
+    RuleValueList = 56, RulePredicate = 57, RuleJoinPredicate = 58, RuleCasePredicate = 59, 
+    RuleExpr = 60, RuleVariableName = 61, RuleColumnRef = 62, RuleColumnWildcard = 63, 
+    RuleClassName = 64, RuleFunctionName = 65, RuleMethodName = 66, RuleCatalogName = 67, 
+    RuleSchemaName = 68, RuleTableName = 69, RuleTableAlias = 70, RuleColumnName = 71, 
+    RuleColumnAlias = 72, RuleCollationName = 73, RuleIndexName = 74, RulePropertyName = 75, 
+    RuleHintName = 76, RulePropertyValue = 77, RuleHintValue = 78, RuleIdentifier = 79, 
+    RuleQualifier = 80, RulePrecision = 81, RuleScale = 82, RuleSize = 83, 
+    RuleLiteral = 84, RuleSimpleLiteral = 85, RuleBooleanLiteral = 86, RuleIntegerLiteral = 87, 
+    RuleDecimalLiteral = 88, RuleFloatLiteral = 89, RuleDateLiteral = 90, 
+    RuleTimeLiteral = 91, RuleTimestampLiteral = 92, RuleStringLiteral = 93, 
+    RuleIntervalLiteral = 94, RuleLooseInterval = 95, RuleSql92CalendarInterval = 96, 
+    RuleSql92TimeInterval = 97, RuleNonReservedWord = 98
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -114,6 +115,7 @@ public:
   class TableExprContext;
   class TableReferenceContext;
   class JoinTypeContext;
+  class ExtendedJoinTypeContext;
   class JoinHintContext;
   class ValuesExprContext;
   class InsertQueryContext;
@@ -566,18 +568,32 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  NaturalJoinContext : public TableExprContext {
+  public:
+    NaturalJoinContext(TableExprContext *ctx);
+
+    sqlParser::JoinTypeContext *type = nullptr;
+    std::vector<TableExprContext *> tableExpr();
+    TableExprContext* tableExpr(size_t i);
+    antlr4::tree::TerminalNode *NATURAL();
+    antlr4::tree::TerminalNode *JOIN();
+    JoinTypeContext *joinType();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  JoinUsingContext : public TableExprContext {
   public:
     JoinUsingContext(TableExprContext *ctx);
 
-    sqlParser::JoinTypeContext *type = nullptr;
+    sqlParser::ExtendedJoinTypeContext *type = nullptr;
     sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *USING();
     JoinUsingListContext *joinUsingList();
-    JoinTypeContext *joinType();
+    ExtendedJoinTypeContext *extendedJoinType();
     JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -587,14 +603,14 @@ public:
   public:
     JoinOnContext(TableExprContext *ctx);
 
-    sqlParser::JoinTypeContext *type = nullptr;
+    sqlParser::ExtendedJoinTypeContext *type = nullptr;
     sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *ON();
     JoinPredicateContext *joinPredicate();
-    JoinTypeContext *joinType();
+    ExtendedJoinTypeContext *extendedJoinType();
     JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -674,6 +690,21 @@ public:
   };
 
   JoinTypeContext* joinType();
+
+  class  ExtendedJoinTypeContext : public antlr4::ParserRuleContext {
+  public:
+    ExtendedJoinTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    JoinTypeContext *joinType();
+    antlr4::tree::TerminalNode *SEMI();
+    antlr4::tree::TerminalNode *ANTI();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExtendedJoinTypeContext* extendedJoinType();
 
   class  JoinHintContext : public antlr4::ParserRuleContext {
   public:

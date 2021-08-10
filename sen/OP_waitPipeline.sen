@@ -5,36 +5,36 @@
 " OP_waitPL.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: waitPipeline_StartMarker \handler
+: waitPipeline_Start \handler
 
   0  to Counter0[]
   -1 to Counter1[]
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
-: waitPipeline_DataMarker \handler
+: waitPipeline_DataPulse \handler
 
   PipeIn[].delete
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEDMARKER ...                                            */
+/* handler for ZK_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
-: waitPipeline_PulsedMarker \handler
+: waitPipeline_End \handler
 
   PipeIn[].delete
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_ReturnPipeline \handler
 
@@ -73,7 +73,7 @@
     Operand[].newDataPulse
     Operand[].pipeOut
 
-    Operand[].newPulsedMarker
+    Operand[].newEndMarker
     Operand[].pipeOut
 
   then
@@ -91,10 +91,10 @@
 
   op__topology
 
-  find: waitPipeline_DataMarker    ZK_DATAPULSE    op[].handler!
-  find: waitPipeline_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
-  find: waitPipeline_ReturnPipeline ZK_RETURNPIPELINE op[].handler!
-  find: waitPipeline_StartMarker    ZK_STARTMARKER    op[].handler!
+  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      op[].handler!
+  find: waitPipeline_End            ZK_M_END            op[].handler!
+  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE op[].handler!
+  find: waitPipeline_Start          ZK_M_START          op[].handler!
 
   op__loop
 

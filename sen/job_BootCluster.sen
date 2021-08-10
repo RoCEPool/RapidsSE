@@ -7,25 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-//: grid::connected ( -- t|f )
-//
-//  grid::bootNodes 0
-//  do
-//    I grid::node node.isConnected not if
-//      args.verbose if
-//        I "Node no %v not connected" .printf
-//      then
-//      unloop
-//      false
-//      exit
-//    then
-//  loop
-//
-//  "All nodes connected" .verbose
-//
-//  true
-//;
-/*----------------------------------------------------------------------------*/
 : grid::isConnected ( -- t|f )
 
   true locals| allConnected |
@@ -77,7 +58,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // has cluster already been started?
 
-  grid::started@ if
+  system::started@ if
                                              //! how do we set an error message?
     DONE_REQ
     exit
@@ -108,7 +89,7 @@
   task::wait
 
   // set grid as started
-  // true grid::started!
+  // true system::started!
   "Cluster started" .
 
   task::doneFinally
@@ -131,7 +112,7 @@
   // wait till all nodes connected
   grid::pause
 
-  // true grid::started!
+  // true system::started!
 ;
 
 /*----------------------------------------------------------------------------*/

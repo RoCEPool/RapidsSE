@@ -30,6 +30,7 @@
 #include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
 #include "store/parser/shadowNodes/planObjects/OrderOp.hpp"
+#include "store/parser/shadowNodes/planObjects/joins/NestedLoopJoinOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
@@ -39,6 +40,9 @@
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
 #include "store/parser/shadowNodes/compound/OrderItem.hpp"
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
+#include "eJT.h"
+
+#include "Text.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -95,7 +99,7 @@ __aFooterFunction(SqlPlanner)
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_pStatementStack(new QueryNodeStack()),
-  m_pTableRefStack(new QueryNodeStack()),
+  m_pTableExprStack(new QueryNodeStack()),
   m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
   m_pOrderItems(nullptr)
@@ -124,13 +128,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pStatementStack = nullptr;
   }
 
-  if (m_pTableRefStack) {
-    while (m_pTableRefStack->nItems() > 0) {
-      QueryNode* pItem = m_pTableRefStack->pPop();
+  if (m_pTableExprStack) {
+    while (m_pTableExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pTableExprStack->pPop();
       delete pItem;
     }
-    delete m_pTableRefStack;
-    m_pTableRefStack = nullptr;
+    delete m_pTableExprStack;
+    m_pTableExprStack = nullptr;
   }
 
   if (m_pExprStack) {
@@ -563,8 +567,173 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *pCtx)
 {
   visitChildren(pCtx);
+
+  if (pCtx->tableAlias()) {
+    Text* pAlias = pCleanId(pCtx->tableAlias()->identifier());
+
+    QueryNode* pTableScanOp = m_pTableExprStack->pTop();
+    ASSERT(TableScanOp::bIsOfType(pTableScanOp));
+    ASSERT(!TableScanOp::bHasAlias(pTableScanOp));
+
+    TableScanOp::vSetAlias(pTableScanOp, pAlias);
+  }
   
   return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Join On node                                                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
+{
+  // Setup for join predicate
+  b1 bFreeExprStack = false;
+  if (!m_pExprStack) {
+    m_pExprStack = new QueryNodeList;
+    bFreeExprStack = true;
+  }
+
+  eJT eJoinType;
+
+  try {
+    visitChildren(pCtx);
+
+    // Extract join type. It can also throw an exception
+    eJoinType = eExtractJoinType(pCtx->extendedJoinType());
+
+  } catch (SqlException& e) {
+
+    if (bFreeExprStack) {
+      m_pExprStack->vDeleteAll();
+      delete m_pExprStack;
+      m_pExprStack = nullptr;
+    }
+
+    throw;
+  }
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // TODO: Extract join hint
+
+  // Extract join predicate
+  ASSERT(m_pExprStack->nItems() >= 1);
+  QueryNode* pJoinPredicate = m_pExprStack->pPop();
+
+  if (bFreeExprStack) {
+    ASSERT(m_pExprStack->nItems() == 0);
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Join Using node                                                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // Extract join type. It can also throw an exception
+  eJT eJoinType = eExtractJoinType(pCtx->extendedJoinType());
+
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // TODO: Extract join hint
+
+  // Extract the USING column identifiers into a StringList node
+  QueryNode* pUsingList = StringList::pCreate();
+
+  for (sqlParser::JoinUsingListItemContext* pItemCtx : pCtx->joinUsingList()->joinUsingListItem()) {
+    Text* pColumnName = pCleanId(pItemCtx->identifier());
+
+    QueryNode* pColumnNode = StringObject::pCreate(pColumnName);
+    pUsingList->vAppendChild(pColumnNode);
+  }
+
+  ASSERT(pUsingList->nChildren() > 0);
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, nullptr, pUsingList);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Cross Join node                                                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCrossJoin(sqlParser::CrossJoinContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // Join type
+  eJT eJoinType = JT_CROSS;
+
+  // A cross join is the same as an inner join with join predicate of TRUE.
+  QueryNode* pJoinPredicate = BooleanLiteral::pCreate(true);
+
+  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
+  pJoinOp->vAppendChild(pTableExpr1);
+  pJoinOp->vAppendChild(pTableExpr2);
+
+  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+  m_pTableExprStack->vPush(pJoinOp);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Natural join node                                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitNaturalJoin(sqlParser::NaturalJoinContext *pCtx)
+{
+  __NOT_IMPL("NATURAL JOIN")
+  visitChildren(pCtx);
+
+  // Extract join type. It can also throw an exception
+  eJT eJoinType = eExtractJoinType(pCtx->joinType());
+
+
+  // Extract the join table expressions
+  ASSERT(m_pTableExprStack->nItems() >=2);
+  QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
+  QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
+
+  // TODO: Extract join hint
+
+  // TODO: create a join predicate
+//  QueryNode* pJoinPredicate = ????
+//
+//
+//  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate);
+//  pJoinOp->vAppendChild(pTableExpr1);
+//  pJoinOp->vAppendChild(pTableExpr2);
+//
+//  // Put it back on the table expr stack so that visitSelectExpr() can pop it off
+//  m_pTableExprStack->vPush(pJoinOp);
+//  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -589,7 +758,8 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
   pTableName = pCleanId(pCtx->tableName()->id);
 
   QueryNode* pTableRef = TableRef::pCreate(pCatalogName, pSchemaName, pTableName);
-  m_pTableRefStack->vPush(pTableRef);
+  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+  m_pTableExprStack->vPush(pTableScanOp);
   
   return nullptr;
 }
@@ -838,17 +1008,26 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
 
   // -----------------------
-  // Table References
+  // Table Expressions
+  // (These include TableScanOps, JoinOps, table subqueries, etc.
   // -----------------------
-  // Check for a tableRef. If one exists, add it to a TableScanOp
-  // and attach the TableScanOp as a child of the ProjectOp
-  QueryNode* pTableScanOp = nullptr;
+  // Check for a table expression. If one exists, attach it as a child of the ProjectOp
+  QueryNode* pTableExprNode = nullptr;
   if (pCtx->tableExpr()) {
     // Visit the grammar rule for table expressions
-    pCtx->tableExpr()->accept(this);
+    try {
+      pCtx->tableExpr()->accept(this);
 
-    ASSERT(m_pTableRefStack->nItems() == 1);
-    pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
+    } catch (SqlException& e) {
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      if (pHavingFilterOp)  delete pHavingFilterOp;
+      if (pWhereFilterOp)   delete pWhereFilterOp;
+      throw;
+    }
+
+    ASSERT(m_pTableExprStack->nItems() == 1);
+    pTableExprNode = m_pTableExprStack->pPop();
 
   } else {
 
@@ -903,11 +1082,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   }
 
   /// TABLE REF
-  if (pTableScanOp) {
-    if (!pFirstOp)  pFirstOp = pTableScanOp;
-    if (pLastOp)    pLastOp->vAppendChild(pTableScanOp);
+  if (pTableExprNode) {
+    if (!pFirstOp)  pFirstOp = pTableExprNode;
+    if (pLastOp)    pLastOp->vAppendChild(pTableExprNode);
 
-    pLastOp = pTableScanOp;
+    pLastOp = pTableExprNode;
   }
 
   // Now attach the sql operator chain to the statement object.
@@ -975,7 +1154,8 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
   Text* pColumnName = pCleanId(pCtx->columnName()->id);
 
-  QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
+  QueryNode* pColumnRef = ColumnRef::pCreate(nullptr,
+                                             pCatalogName, pSchemaName,
                                              pTableName, pColumnName);
 
   m_pExprStack->vPush(pColumnRef);
@@ -1858,6 +2038,52 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   Tsp xVal;
   xVal.vSet(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro);
   return xVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract the join type enumeration                                          */
+/*----------------------------------------------------------------------------*/
+eJT SqlPlanner::eExtractJoinType(sqlParser::JoinTypeContext *pCtx)
+{
+  // The null/default case
+  if (!pCtx || pCtx->INNER()) {
+    return JT_INNER;
+  }
+
+  if (pCtx->outer) {
+    if (pCtx->LEFT())   return JT_LEFT_OUTER;
+    if (pCtx->RIGHT())  return JT_RIGHT_OUTER;
+    if (pCtx->FULL())   return JT_FULL_OUTER;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract the join type enumeration                                          */
+/*----------------------------------------------------------------------------*/
+eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
+{
+  // The null/default case
+  if (!pCtx) {
+    return JT_INNER;
+  }
+
+  if (pCtx->joinType()) {
+    return eExtractJoinType(pCtx->joinType());
+  }
+
+  if (pCtx->SEMI()) {
+//    __NOT_IMPL3("semi-join");
+    return JT_SEMI;
+  }
+
+  if (pCtx->ANTI()) {
+//    __NOT_IMPL3("anti-join");
+    return JT_ANTI;
+  }
+
+  NEVER_REACH
 }
 
 /*============================================================================*/

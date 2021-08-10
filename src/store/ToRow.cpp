@@ -41,7 +41,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pStreamDef  = pStreamDef;
   m_pBucketMap  = pBucketMap;
   m_bPtnHash    = bPtnHash;
-  m_nPtnsInGrid = AM::nPtnsInGrid();
+  m_nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
   m_nErrors = 0;
   m_i_Rec   = -1;
@@ -586,7 +586,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    PtnMap::vRunningHash(&iPtnKeyHash,_colVal);
+    HshLib::vRunningHash(&iPtnKeyHash,_colVal);
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -596,7 +596,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+    HshLib::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
 
 /*----------------------------------------------------------------------------*/
@@ -2956,14 +2956,19 @@ L_RecordEndLineEnd:
   // set partition hash
   if (m_bPtnHash) {
         
-    tPtnNo = PtnMap::tHashToPtnNo(iPtnKeyHash,m_nPtnsInGrid);
+    tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
     
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
     //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
     //tPtnNo = tPtnNo_byBkt;
     
+#ifdef WITH_KEEP_ROW_HASH
+    m_pRowBuffer->vDepositColVal(iPtnKeyHash);
+#else
     m_pRowBuffer->vDepositColVal(tPtnNo);
+#endif
+    
     iPtnKeyHash = 0;
   }
   

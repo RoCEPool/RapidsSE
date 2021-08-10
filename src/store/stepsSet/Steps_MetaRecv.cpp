@@ -41,12 +41,12 @@ void Step::vMetaRecvPutParts(void)
   Table* pTable = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
 
-  i8 nObjParts = pParcel->nObjects();
+  i8 nObjParts = pParcel->nItems();
 
   vTrace("C++ gets called: vMetaRecvPutParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
 
-  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object *pObject = pParcel->pGetObject(i_Obj);
+  for (i8 i_Item = 0; i_Item < nObjParts; i_Item++) {
+    Object *pObject = pParcel->pGetItem(i_Item);
     if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
       //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());

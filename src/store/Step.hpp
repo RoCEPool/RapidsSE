@@ -26,7 +26,7 @@ namespace STORE
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_Api(void);
-    static void vAddSteps_Args(void);
+    static void vAddSteps_SysArgs(void);
     static void vAddSteps_Arrange(void);
     static void vAddSteps_Assert(void);
     static void vAddSteps_Astack(void);
@@ -88,6 +88,7 @@ namespace STORE
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
+    static void vAddSteps_Jobs(void);
 
     static void vAddSteps_List(void);
     static void vAddSteps_Locals(void);
@@ -99,6 +100,7 @@ namespace STORE
 
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
+    static void vAddSteps_Marker();
     static void vAddSteps_MetaGet(void);
     static void vAddSteps_MetaRecv(void);
     static void vAddSteps_MetaSend(void);
@@ -173,6 +175,7 @@ namespace STORE
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
+    static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);
     static void vAddSteps_TablePtn(void);
@@ -186,8 +189,8 @@ namespace STORE
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
     static void vAddSteps_To(void);
-    static void vAddSteps_ToHshCrw(void);
     static void vAddSteps_ToNstRow(void);
+    static void vAddSteps_ToPtnCrw(void);
     static void vAddSteps_ToPtnRow(void);
     static void vAddSteps_ToRow(void);
     static void vAddSteps_TokenVec(void);
@@ -198,7 +201,6 @@ namespace STORE
     static void vAddSteps_User(void);
  
     static void vAddSteps_Word(void);
-    static void vAddSteps_WriteBehind(void);
 
     static void vAddSteps_Parcel(void);
     

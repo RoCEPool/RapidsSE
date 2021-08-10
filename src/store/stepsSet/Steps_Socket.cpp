@@ -39,6 +39,8 @@
 #include "Grid.hpp"
 #include <arpa/inet.h>
 #include "TagConstants.h"
+#include "MY.hpp"
+#include "Op.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -106,7 +108,7 @@ void Step::vSocketClose(void)
   
   SysCall oSysCall;
 
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   // close the socket
   bool bResult = pSocket->bClose(oSysCall);
@@ -128,7 +130,7 @@ void Step::vSocketConnect(void)
   SysCall oSysCall;
   CellSingle xNodeVar;
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   m_pDataStack->vPopItem(xNodeVar,__func__);
   
@@ -168,7 +170,7 @@ void Step::vSocketConnect(void)
   }
   
   //m_pDataStack->vPushPtr(nullptr);
-  m_pJob->pLogicUnit_job()->m_xpSocket = nullptr;
+  m_p_TaskLogicUnit->m_xpSocket = nullptr;
 
   EXIT();
 }
@@ -180,7 +182,7 @@ void Step::vSocketDropWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   pSocket->vDropWrite();
   
@@ -194,7 +196,7 @@ void Step::vSocketGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpSocket);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpSocket);
 
   EXIT();
 }
@@ -206,7 +208,7 @@ void Step::vSocketGrabWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   pSocket->vGrabWrite();
   
@@ -220,7 +222,7 @@ void Step::vSocketIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpSocket.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -232,7 +234,7 @@ void Step::vSocketIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpSocket.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -322,7 +324,7 @@ void Step::vSocketObjectFetch(void)
 {
   ENTRY();
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   Object* pObject = pSocket->pReceivedObject();
 
@@ -338,7 +340,7 @@ void Step::vSocketObjectFetchClear(void)
 {
   ENTRY();
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   Object* pObject = pSocket->pReceivedObject();
   pSocket->vReceivedObject(nullptr);
@@ -355,14 +357,17 @@ void Step::vSocketRecvObject(void)
 {
   ENTRY();
 
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   RASSERT(! pSocket->pReceivedObject());
 
   Object* pReceivedObject = pSocket->pRecvObject();
   
-  if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo())
+  if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo()) {
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
+
+    MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
+  }
   
   pSocket->vReceivedObject(pReceivedObject);
   
@@ -407,7 +412,7 @@ void Step::vSocketSendObject(void)
 
   SysCall oSysCall;
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
 
@@ -425,8 +430,8 @@ void Step::vSocketSet(void)
   ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pSocket || m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull());
-  m_pJob->pLogicUnit_job()->m_xpSocket = _pSocket(pSocket);
+  ASSERT(! pSocket || m_p_TaskLogicUnit->m_xpSocket.bIsNull());
+  m_p_TaskLogicUnit->m_xpSocket = _pSocket(pSocket);
   
   EXIT();
 }
@@ -438,7 +443,7 @@ void Step::vSocketSuccessFetch(void)
 {
   ENTRY();
   
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   bool bSuccess = pSocket->bSuccess();
 
@@ -456,7 +461,7 @@ void Step::vSocketSuccessStore(void)
   
   bool bSuccess = (bool)m_pDataStack->iPopInt(__func__);
 
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
   pSocket->vSuccess(bSuccess);
 

@@ -10,14 +10,18 @@ namespace STORE
   private:
     i8             m_iSends;   // consume Sends
     
-    i8             m_iCancelMarkers;  // cancel markers received by consumeOp
-    i8             m_iDestroyMarkers; // destroy markers received by consumeOp
-    i8             m_iExitMarkers;    // exit markers received by consumeOp
-    i8             m_iEosMarkers;     // eos / error markers received by consumeOp
-    i8             m_iDataPulses;     // data pulses received by consumeOp
-    i8             m_iPulsedMarkers;  // pulsed markers received by consumeOp
-    i8             m_iStartMarkers;   // start markers received by consumeOp
-    i8             m_iStreamDefs;     // stream def's received by consumeOp
+    i8             m_iCancellingMarkers; // cancel markers received by consumeOp
+    i8             m_iCleaningMarkers;   // cleaning markers received by consumeOp
+    i8             m_iDataPulses;        // data pulses received by consumeOp
+    i8             m_iDestroyMarkers;    // destroy markers received by consumeOp
+    i8             m_iEndMarkers;        // end markers received by consumeOp
+    i8             m_iEndingMarkers;     // ending markers received by consumeOp
+    i8             m_iErroringMarkers;   // erroring markers received by consumeOp
+    i8             m_iExitingMarkers;    // exiting markers received by consumeOp
+    i8             m_iEosMarkers;        // eos / error markers received by consumeOp
+    i8             m_iLeavingMarkers;    // leaving markers received by consumeOp
+    i8             m_iStartMarkers;      // start markers received by consumeOp
+    i8             m_iStreamDefs;        // stream def's received by consumeOp
     
     // must be last
     Footer m_xFooter;
@@ -29,23 +33,29 @@ namespace STORE
     Sends(i8 iSends);
     ~Sends(void) noexcept(false);
     
-    bool bCancelDone(void);
+    bool bCancellingDone(void);
+    bool bCleaningDone(void);
     bool bDataPulseDone(void);
     bool bDestroyDone(void);
+    bool bEndDone(void);
+    bool bEndingDone(void);
     bool bEosDone(void);
-    bool bErrorDone(void);
-    bool bExitDone(void);
-    bool bPulsedDone(void);
+    bool bErroringDone(void);
+    bool bExitingDone(void);
+    bool bLeavingDone(void);
     bool bStartDone(void);
     bool bStreamDefDone(void);
     
-    void vIncCancel(void);
+    void vIncCancelling(void);
+    void vIncCleaning(void);
     void vIncDataPulse(void);
     void vIncDestroy(void);
+    void vIncEnd(void);
+    void vIncEnding(void);
     void vIncEos(void);
-    void vIncError(void);
-    void vIncExit(void);
-    void vIncPulsed(void);
+    void vIncErroring(void);
+    void vIncExiting(void);
+    void vIncLeaving(void);
     void vIncStart(void);
     void vIncStreamDef(void);
     

@@ -5,7 +5,7 @@
 " OP_crwToRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 : crwToRow_StreamDef \handler
 
@@ -26,7 +26,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : crwToRow_CrwBuffer \handler
 
@@ -52,7 +52,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : crwToRow_EosMarker \handler
 
@@ -87,9 +87,9 @@
 
   op__topology
 
-  find: crwToRow_StreamDef ZK_STREAMDEF  op[].handler!
-  find: crwToRow_CrwBuffer ZK_CRWBUFFER  op[].handler!
-  find: crwToRow_EosMarker ZK_EOSMARKER  op[].handler!
+  find: crwToRow_StreamDef ZK_D_STREAMDEF  op[].handler!
+  find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  op[].handler!
+  find: crwToRow_EosMarker ZK_M_EOS  op[].handler!
 
   op__loop
 

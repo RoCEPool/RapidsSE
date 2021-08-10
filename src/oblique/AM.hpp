@@ -23,6 +23,7 @@
 #include "eQA.h"
 #include "eRA.h"
 #include "eSL.h"
+#include "eSS.h"
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
@@ -80,7 +81,6 @@ namespace BASE {
 
   class Queue;
 
-  class ReqTuple;
   class Resource;
   class Resources;
 
@@ -191,7 +191,6 @@ namespace STORE {
   class TablePtn;
   class TailLine;
   
-  class WriteBehind;
   class Parcel;
   
   class Sends;
@@ -231,11 +230,26 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
+    class GRID
+    {
+    public:
+      static Node* pGetNode(i8 iNodeNo);
+      static Node* pGetThisNode(void);
+      static i8   iGetNthNodeNo(i8 i_Node);
+      static i8   nKnownNodes(void);
+      static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+                                Stz* szIPAddr, i8 iPortNo,
+                                Stz* pszRegionNm);
+      static i8   iThisNodeNo(void);
+    };
+  
     class JOB
     {
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static Stz* szJobSeed(Job* pJob);
+      static eEC  ePreExecuteTest(Job* pJob);
     };
   
     class LOCK
@@ -246,25 +260,38 @@ namespace OBLIQUE
       static void vIntendWriteUnlocked(Lock* pLock);
       static void vJustWriteLocked(Lock* pLock);
     };
-  
-    class LOG
-    {
-    public:
-      static void vEvent(eEV eEvent, Stz* szFormat, ...);
-      static void vLogInternal(i8 iTable, ...);
-      static void vMemoryAllocation(Object* pObject, eCN eClassNo);
-      static void vMemoryFree(Object* pObject);
-      static void vOperand(i8 iPoint);
-      static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
-    };
-  
+    
     class LOGICUNIT
     {
     public:
       static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
       static void vDelete(LogicUnit** ppLogicUnit);
-      static LogicUnit*  pNew(Job* pJob);
-      static void vNew(Task* pTask, Job* pJob);
+    };
+
+    class MASTERLOCK
+    {
+    public:
+      static void vDropDdlReadLock(LogicUnit* pLogicUnit);
+      static void vGrabDdlReadLock(LogicUnit* pLogicUnit);
+    
+      static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
+      static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
+    
+      static void vDdlLockTestDrop(LogicUnit* pLogicUnit);
+
+      static u8   uDdlLockWord(void);
+    };
+  
+    class OBJECT
+    {
+    public:
+      static i8 iNextNo(eCN eClassNo);
+    };
+
+    class OP
+    {
+    public:
+      static Stz* szOpSeed(Op* pOp);
     };
 
     class OPERAND
@@ -287,10 +314,49 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+    class PTNMAP
+    {
+    public:
+      static tPN tHashToDtdPtnNo(i8 iHash);
+      static i8  nKnownNodes(void);
+      static i8  nPtnsPerNode(void);
+      static i8  nPtnsInGrid(void);
+      static tPN tRobinToDtdPtnNo(i8 iRobin);
+      static tPN tRobinToLclPtnNo(i8 iRobin);
+      static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    };
+
+    class SEED
+    {
+    public:
+      static Stz* szDecodeSeed(eSS eSeed, TagSet* pTags);
+    };
+
+    class SESSION
+    {
+    public:
+      static i8 iInternalSession(void);
+      static Session* pInternalSession(void);
+    };
+
+    class SYSARGS
+    {
+    public:
+      static i8 nDefinedNodes(void);
+      static i8 nPtnsPerNode(void);
+    };
+
     class SYSTEM
     {
     public:
+      static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
+      static bool bPassesLowMem(Job* pJob);
+      static bool bPassesOpenSystem(Job* pJob);
+      static bool bStarted(void);
+      static void vStarted(bool bStarted);
+      static bool bSystemOpen(void);
+      static void vSystemOpen(bool bSystemOpen);
       static void vSystemReady(void);
     };
 
@@ -298,9 +364,9 @@ namespace OBLIQUE
     {
     public:
       static DicStack* pDicStack(void);
-      static bool bLogMemory(void);
-      static void vLogMemory(bool bLogMemory);
-      static bool bLogResource(void);
+      static Task* pNew(void);
+      static Task* pNew(Job* pJob);
+      static Task* pNew(Op* pOp);
       static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
@@ -310,10 +376,7 @@ namespace OBLIQUE
       static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
       static ThreadVec* pGeneralThreadVec(void);
-      static Thread* pNewThread(void);
-      static WriteBehind* pWriteBehind(void);
-      static WriteBehind* pWriteBehind(Thread* pThread);
-    
+      static Thread* pNewThread(void);    
     };
   
     class TRACE
@@ -342,7 +405,6 @@ namespace OBLIQUE
     // args
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
-    static i8   nDegOfPar(void);
     static bool bDeveloper(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
@@ -357,7 +419,6 @@ namespace OBLIQUE
     static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
-    static i8   nPtnsPerTable(void);
     static i8   nThreads(void);
 
     static TagSet* pDbgTagSet(void);
@@ -373,7 +434,6 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static MasterLock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
@@ -381,14 +441,12 @@ namespace OBLIQUE
     static Format* pFmt(void);
     static Grid* pGrid(void);
     static i8   nDefinedNodes(void);
-    static i8   nNodes(void);
 
     // newcode
     static std::list<Node*>::const_iterator itBeginNodes(void);
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
-    static bool bHasStarted(void);
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);
@@ -409,7 +467,6 @@ namespace OBLIQUE
     static i8   iUserUsec(void);
     static i8   iResidentSize(void);
     static bool bProgress(void);
-    static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
     static Word* pConstantRoot(void);
@@ -423,13 +480,10 @@ namespace OBLIQUE
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
-    static i8   iGetNodeNo(i8 i_Node);
-    static bool bFirstNode(i8 iNodeNo);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
     static Heartbeat xGetHeartbeat(Stz* pszNodeName);
-    static void vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort, Stz* pszRegionNm);
     static void vRemoveNode(Stz* pszName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
@@ -452,7 +506,6 @@ namespace OBLIQUE
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vSteps(Steps* pSteps);
     static bool bTaskIsLocked(Task* pTask);
-    static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
 
     //
@@ -492,8 +545,6 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);
-    static Stz* szJobOpNm(Job* pJob);
-    static Stz* szJobSeed(Job* pJob);
     static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
@@ -515,11 +566,8 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static i8   iNextObjectNo(eCN eClassNo);
     static Operand* pDuplicateOperand(Operand* pOperand);
-    
-    static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);
@@ -531,10 +579,8 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);
-    static bool bPassesLowMem(Job* pJob);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
-    static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
 
@@ -546,7 +592,6 @@ namespace OBLIQUE
     static Index* pReadApiIndex(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static ReqTuple* aReqTuple_tls(void);
   
     static RU_Cpu* pRU_Cpu(void);
     static RU_Memory* pRU_Memory(void);
@@ -554,16 +599,17 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static Session* pSessionGet(ReqTuple* aReqTuple);
+    static Session* pSessionGet(i8 i_Origin,  i8 i_Session);
     
-    static bool bSpawnJob_connector(Job* pJob);
-    static bool bSpawnJob_session(Job* pJob);
+    static bool bSpawnTask_session(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-    static void vSpawnJob_dedicated(Job* pJob);
-    static void vSpawnJob_op(Job* pJob);    
-    static void vSpawnJob_received(Job* pJob);
-    static void vSpawnJob_service(Job* pJob);
+    static void vSpawnTaskDedicated_job(Job* pJob);
+    static void vSpawnTaskDedicated_op(Op* pOp);
+    static void vSpawnTask_job(Job* pJob);
+    static void vSpawnTask_op(Op* pOp);
+    static void vSpawnTask_receivedJob(Job* pJob);
+    static void vSpawnTask_demonJob(Job* pJob);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

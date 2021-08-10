@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* OP_sysClosed.sen -- system has been closed                                 */
+/*============================================================================*/
+
+" OP_sysClosed.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                      */
+/*----------------------------------------------------------------------------*/
+: sysClosed_sysClosed \handler
+
+  
+  begin
+     system::activeJobs ">>> ActiveJobs %v" .printf
+     system::activeJobs 2 >
+  while
+    1 task::sleepSsec
+  repeat
+
+  system::activeJobs "$$$ ActiveJobs %v" .printf
+  
+
+  true Session::systemCloser!
+  
+  "system closed" .
+
+  PipeIn[].pipeOut
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* sysClosed request                                  (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: sysClosed_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: sysClosed_sysClosed  ZK_M_DATAPULSE  op[].handler!
+
+  op__loop
+
+  // "*** sysClosed_req EXITS" .
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: sysClosed :: sysClosed ;
+
+: sysClosed_cmdTags _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

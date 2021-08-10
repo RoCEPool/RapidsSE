@@ -184,7 +184,7 @@ PlanNode* PlanDefinitionParser::pParse()
   delete rootBuilder;
 
   // Create a lambda function to walk each node and print its path and type.
-//  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+//  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 //    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
 //
 //    if (iDepth == 2) {

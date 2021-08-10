@@ -818,9 +818,10 @@ void vTest11(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -829,8 +830,7 @@ void vTest11(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   Engine::vCallImmmediate(pImmTask);
 
@@ -888,9 +888,10 @@ void vTest14(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -899,9 +900,7 @@ void vTest14(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
-  
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   
   SeApi* pSeApi = new SeApi;
@@ -931,9 +930,10 @@ void vTest15(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -942,9 +942,7 @@ void vTest15(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
-  
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
   
   SeApi* pSeApi = new SeApi;
@@ -973,9 +971,10 @@ void vTest16(void)
   Timer oTimer;
   oTimer.vStart();
   
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
-
-  Job* pJob = new Job(&xImmReqTuple);
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
@@ -984,11 +983,8 @@ void vTest16(void)
   pJob->vSeed(SS_SEED_RUN);
 
   
-  Task* pImmTask = AM::pTaskNew(pJob);
-  pImmTask->vInitExeContext();
+  Task* pImmTask = AM::TASK::pNew(pJob);
   
-  LogicUnit* pLogicUnit = new LogicUnit(pImmTask);
-  pJob->vLogicUnit_job(pLogicUnit );
 
   pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
   
@@ -1019,19 +1015,18 @@ void vTest16(void)
   \
   SeApi* pSeApi = new SeApi; \
   \
-  ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
-  Job* pJob = new Job(&xImmReqTuple); \
+  Job* pJob = new Job(\
+                      AM::GRID::iThisNodeNo(), \
+                      AM::SESSION::iInternalSession(), \
+                      1 \
+                      ); \
   \
   TagSet* pJobTags = pJob->pJobTags(); \
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz); \
   pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz); \
   pJob->vSeed(SS_SEED_RUN); \
   \
-  Task* pImmTask = AM::pTaskNew(pJob); \
-  pImmTask->vInitExeContext(); \
-  \
-  LogicUnit* pLogicUnit = new LogicUnit(pImmTask); \
-  pJob->vLogicUnit_job(pLogicUnit);\
+  Task* pImmTask = AM::TASK::pNew(pJob); \
   \
   RowSingleList* pRowSingleList = nullptr;
   

@@ -15,6 +15,7 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
 #include "SetOp.hpp"
 #include "ExplainOp.hpp"
+#include "JoinOp.hpp"
 
 using namespace Parser;
 
@@ -51,7 +52,7 @@ void StageMarkers::vRemoveStatementMarkers(QueryNode *pPlanNode, PlanNode* pRoot
   };
 
   // Lambda called as we walk the graph
-  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [fCondition](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -83,7 +84,7 @@ void StageMarkers::vRemoveStatementMarkers(QueryNode *pPlanNode, PlanNode* pRoot
 void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 {
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -105,6 +106,7 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
       pQueryNode->vInsertAsParentOfChild1(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
       pQueryNode->vInsertAsParentOfChild2(StageMarker::pCreate(eLocation2, Routing::RT_UNICAST));
 
+
     // Rule: Add a StageMarker after an ExplainOp
     } else if (ExplainOp::bIsOfType(pQueryNode)) {
       QueryNode *pChild1 = _pQueryNode(pQueryNode->pFirstChild());
@@ -112,10 +114,31 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 
       pQueryNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
 
-//    } else if (JoinOp::bIsOfType(pQueryNode)) {
-//      // TODO: Set location and routing as appropriate
-//    }
 
+    // Rule: We always move the left-side rows of a join to the location of the right-side rows
+    } else if (JoinOp::bIsOfType(pQueryNode)) {
+      // Add a stage marker after the left (first) child of the join
+      ASSERT(pQueryNode->nChildren() == 2);
+      QueryNode *pChild1 = _pQueryNode(pQueryNode->pFirstChild());
+      Location::eLO eLocation1 = PlanObject::eLocation(pChild1, true);
+      ASSERT(eLocation1 == Location::LO_ALL_PARTITIONS);
+
+      pQueryNode->vInsertAsParentOfChild1(StageMarker::pCreate(eLocation1, Routing::RT_BROADCAST));
+
+
+      // Rule: Add a StageMarker above a JoinOp, if one doesn't already exist
+    } else if (pQueryNode->nChildren() >= 1 && JoinOp::bIsOfType(pQueryNode->pFirstChild())) {
+      Location::eLO eCurrentLoc = PlanObject::eLocation(pQueryNode, true);
+      Location::eLO eJoinLoc   = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);
+      ASSERT(eJoinLoc > Location::LO_NONE);
+      ASSERT(eJoinLoc < Location::LO_NENUMS);
+
+      Routing::eRT eRouting = Routing::eDefaultRouting(eJoinLoc, eCurrentLoc);
+      pQueryNode->vInsertAsParentOfChild1(StageMarker::pCreate(eJoinLoc, eRouting));
+
+
+    // Otherwise: If location of this node and its child don't match then add
+    // a StageMarker with appropriate routing
     } else if (pQueryNode->nChildren() == 1 && PlanObject::bNodeHasLocation(pQueryNode)) {
       Location::eLO eCurrentLoc = PlanObject::eLocation(pQueryNode, false);
       Location::eLO eChildLoc   = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);
@@ -156,7 +179,7 @@ void StageMarkers::vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanN
   // "origin". If they don't then we will add in a StageMarker with that location.
 
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

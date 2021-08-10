@@ -74,25 +74,29 @@ withQuery         : name = tableName
                     AS '(' query ')' ;
 
 tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
+                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
+                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
                   | tableExpr
-                    type = joinType?  joint = joinHint?
+                    type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr ON joinPredicate                            #joinOn
                   | tableExpr
-                    type = joinType?  joint = joinHint?
+                    type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr
                     USING '(' joinUsingList ')'                           #joinUsing
-                  | tableExpr
-                    (',' | (CROSS JOIN))
-                    tableExpr                                             #crossJoin
                   | '(' query ')'       (AS? as = tableAlias)?            #subquery
                   | '(' valuesExpr ')'  (AS? as = tableAlias)?            #valuesSubquery
                   ;
 
 tableReference  : ( (catalog = catalogName '.')? schema = schemaName '.')? table = tableName ;
 
-joinType          : INNER | (outer = (LEFT | RIGHT | FULL) OUTER?) ;
+joinType          : INNER |
+                    (outer = (LEFT | RIGHT | FULL) OUTER?);
+
+extendedJoinType  : joinType |
+                    SEMI |
+                    ANTI;
 
 joinHint          : HINT_START
                     method = (LOOP | HASH | BLOCK | BLOOM)
@@ -463,6 +467,7 @@ nonReservedWord   :
 
 ALL                   : A L L;
 AND                   : A N D;
+ANTI                  : A N T I;    // Reserved, to allow for specifying an anti join
 ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
@@ -514,6 +519,7 @@ LIMIT                 : L I M I T;
 MAX                   : M A X;
 MIN                   : M I N;
 MONOTONIC             : M O N O T O N I C;
+NATURAL               : N A T U R A L;
 NO                    : N O;
 NODE                  : N O D E;
 NOT                   : N O T;
@@ -535,6 +541,7 @@ RIGHT                 : R I G H T;
 ROW                   : R O W;
 SCHEMA                : S C H E M A;
 SELECT                : S E L E C T;
+SEMI                  : S E M I;      // Reserved, to allow for specifying a semi join
 SET                   : S E T;
 STAGE                 : S T A G E;
 STATS                 : S T A T S;

@@ -5,9 +5,12 @@
 " OP_toRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : toRow_StartMarker \handler
+
+  // pipeout the (StartMarker)
+  PipeIn[].pipeOut
 
   // test and create Table[] using <tableNm>
   <tableNm> op__table if
@@ -15,25 +18,20 @@
     // create a ToRow using Table[].streamDef
     ToRow[].create
 
-    // pipeout the (StartMarker)
-    PipeIn[].pipeOut
-
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Operand[].newStreamDef
     Operand[].pipeOut
 
   then
-  
-  
+
   // find the __loadResult table def
   C_TDEF_LOADRESULT op__tableDef_infoSet assert
-  
-  
+
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_D_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toRow_CsvBuffer \handler
 
@@ -62,7 +60,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : toRow_EosMarker \handler
 
@@ -115,9 +113,9 @@
 
   op__topology
 
-  find: toRow_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: toRow_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toRow_StartMarker ZK_STARTMARKER op[].handler!
+  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
+  find: toRow_EosMarker   ZK_M_EOS   op[].handler!
+  find: toRow_StartMarker ZK_M_START op[].handler!
 
   op__loop
 

@@ -17,33 +17,35 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                 END */
+/* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: eachJoin_CancelMarker \handler
+: eachJoin_Cleaning \handler
 
-  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_CANCELMARKER_handler
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  Pipein[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : eachJoin_CrwBuffer \handler
 
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   "eachJoin_CrwBuffer: got crw buffer" .
 
   Operand[].pipeIn
   Operand[] DevRhtIxt.crwBuffer!
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -51,11 +53,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EACHROWBUFFER ...                                               EACH */
+/* on ZK_D_EACHROWBUFFER ...                                               EACH */
 /*----------------------------------------------------------------------------*/
 : eachJoin_EachRowBuffer \handler
 
-  0 ZK_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   "eachJoin_EachRowBuffer: got eachRowBuffer" .
 
@@ -67,11 +69,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EACHSCANEOSMARKER ...                                            END */
+/* on ZK_M_EACHSCANEOS ...                                            END */
 /*----------------------------------------------------------------------------*/
 : eachJoin_EachScanEosMarker \handler
 
-  0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EACHSCANEOS EG_ZK LogicUnit[].diaryNote
 
   "eachJoin_EachScanEosMarker: got each scanEosMarker_lj;" .
 
@@ -84,21 +86,21 @@
   // cleanup compiler
   Counter0[] cleanUpAsm
 
-  ZK_EACHSCANEOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_M_EACHSCANEOS EG_ZK PD_PIPE_OUT 0 ZK_M_EACHSCANEOS EG_ZK LogicUnit[].diaryAction
   Pipein[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : eachJoin_EosMarker \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  ZK_M_EOS Counter0[] executeAsmArgs
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
@@ -107,36 +109,22 @@
   // cleanup compiler
   Counter0[] cleanUpAsm
 
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: eachJoin_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : eachJoin_RowBuffer \handler
 
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   "eachJoin_RowBuffer: got rowbuffer;" .
 
   Operand[].pipeIn
   Operand[] DevRhtRow.rowBuffer!
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
   //Operand[].delete
 
@@ -146,11 +134,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : eachJoin_StartMarker \handler
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   // new the PotRlu[]
   PotRlu[].new
@@ -158,15 +146,15 @@
   // init the logicUnit[]
   LogicUnit[].init
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : eachJoin_StreamDef \handler
 
-  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   "eachJoin_StreamDef: got each streamDef_lj;" .
 
@@ -229,7 +217,7 @@
   then
 
   // execute the streamDef asm handler
-  ZK_STREAMDEF Counter0[] executeAsmArgs
+  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   true
 ;
@@ -249,15 +237,14 @@
 
   op__topology
 
-  find: eachJoin_CancelMarker ZK_CANCELMARKER   op[].handler!
-  find: eachJoin_CrwBuffer    ZK_CRWBUFFER      op[].handler!
-  find: eachJoin_EachRowBuffer ZK_EACHROWBUFFER op[].handler!
-  find: eachJoin_EachScanEosMarker ZK_EACHSCANEOSMARKER op[].handler!
-  find: eachJoin_EosMarker    ZK_EOSMARKER      op[].handler!
-  find: eachJoin_ErrorMarker  ZK_ERRORMARKER    op[].handler!
-  find: eachJoin_RowBuffer    ZK_ROWBUFFER      op[].handler!
-  find: eachJoin_StartMarker  ZK_STARTMARKER    op[].handler!
-  find: eachJoin_StreamDef    ZK_STREAMDEF      op[].handler!
+  find: eachJoin_Cleaning      ZK_M_CLEANING        op[].handler!
+  find: eachJoin_CrwBuffer     ZK_D_CRWBUFFER       op[].handler!
+  find: eachJoin_EachRowBuffer ZK_D_EACHROWBUFFER   op[].handler!
+  find: eachJoin_EachScanEosMarker ZK_M_EACHSCANEOS op[].handler!
+  find: eachJoin_EosMarker    ZK_M_EOS              op[].handler!
+  find: eachJoin_RowBuffer    ZK_D_ROWBUFFER        op[].handler!
+  find: eachJoin_StartMarker  ZK_M_START            op[].handler!
+  find: eachJoin_StreamDef    ZK_D_STREAMDEF        op[].handler!
 
   op__loop
 

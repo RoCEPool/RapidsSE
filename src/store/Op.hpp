@@ -6,6 +6,7 @@
 #include "ePX.h"
 #include "eXK.h"
 #include "eZK.h"
+#include "eSS.h"
 
 namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
@@ -14,20 +15,56 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    Job* m_pJob;        // job of this operator
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // a)
+
+    // -- id, name and kind
+    Gid<CN_OP> m_xOpId;  // op id in grid
+    s32        m_sOpNm;  // name of this operator
+    // n/a               // kind
   
+    // -- belongs to
+    Stream* m_pStream;  // which stream of stage of pipeline of job
+
+    // -- refers to
+    OpSpec* m_pOpSpec;  // specification of this operator
+
+    // -- state
+    // n/a
+
+    // -- tags and tasking
+    TagSet m_oOpTags ; // tags for the op
+    Task*  m_pTask;    // which task
+    eSS    m_eSeed;    // seed to spawn
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // b)
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // c)
+  
+    OperandQueue* m_pQueueLeft;   // left input queue
+    OperandQueue* m_pQueueRight;  // right input queue
+    OperandQueue* m_pQueueOoO;    // out-of-order queue
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // d)
+
+  
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // stream name within stream within pipeline
-    s32  m_sOpNm;       // name of this operator
     i8   m_i_Op;        // [op] in stream
   
-    OpSpec*   m_pOpSpec;   // specification of this operator
-    Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
-    Pipeline* m_pPipeline; // which pipeline
+    Pipeline* m_p_Pipeline_op; // which pipeline
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   
+ 
+    LogicUnit* m_pOpLogicUnit;
+
     // working variables. these are not copies of variables from opSpec
   
     bool m_bTraceOp;    // tracing this operator
@@ -36,9 +73,6 @@ namespace STORE
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
-    OperandQueue*  m_pQueueLeft;     // left input queue
-    OperandQueue*  m_pQueueRight;    // right input queue
-    OperandQueue*  m_pQueueOoO;      // out-of-order queue
 
     i8             m_iSendNode;      // send node (for send)
     eXK            m_eSendKind;      // send kind
@@ -77,6 +111,7 @@ namespace STORE
     ePX  eCrossTopo(void);
     i8   iCurHandler(void);
     Word* pCurWord(void);
+    void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
@@ -90,10 +125,7 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    Job* pJob(void);
-    void vJob(Job* pJob);
-    i8   iLocalRobin(void);
-    void vLocalRobin(i8 iLocalRobin);
+    i8   iLocalRobinNext(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);
@@ -103,9 +135,10 @@ namespace STORE
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     i8   iOp(void);
+    LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
-    TagSet* pOpTagSet(void);
+    TagSet* pOpTags(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
@@ -119,9 +152,10 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipeline(void);
+    Pipeline* pPipeline_op(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
+    void vPipeToSelf(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
@@ -131,19 +165,20 @@ namespace STORE
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
-    i8   iRobin(void);
-    void vRobin(i8 iRobin);
+    i8   iRobinNext(void);
+    Stz* szSeed(void);
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOperatorJob(i8 iSessionId);
+    void vSpawnTaskForOp(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
     Task* pTask(void);
+    void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
-
+    void vVerifyOpComposition(void);
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

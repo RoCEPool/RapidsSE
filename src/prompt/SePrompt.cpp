@@ -90,8 +90,6 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pPrintOp = nullptr;
   
   _checkInitialised_(CN_SEPROMPT);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"SePrompt constructor"_Stz);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,8 +144,6 @@ SePrompt::~SePrompt(void) noexcept(false)
   //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
-
-  AM::LOG::vEvent(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,8 +191,7 @@ void SePrompt::vPromptLoop(void)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
 //  m_pPrintOp = Api::pGetOperator("print"_Stz);
-//  Job* pOpJob = m_pPrintOp->pJob();
-//  Task* pOpTask = AM::pTaskNew(pOpJob);
+//  Task* pOpTask = AM::pTaskNew(pOp);
 //
 //  AM::DEMON::vPipeTo("__threadDemon"_Stz, m_pPrintOp);
 //
@@ -353,8 +348,8 @@ bool SePrompt::bExamineCommand(void)
   while (bSubSsnTags())
     {;}
 
-  Api::vExtractPaths(m_pCurrentDeputy->pSession());
-  if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
+  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession());
+  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession()))
     return false;
 
   if (bIsPromptWord())
@@ -995,7 +990,7 @@ void SePrompt::vPromptUser(void)
     return;
   }
   
-  bool bHasStarted = AM::bHasStarted();
+  bool bHasStarted = AM::SYSTEM::bStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
@@ -1136,16 +1131,6 @@ bool SePrompt::bRedirectFromFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command id                                                             */
-/*----------------------------------------------------------------------------*/
-//i8 SePrompt::iRequestId(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-//
-//  return m_xReqTuple.m_iReqNo;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* init the extracted tag set                                                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vResetExtractedTagSet(void)
@@ -1154,7 +1139,7 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pJobTagSet->vReset();
   m_pJobTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
+  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
   m_pJobTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 

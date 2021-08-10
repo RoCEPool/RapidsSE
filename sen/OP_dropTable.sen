@@ -5,27 +5,26 @@
 " OP_dropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : dropTable_StartMarker
 
   0 locals| errorCode |
+
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
   <tableNm> check::validTableAssembly not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
-  else
-    PipeIn[].pipeOut
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DESTROYMARKER ...                                           */
+/* handler for ZK_M_DESTROY ...                                               */
 /*----------------------------------------------------------------------------*/
 : dropTable_DestroyMarker
 
@@ -52,8 +51,8 @@
 
   op__topology
 
-  find: dropTable_StartMarker   ZK_STARTMARKER   op[].handler!
-  find: dropTable_DestroyMarker ZK_DESTROYMARKER op[].handler!
+  find: dropTable_StartMarker   ZK_M_START   op[].handler!
+  find: dropTable_DestroyMarker ZK_M_DESTROY op[].handler!
 
   op__loop
 

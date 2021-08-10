@@ -16,7 +16,7 @@
 
   stage stageA on origin :
     start
-    | periodic once
+    | pulse once
     | metaScan tables
     | rowToList
     | output
@@ -29,34 +29,33 @@
   true session::hasCascade!
 ;
 
-
-
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: transliterate_CancelMarker \handler
+: transliterate_Cleaning \handler
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_DataMarker \handler
  
-  ZK_DATAPULSE_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : transliterate_EosMarker \handler
  
-  ZK_EOSMARKER_handler
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
@@ -79,7 +78,7 @@
 
     // Always exit at this point
     Operand[].delete
-    Operand[].newExitEarlyMarker
+    Operand[].newLeaveMarker
     Operand[].pipeout
     true
     exit
@@ -100,27 +99,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
+/* handler for ZK_M_LEAVE ...                                             */
 /*----------------------------------------------------------------------------*/
-: transliterate_ExitEarlyMarker \handler
+: transliterate_LeaveMarker \handler
 
   // save the pipein in streamSet[]
   StreamSet[].isNull not assert
   StreamSet[].pipeout
 
-  ZK_EXITEARLYMARKER_handler
+  ZK_M_LEAVE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMSET ...                                               */
+/* handler for ZK_D_STREAMSET ...                                               */
 /*----------------------------------------------------------------------------*/
 : transliterate_StreamSet \handler
 
@@ -142,14 +141,14 @@
 
   op__topology
 
-  find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: transliterate_PlanOperand  ZK_PLANOPERAND  op[].handler!
-  find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: transliterate_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: transliterate_DataMarker    ZK_M_DATAPULSE     op[].handler!
+  find: transliterate_EosMarker     ZK_M_EOS           op[].handler!
+  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
+  find: transliterate_StartMarker   ZK_M_START         op[].handler!
 
-  find: transliterate_StreamSet    ZK_STREAMSET    op[].handler!
-  find: transliterate_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
+  find: transliterate_StreamSet    ZK_D_STREAMSET      op[].handler!
+  find: transliterate_LeaveMarker  ZK_M_LEAVE          op[].handler!
 
   op__loop
 

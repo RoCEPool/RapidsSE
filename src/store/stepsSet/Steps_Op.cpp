@@ -21,19 +21,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
+  vAddStep("Op::pipeBackin"_Stz,          &Step::vOpPipeBackIn);
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
 
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
+  
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
   vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
+  
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
+  
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
+  
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.SendKind!"_Stz,        &Step::vOpSendKindStore);
+  vAddStep("Op.sendKind!"_Stz,        &Step::vOpSendKindStore);
+  
+  vAddStep("op::tagSet@"_Stz,         &Step::vOpTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +52,10 @@ void Step::vOpAckPipelineJob(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  
+  
   pOp->vAckPipelineJob();
 }
 
@@ -54,10 +66,11 @@ void Step::vOpDownstreamOpStore(void)
 {
   ENTRY();
     
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
   Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
   
-  Op* pOp = m_pJob->m_pOp;
-
   pOp->vDownstreamOp(pDownstreamOp);
 
   EXIT();
@@ -97,7 +110,9 @@ void Step::vOpOpNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  
   s256 sOpName = pOp->szOpNm();
   
   m_pDataStack->vPushStr(sOpName);
@@ -112,7 +127,10 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->m_pOp->tPtnNo());
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  
+  m_pDataStack->vPushInt(pOp->tPtnNo());
   
   EXIT();
 }
@@ -124,8 +142,10 @@ void Step::vOpPiplineJobFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   if (! pPipeline) {
     m_pDataStack->vPushPtr(nullptr);
@@ -139,13 +159,31 @@ void Step::vOpPiplineJobFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Op::pipeBackIn -- append operand back onto same operator in pipeline       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeBackIn(void)
+{
+  ENTRY();
+
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vPipeToSelf(pOperand,this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Op::pipeout -- append operand onto next operator in pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -161,7 +199,8 @@ void Step::vOpOutboundOperandFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
   
   m_pDataStack->vPushPtr(pOp->pOutboundOperand());
   
@@ -175,7 +214,8 @@ void Step::vOpOutboundOperandStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -191,7 +231,8 @@ void Step::vOpQueueLength(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
   
   i8 nLength = pOp->nQueuedOperands();
 
@@ -207,7 +248,9 @@ void Step::vOpStageNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
@@ -222,7 +265,24 @@ void Step::vOpSendKindStore(void)
 {
   ENTRY();
   
-  m_pJob->m_pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op::tagSet@ -- push ptr to op TagSet                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpTagSetFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+
+  m_pDataStack->vPushPtr(pOp->pOpTags());
   
   EXIT();
 }

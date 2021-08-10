@@ -5,11 +5,27 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                        */
+/* on ZK_M_CLEANING ...                                                       */
+/*----------------------------------------------------------------------------*/
+: chunk_Cleaning \handler
+
+  //"Operand:- ZK_M_CLEANING" .verbose
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
 : chunk_DataMarker \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
+  //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __seekOffsets table
@@ -41,18 +57,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : chunk_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
   0 locals| iFileSizeMb |
 
+  PipeIn[].pipeOut
+
   // open the file for reading
   <fileNm> OPEN_READ op__file if
-
-    PipeIn[].pipeOut
 
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb
@@ -75,24 +91,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EXITMARKER ...                                                       */
-/*----------------------------------------------------------------------------*/
-: chunk_ExitMarker \handler
-
-  //"Operand:- ZK_EXITMARKER" .verbose
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
-
-/*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : chunk_req \operator
@@ -101,9 +99,9 @@
 
   op__topology
 
-  find: chunk_DataMarker ZK_DATAPULSE op[].handler!
-  find: chunk_StartMarker ZK_STARTMARKER op[].handler!
-  find: chunk_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: chunk_Cleaning    ZK_M_CLEANING  op[].handler!
+  find: chunk_DataMarker  ZK_M_DATAPULSE op[].handler!
+  find: chunk_StartMarker ZK_M_START     op[].handler!
 
   op__loop
 

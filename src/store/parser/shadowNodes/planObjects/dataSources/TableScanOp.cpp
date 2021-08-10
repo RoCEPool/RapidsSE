@@ -5,29 +5,22 @@
 #include "BASE.h"
 #include "TableScanOp.hpp"
 
-#include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
 
 #include "ShadowRoot.hpp"
-#include "MetadataNode.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
-#include "ColumnRef.hpp"
-#include "ColumnDef.hpp"
-#include "ProjectedColumn.hpp"
-#include "NodeNamer.hpp"
+
 
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_TABLEREF_PROP = "tableRef"_Stz;
-static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/compound/tableRef"_Stz;
 
-static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableScanOp"_Stz;
+static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp"_Stz;
 
 
 
@@ -40,18 +33,9 @@ static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOpera
 /*----------------------------------------------------------------------------*/
 QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 {
-  ASSERT(pTableRef);
-  ASSERT(pTableRef->szType()->bEqual(C_TABLEREF_DEFN));
+  QueryNode* pTableScanOp = TableSource::pCreate(C_TABLESCAN_DEFN, pTableRef);
 
-  // Create a unique name for this ProjectOp object
-  s256 sName;
-  NodeNamer::vGenerateName(C_TABLESCAN_DEFN, sName);
-
-  // Create the object and add the tableRef property. We will need to rename it first.
-  QueryNode* pTableScanOp = new QueryNode(sName, C_TABLESCAN_DEFN);
-
-  pTableRef->vSetName(C_TABLEREF_PROP);
-  pTableScanOp->vAppendProperty(pTableRef);
+  // Add any extra properties here.
 
   return pTableScanOp;
 }
@@ -68,7 +52,7 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   sBuf.vConcat("TableScanOp : "_Stz);
 
-  QueryNode* pTableRef = _pQueryNode(GraphNav::pFindProperty(C_TABLEREF_PROP, pTableScanOp));
+  QueryNode* pTableRef = TableScanOp::pTableRef(pTableScanOp);
   ASSERT(pTableRef);
 
   TableRef::vDescribe(pTableRef, sBuf);
@@ -111,22 +95,11 @@ void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
   if (bIsExactType(szType)) {
     // Explain any common attributes of this object
     // Get the parent type and keep recursing back
-    s256 sParentType;
+    s2K sParentType;
     GraphNav::vParentType(szType, sParentType);
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
-    // Get the tableref property
-    PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
-    ASSERT(pTableRefNode);
-    ASSERT(TableRef::bIsOfType(pTableRefNode));
-
-    // Print the table reference
-    s2K sTblBuf;
-    TableRef::vDescribe(pTableRefNode, sTblBuf);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
 
     return;
   }
@@ -166,121 +139,7 @@ b1 TableScanOp::bIsExactType(Stz* szType)
   return ShadowNode::bIsExactType(szType, C_TABLESCAN_DEFN);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Returns the tableRef of the queryNode                                      */
-/*----------------------------------------------------------------------------*/
-QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
-{
-  QueryNode *pTableRefNode =
-      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
-  QueryNode *pTableRef = static_cast<QueryNode *>(pTableRefNode);
 
-  return pTableRef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the catalog name of the table reference                            */
-/*----------------------------------------------------------------------------*/
-Stz* TableScanOp::szCatalogName(QueryNode *pNode)
-{
-  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
-
-  return TableRef::szCatalog(pTableRef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the schema name of the table reference                             */
-/*----------------------------------------------------------------------------*/
-Stz* TableScanOp::szSchemaName(QueryNode *pNode)
-{
-  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
-
-  return TableRef::szSchema(pTableRef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the table name of the table reference                              */
-/*----------------------------------------------------------------------------*/
-Stz* TableScanOp::szTableName(QueryNode *pNode)
-{
-  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
-
-  return TableRef::szTable(pTableRef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Get the list of column definitions for this data source                    */
-/* Returned list must be freed, but not its contents                          */
-/*----------------------------------------------------------------------------*/
-QueryNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
-{
-  _static_
-  ASSERT(bIsOfType(pNode));
-  ASSERT(pRootNode);
-
-  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
-  ASSERT(pMetadataNode);
-
-  // Create a list for the columnDefs to be returned
-  QueryNodeList* pColumnDefList = new QueryNodeList();
-
-  // Iterate the columns in the metadata and add them to the above list
-  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
-                                                     szCatalogName(pNode),
-                                                     szSchemaName(pNode),
-                                                     szTableName(pNode));
-
-  while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
-    pColumnDefList->vAppend(pColumnDef);
-  }
-
-  delete pIter;
-  return pColumnDefList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that represent the column expressions      */
-/* that this PlanObject will return. All nodes and the list must be freed.    */
-/*----------------------------------------------------------------------------*/
-QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
-{
-  _static_
-  ASSERT(bIsOfType(pNode));
-  ASSERT(pRootNode);
-
-  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
-  ASSERT(pMetadataNode);
-
-  // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
-  QueryNodeList* pColumnRefList = new QueryNodeList();
-
-  // Iterate the columns in the metadata and add them to the above list
-  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
-                                                     szCatalogName(pNode),
-                                                     szSchemaName(pNode),
-                                                     szTableName(pNode));
-
-  while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
-
-    // Create a columnRef expression object from this column definition
-    QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),
-                                               ColumnDef::szSchemaName(pColumnDef),
-                                               ColumnDef::szTableName(pColumnDef),
-                                               ColumnDef::szColumnName(pColumnDef));
-
-    // Create a ProjectedColumn for this expression
-    QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef,
-                                                           new Text(ColumnDef::szColumnName(pColumnDef)));
-
-    // Append it to the list
-    pColumnRefList->vAppend(pProjectedColumn);
-  }
-
-  delete pIter;
-  return pColumnRefList;
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -39,6 +39,10 @@ Stz* ProjectedColumn::szAliasName(QueryNode* pNode)
   QueryNode *pAliasNode =
       _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
 
+  if (!pAliasNode) {
+    return nullptr;
+  }
+
   return pAliasNode->szValue();;
 }
 

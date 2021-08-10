@@ -16,6 +16,8 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_INDEXJOIN_BEGIN,
   /*    */ AM_CRW_INDEXJOIN_NEXT,
 
+  /*    */ AM_CRW_INDEXJOIN_NEXT_LO,
+
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
   /*    */ AM_CRW_PROJECT_END,
@@ -25,7 +27,8 @@ enum eAM // ASM Macros
 
   /*    */ AM_DEFAULT_HANDLER_CRWBUFFER,
   /*    */ AM_DEFAULT_HANDLER_DATAPULSE,
-  /*    */ AM_DEFAULT_HANDLER_ENDRIGHTMARKER,
+  /*    */ AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT,
+  /*    */ AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT,
   /*    */ AM_DEFAULT_HANDLER_EOSMARKER,
   /*    */ AM_DEFAULT_HANDLER_ROWBUFFER,
   /*    */ AM_DEFAULT_HANDLER_STREAMDEF,
@@ -36,7 +39,8 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_CRWBUFFER_LIMIT,
   /*    */ AM_HANDLER_CRWBUFFER_RHT,
   /*    */ AM_HANDLER_DATAPULSE,
-  /*    */ AM_HANDLER_ENDRIGHTMARKER,
+  /*    */ AM_HANDLER_LEFTOUTER_CRWLFT,
+  /*    */ AM_HANDLER_LEFTOUTER_ROWLFT,
   /*    */ AM_HANDLER_EOSMARKER_GBY,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
@@ -102,8 +106,10 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_HASHROWS_BEGIN,
   /*    */ AM_ROW_HASHROWS_END,
 
-  /*    */ AM_ROW_INDEXJOIN_NEXT,
   /*    */ AM_ROW_INDEXJOIN_BEGIN,
+  /*    */ AM_ROW_INDEXJOIN_NEXT,
+
+  /*    */ AM_ROW_INDEXJOIN_NEXT_LO,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
@@ -133,6 +139,8 @@ static Stz* aAM[]
     /*    */ "CRW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "CRW_INDEXJOIN_NEXT"_Stz,
 
+    /*    */ "CRW_INDEXJOIN_NEXT_LO"_Stz,
+
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
     /*    */ "CRW_PROJECT_END"_Stz,
@@ -142,7 +150,8 @@ static Stz* aAM[]
 
     /*    */ "DEFAULT_HANDLER_CRWBUFFER"_Stz,
     /*    */ "DEFAULT_HANDLER_DATAPULSE"_Stz,
-    /*    */ "DEFAULT_HANDLER_ENDRIGHTMARKER"_Stz,
+    /*    */ "DEFAULT_HANDLER_LEFTOUTER_CRWLFT"_Stz,
+    /*    */ "DEFAULT_HANDLER_LEFTOUTER_ROWLFT"_Stz,
     /*    */ "DEFAULT_HANDLER_EOSMARKER"_Stz,
     /*    */ "DEFAULT_HANDLER_ROWBUFFER"_Stz,
     /*    */ "DEFAULT_HANDLER_STREAMDEF"_Stz,
@@ -153,7 +162,8 @@ static Stz* aAM[]
     /*    */ "HANDLER_CRWBUFFER_LIMIT"_Stz,
     /*    */ "HANDLER_CRWBUFFER_RHT"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
-    /*    */ "HANDLER_ENDRIGHTMARKER"_Stz,
+    /*    */ "HANDLER_LEFTOUTER_CRWLFT"_Stz,
+    /*    */ "HANDLER_LEFTOUTER_ROWLFT"_Stz,
     /*    */ "HANDLER_EOSMARKER_GBY"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
@@ -221,6 +231,8 @@ static Stz* aAM[]
 
     /*    */ "ROW_INDEXJOIN_BEGIN"_Stz,
     /*    */ "ROW_INDEXJOIN_NEXT"_Stz,
+
+    /*    */ "ROW_INDEXJOIN_NEXT_LO"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,

@@ -5,20 +5,9 @@
 " OP_eachScan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: eachScan_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: eachScan_CancelMarker \handler
+: eachScan_Cleaning \handler
 
   // drop the tablePtn lock if held
   counter0[] true == if
@@ -31,11 +20,12 @@
     ptnStream[] ptnStream.delete
   then
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER / ZK_ROWBUFFER...                                 */
+/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER...                             */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_RowCrwBuffer" .
 
@@ -86,7 +76,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_DataMarker" .
 
@@ -114,7 +104,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EACHROWBUFFER ...                                           */
+/* handler for ZK_D_EACHROWBUFFER ...                                           */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_EachRowBuffer" .
 
@@ -153,7 +143,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* handler for ZK_M_EOS ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_EosMarker" .
 
@@ -176,21 +166,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StartMarker" .
 
 : eachScan_StartMarker \handler
 
+   PipeIn[].pipeOut
+
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
-  else
-    // is possible that a PULSEDMARKER arrives after this STARTMARKER
-    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
-    // we need eat the pulsedmarker here
-    find: eachScan_Xyz   ZK_DATAPULSE      op[].handler!
-    find: eachScan_Xyz   ZK_PULSEDMARKER   op[].handler!
   then
 
   //args.developer if
@@ -201,7 +186,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 // ": eachScan_StreamDef" .
 
@@ -234,14 +219,14 @@
 
   op__topology
 
-  find: eachScan_CancelMarker  ZK_CANCELMARKER  op[].handler!
-  find: eachScan_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: eachScan_EachRowBuffer ZK_EACHROWBUFFER op[].handler!
-  find: eachScan_RowCrwBuffer  ZK_CRWBUFFER     op[].handler!
-  find: eachScan_DataMarker    ZK_DATAPULSE     op[].handler!
-  find: eachScan_RowCrwBuffer  ZK_ROWBUFFER     op[].handler!
-  find: eachScan_StartMarker   ZK_STARTMARKER   op[].handler!
-  find: eachScan_StreamDef     ZK_STREAMDEF     op[].handler!
+  find: eachScan_Cleaning      ZK_M_CLEANING op[].handler!
+  find: eachScan_EosMarker     ZK_M_EOS     op[].handler!
+  find: eachScan_EachRowBuffer ZK_D_EACHROWBUFFER op[].handler!
+  find: eachScan_RowCrwBuffer  ZK_D_CRWBUFFER     op[].handler!
+  find: eachScan_DataMarker    ZK_M_DATAPULSE     op[].handler!
+  find: eachScan_RowCrwBuffer  ZK_D_ROWBUFFER     op[].handler!
+  find: eachScan_StartMarker   ZK_M_START   op[].handler!
+  find: eachScan_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop
 

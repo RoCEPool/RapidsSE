@@ -90,8 +90,6 @@ Mutex::Mutex(Object* pIsFor)
   ++ gixMutex;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  AM::LOG::vEvent(EV_CONSTRUCT,"Mutex constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,8 +122,6 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   -- gixMutex;
-  
-  AM::LOG::vEvent(EV_DESTRUCT,"Mutex destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

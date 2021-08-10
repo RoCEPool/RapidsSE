@@ -56,9 +56,10 @@ void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been cancelled
   m_pDataStack->vPushInt(pPipeline->bCancelled());
@@ -73,9 +74,10 @@ void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
@@ -92,19 +94,25 @@ void Step::vPipelineCompileStmt(void)
   sSTMT sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
-
-  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // use dynamo to compile the pipeline statement
   
   Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
 
- 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test compilation result
+  
   if (pPipelineSpec) {
     
-    if (AM::bPassesLowMem(m_pJob)) {
+    eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
+    
+    if (EC_NONE == eError) {
       
-      // clean compile, passes low memory test
+      // a) clean compile, passes pre-execution requirments
       
       if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
         
@@ -118,17 +126,17 @@ void Step::vPipelineCompileStmt(void)
     }
     else {
       
-      // clean compile, but does not pass low memory test
+      // b) clean compile, but does not pass pre-execution requirments
 
       delete pPipelineSpec;
-      m_pDataStack->vPushInt(EC_LOW_MEMORY);
+      m_pDataStack->vPushInt(eError);
       
     }
 
   }
   else {
     
-    // failed to compile
+    // c) failed to compile
     
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
 
@@ -138,6 +146,60 @@ void Step::vPipelineCompileStmt(void)
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vPipelineCompileStmt(void)
+//{
+//  ENTRY();
+//
+//  sSTMT sPipelineStmt;
+//  m_pDataStack->vPopStr(sPipelineStmt,__func__);
+//
+//
+//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+//
+//  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
+//
+//  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+//
+//
+//  if (pPipelineSpec) {
+//
+//    if (AM::SYSTEM::bPassesLowMem(m_pJob)) {
+//
+//      // clean compile, passes low memory test
+//
+//      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+//
+//        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
+//        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
+//      }
+//
+//      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+//      m_pDataStack->vPushInt(EC_NONE);
+//
+//    }
+//    else {
+//
+//      // clean compile, but does not pass low memory test
+//
+//      delete pPipelineSpec;
+//      m_pDataStack->vPushInt(EC_LOW_MEMORY);
+//
+//    }
+//
+//  }
+//  else {
+//
+//    // failed to compile
+//
+//    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+//
+//  }
+//
+//  delete pDynamo;
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Pipeline::deleteSpec -- delete the pipeline spec                           */
@@ -146,7 +208,7 @@ void Step::vPipelineDeleteSpec(void)
 {
   ENTRY();
   
-  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
   if (*pLogicUnit->m_xpPipelineSpec) {
     delete *pLogicUnit->m_xpPipelineSpec;
@@ -164,9 +226,11 @@ void Step::vPipelineEnqueueStart(void)
   ENTRY();
   
   
-  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-  i8 iThisNode = AM::pGrid()->iThisNode();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+    
+  Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
+    
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
@@ -190,7 +254,7 @@ void Step::vPipelineEnqueueStart(void)
 
       Op* pOp = pStream->pGet(0);
 
-      RASSERT(AM::JOB::szJobNm(pOp->pJob())->bSame("start"_Stz));
+      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
 
       Operand* pOperand = new Marker(OM_STARTMARKER);
       
@@ -218,9 +282,10 @@ void Step::vPipelineEarlyExitFetch(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
 
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bEarlyExit());
@@ -235,9 +300,10 @@ void Step::vPipelineEarlyExitStore(void)
 {
   ENTRY();
 
-  Op* pOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipeline_op();
 
   pPipeline->vEarlyExit(m_pDataStack->iPopInt(__func__));
 
@@ -251,9 +317,10 @@ void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bErrored());
@@ -268,9 +335,9 @@ void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
   
@@ -284,9 +351,10 @@ void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
@@ -301,9 +369,10 @@ void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline();
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));
   
@@ -317,17 +386,18 @@ void Step::vPipelineSpawnOps(void)
 {
   ENTRY();
     
-  i8 iThisNode = AM::pGrid()->iThisNode();
-  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
+  
   pLogicUnit->m_xpPipeline =
     new Pipeline(m_pJob,
                  *pLogicUnit->m_xpPipelineSpec,
                  m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-      
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
@@ -340,9 +410,9 @@ void Step::vPipelineSpawnOps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
   
-  pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
+  pPipeline->vSpawnOperators(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }
@@ -365,7 +435,8 @@ void Step::vPipelinePipeout(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
+  Pipeline* pPipeline = pPipelineJob->pPipeline();
+  
   Stage*    pStage0   = pPipeline->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);

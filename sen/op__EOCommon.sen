@@ -17,10 +17,10 @@
   ExprEval[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in
-  find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_EACHROWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
+  find: EATOPERAND_handler ZK_D_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_D_EACHROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_D_ROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_M_EOS op[].handler!
 
   // generate the error infoset
   eError op__execErr
@@ -38,10 +38,10 @@
   StreamDefOut[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in
-  find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_EACHROWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
-  find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
+  find: EATOPERAND_handler ZK_D_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_D_EACHROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_D_ROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_M_EOS op[].handler!
 
   // generate the error infoset
   eError op__execErr

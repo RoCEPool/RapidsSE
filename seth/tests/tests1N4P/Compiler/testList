@@ -4,7 +4,7 @@ aggregates.test
 explain.test
 union.test
 postProject.test
-aliases.test
+columnAliases.test
 corrByProjectSquashing.test
 orderBy.test
 exprPushdown.test
@@ -12,3 +12,5 @@ projValidation.test
 stageMarkers.test
 partitionPlan.test
 aggregateSplit.test
+tableAliases.test
+joins.test

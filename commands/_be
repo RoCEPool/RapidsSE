@@ -1,8 +1,48 @@
 /*============================================================================*/
-/* _nationLoad - create and Load TPC-H Nation table for SF1                   */
+/* _be                                                                        */
 /*============================================================================*/
 
-bc;
+create table datums (
+  int_col0   INTEGER,
+  int_col1  INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9  FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+load datums "../DATA/Datums/datums.csv" ;
+
+select int_col0 from datums;
+/*
+rows:
+ (1)
+ (2)
+ (3)
+ (4)
+ (5)
+ (6)
+ (7)
+ (8)
+ (9)
+ (10)
+*/
+
+
+
+
+
+/*
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
@@ -26,13 +66,12 @@ sqlCompiler "select n_nationkey as col1, n_regionkey as col2 from nation;" ;
 
 //sqlCompiler "select n_nationkey from nation;" ;
 
-/*
 pipeline query
 begin
 
   stage stageA on origin :
     start
-    | periodic once
+    | pulse once
     | stageB
 
   stage StageB on all partitions:

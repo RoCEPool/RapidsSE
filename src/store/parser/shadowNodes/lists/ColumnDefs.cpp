@@ -107,6 +107,58 @@ i8 ColumnDefs::nColumns(QueryNode* pColumnDefs)
   return pColumnDefs->nChildren();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns a pointer to an element in this list that matches the given        */
+/* column ordinal number. Returns nullptr if not found.                       */
+/*----------------------------------------------------------------------------*/
+QueryNode* ColumnDefs::pFind(QueryNode* pNode, i8 iColumnOrdinal)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(iColumnOrdinal >= 0);
+
+  QueryNode* pColumnDef = nullptr;
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pItem = _pQueryNode(pIter->pNext());
+    ASSERT(ColumnDef::bIsOfType(pItem));
+
+    if (ColumnDef::iOrdinal(pItem) == iColumnOrdinal) {
+      pColumnDef = pItem;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pColumnDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a pointer to an element in this list that matches the given        */
+/* column name. Returns nullptr if not found. Case insensitive comparison.    */
+/*----------------------------------------------------------------------------*/
+QueryNode* ColumnDefs::pFind(QueryNode* pNode, Stz* szColumnName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szColumnName);
+
+  QueryNode* pColumnDef = nullptr;
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pItem = _pQueryNode(pIter->pNext());
+    ASSERT(ColumnDef::bIsOfType(pItem));
+
+    if (ColumnDef::szColumnName(pItem)->bSame(szColumnName)) {
+      pColumnDef = pItem;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pColumnDef;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

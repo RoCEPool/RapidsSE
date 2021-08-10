@@ -51,7 +51,7 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
 
   // Visit every statement section
   auto fStmtMarkerVisitor = [pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -121,7 +121,7 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
 
   // Walk each node in this statement marker section
   auto fStmtSectionVisitor = [pRootNode]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);

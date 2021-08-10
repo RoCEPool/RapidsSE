@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "DataSource.hpp"
+#include "TableSource.hpp"
 #include "PlanNode.hpp"
 #include "QueryNodeList.hpp"
 
@@ -11,7 +11,7 @@ namespace Parser
 {
   class QueryNode;
 
-  class TableScanOp : public DataSource
+  class TableScanOp : public TableSource
   {
   private:
     // Shalt never be instantiated. Static functions only.
@@ -32,20 +32,6 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
-
-    static QueryNode* pTableRef(QueryNode* pNode);
-
-    static Stz* szCatalogName(QueryNode* pNode);
-    static Stz* szSchemaName(QueryNode* pNode);
-    static Stz* szTableName(QueryNode* pNode);
-
-    // Get the list of column definitions for this data source
-    // Returned list must be freed, but not its contents.
-    static QueryNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
-
-    // Return a list of ProjectedColumns that represent the column expressions
-    // that this PlanObject will return. All nodes and the list must be freed.
-    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
 

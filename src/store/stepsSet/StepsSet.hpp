@@ -44,14 +44,8 @@ public:
 
   // api
   void vApiAddProcedure(void);
-  void vApiExecuteNested(void);
-  void vApiExecuteRequest(void);
+  void vApiExecuteCommand(void);
   void vApiSpawnDemon(void);
-  void vApiSpawnThread(void);
-
-  // args
-  void vArgsOscillate(void);
-  void vArgsPrint(void);
 
   // arrange
   void vArrangeBegin(void);
@@ -199,6 +193,8 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
+  void vDebugBloat(void);
+  void vDebugBloatCleanup(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
   void vDebugThrow(void);
@@ -404,21 +400,16 @@ public:
   void vFilterSet(void);
 
   // grid
-  void vGridAdjustPtnMap(void);
-  void vGridBootNodes(void);
-  void vGridConnectedNodes(void);
   void vGridDumpInfo(void);
-  void vGridGetGridObject(void);
+  void vGridGetGrid(void);
   void vGridGetGridParts(void);
-  void vGridFindNode(void);
-  void vGridNode(void);
-  void vGridPartitions(void);
+  void vGridFindNodeByName(void);
+  void vGridKnownNodes(void);
+  void vGridFindNodeByNo(void);
   void vGridPutGridParts(void);
   void vGridSeeNodes(void);
   void vGridShow(void);
-  void vGridStartedStore(void);
-  void vGridStartedFetch(void);
-  void vGridTablePtns(void);
+  void vGridPtnsPerNode(void);
   void vGridTablePtnToPtnNo(void);
   void vGridThisNodeFetch(void);
   void vGridThisNodeNameFetch(void);
@@ -630,8 +621,8 @@ public:
   void vJobHasError(void);
 
   void vJobIdFetch(void);
-  void vJobInputFetch(void);
-  void vJobInputStore(void);
+  void vJobSingularOpFetch(void);
+  void vJobSingularOpStore(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
@@ -648,7 +639,7 @@ public:
   void vJobOriginatingTaskStore(void);
   void vJobOriginatorFetch(void);
 
-  void vJobParentIdFetch(void);
+
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
@@ -656,8 +647,6 @@ public:
   void vJobPostRecv(void);
   void vJobPreSend(void);
   void vJobPrintMember(void);
-
-  void vJobQueueReturn(void);
 
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
@@ -672,7 +661,6 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
-  void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
@@ -765,20 +753,6 @@ public:
   // job NetHog
   void vJob_NetHogHogNoFetch(void);
 
-  // job Pipeline
-  void vPipelineSpawnOps(void);
-  void vPipelineCancelledStore(void);
-  void vPipelineCompileStmt(void);
-  void vPipelineDeleteSpec(void);
-  void vPipelineEarlyExitFetch(void);
-  void vPipelineEarlyExitStore(void);
-  void vPipelineErroredStore(void);
-  void vPipelineEnqueueStart(void);
-  void vPipelineCancelledFetch(void);
-  void vPipelineErroredFetch(void);
-  void vPipelinePulsedFetch(void);
-  void vPipelinePulsedStore(void);
-
   // job publish
   void vJob_PublishSpawnSub(void);
   void vJob_PublishTableStore(void);
@@ -820,6 +794,12 @@ public:
   void vJob_SortBegin(void);
   void vJob_SortEnd(void);
   void vJob_SortExecute(void);
+
+  // jobs
+  void vJobsSeeDlist(void);
+  void vJobsSeeLlist(void);
+  void vJobsSeeOlist(void);
+  void vJobsSeePlist(void);
 
   // kbase
   void vKbaseCallSchedule(void);
@@ -919,7 +899,9 @@ public:
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
-  void vLogicUnitLogOperand(void);
+  void vLogicUnitIsLftCrwBufferFetch(void);
+  void vLogicUnitIsLftCrwBufferStore(void);
+
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
   void vLogicUnitTransform(void);
@@ -932,10 +914,21 @@ public:
   void vMachineMemory(void);
 
   // magnitude
-
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
   void vToDigitName(void);
+
+  // ErrorMarker[]
+  void vErrorMarkerDelete(void);
+  void vErrorMarkerGet(void);
+  void vErrorMarkerGetAndClear(void);
+  void vErrorMarkerIsNotNull(void);
+  void vErrorMarkerIsNull(void);
+  void vErrorMarkerNewErrorMarker(void);
+  void vErrorMarkerPipeIn(void);
+  void vErrorMarkerPipeOut(void);
+  void vErrorMarkerPipeToOutput(void);
+  void vErrorMarkerSet(void);
 
   // memory
   void vMemoryByteDump(void);
@@ -1018,12 +1011,14 @@ public:
   void vOpOpNameFetch(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
+  void vOpPipeBackIn(void);
   void vOpPipeOut(void);
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpSendKindStore(void);
+  void vOpTagSetFetch(void);
 
   // operand
   void vOperandToParcel(void);
@@ -1047,24 +1042,34 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCancelMarker(void);
+  void vOperandNewCancelling(void);
+  void vOperandNewCancelledMarker(void);
   void vOperandNewCsvBuffer(void);
+  void vOperandNewCleaningMarker(void);
+  void vOperandNewCleanedupMarker(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
   void vOperandNewEachScanEosMarker(void);
-  void vOperandNewEndRightMarker(void);
+  void vOperandNewEndMarker(void);
+  void vOperandNewEndedMarker(void);
+  void vOperandNewEndingMarker(void);
+  void vOperandNewEndCrwRhtMarker(void);
+  void vOperandNewEndRowRhtMarker(void);
   void vOperandNewEosMarker(void);
-  void vOperandNewErrorMarker(void);
+  void vOperandNewErroringMarker(void);
   void vOperandNewErroredMarker(void);
-  void vOperandNewExitMarker(void);
-  void vOperandNewExitEarlyMarker(void);
+  void vOperandNewExitingMarker(void);
   void vOperandNewExitedMarker(void);
-  void vOperandNewExitedEarlyMarker(void);
-  void vOperandNewPulsedMarker(void);
+  void vOperandNewLeaveMarker(void);
+  void vOperandNewLeavingMarker(void);
+  void vOperandNewLeftMarker(void);
+  void vOperandNewNextBufferMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStartMarker(void);
-  void vOperandNewStartRightMarker(void);
+  void vOperandNewStartCrwRhtMarker(void);
+  void vOperandNewStartRowRhtMarker(void);
   void vOperandNewStreamDef(void);
+  void vOperandNewTrigger(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
@@ -1133,6 +1138,21 @@ public:
   // pipeline
   void vPipelinePipeout(void);
 
+  // job Pipeline
+  void vPipelineSpawnOps(void);
+  void vPipelineCancelledStore(void);
+  void vPipelineCompileStmt(void);
+  void vPipelineDeleteSpec(void);
+  void vPipelineEarlyExitFetch(void);
+  void vPipelineEarlyExitStore(void);
+  void vPipelineErroredStore(void);
+  void vPipelineEnqueueStart(void);
+  void vPipelineCancelledFetch(void);
+  void vPipelineErroredFetch(void);
+  void vPipelinePulsedFetch(void);
+  void vPipelinePulsedStore(void);
+
+
   // plan
   void vPlanCompile(void);
   void vPlanDelete(void);
@@ -1192,6 +1212,8 @@ public:
 
   // ptnMap
   void vPtnMapAdjust(void);
+  void vPtnMapPtnsInGrid(void);
+  void vPtnMapSee(void);
 
   // ptnStream
   void vPtnStreamBufferNo(void);
@@ -1248,13 +1270,16 @@ public:
   // Consume
   void vRegSendsDelete(void);
   void vRegSendsGet(void);
-  void vRegSendsHandleCancel(void);
-  void vRegSendsHandleDestroy(void);
-  void vRegSendsHandleEos(void);
-  void vRegSendsHandleError(void);
-  void vRegSendsHandleExit(void);
+  void vRegSendsHandleCancelling(void);
+  void vRegSendsHandleCleaning(void);
   void vRegSendsHandleDataPulse(void);
-  void vRegSendsHandlePulsed(void);
+  void vRegSendsHandleDestroy(void);
+  void vRegSendsHandleEnd(void);
+  void vRegSendsHandleEnding(void);
+  void vRegSendsHandleEos(void);
+  void vRegSendsHandleErroring(void);
+  void vRegSendsHandleExiting(void);
+  void vRegSendsHandleLeaving(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
   void vRegSendsIsNull(void);
@@ -1458,8 +1483,11 @@ public:
   void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
-  void vSessionTagSetFetch(void);
   void vSessionPid(void);
+  void vSessionSee(void);
+  void vSessionSystemCloserFetch(void);
+  void vSessionSystemCloserStore(void);
+  void vSessionTagSetFetch(void);
   void vSessionTablePtnFetch(void);
   void vSessionThis(void);
   void vSessionToDoFetch(void);
@@ -1665,6 +1693,18 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
+  // args
+  void vSysArgsDefinedNodes(void);
+  void vSysArgsPrint(void);
+
+  // system
+  void vSystemActiveJobs(void);
+  void vSystemOpenFetch(void);
+  void vSystemOpenStore(void);
+  void vSystemSee(void);
+  void vSystemStartedStore(void);
+  void vSystemStartedFetch(void);
+
   // table
   void vTableAddIndex(void);
   void vTableAsAltStreamDef(void);
@@ -1718,7 +1758,6 @@ public:
 
   // tag
   void vTagGet(void);
-  void vTagSet(void);
 
   // tag-set
   void vTagSetAppendInt(void);
@@ -1761,6 +1800,7 @@ public:
   void vTaskSeedInitially(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
+  void vTaskSeeLogicUnitRegisters(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
@@ -1888,11 +1928,11 @@ public:
   void vToTask(void);
 
   // toHshCrw
-  void vToHshCrwRegCompleted(void);
-  void vToHshCrwRegConvert(void);
-  void vToHshCrwRegCreate(void);
-  void vToHshCrwRegDangling(void);
-  void vToHshCrwRegDelete(void);
+  void vToPtnCrwRegCompleted(void);
+  void vToPtnCrwRegConvert(void);
+  void vToPtnCrwRegCreate(void);
+  void vToPtnCrwRegDangling(void);
+  void vToPtnCrwRegDelete(void);
 
   // toNstRow
   void vToNstRowRegConvert(void);
@@ -1995,9 +2035,6 @@ public:
   void vWordResetRoutine(void);
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
-
-  // write behind
-  void vWriteBehindFlush(void);
 
   // zero
   void vZeroLess(void);

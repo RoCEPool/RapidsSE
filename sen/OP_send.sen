@@ -41,9 +41,10 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER operand                                        */
+/* handler for ZK_M_CANCELLING operand                                        */
 /*----------------------------------------------------------------------------*/
-: send_CANCELMARKER \handler
+/*
+: send_CANCELLING \handler
 
   PipeIn[].sendTo discard
 
@@ -53,11 +54,20 @@
   
   false // calling op_loop exits
 ;
+*/
+: send_CANCELLING \handler
+
+  PipeIn[].sendTo discard
+
+  PipeIn[].drain
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER operand                                          */
+/* handler for ZK_M_EXITING operand                                           */
 /*----------------------------------------------------------------------------*/
-: send_EXITMARKER \handler
+: send_EXITING \handler
 
   PipeIn[].sendTo discard
 
@@ -82,8 +92,8 @@
 
   find: PipeIn[].sendTo op[].handlerAll!
 
-  find: send_CANCELMARKER  ZK_CANCELMARKER  op[].handler!
-  find: send_EXITMARKER    ZK_EXITMARKER    op[].handler!
+  find: send_CANCELLING  ZK_M_CANCELLING  op[].handler!
+  find: send_EXITING     ZK_M_EXITING     op[].handler!
 
   op__loop
 

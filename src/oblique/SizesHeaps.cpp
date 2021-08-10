@@ -127,7 +127,7 @@
 #include <BucketGet.hpp>
 
 #include "Parcel.hpp"
-#include "Objects.hpp"
+#include "Numbering.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -173,8 +173,6 @@
 
 #include "TccLock.hpp"
 #include "TraceLock.hpp"
-
-#include "WriteBehind.hpp"
 
 #include "Parcel.hpp"
 #include "Sends.hpp"
@@ -326,7 +324,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
   { sizeof(LocalDir),           HT_INVALID   ,0 }, // CN_LOCALDIR
   { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
-  { sizeof(Location),           HT_T_TINY    ,0 }, // CN_LOCATION
+  { sizeof(BASE::Location),     HT_T_TINY    ,0 }, // CN_LOCATION
   { sizeof(Locator),            HT_T_TINY    ,0 }, // CN_LOCATOR
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { 0,                          HT_INVALID   ,0 }, // CN_LOCKSET
@@ -353,10 +351,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
+  { sizeof(Numbering),          HT_T_MEDIUM  ,0 }, // CN_NUMBERING
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
   { sizeof(ObjBuffer),          HT_T_LARGE   ,0 }, // CN_OBJBUFFER
-  { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
   { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
@@ -509,10 +507,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYVIRTUAL
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TMEVAL
-  { sizeof(ToHshCrw),           HT_T_LARGE   ,0 }, // CN_TOHSHCRW
   { sizeof(Token),              HT_T_TINY    ,0 }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
+  { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
@@ -528,7 +526,6 @@ SizeHeap gxaSizeHeap[]
   { 'W' - ('A' - 1),            HT_INVALID   ,0 }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID   ,0 }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 }, // CN_WORD
-  { sizeof(WriteBehind),        HT_T_LARGE   ,0 }, // CN_WRITEBEHIND
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__

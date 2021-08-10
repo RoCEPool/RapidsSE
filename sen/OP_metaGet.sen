@@ -5,11 +5,11 @@
 " OP_metaGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_METAGET ...                                                 */
+/* handler for ZK_D_METAGET ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metaGet_getTable  \handler
 
-  // pipe out ZK_STARTMARKER
+  // pipe out ZK_M_START
   PipeIn[].pipeOut
   "metaGet_getTable" .
   //stk displays what in the stack
@@ -35,8 +35,8 @@
   "metaGet_req" .
   op__topology
 
-  //find: metaGet_getTable   ZK_STARTMARKER   op[].handler!
-  find: metaGet_getTable   ZK_DATAPULSE   op[].handler!
+  //find: metaGet_getTable   ZK_M_START   op[].handler!
+  find: metaGet_getTable   ZK_M_DATAPULSE   op[].handler!
 
   op__loop
 

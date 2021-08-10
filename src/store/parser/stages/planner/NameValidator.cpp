@@ -17,6 +17,7 @@
 #include "SeApi.hpp"
 #include "InfoSet.hpp"
 #include "TableMetadata.hpp"
+#include "PartitionKeyMetadata.hpp"
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
@@ -33,6 +34,11 @@
 #include "StatementMarker.hpp"
 #include "SqlOperator.hpp"
 #include "SetOp.hpp"
+#include "JoinOp.hpp"
+#include "StringObject.hpp"
+#include "StringList.hpp"
+#include "EqExpr.hpp"
+#include "AndExpr.hpp"
 
 
 using namespace Parser;
@@ -80,7 +86,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   // to be qualified first.
 
   auto fTableVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -108,7 +114,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
 
   auto fColumnVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -127,6 +133,9 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
       // Now resolve the columns against the known tables in the plan.
       vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
+
+      // Validate the column names of any join USING clauses
+      vValidateJoinUsingColumns(pRootNode, pStatementMarker);
 
     } catch (SqlException& e) {
       delete pSeApi;
@@ -161,7 +170,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
   ASSERT(pStartNode);
 
   // Walk the graph looking for TableRefs
-  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -188,6 +197,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
       }
     }
 
+    // Table is not in the plan's metadata.
     // Look up table in SE API
     STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
@@ -220,7 +230,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
       return GraphNav::WALK_CONTINUE;
     }
 
-    // Retrieve the column definitions and make a node our of these
+    // Retrieve the column definitions and make a node out of these
     QueryNode* pColumnDefs = ColumnDefs::pCreate();
     InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
 
@@ -251,8 +261,27 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     // TODO: For now this is empty
     QueryNode* pIndexDefs = IndexDefs::pCreate();
 
+    // Get the partitioning information and make a node out of it.
+    QueryNode* pPartitionDef = ColumnDefs::pCreate();
+    InfoSet* pPartitionKeySet = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
+    ASSERT(pPartitionKeySet);
+
+    for (Row* pPtnKeyRow = pPartitionKeySet->pFirstRow();
+         pPtnKeyRow;
+         pPtnKeyRow = pPartitionKeySet->pNextRow(pPtnKeyRow)) {
+
+      PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pPtnKeyRow);
+
+      QueryNode* pColumnDef = ColumnDefs::pFind(pColumnDefs, pPtnKeyMeta->iColumnNumber());
+      ASSERT(pColumnDef);
+
+      // Add a copy of this node to the partition definition.
+      ColumnDefs::vAddColumnDef(pPartitionDef, pColumnDef->pDeepCopy(true));
+    }
+
+
     // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
-    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs);
+    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
 
     // Add to the plan metadata
     MetadataNode::vAddTable(pMetadataNode, pTableDef);
@@ -262,6 +291,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
 
     delete pTableInfoSet;
     delete pColumnInfoSet;
+    delete pPartitionKeySet;
 
     return GraphNav::WALK_CONTINUE;   // Keep walking
   };
@@ -282,7 +312,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnWildcards
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -303,71 +333,69 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    b1 bRetry = true;
 
-    while (bRetry) {
-      bRetry = false;
-      PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
-      while (pIter->bHasNext()) {
-        QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+    while (pIter->bHasNext()) {
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
 
-        // Get the expr out of the ProjectedColumn
-        QueryNode *pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+      // Get the expr out of the ProjectedColumn
+      QueryNode *pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
-        if (!ColumnWildcard::bIsOfType(pExpr)) {
-          continue;
-        }
-
-        // We've got a columnWildcard. We need to remove this projectedColumn
-        // from the projectedColumns list and replace it with new projectedColumn
-        // instances that have columnRefs from the resolved tables.
-
-        // First get any catalog/schema/table scopes that may limit the wildcard
-        Stz* szCatalogName = ColumnWildcard::szCatalog(_pQueryNode(pExpr));
-        Stz* szSchemaName  = ColumnWildcard::szSchema(_pQueryNode(pExpr));
-        Stz* szTableName   = ColumnWildcard::szTable(_pQueryNode(pExpr));
-
-        // Now generate a list of ProjectedColumn instances, but importantly we can only
-        // use tableRefs that we find underneath this part of the graph, as there can be
-        // other tableRefs that are not visible to this part of the query.
-        QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
-                                                                     pRootNode,
-                                                                     szCatalogName,
-                                                                     szSchemaName,
-                                                                     szTableName);
-
-        // Ensure that the returned list is a list of ProjectedColumn instances
-#ifdef WITH_ASSERT_MACRO
-        QueryNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
-        while (pResolvedIter->bHasNext()) {
-          PlanNode* pResolvedNode = pResolvedIter->pNext();
-          ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
-        }
-        delete pResolvedIter;
-#endif
-
-        if (pResolvedWildcardList->nItems() == 0) {
-          delete pResolvedWildcardList;
-          NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
-        }
-
-        // Now replace the ProjectedColumn that contains the columnWildcard with
-        // each of the resolved ProjectedColumn instances that contain columnRefs.
-        GraphEditor::vReplaceChild(pProjectedColumns, pProjectedColumn, pResolvedWildcardList);
-
-        ASSERT(pResolvedWildcardList->nItems() == 0);
-        delete pResolvedWildcardList;
-
-        // We can't modify the projectedColumns list and keep iterating it.
-        // And there may be more columnWildcards. So we need to start again
-        // and reiterate it from the beginning with a new iterator.
-        bRetry = true;
-        break;
+      if (!ColumnWildcard::bIsOfType(pExpr)) {
+        continue;
       }
 
-      delete pIter;
-    } // while (bRetry)
+      // We've got a columnWildcard. We need to remove this projectedColumn
+      // from the projectedColumns list and replace it with new projectedColumn
+      // instances that have columnRefs from the resolved tables.
+
+      // First get any catalog/schema/table scopes that may limit the wildcard
+      Stz* szCatalogName = ColumnWildcard::szCatalog(_pQueryNode(pExpr));
+      Stz* szSchemaName  = ColumnWildcard::szSchema(_pQueryNode(pExpr));
+      Stz* szTableName   = ColumnWildcard::szTable(_pQueryNode(pExpr));
+
+      // Now generate a list of ProjectedColumn instances, but importantly we can only
+      // use tableRefs that we find underneath this part of the graph, as there can be
+      // other tableRefs that are not visible to this part of the query.
+      QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode->pFirstChild()),
+                                                                   pRootNode,
+                                                                   szCatalogName,
+                                                                   szSchemaName,
+                                                                   szTableName);
+
+      // Ensure that the returned list is a list of ProjectedColumn instances
+#ifdef WITH_ASSERT_MACRO
+      QueryNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
+      while (pResolvedIter->bHasNext()) {
+        PlanNode* pResolvedNode = pResolvedIter->pNext();
+        ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
+      }
+      delete pResolvedIter;
+#endif
+
+      if (pResolvedWildcardList->nItems() == 0) {
+        delete pResolvedWildcardList;
+        delete pIter;
+        NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
+        return GraphNav::WALK_ABORT; // NEVER_REACH. For the IDE's code-warning benefit
+      }
+
+      // Now replace the ProjectedColumn that contains the columnWildcard with
+      // each of the resolved ProjectedColumn instances that contain columnRefs.
+      QueryNode* pResolvedCol;
+      while ((pResolvedCol = pResolvedWildcardList->pPop()) != nullptr) {
+        pIter->vInsertBefore(pResolvedCol);
+      }
+
+      ASSERT(pResolvedWildcardList->nItems() == 0);
+      delete pResolvedWildcardList;
+
+      pIter->vRemove();
+      delete pProjectedColumn;
+    }
+
+    delete pIter;
 
     return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ProjectOps
   };
@@ -381,7 +409,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
 
 
 /*----------------------------------------------------------------------------*/
-/* Look up and return a list of columns that match a column wildcard          */
+/* Look up and return a list of columnRefs that match a column wildcard       */
 /* for a given location in the plan hierarchy.                                */
 /*----------------------------------------------------------------------------*/
 QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
@@ -390,71 +418,56 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
   ASSERT(pStartNode);
   ASSERT(PlanObject::bIsOfType(pStartNode));
 
-  QueryNodeList* pProjectedColumnList = new QueryNodeList();
+  QueryNodeList* pProjectedColumnList = PlanObject::pColumnExprs(pStartNode, pRootNode);
 
+  // If there are no constraints then we use all projected columns
+  if (!szCatalog && !szSchema && !szTable) {
+    return pProjectedColumnList;
+  }
 
-  // Walk the graph from here on down, looking for all data sources.
-  auto fVisitor =
-      [&pProjectedColumnList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  // There are some constraints that we need to match against
+  QueryNodeIter* pIter = pProjectedColumnList->pNewIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedColumn = pIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-    UNUSED(sPath);
-    UNUSED(iDepth);
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pExpr));
 
-    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
-
-    if (!DataSource::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;   // Keep walking
+    // We can only match cat/schm/tbl constraints against columnRefs,
+    // so if it isn't a ColumnRef then it can't be matched and we won't include it.
+    if (!ColumnRef::bIsOfType(pExpr)) {
+      pIter->vRemove();
+      delete pProjectedColumn;
+      continue;
     }
 
-    QueryNode* pDataSourceOp = _pQueryNode(pNode);
-    Stz* szSrcCatalog = DataSource::szCatalogName(pDataSourceOp);
-    Stz* szSrcSchema  = DataSource::szSchemaName(pDataSourceOp);
-    Stz* szSrcTable   = DataSource::szTableName(pDataSourceOp);
+    Stz* szColRefTblAlias = ColumnRef::szTableAlias(pExpr);
+    Stz* szColRefCatalog  = ColumnRef::szCatalog(pExpr);
+    Stz* szColRefSchema   = ColumnRef::szSchema(pExpr);
+    Stz* szColRefTable    = ColumnRef::szTable(pExpr);
 
-    // Check if the wildcard constraints match the data source
-    b1 bConstraintsMatch = 
-        (!szCatalog || (szSrcCatalog && szCatalog->bSame(szSrcCatalog))) &&
-        (!szSchema  || (szSrcSchema  && szSchema->bSame(szSrcSchema))  ) &&
-        (!szTable   || (szSrcTable   && szTable->bSame(szSrcTable))    );
+    b1 bConstraintsMatch;
+
+    if (szColRefTblAlias && szTable) {
+      bConstraintsMatch = (szTable->bSame(szColRefTblAlias) && !szSchema && !szCatalog);
+
+    } else {
+      bConstraintsMatch =
+          (!szCatalog || (szColRefCatalog && szCatalog->bSame(szColRefCatalog))) &&
+          (!szSchema  || (szColRefSchema  && szSchema->bSame(szColRefSchema))  ) &&
+          (!szTable   || (szColRefTable   && szTable->bSame(szColRefTable))    );
+    }
 
     if (!bConstraintsMatch) {
-      // Don't include these columns
-      return GraphNav::WALK_CONTINUE;   // Keep walking
+      // ColumnRef doesn't match
+      pIter->vRemove();
+      delete pProjectedColumn;
+      continue;
     }
+  }
 
-    // We do want to include these columns
-    // Get the column definitions of the data source and convert them to columnRefs
-    QueryNodeList* pColumnDefList = DataSource::pColumnDefs(pDataSourceOp, pRootNode);
-
-    // Iterate through the columnDefs, convert them to columnRefs and add them to the list
-    QueryNodeIter* pIter = pColumnDefList->pNewIter();
-    while (pIter->bHasNext()) {
-      QueryNode* pColumnDef = pIter->pNext();
-
-      QueryNode* pColumnRef = ColumnRef::pCreate( ColumnDef::szCatalogName(pColumnDef),
-                                                  ColumnDef::szSchemaName(pColumnDef),
-                                                  ColumnDef::szTableName(pColumnDef),
-                                                  ColumnDef::szColumnName(pColumnDef) );
-
-      // Make a projectedColumn from the columnRef.
-      // We're not going to give the column an alias.
-      QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef, nullptr);
-
-      // Add it to the list
-      pProjectedColumnList->vAppend(pProjectedColumn);
-    }
-
-    // Clean up
-    delete pIter;
-    pColumnDefList->vRemoveAll();
-    delete pColumnDefList;
-
-    return GraphNav::WALK_CONTINUE;   // Keep walking
-  };
-
-
-  GraphNav::bBoundedWalk(pStartNode, false, true, fVisitor, pRootNode);
-
+  delete pIter;
   return pProjectedColumnList;
 }
 
@@ -468,7 +481,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
 
@@ -480,28 +493,28 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     QueryNode* pColumnRef = _pQueryNode(pNode);
 
-    Stz* szCatalogName = ColumnRef::szCatalog(_pQueryNode(pNode));
-    Stz* szSchemaName  = ColumnRef::szSchema(_pQueryNode(pNode));
-    Stz* szTableName   = ColumnRef::szTable(_pQueryNode(pNode));
-    Stz* szColumnName  = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
+    Stz* szTableAliasName = ColumnRef::szTableAlias(_pQueryNode(pNode));
+    Stz* szCatalogName    = ColumnRef::szCatalog(_pQueryNode(pNode));
+    Stz* szSchemaName     = ColumnRef::szSchema(_pQueryNode(pNode));
+    Stz* szTableName      = ColumnRef::szTable(_pQueryNode(pNode));
+    Stz* szColumnName     = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
 
-    // Is this column already in the metadata? It must have a fully qualified name if it does.
-    if (ColumnRef::bIsFullyQualified(pColumnRef)) {
-      QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName);
-      if (pColumnDef) {
-        // Column is in the metadata. Nothing to do here.
-        return GraphNav::WALK_CONTINUE;   // Keep walking
-      }
-    }
+    // We cannot skip columns that appear to be fully qualified here. Even if a columnRef
+    // has a catalog, schema and table specified AND all of this exists in the metadata
+    // AND that table has a matching column name, there may be an alias on the data source
+    // that means that the column cannot be resolved with that fully qualified name.
+    // Therefore this name is incorrect and should cause an error.
 
-    // We either need to match this partially-qualified column against the plan
-    // graph metadata or against an alias for a projected expression.
+    // We either need to match this partially (or fully) qualified column against the plan
+    // graph metadata, against an alias for a projected expression or against
+    // a table alias found below it in the plan.
     //
     // Let's first consider matching it against a column from a table.
     // First we need to work out which table it might be from by looking for TableRefs
     // underneath the sql operator that contains this columnRef.
 
-    // Get the Sql operator by using the current path and the starting node
+    // Get the Sql operator that contains this ColumnRef expression
+    // by using the current path and the starting plan node
     s256 sSqlOpPath;
     sSqlOpPath.vCopyTill(sPath, ':');
 
@@ -509,34 +522,35 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     ASSERT(pSqlOp);
     ASSERT(SqlOperator::bIsOfType(pSqlOp));
 
-    QueryNodeList* pTableDefList = pMatchingTableDefsFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
+    QueryNodeList* pDataSourceList = pMatchingDataSourcesFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
 
     // We can check for an ambiguous column name
-    if (pTableDefList->nItems() > 1) {
-      // pTableDefList will be deleted in vThrowAmbiguousColumn() below
-      NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pTableDefList);
+    if (pDataSourceList->nItems() > 1) {
+      // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
+      NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pDataSourceList);
     }
 
     if (szCatalogName || szSchemaName || szTableName) {
       // It must be a columnRef. Can't be an aliasRef
 
-      if (pTableDefList->nItems() == 0) {
-        delete pTableDefList;
+      if (pDataSourceList->nItems() == 0) {
+        delete pDataSourceList;
         NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
       }
 
-      ASSERT(pTableDefList->nItems() == 1);
+      ASSERT(pDataSourceList->nItems() == 1);
 
       // Qualify the ColumnRef
-      QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
-      szCatalogName = TableDef::szCatalogName(pTableDef);
-      szSchemaName  = TableDef::szSchemaName(pTableDef);
-      szTableName   = TableDef::szTableName(pTableDef);
+      QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
+      szTableAliasName = DataSource::szAliasName(pDataSource);
+      szCatalogName    = DataSource::szCatalogName(pDataSource);
+      szSchemaName     = DataSource::szSchemaName(pDataSource);
+      szTableName      = DataSource::szTableName(pDataSource);
 
-      ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
-                          szTableName, szColumnName);
+      ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
+                          szSchemaName, szTableName, szColumnName);
 
-      delete pTableDefList;
+      delete pDataSourceList;
       return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
     }
 
@@ -547,13 +561,13 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     // A TableRef produces a projected column for each table with an alias set
     // to that table name. So we can end up with both a TableDef and an projected
     // column alias that both refer to the same table.
-    if (pProjectedColList->nItems() >0 && pTableDefList->nItems() > 0) {
+    if (pProjectedColList->nItems() >0 && pDataSourceList->nItems() > 0) {
 
-      QueryNodeIter* pTableDefIter = pTableDefList->pNewIter();
-      while (pTableDefIter->bHasNext()) {
+      QueryNodeIter* pDataSourceIter = pDataSourceList->pNewIter();
+      while (pDataSourceIter->bHasNext()) {
 
-        QueryNode* pTableDef = pTableDefIter->pNext();
-        ASSERT(TableDef::bIsOfType(pTableDef));
+        QueryNode* pDataSource = pDataSourceIter->pNext();
+        ASSERT(DataSource::bIsOfType(pDataSource));
 
         QueryNodeIter* pProjectedColIter = pProjectedColList->pNewIter();
         while (pProjectedColIter->bHasNext()) {
@@ -564,9 +578,9 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
           ASSERT(!ColumnRef::bIsOfType(pExpr) || ColumnRef::bIsFullyQualified(pExpr));
 
           if (ColumnRef::bIsOfType(pExpr) &&
-              ColumnRef::szCatalog(pExpr)->bSame(TableDef::szCatalogName(pTableDef)) &&
-              ColumnRef::szSchema(pExpr)->bSame(TableDef::szSchemaName(pTableDef)) &&
-              ColumnRef::szTable(pExpr)->bSame(TableDef::szTableName(pTableDef)) ) {
+              ColumnRef::szCatalog(pExpr)->bSame(DataSource::szCatalogName(pDataSource)) &&
+              ColumnRef::szSchema(pExpr)->bSame(DataSource::szSchemaName(pDataSource)) &&
+              ColumnRef::szTable(pExpr)->bSame(DataSource::szTableName(pDataSource)) ) {
 
             // Remove the projected column from the list.
             pProjectedColIter->vRemove();
@@ -576,38 +590,39 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
         delete pProjectedColIter;
       }
 
-      delete pTableDefIter;
+      delete pDataSourceIter;
     }
 
     if (pProjectedColList->nItems() == 0) {
       // No aliased expressions. Could we match the columnRef against the table metadata?
-      if (pTableDefList->nItems() == 0) {
-        delete pTableDefList;
+      if (pDataSourceList->nItems() == 0) {
+        delete pDataSourceList;
         delete pProjectedColList;
         NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
       }
 
-      ASSERT(pTableDefList->nItems() == 1);
+      ASSERT(pDataSourceList->nItems() == 1);
 
       // Qualify the ColumnRef
-      QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
-      szCatalogName = TableDef::szCatalogName(pTableDef);
-      szSchemaName  = TableDef::szSchemaName(pTableDef);
-      szTableName   = TableDef::szTableName(pTableDef);
+      QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
+      szTableAliasName = DataSource::szAliasName(pDataSource);
+      szCatalogName    = DataSource::szCatalogName(pDataSource);
+      szSchemaName     = DataSource::szSchemaName(pDataSource);
+      szTableName      = DataSource::szTableName(pDataSource);
 
-      ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
-                          szTableName, szColumnName);
+      ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
+                          szSchemaName, szTableName, szColumnName);
 
     } else if (pProjectedColList->nItems() == 1) {
       // We matched against an aliased (projected) expression
 
-      if (pTableDefList->nItems() == 1) {
-        // pTableDefList will be deleted in vThrowAmbiguousColumn() below
+      if (pDataSourceList->nItems() == 1) {
+        // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
         // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-        NameValidationException::vThrowAmbiguousColumn(szColumnName, pTableDefList, pProjectedColList);
+        NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedColList);
       }
 
-      ASSERT(pTableDefList->nItems() == 0);
+      ASSERT(pDataSourceList->nItems() == 0);
 
       // We've got a single unambiguous aliased expression.
       // We need to change the ColumnRef to an AliasRef in this spot in the graph.
@@ -627,12 +642,12 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     } else {
       ASSERT(pProjectedColList->nItems() > 1);
-      delete pTableDefList;
+      delete pDataSourceList;
       // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
       NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedColList);
     }
 
-    delete pTableDefList;
+    delete pDataSourceList;
     delete pProjectedColList;
     return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
   };
@@ -646,27 +661,33 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of TableDef nodes that are reachable from a given sql op     */
+/* Return a list of DataSource nodes that are reachable from a given sql op   */
 /* and that contain a column as referenced by pColumnRef.                     */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
-                                                    QueryNode* pSqlOp,
-                                                    PlanNode*  pRootNode,
-                                                    QueryNode* pMetadataNode)
+QueryNodeList* NameValidator::pMatchingDataSourcesFor(QueryNode* pColumnRef,
+                                                      QueryNode* pSqlOp,
+                                                      PlanNode*  pRootNode,
+                                                      QueryNode* pMetadataNode)
 {
-  // List of matching TableDefs to be returned
-  QueryNodeList* pTableDefList = new QueryNodeList();
+  // A DataSource may reference a real table, or it could represent a subquery
+  // that presents as a table (e.g. a Common Table Expression (CTE)).
+  // DataSources may also have an alias. If they do then that alias is masking
+  // the name of the underlying real table (if applicable) and we can't match
+  // against that.
+
+  // List of matching DataSources to be returned
+  QueryNodeList* pDataSourceList = new QueryNodeList();
 
   // Lambda called for each node under SqlOp, to look for TableRefs.
-  auto fVisitor = [pColumnRef, pRootNode, pMetadataNode, &pTableDefList]
-      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pColumnRef, pRootNode, pMetadataNode, &pDataSourceList]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
 
     if (SetOp::bIsOfType(pNode)) {
-      // We only walk down through the first child of a SetOp to resolve tableDefs.
+      // We only walk down through the first child of a SetOp to resolve data sources.
       // Normally this could lead to issues whereby an operator above the SetOp could
       // refer to a column or alias that is not being projected. But at this point we
       // are only interested in resolving names. Later on (in the project pushdown stage)
@@ -675,15 +696,15 @@ QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
 
       // Recursively call the same function but only for the first child
       // of the SetOp.
-      QueryNodeList* pSubList = pMatchingTableDefsFor(pColumnRef,
-                                                      _pQueryNode(pNode->pFirstChild()),
-                                                      pRootNode,
-                                                      pMetadataNode);
+      QueryNodeList* pSubList = pMatchingDataSourcesFor(pColumnRef,
+                                                        _pQueryNode(pNode->pFirstChild()),
+                                                        pRootNode,
+                                                        pMetadataNode);
 
       // Copy the results into the parent list
       QueryNode* pItem;
       while ( (pItem = pSubList->pPop()) != nullptr) {
-        pTableDefList->vAppend(pItem);
+        pDataSourceList->vAppend(pItem);
       }
 
       delete pSubList;
@@ -693,46 +714,36 @@ QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    if (!TableRef::bIsOfType(pNode)) {
+    if (!DataSource::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pTableRef = _pQueryNode(pNode);
-    ASSERT(TableRef::bIsFullyQualified(pTableRef));
+    QueryNode* pDataSource = _pQueryNode(pNode);
 
-    Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
-    Stz* szSchemaName  = ColumnRef::szSchema(pColumnRef);
-    Stz* szTableName   = ColumnRef::szTable(pColumnRef);
+    // ColumnRef properties
+    Stz* szColRefTableAliasName = ColumnRef::szTableAlias(pColumnRef);
+    Stz* szColRefCatalogName    = ColumnRef::szCatalog(pColumnRef);
+    Stz* szColRefSchemaName     = ColumnRef::szSchema(pColumnRef);
+    Stz* szColRefTableName      = ColumnRef::szTable(pColumnRef);
+    Stz* szColRefColumnName     = ColumnRef::szColumn(pColumnRef);
 
-    if ( (szCatalogName == nullptr || szCatalogName->bSame(TableRef::szCatalog(pTableRef))) &&
-         (szSchemaName  == nullptr ||  szSchemaName->bSame(TableRef::szSchema(pTableRef)))  &&
-         (szTableName   == nullptr ||   szTableName->bSame(TableRef::szTable(pTableRef))) ) {
-
-      // This column partially or fully matches the name of this table. Get the
-      // table definition of this table from the metadata
-      QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode,
-                                                     TableRef::szCatalog(pTableRef),
-                                                     TableRef::szSchema(pTableRef),
-                                                     TableRef::szTable(pTableRef));
-      ASSERT(pTableDef);
-
-      // Test if the column belongs to this table definition
-      QueryNode* pColumnDef = TableDef::pColumnDef(pTableDef, ColumnRef::szColumn(pColumnRef));
-      if (pColumnDef) {
-        // Add the table definition to the list
-        pTableDefList->vAppend(pTableDef);
-      }
+    if (DataSource::bResolvesColumnRef(pDataSource, pMetadataNode,
+                                       szColRefTableAliasName,
+                                       szColRefCatalogName, szColRefSchemaName,
+                                       szColRefTableName, szColRefColumnName)) {
+      // Add the data source to the list
+      pDataSourceList->vAppend(pDataSource);
     }
 
-    // Keep looking, even if we found a matching TableRef - it might be an
+    // Keep looking, even if we found a matching DataSource - it might be an
     // ambiguous column.
     return GraphNav::WALK_CONTINUE;
   };
 
-    // Walk the graph from pSqlOp looking for TableRefs
-  GraphNav::bGlobalWalk(pSqlOp, true, true, fVisitor, pRootNode);
+    // Walk the graph from pSqlOp looking for DataSources
+  GraphNav::bGlobalWalk(pSqlOp, false, true, fVisitor, pRootNode);
 
-  return pTableDefList;
+  return pDataSourceList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,7 +795,7 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
   //  - TableRef that is not fully resolved
   // then assert an error.
 
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -806,6 +817,208 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
   };
 
   GraphNav::bGlobalWalk(pPlanNode, true, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Validate the column names of any join USING clauses                        */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateJoinUsingColumns(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the graph looking for JoinOps
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!JoinOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pJoinOp = _pQueryNode(pNode);
+    QueryNode* pUsingList = JoinOp::pUsingListNode(pJoinOp);
+
+    if (!pUsingList) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    ASSERT(StringList::bIsOfType(pUsingList));
+    ASSERT(pUsingList->nChildren() > 0);
+    ASSERT(pJoinOp->nChildren() == 2);
+
+    // Replace the USING list with a join predicate in this join operator
+    vReplaceJoinUsingColumn(pRootNode, pJoinOp, pUsingList);
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
+  };
+
+  // Walk the /plan node, its children but not its properties.
+  GraphNav::bBoundedWalkBottomUp(pStartNode, true, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Replace the USING list with a join predicate in a JoinOp                   */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoinOp, QueryNode* pUsingList)
+{
+  QueryNode* pLeftTable  = _pQueryNode(pJoinOp->pFirstChild());
+  QueryNode* pRightTable = _pQueryNode(pJoinOp->pSecondChild());
+
+  ASSERT(pLeftTable);
+  ASSERT(pRightTable);
+
+  // Get the projected columns of both the left and right tables.
+  QueryNodeList* pLeftProjCols  = PlanObject::pColumnExprs(pLeftTable, pRootNode);
+  QueryNodeList* pRightProjCols = PlanObject::pColumnExprs(pRightTable, pRootNode);
+
+  // The join predicate we will form
+  QueryNode* pJoinPredicate = nullptr;
+
+  // Iterate the USING columns and see if we can find the column in the left and right
+  // projected column lists
+  PlanNodeIter* pUsingIter = pUsingList->pNewChildrenIter();
+  while (pUsingIter->bHasNext()) {
+    QueryNode* pUsingCol = _pQueryNode(pUsingIter->pNext());
+    ASSERT(StringObject::bIsOfType(pUsingCol));
+
+    Stz* szUsingCol = pUsingCol->szValue();
+    ASSERT(szUsingCol);
+
+    QueryNode* pLeftResolvedExpr  = nullptr;
+    QueryNode* pRightResolvedExpr = nullptr;
+
+    // Can we find this name in each projected column list?
+    // Check the left then the right projected column lists.
+    try {
+      pLeftResolvedExpr = pResolveUsingColumn(szUsingCol, pLeftProjCols);
+
+      if (pLeftResolvedExpr) {
+        pRightResolvedExpr = pResolveUsingColumn(szUsingCol, pRightProjCols);
+      }
+
+    } catch (SqlException& e) {
+      pLeftProjCols->vDeleteAll();
+      pRightProjCols->vDeleteAll();
+      delete pLeftProjCols;
+      delete pRightProjCols;
+
+      delete pLeftResolvedExpr;
+      delete pRightResolvedExpr;
+      delete pJoinPredicate;
+
+      delete pUsingIter;
+      throw;
+    }
+
+    if (!pLeftResolvedExpr || !pRightResolvedExpr) {
+      pLeftProjCols->vDeleteAll();
+      pRightProjCols->vDeleteAll();
+      delete pLeftProjCols;
+      delete pRightProjCols;
+
+      delete pLeftResolvedExpr;
+      delete pRightResolvedExpr;
+      delete pJoinPredicate;
+
+      delete pUsingIter;
+
+      // throw exception
+      SemanticException::vThrow(EC_USING_COLUMN_NOT_FOUND, ": %s"_Stz, szUsingCol);
+      return; // For avoiding wrongful code-highlighting/analysis errors
+    }
+
+    // Form a join predicate
+    QueryNode* pEqualityExpr = EqExpr::pCreate(pLeftResolvedExpr, pRightResolvedExpr);
+
+    // Set it as the join predicate, or AND it with any existing join predicate
+    if (pJoinPredicate) {
+      pJoinPredicate = AndExpr::pCreate(pJoinPredicate, pEqualityExpr);
+
+    } else {
+      pJoinPredicate = pEqualityExpr;
+    }
+  }
+
+  // Replace the USING list in the JoinOp with the join predicate
+  JoinOp::vReplaceUsing(pJoinOp, pJoinPredicate);
+
+  pLeftProjCols->vDeleteAll();
+  pRightProjCols->vDeleteAll();
+  delete pLeftProjCols;
+  delete pRightProjCols;
+  delete pUsingIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to resolve a column name in a given projected column list.           */
+/* Returns a ColumnRef/AliasRef that can be used to form a join predicate.    */
+/* May throw an exception if the column name is ambiguous                     */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList)
+{
+  QueryNode* pResolvedExpr = nullptr;
+
+  // Let's iterate the projected column list
+  QueryNodeIter* pProjColIter = pProjColList->pNewIter();
+
+  // Iterate each projected column from the current list
+  while (pProjColIter->bHasNext()) {
+    QueryNode* pProjectedColumn = pProjColIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+    // Get the expression of this projected column
+    QueryNode* pProjExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pProjExpr));
+
+    // The alias of this projected column, if one exists
+    Stz* szAliasName = ProjectedColumn::szAliasName(pProjExpr);
+
+    if (ColumnRef::bIsOfType(pProjExpr) && ColumnRef::szColumn(pProjExpr)->bSame(szUsingCol)) {
+      // We got a match.
+      // First check if we got a previous match. i.e. an ambiguous column name
+      if (pResolvedExpr) {
+        s2K sBuf1;
+        s2K sBuf2;
+        Expr::vDescribe(pResolvedExpr, sBuf1);
+        ColumnRef::vDescribe(pProjExpr, sBuf2);
+
+        delete pResolvedExpr;
+        delete pProjColIter;
+        NameValidationException::vThrowAmbiguousUsingColumn(szUsingCol, sBuf1.szStz(), sBuf2.szStz());
+        return nullptr;  // to avoid code analysis giving false warnings
+      }
+
+      // Save a copy of the ColumnRef to use in a join predicate
+      pResolvedExpr = pProjExpr->pDeepCopy(true);
+      // Keep checking for ambiguous columns
+
+    } else if (szAliasName && szAliasName->bSame(szUsingCol)) {
+      // We got a match on the projected column's alias
+      // First check if we got a previous match. i.e. an ambiguous column name
+      if (pResolvedExpr) {
+        s2K sBuf1;
+        s2K sBuf2;
+        Expr::vDescribe(pResolvedExpr, sBuf1);
+        ProjectedColumn::vDescribe(pProjectedColumn, sBuf2);
+
+        delete pResolvedExpr;
+        delete pProjColIter;
+        NameValidationException::vThrowAmbiguousUsingColumn(szUsingCol, sBuf1.szStz(), sBuf2.szStz());
+        return nullptr;  // to avoid code analysis giving false warnings
+      }
+
+      pResolvedExpr = AliasRef::pCreate(new Text(szAliasName), pProjExpr->pDeepCopy(true));
+      // Keep checking for ambiguous columns
+    }
+  }
+
+  delete pProjColIter;
+  return pResolvedExpr;
 }
 
 /*============================================================================*/

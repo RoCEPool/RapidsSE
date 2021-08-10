@@ -5,11 +5,29 @@
 " OP_rdCsvChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_SEEKOFFSETS ...                                                      */
+/* on ZK_M_CLEANING ...                                                       */
+/*----------------------------------------------------------------------------*/
+: rdCsvChunk_Cleaning \handler
+
+  //"Operand:- ZK_M_CLEANING" .verbose
+
+  // 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_I_SEEKOFFSETS ...                                                    */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
-  // 0 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -44,49 +62,28 @@
 
   InfoSet[].delete
 
-  // 1 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_M_START ...                                                      */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
+  //"Operand:- ZK_M_START" .verbose
 
-  // 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeOut
 
   // open the file for reading
-  <fileNm> OPEN_READ op__file if
-    PipeIn[].pipeOut
-  then
+  <fileNm> OPEN_READ op__file discard
 
-  // 1 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EXITMARKER ...                                                       */
-/*----------------------------------------------------------------------------*/
-: rdCsvChunk_ExitMarker \handler
-
-  //"Operand:- ZK_EXITMARKER" .verbose
-
-  // 0 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
-
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  // 1 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
-
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -105,9 +102,9 @@
 
   op__topology
 
-  find: rdCsvChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_SEEKOFFSETS   op[].handler!
-  find: rdCsvChunk_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     op[].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  op[].handler!
+  find: rdCsvChunk_StartMarker   ZK_M_START        op[].handler!
 
   op__loop
 

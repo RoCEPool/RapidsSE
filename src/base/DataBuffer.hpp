@@ -11,6 +11,8 @@ namespace BASE
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
     tPN    m_tPtnNo;        // partition no this buffer belongs to
+    i8     m_iBucketNo;     // this DataBuffer's bucket number
+
     i8     m_iBufferHeight; // buffer height in the tree
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
@@ -20,7 +22,7 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
-    PadWord m__PadToCacheLine[19];
+    PadWord m__PadToCacheLine[18];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
@@ -29,27 +31,30 @@ namespace BASE
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
     static DataBuffer* pToDataBuffer(void* aAddr);
 
-  void       vStreamDef(StreamDef* pStreamDef);
-  StreamDef* pStreamDef(void);
+    void       vStreamDef(StreamDef* pStreamDef);
+    StreamDef* pStreamDef(void);
 
-  Table*     pTable(void);
-  void       vTable(Table* pTable);
+    Table* pTable(void);
+    void   vTable(Table* pTable);
 
-  tXN        tTxnNo(void);
-  void       vTxnNo(tXN tTxnNo);
+    tXN    tTxnNo(void);
+    void   vTxnNo(tXN tTxnNo);
 
-    i8          iAgeSec(void);
+    i8     iAgeSec(void);
 
-    i8          iBufferHeight(void);
-    void        vBufferHeight(i8 iBufferHeight);
+    i8     iBucketNo(void);
+    void   vBucketNo(i8 iBucketNo);
   
-    void        vDropWrite(void);
-    void        vGrabWrite(void);
+    i8     iBufferHeight(void);
+    void   vBufferHeight(i8 iBufferHeight);
   
-    void        vPtnNo(tPN tPtnNo);
-    tPN         tPtnNo(void);
+    void   vDropWrite(void);
+    void   vGrabWrite(void);
+  
+    void   vPtnNo(tPN tPtnNo);
+    tPN    tPtnNo(void);
     
-    Birth&      oWhenNewed(void);
+    Birth& oWhenNewed(void);
   
     // - - - - - - - - - - - - - -
     bool bIsPermanent(void);

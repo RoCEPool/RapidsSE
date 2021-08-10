@@ -5,6 +5,19 @@
 " OP_rowToList.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING ...                                     CLEANING */
+/*----------------------------------------------------------------------------*/
+: rowToList_Cleaning \handler
+
+  List[].print
+
+  List[].delete
+
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* support for seapi immediate                                                */
 /*----------------------------------------------------------------------------*/
 : rowToList_seapi
@@ -24,17 +37,17 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_StartMarker \handler
 
   List[].new
 
-  ZK_STARTMARKER_handler
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                    DEFINITION */
+/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
 /*----------------------------------------------------------------------------*/
 : rowToList_StreamDef \handler
 
@@ -46,7 +59,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                     ROWBUFFER */
+/* handler for ZK_D_ROWBUFFER ...                                     ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : rowToList_RowBuffer \handler
 
@@ -61,18 +74,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                         EXIT */
-/*----------------------------------------------------------------------------*/
-: rowToList_ExitMarker \handler
-
-  List[].print
-
-  List[].delete
-
-  ZK_EXITMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -84,10 +85,10 @@
 
   op__topology
 
-  find: rowToList_ExitMarker  ZK_EXITMARKER  op[].handler!
-  find: rowToList_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: rowToList_StartMarker ZK_STARTMARKER op[].handler!
-  find: rowToList_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: rowToList_Cleaning    ZK_M_CLEANING    op[].handler!
+  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: rowToList_StartMarker ZK_M_START       op[].handler!
+  find: rowToList_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop
 

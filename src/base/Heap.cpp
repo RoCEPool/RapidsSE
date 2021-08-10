@@ -151,11 +151,25 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
-    if (! bExtendHeap()) {
+
+    // check for low memory when allocating a LARGE buffer
+    if (m_eHeap == HT_T_LARGE &&
+        gpBufferPool->bLowMemory() &&
+        gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
       // error: we have run out of space
-      vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
+      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
       m_okLock.vDropWrite();
+      THROW_LOWMEMORY();
+      return nullptr;
+    }
+
+    if (! bExtendHeap()) {
+      // error: we have run out of space
+      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
+      vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      m_okLock.vDropWrite();
+      THROW_LOWMEMORY();
       return nullptr;
     }
   }
@@ -172,14 +186,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   bool bSetLogMemory = false;
   
-//  if (AM::TASK::bLogMemory() {
-//    if (CN_WRITEBEHIND == eAllocClass) {
-//      bSetLogMemory = true;
-//    }
-//
-//  }
-  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
-    AM::LOG::vMemoryAllocation(pObject,eAllocClass);
 
   //vVerify();
   
@@ -282,9 +288,6 @@ void Heap::vFreeObject(Object* pObject)
 
   eCN eFreeClass = pObject->eGetClassNo();
   
-  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eFreeClass].m_bDontMemLog)
-    AM::LOG::vMemoryFree(pObject);
-
   if (CN_LARGETRANSIENT == eGetClassNo()) {
     
     if (m_nFreeChunks > 10) {
@@ -450,7 +453,7 @@ bool Heap::bExtendHeap(void)
   // check that we are free to extend this heap
   if ( m_bFixedHeap )
     return false;
-  
+
   // get a free buffer from buffer pool
   HeapBuffer* pHeapBuffer = new HeapBuffer;
   if ( ! pHeapBuffer )

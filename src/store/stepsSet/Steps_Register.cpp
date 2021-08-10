@@ -37,7 +37,7 @@ void Step::vRegister0Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpRegister0);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ void Step::vRegister0Set(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpRegister0 = m_pDataStack->pPopPtr(__func__);
+  m_p_TaskLogicUnit->m_xpRegister0 = m_pDataStack->pPopPtr(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void Step::vRegister1Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpRegister1);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ void Step::vRegister1Set(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpRegister1 = m_pDataStack->pPopPtr(__func__);
+  m_p_TaskLogicUnit->m_xpRegister1 = m_pDataStack->pPopPtr(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ void Step::vRegister2Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpRegister2);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void Step::vRegister2Set(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpRegister2 = m_pDataStack->pPopPtr(__func__);
+  m_p_TaskLogicUnit->m_xpRegister2 = m_pDataStack->pPopPtr(__func__);
 }
 
 /*============================================================================*/

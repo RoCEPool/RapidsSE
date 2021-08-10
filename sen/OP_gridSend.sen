@@ -5,7 +5,7 @@
 " OP_gridSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_METAGET ...                                                          */
+/* on ZK_D_METAGET ...                                                          */
 /*----------------------------------------------------------------------------*/
 : gridSend_gridObject \handler
 
@@ -40,8 +40,8 @@
 
   op__topology
 
-  // Setup ZK_gridGET handler
-  find: gridSend_gridObject ZK_GRID op[].handler!
+  // Setup ZK_D_GRIDGET handler
+  find: gridSend_gridObject ZK_D_GRID op[].handler!
   op__loop
 
   LogReqExit

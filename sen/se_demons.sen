@@ -169,23 +169,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn dedicate thread for op demon pipeline command                        */
-/*----------------------------------------------------------------------------*/
-: threadDemonPipeline
-
-  "
-    pipelineLocal threadDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | spawnThread | eatAll | stageA
-
-    end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
 /* waker demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
 : wakerDemonPipeline

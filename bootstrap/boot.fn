@@ -45,7 +45,7 @@ readonly DEFAULT_CLUSTER_REBALANCE_TIMEOUT="-1" # seconds, or -1 to wait indefin
 readonly DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 
 readonly REBALANCE_COMMAND="rebalance"
-readonly FORGET_NODE_COMMAND="__forgetNode"
+readonly FORGET_NODE_COMMAND="forgetNode"
 
 ###############################################################################
 ### Functions                                                               ###

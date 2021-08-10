@@ -5,18 +5,19 @@
 " OP_dropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : dropTenant_DataMarker
 
   0 locals| errorCode |
+
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in tenants
   folder[].checkIsTenants not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
@@ -25,7 +26,6 @@
   // check if tenant exits
   <tenantNm> checkIsTenant not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -34,8 +34,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the tenant
   <tenantNm> removeTenant
-
-  PipeIn[].pipeOut
 
   true
 ;
@@ -49,7 +47,7 @@
 
   op__topology
 
-  find: dropTenant_DataMarker ZK_DATAPULSE op[].handler!
+  find: dropTenant_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

@@ -5,17 +5,18 @@
 " OP_createTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : createTenant_DataMarker
 
   0 locals| errorCode |
 
+  PipeIn[].pipeOut
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -25,7 +26,6 @@
   // check if are in tenant
   folder[].checkIsTenants not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -35,7 +35,6 @@
   // check if catalog already exits
   <tenantNm> name::isNotKnownTenant not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -44,8 +43,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
   <tenantNm> :makeTenantFolder ( )
-
-  PipeIn[].pipeOut
 
   true
 ;
@@ -59,7 +56,7 @@
 
   op__topology
 
-  find: createTenant_DataMarker ZK_DATAPULSE op[].handler!
+  find: createTenant_DataMarker ZK_M_DATAPULSE op[].handler!
 
   op__loop
 

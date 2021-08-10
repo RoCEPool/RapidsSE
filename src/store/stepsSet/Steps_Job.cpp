@@ -47,7 +47,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-  vAddStep("job.tagSet@"_Stz,        &Step::vJobTagSetFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
 
@@ -57,9 +56,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
-  vAddStep("job.input@"_Stz,           &Step::vJobInputFetch);
-  vAddStep("job.input!"_Stz,           &Step::vJobInputStore);
-  vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
+  vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
@@ -75,7 +72,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
-  vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
@@ -83,8 +79,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
-
-  vAddStep("job.queueReturn"_Stz,      &Step::vJobQueueReturn);
 
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
@@ -97,10 +91,12 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
+  vAddStep("job.singularOp@"_Stz,      &Step::vJobSingularOpFetch);
+  vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
-  vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
-
+  
+  vAddStep("job.tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
 }
@@ -212,33 +208,33 @@ void Step::vJobAssertBegin(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
 
-  if (Job::iNodeNo(pJob->iJobId()) == AM::pGrid()->iThisNode()) {
+  if (Job::iNodeNo(pJob->iJobId()) == AM::pGrid()->iThisNodeNo()) {
 
     if (! pJob->bWasReceived())
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertOriginator: "
              "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
     
     if (JL_NONE != pJob->eJobList())
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
     
     Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
     if (! pJobFound)
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
     
     pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
     if (pJobFound)
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+             aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
     
     EXIT();
     return;
@@ -250,27 +246,27 @@ void Step::vJobAssertBegin(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   if (JL_NONE != pJob->eJobList())
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   EXIT();
 }
@@ -302,21 +298,21 @@ void Step::vJobAssertNeutral(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   EXIT();
 }
@@ -334,20 +330,20 @@ void Step::vJobAssertOriginator(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   if (pJob->bWasReceived())
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->iJobId());
   if (! pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   EXIT();
 }
@@ -365,20 +361,20 @@ void Step::vJobAssertParticipant(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   if (! pJob->bWasReceived())
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->iJobId());
   if (! pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
            "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   EXIT();
 }
@@ -396,7 +392,7 @@ void Step::vJobAssertReceived(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
+           aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   EXIT();
 }
@@ -485,20 +481,6 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.tagSet@ -- push ptr to job TagSet                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTagSetFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->pJobTags());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(void)
@@ -543,7 +525,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pJob->pLogicUnit_job()->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -565,7 +547,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pJob->pLogicUnit_job()->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -602,23 +584,23 @@ void Step::vJobIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.input@ -- fetch the input op                                           */
+/* job.singularOp@ -- fetch the input op                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobInputFetch(void)
+void Step::vJobSingularOpFetch(void)
 {
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pJob->pInputOp());
+  m_pDataStack->vPushPtr(pJob->pSingularOp());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.input! -- store the input op                                           */
+/* job.singularOp! -- store the input op                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobInputStore(void)
+void Step::vJobSingularOpStore(void)
 {
   ENTRY();
   
@@ -626,12 +608,12 @@ void Step::vJobInputStore(void)
   
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  pJob->vInputOp(pOp);
+  pJob->vSingularOp(pOp);
   
   // get the job in the session
   Job* pJob_Originating = pOp->pPipelineJob()->m_pOriginatingTask->pJob();
 
-  pJob_Originating->vInputOp(pOp);
+  pJob_Originating->vSingularOp(pOp);
 
   EXIT();
 }
@@ -801,20 +783,6 @@ void Step::vJobOriginatorFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.parentId@ -- fetch job parent id                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParentIdFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->iParentId());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.participant@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantFetch(void)
@@ -900,23 +868,6 @@ void Step::vJobPreSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   STORE::vJob_preSend(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.queueReturn -- queue a return piepline on outer waiting op             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobQueueReturn(void)
-{
-  ENTRY();
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  Op* pOuterOp = m_pJob->m_pOuterOp;
-  Op* pDownstreamOp = pOuterOp->pDownstreamOp();
-  
-  pDownstreamOp->vAppendLeft(pOperand,this);
   
   EXIT();
 }
@@ -1056,7 +1007,7 @@ void Step::vJobSessionFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  i8 iSessionId = pJob->m_i_Session;
   
   Session* pSession = nullptr;
   
@@ -1077,7 +1028,7 @@ void Step::vJobSessionStateFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_xReqTuple.m_i_Session);
+  m_pDataStack->vPushInt(pJob->m_i_Session);
   
   EXIT();
 }
@@ -1125,7 +1076,7 @@ void Step::vJobSignalSession(void)
   
   pJob->vJobState(JS_SIGNALLED);
 
-  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
+  i8 i_Session = pJob->m_i_Session;
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);
@@ -1187,21 +1138,21 @@ void Step::vJobSpawn(void)
 //    RASSERT(TR_NONE == pTask->eTranstionRequest());
 //  }
   
-  Api::vSpawnJob_received(pJob);
+  Api::vSpawnTask_receivedJob(pJob);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.tablePtb@ -- fetch tablePtn                                            */
+/* job.tagSet@ -- push ptr to job TagSet                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobTablePtnFetch(void)
+void Step::vJobTagSetFetch(void)
 {
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->i_TablePtn());
+  m_pDataStack->vPushPtr(pJob->pJobTags());
   
   EXIT();
 }

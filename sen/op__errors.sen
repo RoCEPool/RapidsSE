@@ -11,6 +11,9 @@
 
   DdlLock[].testDrop
 
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
 
@@ -28,6 +31,9 @@
 
   DdlLock[].testDrop
 
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
 
@@ -40,8 +46,8 @@
   // pipeout the CMDERROR infoset
   InfoSet[].pipeOut
 
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,6 +58,9 @@
   params| errorCode |
 
   DdlLock[].testDrop
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
@@ -66,8 +75,8 @@
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut
 
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +87,9 @@
   params| errorCode errorMsg |
 
   DdlLock[].testDrop
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
@@ -91,8 +103,8 @@
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut
 
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
 ;
 
 /*============================================================================*/

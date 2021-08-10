@@ -8,6 +8,11 @@
 #include "Job__Find.hpp"
 #include "JobList.hpp"
 
+#include "PipelineSpec.hpp"
+#include "LogicUnit.hpp"
+#include "SP_Gid.hpp"
+#include "eLH.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -226,6 +231,62 @@ bool JobList::bRemoveJob(Job* pJob)
   pJob->vJobList(JL_NONE);
 
   return bRemoved;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void JobList::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  SP_Gid spJobGid;
+  
+  vTrace("See JobList %s::\n"_Stz,aJL[m_eJobsList]);
+
+  for (SkipNode* pNode = m_pJobsSkipList->pFirst(0);
+       pNode;
+       pNode = m_pJobsSkipList->pNext(pNode, 0)) {
+    Job* pJob = (Job*)(pNode->m_pObject);
+    
+    vTrace("  Job %s %s "_Stz
+           ,spJobGid.sz(pJob->iJobId())
+           ,pJob->szJobNm()
+           );
+
+    vTrace("origin %lld session %lld command %lld "_Stz
+           ,pJob->m_i_Origin
+           ,pJob->m_i_Session
+           ,pJob->m_iCmdNo
+           );
+
+    if (C_UNKNOWN != pJob->iParticipantNode())
+      vTrace("partNode %lld "_Stz
+             ,pJob->iParticipantNode()
+             );
+
+    LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+    
+    if (pLogicUnit) {
+      if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+        vTrace("%s "_Stz
+               ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+               );
+      vTrace("%s "_Stz
+             ,aLH[pLogicUnit->m_eDdlLocked]
+             );
+    }
+    
+    vTrace("Acks %lld/%lld"_Stz
+           ,pJob->iAcksOriginal()
+           ,pJob->iAcksRmg_printOnlyValue()
+           );
+
+
+    vTrace("\n"_Stz);
+  }
+  
+  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

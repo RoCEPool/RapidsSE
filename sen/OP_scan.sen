@@ -5,20 +5,23 @@
 " OP_scan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
+/* handler for ZK_CANCELLINGMARKER ...                                        */
 /*----------------------------------------------------------------------------*/
-: Scan_Xyz \handler
+: Scan_CancellingMarker \handler
 
-  // delete all operands
-  PipeIn[].delete
+  Pipein[]\clear to Operand[]
 
+  "Scan_CancellingMarker DRAINING PIPEIN" .
+  PipeIn[].drain
+
+  Operand[].pipeOut
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: Scan_CancelMarker \handler
+: Scan_Cleaning \handler
 
   // drop the tablePtn lock if held
   counter0[] true == if
@@ -31,17 +34,25 @@
     ptnStream[] ptnStream.delete
   then
 
-  ZK_CANCELMARKER_handler
+  Pipein[].pipeOut
+  true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER / ZK_ROWBUFFER...                                 */
-/*----------------------------------------------------------------------------*/
-// ": scan_RowCrwBuffer" .
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_NEXTBUFFER...                                         */
+/*----------------------------------------------------------------------------*/
+// ": scan_NextBufferMarker" .
+
+<<<<<<< HEAD
 : scan_RowCrwBuffer \handler
   ": scan_RowCrwBuffer" .
   debug::flag@ if "(Revised) scan_RowCrwBuffer handler" . then
+=======
+: scan_NextBufferMarker \handler
+  
+  debug::flag@ if "(Revised) scan_NextBufferMarker handler" . then
+>>>>>>> master
 
   // read next buffer from ptn stream
   ptnStream[] ptnStream.read to Operand[]
@@ -51,13 +62,17 @@
 
     // pipe out the read crw buffer
     Operand[].pipeOut
- 
+
+    // requeue ZK_M_NEXTBUFFER
+    Pipein[].pipeBackin
+
     // call this handler again to process next buffer
-    true LogicUnit[].callAgain!
+    //true LogicUnit[].callAgain!
  
   else
     // no more crw buffers
- 
+    Pipein[].delete
+
     // close and delete partition stream
     ptnStream[] ptnStream.close
     ptnStream[] ptnStream.delete
@@ -81,7 +96,8 @@
  
   0 locals| rateSecs |
 
-  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
+  // "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
+  "<rateSecs>" op::tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
@@ -95,7 +111,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": scan_DataMarker" .
 
@@ -122,9 +138,12 @@
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
-    // force op loop to call scan_CrwBuffer to start processing buffers
-    "scan_RowCrwBuffer" word::find LogicUnit[].handler!
-    true LogicUnit[].callAgain!
+    // pipe in ZK_M_NEXTBUFFER
+    Operand[].newNextBufferMarker
+    Operand[].pipeBackIn
+
+    //"scan_RowCrwBuffer_next" word::find LogicUnit[].handler!
+    //true LogicUnit[].callAgain!
 
   else
     // unable to open partition stream (this would be unusual)
@@ -149,21 +168,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": scan_StartMarker" .
 
 : scan_StartMarker \handler
-": scan_StartMarker" .
+  PipeIn[].pipeOut
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
-  else
-    // is possible that a PULSEDMARKER arrives after this STARTMARKER
-    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
-    // we need eat the pulsedmarker here
-    find: Scan_Xyz   ZK_DATAPULSE      op[].handler!
-    find: Scan_Xyz   ZK_PULSEDMARKER   op[].handler!
   then
 
   //args.developer if
@@ -188,11 +200,11 @@
 
   op__topology
 
-  find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: scan_RowCrwBuffer ZK_CRWBUFFER    op[].handler!
-  find: scan_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: scan_RowCrwBuffer ZK_ROWBUFFER    op[].handler!
-  find: scan_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: scan_CancellingMarker  ZK_M_CANCELLING op[].handler!
+  find: scan_Cleaning          ZK_M_CLEANING   op[].handler!
+  find: scan_DataMarker        ZK_M_DATAPULSE  op[].handler!
+  find: scan_NextBufferMarker  ZK_M_NEXTBUFFER op[].handler!
+  find: scan_StartMarker       ZK_M_START      op[].handler!
 
   op__loop
 

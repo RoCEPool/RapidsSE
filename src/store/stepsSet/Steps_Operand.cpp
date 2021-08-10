@@ -32,6 +32,7 @@
 #include "LogicUnit.hpp"
 
 #include "Parcel.hpp"
+#include "MY.hpp"
 
 
 #ifdef WITH_PYTHON_SUPPORT
@@ -63,24 +64,34 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
-  vAddStep("Operand[].newCancelMarker"_Stz,&Step::vOperandNewCancelMarker);
+  vAddStep("Operand[].newCancelling"_Stz,&Step::vOperandNewCancelling);
+  vAddStep("Operand[].newCancelledMarker"_Stz,&Step::vOperandNewCancelledMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
+  vAddStep("Operand[].newCleaningMarker"_Stz,&Step::vOperandNewCleaningMarker);
+  vAddStep("Operand[].newCleanedupMarker"_Stz,&Step::vOperandNewCleanedupMarker);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
   vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
-  vAddStep("Operand[].newEndRightMarker"_Stz, &Step::vOperandNewEndRightMarker);
+  vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newEndingMarker"_Stz, &Step::vOperandNewEndingMarker);
+  vAddStep("Operand[].newEndedMarker"_Stz, &Step::vOperandNewEndedMarker);
+  vAddStep("Operand[].newEndCrwRhtMarker"_Stz, &Step::vOperandNewEndCrwRhtMarker);
+  vAddStep("Operand[].newEndRowRhtMarker"_Stz, &Step::vOperandNewEndRowRhtMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
-  vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
+  vAddStep("Operand[].newErroringMarker"_Stz, &Step::vOperandNewErroringMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
-  vAddStep("Operand[].newExitMarker"_Stz,  &Step::vOperandNewExitMarker);
-  vAddStep("Operand[].newExitEarlyMarker"_Stz,&Step::vOperandNewExitEarlyMarker);
+  vAddStep("Operand[].newExitingMarker"_Stz,  &Step::vOperandNewExitingMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
-  vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
-  vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
+  vAddStep("Operand[].newLeaveMarker"_Stz,&Step::vOperandNewLeaveMarker);
+  vAddStep("Operand[].newLeavingMarker"_Stz,&Step::vOperandNewLeavingMarker);
+  vAddStep("Operand[].newLeftMarker"_Stz,&Step::vOperandNewLeftMarker);
+  vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
-  vAddStep("Operand[].newStartRightMarker"_Stz, &Step::vOperandNewStartRightMarker);
+  vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
+  vAddStep("Operand[].newStartRowRhtMarker"_Stz, &Step::vOperandNewStartRowRhtMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
+  vAddStep("Operand[].newTrigger"_Stz,     &Step::vOperandNewTrigger);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
@@ -100,7 +111,7 @@ void Step::vOperandCrwDuplicate(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
 
   CrwBuffer* pNewCrwBuffer = new CrwBuffer;
   pNewCrwBuffer->vCopy(pCrwBuffer);
@@ -117,7 +128,7 @@ void Step::vOperandCrwRowCountFetch(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   i8 nRows = pCrwBuffer->nRows();
 
   m_pDataStack->vPushInt(nRows);
@@ -133,8 +144,8 @@ void Step::vOperandCrwToCsv(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  m_pJob->pLogicUnit_job()->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+  m_p_TaskLogicUnit->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
   
   EXIT();
 }
@@ -146,7 +157,7 @@ void Step::vOperandCrwToEachRow(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   i8 iRow = m_pDataStack->iPopInt(__func__);
 
   EachRowBuffer* pEachRowBuffer = pCrwBuffer->pToEachRowBuffer(iRow);
@@ -165,7 +176,7 @@ void Step::vOperandCsvAppend(void)
   s256 sCsvRow;
   m_pDataStack->vPopStr(sCsvRow,__func__);
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   i8 nBytes = sCsvRow.nSize();
   if (pCsvBuffer->nFreeBytes() < nBytes + 1)
     ASSERT(0);
@@ -183,7 +194,7 @@ void Step::vOperandCsvData(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   char* data = (char*)pCsvBuffer->ayDataArea();
   m_pDataStack->vPushStz((Stz*)data);
   
@@ -198,9 +209,9 @@ void Step::vOperandCsvToRow(void)
   ENTRY();
   
   CsvBuffer* pCsvBuffer =
-    _pCsvBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+    _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  ToRow* pToRow = *m_pJob->pLogicUnit_job()->m_xpToRow;
+  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
   
   bool b = pToRow->bConvertCsv(pCsvBuffer);
   UNUSED(b);
@@ -215,9 +226,9 @@ void Step::vOperandDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
+  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
   
   EXIT();
 }
@@ -229,7 +240,7 @@ void Step::vOperandGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandA);
   
   EXIT();
 }
@@ -241,9 +252,9 @@ void Step::vOperandGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
+  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
 
   EXIT();
 }
@@ -255,25 +266,25 @@ void Step::vOperandInsdelIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  tPN tPtnNo = pOp->tPtnNo();
 //  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
 //
-//  if (CN_CRWBUFFER == (*m_pJob->pLogicUnit_job()->m_xpOperandA)->eGetClassNo()) {
-//    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+//  if (CN_CRWBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
 //    // will delete this buffer
 //    pCrwBuffer->vIsPermanent(false);
-//    m_pJob->pLogicUnit_job()->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
+//    m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
 //
 //  }
 //  else
-//  if (CN_ROWBUFFER == (*m_pJob->pLogicUnit_job()->m_xpOperandA)->eGetClassNo()) {
+//  if (CN_ROWBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
 //    // will delete this buffer
-//    RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+//    RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
 //    pRowBuffer->vIsPermanent(false);
-//    m_pJob->pLogicUnit_job()->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
+//    m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
 //  }
 //  else {
 //    NEVER_REACH;
@@ -289,7 +300,7 @@ void Step::vOperandIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpOperandA.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -301,7 +312,7 @@ void Step::vOperandIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpOperandA.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -313,7 +324,7 @@ void Step::vOperandIsReport(void)
 {
   ENTRY();
   
-  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
   
   EXIT();
@@ -427,11 +438,11 @@ void Step::vOperandKind(void)
 {
   ENTRY();
   
-//  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
+//  Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
 //
 //  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
   
-  eZK ePipeInOperand = m_pJob->pLogicUnit_job()->m_ePipeInOperand;
+  eZK ePipeInOperand = m_p_TaskLogicUnit->m_ePipeInOperand;
 
   m_pDataStack->vPushInt(ePipeInOperand);
   
@@ -447,7 +458,7 @@ void Step::vOperandMorphClass(void)
   
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
-  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   
   pOperand->vSetClassNo((eCN)iClassNo);
   
@@ -455,16 +466,30 @@ void Step::vOperandMorphClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newCancelMarker -- new a cancel marker                           */
+/* Operand[].newCancelling -- new a cancelling marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewCancelMarker(void)
+void Step::vOperandNewCancelling(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_CANCELMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CANCELLING);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCancelledMarker -- new a cancelled marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCancelledMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CANCELLEDMARKER);
+
   EXIT();
 }
 
@@ -475,10 +500,38 @@ void Step::vOperandNewCsvBuffer(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new CsvBuffer;
+  m_p_TaskLogicUnit->m_xpOperandA = new CsvBuffer;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCleaningMarker -- new a cleanup marker                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCleaningMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANING);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCleanedupMarker -- new a cleanedup marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCleanedupMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANED);
+
   EXIT();
 }
 
@@ -489,9 +542,9 @@ void Step::vOperandNewDataPulse(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_DATAPULSE);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_DATAPULSE);
   
   EXIT();
 }
@@ -503,9 +556,9 @@ void Step::vOperandNewDestroyMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_DESTROYMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_DESTROYMARKER);
   
   EXIT();
 }
@@ -517,23 +570,79 @@ void Step::vOperandNewEachScanEosMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EACHSCANEOSMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EACHSCANEOSMARKER);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEndRightMarker -- new an end right marker                     */
+/* Operand[].newEnd -- new an end marker                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewEndRightMarker(void)
+void Step::vOperandNewEndMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ENDRIGHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEnded -- new an ended marker                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndedMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDEDMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEnding -- new an ending marker                                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndingMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDINGMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEndCrwRhtMarker -- new an end crw right marker                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndCrwRhtMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_CRWRHTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEndRowRhtMarker -- new an end row right marker                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndRowRhtMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_ROWRHTMARKER);
 
   EXIT();
 }
@@ -545,23 +654,23 @@ void Step::vOperandNewEosMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EOSMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EOSMARKER);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newErrorMarker -- new an error marker                            */
+/* Operand[].newErroringMarker -- new an erroring marker                      */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewErrorMarker(void)
+void Step::vOperandNewErroringMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ERRORMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ERRORINGMARKER);
   
   EXIT();
 }
@@ -573,38 +682,24 @@ void Step::vOperandNewErroredMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_ERROREDMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newExitMarker -- new an exit marker                              */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewExitMarker(void)
-{
-  ENTRY();
-  
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EXITMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ERROREDMARKER);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newExitEarlyMarker -- new an exit early marker                   */
+/* Operand[].newExitingMarker -- new an exiting marker                        */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewExitEarlyMarker(void)
+void Step::vOperandNewExitingMarker(void)
 {
   ENTRY();
-
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
-
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EXITEARLYMARKER);
-
+  
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+  
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITING);
+  
   EXIT();
 }
 
@@ -615,38 +710,65 @@ void Step::vOperandNewExitedMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EXITEDMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITED);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newExitedEarlyMarker -- new an exited early marker               */
+/* Operand[].newLeaveMarker -- new a leave marker                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewExitedEarlyMarker(void)
+void Step::vOperandNewLeaveMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
-
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EXITEDEARLYMARKER);
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEAVEMARKER);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newPulsedMarker -- new a pulsed marker                           */
+/* Operand[].newLeavingMarker -- new a leaving marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewPulsedMarker(void)
+void Step::vOperandNewLeavingMarker(void)
 {
   ENTRY();
-  
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_PULSEDMARKER);
-  
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEAVINGMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newLeftMarker -- new a left marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewLeftMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_LEFTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newNextBufferMarker -- new a next buffer marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewNextBufferMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_NEXTBUFFERMARKER);
+
   EXIT();
 }
 
@@ -657,9 +779,9 @@ void Step::vOperandNewStartedMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTEDMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STARTEDMARKER);
   
   EXIT();
 }
@@ -671,27 +793,43 @@ void Step::vOperandNewStartMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  // revised job/op model
+    Op* pOp = *m_pOp;
 
   Operand* pOperand = new Marker(OM_STARTMARKER);
-  m_pJob->pLogicUnit_job()->m_xpOperandA = pOperand;
+  m_p_TaskLogicUnit->m_xpOperandA = pOperand;
 
-  Op* pOp = m_pJob->m_pOp;
   pOp->vOpTrace(pOperand,(Stz*)__func__,true);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newStartRightMarker -- new a start right marker                  */
+/* Operand[].newStartCrwRhtMarker -- new a start crw right marker             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStartRightMarker(void)
+void Step::vOperandNewStartCrwRhtMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_STARTRIGHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_CRWRHTMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartRowRhtMarker -- new a start crw right marker             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartRowRhtMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_ROWRHTMARKER);
 
   EXIT();
 }
@@ -703,13 +841,27 @@ void Step::vOperandNewStreamDef(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  if (m_pJob->pLogicUnit_job()->m_xpTable.bIsNull())
-    m_pJob->pLogicUnit_job()->m_xpOperandA = new StreamDef();
+  if (m_p_TaskLogicUnit->m_xpTable.bIsNull())
+    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef();
   else
-    m_pJob->pLogicUnit_job()->m_xpOperandA = new StreamDef(m_pJob->pLogicUnit_job()->m_xpTable->pStreamDef());
+    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newTrigger -- new a trigger marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewTrigger(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_TRIGGER);
+
   EXIT();
 }
 
@@ -720,11 +872,11 @@ void Step::vOperandPipeIn(void)
 {
   ENTRY();
   
-  Operand* pOperand = * m_pJob->pLogicUnit_job()->m_xpPipein;
+  Operand* pOperand = * m_p_TaskLogicUnit->m_xpPipein;
 
-  m_pJob->pLogicUnit_job()->m_xpPipein = nullptr;
+  m_p_TaskLogicUnit->m_xpPipein = nullptr;
     
-  m_pJob->pLogicUnit_job()->m_xpOperandA = pOperand;
+  m_p_TaskLogicUnit->m_xpOperandA = pOperand;
   
   EXIT();
 }
@@ -736,13 +888,14 @@ void Step::vOperandPipeOutSet(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
   
-  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
+  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
   
   EXIT();
 }
@@ -754,13 +907,14 @@ void Step::vOperandPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
+
+  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
   
-  pOp->vPipeToOutput(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
+  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
   
   EXIT();
 }
@@ -772,7 +926,7 @@ void Step::vOperandReport(void)
 {
   ENTRY();
   
-  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   pOperand->vTailProcessing(PT_REPORT);
   
   EXIT();
@@ -785,8 +939,8 @@ void Step::vOperandRowRowCountFetch(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   
   m_pDataStack->vPushInt(pRowBuffer->nRows());
   
@@ -802,9 +956,9 @@ void Step::vOperandSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = _pOperand(pOperand);
+  m_p_TaskLogicUnit->m_xpOperandA = _pOperand(pOperand);
   
   EXIT();
 }
@@ -816,16 +970,18 @@ void Step::vOperandToParcel(void)
 {
   ENTRY();
   
-  Op* pSrcOp = m_pJob->m_pOp;
+  // revised job/op model
+    Op* pOp = *m_pOp;
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  Parcel* pParcel = new Parcel(pOperand,
-                               pSrcOp->pPipelineJob()->iJobId(),
-                               C_UNKNOWN,
-                               C_UNKNOWN,
-                               pSrcOp->eCrossTopo());
+  Parcel* pParcel =  new Parcel;
 
+  pParcel->vAddItem(pOperand);
+  
+  pParcel->vLabel(pOp->eCrossTopo(),
+                  pOp->pPipelineJob()->iJobId());
+  
   m_pDataStack->vPushPtr(pParcel);
   
   EXIT();
@@ -838,14 +994,14 @@ void Step::vOperandUpsertIntoTable(void)
 {
   ENTRY();
   
-//  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  tPN tPtnNo = pOp->tPtnNo();
 //  i8 i_TablePtn = Table:iPtnNoToTablePtn(tPtnNo);
 //
-//  m_pJob->pLogicUnit_job()->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
+//  m_p_TaskLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
 //
 //  // will delete this buffer
 //  pCrwBuffer->vIsPermanent(false);
@@ -860,9 +1016,9 @@ void Step::vOperandRowToCsv(void)
 {
   ENTRY();
   
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = pRowBuffer->pToCsvBuffer();
+  m_p_TaskLogicUnit->m_xpOperandA = pRowBuffer->pToCsvBuffer();
   
   delete pRowBuffer;
   
@@ -876,7 +1032,7 @@ void Step::vOperandRowToEachRow(void)
 {
   ENTRY();
 
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
   i8 iRow = m_pDataStack->iPopInt(__func__);
 
   EachRowBuffer* pEachRowBuffer = pRowBuffer->pToEachRowBuffer(iRow);
@@ -892,25 +1048,25 @@ void Step::vOperandWriteToFile0(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpFile0);
-  ASSERT(m_pJob->pLogicUnit_job()->m_xpFile0->bIsOpen());
+  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
+  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
   
-  if (CN_CSVBUFFER == (*m_pJob->pLogicUnit_job()->m_xpOperandA)->eGetClassNo()) {
-    CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  if (CN_CSVBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
     char* aData = (char*)pCsvBuffer->ayDataArea();
   
-    m_pJob->pLogicUnit_job()->m_xpFile0->vPrint("%s"_Stz,aData);
-    //m_pJob->pLogicUnit_job()->m_xpFile0->vFlush();
+    m_p_TaskLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
+    //m_p_TaskLogicUnit->m_xpFile0->vFlush();
   }
   else
-  if (CN_CRWBUFFER == (*m_pJob->pLogicUnit_job()->m_xpOperandA)->eGetClassNo()) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  if (CN_CRWBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
     
     byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
     i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
 
-    bool b = m_pJob->pLogicUnit_job()->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
+    bool b = m_p_TaskLogicUnit->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
     ASSERT(b);
     UNUSED(b);
   }

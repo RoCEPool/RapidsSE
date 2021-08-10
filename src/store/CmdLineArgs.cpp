@@ -31,9 +31,9 @@ CmdLineArgs::CmdLineArgs(void)
 #endif
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
-  m_xSysArgs.m_nDegOfPar     = 4;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
+  m_xSysArgs.m_nPtnsPerNode  = 4;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
@@ -46,17 +46,15 @@ CmdLineArgs::CmdLineArgs(void)
 #else
   m_xSysArgs.m_sSenDir       = "../sen/"_Stz;
 #endif
-  m_xSysArgs.m_nPtnsPerTable    = 4;
-
-  m_xSysArgs.m_iLiftNo = 0;
   
   // node configuration
-  m_xSysArgs.m_nBootNodes = 0;
-  
+  m_xSysArgs.m_nDefinedNodes   = 0;
+  m_xSysArgs.m_nDefinedHeartbeats = 0;
+
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
 
-  m_xSysArgs.m_nHeartbeatNodes = 0;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // commands
@@ -109,7 +107,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_nSupervisorSleep = 10;
-  m_xSysArgs.m_iThisNode        = C_UNKNOWN;
+  m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
@@ -188,7 +186,7 @@ void CmdLineArgs::vEnvironmentVariables(void)
 
   sVarName = "SE_PARTITIONS"_Stz;
   if (Env::bGet(sVarName,sPartitions))
-    m_xSysArgs.m_nPtnsPerTable = sPartitions.iToI8();
+    m_xSysArgs.m_nPtnsPerNode = sPartitions.iToI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -363,8 +361,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
       i_HeartbeatNode++;
 
       if (i_HeartbeatNode > C_MAX_NODES) {
@@ -484,17 +482,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
-      m_xSysArgs.m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
-      m_xSysArgs.m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
         vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
-      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
-      if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
-        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+      if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
+        vWarn("Maximum number of nodes defineable nodes is %lld\n"_Stz,
+              C_MAX_NODES);
         return false;
       }
       continue;
@@ -538,18 +537,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         return false;
       }
 
-      m_xSysArgs.m_nPtnsPerTable = argv[i_Arg].iToI8();
-      if ( m_xSysArgs.m_nPtnsPerTable <= 0 || m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS ) {
+      m_xSysArgs.m_nPtnsPerNode = argv[i_Arg].iToI8();
+      if (m_xSysArgs.m_nPtnsPerNode <= 0 ||
+          m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE ) {
         vWarn("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
-              m_xSysArgs.m_nPtnsPerTable, C_MAX_TABLEPTNS);
+              m_xSysArgs.m_nPtnsPerNode, C_MAX_PTNSPERNODE);
         return false;
       }
-      if (m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS) {
+      if (m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
-          C_MAX_TABLEPTNS);
+          C_MAX_PTNSPERNODE);
         return false;
       }
-      m_xSysArgs.m_nDegOfPar = m_xSysArgs.m_nPtnsPerTable;
       
       continue;
     }
@@ -811,13 +810,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = true;
       continue;
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (szArg->bSame("--liftNo"_Stz)) {
-      m_xSysArgs.m_iLiftNo = argv[++i_Arg].iToI8();
-      continue;
-    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if ('<' == * szArg->azChar()) {
@@ -825,13 +817,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       i8 i_TagArg = i_Arg + 1;
       
       if (i_TagArg >= argc) {
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg);
+        m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
       
       Stz* szTagEqual = argv[i_TagArg];
       if ('=' != * szTagEqual->azChar()) {
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg);
+        m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
       
@@ -844,9 +836,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       Stz* szTagValue = argv[i_Arg];
 
       if (szTagValue->bIsNumeric())
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg,szTagValue->iToI8());
+        m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue->iToI8());
       else
-        m_xSysArgs.m_oArgTagSet.vInsert(szArg,szTagValue);
+        m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue);
 
       continue;
     }
@@ -858,12 +850,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // if --heartbeat was defined just set the m_xSysArgs.m_nHeartbeatNodes
+  // if --heartbeat was defined just set the m_xSysArgs.m_nDefinedHeartbeats
   // for Broadcast mode, this is 1
   if (i_HeartbeatNode) {
 
     // set no. of HB nodes
-    m_xSysArgs.m_nHeartbeatNodes = i_HeartbeatNode;
+    m_xSysArgs.m_nDefinedHeartbeats = i_HeartbeatNode;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -872,7 +864,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   if (i_BootNode) {
     
     // set no. of nodes
-    m_xSysArgs.m_nBootNodes = i_BootNode;
+    m_xSysArgs.m_nDefinedNodes = i_BootNode;
     
     // some basic cluster validations
     
@@ -884,10 +876,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nBootNodes; i_Test++) {
-      if (m_xSysArgs.m_xBootNode[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
+    for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nDefinedNodes; i_Test++) {
+      if (m_xSysArgs.m_xNodeDefn[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
         bFound = true;
-        m_xSysArgs.m_iThisNode = i_Test;
+        m_xSysArgs.m_i_ThisNode = i_Test;
         break;
       }
     }
@@ -901,9 +893,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   } else {
     // add a single node
     // m_xSysArgs.m_nBootNodes = 1;
-    // m_xSysArgs.m_xBootNode[0].m_sNodeName = m_xSysArgs.m_sNodeName;
-    // m_xSysArgs.m_xBootNode[0].m_sIPAddress = ""_Stz;
-    // m_xSysArgs.m_xBootNode[0].m_iPortNo =  -1;
+    // m_xSysArgs.m_xNodeDefn[0].m_sNodeName = m_xSysArgs.m_sNodeName;
+    // m_xSysArgs.m_xNodeDefn[0].m_sIPAddress = ""_Stz;
+    // m_xSysArgs.m_xNodeDefn[0].m_iPortNo =  -1;
 //    if ( m_xSysArgs.m_bStart ) {
 //      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
 //      return false;
@@ -915,13 +907,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     m_xSysArgs.m_sRegionName.vCat(m_xSysArgs.m_sRegionPrefix,"_"_Stz,m_xSysArgs.m_sNodeName.azChar(),nullptr);
   }
   else {
-    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nBootNodes > 1) {
+    if (m_xSysArgs.m_bStart && m_xSysArgs.m_nDefinedNodes > 1) {
       vWarn("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
   }
   
-  //m_xSysArgs.m_oArgTagSet.vDumpSet(true);
+  //m_xSysArgs.m_oArgTags.vDumpSet(true);
   
   return true;
 }
@@ -1002,20 +994,20 @@ void CmdLineArgs::vPrintStartupInfo(void)
   MagLib::vByteMag(m_xSysArgs.m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
   
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nBootNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
-      m_xSysArgs.m_xBootNode[i_Index].m_sNodeName.azChar(),
-      m_xSysArgs.m_xBootNode[i_Index].m_sIPAddress.azChar(),
-      m_xSysArgs.m_xBootNode[i_Index].m_iPortNo);
+      m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
+      m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
+      m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
   }
 
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nHeartbeatNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
     vTrace("  --heartbeat %s %lld\n"_Stz,
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_sIPAddress.azChar(),
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_iPortNo);
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
   }
   
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerTable);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_xSysArgs.m_nThreads);
 
   if (m_xSysArgs.m_nDummyThreads) {
@@ -1035,11 +1027,11 @@ void CmdLineArgs::vPrintStartupInfo(void)
   
   if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
   
-  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nBootNodes; i_Node++)
+  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nDefinedNodes; i_Node++)
     vTrace("  --node %s ip %s port %lld\n"_Stz,
-           m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
-           m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-           m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+           m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
+           m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
+           m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
     
 
   
@@ -1079,8 +1071,8 @@ void CmdLineArgs::vSanityCheck(void)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
-  if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
-    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nBootNodes,C_MAX_NODES);
+  if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nDefinedNodes,C_MAX_NODES);
     Process::vExitFailure();
   }
   
