@@ -57,20 +57,18 @@ void ToPtnRow::vConvert(RowBuffer* pRowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
   m_pFromRowBuffer = pRowBuffer;
-  
-  i8 i_Ptn = 0;
-    
+      
   i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
     
 #ifdef WITH_KEEP_ROW_HASH
-    i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
+    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
     
-    // tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
+    i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
 #else
-    i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
+    i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
 #endif
     
     vCopyRow(i_Ptn,aRowSrc);
