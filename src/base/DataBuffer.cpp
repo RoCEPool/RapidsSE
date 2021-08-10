@@ -38,8 +38,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
-  m_iBufferNo     = iBufferNo();
-  m_tPtnNo        = C_UNKNOWN;
+  m_iBufferNo  = iBufferNo();
+  m_iBucketNo  = C_UNKNOWN;
+  m_tPtnNo     = C_UNKNOWN;
+  
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
   m_bIsPermanent = bIsPermanent;
@@ -176,12 +178,6 @@ void DataBuffer::vTxnNo(tXN tTxnNo)
   m_tTxnNo = tTxnNo;
 }
 
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* get age of buffer in seconds                                               */
 /*----------------------------------------------------------------------------*/
@@ -192,6 +188,26 @@ i8 DataBuffer::iAgeSec(void)
   i8 iAge = m_oWhenNewed.iElapsedSsec();
   
   return iAge;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bucket no                                                              */
+/*----------------------------------------------------------------------------*/
+i8 DataBuffer::iBucketNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iBucketNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bucket no                                                              */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vBucketNo(i8 iBucketNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iBucketNo = iBucketNo;
 }
 
 /*----------------------------------------------------------------------------*/
