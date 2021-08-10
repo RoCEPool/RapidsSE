@@ -134,9 +134,7 @@
 
   //"Operand:- ZK_M_EXITING" .verbose
   Sends[].handleExiting if
-    PipeIn[].pipeOut
-    Op.ackPipelineJob
-    false
+    ZK_M_EXITING_handler // calling op_loop exits
   else
     PipeIn[].delete
     true

@@ -66,9 +66,7 @@
   // pipeout the infoset
   InfoSet[].pipeOut
 
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
+  ZK_M_EXITING_handler // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
