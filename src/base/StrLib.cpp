@@ -2674,7 +2674,9 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
   return iLen;
 }
 
+/*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in text */
+/*----------------------------------------------------------------------------*/
 i8 StrLib::iMatch(char *regexp, char *text)
 {
   if (regexp[0] == '^')
@@ -2686,7 +2688,9 @@ i8 StrLib::iMatch(char *regexp, char *text)
   return 0;
 }
 
+/*----------------------------------------------------------------------------*/
 /* iMatchHere: search for regexp at beginning of text */
+/*----------------------------------------------------------------------------*/
 i8 StrLib::iMatchHere(char *regexp, char *text)
 {
   if (regexp[0] == '\0')
@@ -2699,7 +2703,10 @@ i8 StrLib::iMatchHere(char *regexp, char *text)
     return iMatchHere(regexp+1, text+1);
   return 0;
 }
+
+/*----------------------------------------------------------------------------*/
 /* iMatchStar: search for c*regexp at beginning of text */
+/*----------------------------------------------------------------------------*/
 i8 StrLib::iMatchStar(int c, char *regexp, char *text)
 {
   do {    /* a * matches zero or more instances */
