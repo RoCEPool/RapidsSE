@@ -219,9 +219,7 @@ Job::Job(eCN eClassNo)
  
   //m_xResult
   // -- -- -- -- -- --
-  
-  SP_Gid spId;
-    
+      
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -984,38 +982,75 @@ void Job::vReport(void)
 void Job::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vTrace("See Job::\n"_Stz);
+    
+  SP_Gid spJobId;
 
-  vTrace("%p: %s\n"
-         
-         "m_eJobType=%s m_eJobKind=%s\n"
-         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_iOriginatingId=%lld\n"
-         "m_nxReferences=%lld\n"_Stz,
-         this,
-         aCN[eGetClassNo()],
-         
-         m_sJobNm.azChar(),
-         aJK[m_eJobKind]->azChar(),
-         
-         aJL[m_eJobList],
-         aJP[m_eJobPhase],
-         aJS[m_eJobState],
-         
-         bByPromptTag(),
-         bHasTag_noWait(),
-         m_bWasReceived,
-         
-         m_iOriginatingId,
-         
-         nReferences(),
-         C_VARGS_END
+  vTrace("See Job %p::\n"_Stz
+         ,this
          );
+
   
-  
-  m_oJobTags.vContentDump();
+  vTrace(
+         
+         "            sJobId "  "%lld"  " \n"  // 0
+         "            sJobNm "  "%lld"  " \n"  // 1
+         "          sJobKind "  "%lld"  " \n"  // 2
+
+         "              sCmd "  "%lld"  " \n"  // 3
+         
+         "          i_Origin "  "%lld"  " \n"  // 4
+         "         i_Session "  "%lld"  " \n"  // 5
+         "            iCmdNo "  "%lld"  " \n"  // 6
+
+         "      bWasReceived "  "%lld"  " \n"  // 7
+         "     i_Participant "  "%lld"  " \n"  // 8
+         "      bNormalSides "  "%lld"  " \n"  // 9
+
+         "         eJobState "  "%lld"  " \n"  // 10
+         "         eJobPhase "  "%lld"  " \n"  // 11
+         "          eJobList "  "%lld"  " \n"  // 12
+         
+         "            oTimer "  "%lld"  " \n"  // 13
+         "          oAcksRmg "  "%lld"  " \n"  // 14
+         "            eError "  "%lld"  " \n"  // 15
+
+         "         pPipeline "  "%lld"  " \n"  // 16
+         "       pSingularOp "  "%lld"  " \n"  // 17
+
+         "  pOriginatingTask "  "%lld"  " \n"  // 18
+         "    iOriginatingId "  "%lld"  " \n"  // 19
+ 
+         "             eSeed "  "%lld"  " \n"  // 20
+         "             pTask "  "%lld"  " \n"  // 21
+        
+         "     pJobLogicUnit "  "%lld"  " \n"  // 22
+
+         ""_Stz
+         
+         ,0
+         ,1
+         ,2
+         ,3
+         ,4
+         ,5
+         ,6
+         ,7
+         ,8
+         ,9
+         ,10
+         ,11
+         ,12
+         ,13
+         ,14
+         ,15
+         ,16
+         ,17
+         ,18
+         ,19
+         ,20
+         ,21
+         ,22
+         );
   
   vTrace(";;\n\n"_Stz);
 }

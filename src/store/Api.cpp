@@ -436,6 +436,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pPrepareJob->vJobNm(szJobNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pPrepareJobTags->bHasName(C_SEE_JOB))
+    pPrepareJob->vSee();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
