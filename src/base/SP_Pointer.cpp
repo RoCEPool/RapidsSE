@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* SP_Verify.cpp - Verify Object helper                          (on c stack) */
+/* SP_Pointer.cpp - Pointer sprint helper                        (on c stack) */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "SP_Verify.hpp"
+#include "SP_Pointer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Verify::SP_Verify(void)
+SP_Pointer::SP_Pointer(void)
 : SP(CN_SPID)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
@@ -22,7 +22,7 @@ SP_Verify::SP_Verify(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Verify::~SP_Verify(void) noexcept(false)
+SP_Pointer::~SP_Pointer(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 }
@@ -32,24 +32,24 @@ SP_Verify::~SP_Verify(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* test and sprint object details                                             */
+/* test and sprint pointer details                                            */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Verify::sz(Object* pObject)
+Stz* SP_Pointer::sz(Object* pPointer)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
-  if (! pObject) {
+  if (! pPointer) {
     StrLib::vSprint(m_caResult,"nullptr"_Stz);
     return (Stz*) &m_caResult[0];
   }
   
 
   StrLib::vSprint(m_caResult
-                  ,"Object %p class %lld %lls"_Stz
+                  ,"Pointer %p class %lld %lls"_Stz
                   
-                  ,pObject
-                  ,pObject->eGetClassNo()
-                  ,pObject->szClassNm()
+                  ,pPointer
+                  ,pPointer->eGetClassNo()
+                  ,pPointer->szClassNm()
                  );
   
   return (Stz*) &m_caResult[0];
@@ -58,7 +58,7 @@ Stz* SP_Verify::sz(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SP_Verify)
+__aFooterFunction(SP_Pointer)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Verify.hpp - Verify Object sprint helper                                */
+/* SP_Pointer.hpp - Pointer sprint helper                                */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class SP_Verify : public SP
+  class SP_Pointer : public SP
   {
   public:
 
@@ -13,8 +13,8 @@ namespace BASE
     Footer m_xFooter;
     
   public:
-    SP_Verify(void);
-   ~SP_Verify(void) noexcept(false);
+    SP_Pointer(void);
+   ~SP_Pointer(void) noexcept(false);
   
     Stz* sz(Object* pObject);
 

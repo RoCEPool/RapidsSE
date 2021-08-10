@@ -29,7 +29,7 @@
 #include "SP_Gid.hpp"
 #include "SP_Timer.hpp"
 
-#include "SP_Verify.hpp"
+#include "SP_Pointer.hpp"
 
 Atomic gixJob;
 
@@ -988,11 +988,11 @@ void Job::vSee(void)
   SP_Gid spJobId;
   SP_Timer spTimer;
 
-  SP_Verify spvPipeline;
-  SP_Verify spvSingularOp;
-  SP_Verify spvOriginatingTask;
-  SP_Verify spvTask;
-  SP_Verify spvJobLogicUnit;
+  SP_Pointer spvPipeline;
+  SP_Pointer spvSingularOp;
+  SP_Pointer spvOriginatingTask;
+  SP_Pointer spvTask;
+  SP_Pointer spvJobLogicUnit;
 
   vTrace("See Job %p::\n"_Stz,this);
 
