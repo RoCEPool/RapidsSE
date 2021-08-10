@@ -44,8 +44,8 @@ enum eZK // operand kind
 
   /*    */ ZK_M_CANCEL,
   /*    */ ZK_M_CANCELLING,
-  /*    */ ZK_M_CLEANUP,
-  /*    */ ZK_M_CLEANEDUP,
+  /*    */ ZK_M_CLEANING,
+  /*    */ ZK_M_CLEANED,
   /*    */ ZK_M_CANCELLED,
   /*    */ ZK_M_DATAPULSE,
   /*    */ ZK_M_DESTROY,
@@ -119,8 +119,8 @@ static Stz* aZK[]
 
   /*    */ "ZK_M_CANCEL"_Stz,
   /*    */ "ZK_M_CANCELLING"_Stz,
-  /*    */ "ZK_M_CLEANUP"_Stz,
-  /*    */ "ZK_M_CLEANEDUP"_Stz,
+  /*    */ "ZK_M_CLEANING"_Stz,
+  /*    */ "ZK_M_CLEANED"_Stz,
   /*    */ "ZK_M_CANCELLED"_Stz,
   /*    */ "ZK_M_DATAPULSE"_Stz,
   /*    */ "ZK_M_DESTROY"_Stz,

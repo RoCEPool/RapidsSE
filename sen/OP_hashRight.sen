@@ -17,18 +17,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANUP ...                                                END */
+/* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: hashRight_CleanupMarker \handler
+: hashRight_Cleaning \handler
 
-  0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_M_CLEANUP EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryAction
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
   Pipein[].pipeOut
   true
 ;
@@ -292,16 +292,16 @@
 
   op__topology
 
-  find: hashRight_CleanupMarker   ZK_M_CLEANUP    op[].handler!
-  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER        op[].handler!
+  find: hashRight_Cleaning        ZK_M_CLEANING   op[].handler!
+  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  op[].handler!
   find: hashRight_EndCrwRhtMarker ZK_M_END_CRWRHT op[].handler!
   find: hashRight_EndRowRhtMarker ZK_M_END_ROWRHT op[].handler!
   find: hashRight_EosMarker       ZK_M_EOS        op[].handler!
-  find: hashRight_RowBuffer       ZK_D_ROWBUFFER        op[].handler!
+  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  op[].handler!
   find: hashRight_StartMarker     ZK_M_START      op[].handler!
   find: hashRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
   find: hashRight_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
-  find: hashRight_StreamDef         ZK_D_STREAMDEF          op[].handler!
+  find: hashRight_StreamDef         ZK_D_STREAMDEF    op[].handler!
 
   op__loop
 

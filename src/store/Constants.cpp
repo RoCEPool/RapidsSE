@@ -705,8 +705,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_CANCEL"_Stz,      ZK_M_CANCEL);
   /*  0 */ vAddConstant("ZK_M_CANCELLING"_Stz,    ZK_M_CANCELLING);
   /*  0 */ vAddConstant("ZK_M_CANCELLED"_Stz, ZK_M_CANCELLED);
-  /*  0 */ vAddConstant("ZK_M_CLEANUP"_Stz,   ZK_M_CLEANUP);
-  /*  0 */ vAddConstant("ZK_M_CLEANEDUP"_Stz, ZK_M_CLEANEDUP);
+  /*  0 */ vAddConstant("ZK_M_CLEANING"_Stz,   ZK_M_CLEANING);
+  /*  0 */ vAddConstant("ZK_M_CLEANED"_Stz, ZK_M_CLEANED);
   /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
   /*  0 */ vAddConstant("ZK_D_CRWBUFFER"_Stz,       ZK_D_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_D_CSVBUFFER"_Stz,       ZK_D_CSVBUFFER);

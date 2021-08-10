@@ -30,11 +30,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                               */
+/* handler for ZK_M_CLEANING ...                                               */
 /*----------------------------------------------------------------------------*/
-: sink_CleanupMarker \handler
+: sink_Cleaning \handler
 
-  //"Operand:- ZK_M_CLEANUP" .verbose
+  //"Operand:- ZK_M_CLEANING" .verbose
   PipeIn[].delete
   Operand[].newCleanedupMarker
   Operand[].pipeOut
@@ -202,7 +202,7 @@
   find: sink_Xyz op[].handlerAll!
 
   find: sink_Cancelling      ZK_M_CANCELLING op[].handler!
-  find: sink_CleanupMarker   ZK_M_CLEANUP    op[].handler!
+  find: sink_Cleaning        ZK_M_CLEANING   op[].handler!
   find: sink_EndMarker       ZK_M_END        op[].handler!
   find: sink_EndingMarker    ZK_M_ENDING     op[].handler!
   find: sink_ErrorMarker     ZK_M_ERROR      op[].handler!

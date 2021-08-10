@@ -53,7 +53,7 @@ Sends::Sends(i8 iSends)
   m_iSends  = iSends;
   
   m_iCancellingMarkers = 0;
-  m_iCleanupMarkers    = 0;
+  m_iCleaningMarkers   = 0;
   m_iDataPulses        = 0;
   m_iDestroyMarkers    = 0;
   m_iEndingMarkers     = 0;
@@ -97,18 +97,18 @@ bool Sends::bCancellingDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cleaup done ?                                                              */
+/* cleaning done ?                                                            */
 /*----------------------------------------------------------------------------*/
-bool Sends::bCleanupDone(void)
+bool Sends::bCleaningDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  if (m_iCleanupMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_CLEANUP %lld; expected %lld\n"_Stz,
-          m_iCleanupMarkers, m_iSends);
+  if (m_iCleaningMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_M_CLEANING %lld; expected %lld\n"_Stz,
+           m_iCleaningMarkers, m_iSends);
 
-  if (m_iCleanupMarkers == m_iSends) {
-    m_iCleanupMarkers = 0;
+  if (m_iCleaningMarkers == m_iSends) {
+    m_iCleaningMarkers = 0;
     return true;
   }
   else
@@ -331,13 +331,13 @@ void Sends::vIncCancelling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc cleanup                                                                */
+/* inc cleaning                                                               */
 /*----------------------------------------------------------------------------*/
-void Sends::vIncCleanup(void)
+void Sends::vIncCleaning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  m_iCleanupMarkers++;
+  m_iCleaningMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

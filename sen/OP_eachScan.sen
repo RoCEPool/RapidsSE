@@ -5,9 +5,9 @@
 " OP_eachScan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                               */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: eachScan_CleanupMarker \handler
+: eachScan_Cleaning \handler
 
   // drop the tablePtn lock if held
   counter0[] true == if
@@ -219,7 +219,7 @@
 
   op__topology
 
-  find: eachScan_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: eachScan_Cleaning      ZK_M_CLEANING op[].handler!
   find: eachScan_EosMarker     ZK_M_EOS     op[].handler!
   find: eachScan_EachRowBuffer ZK_D_EACHROWBUFFER op[].handler!
   find: eachScan_RowCrwBuffer  ZK_D_CRWBUFFER     op[].handler!

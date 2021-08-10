@@ -402,7 +402,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           break;
         }
 
-        case OM_CLEANUPMARKER: {
+        case OM_CLEANING: {
           NEVER_REACH
           break;
         }

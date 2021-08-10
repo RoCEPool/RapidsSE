@@ -67,7 +67,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newCancelling"_Stz,&Step::vOperandNewCancelling);
   vAddStep("Operand[].newCancelledMarker"_Stz,&Step::vOperandNewCancelledMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
-  vAddStep("Operand[].newCleanupMarker"_Stz,&Step::vOperandNewCleanupMarker);
+  vAddStep("Operand[].newCleaningMarker"_Stz,&Step::vOperandNewCleaningMarker);
   vAddStep("Operand[].newCleanedupMarker"_Stz,&Step::vOperandNewCleanedupMarker);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
@@ -509,15 +509,15 @@ void Step::vOperandNewCsvBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newCleanupMarker -- new a cleanup marker                         */
+/* Operand[].newCleaningMarker -- new a cleanup marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewCleanupMarker(void)
+void Step::vOperandNewCleaningMarker(void)
 {
   ENTRY();
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANUPMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANING);
 
   EXIT();
 }
@@ -531,7 +531,7 @@ void Step::vOperandNewCleanedupMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANEDUPMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CLEANED);
 
   EXIT();
 }

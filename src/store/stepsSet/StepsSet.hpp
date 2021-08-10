@@ -1037,7 +1037,7 @@ public:
   void vOperandNewCancelling(void);
   void vOperandNewCancelledMarker(void);
   void vOperandNewCsvBuffer(void);
-  void vOperandNewCleanupMarker(void);
+  void vOperandNewCleaningMarker(void);
   void vOperandNewCleanedupMarker(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
@@ -1264,7 +1264,7 @@ public:
   void vRegSendsDelete(void);
   void vRegSendsGet(void);
   void vRegSendsHandleCancelling(void);
-  void vRegSendsHandleCleanup(void);
+  void vRegSendsHandleCleaning(void);
   void vRegSendsHandleDataPulse(void);
   void vRegSendsHandleDestroy(void);
   void vRegSendsHandleEnd(void);

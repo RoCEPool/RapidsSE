@@ -5,16 +5,16 @@
 " OP_compilerOpEg.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                           */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: compilerOpEg_CleanupMarker \handler
+: compilerOpEg_Cleaning \handler
 
   Pipein[].pipeOut
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_DataMarker \handler
  
@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_EosMarker \handler
  
@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_PlanNode \handler
  
@@ -38,7 +38,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_StartMarker \handler
 
@@ -57,11 +57,11 @@
 
   op__topology
 
-  find: compilerOpEg_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: compilerOpEg_Cleaning      ZK_M_CLEANING     op[].handler!
   find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    op[].handler!
-  find: compilerOpEg_EosMarker     ZK_M_EOS    op[].handler!
+  find: compilerOpEg_EosMarker     ZK_M_EOS          op[].handler!
   find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  op[].handler!
-  find: compilerOpEg_StartMarker   ZK_M_START  op[].handler!
+  find: compilerOpEg_StartMarker   ZK_M_START        op[].handler!
 
   op__loop
 

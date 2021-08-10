@@ -5,9 +5,9 @@
 " OP_scanRight.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                            */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: scanRight_CleanupMarker \handler
+: scanRight_Cleaning \handler
 
   // drop the tablePtn lock if held
   counter0[] true == if
@@ -226,7 +226,7 @@
 
   op__topology
 
-  find: scanRight_CleanupMarker    ZK_M_CLEANUP op[].handler!
+  find: scanRight_Cleaning         ZK_M_CLEANING op[].handler!
   find: scanRight_DataMarker       ZK_M_DATAPULSE     op[].handler!
   find: scanRight_EosMarker        ZK_M_EOS     op[].handler!
   find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER     op[].handler!

@@ -110,9 +110,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                           */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: fetch_CleanupMarker \handler
+: fetch_Cleaning \handler
 
   nullptr to Operand[]  // ???? ALKA
   Pipein[].pipeOut
@@ -120,7 +120,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : fetch_CrwBuffer \handler
  
@@ -273,10 +273,10 @@
 
   op__topology
 
-  find: fetch_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: fetch_Cleaning      ZK_M_CLEANING      op[].handler!
   find: fetch_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: fetch_DataMarker    ZK_M_DATAPULSE     op[].handler!
-  find: fetch_StartMarker   ZK_M_START   op[].handler!
+  find: fetch_StartMarker   ZK_M_START         op[].handler!
 
   op__loop
 

@@ -19,9 +19,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANUP ...                                           */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: Scan_CleanupMarker \handler
+: Scan_Cleaning \handler
 
   // drop the tablePtn lock if held
   counter0[] true == if
@@ -197,7 +197,7 @@
   op__topology
 
   find: scan_CancellingMarker  ZK_M_CANCELLING op[].handler!
-  find: scan_CleanupMarker     ZK_M_CLEANUP    op[].handler!
+  find: scan_Cleaning          ZK_M_CLEANING   op[].handler!
   find: scan_DataMarker        ZK_M_DATAPULSE  op[].handler!
   find: scan_NextBufferMarker  ZK_M_NEXTBUFFER op[].handler!
   find: scan_StartMarker       ZK_M_START      op[].handler!

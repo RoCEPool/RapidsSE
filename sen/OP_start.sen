@@ -38,19 +38,19 @@
   //"Operand:- ZK_M_CANCELLED" .verbose
   PipeIn[].delete
 
-  // now pipeout a cleanup marker
-  Operand[].newCleanupMarker
+  // now pipeout a cleaning marker
+  Operand[].newCleaningMarker
   Operand[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANEDUP ...                                             */
+/* handler for ZK_M_CLEANED ...                                               */
 /*----------------------------------------------------------------------------*/
-: start_CleanedupMarker \handler
+: start_Cleaned \handler
 
-  //"ZK_M_CLEANEDUP_handler" .verbose
+  //"ZK_M_CLEANED_handler" .verbose
   Pipein[].delete
 
   // now pipeout an exit marker
@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ENDED ...                                             */
+/* handler for ZK_M_ENDED ...                                                 */
 /*----------------------------------------------------------------------------*/
 : start_EndedMarker \handler
 
@@ -69,14 +69,14 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleanupMarker
+  Operand[].newCleaningMarker
   Operand[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERRORED ...                                           */
+/* handler for ZK_M_ERRORED ...                                               */
 /*----------------------------------------------------------------------------*/
 : start_ErroredMarker \handler
 
@@ -84,7 +84,7 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleanupMarker
+  Operand[].newCleaningMarker
   Operand[].pipeOut
 
   true
@@ -103,7 +103,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEFT ...                                              */
+/* handler for ZK_M_LEFT ...                                                  */
 /*----------------------------------------------------------------------------*/
 : start_LeftMarker \handler
 
@@ -111,14 +111,14 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleanupMarker
+  Operand[].newCleaningMarker
   Operand[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEAVING ...                                           */
+/* handler for ZK_M_LEAVING ...                                               */
 /*----------------------------------------------------------------------------*/
 : start_LeavingMarker \handler
 
@@ -191,7 +191,7 @@
 
   find: start_CancelMarker      ZK_M_CANCEL      op[].handler!
   find: start_CancelledMarker   ZK_M_CANCELLED   op[].handler!
-  find: start_CleanedupMarker   ZK_M_CLEANEDUP   op[].handler!
+  find: start_Cleaned           ZK_M_CLEANED     op[].handler!
   find: start_EndingMarker      ZK_M_ENDING      op[].handler!
   find: start_EndedMarker       ZK_M_ENDED       op[].handler!
   find: start_ErroredMarker     ZK_M_ERRORED     op[].handler!

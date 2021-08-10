@@ -11,7 +11,7 @@ namespace STORE
     i8             m_iSends;   // consume Sends
     
     i8             m_iCancellingMarkers; // cancel markers received by consumeOp
-    i8             m_iCleanupMarkers;    // cleanup markers received by consumeOp
+    i8             m_iCleaningMarkers;   // cleaning markers received by consumeOp
     i8             m_iDataPulses;        // data pulses received by consumeOp
     i8             m_iDestroyMarkers;    // destroy markers received by consumeOp
     i8             m_iEndMarkers;        // end markers received by consumeOp
@@ -34,7 +34,7 @@ namespace STORE
     ~Sends(void) noexcept(false);
     
     bool bCancellingDone(void);
-    bool bCleanupDone(void);
+    bool bCleaningDone(void);
     bool bDataPulseDone(void);
     bool bDestroyDone(void);
     bool bEndDone(void);
@@ -48,7 +48,7 @@ namespace STORE
     bool bStreamDefDone(void);
     
     void vIncCancelling(void);
-    void vIncCleanup(void);
+    void vIncCleaning(void);
     void vIncDataPulse(void);
     void vIncDestroy(void);
     void vIncEnd(void);

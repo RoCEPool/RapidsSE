@@ -5,9 +5,9 @@
 " OP_bloat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANUP ...                                                    */
+/* on ZK_M_CLEANING ...                                                       */
 /*----------------------------------------------------------------------------*/
-: bloat_cleanup \handler
+: bloat_cleaning \handler
 
   task::seeFrameStack
 
@@ -42,8 +42,8 @@
 
   op__topology
 
-  find: bloat_bloat    ZK_D_CRWBUFFER     op[].handler!
-  find: bloat_cleanup  ZK_M_CLEANUP op[].handler!
+  find: bloat_bloat    ZK_D_CRWBUFFER   op[].handler!
+  find: bloat_cleaning  ZK_M_CLEANING   op[].handler!
 
   op__loop
 

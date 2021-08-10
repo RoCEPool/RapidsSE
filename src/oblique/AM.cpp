@@ -2441,8 +2441,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
         case OM_CANCELLING:         eOperand = ZK_M_CANCELLING;   break;
         case OM_CANCELLEDMARKER:    eOperand = ZK_M_CANCELLED;    break;
-        case OM_CLEANUPMARKER:      eOperand = ZK_M_CLEANUP;      break;
-        case OM_CLEANEDUPMARKER:    eOperand = ZK_M_CLEANEDUP;    break;
+        case OM_CLEANING:           eOperand = ZK_M_CLEANING;     break;
+        case OM_CLEANED:            eOperand = ZK_M_CLEANED;      break;
         case OM_DATAPULSE:          eOperand = ZK_M_DATAPULSE;    break;
         case OM_DESTROYMARKER:      eOperand = ZK_M_DESTROY;      break;
         case OM_EACHSCANEOSMARKER:  eOperand = ZK_M_EACHSCANEOS;  break;

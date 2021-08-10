@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANUP ...                                                INIT */
+/* on ZK_M_CLEANING ...                                                INIT */
 /*----------------------------------------------------------------------------*/
-: EOAsm_CleanupMarker \handler
+: EOAsm_Cleaning \handler
 
   potRlu[].isNull not if
     potRlu[].delete
@@ -278,7 +278,7 @@
 
   op__topology
 
-  find: EOAsm_CleanupMarker ZK_M_CLEANUP op[].handler!
+  find: EOAsm_Cleaning      ZK_M_CLEANING op[].handler!
   find: EOAsm_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
   find: EOAsm_EosMarker     ZK_M_EOS     op[].handler!
   find: EOAsm_DataMarker    ZK_M_DATAPULSE     op[].handler!

@@ -21,7 +21,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[]"_Stz,                &Step::vRegSendsGet);
   vAddStep("Sends[].delete"_Stz,         &Step::vRegSendsDelete);
   vAddStep("Sends[].handleCancelling"_Stz, &Step::vRegSendsHandleCancelling);
-  vAddStep("Sends[].handleCleanup"_Stz,  &Step::vRegSendsHandleCleanup);
+  vAddStep("Sends[].handleCleaning"_Stz,  &Step::vRegSendsHandleCleaning);
   vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
   vAddStep("Sends[].handleEnd"_Stz,      &Step::vRegSendsHandleEnd);
@@ -80,17 +80,17 @@ void Step::vRegSendsHandleCancelling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleCleanup -- handle consume of cleanup marker                  */
+/* Sends[].handleCleaning -- handle consume of cleaningp marker               */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleCleanup(void)
+void Step::vRegSendsHandleCleaning(void)
 {
   ENTRY();
 
   Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
 
-  pSends->vIncCleanup();
+  pSends->vIncCleaning();
 
-  m_pDataStack->vPushInt(pSends->bCleanupDone());
+  m_pDataStack->vPushInt(pSends->bCleaningDone());
 
   EXIT();
 }

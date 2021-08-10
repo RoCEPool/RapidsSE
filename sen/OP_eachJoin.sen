@@ -17,18 +17,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANUP ...                                                END */
+/* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: eachJoin_CleanupMarker \handler
+: eachJoin_Cleaning \handler
 
-  0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // cleanup the pot
   PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
-  ZK_M_CLEANUP EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANUP EG_ZK LogicUnit[].diaryAction
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
   Pipein[].pipeOut
 
   true
@@ -237,14 +237,14 @@
 
   op__topology
 
-  find: eachJoin_CleanupMarker ZK_M_CLEANUP  op[].handler!
-  find: eachJoin_CrwBuffer     ZK_D_CRWBUFFER      op[].handler!
-  find: eachJoin_EachRowBuffer ZK_D_EACHROWBUFFER op[].handler!
+  find: eachJoin_Cleaning      ZK_M_CLEANING        op[].handler!
+  find: eachJoin_CrwBuffer     ZK_D_CRWBUFFER       op[].handler!
+  find: eachJoin_EachRowBuffer ZK_D_EACHROWBUFFER   op[].handler!
   find: eachJoin_EachScanEosMarker ZK_M_EACHSCANEOS op[].handler!
-  find: eachJoin_EosMarker    ZK_M_EOS      op[].handler!
-  find: eachJoin_RowBuffer    ZK_D_ROWBUFFER      op[].handler!
-  find: eachJoin_StartMarker  ZK_M_START    op[].handler!
-  find: eachJoin_StreamDef    ZK_D_STREAMDEF      op[].handler!
+  find: eachJoin_EosMarker    ZK_M_EOS              op[].handler!
+  find: eachJoin_RowBuffer    ZK_D_ROWBUFFER        op[].handler!
+  find: eachJoin_StartMarker  ZK_M_START            op[].handler!
+  find: eachJoin_StreamDef    ZK_D_STREAMDEF        op[].handler!
 
   op__loop
 
