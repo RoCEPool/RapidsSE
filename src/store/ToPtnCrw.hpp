@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToHshCrw.hpp -- Convert ptn nst row buffers to hashed crw buffers          */
+/* ToPtnCrw.hpp -- Convert ptn nst row buffers to ptn crw buffers             */
 /*============================================================================*/
 #pragma once
 
