@@ -38,7 +38,8 @@ static Stz* C_COLUMNS_DEFN  = "/__root__/definitions/object/list/columnDefs"_Stz
 static Stz* C_INDEXES_PROP  = "indexes"_Stz;
 static Stz* C_INDEXES_DEFN  = "/__root__/definitions/object/list/indexDefs"_Stz;
 
-
+static Stz* C_PARTITIONING_PROP  = "partitioning"_Stz;
+static Stz* C_PARTITIONING_DEFN  = "/__root__/definitions/object/list/columnDefs"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -50,7 +51,7 @@ static Stz* C_INDEXES_DEFN  = "/__root__/definitions/object/list/indexDefs"_Stz;
 /* Helper function to create tableDef nodes.                                  */
 /*----------------------------------------------------------------------------*/
 QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
-                             QueryNode* pColumnDefs, QueryNode* pIndexDefs)
+                             QueryNode* pColumnDefs, QueryNode* pIndexDefs, QueryNode* pPartitionDef)
 {
   _static_
 
@@ -65,6 +66,8 @@ QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTable
   ASSERT(pColumnDefs->nChildren() > 0);
   ASSERT(pIndexDefs);
   ASSERT(IndexDefs::bIsOfType(pIndexDefs));
+  ASSERT(pPartitionDef);
+  ASSERT(ColumnDefs::bIsOfType(pPartitionDef));
 
 
   // Create the tableDef object
@@ -92,6 +95,10 @@ QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTable
   // Create the indexes property
   pIndexDefs->vSetName(C_INDEXES_PROP);
   pTableDef->vAppendProperty(pIndexDefs);
+
+  // Create the partitioning property
+  pPartitionDef->vSetName(C_PARTITIONING_PROP);
+  pTableDef->vAppendProperty(pPartitionDef);
 
   return pTableDef;
 }
@@ -293,6 +300,33 @@ PlanNodeIter* TableDef::pIndexDefIter(QueryNode *pNode)
   ASSERT(pIndexesNode);
 
   return pIndexesNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a QueryNode that represents the partition information of this table*/
+/*----------------------------------------------------------------------------*/
+QueryNode* TableDef::pPartitionDef(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the indexs property
+  QueryNode* pPartitioningNode = _pQueryNode(GraphNav::pFindProperty(C_PARTITIONING_PROP, pNode));
+  ASSERT(pPartitioningNode);
+
+  return pPartitioningNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator of PlanNodes that represent the partitioning ColumnDefs    */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* TableDef::pPartitionDefIter(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPartitioningNode = pPartitionDef(pNode);
+  ASSERT(pPartitioningNode);
+
+  return pPartitioningNode->pNewChildrenIter();
 }
 
 /*============================================================================*/

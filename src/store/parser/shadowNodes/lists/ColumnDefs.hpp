@@ -29,6 +29,11 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     static i8 nColumns(QueryNode* pColumnDefs);
+
+    // Returns a pointer to an element in this list that matches the given
+    // column ordinal number or name. Returns nullptr if not found.
+    static QueryNode* pFind(QueryNode* pNode, i8 iColumnOrdinal);
+    static QueryNode* pFind(QueryNode* pNode, Stz* iColumnName);
   };
 
 }

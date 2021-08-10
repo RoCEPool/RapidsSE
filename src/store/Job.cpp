@@ -219,9 +219,7 @@ Job::Job(eCN eClassNo)
  
   //m_xResult
   // -- -- -- -- -- --
-  
-  SP_Gid spId;
-    
+      
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -984,38 +982,73 @@ void Job::vReport(void)
 void Job::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+    
+  SP_Gid spJobId;
+  SP_Timer spTimer;
   
-  vTrace("See Job::\n"_Stz);
+  vTrace("See Job %p::\n"_Stz,this);
 
-  vTrace("%p: %s\n"
+  vTrace(
          
-         "m_eJobType=%s m_eJobKind=%s\n"
-         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_iOriginatingId=%lld\n"
-         "m_nxReferences=%lld\n"_Stz,
-         this,
-         aCN[eGetClassNo()],
+         "            sJobId "  "%s"    " \n"  // 0
+         "            sJobNm "  "%s"    " \n"  // 1
+         "          sJobKind "  "%s"    " \n"  // 2
+
+         "              sCmd "  "%s"    " \n"  // 3
          
-         m_sJobNm.azChar(),
-         aJK[m_eJobKind]->azChar(),
+         "          i_Origin "  "%lld"  " \n"  // 4
+         "         i_Session "  "%lld"  " \n"  // 5
+         "            iCmdNo "  "%lld"  " \n"  // 6
+
+         "      bWasReceived "  "%s"    " \n"  // 7
+         "     i_Participant "  "%lld"  " \n"  // 8
+         "      bNormalSides "  "%s"    " \n"  // 9
+
+         "         eJobState "  "%s"    " \n"  // 10
+         "         eJobPhase "  "%s"    " \n"  // 11
+         "          eJobList "  "%s"    " \n"  // 12
          
-         aJL[m_eJobList],
-         aJP[m_eJobPhase],
-         aJS[m_eJobState],
+         "            oTimer "  "%s"    " \n"  // 13
+         "          oAcksRmg "  "%lld"  " \n"  // 14
+         "            eError "  "%s"    " \n"  // 15
+
+         "         pPipeline "  "%p"    " \n"  // 16
+         "       pSingularOp "  "%p"    " \n"  // 17
+
+         "  pOriginatingTask "  "%p"    " \n"  // 18
+         "    iOriginatingId "  "%lld"  " \n"  // 19
+ 
+         "             eSeed "  "%s"    " \n"  // 20
+         "             pTask "  "%p"    " \n"  // 21
+        
+         "     pJobLogicUnit "  "%p"    " \n"  // 22
+
+         ""_Stz
          
-         bByPromptTag(),
-         bHasTag_noWait(),
-         m_bWasReceived,
-         
-         m_iOriginatingId,
-         
-         nReferences(),
-         C_VARGS_END
+         ,spJobId.sz(* m_xJobId)     // 0
+         ,m_sJobNm.szStz()           // 1
+         ,aJK[m_eJobKind]            // 2
+         ,m_sCmd.szStz()             // 3
+         ,m_i_Origin                 // 4
+         ,m_i_Session                // 5
+         ,m_iCmdNo                   // 6
+         ,m_bWasReceived ? "T" : "F" // 7
+         ,m_i_Participant            // 8
+         ,m_bNormalSides ? "T" : "F" // 9
+         ,aJS[m_eJobState]           // 10
+         ,aJP[m_eJobPhase]           // 11
+         ,aJL[m_eJobList]            // 12
+         ,spTimer.sz(& m_oTimer)     // 13
+         ,m_oAcksRmg_job.iPrintOnlyValue() // 14
+         ,aEC[m_eError_job]          // 15
+         ,m_pPipeline_job            // 16
+         ,m_pSingularOp              // 17
+         ,m_pOriginatingTask         // 18
+         ,m_iOriginatingId           // 19
+         ,aSS[m_eSeed]               // 20
+         ,m_pTask                    // 21
+         ,m_pJobLogicUnit            // 22
          );
-  
-  
-  m_oJobTags.vContentDump();
   
   vTrace(";;\n\n"_Stz);
 }

@@ -17,6 +17,7 @@
 #include "SeApi.hpp"
 #include "InfoSet.hpp"
 #include "TableMetadata.hpp"
+#include "PartitionKeyMetadata.hpp"
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
@@ -229,7 +230,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
       return GraphNav::WALK_CONTINUE;
     }
 
-    // Retrieve the column definitions and make a node our of these
+    // Retrieve the column definitions and make a node out of these
     QueryNode* pColumnDefs = ColumnDefs::pCreate();
     InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
 
@@ -260,8 +261,27 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     // TODO: For now this is empty
     QueryNode* pIndexDefs = IndexDefs::pCreate();
 
+    // Get the partitioning information and make a node out of it.
+    QueryNode* pPartitionDef = ColumnDefs::pCreate();
+    InfoSet* pPartitionKeySet = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
+    ASSERT(pPartitionKeySet);
+
+    for (Row* pPtnKeyRow = pPartitionKeySet->pFirstRow();
+         pPtnKeyRow;
+         pPtnKeyRow = pPartitionKeySet->pNextRow(pPtnKeyRow)) {
+
+      PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pPtnKeyRow);
+
+      QueryNode* pColumnDef = ColumnDefs::pFind(pColumnDefs, pPtnKeyMeta->iColumnNumber());
+      ASSERT(pColumnDef);
+
+      // Add a copy of this node to the partition definition.
+      ColumnDefs::vAddColumnDef(pPartitionDef, pColumnDef->pDeepCopy(true));
+    }
+
+
     // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
-    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs);
+    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
 
     // Add to the plan metadata
     MetadataNode::vAddTable(pMetadataNode, pTableDef);
@@ -271,6 +291,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
 
     delete pTableInfoSet;
     delete pColumnInfoSet;
+    delete pPartitionKeySet;
 
     return GraphNav::WALK_CONTINUE;   // Keep walking
   };
