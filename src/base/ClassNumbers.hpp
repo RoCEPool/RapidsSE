@@ -322,10 +322,10 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TINYVIRTUAL,
   /* */ CN_TMEVAL,
-  /* */ CN_TOHSHCRW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
   /* */ CN_TONSTROW,
+  /* */ CN_TOPTNCRW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
   /* */ CN_TRACELOCK,
@@ -666,10 +666,10 @@ static Stz* aCN[]
   /* */ "TINYTRANSIENT"_Stz,        // CN_TINYTRANSIENT
   /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
-  /* */ "TOHSHCRW"_Stz,             // CN_TOHSHCRW
   /* */ "TOKEN"_Stz,                // CN_TOKEN
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
+  /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK

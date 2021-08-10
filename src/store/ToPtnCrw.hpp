@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class ToHshCrw : public Object
+  class ToPtnCrw : public Object
   {
   private:
   
@@ -26,8 +26,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToHshCrw(StreamDef* pStreamDef);
-   ~ToHshCrw(void) noexcept(false);
+    ToPtnCrw(StreamDef* pStreamDef);
+   ~ToPtnCrw(void) noexcept(false);
   
     void vConvert(RowBuffer* pRowBuffer);
   
@@ -42,7 +42,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ToHshCrw* _pToHshCrw(void* aAddr);
+  ToPtnCrw* _pToPtnCrw(void* aAddr);
 }
 
 /*============================================================================*/

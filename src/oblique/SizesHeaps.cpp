@@ -505,10 +505,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYVIRTUAL
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TMEVAL
-  { sizeof(ToHshCrw),           HT_T_LARGE   ,0 }, // CN_TOHSHCRW
   { sizeof(Token),              HT_T_TINY    ,0 }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
+  { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK

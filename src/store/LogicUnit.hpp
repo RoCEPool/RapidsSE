@@ -194,7 +194,7 @@ namespace STORE
     REG<Table>          m_xpTable;
     REG<TablePtn>       m_xpTablePtn;
     REG<Timer>          m_xpTimer;     // timer
-    REG<ToHshCrw>       m_xpToHshCrw;
+    REG<ToPtnCrw>       m_xpToHshCrw;
     REG<ToNstRow>       m_xpToNstRow;
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;

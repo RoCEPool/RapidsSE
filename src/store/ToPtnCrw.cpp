@@ -21,18 +21,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToHshCrw,CN_TOHSHCRW)
-__aNewFunction(ToHshCrw,CN_TOHSHCRW)
-__vDeleteFunction(ToHshCrw,CN_TOHSHCRW)
-__aFooterFunction(ToHshCrw)
+__pCastFunction(STORE,ToPtnCrw,CN_TOPTNCRW)
+__aNewFunction(ToPtnCrw,CN_TOPTNCRW)
+__vDeleteFunction(ToPtnCrw,CN_TOPTNCRW)
+__aFooterFunction(ToPtnCrw)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToHshCrw::ToHshCrw(StreamDef* pStreamDef)
-: Object(CN_TOHSHCRW)
+ToPtnCrw::ToPtnCrw(StreamDef* pStreamDef)
+: Object(CN_TOPTNCRW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
 
   // m_oHashSet
   
@@ -43,20 +43,20 @@ ToHshCrw::ToHshCrw(StreamDef* pStreamDef)
   for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToHshCrw::~ToHshCrw(void) noexcept(false)
+ToPtnCrw::~ToPtnCrw(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++)
     delete m_paRowCompactor[i_Ptn];
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,9 +66,9 @@ ToHshCrw::~ToHshCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vConvert(RowBuffer* pRowBuffer)
+void ToPtnCrw::vConvert(RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   i8 i_Ptn = pRowBuffer->tPtnNo();
   
@@ -92,9 +92,9 @@ void ToHshCrw::vConvert(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToHshCrw::pCompleted(i8 i_Ptn)
+CrwBuffer* ToPtnCrw::pCompleted(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
@@ -109,9 +109,9 @@ CrwBuffer* ToHshCrw::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
+CrwBuffer* ToPtnCrw::pDangling(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
 
@@ -125,9 +125,9 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* add normalised strings into new crw buffer                                 */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
+void ToPtnCrw::vAddNst(RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   ASSERT(0 == m_pCrwBuffer->nRows());
 
@@ -149,9 +149,9 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
+void ToPtnCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
     
   i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -178,9 +178,9 @@ void ToHshCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
+CrwBuffer* ToPtnCrw::pNewCrwBuffer(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
   
   //  create a new buffer
   CrwBuffer* pCrwBuffer = new CrwBuffer();
