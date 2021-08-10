@@ -1034,7 +1034,7 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCancelMarker(void);
+  void vOperandNewCancelling(void);
   void vOperandNewCancelledMarker(void);
   void vOperandNewCsvBuffer(void);
   void vOperandNewCleanupMarker(void);
@@ -1263,7 +1263,7 @@ public:
   // Consume
   void vRegSendsDelete(void);
   void vRegSendsGet(void);
-  void vRegSendsHandleCancel(void);
+  void vRegSendsHandleCancelling(void);
   void vRegSendsHandleCleanup(void);
   void vRegSendsHandleDataPulse(void);
   void vRegSendsHandleDestroy(void);

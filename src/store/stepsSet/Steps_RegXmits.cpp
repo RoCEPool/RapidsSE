@@ -20,7 +20,7 @@ void Step::vAddSteps_RegSends(void)
 {
   vAddStep("Sends[]"_Stz,                &Step::vRegSendsGet);
   vAddStep("Sends[].delete"_Stz,         &Step::vRegSendsDelete);
-  vAddStep("Sends[].handleCancel"_Stz,   &Step::vRegSendsHandleCancel);
+  vAddStep("Sends[].handleCancelling"_Stz, &Step::vRegSendsHandleCancelling);
   vAddStep("Sends[].handleCleanup"_Stz,  &Step::vRegSendsHandleCleanup);
   vAddStep("Sends[].handleDataPulse"_Stz,&Step::vRegSendsHandleDataPulse);
   vAddStep("Sends[].handleDestroy"_Stz,  &Step::vRegSendsHandleDestroy);
@@ -64,17 +64,17 @@ void Step::vRegSendsGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleCancel -- handle consume of cancel marker                    */
+/* Sends[].handleCancelling -- handle consume of cancelling marker            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleCancel(void)
+void Step::vRegSendsHandleCancelling(void)
 {
   ENTRY();
   
   Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
  
-  pSends->vIncCancel();
+  pSends->vIncCancelling();
   
-  m_pDataStack->vPushInt(pSends->bCancelDone());
+  m_pDataStack->vPushInt(pSends->bCancellingDone());
   
   EXIT();
 }

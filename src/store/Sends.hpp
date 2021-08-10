@@ -10,18 +10,18 @@ namespace STORE
   private:
     i8             m_iSends;   // consume Sends
     
-    i8             m_iCancelMarkers;  // cancel markers received by consumeOp
-    i8             m_iCleanupMarkers; // cleanup markers received by consumeOp
-    i8             m_iDataPulses;     // data pulses received by consumeOp
-    i8             m_iDestroyMarkers; // destroy markers received by consumeOp
-    i8             m_iEndMarkers;     // end markers received by consumeOp
-    i8             m_iEndingMarkers;   // ending markers received by consumeOp
+    i8             m_iCancellingMarkers; // cancel markers received by consumeOp
+    i8             m_iCleanupMarkers;    // cleanup markers received by consumeOp
+    i8             m_iDataPulses;        // data pulses received by consumeOp
+    i8             m_iDestroyMarkers;    // destroy markers received by consumeOp
+    i8             m_iEndMarkers;        // end markers received by consumeOp
+    i8             m_iEndingMarkers;     // ending markers received by consumeOp
     i8             m_iErroringMarkers;   // erroring markers received by consumeOp
-    i8             m_iExitMarkers;    // exit markers received by consumeOp
-    i8             m_iEosMarkers;     // eos / error markers received by consumeOp
-    i8             m_iLeavingMarkers; // leaving markers received by consumeOp
-    i8             m_iStartMarkers;   // start markers received by consumeOp
-    i8             m_iStreamDefs;     // stream def's received by consumeOp
+    i8             m_iExitMarkers;       // exit markers received by consumeOp
+    i8             m_iEosMarkers;        // eos / error markers received by consumeOp
+    i8             m_iLeavingMarkers;    // leaving markers received by consumeOp
+    i8             m_iStartMarkers;      // start markers received by consumeOp
+    i8             m_iStreamDefs;        // stream def's received by consumeOp
     
     // must be last
     Footer m_xFooter;
@@ -33,7 +33,7 @@ namespace STORE
     Sends(i8 iSends);
     ~Sends(void) noexcept(false);
     
-    bool bCancelDone(void);
+    bool bCancellingDone(void);
     bool bCleanupDone(void);
     bool bDataPulseDone(void);
     bool bDestroyDone(void);
@@ -47,7 +47,7 @@ namespace STORE
     bool bStartDone(void);
     bool bStreamDefDone(void);
     
-    void vIncCancel(void);
+    void vIncCancelling(void);
     void vIncCleanup(void);
     void vIncDataPulse(void);
     void vIncDestroy(void);

@@ -10,6 +10,7 @@
 : start_CancelMarker \handler
 
   //"Operand:- ZK_M_CANCEL" .verbose
+  PipeIn[].delete
 
   // toggle to default abnormal handlers for all data operands
   "default_abnormalHandlers" FIND execute
@@ -21,7 +22,9 @@
     // mark pipeline as being cancelled
     true Pipeline::cancelled!
 
-    PipeIn[].pipeOut
+    Operand[].newCancelling
+    Operand[].pipeOut
+
   then
 
   true
