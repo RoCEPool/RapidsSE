@@ -5,26 +5,25 @@
 " OP_dropIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropIndex_StartMarker
 
   0 locals| errorCode |
 
+  PipeIn[].pipeOut
+
   // check if we can drop the index
   <indexNm> <tableNm> check::validIndexAssembly not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
-  else
-    PipeIn[].pipeOut
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropIndex_DestroyMarker
 

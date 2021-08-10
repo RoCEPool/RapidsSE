@@ -5,24 +5,23 @@
 " OP_verifyIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : VerifyIndexPtn_DataMarker \handler
 
   0 locals| errorCode |
 
+  PipeIn[].pipeOut
+
   // check if we can verify the index
   <indexNm> <tableNm> check::validIndexAssembly not if
     to errorCode
     errorCode op__execErr
-    PipeIn[].delete
     true
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  PipeIn[].pipeOut
 
   // verify partition of index
   Index[].verifyPtn assert
@@ -34,7 +33,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : VerifyIndexPtn_StartMarker \handler
 

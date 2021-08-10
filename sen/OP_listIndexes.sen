@@ -28,7 +28,6 @@
     to errorCode
     Path[].popNamedTableFolder
     errorCode op__execErr
-    PipeIn[].delete
     false
     exit
   then
