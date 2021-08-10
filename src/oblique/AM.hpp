@@ -286,6 +286,7 @@ namespace OBLIQUE
     {
     public:
       static i8 iNextNo(eCN eClassNo);
+      static eEC eValidObject(Object* pObject);
     };
 
     class OP
