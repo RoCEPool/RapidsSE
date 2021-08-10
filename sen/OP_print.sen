@@ -5,17 +5,7 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                              */
-/*----------------------------------------------------------------------------*/
-: print_exitMarker \handler
-
-  "print_exitMarker:- ZK_M_EXIT" .
-
-  ZK_M_EXIT_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PROMPTOUT ...                                               */
+/* handler for ZK_I_PROMPTOUT ...                                             */
 /*----------------------------------------------------------------------------*/
 : print_promptOut \handler
 
@@ -26,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : print_startMarker \handler
 
@@ -35,9 +25,6 @@
 
   true
 ;
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* print request                                      (on node where spawned) */
@@ -48,7 +35,6 @@
 
   op__topology
 
-  find: print_exitMarker   ZK_M_EXIT    op[].handler!
   find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!
   find: print_startMarker  ZK_M_START   op[].handler!
 

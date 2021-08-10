@@ -5,6 +5,22 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                       */
+/*----------------------------------------------------------------------------*/
+: chunk_Cleaning \handler
+
+  //"Operand:- ZK_M_CLEANING" .verbose
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
 : chunk_DataMarker \handler
@@ -75,24 +91,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EXIT ...                                                       */
-/*----------------------------------------------------------------------------*/
-: chunk_ExitMarker \handler
-
-  //"Operand:- ZK_M_EXIT" .verbose
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
-
-/*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : chunk_req \operator
@@ -101,9 +99,9 @@
 
   op__topology
 
-  find: chunk_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: chunk_StartMarker ZK_M_START op[].handler!
-  find: chunk_ExitMarker  ZK_M_EXIT  op[].handler!
+  find: chunk_Cleaning    ZK_M_CLEANING  op[].handler!
+  find: chunk_DataMarker  ZK_M_DATAPULSE op[].handler!
+  find: chunk_StartMarker ZK_M_START     op[].handler!
 
   op__loop
 

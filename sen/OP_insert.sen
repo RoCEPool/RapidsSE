@@ -5,7 +5,25 @@
 " OP_insert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: insert_Cleaning \handler
+
+  //"Operand:- ZK_M_CLEANING" .verbose
+
+  // get the profile from the task
+  //task[] task.profile@ to Operand[]
+  //nullptr task[] task.profile!
+  //Operand[].pipeOut
+
+  Path[].popNamedTableFolder
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : insert_CrwBuffer \handler
 
@@ -43,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : insert_EosMarker \handler
 
@@ -64,25 +82,6 @@
 
   true
   ;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                              */
-/*----------------------------------------------------------------------------*/
-: insert_ExitMarker \handler
-
-  //"Operand:- ZK_M_EXIT" .verbose
-
-  // get the profile from the task
-  //task[] task.profile@ to Operand[]
-  //nullptr task[] task.profile!
-  //Operand[].pipeOut
-
-  Path[].popNamedTableFolder
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
@@ -132,9 +131,9 @@
 
   op__topology
 
+  find: insert_Cleaning    ZK_M_CLEANING  op[].handler!
   find: insert_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: insert_EosMarker   ZK_M_EOS   op[].handler!
-  find: insert_ExitMarker  ZK_M_EXIT  op[].handler!
   //find: insert_StreamDef   ZK_D_STREAMDEF   op[].handler!
   find: insert_StartMarker ZK_M_START op[].handler!
 

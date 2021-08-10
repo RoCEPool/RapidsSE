@@ -5,7 +5,21 @@
 " OP_wrFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: wrFile_Cleaning \handler
+
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_CrwBuffer \handler
 
@@ -46,23 +60,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                                  */
-/*----------------------------------------------------------------------------*/
-: wrFile_ExitMarker \handler
-
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
-
-/*----------------------------------------------------------------------------*/
 /* execute for wrFile req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : wrFile_req \operator
@@ -71,10 +68,10 @@
 
   op__topology
 
+  find: wrFile_Cleaning    ZK_M_CLEANING    op[].handler!
   find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
   find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: wrFile_StartMarker ZK_M_START op[].handler!
-  find: wrFile_ExitMarker  ZK_M_EXIT  op[].handler!
+  find: wrFile_StartMarker ZK_M_START       op[].handler!
 
   op__loop
 

@@ -5,6 +5,19 @@
 " OP_rowToList.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING ...                                     CLEANING */
+/*----------------------------------------------------------------------------*/
+: rowToList_Cleaning \handler
+
+  List[].print
+
+  List[].delete
+
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* support for seapi immediate                                                */
 /*----------------------------------------------------------------------------*/
 : rowToList_seapi
@@ -61,18 +74,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                         EXIT */
-/*----------------------------------------------------------------------------*/
-: rowToList_ExitMarker \handler
-
-  List[].print
-
-  List[].delete
-
-  ZK_M_EXIT_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -84,9 +85,9 @@
 
   op__topology
 
-  find: rowToList_ExitMarker  ZK_M_EXIT  op[].handler!
+  find: rowToList_Cleaning    ZK_M_CLEANING    op[].handler!
   find: rowToList_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: rowToList_StartMarker ZK_M_START op[].handler!
+  find: rowToList_StartMarker ZK_M_START       op[].handler!
   find: rowToList_StreamDef   ZK_D_STREAMDEF   op[].handler!
 
   op__loop

@@ -5,7 +5,25 @@
 " OP_rdCsvChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_SEEKOFFSETS ...                                                      */
+/* on ZK_M_CLEANING ...                                                       */
+/*----------------------------------------------------------------------------*/
+: rdCsvChunk_Cleaning \handler
+
+  //"Operand:- ZK_M_CLEANING" .verbose
+
+  // 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_I_SEEKOFFSETS ...                                                    */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
@@ -69,27 +87,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EXIT ...                                                       */
-/*----------------------------------------------------------------------------*/
-: rdCsvChunk_ExitMarker \handler
-
-  //"Operand:- ZK_M_EXIT" .verbose
-
-  // 0 ZK_M_EXIT EG_ZK LogicUnit[].diaryNote
-
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  // 1 ZK_M_EXIT EG_ZK LogicUnit[].diaryNote
-
-  false
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for reachChunk req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : rdCsvChunk_req \operator
@@ -105,9 +102,9 @@
 
   op__topology
 
-  find: rdCsvChunk_ExitMarker    ZK_M_EXIT    op[].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS   op[].handler!
-  find: rdCsvChunk_StartMarker   ZK_M_START   op[].handler!
+  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     op[].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  op[].handler!
+  find: rdCsvChunk_StartMarker   ZK_M_START        op[].handler!
 
   op__loop
 

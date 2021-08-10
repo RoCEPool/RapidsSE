@@ -60,7 +60,7 @@
   // create an infoSet operand
   infoSetTable[] InfoSet[].new
 
-  // add lock  to the infoSet
+  // add lock to the infoSet
   infoSetTable[] InfoSet[].addLockStats assert
 
   // pipeout the infoset
