@@ -611,7 +611,15 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 eEC AM::OBJECT::eValidObject(Object* pObject)
 {
+  // valid address in buffer?
+  if (! gpBufferPool->bValidAddress(pObject))
+    return EC_OBJECT_ADDRESS_INVALID;
   
+  // valid class, footer etc?
+  eEC eError = pObject->eValidObject();
+  if (EC_NONE != eError)
+    return eError;
+
   // object is valid
   return EC_NONE;
 }
