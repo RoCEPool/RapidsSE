@@ -726,7 +726,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_ERRORED"_Stz,   ZK_M_ERRORED);
   /*  0 */ vAddConstant("ZK_M_ERRORING"_Stz,  ZK_M_ERRORING);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
-  /*  0 */ vAddConstant("ZK_M_EXIT"_Stz,      ZK_M_EXIT);
+  /*  0 */ vAddConstant("ZK_M_EXITING"_Stz,      ZK_M_EXITING);
   /*  0 */ vAddConstant("ZK_M_EXITED"_Stz,    ZK_M_EXITED);
   /*  0 */ vAddConstant("ZK_D_GRID"_Stz,            ZK_D_GRID);
   /*  0 */ vAddConstant("ZK_D_INDEX"_Stz,           ZK_D_INDEX);

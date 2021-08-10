@@ -113,11 +113,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_M_EXIT operand                          (pipes out) */
+/* default handler for ZK_M_EXITING operand                       (pipes out) */
 /*----------------------------------------------------------------------------*/
-: ZK_M_EXIT_handler \handler
+: ZK_M_EXITING_handler \handler
 
-  //"ZK_M_EXIT_handler" .verbose
+  //"ZK_M_EXITING_handler" .verbose
   
   PipeIn[].pipeOut
   
@@ -284,7 +284,7 @@
   //ZK_M_ERROR
   //ZK_M_ERRORED
   //ZK_M_ERRORING
-  //ZK_M_EXIT
+  //ZK_M_EXITING
   //ZK_M_EXITED
   //ZK_M_LEAVE
   //ZK_M_LEAVING

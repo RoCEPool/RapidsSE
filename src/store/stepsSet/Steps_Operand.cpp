@@ -80,7 +80,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErroringMarker"_Stz, &Step::vOperandNewErroringMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
-  vAddStep("Operand[].newExitMarker"_Stz,  &Step::vOperandNewExitMarker);
+  vAddStep("Operand[].newExitingMarker"_Stz,  &Step::vOperandNewExitingMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
   vAddStep("Operand[].newLeaveMarker"_Stz,&Step::vOperandNewLeaveMarker);
   vAddStep("Operand[].newLeavingMarker"_Stz,&Step::vOperandNewLeavingMarker);
@@ -691,15 +691,15 @@ void Step::vOperandNewErroredMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newExitMarker -- new an exit marker                              */
+/* Operand[].newExitingMarker -- new an exiting marker                        */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewExitMarker(void)
+void Step::vOperandNewExitingMarker(void)
 {
   ENTRY();
   
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITING);
   
   EXIT();
 }
@@ -713,7 +713,7 @@ void Step::vOperandNewExitedMarker(void)
   
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITEDMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_EXITED);
   
   EXIT();
 }

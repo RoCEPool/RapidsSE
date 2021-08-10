@@ -356,7 +356,7 @@ void vRapidsSE_ApiDemo_putRows(void)
       break;
         
     // exit marker?
-    if (OM_EXITMARKER == eOpMarker) {
+    if (OM_EXITING == eOpMarker) {
       RapidsSE::eDeleteOperand(aSession,&aOperand);
       break;
     }

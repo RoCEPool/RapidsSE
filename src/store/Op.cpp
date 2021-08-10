@@ -768,7 +768,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_M_EXIT:
+    case ZK_M_EXITING:
       // should have received a ZK_M_START
 //      if ( ! m_iOperandCount[ZK_M_START]) {
 //        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
@@ -776,9 +776,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 //        return false;
 //      }
       
-      // should not have received a ZK_M_EXIT already
+      // should not have received a ZK_M_EXITING already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_M_EXIT arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXITING arrived\n"_Stz, szOpNm());
         return false;
       }
       
@@ -798,9 +798,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
 
-      // should not have received a ZK_M_EXIT already
+      // should not have received a ZK_M_EXITING already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_M_EXIT arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_EXITING arrived\n"_Stz, szOpNm());
         return false;
       }
       break;

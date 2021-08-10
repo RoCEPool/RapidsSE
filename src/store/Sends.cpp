@@ -58,7 +58,7 @@ Sends::Sends(i8 iSends)
   m_iDestroyMarkers    = 0;
   m_iEndingMarkers     = 0;
   m_iErroringMarkers   = 0;
-  m_iExitMarkers       = 0;
+  m_iExitingMarkers    = 0;
   m_iEosMarkers        = 0;
   m_iEndMarkers        = 0;
   m_iLeavingMarkers    = 0;
@@ -247,18 +247,18 @@ bool Sends::bErroringDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exit done ?                                                                */
+/* exiting done ?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Sends::bExitDone(void)
+bool Sends::bExitingDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
-  if (m_iExitMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_EXIT %lld; expected %lld\n"_Stz,
-      m_iExitMarkers, m_iSends);
+  if (m_iExitingMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp ZK_M_EXITING ZK_M_EXIT %lld; expected %lld\n"_Stz,
+           m_iExitingMarkers, m_iSends);
   
-  if (m_iExitMarkers == m_iSends) {
-    //m_iExitMarkers = 0;
+  if (m_iExitingMarkers == m_iSends) {
+    //m_iExitingMarkers = 0;
     return true;
   }
   else
@@ -411,13 +411,13 @@ void Sends::vIncErroring(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc exit                                                                   */
+/* inc exiting                                                                */
 /*----------------------------------------------------------------------------*/
-void Sends::vIncExit(void)
+void Sends::vIncExiting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-  
-  m_iExitMarkers++;
+
+  m_iExitingMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

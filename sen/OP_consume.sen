@@ -128,12 +128,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                                  */
+/* handler for ZK_M_EXITING ...                                               */
 /*----------------------------------------------------------------------------*/
-: consumeOp_ExitMarker \handler
+: consumeOp_Exiting \handler
 
-  //"Operand:- ZK_M_EXIT" .verbose
-  Sends[].handleExit if
+  //"Operand:- ZK_M_EXITING" .verbose
+  Sends[].handleExiting if
     PipeIn[].pipeOut
     Op.ackPipelineJob
     false
@@ -206,7 +206,7 @@
   find: consumeOp_EosMarker      ZK_M_EOS        op[].handler!
   find: consumeOp_ErrorMarker    ZK_M_ERROR      op[].handler!
   find: consumeOp_ErroringMarker ZK_M_ERRORING   op[].handler!
-  find: consumeOp_ExitMarker     ZK_M_EXIT       op[].handler!
+  find: consumeOp_Exiting        ZK_M_EXITING    op[].handler!
   find: consumeOp_LeavingMarker  ZK_M_LEAVING    op[].handler!
   find: consumeOp_StartMarker    ZK_M_START      op[].handler!
   find: consumeOp_StreamDef      ZK_D_STREAMDEF  op[].handler!

@@ -28,7 +28,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleEnding"_Stz,   &Step::vRegSendsHandleEnding);
   vAddStep("Sends[].handleEos"_Stz,      &Step::vRegSendsHandleEos);
   vAddStep("Sends[].handleErroring"_Stz, &Step::vRegSendsHandleErroring);
-  vAddStep("Sends[].handleExit"_Stz,     &Step::vRegSendsHandleExit);
+  vAddStep("Sends[].handleExiting"_Stz,  &Step::vRegSendsHandleExiting);
   vAddStep("Sends[].handleLeaving"_Stz,  &Step::vRegSendsHandleLeaving);
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
@@ -175,17 +175,17 @@ void Step::vRegSendsHandleErroring(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Sends[].handleExit -- handle consume of exit marker                        */
+/* Sends[].handleExiting -- handle consume of exiting marker                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleExit(void)
+void Step::vRegSendsHandleExiting(void)
 {
   ENTRY();
   
   Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
   
-  pSends->vIncExit();
+  pSends->vIncExiting();
   
-  m_pDataStack->vPushInt(pSends->bExitDone());
+  m_pDataStack->vPushInt(pSends->bExitingDone());
   
   EXIT();
 }

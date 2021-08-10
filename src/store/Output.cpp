@@ -114,7 +114,7 @@ void Output::vDrainBufferQueue(Session* pSession)
       Marker *pMarker = _pMarker(pOperand);
       eOM eOpMarker = pMarker->eOpMarker();
 
-      if (eOpMarker == OM_EXITMARKER)
+      if (eOpMarker == OM_EXITING)
         m_bExitMarker = true;
     }
 
@@ -441,7 +441,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           break;
         }
           
-        case OM_EXITMARKER: {
+        case OM_EXITING: {
           //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
           //if ( ! bHasError )
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);

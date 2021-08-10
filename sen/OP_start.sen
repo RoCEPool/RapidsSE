@@ -53,8 +53,8 @@
   //"ZK_M_CLEANED_handler" .verbose
   Pipein[].delete
 
-  // now pipeout an exit marker
-  Operand[].newExitMarker
+  // now pipeout an exiting marker
+  Operand[].newExitingMarker
   Operand[].pipeOut
 
   true
@@ -91,7 +91,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXITED ...                                            */
+/* handler for ZK_M_EXITED ...                                                */
 /*----------------------------------------------------------------------------*/
 : start_ExitedMarker \handler
 

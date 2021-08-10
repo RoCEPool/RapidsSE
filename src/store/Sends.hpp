@@ -17,7 +17,7 @@ namespace STORE
     i8             m_iEndMarkers;        // end markers received by consumeOp
     i8             m_iEndingMarkers;     // ending markers received by consumeOp
     i8             m_iErroringMarkers;   // erroring markers received by consumeOp
-    i8             m_iExitMarkers;       // exit markers received by consumeOp
+    i8             m_iExitingMarkers;    // exiting markers received by consumeOp
     i8             m_iEosMarkers;        // eos / error markers received by consumeOp
     i8             m_iLeavingMarkers;    // leaving markers received by consumeOp
     i8             m_iStartMarkers;      // start markers received by consumeOp
@@ -42,7 +42,7 @@ namespace STORE
     bool bEosDone(void);
     bool bErrorDone(void);
     bool bErroringDone(void);
-    bool bExitDone(void);
+    bool bExitingDone(void);
     bool bLeavingDone(void);
     bool bStartDone(void);
     bool bStreamDefDone(void);
@@ -56,7 +56,7 @@ namespace STORE
     void vIncEos(void);
     void vIncError(void);
     void vIncErroring(void);
-    void vIncExit(void);
+    void vIncExiting(void);
     void vIncLeaving(void);
     void vIncStart(void);
     void vIncStreamDef(void);

@@ -1050,7 +1050,7 @@ public:
   void vOperandNewEosMarker(void);
   void vOperandNewErroringMarker(void);
   void vOperandNewErroredMarker(void);
-  void vOperandNewExitMarker(void);
+  void vOperandNewExitingMarker(void);
   void vOperandNewExitedMarker(void);
   void vOperandNewLeaveMarker(void);
   void vOperandNewLeavingMarker(void);
@@ -1271,7 +1271,7 @@ public:
   void vRegSendsHandleEnding(void);
   void vRegSendsHandleEos(void);
   void vRegSendsHandleErroring(void);
-  void vRegSendsHandleExit(void);
+  void vRegSendsHandleExiting(void);
   void vRegSendsHandleLeaving(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);

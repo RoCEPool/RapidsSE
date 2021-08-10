@@ -50,9 +50,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXIT ...                                              */
+/* handler for ZK_M_EXITING ...                                               */
 /*----------------------------------------------------------------------------*/
-: stats_ExitMarker \handler
+: stats_Exiting \handler
 
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
@@ -81,7 +81,7 @@
   op__topology
 
   find: stats_StartMarker ZK_M_START op[].handler!
-  find: stats_ExitMarker  ZK_M_EXIT  op[].handler!
+  find: stats_Exiting     ZK_M_EXITING  op[].handler!
 
   op__loop
 
