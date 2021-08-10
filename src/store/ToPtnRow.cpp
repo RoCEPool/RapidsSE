@@ -65,7 +65,13 @@ void ToPtnRow::vConvert(RowBuffer* pRowBuffer)
     
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
     
+#ifdef WITH_KEEP_ROW_HASH
     i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
+    
+    // tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
+#else
+    i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
+#endif
     
     vCopyRow(i_Ptn,aRowSrc);
   }
