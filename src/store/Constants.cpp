@@ -702,7 +702,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_BUCKETMAP"_Stz,       ZK_D_BUCKETMAP);
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
-  /*  0 */ vAddConstant("ZK_M_CANCEL"_Stz,    ZK_M_CANCEL);
+  /*  0 */ vAddConstant("ZK_M_CANCEL"_Stz,      ZK_M_CANCEL);
+  /*  0 */ vAddConstant("ZK_M_CANCELLING"_Stz,    ZK_M_CANCELLING);
   /*  0 */ vAddConstant("ZK_M_CANCELLED"_Stz, ZK_M_CANCELLED);
   /*  0 */ vAddConstant("ZK_M_CLEANUP"_Stz,   ZK_M_CLEANUP);
   /*  0 */ vAddConstant("ZK_M_CLEANEDUP"_Stz, ZK_M_CLEANEDUP);

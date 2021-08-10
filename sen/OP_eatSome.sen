@@ -26,7 +26,7 @@
   // set topology, next stage and op
   op__topology
 
-//  pEatSomeHandler ZK_M_CANCEL     op[].handler!
+//  pEatSomeHandler ZK_M_CANCELLING     op[].handler!
 //  pEatSomeHandler ZK_M_CANCELLED  op[].handler!
     pEatSomeHandler ZK_D_CRWBUFFER        op[].handler!
     pEatSomeHandler ZK_D_CSVBUFFER        op[].handler!

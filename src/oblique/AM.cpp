@@ -635,7 +635,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
     return false;
   
   Marker* pMarker = _pMarker(pOperand);
-  if (pMarker->eOpMarker() == OM_CANCELMARKER)
+  if (pMarker->eOpMarker() == OM_CANCELLING)
     return true;
 
   if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
@@ -2439,10 +2439,11 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
         case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
+        case OM_CANCELLING:         eOperand = ZK_M_CANCELLING;   break;
         case OM_CANCELLEDMARKER:    eOperand = ZK_M_CANCELLED;    break;
         case OM_CLEANUPMARKER:      eOperand = ZK_M_CLEANUP;      break;
         case OM_CLEANEDUPMARKER:    eOperand = ZK_M_CLEANEDUP;    break;
-        case OM_DATAPULSE:          eOperand = ZK_M_DATAPULSE;          break;
+        case OM_DATAPULSE:          eOperand = ZK_M_DATAPULSE;    break;
         case OM_DESTROYMARKER:      eOperand = ZK_M_DESTROY;      break;
         case OM_EACHSCANEOSMARKER:  eOperand = ZK_M_EACHSCANEOS;  break;
         case OM_ENDMARKER:          eOperand = ZK_M_END;          break;

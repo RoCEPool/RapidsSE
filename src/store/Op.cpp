@@ -602,17 +602,11 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
   
   switch(i_OperandKind) {
 
-    case ZK_M_CANCEL:
-      // should have received an ZK_M_ERRORED
-      if (m_iOperandCount[ZK_M_ERRORED]) {
-        vTrace("%s: %s arrived without a prior ZK_M_ERRORED\n"_Stz,
-               szOpNm(), aZK[i_OperandKind]);
-        return false;
-      }
+    case ZK_M_CANCELLING:
       
-      // should not have received a ZK_M_CANCEL already
+      // should not have received a ZK_M_CANCELLING already
       if (m_iOperandCount[i_OperandKind]) {
-        vTrace("%s: multiple ZK_M_CANCEL arrived\n"_Stz, szOpNm());
+        vTrace("%s: multiple ZK_M_CANCELLING arrived\n"_Stz, szOpNm());
         return false;
       }
       

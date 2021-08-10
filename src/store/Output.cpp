@@ -397,7 +397,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
       switch (eOpMarker) {
           
-        case OM_CANCELMARKER: {
+        case OM_CANCELLING: {
           NEVER_REACH
           break;
         }

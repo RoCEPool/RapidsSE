@@ -52,18 +52,18 @@ Sends::Sends(i8 iSends)
 
   m_iSends  = iSends;
   
-  m_iCancelMarkers   = 0;
-  m_iCleanupMarkers  = 0;
-  m_iDataPulses      = 0;
-  m_iDestroyMarkers  = 0;
-  m_iEndingMarkers   = 0;
-  m_iErroringMarkers = 0;
-  m_iExitMarkers     = 0;
-  m_iEosMarkers      = 0;
-  m_iEndMarkers      = 0;
-  m_iLeavingMarkers  = 0;
-  m_iStartMarkers    = 0;
-  m_iStreamDefs      = 0;
+  m_iCancellingMarkers = 0;
+  m_iCleanupMarkers    = 0;
+  m_iDataPulses        = 0;
+  m_iDestroyMarkers    = 0;
+  m_iEndingMarkers     = 0;
+  m_iErroringMarkers   = 0;
+  m_iExitMarkers       = 0;
+  m_iEosMarkers        = 0;
+  m_iEndMarkers        = 0;
+  m_iLeavingMarkers    = 0;
+  m_iStartMarkers      = 0;
+  m_iStreamDefs        = 0;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 }
@@ -78,16 +78,17 @@ Sends::~Sends(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cancel done ?                                                              */
+/* cancelling done ?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Sends::bCancelDone(void)
+bool Sends::bCancellingDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iCancellingMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_M_CANCELLING %lld; expected %lld\n"_Stz,
+         m_iCancellingMarkers, m_iSends);
   
-  vTrace("Warning: ConsumeOp received ZK_M_CANCEL %lld; expected %lld\n"_Stz,
-         m_iCancelMarkers, m_iSends);
-  
-  if (m_iCancelMarkers == m_iSends) {
+  if (m_iCancellingMarkers == m_iSends) {
     //m_iCancelMarkers = 0;
     return true;
   }
@@ -102,8 +103,9 @@ bool Sends::bCleanupDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
-  //vTrace("Warning: ConsumeOp received ZK_M_CLEANUP %lld; expected %lld\n"_Stz,
-  //       m_iCleanupMarkers, m_iSends);
+  if (m_iCleanupMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received ZK_M_CLEANUP %lld; expected %lld\n"_Stz,
+          m_iCleanupMarkers, m_iSends);
 
   if (m_iCleanupMarkers == m_iSends) {
     m_iCleanupMarkers = 0;
@@ -319,13 +321,13 @@ bool Sends::bStreamDefDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc cancel                                                                 */
+/* inc cancelling                                                             */
 /*----------------------------------------------------------------------------*/
-void Sends::vIncCancel(void)
+void Sends::vIncCancelling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
-  m_iCancelMarkers++;
+  m_iCancellingMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

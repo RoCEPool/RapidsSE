@@ -64,7 +64,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
-  vAddStep("Operand[].newCancelMarker"_Stz,&Step::vOperandNewCancelMarker);
+  vAddStep("Operand[].newCancelling"_Stz,&Step::vOperandNewCancelling);
   vAddStep("Operand[].newCancelledMarker"_Stz,&Step::vOperandNewCancelledMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
   vAddStep("Operand[].newCleanupMarker"_Stz,&Step::vOperandNewCleanupMarker);
@@ -467,15 +467,15 @@ void Step::vOperandMorphClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newCancelMarker -- new a cancel marker                           */
+/* Operand[].newCancelling -- new a cancelling marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewCancelMarker(void)
+void Step::vOperandNewCancelling(void)
 {
   ENTRY();
   
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CANCELMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_CANCELLING);
   
   EXIT();
 }
