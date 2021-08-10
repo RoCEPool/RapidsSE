@@ -5,17 +5,18 @@
 " OP_dropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropSchema_DataMarker
 
   0 locals| errorCode |
 
+  PipeIn[].pipeOut
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove schema
   <schemaNm> checkRemoveSchema not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -24,8 +25,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the schema
   <schemaNm> removeSchema
-
-  PipeIn[].pipeOut
 
   true
 ;

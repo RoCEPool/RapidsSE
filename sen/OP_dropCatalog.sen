@@ -5,17 +5,18 @@
 " OP_dropCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropCatalog_DataMarker
 
   0 locals| errorCode |
 
+  PipeIn[].pipeOut
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove catalog
   <catalogNm> checkRemoveCatalog not if
     to errorCode
-    PipeIn[].delete
     errorCode op__execErr
     true
     exit
@@ -24,8 +25,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
   <catalogNm> removeCatalog
-
-  PipeIn[].pipeOut
 
   true
 ;
