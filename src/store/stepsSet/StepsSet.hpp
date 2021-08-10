@@ -1920,11 +1920,11 @@ public:
   void vToTask(void);
 
   // toHshCrw
-  void vToHshCrwRegCompleted(void);
-  void vToHshCrwRegConvert(void);
-  void vToHshCrwRegCreate(void);
-  void vToHshCrwRegDangling(void);
-  void vToHshCrwRegDelete(void);
+  void vToPtnCrwRegCompleted(void);
+  void vToPtnCrwRegConvert(void);
+  void vToPtnCrwRegCreate(void);
+  void vToPtnCrwRegDangling(void);
+  void vToPtnCrwRegDelete(void);
 
   // toNstRow
   void vToNstRowRegConvert(void);

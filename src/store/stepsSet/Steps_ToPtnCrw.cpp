@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToHshCrw.cpp - Convert ptn nst row buffers to hashed crw buffers   */
+/* Steps_ToPtnCrw.cpp - Convert ptn nst row buffers to hashed crw buffers     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -26,17 +26,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToHshCrw(void)
 {
-  vAddStep("toPtnCrw[].completed"_Stz, &Step::vToHshCrwRegCompleted);
-  vAddStep("toPtnCrw[].convert"_Stz,   &Step::vToHshCrwRegConvert);
-  vAddStep("toPtnCrw[].create"_Stz,    &Step::vToHshCrwRegCreate);
-  vAddStep("toPtnCrw[].dangling"_Stz,  &Step::vToHshCrwRegDangling);
-  vAddStep("toPtnCrw[].delete"_Stz,    &Step::vToHshCrwRegDelete);
+  vAddStep("toPtnCrw[].completed"_Stz, &Step::vToPtnCrwRegCompleted);
+  vAddStep("toPtnCrw[].convert"_Stz,   &Step::vToPtnCrwRegConvert);
+  vAddStep("toPtnCrw[].create"_Stz,    &Step::vToPtnCrwRegCreate);
+  vAddStep("toPtnCrw[].dangling"_Stz,  &Step::vToPtnCrwRegDangling);
+  vAddStep("toPtnCrw[].delete"_Stz,    &Step::vToPtnCrwRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
 /* toPtnCrw[].completed -- get any completed/full buffer                      */
 /*----------------------------------------------------------------------------*/
-void Step::vToHshCrwRegCompleted(void)
+void Step::vToPtnCrwRegCompleted(void)
 {
   ENTRY();
   
@@ -54,7 +54,7 @@ void Step::vToHshCrwRegCompleted(void)
 /*----------------------------------------------------------------------------*/
 /* toPtnCrw[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToHshCrwRegConvert(void)
+void Step::vToPtnCrwRegConvert(void)
 {
   ENTRY();
 
@@ -70,7 +70,7 @@ void Step::vToHshCrwRegConvert(void)
 /*----------------------------------------------------------------------------*/
 /* toPtnCrw[].create -- create toHshCrw                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToHshCrwRegCreate(void)
+void Step::vToPtnCrwRegCreate(void)
 {
   ENTRY();
     
@@ -84,7 +84,7 @@ void Step::vToHshCrwRegCreate(void)
 /*----------------------------------------------------------------------------*/
 /* toPtnCrw[].dangling -- get any dangling/last buffer                        */
 /*----------------------------------------------------------------------------*/
-void Step::vToHshCrwRegDangling(void)
+void Step::vToPtnCrwRegDangling(void)
 {
   ENTRY();
   
@@ -102,7 +102,7 @@ void Step::vToHshCrwRegDangling(void)
 /*----------------------------------------------------------------------------*/
 /* toPtnCrw[].delete -- delete toHshCrw                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToHshCrwRegDelete(void)
+void Step::vToPtnCrwRegDelete(void)
 {
   ENTRY();
   
