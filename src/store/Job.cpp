@@ -979,6 +979,48 @@ void Job::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see job dump                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("See Job::\n"_Stz);
+
+  vTrace("%p: %s\n"
+         
+         "m_eJobType=%s m_eJobKind=%s\n"
+         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
+         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
+         "m_iOriginatingId=%lld\n"
+         "m_nxReferences=%lld\n"_Stz,
+         this,
+         aCN[eGetClassNo()],
+         
+         m_sJobNm.azChar(),
+         aJK[m_eJobKind]->azChar(),
+         
+         aJL[m_eJobList],
+         aJP[m_eJobPhase],
+         aJS[m_eJobState],
+         
+         bByPromptTag(),
+         bHasTag_noWait(),
+         m_bWasReceived,
+         
+         m_iOriginatingId,
+         
+         nReferences(),
+         C_VARGS_END
+         );
+  
+  
+  m_oJobTags.vContentDump();
+  
+  vTrace(";;\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the seed to be spawned                                                 */
 /*----------------------------------------------------------------------------*/
 eSS Job::eSeed(void)

@@ -168,6 +168,7 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);
+    void vSee(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
