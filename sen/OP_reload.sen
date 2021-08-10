@@ -13,15 +13,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: reload_DataMarker \handler
+: reload_DataPulse \handler
 
-  ZK_M_PULSED_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                   EACH */
+/* on ZK_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : reload_CsvBuffer \handler
 
@@ -49,9 +49,9 @@
   op__topology
 
   find: reload_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: reload_EosMarker   ZK_M_EOS   op[].handler!
-  find: reload_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: reload_StartMarker ZK_M_START op[].handler!
+  find: reload_EosMarker   ZK_M_EOS         op[].handler!
+  find: reload_DataPulse   ZK_M_DATAPULSE   op[].handler!
+  find: reload_StartMarker ZK_M_START       op[].handler!
 
   op__loop
 

@@ -49,7 +49,6 @@
 //  pEatSomeHandler ZK_D_PROFILE          op[].handler!
 //  pEatSomeHandler ZK_I_PROGRESSUNITS    op[].handler!
 //  pEatSomeHandler ZK_M_DATAPULSE        op[].handler!
-//  pEatSomeHandler ZK_M_PULSED     op[].handler!
     pEatSomeHandler ZK_D_ROWBUFFER        op[].handler!
 //  pEatSomeHandler ZK_I_SEEKOFFSETS      op[].handler!
 //  pEatSomeHandler ZK_D_SRTBUFFER        op[].handler!

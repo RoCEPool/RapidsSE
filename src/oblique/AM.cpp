@@ -2463,7 +2463,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_M_LEFTOUTER_CRWLFT;   break;
         case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT;   break;
         case OM_NEXTBUFFERMARKER:   eOperand = ZK_M_NEXTBUFFER;   break;
-        case OM_PULSEDMARKER:       eOperand = ZK_M_PULSED;       break;
         case OM_STARTEDMARKER:      eOperand = ZK_M_STARTED;      break;
         case OM_START_CRWRHTMARKER: eOperand = ZK_M_START_CRWRHT; break;
         case OM_STARTMARKER:        eOperand = ZK_M_START;        break;

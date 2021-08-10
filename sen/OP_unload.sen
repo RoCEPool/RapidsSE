@@ -5,7 +5,7 @@
 " OP_unload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : unload_StartMarker \handler
 
@@ -13,15 +13,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: unload_DataMarker \handler
+: unload_DataPulse \handler
 
-  ZK_M_PULSED_handler
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                   EACH */
+/* on ZK_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : unload_CsvBuffer \handler
 
@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : unload_EosMarker \handler
 
@@ -48,10 +48,10 @@
 
   op__topology
 
-  find: unload_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: unload_EosMarker   ZK_M_EOS   op[].handler!
-  find: unload_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: unload_StartMarker ZK_M_START op[].handler!
+  find: unload_CsvBuffer   ZK_D_CSVBUFFER op[].handler!
+  find: unload_EosMarker   ZK_M_EOS       op[].handler!
+  find: unload_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: unload_StartMarker ZK_M_START     op[].handler!
 
   op__loop
 

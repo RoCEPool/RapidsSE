@@ -86,7 +86,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newLeavingMarker"_Stz,&Step::vOperandNewLeavingMarker);
   vAddStep("Operand[].newLeftMarker"_Stz,&Step::vOperandNewLeftMarker);
   vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
-  vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
@@ -770,20 +769,6 @@ void Step::vOperandNewNextBufferMarker(void)
 
   m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_NEXTBUFFERMARKER);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newPulsedMarker -- new a pulsed marker                           */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewPulsedMarker(void)
-{
-  ENTRY();
-  
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-  
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_PULSEDMARKER);
-  
   EXIT();
 }
 

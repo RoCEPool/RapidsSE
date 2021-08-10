@@ -84,12 +84,11 @@
 : ZK_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
 : ZK_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
 : ZK_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
-: ZK_M_PULSED_handler           \handler STANDARD_PIPEOUT ;
 : ZK_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_M_START_CRWRHT_handler    \handler STANDARD_PIPEOUT ;
-: ZK_M_START_handler           \handler STANDARD_PIPEOUT ;
-: ZK_M_START_ROWRHT_handler    \handler STANDARD_PIPEOUT ;
-: ZK_M_TRIGGER_handler         \handler STANDARD_PIPEOUT ;
+: ZK_M_START_CRWRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_START_handler            \handler STANDARD_PIPEOUT ;
+: ZK_M_START_ROWRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
@@ -294,7 +293,6 @@
   defaultHandler ZK_M_LEFTOUTER_CRWLFT  op[].handler!
   defaultHandler ZK_M_LEFTOUTER_ROWLFT  op[].handler!
   defaultHandler ZK_M_NEXTBUFFER        op[].handler!
-  defaultHandler ZK_M_PULSED            op[].handler!
   defaultHandler ZK_M_START_CRWRHT      op[].handler!
   defaultHandler ZK_M_START             op[].handler!
   defaultHandler ZK_M_START_ROWRHT      op[].handler!

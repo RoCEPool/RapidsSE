@@ -686,9 +686,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
-      // should not have received a ZK_M_PULSED
-      if ( m_iOperandCount[ZK_M_PULSED]) {
-        vTrace("%s: %s arrived after ZK_M_PULSED\n"_Stz,
+      // should not have received a ZK_M_END
+      if ( m_iOperandCount[ZK_M_END]) {
+        vTrace("%s: %s arrived after ZK_M_END\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
@@ -833,7 +833,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_M_PULSED:
+    case ZK_M_END:
       // should have received a ZK_M_START
       if ( ! m_iOperandCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,

@@ -1056,7 +1056,6 @@ public:
   void vOperandNewLeavingMarker(void);
   void vOperandNewLeftMarker(void);
   void vOperandNewNextBufferMarker(void);
-  void vOperandNewPulsedMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStartMarker(void);
   void vOperandNewStartCrwRhtMarker(void);
