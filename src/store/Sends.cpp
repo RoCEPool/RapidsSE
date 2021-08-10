@@ -89,7 +89,6 @@ bool Sends::bCancellingDone(void)
          m_iCancellingMarkers, m_iSends);
   
   if (m_iCancellingMarkers == m_iSends) {
-    //m_iCancelMarkers = 0;
     return true;
   }
   else
@@ -108,7 +107,6 @@ bool Sends::bCleaningDone(void)
            m_iCleaningMarkers, m_iSends);
 
   if (m_iCleaningMarkers == m_iSends) {
-    m_iCleaningMarkers = 0;
     return true;
   }
   else
@@ -182,7 +180,6 @@ bool Sends::bEndingDone(void)
            m_iEndingMarkers, m_iSends);
 
   if (m_iEndingMarkers == m_iSends) {
-    //m_iEndingMarkers = 0;
     return true;
   }
   else
@@ -239,7 +236,6 @@ bool Sends::bErroringDone(void)
            m_iErroringMarkers, m_iSends);
 
   if (m_iErroringMarkers == m_iSends) {
-    //m_iErroringMarkers = 0;
     return true;
   }
   else
@@ -258,7 +254,6 @@ bool Sends::bExitingDone(void)
            m_iExitingMarkers, m_iSends);
   
   if (m_iExitingMarkers == m_iSends) {
-    //m_iExitingMarkers = 0;
     return true;
   }
   else
@@ -277,7 +272,6 @@ bool Sends::bLeavingDone(void)
            m_iLeavingMarkers, m_iSends);
 
   if (m_iLeavingMarkers == m_iSends) {
-    //m_iExitMarkers = 0;
     return true;
   }
   else
