@@ -155,6 +155,10 @@ namespace BASE
     //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
+    static i8    iMatch(char *regexp, char *text);
+    static i8    iMatchHere(char *regexp, char *text);
+    static i8    iMatchStar(int c, char *regexp, char *text);
+
     static char* sNew(const char* azFormat, ...);
     static char* zNullTerminator(char* s);
 
