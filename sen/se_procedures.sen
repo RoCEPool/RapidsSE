@@ -665,6 +665,7 @@
     stage stageB on all partitions on origin :
         toRow $table      // (csvBuffer) => (rowBuffer w row+hash)
       | toPtnRow          // (rowBuffer) => (ptn rowBuffer)
+    //| toBktRow          // (rowBuffer) => (bkt rowBuffer)
       | toNstRow          // (rowBuffer) => (ptn rowBuffer w nst)
       | toPtnCrw          // (rowBuffer) => (ptn crwBuffer)
       | stageC hashcast
