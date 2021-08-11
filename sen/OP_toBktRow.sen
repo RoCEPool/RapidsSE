@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : toBktRow_StartMarker \handler
 
-  ToPtnRow[].create
+  ToBktRow[].create
 
   ZK_M_START_handler
 ;
@@ -35,19 +35,19 @@
     exit
   then
 
-  PipeIn[] ToPtnRow[].convert
+  PipeIn[] ToBktRow[].convert
   nullptr to Pipein[]
 
   ptnmap::ptnsInGrid 0
   do
 
-    I ToPtnRow[].completed to OperandB[]
+    I ToBktRow[].completed to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].pipeOut
-      I ToPtnRow[].completed to OperandB[]
+      I ToBktRow[].completed to OperandB[]
     repeat
 
   loop
@@ -63,18 +63,18 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I ToPtnRow[].dangling to OperandB[]
+    I ToBktRow[].dangling to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].pipeOut
-      I ToPtnRow[].dangling to OperandB[]
+      I ToBktRow[].dangling to OperandB[]
     repeat
 
   loop
 
-  ToPtnRow[].delete
+  ToBktRow[].delete
 
   PipeIn[].pipeOut
 

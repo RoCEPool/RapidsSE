@@ -14,7 +14,7 @@
 
   StreamDefLft[].duplicate to OperandB[]
 
-  toPtnCrw[].create
+  ToBktCrw[].create
 
   OperandB[].pipeOut
 
@@ -42,20 +42,20 @@
 /*----------------------------------------------------------------------------*/
 : toBktCrw_RowBuffer \handler
 
-  PipeIn[] toPtnCrw[].convert
+  PipeIn[] ToBktCrw[].convert
   nullptr to PipeIn[]
 
   ptnmap::ptnsInGrid 0
   do
 
-    I toPtnCrw[].completed to OperandB[]
+    I ToBktCrw[].completed to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I toPtnCrw[].completed to OperandB[]
+      I ToBktCrw[].completed to OperandB[]
     repeat
 
   loop
@@ -71,21 +71,21 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I toPtnCrw[].dangling to OperandB[]
+    I ToBktCrw[].dangling to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I toPtnCrw[].dangling to OperandB[]
+      I ToBktCrw[].dangling to OperandB[]
     repeat
 
   loop
 
   StreamDefLft[].delete
 
-  toPtnCrw[].delete
+  ToBktCrw[].delete
 
   PipeIn[].pipeOut
 
