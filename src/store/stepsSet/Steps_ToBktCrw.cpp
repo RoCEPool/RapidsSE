@@ -1,0 +1,119 @@
+/*============================================================================*/
+/* Steps_ToBktCrw.cpp - Convert ptn nst row buffers to hashed crw buffers     */
+/*============================================================================*/
+
+#include "BASE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "Steps.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "EntWrk.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "Job.hpp"
+#include "Node_I.hpp"
+#include "LogicUnit.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_ToBktCrw(void)
+{
+  vAddStep("toBktCrw[].completed"_Stz, &Step::vToBktCrwRegCompleted);
+  vAddStep("toBktCrw[].convert"_Stz,   &Step::vToBktCrwRegConvert);
+  vAddStep("toBktCrw[].create"_Stz,    &Step::vToBktCrwRegCreate);
+  vAddStep("toBktCrw[].dangling"_Stz,  &Step::vToBktCrwRegDangling);
+  vAddStep("toBktCrw[].delete"_Stz,    &Step::vToBktCrwRegDelete);
+}
+
+/*----------------------------------------------------------------------------*/
+/* toBktCrw[].completed -- get any completed/full buffer                      */
+/*----------------------------------------------------------------------------*/
+void Step::vToBktCrwRegCompleted(void)
+{
+  ENTRY();
+  
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  
+  CrwBuffer* pCrwBuffer = pToPtnCrw->pCompleted(i_Ptn);
+
+  m_pDataStack->vPushPtr(pCrwBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toBktCrw[].convert -- convert row buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vToBktCrwRegConvert(void)
+{
+  ENTRY();
+
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+    
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+
+  pToPtnCrw->vConvert(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toBktCrw[].create -- create toHshCrw                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vToBktCrwRegCreate(void)
+{
+  ENTRY();
+    
+  ToPtnCrw* pToPtnCrw = new ToPtnCrw(* m_p_TaskLogicUnit->m_xpStreamDefLft);
+      
+  m_p_TaskLogicUnit->m_xpToPtnCrw = pToPtnCrw;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toBktCrw[].dangling -- get any dangling/last buffer                        */
+/*----------------------------------------------------------------------------*/
+void Step::vToBktCrwRegDangling(void)
+{
+  ENTRY();
+  
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  
+  CrwBuffer* pCrwBuffer = pToPtnCrw->pDangling(i_Ptn);
+  
+  m_pDataStack->vPushPtr(pCrwBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toBktCrw[].delete -- delete toHshCrw                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vToBktCrwRegDelete(void)
+{
+  ENTRY();
+  
+  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  m_p_TaskLogicUnit->m_xpToPtnCrw = nullptr;
+  
+  delete pToPtnCrw;
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
