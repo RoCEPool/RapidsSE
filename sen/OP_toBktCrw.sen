@@ -1,0 +1,129 @@
+/*============================================================================*/
+/* OP_toBktCrw.sen -- Convert ptn nst row buffers to ptn crw buffers          */
+/*============================================================================*/
+
+" OP_toBktCrw.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_StreamDef \handler
+
+  PipeIn[] to StreamDefLft[]
+  nullptr to PipeIn[]
+
+  StreamDefLft[].duplicate to OperandB[]
+
+  toPtnCrw[].create
+
+  OperandB[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_StartMarker \handler
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_DataMarker \handler
+
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_RowBuffer \handler
+
+  PipeIn[] toPtnCrw[].convert
+  nullptr to PipeIn[]
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I toPtnCrw[].completed to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      I toPtnCrw[].completed to OperandB[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_EosMarker \handler
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I toPtnCrw[].dangling to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      I toPtnCrw[].dangling to OperandB[]
+    repeat
+
+  loop
+
+  StreamDefLft[].delete
+
+  toPtnCrw[].delete
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRow request                                                        SPAWN */
+/*----------------------------------------------------------------------------*/
+: toBktCrw_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toBktCrw_EosMarker   ZK_M_EOS         op[].handler!
+  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!
+  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: toBktCrw_StartMarker ZK_M_START       op[].handler!
+  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toBktCrw :: toBktCrw ;
+
+: toBktCrw_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
