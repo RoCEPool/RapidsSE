@@ -1919,17 +1919,31 @@ public:
   void vToStr(void);
   void vToTask(void);
 
-  // toHshCrw
-  void vToPtnCrwRegCompleted(void);
-  void vToPtnCrwRegConvert(void);
-  void vToPtnCrwRegCreate(void);
-  void vToPtnCrwRegDangling(void);
-  void vToPtnCrwRegDelete(void);
+  // toBktCrw
+  void vToBktCrwRegCompleted(void);
+  void vToBktCrwRegConvert(void);
+  void vToBktCrwRegCreate(void);
+  void vToBktCrwRegDangling(void);
+  void vToBktCrwRegDelete(void);
+
+  // toBktRow
+  void vToBktRowRegCompleted(void);
+  void vToBktRowRegConvert(void);
+  void vToBktRowRegCreate(void);
+  void vToBktRowRegDangling(void);
+  void vToBktRowRegDelete(void);
 
   // toNstRow
   void vToNstRowRegConvert(void);
   void vToNstRowRegCreate(void);
   void vToNstRowRegDelete(void);
+
+  // toPtnCrw
+  void vToPtnCrwRegCompleted(void);
+  void vToPtnCrwRegConvert(void);
+  void vToPtnCrwRegCreate(void);
+  void vToPtnCrwRegDangling(void);
+  void vToPtnCrwRegDelete(void);
 
   // toPtnRow
   void vToPtnRowRegCompleted(void);
