@@ -170,6 +170,9 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "ToBktCrw.hpp"
+#include "ToBktRow.hpp"
+
 #include "TccLock.hpp"
 #include "TraceLock.hpp"
 
@@ -211,7 +214,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
-  { sizeof(Bucket),             HT_T_TINY   ,0 }, // CN_BUCKET
+  { sizeof(Bucket),             HT_T_TINY    ,0 }, // CN_BUCKET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
   { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
@@ -328,7 +331,7 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_LARGE   ,0 }, // CN_LOGICTIMER
-  { sizeof(LogicUnit),          HT_T_LARGE  ,0 }, // CN_LOGICUNIT
+  { sizeof(LogicUnit),          HT_T_LARGE   ,0 }, // CN_LOGICUNIT
 
   { 'M' - ('A' - 1),            HT_INVALID   ,0 }, // CN__M__
   { sizeof(Marker),             HT_T_TINY    ,0 }, // CN_MARKER
@@ -337,7 +340,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
-  { sizeof(MetaGet),           HT_T_TINY    ,0 }, // CN_METAGET
+  { sizeof(MetaGet),           HT_T_TINY     ,0 }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
@@ -505,6 +508,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYVIRTUAL
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TMEVAL
+  { sizeof(ToBktCrw),           HT_T_LARGE   ,0 }, // CN_TOBKTCRW
+  { sizeof(ToBktRow),           HT_T_LARGE   ,0 }, // CN_TOBKTROW
   { sizeof(Token),              HT_T_TINY    ,0 }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
