@@ -119,6 +119,7 @@
 #include "Version.h"
 
 #include "MY.hpp"
+#include "SP_Pointer.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -937,6 +938,40 @@ tPN AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
   return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  SE                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* where                                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::SE::vWhereAmI(void)
+{
+  printf("AM::SE::vWhereAmI\n");
+  
+  SP_Pointer spTask;
+  Task* pTask = MY::pTask();
+  vTrace("Task %s\n"_Stz,spTask.sz(pTask));
+
+  SP_Pointer spThread;
+  Thread* pThread = MY::pThread();
+  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
+
+  SP_Pointer spJob;
+  Job* pJob = MY::pJob();
+  vTrace("Job %s\n"_Stz,spJob.sz(pJob));
+
+  SP_Pointer spOp;
+  Op* pOp = MY::pOp();
+  vTrace("Op %s\n"_Stz,spOp.sz(pOp));
+
+  SP_Pointer spLogicUnit;
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
+
+  vTrace("\n"_Stz);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 SEED                                       */
@@ -3605,6 +3640,15 @@ bool AM::bSupervisorHalt(void)
 void AM::vSupervisorHalt(bool bHalt)
 {
   gpAttachMap->m_bSupervisorHalt = bHalt;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+
+void where(void)
+{
+  AM::SE::vWhereAmI();
 }
 
 /*============================================================================*/

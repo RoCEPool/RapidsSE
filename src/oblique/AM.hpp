@@ -327,6 +327,12 @@ namespace OBLIQUE
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     };
 
+    class SE
+    {
+    public:
+      static void vWhereAmI(void);
+    };
+  
     class SEED
     {
     public:
@@ -681,6 +687,8 @@ namespace OBLIQUE
   };
 
 }
+
+void where(void);
 
 /*============================================================================*/
 /* end                                                                        */
