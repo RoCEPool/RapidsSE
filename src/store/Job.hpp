@@ -129,7 +129,7 @@ namespace STORE
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
-    bool bHasTag(Stz* szEnameTag);
+    bool bHasTag(Stz* szTagNm);
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);

@@ -172,6 +172,7 @@ enum eEC // error code
   EC_NULLPTR,
 
   /* _O_ */
+  EC_OBJECT_ADDRESS_INVALID,
   EC_OBJECT_CLASSNO_INVALID,
   EC_OBJECT_FOOTER_INVALID,
   EC_OBJECT_MAGIC_INVALID,
@@ -396,6 +397,7 @@ static Stz* aEC[]
   /* EC_NULLPTR                       */ "nullptr"_Stz,
 
   /* _O_ */
+  /* EC_OBJECT_ADDRESS_INVALID        */ "EC_OBJECT_ADDRESS_INVALID"_Stz,
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
@@ -622,6 +624,7 @@ static Stz* aEC2[] // error code
   /* EC_NULLPTR                       */ "EC_NULLPTR"_Stz,
 
   /* _O_ */
+  /* EC_OBJECT_ADDRESS_INVALID        */ "EC_OBJECT_ADDRESS_INVALID"_Stz,
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
@@ -858,6 +861,7 @@ static Stz* aErrorMsg[]
   /* EC_NULLPTR                       */ "nullptr"_Stz,
 
   /* _O_ */
+  /* EC_OBJECT_ADDRESS_INVALID        */ "Object address is invalid"_Stz,
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,

@@ -1128,6 +1128,22 @@ void vTest18(void)
 /*----------------------------------------------------------------------------*/
 void vTest19(void)
 {
+  Stz* szRegExp;
+  Stz* szText = "the quick brown fox jumped over the lazy dog"_Stz;
+  
+  for (i8 i_Test = 0; /* none */; i_Test++) {
+    switch (i_Test) {
+      case 0 : szRegExp = "^the"_Stz;      break;
+      case 1 : szRegExp = "^quick"_Stz;    break;
+      case 2 : szRegExp = "*quick"_Stz;    break;
+      case 3 : szRegExp = "he *quick"_Stz; break;
+      default:
+        return;
+    }
+    vTrace("%lld : %s\n"_Stz
+           ,(i8)StrLib::bMatch((char*)szText,(char*)szRegExp)
+           ,szRegExp);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

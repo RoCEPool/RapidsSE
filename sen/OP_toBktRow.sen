@@ -1,0 +1,117 @@
+/*============================================================================*/
+/* OP_toBktRow.sen -- Convert row buffers to partitioned row slab buffers     */
+/*============================================================================*/
+
+" OP_toBktRow.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: toBktRow_StartMarker \handler
+
+  ToBktRow[].create
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toBktRow_DataMarker \handler
+
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: toBktRow_RowBuffer \handler
+
+  // check for low memory
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY op__execErr
+    PipeIn[].delete
+    true
+    exit
+  then
+
+  PipeIn[] ToBktRow[].convert
+  nullptr to Pipein[]
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToBktRow[].completed to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].pipeOut
+      I ToBktRow[].completed to OperandB[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                       END */
+/*----------------------------------------------------------------------------*/
+: toBktRow_EosMarker \handler
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToBktRow[].dangling to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].pipeOut
+      I ToBktRow[].dangling to OperandB[]
+    repeat
+
+  loop
+
+  ToBktRow[].delete
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRow request                                                        SPAWN */
+/*----------------------------------------------------------------------------*/
+: toBktRow_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toBktRow_EosMarker   ZK_M_EOS         op[].handler!
+  find: toBktRow_DataMarker  ZK_M_DATAPULSE   op[].handler!
+  find: toBktRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: toBktRow_StartMarker ZK_M_START       op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toBktRow :: toBktRow ;
+
+: toBktRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -119,6 +119,7 @@
 #include "Version.h"
 
 #include "MY.hpp"
+#include "SP_Pointer.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -606,6 +607,23 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
   return iNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test if object is valid                                                    */
+/*----------------------------------------------------------------------------*/
+eEC AM::OBJECT::eValidObject(Object* pObject)
+{
+  // valid address in buffer?
+  if (! gpBufferPool->bValidAddress(pObject))
+    return EC_OBJECT_ADDRESS_INVALID;
+  
+  // valid class, footer etc?
+  eEC eError = pObject->eValidObject();
+  if (EC_NONE != eError)
+    return eError;
+
+  // object is valid
+  return EC_NONE;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   OP                                       */
@@ -920,6 +938,46 @@ tPN AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
   return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  SE                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* where                                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::SE::vWhereAmI(void)
+{
+  printf("AM::SE::vWhereAmI()\n");
+  
+  SP_Pointer spThread;
+  Thread* pThread = MY::pThread();
+  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
+  
+  SP_Pointer spTask;
+  Task* pTask = MY::pTask();
+  vTrace("Task %s\n"_Stz,spTask.sz(pTask));
+
+  SP_Pointer spJob;
+  Job* pJob = MY::pJob();
+  vTrace("Job %s\n"_Stz,spJob.sz(pJob));
+
+  SP_Pointer spOp;
+  Op* pOp = MY::pOp();
+  vTrace("Op %s\n"_Stz,spOp.sz(pOp));
+
+  SP_Pointer spLogicUnit;
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
+
+  vTrace("\n"_Stz);
+  
+  if (EC_NONE == pTask->eValidObject()) {
+    pTask->vDump();
+  }
+    
+  vTrace("\n"_Stz);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 SEED                                       */
@@ -1889,6 +1947,9 @@ void AM::vTaskDump(Task* pTask)
 {
   Job* pJob = pTask->pJob();
     
+  if (! pJob)
+    return;
+  
   AM::vJobContentDump(pJob);
   
   if (pJob->pJobLogicUnit()) {
@@ -1931,7 +1992,8 @@ void AM::vTaskFullTrace(Task* pTask)
 
   //pTask->vContentDump();
   
-  AM::vJobContentDump(pJob);
+  if (pJob)
+    AM::vJobContentDump(pJob);
   
   //pJob->pJobLogicUnit()->vContentDump();
   
@@ -3608,6 +3670,15 @@ bool AM::bSupervisorHalt(void)
 void AM::vSupervisorHalt(bool bHalt)
 {
   gpAttachMap->m_bSupervisorHalt = bHalt;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+
+void where(void)
+{
+  AM::SE::vWhereAmI();
 }
 
 /*============================================================================*/

@@ -2675,6 +2675,71 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
+/* match: search for regexp anywhere in given string                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bMatch(char* azStr, char* azRegExp)
+{
+  /*
+  
+    Current set of metacharacters:
+   
+      c  matches any literal character c
+      .  matches any single character
+      ^  matches the beginning of the input string
+      $  matches the end of the input string
+      *  matches zero or more occurrences of the previous character
+
+   */
+  
+  if (azRegExp[0] == '^')
+    return bMatchHere(azStr,azRegExp+1);
+  
+  do { /* must look even if string is empty */
+    
+    if (bMatchHere(azStr,azRegExp))
+      return true;
+    
+  } while (*azStr++ != '\0');
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bMatchHere: search for regexp at beginning of string                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bMatchHere(char* azStr, char* azRegExp)
+{
+  if (azRegExp[0] == '\0')
+    return true;
+  
+  if (azRegExp[1] == '*')
+    return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
+  
+  if (azRegExp[0] == '$' && azRegExp[1] == '\0')
+    return (*azStr == '\0');
+  
+  if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
+    return bMatchHere(azStr+1,azRegExp+1);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bMatchStar: search for c*regexp at beginning of string                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
+{
+  do { /* a * matches zero or more instances */
+    
+    if (bMatchHere(azStr,azRegExp))
+      return true;
+    
+  } while (*azStr != '\0' && (*azStr++ == cChr || cChr == '.'));
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sNew: new a string from formatted args                                     */
 /*----------------------------------------------------------------------------*/
 char* StrLib::sNew(const char* sFormat, ...)

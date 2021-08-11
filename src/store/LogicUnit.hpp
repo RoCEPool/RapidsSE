@@ -10,6 +10,9 @@
 #include "ToNstRow.hpp"
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
+#include "ToBktCrw.hpp"
+#include "ToBktRow.hpp"
+
 
 #include "Pot.hpp"
 
@@ -194,6 +197,8 @@ namespace STORE
     REG<Table>          m_xpTable;
     REG<TablePtn>       m_xpTablePtn;
     REG<Timer>          m_xpTimer;     // timer
+    REG<ToBktCrw>       m_xpToBktCrw;
+    REG<ToBktRow>       m_xpToBktRow;
     REG<ToNstRow>       m_xpToNstRow;
     REG<ToPtnCrw>       m_xpToPtnCrw;
     REG<ToPtnRow>       m_xpToPtnRow;

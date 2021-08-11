@@ -286,6 +286,7 @@ namespace OBLIQUE
     {
     public:
       static i8 iNextNo(eCN eClassNo);
+      static eEC eValidObject(Object* pObject);
     };
 
     class OP
@@ -326,6 +327,12 @@ namespace OBLIQUE
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     };
 
+    class SE
+    {
+    public:
+      static void vWhereAmI(void);
+    };
+  
     class SEED
     {
     public:
@@ -680,6 +687,8 @@ namespace OBLIQUE
   };
 
 }
+
+void where(void);
 
 /*============================================================================*/
 /* end                                                                        */

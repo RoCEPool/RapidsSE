@@ -29,6 +29,8 @@
 #include "SP_Gid.hpp"
 #include "SP_Timer.hpp"
 
+#include "SP_Pointer.hpp"
+
 Atomic gixJob;
 
 /*----------------------------------------------------------------------------*/
@@ -334,20 +336,25 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vPostRecv(void* aJob)
+void Job::vPostRecv(void* aReceivedJob)
 {
   _static_
   
-  Job* pJob = _pJob(aJob);
+  Job* pReceivedJob = _pJob(aReceivedJob);
   
-  pJob->vWasReceived(true);
+  pReceivedJob->vWasReceived(true);
   
-  pJob->vJobList(JL_NONE);
+  pReceivedJob->vJobList(JL_NONE);
   
-  pJob->vTask(nullptr);
+  pReceivedJob->vTask(nullptr);
     
   // revised job/op model
-  pJob->vNullJobLogicUnit();
+  pReceivedJob->vNullJobLogicUnit();
+  
+  if (pReceivedJob->bHasTag(C_SEE_JOB))
+    pReceivedJob->vSee();
+  
+  vDebugPoint();
 }
 
 
@@ -512,11 +519,11 @@ void Job::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* test if this job has given ename tag                                       */
 /*----------------------------------------------------------------------------*/
-bool Job::bHasTag(Stz* szEnameTag)
+bool Job::bHasTag(Stz* szTagNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oJobTags.bHasName(szEnameTag))
+  if (m_oJobTags.bHasName(szTagNm))
     return true;
   
   return false;
@@ -985,7 +992,13 @@ void Job::vSee(void)
     
   SP_Gid spJobId;
   SP_Timer spTimer;
-  
+
+  SP_Pointer spvPipeline;
+  SP_Pointer spvSingularOp;
+  SP_Pointer spvOriginatingTask;
+  SP_Pointer spvTask;
+  SP_Pointer spvJobLogicUnit;
+
   vTrace("See Job %p::\n"_Stz,this);
 
   vTrace(
@@ -1012,16 +1025,16 @@ void Job::vSee(void)
          "          oAcksRmg "  "%lld"  " \n"  // 14
          "            eError "  "%s"    " \n"  // 15
 
-         "         pPipeline "  "%p"    " \n"  // 16
-         "       pSingularOp "  "%p"    " \n"  // 17
+         "         pPipeline "  "%s"    " \n"  // 16
+         "       pSingularOp "  "%s"    " \n"  // 17
 
-         "  pOriginatingTask "  "%p"    " \n"  // 18
+         "  pOriginatingTask "  "%s"    " \n"  // 18
          "    iOriginatingId "  "%lld"  " \n"  // 19
  
          "             eSeed "  "%s"    " \n"  // 20
-         "             pTask "  "%p"    " \n"  // 21
+         "             pTask "  "%s"    " \n"  // 21
         
-         "     pJobLogicUnit "  "%p"    " \n"  // 22
+         "     pJobLogicUnit "  "%s"    " \n"  // 22
 
          ""_Stz
          
@@ -1032,24 +1045,27 @@ void Job::vSee(void)
          ,m_i_Origin                 // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
-         ,m_bWasReceived ? "T" : "F" // 7
+         ,m_bWasReceived ? "true" : "false" // 7
          ,m_i_Participant            // 8
-         ,m_bNormalSides ? "T" : "F" // 9
+         ,m_bNormalSides ? "true" : "false" // 9
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oTimer)     // 13
          ,m_oAcksRmg_job.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
-         ,m_pPipeline_job            // 16
-         ,m_pSingularOp              // 17
-         ,m_pOriginatingTask         // 18
+         ,spvPipeline.sz(m_pPipeline_job)  // 16
+         ,spvSingularOp.sz(m_pSingularOp)  // 17
+         ,spvOriginatingTask.sz(m_pOriginatingTask) // 18
          ,m_iOriginatingId           // 19
          ,aSS[m_eSeed]               // 20
-         ,m_pTask                    // 21
-         ,m_pJobLogicUnit            // 22
+         ,spvTask.sz(m_pTask)        // 21
+         ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
+         
          );
   
+  m_oJobTags.vContentDump();
+
   vTrace(";;\n\n"_Stz);
 }
 

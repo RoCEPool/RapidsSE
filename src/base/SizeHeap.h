@@ -5,8 +5,8 @@
 
 typedef void (fpPOSTFN)(void* aObject);
 
-struct SizeHeap {
-  
+struct SizeHeap
+{
   i8  m_nClassSize;         // size of the class in bytes
   
   eHT m_eWhichHeap;         // from which heap should the instance be allocated

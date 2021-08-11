@@ -32,6 +32,8 @@ void Step::vAddSteps_Debug(void)
 void Step::vDebugBloat(void)
 {
   ENTRY();
+  
+  //AM::SE::vWhereAmI();
 
   RowBuffer* pRowBuffer = new RowBuffer();
   m_p_TaskLogicUnit->m_xpMemoryHog = pRowBuffer;
