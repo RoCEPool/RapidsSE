@@ -948,15 +948,15 @@ tPN AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 void AM::SE::vWhereAmI(void)
 {
-  printf("AM::SE::vWhereAmI\n");
+  printf("AM::SE::vWhereAmI()\n");
+  
+  SP_Pointer spThread;
+  Thread* pThread = MY::pThread();
+  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
   
   SP_Pointer spTask;
   Task* pTask = MY::pTask();
   vTrace("Task %s\n"_Stz,spTask.sz(pTask));
-
-  SP_Pointer spThread;
-  Thread* pThread = MY::pThread();
-  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
 
   SP_Pointer spJob;
   Job* pJob = MY::pJob();
