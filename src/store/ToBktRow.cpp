@@ -68,6 +68,9 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
     
     i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
+    
+    // myvan
+    //i_Ptn = pBktMap->toBkt(i_Ptn);
 #else
     i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
 #endif
