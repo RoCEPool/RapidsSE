@@ -36,6 +36,7 @@
 #include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Job.hpp"
+
 #include "LogicUnit.hpp"
 #include "Pipeline.hpp"
 
@@ -121,6 +122,8 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_NONE,         nullptr,        "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_NONE,         nullptr,        "m_xpTablePtn"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
+,       m_xpToBktCrw(this,RF_NONE,         nullptr,        "m_xpToBktCrw"_Stz)
+,       m_xpToBktRow(this,RF_NONE,         nullptr,        "m_xpToBktRow"_Stz)
 ,       m_xpToNstRow(this,RF_NONE,         nullptr,        "m_xpToNstRow"_Stz)
 ,       m_xpToPtnCrw(this,RF_NONE,         nullptr,        "m_xpToPtnCrw"_Stz)
 ,       m_xpToPtnRow(this,RF_NONE,         nullptr,        "m_xpToPtnRow"_Stz)
