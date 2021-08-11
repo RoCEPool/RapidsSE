@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_BUCKETGET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: bucketSend_bucketGet \handler
+: bucketSend0_bucketGet \handler
 
- "bucketSend_bucketGet handler" .
+ "bucketSend0_bucketGet handler" .
 
   Operand[].pipein  // pop the pBucket and put in the Operand register
   //Operand[] MetaGet.getTableName
@@ -34,15 +34,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute for bucketsend request                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketSend_req \operator
+: bucketSend0_req \operator
 
   LogReqEntry SEED_REQ
-  //"bucketSend_req" .
+  //"bucketSend0_req" .
 
   op__topology
 
   // Setup ZK_BUCKETGET handler
-  find: bucketSend_bucketGet ZK_BUCKETGET op[].handler!
+  find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
   op__loop
 
   LogReqExit
@@ -53,9 +53,9 @@
 /*----------------------------------------------------------------------------*/
 /*                            - Definition -                                  */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: bucketSend :: bucketSend <TableNm>;
+cmdSyntax: bucketSend0 :: bucketSend0 <TableNm>;
 
-: bucketSend_cmdTags _cmdTags tagCopy: op_tags
+: bucketSend0_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

@@ -1139,38 +1139,20 @@
     stage stageA on origin :
       start | pulse once | bucketGet $TableNm1 | stageB
 
-    // toHshCrw , send the crwBuffer of the bucket table scan $TableNm1 | dupCrw | insert $TableNm2 | stageC
-    stage stageB on all partitions :
-      scan $TableNm1 | insert $TableNm2 | stageC
-
-    //stage stageC on origin :
-    //  insert $TableNm2 | stageD
+    stage stageB on all nodes :
+      bucketSend $TableNm1 | stageC
 
     stage stageC on origin :
+      insert $TableNm2 | stageD
+
+    stage stageD on origin :
        sink | stageA
 
   end ;
   "
   api::addProcedure
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  STD_PATH
-  "
-  procedure getBucket1
-    parameters $TableNm1 $TableNm2
-  begin
 
-    stage stageA on origin :
-      start | pulse once | metaGet $TableNm | stageB hashcast
-
-    stage stageB on all partitions :
-        scan $TableNm1 | dupCrw | insert $TableNm2 | stageC
-
-    stage stageC on origin :
-        sink | stageA
-
-  end ;
-  "
-  api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object

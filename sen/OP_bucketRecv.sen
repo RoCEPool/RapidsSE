@@ -35,8 +35,8 @@
   op__topology
 
   // Setup ZK_XXXXXX handler here
-  find: bucketRecv_Crw ZK_CRWBUFFER op[].handler!
-  //find: bucketRecv_Crw ZK_BUCKETGET op[].handler!
+  //find: bucketRecv_Crw ZK_CRWBUFFER op[].handler!
+  find: bucketRecv_Crw ZK_BUCKETGET op[].handler!
 
   op__loop
 

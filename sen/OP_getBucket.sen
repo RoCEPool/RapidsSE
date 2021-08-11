@@ -11,7 +11,7 @@ begin
 
   // send the crwBuffer of the bucket table
   stage stageB on all nodes :
-     bucketSend | bucketRecv | stageC
+     bucketSend $TableNm | bucketRecv | stageC
 
   //bucketSend  | stageC
   //scan $Table   |        crwToRow      | stageC
@@ -54,7 +54,7 @@ begin
 
   // send the crwBuffer of the bucket table
   stage stageB on all nodes :
-     bucketSend | bucketRecv | stageC
+     bucketSend $TableNm | bucketRecv | stageC
 
   stage stageC on origin :
      noop | sink | stageA
