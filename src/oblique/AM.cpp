@@ -971,6 +971,12 @@ void AM::SE::vWhereAmI(void)
   vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
 
   vTrace("\n"_Stz);
+  
+  if (EC_NONE == pTask->eValidObject()) {
+    pTask->vDump();
+  }
+    
+  vTrace("\n"_Stz);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1923,6 +1929,9 @@ void AM::vTaskDump(Task* pTask)
 {
   Job* pJob = pTask->pJob();
     
+  if (! pJob)
+    return;
+  
   AM::vJobContentDump(pJob);
   
   if (pJob->pJobLogicUnit()) {
@@ -1965,7 +1974,8 @@ void AM::vTaskFullTrace(Task* pTask)
 
   //pTask->vContentDump();
   
-  AM::vJobContentDump(pJob);
+  if (pJob)
+    AM::vJobContentDump(pJob);
   
   //pJob->pJobLogicUnit()->vContentDump();
   
