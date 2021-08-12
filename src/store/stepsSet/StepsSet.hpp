@@ -127,8 +127,9 @@ public:
   void vBucketGetGetBucketTable(void);
   void vBucketGetGetBucketNumber(void);
   void vBucketSendGetBucketCrw(void);
+  void vBucketGetGetTablePtn(void);
   void vBucketSendGetBucketPtnStream(void);
-  void vBucketRecvInsertRows(void);
+
 
   // build
   void vBuildBranch(void);

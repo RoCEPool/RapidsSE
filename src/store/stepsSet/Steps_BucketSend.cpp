@@ -24,6 +24,7 @@
 void Step::vAddSteps_BucketSend(void)
 {
   vAddStep("BucketSend.getBucketCrw"_Stz,&Step::vBucketSendGetBucketCrw);
+  //vAddStep("BucketSend.getBucketPtn"_Stz,&Step::vBucketSendGetBucketPtn);
   vAddStep("BucketSend.getBucketPtnStream"_Stz,&Step::vBucketSendGetBucketPtnStream);
 }
 
@@ -48,6 +49,25 @@ void Step::vBucketSendGetBucketCrw(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* BucketSend.getBucketPtn -- get parts of bucket-object                      */
+/*----------------------------------------------------------------------------*/
+/*
+void Step::vBucketSendGetBucketPtn(void)
+{
+  ENTRY();
+what class
+  vTrace("C++ gets called: vBucketSendGetBucketPtn\n"_Stz);
+
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+
+
+
+  m_pDataStack->vPushPtr(pTablePtn);
+
+  EXIT();
+}*/
 
 /*----------------------------------------------------------------------------*/
 /* BucketSend.getBucketPtnStream -- get parts of bucket-object          */

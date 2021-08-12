@@ -58,6 +58,21 @@ BucketGet::BucketGet(i8 iBucket)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BucketGet::BucketGet(TablePtn* pTablePtn)
+    : Operand(CN_BUCKETGET) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
+
+  m_pTablePtn = pTablePtn;
+
+
+  _checkInitialised_(CN_BUCKETGET);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETGET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 BucketGet::~BucketGet(void) noexcept(false)
@@ -65,4 +80,10 @@ BucketGet::~BucketGet(void) noexcept(false)
 _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
 
 
+}
+
+TablePtn* BucketGet::pTablePtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
+  return m_pTablePtn;
 }

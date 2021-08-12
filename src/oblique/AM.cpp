@@ -1727,8 +1727,8 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
-    case CN_BUCKET: {
-      Bucket* pBucket = _pBucket(pOperand);
+    case CN_BUCKETGET: {
+      //BucketGet* pBucketGet = _pBucketGet(pOperand);
       vTraceDumpGrabLock();
       vTrace(">>>>vDeleteOperand delete CN_BUCKET called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz);
       //delete pBucket; // Question for Ray: do we need to delete ?
@@ -2568,8 +2568,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
     case CN_TABLE:        eOperand = ZK_D_TABLE;          break;
     case CN_GRID:         eOperand = ZK_D_GRID;           break;
-    case CN_BUCKET:       eOperand = ZK_BUCKETGET;      break;
-    //case CN_PTNSTREAM:       eOperand = ZK_PTNSTREAM;      break;
+    case CN_BUCKETGET:       eOperand = ZK_D_BUCKETGET;      break;
+    case CN_TABLEPTN:     eOperand = ZK_D_TABLEPTN;      break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

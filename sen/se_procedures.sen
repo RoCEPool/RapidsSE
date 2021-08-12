@@ -1141,10 +1141,10 @@
     stage stageA on origin :
       start | pulse once | bucketGet $TableNm1 | stageB
 
-    stage stageB on all nodes :
+    stage stageB on all partitions :
       bucketSend $TableNm1 | stageC
 
-    stage stageC on origin :
+    stage stageC on all partitions :
       insert $TableNm2 | stageD
 
     stage stageD on origin :
@@ -1153,9 +1153,7 @@
   end ;
   "
   api::addProcedure
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
   

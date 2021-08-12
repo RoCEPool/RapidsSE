@@ -699,7 +699,7 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
-  /*  0 */ vAddConstant("ZK_BUCKETGET"_Stz,       ZK_BUCKETGET);
+  /*  0 */ vAddConstant("ZK_D_BUCKETGET"_Stz,       ZK_D_BUCKETGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETMAP"_Stz,       ZK_D_BUCKETMAP);
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
@@ -764,6 +764,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_STREAMDEFRHT"_Stz,    ZK_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_D_STREAMSET"_Stz,       ZK_D_STREAMSET);
   /*  0 */ vAddConstant("ZK_D_TABLE"_Stz,           ZK_D_TABLE);
+  /*  0 */ vAddConstant("ZK_D_TABLEPTN"_Stz,           ZK_D_TABLEPTN);
   /*  0 */ vAddConstant("ZK_I_TOTALUNITS"_Stz,      ZK_I_TOTALUNITS);
   /*  0 */ vAddConstant("ZK_M_TRIGGER"_Stz,         ZK_M_TRIGGER);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);

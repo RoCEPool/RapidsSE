@@ -30,7 +30,7 @@
 /*                          STANDARD EVENT HANDLERS                           */
 /*----------------------------------------------------------------------------*/
 
-: ZK_BUCKETGET_handler          \handler STANDARD_PIPEOUT ;
+: ZK_D_BUCKETGET_handler          \handler STANDARD_PIPEOUT ;
 : ZK_D_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
@@ -51,6 +51,7 @@
 : ZK_M_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
 : ZK_D_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
+: ZK_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
 
 : ZK_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;

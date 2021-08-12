@@ -181,6 +181,17 @@ void TablePtn::vRemoveBucket(i8 i_Bucket)
   }
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* set a bucket by number to be used                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vSetBucket(i8 iBucket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  // Set the bucket to be used
+}
+
 /*----------------------------------------------------------------------------*/
 /* get a bucket by number                                                     */
 /*----------------------------------------------------------------------------*/

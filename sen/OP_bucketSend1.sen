@@ -173,9 +173,9 @@
     Table[].tablePtn@ to TablePtn[]
   then
 
-  //args.developer if
-  //  1 debug::flag!
-  //then
+  //Operand[].pipein
+  //Operand[] BucketGet.getTablePtn TablePtn[]
+
 
   true
 ;
