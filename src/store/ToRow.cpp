@@ -2956,6 +2956,7 @@ L_RecordEndLineEnd:
   // set partition hash
   if (m_bPtnHash) {
         
+    // now use the running hash to calc the partition
     tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
     
     // partition mapping experiment by Ray 12 Nov 2020
