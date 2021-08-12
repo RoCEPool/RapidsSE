@@ -33,6 +33,8 @@ namespace BASE
                              i8    iLineNo,
                              Stz*  szCondition,...);
 
+  [[ noreturn ]] void vThrowException(Exception xException);
+
   [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
                                  const char* azFunc,
                                  const char* azFilePath,

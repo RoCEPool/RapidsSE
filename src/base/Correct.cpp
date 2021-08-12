@@ -560,6 +560,14 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // throw to Task::vExceptionHandler()
   
+  vThrowException(xException);
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw an xException                                                        */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowException(Exception xException)
+{
   throw xException;
 }
 
@@ -604,7 +612,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
 
-  throw xException;
+  vThrowException(xException);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -648,7 +656,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
   
-  throw xException;
+  vThrowException(xException);
 }
 
 /*----------------------------------------------------------------------------*/
