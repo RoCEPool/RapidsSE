@@ -504,28 +504,28 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  fprintf(stderr,
-          "\n\n"
-        // 0         1         2         3
-        // 0123456789012345678901234567890123456789"
-          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
-          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
-          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
-          "\n"
-          "BASE::vThrow(\n"
-          "  eFailure    = %lld\n"
-          "  azFunc      = %s\n"
-          "  azFilePath  = %s\n"
-          "  iLineNo     = %lld\n"
-          "  szCondition = %s\n"
-          ")\n"
-          
-          ,(i8)eFailure
-          ,azFunc
-          ,azFilePath
-          ,(i8)iLineNo
-          ,szCondition->azChar()
-          );
+//  fprintf(stderr,
+//          "\n\n"
+//        // 0         1         2         3
+//        // 0123456789012345678901234567890123456789"
+//          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
+//          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
+//          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
+//          "\n"
+//          "BASE::vThrow(\n"
+//          "  eFailure    = %lld\n"
+//          "  azFunc      = %s\n"
+//          "  azFilePath  = %s\n"
+//          "  iLineNo     = %lld\n"
+//          "  szCondition = %s\n"
+//          ")\n"
+//
+//          ,(i8)eFailure
+//          ,azFunc
+//          ,azFilePath
+//          ,(i8)iLineNo
+//          ,szCondition->azChar()
+//          );
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
@@ -542,20 +542,20 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the call stack
   
-  if (AM::bDeveloper() || AM::bDebugMode()) {
-    xException.vPrint();
-    vThreadCallStackDump();
-    vDebugPoint();
-  }
-  
-  fprintf(stderr,
-          // 0         1         2         3
-          // 0123456789012345678901234567890123456789"
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
-            "\n"
-          );
+//  if (AM::bDeveloper() || AM::bDebugMode()) {
+//    xException.vPrint();
+//    vThreadCallStackDump();
+//    vDebugPoint();
+//  }
+//
+//  fprintf(stderr,
+//          // 0         1         2         3
+//          // 0123456789012345678901234567890123456789"
+//            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 40
+//            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 80
+//            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" // 120
+//            "\n"
+//          );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // throw to Task::vExceptionHandler()
@@ -568,6 +568,36 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowException(Exception xException)
 {
+
+  if (AM::bDeveloper() || AM::bDebugMode()) {
+
+    fprintf(stderr,"\n");
+    fprintf(stderr,
+            // 0         1         2         3
+            // 0123456789012345678901234567890123456789"
+              "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
+              "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
+              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
+              "\n"
+            );
+    fprintf(stderr,"\n");
+
+    xException.vPrint();
+    
+    vThreadCallStackDump();
+
+    fprintf(stderr,"\n");
+    fprintf(stderr,
+            // 0         1         2         3
+            // 0123456789012345678901234567890123456789"
+              "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
+              "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
+              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
+              "\n"
+            );
+    fprintf(stderr,"\n");
+  }
+
   throw xException;
 }
 
@@ -580,24 +610,24 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                                      i8    iLineNo,
                                      Stz*  szFormat,...)
 {
-  if (AM::bDeveloper()) {
-    fprintf(stderr,
-            "BASE::vThrow:\n"
-            "eFailure = %lld\n"
-            "azFunc = %s\n"
-            "azFilePath = %s\n"
-            "iLineNo = %lld\n"
-            "szFormat = %s\n",
-            (i8)eFailure,
-            azFunc,
-            azFilePath,
-            (i8)iLineNo,
-            szFormat->azChar()
-    );
-
-    // put a breakpoint here to trap throws
-    sleep(0);
-  }
+//  if (AM::bDeveloper()) {
+//    fprintf(stderr,
+//            "BASE::vThrow:\n"
+//            "eFailure = %lld\n"
+//            "azFunc = %s\n"
+//            "azFilePath = %s\n"
+//            "iLineNo = %lld\n"
+//            "szFormat = %s\n",
+//            (i8)eFailure,
+//            azFunc,
+//            azFilePath,
+//            (i8)iLineNo,
+//            szFormat->azChar()
+//    );
+//
+//    // put a breakpoint here to trap throws
+//    sleep(0);
+//  }
 
   char zFileNm[256];
   StrLib::vSubPath(zFileNm,(char*)azFilePath);
@@ -624,24 +654,24 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                                         i8    iLineNo,
                                         Stz*  szFormat,...)
 {
-  if (AM::bDeveloper()) {
-    fprintf(stderr,
-            "BASE::vThrow:\n"
-            "eFailure = %lld\n"
-            "azFunc = %s\n"
-            "azFilePath = %s\n"
-            "iLineNo = %lld\n"
-            "szFormat = %s\n",
-            (i8)eFailure,
-            azFunc,
-            azFilePath,
-            (i8)iLineNo,
-            szFormat->azChar()
-            );
-    
-    // put a breakpoint here to trap throws
-    sleep(0);
-  }
+//  if (AM::bDeveloper()) {
+//    fprintf(stderr,
+//            "BASE::vThrow:\n"
+//            "eFailure = %lld\n"
+//            "azFunc = %s\n"
+//            "azFilePath = %s\n"
+//            "iLineNo = %lld\n"
+//            "szFormat = %s\n",
+//            (i8)eFailure,
+//            azFunc,
+//            azFilePath,
+//            (i8)iLineNo,
+//            szFormat->azChar()
+//            );
+//
+//    // put a breakpoint here to trap throws
+//    sleep(0);
+//  }
   
   char zFileNm[256];
   StrLib::vSubPath(zFileNm,(char*)azFilePath);
@@ -695,10 +725,10 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   //    printf("  FreeChunk was %d\n",eWasClass);
   //  }
   
-  if (AM::bDeveloper()) {
-    AM::vTaskDump();
-    vThreadCallStackDump();
-  }
+//  if (AM::bDeveloper()) {
+//    AM::vTaskDump();
+//    vThreadCallStackDump();
+//  }
 
   vThrow(eFailure,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
@@ -741,14 +771,13 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   //    printf("  FreeChunk was %d\n",eWasClass);
   //  }
   
-  if (AM::bDeveloper()) {
-    AM::vTaskDump();
-    vThreadCallStackDump();
-  }
+//  if (AM::bDeveloper()) {
+//    AM::vTaskDump();
+//    vThreadCallStackDump();
+//  }
 
   vThrow(eFailure,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
