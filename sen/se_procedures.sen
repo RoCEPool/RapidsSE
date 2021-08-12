@@ -687,6 +687,44 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load (bucket)
+  
+  STD_PATH
+  "
+  procedure load_bkt
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | stageB robin
+
+    stage stageB on all partitions on origin :
+        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
+      | toBktRow          //       (rowBuffer) => (bkt rowBuffer)
+      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
+      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
+      | stageC hashcast
+
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | stageD
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
   
   STD_PATH

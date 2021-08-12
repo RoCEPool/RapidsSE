@@ -287,10 +287,78 @@ void Task::vExceptionHandler(Exception xException)
   
   m_xException = xException;
   
-  vExceptionTrace();
   vDumpOnFailure();
   
   vContinueAfterFailure();
+}
+
+/*----------------------------------------------------------------------------*/
+/* detailed dump of task on exception                                         */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_FAILURE_DUMP
+void Task::vDumpOnFailure(void)
+{
+  _noPreconditions_
+
+//  if (m_pJob) {
+//    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+//      return;
+//  }
+  
+  vTrace("\n\n"_Stz);
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("Dump of Task %p\n"_Stz,this);
+
+  
+  vTrace("1) TBD \n"_Stz);
+  vTrace("2) TBD \n"_Stz);
+  vTrace("3) TBD \n"_Stz);
+
+  
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("\n\n"_Stz);
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Task::vDumpOnFailure(void)
+{
+  _noPreconditions_
+
+  // to be removed
+  vExceptionTrace();
+  //
+  
+  if (m_pJob) {
+    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+      return;
+  }
+  
+  vTrace("\n\n"_Stz);
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("Dump of Task %p\n"_Stz,this);
+
+  
+  vTrace("1) TBD \n"_Stz);
+  vTrace("2) TBD \n"_Stz);
+  vTrace("3) TBD \n"_Stz);
+
+  
+  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+  vTrace("\n\n"_Stz);
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* task continues after failure                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vContinueAfterFailure(void)
+{
+  //m_iTraceMask = C_TRACE_STEPS;
+  
+  //vResetSenContext();
+  vRecoverSenContext();
+
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,47 +388,6 @@ void Task::vExceptionTrace(void)
   AM::vTaskFullTrace(this);
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task continues after failure                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vContinueAfterFailure(void)
-{
-  //m_iTraceMask = C_TRACE_STEPS;
-  
-  //vResetSenContext();
-  vRecoverSenContext();
-
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* detailed dump of task on exception                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vDumpOnFailure(void)
-{
-  _noPreconditions_
-
-  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-    return;
-
-  vTrace("\n\n"_Stz);
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("Dump of Task %p\n"_Stz
-         
-         ,this
-         );
-
-  
-  vTrace("1) TBD \n"_Stz);
-  vTrace("2) TBD \n"_Stz);
-  vTrace("3) TBD \n"_Stz);
-
-  
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("\n\n"_Stz);
 }
 
@@ -1120,7 +1147,7 @@ void Task::vSeeLogicUnitRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pJob->pJobLogicUnit()->vDumpRegisters();
+  m_p_TaskLogicUnit->vDumpRegisters();
 }
 
 /*----------------------------------------------------------------------------*/

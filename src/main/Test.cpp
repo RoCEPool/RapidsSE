@@ -1137,6 +1137,7 @@ void vTest19(void)
       case 1 : szRegExp = "^quick"_Stz;    break;
       case 2 : szRegExp = "*quick"_Stz;    break;
       case 3 : szRegExp = "he *quick"_Stz; break;
+      case 4 : szRegExp = ".*fox.*over.*"_Stz; break;
       default:
         return;
     }
