@@ -17,10 +17,13 @@ namespace STORE
   private:
 
     PlanNode*      m_pPlanRoot;
+    PlanNode*      m_pWalkNode;
     String*        m_sPipeline;
     bool           m_bHasUnionOp;
     bool           m_bNewStage;
     QueryNode*     m_pPrevStageMarker;
+    bool           m_bJoinPredicate;
+    i8             m_iColumnsOfLeftChild;
 
     // must be last
     Footer m_xFooter;
@@ -44,9 +47,11 @@ namespace STORE
     static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendOrderByOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
+    static void vAppendScanRightOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
     static Stz* szGetRouting(QueryNode* pStageMarker);
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
