@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* OP_bucketSend.sen -- Operator bucket send                                  */
+/*============================================================================*/
+
+" OP_bucketSend.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_BUCKETGET ...                                                          */
+/*----------------------------------------------------------------------------*/
+: bucketSend0_bucketGet \handler
+
+ "bucketSend0_bucketGet handler" .
+
+  Operand[].pipein  // pop the pBucket and put in the Operand register
+  //Operand[] MetaGet.getTableName
+  // print table name from the stack
+  //.
+
+  // pass the table name to op__table to get the table[] register
+  // then call C++ getBucketCrw to build the rows and push the rows to the stack
+
+  // toHshCrw
+  Operand[] BucketSend.getBucketCrw Op::pipeout
+  //Operand[] BucketSend.getBucketPtnStream Op::pipeout
+
+  // send EOSMARKER
+  nullptr to Operand[]
+
+  true
+
+  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bucketsend request                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bucketSend0_req \operator
+
+  LogReqEntry SEED_REQ
+  //"bucketSend0_req" .
+
+  op__topology
+
+  // Setup ZK_BUCKETGET handler
+  find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bucketSend0 :: bucketSend0 <TableNm>;
+
+: bucketSend0_cmdTags _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

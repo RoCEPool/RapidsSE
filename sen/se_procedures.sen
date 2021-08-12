@@ -1130,33 +1130,30 @@
     "
     api::addProcedure
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// get bucket object
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
   STD_PATH
   "
   procedure getBucket
-    parameters $TableNm $BucketNo
+    parameters $TableNm1 $TableNm2
   begin
 
-    // roundrobin or hash, then ask for the bucket of the table
     stage stageA on origin :
-      start | pulse once | bucketGet $TableNm $BucketNo | stageB hashcast
+      start | pulse once | bucketGet $TableNm1 | stageB
 
-    // toHshCrw
-    // send the crwBuffer of the bucket table
-    stage stageB on all nodes :
-      bucketSend | stageC
+    stage stageB on all partitions :
+      bucketSend $TableNm1 | stageC
 
-    // receive crwBuffer, then the bucketRecv would insert into the table
-    // insert $table
-    stage stageC on origin :
-      bucketRecv | output | sink | stageA
+    stage stageC on all partitions :
+      insert $TableNm2 | stageD
+
+    stage stageD on origin :
+       sink | stageA
 
   end ;
   "
   api::addProcedure
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
   
@@ -1167,39 +1164,19 @@
   begin
 
     stage stageA on origin :
-      start | pulse once | metaGet $TableNm | stageB hashcast
-
-    stage stageB on all nodes :
-      metaSend | stageC
-
-    stage stageC on origin :
-      metaRecv | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get meta object 2
-  
-  STD_PATH
-  "
-  procedure getMeta2
-    parameters $TableNm
-  begin
-
-    stage stageA on origin :
-      start | metaGet $TableNm | stageB hashcast
+      start | periodic once | metaGet $TableNm | stageB hashcast
 
     stage stageB on all nodes :
       metaSend | metaRecv | stageC
 
     stage stageC on origin :
+      //metaRecv | output | sink | stageA
       noop | sink | stageA
 
   end ;
   "
   api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/

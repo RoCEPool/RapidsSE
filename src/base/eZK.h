@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_D_BUCKETGET,
   /*    */ ZK_D_BUCKETMAP,
   /*    */ ZK_D_CRWBUFFER,
   /*    */ ZK_D_CSVBUFFER,
@@ -27,6 +28,7 @@ enum eZK // operand kind
   /*    */ ZK_D_STREAMDEF,
   /*    */ ZK_D_STREAMSET,
   /*    */ ZK_D_TABLE,
+  /*    */ ZK_D_TABLEPTN,
 
   /*    */ ZK_I_CALLPIPELINE,
   /*    */ ZK_I_COMMANDERRORS,
@@ -73,14 +75,13 @@ enum eZK // operand kind
   /*    */ ZK_M_START_ROWRHT,
   /*    */ ZK_M_STREAMDEFRHT,
   /*    */ ZK_M_TRIGGER,
-
   /*    */ ZK_ENUMS
 };
 
 static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
-  
+  /*    */ "ZK_D_BUCKETGET"_Stz,
   /*    */ "ZK_D_BUCKETMAP"_Stz,
   /*    */ "ZK_D_CRWBUFFER"_Stz,
   /*    */ "ZK_D_CSVBUFFER"_Stz,
@@ -101,6 +102,7 @@ static Stz* aZK[]
   /*    */ "ZK_D_STREAMDEF"_Stz,
   /*    */ "ZK_D_STREAMSET"_Stz,
   /*    */ "ZK_D_TABLE"_Stz,
+  /*    */ "ZK_D_TABLEPTN"_Stz,
 
   /*    */ "ZK_I_CALLPIPELINE"_Stz,
   /*    */ "ZK_I_COMMANDERRORS"_Stz,
@@ -147,7 +149,6 @@ static Stz* aZK[]
   /*    */ "ZK_M_START_ROWRHT"_Stz,
   /*    */ "ZK_M_STREAMDEFRHT"_Stz,
   /*    */ "ZK_M_TRIGGER"_Stz,
-  
   /*    */ "ENUMS"_Stz
 };
 

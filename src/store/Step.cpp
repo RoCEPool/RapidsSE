@@ -54,6 +54,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Bp();
   Step::vAddSteps_Build();
 
+  Step::vAddSteps_BucketGet();
+  Step::vAddSteps_BucketSend();
+
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
   Step::vAddSteps_CoreWords();

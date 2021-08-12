@@ -122,6 +122,15 @@ public:
   void vBpInUseSpace(void);
   void vBpTotalSpace(void);
 
+  // bucket
+  void vBucketGetGetBucketData(void);
+  void vBucketGetGetBucketTable(void);
+  void vBucketGetGetBucketNumber(void);
+  void vBucketSendGetBucketCrw(void);
+  void vBucketGetGetTablePtn(void);
+  void vBucketSendGetBucketPtnStream(void);
+
+
   // build
   void vBuildBranch(void);
   void vBuildDate(void);

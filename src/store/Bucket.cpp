@@ -85,15 +85,16 @@ Bucket::~Bucket(void) noexcept(false)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-switch (m_eKind) {
-case CN_CRWTABLEPTN:
-delete m_pCrwTablePtn;
-break;
-case CN_ROWTABLEPTN:
-delete m_pRowTablePtn;
-break;
-default: NEVER_REACH;
-}
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      delete m_pCrwTablePtn;
+      break;
+    case CN_ROWTABLEPTN:
+      delete m_pRowTablePtn;
+      break;
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
