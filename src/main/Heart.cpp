@@ -34,7 +34,7 @@ RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the s
 void vHeartInit(void) {
 
   if (gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats > 0) {
-    vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
+    //vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
     int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
     char szAddr[32];
@@ -132,7 +132,6 @@ void vHeartInit(void) {
       i8 iSaveChk = xHeartbeat.m_iChecksum;
 
       xHeartbeat.m_iChecksum = 0;
-      //printf("fletcher16 mychecksum1=%d\n",fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)));
 
       // recalculate checksum and compare
       CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
@@ -141,12 +140,12 @@ void vHeartInit(void) {
         xHeartbeat.m_iChecksum = iSaveChk;
         if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
-          if (iCnt++ <= 1) { // debug print twice
+          /*if (iCnt++ <= 1) { // debug print twice
 
-            vTrace("Received HB from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
-            vTrace("iLen=%d m_u2DataLen=%d checksum=%lld \n"_Stz, iLen, xHeartbeat.m_u2DataLen,
+            //vTrace("Received HB from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
+            //vTrace("iLen=%d m_u2DataLen=%d checksum=%lld \n"_Stz, iLen, xHeartbeat.m_u2DataLen,
                    iSaveChk);
-          }
+          }*/
         }
       } else {
         vTrace("Invalid Heartbeat message, checksum is not equal, skip this message.\n"_Stz);
