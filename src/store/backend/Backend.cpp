@@ -455,9 +455,6 @@ void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
   QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
   ASSERT(pJoinPredicate);
 
-  ASSERT(OperatorExpr::bIsOfType(pJoinPredicate));
-  ASSERT(ComparisonExpr::bIsOfType(pJoinPredicate));
-
   // save the left child columns
   pBackend->m_bJoinPredicate = true;
   pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
@@ -742,7 +739,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
       if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild < 0 )
         sPipeline->vCatSprint(
-            "$L%lld"
+            " $L%lld"
             ""_Stz,
             iColumnOrdinal);
       else
