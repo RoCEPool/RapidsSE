@@ -194,7 +194,7 @@ void Step::vSenExecute(void)
       NEVER_REACH;
       break;
           
-    case WK_ROUTINE:
+    case WK_COLON:
       m_pReturnStack->vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
       break;

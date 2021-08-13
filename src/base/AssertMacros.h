@@ -23,9 +23,9 @@
 /*----------------------------------------------------------------------------*/
 #define ALWAYS(condition) \
   if (! (condition)) \
-    BASE::vThrow(FK_ASSERT,\
-                 __func__,__FILE__,__LINE__,\
-                 (Stz*)#condition); \
+    BASE::vThrowAlways(FK_ALWAYS,\
+                       __func__,__FILE__,__LINE__,\
+                      (Stz*)#condition); \
 
 /*----------------------------------------------------------------------------*/
 /* ASSERT macro                                                               */
@@ -33,22 +33,40 @@
 #ifdef WITH_ASSERT_MACRO
   #define ASSERT(condition) \
     if (! (condition)) \
-      BASE::vThrow(FK_ASSERT,\
-                   __func__,__FILE__,__LINE__,\
-                   (Stz*)#condition); \
+      BASE::vThrowAssert(FK_ASSERT,\
+                         __func__,__FILE__,__LINE__,\
+                         (Stz*)#condition); \
 EndDefine
 #else
   #define ASSERT(condition) EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* NEVER_REACH macro (point in code which should never be reached             */
+/*----------------------------------------------------------------------------*/
+#define NEVER_REACH \
+  BASE::vThrowReached(FK_REACHED,\
+                     __func__,__FILE__,__LINE__, \
+                     "NEVER_REACH point in code was reached"_Stz); \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
+/* NEVER_REACH macro (point in code which should never be reached             */
+/*----------------------------------------------------------------------------*/
+#define NOT_IMPLEMENTED_YET \
+  BASE::vThrowUnimplemented(FK_UNIMPLEMENTED,\
+                            __func__,__FILE__,__LINE__, \
+                            "NOT_IMPLEMENTED_YET block of code hit"_Stz); \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* RASSERT macro                                                              */
 /*----------------------------------------------------------------------------*/
 #define RASSERT(condition) \
   if (! (condition)) \
-    BASE::vThrow(FK_RASSERT,\
-                 __func__,__FILE__,__LINE__,\
-                 (Stz*)#condition); \
+    BASE::vThrowAssert(FK_RASSERT,\
+                      __func__,__FILE__,__LINE__,\
+                      (Stz*)#condition); \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
@@ -86,24 +104,6 @@ EndDefine
   BASE::vThrowUser(FK_THROW,\
                    __func__,__FILE__,__LINE__,\
                    szDescription); \
-EndDefine
-
-/*----------------------------------------------------------------------------*/
-/* NEVER_REACH macro (point in code which should never be reached             */
-/*----------------------------------------------------------------------------*/
-#define NEVER_REACH \
-  BASE::vThrow(FK_REACHED,\
-               __func__,__FILE__,__LINE__, \
-               (Stz*)"NEVER_REACH point in code was reached"); \
-EndDefine
-
-/*----------------------------------------------------------------------------*/
-/* NEVER_REACH macro (point in code which should never be reached             */
-/*----------------------------------------------------------------------------*/
-#define NOT_IMPLEMENTED_YET \
-  BASE::vThrow(FK_REACHED,\
-               __func__,__FILE__,__LINE__, \
-               (Stz*)"NOT_IMPLEMENTED_YET block of code hit"); \
 EndDefine
 
 /*============================================================================*/

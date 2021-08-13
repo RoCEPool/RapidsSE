@@ -109,13 +109,16 @@ void Exception::vSprint(char* azIntoBuf)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
                   
-                  "Exception : failure=%s (%s) "
-                  "thrown by func=%s() in file=%s at line=%lld"_Stz
+                  "Exception eFK=%lld:%s`%s`; "
+                  "__func__=%s() "
+                  "__FILE__=%s:%lld"_Stz
          
+                  ,(i8)m_eFailure
                   ,aFK[eFailure()]->azChar()
                   ,azText()
                   
                   ,m_zFuncNm
+                  
                   ,azFileNm()
                   ,iLineNo()
                   );

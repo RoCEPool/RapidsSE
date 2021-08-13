@@ -27,25 +27,49 @@ namespace BASE
   
   [[ noreturn ]] void vAbortProcess(void);
     
+  [[ noreturn ]] void vThrow_toHandler(Exception xException);
+
   [[ noreturn ]] void vThrow(eFK   eKind,
-                              const char* azFunc,
+                             const char* azFunc,
                              const char* azFilePath,
                              i8    iLineNo,
                              Stz*  szCondition,...);
 
-  [[ noreturn ]] void vThrowException(Exception xException);
+  [[ noreturn ]] void vThrowAlways(eFK   eKind,
+                                   const char* azFunc,
+                                   const char* azFilePath,
+                                   i8    iLineNo,
+                                   Stz*  szCondition,...);
+
+  [[ noreturn ]] void vThrowAssert(eFK   eKind,
+                                   const char* azFunc,
+                                   const char* azFilePath,
+                                   i8    iLineNo,
+                                   Stz*  szCondition,...);
 
   [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
+                                      const char* azFunc,
+                                      const char* azFilePath,
+                                      i8    iLineNo,
+                                      Stz*  szFormat,...);
+
+  [[ noreturn ]] void vThrowReached(eFK   eKind,
+                                    const char* azFunc,
+                                    const char* azFilePath,
+                                    i8    iLineNo,
+                                    Stz*  szCondition,...);
+
+  [[ noreturn ]] void vThrowUnimplemented(eFK   eKind,
+                                          const char* azFunc,
+                                          const char* azFilePath,
+                                          i8    iLineNo,
+                                          Stz*  szCondition,...);
+
+  [[ noreturn ]] void vThrowUser(eFK   eKind,
                                  const char* azFunc,
                                  const char* azFilePath,
                                  i8    iLineNo,
                                  Stz*  szFormat,...);
-
-  [[ noreturn ]] void vThrowUser(eFK   eKind,
-                             const char* azFunc,
-                             const char* azFilePath,
-                             i8    iLineNo,
-                             Stz*  szFormat,...);
   
   [[ noreturn ]] void vThrowType(eFK   eKind,
                                  const char* azFunc,

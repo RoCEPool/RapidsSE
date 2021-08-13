@@ -651,8 +651,10 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
-    static void vWordSee(Word* pWord, DicStack* pDicStack);
-    static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip, DicStack* pDicStack);
+    static void vWordSee(Word* pWord, DicStack* pDicStack,
+                         CodeCell* aInxPtr=nullptr);
+    static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,
+                             DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
     static void vWriteLog(void);
     static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
     static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);

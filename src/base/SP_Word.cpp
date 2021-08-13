@@ -111,14 +111,13 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%p: Word %s %s %s"
+                  "Word %s %p: %s category=%s"
                   "%s"_Stz,
                   
-                  pWord,
                   pWord->szWordNm(),
+                  pWord,
                   aWK[pWord->eWord()],
                   pWord->pCategory()->szWordNm(),
-                  
                   
                   pWord->bImmediate() ? " immediate" : "",
                   
@@ -127,12 +126,12 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
-                       " exitHook %s"_Stz,
+                       " exitHook=%s"_Stz,
                        pWord->szExitHook());
   
   if (* pWord->szExceptionHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
-                       " exceptionHook %s"_Stz,
+                       " exceptionHook=%s"_Stz,
                        pWord->szExceptionHook());
   
   

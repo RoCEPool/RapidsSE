@@ -25,9 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the command error info set                                          */
 /*----------------------------------------------------------------------------*/
-: op__cmdErr ( errorMsg errorCode )
-
-  params| errorCode errorMsg |
+: op__cmdErr params| errorCode errorMsg |
 
   DdlLock[].testDrop
 
@@ -53,9 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__execErr ( errorCode )
-
-  params| errorCode |
+: op__execErr params| errorCode |
 
   DdlLock[].testDrop
 
@@ -70,7 +66,7 @@
   OI_EXECERRORS infoSet[].opInfoset!
 
   errorCode attachmap::errorText@
-  errorCode infoSetTable[] InfoSet[].addExecError assert
+    errorCode infoSetTable[] InfoSet[].addExecError assert
 
   // pipeout the EXECERROR infoset
   InfoSet[].pipeOut
@@ -82,9 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__execErrMsg ( errorMsg errorCode )
-
-  params| errorCode errorMsg |
+: op__execErrMsg params| errorCode errorMsg |
 
   DdlLock[].testDrop
 

@@ -492,6 +492,33 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /*----------------------------------------------------------------------------*/
 /* throw an xException                                                        */
 /*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrow_toHandler(Exception xException)
+{
+
+  if (AM::bDeveloper() || AM::bDebugMode()) {
+
+    fprintf(stderr,"\n");
+    fprintf(stderr,
+            // 0         1         2         3
+            // 0123456789012345678901234567890123456789"
+              "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
+              "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
+              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
+              "\n"
+            );
+    fprintf(stderr,"\n");
+
+    xException.vPrint();
+    
+    vThreadCallStackDump();
+  }
+
+  throw xException;
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw an xException                                                        */
+/*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrow(eFK   eFailure,
                                  const char* azFunc,
                                  const char* azFilePath,
@@ -560,55 +587,79 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // throw to Task::vExceptionHandler()
   
-  vThrowException(xException);
+  vThrow_toHandler(xException);
 }
 
 /*----------------------------------------------------------------------------*/
-/* throw an xException                                                        */
+/* throw an always exception                                                  */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void BASE::vThrowException(Exception xException)
+[[ noreturn ]] void BASE::vThrowAlways(eFK   eFailure,
+                                       const char* azFunc,
+                                       const char* azFilePath,
+                                       i8    iLineNo,
+                                       Stz*  szCondition,
+                                       ...)
 {
-
-  if (AM::bDeveloper() || AM::bDebugMode()) {
-
-    fprintf(stderr,"\n");
-    fprintf(stderr,
-            // 0         1         2         3
-            // 0123456789012345678901234567890123456789"
-              "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
-              "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
-              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
-              "\n"
-            );
-    fprintf(stderr,"\n");
-
-    xException.vPrint();
+  char zFileNm[1024];
+  char zCondition[1024];
     
-    vThreadCallStackDump();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szCondition);
+  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  va_end(xArgs);
+  
+  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
+  
+  vThrow_toHandler(xException);
+}
 
-    fprintf(stderr,"\n");
-    fprintf(stderr,
-            // 0         1         2         3
-            // 0123456789012345678901234567890123456789"
-              "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
-              "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
-              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
-              "\n"
-            );
-    fprintf(stderr,"\n");
-  }
-
-  throw xException;
+/*----------------------------------------------------------------------------*/
+/* throw an assert exception                                                  */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowAssert(eFK   eFailure,
+                                       const char* azFunc,
+                                       const char* azFilePath,
+                                       i8    iLineNo,
+                                       Stz*  szCondition,
+                                       ...)
+{
+  char zFileNm[1024];
+  char zCondition[1024];
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szCondition);
+  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  va_end(xArgs);
+  
+  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
+  
+  vThrow_toHandler(xException);
 }
 
 /*----------------------------------------------------------------------------*/
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowLowMemory(eFK   eFailure,
-                                     const char* azFunc,
-                                     const char* azFilePath,
-                                     i8    iLineNo,
-                                     Stz*  szFormat,...)
+                                          const char* azFunc,
+                                          const char* azFilePath,
+                                          i8    iLineNo,
+                                          Stz*  szFormat,...)
 {
 //  if (AM::bDeveloper()) {
 //    fprintf(stderr,
@@ -642,17 +693,79 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
 
-  vThrowException(xException);
+  vThrow_toHandler(xException);
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw a reached exception                                                  */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowReached(eFK   eFailure,
+                                        const char* azFunc,
+                                        const char* azFilePath,
+                                        i8    iLineNo,
+                                        Stz*  szCondition,
+                                        ...)
+{
+  char zFileNm[1024];
+  char zCondition[1024];
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szCondition);
+  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  va_end(xArgs);
+  
+  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
+  
+  vThrow_toHandler(xException);
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw an unimplemented exception                                           */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowUnimplemented(eFK   eFailure,
+                                              const char* azFunc,
+                                              const char* azFilePath,
+                                              i8    iLineNo,
+                                              Stz*  szCondition,
+                                              ...)
+{
+  char zFileNm[1024];
+  char zCondition[1024];
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szCondition);
+  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  va_end(xArgs);
+  
+  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
+  
+  vThrow_toHandler(xException);
 }
 
 /*----------------------------------------------------------------------------*/
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowUser(eFK   eFailure,
-                                        const char* azFunc,
-                                        const char* azFilePath,
-                                        i8    iLineNo,
-                                        Stz*  szFormat,...)
+                                     const char* azFunc,
+                                     const char* azFilePath,
+                                     i8    iLineNo,
+                                     Stz*  szFormat,...)
 {
 //  if (AM::bDeveloper()) {
 //    fprintf(stderr,
@@ -686,18 +799,18 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
   
-  vThrowException(xException);
+  vThrow_toHandler(xException);
 }
 
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void BASE::vThrowType(eFK   eFailure,
-                                            const char* azFunc,
-                                            const char* azFilePath,
-                                            i8    iLineNo,
-                                            void* aObject,
-                                            eCN   eExpectingClass)
+[[ noreturn ]] void BASE::vThrowType(eFK eFailure,
+                                     const char* azFunc,
+                                     const char* azFilePath,
+                                     i8    iLineNo,
+                                     void* aObject,
+                                     eCN   eExpectingClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
   eCN eGotClass = pObject->eGetClassNo();
@@ -736,13 +849,13 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void BASE::vThrowType2(eFK   eFailure,
-                                            const char* azFunc,
-                                            const char* azFilePath,
-                                            i8    iLineNo,
-                                            void* aObject,
-                                            eCN   eExpectingClass,
-                                            eCN   eGotClass)
+[[ noreturn ]] void BASE::vThrowType2(eFK eFailure,
+                                      const char* azFunc,
+                                      const char* azFilePath,
+                                      i8    iLineNo,
+                                      void* aObject,
+                                      eCN   eExpectingClass,
+                                      eCN   eGotClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
   UNUSED(pObject);

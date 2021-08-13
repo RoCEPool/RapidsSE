@@ -242,7 +242,40 @@ void Task::vTaskLoop(void)
     
     // catch exception
     catch (Exception xException) {
-      vExceptionHandler(xException);
+      
+      if (AM::bDeveloper()) {
+        fprintf(stderr,"\n");
+        fprintf(stderr,
+                // 0         1         2         3
+                // 0123456789012345678901234567890123456789"
+                   "@CATCH @CATCH @CATCH @CATCH @CATCH @CATC" // 40
+                   "H @CATCH @CATCH @CATCH @CATCH @CATCH @CA" // 80
+                   "TCH @CATCH @CATCH @CATCH @CATCH @CATCH" // 120
+                   "\n"
+                );
+        fprintf(stderr,"\n");
+      }
+      
+      m_xException = xException;
+      
+      if (AM::bDeveloper()) {
+        vDumpOnException();
+      }
+      
+      vExceptionHandler();
+            
+      if (AM::bDeveloper()) {
+        fprintf(stderr,"\n");
+        fprintf(stderr,
+                // 0         1         2         3
+                // 0123456789012345678901234567890123456789"
+                  "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
+                  "OVER @RECOVER @RECOVER @HANDLER @HANDLER" // 80
+                  " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
+                  "\n"
+                );
+        fprintf(stderr,"\n");
+      }
     }
   }
   
@@ -281,84 +314,76 @@ void Task::vVerifyTaskComposition(void)
 /*----------------------------------------------------------------------------*/
 /* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
-void Task::vExceptionHandler(Exception xException)
+void Task::vExceptionHandler(void)
 {
   _noPreconditions_
+ 
+  if (AM::bDeveloper()) {
+    fprintf(stderr,"\n");
+    fprintf(stderr,
+            // 0         1         2         3
+            // 0123456789012345678901234567890123456789"
+              "@HANDLER @HANDLER @HANDLER @HANDLER @HAN" // 40
+              "DLER @HANDLER @HANDLER @HANDLER @HANDLER" // 80
+              " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
+              "\n"
+            );
+    fprintf(stderr,"\n");
+  }
   
-  m_xException = xException;
+  vSetSenRecoverContext();
   
-  vDumpOnFailure();
+  if (AM::bDeveloper()) {
+    vSeeFrameStack();
   
-  vContinueAfterFailure();
+    Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+    if (pWord)
+      AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* detailed dump of task on exception                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_NEW_FAILURE_DUMP
-void Task::vDumpOnFailure(void)
+void Task::vDumpOnException(void)
 {
   _noPreconditions_
-
-//  if (m_pJob) {
-//    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-//      return;
-//  }
   
-  vTrace("\n\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz,this);
 
-  
-  vTrace("1) TBD \n"_Stz);
-  vTrace("2) TBD \n"_Stz);
-  vTrace("3) TBD \n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n1) Task General \n"_Stz);
+ 
+  vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
 
-  
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("\n\n"_Stz);
-}
-/*----------------------------------------------------------------------------*/
-#else
-void Task::vDumpOnFailure(void)
-{
-  _noPreconditions_
+  if (m_pJob.bIsNotNull()) {
+    vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
-  // to be removed
-  vExceptionTrace();
-  //
-  
-  if (m_pJob) {
-    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-      return;
   }
+  else
+  if (m_pOp.bIsNotNull()) {
+    vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,m_pOp->szOpNm());
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n2) Task Frames\n"_Stz);
+    
+  Task::vSeeFrameStack();
   
-  vTrace("\n\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n3) Event Handler \n"_Stz);
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord)
+    AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("End Dump of Task\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("Dump of Task %p\n"_Stz,this);
-
-  
-  vTrace("1) TBD \n"_Stz);
-  vTrace("2) TBD \n"_Stz);
-  vTrace("3) TBD \n"_Stz);
-
-  
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("\n\n"_Stz);
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* task continues after failure                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vContinueAfterFailure(void)
-{
-  //m_iTraceMask = C_TRACE_STEPS;
-  
-  //vResetSenContext();
-  vRecoverSenContext();
-
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1009,7 +1034,7 @@ void Task::vReseed(void)
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRecoverSenContext(void)
+void Task::vSetSenRecoverContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -1028,7 +1053,8 @@ void Task::vRecoverSenContext(void)
   
   //Task::vSeeFrameStack();
   
-  m_aInxPtr = nullptr;
+
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1040,22 +1066,36 @@ void Task::vReleaseLockSets(void)
 
   SP_Lock spLock;
 
-  vTrace("Release Read Lock Set\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop all read locks held by this task
+  
+  if (AM::bDeveloper())
+    vTrace("Release Read Lock Set\n"_Stz);
+  
   for (i8 i_Lock = m_oReadLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
     Lock* pLock = m_oReadLocks.pGet(i_Lock);
-    vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
+    
+    if (AM::bDeveloper())
+      vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropRead();
   }
 
-  vTrace("Release Write Lock Set\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop all write locks held by this task
+
+  if (AM::bDeveloper())
+    vTrace("Release Write Lock Set\n"_Stz);
+  
   for (i8 i_Lock = m_oWriteLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {
     Lock* pLock = m_oWriteLocks.pGet(i_Lock);
-    vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
+    
+    if (AM::bDeveloper())
+      vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropWrite();
   }
@@ -1104,14 +1144,14 @@ void Task::vSeeFrameStack(void)
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   
   if (pWord)
-    vTrace("=%p word %s %s\n"_Stz
+    vTrace("Current Frame =%p word %s %s\n"_Stz
            ,pWord
            ,pWord->szWordNm()
            ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
                                : ""_Stz
            );
 
-  m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
+  m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
