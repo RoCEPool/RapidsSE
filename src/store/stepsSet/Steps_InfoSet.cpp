@@ -130,10 +130,12 @@ void Step::vInfoSetAddExecError(void)
 
   Grid* pGrid = AM::pGrid();
 
+  pStreamDef->vListContents(1);
+  
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pGrid->pThisNode()->szNodeNm(),
-                                  eErrorCode,
+                                  (i8)eErrorCode,
                                   sErrorText.azChar(),
                                   C_VARGS_END);
 

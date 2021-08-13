@@ -471,7 +471,7 @@
   task::releaseLockSets
 
   "<recover>" job[] job.tagSet@ tagSet.hasName if
-    task::exception 999 op__execErrMsg
+    task::exception EC_INTERNAL_ERROR op__execErrMsg
 
     PipeIn[].isNull not if
       PipeIn[].delete
