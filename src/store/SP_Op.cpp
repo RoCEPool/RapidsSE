@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "MY.hpp"
+
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"
@@ -175,6 +177,30 @@ Stz* SP_Op::szLeading(Op* pOp)
   return (Stz*) &m_caResult[0];
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* sprint path an op                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szPath(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  Stream*   pStream   = pOp->pStream();
+  Stage*    pStage    = pStream->pStage();
+  Pipeline* pPipeline = pStage->pPipeline();
+
+  vInit();
+  
+  vCatf("%s/%s/%s/%lld/%s"_Stz
+        ,MY::szNodeNm()
+        ,pPipeline->szPipelineNm()
+        ,pStage->szStageNm()
+        ,pStream->i_Stream()
+        ,pOp->szOpNm()
+        );
+
+  return (Stz*) &m_caResult[0];
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

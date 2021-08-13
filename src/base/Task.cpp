@@ -11,6 +11,7 @@
 #include "Grid.hpp" //?
 
 #include "SP_Lock.hpp" //?
+#include "SP_Op.hpp" //?
 #include "SP_Timer.hpp" //?
 #include "LogicUnit.hpp" //?
 
@@ -357,17 +358,19 @@ void Task::vDumpOnException(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n1) Task General \n"_Stz);
  
-  vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
-
   if (m_pJob.bIsNotNull()) {
     vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
   if (m_pOp.bIsNotNull()) {
-    vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,m_pOp->szOpNm());
+    SP_Op spOp;
+    vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,spOp.szPath(m_pOp));
 
   }
+
+  vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n2) Task Frames\n"_Stz);

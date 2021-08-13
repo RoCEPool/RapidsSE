@@ -24,6 +24,7 @@ namespace STORE
     Stz* sz(Op* pOp);
   
     Stz* szLeading(Op* pOp);
+    Stz* szPath(Op* pOp);
 
     Footer* aFooter(void);
   };
