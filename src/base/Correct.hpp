@@ -35,6 +35,18 @@ namespace BASE
                              i8    iLineNo,
                              Stz*  szCondition,...);
 
+  [[ noreturn ]] void vThrowAlways(eFK   eKind,
+                                   const char* azFunc,
+                                   const char* azFilePath,
+                                   i8    iLineNo,
+                                   Stz*  szCondition,...);
+
+  [[ noreturn ]] void vThrowAssert(eFK   eKind,
+                                   const char* azFunc,
+                                   const char* azFilePath,
+                                   i8    iLineNo,
+                                   Stz*  szCondition,...);
+
   [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
                                       const char* azFunc,
                                       const char* azFilePath,
