@@ -253,15 +253,30 @@ void Task::vTaskLoop(void)
               );
       fprintf(stderr,"\n");
       
-      vExceptionHandler(xException);
+      m_xException = xException;
+      
+      vDumpOnFailure();
+      
+      vExceptionHandler();
+      
+//      fprintf(stderr,"\n");
+//      fprintf(stderr,
+//              // 0         1         2         3
+//              // 0123456789012345678901234567890123456789"
+//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 40
+//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 80
+//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 120
+//                "\n"
+//              );
+//      fprintf(stderr,"\n");
       
       fprintf(stderr,"\n");
       fprintf(stderr,
               // 0         1         2         3
               // 0123456789012345678901234567890123456789"
-                "@RETRY @RETRY @RETRY @RETRY @RETRY @RETR" // 40
-                "Y @RETRY @RETRY @RETRY @RETRY @RETRY @RE" // 80
-                "TRY @RETRY @RETRY @RETRY @RETRY @RETRY" // 120
+                "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
+                "OVER @RECOVER @RECOVER @HANDLER @HANDLER" // 80
+                " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
                 "\n"
               );
       fprintf(stderr,"\n");
@@ -303,7 +318,7 @@ void Task::vVerifyTaskComposition(void)
 /*----------------------------------------------------------------------------*/
 /* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
-void Task::vExceptionHandler(Exception xException)
+void Task::vExceptionHandler(void)
 {
   _noPreconditions_
  
@@ -316,94 +331,36 @@ void Task::vExceptionHandler(Exception xException)
             " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
             "\n"
           );
-
-  m_xException = xException;
+  fprintf(stderr,"\n");
   
-  vDumpOnFailure();
+  vSetSenRecoverContext();
   
-  //vResetSenContext();
-  vRecoverSenContext();
-
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  vSeeFrameStack();
 }
 
 /*----------------------------------------------------------------------------*/
 /* detailed dump of task on exception                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_NEW_FAILURE_DUMP
 void Task::vDumpOnFailure(void)
 {
   _noPreconditions_
-
-//  if (m_pJob) {
-//    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-//      return;
-//  }
   
-  //vTrace("\n\n"_Stz);
+  vTrace("\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz,this);
 
   
-  vTrace("1) TBD \n"_Stz);
-  vTrace("2) TBD \n"_Stz);
-  vTrace("3) TBD \n"_Stz);
+  vTrace("\n1) TBD \n"_Stz);
+  
+  vTrace("\n2) Task Frames\n"_Stz);
+
+  Task::vSeeFrameStack();
+
+  vTrace("\n3) TBD \n"_Stz);
 
   
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  //vTrace("\n\n"_Stz);
-}
-/*----------------------------------------------------------------------------*/
-#else
-void Task::vDumpOnFailure(void)
-{
-  _noPreconditions_
-
-  // to be removed
-  vExceptionTrace();
-  //
-  
-  if (m_pJob) {
-    if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
-      return;
-  }
-  
-  vTrace("\n\n"_Stz);
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("Dump of Task %p\n"_Stz,this);
-
-  
-  vTrace("1) TBD \n"_Stz);
-  vTrace("2) TBD \n"_Stz);
-  vTrace("3) TBD \n"_Stz);
-
-  
-  vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("\n\n"_Stz);
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* task continues after failure                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vContinueAfterFailure(void)
-{
-  //m_iTraceMask = C_TRACE_STEPS;
-  
-  fprintf(stderr,
-          // 0         1         2         3
-          // 0123456789012345678901234567890123456789"
-            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 40
-            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 80
-            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 120
-            "\n"
-          );
-
-
-  //vResetSenContext();
-  vRecoverSenContext();
-
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1054,18 +1011,9 @@ void Task::vReseed(void)
 /*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRecoverSenContext(void)
+void Task::vSetSenRecoverContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  fprintf(stderr,"\n");  fprintf(stderr,
-          // 0         1         2         3
-          // 0123456789012345678901234567890123456789"
-            "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
-            "OVER @RECOVER @HANDLER @HANDLER @HANDLER" // 80
-            " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
-            "\n"
-          );
 
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
@@ -1082,7 +1030,8 @@ void Task::vRecoverSenContext(void)
   
   //Task::vSeeFrameStack();
   
-  m_aInxPtr = nullptr;
+
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1158,14 +1107,14 @@ void Task::vSeeFrameStack(void)
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   
   if (pWord)
-    vTrace("=%p word %s %s\n"_Stz
+    vTrace("Current Frame =%p word %s %s\n"_Stz
            ,pWord
            ,pWord->szWordNm()
            ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
                                : ""_Stz
            );
 
-  m_pReturnStack->vDump(&m_oDicStack,"Task Frame Stack"_Stz);
+  m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

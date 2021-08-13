@@ -124,9 +124,8 @@ namespace BASE
   
   
     void vTaskLoop(void);
-    void vExceptionHandler(Exception xException);
+    void vExceptionHandler(void);
     void vExceptionTrace(void);
-    void vContinueAfterFailure(void);
 
     void vDumpOnFailure(void);
 
@@ -176,7 +175,7 @@ namespace BASE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LockSet* pReadLocks(void);
-    void vRecoverSenContext(void);
+    void vSetSenRecoverContext(void);
     void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vReseed(void);
