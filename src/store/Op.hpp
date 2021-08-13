@@ -68,6 +68,7 @@ namespace STORE
     // working variables. these are not copies of variables from opSpec
   
     bool m_bTraceOp;    // tracing this operator
+    bool m_bTraceAck;   // tracing ack of this operator
 
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses

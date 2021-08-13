@@ -1221,7 +1221,7 @@ void Backend::vAppendLastStage(Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
       "    | sink\n"
-      "    | startStage\n"
+      "    | stageStart\n"
       ""_Stz);
 
   m_sPipeline->vConcat(
@@ -1283,7 +1283,7 @@ void Backend::vAppendStartStage() {
       ""_Stz);
 
   m_sPipeline->vCatSprint(
-      "  stage startStage on origin :\n"
+      "  stage stageStart on origin :\n"
       "    start\n"
       "    | pulse once"
       ""_Stz

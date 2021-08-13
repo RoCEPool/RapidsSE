@@ -60,9 +60,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_sStreamNm   = pStream->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
   m_i_Op        = pOpSpec->iOpSpec();
-  
+
   m_bTraceOp    = false;
-  
+  m_bTraceAck   = false;
+
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
@@ -104,7 +105,11 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
       pJobTags->bHasName(C_TAG_TRACEOP)) {
     m_bTraceOp = true;
   }
-  
+
+  if (AM::TRACE::bVerbose(C_VB_ACK)) {
+    m_bTraceAck = true;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ++ gixOp;
@@ -220,52 +225,48 @@ void Op::vAckPipelineJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Task* pPipelineTask = AM::pExecutingTask(m_p_Pipeline_op->pPipelineJob());
-    
 
-  if (m_bTraceOp) {
-    
-    if (AM::TRACE::bVBlong()) {
+    if (m_bTraceOp) {
+
+      if (AM::TRACE::bVBlong()) {
+        SP_Op spOp;
+
+        vTraceM("%s "
+                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pPipelineJob()
+        );
+      } else {
+        vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+               szOpNm(),
+               m_pStage->szStageNm(),
+               iNode(),
+               tPtnNo());
+      }
+    }
+
+    i8 nAcksWereRemaining;
+
+    SP_Op spOp;
+
+    if (m_bTraceOp && AM::TRACE::bVBlong())
+      spOp.szLeading(this);
+
+    AM::vAckWaitingTask(pPipelineTask, m_pTask, nAcksWereRemaining);
+
+    if (m_bTraceOp && AM::TRACE::bVBlong()) {
       SP_Op spOp;
 
       vTraceM("%s "
-              "%-18s pipelineJob=%p\n"_Stz
-             
-              ,spOp.szLeading(this)
-             
-              ,__func__
-              ,pPipelineJob()
-             );
+              "%-18s nAcksWereRemaining=%lld\n"_Stz, spOp.sz(), __func__, nAcksWereRemaining
+      );
     }
-    else {
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+
+    if (m_bTraceAck)
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job (acksRemaining : %lld)\n"_Stz,
              szOpNm(),
              m_pStage->szStageNm(),
              iNode(),
-             tPtnNo());
-    }
-  }
-  
-  i8 nAcksWereRemaining;
-  
-  SP_Op spOp;
-
-  if (m_bTraceOp && AM::TRACE::bVBlong())
-    spOp.szLeading(this);
-  
-  AM::vAckWaitingTask(pPipelineTask,m_pTask,nAcksWereRemaining);
-  
-  if (m_bTraceOp && AM::TRACE::bVBlong()) {
-      SP_Op spOp;
-
-      vTraceM("%s "
-              "%-18s nAcksWereRemaining=%lld\n"_Stz
-             
-              ,spOp.sz()
-             
-              ,__func__
-              ,nAcksWereRemaining
-             );
-   }
+             tPtnNo(),
+             nAcksWereRemaining);
 }
 
 /*----------------------------------------------------------------------------*/

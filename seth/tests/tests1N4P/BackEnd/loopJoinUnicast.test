@@ -44,7 +44,7 @@ begin
   stage stageD on origin :
     output | sink | stageA
 
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -63,7 +63,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -82,7 +82,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -101,7 +101,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -123,7 +123,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -146,7 +146,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -171,7 +171,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -220,7 +220,7 @@ begin
   stage stageD on origin :
     output | sink | stageA
 
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -239,7 +239,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -258,7 +258,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -277,7 +277,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -299,7 +299,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -322,7 +322,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -347,7 +347,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -393,7 +393,7 @@ begin
   stage stageD on origin :
     output | sink | stageA
 
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -412,7 +412,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -431,7 +431,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -450,7 +450,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -472,7 +472,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -495,7 +495,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -520,7 +520,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows: 0
 
@@ -573,7 +573,7 @@ begin
   stage stageD on origin :
     output | sink | stageA
 
-end;
+end <vb_ack> = 1;
 
 rows:
   (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
@@ -598,7 +598,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
   (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
@@ -620,7 +620,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
   (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
@@ -641,7 +641,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
@@ -664,7 +664,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
   (6,'T-ROW6',6,null,666,'J-ROW6')
@@ -690,7 +690,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
   (3,303,33993,'T-ROW3',3,'J-ROW3a')
@@ -717,7 +717,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end <vb_ack> = 1;
 
 rows:
   (7,'T-ROW7',7,'J-ROW7')

@@ -1364,8 +1364,8 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   if (gpAttachMap->m_xSysArgs.m_bVerbose)
     return true;
   
-  if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
-    return false;
+  //if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
+  //  return false;
 
   pTags = & gpAttachMap->m_xSysArgs.m_oArgTags;
   if (pTags) {
