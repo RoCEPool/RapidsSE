@@ -90,8 +90,6 @@
 #define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
                                            //   instead of partition no
 
-#define WITH_NEW_FAILURE_DUMP EndDefine    // code for new exception dump
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
