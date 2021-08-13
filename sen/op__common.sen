@@ -460,17 +460,15 @@
 /*----------------------------------------------------------------------------*/
 : op__failureRecovery
 
-  "op__failureRecovery" .
+   args.developer if
+    "op__failureRecovery" .
+    task::seeFrameStack
+    task::seeLockSets
+    //task::seeLogicUnitRegisters
+    //grid::seeNodes
+  then
   
-  task::seeFrameStack
-  
-  task::seeLockSets
-
-  task::seeLogicUnitRegisters
-
   task::releaseLockSets
-
-  grid::seeNodes
 
   "<recover>" job[] job.tagSet@ tagSet.hasName if
     task::exception 999 op__execErrMsg

@@ -242,44 +242,40 @@ void Task::vTaskLoop(void)
     
     // catch exception
     catch (Exception xException) {
-      fprintf(stderr,"\n");
-      fprintf(stderr,
-              // 0         1         2         3
-              // 0123456789012345678901234567890123456789"
-                "@CATCH @CATCH @CATCH @CATCH @CATCH @CATC" // 40
-                "H @CATCH @CATCH @CATCH @CATCH @CATCH @CA" // 80
-                "TCH @CATCH @CATCH @CATCH @CATCH @CATCH" // 120
-                "\n"
-              );
-      fprintf(stderr,"\n");
+      
+      if (AM::bDeveloper()) {
+        fprintf(stderr,"\n");
+        fprintf(stderr,
+                // 0         1         2         3
+                // 0123456789012345678901234567890123456789"
+                   "@CATCH @CATCH @CATCH @CATCH @CATCH @CATC" // 40
+                   "H @CATCH @CATCH @CATCH @CATCH @CATCH @CA" // 80
+                   "TCH @CATCH @CATCH @CATCH @CATCH @CATCH" // 120
+                   "\n"
+                );
+        fprintf(stderr,"\n");
+      }
       
       m_xException = xException;
       
-      vDumpOnException();
+      if (AM::bDeveloper()) {
+        vDumpOnException();
+      }
       
       vExceptionHandler();
-      
-//      fprintf(stderr,"\n");
-//      fprintf(stderr,
-//              // 0         1         2         3
-//              // 0123456789012345678901234567890123456789"
-//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 40
-//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 80
-//                "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 120
-//                "\n"
-//              );
-//      fprintf(stderr,"\n");
-      
-      fprintf(stderr,"\n");
-      fprintf(stderr,
-              // 0         1         2         3
-              // 0123456789012345678901234567890123456789"
-                "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
-                "OVER @RECOVER @RECOVER @HANDLER @HANDLER" // 80
-                " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
-                "\n"
-              );
-      fprintf(stderr,"\n");
+            
+      if (AM::bDeveloper()) {
+        fprintf(stderr,"\n");
+        fprintf(stderr,
+                // 0         1         2         3
+                // 0123456789012345678901234567890123456789"
+                  "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
+                  "OVER @RECOVER @RECOVER @HANDLER @HANDLER" // 80
+                  " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
+                  "\n"
+                );
+        fprintf(stderr,"\n");
+      }
     }
   }
   
@@ -322,24 +318,28 @@ void Task::vExceptionHandler(void)
 {
   _noPreconditions_
  
-  fprintf(stderr,"\n");
-  fprintf(stderr,
-          // 0         1         2         3
-          // 0123456789012345678901234567890123456789"
-            "@HANDLER @HANDLER @HANDLER @HANDLER @HAN" // 40
-            "DLER @HANDLER @HANDLER @HANDLER @HANDLER" // 80
-            " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
-            "\n"
-          );
-  fprintf(stderr,"\n");
+  if (AM::bDeveloper()) {
+    fprintf(stderr,"\n");
+    fprintf(stderr,
+            // 0         1         2         3
+            // 0123456789012345678901234567890123456789"
+              "@HANDLER @HANDLER @HANDLER @HANDLER @HAN" // 40
+              "DLER @HANDLER @HANDLER @HANDLER @HANDLER" // 80
+              " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
+              "\n"
+            );
+    fprintf(stderr,"\n");
+  }
   
   vSetSenRecoverContext();
   
-  vSeeFrameStack();
+  if (AM::bDeveloper()) {
+    vSeeFrameStack();
   
-  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
-  if (pWord)
-    AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+    Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+    if (pWord)
+      AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1066,22 +1066,36 @@ void Task::vReleaseLockSets(void)
 
   SP_Lock spLock;
 
-  vTrace("Release Read Lock Set\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop all read locks held by this task
+  
+  if (AM::bDeveloper())
+    vTrace("Release Read Lock Set\n"_Stz);
+  
   for (i8 i_Lock = m_oReadLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
     Lock* pLock = m_oReadLocks.pGet(i_Lock);
-    vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
+    
+    if (AM::bDeveloper())
+      vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropRead();
   }
 
-  vTrace("Release Write Lock Set\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop all write locks held by this task
+
+  if (AM::bDeveloper())
+    vTrace("Release Write Lock Set\n"_Stz);
+  
   for (i8 i_Lock = m_oWriteLocks.iFirst();
        C_UNKNOWN != i_Lock;
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {
     Lock* pLock = m_oWriteLocks.pGet(i_Lock);
-    vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
+    
+    if (AM::bDeveloper())
+      vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropWrite();
   }
