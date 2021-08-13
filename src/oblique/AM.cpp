@@ -2862,16 +2862,16 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   
   SP_Word spWord;
   vTrace("\n"_Stz);
-  vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
-  vTrace("-------------------------------------------------------------\n"_Stz);
+  vTrace("%s\n"_Stz,spWord.szSeeWord(pWord));
+  //vTrace("-------------------------------------------------------------\n"_Stz);
 
   CodeCell* aDoes = pWord->aEntryCell();
   
   Word* pDoesWord = CodeBlock::pToWord(aDoes);
   
-  vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
+  //vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
-  AM::vWordSeeDoes(pDoesWord,aDoes, pDicStack);
+  AM::vWordSeeDoes(pDoesWord,aDoes,pDicStack);
   
   vTrace("=============================================================\n"_Stz);
 }
