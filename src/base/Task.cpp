@@ -242,7 +242,29 @@ void Task::vTaskLoop(void)
     
     // catch exception
     catch (Exception xException) {
+      fprintf(stderr,"\n");
+      fprintf(stderr,
+              // 0         1         2         3
+              // 0123456789012345678901234567890123456789"
+                "@CATCH @CATCH @CATCH @CATCH @CATCH @CATC" // 40
+                "H @CATCH @CATCH @CATCH @CATCH @CATCH @CA" // 80
+                "TCH @CATCH @CATCH @CATCH @CATCH @CATCH" // 120
+                "\n"
+              );
+      fprintf(stderr,"\n");
+      
       vExceptionHandler(xException);
+      
+      fprintf(stderr,"\n");
+      fprintf(stderr,
+              // 0         1         2         3
+              // 0123456789012345678901234567890123456789"
+                "@RETRY @RETRY @RETRY @RETRY @RETRY @RETR" // 40
+                "Y @RETRY @RETRY @RETRY @RETRY @RETRY @RE" // 80
+                "TRY @RETRY @RETRY @RETRY @RETRY @RETRY" // 120
+                "\n"
+              );
+      fprintf(stderr,"\n");
     }
   }
   
@@ -284,12 +306,25 @@ void Task::vVerifyTaskComposition(void)
 void Task::vExceptionHandler(Exception xException)
 {
   _noPreconditions_
-  
+ 
+  fprintf(stderr,"\n");
+  fprintf(stderr,
+          // 0         1         2         3
+          // 0123456789012345678901234567890123456789"
+            "@HANDLER @HANDLER @HANDLER @HANDLER @HAN" // 40
+            "DLER @HANDLER @HANDLER @HANDLER @HANDLER" // 80
+            " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
+            "\n"
+          );
+
   m_xException = xException;
   
   vDumpOnFailure();
   
-  vContinueAfterFailure();
+  //vResetSenContext();
+  vRecoverSenContext();
+
+  m_aInxPtr = m_pRecoveryWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,7 +340,7 @@ void Task::vDumpOnFailure(void)
 //      return;
 //  }
   
-  vTrace("\n\n"_Stz);
+  //vTrace("\n\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz,this);
 
@@ -316,7 +351,7 @@ void Task::vDumpOnFailure(void)
 
   
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("\n\n"_Stz);
+  //vTrace("\n\n"_Stz);
 }
 /*----------------------------------------------------------------------------*/
 #else
@@ -355,6 +390,16 @@ void Task::vContinueAfterFailure(void)
 {
   //m_iTraceMask = C_TRACE_STEPS;
   
+  fprintf(stderr,
+          // 0         1         2         3
+          // 0123456789012345678901234567890123456789"
+            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 40
+            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 80
+            "@CONTINUE @CONTINUE @CONTINUE @CONTINUE " // 120
+            "\n"
+          );
+
+
   //vResetSenContext();
   vRecoverSenContext();
 
@@ -1012,6 +1057,15 @@ void Task::vReseed(void)
 void Task::vRecoverSenContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  fprintf(stderr,"\n");  fprintf(stderr,
+          // 0         1         2         3
+          // 0123456789012345678901234567890123456789"
+            "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
+            "OVER @RECOVER @HANDLER @HANDLER @HANDLER" // 80
+            " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
+            "\n"
+          );
 
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
