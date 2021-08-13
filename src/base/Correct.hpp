@@ -27,13 +27,13 @@ namespace BASE
   
   [[ noreturn ]] void vAbortProcess(void);
     
+  [[ noreturn ]] void vThrow_toHandler(Exception xException);
+
   [[ noreturn ]] void vThrow(eFK   eKind,
                              const char* azFunc,
                              const char* azFilePath,
                              i8    iLineNo,
                              Stz*  szCondition,...);
-
-  [[ noreturn ]] void vThrowException(Exception xException);
 
   [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
                                       const char* azFunc,
