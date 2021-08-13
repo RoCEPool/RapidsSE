@@ -345,24 +345,38 @@ void Task::vDumpOnException(void)
 {
   _noPreconditions_
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("Dump of Task %p\n"_Stz,this);
 
-  
-  vTrace("\n1) TBD \n"_Stz);
-  
-  
-  vTrace("\n2) Task Frames\n"_Stz);
-  Task::vSeeFrameStack();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n1) Task General \n"_Stz);
+ 
+  vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
 
+  if (m_pJob.bIsNotNull()) {
+    vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
+
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,m_pOp->szOpNm());
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n2) Task Frames\n"_Stz);
+    
+  Task::vSeeFrameStack();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n3) TBD \n"_Stz);
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord)
-    AM::vWordSee(pWord,&m_oDicStack);
-
+    AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("End Dump of Task\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("\n"_Stz);

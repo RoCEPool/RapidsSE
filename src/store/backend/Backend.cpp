@@ -737,7 +737,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (bJoinPredicate) {
 
-      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild < 0 )
+      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
         sPipeline->vCatSprint(
             " $L%lld"
             ""_Stz,
