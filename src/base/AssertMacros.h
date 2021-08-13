@@ -94,16 +94,16 @@ EndDefine
 #define NEVER_REACH \
   BASE::vThrowReached(FK_REACHED,\
                      __func__,__FILE__,__LINE__, \
-                     (Stz*)"NEVER_REACH point in code was reached"); \
+                     "NEVER_REACH point in code was reached"_Stz); \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NOT_IMPLEMENTED_YET \
-  BASE::vThrow(FK_REACHED,\
-               __func__,__FILE__,__LINE__, \
-               (Stz*)"NOT_IMPLEMENTED_YET block of code hit"); \
+  BASE::vThrowUnimplemented(FK_REACHED,\
+                            __func__,__FILE__,__LINE__, \
+                            "NOT_IMPLEMENTED_YET block of code hit"_Stz); \
 EndDefine
 
 /*============================================================================*/

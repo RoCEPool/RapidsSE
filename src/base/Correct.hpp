@@ -47,6 +47,12 @@ namespace BASE
                                     i8    iLineNo,
                                     Stz*  szCondition,...);
 
+  [[ noreturn ]] void vThrowUnimplemented(eFK   eKind,
+                                          const char* azFunc,
+                                          const char* azFilePath,
+                                          i8    iLineNo,
+                                          Stz*  szCondition,...);
+
   [[ noreturn ]] void vThrowUser(eFK   eKind,
                                  const char* azFunc,
                                  const char* azFilePath,

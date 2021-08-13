@@ -666,6 +666,37 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 }
 
 /*----------------------------------------------------------------------------*/
+/* throw an unimplemented exception                                           */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowUnimplemented(eFK   eFailure,
+                                              const char* azFunc,
+                                              const char* azFilePath,
+                                              i8    iLineNo,
+                                              Stz*  szCondition,
+                                              ...)
+{
+  char zFileNm[1024];
+  char zCondition[1024];
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the exception
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szCondition);
+  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  va_end(xArgs);
+  
+  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throw to Task::vExceptionHandler()
+  
+  vThrow_toHandler(xException);
+}
+
+/*----------------------------------------------------------------------------*/
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowUser(eFK   eFailure,
