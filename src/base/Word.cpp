@@ -70,7 +70,7 @@ Word::Word(Stz* szWordNm)
   m_sWordNm    = szWordNm;
   RASSERT(m_sWordNm.bSame(szWordNm));
   
-  m_eWord      = WK_ROUTINE;
+  m_eWord      = WK_COLON;
 
   m_bBreakPt   = false;
   m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;

@@ -683,7 +683,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("WK_CPPOBJECT"_Stz,  WK_CPPOBJECT);
   /*  0 */ vAddConstant("WK_INTRINSIC"_Stz,  WK_INTRINSIC);
   /*  0 */ vAddConstant("WK_LOCAL"_Stz,      WK_LOCAL);
-  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,    WK_ROUTINE);
+  /*  0 */ vAddConstant("WK_COLON"_Stz,    WK_COLON);
   /*  0 */ vAddConstant("WK_ENUMS"_Stz,      WK_ENUMS);
   
   // XP_ : transaction phase

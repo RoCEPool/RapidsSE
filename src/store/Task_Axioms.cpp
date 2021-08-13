@@ -465,7 +465,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
             pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
           }
         }
-        else if (WK_ROUTINE == pCalledWord->eWord()) {
+        else if (WK_COLON == pCalledWord->eWord()) {
           fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
           pNewWord->vEncodeCall(afpCalledEntryStep);
         }

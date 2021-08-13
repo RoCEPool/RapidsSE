@@ -2856,22 +2856,22 @@ void AM::vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSee(Word* pWord, DicStack* pDicStack)
+void AM::vWordSee(Word* pWord, DicStack* pDicStack, CodeCell* aInxPtr)
 {
   s48K sString;
   
   SP_Word spWord;
   vTrace("\n"_Stz);
-  vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
-  vTrace("-------------------------------------------------------------\n"_Stz);
+  vTrace("%s\n"_Stz,spWord.szSeeWord(pWord));
+  //vTrace("-------------------------------------------------------------\n"_Stz);
 
   CodeCell* aDoes = pWord->aEntryCell();
   
   Word* pDoesWord = CodeBlock::pToWord(aDoes);
   
-  vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
+  //vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
-  AM::vWordSeeDoes(pDoesWord,aDoes, pDicStack);
+  AM::vWordSeeDoes(pDoesWord,aDoes,pDicStack,aInxPtr);
   
   vTrace("=============================================================\n"_Stz);
 }
@@ -2879,7 +2879,8 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
+void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
+                      DicStack* pDicStack, CodeCell* aInxPtr)
 {
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
@@ -2903,7 +2904,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
       vTrace(" %p\n"_Stz,aCell->m_aJumpTo);
       aCell++;
       
-      continue;
+      goto L_Continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
@@ -2921,7 +2922,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
       
-      continue;
+      goto L_Continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
@@ -2948,7 +2949,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
       
-      continue;
+      goto L_Continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
@@ -2965,7 +2966,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
       
-      continue;
+      goto L_Continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
@@ -2982,7 +2983,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
              pEnterWord->szWordNm());
       aCell++;
       
-      continue;
+      goto L_Continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
@@ -2990,6 +2991,11 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
   
     vTrace("%p: %s\n"_Stz,aCell,szStepNm);
     aCell++;
+    
+    L_Continue:
+    
+    if (aInxPtr == aCell)
+      vTrace(" <===\n"_Stz);
   }
   
 }
