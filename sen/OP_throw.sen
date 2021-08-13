@@ -9,10 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : throw_throw \handler
 
-  task::seeFrameStack
+  //task::seeFrameStack
   
   debug::throw
 
+  HAZARD
+  
   PipeIn[].pipeOut
   
   true

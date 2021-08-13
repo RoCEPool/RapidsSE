@@ -336,6 +336,10 @@ void Task::vExceptionHandler(void)
   vSetSenRecoverContext();
   
   vSeeFrameStack();
+  
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord)
+    AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +375,7 @@ void Task::vDumpOnException(void)
   Task::vSeeFrameStack();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("\n3) TBD \n"_Stz);
+  vTrace("\n3) Event Handler \n"_Stz);
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
