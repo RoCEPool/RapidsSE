@@ -255,7 +255,7 @@ void Task::vTaskLoop(void)
       
       m_xException = xException;
       
-      vDumpOnFailure();
+      vDumpOnException();
       
       vExceptionHandler();
       
@@ -341,7 +341,7 @@ void Task::vExceptionHandler(void)
 /*----------------------------------------------------------------------------*/
 /* detailed dump of task on exception                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vDumpOnFailure(void)
+void Task::vDumpOnException(void)
 {
   _noPreconditions_
   
@@ -352,13 +352,18 @@ void Task::vDumpOnFailure(void)
   
   vTrace("\n1) TBD \n"_Stz);
   
+  
   vTrace("\n2) Task Frames\n"_Stz);
-
   Task::vSeeFrameStack();
 
+  
   vTrace("\n3) TBD \n"_Stz);
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord)
+    AM::vWordSee(pWord,&m_oDicStack);
 
   
+  vTrace("End Dump of Task\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
   vTrace("\n"_Stz);
 }

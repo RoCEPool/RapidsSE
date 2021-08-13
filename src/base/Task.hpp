@@ -127,7 +127,7 @@ namespace BASE
     void vExceptionHandler(void);
     void vExceptionTrace(void);
 
-    void vDumpOnFailure(void);
+    void vDumpOnException(void);
 
   
     i8   iAcksOriginal(void);

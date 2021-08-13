@@ -7,6 +7,7 @@ decimal.test
 time.test
 filterInteger.test
 //filterDecimal.test
+loopJoinBroadcast1.test
 minMax.test
 project.test
 selectTypes.test
