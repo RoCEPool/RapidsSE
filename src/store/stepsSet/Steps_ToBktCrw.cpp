@@ -40,11 +40,11 @@ void Step::vToBktCrwRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  ToBktCrw* pToBktCrw = *m_p_TaskLogicUnit->m_xpToBktCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  CrwBuffer* pCrwBuffer = pToPtnCrw->pCompleted(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pCrwBuffer);
 
@@ -58,11 +58,11 @@ void Step::vToBktCrwRegConvert(void)
 {
   ENTRY();
 
-  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  ToBktCrw* pToBktCrw = *m_p_TaskLogicUnit->m_xpToBktCrw;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToPtnCrw->vConvert(pRowBuffer);
+  pToBktCrw->vConvert(pRowBuffer);
   
   EXIT();
 }
@@ -74,9 +74,9 @@ void Step::vToBktCrwRegCreate(void)
 {
   ENTRY();
     
-  ToPtnCrw* pToPtnCrw = new ToPtnCrw(* m_p_TaskLogicUnit->m_xpStreamDefLft);
+  ToBktCrw* pToBktCrw = new ToBktCrw(* m_p_TaskLogicUnit->m_xpStreamDefLft);
       
-  m_p_TaskLogicUnit->m_xpToPtnCrw = pToPtnCrw;
+  m_p_TaskLogicUnit->m_xpToBktCrw = pToBktCrw;
 
   EXIT();
 }
@@ -88,11 +88,11 @@ void Step::vToBktCrwRegDangling(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
+  ToBktCrw* pToBktCrw = *m_p_TaskLogicUnit->m_xpToBktCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  CrwBuffer* pCrwBuffer = pToPtnCrw->pDangling(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToBktCrw->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pCrwBuffer);
 
@@ -106,10 +106,10 @@ void Step::vToBktCrwRegDelete(void)
 {
   ENTRY();
   
-  ToPtnCrw* pToPtnCrw = *m_p_TaskLogicUnit->m_xpToPtnCrw;
-  m_p_TaskLogicUnit->m_xpToPtnCrw = nullptr;
+  ToBktCrw* pToBktCrw = *m_p_TaskLogicUnit->m_xpToBktCrw;
+  m_p_TaskLogicUnit->m_xpToBktCrw = nullptr;
   
-  delete pToPtnCrw;
+  delete pToBktCrw;
   
   EXIT();
 }

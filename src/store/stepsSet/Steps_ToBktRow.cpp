@@ -33,11 +33,11 @@ void Step::vToBktRowRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
+  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRowBuffer = pToPtnRow->pCompleted(i_Ptn);
+  RowBuffer* pRowBuffer = pToBktRow->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -51,11 +51,11 @@ void Step::vToBktRowRegConvert(void)
 {
   ENTRY();
 
-  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
+  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToPtnRow->vConvert(pRowBuffer);
+  pToBktRow->vConvert(pRowBuffer);
   
   delete pRowBuffer;
   
@@ -63,15 +63,15 @@ void Step::vToBktRowRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].create -- create toPtnRow                                       */
+/* toBktRow[].create -- create toBktRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegCreate(void)
 {
   ENTRY();
     
-  ToPtnRow* pToPtnRow = new ToPtnRow;
+  ToBktRow* pToBktRow = new ToBktRow;
       
-  m_p_TaskLogicUnit->m_xpToPtnRow = pToPtnRow;
+  m_p_TaskLogicUnit->m_xpToBktRow = pToBktRow;
 
   EXIT();
 }
@@ -83,11 +83,11 @@ void Step::vToBktRowRegDangling(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
+  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRowBuffer = pToPtnRow->pDangling(i_Ptn);
+  RowBuffer* pRowBuffer = pToBktRow->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -95,16 +95,16 @@ void Step::vToBktRowRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].delete -- delete toPtnRow                                       */
+/* toBktRow[].delete -- delete toBktRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegDelete(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_p_TaskLogicUnit->m_xpToPtnRow;
-  m_p_TaskLogicUnit->m_xpToPtnRow = nullptr;
+  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
+  m_p_TaskLogicUnit->m_xpToBktRow = nullptr;
   
-  delete pToPtnRow;
+  delete pToBktRow;
   
   EXIT();
 }

@@ -32,6 +32,8 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
   m_nPtnsInGrid  = C_UNKNOWN;
 
   vResetNodePtnArray();
+
+  vResetNodeBktArray();
   
   _checkInitialised_(CN_PTNMAP);
   
@@ -92,6 +94,16 @@ tPN PtnMap::tHashToDtdPtnNo(i8 iHash)
   i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
 
   return tDtdPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tPN to Bkt No                                                      */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iToBkt(tPN tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return tPtnNo < C_MAX_PTNSINGRID ? m_iaBkt[(i8) tPtnNo] : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,6 +306,16 @@ void PtnMap::vResetNodePtnArray(void)
     m_xaNodePtn[i_Ptn].m_iNodeNo = C_UNKNOWN;
     m_xaNodePtn[i_Ptn].m_i_Ptn   = C_UNKNOWN;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the Bkt array                                                        */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vResetNodeBktArray(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PTNMAP, _FOOTER_);
+
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++)
+    m_iaBkt[i_Ptn] = i_Ptn;
 }
 
 /*============================================================================*/

@@ -887,6 +887,14 @@ tPN AM::PTNMAP::tHashToDtdPtnNo(i8 iHash)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert PtnNo to Bkt No                                                    */
+/*----------------------------------------------------------------------------*/
+i8 AM::PTNMAP::iToBkt(tPN tPtnNo)
+{
+  return gpAttachMap->m_pPtnMap->iToBkt(tPtnNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nKnownNodes(void)
