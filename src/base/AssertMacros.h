@@ -92,9 +92,9 @@ EndDefine
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  BASE::vThrow(FK_REACHED,\
-               __func__,__FILE__,__LINE__, \
-               (Stz*)"NEVER_REACH point in code was reached"); \
+  BASE::vThrowReached(FK_REACHED,\
+                     __func__,__FILE__,__LINE__, \
+                     (Stz*)"NEVER_REACH point in code was reached"); \
 EndDefine
 
 /*----------------------------------------------------------------------------*/

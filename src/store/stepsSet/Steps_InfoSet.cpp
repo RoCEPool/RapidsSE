@@ -130,7 +130,7 @@ void Step::vInfoSetAddExecError(void)
 
   Grid* pGrid = AM::pGrid();
 
-  pStreamDef->vListContents(1);
+  //pStreamDef->vListContents(1);
   
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
