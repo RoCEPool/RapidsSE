@@ -12,6 +12,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "Job.hpp"
 
 #include "SP_Op.hpp"
 
@@ -188,11 +189,13 @@ Stz* SP_Op::szPath(Op* pOp)
   Stream*   pStream   = pOp->pStream();
   Stage*    pStage    = pStream->pStage();
   Pipeline* pPipeline = pStage->pPipeline();
+  Job*      pJob      = pPipeline->pPipelineJob();
 
   vInit();
   
-  vCatf("%s/%s/%s/%lld/%s"_Stz
+  vCatf("%s/%s/%s/%s/%lld/%s"_Stz
         ,MY::szNodeNm()
+        ,pJob->szJobNm()
         ,pPipeline->szPipelineNm()
         ,pStage->szStageNm()
         ,pStream->i_Stream()

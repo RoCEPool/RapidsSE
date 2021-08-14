@@ -40,6 +40,12 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // b)
 
+    eZK   m_eCurHandler;
+    i8    m_eCurOperand;
+    Word* m_paEventHandler[ZK_ENUMS];  // array of operand handlers (by kind)
+    i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
+    i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // c)
   
@@ -83,11 +89,6 @@ namespace STORE
     Op*            m_pDownstreamOp;  // downstream op
     Operand*       m_pOutboundOperand;  // operand to be piped out
 
-    eZK   m_eCurHandler;
-    i8    m_eCurOperand;
-    Word* m_paEventHandler[ZK_ENUMS];  // array of operand handlers (by kind)
-    i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
-    i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
     
     // must be last
     Footer m_xFooter;
