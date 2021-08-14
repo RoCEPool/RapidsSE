@@ -170,9 +170,9 @@ void Step::vRegOpIncHandlerCount(void)
 {
   ENTRY();
   
-  i8 i_Handler = m_pDataStack->iPopInt(__func__);
+  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_xpOp->vIncHandlerCount(i_Handler);
+  m_p_TaskLogicUnit->m_xpOp->vIncHandlerCount(eEvent);
   
   EXIT();
 }
@@ -184,9 +184,9 @@ void Step::vRegOpIncOperandCount(void)
 {
   ENTRY();
   
-  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_xpOp->vIncOperandCount(i_OperandKind);
+  m_p_TaskLogicUnit->m_xpOp->vIncOperandCount(eEvent);
   
   EXIT();
 }

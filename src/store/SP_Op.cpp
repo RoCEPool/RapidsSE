@@ -87,7 +87,7 @@ void SP_Op::vLeading(Op* pOp)
     vCatf("%-24s #%04lld ?> ## "_Stz
         
          ,pEventHandler->szWordNm()
-         ,pOp->iHandlerCount(pOp->iCurHandler())
+         ,pOp->iHandlerCount(pOp->eCurHandler())
         );
   }
   else {

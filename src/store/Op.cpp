@@ -392,11 +392,11 @@ ePX Op::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* get current handler                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Op::iCurHandler(void)
+eZK Op::eCurHandler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_i_CurHandler;
+  return m_eCurHandler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,25 +517,25 @@ i8 Op::iHandlerCount(i8 i_Handler)
 /*----------------------------------------------------------------------------*/
 /* inc handler count for given handler                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vIncHandlerCount(i8 i_Handler)
+void Op::vIncHandlerCount(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_i_CurHandler = i_Handler;
+  m_eCurHandler = eEvent;
   
-  m_iHandlerCount[m_i_CurHandler]++;
+  m_iHandlerCount[m_eCurHandler]++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* inc operand count for given operand kind                                   */
 /*----------------------------------------------------------------------------*/
-void Op::vIncOperandCount(i8 i_OperandKind)
+void Op::vIncOperandCount(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  m_i_CurOperand = i_OperandKind;
+  m_eCurOperand = eEvent;
 
-  m_iOperandCount[i_OperandKind]++;
+  m_iOperandCount[m_eCurOperand]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,8 +578,8 @@ void Op::vInitOperandHandlers(void)
 
   }
   
-  m_i_CurHandler = 0;
-  m_i_CurOperand = 0;
+  m_eCurHandler = ZK_NONE;
+  m_eCurOperand = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1132,7 +1132,7 @@ void Op::vOpTrace(Operand* pOperand
            
             ,szFunNm
             ,AM::pOperandName(pOperand)
-            ,m_iOperandCount[m_i_CurOperand]
+            ,m_iOperandCount[m_eCurOperand]
             ,pOperand
             ,szSupplemental
            );

@@ -83,8 +83,8 @@ namespace STORE
     Op*            m_pDownstreamOp;  // downstream op
     Operand*       m_pOutboundOperand;  // operand to be piped out
 
-    i8    m_i_CurHandler;
-    i8    m_i_CurOperand;
+    eZK   m_eCurHandler;
+    i8    m_eCurOperand;
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
     i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
@@ -110,7 +110,7 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     ePX  eCrossTopo(void);
-    i8   iCurHandler(void);
+    eZK  eCurHandler(void);
     Word* pCurWord(void);
     void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
@@ -120,8 +120,8 @@ namespace STORE
     Word* pEventHandler(void);
     void vGrabTaskLock(void);
     i8   iHandlerCount(i8 i_Handler);
-    void vIncHandlerCount(i8 i_Handler);
-    void vIncOperandCount(i8 i_OperandKind);
+    void vIncHandlerCount(eZK eEvent);
+    void vIncOperandCount(eZK eEvent);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
