@@ -1280,6 +1280,7 @@ void Task::vSeedTask(void)
   
   Word* pRecoveryWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
   if (pRecoveryWord) {
+    NEVER_REACH
     m_pRecoveryWord = pRecoveryWord;
     return;
   }

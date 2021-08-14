@@ -58,7 +58,7 @@ Word::Word(Stz* szWordNm)
   //vTrace("WORD: %s\n"_Stz,szWordNm);
 
 #ifdef WITH_DEBUG
-  if (szWordNm->bSame("word"_Stz)) {
+  if (szWordNm->bSame("\\word"_Stz)) {
     vDebugPoint();
     RASSERT(m_pDic);
     RASSERT(! m_pDic->pLastWord());

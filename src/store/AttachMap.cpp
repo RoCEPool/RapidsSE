@@ -90,8 +90,8 @@ AttachMap::AttachMap(void)
   m_pTxSet          = new TxSet;
 
   
-  Step::vAddStep("word"_Stz,&Step::vWord);
-  AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
+  Step::vAddStep("\\word"_Stz,&Step::vWord);
+  AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));
 
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));

@@ -112,7 +112,7 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   
   StrLib::vSprint(m_caResult,
                   "%s %s=%p "
-                  "category=%s"
+                  "%s"
                   "%s"_Stz,
                   
                   aWK[pWord->eWord()],
