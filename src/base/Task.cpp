@@ -372,7 +372,10 @@ void Task::vDumpOnException(void)
   if (m_pOp.bIsNotNull()) {
     vTrace("1) Operator\n"_Stz);
     SP_Op spOp;
-    vTrace("m_pOp=%p (%s)\n"_Stz,*m_pOp,spOp.szPath(m_pOp));
+    vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
+           ,*m_pOp
+           ,spOp.szPath(m_pOp)
+           ,m_pOp->nQueuedOperands());
   }
 
   vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);

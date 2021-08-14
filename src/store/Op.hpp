@@ -41,9 +41,10 @@ namespace STORE
     // b)
 
     eZK   m_eCurHandler;
-    i8    m_eCurOperand;
     Word* m_paEventHandler[ZK_ENUMS];  // operand handlers (by kind)
     i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
+  
+    i8    m_eCurOperand;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands recceived
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
