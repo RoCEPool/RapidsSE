@@ -39,9 +39,10 @@ Stz* SP_Word::sz(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%s %p %s %s"
+                  "/%s/%s %p %s %s"
                   "%s"_Stz,
                   
+                  pWord->pDic()->szDicNm(),
                   pWord->szWordNm(),
                   pWord,
                   aWK[pWord->eWord()],
@@ -100,11 +101,12 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%s %s=%p "
+                  "%s /%s/%s=%p "
                   "%s"
                   "%s"_Stz,
                   
                   aWK[pWord->eWord()],
+                  pWord->pDic()->szDicNm(),
                   pWord->szWordNm(),
                   pWord,
                   
