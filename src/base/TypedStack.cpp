@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_Word.hpp"
 
 /*
 
@@ -141,12 +142,14 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
           Word* pWord = pDicStack->pLocateRoutine(aFip);
           
           if (pWord) {
-            vTrace("=%p word %s %s\n"_Stz
-                   ,aFip
-                   ,pWord->szWordNm()
-                   ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
-                                       : ""_Stz
-                   );
+//            vTrace("=%p word %s %s\n"_Stz
+//                   ,aFip
+//                   ,pWord->szWordNm()
+//                   ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+//                                       : ""_Stz
+//                   );
+            SP_Word spWord;
+            vTrace("=%s\n"_Stz,spWord.sz(pWord));
           }
           else {
             vTrace("=%p word %s \n"_Stz,
