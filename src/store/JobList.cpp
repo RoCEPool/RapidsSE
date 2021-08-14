@@ -243,6 +243,8 @@ void JobList::vSee(void)
   SP_Gid spJobGid;
   
   vTrace("See JobList %s::\n"_Stz,aJL[m_eJobsList]);
+  
+  vGrabLock();
 
   for (SkipNode* pNode = m_pJobsSkipList->pFirst(0);
        pNode;
@@ -286,6 +288,8 @@ void JobList::vSee(void)
     vTrace("\n"_Stz);
   }
   
+  vDropLock();
+
   vTrace(";;\n\n"_Stz);
 }
 
