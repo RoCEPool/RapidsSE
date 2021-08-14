@@ -85,7 +85,7 @@ namespace STORE
 
     eZK   m_eCurHandler;
     i8    m_eCurOperand;
-    Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
+    Word* m_paEventHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     i8    m_iHandlerCount[ZK_ENUMS];     // array of operand counts of handlers
     i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
     
@@ -133,8 +133,8 @@ namespace STORE
     Stage* pNextStage(void);
     i8   iNode(void);
     i8   iOperandCount(i8 i_OperandKind);
-    Word* pOperandHandler(i8 i_OperandKind);
-    void vOperandHandler(i8 i_OperandKind, Word* pHandler);
+    Word* pEventHandler(i8 i_OperandKind);
+    void vEventHandler(i8 i_OperandKind, Word* pHandler);
     i8   iOp(void);
     LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);

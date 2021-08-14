@@ -573,7 +573,7 @@ void Op::vInitOperandHandlers(void)
              sHandlerNm.szStz());
     
     m_iOperandCount[i_Kind] = 0;
-    m_paOperandHandler[i_Kind] = pHandler;
+    m_paEventHandler[i_Kind] = pHandler;
     m_iHandlerCount[i_Kind] = 0;
 
   }
@@ -1022,11 +1022,11 @@ i8 Op::iOperandCount(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* get operand handler for given operand kind                                 */
 /*----------------------------------------------------------------------------*/
-Word* Op::pOperandHandler(i8 i_OperandKind)
+Word* Op::pEventHandler(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Word* pHandler = m_paOperandHandler[i_OperandKind];
+  Word* pHandler = m_paEventHandler[i_OperandKind];
   
   return pHandler;
 }
@@ -1034,11 +1034,11 @@ Word* Op::pOperandHandler(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* set operand handler for given operand kind                                 */
 /*----------------------------------------------------------------------------*/
-void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
+void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_paOperandHandler[i_OperandKind] = pHandler;
+  m_paEventHandler[i_OperandKind] = pHandler;
 }
 
 /*----------------------------------------------------------------------------*/
