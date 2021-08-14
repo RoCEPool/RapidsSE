@@ -11,12 +11,12 @@ filterRows$_I.test
 limitRows.test
 limitRows_I.test
 
-//loopJoinBroadcast.test
+loopJoinBroadcast.test
 //loopJoinBroadcastLO.test
-//loopJoinHashcast.test
-//loopJoinHashcastLO.test
-//loopJoinUnicast.test
-//loopJoinUnicastLO.test
+loopJoinHashcast.test
+loopJoinHashcastLO.test
+loopJoinUnicast.test
+loopJoinUnicastLO.test
 
 projectColumns$_I.test
 projectColumns$.test

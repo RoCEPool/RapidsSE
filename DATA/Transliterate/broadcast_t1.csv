@@ -1,0 +1,8 @@
+1,T1-ROW1,10.23, true
+null,T1-ROW2,11.32,false
+3,T1-ROW3,, true
+4,null,11.32,false
+5,T1-ROW5,22.98,false
+6,T1-ROW6,16.32,false
+7,T1-ROW7,10.23, null
+8,T1-ROW8,13.24,false

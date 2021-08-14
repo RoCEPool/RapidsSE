@@ -23,6 +23,8 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
+  "ZK_M_CLEANING" .
+
   // cleanup the pot
   PotRlu[].cleanup
 
@@ -42,9 +44,11 @@
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Counter1[] 0 == if
+    "loopJoin_CrwBuffer left" .
     PipeIn[]\clear DevLftIxt.crwBuffer!
     true LogicUnit[].IsLftCrwBuffer!
   else
+    "loopJoin_CrwBuffer rht" .
     Operand[].pipein
     Operand[] DevRhtIxt.crwBuffer!
     ZK_D_CRWBUFFER Counter0[] executeAsmArgs
@@ -60,11 +64,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_END_CRWRHT ...                                            INIT */
+/* on ZK_M_END_CRWRHT ...                                                INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_EndCrwRhtMarker \handler
 
   0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
+
+  "ZK_M_END_CRWRHT" .
 
   PipeIn[].delete
 
@@ -101,6 +107,8 @@
 
   0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
 
+  "ZK_M_END_ROWRHT" .
+
   PipeIn[].delete
 
   // delete the left buffer
@@ -135,6 +143,7 @@
 : loopJoin_EosMarker \handler
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+  "ZK_M_EOS" .
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
@@ -156,6 +165,8 @@
 : loopJoin_RowBuffer \handler
 
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "ZK_D_ROWBUFFER" .
 
   Counter1[] 0 == if
     Operand[].pipeIn
@@ -182,6 +193,7 @@
 : loopJoin_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  "loopJoin_StartMarker" .
 
   // new the PotRlu[]
   PotRlu[].new
@@ -214,6 +226,8 @@
 
   0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
 
+  "ZK_M_START_ROWRHT" .
+
   PipeIn[].delete
 
   // record receipt of start right marker
@@ -232,7 +246,7 @@
   EC_NONE locals| eError |
 
   StreamDefLft[].isNull if
-
+    "loopJoin_StreamDef left" .
     //"loopJoin_StreamDef got left streamDef" .
     // move pipein[] to StreamDefLft[]
     Pipein[]\clear to StreamDefLft[]
@@ -240,6 +254,8 @@
     true
     exit
   then
+
+  "loopJoin_StreamDef rht" .
 
   // We have received the ZK_M_START_CRWRHT
   // Hence this the right table stream def
