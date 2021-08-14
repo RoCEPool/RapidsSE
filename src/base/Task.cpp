@@ -379,7 +379,19 @@ void Task::vDumpOnException(void)
            ,m_pOp->nQueuedOperands());
   }
 
-  vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
+  vTrace("m_aInxPtr=%p "_Stz,m_aInxPtr);
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  if (pWord)
+    vTrace("in word=%p %s %s %s "_Stz
+           ,pWord
+           ,aWK[pWord->eWord()]
+           ,pWord->szWordNm()
+           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
+                               : ""_Stz
+           );
+  vTrace("\n"_Stz,m_aInxPtr);
+
+  
   vTrace("m_pRecoveryWord=%p "_Stz,m_pRecoveryWord);
   if (m_pRecoveryWord) {
     SP_Word spWord;
@@ -398,7 +410,7 @@ void Task::vDumpOnException(void)
          );
 
 
-  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
   
