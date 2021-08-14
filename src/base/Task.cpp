@@ -366,6 +366,11 @@ void Task::vDumpOnException(void)
   if (m_pOp.bIsNotNull()) {
     SP_Op spOp;
     vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,spOp.szPath(m_pOp));
+    vTrace("     =EvHandler %lld:%s (+%lld times)\n"_Stz,
+           m_pOp->iCurHandler(),
+           aZK[m_pOp->iCurHandler()],
+           m_pOp->iHandlerCount(m_pOp->iCurHandler())
+           );
 
   }
 
