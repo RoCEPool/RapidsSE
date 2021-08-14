@@ -18,7 +18,6 @@ namespace BASE
   
     Stz* sz(Word* pWord);
     Stz* szSeeDoes(Word* pWord);
-    Stz* szSeeWord(Word* pWord);
 
     Footer* aFooter(void);
   };

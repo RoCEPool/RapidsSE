@@ -2870,7 +2870,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack, CodeCell* aInxPtr)
   
   SP_Word spWord;
   vTrace("\n"_Stz);
-  vTrace("%s\n"_Stz,spWord.szSeeWord(pWord));
+  vTrace("%s\n"_Stz,spWord.sz(pWord));
   //vTrace("-------------------------------------------------------------\n"_Stz);
 
   CodeCell* aDoes = pWord->aEntryCell();

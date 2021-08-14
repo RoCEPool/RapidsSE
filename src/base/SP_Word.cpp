@@ -38,30 +38,66 @@ Stz* SP_Word::sz(Word* pWord)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
+  if (! pWord) {
+    StrLib::vSprint(m_caResult,"%p"_Stz,pWord);
+    return (Stz*) &m_caResult[0];
+  }
+  
+  //  COLON /__dicRoot/std_recoveryWord=0x2048061b0440 \word
+  
   StrLib::vSprint(m_caResult,
-                  "/%s/%s %p %s %s"
-                  "%s"_Stz,
+                  "%p: %s /%s/%s "
+                  "%s"
+                  "%s"_Stz
                   
-                  pWord->pDic()->szDicNm(),
-                  pWord->szWordNm(),
-                  pWord,
-                  aWK[pWord->eWord()],
-                  pWord->pCategory()->szWordNm(),
+                  ,pWord
+                  ,aWK[pWord->eWord()]
+                  ,pWord->pDic()->szDicNm()
+                  ,pWord->szWordNm()
                   
-
-                  pWord->bImmediate() ? " immediate" : "",
-
-                  C_VARGS_END
+                  ,pWord->pCategory()->szWordNm()
+                  
+                  ,pWord->bImmediate() ? " immediate" : ""
+                  
+                  ,C_VARGS_END
                   );
   
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
-                      " exitHook %s"_Stz,
+                       " exitHook=%s"_Stz,
                        pWord->szExitHook());
- 
-
+  
   return (Stz*) &m_caResult[0];
 }
+/*----------------------------------------------------------------------------*/
+//Stz* SP_Word::sz(Word* pWord)
+//{
+//  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+//
+//  StrLib::vSprint(m_caResult,
+//                  "/%s/%s %p %s %s"
+//                  "%s"_Stz,
+//
+//                  pWord->pDic()->szDicNm(),
+//                  pWord->szWordNm(),
+//                  pWord,
+//                  aWK[pWord->eWord()],
+//                  pWord->pCategory()->szWordNm(),
+//
+//
+//                  pWord->bImmediate() ? " immediate" : "",
+//
+//                  C_VARGS_END
+//                  );
+//
+//  if (* pWord->szExitHook()->azChar())
+//    StrLib::vSprintCat((Stz*)m_caResult,
+//                      " exitHook %s"_Stz,
+//                       pWord->szExitHook());
+//
+//
+//  return (Stz*) &m_caResult[0];
+//}
 
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
@@ -88,38 +124,6 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
                        " exitHook %s"_Stz,
-                       pWord->szExitHook());
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Word::szSeeWord(Word* pWord)
-{
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-  
-  StrLib::vSprint(m_caResult,
-                  "%s /%s/%s=%p "
-                  "%s"
-                  "%s"_Stz,
-                  
-                  aWK[pWord->eWord()],
-                  pWord->pDic()->szDicNm(),
-                  pWord->szWordNm(),
-                  pWord,
-                  
-                  pWord->pCategory()->szWordNm(),
-                  
-                  pWord->bImmediate() ? " immediate" : "",
-                  
-                  C_VARGS_END
-                  );
-  
-  if (* pWord->szExitHook()->azChar())
-    StrLib::vSprintCat((Stz*)m_caResult,
-                       " exitHook=%s"_Stz,
                        pWord->szExitHook());
   
   return (Stz*) &m_caResult[0];

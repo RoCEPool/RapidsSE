@@ -382,7 +382,7 @@ void Task::vDumpOnException(void)
 
   vTrace("m_aInxPtr=%p "_Stz,m_aInxPtr);
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
-  if (pWord)
+  if (pWord)                                                             // WORD
     vTrace("in word=%p %s %s %s "_Stz
            ,pWord
            ,aWK[pWord->eWord()]
@@ -393,12 +393,9 @@ void Task::vDumpOnException(void)
   vTrace("\n"_Stz,m_aInxPtr);
 
   
-  vTrace("m_pRecoveryWord=%p "_Stz,m_pRecoveryWord);
-  if (m_pRecoveryWord) {
-    SP_Word spWord;
-    vTrace("%s"_Stz,spWord.szSeeWord(m_pRecoveryWord));
-  }
-  vTrace("\n"_Stz,m_aInxPtr);
+  SP_Word spWord;
+  vTrace("m_pRecoveryWord=%s\n"_Stz,spWord.sz(m_pRecoveryWord));
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
@@ -410,8 +407,7 @@ void Task::vDumpOnException(void)
          m_pOp->iHandlerCount(m_pOp->eCurHandler())
          );
 
-
-  pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
+  pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                         // WORD
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
   
@@ -1182,9 +1178,7 @@ void Task::vSeeFrameStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  
-  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
-  
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                   // WORD
   if (pWord)
     vTrace("Current Frame =%p word %s %s\n"_Stz
            ,pWord
