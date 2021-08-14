@@ -13,6 +13,7 @@
 #include "SP_Lock.hpp" //?
 #include "SP_Op.hpp" //?
 #include "SP_Timer.hpp" //?
+#include "SP_Word.hpp" //?
 #include "LogicUnit.hpp" //?
 
 Atomic gixTask;
@@ -364,13 +365,13 @@ void Task::vDumpOnException(void)
   vTrace("\n"_Stz);
 
   if (m_pJob.bIsNotNull()) {
-    vTrace("1) Job\n"_Stz);
+    vTrace("1) Job Task\n"_Stz);
     vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
   if (m_pOp.bIsNotNull()) {
-    vTrace("1) Operator\n"_Stz);
+    vTrace("1) Operator Task\n"_Stz);
     SP_Op spOp;
     vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
            ,*m_pOp
@@ -379,17 +380,16 @@ void Task::vDumpOnException(void)
   }
 
   vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
-
+  vTrace("m_pRecoveryWord=%p "_Stz,m_pRecoveryWord);
+  if (m_pRecoveryWord) {
+    SP_Word spWord;
+    vTrace("%s"_Stz,spWord.szSeeWord(m_pRecoveryWord));
+  }
+  vTrace("\n"_Stz,m_aInxPtr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
-  vTrace("2) Event Frames\n"_Stz);
-    
-  Task::vSeeFrameStack();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("\n"_Stz);
-  vTrace("3) Event Handler \n"_Stz);
+  vTrace("2) Event Handler \n"_Stz);
   
   vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
          (i8)m_pOp->eCurHandler(),
@@ -401,6 +401,12 @@ void Task::vDumpOnException(void)
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("\n"_Stz);
+  vTrace("3) Event Frames\n"_Stz);
+    
+  Task::vSeeFrameStack();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);

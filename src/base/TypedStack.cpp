@@ -125,11 +125,11 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
     i8 nStackUsage = aTypedCell->nStackUsage();
     
     if (CN_STZVAL == eType)
-      vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
+      vTrace("  [%02lld] %p %02lldB %6s (8,8,%02lld) "_Stz,
              i_Item,aTypedCell,nStackUsage,aCN[eType],
              aTypedCell->nStzSize());
     else
-      vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
+      vTrace("  [%02lld] %p %02lldB %6s (8,8,00) "_Stz,
              i_Item,aTypedCell,nStackUsage,aCN[eType]);
     
     switch (eType) {
