@@ -57,12 +57,7 @@ Stz* SP_Word::sz(Word* pWord)
     StrLib::vSprintCat((Stz*)m_caResult,
                       " exitHook %s"_Stz,
                        pWord->szExitHook());
-
-  if (* pWord->szExceptionHook()->azChar())
-    StrLib::vSprintCat((Stz*)m_caResult,
-                       " exceptionHook %s"_Stz,
-                       pWord->szExceptionHook());
-  
+ 
 
   return (Stz*) &m_caResult[0];
 }
@@ -94,12 +89,6 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
                        " exitHook %s"_Stz,
                        pWord->szExitHook());
   
-  if (* pWord->szExceptionHook()->azChar())
-    StrLib::vSprintCat((Stz*)m_caResult,
-                       " exceptionHook %s"_Stz,
-                       pWord->szExceptionHook());
-  
-  
   return (Stz*) &m_caResult[0];
 }
 
@@ -130,12 +119,6 @@ Stz* SP_Word::szSeeWord(Word* pWord)
     StrLib::vSprintCat((Stz*)m_caResult,
                        " exitHook=%s"_Stz,
                        pWord->szExitHook());
-  
-  if (* pWord->szExceptionHook()->azChar())
-    StrLib::vSprintCat((Stz*)m_caResult,
-                       " exceptionHook=%s"_Stz,
-                       pWord->szExceptionHook());
-  
   
   return (Stz*) &m_caResult[0];
 }

@@ -373,9 +373,10 @@ void Task::vDumpOnException(void)
   if (m_pOp.bIsNotNull()) {
     vTrace("1) Operator Task\n"_Stz);
     SP_Op spOp;
-    vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
+    vTrace("m_pOp=%p (%s); seed %s; %lld queued operands\n"_Stz
            ,*m_pOp
            ,spOp.szPath(m_pOp)
+           ,m_pOp->szSeed()
            ,m_pOp->nQueuedOperands());
   }
 
@@ -1278,16 +1279,7 @@ void Task::vSeedTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pRecoveryWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
-  if (pRecoveryWord) {
-    NEVER_REACH
-    m_pRecoveryWord = pRecoveryWord;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
+  Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
     m_pRecoveryWord = pRecoveryWord;
     return;

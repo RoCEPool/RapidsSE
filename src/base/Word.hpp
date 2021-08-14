@@ -24,7 +24,6 @@ namespace BASE
     Dic*      m_pDic;         // which dictionary this word in
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
-    s32       m_sExceptionHook; // routine to be called on exception
     bool      m_bImmediate;   // immediate execution during compile?
     i8        m_iLocalNo;     // local number (for a local variable)
     Object*   m_pObject;      // optional associated object
@@ -91,8 +90,6 @@ namespace BASE
     fpSTEPFN fpEntryStep(void);
     fpSTEPFN* afpEntryStep(void);
     i8    iEpoch(void);
-    Stz*  szExceptionHook(void);
-    void  vExceptionHook(Stz* szExceptionHook);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
     CodeCell* aFirstCell(void);
