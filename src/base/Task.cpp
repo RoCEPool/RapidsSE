@@ -1178,14 +1178,11 @@ void Task::vSeeFrameStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  SP_Word spWord;
+  
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                   // WORD
-  if (pWord)
-    vTrace("Current Frame =%p word %s %s\n"_Stz
-           ,pWord
-           ,pWord->szWordNm()
-           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
-                               : ""_Stz
-           );
+
+  vTrace("Current Frame =%s\n"_Stz,spWord.sz(pWord));
 
   m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
 }
