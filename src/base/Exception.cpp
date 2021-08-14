@@ -110,8 +110,8 @@ void Exception::vSprint(char* azIntoBuf)
   StrLib::vSprint((Stz*)azIntoBuf,
                   
                   "Exception eFK=%lld:%s`%s`; "
-                  "__func__=%s() "
-                  "__FILE__=%s:%lld"_Stz
+                  "%s() "
+                  "(%s:%lld)"_Stz
          
                   ,(i8)m_eFailure
                   ,aFK[eFailure()]->azChar()
