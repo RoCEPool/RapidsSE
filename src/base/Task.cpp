@@ -340,7 +340,7 @@ void Task::vExceptionHandler(void)
   
     Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
     if (pWord)
-      AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+      AM::WORD::vDisassemble(pWord,&m_oDicStack,m_aInxPtr);
   }
 }
 
@@ -409,7 +409,7 @@ void Task::vDumpOnException(void)
 
   pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                         // WORD
   if (pWord)
-    AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
+    AM::WORD::vDisassemble(pWord,&m_oDicStack,m_aInxPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
@@ -714,7 +714,7 @@ void Task::vDump(void)
   m_oDicStack.vContentDump();
   
   if (pWord)
-    AM::vWordSee(pWord,&m_oDicStack);
+    AM::WORD::vDisassemble(pWord,&m_oDicStack);
 
 
   // dump the logicUnit registers

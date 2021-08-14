@@ -17,7 +17,6 @@ namespace BASE
    ~SP_Word(void) noexcept(false);
   
     Stz* sz(Word* pWord);
-    Stz* szSeeDoes(Word* pWord);
 
     Footer* aFooter(void);
   };

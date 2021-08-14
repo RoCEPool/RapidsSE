@@ -1425,6 +1425,28 @@ bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* disassemble a COLON                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::WORD::vDisassemble(Word* pWord, DicStack* pDicStack, CodeCell* aInxPtr)
+{
+  s48K sString;
+  
+  SP_Word spWord;
+  vTrace("\n"_Stz);
+  vTrace("%s\n"_Stz,spWord.sz(pWord));
+ 
+  CodeCell* aDoes = pWord->aEntryCell();
+  
+  Word* pDoesWord = CodeBlock::pToWord(aDoes);
+  
+  vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
+
+  AM::vWordSeeDoes(pDoesWord,aDoes,pDicStack,aInxPtr);
+  
+  vTrace("=============================================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find given word                                                            */
 /*----------------------------------------------------------------------------*/
 Word* AM::WORD::pFind(Stz* szWordNm)
@@ -2864,34 +2886,9 @@ void AM::vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSee(Word* pWord, DicStack* pDicStack, CodeCell* aInxPtr)
-{
-  s48K sString;
-  
-  SP_Word spWord;
-  vTrace("\n"_Stz);
-  vTrace("%s\n"_Stz,spWord.sz(pWord));
-  //vTrace("-------------------------------------------------------------\n"_Stz);
-
-  CodeCell* aDoes = pWord->aEntryCell();
-  
-  Word* pDoesWord = CodeBlock::pToWord(aDoes);
-  
-  //vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
-
-  AM::vWordSeeDoes(pDoesWord,aDoes,pDicStack,aInxPtr);
-  
-  vTrace("=============================================================\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump routine of word                                                       */
-/*----------------------------------------------------------------------------*/
 void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
                       DicStack* pDicStack, CodeCell* aInxPtr)
 {
-  vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
-
   CodeCell* aLastCell = pDoesWord->aLastCell();
   for (CodeCell* aCell = aDoes; aCell < aLastCell; ) {
     

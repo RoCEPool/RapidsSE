@@ -69,65 +69,6 @@ Stz* SP_Word::sz(Word* pWord)
   
   return (Stz*) &m_caResult[0];
 }
-/*----------------------------------------------------------------------------*/
-//Stz* SP_Word::sz(Word* pWord)
-//{
-//  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-//
-//  StrLib::vSprint(m_caResult,
-//                  "/%s/%s %p %s %s"
-//                  "%s"_Stz,
-//
-//                  pWord->pDic()->szDicNm(),
-//                  pWord->szWordNm(),
-//                  pWord,
-//                  aWK[pWord->eWord()],
-//                  pWord->pCategory()->szWordNm(),
-//
-//
-//                  pWord->bImmediate() ? " immediate" : "",
-//
-//                  C_VARGS_END
-//                  );
-//
-//  if (* pWord->szExitHook()->azChar())
-//    StrLib::vSprintCat((Stz*)m_caResult,
-//                      " exitHook %s"_Stz,
-//                       pWord->szExitHook());
-//
-//
-//  return (Stz*) &m_caResult[0];
-//}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Word::szSeeDoes(Word* pWord)
-{
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-  
-  StrLib::vSprint(m_caResult,
-                  "%p: Does %s %s %s"
-                  "%s"_Stz,
-                  
-                  pWord,
-                  pWord->szWordNm(),
-                  aWK[pWord->eWord()],
-                  pWord->pCategory()->szWordNm(),
-                  
-                  
-                  pWord->bImmediate() ? " immediate" : "",
-                  
-                  C_VARGS_END
-                  );
-  
-  if (* pWord->szExitHook()->azChar())
-    StrLib::vSprintCat((Stz*)m_caResult,
-                       " exitHook %s"_Stz,
-                       pWord->szExitHook());
-  
-  return (Stz*) &m_caResult[0];
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

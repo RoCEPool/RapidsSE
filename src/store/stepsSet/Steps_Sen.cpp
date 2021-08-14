@@ -657,7 +657,7 @@ void Step::vSenSee(void)
   
   Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
 
-  AM::vWordSee(pCurrentWord,&m_oDicStack);
+  AM::WORD::vDisassemble(pCurrentWord,&m_oDicStack);
   
   EXIT();
 }
@@ -711,7 +711,7 @@ void Step::vSenSemicolon(void)
   //m_pSenCompiler->vCurrentWord(nullptr);
     
 //  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
-//    AM::vWordSee(pCurrentWord,&m_oDicStack);
+//    AM::WORD::vDisassemble(pCurrentWord,&m_oDicStack);
   
   EXIT();
 }

@@ -398,6 +398,8 @@ namespace OBLIQUE
     class WORD
     {
     public:
+      static void vDisassemble(Word* pWord, DicStack* pDicStack,
+                               CodeCell* aInxPtr=nullptr);
       static Word* pFind(Stz* szWordNm);
       static void vListContents(Word* pWord, i8 i_Depth);
     };
@@ -651,8 +653,6 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
-    static void vWordSee(Word* pWord, DicStack* pDicStack,
-                         CodeCell* aInxPtr=nullptr);
     static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,
                              DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
     static void vWriteLog(void);

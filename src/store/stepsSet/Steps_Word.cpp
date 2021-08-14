@@ -552,7 +552,7 @@ void Step::vWordSee(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  AM::vWordSee(pWord,&m_oDicStack);
+  AM::WORD::vDisassemble(pWord,&m_oDicStack);
   
   EXIT();
 }
