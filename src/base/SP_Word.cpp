@@ -111,12 +111,14 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "Word %s %p: %s category=%s"
+                  "%s %s=%p "
+                  "category=%s"
                   "%s"_Stz,
                   
+                  aWK[pWord->eWord()],
                   pWord->szWordNm(),
                   pWord,
-                  aWK[pWord->eWord()],
+                  
                   pWord->pCategory()->szWordNm(),
                   
                   pWord->bImmediate() ? " immediate" : "",

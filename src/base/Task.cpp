@@ -353,7 +353,7 @@ void Task::vDumpOnException(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
-  vTrace("Dump of Task %p\n"_Stz,this);
+  vTrace("Dump of Task=%p\n"_Stz,this);
 
   Now oNow;
   
@@ -362,22 +362,17 @@ void Task::vDumpOnException(void)
   vTrace("Now %s\n"_Stz,oNow.sz());
  
   vTrace("\n"_Stz);
-  vTrace("1) Operator\n"_Stz);
 
   if (m_pJob.bIsNotNull()) {
+    vTrace("1) Job\n"_Stz);
     vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
   if (m_pOp.bIsNotNull()) {
+    vTrace("1) Operator\n"_Stz);
     SP_Op spOp;
-    vTrace("m_pOp=%p %s\n"_Stz,*m_pOp,spOp.szPath(m_pOp));
-    vTrace("     =EvHandler %lld:%s (+%lld times)\n"_Stz,
-           (i8)m_pOp->eCurHandler(),
-           aZK[m_pOp->eCurHandler()],
-           m_pOp->iHandlerCount(m_pOp->eCurHandler())
-           );
-
+    vTrace("m_pOp=%p (%s)\n"_Stz,*m_pOp,spOp.szPath(m_pOp));
   }
 
   vTrace("m_aInxPtr=%p\n"_Stz,m_aInxPtr);
@@ -392,6 +387,14 @@ void Task::vDumpOnException(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
   vTrace("3) Event Handler \n"_Stz);
+  
+  vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
+         (i8)m_pOp->eCurHandler(),
+         aZK[m_pOp->eCurHandler()],
+         m_pOp->iHandlerCount(m_pOp->eCurHandler())
+         );
+
+
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord)
     AM::vWordSee(pWord,&m_oDicStack,m_aInxPtr);
