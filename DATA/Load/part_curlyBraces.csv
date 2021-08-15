@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d9bf87eab24ad86c972b31624b7b410f59294649f25c9f943e3a24971d6d1697
-size 1411
+0,{whatever},{Yahoo},{Brand#13},{STANDARD ANODIZED BRASS},24,{SM CAN},560.73,{part comments}
+1,{watchamacallit},{Yahoo},{Brand#25},{PROMO ANODIZED BRASS},39,{SM BOX},5130.78,{part comments}
+2,{doohickey},{Apple},{Brand#24},{LARGE ANODIZED BRASS},8,{NULL},9019.35,{part comments}
+3,{widget},{Toshiba},{Brand#31},{MEDIUM ANODIZED BRASS},29,{LG PACK},6139.15,{part comments}
+4,{watchamacallit},{Dell},{Brand#53},{STANDARD ANODIZED BRASS},47,{MED PKG},4613.89,{part comments}
+5,{housit},{Toshiba},{Brand#44},{LARGE ANODIZED BRASS},18,{SM PKG},2668.66,{part comments}
+6,{housit},{Google},{Brand#14},null,6,{SM CASE},8157.19,{part comments}
+7,{housit},{Toshiba},{Brand#21},{ECONOMY ANODIZED BRASS},24,{LG BAG},3109.62,{part comments}
+8,{doohickey},{Yahoo},{Brand#44},{NULL},38,{LG DRUM},5930.75,{part comments}
+9,{thingy},{LG},{Brand#51},{SMALL ANODIZED BRASS},44,{LG JAR},2057.67,{part comments}
+10,{housit},{Google},{Brand#52},{SMALL ANODIZED BRASS},25,{SM JAR},6626.02,{part comments}
+11,{thingy},{Google},{Brand#54},{NULL},26,{LG DRUM},7092.25,{part comments}
+12,{doohickey},{LG},{Brand#21},{PROMO ANODIZED BRASS},25,{MED CASE},1866.27,{part comments}
+13,{thingmabob},{IBM},{Brand#23},{PROMO ANODIZED BRASS},49,{MED DRUM},5646.41,{part comments}
+14,{thingy},{Excite},{Brand#11},{NULL},5,{LG CASE},6886.06,{part comments}
+15,{housit},{Excite},{Brand#22},{LARGE ANODIZED BRASS},11,{MED BOX},9173.86,{part comments}

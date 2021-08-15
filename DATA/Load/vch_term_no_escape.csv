@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e629109d2fdd10bafeeb34de5eaea993127ba3c0a396c1aaf096a2db6020d20d
-size 1221
+801 ,'quick brown fox',       'valid: quoted varchar field';
+802 ,'quick, brown fox',      'valid: quoted comma is not a field separator';
+803 ,'quick brown fox\',      'valid: quoted field has backslash';
+804 ,'quick brown fox''s',    'valid: two single quotes is an escaped quote';
+805 ,'quick brow\\n foxs',    'valid: quoted field has escaped backslash';
+806 ,'quick brown fox\ns',    'valid: quoted field has backslash';
+807 ,'quick brown fox',       'problem: loader doesnt parse quoted fields';
+808 ,   'quick brown fox'   , 'valid: leading/trailing spaces ignored';
+809 ,'',                      'valid: empty string';
+810 ,'null',                  'valid: quoted null is a string';
+811 ,'\N',                    'valid: quoted field has backslash';
+
+812 ,quick brown fox,         'valid: unquoted varchar field';
+813 ,   quick brown fox   ,   'valid: leading/trailing spaces included';
+814 ,quick brown fox's',      'valid: unquoted varchar field';
+815 ,,                        'valid: empty unquoted field';
+816 ,null,                    'valid: unquoted null is isNull';
+817 ,\N,                      'valid: unquoted field has backslash';
+818 ,quick brown fox\ns,      'valid: unquoted field has backslash';

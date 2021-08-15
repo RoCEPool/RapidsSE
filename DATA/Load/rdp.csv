@@ -1,3 +1,65 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e8e94352ed18b3ab4df03e4958a5998cf8edc75c41aa5e2899a8b3e1f821117d
-size 5631
+1000,'test 1000', false,false, 0.0,0.0 , 0.0,0.0 , 0,0   ,1900-01-01 00:00:00,1900-01-01 00:00:00,'quick brown fox' ,'quick brown fox'
+1001,'test 1001', false,null , 0.0,null, 0.0,null, 0,null,1900-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1010,'test 1010', true ,true , 1.0,1.0 , 1.0,1.0 , 1,1   ,1901-01-01 00:00:00,1901-01-01 01:01:01,'quick brown fox' ,'quick brown fox\'s'
+1011,'test 1011', true ,null ,-1.0,null,-1.0,null,-1,null,1901-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1020,'test 1020', false,true , 2.0,2.0 , 2.0,2.0 , 2,2   ,1902-01-01 00:00:00,1902-02-02 02:02:02,'quick brown fox' ,'quick brow\nn fox'
+1021,'test 1021', true ,null ,-2.0,null,-2.0,null,-2,null,1902-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1030,'test 1030', true ,false, 3.0,3.0 , 3.0,3.0 , 3,3   ,1903-01-01 00:00:00,1903-03-03 03:03:03,'quick brown fox' ,'quick brow\\n fox'
+1031,'test 1031', true ,null ,-3.0,null,-3.0,null,-3,null,1903-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1040,'test 1040', false,true , 4.0,4.0 , 4.0,4.0 , 4,4   ,1904-01-01 00:00:00,1904-04-04 04:04:04,'quick brown fox' ,'quick brow\N fox'
+1041,'test 1041', false,null ,-4.0,null,-4.0,null,-4,null,1904-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1050,'test 1050', true ,true , 5.0,5.0 , 5.0,5.0 , 5,5   ,1905-01-01 00:00:00,1905-05-05 05:05:05,'quick brown fox' ,'quick brown \tfox'
+1051,'test 1051', false,null ,-5.0,null,-5.0,null,-5,null,1905-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1060,'test 1060', false,false, 6.0,6.0 , 6.0,6.0 , 6,6   ,1906-01-01 00:00:00,1906-06-06 06:06:06,'quick brown fox' ,''
+1061,'test 1061', false,null ,-6.0,null,-6.0,null,-6,null,1906-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1070,'test 1070', true ,true , 7.0,7.0 , 7.0,7.0 , 7,7   ,1907-01-01 00:00:00,1907-07-07 07:07:07,'quick brown fox' ,'quick brown fox'
+1071,'test 1071', true ,null ,-7.0,null,-7.0,null,-7,null,1907-01-01 00:00:00,null               ,'quick brown fox' ,null
+
+1080,'test 1080', false,true , 8.0,8.0 , 8.0,8.0 , 8,8   ,1908-01-01 00:00:00,1908-08-08 08:08:08,'quick brown fox' ,'quick brown fox'
+1081,'test 1081', true ,null ,-8.0,null,-8.0,null,-8,null,1908-01-01 00:00:00,null               ,'quick brown fox' ,'\N'
+
+1090,'test 1090', false,true , 9.0,9.0 , 9.0,9.0 , 9,9   ,1909-01-01 00:00:00,1909-09-09 09:09:09,'quick brown fox' ,'quick brown \b\f\n\r\t\Zfox'
+1091,'test 1091', false,null ,-9.0,null,-9.0,null,-9,null,1909-01-01 00:00:00,null               ,'quick brown fox' ,\N
+
+2000,'test 2000', false,false, 0.0,0.0 , 0.0,0.0 , 0,0   ,1900-01-01 00:00:00,1900-01-01 00:00:00,quick brown \\yfox,quick brown fox
+2001,'test 2001', false,null , 0.0,null, 0.0,null, 0,null,1900-01-01 00:00:00,null               ,quick brown fox,null
+
+2010,'test 2010', true ,true , 1.0,1.0 , 1.0,1.0 , 1,1   ,1901-01-01 00:00:00,1901-01-01 01:01:01,quick brown fox,quick brown fox's
+2011,'test 2011', true ,null ,-1.0,null,-1.0,null,-1,null,1901-01-01 00:00:00,null               ,quick brown fox,null
+
+2020,'test 2020', false,true , 2.0,2.0 , 2.0,2.0 , 2,2   ,1902-01-01 00:00:00,1902-02-02 02:02:02,quick brown fox,quick brow\nn fox
+2021,'test 2021', true ,null ,-2.0,null,-2.0,null,-2,null,1902-01-01 00:00:00,null               ,quick brown fox,null
+
+2030,'test 2030', true ,false, 3.0,3.0 , 3.0,3.0 , 3,3   ,1903-01-01 00:00:00,1903-03-03 03:03:03,quick brown fox,quick brow\\n fox
+2031,'test 2031', true ,null ,-3.0,null,-3.0,null,-3,null,1903-01-01 00:00:00,null               ,quick brown fox,null
+
+2040,'test 2040', false,true , 4.0,4.0 , 4.0,4.0 , 4,4   ,1904-01-01 00:00:00,1904-04-04 04:04:04,quick brown fox,quick brow\N fox
+2041,'test 2041', false,null ,-4.0,null,-4.0,null,-4,null,1904-01-01 00:00:00,null               ,quick brown fox,null
+
+2050,'test 2050', true ,true , 5.0,5.0 , 5.0,5.0 , 5,5   ,1905-01-01 00:00:00,1905-05-05 05:05:05,quick brown fox,quick brown \tfox
+2051,'test 2051', false,null ,-5.0,null,-5.0,null,-5,null,1905-01-01 00:00:00,null               ,quick brown fox,null
+
+2060,'test 2060', false,false, 6.0,6.0 , 6.0,6.0 , 6,6   ,1906-01-01 00:00:00,1906-06-06 06:06:06,quick brown fox,
+2061,'test 2061', false,null ,-6.0,null,-6.0,null,-6,null,1906-01-01 00:00:00,null               ,quick brown fox,null
+
+2070,'test 2070', true ,true , 7.0,7.0 , 7.0,7.0 , 7,7   ,1907-01-01 00:00:00,1907-07-07 07:07:07,quick brown fox,quick brown fox
+2071,'test 2071', true ,null ,-7.0,null,-7.0,null,-7,null,1907-01-01 00:00:00,null               ,quick brown fox,null
+
+2080,'test 2080', false,true , 8.0,8.0 , 8.0,8.0 , 8,8   ,1908-01-01 00:00:00,1908-08-08 08:08:08,quick brown fox,quick brown fox
+2081,'test 2081', true ,null ,-8.0,null,-8.0,null,-8,null,1908-01-01 00:00:00,null               ,quick brown fox,\N
+
+2090,'test 2090', false,true , 9.0,9.0 , 9.0,9.0 , 9,9   ,1909-01-01 00:00:00,1909-09-09 09:09:09,quick brown fox,quick brown \b\f\n\r\t\Zfox
+2091,'test 2091', false,null ,-9.0,null,-9.0,null,-9,null,1909-01-01 00:00:00,null               ,quick brown fox,\N
+
+2092,'test 2092', false,null ,-9.0,null,-9.0,null,0,null,1909-01-01 00:00:00,null                 ,quick brown fox,\N
+2093,'test 2093', false,null ,-9.0,null,-9.0,null,0,null,1909-01-01 00:00:00,null                 ,quick brown fox,'null'
+2094,'test 2094', false,null ,-9.0,null,-9.0,null,0,null,1909-01-01 00:00:00,null                 ,quick brown fox,
+
+3000,'test 3000', false,true, -922337203685477,922337203685477, -1.797693e+308,1.797693e+308, -9223372036854775806,9223372036854775806, 1909-01-01 00:00:00,1909-09-09 09:09:09, '','z'

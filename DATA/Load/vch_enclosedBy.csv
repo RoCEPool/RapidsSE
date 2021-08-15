@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:535ed2c61049da2d28f89ca5797ba42f549eade1e58d6f88ba88359254f149ad
-size 1408
+101 ,'quick brown fox',       'valid: quoted field'
+102 ,'quick, brown fox',      'valid: quoted field comma is not a separator'
+103 ,'quick brown fox\'s',    'valid: quoted field has escaped quote'
+104 ,'quick brown fox''s',    'valid: two single quotes is an escaped quote'
+105 ,'quick brow\\n foxs',    'valid: quoted field has escaped backslash'
+106 ,'quick brown fox\ns',    'valid: quoted field has escaped newline'
+107 ,'quick brown fox',       'problem: loader doesnt parse quoted fields'
+108 ,   'quick brown fox'   , 'valid: leading/trailing spaces ignored'
+109 ,'',                      'valid: empty string'
+110 ,'null',                  'valid: quoted null is a string'
+111 ,'\N',                    'valid: quoted backslash N is a null'
+112 ,'quick brown \N fox',    'valid: quoted field which as \N in it'
+
+113 ,quick brown fox,         'valid: unquoted field'
+114 ,   quick brown fox   ,   'valid: leading/trailing spaces included'
+115 ,quick brown fox's,       'valid: unquoted field with a quote in it'
+116 ,,                        'valid: empty unquoted field'
+117 ,null,                    'valid: unquoted null is isNull'
+118 ,nulla,                   'valid: unquoted nulla is string'
+119 ,null a,                  'valid: unquoted null a is string'
+120 ,\N,                      'valid: backslash N is isNull'
+121 ,quick brown fox\ns,      'valid: unquoted field has escaped newline'

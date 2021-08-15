@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:299bb59ec05609bc030ce10e078f188600dd6c05e121d5fbdbe202a7d4dd81af
-size 836
+1, [DAVE's DATA], [9], [9], [9], [2018-04-04 09:00:00] , [T], [valid]
+2, [WITH \[\]], [9], [9], [9], [2018-04-04 09:00:00] , [T], [valid]
+3, [WITH[]], [9], [9], [9], [2018-04-04 09:00:00] , [T], [invalid]
+4, 'DAVE's DATA', [9], [9], [9], [2018-04-04 09:00:00] , [T], [valid]
+5, 'DAVE's DATA', '9', 9, 9, 2018-04-04 09:00:00, T, [invalid]
+6, 'DAVE's DATA',9, '9', 9, 2018-04-04 09:00:00, T, [invalid]
+7, 'DAVE's DATA',9, 9, '9', 2018-04-04 09:00:00, T, [invalid]
+8, 'DAVE's DATA',9, 9, 9, '2018-04-04 09:00:00', T, [invalid]
+9, 'DAVE's DATA',9, 9, 9, 2018-04-04 09:00:00, 'T', [invalid]
+10, DAVE's DATA, 9, 9, 9, 2018-04-04 09:00:00, T, [valid]
+11, [DAVE's DATA, 9, 9, 9, 2018-04-04 09:00:00, T, [invalid]
+12, DAVE's DATA], 9, 9, 9, 2018-04-04 09:00:00, T, [valid]
+13, '[DAVE's DATA], [9], [9], [9], [2018-04-04 09:00:00] , [T], [valid]

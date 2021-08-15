@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:952ad510f1690f7620b42c70460fc909e9b4092f88349435a1047d352652d9bc
-size 800
+1,NULL,Test for Null keyword,2018-04-05,Mary had a little lamb
+2,null,Test for lower case null,2018-04-05,row row row your boat
+3,NuLl,Test for mixed case null,2018-04-01,humpty dumpty
+4,,Test for empty string null,2018-04-09,tisket tasket
+5,jack be nimble,Test for last field null,2018-02-09,
+6,'null',Test for quoted string,2018-03-15,old woman in the shoe
+7,  null,Test for white space in front of a null,2018-02-28,hello goodbye
+8,'\N',Test for stripping escape,2018-01-10,This is wrong s/b '\N'
+9,,\N is not a null,2017-10-10,Returns entire string
+10,'\\N',Test for backslash null,2017-08-15,night and day
+11,The word null,Test for entire string,2017-05-06,up and down
+12,'The word null',Test for adding quotes,2017-06-06,right and wrong
+13,'null is not a null',Test for null inside a string',,

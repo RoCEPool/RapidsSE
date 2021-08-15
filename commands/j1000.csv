@@ -1,3 +1,1000 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c30cae6f0ac8285dc954950518e343c23b916922a0cdb2d3f6cc3edac0792a1b
-size 23240
+0,zero,0,0
+1,one,1,1
+2,two,2,2
+3,three,3,3
+4,four,4,4
+5,five,5,5
+6,six,6,6
+7,seven,7,7
+8,eight,8,8
+9,nine,9,9
+10,one zero,10,0
+11,one one,11,1
+12,one two,12,2
+13,one three,13,3
+14,one four,14,4
+15,one five,15,5
+16,one six,16,6
+17,one seven,17,7
+18,one eight,18,8
+19,one nine,19,9
+20,two zero,20,0
+21,two one,21,1
+22,two two,22,2
+23,two three,23,3
+24,two four,24,4
+25,two five,25,5
+26,two six,26,6
+27,two seven,27,7
+28,two eight,28,8
+29,two nine,29,9
+30,three zero,30,0
+31,three one,31,1
+32,three two,32,2
+33,three three,33,3
+34,three four,34,4
+35,three five,35,5
+36,three six,36,6
+37,three seven,37,7
+38,three eight,38,8
+39,three nine,39,9
+40,four zero,40,0
+41,four one,41,1
+42,four two,42,2
+43,four three,43,3
+44,four four,44,4
+45,four five,45,5
+46,four six,46,6
+47,four seven,47,7
+48,four eight,48,8
+49,four nine,49,9
+50,five zero,50,0
+51,five one,51,1
+52,five two,52,2
+53,five three,53,3
+54,five four,54,4
+55,five five,55,5
+56,five six,56,6
+57,five seven,57,7
+58,five eight,58,8
+59,five nine,59,9
+60,six zero,60,0
+61,six one,61,1
+62,six two,62,2
+63,six three,63,3
+64,six four,64,4
+65,six five,65,5
+66,six six,66,6
+67,six seven,67,7
+68,six eight,68,8
+69,six nine,69,9
+70,seven zero,70,0
+71,seven one,71,1
+72,seven two,72,2
+73,seven three,73,3
+74,seven four,74,4
+75,seven five,75,5
+76,seven six,76,6
+77,seven seven,77,7
+78,seven eight,78,8
+79,seven nine,79,9
+80,eight zero,80,0
+81,eight one,81,1
+82,eight two,82,2
+83,eight three,83,3
+84,eight four,84,4
+85,eight five,85,5
+86,eight six,86,6
+87,eight seven,87,7
+88,eight eight,88,8
+89,eight nine,89,9
+90,nine zero,90,0
+91,nine one,91,1
+92,nine two,92,2
+93,nine three,93,3
+94,nine four,94,4
+95,nine five,95,5
+96,nine six,96,6
+97,nine seven,97,7
+98,nine eight,98,8
+99,nine nine,99,9
+100,one zero zero,0,0
+101,one zero one,1,1
+102,one zero two,2,2
+103,one zero three,3,3
+104,one zero four,4,4
+105,one zero five,5,5
+106,one zero six,6,6
+107,one zero seven,7,7
+108,one zero eight,8,8
+109,one zero nine,9,9
+110,one one zero,10,0
+111,one one one,11,1
+112,one one two,12,2
+113,one one three,13,3
+114,one one four,14,4
+115,one one five,15,5
+116,one one six,16,6
+117,one one seven,17,7
+118,one one eight,18,8
+119,one one nine,19,9
+120,one two zero,20,0
+121,one two one,21,1
+122,one two two,22,2
+123,one two three,23,3
+124,one two four,24,4
+125,one two five,25,5
+126,one two six,26,6
+127,one two seven,27,7
+128,one two eight,28,8
+129,one two nine,29,9
+130,one three zero,30,0
+131,one three one,31,1
+132,one three two,32,2
+133,one three three,33,3
+134,one three four,34,4
+135,one three five,35,5
+136,one three six,36,6
+137,one three seven,37,7
+138,one three eight,38,8
+139,one three nine,39,9
+140,one four zero,40,0
+141,one four one,41,1
+142,one four two,42,2
+143,one four three,43,3
+144,one four four,44,4
+145,one four five,45,5
+146,one four six,46,6
+147,one four seven,47,7
+148,one four eight,48,8
+149,one four nine,49,9
+150,one five zero,50,0
+151,one five one,51,1
+152,one five two,52,2
+153,one five three,53,3
+154,one five four,54,4
+155,one five five,55,5
+156,one five six,56,6
+157,one five seven,57,7
+158,one five eight,58,8
+159,one five nine,59,9
+160,one six zero,60,0
+161,one six one,61,1
+162,one six two,62,2
+163,one six three,63,3
+164,one six four,64,4
+165,one six five,65,5
+166,one six six,66,6
+167,one six seven,67,7
+168,one six eight,68,8
+169,one six nine,69,9
+170,one seven zero,70,0
+171,one seven one,71,1
+172,one seven two,72,2
+173,one seven three,73,3
+174,one seven four,74,4
+175,one seven five,75,5
+176,one seven six,76,6
+177,one seven seven,77,7
+178,one seven eight,78,8
+179,one seven nine,79,9
+180,one eight zero,80,0
+181,one eight one,81,1
+182,one eight two,82,2
+183,one eight three,83,3
+184,one eight four,84,4
+185,one eight five,85,5
+186,one eight six,86,6
+187,one eight seven,87,7
+188,one eight eight,88,8
+189,one eight nine,89,9
+190,one nine zero,90,0
+191,one nine one,91,1
+192,one nine two,92,2
+193,one nine three,93,3
+194,one nine four,94,4
+195,one nine five,95,5
+196,one nine six,96,6
+197,one nine seven,97,7
+198,one nine eight,98,8
+199,one nine nine,99,9
+200,two zero zero,0,0
+201,two zero one,1,1
+202,two zero two,2,2
+203,two zero three,3,3
+204,two zero four,4,4
+205,two zero five,5,5
+206,two zero six,6,6
+207,two zero seven,7,7
+208,two zero eight,8,8
+209,two zero nine,9,9
+210,two one zero,10,0
+211,two one one,11,1
+212,two one two,12,2
+213,two one three,13,3
+214,two one four,14,4
+215,two one five,15,5
+216,two one six,16,6
+217,two one seven,17,7
+218,two one eight,18,8
+219,two one nine,19,9
+220,two two zero,20,0
+221,two two one,21,1
+222,two two two,22,2
+223,two two three,23,3
+224,two two four,24,4
+225,two two five,25,5
+226,two two six,26,6
+227,two two seven,27,7
+228,two two eight,28,8
+229,two two nine,29,9
+230,two three zero,30,0
+231,two three one,31,1
+232,two three two,32,2
+233,two three three,33,3
+234,two three four,34,4
+235,two three five,35,5
+236,two three six,36,6
+237,two three seven,37,7
+238,two three eight,38,8
+239,two three nine,39,9
+240,two four zero,40,0
+241,two four one,41,1
+242,two four two,42,2
+243,two four three,43,3
+244,two four four,44,4
+245,two four five,45,5
+246,two four six,46,6
+247,two four seven,47,7
+248,two four eight,48,8
+249,two four nine,49,9
+250,two five zero,50,0
+251,two five one,51,1
+252,two five two,52,2
+253,two five three,53,3
+254,two five four,54,4
+255,two five five,55,5
+256,two five six,56,6
+257,two five seven,57,7
+258,two five eight,58,8
+259,two five nine,59,9
+260,two six zero,60,0
+261,two six one,61,1
+262,two six two,62,2
+263,two six three,63,3
+264,two six four,64,4
+265,two six five,65,5
+266,two six six,66,6
+267,two six seven,67,7
+268,two six eight,68,8
+269,two six nine,69,9
+270,two seven zero,70,0
+271,two seven one,71,1
+272,two seven two,72,2
+273,two seven three,73,3
+274,two seven four,74,4
+275,two seven five,75,5
+276,two seven six,76,6
+277,two seven seven,77,7
+278,two seven eight,78,8
+279,two seven nine,79,9
+280,two eight zero,80,0
+281,two eight one,81,1
+282,two eight two,82,2
+283,two eight three,83,3
+284,two eight four,84,4
+285,two eight five,85,5
+286,two eight six,86,6
+287,two eight seven,87,7
+288,two eight eight,88,8
+289,two eight nine,89,9
+290,two nine zero,90,0
+291,two nine one,91,1
+292,two nine two,92,2
+293,two nine three,93,3
+294,two nine four,94,4
+295,two nine five,95,5
+296,two nine six,96,6
+297,two nine seven,97,7
+298,two nine eight,98,8
+299,two nine nine,99,9
+300,three zero zero,0,0
+301,three zero one,1,1
+302,three zero two,2,2
+303,three zero three,3,3
+304,three zero four,4,4
+305,three zero five,5,5
+306,three zero six,6,6
+307,three zero seven,7,7
+308,three zero eight,8,8
+309,three zero nine,9,9
+310,three one zero,10,0
+311,three one one,11,1
+312,three one two,12,2
+313,three one three,13,3
+314,three one four,14,4
+315,three one five,15,5
+316,three one six,16,6
+317,three one seven,17,7
+318,three one eight,18,8
+319,three one nine,19,9
+320,three two zero,20,0
+321,three two one,21,1
+322,three two two,22,2
+323,three two three,23,3
+324,three two four,24,4
+325,three two five,25,5
+326,three two six,26,6
+327,three two seven,27,7
+328,three two eight,28,8
+329,three two nine,29,9
+330,three three zero,30,0
+331,three three one,31,1
+332,three three two,32,2
+333,three three three,33,3
+334,three three four,34,4
+335,three three five,35,5
+336,three three six,36,6
+337,three three seven,37,7
+338,three three eight,38,8
+339,three three nine,39,9
+340,three four zero,40,0
+341,three four one,41,1
+342,three four two,42,2
+343,three four three,43,3
+344,three four four,44,4
+345,three four five,45,5
+346,three four six,46,6
+347,three four seven,47,7
+348,three four eight,48,8
+349,three four nine,49,9
+350,three five zero,50,0
+351,three five one,51,1
+352,three five two,52,2
+353,three five three,53,3
+354,three five four,54,4
+355,three five five,55,5
+356,three five six,56,6
+357,three five seven,57,7
+358,three five eight,58,8
+359,three five nine,59,9
+360,three six zero,60,0
+361,three six one,61,1
+362,three six two,62,2
+363,three six three,63,3
+364,three six four,64,4
+365,three six five,65,5
+366,three six six,66,6
+367,three six seven,67,7
+368,three six eight,68,8
+369,three six nine,69,9
+370,three seven zero,70,0
+371,three seven one,71,1
+372,three seven two,72,2
+373,three seven three,73,3
+374,three seven four,74,4
+375,three seven five,75,5
+376,three seven six,76,6
+377,three seven seven,77,7
+378,three seven eight,78,8
+379,three seven nine,79,9
+380,three eight zero,80,0
+381,three eight one,81,1
+382,three eight two,82,2
+383,three eight three,83,3
+384,three eight four,84,4
+385,three eight five,85,5
+386,three eight six,86,6
+387,three eight seven,87,7
+388,three eight eight,88,8
+389,three eight nine,89,9
+390,three nine zero,90,0
+391,three nine one,91,1
+392,three nine two,92,2
+393,three nine three,93,3
+394,three nine four,94,4
+395,three nine five,95,5
+396,three nine six,96,6
+397,three nine seven,97,7
+398,three nine eight,98,8
+399,three nine nine,99,9
+400,four zero zero,0,0
+401,four zero one,1,1
+402,four zero two,2,2
+403,four zero three,3,3
+404,four zero four,4,4
+405,four zero five,5,5
+406,four zero six,6,6
+407,four zero seven,7,7
+408,four zero eight,8,8
+409,four zero nine,9,9
+410,four one zero,10,0
+411,four one one,11,1
+412,four one two,12,2
+413,four one three,13,3
+414,four one four,14,4
+415,four one five,15,5
+416,four one six,16,6
+417,four one seven,17,7
+418,four one eight,18,8
+419,four one nine,19,9
+420,four two zero,20,0
+421,four two one,21,1
+422,four two two,22,2
+423,four two three,23,3
+424,four two four,24,4
+425,four two five,25,5
+426,four two six,26,6
+427,four two seven,27,7
+428,four two eight,28,8
+429,four two nine,29,9
+430,four three zero,30,0
+431,four three one,31,1
+432,four three two,32,2
+433,four three three,33,3
+434,four three four,34,4
+435,four three five,35,5
+436,four three six,36,6
+437,four three seven,37,7
+438,four three eight,38,8
+439,four three nine,39,9
+440,four four zero,40,0
+441,four four one,41,1
+442,four four two,42,2
+443,four four three,43,3
+444,four four four,44,4
+445,four four five,45,5
+446,four four six,46,6
+447,four four seven,47,7
+448,four four eight,48,8
+449,four four nine,49,9
+450,four five zero,50,0
+451,four five one,51,1
+452,four five two,52,2
+453,four five three,53,3
+454,four five four,54,4
+455,four five five,55,5
+456,four five six,56,6
+457,four five seven,57,7
+458,four five eight,58,8
+459,four five nine,59,9
+460,four six zero,60,0
+461,four six one,61,1
+462,four six two,62,2
+463,four six three,63,3
+464,four six four,64,4
+465,four six five,65,5
+466,four six six,66,6
+467,four six seven,67,7
+468,four six eight,68,8
+469,four six nine,69,9
+470,four seven zero,70,0
+471,four seven one,71,1
+472,four seven two,72,2
+473,four seven three,73,3
+474,four seven four,74,4
+475,four seven five,75,5
+476,four seven six,76,6
+477,four seven seven,77,7
+478,four seven eight,78,8
+479,four seven nine,79,9
+480,four eight zero,80,0
+481,four eight one,81,1
+482,four eight two,82,2
+483,four eight three,83,3
+484,four eight four,84,4
+485,four eight five,85,5
+486,four eight six,86,6
+487,four eight seven,87,7
+488,four eight eight,88,8
+489,four eight nine,89,9
+490,four nine zero,90,0
+491,four nine one,91,1
+492,four nine two,92,2
+493,four nine three,93,3
+494,four nine four,94,4
+495,four nine five,95,5
+496,four nine six,96,6
+497,four nine seven,97,7
+498,four nine eight,98,8
+499,four nine nine,99,9
+500,five zero zero,0,0
+501,five zero one,1,1
+502,five zero two,2,2
+503,five zero three,3,3
+504,five zero four,4,4
+505,five zero five,5,5
+506,five zero six,6,6
+507,five zero seven,7,7
+508,five zero eight,8,8
+509,five zero nine,9,9
+510,five one zero,10,0
+511,five one one,11,1
+512,five one two,12,2
+513,five one three,13,3
+514,five one four,14,4
+515,five one five,15,5
+516,five one six,16,6
+517,five one seven,17,7
+518,five one eight,18,8
+519,five one nine,19,9
+520,five two zero,20,0
+521,five two one,21,1
+522,five two two,22,2
+523,five two three,23,3
+524,five two four,24,4
+525,five two five,25,5
+526,five two six,26,6
+527,five two seven,27,7
+528,five two eight,28,8
+529,five two nine,29,9
+530,five three zero,30,0
+531,five three one,31,1
+532,five three two,32,2
+533,five three three,33,3
+534,five three four,34,4
+535,five three five,35,5
+536,five three six,36,6
+537,five three seven,37,7
+538,five three eight,38,8
+539,five three nine,39,9
+540,five four zero,40,0
+541,five four one,41,1
+542,five four two,42,2
+543,five four three,43,3
+544,five four four,44,4
+545,five four five,45,5
+546,five four six,46,6
+547,five four seven,47,7
+548,five four eight,48,8
+549,five four nine,49,9
+550,five five zero,50,0
+551,five five one,51,1
+552,five five two,52,2
+553,five five three,53,3
+554,five five four,54,4
+555,five five five,55,5
+556,five five six,56,6
+557,five five seven,57,7
+558,five five eight,58,8
+559,five five nine,59,9
+560,five six zero,60,0
+561,five six one,61,1
+562,five six two,62,2
+563,five six three,63,3
+564,five six four,64,4
+565,five six five,65,5
+566,five six six,66,6
+567,five six seven,67,7
+568,five six eight,68,8
+569,five six nine,69,9
+570,five seven zero,70,0
+571,five seven one,71,1
+572,five seven two,72,2
+573,five seven three,73,3
+574,five seven four,74,4
+575,five seven five,75,5
+576,five seven six,76,6
+577,five seven seven,77,7
+578,five seven eight,78,8
+579,five seven nine,79,9
+580,five eight zero,80,0
+581,five eight one,81,1
+582,five eight two,82,2
+583,five eight three,83,3
+584,five eight four,84,4
+585,five eight five,85,5
+586,five eight six,86,6
+587,five eight seven,87,7
+588,five eight eight,88,8
+589,five eight nine,89,9
+590,five nine zero,90,0
+591,five nine one,91,1
+592,five nine two,92,2
+593,five nine three,93,3
+594,five nine four,94,4
+595,five nine five,95,5
+596,five nine six,96,6
+597,five nine seven,97,7
+598,five nine eight,98,8
+599,five nine nine,99,9
+600,six zero zero,0,0
+601,six zero one,1,1
+602,six zero two,2,2
+603,six zero three,3,3
+604,six zero four,4,4
+605,six zero five,5,5
+606,six zero six,6,6
+607,six zero seven,7,7
+608,six zero eight,8,8
+609,six zero nine,9,9
+610,six one zero,10,0
+611,six one one,11,1
+612,six one two,12,2
+613,six one three,13,3
+614,six one four,14,4
+615,six one five,15,5
+616,six one six,16,6
+617,six one seven,17,7
+618,six one eight,18,8
+619,six one nine,19,9
+620,six two zero,20,0
+621,six two one,21,1
+622,six two two,22,2
+623,six two three,23,3
+624,six two four,24,4
+625,six two five,25,5
+626,six two six,26,6
+627,six two seven,27,7
+628,six two eight,28,8
+629,six two nine,29,9
+630,six three zero,30,0
+631,six three one,31,1
+632,six three two,32,2
+633,six three three,33,3
+634,six three four,34,4
+635,six three five,35,5
+636,six three six,36,6
+637,six three seven,37,7
+638,six three eight,38,8
+639,six three nine,39,9
+640,six four zero,40,0
+641,six four one,41,1
+642,six four two,42,2
+643,six four three,43,3
+644,six four four,44,4
+645,six four five,45,5
+646,six four six,46,6
+647,six four seven,47,7
+648,six four eight,48,8
+649,six four nine,49,9
+650,six five zero,50,0
+651,six five one,51,1
+652,six five two,52,2
+653,six five three,53,3
+654,six five four,54,4
+655,six five five,55,5
+656,six five six,56,6
+657,six five seven,57,7
+658,six five eight,58,8
+659,six five nine,59,9
+660,six six zero,60,0
+661,six six one,61,1
+662,six six two,62,2
+663,six six three,63,3
+664,six six four,64,4
+665,six six five,65,5
+666,six six six,66,6
+667,six six seven,67,7
+668,six six eight,68,8
+669,six six nine,69,9
+670,six seven zero,70,0
+671,six seven one,71,1
+672,six seven two,72,2
+673,six seven three,73,3
+674,six seven four,74,4
+675,six seven five,75,5
+676,six seven six,76,6
+677,six seven seven,77,7
+678,six seven eight,78,8
+679,six seven nine,79,9
+680,six eight zero,80,0
+681,six eight one,81,1
+682,six eight two,82,2
+683,six eight three,83,3
+684,six eight four,84,4
+685,six eight five,85,5
+686,six eight six,86,6
+687,six eight seven,87,7
+688,six eight eight,88,8
+689,six eight nine,89,9
+690,six nine zero,90,0
+691,six nine one,91,1
+692,six nine two,92,2
+693,six nine three,93,3
+694,six nine four,94,4
+695,six nine five,95,5
+696,six nine six,96,6
+697,six nine seven,97,7
+698,six nine eight,98,8
+699,six nine nine,99,9
+700,seven zero zero,0,0
+701,seven zero one,1,1
+702,seven zero two,2,2
+703,seven zero three,3,3
+704,seven zero four,4,4
+705,seven zero five,5,5
+706,seven zero six,6,6
+707,seven zero seven,7,7
+708,seven zero eight,8,8
+709,seven zero nine,9,9
+710,seven one zero,10,0
+711,seven one one,11,1
+712,seven one two,12,2
+713,seven one three,13,3
+714,seven one four,14,4
+715,seven one five,15,5
+716,seven one six,16,6
+717,seven one seven,17,7
+718,seven one eight,18,8
+719,seven one nine,19,9
+720,seven two zero,20,0
+721,seven two one,21,1
+722,seven two two,22,2
+723,seven two three,23,3
+724,seven two four,24,4
+725,seven two five,25,5
+726,seven two six,26,6
+727,seven two seven,27,7
+728,seven two eight,28,8
+729,seven two nine,29,9
+730,seven three zero,30,0
+731,seven three one,31,1
+732,seven three two,32,2
+733,seven three three,33,3
+734,seven three four,34,4
+735,seven three five,35,5
+736,seven three six,36,6
+737,seven three seven,37,7
+738,seven three eight,38,8
+739,seven three nine,39,9
+740,seven four zero,40,0
+741,seven four one,41,1
+742,seven four two,42,2
+743,seven four three,43,3
+744,seven four four,44,4
+745,seven four five,45,5
+746,seven four six,46,6
+747,seven four seven,47,7
+748,seven four eight,48,8
+749,seven four nine,49,9
+750,seven five zero,50,0
+751,seven five one,51,1
+752,seven five two,52,2
+753,seven five three,53,3
+754,seven five four,54,4
+755,seven five five,55,5
+756,seven five six,56,6
+757,seven five seven,57,7
+758,seven five eight,58,8
+759,seven five nine,59,9
+760,seven six zero,60,0
+761,seven six one,61,1
+762,seven six two,62,2
+763,seven six three,63,3
+764,seven six four,64,4
+765,seven six five,65,5
+766,seven six six,66,6
+767,seven six seven,67,7
+768,seven six eight,68,8
+769,seven six nine,69,9
+770,seven seven zero,70,0
+771,seven seven one,71,1
+772,seven seven two,72,2
+773,seven seven three,73,3
+774,seven seven four,74,4
+775,seven seven five,75,5
+776,seven seven six,76,6
+777,seven seven seven,77,7
+778,seven seven eight,78,8
+779,seven seven nine,79,9
+780,seven eight zero,80,0
+781,seven eight one,81,1
+782,seven eight two,82,2
+783,seven eight three,83,3
+784,seven eight four,84,4
+785,seven eight five,85,5
+786,seven eight six,86,6
+787,seven eight seven,87,7
+788,seven eight eight,88,8
+789,seven eight nine,89,9
+790,seven nine zero,90,0
+791,seven nine one,91,1
+792,seven nine two,92,2
+793,seven nine three,93,3
+794,seven nine four,94,4
+795,seven nine five,95,5
+796,seven nine six,96,6
+797,seven nine seven,97,7
+798,seven nine eight,98,8
+799,seven nine nine,99,9
+800,eight zero zero,0,0
+801,eight zero one,1,1
+802,eight zero two,2,2
+803,eight zero three,3,3
+804,eight zero four,4,4
+805,eight zero five,5,5
+806,eight zero six,6,6
+807,eight zero seven,7,7
+808,eight zero eight,8,8
+809,eight zero nine,9,9
+810,eight one zero,10,0
+811,eight one one,11,1
+812,eight one two,12,2
+813,eight one three,13,3
+814,eight one four,14,4
+815,eight one five,15,5
+816,eight one six,16,6
+817,eight one seven,17,7
+818,eight one eight,18,8
+819,eight one nine,19,9
+820,eight two zero,20,0
+821,eight two one,21,1
+822,eight two two,22,2
+823,eight two three,23,3
+824,eight two four,24,4
+825,eight two five,25,5
+826,eight two six,26,6
+827,eight two seven,27,7
+828,eight two eight,28,8
+829,eight two nine,29,9
+830,eight three zero,30,0
+831,eight three one,31,1
+832,eight three two,32,2
+833,eight three three,33,3
+834,eight three four,34,4
+835,eight three five,35,5
+836,eight three six,36,6
+837,eight three seven,37,7
+838,eight three eight,38,8
+839,eight three nine,39,9
+840,eight four zero,40,0
+841,eight four one,41,1
+842,eight four two,42,2
+843,eight four three,43,3
+844,eight four four,44,4
+845,eight four five,45,5
+846,eight four six,46,6
+847,eight four seven,47,7
+848,eight four eight,48,8
+849,eight four nine,49,9
+850,eight five zero,50,0
+851,eight five one,51,1
+852,eight five two,52,2
+853,eight five three,53,3
+854,eight five four,54,4
+855,eight five five,55,5
+856,eight five six,56,6
+857,eight five seven,57,7
+858,eight five eight,58,8
+859,eight five nine,59,9
+860,eight six zero,60,0
+861,eight six one,61,1
+862,eight six two,62,2
+863,eight six three,63,3
+864,eight six four,64,4
+865,eight six five,65,5
+866,eight six six,66,6
+867,eight six seven,67,7
+868,eight six eight,68,8
+869,eight six nine,69,9
+870,eight seven zero,70,0
+871,eight seven one,71,1
+872,eight seven two,72,2
+873,eight seven three,73,3
+874,eight seven four,74,4
+875,eight seven five,75,5
+876,eight seven six,76,6
+877,eight seven seven,77,7
+878,eight seven eight,78,8
+879,eight seven nine,79,9
+880,eight eight zero,80,0
+881,eight eight one,81,1
+882,eight eight two,82,2
+883,eight eight three,83,3
+884,eight eight four,84,4
+885,eight eight five,85,5
+886,eight eight six,86,6
+887,eight eight seven,87,7
+888,eight eight eight,88,8
+889,eight eight nine,89,9
+890,eight nine zero,90,0
+891,eight nine one,91,1
+892,eight nine two,92,2
+893,eight nine three,93,3
+894,eight nine four,94,4
+895,eight nine five,95,5
+896,eight nine six,96,6
+897,eight nine seven,97,7
+898,eight nine eight,98,8
+899,eight nine nine,99,9
+900,nine zero zero,0,0
+901,nine zero one,1,1
+902,nine zero two,2,2
+903,nine zero three,3,3
+904,nine zero four,4,4
+905,nine zero five,5,5
+906,nine zero six,6,6
+907,nine zero seven,7,7
+908,nine zero eight,8,8
+909,nine zero nine,9,9
+910,nine one zero,10,0
+911,nine one one,11,1
+912,nine one two,12,2
+913,nine one three,13,3
+914,nine one four,14,4
+915,nine one five,15,5
+916,nine one six,16,6
+917,nine one seven,17,7
+918,nine one eight,18,8
+919,nine one nine,19,9
+920,nine two zero,20,0
+921,nine two one,21,1
+922,nine two two,22,2
+923,nine two three,23,3
+924,nine two four,24,4
+925,nine two five,25,5
+926,nine two six,26,6
+927,nine two seven,27,7
+928,nine two eight,28,8
+929,nine two nine,29,9
+930,nine three zero,30,0
+931,nine three one,31,1
+932,nine three two,32,2
+933,nine three three,33,3
+934,nine three four,34,4
+935,nine three five,35,5
+936,nine three six,36,6
+937,nine three seven,37,7
+938,nine three eight,38,8
+939,nine three nine,39,9
+940,nine four zero,40,0
+941,nine four one,41,1
+942,nine four two,42,2
+943,nine four three,43,3
+944,nine four four,44,4
+945,nine four five,45,5
+946,nine four six,46,6
+947,nine four seven,47,7
+948,nine four eight,48,8
+949,nine four nine,49,9
+950,nine five zero,50,0
+951,nine five one,51,1
+952,nine five two,52,2
+953,nine five three,53,3
+954,nine five four,54,4
+955,nine five five,55,5
+956,nine five six,56,6
+957,nine five seven,57,7
+958,nine five eight,58,8
+959,nine five nine,59,9
+960,nine six zero,60,0
+961,nine six one,61,1
+962,nine six two,62,2
+963,nine six three,63,3
+964,nine six four,64,4
+965,nine six five,65,5
+966,nine six six,66,6
+967,nine six seven,67,7
+968,nine six eight,68,8
+969,nine six nine,69,9
+970,nine seven zero,70,0
+971,nine seven one,71,1
+972,nine seven two,72,2
+973,nine seven three,73,3
+974,nine seven four,74,4
+975,nine seven five,75,5
+976,nine seven six,76,6
+977,nine seven seven,77,7
+978,nine seven eight,78,8
+979,nine seven nine,79,9
+980,nine eight zero,80,0
+981,nine eight one,81,1
+982,nine eight two,82,2
+983,nine eight three,83,3
+984,nine eight four,84,4
+985,nine eight five,85,5
+986,nine eight six,86,6
+987,nine eight seven,87,7
+988,nine eight eight,88,8
+989,nine eight nine,89,9
+990,nine nine zero,90,0
+991,nine nine one,91,1
+992,nine nine two,92,2
+993,nine nine three,93,3
+994,nine nine four,94,4
+995,nine nine five,95,5
+996,nine nine six,96,6
+997,nine nine seven,97,7
+998,nine nine eight,98,8
+999,nine nine nine,99,9

@@ -1,3 +1,104 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d46dd7ef8d5e44c06b3812c54d9bdea9bed32408c83d57b735070e10b9e59fc4
-size 4589
+0,zero,100,0,"abcd,efghijklmnopqrstuvwxyz
+0,null,100,0,abcdefghijklmnopqrstuvwxyz
+
+0,zero,0,10,null
+1,'one',101,1,abcdefghi"jklmnopqrstuvwxyz
+2,,102,2,abcdef'ghijklmnopqrstuvwxyz
+3,null a,103,3,abcdefghijklmnopqrstuvwxyz
+4,four   ,104,4,"abcd,efghijklmno,pqrstuvwxyz"
+5,   five-abcdefgh,105,5,'abcdefghijklmnopqrstuvwxyz'
+6,six    ,106,6,"abcdefghij,klmnopqrstuvwxyz"
+7,nulla,107,7,'abcdefghij,klmnopqrstuvwxyz'
+8,eight-abcdefgh,108,8,abcdefghijklmnopqrstuvwxyz
+9,ni  ne,109,9,
+10,one zero,110,0,abcdefghijklmnopqrstuvwxyz
+11,one one,111,1,
+12,one two,112,2,NULL
+13,one three,113,3,abcdefghijklmnopqrstuvwxyz
+14,null ,114,4,null a
+15,one five,115,5,null ,
+16,one six,116,6,abcdefghijklmnopqrstuvwxyz
+17,null xyz,117,7,null xyz
+18,'one, eight',118,8,abcdefghijklmnopqrstuvwxyz
+19,one nine,119,9,abcdefghijklmnopqrstuvwxyz
+20,two zero,120,0,abcdefghijklmnopqrstuvwxyz
+21,two one,121,1,abcdefghijklmnopqrstuvwxyz
+22,two two,122,2,abcdefghijklmnopqrstuvwxyz
+23,two three,123,3,abcdefghijklmnopqrstuvwxyz
+24,two four,124,4,abcdefghijklmnopqrstuvwxyz
+25,two five,125,5,abcdefghijklmnopqrstuvwxyz
+26,two six,126,6,abcdefghijklmnopqrstuvwxyz
+27,two seven,127,7,abcdefghijklmnopqrstuvwxyz
+28,two eight,128,8,abcdefghijklmnopqrstuvwxyz
+29,two nine,129,9,abcdefghijklmnopqrstuvwxyz
+30,three zero-abcdefgh,130,0,abcdefghijklmnopqrstuvwxyz
+31,three one,131,1,abcdefghijklmnopqrstuvwxyz
+32,three two,132,2,abcdefghijklmnopqrstuvwxyz
+33,three three,133,3,abcdefghijklmnopqrstuvwxyz
+34,three four,134,4,abcdefghijklmnopqrstuvwxyz
+35,three five,135,5,abcdefghijklmnopqrstuvwxyz
+36,three six,136,6,abcdefghijklmnopqrstuvwxyz
+37,three seven,137,7,abcdefghijklmnopqrstuvwxyz
+38,three eight,138,8,abcdefghijklmnopqrstuvwxyz
+39,three nine,139,9,abcdefghijklmnopqrstuvwxyz
+40,four zero,140,0,abcdefghijklmnopqrstuvwxyz
+41,four one,141,1,abcdefghijklmnopqrstuvwxyz
+42,four two,142,2,abcdefghijklmnopqrstuvwxyz
+43,four three,143,3,abcdefghijklmnopqrstuvwxyz
+44,four four,144,4,abcdefghijklmnopqrstuvwxyz
+45,four five,145,5,abcdefghijklmnopqrstuvwxyz
+46,four six,146,6,abcdefghijklmnopqrstuvwxyz
+47,four seven-abcdefgh,147,7,abcdefghijklmnopqrstuvwxyz
+48,four eight,148,8,abcdefghijklmnopqrstuvwxyz
+49,four nine,149,9,abcdefghijklmnopqrstuvwxyz
+50,five zero,150,0,abcdefghijklmnopqrstuvwxyz
+51,five one,151,1,abcdefghijklmnopqrstuvwxyz
+52,five two,152,2,abcdefghijklmnopqrstuvwxyz
+53,five three,153,3,abcdefghijklmnopqrstuvwxyz
+54,five four,154,4,abcdefghijklmnopqrstuvwxyz
+55,five five,155,5,abcdefghijklmnopqrstuvwxyz
+56,five six,156,6,abcdefghijklmnopqrstuvwxyz
+57,five seven,157,7,abcdefghijklmnopqrstuvwxyz
+58,five eight,158,8,abcdefghijklmnopqrstuvwxyz
+59,five nine,159,9,abcdefghijklmnopqrstuvwxyz
+60,six zero,160,0,abcdefghijklmnopqrstuvwxyz
+61,six one-abcdefgh,161,1,abcdefghijklmnopqrstuvwxyz
+62,six two,162,2,abcdefghijklmnopqrstuvwxyz
+63,six three,163,3,abcdefghijklmnopqrstuvwxyz
+64,six four,164,4,abcdefghijklmnopqrstuvwxyz
+65,six five,165,5,abcdefghijklmnopqrstuvwxyz
+66,six six,166,6,abcdefghijklmnopqrstuvwxyz
+67,six seven,167,7,abcdefghijklmnopqrstuvwxyz
+68,six eight,168,8,abcdefghijklmnopqrstuvwxyz
+69,six nine,169,9,abcdefghijklmnopqrstuvwxyz
+70,seven zero,170,0,abcdefghijklmnopqrstuvwxyz
+71,seven one,171,1,abcdefghijklmnopqrstuvwxyz
+72,seven two,172,2,abcdefghijklmnopqrstuvwxyz
+73,seven three,173,3,abcdefghijklmnopqrstuvwxyz
+74,seven four,174,4,abcdefghijklmnopqrstuvwxyz
+75,seven five,175,5,abcdefghijklmnopqrstuvwxyz
+76,seven six,176,6,abcdefghijklmnopqrstuvwxyz
+77,seven seven,177,7,abcdefghijklmnopqrstuvwxyz
+78,seven eight,178,8,abcdefghijklmnopqrstuvwxyz
+79,seven nine,179,9,abcdefghijklmnopqrstuvwxyz
+80,eight zero,180,0,abcdefghijklmnopqrstuvwxyz
+81,eight one,181,1,abcdefghijklmnopqrstuvwxyz
+82,eight two,182,2,abcdefghijklmnopqrstuvwxyz
+83,eight three,183,3,abcdefghijklmnopqrstuvwxyz
+84,eight four,184,4,abcdefghijklmnopqrstuvwxyz
+85,eight five,185,5,abcdefghijklmnopqrstuvwxyz
+86,eight six,186,6,abcdefghijklmnopqrstuvwxyz
+87,eight seven,187,7,abcdefghijklmnopqrstuvwxyz
+88,eight eight,188,8,abcdefghijklmnopqrstuvwxyz
+89,eight nine,189,9,abcdefghijklmnopqrstuvwxyz
+90,nine zero,190,0,abcdefghijklmnopqrstuvwxyz
+91,nine one,191,1,abcdefghijklmnopqrstuvwxyz
+92,nine two,192,2,abcdefghijklmnopqrstuvwxyz
+93,nine three,193,3,abcdefghijklmnopqrstuvwxyz
+94,nine four,194,4,abcdefghijklmnopqrstuvwxyz
+95,nine five,195,5,abcdefghijklmnopqrstuvwxyz
+96,nine six,196,6,abcdefghijklmnopqrstuvwxyz
+97,nine seven,197,7,abcdefghijklmnopqrstuvwxyz
+98,nine eight,198,8,abcdefghijklmnopqrstuvwxyz
+99,nine nine,199,9,abcdefghijklmnopqrstuvwxyz
+100,one zero zero,200,0,abcdefghijklmnopqrstuvwxyz
