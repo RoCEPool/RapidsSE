@@ -16,80 +16,66 @@ namespace STORE
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // a)
+    // operator
 
     // -- id, name and kind
-    Gid<CN_OP> m_xOpId;  // op id in grid
-    s32        m_sOpNm;  // name of this operator
-    // n/a               // kind
-  
+    Gid<CN_OP> m_xOpId;     // op id in grid
+    s32        m_sOpNm;     // name of this operator
+
+    TagSet     m_oOpTags;   // tags for the op
+    eSS        m_eSeed;     // seed to spawn
+    Word*      m_pSeedWord; // seed word of this operator
+    bool       m_bTraceOp;  // tracing this operator
+    bool       m_bTraceAck; // tracing ack of this operator
+
     // -- belongs to
-    Stream* m_pStream;  // which stream of stage of pipeline of job
+    Stream*    m_pStream;   // which stream of stage of pipeline of job
+    i8         m_i_Op;      // [op] in stream
 
     // -- refers to
-    OpSpec* m_pOpSpec;  // specification of this operator
+    OpSpec*    m_pOpSpec;   // specification of this operator
+    Pipeline*  m_p_Pipeline_op; // which pipeline
 
-    // -- state
-    // n/a
+    // -- owns
+    LogicUnit* m_pOpLogicUnit;
 
-    // -- tags and tasking
-    TagSet m_oOpTags ; // tags for the op
-    Task*  m_pTask;    // which task
-    eSS    m_eSeed;    // seed to spawn
+    // -- executed by
+    Task*      m_pTask;    // which task is currenty executing this op
 
+    // can these go???
+    bool m_bPulsedLimit;  // is this a pulsed operand?
+    i8   m_iWorkQuanta;   // quanta of work between pulses
+    i8   m_iWorkDone;     // work done
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
+    // event handling
 
     eZK   m_eCurHandler;
-    Word* m_paEventHandler[ZK_ENUMS];  // operand handlers (by kind)
+    Word* m_paEventHandler[ZK_ENUMS];  // event handlers
     i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
   
     i8    m_eCurOperand;
-    i8    m_naOperandCount[ZK_ENUMS];  // counts of operands recceived
+    i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c)
+    // in-bound queues and outbound operand
   
     OperandQueue* m_pQueueLeft;   // left input queue
     OperandQueue* m_pQueueRight;  // right input queue
     OperandQueue* m_pQueueOoO;    // out-of-order queue
 
+    Operand*      m_pOutboundOperand;  // operand to be piped out
+                                       // I think this can be removed
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
+    // move these in logic unit???
   
-    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-
-    s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name within pipeline
-    s32  m_sStreamNm;   // stream name within stream within pipeline
-    i8   m_i_Op;        // [op] in stream
+    i8   m_iSendNode;     // send node (for send)
+    eXK  m_eSendKind;     // send kind
+    i8   m_iRobin;        // send Round Robin partition/node/thread
+    i8   m_iLocalRobin;   // send Round Robin local ptn/node/thread
   
-    Stage*    m_pStage;    // which stage of pipeline
-    Pipeline* m_p_Pipeline_op; // which pipeline
-  
-   
- 
-    LogicUnit* m_pOpLogicUnit;
-
-    // working variables. these are not copies of variables from opSpec
-  
-    bool m_bTraceOp;    // tracing this operator
-    bool m_bTraceAck;   // tracing ack of this operator
-
-    bool           m_bPulsedLimit;   // is this a pulsed operand?
-    i8             m_iWorkQuanta;    // quanta of work between pulses
-    i8             m_iWorkDone;      // work done
-
-
-    i8             m_iSendNode;      // send node (for send)
-    eXK            m_eSendKind;      // send kind
-    i8             m_iRobin;         // send Round Robin partition/node/thread
-    i8             m_iLocalRobin;    // send Round Robin local ptn/node/thread
-  
-    Op*            m_pDownstreamOp;  // downstream op
-    Operand*       m_pOutboundOperand;  // operand to be piped out
-
+    Op*  m_pDownstreamOp; // downstream op  DELETE
     
     // must be last
     Footer m_xFooter;
@@ -175,6 +161,8 @@ namespace STORE
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnTaskForOp(i8 iSessionId);
+    Word* pSeedWord(void);
+    void vSeedWord(Word* pSeedWord);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);

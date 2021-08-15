@@ -1264,7 +1264,15 @@ void Task::vSeedTask(void)
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
+  if (m_pJob.bIsNotNull())
+    {;}
+  else
+  if (m_pOp.bIsNotNull())
+    m_pOp->vSeedWord(pSeedWord);
+  else
+    NEVER_REACH;
 
+  
   m_pSeedWord = pSeedWord;
   m_aInxPtr   = pSeedWord->aFirstCell();
   

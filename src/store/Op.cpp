@@ -55,9 +55,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   m_pOpLogicUnit = nullptr;
 
-  m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
-  m_sStageNm    = pStream->pStage()->szStageNm();
-  m_sStreamNm   = pStream->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
   m_i_Op        = pOpSpec->iOpSpec();
 
@@ -66,7 +63,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
-  m_pStage    = pStream->pStage();
   m_p_Pipeline_op = pStream->pPipeline();
 
   // -- -- -- -- -- --
@@ -75,6 +71,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pTask = nullptr;
   
   m_eSeed = SS_SEED_REQ;
+  m_pSeedWord = nullptr;
   
   // -- -- -- -- -- --
 
@@ -127,17 +124,15 @@ Op::Op(Stz* szOpNm)
     
   m_pOpLogicUnit = nullptr;
 
-  m_sPipelineNm = C_NO_NAME;
-  m_sStageNm    = C_NO_NAME;
-  m_sStreamNm   = C_NO_NAME;
   m_sOpNm       = szOpNm;
   m_i_Op        = C_UNKNOWN;
   
+  m_pSeedWord = nullptr;
+
   m_bTraceOp    = false;
   
   m_pOpSpec   = nullptr;
   m_pStream   = nullptr;
-  m_pStage    = nullptr;
   m_p_Pipeline_op = nullptr;
   
   // -- -- -- -- -- --
@@ -237,7 +232,7 @@ void Op::vAckPipelineJob(void)
       } else {
         vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
                szOpNm(),
-               m_pStage->szStageNm(),
+               m_pStream->pStage()->szStageNm(),
                iNode(),
                tPtnNo());
       }
@@ -263,7 +258,7 @@ void Op::vAckPipelineJob(void)
     if (m_bTraceAck)
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job (acksRemaining : %lld)\n"_Stz,
              szOpNm(),
-             m_pStage->szStageNm(),
+             m_pStream->pStage()->szStageNm(),
              iNode(),
              tPtnNo(),
              nAcksWereRemaining);
@@ -989,7 +984,7 @@ i8 Op::iNode(void)
   
   i8 i_Node;
   
-  if (m_pStage->pStageSpec()->bNodeTopo())
+  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     i_Node = m_pStream->i_Node();
   else
     i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo());
@@ -1103,7 +1098,7 @@ void Op::vOpTrace(Operand* pOperand
          "%18s %-15s %p %s\n"_Stz,
 
          m_sOpNm.szStz(),
-         m_pStage->szStageNm(),
+         m_pStream->pStage()->szStageNm(),
          iNode(),
          tPtnNo(),
          pPipelineJob(),
@@ -1527,7 +1522,7 @@ tPN Op::tPtnNo(void)
   
   i8 tPtnNo;
 
-  if (m_pStage->pStageSpec()->bNodeTopo())
+  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     tPtnNo = C_UNKNOWN;
   else
     tPtnNo = m_pStream->tPtnNo();
@@ -1590,6 +1585,26 @@ Stz* Op::szSeed(void)
   Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oOpTags);
     
   return szSeed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seed word                                                              */
+/*----------------------------------------------------------------------------*/
+Word* Op::pSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pSeedWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set seed word                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vSeedWord(Word* pSeedWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pSeedWord = pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1704,7 +1719,7 @@ Stz* Op::szStageName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStage->szStageNm();
+  return m_pStream->pStage()->szStageNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1714,7 +1729,7 @@ Stage* Op::pStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStage;
+  return m_pStream->pStage();
 }
 
 /*----------------------------------------------------------------------------*/
