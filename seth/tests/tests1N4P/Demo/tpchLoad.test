@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 // load customer
 load customer "../TPCH/SF1/customer.tbl";
+success
 
 compactidx customer customer_idx1;
 success
