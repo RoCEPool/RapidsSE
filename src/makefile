@@ -59,7 +59,7 @@ TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
 
 # Man pages
-MAN_PAGES=../Documents/se.man
+MAN_PAGES=se.man
 
 # Source Files
 SRC_DIR := .

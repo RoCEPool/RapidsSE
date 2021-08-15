@@ -1,0 +1,163 @@
+.TH se 7 "17 September 2016" "version 0.1.0"
+
+.SH NAME
+se - rapids storage engine
+
+.SH SYNOPSIS
+.B se [--start [--size n[b|kb|mb|gb|tb|pb] ] | --stop | --status] 
+
+.SH DESCRIPTION
+.B se
+is a rapids storage engine.
+ 
+.SH OPTIONS
+The following options are available in this release:
+
+.TP 
+.B --start  
+starts the storage engine. You can give an optional size of the shared memory. Default shared memory size is 4gb.
+.TP
+.RS
+.RE
+Example: se --start --size 8gb
+
+.TP
+.B --stop  
+stops the storage engine
+
+.TP
+.B --status
+displays the status of the storage engine
+
+.TP
+.B --prompt
+starts se prompt
+
+.SH EXAMPLES
+.TP
+.B se --start
+.RS
+.RE
+RapidsSE v0.1.1 (Sep 26 2016 11:33:56 -- debug)
+.RE
+Creating SE instance /RapidsSE_Instance1 ...
+.RE
+RapidsSE instance /RapidsSE_Instance1 started
+.TP
+.B se --status
+.RS
+.RE
+RapidsSE v0.1.1 (Sep 26 2016 11:33:56 -- debug)
+.RE
+RapidsSE instance /RapidsSE_Instance1 running
+
+.TP
+.B se --stop
+.RS
+.RE
+RapidsSE v0.1.1 (Sep 26 2016 11:33:56 -- debug)
+.RE
+Attaching to SE instance /RapidsSE_Instance1
+.RE
+RapidsSE instance /RapidsSE_Instance1 stopped
+
+.TP
+.B se --prompt
+.RS
+.RE
+RapidsSE v0.1.1 (Sep 26 2016 11:33:56 -- debug)
+.RE
+Attaching to SE instance /RapidsSE_Instance1
+.RE
+se 0.1.1>
+.TP
+The commands that can be given to the se prompt are:
+
+.RS
+.RE
+.B bye
+-- exit out of the se prompt
+
+.RE
+.B cd <directoryName>
+-- change directory to <directoryName>
+
+.RE
+.B cf <folderName>
+-- change folder to <folderName>
+
+.RE
+.B create catalog <catalogName>;
+-- create the catalog
+
+.RE
+.B create schema <schemaName>;
+-- create the schema
+
+.RE
+.B create table <tableName>;
+-- create the table
+
+.RE
+.B create tenant <tenantName>;
+-- create the tenant
+
+.RE
+.B drop catalog <catalogName>;
+-- drop the catalog
+
+.RE
+.B drop schema <schemaName>;
+-- drop the schema
+
+.RE
+.B drop table <tableName>;
+-- drop the table
+
+.RE
+.B drop tenant <tenantName>;
+-- drop the tenant
+
+.RE
+.B lf
+-- list folder contents
+
+.RE
+.B ld <tableName> <fileName>
+-- load table
+
+.RE
+.B ex <tableName> <fileName>
+-- export table into a file
+
+.RE 
+.B ls
+-- list directory contents
+
+.RE
+.B lscol <tableName>
+-- list columns of the table
+
+.RE
+.B print
+print string
+
+.RE
+.B pwf
+print working folder
+
+.RE
+.B pwd
+print working directory
+
+.RE
+.B space
+print the total, in use and free pool space
+
+.RE
+.B ?
+print this help
+
+.RE
+.B help
+print this help
