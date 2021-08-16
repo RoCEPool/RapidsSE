@@ -18,9 +18,10 @@ namespace STORE
     i8             m_iEndingMarkers;     // ending markers received by consumeOp
     i8             m_iErroringMarkers;   // erroring markers received by consumeOp
     i8             m_iExitingMarkers;    // exiting markers received by consumeOp
-    i8             m_iEosMarkers;        // eos / error markers received by consumeOp
+    i8             m_iEosMarkers;        // eos markers received by consumeOp
     i8             m_iLeavingMarkers;    // leaving markers received by consumeOp
     i8             m_iStartMarkers;      // start markers received by consumeOp
+    i8             m_iStreamDefRhtMarkers; // streamDefRht markers received by consumeOp
     i8             m_iStreamDefs;        // stream def's received by consumeOp
     
     // must be last
@@ -45,6 +46,7 @@ namespace STORE
     bool bLeavingDone(void);
     bool bStartDone(void);
     bool bStreamDefDone(void);
+    bool bStreamDefRhtDone(void);
     
     void vIncCancelling(void);
     void vIncCleaning(void);
@@ -58,6 +60,7 @@ namespace STORE
     void vIncLeaving(void);
     void vIncStart(void);
     void vIncStreamDef(void);
+    void vIncStreamDefRht(void);
     
     Footer* aFooter(void);
     

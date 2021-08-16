@@ -1070,6 +1070,7 @@ public:
   void vOperandNewStartCrwRhtMarker(void);
   void vOperandNewStartRowRhtMarker(void);
   void vOperandNewStreamDef(void);
+  void vOperandNewStreamDefRht(void);
   void vOperandNewTrigger(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
@@ -1283,6 +1284,7 @@ public:
   void vRegSendsHandleLeaving(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
+  void vRegSendsHandleStreamDefRht(void);
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 

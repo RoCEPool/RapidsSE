@@ -254,7 +254,7 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
+/*----------------------- -----------------------------------------------------*/
 /* on ZK_M_STARTROWRHT ...                                               INIT */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StartRowRht \handler
@@ -272,7 +272,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_M_STREAMDEFRHT ...                                              INIT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_StreamDefRht \handler
+
+  0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
+
+  "ZK_M_STREAMDEFRHT" .
+
+  PipeIn[].delete
+
+  // record receipt of streamDef right marker
+  1 to Counter2[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : loopJoin_StreamDef \handler
 
@@ -280,7 +297,7 @@
 
   EC_NONE locals| eError |
 
-  StreamDefLft[].isNull if
+  Counter2[] 0 == if
     "ZK_D_STREAMDEF left" .
     //"loopJoin_StreamDef got left streamDef" .
     // move pipein[] to StreamDefLft[]
@@ -290,6 +307,7 @@
     exit
   then
 
+  // would have received a streamDefRht marker
   "ZK_D_STREAMDEF rht" .
 
   // We have received the ZK_M_STARTCRWRHT
@@ -372,11 +390,12 @@
   find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   op[].handler!
   find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   op[].handler!
   find: loopJoin_StreamDef        ZK_D_STREAMDEF     op[].handler!
+  find: loopJoin_StreamDefRht     ZK_M_STREAMDEFRHT  op[].handler!
 
-find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!
-find: loopJoin_End               ZK_M_END            op[].handler!
-find: loopJoin_Ending            ZK_M_ENDING         op[].handler!
-find: loopJoin_Exiting           ZK_M_EXITING        op[].handler!
+  find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!
+  find: loopJoin_End               ZK_M_END            op[].handler!
+  find: loopJoin_Ending            ZK_M_ENDING         op[].handler!
+  find: loopJoin_Exiting           ZK_M_EXITING        op[].handler!
 
   op__loop
 

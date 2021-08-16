@@ -198,6 +198,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_STREAMDEFRHT ...                                              INIT */
+/*----------------------------------------------------------------------------*/
+: filterRight_StreamDefRht \handler
+
+  0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
+
+  // record receipt of streamDef right marker
+  1 to Counter2[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : filterRight_StreamDef \handler
@@ -208,16 +223,19 @@
 
   // filterRight gets the left streamDef, then right streamDef
   // it needs to store the right streamDef in left
-  // and left in right (which it will ignore)
-  StreamDefRht[].isNull if
+  // and left in right (which it will pipeout)
+  Counter2[] 0 == if
 
-      //"loopJoin_StreamDef got left streamDef" .
+      //"filterRight_StreamDef got left streamDef" .
       // move pipein[] to StreamDefRht[]
       Pipein[]\clear to StreamDefRht[]
+      StreamDefRht[].pipeout
 
       true
       exit
   then
+
+  // would have received a streamDefRht marker
 
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
@@ -252,8 +270,7 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  // pipeout the StreamDefRht and streamDefOut
-  StreamDefRht[].pipeout
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
   // create the compiler
@@ -293,6 +310,7 @@
   find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!
   find: filterRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!
   find: filterRight_StreamDef        ZK_D_STREAMDEF   op[].handler!
+  find: filterRight_StreamDefRht     ZK_M_STREAMDEFRHT op[].handler!
 
   op__loop
 

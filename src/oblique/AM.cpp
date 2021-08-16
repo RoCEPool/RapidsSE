@@ -2570,15 +2570,15 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_M_LEFTOUTER_CRWLFT;   break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT;   break;
+        case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_M_LEFTOUTER_CRWLFT; break;
+        case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT; break;
         case OM_NEXTBUFFERMARKER:   eOperand = ZK_M_NEXTBUFFER;   break;
         case OM_STARTEDMARKER:      eOperand = ZK_M_STARTED;      break;
-        case OM_STARTCRWRHT:        eOperand = ZK_M_STARTCRWRHT; break;
+        case OM_STARTCRWRHT:        eOperand = ZK_M_STARTCRWRHT;  break;
         case OM_STARTMARKER:        eOperand = ZK_M_START;        break;
-        case OM_STARTROWRHT:        eOperand = ZK_M_STARTROWRHT; break;
-        //case OM_STREAMDEFRHT:   eOperand = ZK_M_STREAMDEFRHT;    break;
-        case OM_TRIGGER:            eOperand = ZK_M_TRIGGER;            break;
+        case OM_STARTROWRHT:        eOperand = ZK_M_STARTROWRHT;  break;
+        case OM_STREAMDEFRHT:       eOperand = ZK_M_STREAMDEFRHT; break;
+        case OM_TRIGGER:            eOperand = ZK_M_TRIGGER;      break;
         default:
           RASSERT(0);
       }

@@ -54,7 +54,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 // ": scanRight_EosMarker" .
 
@@ -205,6 +205,11 @@
 
   // now pipe out the stream def for the right table
   //"piping out right streamDef" .
+  // pipeout a streamDefRht marker first
+  Operand[].newStreamDefRht
+  Operand[].pipeout
+
+  // pipeout the rht streamDef
   Operand[].newStreamDef
   Operand[].pipeOut
 
