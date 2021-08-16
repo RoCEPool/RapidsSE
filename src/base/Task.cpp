@@ -358,6 +358,8 @@ void Task::vDumpOnException(void)
 
   Now oNow;
   
+  SP_Word spWord;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
   vTrace("Now %s\n"_Stz,oNow.sz());
@@ -365,13 +367,13 @@ void Task::vDumpOnException(void)
   vTrace("\n"_Stz);
 
   if (m_pJob.bIsNotNull()) {
-    vTrace("1) Job Task\n"_Stz);
+    vTrace("1) Task (for Job)\n"_Stz);
     vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
   if (m_pOp.bIsNotNull()) {
-    vTrace("1) Operator Task\n"_Stz);
+    vTrace("1) Task (for Op)\n"_Stz);
     SP_Op spOp;
     vTrace("m_pOp=%p (%s); seed %s; %lld queued operands\n"_Stz
            ,*m_pOp
@@ -390,16 +392,30 @@ void Task::vDumpOnException(void)
            ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
                                : ""_Stz
            );
-  vTrace("\n"_Stz,m_aInxPtr);
+  vTrace("\n"_Stz);
 
   
-  SP_Word spWord;
   vTrace("m_pRecoveryWord=%s\n"_Stz,spWord.sz(m_pRecoveryWord));
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (m_pJob.bIsNotNull()) {
+    vTrace("\n"_Stz);
+    vTrace("2) Job\n"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  else
+  if (m_pOp.bIsNotNull()) {
+    vTrace("\n"_Stz);
+    vTrace("2) Op\n"_Stz);
+  
+    vTrace("m_pOp::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pOp->pSeedWord()));
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
-  vTrace("2) Event Handler \n"_Stz);
+  vTrace("3) Event Handler \n"_Stz);
   
   vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
          (i8)m_pOp->eCurHandler(),
@@ -413,7 +429,7 @@ void Task::vDumpOnException(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("\n"_Stz);
-  vTrace("3) Event Frames\n"_Stz);
+  vTrace("Event Frames\n"_Stz);
     
   Task::vSeeFrameStack();
   

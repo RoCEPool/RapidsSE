@@ -32,6 +32,9 @@ namespace STORE
     s32         m_sJobNm;    // name of job
     eJK         m_eJobKind;  // job kind: (needs work)
 
+    eSS         m_eSeed;  // sen word to start execution
+    Word*       m_pSeedWord; // seed word of this job
+
     // -- command and tags
     s4K    m_sCmd;      // the command
     TagSet m_oJobTags;  // tags for the job
@@ -82,7 +85,6 @@ namespace STORE
     // job execution                                        execution
 
     // -- tasking
-    eSS   m_eSeed;  // sen word to start execution
     Task* m_pTask;  // task executing this job
 
     // -- logic unit
@@ -172,6 +174,8 @@ namespace STORE
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
+    Word* pSeedWord(void);
+    void vSeedWord(Word* pSeedWord);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);
