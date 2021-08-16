@@ -1281,7 +1281,7 @@ void Task::vSeedTask(void)
   }
 
   if (m_pJob.bIsNotNull())
-    {;}
+    m_pJob->vSeedWord(pSeedWord);
   else
   if (m_pOp.bIsNotNull())
     m_pOp->vSeedWord(pSeedWord);
