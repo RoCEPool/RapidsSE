@@ -21,7 +21,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  Pipeline::createOpsSpawnTasks
+  Pipeline::create
+  Pipeline::spawnOpTasks
 
   // run <pre_execute>
 
