@@ -24,23 +24,23 @@ namespace STORE
 
     TagSet     m_oOpTags;   // tags for the op
     eSS        m_eSeed;     // seed to spawn
-    Word*      m_pSeedWord; // seed word of this operator
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
     // -- belongs to
-    Stream*    m_pStream;   // which stream of stage of pipeline of job
-    i8         m_i_Op;      // [op] in stream
+    SMA<Stream> m_pStream;  // which stream (of stage of pipeline of job)
+    i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    OpSpec*    m_pOpSpec;   // specification of this operator
-    Pipeline*  m_p_Pipeline_op; // which pipeline
+    SMA<OpSpec>    m_pOpSpec;   // specification of this operator
+    SMA<Pipeline>  m_p_Pipeline_op; // which pipeline
+    SMA<Word>      m_pSeedWord; // seed word of this operator
 
     // -- owns
-    LogicUnit* m_pOpLogicUnit;
+    SMA<LogicUnit> m_pOpLogicUnit;  // logic unit of op
 
     // -- executed by
-    Task*      m_pTask;    // which task is currenty executing this op
+    SMA<Task>      m_pTask;    // which task is currenty executing this op
 
     // can these go???
     bool m_bPulsedLimit;  // is this a pulsed operand?
@@ -60,22 +60,24 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
   
-    OperandQueue* m_pQueueLeft;   // left input queue
-    OperandQueue* m_pQueueRight;  // right input queue
-    OperandQueue* m_pQueueOoO;    // out-of-order queue
-
-    Operand*      m_pOutboundOperand;  // operand to be piped out
-                                       // I think this can be removed
+    SMA<OperandQueue> m_pQueueLeft;   // left input queue
+    SMA<OperandQueue> m_pQueueRight;  // right input queue
+    SMA<OperandQueue> m_pQueueOoO;    // out-of-order queue
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
   
-    i8   m_iSendNode;     // send node (for send)
-    eXK  m_eSendKind;     // send kind
-    i8   m_iRobin;        // send Round Robin partition/node/thread
-    i8   m_iLocalRobin;   // send Round Robin local ptn/node/thread
+    i8   m_iSendNode;   // send node (for send)
+    eXK  m_eSendKind;   // send kind
+    i8   m_iRobin;      // send Round Robin partition/node/thread
+    i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
   
-    Op*  m_pDownstreamOp; // downstream op  DELETE
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // delete these???
+
+    SMA<Operand> m_pOutboundOperand;  // operand to be piped out
+
+    SMA<Op>      m_pDownstreamOp;     // downstream op  DELETE
     
     // must be last
     Footer m_xFooter;

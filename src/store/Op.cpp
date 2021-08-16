@@ -1611,7 +1611,7 @@ Word* Op::pSeedWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pSeedWord;
+  return * m_pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
