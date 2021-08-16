@@ -95,7 +95,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  SMA<Job> pPipelineJob;
+  
+  pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_OP) ||
@@ -1288,10 +1291,12 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Job* pPipelineJob = m_p_Pipeline_op->pPipelineJob();
+  SMA<Job> pPipelineJob;
+  
+  pPipelineJob = m_p_Pipeline_op->pPipelineJob();
 
   
-  return pPipelineJob;
+  return * pPipelineJob;
 }
 
 /*----------------------------------------------------------------------------*/
