@@ -394,7 +394,6 @@ void Task::vDumpOnException(void)
            );
   vTrace("\n"_Stz);
 
-  
   vTrace("m_pRecoveryWord=%s\n"_Stz,spWord.sz(m_pRecoveryWord));
   
 
@@ -402,6 +401,8 @@ void Task::vDumpOnException(void)
   if (m_pJob.bIsNotNull()) {
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
+    
+    vTrace("m_pJob::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pJob->pSeedWord()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
