@@ -713,7 +713,7 @@ begin
     scanRight T2
     | filterRight 0 "type boolean $2 500 >= "
     | projectRight 0 "type integer $1 , type varchar $4 "
-    | loopJoin 0 "$L1 $R1 ==" | stageD
+    | loopJoin 0 "$L1 $R1 ==" |   stageD
 
   stage stageD on origin :
     output | sink | stageA
