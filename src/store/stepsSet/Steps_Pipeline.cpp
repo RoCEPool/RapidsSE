@@ -44,9 +44,12 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::errored!"_Stz,     &Step::vPipelineErroredStore);
   vAddStep("Pipeline::pulsed@"_Stz,      &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
-  vAddStep("Pipeline::spawnOps"_Stz,     &Step::vPipelineSpawnOps);
-
+  
   vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
+  
+  vAddStep("Pipeline::createOpsSpawnTasks"_Stz,
+           &Step::vPipelineCreateOpsSpawnTasks);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +385,7 @@ void Step::vPipelinePulsedStore(void)
 /*----------------------------------------------------------------------------*/
 /* Pipeline::spawnOps -- spawn all ops of the pipeline for this node          */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpawnOps(void)
+void Step::vPipelineCreateOpsSpawnTasks(void)
 {
   ENTRY();
     
@@ -412,7 +415,7 @@ void Step::vPipelineSpawnOps(void)
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
     vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
   
-  pPipeline->vSpawnOperators(m_pJob->m_i_Session, iThisNode);
+  pPipeline->vSpawnTasksForOps(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }

@@ -45,7 +45,7 @@ namespace STORE
   
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
-    void vSpawnOperators(i8 iSessionId, i8 iNode);
+    void vSpawnTasksForOp(i8 iSessionId, i8 iNode);
     Stz* szStreamNm(void);
 
   private:

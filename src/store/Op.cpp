@@ -117,8 +117,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
 
   // ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
-  // seed experiment
-  
+  // seed experiment 1
+  /*
   Dic* pDicRoot = AM::DIC::pRoot();
 
   Stz* szSeed = AM::OP::szOpSeed(this);
@@ -129,7 +129,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 //           "Unable to find seed word: %s\n"_Stz,szSeed);
 
   vSeedWord(pSeedWord);
-
+  */
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
