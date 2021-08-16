@@ -162,7 +162,7 @@ namespace STORE
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnTaskForOp(i8 iSessionId);
+    void vSpawnOpTask(i8 iSessionId);
     Word* pSeedWord(void);
     void vSeedWord(Word* pSeedWord);
     Stage* pStage(void);

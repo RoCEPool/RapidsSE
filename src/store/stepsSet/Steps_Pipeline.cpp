@@ -428,7 +428,7 @@ void Step::vPipelineSpawnOpTasks(void)
   
   Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
   
-  pPipeline->vSpawnTasksForOps(m_pJob->m_i_Session, iThisNode);
+  pPipeline->vSpawnOpTasks(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }

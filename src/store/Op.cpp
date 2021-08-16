@@ -1676,7 +1676,7 @@ void Op::vSendNode(i8 iSendNode)
 /*----------------------------------------------------------------------------*/
   // revised job/op model
 
-void Op::vSpawnTaskForOp(i8 iSessionId)
+void Op::vSpawnOpTask(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
