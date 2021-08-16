@@ -80,6 +80,7 @@ void Stream::vCreateOps(void)
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
   
     Op* pOp = new Op(pOpSpec,this);
+    
     vAdd(pOp);
   }
 

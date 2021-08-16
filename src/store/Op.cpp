@@ -131,7 +131,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   vSeedWord(pSeedWord);
   */
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ Op::Op(Stz* szOpNm)
     
   ++ gixOp;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1672,17 +1672,29 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set tags for this op                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vSetTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
+  m_oOpTags.vCopy(pPipeLineJobTags);
+  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn this operator                                                        */
 /*----------------------------------------------------------------------------*/
-  // revised job/op model
-
 void Op::vSpawnOpTask(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
-  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-  m_oOpTags.vCopy(pPipeLineJobTags);
-  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+//  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
+//  m_oOpTags.vCopy(pPipeLineJobTags);
+//  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+
+  vSetTags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form and parse op command string
