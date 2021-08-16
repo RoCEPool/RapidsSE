@@ -1694,7 +1694,7 @@ void Op::vSpawnOpTask(i8 iSessionId)
 //  m_oOpTags.vCopy(pPipeLineJobTags);
 //  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
 
-  vSetTags();
+//  vSetTags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form and parse op command string
