@@ -17,6 +17,37 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                  END */
+/*----------------------------------------------------------------------------*/
+: loopJoin_DataPulse \handler
+  "ZK_M_DATAPULSE" .
+   ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_END ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: loopJoin_End \handler
+  "ZK_M_END" .
+  ZK_M_END_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_ENDING ...                                                     END */
+/*----------------------------------------------------------------------------*/
+: loopJoin_Ending \handler
+  "ZK_M_ENDING" .
+  ZK_M_ENDING_handler
+;
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EXITING ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: loopJoin_Exiting \handler
+  "ZK_M_EXITING" .
+  ZK_M_EXITING_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_Cleaning \handler
@@ -37,7 +68,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : loopJoin_CrwBuffer \handler
 
@@ -327,16 +358,21 @@
 
   op__topology
 
-  find: loopJoin_Cleaning         ZK_M_CLEANING     op[].handler!
-  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER         op[].handler!
-  find: loopJoin_EndCrwRhtMarker  ZK_M_END_CRWRHT  op[].handler!
-  find: loopJoin_EndRowRhtMarker  ZK_M_END_ROWRHT  op[].handler!
-  find: loopJoin_EosMarker        ZK_M_EOS         op[].handler!
-  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER         op[].handler!
-  find: loopJoin_StartMarker      ZK_M_START       op[].handler!
+  find: loopJoin_Cleaning         ZK_M_CLEANING      op[].handler!
+  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER     op[].handler!
+  find: loopJoin_EndCrwRhtMarker  ZK_M_END_CRWRHT    op[].handler!
+  find: loopJoin_EndRowRhtMarker  ZK_M_END_ROWRHT    op[].handler!
+  find: loopJoin_EosMarker        ZK_M_EOS           op[].handler!
+  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER     op[].handler!
+  find: loopJoin_StartMarker      ZK_M_START         op[].handler!
   find: loopJoin_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
   find: loopJoin_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
-  find: loopJoin_StreamDef        ZK_D_STREAMDEF         op[].handler!
+  find: loopJoin_StreamDef         ZK_D_STREAMDEF    op[].handler!
+
+find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!
+find: loopJoin_End               ZK_M_END            op[].handler!
+find: loopJoin_Ending            ZK_M_ENDING         op[].handler!
+find: loopJoin_Exiting           ZK_M_EXITING        op[].handler!
 
   op__loop
 
