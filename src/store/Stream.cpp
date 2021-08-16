@@ -82,7 +82,8 @@ void Stream::vCreateOps(void)
     Op* pOp = new Op(pOpSpec,this);
     
     pOp->vSetTags();
-    
+    //pOp->vSetSeedWord();
+
     vAdd(pOp);
   }
 
