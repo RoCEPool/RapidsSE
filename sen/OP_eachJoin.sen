@@ -104,10 +104,6 @@
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
-  PotRlu[].delete
-
-  // cleanup compiler
-  Counter0[] cleanUpAsm
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
   ZK_M_EOS_handler

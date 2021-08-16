@@ -111,7 +111,6 @@
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
-  PotRlu[].delete
 
   // create a new eos marker
   Operand[].newEosMarker
