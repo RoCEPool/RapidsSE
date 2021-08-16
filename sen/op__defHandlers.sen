@@ -77,8 +77,8 @@
 : ZK_M_EACHSCANEOS_handler      \handler STANDARD_PIPEOUT ;
 : ZK_M_END_handler              \handler STANDARD_PIPEOUT ;
 : ZK_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
-: ZK_M_END_CRWRHT_handler       \handler STANDARD_PIPEOUT ;
-: ZK_M_END_ROWRHT_handler       \handler STANDARD_PIPEOUT ;
+: ZK_M_ENDCRWRHT_handler        \handler STANDARD_PIPEOUT ;
+: ZK_M_ENDROWRHT_handler        \handler STANDARD_PIPEOUT ;
 : ZK_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : ZK_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
 : ZK_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
@@ -87,9 +87,9 @@
 : ZK_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
 : ZK_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : ZK_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: ZK_M_START_CRWRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_STARTCRWRHT_handler      \handler STANDARD_PIPEOUT ;
 : ZK_M_START_handler            \handler STANDARD_PIPEOUT ;
-: ZK_M_START_ROWRHT_handler     \handler STANDARD_PIPEOUT ;
+: ZK_M_STARTROWRHT_handler      \handler STANDARD_PIPEOUT ;
 : ZK_M_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
@@ -289,15 +289,15 @@
   defaultHandler ZK_M_DATAPULSE         op[].handler!
   defaultHandler ZK_M_DESTROY           op[].handler!
   defaultHandler ZK_M_EACHSCANEOS       op[].handler!
-  defaultHandler ZK_M_END_CRWRHT        op[].handler!
-  defaultHandler ZK_M_END_ROWRHT        op[].handler!
+  defaultHandler ZK_M_ENDCRWRHT         op[].handler!
+  defaultHandler ZK_M_ENDROWRHT         op[].handler!
   defaultHandler ZK_M_EOS               op[].handler!
   defaultHandler ZK_M_LEFTOUTER_CRWLFT  op[].handler!
   defaultHandler ZK_M_LEFTOUTER_ROWLFT  op[].handler!
   defaultHandler ZK_M_NEXTBUFFER        op[].handler!
-  defaultHandler ZK_M_START_CRWRHT      op[].handler!
+  defaultHandler ZK_M_STARTCRWRHT       op[].handler!
   defaultHandler ZK_M_START             op[].handler!
-  defaultHandler ZK_M_START_ROWRHT      op[].handler!
+  defaultHandler ZK_M_STARTROWRHT       op[].handler!
   defaultHandler ZK_M_STREAMDEFRHT      op[].handler!
   defaultHandler ZK_M_TRIGGER           op[].handler!
 

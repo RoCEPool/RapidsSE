@@ -628,7 +628,7 @@ void Step::vOperandNewEndCrwRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_CRWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDCRWRHT);
 
   EXIT();
 }
@@ -642,7 +642,7 @@ void Step::vOperandNewEndRowRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_ROWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDROWRHT);
 
   EXIT();
 }
@@ -815,7 +815,7 @@ void Step::vOperandNewStartCrwRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_CRWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STARTCRWRHT);
 
   EXIT();
 }
@@ -829,7 +829,7 @@ void Step::vOperandNewStartRowRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_ROWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STARTROWRHT);
 
   EXIT();
 }

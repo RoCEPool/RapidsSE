@@ -2559,8 +2559,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_ENDMARKER:          eOperand = ZK_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = ZK_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = ZK_M_ENDING;       break;
-        case OM_END_CRWRHTMARKER:   eOperand = ZK_M_END_CRWRHT;   break;
-        case OM_END_ROWRHTMARKER:   eOperand = ZK_M_END_ROWRHT;   break;
+        case OM_ENDCRWRHT:          eOperand = ZK_M_ENDCRWRHT;    break;
+        case OM_ENDROWRHT:          eOperand = ZK_M_ENDROWRHT;    break;
         case OM_EOSMARKER:          eOperand = ZK_M_EOS;          break;
         case OM_ERRORMARKER:        eOperand = ZK_M_ERROR;        break;
         case OM_ERROREDMARKER:      eOperand = ZK_M_ERRORED;      break;
@@ -2574,9 +2574,9 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT;   break;
         case OM_NEXTBUFFERMARKER:   eOperand = ZK_M_NEXTBUFFER;   break;
         case OM_STARTEDMARKER:      eOperand = ZK_M_STARTED;      break;
-        case OM_START_CRWRHTMARKER: eOperand = ZK_M_START_CRWRHT; break;
+        case OM_STARTCRWRHT:        eOperand = ZK_M_STARTCRWRHT; break;
         case OM_STARTMARKER:        eOperand = ZK_M_START;        break;
-        case OM_START_ROWRHTMARKER: eOperand = ZK_M_START_ROWRHT; break;
+        case OM_STARTROWRHT:        eOperand = ZK_M_STARTROWRHT; break;
         //case OM_STREAMDEFRHT:   eOperand = ZK_M_STREAMDEFRHT;    break;
         case OM_TRIGGER:            eOperand = ZK_M_TRIGGER;            break;
         default:

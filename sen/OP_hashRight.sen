@@ -59,11 +59,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_END_CRWRHT ...                                            INIT */
+/* on ZK_M_ENDCRWRHT ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: hashRight_EndCrwRhtMarker \handler
+: hashRight_EndCrwRht \handler
 
-  0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_ENDCRWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
@@ -84,11 +84,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_END_ROWRHT ...                                            INIT */
+/* on ZK_M_ENDROWRHT ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: hashRight_EndRowRhtMarker \handler
+: hashRight_EndRowRht \handler
 
-  0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_ENDROWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
@@ -165,15 +165,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START_CRWRHT ...                                          INIT */
+/* on ZK_M_STARTCRWRHT ...                                               INIT */
 /*----------------------------------------------------------------------------*/
-: hashRight_StartCrwRhtMarker \handler
+: hashRight_StartCrwRht \handler
 
-  0 ZK_M_START_CRWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_STARTCRWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
-  // pipeout a StartRowRhtMarker
+  // pipeout a StartRowRht
   Operand[].newStartRowRhtMarker
   Operand[].pipeout
 
@@ -184,11 +184,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START_ROWRHT ...                                          INIT */
+/* on ZK_M_STARTROWRHT ...                                               INIT */
 /*----------------------------------------------------------------------------*/
-: hashRight_StartRowRhtMarker \handler
+: hashRight_StartRowRht \handler
 
-  0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_STARTROWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
@@ -294,14 +294,14 @@
 
   find: hashRight_Cleaning        ZK_M_CLEANING   op[].handler!
   find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  op[].handler!
-  find: hashRight_EndCrwRhtMarker ZK_M_END_CRWRHT op[].handler!
-  find: hashRight_EndRowRhtMarker ZK_M_END_ROWRHT op[].handler!
+  find: hashRight_EndCrwRht       ZK_M_ENDCRWRHT op[].handler!
+  find: hashRight_EndRowRht       ZK_M_ENDROWRHT op[].handler!
   find: hashRight_EosMarker       ZK_M_EOS        op[].handler!
   find: hashRight_RowBuffer       ZK_D_ROWBUFFER  op[].handler!
   find: hashRight_StartMarker     ZK_M_START      op[].handler!
-  find: hashRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
-  find: hashRight_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
-  find: hashRight_StreamDef         ZK_D_STREAMDEF    op[].handler!
+  find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT op[].handler!
+  find: hashRight_StartRowRht     ZK_M_STARTROWRHT op[].handler!
+  find: hashRight_StreamDef       ZK_D_STREAMDEF    op[].handler!
 
   op__loop
 

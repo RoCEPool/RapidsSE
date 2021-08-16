@@ -690,30 +690,30 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_M_END_CRWRHT:
-      // should not have received a ZK_M_END_ROWRHT already
-      if (m_naOperandCount[ZK_M_END_ROWRHT]) {
-        vTrace("%s: ZK_M_END_ROWRHT already arrived\n"_Stz, szOpNm());
+    case ZK_M_ENDCRWRHT:
+      // should not have received a ZK_M_ENDROWRHT already
+      if (m_naOperandCount[ZK_M_ENDROWRHT]) {
+        vTrace("%s: ZK_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should have received a ~ ZK_M_START_CRWRHT already
-      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_START_CRWRHT] ) {
-        vTrace("%s: ZK_M_START_CRWRHT not yet arrived\n"_Stz, szOpNm());
+      // should have received a ~ ZK_M_STARTCRWRHT already
+      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_STARTCRWRHT] ) {
+        vTrace("%s: ZK_M_STARTCRWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
 
-    case ZK_M_END_ROWRHT:
-      // should not have received a ZK_M_END_CRWRHT already
-      if (m_naOperandCount[ZK_M_END_CRWRHT]) {
-        vTrace("%s: ZK_M_END_CRWRHT already arrived\n"_Stz, szOpNm());
+    case ZK_M_ENDROWRHT:
+      // should not have received a ZK_M_ENDCRWRHT already
+      if (m_naOperandCount[ZK_M_ENDCRWRHT]) {
+        vTrace("%s: ZK_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should have received a ~ ZK_M_START_ROWRHT already
-      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_START_ROWRHT] ) {
-        vTrace("%s: ZK_M_START_ROWRHT not yet arrived\n"_Stz, szOpNm());
+      // should have received a ~ ZK_M_STARTROWRHT already
+      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_STARTROWRHT] ) {
+        vTrace("%s: ZK_M_STARTROWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
@@ -838,16 +838,16 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_M_START_CRWRHT:
-      // should not have received a ZK_M_START_ROWRHT already
-      if (m_naOperandCount[ZK_M_START_ROWRHT]) {
-        vTrace("%s: ZK_M_START_ROWRHT already arrived\n"_Stz, szOpNm());
+    case ZK_M_STARTCRWRHT:
+      // should not have received a ZK_M_STARTROWRHT already
+      if (m_naOperandCount[ZK_M_STARTROWRHT]) {
+        vTrace("%s: ZK_M_STARTROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should not have received a ~ ZK_M_END_CRWRHT already
-      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_END_CRWRHT] + 1 ) {
-        vTrace("%s: ZK_M_END_CRWRHT already arrived\n"_Stz, szOpNm());
+      // should not have received a ~ ZK_M_ENDCRWRHT already
+      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_ENDCRWRHT] + 1 ) {
+        vTrace("%s: ZK_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
@@ -860,16 +860,16 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case ZK_M_START_ROWRHT:
-      // should not have received a ZK_M_START_CRWRHT already
-      if (m_naOperandCount[ZK_M_START_CRWRHT]) {
-        vTrace("%s: ZK_M_START_CRWRHT already arrived\n"_Stz, szOpNm());
+    case ZK_M_STARTROWRHT:
+      // should not have received a ZK_M_STARTCRWRHT already
+      if (m_naOperandCount[ZK_M_STARTCRWRHT]) {
+        vTrace("%s: ZK_M_STARTCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
-      // should not have received a ~ ZK_M_START_ROWRHT already
-      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_END_ROWRHT] + 1 ) {
-        vTrace("%s: ZK_M_END_ROWRHT already arrived\n"_Stz, szOpNm());
+      // should not have received a ~ ZK_M_STARTROWRHT already
+      if (m_naOperandCount[i_OperandKind] == m_naOperandCount[ZK_M_ENDROWRHT] + 1 ) {
+        vTrace("%s: ZK_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
