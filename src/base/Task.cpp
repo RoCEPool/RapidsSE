@@ -1279,7 +1279,10 @@ void Task::vSeedTask(void)
   }
   else
   if (m_pOp.bIsNotNull()) {
+    
     szSeed = AM::OP::szOpSeed(m_pOp);
+    //vTrace("Task::vSeedTask:szSeed = %s\n"_Stz,szSeed);
+    
     m_pSeedWord = pDicRoot->pFindWord(szSeed);
     
     if (! m_pSeedWord) {
@@ -1290,6 +1293,12 @@ void Task::vSeedTask(void)
     }
 
     m_pOp->vSeedWord(m_pSeedWord);
+    
+    
+    m_pSeedWord = m_pOp->pSeedWord();
+    if (! m_pSeedWord) {
+      RASSERT(m_pSeedWord);
+    }
   }
   else
     NEVER_REACH;

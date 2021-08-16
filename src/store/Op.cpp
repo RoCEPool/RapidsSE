@@ -19,6 +19,7 @@
 #include "StageSpec.hpp"
 #include "MY.hpp"
 #include "Parcel.hpp"
+#include "SP_Word.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -1626,6 +1627,17 @@ void Op::vSeedWord(Word* pSeedWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  if (m_pSeedWord.bIsNotNull() && (*m_pSeedWord) != pSeedWord ) {
+  
+    SP_Word spWord;
+  
+    vTrace("Cur Seed: %s\n"_Stz,spWord.sz(*m_pSeedWord));
+    vTrace("Rev Seed: %s\n"_Stz,spWord.sz(pSeedWord));
+   
+    NEVER_REACH;
+  }
+  
+  
   m_pSeedWord = pSeedWord;
 }
 
@@ -1681,8 +1693,13 @@ void Op::vSetSeedWord(void)
   Dic* pDicRoot = AM::DIC::pRoot();
  
   Stz* szSeed = AM::OP::szOpSeed(this);
+  //vTrace("Op::vSetSeedWord:szSeed = %s\n"_Stz,szSeed);
   
   m_pSeedWord = pDicRoot->pFindWord(szSeed);
+  
+  if (! m_pSeedWord) {
+    RASSERT(m_pSeedWord);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1707,19 +1724,19 @@ void Op::vSpawnOpTask(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form and parse op command string
   
-  sSTMT sOpCmd;
-  vToCmdStr(sOpCmd);
-  
-  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-
-  TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(sOpCmd);
-
-  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
-  RASSERT(b);
-  
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
+//  sSTMT sOpCmd;
+//  vToCmdStr(sOpCmd);
+//
+//  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+//
+//  TokenVec* pTknVec = new TokenVec;
+//  pTknVec->vTokenise(sOpCmd);
+//
+//  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
+//  RASSERT(b);
+//
+//  pTknVec->vSetAllTokens();
+//  delete pTknVec;
   
   //pOpJobTagSet->vDumpSet();
   
