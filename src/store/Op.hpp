@@ -165,6 +165,7 @@ namespace STORE
     void vSpawnOpTask(i8 iSessionId);
     Word* pSeedWord(void);
     void vSeedWord(Word* pSeedWord);
+    void vSetSeedWord(void);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);

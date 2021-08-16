@@ -1672,6 +1672,20 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find and set seed word for this op                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vSetSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+ 
+  Stz* szSeed = AM::OP::szOpSeed(this);
+  
+  m_pSeedWord = pDicRoot->pFindWord(szSeed);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set tags for this op                                                       */
 /*----------------------------------------------------------------------------*/
 void Op::vSetTags(void)
@@ -1689,13 +1703,7 @@ void Op::vSetTags(void)
 void Op::vSpawnOpTask(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-//  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-//  m_oOpTags.vCopy(pPipeLineJobTags);
-//  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
-
-//  vSetTags();
-  
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form and parse op command string
   
