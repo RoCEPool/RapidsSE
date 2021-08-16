@@ -61,11 +61,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_END_CRWRHT ...                                            INIT */
+/* on ZK_M_ENDCRWRHT ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_EndCrwRhtMarker \handler
+: projectRight_EndCrwRht \handler
 
-  0 ZK_M_END_CRWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_ENDCRWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
@@ -86,11 +86,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_END_ROWRHT ...                                            INIT */
+/* on ZK_M_ENDROWRHT ...                                                INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_EndRowRhtMarker \handler
+: projectRight_EndRowRht \handler
 
-  0 ZK_M_END_ROWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_ENDROWRHT EG_ZK LogicUnit[].diaryNote
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
@@ -114,12 +114,6 @@
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // Arrival of EOSMARKER implies left is all done
-
-  // delete the pot
-  PotRlu[].delete
-
-  // cleanup compiler
-  Counter0[] cleanUpAsm
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
   ZK_M_EOS_handler
@@ -151,7 +145,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : projectRight_StartMarker \handler
 
@@ -167,15 +161,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START_CRWRHT ...                                          INIT */
+/* on ZK_M_STARTCRWRHT ...                                               INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_StartCrwRhtMarker \handler
+: projectRight_StartCrwRht \handler
 
-  0 ZK_M_START_CRWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_STARTCRWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].delete
 
-  // pipeout a StartRowRhtMarker
+  // pipeout a StartRowRht
   Operand[].newStartRowRhtMarker
   Operand[].pipeout
 
@@ -186,16 +180,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START_ROWRHT ...                                          INIT */
+/* on ZK_M_STARTROWRHT ...                                               INIT */
 /*----------------------------------------------------------------------------*/
-: projectRight_StartRowRhtMarker \handler
+: projectRight_StartRowRht \handler
 
-  0 ZK_M_START_ROWRHT EG_ZK LogicUnit[].diaryNote
+  0 ZK_M_STARTROWRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_STREAMDEFRHT ...                                              INIT */
+/*----------------------------------------------------------------------------*/
+: projectRight_StreamDefRht \handler
+
+  0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[].pipeout
+
+  // record receipt of streamDef right marker
+  1 to Counter2[]
 
   true
 ;
@@ -211,17 +220,18 @@
 
   // projectRight gets the left streamDef, then right streamDef
   // it needs to store the right streamDef in left
-  // and left in right (which it will ignore)
-  StreamDefRht[].isNull if
+  // and left in right (which it will pipeout)
+  Counter2[] 0 == if
 
-      //"loopJoin_StreamDef got left streamDef" .
+      //"projectRight_StreamDef got left streamDef" .
       // move pipein[] to StreamDefRht[]
       Pipein[]\clear to StreamDefRht[]
-
+      StreamDefRht[].pipeout
       true
       exit
   then
 
+  // would have received a streamDefRht marker
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
@@ -255,8 +265,7 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  // pipeout the StreamDefRht and streamDefOut
-  StreamDefRht[].pipeout
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
   // create the compiler
@@ -287,15 +296,16 @@
   op__topology
 
   find: projectRight_Cleaning         ZK_M_CLEANING    op[].handler!
-  find: projectRight_CrwBuffer        ZK_D_CRWBUFFER        op[].handler!
-  find: projectRight_EndCrwRhtMarker  ZK_M_END_CRWRHT op[].handler!
-  find: projectRight_EndRowRhtMarker  ZK_M_END_ROWRHT op[].handler!
-  find: projectRight_EosMarker        ZK_M_EOS        op[].handler!
-  find: projectRight_RowBuffer        ZK_D_ROWBUFFER        op[].handler!
-  find: projectRight_StartMarker      ZK_M_START      op[].handler!
-  find: projectRight_StartCrwRhtMarker ZK_M_START_CRWRHT op[].handler!
-  find: projectRight_StartRowRhtMarker ZK_M_START_ROWRHT op[].handler!
-  find: projectRight_StreamDef        ZK_D_STREAMDEF        op[].handler!
+  find: projectRight_CrwBuffer        ZK_D_CRWBUFFER   op[].handler!
+  find: projectRight_EndCrwRht        ZK_M_ENDCRWRHT   op[].handler!
+  find: projectRight_EndRowRht        ZK_M_ENDROWRHT   op[].handler!
+  find: projectRight_EosMarker        ZK_M_EOS         op[].handler!
+  find: projectRight_RowBuffer        ZK_D_ROWBUFFER   op[].handler!
+  find: projectRight_StartMarker      ZK_M_START       op[].handler!
+  find: projectRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!
+  find: projectRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!
+  find: projectRight_StreamDef        ZK_D_STREAMDEF   op[].handler!
+  find: projectRight_StreamDefRHT     ZK_M_STREAMDEFRHT op[].handler!
 
   op__loop
 

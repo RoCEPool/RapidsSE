@@ -184,6 +184,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_STREAMDEFRHT ...                                          */
+/*----------------------------------------------------------------------------*/
+: consumeOp_StreamDefRht \handler
+
+  //"Operand:- ZK_M_STREAMDEFRHT" .verbose
+  Sends[].handleStreamDefRht if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for consumeOp req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : consumeOp_req \operator
@@ -208,6 +222,7 @@
   find: consumeOp_LeavingMarker  ZK_M_LEAVING    op[].handler!
   find: consumeOp_StartMarker    ZK_M_START      op[].handler!
   find: consumeOp_StreamDef      ZK_D_STREAMDEF  op[].handler!
+  find: consumeOp_StreamDefRht   ZK_M_STREAMDEFRHT  op[].handler!
 
   op__loop
 

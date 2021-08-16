@@ -63,7 +63,8 @@ Sends::Sends(i8 iSends)
   m_iEndMarkers        = 0;
   m_iLeavingMarkers    = 0;
   m_iStartMarkers      = 0;
-  m_iStreamDefs        = 0;
+  m_iStreamDefRhtMarkers = 0;
+  m_iStreamDefs          = 0;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 }
@@ -294,6 +295,24 @@ bool Sends::bStreamDefDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* streamDefRht done ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Sends::bStreamDefRhtDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iStreamDefRhtMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp ZK_M_STREAMDEFRHT received %lld; expected %lld\n"_Stz,
+           m_iStreamDefRhtMarkers, m_iSends);
+
+  if (m_iStreamDefRhtMarkers == 0) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc cancelling                                                             */
 /*----------------------------------------------------------------------------*/
 void Sends::vIncCancelling(void)
@@ -411,6 +430,16 @@ void Sends::vIncStreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   m_iStreamDefs++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc streamDefRht                                                           */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncStreamDefRht(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iStreamDefRhtMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

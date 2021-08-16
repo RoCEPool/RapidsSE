@@ -91,6 +91,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStartCrwRhtMarker"_Stz, &Step::vOperandNewStartCrwRhtMarker);
   vAddStep("Operand[].newStartRowRhtMarker"_Stz, &Step::vOperandNewStartRowRhtMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
+  vAddStep("Operand[].newStreamDefRht"_Stz,&Step::vOperandNewStreamDefRht);
   vAddStep("Operand[].newTrigger"_Stz,     &Step::vOperandNewTrigger);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
@@ -628,7 +629,7 @@ void Step::vOperandNewEndCrwRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_CRWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDCRWRHT);
 
   EXIT();
 }
@@ -642,7 +643,7 @@ void Step::vOperandNewEndRowRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_END_ROWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_ENDROWRHT);
 
   EXIT();
 }
@@ -815,7 +816,7 @@ void Step::vOperandNewStartCrwRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_CRWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STARTCRWRHT);
 
   EXIT();
 }
@@ -829,7 +830,7 @@ void Step::vOperandNewStartRowRhtMarker(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_START_ROWRHTMARKER);
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STARTROWRHT);
 
   EXIT();
 }
@@ -848,6 +849,20 @@ void Step::vOperandNewStreamDef(void)
   else
     m_p_TaskLogicUnit->m_xpOperandA = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStreamDefRht -- new a streamDefRht marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStreamDefRht(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_STREAMDEFRHT);
+
   EXIT();
 }
 

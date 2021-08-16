@@ -42,7 +42,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 
 end ;
 
@@ -62,7 +62,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -81,7 +81,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -100,7 +100,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -122,7 +122,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -147,7 +147,7 @@ begin
     | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -172,7 +172,7 @@ begin
     | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -222,7 +222,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 
 end ;
 
@@ -242,7 +242,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -261,7 +261,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -280,7 +280,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -302,7 +302,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -327,7 +327,7 @@ begin
     | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -352,7 +352,7 @@ begin
     | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -398,7 +398,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 
 end ;
 
@@ -418,7 +418,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -437,7 +437,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -456,7 +456,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -478,7 +478,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -503,7 +503,7 @@ begin
     | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -528,7 +528,7 @@ begin
     | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows: 0
@@ -580,7 +580,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 
 end ;
 
@@ -606,7 +606,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:
@@ -628,7 +628,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:
@@ -649,7 +649,7 @@ begin
     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:
@@ -672,7 +672,7 @@ begin
     scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:
@@ -700,7 +700,7 @@ begin
     | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:
@@ -727,7 +727,7 @@ begin
     | loopJoin 0 "$L1 $R1 ==" | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output | sink2 | stageA
 end ;
 
 rows:

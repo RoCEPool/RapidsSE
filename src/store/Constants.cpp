@@ -721,8 +721,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_END"_Stz,       ZK_M_END);
   /*  0 */ vAddConstant("ZK_M_ENDED"_Stz,     ZK_M_ENDED);
   /*  0 */ vAddConstant("ZK_M_ENDING"_Stz,    ZK_M_ENDING);
-  /*  0 */ vAddConstant("ZK_M_END_CRWRHT"_Stz,ZK_M_END_CRWRHT);
-  /*  0 */ vAddConstant("ZK_M_END_ROWRHT"_Stz,ZK_M_END_ROWRHT);
+  /*  0 */ vAddConstant("ZK_M_ENDCRWRHT"_Stz,ZK_M_ENDCRWRHT);
+  /*  0 */ vAddConstant("ZK_M_ENDROWRHT"_Stz,ZK_M_ENDROWRHT);
   /*  0 */ vAddConstant("ZK_D_ENTBUFFER"_Stz,       ZK_D_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_M_ERROR"_Stz,     ZK_M_ERROR);
   /*  0 */ vAddConstant("ZK_M_ERRORED"_Stz,   ZK_M_ERRORED);
@@ -737,13 +737,13 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_LEAVING"_Stz,  ZK_M_LEAVING);
   /*  0 */ vAddConstant("ZK_M_LEFT"_Stz,     ZK_M_LEFT);
 
-  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_CRWLFT"_Stz,  ZK_M_LEFTOUTER_CRWLFT);
-  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_ROWLFT"_Stz,  ZK_M_LEFTOUTER_ROWLFT);
+  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_CRWLFT"_Stz, ZK_M_LEFTOUTER_CRWLFT);
+  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_ROWLFT"_Stz, ZK_M_LEFTOUTER_ROWLFT);
   /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
   /*  0 */ vAddConstant("ZK_I_LOCKSTATS"_Stz,       ZK_I_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_D_METAGET"_Stz,         ZK_D_METAGET);
   /*  0 */ vAddConstant("ZK_D_NAMEDBUFFER"_Stz,     ZK_D_NAMEDBUFFER);
-  /*  0 */ vAddConstant("ZK_M_NEXTBUFFER"_Stz,  ZK_M_NEXTBUFFER);
+  /*  0 */ vAddConstant("ZK_M_NEXTBUFFER"_Stz,      ZK_M_NEXTBUFFER);
   /*  0 */ vAddConstant("ZK_I_NODEINFO"_Stz,        ZK_I_NODEINFO);
   /*  0 */ vAddConstant("ZK_D_OP"_Stz,              ZK_D_OP);
   /*  0 */ vAddConstant("ZK_D_OTHEROPERAND"_Stz,    ZK_D_OTHEROPERAND);
@@ -757,18 +757,18 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_ROWBUFFER"_Stz,       ZK_D_ROWBUFFER);
   /*  0 */ vAddConstant("ZK_I_SEEKOFFSETS"_Stz,     ZK_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("ZK_D_SRTBUFFER"_Stz,       ZK_D_SRTBUFFER);
-  /*  0 */ vAddConstant("ZK_M_START_CRWRHT"_Stz,ZK_M_START_CRWRHT);
-  /*  0 */ vAddConstant("ZK_M_START"_Stz,     ZK_M_START);
-  /*  0 */ vAddConstant("ZK_M_START_ROWRHT"_Stz,ZK_M_START_ROWRHT);
-  /*  0 */ vAddConstant("ZK_M_STARTED"_Stz,   ZK_M_STARTED);
+  /*  0 */ vAddConstant("ZK_M_STARTCRWRHT"_Stz,     ZK_M_STARTCRWRHT);
+  /*  0 */ vAddConstant("ZK_M_START"_Stz,           ZK_M_START);
+  /*  0 */ vAddConstant("ZK_M_STARTROWRHT"_Stz,     ZK_M_STARTROWRHT);
+  /*  0 */ vAddConstant("ZK_M_STARTED"_Stz,         ZK_M_STARTED);
   /*  0 */ vAddConstant("ZK_D_STREAMDEF"_Stz,       ZK_D_STREAMDEF);
   /*  0 */ vAddConstant("ZK_M_STREAMDEFRHT"_Stz,    ZK_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_D_STREAMSET"_Stz,       ZK_D_STREAMSET);
   /*  0 */ vAddConstant("ZK_D_TABLE"_Stz,           ZK_D_TABLE);
-  /*  0 */ vAddConstant("ZK_D_TABLEPTN"_Stz,           ZK_D_TABLEPTN);
+  /*  0 */ vAddConstant("ZK_D_TABLEPTN"_Stz,        ZK_D_TABLEPTN);
   /*  0 */ vAddConstant("ZK_I_TOTALUNITS"_Stz,      ZK_I_TOTALUNITS);
   /*  0 */ vAddConstant("ZK_M_TRIGGER"_Stz,         ZK_M_TRIGGER);
-  /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
+  /*  0 */ vAddConstant("ZK_ENUMS"_Stz,             ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
