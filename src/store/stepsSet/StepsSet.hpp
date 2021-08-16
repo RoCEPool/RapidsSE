@@ -1141,8 +1141,6 @@ public:
   void vPipelinePipeout(void);
 
   // job Pipeline
-  void vPipelineCreateOpsSpawnTasks(void);
-
   void vPipelineCreate(void);
   void vPipelineSpawnOpTasks(void);
 

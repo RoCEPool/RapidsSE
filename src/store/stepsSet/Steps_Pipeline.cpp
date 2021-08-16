@@ -36,6 +36,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
   vAddStep("Pipeline::compileStmt"_Stz,  &Step::vPipelineCompileStmt);
+  vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
@@ -47,10 +48,6 @@ void Step::vAddSteps_Pipeline(void)
   
   vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
   
-  vAddStep("Pipeline::createOpsSpawnTasks"_Stz,
-           &Step::vPipelineCreateOpsSpawnTasks);
-
-  vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline::spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
 
@@ -401,25 +398,6 @@ void Step::vPipelinePulsedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineSpawnOpTasks(void)
-{
-  ENTRY();
-
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz,iThisNode);
-  
-  Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
-  
-  pPipeline->vSpawnTasksForOps(m_pJob->m_i_Session, iThisNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Pipeline::pulsed! -- set pipeline as being pulsed                          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedStore(void)
@@ -437,43 +415,23 @@ void Step::vPipelinePulsedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::spawnOps -- spawn all ops of the pipeline for this node          */
+/* Pipeline::spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineCreateOpsSpawnTasks(void)
+void Step::vPipelineSpawnOpTasks(void)
 {
   ENTRY();
-    
+
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a pipeline
   
-  pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
-                 m_pJob->iOriginatorNode());
-  
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the pipeline
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
-    if (iThisNode == 0) {
-      SP_Pipeline spPipeline(pPipeline,true);
-      vTraceM("%s\n"_Stz,spPipeline.sz());
-      vDebugPoint();
-    }
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn operators for this node
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
+    vTraceM("Spawning operator jobs for node %lld\n"_Stz,iThisNode);
+  
+  Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
   
   pPipeline->vSpawnTasksForOps(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
