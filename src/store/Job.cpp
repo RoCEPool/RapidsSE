@@ -121,6 +121,10 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   m_pPipeline_job = nullptr;
   
+  
+  m_eSeed      = SS_ENUMS;
+  m_pSeedWord  = nullptr;
+  
   // -- a -------------------
   
   m_i_Origin     = i_Origin;
@@ -159,7 +163,6 @@ Job::Job(i8 i_Origin,     // originated on which node
 
   // -- g -------------------
   m_oAcksRmg_job.vCheckInit();
-  m_eSeed      = SS_ENUMS;
   m_pTask     = nullptr;
 
   // -- -- -- -- -- --
@@ -192,8 +195,9 @@ Job::Job(eCN eClassNo)
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
 
-  m_eSeed     = SS_ENUMS;
-  
+  m_eSeed      = SS_ENUMS;
+  m_pSeedWord  = nullptr;
+
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
@@ -1111,6 +1115,26 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eSeed = eSeed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seed word                                                              */
+/*----------------------------------------------------------------------------*/
+Word* Job::pSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pSeedWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set seed word                                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vSeedWord(Word* pSeedWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pSeedWord = pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
