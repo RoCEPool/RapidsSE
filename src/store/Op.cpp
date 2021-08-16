@@ -111,6 +111,23 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   ++ gixOp;
   
+  
+
+  // ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
+  // seed experiment
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Stz* szSeed = AM::OP::szOpSeed(this);
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
+  
+//  if (! pSeedWord)
+//    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//           "Unable to find seed word: %s\n"_Stz,szSeed);
+
+  vSeedWord(pSeedWord);
+
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
@@ -1594,7 +1611,7 @@ Word* Op::pSeedWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pSeedWord;
+  return * m_pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
