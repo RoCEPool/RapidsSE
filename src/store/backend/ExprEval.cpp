@@ -1689,7 +1689,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vPushDatum(DM_BCD,  m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
+      vPushDatum(DM_BCD, m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
       vPushDatum(DM_BCD, m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1698,7 +1698,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a string ?
     if (pTkn->bIsString()) {
-      vPushDatum(DM_VCH,  m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
+      vPushDatum(DM_VCH, m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
       vPushDatum(DM_VCH, m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1709,6 +1709,8 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
     if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
       StrLib::vSprintCat(m_sJoinAsm_CrwRht, "  EO_RETURN_FALSE\n"_Stz);
       vAddArithmetic(m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
+
+      StrLib::vSprintCat(m_sJoinAsm_RowRht, "  EO_RETURN_FALSE\n"_Stz);
       vAddArithmetic(m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
@@ -3034,7 +3036,7 @@ void ExprEval::vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
 
   StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS %lld\n"_Stz, m_iStreamInColumns);
   StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_uExprEvalColumns);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);  ///????? ALKA what is this ?
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_LFT\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_COLS_TO_LOCALS\n"_Stz);
@@ -3052,11 +3054,11 @@ void ExprEval::vPushRhtRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
   BitLib::vSetOn(iExprEvalColumn, i_Column);
 
   StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_ITEMS 1\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, m_iStreamInColumns);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_SET_COLUMNS %lld\n"_Stz, iExprEvalColumn);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_COLS_PUSHSET_PST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
 
   eDM eDatumType = Column::eDatum(eColumnType);
   pTypeStack->vPush(eDatumType);

@@ -4047,6 +4047,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // ixt device col operators
       case EO_DEVIXT_COLS_TO_LOCALS: ArgNil(); // inflate dev columns direct into locals
         dLU0(EO_DEVIXT_COLS_TO_LOCALS);
+        //vRlu_DUMP(pLU,aiDstk);
         vDev_IXT_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow / devIxt
         break;//+endCase
 
