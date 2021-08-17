@@ -609,7 +609,7 @@ void Step::vJobSingularOpStore(void)
   pJob->vSingularOp(pOp);
   
   // get the job in the session
-  Job* pJob_Originating = pOp->pPipelineJob()->m_pOriginatingTask->pJob();
+  Job* pJob_Originating = pOp->pPipelineJob()->m__dpOriginatingTask->pJob();
 
   pJob_Originating->vSingularOp(pOp);
 
@@ -744,7 +744,7 @@ void Step::vJobOriginatingTaskFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pJob->m_pOriginatingTask);
+  m_pDataStack->vPushPtr(pJob->m__dpOriginatingTask);
   
   EXIT();
 }
@@ -761,7 +761,7 @@ void Step::vJobOriginatingTaskStore(void)
   Task* pOriginatingTask = _pTask(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TASK == pOriginatingTask->eGetClassNo());
   
-  pJob->m_pOriginatingTask = pOriginatingTask;
+  pJob->m__dpOriginatingTask = pOriginatingTask;
   
   EXIT();
 }

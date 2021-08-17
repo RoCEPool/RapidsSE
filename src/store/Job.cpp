@@ -158,8 +158,8 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_pSingularOp  = nullptr;
 
   // -- f -------------------
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId   = C_UNKNOWN;
+  m__dpOriginatingTask = nullptr;
+  m_iOriginatingId     = C_UNKNOWN;
 
   // -- g -------------------
   m_oAcksRmg_job.vCheckInit();
@@ -210,9 +210,9 @@ Job::Job(eCN eClassNo)
   
   //m_oAcksRmg_task
   
-  m_pTask           = nullptr;
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId   = C_UNKNOWN;
+  m_pTask              = nullptr;
+  m__dpOriginatingTask = nullptr;
+  m_iOriginatingId     = C_UNKNOWN;
 
   m_i_Participant = C_UNKNOWN;
   m_oAcksRmg_job.vCheckInit();
@@ -966,8 +966,8 @@ void Job::vResetForReuse(Session* pSession)
   delete m_pSingularOp;  m_pSingularOp  = nullptr;
 
   // -- f -------------------
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId   = C_UNKNOWN;
+  m__dpOriginatingTask = nullptr;
+  m_iOriginatingId     = C_UNKNOWN;
 
   // -- g -------------------
   m_oAcksRmg_job.vReset();
@@ -1065,7 +1065,7 @@ void Job::vSee(void)
          ,aEC[m_eError_job]          // 15
          ,spvPipeline.sz(m_pPipeline_job)  // 16
          ,spvSingularOp.sz(m_pSingularOp)  // 17
-         ,spvOriginatingTask.sz(m_pOriginatingTask) // 18
+         ,spvOriginatingTask.sz(m__dpOriginatingTask) // 18
          ,m_iOriginatingId           // 19
          ,aSS[m_eSeed]               // 20
          ,spvTask.sz(m_pTask)        // 21

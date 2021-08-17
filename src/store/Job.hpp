@@ -33,7 +33,7 @@ namespace STORE
     eJK         m_eJobKind;  // job kind: (needs work)
 
     eSS         m_eSeed;  // sen word to start execution
-    Word*       m_pSeedWord; // seed word of this job
+    Word*       m_pSeedWord; // seed word of this job                  POST_RECV
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -48,14 +48,14 @@ namespace STORE
     // information depending on job instance/location           MODAL
   
     // -- postage
-    bool m_bWasReceived;   // was job received over a socket?
+    bool m_bWasReceived;   // was job received over a socket?          POST_RECV
     i8   m_i_Participant;  // participant node no (FromNodeNo?)
     bool m_bNormalSides;   // normal side semantics?
   
     // -- state
     eJS m_eJobState;  // current state: JS_RUNNING, _LOCKED, ...
     eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
-    eJL m_eJobList;   // current list : JP_DEMON, _LOCAL, _ORIGINATING, ...
+    eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as originator on origin                 ORIGINATOR
@@ -71,25 +71,24 @@ namespace STORE
     // job running on participant node                    PARTICIPANT
 
     // -- participating job maintains
-    Pipeline* m_pPipeline_job;  // pipeline the job represents
-    Op*       m_pSingularOp;    //   or op (api input op for a pipeline)
+    Pipeline* m_pPipeline_job;  // pipeline the job represents         POST_RECV
+    Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as responder on origin                   RESPONDER
   
     // -- responding to which originator
-    Task*  m_pOriginatingTask;  // originating task of the request
-    i8     m_iOriginatingId;    // job id of originating job
+    Task*  m__dpOriginatingTask; // dist ptr of originating task of the request
+    i8     m_iOriginatingId;     // job id of originating job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job execution                                        execution
 
     // -- tasking
-    Task* m_pTask;  // task executing this job
+    Task* m_pTask;  // task executing this job                         POST_RECV
 
     // -- logic unit
-    LogicUnit* m_pJobLogicUnit;  // set of registers for the task steps
-
+    LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
 
   private:
     
