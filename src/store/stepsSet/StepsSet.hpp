@@ -801,6 +801,7 @@ public:
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
+  void vJobsSeeSqueue(void);
 
   // kbase
   void vKbaseCallSchedule(void);
