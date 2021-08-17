@@ -10,10 +10,15 @@
 : recurring_activity ( -- )
 
   "Recurring Activity" .
+  
+  jobs::seeDlist
+  jobs::seeLlist
+  jobs::seeOlist
+  jobs::seePlist
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : recurring_StartMarker \handler
 
