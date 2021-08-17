@@ -243,7 +243,8 @@ LogicUnit::LogicUnit(void)
 
     // forced execution of constructor of s32 needed because s32 is a member of a struct
     // for tinyc and struct doesn't invoke the constructor!!!
-    new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32();
+    s32* s = new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32;
+    IGNORE_RETURN(s);
 
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;

@@ -385,7 +385,7 @@ rows:
   (4,null,11.32,false,4,null,11.32,*,*,*)
   (5,'T1-ROW5',22.98,false,5,'T2-ROW5',22.98,*,*,*)
   (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
-  (8,'T1-ROW8',13.24,false,8,'T2-ROW8',13.24,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
 
 SELECT *
@@ -399,7 +399,7 @@ rows:
   (1,'T1-ROW1',10.23,true,5,'T2-ROW5',22.98,*,*,*)
   (1,'T1-ROW1',10.23,true,null,'T2-ROW6',16.32,*,*,*)
   (1,'T1-ROW1',10.23,true,7,'T1-ROW7',null,*,*,*)
-  (1,'T1-ROW1',10.23,true,8,'T2-ROW8',13.24,*,*,*)
+  (1,'T1-ROW1',10.23,true,8,'T1-ROW8',13.24,*,*,*)
   (null,'T1-ROW2',11.32,false,1,'T2-ROW1',10.23,*,*,*)
   (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
   (null,'T1-ROW2',11.32,false,3,'T2-ROW3',278.45,*,*,*)
@@ -407,7 +407,7 @@ rows:
   (null,'T1-ROW2',11.32,false,5,'T2-ROW5',22.98,*,*,*)
   (null,'T1-ROW2',11.32,false,null,'T2-ROW6',16.32,*,*,*)
   (null,'T1-ROW2',11.32,false,7,'T1-ROW7',null,*,*,*)
-  (null,'T1-ROW2',11.32,false,8,'T2-ROW8',13.24,*,*,*)
+  (null,'T1-ROW2',11.32,false,8,'T1-ROW8',13.24,*,*,*)
   (3,'T1-ROW3',null,true,1,'T2-ROW1',10.23,*,*,*)
   (3,'T1-ROW3',null,true,2,'T1-ROW2',11.32,*,*,*)
   (3,'T1-ROW3',null,true,3,'T2-ROW3',278.45,*,*,*)
@@ -415,7 +415,7 @@ rows:
   (3,'T1-ROW3',null,true,5,'T2-ROW5',22.98,*,*,*)
   (3,'T1-ROW3',null,true,null,'T2-ROW6',16.32,*,*,*)
   (3,'T1-ROW3',null,true,7,'T1-ROW7',null,*,*,*)
-  (3,'T1-ROW3',null,true,8,'T2-ROW8',13.24,*,*,*)
+  (3,'T1-ROW3',null,true,8,'T1-ROW8',13.24,*,*,*)
   (4,null,11.32,false,1,'T2-ROW1',10.23,*,*,*)
   (4,null,11.32,false,2,'T1-ROW2',11.32,*,*,*)
   (4,null,11.32,false,3,'T2-ROW3',278.45,*,*,*)
@@ -423,7 +423,7 @@ rows:
   (4,null,11.32,false,5,'T2-ROW5',22.98,*,*,*)
   (4,null,11.32,false,null,'T2-ROW6',16.32,*,*,*)
   (4,null,11.32,false,7,'T1-ROW7',null,*,*,*)
-  (4,null,11.32,false,8,'T2-ROW8',13.24,*,*,*)
+  (4,null,11.32,false,8,'T1-ROW8',13.24,*,*,*)
   (5,'T1-ROW5',22.98,false,1,'T2-ROW1',10.23,*,*,*)
   (5,'T1-ROW5',22.98,false,2,'T1-ROW2',11.32,*,*,*)
   (5,'T1-ROW5',22.98,false,3,'T2-ROW3',278.45,*,*,*)
@@ -431,7 +431,7 @@ rows:
   (5,'T1-ROW5',22.98,false,5,'T2-ROW5',22.98,*,*,*)
   (5,'T1-ROW5',22.98,false,null,'T2-ROW6',16.32,*,*,*)
   (5,'T1-ROW5',22.98,false,7,'T1-ROW7',null,*,*,*)
-  (5,'T1-ROW5',22.98,false,8,'T2-ROW8',13.24,*,*,*)
+  (5,'T1-ROW5',22.98,false,8,'T1-ROW8',13.24,*,*,*)
   (6,'T1-ROW6',16.32,false,1,'T2-ROW1',10.23,*,*,*)
   (6,'T1-ROW6',16.32,false,2,'T1-ROW2',11.32,*,*,*)
   (6,'T1-ROW6',16.32,false,3,'T2-ROW3',278.45,*,*,*)
@@ -439,7 +439,7 @@ rows:
   (6,'T1-ROW6',16.32,false,5,'T2-ROW5',22.98,*,*,*)
   (6,'T1-ROW6',16.32,false,null,'T2-ROW6',16.32,*,*,*)
   (6,'T1-ROW6',16.32,false,7,'T1-ROW7',null,*,*,*)
-  (6,'T1-ROW6',16.32,false,8,'T2-ROW8',13.24,*,*,*)
+  (6,'T1-ROW6',16.32,false,8,'T1-ROW8',13.24,*,*,*)
   (7,'T1-ROW7',10.23,null,1,'T2-ROW1',10.23,*,*,*)
   (7,'T1-ROW7',10.23,null,2,'T1-ROW2',11.32,*,*,*)
   (7,'T1-ROW7',10.23,null,3,'T2-ROW3',278.45,*,*,*)
@@ -447,7 +447,7 @@ rows:
   (7,'T1-ROW7',10.23,null,5,'T2-ROW5',22.98,*,*,*)
   (7,'T1-ROW7',10.23,null,null,'T2-ROW6',16.32,*,*,*)
   (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
-  (7,'T1-ROW7',10.23,null,8,'T2-ROW8',13.24,*,*,*)
+  (7,'T1-ROW7',10.23,null,8,'T1-ROW8',13.24,*,*,*)
   (8,'T1-ROW8',13.24,false,1,'T2-ROW1',10.23,*,*,*)
   (8,'T1-ROW8',13.24,false,2,'T1-ROW2',11.32,*,*,*)
   (8,'T1-ROW8',13.24,false,3,'T2-ROW3',278.45,*,*,*)
@@ -455,7 +455,7 @@ rows:
   (8,'T1-ROW8',13.24,false,5,'T2-ROW5',22.98,*,*,*)
   (8,'T1-ROW8',13.24,false,null,'T2-ROW6',16.32,*,*,*)
   (8,'T1-ROW8',13.24,false,7,'T1-ROW7',null,*,*,*)
-  (8,'T1-ROW8',13.24,false,8,'T2-ROW8',13.24,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
 /*
 EXPLAIN SELECT *
@@ -502,120 +502,31 @@ JOIN t2 USING (colB);
 rows:
   (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
   (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
-/*
   -- Multiple USING 2 columns
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
-      » ordinal predicate: (($2 = $6) AND ($3 = $7))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
+rows:
+  (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
   -- Multiple USING 3 columns
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC, colA);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC, colA)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC)) AND (rapidsse.public.t1.colA = rapidsse.public.t2.colA))
-      » ordinal predicate: ((($2 = $6) AND ($3 = $7)) AND ($1 = $5))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
+rows:
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
 
 -- Mixed JOIN ON and JOIN USING
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC)
 JOIN t3 ON (t1.colA = t3.colC);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC) JOIN t3 ON (t1.colA = t3.colC)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-   » column: (Alias = colA ; Expr = rapidsse.public.t3.colA ; Ordinal Expr = $11)
-   » column: (Alias = colB ; Expr = rapidsse.public.t3.colB ; Ordinal Expr = $12)
-   » column: (Alias = colC ; Expr = rapidsse.public.t3.colC ; Ordinal Expr = $13)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t3.colC)
-      » ordinal predicate: ($1 = $13)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
-         » ordinal predicate: (($2 = $6) AND ($3 = $7))
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t3)'
-)
-
-
-*/
+rows:
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*,8,'T3-ROW8',8.00)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
