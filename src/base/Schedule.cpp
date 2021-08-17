@@ -720,8 +720,8 @@ void Schedule::vDumpSleepingQueue(void)
 
   m_pSleepingQueue->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: %p Expressions %lld\n"_Stz,
-         m_pSleepingQueue,m_pSleepingQueue->nTasks());
+  vTrace("Sleeping Queue: Tasks %lld\n"_Stz,
+         m_pSleepingQueue->nTasks());
   vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vContentDump();
   m_pSleepingQueue->vDropLock();

@@ -90,6 +90,8 @@ void Step::vJobsSeeSqueue(void)
 {
   ENTRY();
   
+  AM::pSchedule()->vDumpSleepingQueue();
+
   EXIT();
 }
 

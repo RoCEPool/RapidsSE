@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_Task.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -108,21 +109,14 @@ void TaskQueue::vAssertItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vContentDump(void)
 {
-  //  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
-  //         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
+  SP_Task spTask;
   
-  s256 sDescription; // short text description of task
-
   for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
        pNode;
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
-    
     Task* pTask = _pTask(pNode->m_pObject);
-    UNUSED(pTask);
 
-    //pTask->vRenderPortrait(sDescription);
-    
-    vTrace("%s\n"_Stz,sDescription.azChar());
+    vTrace("%s\n"_Stz,spTask.sz(pTask));
   }
 }
 

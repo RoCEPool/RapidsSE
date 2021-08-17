@@ -248,6 +248,8 @@
   jobs::seeLlist
   jobs::seeOlist
   jobs::seePlist
+  
+  jobs::seeSqueue
 ;
 
 

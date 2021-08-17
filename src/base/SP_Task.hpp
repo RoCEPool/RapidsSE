@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class SP_Task : public SP
+  class SP_Task : public SPmedium
   {
   public:
 

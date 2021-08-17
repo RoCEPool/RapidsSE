@@ -12,13 +12,12 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Task::SP_Task(void)
-: SP(CN_SPID)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   _checkInitialised_(CN_SPID);
   
-  _postcondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +25,7 @@ SP_Task::SP_Task(void)
 /*----------------------------------------------------------------------------*/
 SP_Task::~SP_Task(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,16 +37,22 @@ SP_Task::~SP_Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Task::sz(Task* pTask)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  StrLib::vSprint(m_caResult,
-                  "{%s %s %s}"_Stz,
+  vCatf("Task %p "
+        "%s %s %s "_Stz
 
-                  aTS[pTask->eState()],
-                  aQK[pTask->eQueue()],
-                  aTR[pTask->eTranstionRequest()],
+        ,pTask
+        
+        ,aTS[pTask->eState()]
+        ,aQK[pTask->eQueue()]
+        ,aTR[pTask->eTranstionRequest()]
   
-                  C_VARGS_END);
+        );
+  
+  if (TS_SLEEPING == pTask->eState() && QK_SLEEPING_QUEUE == pTask->eQueue())
+    vCatf("wakeup --.-- "_Stz
+          );
 
   return (Stz*) &m_caResult[0];
 }
@@ -57,7 +62,7 @@ Stz* SP_Task::sz(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Task::sz_log(Task* pTask)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   SP_Gid spThreadId;
   
