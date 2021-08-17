@@ -1260,38 +1260,43 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = nullptr;
+//  Dic* pDicRoot = AM::DIC::pRoot();
+//
+//  Stz* szSeed = nullptr;
   
   if (m_pJob.bIsNotNull()) {
     
-    RASSERT(! m_pJob->pSeedWord());
-
-    szSeed = AM::JOB::szJobSeed(m_pJob);
-    m_pSeedWord = pDicRoot->pFindWord(szSeed);
+//    RASSERT(! m_pJob->pSeedWord());
     
-    if (! m_pSeedWord) {
-      AM::JOB::szJobSeed(m_pJob);
-      
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Unable to find seed word: %s\n"_Stz,szSeed);
-    }
-
-    m_pJob->vSeedWord(m_pSeedWord);
+//    szSeed = AM::JOB::szJobSeed(m_pJob);
+//    m_pSeedWord = pDicRoot->pFindWord(szSeed);
+//
+//    if (! m_pSeedWord) {
+//      AM::JOB::szJobSeed(m_pJob);
+//
+//      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//             "Unable to find seed word: %s\n"_Stz,szSeed);
+//    }
+//
+//    m_pJob->vSeedWord(m_pSeedWord);
+    
+    m_pSeedWord = m_pJob->pSeedWord();
+    
   }
   else
   if (m_pOp.bIsNotNull()) {
     m_pSeedWord = m_pOp->pSeedWord();
-    RASSERT(m_pSeedWord);
   }
   else
     NEVER_REACH;
   
+  RASSERT(m_pSeedWord);
 
   m_aInxPtr = m_pSeedWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {

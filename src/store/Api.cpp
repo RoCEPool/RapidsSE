@@ -453,6 +453,25 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
     pPrepareJob->vSee();
   
+  
+  
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Stz* szSeed = AM::JOB::szJobSeed(pPrepareJob);
+  
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
+
+  if (! pSeedWord) {
+    AM::JOB::szJobSeed(pPrepareJob);
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find seed word: %s\n"_Stz,szSeed);
+  }
+
+  pPrepareJob->vSeedWord(pSeedWord);
+
+  
   return EC_NONE;
 }
 
@@ -751,6 +770,24 @@ void Api::vCallBoot(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Stz* szSeed = AM::JOB::szJobSeed(pJob);
+  
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
+
+  if (! pSeedWord) {
+    AM::JOB::szJobSeed(pJob);
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find seed word: %s\n"_Stz,szSeed);
+  }
+
+  pJob->vSeedWord(pSeedWord);
+
+  
+  
+  
   pJob->vTimerStart();
   
   vCallImmediate(pBootTask);
@@ -792,6 +829,25 @@ void Api::vCallStart(void)
   Task* pStartTask = AM::TASK::pNew(pJob);
   
   pStartTask->vIsStart(true);
+  
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Stz* szSeed = AM::JOB::szJobSeed(pJob);
+  
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
+
+  if (! pSeedWord) {
+    AM::JOB::szJobSeed(pJob);
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find seed word: %s\n"_Stz,szSeed);
+  }
+
+  pJob->vSeedWord(pSeedWord);
+
+  
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1064,6 +1120,25 @@ void Api::vCreateTaskForJob(Job* pJob)
   if (! pJob->pJobLogicUnit()) {
     pJob->vNewJobLogicUnit();
   }
+  
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Stz* szSeed = AM::JOB::szJobSeed(pJob);
+  
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
+
+  if (! pSeedWord) {
+    AM::JOB::szJobSeed(pJob);
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find seed word: %s\n"_Stz,szSeed);
+  }
+
+  pJob->vSeedWord(pSeedWord);
+
+  
+  
   
   pTask->vSeedTask();
 
