@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp"
+#include "SP_Ivl.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -718,10 +719,18 @@ void Schedule::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
 
+  SP_Ivl spIvl;
+  
   m_pSleepingQueue->vGrabLock();
+  
+  Ivl wCurIvl = IvlLib::wGetCurrIvl();
+  
+  
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: Tasks %lld\n"_Stz,
-         m_pSleepingQueue->nTasks());
+  vTrace("Sleeping Queue: Tasks %lld ; CurIvl %s\n"_Stz
+         ,m_pSleepingQueue->nTasks()
+         ,spIvl.sz(wCurIvl.m_iAsI8)
+         );
   vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vContentDump();
   m_pSleepingQueue->vDropLock();
