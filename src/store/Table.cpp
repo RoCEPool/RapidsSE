@@ -563,6 +563,10 @@ void Table::vListContents(i8 i_Depth)
 TablePtn* Table::pTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  // experiment on where we can map Bkt to Ptn
+  // i_TablePtn could be a BktNo, gets mapped to PtnNo
+  i_TablePtn = m_pBucketMap->tWhichLglPtnNo(i_TablePtn);
   
   return m_pTablePtnVec->pGet(i_TablePtn);
 }
