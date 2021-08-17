@@ -999,12 +999,12 @@ Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
   Stz* szSeed;
   
   switch (eSeed) {
-    case SS_SEED_RUN: szSeed = pTags->szValue("<seedRun>"_Stz); break;
-    case SS_SEED_REQ: szSeed = pTags->szValue("<seedReq>"_Stz); break;
-    case SS_SEED_RCV: szSeed = pTags->szValue("<seedRcv>"_Stz); break;
-    case SS_SEED_EXE: szSeed = pTags->szValue("<seedExe>"_Stz); break;
-    case SS_SEED_END: szSeed = pTags->szValue("<seedEnd>"_Stz); break;
-    case SS_SEED_CAN: szSeed = pTags->szValue("<seedCan>"_Stz); break;
+    case SS_SEED_RUN: szSeed = pTags->szValue(C_TAG_SEEDRUN); break;
+    case SS_SEED_REQ: szSeed = pTags->szValue(C_TAG_SEEDREQ); break;
+    case SS_SEED_RCV: szSeed = pTags->szValue(C_TAG_SEEDRCV); break;
+    case SS_SEED_EXE: szSeed = pTags->szValue(C_TAG_SEEDEXE); break;
+    case SS_SEED_END: szSeed = pTags->szValue(C_TAG_SEEDEND); break;
+    case SS_SEED_CAN: szSeed = pTags->szValue(C_TAG_SEEDCAN); break;
     default: NEVER_REACH;
   }
 

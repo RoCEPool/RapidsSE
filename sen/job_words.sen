@@ -110,8 +110,6 @@
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  pJob job.preSend
-
   job::</seeXfer/>
 
   Socket[].grabWrite

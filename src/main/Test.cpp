@@ -826,7 +826,7 @@ void vTest11(void)
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,"helloWorldImm"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"helloWorldImm"_Stz);
   //pJobTags->vDumpSet();
   pJob->vSeed(SS_SEED_RUN);
 
@@ -896,7 +896,7 @@ void vTest14(void)
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
   //pJobTags->vDumpSet();
   pJob->vSeed(SS_SEED_RUN);
 
@@ -938,7 +938,7 @@ void vTest15(void)
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
   //pJobTags->vDumpSet();
   pJob->vSeed(SS_SEED_RUN);
 
@@ -979,7 +979,7 @@ void vTest16(void)
 
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
   //pJobTags->vDumpSet();
   pJob->vSeed(SS_SEED_RUN);
 
@@ -1024,7 +1024,7 @@ void vTest16(void)
   \
   TagSet* pJobTags = pJob->pJobTags(); \
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz); \
-  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz); \
+  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz); \
   pJob->vSeed(SS_SEED_RUN); \
   \
   Task* pImmTask = AM::TASK::pNew(pJob); \

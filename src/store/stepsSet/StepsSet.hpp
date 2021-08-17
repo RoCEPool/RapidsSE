@@ -645,8 +645,6 @@ public:
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
-  void vJobPostRecv(void);
-  void vJobPreSend(void);
   void vJobPrintMember(void);
 
   void vJobRemoveLocal(void);
