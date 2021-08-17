@@ -374,13 +374,16 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
                    );
-  
-  ASSERT(! pPrepareJob->pTask());
-  RASSERT(JS_LOCKED != pPrepareJob->eJobState());
-  
-  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
+  pPrepareJob->vSeed(SS_SEED_REQ);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
+  //pPrepareJobTags->vDumpSet();
+
+  // parse cmd
+    
+  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
 
 
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
@@ -421,28 +424,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->m_sCmd);
   
-  pPrepareJob->vSeed(SS_SEED_REQ);
-
   pPrepareJobTags->vCopy(pSsnTags);
 
   pPrepareJobTags->vCopy(pCmdTags);
-  
-  eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
-  pPrepareJob->vJobKind(eJobKind);
-  
-  Stz* szJobNm = pPrepareJobTags->szValue(C_TAG_JOBNM);
-  pPrepareJob->vJobNm(szJobNm);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pPrepareJobTags->bHasName(C_SEE_JOB))
-    pPrepareJob->vSee();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
@@ -456,6 +442,17 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   if ( pPrepareJob->bHasTag(C_TAG_TAGS))
     pPrepareJobTags->vDumpSet();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
+  pPrepareJob->vJobKind(eJobKind);
+  
+  Stz* szJobNm = pPrepareJobTags->szValue(C_TAG_JOBNM);
+  pPrepareJob->vJobNm(szJobNm);
+  
+  if (pPrepareJobTags->bHasName(C_SEE_JOB))
+    pPrepareJob->vSee();
+  
   return EC_NONE;
 }
 
@@ -731,14 +728,19 @@ void Api::vCallBoot(void)
                       1
                       );
   pJob->vSeed(SS_SEED_RUN);
-  
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   TagSet* pJobTags = pJob->pJobTags();
   //pJobTags->vDumpSet();
+
+  // (no cmd to parse)
+
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"boot_run"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Task* pBootTask = AM::TASK::pNew(pJob);
   
   pBootTask->vAddAxioms();
@@ -747,9 +749,9 @@ void Api::vCallBoot(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  pJob->vTimerStart();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pJob->vTimerStart();
   
   vCallImmediate(pBootTask);
   
@@ -766,6 +768,7 @@ void Api::vCallStart(void)
 //  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
 //    vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
 
+  // this is the main thread
   PsxThd::vMarkNonSeThread();
 
   Job* pJob = new Job(AM::GRID::iThisNodeNo(),
@@ -774,19 +777,26 @@ void Api::vCallStart(void)
                       );
   pJob->vSeed(SS_SEED_RUN);
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   TagSet* pJobTags = pJob->pJobTags();
+  //pJobTags->vDumpSet();
+
+  // (no cmd to parse)
+
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"start_run"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Task* pStartTask = AM::TASK::pNew(pJob);
+  
   pStartTask->vIsStart(true);
-
-  pJob->vTimerStart();
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pJob->vTimerStart();
+
   vCallImmediate(pStartTask);
 
   vDeleteImmediate(&pStartTask);
