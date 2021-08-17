@@ -24,7 +24,7 @@
 #include "CrwBuffer.hpp"
 
 extern SizeHeap      gxaSizeHeap[];
-
+class Table;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -143,7 +143,36 @@ i8 Parcel::iDstOp(void)
 tPN Parcel::tDstPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  Operand* pOperand = pGetOperand();
+  vTrace("Parcel::tDstPtn %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
+  if (CN_CRWBUFFER == pOperand->eGetClassNo()) {
 
+    CrwBuffer* pBuffer = (CrwBuffer*)m_pItems[0];
+
+    vTrace(" CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnNo());
+
+    m_tDstPtn = pBuffer->iBucketNo();
+
+
+    //m_tDstPtn = pTable->pBucketMap()->i_WhichPartition(i_Bkt);
+  }
+  return m_tDstPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destination ptn                                                        */
+/*----------------------------------------------------------------------------*/
+tPN Parcel::tDstPtn(i8 iBktNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  Operand* pOperand = pGetOperand();
+  //vTrace("Parcel::tDstPtn %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
+  if (CN_CRWBUFFER == pOperand->eGetClassNo()) {
+    vTrace(" CN_TABLE\n"_Stz);
+    Table* pTable = (Table*)m_pItems[0];
+    //m_tDstPtn = pTable->pBucketMap()->i_WhichPartition(i_Bkt);
+  }
   return m_tDstPtn;
 }
 
@@ -558,7 +587,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   tPN tPtnNo;
-  i8 i_TablePtn;
+  //i8 i_TablePtn;
   
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
@@ -677,7 +706,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   tPN tPtnNo;
-  i8 i_TablePtn;
+  //i8 i_TablePtn;
   
   Operand* pOperand = pGetOperand();
   

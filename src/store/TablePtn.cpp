@@ -226,6 +226,13 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  /* eventually, we have to append the rowbuffer into the correct bucket
+  i8 iBktNo = pDataBuffer->iBucketNo();
+  Bucket* pBucket = pGetBucket(iBktNo );
+  pBucket->vAppendBuffer(pDataBuffer);
+   */
+
   m_pBucket->vAppendBuffer(pDataBuffer);
 }
 

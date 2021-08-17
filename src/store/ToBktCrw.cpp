@@ -188,6 +188,7 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(i8 i_Ptn)
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
   pCrwBuffer->vPtnNo(i_Ptn);
+  pCrwBuffer->vBucketNo(i_Ptn);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);

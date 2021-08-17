@@ -33,7 +33,7 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
 
   vResetNodePtnArray();
 
-  vResetNodeBktArray();
+  vInitNodeBktArray();
   
   _checkInitialised_(CN_PTNMAP);
   
@@ -103,7 +103,17 @@ i8 PtnMap::iToBkt(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  return tPtnNo < C_MAX_PTNSINGRID ? m_iaBkt[(i8) tPtnNo] : 0;
+  return tPtnNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnNo].m_i_Bkt : 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert iBkt to tPN                                                        */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tToPtn(i8 iBktNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return iBktNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) iBktNo].m_i_Ptn : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,13 +319,15 @@ void PtnMap::vResetNodePtnArray(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset the Bkt array                                                        */
+/* initialize the Bkt array                                                   */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vResetNodeBktArray(void) {
+void PtnMap::vInitNodeBktArray(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PTNMAP, _FOOTER_);
 
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++)
-    m_iaBkt[i_Ptn] = i_Ptn;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
+    m_xaBkt[i_Ptn].m_i_Ptn = i_Ptn;
+    m_xaBkt[i_Ptn].m_i_Bkt = i_Ptn;
+  }
 }
 
 /*============================================================================*/
