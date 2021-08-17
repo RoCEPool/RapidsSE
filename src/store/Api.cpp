@@ -203,7 +203,7 @@ void Api::vExecuteJob(Session* pSession)
              ,pSession->m_sCascade.azChar());
     }
     
-    pJob->vResetForReuse(pSession);
+    pJob->vResetForCascade(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
     

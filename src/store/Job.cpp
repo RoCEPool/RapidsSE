@@ -936,7 +936,7 @@ Pipeline* Job::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vResetForReuse(Session* pSession)
+void Job::vResetForCascade(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
