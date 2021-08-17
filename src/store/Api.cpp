@@ -730,25 +730,26 @@ void Api::vCallBoot(void)
                       AM::SESSION::iInternalSession(),
                       1
                       );
-  
   pJob->vSeed(SS_SEED_RUN);
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   TagSet* pJobTags = pJob->pJobTags();
   //pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"boot_run"_Stz);
   
   Task* pBootTask = AM::TASK::pNew(pJob);
   
-  
   pBootTask->vAddAxioms();
-
   pBootTask->vAddMunged();
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   pJob->vTimerStart();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vCallImmediate(pBootTask);
   
@@ -771,18 +772,21 @@ void Api::vCallStart(void)
                       AM::SESSION::iInternalSession(),
                       1
                       );
-
   pJob->vSeed(SS_SEED_RUN);
 
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"start_run"_Stz);
 
   Task* pStartTask = AM::TASK::pNew(pJob);
   pStartTask->vIsStart(true);
 
   pJob->vTimerStart();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vCallImmediate(pStartTask);
 
   vDeleteImmediate(&pStartTask);
