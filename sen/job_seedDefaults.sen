@@ -137,7 +137,8 @@
   then
 
   JP_BEGUN job[] job.phase!
-
+  nullptr job[] job.seedWord!
+  
   2pcReply::job__begun
 
   task::doneFinally
@@ -169,6 +170,7 @@
   then
 
   JP_EXECUTED job[] job.phase!
+  nullptr job[] job.seedWord!
 
   2pcReply::job__executed
 
@@ -195,6 +197,7 @@
   then
 
   JP_ENDED job[] job.phase!
+  nullptr job[] job.seedWord!
 
   job[] job.removeParticipant
 
@@ -221,6 +224,7 @@
   then
 
   JP_CANCELED job[] job.phase!
+  nullptr job[] job.seedWord!
 
   job[] job.removeParticipant
 
