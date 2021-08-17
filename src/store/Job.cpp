@@ -356,7 +356,10 @@ void Job::vPostRecv(void* aReceivedJob)
 
   // revised job/op model
   pReceivedJob->vNullJobLogicUnit();
-  
+
+  pReceivedJob->m_pPipeline_job = nullptr;
+  pReceivedJob->m_pSingularOp = nullptr;
+
   if (pReceivedJob->bHasTag(C_SEE_JOB))
     pReceivedJob->vSee();
   
