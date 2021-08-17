@@ -3056,7 +3056,7 @@ void ExprEval::vPushRhtRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColum
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_LOCALS\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_COLSET\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_RHT\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVIXT_COL_PUSHSET_ADR\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_COLS_PUSHSET_PST\n"_Stz);
 
   eDM eDatumType = Column::eDatum(eColumnType);
   pTypeStack->vPush(eDatumType);
