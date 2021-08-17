@@ -20,10 +20,7 @@ namespace STORE
 
     static void vAttachRegion(void);
     static void vBootCheck(void);
-    static void vCallBoot(void);
-    static void vCallImmmediate(Task* pTask);
     static void vCallPrompt(void);
-    static void vCallStart(void);
     static void vChangeDirectory(void);
     static void vCheckGrid(void);
     static void vCheckNodes(void);
@@ -34,7 +31,6 @@ namespace STORE
     static void vCreateFileNames(void);
     static void vCreateTmpDir(void);
     static eBO  eDecodeCommandLine(void);
-    static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSession(Session* pSession);
     static void vEnvFlags(void);
     static void vErrorHandler(Error* pError);

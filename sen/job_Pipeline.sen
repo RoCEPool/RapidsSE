@@ -80,7 +80,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  Pipeline::spawnOps
+  Pipeline::create
+  Pipeline::spawnOpTasks
 ;
 
 /*----------------------------------------------------------------------------*/

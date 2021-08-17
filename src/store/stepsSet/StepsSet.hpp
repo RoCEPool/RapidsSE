@@ -1141,7 +1141,10 @@ public:
   void vPipelinePipeout(void);
 
   // job Pipeline
-  void vPipelineSpawnOps(void);
+  void vPipelineCreate(void);
+  void vPipelineSpawnOpTasks(void);
+
+
   void vPipelineCancelledStore(void);
   void vPipelineCompileStmt(void);
   void vPipelineDeleteSpec(void);

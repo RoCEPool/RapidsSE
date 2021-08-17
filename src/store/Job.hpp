@@ -177,6 +177,7 @@ namespace STORE
     Word* pSeedWord(void);
     void vSeedWord(Word* pSeedWord);
     Session* pSession(void);
+    void vSetSeedWord(void);
     void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);

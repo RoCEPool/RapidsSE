@@ -46,6 +46,13 @@ namespace STORE
   static bool bSpawnTask_session(Job* pJob);
   
   // internal
+  
+  static void vCallBoot(void);
+  static void vCallStart(void);
+
+  static void vCallImmediate(Task* pImmediateTask);
+  static void vDeleteImmediate(Task** ppTask);
+
   static void vSpawnTask_job(Job* pJob);
   static void vSpawnTask_op(Op* pop);
   static void vSpawnTaskDedicated_job(Job* pJob);

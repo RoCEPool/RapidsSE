@@ -19,6 +19,7 @@
 #include "StageSpec.hpp"
 #include "MY.hpp"
 #include "Parcel.hpp"
+#include "SP_Word.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -95,7 +96,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  SMA<Job> pPipelineJob;
+  
+  pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_OP) ||
@@ -114,8 +118,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
 
   // ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
-  // seed experiment
-  
+  // seed experiment 1
+  /*
   Dic* pDicRoot = AM::DIC::pRoot();
 
   Stz* szSeed = AM::OP::szOpSeed(this);
@@ -126,9 +130,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 //           "Unable to find seed word: %s\n"_Stz,szSeed);
 
   vSeedWord(pSeedWord);
-
+  */
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +185,7 @@ Op::Op(Stz* szOpNm)
     
   ++ gixOp;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1288,10 +1292,12 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Job* pPipelineJob = m_p_Pipeline_op->pPipelineJob();
+  SMA<Job> pPipelineJob;
+  
+  pPipelineJob = m_p_Pipeline_op->pPipelineJob();
 
   
-  return pPipelineJob;
+  return * pPipelineJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1621,6 +1627,17 @@ void Op::vSeedWord(Word* pSeedWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  if (m_pSeedWord.bIsNotNull() && (*m_pSeedWord) != pSeedWord ) {
+  
+    SP_Word spWord;
+  
+    vTrace("Cur Seed: %s\n"_Stz,spWord.sz(*m_pSeedWord));
+    vTrace("Rev Seed: %s\n"_Stz,spWord.sz(pSeedWord));
+   
+    NEVER_REACH;
+  }
+  
+  
   m_pSeedWord = pSeedWord;
 }
 
@@ -1667,34 +1684,59 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn this operator                                                        */
+/* find and set seed word for this op                                         */
 /*----------------------------------------------------------------------------*/
-  // revised job/op model
-
-void Op::vSpawnTaskForOp(i8 iSessionId)
+void Op::vSetSeedWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+ 
+  Stz* szSeed = AM::OP::szOpSeed(this);
+  //vTrace("Op::vSetSeedWord:szSeed = %s\n"_Stz,szSeed);
+  
+  m_pSeedWord = pDicRoot->pFindWord(szSeed);
+  
+  if (! m_pSeedWord) {
+    RASSERT(m_pSeedWord);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tags for this op                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vSetTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
   m_oOpTags.vCopy(pPipeLineJobTags);
   m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
-  
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn this operator                                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vSpawnOpTask(i8 iSessionId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form and parse op command string
   
-  sSTMT sOpCmd;
-  vToCmdStr(sOpCmd);
-  
-  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-
-  TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(sOpCmd);
-
-  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
-  RASSERT(b);
-  
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
+//  sSTMT sOpCmd;
+//  vToCmdStr(sOpCmd);
+//
+//  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+//
+//  TokenVec* pTknVec = new TokenVec;
+//  pTknVec->vTokenise(sOpCmd);
+//
+//  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
+//  RASSERT(b);
+//
+//  pTknVec->vSetAllTokens();
+//  delete pTknVec;
   
   //pOpJobTagSet->vDumpSet();
   

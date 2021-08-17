@@ -1164,6 +1164,15 @@ void Job::vSetFromCascade(Stz* szCascade)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find and set seed word for this job                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vSetSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which side the job is on (originator or participant)                   */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szSide(void)

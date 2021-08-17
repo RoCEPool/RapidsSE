@@ -80,6 +80,31 @@ void Stream::vCreateOps(void)
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
   
     Op* pOp = new Op(pOpSpec,this);
+    
+    pOp->vSetTags();
+    
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form and parse op command string
+    
+    sSTMT sOpCmd;
+    pOp->vToCmdStr(sOpCmd);
+    
+    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+
+    TokenVec* pTknVec = new TokenVec;
+    pTknVec->vTokenise(sOpCmd);
+
+    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
+    RASSERT(b);
+    
+    pTknVec->vSetAllTokens();
+    delete pTknVec;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    pOp->vSetSeedWord();
+
     vAdd(pOp);
   }
 
@@ -136,9 +161,9 @@ StageSpec* Stream::pStageSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operators for partitions of given node                               */
+/* spawn tasks for all operators for partitions of given node                 */
 /*----------------------------------------------------------------------------*/
-void Stream::vSpawnOperators(i8 iSessionId, i8 i_ThisNode)
+void Stream::vSpawnOpTasks(i8 iSessionId, i8 i_ThisNode)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -154,7 +179,7 @@ void Stream::vSpawnOperators(i8 iSessionId, i8 i_ThisNode)
       
       Op* pOp = pGet(i_Op);
       
-      pOp->vSpawnTaskForOp(iSessionId);
+      pOp->vSpawnOpTask(iSessionId);
     }
   }
   
