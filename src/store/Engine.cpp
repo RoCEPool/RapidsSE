@@ -52,6 +52,8 @@
 #include "InternalTables.hpp"
 #include "Parcel.hpp"
 
+#include "Api.hpp"
+
 #include "STORE.h"
 
 CmdLineArgs  gxCmdLineArgs;
@@ -362,57 +364,6 @@ void Engine::vBootCheck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call the boot task to compile the main dictionary                          */
-/*----------------------------------------------------------------------------*/
-void Engine::vCallBoot(void)
-{
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-  
-  pJob->vSeed(SS_SEED_RUN);
-  
-  TagSet* pJobTags = pJob->pJobTags();
-  //pJobTags->vDumpSet();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
-  
-  Task* pBootTask = AM::TASK::pNew(pJob);
-  
-  
-  pBootTask->vAddAxioms();
-
-  pBootTask->vAddMunged();
-  
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  pJob->vTimerStart();
-  
-  vCallImmmediate(pBootTask);
-  
-  vDeleteImmmediate(&pBootTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* run task immediately                                                       */
-/*----------------------------------------------------------------------------*/
-void Engine::vCallImmmediate(Task* pImmediateTask)
-{
-  Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
-
-  pImmediateTask->vIsImmediate(true);
-  pImmediateTask->vSeedTask();
-  
-  pImmediateTask->vState(TS_EXECUTING);
-  
-  pImmediateTask->vTaskLoop();
-  
-  PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* call the prompt loop                                                       */
 /*----------------------------------------------------------------------------*/
 void Engine::vCallPrompt(void)
@@ -438,37 +389,6 @@ void Engine::vCallPrompt(void)
   
   delete pSePrompt;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* call start                                                                 */
-/*----------------------------------------------------------------------------*/
-void Engine::vCallStart(void)
-{
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
-  
-  PsxThd::vMarkNonSeThread();
-  
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-  
-  pJob->vSeed(SS_SEED_RUN);
-  
-  TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
-  
-  Task* pStartTask = AM::TASK::pNew(pJob);
-  pStartTask->vIsStart(true);
-  
-  pJob->vTimerStart();
-  
-  vCallImmmediate(pStartTask);
-  
-  vDeleteImmmediate(&pStartTask);  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -716,22 +636,6 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete task immediate                                                      */
-/*----------------------------------------------------------------------------*/
-void Engine::vDeleteImmmediate(Task** ppTask)
-{
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
-
-  pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
-  delete pJob;
-  
-  //delete pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1651,7 +1555,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Boot Job\n"_Stz);
-  vCallBoot();
+  Api::vCallBoot();
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
@@ -1665,7 +1569,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Start\n"_Stz);
-  vCallStart();
+  Api::vCallStart();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
