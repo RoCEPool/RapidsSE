@@ -52,6 +52,7 @@ namespace STORE
     bool     m_bLeftOuter;
 
     IntStack m_xTypeStack;
+    IntStack m_xTypeStack_Row;
     IntStack m_xStoreStack;
     IntStack m_xAggStack;
     IntStack m_xKeyStack;
@@ -59,7 +60,8 @@ namespace STORE
     s4K      m_sProjectAsm;
     s4K      m_sAggInitAsm;
     s4K      m_sAggAsm;
-    s4K      m_sJoinAsm;
+    s4K      m_sJoinAsm_CrwRht;
+    s4K      m_sJoinAsm_RowRht;
 
     s4K      m_sGbyIdxAsm;
     s4K      m_sPayLoadAggAsm;
@@ -145,6 +147,7 @@ namespace STORE
     void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
     void vPushLftCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
     void vPushRhtCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
+    void vPushRhtRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
     void vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
     void vPushLftRowCol2(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
 

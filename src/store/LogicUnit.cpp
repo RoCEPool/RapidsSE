@@ -243,7 +243,8 @@ LogicUnit::LogicUnit(void)
 
     // forced execution of constructor of s32 needed because s32 is a member of a struct
     // for tinyc and struct doesn't invoke the constructor!!!
-    new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32();
+    s32* s = new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32;
+    IGNORE_RETURN(s);
 
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;
@@ -2536,18 +2537,32 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_VCHVCH: ArgNil(); // vch == vch
         // get topB string
         iTopB = *(aiDstk--);
-        azTopB = (char *) (aiDstk - (nWordRoundedStrBytes(iTopB) / 8 - 1));
-        aiDstk -= nWordRoundedStrBytes(iTopB) / 8;
+        if (iTopB == C_DATUM_NULL) {
+          iTopA = *(aiDstk--);
+          if (iTopA != C_DATUM_NULL) {
+            azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
+            aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
+          }
+          *(++aiDstk) = 0;
+        }
+        else {
+          azTopB = (char *) (aiDstk - (nWordRoundedStrBytes(iTopB) / 8 - 1));
+          aiDstk -= nWordRoundedStrBytes(iTopB) / 8;
 
-        // get topA string
-        iTopA = *(aiDstk--);
-        azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
-        aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
+          // get topA string
+          iTopA = *(aiDstk--);
+          if (iTopA == C_DATUM_NULL) {
+            *(++aiDstk) = 0;
+          } else {
+            azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
+            aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
 
-        // invoke function
-        iRes = iMathLib_Eq_VCHVCH(azTopA, azTopB);
-        dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
-        *(++aiDstk) = iRes;
+            // invoke function
+            iRes = iMathLib_Eq_VCHVCH(azTopA, azTopB);
+            dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
+            *(++aiDstk) = iRes;
+          }
+        }
         break;//+endCase
 
       case EO_EQ_UNKXYZ: ArgNil(); // unk == xyz
@@ -4032,6 +4047,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // ixt device col operators
       case EO_DEVIXT_COLS_TO_LOCALS: ArgNil(); // inflate dev columns direct into locals
         dLU0(EO_DEVIXT_COLS_TO_LOCALS);
+        //vRlu_DUMP(pLU,aiDstk);
         vDev_IXT_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow / devIxt
         break;//+endCase
 

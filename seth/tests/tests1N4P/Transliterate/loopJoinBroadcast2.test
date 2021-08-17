@@ -13,25 +13,25 @@
 _region;
 success
 
-load region "../TPCH/SF1/region.tbl" ;
+load region "../DATA/TPCH/region.tbl" ;
 success
 
 _nation;
 success
 
-load nation "../TPCH/SF1/nation.tbl" ;
+load nation "../DATA/TPCH/nation.tbl" ;
 success
 
 _supplier;
 success
 
-load supplier "../TPCH/SF1/supplier.tbl" ;
+load supplier "../DATA/TPCH/supplier_2k.tbl" ;
 success
 
 _partsupp;
 success
 
-load partsupp "../TPCH/SF1/partsupp.tbl" ;
+load partsupp "../DATA/TPCH/partsupp_2k.tbl" ;
 success
 
 CREATE TABLE t1 (colA INTEGER, colB VARCHAR, colC DECIMAL, colD BOOLEAN);
@@ -62,19 +62,10 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  n-way join tests
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
 -- Join 2 tables
 SELECT n_regionkey, n_name, r_regionkey, r_name
 FROM region
 JOIN nation ON r_regionkey = n_regionkey;
-
-
-explain  stage aggregateSplit, transliterate SELECT s_nationkey, n_regionkey, n_name, r_regionkey, r_name
-FROM region
-JOIN nation ON r_regionkey = n_regionkey
-JOIN supplier ON s_nationkey = n_nationkey;
-
-
 rows:
  (2,'VIETNAM',2,'ASIA')
  (0,'KENYA',0,'AFRICA')
@@ -113,59 +104,22 @@ SELECT n_name, r_name, s_name
 FROM region
 JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
-rows: 10000
+rows: 2000
 
 SELECT n_name, r_name, s_name FROM region, nation, supplier;
-rows: 1250000
-
+rows: 250000
 
 -- Join 4 tables
-EXPLAIN SELECT n_name, r_name, s_name, ps_partkey
+SELECT n_name, r_name, s_name, ps_partkey
 FROM region
 JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey
 JOIN partsupp ON ps_suppkey = s_suppkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name, ps_partkey FROM region JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey JOIN partsupp ON ps_suppkey = s_suppkey"
+rows: 1999
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.partsupp.ps_partkey ; Ordinal Expr = $15)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.partsupp.ps_suppkey = rapidsse.public.supplier.s_suppkey)
-      » ordinal predicate: ($16 = $8)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-         » ordinal predicate: ($11 = $4)
-
--> -> -> -> nestedLoopJoinOp
-            » join type: Inner Join
-            » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-            » ordinal predicate: ($1 = $6)
-
--> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.region)
-
--> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.supplier)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.partsupp)'
-)
-
-
-
-EXPLAIN SELECT n_name, r_name, s_name, ps_suppkey
+/*
+LOW_MEMORY
+SELECT n_name, r_name, s_name, ps_suppkey
 FROM region, nation, supplier, partsupp;
 rows: (*,'explainPlan',
 'StatementMarker: select
@@ -204,6 +158,7 @@ rows: (*,'explainPlan',
 -> -> -> tableScanOp
          » table: (rapidsse.public.partsupp)'
 )
+*/
 
 -- Self join, one table with an alias
 SELECT nation.n_name, n2.n_regionkey
@@ -239,153 +194,87 @@ rows:
   ('CANADA',3)
   ('EGYPT',4)
 
-/*
-EXPLAIN SELECT nation.n_name, n2.n_regionkey
+SELECT nation.n_name, n2.n_regionkey
 FROM nation, nation n2;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT nation.n_name, n2.n_regionkey FROM nation, nation n2"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-   » column: (Expr = n2.n_regionkey ; Ordinal Expr = $7)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » alias: (n2)
-         » table: (rapidsse.public.nation)'
-)
+rows:  625
 
 -- Self join, both tables with aliases
-EXPLAIN SELECT n1.n_name, n2.n_regionkey
+SELECT n1.n_name, n2.n_regionkey
 FROM nation n1
 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n1.n_name, n2.n_regionkey FROM nation n1 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey"
-
--> projectOp
-   » column: (Expr = n1.n_name ; Ordinal Expr = $2)
-   » column: (Expr = n2.n_regionkey ; Ordinal Expr = $7)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (n1.n_nationkey = n2.n_regionkey)
-      » ordinal predicate: ($1 = $7)
-
--> -> -> tableScanOp
-         » alias: (n1)
-         » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » alias: (n2)
-         » table: (rapidsse.public.nation)'
-)
-
-EXPLAIN SELECT n1.n_name, n2.n_regionkey
+rows: 
+  ('ALGERIA',0)
+   ('ALGERIA',0)
+   ('BRAZIL',2)
+      
+   ('ALGERIA',0)
+   ('ALGERIA',0)
+   ('CANADA',3)
+   ('EGYPT',4)
+   ('EGYPT',4)
+   ('EGYPT',4)
+   ('ARGENTINA',1)
+   ('ARGENTINA',1)
+   ('BRAZIL',2)
+      
+   ('CANADA',3)
+   ('CANADA',3)
+   ('EGYPT',4)
+   ('ARGENTINA',1)
+   ('ARGENTINA',1)
+   ('BRAZIL',2)
+   ('BRAZIL',2)
+   ('BRAZIL',2)
+      
+   ('ALGERIA',0)
+   ('CANADA',3)
+   ('CANADA',3)
+   ('EGYPT',4)
+   ('ARGENTINA',1)
+      
+SELECT n1.n_name, n2.n_regionkey
 FROM nation n1, nation n2;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n1.n_name, n2.n_regionkey FROM nation n1, nation n2"
-
--> projectOp
-   » column: (Expr = n1.n_name ; Ordinal Expr = $2)
-   » column: (Expr = n2.n_regionkey ; Ordinal Expr = $7)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> tableScanOp
-         » alias: (n1)
-         » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » alias: (n2)
-         » table: (rapidsse.public.nation)'
-)
-
+rows: 625
 
 -- Self join amongst other joined tables
-EXPLAIN SELECT n1.n_name, n2.n_regionkey, r_name
+SELECT n1.n_name, n2.n_regionkey, r_name
 FROM nation n1
 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey
 JOIN region ON n1.n_regionkey = r_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n1.n_name, n2.n_regionkey, r_name FROM nation n1 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey JOIN region ON n1.n_regionkey = r_regionkey"
+rows: 
+   ('ARGENTINA',1,'AMERICA')
+   ('ARGENTINA',1,'AMERICA')
+   ('BRAZIL',2,'AMERICA')
+   ('CANADA',3,'AMERICA')
+   ('ARGENTINA',1,'AMERICA')
+   ('ARGENTINA',1,'AMERICA')
+   ('BRAZIL',2,'AMERICA')
+   ('BRAZIL',2,'AMERICA')
+   ('BRAZIL',2,'AMERICA')
+   ('CANADA',3,'AMERICA')
+   ('CANADA',3,'AMERICA')
+   ('BRAZIL',2,'AMERICA')
+   ('ARGENTINA',1,'AMERICA')
+   ('CANADA',3,'AMERICA')
+   ('CANADA',3,'AMERICA')
 
--> projectOp
-   » column: (Expr = n1.n_name ; Ordinal Expr = $2)
-   » column: (Expr = n2.n_regionkey ; Ordinal Expr = $7)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (n1.n_regionkey = rapidsse.public.region.r_regionkey)
-      » ordinal predicate: ($3 = $9)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (n1.n_nationkey = n2.n_regionkey)
-         » ordinal predicate: ($1 = $7)
-
--> -> -> -> tableScanOp
-            » alias: (n1)
-            » table: (rapidsse.public.nation)
-
--> -> -> -> tableScanOp
-            » alias: (n2)
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)'
-)
+   ('ALGERIA',0,'AFRICA')
+   ('ALGERIA',0,'AFRICA')
+   ('EGYPT',4,'MIDDLE EAST')
+   ('EGYPT',4,'MIDDLE EAST')
+   ('EGYPT',4,'MIDDLE EAST')
+   ('EGYPT',4,'MIDDLE EAST')
+   ('ALGERIA',0,'AFRICA')
+   ('ALGERIA',0,'AFRICA')
+   ('ALGERIA',0,'AFRICA')
+   ('EGYPT',4,'MIDDLE EAST')
 
 -- Same as previous but with a different table separating the two instances of the first table
-EXPLAIN SELECT n1.n_name, n2.n_regionkey, r_name
+SELECT n1.n_name, n2.n_regionkey, r_name
 FROM nation n1
 JOIN region ON n1.n_regionkey = r_regionkey
 JOIN nation n2 ON n2.n_regionkey = r_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n1.n_name, n2.n_regionkey, r_name FROM nation n1 JOIN region ON n1.n_regionkey = r_regionkey JOIN nation n2 ON n2.n_regionkey = r_regionkey"
-
--> projectOp
-   » column: (Expr = n1.n_name ; Ordinal Expr = $2)
-   » column: (Expr = n2.n_regionkey ; Ordinal Expr = $10)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $6)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (n2.n_regionkey = rapidsse.public.region.r_regionkey)
-      » ordinal predicate: ($10 = $5)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (n1.n_regionkey = rapidsse.public.region.r_regionkey)
-         » ordinal predicate: ($3 = $5)
-
--> -> -> -> tableScanOp
-            » alias: (n1)
-            » table: (rapidsse.public.nation)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » alias: (n2)
-         » table: (rapidsse.public.nation)'
-)
-
+rows: 125
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Join type tests
@@ -393,107 +282,46 @@ rows: (*,'explainPlan',
 
 -- explicit join types:
   -- inner join
-EXPLAIN SELECT n_name, r_name
+SELECT n_name, r_name
 FROM region
 INNER JOIN nation ON r_regionkey = n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name FROM region INNER JOIN nation ON r_regionkey = n_regionkey"
+rows: 
+   ('VIETNAM','ASIA')
+   ('KENYA','AFRICA')
+   ('MOROCCO','AFRICA')
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+   ('BRAZIL','AMERICA')
+   ('UNITED STATES','AMERICA')
+   ('INDIA','ASIA')
+   ('INDONESIA','ASIA')
+   ('CHINA','ASIA')
+   ('RUSSIA','EUROPE')
+   ('UNITED KINGDOM','EUROPE')
+   ('IRAN','MIDDLE EAST')
 
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-      » ordinal predicate: ($1 = $6)
+   ('ARGENTINA','AMERICA')
+   ('PERU','AMERICA')
+   ('JAPAN','ASIA')
+   ('ETHIOPIA','AFRICA')
+   ('MOZAMBIQUE','AFRICA')
+   ('ROMANIA','EUROPE')
+   ('IRAQ','MIDDLE EAST')
+   ('JORDAN','MIDDLE EAST')
+   ('SAUDI ARABIA','MIDDLE EAST')
 
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
+   ('CANADA','AMERICA')
+   ('ALGERIA','AFRICA')
+   ('FRANCE','EUROPE')
+   ('GERMANY','EUROPE')
+   ('EGYPT','MIDDLE EAST')
 
   -- cross join
-EXPLAIN SELECT n_name, r_name
+SELECT n_name, r_name
 FROM region
 CROSS JOIN nation;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name FROM region CROSS JOIN nation"
+rows: 125
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
-
-  -- natural join, not yet supported
-EXPLAIN SELECT n_name, r_name
-FROM region
-NATURAL JOIN nation;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- semi join
-EXPLAIN SELECT r_name, r_name
-FROM region
-SEMI JOIN nation ON r_regionkey = n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT r_name, r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Semi Join
-      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-      » ordinal predicate: ($1 = $6)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
-
-  -- anti join
-EXPLAIN SELECT r_name, r_name
-FROM region
-ANTI JOIN nation ON r_regionkey = n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT r_name, r_name FROM region ANTI JOIN nation ON r_regionkey = n_regionkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Anti Join
-      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-      » ordinal predicate: ($1 = $6)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
-
+/*
   -- left outer join
 EXPLAIN SELECT n_name, r_name
 FROM region
@@ -518,476 +346,118 @@ rows: (*,'explainPlan',
          » table: (rapidsse.public.nation)'
 )
 
-  -- right outer join
-EXPLAIN SELECT n_name, r_name
-FROM region
-RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name FROM region RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Right Outer Join
-      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-      » ordinal predicate: ($1 = $6)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
-
-  -- full outer join
-EXPLAIN SELECT n_name, r_name
-FROM region
-FULL OUTER JOIN nation ON r_regionkey = n_regionkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name FROM region FULL OUTER JOIN nation ON r_regionkey = n_regionkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Full Outer Join
-      » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-      » ordinal predicate: ($1 = $6)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.region)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.nation)'
-)
-
-  -- natural inner join
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL INNER JOIN t2;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- natural left outer join
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL LEFT OUTER JOIN t2;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- natural right outer join
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL RIGHT OUTER JOIN t2;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- natural full outer join
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL FULL OUTER JOIN t2;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- Can't have a NATURAL SEMI/ANTI join
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL SEMI JOIN t2;
-failure contains: 'EC_SYNTAX_ERROR'
-
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL ANTI JOIN t2;
-failure contains: 'EC_SYNTAX_ERROR'
-
-  -- mixed (1)
-EXPLAIN SELECT n_name, r_name, s_name
-FROM region
-LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
-INNER JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region LEFT OUTER JOIN nation ON r_regionkey = n_regionkey INNER JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($11 = $4)
-
--> -> -> nestedLoopJoinOp
-         » join type: Left Outer Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
-  -- mixed (2)
-EXPLAIN SELECT n_name, r_name, s_name
-FROM region
-LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
-CROSS JOIN supplier;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region LEFT OUTER JOIN nation ON r_regionkey = n_regionkey CROSS JOIN supplier"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> nestedLoopJoinOp
-         » join type: Left Outer Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
-  -- mixed (3)
-EXPLAIN SELECT n_name, r_name, s_name
-FROM region
-RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey
-FULL OUTER JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey FULL OUTER JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Full Outer Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($11 = $4)
-
--> -> -> nestedLoopJoinOp
-         » join type: Right Outer Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
-  -- mixed (4)
-EXPLAIN SELECT n_name, r_name, s_name
-FROM region
-LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
-NATURAL JOIN supplier;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
-  -- mixed (5)
-EXPLAIN SELECT r_name, s_name
-FROM region
-SEMI JOIN nation ON r_regionkey = n_regionkey
-JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT r_name, s_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $5)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($7 = rapidsse.public.nation.n_nationkey)
-
--> -> -> nestedLoopJoinOp
-         » join type: Semi Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
-  -- mixed (6)
-EXPLAIN SELECT r_name
-FROM region
-SEMI JOIN nation ON r_regionkey = n_regionkey
-ANTI JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey ANTI JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-
--> -> nestedLoopJoinOp
-      » join type: Anti Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($7 = rapidsse.public.nation.n_nationkey)
-
--> -> -> nestedLoopJoinOp
-         » join type: Semi Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
-
-  -- natural joins can't have ON or USING clauses
-EXPLAIN SELECT n_name, r_name
-FROM region
-NATURAL JOIN nation ON n_regionkey = r_regionkey;
-failure contains: 'EC_SYNTAX_ERROR'
-
-EXPLAIN SELECT t1.colA, t2.colX
-FROM t1
-NATURAL JOIN t2 USING (colA);
-failure contains: 'EC_SYNTAX_ERROR'
-
-
+*/
 
 -- Implicit join types ("JOIN" vs ",")
   -- implicit inner join with the JOIN keyword
-EXPLAIN SELECT n_name, r_name, s_name
+SELECT n_name, r_name, s_name
 FROM region
 JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($11 = $4)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
+rows: 2000
 
   -- implicit cross join with the comma table-separator
-EXPLAIN SELECT n_name, r_name, s_name
+SELECT n_name, r_name, s_name
 FROM region, nation, supplier;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region, nation, supplier"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> nestedLoopJoinOp
-         » join type: Cross Join
-         » predicate: (true)
-         » ordinal predicate: (true)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
+rows: 250000
 
   -- mixed implicit join types (1)
-EXPLAIN SELECT n_name, r_name, s_name
+SELECT n_name, r_name, s_name
 FROM region
 JOIN nation ON r_regionkey = n_regionkey
 , supplier;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region JOIN nation ON r_regionkey = n_regionkey , supplier"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-         » ordinal predicate: ($1 = $6)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
+rows: 50000
 
   -- mixed implicit join types (2)
-EXPLAIN SELECT n_name, r_name, s_name
+SELECT n_name, r_name, s_name
 FROM region, nation
 JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name FROM region, nation JOIN supplier ON s_nationkey = n_nationkey"
-
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-      » ordinal predicate: ($11 = $4)
-
--> -> -> nestedLoopJoinOp
-         » join type: Cross Join
-         » predicate: (true)
-         » ordinal predicate: (true)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.supplier)'
-)
-
+rows: 10000
 
 -- Validate columns returned:
   -- Inner/cross/outer joins return all columns
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 INNER JOIN t2 ON t1.colA = t2.colA;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 INNER JOIN t2 ON t1.colA = t2.colA"
+rows: 
+  (1,'T1-ROW1',10.23,true,1,'T2-ROW1',10.23,*,*,*)
+  (3,'T1-ROW3',null,true,3,'T2-ROW3',278.45,*,*,*)
+  (4,null,11.32,false,4,null,11.32,*,*,*)
+  (5,'T1-ROW5',22.98,false,5,'T2-ROW5',22.98,*,*,*)
+  (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
-      » ordinal predicate: ($1 = $5)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 CROSS JOIN t2;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 CROSS JOIN t2"
+rows: 
+  (1,'T1-ROW1',10.23,true,1,'T2-ROW1',10.23,*,*,*)
+  (1,'T1-ROW1',10.23,true,2,'T1-ROW2',11.32,*,*,*)
+  (1,'T1-ROW1',10.23,true,3,'T2-ROW3',278.45,*,*,*)
+  (1,'T1-ROW1',10.23,true,4,null,11.32,*,*,*)
+  (1,'T1-ROW1',10.23,true,5,'T2-ROW5',22.98,*,*,*)
+  (1,'T1-ROW1',10.23,true,null,'T2-ROW6',16.32,*,*,*)
+  (1,'T1-ROW1',10.23,true,7,'T1-ROW7',null,*,*,*)
+  (1,'T1-ROW1',10.23,true,8,'T1-ROW8',13.24,*,*,*)
+  (null,'T1-ROW2',11.32,false,1,'T2-ROW1',10.23,*,*,*)
+  (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (null,'T1-ROW2',11.32,false,3,'T2-ROW3',278.45,*,*,*)
+  (null,'T1-ROW2',11.32,false,4,null,11.32,*,*,*)
+  (null,'T1-ROW2',11.32,false,5,'T2-ROW5',22.98,*,*,*)
+  (null,'T1-ROW2',11.32,false,null,'T2-ROW6',16.32,*,*,*)
+  (null,'T1-ROW2',11.32,false,7,'T1-ROW7',null,*,*,*)
+  (null,'T1-ROW2',11.32,false,8,'T1-ROW8',13.24,*,*,*)
+  (3,'T1-ROW3',null,true,1,'T2-ROW1',10.23,*,*,*)
+  (3,'T1-ROW3',null,true,2,'T1-ROW2',11.32,*,*,*)
+  (3,'T1-ROW3',null,true,3,'T2-ROW3',278.45,*,*,*)
+  (3,'T1-ROW3',null,true,4,null,11.32,*,*,*)
+  (3,'T1-ROW3',null,true,5,'T2-ROW5',22.98,*,*,*)
+  (3,'T1-ROW3',null,true,null,'T2-ROW6',16.32,*,*,*)
+  (3,'T1-ROW3',null,true,7,'T1-ROW7',null,*,*,*)
+  (3,'T1-ROW3',null,true,8,'T1-ROW8',13.24,*,*,*)
+  (4,null,11.32,false,1,'T2-ROW1',10.23,*,*,*)
+  (4,null,11.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (4,null,11.32,false,3,'T2-ROW3',278.45,*,*,*)
+  (4,null,11.32,false,4,null,11.32,*,*,*)
+  (4,null,11.32,false,5,'T2-ROW5',22.98,*,*,*)
+  (4,null,11.32,false,null,'T2-ROW6',16.32,*,*,*)
+  (4,null,11.32,false,7,'T1-ROW7',null,*,*,*)
+  (4,null,11.32,false,8,'T1-ROW8',13.24,*,*,*)
+  (5,'T1-ROW5',22.98,false,1,'T2-ROW1',10.23,*,*,*)
+  (5,'T1-ROW5',22.98,false,2,'T1-ROW2',11.32,*,*,*)
+  (5,'T1-ROW5',22.98,false,3,'T2-ROW3',278.45,*,*,*)
+  (5,'T1-ROW5',22.98,false,4,null,11.32,*,*,*)
+  (5,'T1-ROW5',22.98,false,5,'T2-ROW5',22.98,*,*,*)
+  (5,'T1-ROW5',22.98,false,null,'T2-ROW6',16.32,*,*,*)
+  (5,'T1-ROW5',22.98,false,7,'T1-ROW7',null,*,*,*)
+  (5,'T1-ROW5',22.98,false,8,'T1-ROW8',13.24,*,*,*)
+  (6,'T1-ROW6',16.32,false,1,'T2-ROW1',10.23,*,*,*)
+  (6,'T1-ROW6',16.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (6,'T1-ROW6',16.32,false,3,'T2-ROW3',278.45,*,*,*)
+  (6,'T1-ROW6',16.32,false,4,null,11.32,*,*,*)
+  (6,'T1-ROW6',16.32,false,5,'T2-ROW5',22.98,*,*,*)
+  (6,'T1-ROW6',16.32,false,null,'T2-ROW6',16.32,*,*,*)
+  (6,'T1-ROW6',16.32,false,7,'T1-ROW7',null,*,*,*)
+  (6,'T1-ROW6',16.32,false,8,'T1-ROW8',13.24,*,*,*)
+  (7,'T1-ROW7',10.23,null,1,'T2-ROW1',10.23,*,*,*)
+  (7,'T1-ROW7',10.23,null,2,'T1-ROW2',11.32,*,*,*)
+  (7,'T1-ROW7',10.23,null,3,'T2-ROW3',278.45,*,*,*)
+  (7,'T1-ROW7',10.23,null,4,null,11.32,*,*,*)
+  (7,'T1-ROW7',10.23,null,5,'T2-ROW5',22.98,*,*,*)
+  (7,'T1-ROW7',10.23,null,null,'T2-ROW6',16.32,*,*,*)
+  (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
+  (7,'T1-ROW7',10.23,null,8,'T1-ROW8',13.24,*,*,*)
+  (8,'T1-ROW8',13.24,false,1,'T2-ROW1',10.23,*,*,*)
+  (8,'T1-ROW8',13.24,false,2,'T1-ROW2',11.32,*,*,*)
+  (8,'T1-ROW8',13.24,false,3,'T2-ROW3',278.45,*,*,*)
+  (8,'T1-ROW8',13.24,false,4,null,11.32,*,*,*)
+  (8,'T1-ROW8',13.24,false,5,'T2-ROW5',22.98,*,*,*)
+  (8,'T1-ROW8',13.24,false,null,'T2-ROW6',16.32,*,*,*)
+  (8,'T1-ROW8',13.24,false,7,'T1-ROW7',null,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Cross Join
-      » predicate: (true)
-      » ordinal predicate: (true)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
+/*
 EXPLAIN SELECT *
 FROM t1
 LEFT OUTER JOIN t2 ON t1.colA = t2.colA;
@@ -1018,380 +488,45 @@ rows: (*,'explainPlan',
 -> -> -> tableScanOp
          » table: (rapidsse.public.t2)'
 )
-
-EXPLAIN SELECT *
-FROM t1
-RIGHT OUTER JOIN t2 ON t1.colA = t2.colA;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 RIGHT OUTER JOIN t2 ON t1.colA = t2.colA"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Right Outer Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
-      » ordinal predicate: ($1 = $5)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA = t2.colA;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Full Outer Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
-      » ordinal predicate: ($1 = $5)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
-  -- Semi/anti joins return left columns only
-EXPLAIN SELECT *
-FROM t1
-SEMI JOIN t2 ON t1.colA = t2.colA;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 SEMI JOIN t2 ON t1.colA = t2.colA"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-
--> -> nestedLoopJoinOp
-      » join type: Semi Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
-      » ordinal predicate: ($1 = $5)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
-EXPLAIN SELECT *
-FROM t1
-ANTI JOIN t2 ON t1.colA = t2.colA;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 ANTI JOIN t2 ON t1.colA = t2.colA"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-
--> -> nestedLoopJoinOp
-      » join type: Anti Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
-      » ordinal predicate: ($1 = $5)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
-
-  -- semi join doesn't project the right hand table columns
-EXPLAIN SELECT n_name, r_name
-FROM region
-SEMI JOIN nation ON r_regionkey = n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_name'
-
--- anti join doesn't project the right hand table columns
-EXPLAIN SELECT n_name, r_name
-FROM region
-ANTI JOIN nation ON r_regionkey = n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_name'
-
-  -- Natural join only returns distinct column names
-EXPLAIN SELECT *
-FROM t1
-NATURAL JOIN t2;
-failure contains: 'Feature not yet implemented: NATURAL JOIN'
-
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Join predicate tests
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- JOIN ON
-
--- no join predicate is a syntax error
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2;
-failure contains: 'EC_SYNTAX_ERROR'
-
--- expression in join predicate can have an AND
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA = t2.colA AND t1.colB = t2.colB;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA AND t1.colB = t2.colB"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Full Outer Join
-      » predicate: ((rapidsse.public.t1.colA = rapidsse.public.t2.colA) AND (rapidsse.public.t1.colB = rapidsse.public.t2.colB))
-      » ordinal predicate: (($1 = $5) AND ($2 = $6))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
--- expression in join predicate can have an OR
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA = t2.colA OR t1.colB = t2.colB;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA OR t1.colB = t2.colB"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Full Outer Join
-      » predicate: ((rapidsse.public.t1.colA = rapidsse.public.t2.colA) OR (rapidsse.public.t1.colB = rapidsse.public.t2.colB))
-      » ordinal predicate: (($1 = $5) OR ($2 = $6))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
--- expression in join predicate must be a boolean expression
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA + 5;
-failure contains: 'Predicate expression must have a boolean result : rapidsse.public.t1.colA + 5'
-
--- expression in join predicate must be a valid expression with comparable data types
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA = t2.colB;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
-
--- non-equi-joins not yet supported
-EXPLAIN SELECT *
-FROM t1
-FULL OUTER JOIN t2 ON t1.colA < t2.colA;
-failure contains: 'Join predicate expression must be an equi-join'
-
-
 -- JOIN USING
   -- Single USING column
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.t1.colB = rapidsse.public.t2.colB)
-      » ordinal predicate: ($2 = $6)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
+rows:
+  (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
   -- Multiple USING 2 columns
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
-      » ordinal predicate: (($2 = $6) AND ($3 = $7))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
-
+rows:
+  (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
   -- Multiple USING 3 columns
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC, colA);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC, colA)"
+rows:
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC)) AND (rapidsse.public.t1.colA = rapidsse.public.t2.colA))
-      » ordinal predicate: ((($2 = $6) AND ($3 = $7)) AND ($1 = $5))
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t1)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t2)'
-)
 
 -- Mixed JOIN ON and JOIN USING
-EXPLAIN SELECT *
+SELECT *
 FROM t1
 JOIN t2 USING (colB, colC)
 JOIN t3 ON (t1.colA = t3.colC);
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC) JOIN t3 ON (t1.colA = t3.colC)"
-
--> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
-   » column: (Alias = colA ; Expr = rapidsse.public.t3.colA ; Ordinal Expr = $11)
-   » column: (Alias = colB ; Expr = rapidsse.public.t3.colB ; Ordinal Expr = $12)
-   » column: (Alias = colC ; Expr = rapidsse.public.t3.colC ; Ordinal Expr = $13)
-
--> -> nestedLoopJoinOp
-      » join type: Inner Join
-      » predicate: (rapidsse.public.t1.colA = rapidsse.public.t3.colC)
-      » ordinal predicate: ($1 = $13)
-
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
-         » ordinal predicate: (($2 = $6) AND ($3 = $7))
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.t3)'
-)
-
-
-*/
+rows:
+  (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*,8,'T3-ROW8',8.00)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
@@ -1405,7 +540,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-/*
   drop table nation ;
   mute
 
@@ -1426,5 +560,4 @@ CLEANUP {
 
   drop table t3;
   mute
-  */
 }

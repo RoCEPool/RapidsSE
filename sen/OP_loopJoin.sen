@@ -20,7 +20,7 @@
 /* on ZK_M_DATAPULSE ...                                                  END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_DataPulse \handler
-  "ZK_M_DATAPULSE" .
+  //"ZK_M_DATAPULSE" .
    ZK_M_DATAPULSE_handler
 ;
 
@@ -74,14 +74,14 @@
 
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  "ZK_D_CRWBUFFER" .
+  //"ZK_D_CRWBUFFER" .
 
   Counter1[] 0 == if
-    "loopJoin_CrwBuffer left" .
+    //"loopJoin_CrwBuffer left" .
     PipeIn[]\clear DevLftIxt.crwBuffer!
     true LogicUnit[].IsLftCrwBuffer!
   else
-    "loopJoin_CrwBuffer rht" .
+    //"loopJoin_CrwBuffer rht" .
     Operand[].pipein
     Operand[] DevRhtIxt.crwBuffer!
     ZK_D_CRWBUFFER Counter0[] executeAsmArgs
@@ -103,7 +103,7 @@
 
   0 ZK_M_ENDCRWRHT EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_ENDCRWRHT" .
+  //"ZK_M_ENDCRWRHT" .
 
   PipeIn[].delete
 
@@ -140,7 +140,7 @@
 
   0 ZK_M_ENDROWRHT EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_ENDROWRHT" .
+  //"ZK_M_ENDROWRHT" .
 
   PipeIn[].delete
 
@@ -195,7 +195,7 @@
 
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  "ZK_D_ROWBUFFER" .
+  //"ZK_D_ROWBUFFER" .
 
   Counter1[] 0 == if
     Operand[].pipeIn
@@ -222,7 +222,7 @@
 : loopJoin_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-  "ZK_M_START" .
+  //"ZK_M_START" .
 
   // new the PotRlu[]
   PotRlu[].new
@@ -240,7 +240,7 @@
 
   0 ZK_M_STARTCRWRHT EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_STARTCRWRHT" .
+  //"ZK_M_STARTCRWRHT" .
 
   PipeIn[].delete
 
@@ -257,7 +257,7 @@
 
   0 ZK_M_STARTROWRHT EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_STARTROWRHT" .
+  //"ZK_M_STARTROWRHT" .
 
   PipeIn[].delete
 
@@ -274,7 +274,7 @@
 
   0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_STREAMDEFRHT" .
+  //"ZK_M_STREAMDEFRHT" .
 
   PipeIn[].delete
 
@@ -294,7 +294,7 @@
   EC_NONE locals| eError |
 
   Counter2[] 0 == if
-    "ZK_D_STREAMDEF left" .
+    //"ZK_D_STREAMDEF left" .
     //"loopJoin_StreamDef got left streamDef" .
     // move pipein[] to StreamDefLft[]
     Pipein[]\clear to StreamDefLft[]
@@ -304,7 +304,7 @@
   then
 
   // would have received a streamDefRht marker
-  "ZK_D_STREAMDEF rht" .
+  //"ZK_D_STREAMDEF rht" .
 
   // We have received the ZK_M_STARTCRWRHT
   // Hence this the right table stream def

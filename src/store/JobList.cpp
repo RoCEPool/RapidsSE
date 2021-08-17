@@ -279,9 +279,9 @@ void JobList::vSee(void)
              );
     }
     
-    vTrace("Acks %lld/%lld"_Stz
-           ,pJob->iAcksOriginal()
+    vTrace("AcksRmg %lld (out of %lld)"_Stz
            ,pJob->iAcksRmg_printOnlyValue()
+           ,pJob->iAcksOriginal()
            );
 
 
