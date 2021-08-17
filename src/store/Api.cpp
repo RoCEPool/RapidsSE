@@ -23,6 +23,8 @@
 
 extern BufferPool*  gpBufferPool;
 
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
 /*-- parsimonious API --------------------------------------------------------*/
@@ -714,6 +716,109 @@ void Api::vIncStatistics(eAC eApiCall)
     default:
       NEVER_REACH;
   }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* call the boot task to compile the main dictionary                          */
+/*----------------------------------------------------------------------------*/
+void Api::vCallBoot(void)
+{
+  _static_
+  
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
+  
+  pJob->vSeed(SS_SEED_RUN);
+  
+  TagSet* pJobTags = pJob->pJobTags();
+  //pJobTags->vDumpSet();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
+  
+  Task* pBootTask = AM::TASK::pNew(pJob);
+  
+  
+  pBootTask->vAddAxioms();
+
+  pBootTask->vAddMunged();
+  
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
+  
+  pJob->vTimerStart();
+  
+  vCallImmediate(pBootTask);
+  
+  vDeleteImmediate(&pBootTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* call start                                                                 */
+/*----------------------------------------------------------------------------*/
+void Api::vCallStart(void)
+{
+  _static_
+
+//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+//    vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
+
+  PsxThd::vMarkNonSeThread();
+
+  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
+
+  pJob->vSeed(SS_SEED_RUN);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
+
+  Task* pStartTask = AM::TASK::pNew(pJob);
+  pStartTask->vIsStart(true);
+
+  pJob->vTimerStart();
+
+  vCallImmediate(pStartTask);
+
+  vDeleteImmediate(&pStartTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* run task immediately                                                       */
+/*----------------------------------------------------------------------------*/
+void Api::vCallImmediate(Task* pImmediateTask)
+{
+  Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
+
+  pImmediateTask->vIsImmediate(true);
+  pImmediateTask->vSeedTask();
+  
+  pImmediateTask->vState(TS_EXECUTING);
+  
+  pImmediateTask->vTaskLoop();
+  
+  PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete task immediate                                                      */
+/*----------------------------------------------------------------------------*/
+void Api::vDeleteImmediate(Task** ppTask)
+{
+  Task* pTask = *ppTask;
+  *ppTask = nullptr;
+
+  pTask->vState(TS_COMPLETED);
+  Job* pJob = pTask->pJob();
+  pTask->vJob(nullptr);
+  delete pJob;
+  
+  //delete pTask;
 }
 
 /*----------------------------------------------------------------------------*/

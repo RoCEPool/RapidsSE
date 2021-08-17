@@ -1093,7 +1093,9 @@ void LogicUnit::vAddCodeTsp(eEO eCode, Stz* szLiteral)
 i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
+
+  RASSERT(m_nLabels < C_LOGIC_LABEL - 1);
+
   i8 i_Label = m_nLabels;
 
   m_xaJumpLabel[i_Label].m_sLabelNm = szLabelNm;

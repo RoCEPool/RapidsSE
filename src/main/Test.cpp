@@ -24,6 +24,7 @@
 #include "TagConstants.h"
 #include "Engine.hpp"
 #include "SeApi.hpp"
+#include "Api.hpp"
 #include "CatalogMetadata.hpp"
 #include "ColumnMetadata.hpp"
 #include "PartitionKeyMetadata.hpp"
@@ -832,9 +833,9 @@ void vTest11(void)
   
   Task* pImmTask = AM::TASK::pNew(pJob);
   
-  Engine::vCallImmmediate(pImmTask);
+  Api::vCallImmediate(pImmTask);
 
-  Engine::vDeleteImmmediate(&pImmTask);
+  Api::vDeleteImmediate(&pImmTask);
   
   oTimer.vUpdate();
   vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
@@ -909,9 +910,9 @@ void vTest14(void)
 
   pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
   
-  Engine::vCallImmmediate(pImmTask);
+  Api::vCallImmediate(pImmTask);
 
-  Engine::vDeleteImmmediate(&pImmTask);
+  Api::vDeleteImmediate(&pImmTask);
   
   delete pSeApi;
 
@@ -951,9 +952,9 @@ void vTest15(void)
 
   pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
   
-  Engine::vCallImmmediate(pImmTask);
+  Api::vCallImmediate(pImmTask);
 
-  Engine::vDeleteImmmediate(&pImmTask);
+  Api::vDeleteImmediate(&pImmTask);
   
   delete pSeApi;
   
@@ -988,7 +989,7 @@ void vTest16(void)
 
   pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
   
-  Engine::vCallImmmediate(pImmTask);
+  Api::vCallImmediate(pImmTask);
 
   RowSingleList* pRowSingleList =
     (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
@@ -1000,7 +1001,7 @@ void vTest16(void)
     pRowSingle->vPrintRow();
   }
   
-  Engine::vDeleteImmmediate(&pImmTask);
+  Api::vDeleteImmediate(&pImmTask);
   
   delete pIter;
 
@@ -1050,7 +1051,7 @@ void vTest16(void)
   \
   vTrace("imm %s\n"_Stz,pSeApi->szGet()); \
   pImmTask->m_pDataStack->vPushStz(pSeApi->szGet()); \
-  Engine::vCallImmmediate(pImmTask); \
+  Api::vCallImmediate(pImmTask); \
   pRowSingleList = \
     (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
 

@@ -82,7 +82,28 @@ void Stream::vCreateOps(void)
     Op* pOp = new Op(pOpSpec,this);
     
     pOp->vSetTags();
-    //pOp->vSetSeedWord();
+    
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form and parse op command string
+    
+    sSTMT sOpCmd;
+    pOp->vToCmdStr(sOpCmd);
+    
+    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+
+    TokenVec* pTknVec = new TokenVec;
+    pTknVec->vTokenise(sOpCmd);
+
+    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
+    RASSERT(b);
+    
+    pTknVec->vSetAllTokens();
+    delete pTknVec;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    pOp->vSetSeedWord();
 
     vAdd(pOp);
   }
