@@ -1320,29 +1320,6 @@ eEC STORE::eJob_checkCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pre-send job function                                                      */
-/*----------------------------------------------------------------------------*/
-void STORE::vJob_preSend(Job* pJob)
-{
-  UNUSED(pJob);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* post-recv job function  (when is this run ????)                            */
-/*----------------------------------------------------------------------------*/
-void STORE::vJob_postRecv(Job* pJob)
-{
-  pJob->vWasReceived(true);
-  
-  pJob->vJobList(JL_NONE);
-  
-  pJob->vTask(nullptr);
-    
-   pJob->vNullJobLogicUnit();
-}
-
-/*----------------------------------------------------------------------------*/
 /* compare two jobs by their jobId                                            */
 /*----------------------------------------------------------------------------*/
 bool STORE::bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch)

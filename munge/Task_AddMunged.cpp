@@ -34438,8 +34438,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "  SendNode[] node.sendSocket@ to Socket[]\n"
     "\n"
-    "  pJob job.preSend\n"
-    "\n"
     "  job::</seeXfer/>\n"
     "\n"
     "  Socket[].grabWrite\n"

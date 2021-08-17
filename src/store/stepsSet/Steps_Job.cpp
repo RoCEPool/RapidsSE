@@ -76,8 +76,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
-  vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
-  vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
@@ -838,36 +836,6 @@ void Step::vJobPhaseStore(void)
   i8 iJobPhase = m_pDataStack->iPopAsInt(__func__);
   
   pJob->vJobPhase((eJP)iJobPhase);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.postRecv -- run the post-receive function of the job                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPostRecv(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // run the post recv function
-  STORE::vJob_postRecv(pJob);
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.preSend -- run the pre-send function of the job                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPreSend(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  STORE::vJob_preSend(pJob);
   
   EXIT();
 }

@@ -206,7 +206,6 @@ namespace STORE
   ////////////////////////////////////////////////////////////////////////////////
   eEC  eJob_checkCluster(void);
   void vJob_postRecv(Job* pJob);
-  void vJob_preSend(Job* pJob);
 
   bool bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch);
 }
