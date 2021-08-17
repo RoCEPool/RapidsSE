@@ -1266,7 +1266,7 @@ void Task::vSeedTask(void)
   
   if (m_pJob.bIsNotNull()) {
     
-    //RASSERT(! m_pJob->pSeedWord());
+    RASSERT(! m_pJob->pSeedWord());
 
     szSeed = AM::JOB::szJobSeed(m_pJob);
     m_pSeedWord = pDicRoot->pFindWord(szSeed);

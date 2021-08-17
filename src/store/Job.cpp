@@ -972,6 +972,7 @@ void Job::vResetForReuse(Session* pSession)
   // -- g -------------------
   m_oAcksRmg_job.vReset();
   m_eSeed      = SS_ENUMS;
+  m_pSeedWord = nullptr;
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
