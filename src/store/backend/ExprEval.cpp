@@ -235,7 +235,7 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
 
-  eError = eCollectLeftColumns(pStreamDefRht, pTknVec);
+  eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
