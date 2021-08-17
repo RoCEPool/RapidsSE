@@ -85,6 +85,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
+  vAddStep("job.seedWord@"_Stz,        &Step::vJobSeedWordFetch);
+  vAddStep("job.seedWord!"_Stz,        &Step::vJobSeedWordStore);
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
@@ -962,6 +964,38 @@ void Step::vJobSeedStore(void)
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
     
   pJob->vSeed((eSS)i_Seed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.seedWord@ -- fetch job seed word                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSeedWordFetch(void)
+{
+  ENTRY();
+ 
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  Word* pWord = pJob->pSeedWord();
+  
+  m_pDataStack->vPushPtr(pWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.seedWord! -- set job seed word                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSeedWordStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+    
+  pJob->vSeedWord(pWord);
   
   EXIT();
 }
