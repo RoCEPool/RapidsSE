@@ -2536,18 +2536,32 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_VCHVCH: ArgNil(); // vch == vch
         // get topB string
         iTopB = *(aiDstk--);
-        azTopB = (char *) (aiDstk - (nWordRoundedStrBytes(iTopB) / 8 - 1));
-        aiDstk -= nWordRoundedStrBytes(iTopB) / 8;
+        if (iTopB == C_DATUM_NULL) {
+          iTopA = *(aiDstk--);
+          if (iTopA != C_DATUM_NULL) {
+            azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
+            aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
+          }
+          *(++aiDstk) = 0;
+        }
+        else {
+          azTopB = (char *) (aiDstk - (nWordRoundedStrBytes(iTopB) / 8 - 1));
+          aiDstk -= nWordRoundedStrBytes(iTopB) / 8;
 
-        // get topA string
-        iTopA = *(aiDstk--);
-        azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
-        aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
+          // get topA string
+          iTopA = *(aiDstk--);
+          if (iTopA == C_DATUM_NULL) {
+            *(++aiDstk) = 0;
+          } else {
+            azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
+            aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
 
-        // invoke function
-        iRes = iMathLib_Eq_VCHVCH(azTopA, azTopB);
-        dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
-        *(++aiDstk) = iRes;
+            // invoke function
+            iRes = iMathLib_Eq_VCHVCH(azTopA, azTopB);
+            dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
+            *(++aiDstk) = iRes;
+          }
+        }
         break;//+endCase
 
       case EO_EQ_UNKXYZ: ArgNil(); // unk == xyz
