@@ -51,7 +51,10 @@ Stz* SP_Task::sz(Task* pTask)
         );
   
   if (TS_SLEEPING == pTask->eState() && QK_SLEEPING_QUEUE == pTask->eQueue())
-    vCatf("wakeup --.-- "_Stz
+    vCatf("wakeup %lld.%06lld "_Stz
+          
+          ,(i8)pTask->oWakeup().m_wWakeup.m_uSecond
+          ,(i8)pTask->oWakeup().m_wWakeup.m_uMicro
           );
 
   return (Stz*) &m_caResult[0];

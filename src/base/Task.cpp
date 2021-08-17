@@ -1547,9 +1547,9 @@ bool Task::bWakeupNow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sleep time                                                             */
+/* get wakeup                                                                 */
 /*----------------------------------------------------------------------------*/
-Sleep& Task::oWakeupSleep(void)
+Wakeup& Task::oWakeup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     

@@ -73,7 +73,7 @@ namespace BASE
     eEP          m_eEntryPoint;  // task entry point
     
     Decider      m_oAcksRmg_task;     // number of acks still waiting for
-    Sleep        m_oWakeup;      // wakeup time from sleeping
+    Wakeup       m_oWakeup;      // wakeup time from sleeping
 
     i8           m_iTraceMask;   // tracing mask
   
@@ -203,7 +203,7 @@ namespace BASE
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);
-    Sleep& oWakeupSleep(void);
+    Wakeup& oWakeup(void);
     u8   uWakeupTime(void);
     LockSet* pWriteLocks(void);
 

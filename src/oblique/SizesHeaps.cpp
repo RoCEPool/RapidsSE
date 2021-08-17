@@ -447,7 +447,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SkipNode),           HT_T_TINY    ,0 }, // CN_SKIPNODE
   { sizeof(Slab),               HT_T_LARGE   ,0 }, // CN_SLAB
   { sizeof(SlabAllocator),      HT_T_TINY    ,0 }, // CN_SLABALLOCATOR
-  { sizeof(Sleep),              HT_INVALID   ,0 }, // CN_SLEEP
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLVIRTUAL
@@ -529,6 +528,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Verbose),            HT_T_TINY    ,0 }, // CN_VERBOSE
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 }, // CN__W__
+  { sizeof(Wakeup),             HT_INVALID   ,0 }, // CN_WAKEUP
   { sizeof(Wilderness),         HT_INVALID   ,0 }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 }, // CN_WORD
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
@@ -539,7 +539,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Z' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Z__
 
-  { C_VARGS_END,                HT_INVALID   ,0 } // CN_ENUMS
+  { C_VARGS_END,                HT_INVALID   ,0 }  // CN_ENUMS
 };
 
 /*============================================================================*/
