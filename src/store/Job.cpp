@@ -350,8 +350,10 @@ void Job::vPostRecv(void* aReceivedJob)
   
   pReceivedJob->vJobList(JL_NONE);
   
+  pReceivedJob->vSeedWord(nullptr);
+  
   pReceivedJob->vTask(nullptr);
-    
+
   // revised job/op model
   pReceivedJob->vNullJobLogicUnit();
   
