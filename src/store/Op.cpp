@@ -57,6 +57,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOpLogicUnit = nullptr;
 
   m_sOpNm       = pOpSpec->szOpNm();
+  //m_sPath
+  
   m_i_Op        = pOpSpec->iOpSpec();
 
   m_bTraceOp    = false;
@@ -113,6 +115,11 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  SP_Op spOp;
+  m_sPath = spOp.szPath(this);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   ++ gixOp;
   
   
@@ -1222,6 +1229,16 @@ void Op::vOutboundOperand(Operand* pOutboundOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pOutboundOperand = pOutboundOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get operator path                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/

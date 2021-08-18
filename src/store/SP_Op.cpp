@@ -159,7 +159,7 @@ Stz* SP_Op::szSchedule(Op* pOp)
 
   vInit();
   
-  vOp(pOp);
+  vCats(pOp->szPath());
   
   return (Stz*) &m_caResult[0];
 }
