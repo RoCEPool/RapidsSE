@@ -21309,7 +21309,7 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | recurring 600 | eatAll | stageA\n"
+    "        start | recurring 60 | eatAll | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
