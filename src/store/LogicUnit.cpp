@@ -73,7 +73,7 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::vRepair,  "m_xpAggTimer"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,  "m_xpAggTimer"_Stz)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,"m_xpCrwToRow"_Stz)
 ,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir1"_Stz)
@@ -279,14 +279,13 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
 
   // registers should have been repaired
-  RASSERT(m_xpAggTimer.bIsNull());
-  RASSERT(m_xpCrwToRow.bIsNull());
-  RASSERT(m_xpAggTimer.bIsNull());
-  RASSERT(m_xpDir0.bIsNull());
-  RASSERT(m_xpDir1.bIsNull());
-  RASSERT(m_xpErrorMarker.bIsNull());
-  RASSERT(m_xpFile0.bIsNull());
-  RASSERT(m_xpFile1.bIsNull());
+//  RASSERT(m_xpAggTimer.bIsNull());
+//  RASSERT(m_xpCrwToRow.bIsNull());
+//  RASSERT(m_xpDir0.bIsNull());
+//  RASSERT(m_xpDir1.bIsNull());
+//  RASSERT(m_xpErrorMarker.bIsNull());
+//  RASSERT(m_xpFile0.bIsNull());
+//  RASSERT(m_xpFile1.bIsNull());
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
@@ -403,12 +402,11 @@ void LogicUnit::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object> *p_Reg = m_paReg[i_Reg];
-
-    // execute register repare
-    p_Reg->vRepair();
-  }
+//  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+//    REG<Object> *p_Reg = m_paReg[i_Reg];
+//    // execute register repare
+//    p_Reg->vRepair();
+//  }
 
 }
 

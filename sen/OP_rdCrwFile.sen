@@ -38,8 +38,8 @@
       rdCrwFile_crwBuffer
     while repeat
 
-    //file0[].get file.close
-    //<fileNm> "File %v closed" .printf
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
   then
 
   true

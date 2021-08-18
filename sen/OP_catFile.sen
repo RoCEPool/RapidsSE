@@ -38,8 +38,8 @@
       // check for low memory
       attachMap::isLowMemory if
         EC_LOW_MEMORY op__execErr
-        //file0[].get file.close
-        //<fileNm> "File %v closed" .printf
+        file0[].get file.close
+        <fileNm> "File %v closed" .printf
         true
         exit
       then
@@ -48,8 +48,8 @@
 
     while repeat
 
-    //file0[].get file.close
-    //<fileNm> "File %v closed" .printf
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
   then
 
   true
