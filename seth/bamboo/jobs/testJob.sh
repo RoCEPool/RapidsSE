@@ -147,16 +147,21 @@ echo ""
 trap onExit EXIT
 
 # Check the arguments
-if [ "$#" -ne 2 ]; then
-  errorExit "Script $0 must be called with two arguments: build_type and build_config.\ne.g. $0 \"release\" \"1N4P\""
+if [ "$#" -lt 2 ]; then
+  errorExit "Script $0 must be called with at least two arguments: \n\$1 : build_type\n\$2 : build_config\n\$3 : build_suffix\ne.g. $0 \"release\" \"1N4P\" \"_AWS\""
 fi
 
 BUILD_TYPE="$1"
 BUILD_CONFIG="$2"
 
+if [ "$#" -ge 3 ]; then
+  CONFIG_SUFFIX="$3"
+else
+  CONFIG_SUFFIX=""
+fi
 
 # Resolve the config file and testlist file to be used
-configFile="${BAMBOO_CONFIGS_DIR}/${BUILD_CONFIG}.config"
+configFile="${BAMBOO_CONFIGS_DIR}/${BUILD_CONFIG}${CONFIG_SUFFIX:-}.config"
 testlistFile="${BAMBOO_TESTLISTS_DIR}/${BUILD_CONFIG}.testlist"
 
 # Ensure these files exist
