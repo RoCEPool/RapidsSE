@@ -61,6 +61,33 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* repair the file                                                            */
+/*----------------------------------------------------------------------------*/
+void CrwToRow::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  CrwToRow* pCrwToRow = _pCrwToRow(pObject);
+
+  RowBuffer* pRowBuffer = pCrwToRow->m_pRowBuffer;
+
+  while (pRowBuffer) {
+
+    RowBuffer* pNextRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
+
+    delete pRowBuffer;
+    pRowBuffer = pNextRowBuffer;
+
+  }
+
+  // delete the CrwToRow
+  delete pCrwToRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

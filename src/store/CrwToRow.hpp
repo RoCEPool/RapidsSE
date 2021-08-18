@@ -21,7 +21,9 @@ namespace STORE
     
     CrwToRow(StreamDef* pStreamDef);
    ~CrwToRow(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     bool bConvertCrwToRow(CrwBuffer* pCrwBuffer);
   
     RowBuffer* pDanglingRowBuffer(void);
