@@ -470,7 +470,7 @@
   
   task::releaseLockSets
 
-  "<recover>" job[] job.tagSet@ tagSet.hasName if
+  //"<recover>" job[] job.tagSet@ tagSet.hasName if
     task::exception EC_INTERNAL_ERROR op__execErrMsg
 
     PipeIn[].isNull not if
@@ -478,10 +478,10 @@
     then
 
     true
-  else
-    process::quit
-    HAZARD
-  then
+  //else
+  //  process::quit
+  //  HAZARD
+  //then
 ;
 
 /*----------------------------------------------------------------------------*/
