@@ -440,6 +440,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      vTrace("vSendToAllPartitions  \n"_Stz);
       vSendToAllPartitions(pSrcOp);
       break;
     
@@ -447,6 +448,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     // PX cases which send this parcel to all partitions on origin
       
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+      vTrace("vSendToAllOriginPartitions  \n"_Stz);
       vSendToAllOriginPartitions(pSrcOp);
       break;
      
@@ -454,6 +456,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     // PX cases which send this parcel to a specific partition
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
+      vTrace("vSendToPartition  \n"_Stz);
       Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
       tPN tDstPtnNo_stream = pStream->tPtnNo();
       vSendToPartition(pSrcOp,tDstPtnNo_stream);
@@ -475,14 +478,20 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
 
       if (m_eSendKind == XK_BROADCAST) {
+        vTrace("vSendToAllPartitions  \n"_Stz);
         vSendToAllPartitions(pSrcOp);
       }
       else {
-        if (pGetOperand()->bIsBuffer())
+        if (pGetOperand()->bIsBuffer()) {
+          vTrace("vSendToPartition  \n"_Stz);
           vSendToPartition(pSrcOp, tDstPtn);
-        else
+        }
+        else {
+          vTrace("vSendToAllPartitions  \n"_Stz);
           vSendToAllPartitions(pSrcOp);
+        }
       }
+
       break;
     }
      
@@ -490,6 +499,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     // PX cases which send this parcel to all nodes
       
     case PX_ORIGIN_TO_ALL_NODES: {
+      vTrace("vSendToNode SENT to ALL nodes  \n"_Stz);
       vSendToAllNodes(pSrcOp);
       break;
     }
@@ -555,7 +565,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
     Node* pNode = (*oNode_I);
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
-    //vTrace("Node :%lld\n"_Stz, iDstNode);
+    vTrace("Node :%lld\n"_Stz, iDstNode);
   }
 }
 
@@ -696,7 +706,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-    
+  vTrace("SendKind:%s\n"_Stz, aXK[m_eSendKind]);
   switch (m_eSendKind) {
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -777,7 +787,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -801,7 +811,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
-  //vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
+  vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 

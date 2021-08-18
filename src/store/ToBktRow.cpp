@@ -69,12 +69,15 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     
     i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
 
-    i_Ptn = AM::PTNMAP::iToBkt(i_Ptn);
+    i8 i_Bkt = AM::PTNMAP::iToBkt(i_Ptn);
+
+    vCopyRow(i_Bkt,aRowSrc);
+    vTrace("Row:%lld Bkt:%lld\n"_Stz, i_Row, i_Bkt);
 #else
     i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
-#endif
-    
+
     vCopyRow(i_Ptn,aRowSrc);
+#endif
   }
 }
 
