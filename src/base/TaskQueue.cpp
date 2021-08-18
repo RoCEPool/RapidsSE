@@ -123,7 +123,7 @@ void TaskQueue::vContentDump(void)
 
     vTrace("  [%02lld] %s\n"_Stz
            ,i_Task++
-           ,spTask.sz(pTask));
+           ,spTask.szJobOp(pTask));
   }
 }
 

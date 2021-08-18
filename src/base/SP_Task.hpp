@@ -17,7 +17,7 @@ namespace BASE
    ~SP_Task(void) noexcept(false);
   
     Stz* sz(Task* pTask);
-    Stz* sz_log(Task* pTask);
+    Stz* szJobOp(Task* pTask);
 
     Footer* aFooter(void);
   };
