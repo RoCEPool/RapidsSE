@@ -6,6 +6,7 @@
 
 #include "SP_Gid.hpp"
 
+#include "SP_Thread.hpp"
 #include "SP_Task.hpp"
 #include "SP_Ivl.hpp"
 #include "SP_Job.hpp"
@@ -83,6 +84,18 @@ Stz* SP_Task::szJobOp(Task* pTask)
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   IGNORE_RETURN( sz(pTask) );
+  
+  Thread* pThread = pTask->pvThread_DONT_DEREF();
+  if (pThread) {
+    SP_Thread spThread;
+    vCatf("%s "_Stz,spThread.sz_schedule(pThread));
+  }
+  else {
+    vCats(" (no thread) "_Stz);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job or op
   
   Job* pJob = pTask->pJob();
   if (pJob) {

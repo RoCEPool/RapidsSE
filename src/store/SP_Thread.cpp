@@ -12,13 +12,12 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Thread::SP_Thread(void)
-: SP(CN_SPID)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  _checkInitialised_(CN_SPID);
+  _checkInitialised_(CN_SPMEDIUM);
   
-  _postcondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +25,7 @@ SP_Thread::SP_Thread(void)
 /*----------------------------------------------------------------------------*/
 SP_Thread::~SP_Thread(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +37,7 @@ SP_Thread::~SP_Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Thread::sz(Thread* pThread)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   UNUSED(pThread);
   
   return (Stz*) &m_caResult[0];
@@ -49,7 +48,7 @@ Stz* SP_Thread::sz(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Thread::sz_log(Thread* pThread)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   SP_Gid spTaskId;
   
@@ -67,6 +66,31 @@ Stz* SP_Thread::sz_log(Thread* pThread)
                     : " dedicated"_Stz,
 
                   C_VARGS_END);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Thread::sz_schedule(Thread* pThread)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  vInit();
+  
+  vCatf("Thread %p: "
+        "%s %s"
+        ""_Stz
+              
+        ,pThread
+        ,aHS[pThread->eThreadState()]
+                                  
+        ,CN_NONE == pThread->eDedicated()
+           ? "general"_Stz
+           : " dedicated"_Stz
+
+        );
   
   return (Stz*) &m_caResult[0];
 }

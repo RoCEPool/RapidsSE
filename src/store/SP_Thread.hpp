@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class SP_Thread : public SP
+  class SP_Thread : public SPmedium
   {
   public:
 
@@ -18,6 +18,7 @@ namespace STORE
   
     Stz* sz(Thread* pThread);
     Stz* sz_log(Thread* pThread);
+    Stz* sz_schedule(Thread* pThread);
 
     Footer* aFooter(void);
   };
