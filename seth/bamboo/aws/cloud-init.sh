@@ -11,7 +11,11 @@ echo "*************************************"
 
 # Partition, format and mount the instance stores if they are not already mounted.
 # This needs to be done whenever the instance is stopped, but not when it is rebooted.
-cat << EOF >> "/etc/rc.local"
+
+echo
+echo "*** Installing the SSD mount script ***"
+echo
+cat << 'EOF' >> "/etc/rc.local"
 
 # ----------------------------------------------------------------------------------------
 # Setup the SSDs on each boot
@@ -75,10 +79,16 @@ fi
 EOF
 
 # Run the above script
+echo
+echo "*** Running the SSD mount script ***"
+echo
 bash /etc/rc.local
 
 # ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
+echo
+echo "*** Setting JAVA_HOME ***"
+echo
 cat << EOF > /etc/profile.d/java_home.sh
 #!/bin/bash
 export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
@@ -88,22 +98,35 @@ EOF
 # DNS (Route 53) resolution
 # This will force unqualified names to tried with the .local domain name and
 # then be looked up in DNS.
+echo
+echo "*** Setting DNS domain name search qualifier ***"
+echo
 echo "search local" >> /etc/resolv.conf
 
 # ----------------------------------------------------------------------------------------
 # Change permissions to allow for writing to /opt
+echo
+echo "*** Setting /opt permissions ***"
+echo
 chown root:wheel /opt
 chmod g+w /opt
 
 # ----------------------------------------------------------------------------------------
 # Apply any package updates
+echo
+echo "*** Installing updates and necessary packages ***"
+echo
 amazon-linux-extras install epel
 yum update -y
-yum install gcc-c++ git git-lfs java-11-amazon-corretto-headless
-yum install nload nethogs bmon iftop iperf3 iotop -y
+yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel
+yum install -y nload nethogs bmon iftop iperf3 iotop
 
 # ----------------------------------------------------------------------------------------
 # Set up SSH.
+echo
+echo "*** Installing a common internal SSH key ***"
+echo
+
 # All machines have the same public/private key
 SSH_DIR="/home/ec2-user/.ssh"
 
@@ -167,6 +190,10 @@ chown -R ec2-user:ec2-user "${SSH_DIR}"
 
 # ----------------------------------------------------------------------------------------
 # Vim annoyances
+echo
+echo "*** Setting vim preferences ***"
+echo
+
 vimrc="/home/ec2-user/.vimrc"
 cat << EOF > "${vimrc}"
 set ts=2
@@ -184,6 +211,10 @@ chown ec2-user:ec2-user "${vimrc}"
 
 # ----------------------------------------------------------------------------------------
 # Bash prompt
+echo
+echo "*** Setting bash preferences ***"
+echo
+
 bash_profile="/home/ec2-user/.bash_profile"
 echo "" >> "${bash_profile}"
 echo '#export PS1="[\u@\h \W]\$ ' >> "${bash_profile}"
