@@ -169,6 +169,22 @@ bool Dir::bRemove(Stz* szDirPath)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the dir                                                             */
+/*----------------------------------------------------------------------------*/
+void Dir::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  Dir* pDir = _pDir(pObject);
+
+  // close the file if open
+  if (pDir->bIsOpen())
+    pDir->vClose();
+
+  // delete the dir object
+  delete pDir;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

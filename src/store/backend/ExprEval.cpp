@@ -108,6 +108,19 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* repair the exprEval                                                        */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  ExprEval* pExprEval = _pExprEval(pObject);
+
+  // delete
+  delete pExprEval;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1648,7 +1661,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   while ( pTkn ) {
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator ?

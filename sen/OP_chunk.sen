@@ -15,13 +15,11 @@
     File0[].get file.delete
   then
 
-  PipeIn[].pipeOut
-
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                        */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : chunk_DataMarker \handler
 

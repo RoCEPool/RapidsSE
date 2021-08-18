@@ -14,8 +14,7 @@
     File0[].get file.delete
   then
 
-  PipeIn[].pipeOut
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -16,7 +16,7 @@ namespace STORE
     Stz*       m_szRegNm;     // register name
     eRF        m_eRepair;     // how to repair
   
-    bool (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
+    void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
     COMPONENT* m_pComponent; // pointer to the component object
 
@@ -40,7 +40,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     REG<COMPONENT>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   bool (*fpRepair)(Object* pObject, eRF eRepair),
+                   void (*fpRepair)(Object* pObject, eRF eRepair),
                    Stz* szRegNm)
     {
       m_p_LogicUnit = pLogicUnit;
@@ -67,7 +67,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     REG<COMPONENT>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   bool (*fpRepair)(Object* pObject, eRF eRepair),
+                   void (*fpRepair)(Object* pObject, eRF eRepair),
                    bool bNullOnDelete,
                    bool bDeleteOnFailure,
                    Stz* szRegNm)
@@ -205,33 +205,20 @@ namespace STORE
     }
   
     /*------------------------------------------------------------------------*/
-    /* call m_pComponent to recover from failure                              */
+    /* call m_pComponent repair function to repair itself                     */
     /*------------------------------------------------------------------------*/
     bool vRepair(void)
     {
-      //m_pComponent->vRecoverFromFailure();
-    
-      switch (m_eRepair) {
-          
-        case RF_NONE:
-          break;
-          
-        case RF_REPAIR_DELETE:
-          break;
-          
-        case RF_REPAIR_ONLY:
-          break;
-          
-        case RF_DELETE_ONLY:
-          break;
-          
-        default:
-          break;
+      // execute its repair function ?
+      if (m_pComponent) {
+        if (m_fpRepair) {
+          m_fpRepair((Object *) m_pComponent, m_eRepair);
+
+          // null the component
+          m_pComponent = nullptr;
+        }
       }
 
-      if (m_bDeleteOnFailure) {
-        vDeleteComponent();
-      }
     }
 
     /*------------------------------------------------------------------------*/

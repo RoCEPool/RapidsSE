@@ -7,18 +7,21 @@
 #include "SP_Gid.hpp"
 
 #include "SP_Task.hpp"
+#include "SP_Ivl.hpp"
+#include "SP_Job.hpp"
+#include "SP_Op.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Task::SP_Task(void)
-: SP(CN_SPID)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   _checkInitialised_(CN_SPID);
   
-  _postcondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +29,7 @@ SP_Task::SP_Task(void)
 /*----------------------------------------------------------------------------*/
 SP_Task::~SP_Task(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,45 +41,62 @@ SP_Task::~SP_Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Task::sz(Task* pTask)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  StrLib::vSprint(m_caResult,
-                  "{%s %s %s}"_Stz,
-
-                  aTS[pTask->eState()],
-                  aQK[pTask->eQueue()],
-                  aTR[pTask->eTranstionRequest()],
+  vInit();
   
-                  C_VARGS_END);
+  vCatf("Task %p "
+        "%s %s %s "_Stz
 
+        ,pTask
+        
+        ,aTS[pTask->eState()]
+        ,aQK[pTask->eQueue()]
+        ,aTR[pTask->eTranstionRequest()]
+  
+        );
+  
+  if (TS_SLEEPING == pTask->eState() && QK_SLEEPING_QUEUE == pTask->eQueue()) {
+//    vCatf("wakeup %lld.%06lld "_Stz
+//
+//          ,(i8)pTask->oWakeup().m_wWakeup.m_uSecond
+//          ,(i8)pTask->oWakeup().m_wWakeup.m_uMicro
+//          );
+        
+    SP_Ivl spIvl;
+    vCatf("wakeup %s "_Stz
+    
+          ,spIvl.sz(pTask->oWakeup().m_wWakeup.m_iAsI8)
+          
+          );
+
+  }
+  
   return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Task::sz_log(Task* pTask)
+Stz* SP_Task::szJobOp(Task* pTask)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  SP_Gid spThreadId;
+  IGNORE_RETURN( sz(pTask) );
   
-  StrLib::vSprint(m_caResult,
-                  "{%s %s %s}"_Stz,
+  Job* pJob = pTask->pJob();
+  if (pJob) {
+    SP_Job spJob;
+    vCats(spJob.sz_detail(pJob));
+    return (Stz*) &m_caResult[0];
+  }
 
-                  aTS[pTask->eState()],
-                  aQK[pTask->eQueue()],
-                  aTR[pTask->eTranstionRequest()],
-  
-// AY+RH : 29th Apr 2020 : TaskA should never attempt pTaskB->pThread()
-//                         TaskA can never assume existence of
-//                         some other tasks thread
-//
-//                  spThreadId.sz(pTask->pThread()
-//                                  ? AM::iThreadId(pTask->pThread())
-//                                  : C_UNKNOWN),
-
-                  C_VARGS_END);
+  Op* pOp = pTask->pOp();
+  if (pOp) {
+    SP_Op spOp;
+    vCats(spOp.sz(pOp));
+    return (Stz*) &m_caResult[0];
+  }
 
   return (Stz*) &m_caResult[0];
 }

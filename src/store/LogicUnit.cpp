@@ -73,14 +73,14 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::bRepair,"m_xpAggTimer"_Stz)
-,       m_xpCrwToRow(this,RF_NONE,         nullptr,        "m_xpCrwToRow"_Stz)
-,           m_xpDir0(this,RF_NONE,         nullptr,        "m_xpDir0"_Stz)
-,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
-,    m_xpErrorMarker(this,RF_NONE,         nullptr,        "m_xpErrorMarker"_Stz)
-,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
-,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
-,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,  "m_xpAggTimer"_Stz)
+,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,"m_xpCrwToRow"_Stz)
+,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir0"_Stz)
+,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir1"_Stz)
+,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair, "m_xpErrorMarker"_Stz)
+,       m_xpExprEval(this,RF_NONE,         nullptr,          "m_xpExprEval"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,    "m_xpFile0"_Stz)
+,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,    "m_xpFile1"_Stz)
 ,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
@@ -277,10 +277,16 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
-  
-  if (! m_xpAggTimer.bIsNull())
-    delete *m_xpAggTimer;
-  
+
+  // registers should have been repaired
+//  RASSERT(m_xpAggTimer.bIsNull());
+//  RASSERT(m_xpCrwToRow.bIsNull());
+//  RASSERT(m_xpDir0.bIsNull());
+//  RASSERT(m_xpDir1.bIsNull());
+//  RASSERT(m_xpErrorMarker.bIsNull());
+//  RASSERT(m_xpFile0.bIsNull());
+//  RASSERT(m_xpFile1.bIsNull());
+
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
   
@@ -387,6 +393,21 @@ void LogicUnit::vCC(i8 i_Cond)
     m_iNextCond = 1;
   else
     m_iNextCond = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cleanup                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+//  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+//    REG<Object> *p_Reg = m_paReg[i_Reg];
+//    // execute register repare
+//    p_Reg->vRepair();
+//  }
+
 }
 
 /*----------------------------------------------------------------------------*/

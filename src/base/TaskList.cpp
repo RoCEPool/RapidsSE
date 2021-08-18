@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_Task.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -210,33 +211,21 @@ i8 TaskList::nTasks(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)
 {
-  //vDump(CN_TASKLIST, this, Stz::szTab(1));
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+
   ASSERT(m_okLock.bIsLocked());
 
-  //vTrace("ITEMS %lld\n"_Stz,nItems());
+  SP_Task spTask;
 
+  i8 i_Task = 0;
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;
        pTask = pTask->pNextItem()) {
     
-    Job* pJob = pTask->pJob();
-    
-    vTrace("Task %p %s Job %p %s"_Stz,
-           pTask,
-           aTS[pTask->eState()],
-           
-           pJob,
-           aCN[AM::eJobClass(pJob)]
-           );
-    
-    if (void* aThread = pTask->pvThread_DONT_DEREF()) {
-     vTrace(" Thread %p"_Stz,
-            aThread);
+    vTrace("  [%02lld] %s\n"_Stz
+           ,i_Task++
+           ,spTask.szJobOp(pTask));
 
-    }
-
-    vTrace("\n"_Stz);
   }
 }
 

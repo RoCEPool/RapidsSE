@@ -1512,6 +1512,21 @@ void Task::vTranstionRequestClear()
 }
 
 /*----------------------------------------------------------------------------*/
+/* get wake up                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Task::iWakeup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  u8 uSecond = m_oWakeup.m_wWakeup.m_uSecond;
+  u8 uMicro  = m_oWakeup.m_wWakeup.m_uMicro;
+
+  i8 iWakeup = uSecond * C_1M + uMicro;
+  
+  return iWakeup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* wakeup the task                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vWakeupClear(void)
@@ -1547,9 +1562,9 @@ bool Task::bWakeupNow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sleep time                                                             */
+/* get wakeup                                                                 */
 /*----------------------------------------------------------------------------*/
-Sleep& Task::oWakeupSleep(void)
+Wakeup& Task::oWakeup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
@@ -1599,9 +1614,9 @@ __aFooterFunction(Task);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compare two tasks by their wakeuptime                                      */
+/* compare two tasks by their wakeup time                                     */
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool bTaskCompareWakeup(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
@@ -1612,12 +1627,12 @@ bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->uWakeupTime() == pScanEntry->uWakeupTime())
+  if (pInsertEntry->iWakeup() == pScanEntry->iWakeup())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->uWakeupTime() > pScanEntry->uWakeupTime())
+  if (pInsertEntry->iWakeup() > pScanEntry->iWakeup())
     return true;
   else
     return false;
