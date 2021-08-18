@@ -24,6 +24,8 @@ void Step::vAddSteps_Debug(void)
   vAddStep("debug::flag!"_Stz,       &Step::vDebugFlagStore);
   vAddStep("debug::trap"_Stz,        &Step::vDebugBreakpoint);
   vAddStep("debug::throw"_Stz,       &Step::vDebugThrow);
+  
+  vAddStep("debug::sigsegv"_Stz,     &Step::vDebugSigsegv);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +108,22 @@ void Step::vDebugFlagStore(void)
   ENTRY();
 
   m_p_TaskLogicUnit->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* debug::sigsegv -- inject a sigsegv signal                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vDebugSigsegv(void)
+{
+  ENTRY();
+  
+  Object* pObject = nullptr;
+  
+  pObject->vMemoryDump();
+  
+  NEVER_REACH;
   
   EXIT();
 }

@@ -198,6 +198,7 @@ public:
   void vDebugBloatCleanup(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
+  void vDebugSigsegv(void);
   void vDebugThrow(void);
   void vDebugBreakpoint(void);
 

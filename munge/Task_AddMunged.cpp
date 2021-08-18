@@ -34345,7 +34345,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  //task::seeFrameStack\n"
     "  \n"
-    "  //debug::sigsegv\n"
+    "  debug::sigsegv\n"
     "\n"
     "  HAZARD\n"
     "  \n"
