@@ -523,7 +523,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 {
   Job* pJob = pSession->m_pSsnJob;
 
-  Op* pInputOp = pJob->m_pSingularOp;
+  Op* pInputOp = pJob->pSingularOp();
 
   pInputOp->vOutboundOperand(pOperand);
   pOperand = nullptr;

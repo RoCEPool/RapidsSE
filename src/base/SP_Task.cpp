@@ -87,14 +87,14 @@ Stz* SP_Task::szJobOp(Task* pTask)
   Job* pJob = pTask->pJob();
   if (pJob) {
     SP_Job spJob;
-    vCats(spJob.sz_detail(pJob));
+    vCatf("job: %s"_Stz,spJob.sz_schedule(pJob));
     return (Stz*) &m_caResult[0];
   }
 
   Op* pOp = pTask->pOp();
   if (pOp) {
     SP_Op spOp;
-    vCats(spOp.sz(pOp));
+    vCatf("op: %s"_Stz,spOp.szSchedule(pOp));
     return (Stz*) &m_caResult[0];
   }
 

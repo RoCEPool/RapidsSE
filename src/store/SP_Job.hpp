@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class SP_Job : public SP
+  class SP_Job : public SPmedium
   {
   public:
 
@@ -17,9 +17,10 @@ namespace STORE
    ~SP_Job(void) noexcept(false);
   
     Stz* sz_api(Job* pJob);
+    Stz* sz_detail(Job* pJob);
     Stz* sz_log(Job* pJob);
     Stz* sz_recv(Job* pJob);
-    Stz* sz_detail(Job* pJob);
+    Stz* sz_schedule(Job* pJob);
 
     Footer* aFooter(void);
   };
