@@ -94,7 +94,7 @@ Stz* SP_Task::szJobOp(Task* pTask)
   Op* pOp = pTask->pOp();
   if (pOp) {
     SP_Op spOp;
-    vCats(spOp.sz(pOp));
+    vCats(spOp.szSchedule(pOp));
     return (Stz*) &m_caResult[0];
   }
 

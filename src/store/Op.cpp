@@ -272,7 +272,8 @@ void Op::vAckPipelineJob(void)
       SP_Op spOp;
 
       vTraceM("%s "
-              "%-18s nAcksWereRemaining=%lld\n"_Stz, spOp.sz(), __func__, nAcksWereRemaining
+              "%-18s nAcksWereRemaining=%lld\n"_Stz
+              , spOp.szAck(this), __func__, nAcksWereRemaining
       );
     }
 

@@ -54,9 +54,32 @@ SP_Op::~SP_Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint leading portion                                                     */
+/* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-void SP_Op::vLeading(Op* pOp)
+Stz* SP_Op::szAck(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vOp(pOp);
+  
+  return (Stz*) &m_caResult[0];
+}
+/*----------------------------------------------------------------------------*/
+/* sprint Vch and return Stz* to result                                       */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szExHandler(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vOp(pOp);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint leading portion of an op trace                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szLeading(Op* pOp)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -97,87 +120,9 @@ void SP_Op::vLeading(Op* pOp)
          ,pOp->pCurWord()->szWordNm()
         );
   }
-//  vCatf("%12s (%10s) (N%lld) (P%02lld) (job:%p)"_Stz
-//
-//        ,pOp->szOpNm()
-//        ,pOp->pStage()->szStageNm()
-//        ,pOp->iNode()
-//        ,pOp->tPtnNo()
-//        ,pOp->pPipelineJob()
-//
-//        );
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint op                                                                  */
-/*----------------------------------------------------------------------------*/
-void SP_Op::vOp(Op* pOp, bool bDescend)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vInit();
-    
-  i8 iNextStage = pOp->iNextStage();
-  i8 iNextOp = pOp->iNextOp();
-  Op* pNextOp = pOp->pNextOp();
-  ePX eCrossTopo = pOp->eCrossTopo();
-
-  if (bDescend)
-    vCatf("\n      "_Stz);
-
-  vCatf("[%03lld] Op %-16s "
-        "|%s [%02lld.%03lld] Op %-16s "
-        "x %s"_Stz
-        
-         ,pOp->iOp()
-         ,pOp->szOpNm()
-        
-         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
-         ,iNextStage
-         ,iNextOp
-           ,pNextOp->szOpNm()
-           ,aPX[eCrossTopo]
-        );
-
-  if (XK_NONE != pOp->eSendKind())
-      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);  
-}
-
-/*----------------------------------------------------------------------------*/
-/* return Stz* of result                                                      */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Op::sz(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
   
   return (Stz*) &m_caResult[0];
 }
-
-/*----------------------------------------------------------------------------*/
-/* sprint Vch and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Op::sz(Op* pOp)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vOp(pOp);
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint leading portion of an op trace                                      */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Op::szLeading(Op* pOp)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vLeading(pOp);
-  
-  return (Stz*) &m_caResult[0];
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* sprint path of an op                                                       */
@@ -204,6 +149,97 @@ Stz* SP_Op::szPath(Op* pOp)
 
   return (Stz*) &m_caResult[0];
 }
+
+/*----------------------------------------------------------------------------*/
+/* sprint schedule version of op                                              */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szSchedule(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vInit();
+  
+  vOp(pOp);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint schedule version of op                                              */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::szStream(Op* pOp, bool bDescend)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vInit();
+    
+  i8 iNextStage = pOp->iNextStage();
+  i8 iNextOp = pOp->iNextOp();
+  Op* pNextOp = pOp->pNextOp();
+  ePX eCrossTopo = pOp->eCrossTopo();
+
+  if (bDescend)
+    vCatf("\n      "_Stz);
+
+  vCatf("[%03lld] Op %-16s "
+        "|%s [%02lld.%03lld] Op %-16s "
+        "x %s"_Stz
+        
+         ,pOp->iOp()
+         ,pOp->szOpNm()
+        
+         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
+         ,iNextStage
+         ,iNextOp
+           ,pNextOp->szOpNm()
+           ,aPX[eCrossTopo]
+        );
+
+  if (XK_NONE != pOp->eSendKind())
+      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
+
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint op                                                                  */
+/*----------------------------------------------------------------------------*/
+void SP_Op::vOp(Op* pOp, bool bDescend)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vInit();
+
+  i8 iNextStage = pOp->iNextStage();
+  i8 iNextOp = pOp->iNextOp();
+  Op* pNextOp = pOp->pNextOp();
+  ePX eCrossTopo = pOp->eCrossTopo();
+
+  if (bDescend)
+    vCatf("\n      "_Stz);
+
+  vCatf("[%03lld] Op %-16s "
+        "|%s [%02lld.%03lld] Op %-16s "
+        "x %s"_Stz
+
+         ,pOp->iOp()
+         ,pOp->szOpNm()
+
+         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
+         ,iNextStage
+         ,iNextOp
+           ,pNextOp->szOpNm()
+           ,aPX[eCrossTopo]
+        );
+
+  if (XK_NONE != pOp->eSendKind())
+      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
