@@ -205,16 +205,19 @@ namespace STORE
     }
   
     /*------------------------------------------------------------------------*/
-    /* call m_pComponent to recover from failure                              */
+    /* call m_pComponent repair function to repair itself                     */
     /*------------------------------------------------------------------------*/
     bool vRepair(void)
     {
       // execute its repair function ?
-      if (m_pComponent != nullptr)
-        if (m_fpRepair)
+      if (m_pComponent) {
+        if (m_fpRepair) {
           m_fpRepair((Object *) m_pComponent, m_eRepair);
 
-      //m_pComponent = nullptr;
+          // null the component
+          m_pComponent = nullptr;
+        }
+      }
 
     }
 

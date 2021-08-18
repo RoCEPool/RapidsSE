@@ -13,13 +13,12 @@
 
   // 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
+  //File0[].isNull not if
+  //  File0[].get file.close
+  //  File0[].get file.delete
+  //then
 
-  PipeIn[].pipeOut
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/

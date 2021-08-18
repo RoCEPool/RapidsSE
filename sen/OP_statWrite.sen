@@ -37,8 +37,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- File0[].get file.close
- File0[].get file.delete
+ //File0[].get file.close
+ //File0[].get file.delete
  */
 
   // open the file for writing
@@ -53,8 +53,8 @@
 
     InfoSet[].delete
 
-    File0[].get file.close
-    File0[].get file.delete
+    //File0[].get file.close
+    //File0[].get file.delete
   else
     Pipein[].delete
   then
@@ -76,8 +76,8 @@
 
     PipeIn[].delete
 
-    File0[].get file.close
-    File0[].get file.delete
+    //File0[].get file.close
+    //File0[].get file.delete
   else
     Pipein[].delete
   then
