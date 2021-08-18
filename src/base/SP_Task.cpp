@@ -40,6 +40,8 @@ Stz* SP_Task::sz(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  vInit();
+  
   vCatf("Task %p "
         "%s %s %s "_Stz
 

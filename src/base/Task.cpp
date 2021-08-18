@@ -1599,9 +1599,9 @@ __aFooterFunction(Task);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compare two tasks by their wakeuptime                                      */
+/* compare two tasks by their wakeup time                                     */
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool bTaskCompareWakeup(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);

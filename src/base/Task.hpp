@@ -232,7 +232,7 @@ namespace BASE
   Task* _pTask(i8 iAddr);
 }
 
-bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+bool bTaskCompareWakeup(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */

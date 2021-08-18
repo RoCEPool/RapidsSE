@@ -67,7 +67,7 @@ Schedule::Schedule(void)
   m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
                                    C_NON_UNQIUE_KEY,
-                                   bTaskCompareWakeupTime);
+                                   bTaskCompareWakeup);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task sets

@@ -111,12 +111,15 @@ void TaskQueue::vContentDump(void)
 {
   SP_Task spTask;
   
+  i8 i_Task = 0;
   for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
        pNode;
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     Task* pTask = _pTask(pNode->m_pObject);
 
-    vTrace("%s\n"_Stz,spTask.sz(pTask));
+    vTrace("  [%02lld] %s\n"_Stz
+           ,i_Task++
+           ,spTask.sz(pTask));
   }
 }
 

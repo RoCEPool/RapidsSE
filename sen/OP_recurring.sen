@@ -27,7 +27,7 @@
     task::yield
 
     // "periodic sleeping..." .
-    60 task::sleepSsec
+    <nSeconds> >int task::sleepSsec
 
     recurring_activity
 
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: recurring :: recurring ;
+cmdSyntax: recurring :: recurring <nSeconds> ;
 
 : recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
 
