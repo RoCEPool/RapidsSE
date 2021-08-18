@@ -27,6 +27,7 @@ namespace BASE
     
     void vAdd(i8 iTicks);
     void vAdd(Timer* pTimer);
+    void vRepair(Object* pObject, eRF eRepair);
     void vReset(void);
     void vSet(i8 iTicks);
     

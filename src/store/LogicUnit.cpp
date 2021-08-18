@@ -278,9 +278,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
   
-  if (! m_xpAggTimer.bIsNull())
-    delete *m_xpAggTimer;
-  
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
   
