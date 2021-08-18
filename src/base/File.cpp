@@ -166,6 +166,23 @@ void File::vListOfOpenFiles(TokenVec* pTokenVec)
   vTrace("File::vListOfOpenFiles\n"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the file                                                            */
+/*----------------------------------------------------------------------------*/
+void File::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  File* pFile = _pFile(pObject);
+
+  // close the file if open
+  if (pFile->bIsOpen())
+    pFile->vClose();
+
+  // delete the file object
+  delete pFile;
+}
+
 /*---------------------------------------------------------------------------*/
 /* test if given file has access permissions                                 */
 /*---------------------------------------------------------------------------*/

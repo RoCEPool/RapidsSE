@@ -90,7 +90,12 @@ void Step::vJobsSeeSqueue(void)
 {
   ENTRY();
   
+  AM::pSchedule()->vDumpBidingSet();
+  AM::pSchedule()->vDumpExecutingSet();
+  AM::pSchedule()->vDumpReadyQueue();
+  //AM::pSchedule()->vDumpReadyQueueLP();
   AM::pSchedule()->vDumpSleepingQueue();
+  AM::pSchedule()->vDumpWaitingSet();
 
   EXIT();
 }

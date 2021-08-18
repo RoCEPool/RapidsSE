@@ -128,7 +128,7 @@
     begin
 
       stage stageA on origin :
-        start | recurring 600 | eatAll | stageA
+        start | recurring 60 | eatAll | stageA
 
     end ;
   "

@@ -109,6 +109,10 @@ void TaskQueue::vAssertItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vContentDump(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+
   SP_Task spTask;
   
   i8 i_Task = 0;
@@ -119,7 +123,7 @@ void TaskQueue::vContentDump(void)
 
     vTrace("  [%02lld] %s\n"_Stz
            ,i_Task++
-           ,spTask.sz(pTask));
+           ,spTask.szJobOp(pTask));
   }
 }
 

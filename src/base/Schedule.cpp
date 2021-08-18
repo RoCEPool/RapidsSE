@@ -645,13 +645,12 @@ void Schedule::vDumpBidingSet(void)
   
   m_pBidingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Biding Set: %p Expressions %lld\n"_Stz,
-         m_pBidingSet,m_pBidingSet->nItems());
+  vTrace("Biding Set: Tasks %lld\n"_Stz
+         ,m_pBidingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pBidingSet->vContentDump();
   m_pBidingSet->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -664,13 +663,12 @@ void Schedule::vDumpExecutingSet(void)
   
   m_pExecutingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: %p Expressions %lld\n"_Stz,
-         m_pExecutingSet,m_pExecutingSet->nItems());
+  vTrace("Executing Set: Tasks %lld\n"_Stz
+         ,m_pExecutingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vContentDump();
   m_pExecutingSet->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -683,13 +681,12 @@ void Schedule::vDumpReadyQueue(void)
   
   m_pReadyQueue->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (normal priority): %p Expressions %lld\n"_Stz,
-         m_pReadyQueue,m_pReadyQueue->nItems());
+  vTrace("Ready Queue: Tasks %lld\n"_Stz
+         ,m_pReadyQueue->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vContentDump();
   m_pReadyQueue->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -702,13 +699,12 @@ void Schedule::vDumpReadyQueueLP(void)
   
   m_pReadyQueueLP->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): %p Expressions %lld\n"_Stz,
-         m_pReadyQueueLP,m_pReadyQueueLP->nItems());
+  vTrace("Ready Queue (low Priority): Tasks %lld\n"_Stz
+         ,m_pReadyQueueLP->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vContentDump();
   m_pReadyQueueLP->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -748,8 +744,8 @@ void Schedule::vDumpWaitingSet(void)
   
   m_pWaitingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: %p Expressions %lld\n"_Stz,
-         m_pWaitingSet,m_pWaitingSet->nItems());
+  vTrace("Waiting Set: Tasks %lld\n"_Stz
+         ,m_pWaitingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vContentDump();
   m_pWaitingSet->vDropLock();

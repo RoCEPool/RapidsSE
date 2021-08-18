@@ -8,6 +8,9 @@
 
 #include "SP_Task.hpp"
 #include "SP_Ivl.hpp"
+#include "SP_Job.hpp"
+#include "SP_Op.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -75,28 +78,25 @@ Stz* SP_Task::sz(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Task::sz_log(Task* pTask)
+Stz* SP_Task::szJobOp(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  SP_Gid spThreadId;
+  IGNORE_RETURN( sz(pTask) );
   
-  StrLib::vSprint(m_caResult,
-                  "{%s %s %s}"_Stz,
+  Job* pJob = pTask->pJob();
+  if (pJob) {
+    SP_Job spJob;
+    vCats(spJob.sz_detail(pJob));
+    return (Stz*) &m_caResult[0];
+  }
 
-                  aTS[pTask->eState()],
-                  aQK[pTask->eQueue()],
-                  aTR[pTask->eTranstionRequest()],
-  
-// AY+RH : 29th Apr 2020 : TaskA should never attempt pTaskB->pThread()
-//                         TaskA can never assume existence of
-//                         some other tasks thread
-//
-//                  spThreadId.sz(pTask->pThread()
-//                                  ? AM::iThreadId(pTask->pThread())
-//                                  : C_UNKNOWN),
-
-                  C_VARGS_END);
+  Op* pOp = pTask->pOp();
+  if (pOp) {
+    SP_Op spOp;
+    vCats(spOp.sz(pOp));
+    return (Stz*) &m_caResult[0];
+  }
 
   return (Stz*) &m_caResult[0];
 }

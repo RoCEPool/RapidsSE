@@ -295,6 +295,7 @@ namespace STORE
 
     void vAddReg(REG<Object>* pReg);
     void vCC(i8 i_Cond);
+    void vCleanup(void);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);
     char* aCodeArg(i8 i_Code);

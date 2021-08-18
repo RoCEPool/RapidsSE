@@ -94,6 +94,19 @@ void AggTimer::vAdd(Timer* pTimer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the aggregate time                                                  */
+/*----------------------------------------------------------------------------*/
+void AggTimer::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  AggTimer* pAggTimer = _pAggTimer(pObject);
+
+  // delete the aggTimer
+  delete pAggTimer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
 void AggTimer::vReset(void)

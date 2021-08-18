@@ -200,6 +200,7 @@ namespace BASE
     void vScheduleWait(void);
     eTR  eTranstionRequest(void);
     void vTranstionRequestClear(void);
+    i8   iWakeup(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);

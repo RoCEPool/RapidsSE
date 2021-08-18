@@ -39,11 +39,11 @@ bool Object::bInspect(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* inspect the object                                                         */
 /*----------------------------------------------------------------------------*/
-bool Object::bRepair(Object* pObject, eRF eRepair)
+void Object::vRepair(Object* pObject, eRF eRepair)
 {
   _static_
   
-  return true;
+  // DO NOTHING
 }
 
 

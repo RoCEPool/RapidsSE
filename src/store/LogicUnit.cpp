@@ -73,13 +73,13 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::bRepair,"m_xpAggTimer"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,Object::vRepair,"m_xpAggTimer"_Stz)
 ,       m_xpCrwToRow(this,RF_NONE,         nullptr,        "m_xpCrwToRow"_Stz)
 ,           m_xpDir0(this,RF_NONE,         nullptr,        "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
 ,    m_xpErrorMarker(this,RF_NONE,         nullptr,        "m_xpErrorMarker"_Stz)
 ,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
-,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE, File::vRepair,         "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
 ,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
@@ -278,9 +278,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
   
-  if (! m_xpAggTimer.bIsNull())
-    delete *m_xpAggTimer;
-  
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
   
@@ -387,6 +384,22 @@ void LogicUnit::vCC(i8 i_Cond)
     m_iNextCond = 1;
   else
     m_iNextCond = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cleanup                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+    REG<Object> *p_Reg = m_paReg[i_Reg];
+
+    // execute register repare
+    p_Reg->vRepair();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

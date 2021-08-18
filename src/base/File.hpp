@@ -61,6 +61,7 @@ namespace BASE
     static bool bExists(Stz* szFilePath, bool bWarning=true);
     static bool bModTime(Stz* szFilePath, time_t& tTime);
     static bool bRemove(Stz* szFilePath);
+    static void vRepair(Object* pObject, eRF eRepair);
     static i8   nSize(Stz* szFilePath);
     static void vStatistics(void);
   
