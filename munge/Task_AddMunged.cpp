@@ -15467,7 +15467,7 @@ void Task::vAddMunged(Task* )
     "    task::yield\n"
     "\n"
     "    // \"periodic sleeping...\" .\n"
-    "    <nSeconds> >int task::sleepSsec\n"
+    "    <nSeconds> >int  task::sleepSsec\n"
     "\n"
     "    recurring_activity\n"
     "\n"

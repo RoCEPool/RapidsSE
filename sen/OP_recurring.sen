@@ -29,7 +29,7 @@
     task::yield
 
     // "periodic sleeping..." .
-    <nSeconds> >int task::sleepSsec
+    <nSeconds> >int  task::sleepSsec
 
     recurring_activity
 
