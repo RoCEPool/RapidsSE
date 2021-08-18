@@ -240,7 +240,7 @@ bool File::bRemove(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* repair the file                                                            */
 /*----------------------------------------------------------------------------*/
-bool File::bRepair(Object* pObject, eRF eRepair)
+void File::vRepair(Object* pObject, eRF eRepair)
 {
   _static_
 
@@ -252,8 +252,6 @@ bool File::bRepair(Object* pObject, eRF eRepair)
 
   // delete the file object
   delete pFile;
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
