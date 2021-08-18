@@ -32,10 +32,11 @@ void Step::vAddSteps_Jobs(void)
   vAddStep("jobs::seeLlist"_Stz,       &Step::vJobsSeeLlist);
   vAddStep("jobs::seeOlist"_Stz,       &Step::vJobsSeeOlist);
   vAddStep("jobs::seePlist"_Stz,       &Step::vJobsSeePlist);
+  vAddStep("jobs::seeSqueue"_Stz,      &Step::vJobsSeeSqueue);
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobs::seeDlist! -- see contents of m_pDemonJobs                            */
+/* jobs::seeDlist -- see contents of m_pDemonJobs                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeeDlist(void)
 {
@@ -47,7 +48,7 @@ void Step::vJobsSeeDlist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobs::seeLlist! -- see contents of m_pLocalJobs                            */
+/* jobs::seeLlist -- see contents of m_pLocalJobs                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeeLlist(void)
 {
@@ -59,7 +60,7 @@ void Step::vJobsSeeLlist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobs::seeOlist! -- see contents of m_pOriginatingJobs                      */
+/* jobs::seeOlist -- see contents of m_pOriginatingJobs                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeeOlist(void)
 {
@@ -71,13 +72,30 @@ void Step::vJobsSeeOlist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobs::seePlist! -- see contents of m_pParticipatingJobs                    */
+/* jobs::seePlist -- see contents of m_pParticipatingJobs                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeePlist(void)
 {
   ENTRY();
   
   AM::pParticipatingJobs()->vSee();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::seeSqueue -- see contents of m_pSleepingQueue                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsSeeSqueue(void)
+{
+  ENTRY();
+  
+  AM::pSchedule()->vDumpBidingSet();
+  AM::pSchedule()->vDumpExecutingSet();
+  AM::pSchedule()->vDumpReadyQueue();
+  //AM::pSchedule()->vDumpReadyQueueLP();
+  AM::pSchedule()->vDumpSleepingQueue();
+  AM::pSchedule()->vDumpWaitingSet();
 
   EXIT();
 }

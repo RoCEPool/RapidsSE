@@ -7,8 +7,6 @@ enum eTS // Task State
 {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_BIDING,    // task is biding till operand arrives and triggers
-  
-  // TO BE REMOVED
   /* 2 */ TS_COMPLETED, // task has completed and can be deleted
   /* 3 */ TS_DELETING,  // task is being deleted
   /* 4 */ TS_DESISTED,  // task has desisted / is under control of scheduler
@@ -21,16 +19,16 @@ enum eTS // Task State
   
 static Stz* aTS[]
 {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "BIDING"_Stz,
-  /* 2 */ "COMPLETED"_Stz,
-  /* 3 */ "DELETED"_Stz,
-  /* 4 */ "DESISTED"_Stz,
-  /* 5 */ "EXECUTING"_Stz,
-  /* 6 */ "READY"_Stz,
-  /* 7 */ "WAITING"_Stz,
-  /* 8 */ "YIELDED"_Stz,
-  /* 9 */ "ENUMS"_Stz,
+  /* 0 */ "TS_NONE"_Stz,
+  /* 1 */ "TS_BIDING"_Stz,
+  /* 2 */ "TS_COMPLETED"_Stz,
+  /* 3 */ "TS_DELETED"_Stz,
+  /* 4 */ "TS_DESISTED"_Stz,
+  /* 5 */ "TS_EXECUTING"_Stz,
+  /* 6 */ "TS_READY"_Stz,
+  /* 7 */ "TS_SLEEPING"_Stz,
+  /* 8 */ "TS_WAITING"_Stz,
+  /* 9 */ "TS_ENUMS"_Stz,
 };
 
 /*============================================================================*/

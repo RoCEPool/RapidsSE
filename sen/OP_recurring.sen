@@ -10,10 +10,17 @@
 : recurring_activity ( -- )
 
   "Recurring Activity" .
+  
+  jobs::seeDlist
+  jobs::seeLlist
+  jobs::seeOlist
+  jobs::seePlist
+  
+  jobs::seeSqueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : recurring_StartMarker \handler
 
@@ -22,7 +29,7 @@
     task::yield
 
     // "periodic sleeping..." .
-    60 task::sleepSsec
+    <nSeconds> >int task::sleepSsec
 
     recurring_activity
 
@@ -54,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: recurring :: recurring ;
+cmdSyntax: recurring :: recurring <nSeconds> ;
 
 : recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
 

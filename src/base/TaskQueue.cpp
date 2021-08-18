@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_Task.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -108,21 +109,21 @@ void TaskQueue::vAssertItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vContentDump(void)
 {
-  //  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
-  //         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  s256 sDescription; // short text description of task
+  ASSERT(m_okLock.bIsLocked());
 
+  SP_Task spTask;
+  
+  i8 i_Task = 0;
   for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
        pNode;
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
-    
     Task* pTask = _pTask(pNode->m_pObject);
-    UNUSED(pTask);
 
-    //pTask->vRenderPortrait(sDescription);
-    
-    vTrace("%s\n"_Stz,sDescription.azChar());
+    vTrace("  [%02lld] %s\n"_Stz
+           ,i_Task++
+           ,spTask.szJobOp(pTask));
   }
 }
 

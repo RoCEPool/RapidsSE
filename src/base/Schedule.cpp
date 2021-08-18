@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp"
+#include "SP_Ivl.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -66,7 +67,7 @@ Schedule::Schedule(void)
   m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
                                    C_NON_UNQIUE_KEY,
-                                   bTaskCompareWakeupTime);
+                                   bTaskCompareWakeup);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task sets
@@ -644,13 +645,12 @@ void Schedule::vDumpBidingSet(void)
   
   m_pBidingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Biding Set: %p Expressions %lld\n"_Stz,
-         m_pBidingSet,m_pBidingSet->nItems());
+  vTrace("Biding Set: Tasks %lld\n"_Stz
+         ,m_pBidingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pBidingSet->vContentDump();
   m_pBidingSet->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -663,13 +663,12 @@ void Schedule::vDumpExecutingSet(void)
   
   m_pExecutingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: %p Expressions %lld\n"_Stz,
-         m_pExecutingSet,m_pExecutingSet->nItems());
+  vTrace("Executing Set: Tasks %lld\n"_Stz
+         ,m_pExecutingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vContentDump();
   m_pExecutingSet->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -682,13 +681,12 @@ void Schedule::vDumpReadyQueue(void)
   
   m_pReadyQueue->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (normal priority): %p Expressions %lld\n"_Stz,
-         m_pReadyQueue,m_pReadyQueue->nItems());
+  vTrace("Ready Queue: Tasks %lld\n"_Stz
+         ,m_pReadyQueue->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vContentDump();
   m_pReadyQueue->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -701,13 +699,12 @@ void Schedule::vDumpReadyQueueLP(void)
   
   m_pReadyQueueLP->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): %p Expressions %lld\n"_Stz,
-         m_pReadyQueueLP,m_pReadyQueueLP->nItems());
+  vTrace("Ready Queue (low Priority): Tasks %lld\n"_Stz
+         ,m_pReadyQueueLP->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vContentDump();
   m_pReadyQueueLP->vDropLock();
   vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("\n"_Stz);
 }
 
@@ -718,10 +715,18 @@ void Schedule::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
 
+  SP_Ivl spIvl;
+  
   m_pSleepingQueue->vGrabLock();
+  
+  Ivl wCurIvl = IvlLib::wGetCurrIvl();
+  
+  
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: %p Expressions %lld\n"_Stz,
-         m_pSleepingQueue,m_pSleepingQueue->nTasks());
+  vTrace("Sleeping Queue: Tasks %lld ; CurIvl %s\n"_Stz
+         ,m_pSleepingQueue->nTasks()
+         ,spIvl.sz(wCurIvl.m_iAsI8)
+         );
   vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vContentDump();
   m_pSleepingQueue->vDropLock();
@@ -739,8 +744,8 @@ void Schedule::vDumpWaitingSet(void)
   
   m_pWaitingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: %p Expressions %lld\n"_Stz,
-         m_pWaitingSet,m_pWaitingSet->nItems());
+  vTrace("Waiting Set: Tasks %lld\n"_Stz
+         ,m_pWaitingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vContentDump();
   m_pWaitingSet->vDropLock();

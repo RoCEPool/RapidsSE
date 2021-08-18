@@ -120,15 +120,15 @@
 /*----------------------------------------------------------------------------*/
 /* recurring demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
-: recurringDemonPipeline
+: recurDemonPipeline
 
   "
-    pipelineLocal recurringDemon
+    pipelineLocal recurDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
-        start | recurring | eatAll | stageA
+        start | recurring 60 | eatAll | stageA
 
     end ;
   "

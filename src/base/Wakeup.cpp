@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Sleep.cpp - how long to sleep for ?                                        */
+/* Wakeup.cpp - when to be woken up ?                                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,26 +7,26 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Sleep::Sleep(void)
-: Object(CN_SLEEP)
+Wakeup::Wakeup(void)
+: Object(CN_WAKEUP)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
   
-  m_wSleptIvl    = 0;
-  m_wWakeupIvl   = 0;
-  m_wDurationIvl = 0;
+  m_wFrom     = 0;
+  m_wDuration = 0;
+  m_wWakeup   = 0;
   
-  _checkInitialised_(CN_SLEEP);
+  _checkInitialised_(CN_WAKEUP);
   
-  _postcondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Sleep::~Sleep(void) noexcept(false)
+Wakeup::~Wakeup(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,43 +40,39 @@ Sleep::~Sleep(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* clear the sleep                                                            */
 /*----------------------------------------------------------------------------*/
-void Sleep::vClear(void)
+void Wakeup::vClear(void)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
   
-  // reset slept interval
-  m_wSleptIvl = 0;
+  m_wFrom     = 0;
+  m_wDuration = 0;
+  m_wWakeup   = 0;
   
-  // reset the wakeup interval
-  m_wWakeupIvl = 0;
-  
-  // reset the sleep interval
-  m_wDurationIvl = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* sleep for microseconds                                                     */
 /*----------------------------------------------------------------------------*/
-void Sleep::vSleepFor(i8 iMicroseconds)
+void Wakeup::vSleepFor(i8 iMicroseconds)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
   
-  // get current ivlwhen slept
-  m_wSleptIvl = IvlLib::wGetCurrIvl();;
+  // get this point in ivl time
+  m_wFrom = IvlLib::wGetCurrIvl();;
   
-  // set the sleep duration as Ivl
-  m_wDurationIvl = IvlLib::wToIvl(iMicroseconds);
+  // set the duration of the sleep as ivl time
+  m_wDuration = IvlLib::wToIvl(iMicroseconds);
   
-  // calculate the wakeup time in Ivl
-  m_wWakeupIvl = IvlLib::wAdd(m_wSleptIvl, m_wDurationIvl);
+  // calculate the wakeup point
+  m_wWakeup = IvlLib::wAdd(m_wFrom, m_wDuration);
 }
 
 /*----------------------------------------------------------------------------*/
 /* how long before task can be woken up (in microseconds)                     */
 /*----------------------------------------------------------------------------*/
-u8 Sleep::uWakeupInUsec(void)
+u8 Wakeup::uWakeupInUsec(void)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get current time as an Ivl
@@ -84,7 +80,7 @@ u8 Sleep::uWakeupInUsec(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // subtract wkaeupIvl from CurrentIvl
-  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl);
+  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeup);
   
   return uMicro;
 }
@@ -92,15 +88,15 @@ u8 Sleep::uWakeupInUsec(void)
 /*----------------------------------------------------------------------------*/
 /* Time to wakeup ?                                                           */
 /*----------------------------------------------------------------------------*/
-bool Sleep::bWakeupNow(void)
+bool Wakeup::bWakeupNow(void)
 {
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
   
   // get current time as an Ivl
   Ivl xCurrentIvl = IvlLib::wGetCurrIvl();
   
   // compare wakeup ivl with current ivl
-  if (m_wWakeupIvl.m_iAsI8 <= xCurrentIvl.m_iAsI8)
+  if (m_wWakeup.m_iAsI8 <= xCurrentIvl.m_iAsI8)
     return true;
   else
     return false;
@@ -109,7 +105,7 @@ bool Sleep::bWakeupNow(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Sleep);
+__aFooterFunction(Wakeup);
 
 
 /*============================================================================*/

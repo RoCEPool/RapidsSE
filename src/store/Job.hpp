@@ -154,7 +154,7 @@ namespace STORE
     void vLockJobMutex(void);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     Pipeline* pPipeline(void);
-    void vResetForReuse(Session* pSession);
+    void vResetForCascade(Session* pSession);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);

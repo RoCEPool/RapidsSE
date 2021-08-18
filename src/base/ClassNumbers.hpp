@@ -260,7 +260,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SKIPNODE,
   /* */ CN_SLAB,
   /* */ CN_SLABALLOCATOR,
-  /* */ CN_SLEEP,
   /* */ CN_SMALLPERSISTENT,
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
@@ -342,6 +341,7 @@ enum eCN : u2 // Class Number
   /* */ CN_VERBOSE,
 
   /* */ CN__W__,
+  /* */ CN_WAKEUP,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
@@ -607,7 +607,6 @@ static Stz* aCN[]
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
   /* */ "SLAB"_Stz,                 // CN_SLAB
   /* */ "SLABALLOCATOR"_Stz,        // CN_SLABALLOCATOR
-  /* */ "SLEEP"_Stz,                // CN_SLEEP
   /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
@@ -689,6 +688,7 @@ static Stz* aCN[]
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
 
   /* */ "_W__"_Stz,                 // CN__W__
+  /* */ "WAKEUP"_Stz,               // CN_WAKEUP
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t

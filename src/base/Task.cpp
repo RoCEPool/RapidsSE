@@ -1254,44 +1254,29 @@ bool Task::bSeeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task                                                                   */
+/* seed task from it's job or op's seed word                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = nullptr;
-  
+    
   if (m_pJob.bIsNotNull()) {
-    
-    //RASSERT(! m_pJob->pSeedWord());
-
-    szSeed = AM::JOB::szJobSeed(m_pJob);
-    m_pSeedWord = pDicRoot->pFindWord(szSeed);
-    
-    if (! m_pSeedWord) {
-      AM::JOB::szJobSeed(m_pJob);
-      
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Unable to find seed word: %s\n"_Stz,szSeed);
-    }
-
-    m_pJob->vSeedWord(m_pSeedWord);
+    m_pSeedWord = m_pJob->pSeedWord();
   }
   else
   if (m_pOp.bIsNotNull()) {
     m_pSeedWord = m_pOp->pSeedWord();
-    RASSERT(m_pSeedWord);
   }
   else
     NEVER_REACH;
   
+  RASSERT(m_pSeedWord);
 
   m_aInxPtr = m_pSeedWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
@@ -1527,6 +1512,21 @@ void Task::vTranstionRequestClear()
 }
 
 /*----------------------------------------------------------------------------*/
+/* get wake up                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Task::iWakeup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  u8 uSecond = m_oWakeup.m_wWakeup.m_uSecond;
+  u8 uMicro  = m_oWakeup.m_wWakeup.m_uMicro;
+
+  i8 iWakeup = uSecond * C_1M + uMicro;
+  
+  return iWakeup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* wakeup the task                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vWakeupClear(void)
@@ -1562,9 +1562,9 @@ bool Task::bWakeupNow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sleep time                                                             */
+/* get wakeup                                                                 */
 /*----------------------------------------------------------------------------*/
-Sleep& Task::oWakeupSleep(void)
+Wakeup& Task::oWakeup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
@@ -1614,9 +1614,9 @@ __aFooterFunction(Task);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compare two tasks by their wakeuptime                                      */
+/* compare two tasks by their wakeup time                                     */
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool bTaskCompareWakeup(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
@@ -1627,12 +1627,12 @@ bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->uWakeupTime() == pScanEntry->uWakeupTime())
+  if (pInsertEntry->iWakeup() == pScanEntry->iWakeup())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->uWakeupTime() > pScanEntry->uWakeupTime())
+  if (pInsertEntry->iWakeup() > pScanEntry->iWakeup())
     return true;
   else
     return false;

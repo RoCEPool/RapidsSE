@@ -936,7 +936,7 @@ Pipeline* Job::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vResetForReuse(Session* pSession)
+void Job::vResetForCascade(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -972,6 +972,7 @@ void Job::vResetForReuse(Session* pSession)
   // -- g -------------------
   m_oAcksRmg_job.vReset();
   m_eSeed      = SS_ENUMS;
+  m_pSeedWord = nullptr;
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
