@@ -567,7 +567,7 @@ TablePtn* Table::pTablePtn(i8 i_TablePtn)
   // experiment on where we can map Bkt to Ptn
   // i_TablePtn could be a BktNo, gets mapped to PtnNo
   i8 i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnNo(i_TablePtn);
-  vTrace("Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
+  vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
   
   return m_pTablePtnVec->pGet(i_TablePtn);
 }
