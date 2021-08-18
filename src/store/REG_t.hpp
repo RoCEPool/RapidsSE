@@ -209,29 +209,13 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool vRepair(void)
     {
-      //m_pComponent->vRecoverFromFailure();
-    
-      switch (m_eRepair) {
-          
-        case RF_NONE:
-          break;
-          
-        case RF_REPAIR_DELETE:
-          break;
-          
-        case RF_REPAIR_ONLY:
-          break;
-          
-        case RF_DELETE_ONLY:
-          break;
-          
-        default:
-          break;
-      }
+      // execute its repair function ?
+      if (m_pComponent != nullptr)
+        if (m_fpRepair)
+          m_fpRepair((Object *) m_pComponent, m_eRepair);
 
-      if (m_bDeleteOnFailure) {
-        vDeleteComponent();
-      }
+      //m_pComponent = nullptr;
+
     }
 
     /*------------------------------------------------------------------------*/

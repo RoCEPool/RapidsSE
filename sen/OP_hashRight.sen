@@ -29,8 +29,8 @@
   Counter0[] cleanUpAsm
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-  Pipein[].pipeOut
-  true
+
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/

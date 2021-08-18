@@ -11,8 +11,7 @@
 
   //"Operand:- ZK_D_CRWBUFFER" .verbose
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to Operand[]
 
   Operand[].crwDuplicate to operandB[]
   nullptr to Operand[]

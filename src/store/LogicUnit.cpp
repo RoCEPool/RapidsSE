@@ -79,7 +79,7 @@ LogicUnit::LogicUnit(void)
 ,           m_xpDir1(this,RF_NONE,         nullptr,        "m_xpDir1"_Stz)
 ,    m_xpErrorMarker(this,RF_NONE,         nullptr,        "m_xpErrorMarker"_Stz)
 ,       m_xpExprEval(this,RF_NONE,         nullptr,        "m_xpExprEval"_Stz)
-,          m_xpFile0(this,RF_NONE,         nullptr,        "m_xpFile0"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE, File::bRepair,         "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_NONE,         nullptr,        "m_xpFile1"_Stz)
 ,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
@@ -387,6 +387,22 @@ void LogicUnit::vCC(i8 i_Cond)
     m_iNextCond = 1;
   else
     m_iNextCond = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cleanup                                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+    REG<Object> *p_Reg = m_paReg[i_Reg];
+
+    // execute register repare
+    p_Reg->vRepair();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

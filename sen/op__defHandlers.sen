@@ -70,7 +70,6 @@
 
 : ZK_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
 : ZK_M_CANCELLING_handler       \handler STANDARD_PIPEOUT ;
-: ZK_M_CLEANING_handler         \handler STANDARD_PIPEOUT ;
 
 : ZK_M_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : ZK_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
@@ -95,6 +94,20 @@
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_M_CLEANING operand                      (pipes out) */
+/*----------------------------------------------------------------------------*/
+: ZK_M_CLEANING_handler \handler
+
+  //"ZK_M_CLEANING_handler" .verbose
+
+  LogicUnit[].cleanup
+
+  PipeIn[].pipeOut
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* default handler for ZK_M_ERROR operand                         (pipes out) */

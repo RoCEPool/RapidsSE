@@ -33,6 +33,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
   vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
   vAddStep("LogicUnit[].calledAgain!"_Stz,  &Step::vLogicUnitCalledAgainStore);
+  vAddStep("LogicUnit[].cleanup"_Stz,       &Step::vLogicUnitCleanup);
   vAddStep("LogicUnit[].compilerToExit"_Stz,&Step::vLogicUnitCompilerToExit);
 
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
@@ -146,6 +147,18 @@ void Step::vLogicUnitCalledAgainStore(void)
   
   m_p_TaskLogicUnit->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].cleanup --                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCleanup(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->vCleanup();
+
   EXIT();
 }
 

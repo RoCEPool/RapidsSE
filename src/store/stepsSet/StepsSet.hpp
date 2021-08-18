@@ -876,6 +876,7 @@ public:
   void vLogicUnitCallAgainStore(void);
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
+  void vLogicUnitCleanup(void);
   void vLogicUnitCompilerToExit(void);
   void vLogicUnitDiaryAction(void);
   void vLogicUnitDiaryDir(void);

@@ -238,6 +238,25 @@ bool File::bRemove(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the file                                                            */
+/*----------------------------------------------------------------------------*/
+bool File::bRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  File* pFile = _pFile(pObject);
+
+  // close the file if open
+  if (pFile->bIsOpen())
+    pFile->vClose();
+
+  // delete the file object
+  delete pFile;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of named file                                                     */
 /*----------------------------------------------------------------------------*/
 i8 File::nSize(Stz* szFilePath)
