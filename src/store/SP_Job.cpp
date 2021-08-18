@@ -138,9 +138,9 @@ Stz* SP_Job::sz_schedule(Job* pJob)
 
         );
   
-  if (pJob->m_pPipeline_job) {
+  if (pJob->pPipeline_job()) {
     vCatf(" pipeline: %s"_Stz
-          ,pJob->m_pPipeline_job->szPipelineNm()
+          ,pJob->pPipeline_job()->szPipelineNm()
           );
   }
   

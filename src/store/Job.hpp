@@ -70,10 +70,12 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
 
+  private:
     // -- participating job maintains
     Pipeline* m_pPipeline_job;  // pipeline the job represents         POST_RECV
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
-
+  public:
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as responder on origin                   RESPONDER
   
@@ -152,23 +154,19 @@ namespace STORE
     TagSet* pJobTags(void);
     LogicUnit* pJobLogicUnit(void);
     void vLockJobMutex(void);
-    void vOperandQueueReport(File* pFile, bool bStdOut);
-    Pipeline* pPipeline(void);
-    void vResetForCascade(Session* pSession);
-    void vSetFromCascade(Stz* szCascade);
-    Stz* szSide(void);
-    void vSignalJobMutex(void);
-    void vUnlockJobMutex(void);
-    void vWaitJobMutex(void);
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
+    void vOperandQueueReport(File* pFile, bool bStdOut);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
+    Pipeline* pPipeline_job(void);
+    void vPipeline_job(Pipeline* pPipeline_job);
     void vReport(void);
+    void vResetForCascade(Session* pSession);
     void vSee(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
@@ -181,12 +179,17 @@ namespace STORE
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);
+    void vSetFromCascade(Stz* szCascade);
+    Stz* szSide(void);
+    void vSignalJobMutex(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
+    void vUnlockJobMutex(void);
     void vVerifyJobComposition(void);
+    void vWaitJobMutex(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 
