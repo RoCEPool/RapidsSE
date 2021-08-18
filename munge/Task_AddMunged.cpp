@@ -15459,6 +15459,8 @@ void Task::vAddMunged(Task* )
     "  jobs::seeLlist\n"
     "  jobs::seeOlist\n"
     "  jobs::seePlist\n"
+    "  \n"
+    "  jobs::seeSqueue\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
