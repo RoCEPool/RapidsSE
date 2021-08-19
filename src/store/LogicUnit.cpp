@@ -83,8 +83,8 @@ LogicUnit::LogicUnit(void)
 ,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,   "m_xpExprEval"_Stz)
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,       "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,       "m_xpFile1"_Stz)
+,        m_xpHandler(this,RF_NONE,         nullptr,             "m_xpHandler"_Stz)
 
-,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
 ,    m_xpIndexStream(this,RF_NONE,         nullptr,        "m_xpIndexStream"_Stz)
@@ -97,7 +97,9 @@ LogicUnit::LogicUnit(void)
 
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
-,            m_xpNow(this,RF_NONE,         nullptr,        "m_xpNow"_Stz)
+
+,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,   "m_xpNow"_Stz)
+
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
@@ -301,7 +303,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
-  
+
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
 
