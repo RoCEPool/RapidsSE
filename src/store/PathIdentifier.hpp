@@ -29,7 +29,9 @@ namespace STORE
     
     PathIdentifier(void);
     ~PathIdentifier(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);
     void vGenPaths(void);

@@ -44,6 +44,13 @@
 #include "DEV_interface.h"
 #include "MathLib.h"
 
+#include "Arg.hpp"
+#include "RelOp.hpp"
+#include "Predicate.hpp"
+#include "PredicateVec.hpp"
+#include "AccessPath.hpp"
+#include "PathIdentifier.hpp"
+
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
 
@@ -104,8 +111,10 @@ LogicUnit::LogicUnit(void)
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
 ,       m_xpOperandC(this,RF_NONE,         nullptr,        "m_xpOperandC"_Stz)
-,     m_xpOperandOoO(this,RF_NONE,         nullptr,        "m_xpOperandOoO"_Stz)
-, m_xpPathIdentifier(this,RF_NONE,         nullptr,        "m_xpPathIdentifier"_Stz)
+,     m_xpOperandOoO(this,RF_NONE,         nullptr,         "m_xpOperandOoO"_Stz)
+
+, m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
+
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
@@ -299,6 +308,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpList.bIsNull());
   RASSERT(m_xpLogicCompiler.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
+  RASSERT(m_xpPathIdentifier.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );
