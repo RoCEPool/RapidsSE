@@ -48,6 +48,11 @@ Stz* SP_Task::sz(Task* pTask)
   
   vInit();
   
+  if (! pTask) {
+    vCats("Task {(none)}"_Stz);
+    return (Stz*) &m_caResult[0];
+  }
+  
   vCatf("Task {"
         "%p "
         "%s %s %s"_Stz

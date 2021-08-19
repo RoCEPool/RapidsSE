@@ -17,8 +17,6 @@ namespace STORE
    ~SP_Thread(void) noexcept(false);
   
     Stz* sz(Thread* pThread);
-    Stz* sz_log(Thread* pThread);
-    Stz* sz_schedule(Thread* pThread);
 
     Footer* aFooter(void);
   };

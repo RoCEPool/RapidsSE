@@ -57,7 +57,7 @@ Stz* SP_Recurring::sz(Task* pTask)
   
   Thread* pThread = pTask->pvThread_DONT_DEREF();
   SP_Thread spThread;
-  vCatf(" %s"_Stz,spThread.sz_schedule(pThread));
+  vCatf(" %s"_Stz,spThread.sz(pThread));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job or op
