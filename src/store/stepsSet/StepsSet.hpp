@@ -1369,9 +1369,6 @@ public:
   void vRegister0Get(void);
   void vRegister0Set(void);
 
-  void vRegister2Get(void);
-  void vRegister2Set(void);
-
   // row buffer
   void vRowBufferOperandDump(void);
 

@@ -306,11 +306,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Register2[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Register2[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Row[]"_Stz)) {
     pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
