@@ -228,7 +228,7 @@ void TaskQueue::vRemoveTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* get number of tasks in queue                                               */
 /*----------------------------------------------------------------------------*/
-i8 TaskQueue::nTasks(void)
+i8 TaskQueue::nItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 

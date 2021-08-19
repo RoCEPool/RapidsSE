@@ -30,10 +30,10 @@ namespace BASE
     void  vGrabLock(void);
     bool  bGrabLock(void);
     bool  bIsLocked(void);
+    i8    nItems(void);
     Task* pPeekTask(void);
     Task* pPopTask(void);
     void  vRemoveTask(Task* pTask);
-    i8    nTasks(void);
   
     Footer* aFooter(void);
   };

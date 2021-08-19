@@ -91,7 +91,7 @@ Stz* SP_Task::szJobOp(Task* pTask)
     vCatf("%s "_Stz,spThread.sz_schedule(pThread));
   }
   else {
-    vCats(" (no thread) "_Stz);
+    vCats("(no thread) "_Stz);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
