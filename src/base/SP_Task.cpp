@@ -48,8 +48,8 @@ Stz* SP_Task::sz(Task* pTask)
   
   vInit();
   
-  vCatf("Task %p "
-        "%s %s %s "_Stz
+  vCatf("Task {%p "
+        "%s %s %s"_Stz
 
         ,pTask
         
@@ -67,14 +67,16 @@ Stz* SP_Task::sz(Task* pTask)
 //          );
         
     SP_Ivl spIvl;
-    vCatf("wakeup %s "_Stz
+    vCatf(" wakeup %s"_Stz
     
           ,spIvl.sz(pTask->oWakeup().m_wWakeup.m_iAsI8)
           
           );
 
   }
-  
+
+  vCats("}"_Stz);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -88,13 +90,8 @@ Stz* SP_Task::szJobOp(Task* pTask)
   IGNORE_RETURN( sz(pTask) );
   
   Thread* pThread = pTask->pvThread_DONT_DEREF();
-  if (pThread) {
-    SP_Thread spThread;
-    vCatf("%s "_Stz,spThread.sz_schedule(pThread));
-  }
-  else {
-    vCats("(no thread) "_Stz);
-  }
+  SP_Thread spThread;
+  vCatf(" %s"_Stz,spThread.sz_schedule(pThread));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job or op

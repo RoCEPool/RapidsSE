@@ -79,16 +79,23 @@ Stz* SP_Thread::sz_schedule(Thread* pThread)
   
   vInit();
   
-  vCatf("Thread %p: "
+  if (! pThread) {
+    vCats("Thread {(none)}"_Stz);
+    return (Stz*) &m_caResult[0];
+  }
+
+  
+  vCatf("Thread {"
+        "%p: "
         "%s %s"
-        ""_Stz
+        "}"_Stz
               
         ,pThread
+        
         ,aHS[pThread->eThreadState()]
-                                  
         ,CN_NONE == pThread->eDedicated()
            ? "general"_Stz
-           : " dedicated"_Stz
+           : "dedicated"_Stz
 
         );
   

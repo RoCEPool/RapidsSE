@@ -2,6 +2,7 @@
 /* Heartbeat.hpp -- heartbeat message                                         */
 /*============================================================================*/
 #pragma once
+
 #include <atomic>
 #include <string>
 #include <sys/types.h>
