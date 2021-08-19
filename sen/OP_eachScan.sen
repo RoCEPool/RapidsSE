@@ -15,11 +15,6 @@
     false to counter0[]
   then
 
-  // delete the ptn stream
-  ptnStream[].isNull not if
-    ptnStream[] ptnStream.delete
-  then
-
   ZK_M_CLEANING_handler
 ;
 

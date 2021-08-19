@@ -50,6 +50,7 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
+#include "PtnStream.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -118,7 +119,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
-,      m_xpPtnStream(this,RF_NONE,         nullptr,        "m_xpPtnStream"_Stz)
+,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)
 ,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
 ,      m_xpRegister0(this,RF_NONE,         nullptr,        "m_xpRegister0"_Stz)
 ,            m_xpRow(this,RF_NONE,         nullptr,        "m_xpRow"_Stz)
@@ -307,6 +308,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpLogicCompiler.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
+  RASSERT(m_xpPtnStream.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );

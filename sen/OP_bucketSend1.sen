@@ -30,9 +30,9 @@
   then
 
   // delete the ptn stream
-  ptnStream[].isNull not if
-    ptnStream[] ptnStream.delete
-  then
+  //ptnStream[].isNull not if
+  //  ptnStream[] ptnStream.delete
+  //then
 
   ZK_M_CLEANING_handler
 ;
