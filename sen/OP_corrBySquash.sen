@@ -10,12 +10,11 @@
 /*----------------------------------------------------------------------------*/
 : corrBySquash_Cleaning \handler
 
-  Pipein[].pipeOut
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : corrBySquash_PlanOperand \handler
 

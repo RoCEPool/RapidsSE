@@ -135,8 +135,8 @@
 
   //"ZK_M_CLEANING_handler" .verbose
   nullptr to Operand[]
-  PipeIn[].pipeOut
-  true
+
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
