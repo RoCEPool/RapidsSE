@@ -805,12 +805,12 @@ function validateInstallDirIsWritable() {
 function validateNodeNames() {
 
   local nodeName
-  local re="^[[:alnum:]]+$"
+  local re="^[[:alnum:]_]+$"
 
   for nodeName in "${NODE_LIST[@]}"
   do
     if ! [[ "${nodeName}" =~ $re ]]; then
-      errorExit "Invalid node name: $nodeName"
+      errorExit "Invalid node name. Must only contain letters, numbers and underscores: $nodeName"
     fi
   done
 
