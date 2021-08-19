@@ -180,7 +180,6 @@ namespace STORE
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
-    REG<Object>         m_xpRegister1; // general purpose reg 1[]
     REG<Object>         m_xpRegister2; // general purpose reg 2[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
