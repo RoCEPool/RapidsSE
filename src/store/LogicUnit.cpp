@@ -99,8 +99,8 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,   "m_xpNow"_Stz)
-
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
+
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
 ,       m_xpOperandC(this,RF_NONE,         nullptr,        "m_xpOperandC"_Stz)
@@ -294,12 +294,15 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpExprEval.bIsNull());
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());
-
   RASSERT(m_xpInfoSet.bIsNull());
   RASSERT(m_xpInfoSetTable.bIsNull());
   RASSERT(m_xpList.bIsNull());
   RASSERT(m_xpLogicCompiler.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
+
+  // These registers cannot be NULL if m_pJob is NULL
+  RASSERT( m_pJob || !m_xpHandler.bIsNull() );
+  RASSERT( m_pJob || !m_xpOp.bIsNull() );
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
