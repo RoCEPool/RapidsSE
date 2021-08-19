@@ -20,7 +20,6 @@ void Step::vAddSteps_Debug(void)
   vAddStep("debug::breakpoint"_Stz,  &Step::vDebugBreakpoint);
   vAddStep("debug::flag@"_Stz,       &Step::vDebugFlagFetch);
   vAddStep("debug::flag!"_Stz,       &Step::vDebugFlagStore);
-  vAddStep("debug::trap"_Stz,        &Step::vDebugBreakpoint);
 }
 
 /*----------------------------------------------------------------------------*/

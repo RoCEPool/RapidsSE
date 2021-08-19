@@ -11,7 +11,7 @@
 
   //task::seeFrameStack
   
-  debug::throw
+  inject::throw
 
   HAZARD
   

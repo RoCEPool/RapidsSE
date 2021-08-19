@@ -17,14 +17,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Inject(void)
 {
-  vAddStep("debug::bloat"_Stz,        &Step::vInjectBloat);
-  vAddStep("debug::bloatCleanup"_Stz, &Step::vInjectBloatCleanup);
-  vAddStep("debug::sigsegv"_Stz,      &Step::vInjectSigsegv);
-  vAddStep("debug::throw"_Stz,        &Step::vInjectThrow);
+  vAddStep("inject::bloat"_Stz,        &Step::vInjectBloat);
+  vAddStep("inject::bloatCleanup"_Stz, &Step::vInjectBloatCleanup);
+  vAddStep("inject::sigsegv"_Stz,      &Step::vInjectSigsegv);
+  vAddStep("inject::throw"_Stz,        &Step::vInjectThrow);
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::bloat -- hog memory and bloat                                       */
+/* inject::bloat -- hog memory and bloat                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vInjectBloat(void)
 {
@@ -48,7 +48,7 @@ void Step::vInjectBloat(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::bloatCleanup -- cleanup the bloat                                   */
+/* inject::bloatCleanup -- cleanup the bloat                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vInjectBloatCleanup(void)
 {
@@ -73,7 +73,7 @@ void Step::vInjectBloatCleanup(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::sigsegv -- inject a sigsegv signal                                  */
+/* inject::sigsegv -- inject a sigsegv signal                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vInjectSigsegv(void)
 {
@@ -89,7 +89,7 @@ void Step::vInjectSigsegv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::throw -- throw an exception                                         */
+/* inject::throw -- throw an exception                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vInjectThrow(void)
 {
