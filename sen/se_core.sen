@@ -526,7 +526,7 @@ true find: CASE word.immediate!
 
   task[] task.name@ "TypedStack of task %v has grown" .printf
 
-  debug::trap
+  debug::breakpoint
 ;
 
 /*----------------------------------------------------------------------------*/

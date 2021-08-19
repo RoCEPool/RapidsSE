@@ -11,7 +11,7 @@
 
   task::seeFrameStack
 
-  debug::bloatCleanup
+  inject::bloatCleanup
 
   PipeIn[].pipeOut
 
@@ -26,7 +26,7 @@
 
   task::seeFrameStack
   
-  debug::bloat
+  inject::bloat
 
   PipeIn[].delete
   

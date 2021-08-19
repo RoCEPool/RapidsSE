@@ -805,7 +805,7 @@ function validateInstallDirIsWritable() {
 function validateNodeNames() {
 
   local nodeName
-  local re="^[[:alpha:]][[:alnum:]]*$"
+  local re="^[[:alnum:]]+$"
 
   for nodeName in "${NODE_LIST[@]}"
   do

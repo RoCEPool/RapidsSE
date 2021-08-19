@@ -203,7 +203,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline();
+  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   Op* pOp0 = pPipeline->pOp0();
 
@@ -212,6 +212,18 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   pOp0->vAppendLeft(pOperand,nullptr);
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  ENGINE                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* call engine signal handler                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::ENGINE::vSignalHandler(i8 iSignal)
+{
+  Engine::vSignalHandler(iSignal);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   GRID                                     */

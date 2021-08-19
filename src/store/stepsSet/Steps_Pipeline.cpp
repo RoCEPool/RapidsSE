@@ -223,6 +223,8 @@ void Step::vPipelineCreate(void)
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
   
+  m_pJob->vPipeline_job(pPipeline);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
@@ -450,7 +452,7 @@ void Step::vPipelinePipeout(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline* pPipeline = pPipelineJob->pPipeline();
+  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   Stage*    pStage0   = pPipeline->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);

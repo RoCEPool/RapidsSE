@@ -563,6 +563,8 @@ void Step::vLogicUnitHandlerStore(void)
   
   m_p_TaskLogicUnit->m_xpHandler = pHandler;
   
+  PsxThd::vTlsSet(giTLS_HandlerKey,(void*)pHandler->szWordNm());
+  
   EXIT();
 }
 

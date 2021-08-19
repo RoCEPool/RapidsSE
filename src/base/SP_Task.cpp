@@ -6,6 +6,7 @@
 
 #include "SP_Gid.hpp"
 
+#include "SP_Thread.hpp"
 #include "SP_Task.hpp"
 #include "SP_Ivl.hpp"
 #include "SP_Job.hpp"
@@ -84,17 +85,29 @@ Stz* SP_Task::szJobOp(Task* pTask)
   
   IGNORE_RETURN( sz(pTask) );
   
+  Thread* pThread = pTask->pvThread_DONT_DEREF();
+  if (pThread) {
+    SP_Thread spThread;
+    vCatf("%s "_Stz,spThread.sz_schedule(pThread));
+  }
+  else {
+    vCats(" (no thread) "_Stz);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job or op
+  
   Job* pJob = pTask->pJob();
   if (pJob) {
     SP_Job spJob;
-    vCats(spJob.sz_detail(pJob));
+    vCatf("job: %s"_Stz,spJob.sz_schedule(pJob));
     return (Stz*) &m_caResult[0];
   }
 
   Op* pOp = pTask->pOp();
   if (pOp) {
     SP_Op spOp;
-    vCats(spOp.sz(pOp));
+    vCatf("op: %s"_Stz,spOp.szSchedule(pOp));
     return (Stz*) &m_caResult[0];
   }
 

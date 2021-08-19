@@ -7,6 +7,7 @@
 #include "SP_Footer.hpp"
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"
+#include "Pipeline.hpp"
 
 #include "Job.hpp"
 
@@ -14,13 +15,12 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Job::SP_Job(void)
-: SP(CN_SPID)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  _checkInitialised_(CN_SPID);
+  _checkInitialised_(CN_SPMEDIUM);
   
-  _postcondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ SP_Job::SP_Job(void)
 /*----------------------------------------------------------------------------*/
 SP_Job::~SP_Job(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ SP_Job::~SP_Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Job::sz_api(Job* pJob)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
                   "Job %p: name %s "_Stz,
@@ -56,9 +56,30 @@ Stz* SP_Job::sz_api(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
+Stz* SP_Job::sz_detail(Job* pJob)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+ 
+  StrLib::vSprint(m_caResult,
+                  "%s %s %s %s"_Stz,
+
+                  pJob->m_sJobNm.azChar(),
+                  aJK[pJob->m_eJobKind],
+                  aJP[pJob->m_eJobKind],
+                  aJS[pJob->m_eJobKind]
+
+                  );
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
 Stz* SP_Job::sz_log(Job* pJob)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
                   "{%s %lld %s %s %s %s%s}%s"_Stz,
@@ -84,7 +105,7 @@ Stz* SP_Job::sz_log(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Job::sz_recv(Job* pJob)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   SP_Header   spHeader;
   SP_Footer   spFooter;
@@ -102,20 +123,33 @@ Stz* SP_Job::sz_recv(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz_detail(Job* pJob)
+Stz* SP_Job::sz_schedule(Job* pJob)
 {
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
- 
-  StrLib::vSprint(m_caResult,
-                  "%s %s %s %s"_Stz,
+  vInit();
 
-                  pJob->m_sJobNm.azChar(),
-                  aJK[pJob->m_eJobKind],
-                  aJP[pJob->m_eJobKind],
-                  aJS[pJob->m_eJobKind]
+  vCatf("%s %s %s %s"_Stz
 
-                  );
+        ,pJob->m_sJobNm.azChar()
+        ,aJK[pJob->m_eJobKind]
+        ,aJP[pJob->m_eJobPhase]
+        ,aJS[pJob->m_eJobState]
+
+        );
+  
+  if (pJob->iAcksOriginal()) {
+    vCatf("AcksRmg %lld (out of %lld)"_Stz
+           ,pJob->iAcksRmg_printOnlyValue()
+           ,pJob->iAcksOriginal()
+           );
+  }
+  
+  if (pJob->pPipeline_job()) {
+    vCatf(" pipeline: %s"_Stz
+          ,pJob->pPipeline_job()->szPipelineNm()
+          );
+  }
   
   return (Stz*) &m_caResult[0];
 }

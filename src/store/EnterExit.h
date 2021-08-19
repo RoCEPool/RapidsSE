@@ -37,6 +37,8 @@
   \
   vCheckBreakPt(); \
   \
+  PsxThd::vTlsSet(giTLS_StepKey,__func__); \
+  \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +61,10 @@ EndDefine
   if (C_TRACE_STEPS && m_iTraceMask) \
     printf("%s\n",__func__); \
   \
-  EndDefine
+  PsxThd::vTlsSet(giTLS_StepKey,(void*)__func__); \
+  \
+EndDefine
+
 #define EXIT() EndDefine
 
 #endif

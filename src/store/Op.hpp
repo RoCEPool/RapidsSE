@@ -21,7 +21,8 @@ namespace STORE
     // -- id, name and kind
     Gid<CN_OP> m_xOpId;     // op id in grid
     s32        m_sOpNm;     // name of this operator
-
+    s256       m_sPath;     // operator path
+  
     TagSet     m_oOpTags;   // tags for the op
     eSS        m_eSeed;     // seed to spawn
     bool       m_bTraceOp;  // tracing this operator
@@ -140,6 +141,7 @@ namespace STORE
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
 
+    Stz* szPath(void);
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
