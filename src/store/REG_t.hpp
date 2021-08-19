@@ -207,7 +207,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* call m_pComponent repair function to repair itself                     */
     /*------------------------------------------------------------------------*/
-    bool vRepair(void)
+    void vRepair(void)
     {
       // execute its repair function ?
       if (m_pComponent) {

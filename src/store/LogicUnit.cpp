@@ -402,11 +402,11 @@ void LogicUnit::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-//  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-//    REG<Object> *p_Reg = m_paReg[i_Reg];
-//    // execute register repare
-//    p_Reg->vRepair();
-//  }
+  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
+    REG<Object> *p_Reg = m_paReg[i_Reg];
+    // execute register repare
+    p_Reg->vRepair();
+  }
 
 }
 

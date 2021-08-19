@@ -64,8 +64,8 @@
 : report_EosMarker \handler
 
   //"Operand:- ZK_M_EOS" .verbose
-  File0[].get file.close
-  File0[].get file.delete
+  //File0[].get file.close
+  //File0[].get file.delete
   PipeIn[].pipeOut
 
   true
