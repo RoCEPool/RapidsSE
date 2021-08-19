@@ -230,6 +230,12 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
+    class ENGINE
+    {
+    public:
+      static void vSignalHandler(i8 iSignal);
+    };
+
     class GRID
     {
     public:

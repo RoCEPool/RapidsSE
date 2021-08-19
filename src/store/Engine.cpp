@@ -1446,16 +1446,23 @@ void Engine::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vSignalHandler(int iSignal)
 {
-  fprintf(stderr,
-          "Engine::vSignalHandler:\n"
-          "Node = %s\n"
-          "iSignal = %lld\n",
-          AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-          (i8)iSignal);
+  vTrace("Engine::vSignalHandler:\n"
+         "  Node = %s\n"
+         "  iSignal = %lld\n"_Stz
+         
+         ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
+         ,(i8)iSignal
+         );
   
+  Stz* szStepNm = (Stz*)PsxThd::pTlsGet(giTLS_StepKey);
+  vTrace("  last known step = %s\n"_Stz
+         ,szStepNm);
+  
+
+  // print out all the frames to stderr
   vThreadCallStackDump();
   
-  // print out all the frames to stderr
+  
   vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "Error: signal %d:\n"_Stz, iSignal);
 }

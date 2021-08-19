@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+extern pthread_key_t giTLS_StepKey;
+
 namespace STORE
 {
   static const i8 C_STEPS = 2048;

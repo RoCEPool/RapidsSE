@@ -20,6 +20,7 @@ void Step::vAddSteps_Inject(void)
   vAddStep("inject::bloat"_Stz,        &Step::vInjectBloat);
   vAddStep("inject::bloatCleanup"_Stz, &Step::vInjectBloatCleanup);
   vAddStep("inject::sigsegv"_Stz,      &Step::vInjectSigsegv);
+  vAddStep("inject::sigsegv_dbg"_Stz,  &Step::vInjectSigsegv_dbg);
   vAddStep("inject::throw"_Stz,        &Step::vInjectThrow);
 }
 
@@ -73,7 +74,7 @@ void Step::vInjectBloatCleanup(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inject::sigsegv -- inject a sigsegv signal                                  */
+/* inject::sigsegv -- inject a sigsegv signal                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vInjectSigsegv(void)
 {
@@ -82,6 +83,20 @@ void Step::vInjectSigsegv(void)
   Object* pObject = nullptr;
   
   pObject->vMemoryDump();
+  
+  NEVER_REACH;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inject::sigsegv_dbg -- inject a sigsegv signal                             */
+/*----------------------------------------------------------------------------*/
+void Step::vInjectSigsegv_dbg(void)
+{
+  ENTRY();
+  
+  AM::ENGINE::vSignalHandler(SIGSEGV);
   
   NEVER_REACH;
   

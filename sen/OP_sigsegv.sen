@@ -11,7 +11,8 @@
 
   //task::seeFrameStack
   
-  inject::sigsegv
+  //inject::sigsegv
+  inject::sigsegv_dbg
 
   HAZARD
   

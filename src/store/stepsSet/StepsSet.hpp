@@ -554,6 +554,7 @@ public:
   void vInjectBloat(void);
   void vInjectBloatCleanup(void);
   void vInjectSigsegv(void);
+  void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
 
   // input
