@@ -56,7 +56,7 @@ Stz* SP_Task::sz(Task* pTask)
         
         ,aTS[pTask->eState()]
         ,aQK[pTask->eQueue()]
-        ,aTR[pTask->eTranstionRequest()]
+        ,aTR[pTask->eTransition()]
   
         );
   

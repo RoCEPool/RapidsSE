@@ -55,7 +55,7 @@ Stz* SP_Recurring::sz(Task* pTask)
         
         ,aTS[pTask->eState()]
         ,aQK[pTask->eQueue()]
-        ,aTR[pTask->eTranstionRequest()]
+        ,aTR[pTask->eTransition()]
   
         );
   

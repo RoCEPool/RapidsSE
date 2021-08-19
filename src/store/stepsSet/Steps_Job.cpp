@@ -1141,7 +1141,7 @@ void Step::vJobSpawn(void)
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
 //    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eTranstionRequest());
+//    RASSERT(TR_NONE == pTask->eTransition());
 //  }
   
   Api::vSpawnTask_receivedJob(pJob);

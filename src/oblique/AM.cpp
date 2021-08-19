@@ -1249,7 +1249,7 @@ Task* AM::TASK::pNew(void)
   Task* pTask = new Task;
 
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(TR_NONE == pTask->eTranstionRequest());
+  RASSERT(TR_NONE == pTask->eTransition());
 
   return pTask;
 }
