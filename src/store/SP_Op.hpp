@@ -17,14 +17,15 @@ namespace STORE
     SP_Op(Op* pOp, bool bDescend=false);
    ~SP_Op(void) noexcept(false);
 
-    void vLeading(Op* pOp);
-    void vOp(Op* pOp, bool bDescend=false);
-
-    Stz* sz(void);
-    Stz* sz(Op* pOp);
-  
+    Stz* szAck(Op* pOp);
+    Stz* szExHandler(Op* pOp);
     Stz* szLeading(Op* pOp);
     Stz* szPath(Op* pOp);
+    Stz* szSchedule(Op* pOp);
+    Stz* szStream(Op* pOp, bool bDescend=false);
+  
+  private:
+    void vOp(Op* pOp, bool bDescend=false);
 
     Footer* aFooter(void);
   };

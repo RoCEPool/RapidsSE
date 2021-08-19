@@ -77,8 +77,8 @@ void SP_Stream::vStream(Stream* pStream, bool bDescend)
     for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++ ) {
       
       Op* pOp = pStream->pGet(i_Op);
-      SP_Op spOp(pOp,bDescend);
-      vCatf("%s"_Stz,spOp.sz());
+      SP_Op spOp;
+      vCatf("%s"_Stz,spOp.szStream(pOp,bDescend));
     }
   }
 

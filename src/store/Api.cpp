@@ -23,8 +23,10 @@
 
 extern BufferPool*  gpBufferPool;
 
-extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_HandlerKey;
+extern pthread_key_t giTLS_StepKey;
 
 /*----------------------------------------------------------------------------*/
 /*-- parsimonious API --------------------------------------------------------*/
@@ -523,7 +525,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 {
   Job* pJob = pSession->m_pSsnJob;
 
-  Op* pInputOp = pJob->m_pSingularOp;
+  Op* pInputOp = pJob->pSingularOp();
 
   pInputOp->vOutboundOperand(pOperand);
   pOperand = nullptr;

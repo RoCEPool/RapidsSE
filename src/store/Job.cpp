@@ -831,7 +831,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
-  Pipeline* pPipeline = this->pPipeline();
+  Pipeline* pPipeline = this->pPipeline_job();
 
   if (! pPipeline)
     return;
@@ -924,13 +924,25 @@ i8 Job::iParticipantNode(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Job::pPipeline(void)
+Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
+  //Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
   
-  return pPipeline;
+  //RASSERT(pPipeline == m_pPipeline_job);
+  
+  return m_pPipeline_job;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vPipeline_job(Pipeline* pPipeline_job)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pPipeline_job =  pPipeline_job;
 }
 
 /*----------------------------------------------------------------------------*/

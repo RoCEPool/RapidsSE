@@ -17,22 +17,23 @@ enum eJK // job kind
   /*  9 */ JK_OP,        // op job (such as scan)
   /* 10 */ JK_SERVICE,   // service job (such as socket receiver)
   /* 11 */ JK_OTHER,     // any other
+  /* 12 */ JK_ENUMS,     // any other
 };
 
 static Stz* aJK[]
 {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "BOOT"_Stz,
-  /*  2 */ "CHILD"_Stz,
-  /*  3 */ "DIST2PC"_Stz,
-  /*  4 */ "GENERIC"_Stz,
-  /*  5 */ "GRANDKID"_Stz,
-  /*  6 */ "INFO"_Stz,
-  /*  7 */ "LOCAL"_Stz,
-  /*  8 */ "META"_Stz,
-  /*  9 */ "OP"_Stz,
-  /* 10 */ "SERVICE"_Stz,
-  /* 11 */ "OTHER"_Stz,
+  /*  0 */ "JK_NONE"_Stz,
+  /*  1 */ "JK_BOOT"_Stz,
+  /*  2 */ "JK_CHILD"_Stz,
+  /*  3 */ "JK_DIST2PC"_Stz,
+  /*  4 */ "JK_GENERIC"_Stz,
+  /*  5 */ "JK_GRANDKID"_Stz,
+  /*  6 */ "JK_INFO"_Stz,
+  /*  7 */ "JK_LOCAL"_Stz,
+  /*  8 */ "JK_META"_Stz,
+  /*  9 */ "JK_OP"_Stz,
+  /* 10 */ "JK_SERVICE"_Stz,
+  /* 11 */ "JK_ENUMS"_Stz,
 };
 
 /*============================================================================*/

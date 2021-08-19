@@ -10,10 +10,10 @@
 : chunk_Cleaning \handler
 
   //"Operand:- ZK_M_CLEANING" .verbose
-  //File0[].isNull not if
-  //  File0[].get file.close
-  //  File0[].get file.delete
-  //then
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
 
   ZK_M_CLEANING_handler
 ;
