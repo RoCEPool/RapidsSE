@@ -174,7 +174,7 @@ function compileSE() {
       fi
 
     else
-      make distclean && time make "${target}" "-j$(nproc)"
+      make clean && time make "${target}" "-j$(nproc)"
     fi
   )
 }
