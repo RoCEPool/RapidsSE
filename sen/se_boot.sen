@@ -45,7 +45,6 @@ assert::stack_0
 
 "se_boot 5" .verbose
         "job_words.sen"           include
-        "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
         "job_seedHooks.sen"       include
         "job_seedSuffixs.sen"     include
@@ -109,9 +108,6 @@ assert::stack_0
         "se_munge.sen"                include
         "se_stepTests.sen"            include
         "se_stepTiming.sen"           include
-
-//cmd::fillOut_allCmds_usingInfo
-//cmd::fillOut_allCmds_usingCmdSyntax
 
 //"BEFORE fillOut_allCmds" .
 
