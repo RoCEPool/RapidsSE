@@ -194,12 +194,8 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
-  void vDebugBloat(void);
-  void vDebugBloatCleanup(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
-  void vDebugSigsegv(void);
-  void vDebugThrow(void);
   void vDebugBreakpoint(void);
 
   // devLftRow
@@ -553,6 +549,12 @@ public:
   void vInfoSetTableDump(void);
   void vInfoSetTableGet(void);
   void vInfoSetTableSet(void);
+
+  // inject
+  void vInjectBloat(void);
+  void vInjectBloatCleanup(void);
+  void vInjectSigsegv(void);
+  void vInjectThrow(void);
 
   // input
   void vInputChars(void);
