@@ -71,13 +71,8 @@ Stz* SP_Recurring::sz(Task* pTask)
 
   Op* pOp = pTask->pOp();
   if (pOp) {
-    vCats(" op: "_Stz);
-    
-    i8 nQueuedOperands = pOp->nQueuedOperands();
-    vCatf("operands %lld "_Stz,nQueuedOperands);
-
     SP_Op spOp;
-    vCatf("%s "_Stz,spOp.szSchedule(pOp));
+    vCatf(" %s"_Stz,spOp.sz(pOp));
     return (Stz*) &m_caResult[0];
   }
 
