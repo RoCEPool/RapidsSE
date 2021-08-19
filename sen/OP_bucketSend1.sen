@@ -90,7 +90,7 @@
   0 locals| rateSecs |
 
   // "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
-  "<rateSecs>" op::tagSet@ tagSet.hasName if
+  "<rateSecs>" op[].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 

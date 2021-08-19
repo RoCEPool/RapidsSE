@@ -99,6 +99,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
+  
+  
+  vAddStep("job[]"_Stz,      &Step::vRegJobGet);
+
 }
 
 
@@ -1190,6 +1194,41 @@ void Step::vJobTaskStore(void)
   
   EXIT();
 }
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* job[].get -- get task                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegJobGet(void)
+{
+  ENTRY();
+  
+  // revised job/op model
+
+  Job* pJob = nullptr;
+  
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  m_pDataStack->vPushPtr(pJob);
+
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
