@@ -48,34 +48,61 @@ Stz* SP_Recurring::sz(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  if (! pTask) {
+    vCats("Task {(none)}"_Stz);
+    return (Stz*) &m_caResult[0];
+  }
+
+  Thread* pThread = pTask->pvThread_DONT_DEREF();
+  Job* pJob = pTask->pJob();
+  Op* pOp = pTask->pOp();
+  
   vInit();
   
-  SP_Task spTask;
-  vCatf("%s"_Stz,spTask.sz(pTask));
-
-  // - - -
+  s32 sMnemonic;
   
-  Thread* pThread = pTask->pvThread_DONT_DEREF();
+  sMnemonic = "TSK"_Stz;
+  if (pThread)
+    sMnemonic.vConcat("/THD"_Stz);
+  else
+    sMnemonic.vConcat("/thd"_Stz);
+  if (pJob)
+    sMnemonic.vConcat("*JOB"_Stz);
+  else
+  if (pOp)
+    sMnemonic.vConcat("*OPR"_Stz);
+  else
+    sMnemonic.vConcat("*???"_Stz);
+
+  vCatf("%-11s"_Stz,sMnemonic.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task
+  SP_Task spTask;
+  vCatf(" %s"_Stz,spTask.sz(pTask));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // thread
+  
   SP_Thread spThread;
   vCatf(" %s"_Stz,spThread.sz(pThread));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job or op
   
-  Job* pJob = pTask->pJob();
   if (pJob) {
     SP_Job spJob;
     vCatf(" %s"_Stz,spJob.sz(pJob));
-    return (Stz*) &m_caResult[0];
   }
-
-  Op* pOp = pTask->pOp();
+  else
   if (pOp) {
     SP_Op spOp;
     vCatf(" %s"_Stz,spOp.sz(pOp));
-    return (Stz*) &m_caResult[0];
   }
-
+  else {
+    vCats(" NON-DECODABLE"_Stz);
+  }
+  
   return (Stz*) &m_caResult[0];
 }
 
