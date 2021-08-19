@@ -351,7 +351,7 @@ void Task::vAddAxioms(void)
   "      word::find execute >int mungedText include-munged"
   "      exit_rt"
   "    then"
-  "    . debug::trap"
+  "    . debug::breakpoint"
   "    process::quit "
   "  then"
   "  include-file"

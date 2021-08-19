@@ -35423,7 +35423,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  task[] task.name@ \"TypedStack of task %v has grown\" .printf\n"
     "\n"
-    "  debug::trap\n"
+    "  debug::breakpoint\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
