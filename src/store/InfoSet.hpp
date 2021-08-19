@@ -24,8 +24,9 @@ namespace STORE
     InfoSet(void);
     InfoSet(StreamDef* pStreamDef);
    ~InfoSet(void) noexcept(false);
-    
-    static void       vPostRecv(void* aInfoSet);
+
+    static void vPostRecv(void* aInfoSet);
+    static void vRepair(Object* pObject, eRF eRepair);
 
     void vOpInfoSet(eOI eOpInfoSet);
     eOI  eOpInfoSet(void);

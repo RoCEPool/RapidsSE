@@ -86,7 +86,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
 ,    m_xpIndexStream(this,RF_NONE,         nullptr,        "m_xpIndexStream"_Stz)
-,        m_xpInfoSet(this,RF_NONE,         nullptr,        "m_xpInfoSet"_Stz)
+
+,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,    "m_xpInfoSet"_Stz)
+
 ,   m_xpInfoSetTable(this,RF_NONE,         nullptr,        "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_NONE,         nullptr,        "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_NONE,         nullptr,        "m_xpLogicCompiler"_Stz)
@@ -288,6 +290,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpExprEval.bIsNull());
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());
+
+  RASSERT(m_xpInfoSet.bIsNull());
+
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
