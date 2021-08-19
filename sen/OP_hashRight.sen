@@ -26,7 +26,7 @@
   // cleanup the pot
   PotRlu[].cleanup
 
-  Counter0[] cleanUpAsm
+  //Counter0[] cleanUpAsm
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
