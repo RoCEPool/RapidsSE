@@ -17,8 +17,7 @@
     potRlu[].delete
   then
 
-  Pipein[].pipeOut
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/

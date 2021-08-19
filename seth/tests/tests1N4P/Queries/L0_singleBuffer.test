@@ -42,7 +42,7 @@ failure contains: 'no such index'
 
 vfyidx Q1 idx;
 rows:
-('NODE1','Q1','idx','Valid')
+(*,'Q1','idx','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN

@@ -32,7 +32,7 @@ success
 
 vfyidx jCdt jCdt_idx1;
 rows:
-  ('NODE1','jCdt','jCdt_idx1','Valid')
+  (*,'jCdt','jCdt_idx1','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN

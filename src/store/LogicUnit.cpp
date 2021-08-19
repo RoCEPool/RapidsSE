@@ -51,6 +51,8 @@
 #include "SN_Tme.hpp"
 #include "SN_Tsp.hpp"
 
+#include "Table.hpp"
+
 #include "MY.hpp"
 
 
@@ -88,8 +90,8 @@ LogicUnit::LogicUnit(void)
 ,    m_xpIndexStream(this,RF_NONE,         nullptr,        "m_xpIndexStream"_Stz)
 
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,    "m_xpInfoSet"_Stz)
+,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,             "m_xpInfoSetTable"_Stz)
 
-,   m_xpInfoSetTable(this,RF_NONE,         nullptr,        "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_NONE,         nullptr,        "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_NONE,         nullptr,        "m_xpLogicCompiler"_Stz)
 ,      m_xpMemoryHog(this,RF_NONE,         nullptr,         "m_xpMemoryHog"_Stz)
@@ -292,7 +294,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpFile1.bIsNull());
 
   RASSERT(m_xpInfoSet.bIsNull());
-
+  RASSERT(m_xpInfoSetTable.bIsNull());
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
@@ -412,6 +414,8 @@ void LogicUnit::vCleanup(void)
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object> *p_Reg = m_paReg[i_Reg];
     // execute register repare
+    if (p_Reg->m_szRegNm->bSame("m_xpInfoSetTable"_Stz))
+      int i = 1;
     p_Reg->vRepair();
   }
 

@@ -17,9 +17,8 @@
   //Operand[].pipeOut
 
   Path[].popNamedTableFolder
-  PipeIn[].pipeOut
 
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
