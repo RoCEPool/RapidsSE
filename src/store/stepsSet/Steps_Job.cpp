@@ -1156,22 +1156,22 @@ void Step::vJobTagSetFetch(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-//  Job* pJob = nullptr;
-//  
-//  if (m_pJob.bIsNotNull()) {
-//    //RASSERT(! *m_pOp);
-//    pJob = *m_pJob;
-//  }
-//  else
-//  if (m_pOp.bIsNotNull()) {
-//    RASSERT(m_pJob.bIsNull());
-//    pJob = m_pOp->pPipelineJob();
-//  }
-//  else {
-//    NEVER_REACH;
-//  }
+  Job* pJob = nullptr;
+
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
   
   m_pDataStack->vPushPtr(pJob->pJobTags());
   
