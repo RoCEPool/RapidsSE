@@ -93,8 +93,8 @@ LogicUnit::LogicUnit(void)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,               "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,    "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,"m_xpLogicCompiler"_Stz)
+,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,"m_xpMemoryHog"_Stz)
 
-,      m_xpMemoryHog(this,RF_NONE,         nullptr,         "m_xpMemoryHog"_Stz)
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 ,            m_xpNow(this,RF_NONE,         nullptr,        "m_xpNow"_Stz)
@@ -297,6 +297,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpInfoSetTable.bIsNull());
   RASSERT(m_xpList.bIsNull());
   RASSERT(m_xpLogicCompiler.bIsNull());
+  RASSERT(m_xpMemoryHog.bIsNull());
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;

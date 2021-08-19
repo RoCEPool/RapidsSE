@@ -104,23 +104,25 @@ function copyLogs() {
 
   local buildConfig="$1"
   local buildType="$2"
+  local configSuffix="$3"
 
-  local configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}.config"
+  local configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}${configSuffix:-}.config"
   # shellcheck disable=SC1090
   source "${configFile}"
 
   sleep 5
-  mkdir -p "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}"
+  local outputDir="${BAMBOO_LOGS_DIR}/${buildType}-${buildConfig}${configSuffix:-}"
+  mkdir -p "${outputDir}"
 
   for nodeName in "${NODE_LIST[@]}"; do
     # Get the installation directory
     local installDir
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-    cp "${installDir}/se.log" "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/se.${nodeName}.log" || true
+    cp "${installDir}/se.log" "${outputDir}/se.${nodeName}.log" || true
   done
 
-  mv "${BAMBOO_RESULTS_DIR}"/log-* "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/seth.log" &>/dev/null || true
+  mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null || true
 }
 
 
@@ -186,7 +188,7 @@ if ! "${SCRIPTS_DIR}/start.sh" "${configFile}"; then
   # We don't try to carry on because it is confusing if Bamboo reports
   # the job failed but any prior tests passed.
   "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
-  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" ) || true
+  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
   exit 1
 fi
 
@@ -197,13 +199,13 @@ testNamePrefix="${BUILD_CONFIG}_${BUILD_TYPE}"
 if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}"; then
   # Startup failed. Copy any logs. Stop the whole cluster and exit.
   "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
-  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" ) || true
+  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
   exit 1
 fi
 
 
 # *** Copy any log files ***
-( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" ) || true
+( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
 
 # *** Stop the cluster ***
 "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true

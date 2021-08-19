@@ -59,16 +59,12 @@ void Step::vInjectBloatCleanup(void)
 
   RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpMemoryHog);
   RowBuffer* pNextRowBuffer;
-  i8 i = 0;
 
   while (pRowBuffer) {
     pNextRowBuffer = pRowBuffer->pNextRowBuffer();
     delete pRowBuffer;
-    i++;
     pRowBuffer = pNextRowBuffer;
   }
-
-  vTrace("DELETED %lld\n"_Stz, i);
 
   m_p_TaskLogicUnit->m_xpMemoryHog = nullptr;
 
