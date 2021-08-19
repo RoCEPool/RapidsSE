@@ -1774,17 +1774,22 @@ void Op::vSpawnOpTask(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 
-  if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
+  if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
+    
+    m_oOpTags.vDumpSet(true);
+    
     AM::vSpawnTaskDedicated_op(this);
-//    m_pTask = AM::pExecutingTask(m_pOpJob);
-//    RASSERT(m_pTask->pJob() == m_pOpJob);
-//    m_pTask->vOp(this);
   }
+//  else
+//  if (StrLib::bSame(m_sOpNm.azChar(), "recv")) {
+//    
+//    m_oOpTags.vDumpSet(true);
+//    
+//    AM::vSpawnTaskDedicated_op(this);
+//  }
   else {
+    
     AM::vSpawnTask_op(this);
-//    m_pTask = AM::pExecutingTask(m_pOpJob);
-//    RASSERT(m_pTask->pJob() == m_pOpJob);
-//    m_pTask->vOp(this);
   }
   
 }

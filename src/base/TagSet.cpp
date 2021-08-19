@@ -267,42 +267,47 @@ void TagSet::vDumpSet(bool bCarriageReturns)
 
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
-    if (i_Ename)
+    if ((! bCarriageReturns) && i_Ename)
       vTrace(", "_Stz);
     
-    if (i_Ename || bCarriageReturns)
-      vTrace("\n  "_Stz);
+    if (bCarriageReturns && i_Ename)
+      vTrace("\n"_Stz);
     
     if (bCarriageReturns)
-      vTrace("[%lld] %s : "_Stz,i_Ename,aTN[m_xEname[i_Ename].m_eToken]);
+      vTrace("  [%02lld] %7s : "_Stz
+             ,i_Ename
+             ,aTN[m_xEname[i_Ename].m_eToken]);
 
     if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
-      
-      vTrace("%s=%lld"_Stz,
+      vTrace(bCarriageReturns
+               ? "%16s = %lld"_Stz
+               : "%s=%lld"_Stz
              
-             m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name),
-             m_xEname[i_Ename].m_i_Value,
-             
-             C_VARGS_END
-             );
-      continue;
+             ,m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name)
+             ,m_xEname[i_Ename].m_i_Value
+              );
     }
-    
-    vTrace("%s=%s"_Stz,
-    
-           m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name),
-           m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value),
-           
-           C_VARGS_END
-           );
+    else {
+      vTrace(bCarriageReturns
+               ? "%16s = %s"_Stz
+               : "%s=%s"_Stz
+
+             ,m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name)
+             ,m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value)
+              );
+    }
   }
   
   
- 
   if (bCarriageReturns)
-    vTrace("\n BYTES=%lld/%lld }\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
-  else
-    vTrace(" BYTES=%lld/%lld }\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
+    vTrace("\n"_Stz);
+  
+  vTrace("BYTES=%lld/%lld"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
+
+  if (bCarriageReturns)
+    vTrace("\n"_Stz);
+
+  vTrace("}\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
 }
 
 /*----------------------------------------------------------------------------*/
