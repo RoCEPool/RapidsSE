@@ -273,7 +273,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  task::seeFrameStack\n"
     "\n"
-    "  inject::bloatCleanup\n"
+    "  //inject::bloatCleanup\n"
     "\n"
     "  ZK_M_CLEANING_handler\n"
     " ;\n"

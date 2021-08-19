@@ -78,6 +78,18 @@ void RowBuffer::vPostRecv(void* aRowBuffer)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+void RowBuffer::vRepairList(Object* pObject, eRF eRepair)
+{
+  _static_
+  RowBuffer* pRowBuffer = _pRowBuffer(pObject);
+  RowBuffer* pNextRowBuffer;
+
+  while (pRowBuffer) {
+    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
+    delete pRowBuffer;
+    pRowBuffer = pNextRowBuffer;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the row buffer that contains the given address                         */
