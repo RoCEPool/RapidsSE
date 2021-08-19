@@ -58,7 +58,7 @@ $(LIBDIR)/$(LIBANTLR) :
 	cd $(SRCDIR) && cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_ARGS) CMakeLists.txt
 	+cd $(SRCDIR) && $(MAKE) 
 	cp $(SRCDIR)/dist/$(LIBANTLR) $(LIBDIR)
-	cd $(SRCDIR)/runtime/src && find . -name '*.h' | cpio -pdum $(INCDIR)
+	cd $(SRCDIR)/runtime/src && find . -name '*.h' | cpio -pdm $(INCDIR)
 	@rm -rf $(SRCDIR)
 
 # Empty rules
