@@ -31,9 +31,9 @@
   // run <pre_execute>
 
   "<pre_execute>"
-  job[] job.tagSet@ tagSet.hasName if
+  job[] job::tagSet@ tagSet.hasName if
     "<pre_execute>"
-    job[] job.tagSet@ tagSet.getStr locals| sPreExe |
+    job[] job::tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf

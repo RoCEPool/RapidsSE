@@ -43,7 +43,7 @@
  
   LogReqEntry SEED_REQ
 
-  "<testTag>" job[] job.tagSet@ tagSet.hasName if
+  "<testTag>" job[] job::tagSet@ tagSet.hasName if
     <testTag> .
   then
 

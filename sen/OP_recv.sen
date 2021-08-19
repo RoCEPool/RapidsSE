@@ -19,7 +19,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
+  "<ansNode>" job[] job::tagSet@ tagSet.hasName assert
 
   <ansNode> >int >ptr node.recvSocket@ to Socket[]
 ;
