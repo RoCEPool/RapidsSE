@@ -45,7 +45,7 @@
 
       // check for low memory
       attachMap::isLowMemory if
-        InfoSet[].delete
+        //InfoSet[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
