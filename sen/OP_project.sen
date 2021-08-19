@@ -120,7 +120,7 @@
 
   // check for error
   eError EC_NONE == not if
-    eError op__exprEvalExecErr
+    eError op__asmGenExecErr
     true
     exit
   then

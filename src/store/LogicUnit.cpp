@@ -73,14 +73,15 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,  "m_xpAggTimer"_Stz)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,"m_xpCrwToRow"_Stz)
-,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir0"_Stz)
-,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,     "m_xpDir1"_Stz)
-,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair, "m_xpErrorMarker"_Stz)
-,       m_xpExprEval(this,RF_NONE,         nullptr,          "m_xpExprEval"_Stz)
-,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,    "m_xpFile0"_Stz)
-,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,    "m_xpFile1"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,   "m_xpAggTimer"_Stz)
+,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,   "m_xpCrwToRow"_Stz)
+,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,        "m_xpDir0"_Stz)
+,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,        "m_xpDir1"_Stz)
+,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,    "m_xpErrorMarker"_Stz)
+,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,   "m_xpExprEval"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,       "m_xpFile0"_Stz)
+,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,       "m_xpFile1"_Stz)
+
 ,        m_xpHandler(this,RF_NONE,         nullptr,        "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
@@ -279,13 +280,14 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
 
   // registers should have been repaired
-//  RASSERT(m_xpAggTimer.bIsNull());
-//  RASSERT(m_xpCrwToRow.bIsNull());
-//  RASSERT(m_xpDir0.bIsNull());
-//  RASSERT(m_xpDir1.bIsNull());
-//  RASSERT(m_xpErrorMarker.bIsNull());
-//  RASSERT(m_xpFile0.bIsNull());
-//  RASSERT(m_xpFile1.bIsNull());
+  RASSERT(m_xpAggTimer.bIsNull());
+  RASSERT(m_xpCrwToRow.bIsNull());
+  RASSERT(m_xpDir0.bIsNull());
+  RASSERT(m_xpDir1.bIsNull());
+  RASSERT(m_xpErrorMarker.bIsNull());
+  RASSERT(m_xpExprEval.bIsNull());
+  RASSERT(m_xpFile0.bIsNull());
+  RASSERT(m_xpFile1.bIsNull());
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
