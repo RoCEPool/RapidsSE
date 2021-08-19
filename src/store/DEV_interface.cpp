@@ -2045,7 +2045,7 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move StreamDefLft[] to  streamDefout[]                                        */
+/* move StreamDefLft[] to  streamDefout[]                                     */
 /*----------------------------------------------------------------------------*/
 void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
 {

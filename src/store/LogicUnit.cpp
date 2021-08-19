@@ -142,9 +142,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
 ,       m_xpToBktCrw(this,RF_NONE,         nullptr,        "m_xpToBktCrw"_Stz)
 ,       m_xpToBktRow(this,RF_NONE,         nullptr,        "m_xpToBktRow"_Stz)
-,       m_xpToNstRow(this,RF_NONE,         nullptr,        "m_xpToNstRow"_Stz)
-,       m_xpToPtnCrw(this,RF_NONE,         nullptr,        "m_xpToPtnCrw"_Stz)
-,       m_xpToPtnRow(this,RF_NONE,         nullptr,        "m_xpToPtnRow"_Stz)
+,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,  "m_xpToNstRow"_Stz)
+,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepair,  "m_xpToPtnCrw"_Stz)
+,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepair,  "m_xpToPtnRow"_Stz)
 ,          m_xpToRow(this,RF_NONE,         nullptr,        "m_xpToRow"_Stz)
 ,             m_xpTx(this,RF_NONE,         nullptr,        "m_xpTx"_Stz)
 
@@ -314,6 +314,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPtnStream.bIsNull());
   RASSERT(m_xpInfoSetRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
+
+  RASSERT(m_xpToNstRow.bIsNull());
+  RASSERT(m_xpToPtnCrw.bIsNull());
+  RASSERT(m_xpToPtnRow.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );
