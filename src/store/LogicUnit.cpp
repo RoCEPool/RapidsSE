@@ -122,7 +122,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)
 ,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
 ,      m_xpRegister0(this,RF_NONE,         nullptr,        "m_xpRegister0"_Stz)
-,            m_xpRow(this,RF_NONE,         nullptr,        "m_xpRow"_Stz)
+,            m_xpRow(this,RF_SET_NULL,     nullptr,        "m_xpRow"_Stz)
 ,        m_xpRowOnce(this,RF_NONE,         nullptr,        "m_xpRowOnce"_Stz)
 ,       m_xpSendNode(this,RF_NONE,         nullptr,        "m_xpSendNode"_Stz)
 ,          m_xpSends(this,RF_NONE,         nullptr,        "m_xpSends"_Stz)
@@ -309,6 +309,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
+  RASSERT(m_xpRow.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );
