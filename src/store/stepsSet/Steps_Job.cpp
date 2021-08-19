@@ -96,7 +96,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   
-  vAddStep("job.tagSet@"_Stz,          &Step::vJobTagSetFetch);
+  vAddStep("job::tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   
@@ -1150,13 +1150,28 @@ void Step::vJobSpawn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.tagSet@ -- push ptr to job TagSet                                      */
+/* job::tagSet@ -- push ptr to job TagSet                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobTagSetFetch(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Job* pJob = nullptr;
+
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
   
   m_pDataStack->vPushPtr(pJob->pJobTags());
   

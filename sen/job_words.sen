@@ -66,11 +66,11 @@
 : job::</seeXfer/>
 
   "</xfer/>"
-  job[] job.tagSet@ tagSet.hasName
+  job::tagSet@ tagSet.hasName
   if
 
    r@ locate .
-   job[] job.tagSet@ tagSet.asStr .
+   job::tagSet@ tagSet.asStr .
 
   then
 ;
@@ -210,11 +210,11 @@
 : job::</seeFlow/>
 
   "</flow/>"
-    job[] job.tagSet@ tagSet.hasName
+    job::tagSet@ tagSet.hasName
   if
 
     r@ locate .
-    job[] job.tagSet@ tagSet.asStr .
+    job::tagSet@ tagSet.asStr .
 
   then
 ;

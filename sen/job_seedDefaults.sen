@@ -59,7 +59,7 @@
 
   task::seedInitially
 
-  "<preCheck>" job[] job.tagSet@ tagSet.hasName if
+  "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if
 
       task::seedInitially task::doneFinally
