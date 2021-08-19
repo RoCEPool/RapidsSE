@@ -11,7 +11,7 @@
 
   List[].print
 
-  List[].delete
+  //List[].delete
 
   ZK_M_CLEANING_handler
 ;

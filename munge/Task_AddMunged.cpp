@@ -20811,7 +20811,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  List[].print\n"
     "\n"
-    "  List[].delete\n"
+    "  //List[].delete\n"
     "\n"
     "  ZK_M_CLEANING_handler\n"
     " ;\n"
