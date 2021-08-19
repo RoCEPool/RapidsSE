@@ -19,7 +19,7 @@
   // find the __path table def
   C_TDEF_PATHINFO op__tableDef_infoSet assert
 
-  InfoSet[].firstRow to Row[]
+  InfoSet[].firstRow to infoSetRow[]
 
   0 InfoSet[].colVal@ locals| sPath | sPath .
   1 InfoSet[].colVal@ locals| iPathNo | iPathNo .

@@ -516,7 +516,7 @@ void Step::vInfoSetColValFetch(void)
   Column* pColumn = pStreamDef->pGetColumn(i_Col);
   eDM eDatum = pColumn->eDatum();
 
-  Row* aRow = *m_p_TaskLogicUnit->m_xpRow;
+  Row* aRow = *m_p_TaskLogicUnit->m_xpInfoSetRow;
   
   i8 iInt;
   s256 sStr;
@@ -674,7 +674,7 @@ void Step::vInfoSetNextRow(void)
   ENTRY();
   
   InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
-  Row* pRow = _pRow(*m_p_TaskLogicUnit->m_xpRow);
+  Row* pRow = _pRow(*m_p_TaskLogicUnit->m_xpInfoSetRow);
   
   ASSERT(pRow);
   

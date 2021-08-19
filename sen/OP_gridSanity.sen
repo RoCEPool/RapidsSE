@@ -15,7 +15,7 @@
   nullptr to PipeIn[]
 
   // get the first row of the infoSet (nodeInfo)
-  InfoSet[].firstRow to row[]
+  InfoSet[].firstRow to infoSetRow[]
 
   // find the __nodeInfo table
   //C_TDEF_gridSanity op__tableDef_streamSet assert
@@ -30,7 +30,7 @@
   streamSetTable[] streamSet[].new
 
   // add nodeInfo to the infoSet
-  row[].get streamSetTable[] streamSet[].addgridSanity assert
+  infoSetRow[].get streamSetTable[] streamSet[].addgridSanity assert
 
   // pipeout the infoset
   streamSet[].pipeOut

@@ -31,9 +31,9 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-  InfoSet[].firstRow to row[]
+  InfoSet[].firstRow to infoSetRow[]
   begin
-    row[].isNull
+    infoSetRow[].isNull
   not while
 
    args.operands attachmap::operands@ args.operands > and if
@@ -51,9 +51,9 @@
         exit
       then
 
-      row[].get InfoSet[].rdCsvChunk to Operand[]
+      infoSetRow[].get InfoSet[].rdCsvChunk to Operand[]
       Operand[].pipeOut
-      InfoSet[].nextRow to row[]
+      InfoSet[].nextRow to infoSetRow[]
 
     then
 

@@ -98,6 +98,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_IndexTreeRlu();
   Step::vAddSteps_Inject();
   Step::vAddSteps_InfoSet();
+  Step::vAddSteps_InfoSetRow();
   Step::vAddSteps_InfoSetTable();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
@@ -164,7 +165,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegSends();
-  Step::vAddSteps_Row();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
   Step::vAddSteps_Rstack();

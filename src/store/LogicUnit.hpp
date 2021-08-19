@@ -180,7 +180,7 @@ namespace STORE
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
-    REG<Row>            m_xpRow;
+    REG<Row>            m_xpInfoSetRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to
     REG<Sends>          m_xpSends;     // consume Sends

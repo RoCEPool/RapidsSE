@@ -77,6 +77,7 @@ namespace STORE
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexDefRlu(void);
     static void vAddSteps_InfoSet(void);
+    static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_IndexStream(void);
     static void vAddSteps_IndexTreeRlu(void);
@@ -150,7 +151,6 @@ namespace STORE
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegSends(void);
-    static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);

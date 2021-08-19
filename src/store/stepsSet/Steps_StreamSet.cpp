@@ -63,7 +63,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].isNull"_Stz,         &Step::vStreamSetIsNull);
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
-  vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
 }
 
@@ -881,21 +880,6 @@ void Step::vStreamSetNew(void)
   m_p_TaskLogicUnit->m_xpStreamSet = new StreamSet(pStreamDef);
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].nextRow -- get next row from the infoset                       */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetNextRow(void)
-{
-  ENTRY();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
-  Row* pRow = _pRow(*m_p_TaskLogicUnit->m_xpRow);
-  
-  ASSERT(pRow);
-  
-  m_pDataStack->vPushPtr(pStreamSet->pNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/

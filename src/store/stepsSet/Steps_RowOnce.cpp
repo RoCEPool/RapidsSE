@@ -22,6 +22,7 @@ void Step::vAddSteps_RowOnce(void)
   vAddStep("rowOnce[].delete"_Stz,         &Step::vRowOnceDelete);
   vAddStep("rowOnce[].isNull"_Stz,         &Step::vRowOnceIsNull);
   vAddStep("rowOnce[].new"_Stz,            &Step::vRowOnceNew);
+  vAddStep("rowOnce[].set"_Stz,            &Step::vRowOnceSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +77,19 @@ void Step::vRowOnceNew(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* rowOnce[] -- set rowOnce skipList                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vRowOnceSet(void)
+{
+  ENTRY();
+
+  RowOnce* pRowOnce = _pRowOnce(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpRowOnce = pRowOnce;
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

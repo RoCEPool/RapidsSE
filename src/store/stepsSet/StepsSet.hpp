@@ -1386,19 +1386,20 @@ public:
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
 
-  // row
-  void vRowGet(void);
-  void vRowGetIntColumn(void);
-  void vRowGetVchColumn(void);
-  void vRowIntColumnFetch(void);
-  void vRowIsNull(void);
-  void vRowSet(void);
+  // infoSetRow
+  void vInfoSetRowGet(void);
+  void vInfoSetRowGetIntColumn(void);
+  void vInfoSetRowGetVchColumn(void);
+  void vInfoSetRowIntColumnFetch(void);
+  void vInfoSetRowIsNull(void);
+  void vInfoSetRowSet(void);
 
   // rowOnce
   void vRowOnceDelete(void);
   void vRowOnceGet(void);
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
+  void vRowOnceSet(void);
 
   // rstack
   void vRstackCsPick(void);
@@ -1668,7 +1669,6 @@ public:
   void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
-  void vStreamSetNextRow(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 
