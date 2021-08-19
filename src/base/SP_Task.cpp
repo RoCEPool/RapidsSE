@@ -48,7 +48,8 @@ Stz* SP_Task::sz(Task* pTask)
   
   vInit();
   
-  vCatf("Task {%p "
+  vCatf("Task {"
+        "%p "
         "%s %s %s"_Stz
 
         ,pTask
@@ -59,65 +60,20 @@ Stz* SP_Task::sz(Task* pTask)
   
         );
   
-  if (TS_SLEEPING == pTask->eState() && QK_SLEEPING_QUEUE == pTask->eQueue()) {
-//    vCatf("wakeup %lld.%06lld "_Stz
-//
-//          ,(i8)pTask->oWakeup().m_wWakeup.m_uSecond
-//          ,(i8)pTask->oWakeup().m_wWakeup.m_uMicro
-//          );
-        
+  if (TS_SLEEPING == pTask->eState() &&
+      QK_SLEEPING_QUEUE == pTask->eQueue()) {
     SP_Ivl spIvl;
     vCatf(" wakeup %s"_Stz
     
           ,spIvl.sz(pTask->oWakeup().m_wWakeup.m_iAsI8)
           
           );
-
   }
 
   vCats("}"_Stz);
 
   return (Stz*) &m_caResult[0];
 }
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Task::szJobOp(Task* pTask)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-  
-  IGNORE_RETURN( sz(pTask) );
-  
-  Thread* pThread = pTask->pvThread_DONT_DEREF();
-  SP_Thread spThread;
-  vCatf(" %s"_Stz,spThread.sz_schedule(pThread));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job or op
-  
-  Job* pJob = pTask->pJob();
-  if (pJob) {
-    SP_Job spJob;
-    vCatf("job: %s"_Stz,spJob.sz_schedule(pJob));
-    return (Stz*) &m_caResult[0];
-  }
-
-  Op* pOp = pTask->pOp();
-  if (pOp) {
-    vCats("op: "_Stz);
-    
-    i8 nQueuedOperands = pOp->nQueuedOperands();
-    vCatf("operands %lld "_Stz,nQueuedOperands);
-
-    SP_Op spOp;
-    vCatf("%s "_Stz,spOp.szSchedule(pOp));
-    return (Stz*) &m_caResult[0];
-  }
-
-  return (Stz*) &m_caResult[0];
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
