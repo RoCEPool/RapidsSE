@@ -1454,6 +1454,10 @@ void Engine::vSignalHandler(int iSignal)
          ,(i8)iSignal
          );
   
+  Stz* szWordNm = (Stz*)PsxThd::pTlsGet(giTLS_HandlerKey);
+  vTrace("  last known handler = %s\n"_Stz
+         ,szWordNm);
+  
   Stz* szStepNm = (Stz*)PsxThd::pTlsGet(giTLS_StepKey);
   vTrace("  last known step = %s\n"_Stz
          ,szStepNm);

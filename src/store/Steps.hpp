@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+extern pthread_key_t giTLS_ThreadKey;
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_HandlerKey;
 extern pthread_key_t giTLS_StepKey;
 
 namespace STORE
