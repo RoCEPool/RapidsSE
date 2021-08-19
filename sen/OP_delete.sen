@@ -184,6 +184,7 @@
 
       // delete the path identifier
       PathIdentifier[].delete
+      nullptr to PathIdentifier[]
 
       // pipeout an eosMarker
       Operand[].newEosMarker
