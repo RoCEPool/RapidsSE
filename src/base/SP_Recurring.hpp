@@ -17,7 +17,6 @@ namespace BASE
    ~SP_Recurring(void) noexcept(false);
   
     Stz* sz(Task* pTask);
-    Stz* szJobOp(Task* pTask);
 
     Footer* aFooter(void);
   };

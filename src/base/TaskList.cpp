@@ -224,7 +224,7 @@ void TaskList::vContentDump(void)
     
     vTrace("  [%02lld] %s\n"_Stz
            ,i_Task++
-           ,spRecurring.szJobOp(pTask));
+           ,spRecurring.sz(pTask));
 
   }
 }

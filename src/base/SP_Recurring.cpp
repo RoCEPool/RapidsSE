@@ -40,7 +40,7 @@ SP_Recurring::~SP_Recurring(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
+/* sprint extended task to result                                             */
 /*----------------------------------------------------------------------------*/
 Stz* SP_Recurring::sz(Task* pTask)
 {
@@ -77,17 +77,12 @@ Stz* SP_Recurring::sz(Task* pTask)
 
   vCats("}"_Stz);
 
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Recurring::szJobOp(Task* pTask)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  IGNORE_RETURN( sz(pTask) );
+  
+  // - - -
+  
+  
+  
   
   Thread* pThread = pTask->pvThread_DONT_DEREF();
   SP_Thread spThread;
