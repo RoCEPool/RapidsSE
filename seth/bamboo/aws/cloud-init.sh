@@ -121,6 +121,8 @@ yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel
 yum install -y nload nethogs bmon iftop iperf3 iotop
 
+git lfs install
+
 # ----------------------------------------------------------------------------------------
 # Set up SSH.
 echo

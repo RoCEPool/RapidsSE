@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _sigsegv - simulate/inject segment violations into pipeline                */
+/*============================================================================*/
+
+create table nation (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load nation "../TPCH/SF1/nation.tbl" ;
+
+//tablescan nation;
+
+pipeline throwTest
+begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan nation | sigsegv | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end
+
+<recover> = 1
+//<vb_op> = 1
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

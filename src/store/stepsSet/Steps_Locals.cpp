@@ -241,6 +241,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("InfoSetRow[]"_Stz)) {
+    pCurrentWord->vEncodeCall("InfoSetRow[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("InfoSetTable[]"_Stz)) {
     pCurrentWord->vEncodeCall("InfoSetTable[].set"_Stz);
     EXIT();
@@ -303,21 +308,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Register0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Register0[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("Register1[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Register1[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("Register2[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Register2[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("Row[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
     return;
   }

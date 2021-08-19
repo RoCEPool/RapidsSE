@@ -11,10 +11,9 @@
 
   List[].print
 
-  List[].delete
+  //List[].delete
 
-  Pipein[].pipeout
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/

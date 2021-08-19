@@ -28,7 +28,9 @@ namespace STORE
     
     ToPtnCrw(StreamDef* pStreamDef);
    ~ToPtnCrw(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vConvert(RowBuffer* pRowBuffer);
   
     CrwBuffer* pCompleted(i8 i_Ptn);

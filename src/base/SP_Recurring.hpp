@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Thread.hpp - Thread sprint helper                                       */
+/* SP_Recurring.hpp - Recurring sprint helper                                 */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
-  class SP_Thread : public SP
+  class SP_Recurring : public SPmedium
   {
   public:
 
@@ -13,11 +13,10 @@ namespace STORE
     Footer m_xFooter;
     
   public:
-    SP_Thread(void);
-   ~SP_Thread(void) noexcept(false);
+    SP_Recurring(void);
+   ~SP_Recurring(void) noexcept(false);
   
-    Stz* sz(Thread* pThread);
-    Stz* sz_log(Thread* pThread);
+    Stz* sz(Task* pTask);
 
     Footer* aFooter(void);
   };

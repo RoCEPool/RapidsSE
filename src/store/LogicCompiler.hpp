@@ -47,6 +47,8 @@ namespace STORE
     static eEO  eFindEO(Stz* szEOname);
     static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sMacro);
 
+    static void vRepair(Object* pObject, eRF eRepair);
+
     i8 iCall(void);
     i8 iCompile(void);
     Stz* szSource(void);

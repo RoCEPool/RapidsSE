@@ -45,12 +45,12 @@ assert::stack_0
 
 "se_boot 5" .verbose
         "job_words.sen"           include
-        "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
         "job_seedHooks.sen"       include
         "job_seedSuffixs.sen"     include
+        "job_2pcReply.sen"        include
         "job_seedDefaults.sen"    include
-
+        
         // -- -- -- -- -- -- -- -- -- --
 
         "tag_tagSets.sen"         include
@@ -62,10 +62,6 @@ assert::stack_0
         "job__Executed.sen"       include
         "job__Execute.sen"        include
         "job__Begun.sen"          include
-
-        "job_BootCluster.sen"     include
-
-        "job_ConnectCluster.sen"  include
 
         "job_Pipeline.sen"        include
         "job_PipelineLocal.sen"   include
@@ -114,9 +110,6 @@ assert::stack_0
         "se_munge.sen"                include
         "se_stepTests.sen"            include
         "se_stepTiming.sen"           include
-
-//cmd::fillOut_allCmds_usingInfo
-//cmd::fillOut_allCmds_usingCmdSyntax
 
 //"BEFORE fillOut_allCmds" .
 

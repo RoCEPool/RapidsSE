@@ -135,8 +135,8 @@
 
   //"ZK_M_CLEANING_handler" .verbose
   nullptr to Operand[]
-  PipeIn[].pipeOut
-  true
+
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +184,7 @@
 
       // delete the path identifier
       PathIdentifier[].delete
+      nullptr to PathIdentifier[]
 
       // pipeout an eosMarker
       Operand[].newEosMarker

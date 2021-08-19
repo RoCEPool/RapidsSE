@@ -29,13 +29,7 @@
     false to counter0[]
   then
 
-  // delete the ptn stream
-  ptnStream[].isNull not if
-    ptnStream[] ptnStream.delete
-  then
-
-  Pipein[].pipeOut
-  true
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,8 +140,8 @@
  
   0 locals| rateSecs |
 
-  // "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
-  "<rateSecs>" op::tagSet@ tagSet.hasName if
+  // "<rateSecs>" job::tagSet@ tagSet.hasName if
+  "<rateSecs>" op[].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
@@ -186,7 +180,7 @@
 
   LogReqEntry SEED_REQ
 
-  "<catalogNm>"  job[] job.tagSet@ tagSet.hasName if
+  "<catalogNm>"  job::tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
     "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
     str.toStrVec Path[].set

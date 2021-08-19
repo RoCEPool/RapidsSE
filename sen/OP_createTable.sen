@@ -47,7 +47,7 @@
   nullptr to Pipein[]
 
   // get the table name
-  "<tableNm>" job[] job.tagSet@ tagSet.hasName if
+  "<tableNm>" job::tagSet@ tagSet.hasName if
     <tableNm> to sTableNm
   else
     StreamDefLft[].name to sTableNm

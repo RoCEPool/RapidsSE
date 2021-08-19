@@ -164,7 +164,7 @@ namespace STORE
     REG<Table>          m_xpInfoSetTable;
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
-    REG<Operand>        m_xpMemoryHog; // memoryHog
+    REG<RowBuffer>      m_xpMemoryHog; // memoryHog
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
@@ -180,9 +180,7 @@ namespace STORE
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
-    REG<Object>         m_xpRegister1; // general purpose reg 1[]
-    REG<Object>         m_xpRegister2; // general purpose reg 2[]
-    REG<Row>            m_xpRow;
+    REG<Row>            m_xpInfoSetRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to
     REG<Sends>          m_xpSends;     // consume Sends

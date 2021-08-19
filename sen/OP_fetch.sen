@@ -115,8 +115,8 @@
 : fetch_Cleaning \handler
 
   nullptr to Operand[]  // ???? ALKA
-  Pipein[].pipeOut
-  true
+
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -169,10 +169,12 @@
 
       // delete the path identifier
       PathIdentifier[].delete
-
+      nullptr to PathIdentifier[]
+      
       // delete the rowOnce skipList
       rowOnce[].isNull not if
         rowOnce[].delete
+        nullptr to rowOnce[]
       then
 
       // pipeout an eosMarker

@@ -33,10 +33,10 @@
   nullptr to PipeIn[]
 
   // get first row of InfoSet[]
-  InfoSet[].firstRow to row[]
+  InfoSet[].firstRow to infoSetRow[]
 
   // get 0th Column (rowCount) add to Counter
-  0 row[].getIntColumn Counter0[] + to Counter0[]
+  0 infoSetRow[].getIntColumn Counter0[] + to Counter0[]
 
   // now delete the InfoSet[]
   InfoSet[].delete

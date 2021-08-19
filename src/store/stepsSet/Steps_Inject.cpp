@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Row.cpp -- Row step group                                            */
+/* Steps_Inject.cpp - fault injection step group                              */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -12,85 +12,103 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include <signal.h>
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Row(void)
+void Step::vAddSteps_Inject(void)
 {
-  vAddStep("Row[].get"_Stz,           &Step::vRowGet);
-  vAddStep("Row[].getIntColumn"_Stz,  &Step::vRowGetIntColumn);
-  vAddStep("Row[].getVchColumn"_Stz,  &Step::vRowGetVchColumn);
-  vAddStep("Row[].isNull"_Stz,        &Step::vRowIsNull);
-  vAddStep("Row[].set"_Stz,           &Step::vRowSet);
+  vAddStep("inject::bloat"_Stz,        &Step::vInjectBloat);
+  vAddStep("inject::bloatCleanup"_Stz, &Step::vInjectBloatCleanup);
+  vAddStep("inject::sigsegv"_Stz,      &Step::vInjectSigsegv);
+  vAddStep("inject::sigsegv_dbg"_Stz,  &Step::vInjectSigsegv_dbg);
+  vAddStep("inject::throw"_Stz,        &Step::vInjectThrow);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Row[].get -- get the row                                                   */
+/* inject::bloat -- hog memory and bloat                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vRowGet(void)
+void Step::vInjectBloat(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRow);
+  //AM::SE::vWhereAmI();
+
+  RowBuffer* pRowBuffer = new RowBuffer();
+  m_p_TaskLogicUnit->m_xpMemoryHog = pRowBuffer;
+  i8 i = 0;
+
+  while (true) {
+    RowBuffer* pNewRowBuffer = new RowBuffer();
+    i++;
+    pRowBuffer->vNextRowBuffer(pNewRowBuffer);
+    pRowBuffer = pNewRowBuffer;
+  }
+
+  vTrace("HOGGED %lld\n"_Stz, i);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inject::bloatCleanup -- cleanup the bloat                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vInjectBloatCleanup(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpMemoryHog);
+  RowBuffer* pNextRowBuffer;
+
+  while (pRowBuffer) {
+    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
+    delete pRowBuffer;
+    pRowBuffer = pNextRowBuffer;
+  }
+
+  m_p_TaskLogicUnit->m_xpMemoryHog = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inject::sigsegv -- inject a sigsegv signal                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vInjectSigsegv(void)
+{
+  ENTRY();
+  
+  Object* pObject = nullptr;
+  
+  pObject->vMemoryDump();
+  
+  NEVER_REACH;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Row[].getIntColumn -- get the integer column from the row                  */
+/* inject::sigsegv_dbg -- inject a sigsegv signal                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRowGetIntColumn(void)
+void Step::vInjectSigsegv_dbg(void)
 {
   ENTRY();
   
-  i8 i_Col = m_pDataStack->iPopInt(__func__);
+  AM::ENGINE::vSignalHandler(SIGSEGV);
   
-  Row* pRow = *m_p_TaskLogicUnit->m_xpRow;
-  
-  m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
+  NEVER_REACH;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Row[].getVchColumn -- get the varchar column from the row                  */
+/* inject::throw -- throw an exception                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRowGetVchColumn(void)
+void Step::vInjectThrow(void)
 {
   ENTRY();
   
-  i8 i_Col = m_pDataStack->iPopInt(__func__);
-  
-  Row* pRow = *m_p_TaskLogicUnit->m_xpRow;
-  
-  s256 sColumn = pRow->szColVal_ofs(i_Col);
-  m_pDataStack->vPushStr(sColumn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Row[].isNull -- is row null ?                                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRowIsNull(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRow.bIsNull() ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Row[].set -- set row                                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vRowSet(void)
-{
-  ENTRY();
-
-  Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
-
-  m_p_TaskLogicUnit->m_xpRow = _pRow(pRow);
+  NEVER_REACH;
   
   EXIT();
 }

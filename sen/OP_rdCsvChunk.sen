@@ -13,10 +13,10 @@
 
   // 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
+  //File0[].isNull not if
+  //  File0[].get file.close
+  //  File0[].get file.delete
+  //then
 
   ZK_M_CLEANING_handler
 ;
@@ -31,9 +31,9 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-  InfoSet[].firstRow to row[]
+  InfoSet[].firstRow to infoSetRow[]
   begin
-    row[].isNull
+    infoSetRow[].isNull
   not while
 
    args.operands attachmap::operands@ args.operands > and if
@@ -45,15 +45,15 @@
 
       // check for low memory
       attachMap::isLowMemory if
-        InfoSet[].delete
+        //InfoSet[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
       then
 
-      row[].get InfoSet[].rdCsvChunk to Operand[]
+      infoSetRow[].get InfoSet[].rdCsvChunk to Operand[]
       Operand[].pipeOut
-      InfoSet[].nextRow to row[]
+      InfoSet[].nextRow to infoSetRow[]
 
     then
 
@@ -92,7 +92,7 @@
 
   LogReqEntry SEED_REQ
 
-//  "<note>"  job[] job.tagSet@ tagSet.hasName if
+//  "<note>"  job::tagSet@ tagSet.hasName if
 //    <note> LogicUnit[].diaryJobNote
 //  then
 //

@@ -207,16 +207,37 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* call m_pComponent repair function to repair itself                     */
     /*------------------------------------------------------------------------*/
-    bool vRepair(void)
+    void vRepair(void)
     {
-      // execute its repair function ?
-      if (m_pComponent) {
-        if (m_fpRepair) {
-          m_fpRepair((Object *) m_pComponent, m_eRepair);
+      // m_pComponent already NULL ?
+      // Nothing to be done
+      if ( !m_pComponent ) {
+        return;
+      }
 
-          // null the component
-          m_pComponent = nullptr;
-        }
+      // RF_SET_NULL ?
+      if (m_eRepair == RF_SET_NULL) {
+        // null the component
+        m_pComponent = nullptr;
+        RASSERT(!m_fpRepair);
+        return;
+      }
+
+      // Following code to be uncommented once all repairs in place
+      /*
+      RASSERT(m_fpRepair);
+      m_fpRepair((Object *) m_pComponent, m_eRepair);
+
+      // null the component
+      m_pComponent = nullptr;
+      */
+
+      // execute the repair function ?
+      if (m_fpRepair) {
+        m_fpRepair((Object *) m_pComponent, m_eRepair);
+
+        // null the component
+        m_pComponent = nullptr;
       }
 
     }

@@ -23,7 +23,7 @@ $(LIBTCC) :
 	+cd src && $(MAKE) && $(MAKE) install
 
 clean :
-	cd src && $(MAKE) clean
+	-cd src && $(MAKE) clean
 	rm -f  $(LIBDIR)/*.a
 	rm -rf $(LIBDIR)/tcc
 	rm -f  $(BINDIR)/tcc

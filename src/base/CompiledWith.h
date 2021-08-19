@@ -90,6 +90,8 @@
 #define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
                                            //   instead of partition no
 
+//#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

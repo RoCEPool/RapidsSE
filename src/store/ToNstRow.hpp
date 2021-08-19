@@ -18,7 +18,9 @@ namespace STORE
     
     ToNstRow(void);
    ~ToNstRow(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vConvert(RowBuffer* pRowBuffer);
   
   private:

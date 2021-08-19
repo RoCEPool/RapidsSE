@@ -198,8 +198,8 @@ namespace BASE
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);
-    eTR  eTranstionRequest(void);
-    void vTranstionRequestClear(void);
+    eTR  eTransition(void);
+    void vTranstionClear(void);
     i8   iWakeup(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);

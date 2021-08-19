@@ -261,6 +261,8 @@ void Thread::vLoop_dedicated(void)
 
   Scheduler::vTaskApi_BeginExecutingDedicated(this);
   
+  m_eThreadState = HS_ASSIGNED;
+  
   while (m_pTask && (m_pTask->pOp() || m_pTask->pJob()))
     m_pTask->vTaskLoop();
 
@@ -286,20 +288,20 @@ void Thread::vLoop_general(void)
   
         RASSERT(HS_ASSIGNED == m_eThreadState);
         RASSERT(m_pTask);
-        RASSERT(TR_NONE == m_pTask->eTranstionRequest());
+        RASSERT(TR_NONE == m_pTask->eTransition());
         RASSERT(this == m_pTask->pvThread_DONT_DEREF());
 
   for (;;) {
 
                 RASSERT(HS_ASSIGNED == m_eThreadState);
                 ASSERT(m_pTask);
-                ASSERT(TR_NONE == m_pTask->eTranstionRequest());
+                ASSERT(TR_NONE == m_pTask->eTransition());
                 RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     m_pTask->vTaskLoop();
   
                 RASSERT(HS_ASSIGNED == m_eThreadState);
                 ASSERT(m_pTask);
-                ASSERT(TR_NONE != m_pTask->eTranstionRequest());
+                ASSERT(TR_NONE != m_pTask->eTransition());
                 RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
 
@@ -315,7 +317,7 @@ void Thread::vLoop_general(void)
     
                 RASSERT(HS_ASSIGNED == m_eThreadState);
                 RASSERT(m_pTask);
-                RASSERT(TR_NONE == m_pTask->eTranstionRequest());
+                RASSERT(TR_NONE == m_pTask->eTransition());
                 RASSERT(this == m_pTask->pvThread_DONT_DEREF());
   }
      

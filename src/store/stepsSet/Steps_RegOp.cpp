@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegOp.cpp - op[] step group                                          */
+/* Steps_RegOp.cpp - Op[] step group                                          */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -21,20 +21,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOp(void)
 {
-  vAddStep("op[]"_Stz,                 &Step::vRegOpGet);
-  vAddStep("op[].handlerEntry"_Stz,    &Step::vRegOpHandlerEntry);
-  vAddStep("op[].handlerExit"_Stz,     &Step::vRegOpHandlerExit);
-  vAddStep("op[].handler@"_Stz,        &Step::vRegOpHandlerFetch);
-  vAddStep("op[].handler!"_Stz,        &Step::vRegOpHandlerStore);
-  vAddStep("op[].handlerAll!"_Stz,     &Step::vRegOpHandlerAllStore);
-  vAddStep("op[].init"_Stz,            &Step::vRegOpInit);
-  vAddStep("op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
-  vAddStep("op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
-  vAddStep("op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
+  vAddStep("Op[]"_Stz,                 &Step::vRegOpGet);
+  vAddStep("Op[].handlerEntry"_Stz,    &Step::vRegOpHandlerEntry);
+  vAddStep("Op[].handlerExit"_Stz,     &Step::vRegOpHandlerExit);
+  vAddStep("Op[].handler@"_Stz,        &Step::vRegOpHandlerFetch);
+  vAddStep("Op[].handler!"_Stz,        &Step::vRegOpHandlerStore);
+  vAddStep("Op[].handlerAll!"_Stz,     &Step::vRegOpHandlerAllStore);
+  vAddStep("Op[].init"_Stz,            &Step::vRegOpInit);
+  vAddStep("Op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
+  vAddStep("Op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
+  vAddStep("Op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
+  
+  vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].get -- get op                                                         */
+/* Op[].get -- get op                                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpGet(void)
 {
@@ -46,7 +49,7 @@ void Step::vRegOpGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handlerEntry -- handler entry                                         */
+/* Op[].handlerEntry -- handler entry                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerEntry(void)
 {
@@ -69,7 +72,7 @@ void Step::vRegOpHandlerEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handlerExit -- handler exit                                           */
+/* Op[].handlerExit -- handler exit                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerExit(void)
 {
@@ -79,7 +82,7 @@ void Step::vRegOpHandlerExit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handler@ -- get this op's handler for given operand                   */
+/* Op[].handler@ -- get this op's handler for given operand                   */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerFetch(void)
 {
@@ -95,7 +98,7 @@ void Step::vRegOpHandlerFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handler! -- set this op's handler for given operand                   */
+/* Op[].handler! -- set this op's handler for given operand                   */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerStore(void)
 {
@@ -111,7 +114,7 @@ void Step::vRegOpHandlerStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handlerAll! -- set this op's handler for given operand                */
+/* Op[].handlerAll! -- set this op's handler for given operand                */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerAllStore(void)
 {
@@ -126,7 +129,7 @@ void Step::vRegOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].init -- init op                                                       */
+/* Op[].init -- init op                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpInit(void)
 {
@@ -141,7 +144,7 @@ void Step::vRegOpInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].isOperandValid -- check if operand is valid                           */
+/* Op[].isOperandValid -- check if operand is valid                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpIsOperandValid(void)
 {
@@ -164,7 +167,7 @@ void Step::vRegOpIsOperandValid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].incHandlerCount -- inc handler count                                  */
+/* Op[].incHandlerCount -- inc handler count                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpIncHandlerCount(void)
 {
@@ -178,7 +181,7 @@ void Step::vRegOpIncHandlerCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].incOperandCount -- inc operand count                                  */
+/* Op[].incOperandCount -- inc operand count                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpIncOperandCount(void)
 {
@@ -190,6 +193,24 @@ void Step::vRegOpIncOperandCount(void)
   
   EXIT();
 }
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Op[].tagSet@ -- push ptr to op TagSet                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpTagSetFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+
+  m_pDataStack->vPushPtr(pOp->pOpTags());
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

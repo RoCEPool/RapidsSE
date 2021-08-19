@@ -437,6 +437,19 @@ eEO LogicCompiler::eFindEO(Stz* szEOname)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the logicCompiler                                                   */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  LogicCompiler* pLogicCompiler = _pLogicCompiler(pObject);
+
+  // delete the logicCompiler
+  delete pLogicCompiler;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -77,9 +77,11 @@ namespace STORE
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexDefRlu(void);
     static void vAddSteps_InfoSet(void);
+    static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_IndexStream(void);
     static void vAddSteps_IndexTreeRlu(void);
+    static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   
@@ -142,7 +144,6 @@ namespace STORE
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
-    static void vAddSteps_RegJob(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
     static void vAddSteps_RegPath(void);
@@ -150,7 +151,6 @@ namespace STORE
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegSends(void);
-    static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);

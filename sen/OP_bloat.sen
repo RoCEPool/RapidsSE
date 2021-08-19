@@ -11,11 +11,9 @@
 
   task::seeFrameStack
 
-  debug::bloatCleanup
+  //inject::bloatCleanup
 
-  PipeIn[].pipeOut
-
-  true
+  ZK_M_CLEANING_handler
 ;
 
 
@@ -26,7 +24,7 @@
 
   task::seeFrameStack
   
-  debug::bloat
+  inject::bloat
 
   PipeIn[].delete
   

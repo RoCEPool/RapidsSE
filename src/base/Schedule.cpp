@@ -261,7 +261,7 @@ void Schedule::vAddSleepingQueue(Task* pTask)
 
   m_pSleepingQueue->vGrabLock();
   
-  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  i8 nPriorItems = m_pSleepingQueue->nItems();
   m_pSleepingQueue->vAssertItems(nPriorItems);
   m_pSleepingQueue->vAddTask(pTask);
   m_pSleepingQueue->vAssertItems(nPriorItems + 1);
@@ -439,7 +439,7 @@ Task* Schedule::pPopSleepingQueue(void)
   Task* pPopTask;
   
   // pop the task off the sleeping queue
-  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  i8 nPriorItems = m_pSleepingQueue->nItems();
   m_pSleepingQueue->vAssertItems(nPriorItems);
   pPopTask = m_pSleepingQueue->pPopTask();
   
@@ -644,14 +644,21 @@ void Schedule::vDumpBidingSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
   m_pBidingSet->vGrabLock();
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Biding Set: Tasks %lld\n"_Stz
-         ,m_pBidingSet->nItems());
-  vTrace("------------------------------------\n"_Stz);
-  m_pBidingSet->vContentDump();
-  m_pBidingSet->vDropLock();
+  
+  i8 nTasks = m_pBidingSet->nItems();
+  
+  vTrace("====================================\n"_Stz);
+  vTrace("Biding Set: Tasks %lld\n"_Stz,nTasks);
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pBidingSet->vContentDump();
+  }
+  
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
+
+  m_pBidingSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -662,14 +669,21 @@ void Schedule::vDumpExecutingSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
   m_pExecutingSet->vGrabLock();
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: Tasks %lld\n"_Stz
-         ,m_pExecutingSet->nItems());
-  vTrace("------------------------------------\n"_Stz);
-  m_pExecutingSet->vContentDump();
-  m_pExecutingSet->vDropLock();
+
+  i8 nTasks = m_pExecutingSet->nItems();
+  
+  vTrace("====================================\n"_Stz);
+  vTrace("Executing Set: Tasks %lld\n"_Stz,nTasks);
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pExecutingSet->vContentDump();
+  }
+  
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
+  
+  m_pExecutingSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -680,14 +694,21 @@ void Schedule::vDumpReadyQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
   m_pReadyQueue->vGrabLock();
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue: Tasks %lld\n"_Stz
-         ,m_pReadyQueue->nItems());
-  vTrace("------------------------------------\n"_Stz);
-  m_pReadyQueue->vContentDump();
-  m_pReadyQueue->vDropLock();
+  
+  i8 nTasks = m_pReadyQueue->nItems();
+
+  vTrace("====================================\n"_Stz);
+  vTrace("Ready Queue: Tasks %lld\n"_Stz,nTasks);
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pReadyQueue->vContentDump();
+  }
+  
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
+
+  m_pReadyQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -698,14 +719,21 @@ void Schedule::vDumpReadyQueueLP(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
   m_pReadyQueueLP->vGrabLock();
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): Tasks %lld\n"_Stz
-         ,m_pReadyQueueLP->nItems());
-  vTrace("------------------------------------\n"_Stz);
-  m_pReadyQueueLP->vContentDump();
-  m_pReadyQueueLP->vDropLock();
+  
+  i8 nTasks = m_pReadyQueueLP->nItems();
+
+  vTrace("====================================\n"_Stz);
+  vTrace("Ready Queue (low Priority): Tasks %lld\n"_Stz,nTasks);
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pReadyQueueLP->vContentDump();
+  }
+
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
+  
+  m_pReadyQueueLP->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -719,20 +747,25 @@ void Schedule::vDumpSleepingQueue(void)
   
   m_pSleepingQueue->vGrabLock();
   
+  i8 nTasks = m_pSleepingQueue->nItems();
+
   Ivl wCurIvl = IvlLib::wGetCurrIvl();
   
-  
-  vTrace("------------------------------------\n"_Stz);
+  vTrace("====================================\n"_Stz);
   vTrace("Sleeping Queue: Tasks %lld ; CurIvl %s\n"_Stz
-         ,m_pSleepingQueue->nTasks()
+         ,nTasks
          ,spIvl.sz(wCurIvl.m_iAsI8)
          );
-  vTrace("------------------------------------\n"_Stz);
-  m_pSleepingQueue->vContentDump();
-  m_pSleepingQueue->vDropLock();
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pSleepingQueue->vContentDump();
+  }
+
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
+
+  m_pSleepingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -743,15 +776,21 @@ void Schedule::vDumpWaitingSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
   m_pWaitingSet->vGrabLock();
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: Tasks %lld\n"_Stz
-         ,m_pWaitingSet->nItems());
-  vTrace("------------------------------------\n"_Stz);
-  m_pWaitingSet->vContentDump();
-  m_pWaitingSet->vDropLock();
+  
+  i8 nTasks = m_pWaitingSet->nItems();
+
+  vTrace("====================================\n"_Stz);
+  vTrace("Waiting Set: Tasks %lld\n"_Stz,nTasks);
+  
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pWaitingSet->vContentDump();
+  }
+
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
+
+  m_pWaitingSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -814,7 +853,7 @@ i8 Schedule::nTasksSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
-  return m_pSleepingQueue->nTasks();
+  return m_pSleepingQueue->nItems();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,12 +26,12 @@
   // cleanup the pot
   PotRlu[].cleanup
 
-  Counter0[] cleanUpAsm
+  //Counter0[] cleanUpAsm
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-  Pipein[].pipeOut
 
-  true
+  ZK_M_CLEANING_handler
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@
   DevLftRow.deleteEachRowBuffer
 
   // cleanup compiler
-  Counter0[] cleanUpAsm
+  //Counter0[] cleanUpAsm
 
   ZK_M_EACHSCANEOS EG_ZK PD_PIPE_OUT 0 ZK_M_EACHSCANEOS EG_ZK LogicUnit[].diaryAction
   Pipein[].delete
@@ -178,7 +178,7 @@
 
   // check for error
   eError EC_NONE == not if
-    eError op__exprEvalExecErr
+    eError op__asmGenExecErr
     true
     exit
   then

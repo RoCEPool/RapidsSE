@@ -812,7 +812,7 @@ i8 File::nReadFile(String* aDst)
   i8 nFileSize = iSize();
   i8 nStringSize = aDst->nArea();
 
-  // string size whould be > than the file size
+  // string size should be > than the file size
   RASSERT(nStringSize > nFileSize );
 
   i8  nBytesRead = fread(aDst->azStr(),1,nFileSize,m_aFile);

@@ -85,8 +85,11 @@ i8   giProgressSubPoint = 0;
 extern i8     gi_argc;
 extern s256   gi_szaArgv[];
 
-pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
-pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
+
+pthread_key_t giTLS_ThreadKey  = C_UNKNOWN;
+pthread_key_t giTLS_TaskKey    = C_UNKNOWN;
+pthread_key_t giTLS_HandlerKey = C_UNKNOWN;
+pthread_key_t giTLS_StepKey    = C_UNKNOWN;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -1443,16 +1446,27 @@ void Engine::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vSignalHandler(int iSignal)
 {
-  fprintf(stderr,
-          "Engine::vSignalHandler:\n"
-          "Node = %s\n"
-          "iSignal = %lld\n",
-          AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-          (i8)iSignal);
+  vTrace("Engine::vSignalHandler:\n"
+         "  Node = %s\n"
+         "  iSignal = %lld\n"_Stz
+         
+         ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
+         ,(i8)iSignal
+         );
   
+  Stz* szWordNm = (Stz*)PsxThd::pTlsGet(giTLS_HandlerKey);
+  vTrace("  last known handler = %s\n"_Stz
+         ,szWordNm);
+  
+  Stz* szStepNm = (Stz*)PsxThd::pTlsGet(giTLS_StepKey);
+  vTrace("  last known step = %s\n"_Stz
+         ,szStepNm);
+  
+
+  // print out all the frames to stderr
   vThreadCallStackDump();
   
-  // print out all the frames to stderr
+  
   vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "Error: signal %d:\n"_Stz, iSignal);
 }

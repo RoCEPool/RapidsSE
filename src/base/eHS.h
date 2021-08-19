@@ -14,11 +14,11 @@ enum eHS // thread state
 
 static Stz* aHS[]
 {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "ASSIGNED"_Stz,
-  /*  2 */ "IDLE"_Stz,
-  /*  3 */ "UNASSIGNED"_Stz,
-  /*  4 */ "ENUMS"_Stz,
+  /*  0 */ "HS_NONE"_Stz,
+  /*  1 */ "HS_ASSIGNED"_Stz,
+  /*  2 */ "HS_IDLE"_Stz,
+  /*  3 */ "HS_UNASSIGNED"_Stz,
+  /*  4 */ "HS_ENUMS"_Stz,
 };
 
 /*============================================================================*/

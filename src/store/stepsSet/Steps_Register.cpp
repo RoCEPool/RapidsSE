@@ -20,14 +20,6 @@ void Step::vAddSteps_Register(void)
   vAddStep("Register0[]"_Stz,       &Step::vRegister0Get);
   vAddStep("Register0[].get"_Stz,   &Step::vRegister0Get);
   vAddStep("Register0[].set"_Stz,   &Step::vRegister0Set);
-  
-  vAddStep("Register1[]"_Stz,       &Step::vRegister1Get);
-  vAddStep("Register1[].get"_Stz,   &Step::vRegister1Get);
-  vAddStep("Register1[].set"_Stz,   &Step::vRegister1Set);
-  
-  vAddStep("Register2[]"_Stz,       &Step::vRegister2Get);
-  vAddStep("Register2[].get"_Stz,   &Step::vRegister2Get);
-  vAddStep("Register2[].set"_Stz,   &Step::vRegister2Set);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,47 +46,7 @@ void Step::vRegister0Set(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Register1[].get -- get the value in register1                              */
 /*----------------------------------------------------------------------------*/
-void Step::vRegister1Get(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Register1[].set -- set the value in register1                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRegister1Set(void)
-{
-  ENTRY();
-  
-  m_p_TaskLogicUnit->m_xpRegister1 = m_pDataStack->pPopPtr(__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Register2[].get -- get the value in register2                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRegister2Get(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister2);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Register2[].set -- set the value in register2                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRegister2Set(void)
-{
-  ENTRY();
-  
-  m_p_TaskLogicUnit->m_xpRegister2 = m_pDataStack->pPopPtr(__func__);
-}
 
 /*============================================================================*/
 /* end                                                                        */

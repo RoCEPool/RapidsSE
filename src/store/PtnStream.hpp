@@ -21,7 +21,9 @@ namespace STORE
     
     PtnStream(TablePtn* pTablePtn);
    ~PtnStream(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     i8   iBufferNo(void);
     void vClose(void);
     bool bOpen(void);

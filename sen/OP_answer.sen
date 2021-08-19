@@ -63,10 +63,10 @@
   Socket[].object@\clear to InfoSet[]
 
   // get the first row from the infoset
-  InfoSet[].firstRow to row[]
+  InfoSet[].firstRow to infoSetRow[]
 
   // get the 0th column from the row
-  0 row[].getVchColumn to sNodeName
+  0 infoSetRow[].getVchColumn to sNodeName
 
   // find the node
   sNodeName grid::findNodeByName to pAnsweredNode
@@ -96,7 +96,7 @@
 
   //ptnmap::adjust
 
-  //3 Row[].getIntColumn system::started@ not and if
+  //3 infoSetRow[].getIntColumn system::started@ not and if
   //  true system::started!
   //then
 

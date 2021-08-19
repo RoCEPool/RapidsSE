@@ -138,6 +138,13 @@ Stz* SP_Job::sz_schedule(Job* pJob)
 
         );
   
+  if (pJob->iAcksOriginal()) {
+    vCatf("AcksRmg %lld (out of %lld)"_Stz
+           ,pJob->iAcksRmg_printOnlyValue()
+           ,pJob->iAcksOriginal()
+           );
+  }
+  
   if (pJob->pPipeline_job()) {
     vCatf(" pipeline: %s"_Stz
           ,pJob->pPipeline_job()->szPipelineNm()

@@ -26,7 +26,9 @@ namespace STORE
     
     ToPtnRow(void);
    ~ToPtnRow(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vConvert(RowBuffer* pRowBuffer);
   
     RowBuffer* pCompleted(i8 i_Ptn);

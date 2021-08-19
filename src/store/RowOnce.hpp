@@ -21,7 +21,9 @@ namespace STORE
   
     RowOnce(void);
     ~RowOnce(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     bool bRowSeen(Rrf xRowRef);
   
     Footer* aFooter(void);  

@@ -42,7 +42,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   vAddStep("Op.sendKind!"_Stz,        &Step::vOpSendKindStore);
   
-  vAddStep("op::tagSet@"_Stz,         &Step::vOpTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,20 +268,6 @@ void Step::vOpSendKindStore(void)
     Op* pOp = *m_pOp;
 
   pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* op::tagSet@ -- push ptr to op TagSet                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vOpTagSetFetch(void)
-{
-  ENTRY();
-  
-  Op* pOp = *m_pOp;
-
-  m_pDataStack->vPushPtr(pOp->pOpTags());
   
   EXIT();
 }

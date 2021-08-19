@@ -194,11 +194,8 @@ public:
   void vDdlLockTestDrop(void);
 
   // debug
-  void vDebugBloat(void);
-  void vDebugBloatCleanup(void);
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
-  void vDebugThrow(void);
   void vDebugBreakpoint(void);
 
   // devLftRow
@@ -552,6 +549,13 @@ public:
   void vInfoSetTableDump(void);
   void vInfoSetTableGet(void);
   void vInfoSetTableSet(void);
+
+  // inject
+  void vInjectBloat(void);
+  void vInjectBloatCleanup(void);
+  void vInjectSigsegv(void);
+  void vInjectSigsegv_dbg(void);
+  void vInjectThrow(void);
 
   // input
   void vInputChars(void);
@@ -1365,12 +1369,6 @@ public:
   void vRegister0Get(void);
   void vRegister0Set(void);
 
-  void vRegister1Get(void);
-  void vRegister1Set(void);
-
-  void vRegister2Get(void);
-  void vRegister2Set(void);
-
   // row buffer
   void vRowBufferOperandDump(void);
 
@@ -1388,19 +1386,20 @@ public:
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
 
-  // row
-  void vRowGet(void);
-  void vRowGetIntColumn(void);
-  void vRowGetVchColumn(void);
-  void vRowIntColumnFetch(void);
-  void vRowIsNull(void);
-  void vRowSet(void);
+  // infoSetRow
+  void vInfoSetRowGet(void);
+  void vInfoSetRowGetIntColumn(void);
+  void vInfoSetRowGetVchColumn(void);
+  void vInfoSetRowIntColumnFetch(void);
+  void vInfoSetRowIsNull(void);
+  void vInfoSetRowSet(void);
 
   // rowOnce
   void vRowOnceDelete(void);
   void vRowOnceGet(void);
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
+  void vRowOnceSet(void);
 
   // rstack
   void vRstackCsPick(void);
@@ -1670,7 +1669,6 @@ public:
   void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
-  void vStreamSetNextRow(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 

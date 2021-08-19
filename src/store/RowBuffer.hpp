@@ -30,6 +30,7 @@ namespace STORE
       
     static RowBuffer* pToRowBuffer(void* aAddr);
 
+    static void       vRepairList(Object* pObject, eRF eRepair);
     static void       vPostRecv(void* aRowBuffer);
 
     Row* pAllotCopyRow(RowSingle* pRowSingle);

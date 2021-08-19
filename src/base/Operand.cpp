@@ -71,7 +71,7 @@ Operand::~Operand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair the operand                                                         */
+/* repair list of operands                                                    */
 /*----------------------------------------------------------------------------*/
 void Operand::vRepair(Object* pObject, eRF eRepair)
 {
@@ -79,7 +79,7 @@ void Operand::vRepair(Object* pObject, eRF eRepair)
 
   Operand* pOperand = _pOperand(pObject);
 
-  // delete the dir object
+  // delete the operand
   AM::vDeleteOperand(pOperand);
 }
 
