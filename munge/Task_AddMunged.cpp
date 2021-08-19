@@ -5855,7 +5855,7 @@ void Task::vAddMunged(Task* )
     "      // delete the path identifier\n"
     "      PathIdentifier[].delete\n"
     "      nullptr to PathIdentifier[]\n"
-    "      \n"
+    "\n"
     "      // delete the rowOnce skipList\n"
     "      rowOnce[].isNull not if\n"
     "        rowOnce[].delete\n"

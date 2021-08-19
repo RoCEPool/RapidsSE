@@ -330,8 +330,8 @@ void Step::vPathIdentifierScorePaths(void)
 void Step::vPathIdentifierSet(void)
 {
   ENTRY();
-  
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pPathIdentifier || m_p_TaskLogicUnit->m_xpPathIdentifier.bIsNull());
   m_p_TaskLogicUnit->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
   
