@@ -65,7 +65,7 @@ Stz* SP_Recurring::sz(Task* pTask)
   Job* pJob = pTask->pJob();
   if (pJob) {
     SP_Job spJob;
-    vCatf(" job: %s"_Stz,spJob.sz_schedule(pJob));
+    vCatf(" %s"_Stz,spJob.sz(pJob));
     return (Stz*) &m_caResult[0];
   }
 
