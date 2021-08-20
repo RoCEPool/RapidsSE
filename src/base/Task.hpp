@@ -146,12 +146,12 @@ namespace BASE
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);
-    void vDropTaskLock(void);
+    void vDropTaskLock(Stz* szCaller);
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
     Word* pEventHandler(void);
-    void vGrabTaskLock(void);
+    void vGrabTaskLock(Stz* szCaller);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);

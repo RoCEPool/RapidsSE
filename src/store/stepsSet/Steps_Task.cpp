@@ -15,6 +15,8 @@
 #include "JobList.hpp"
 #include "LogicUnit.hpp"
 
+#include "MY.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -125,7 +127,7 @@ void Step::vTaskDropLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vDropTaskLock();
+  pThatTask->vDropTaskLock(m_pThread->szThreadNm());
   
   EXIT();
 }
@@ -155,7 +157,13 @@ void Step::vTaskDelete(void)
     m_pJob = nullptr;
   }
   
-  vGrabTaskLock();
+  Stz* szThreadNm;
+  if (MY::pThread())
+    szThreadNm = MY::pThread()->szThreadNm();
+  else
+    szThreadNm = "PmyThread"_Stz;
+
+  vGrabTaskLock(szThreadNm);
   vScheduleDelete();
 
   EXIT();
@@ -197,7 +205,7 @@ void Step::vTaskGrabLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vGrabTaskLock();
+  pThatTask->vGrabTaskLock(m_pThread->szThreadNm());
 
   EXIT();
 }
@@ -409,7 +417,7 @@ void Step::vTaskSleepMsec(void)
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock();
+  vGrabTaskLock(m_pThread->szThreadNm());
   vScheduleSleep();
 
   EXIT();
@@ -426,7 +434,7 @@ void Step::vTaskSleepSsec(void)
   i8 nMicroSeconds = nSeconds * C_1M;
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock();
+  vGrabTaskLock(m_pThread->szThreadNm());
   vScheduleSleep();
 
   EXIT();
@@ -442,7 +450,7 @@ void Step::vTaskSleepUsec(void)
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock();
+  vGrabTaskLock(m_pThread->szThreadNm());
   vScheduleSleep();
 
   EXIT();
@@ -499,7 +507,7 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
-  vGrabTaskLock();
+  vGrabTaskLock(m_pThread->szThreadNm());
   vScheduleYield();
 
   EXIT();
@@ -512,7 +520,7 @@ void Step::vTaskYield_opLoop(void)
 {
   ENTRY();
     
-  vGrabTaskLock();
+  vGrabTaskLock(m_pThread->szThreadNm());
   RASSERT(bIsLocked());
   vScheduleYield();
 

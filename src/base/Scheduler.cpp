@@ -154,7 +154,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_BIDING);
   pSchedule->vAddBidingSet(pSelfTask);
   
-  pSelfTask->vDropTaskLock();
+  pSelfTask->vDropTaskLock(pThread->szThreadNm());
   
   /** do not touch task **/
 }
@@ -187,7 +187,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 
   pSelfTask->vState(TS_DELETING);
   
-  pSelfTask->vDropTaskLock();
+  pSelfTask->vDropTaskLock(pThread->szThreadNm());
   
   delete pSelfTask; // note: this is the only point where tasks get deleted
 
@@ -218,7 +218,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
     pSelfTask->vState(TS_SLEEPING);
     pSchedule->vAddSleepingQueue(pSelfTask);
 
-    pSelfTask->vDropTaskLock();
+    pSelfTask->vDropTaskLock(pThread->szThreadNm());
     /** do not touch task **/
     return;
   }
@@ -235,7 +235,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
 
   pSchedule->vAddExecutingSet(pSelfTask);
 
-  pSelfTask->vDropTaskLock();
+  pSelfTask->vDropTaskLock(pThread->szThreadNm());
   
   // calling thread continues with self task
 }
@@ -263,7 +263,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_WAITING);
   pSchedule->vAddWaitingSet(pSelfTask);
   
-  pSelfTask->vDropTaskLock();
+  pSelfTask->vDropTaskLock(pThread->szThreadNm());
   /** do not touch task **/
 }
 
@@ -290,7 +290,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   if (nReadyTasks) {
 
     vScheduleTask(pSelfTask);
-    pSelfTask->vDropTaskLock();
+    pSelfTask->vDropTaskLock(pThread->szThreadNm());
     /** do not touch task **/
     return;
   }
@@ -304,7 +304,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   pThread->vTask(pSelfTask);
  
   pSchedule->vAddExecutingSet(pSelfTask);
-  pSelfTask->vDropTaskLock();
+  pSelfTask->vDropTaskLock(pThread->szThreadNm());
   
   // calling thread continues with self task
 }
@@ -352,8 +352,8 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
   RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
   
   // cycle the task lock to ensure task has fully entered wait state
-  pTaskWaiting->vGrabTaskLock();
-  pTaskWaiting->vDropTaskLock();
+  pTaskWaiting->vGrabTaskLock("AckWaiting"_Stz);
+  pTaskWaiting->vDropTaskLock("AckWaiting"_Stz);
     
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTaskWaiting->eState());
@@ -419,7 +419,7 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   
   pSchedule->vRemoveBidingSet(pTaskBiding);
   
-  pTaskBiding->vDropTaskLock();
+  pTaskBiding->vDropTaskLock("TriggerBiding"_Stz);
   
   RASSERT(TS_DESISTED == pTaskBiding->eState());
   RASSERT(QK_NONE == pTaskBiding->eQueue());

@@ -842,13 +842,16 @@ void Task::vDropAllLocks(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDropTaskLock(void)
+void Task::vDropTaskLock(Stz* szCaller)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
-    vTrace("vDropTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+    vTrace("vDropTaskLock: %s by %s\n"_Stz
+           ,m_sTaskNm.szStz()
+           ,szCaller
+           );
     vThreadCallStackDump();
     vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
     vTrace("\n"_Stz);
@@ -860,7 +863,7 @@ void Task::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGrabTaskLock(void)
+void Task::vGrabTaskLock(Stz* szCaller)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -868,7 +871,10 @@ void Task::vGrabTaskLock(void)
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
-    vTrace("vGrabTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+    vTrace("vGrabTaskLock: %s by %s\n"_Stz
+           ,m_sTaskNm.szStz()
+           ,szCaller
+           );
     vThreadCallStackDump();
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
 
