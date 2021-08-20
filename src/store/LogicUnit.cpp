@@ -142,8 +142,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,        "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,        "m_xpTablePtn"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
-,       m_xpToBktCrw(this,RF_NONE,         nullptr,        "m_xpToBktCrw"_Stz)
-,       m_xpToBktRow(this,RF_NONE,         nullptr,        "m_xpToBktRow"_Stz)
+
+,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,   "m_xpToBktCrw"_Stz)
+,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,   "m_xpToBktRow"_Stz)
 
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,  "m_xpToNstRow"_Stz)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepair,  "m_xpToPtnCrw"_Stz)
@@ -328,6 +329,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
 
+  RASSERT(m_xpToBktCrw.bIsNull());
+  RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
   RASSERT(m_xpToPtnCrw.bIsNull());
   RASSERT(m_xpToPtnRow.bIsNull());
