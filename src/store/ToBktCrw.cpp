@@ -61,6 +61,33 @@ ToBktCrw::~ToBktCrw(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the ToBktCrw                                                        */
+/*----------------------------------------------------------------------------*/
+void ToBktCrw::vRepairHashSet(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  ToBktCrw* pToBktCrw = _pToBktCrw(pObject);
+
+  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
+
+    // delete all completed buffers
+    CrwBuffer* pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
+    while(pCrwBuffer) {
+      delete pCrwBuffer;
+      pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
+    }
+
+    // delete dangling buffer
+    pCrwBuffer = pToBktCrw->pDangling(i_Ptn);
+    delete pCrwBuffer;
+  }
+
+  // delete the toBktCrw
+  delete pToBktCrw;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
