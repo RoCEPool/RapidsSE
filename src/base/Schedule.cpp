@@ -125,9 +125,9 @@ void Schedule::vThreadsReport(void)
     
     vTrace("  [%02lld] "
            "%p %2lld"
-           " base %px size %lldB"
-           " user %lld system %lld usage %lld%% sleep %llds"
-           " %s %s"
+           " base %p size %lldB"
+           " user %12lld system %12lld usage %02lld%% sleep %02llds"
+           " %11s"
            " assigned %lld\n"_Stz
            
            ,i_Thread
@@ -144,9 +144,6 @@ void Schedule::vThreadsReport(void)
            ,iSleepSsec
            
            ,aHS[pThread->eThreadState()]
-           ,pThread->eDedicated()
-             ? aCN[pThread->eDedicated()]->azChar()
-             : ""
            
            ,pThread->nAssignedTasks()
            );
@@ -178,8 +175,8 @@ void Schedule::vThreadsReport(void)
     vTrace("  [%02lld] "
            "%p %2lld"
            " base %p size %lldB"
-           " user %lld system %lld usage %lld%% sleep %llds"
-           " %7s %s"
+           " user %12lld system %12lld usage %02lld%% sleep %02llds"
+           " %11s"
            " assigned %lld\n"_Stz
            
            ,i_Thread
@@ -196,9 +193,6 @@ void Schedule::vThreadsReport(void)
            ,iSleepSsec
            
            ,aHS[pThread->eThreadState()]
-           ,pThread->eDedicated()
-             ? aCN[pThread->eDedicated()]->azChar()
-             : ""
            
            ,pThread->nAssignedTasks()
            );
