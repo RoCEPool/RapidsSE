@@ -97,6 +97,8 @@ void Step::vJobsSeeSqueue(void)
   AM::pSchedule()->vDumpSleepingQueue();
   AM::pSchedule()->vDumpWaitingSet();
 
+  AM::pSchedule()->vThreadsReport();
+
   EXIT();
 }
 
