@@ -30,18 +30,24 @@ Thread::Thread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_eThreadState = HS_NONE;
+  // m_xThreadId
+  
   m_eDedicated = CN_NONE;
-
-  m_pTask = nullptr;
-  m_nAssignedTasks = 0;
+  m_eThreadState = HS_NONE;
 
   m_pPsxThd = new PsxThd(this);
+  m_pTask = nullptr;
   
   m_pObject0 = nullptr;
   m_pObject1 = nullptr;
+  
+  // m_oMutex
+
+  m_nAssignedTasks = 0;
 
   _checkInitialised_(CN_THREAD);
+  
+  m_sThreadNm.vSprint("Thread_%02lld"_Stz,iThreadNo());
   
   ++ gixThread;
   
@@ -584,6 +590,16 @@ void Thread::vThreadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* get thread nm                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Thread::szThreadNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+ 
+  return m_sThreadNm;
 }
 
 /*----------------------------------------------------------------------------*/
