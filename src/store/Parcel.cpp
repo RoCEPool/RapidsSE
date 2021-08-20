@@ -24,7 +24,7 @@
 #include "CrwBuffer.hpp"
 
 extern SizeHeap      gxaSizeHeap[];
-
+class Table;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -143,7 +143,18 @@ i8 Parcel::iDstOp(void)
 tPN Parcel::tDstPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  Operand* pOperand = pGetOperand();
 
+#ifdef WITH_BKTMAP_2N4P
+  if (CN_CRWBUFFER == pOperand->eGetClassNo()) {
+
+    CrwBuffer* pBuffer = (CrwBuffer*)m_pItems[0];
+    // Get the bucket number and partition number from buffer
+    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnNo());
+
+    m_tDstPtn = pBuffer->iBucketNo();
+  }
+#endif
   return m_tDstPtn;
 }
 
@@ -445,6 +456,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     // PX cases which send this parcel to a specific partition
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
+      vTrace("vSendToPartition  \n"_Stz);
       Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
       tPN tDstPtnNo_stream = pStream->tPtnNo();
       vSendToPartition(pSrcOp,tDstPtnNo_stream);
@@ -469,11 +481,14 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
         vSendToAllPartitions(pSrcOp);
       }
       else {
-        if (pGetOperand()->bIsBuffer())
+        if (pGetOperand()->bIsBuffer()) {
           vSendToPartition(pSrcOp, tDstPtn);
-        else
+        }
+        else {
           vSendToAllPartitions(pSrcOp);
+        }
       }
+
       break;
     }
      
@@ -546,7 +561,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
     Node* pNode = (*oNode_I);
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
-    //vTrace("Node :%lld\n"_Stz, iDstNode);
+    vTrace("Node :%lld\n"_Stz, iDstNode);
   }
 }
 
@@ -558,7 +573,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   tPN tPtnNo;
-  i8 i_TablePtn;
+  //i8 i_TablePtn;
   
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
@@ -677,7 +692,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   tPN tPtnNo;
-  i8 i_TablePtn;
+  //i8 i_TablePtn;
   
   Operand* pOperand = pGetOperand();
   
@@ -687,7 +702,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-    
+  //vTrace("SendKind:%s\n"_Stz, aXK[m_eSendKind]);
   switch (m_eSendKind) {
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -768,7 +783,9 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+#ifdef WITH_BKTMAP_2N4P
+  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+#endif
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -840,7 +857,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
-  vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
+  //vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
 }
 

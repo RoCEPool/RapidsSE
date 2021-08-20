@@ -11,6 +11,13 @@ namespace STORE
     i4  m_i_Ptn;    // node partition (aka partition of node)
   };
 
+  struct NodeBkt
+  {
+    i4  m_iNodeNo;  // node number
+    i4  m_i_Ptn;    // node partition (aka partition of node)
+    i8  m_i_Bkt;    // Bucket number
+  };
+
   class PtnMap : public Object
   {
   private:
@@ -25,8 +32,8 @@ namespace STORE
     // which {nodeNo,i_ptn} a logical partition mPtnNo is in
     NodePtn m_xaNodePtn[C_MAX_PTNSINGRID];
 
-    // Temp buck array
-    i8 m_iaBkt[C_MAX_PTNSINGRID];
+    // Temp bucket array
+    NodeBkt m_xaBkt[C_MAX_PTNSINGRID];
   
     // must be last
     Footer m_xFooter;
@@ -43,6 +50,7 @@ namespace STORE
     void vAdjustMap(i8 nKnownNodes);
     tPN  tHashToDtdPtnNo(i8 iHash);
     i8   iToBkt(tPN tPtnNo);
+    tPN  tToPtn(i8 iBktNo);
     i8   nKnownNodes(void);
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
@@ -59,7 +67,7 @@ namespace STORE
   private:
     void vRepartition(void);
     void vResetNodePtnArray(void);
-    void vResetNodeBktArray(void);
+    void vInitNodeBktArray(void);
 
     Footer* aFooter(void);
   };

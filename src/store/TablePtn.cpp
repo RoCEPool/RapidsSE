@@ -46,6 +46,10 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pBucketVec = new BucketVec;
 
   vAddBucket(pTable, tPtnNo);
+#ifdef WITH_BKTMAP_2N4P
+  // add second bucket here
+  vAddBucket(pTable, tPtnNo);
+#endif
 
   // Temporary: Be used for now as the only 1 bucket per partition location
   m_pBucket = pGetBucket(0);
@@ -226,6 +230,13 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  /* eventually, we have to append the rowbuffer into the correct bucket
+  i8 iBktNo = pDataBuffer->iBucketNo();
+  Bucket* pBucket = pGetBucket(iBktNo );
+  pBucket->vAppendBuffer(pDataBuffer);
+   */
+
   m_pBucket->vAppendBuffer(pDataBuffer);
 }
 

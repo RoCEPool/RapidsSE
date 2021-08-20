@@ -44,6 +44,7 @@ namespace STORE
     i8   iDstNode(void);
     i8   iDstOp(void);
     tPN  tDstPtn(void);
+    tPN  tDstPtn(i8 i_BktNo);
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
