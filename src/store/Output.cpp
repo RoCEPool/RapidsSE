@@ -341,8 +341,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
           eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
           Stz *szErrorText = pInfoRow->szColVal_ofs(2);
-          
-          i8 iErrorCode = eErrorCode;
 
           vTrace("error: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);

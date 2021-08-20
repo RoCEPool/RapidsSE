@@ -20,11 +20,11 @@ static Stz* aTR[]
 {
   /* 0 */ "TR_NONE"_Stz,
   
-  /* 1 */ "TR_BIDE_FOR_OPERAND"_Stz,
-  /* 2 */ "TR_DELETE_THIS_TASK"_Stz,
-  /* 4 */ "TR_SLEEP_SOME_TIME"_Stz,
-  /* 5 */ "TR_WAIT_FOR_RESUME"_Stz,
-  /* 6 */ "TR_YIELD_FOR_OTHERS"_Stz,
+  /* 1 */ "TR_BIDE"_Stz,
+  /* 2 */ "TR_DELETE"_Stz,
+  /* 4 */ "TR_SLEEP"_Stz,
+  /* 5 */ "TR_WAIT"_Stz,
+  /* 6 */ "TR_YIELD"_Stz,
   
   /* 7 */ "TR_ENUMS"_Stz,
 };

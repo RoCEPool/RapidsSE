@@ -38,65 +38,40 @@ SP_Job::~SP_Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz_api(Job* pJob)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-    
-  StrLib::vSprint(m_caResult,
-                  "Job %p: name %s "_Stz,
-                  
-                  pJob,
-                  pJob->szJobNm()
-                  
-                  );
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz_detail(Job* pJob)
+Stz* SP_Job::sz(Job* pJob)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
- 
-  StrLib::vSprint(m_caResult,
-                  "%s %s %s %s"_Stz,
+  vInit();
 
-                  pJob->m_sJobNm.azChar(),
-                  aJK[pJob->m_eJobKind],
-                  aJP[pJob->m_eJobKind],
-                  aJS[pJob->m_eJobKind]
+  vCatf("Job {"
+        "%p "
+        "%s %s %s %s"_Stz
 
-                  );
+        ,pJob
+        
+        ,pJob->m_sJobNm.azChar()
+        ,aJK[pJob->m_eJobKind]
+        ,aJP[pJob->m_eJobPhase]
+        ,aJS[pJob->m_eJobState]
+
+        );
   
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz_log(Job* pJob)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-    
-  StrLib::vSprint(m_caResult,
-                  "{%s %lld %s %s %s %s%s}%s"_Stz,
-                  
-                  aCN[pJob->eGetClassNo()],
-                  pJob->iAcksRmg_printOnlyValue(),
-
-                  aSS[pJob->eSeed()],
-                  aJL[pJob->eJobList()],
-                  aJP[pJob->eJobPhase()],
-                  aJS[pJob->eJobState()],
-                  
-                  pJob->bHasTag_noWait()   ? ""_Stz       : " wait"_Stz,
-                  pJob->bWasReceived() ? " recvd"_Stz : ""_Stz,
-                  
-                  C_VARGS_END);
+  if (pJob->iAcksOriginal()) {
+    vCatf("AcksRmg %lld (out of %lld)"_Stz
+           ,pJob->iAcksRmg_printOnlyValue()
+           ,pJob->iAcksOriginal()
+           );
+  }
   
+  if (pJob->pPipeline_job()) {
+    vCatf(" %s"_Stz
+          ,pJob->pPipeline_job()->szPipelineNm()
+          );
+  }
+  
+  vCats("}"_Stz);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -116,40 +91,6 @@ Stz* SP_Job::sz_recv(Job* pJob)
                   spHeader.sz(pJob),
                    spFooter.sz(pJob)
                   );
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz_schedule(Job* pJob)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-  
-  vInit();
-
-  vCatf("%s %s %s %s"_Stz
-
-        ,pJob->m_sJobNm.azChar()
-        ,aJK[pJob->m_eJobKind]
-        ,aJP[pJob->m_eJobPhase]
-        ,aJS[pJob->m_eJobState]
-
-        );
-  
-  if (pJob->iAcksOriginal()) {
-    vCatf("AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->iAcksRmg_printOnlyValue()
-           ,pJob->iAcksOriginal()
-           );
-  }
-  
-  if (pJob->pPipeline_job()) {
-    vCatf(" pipeline: %s"_Stz
-          ,pJob->pPipeline_job()->szPipelineNm()
-          );
-  }
   
   return (Stz*) &m_caResult[0];
 }

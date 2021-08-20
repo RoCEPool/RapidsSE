@@ -11,10 +11,9 @@ namespace BASE
                  public ListItem_t<Thread>
   {
   private:
-    Mutex    m_oMutex;        // this threads mutex
-  
     Gid<CN_THREAD> m_xThreadId; // threads object id
-
+    s32            m_sThreadNm; // name of this thread
+  
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
     eHS      m_eThreadState;  // thread state
   
@@ -24,6 +23,8 @@ namespace BASE
     Object*  m_pObject0;      // general purpose object 0
     Object*  m_pObject1;      // general purpose object 1
 
+    Mutex    m_oMutex;        // this threads mutex
+  
     i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
   
     // must be last
@@ -68,6 +69,7 @@ namespace BASE
     void vTask(Task* pTask);
     void vThisTLSThread(void);
     void vThreadEntry(void);
+    Stz* szThreadNm(void);
     i8   iThreadNo(void);
     eHS  eThreadState(void);
     void vThreadState(eHS eThreadState);

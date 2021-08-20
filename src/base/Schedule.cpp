@@ -110,6 +110,12 @@ void Schedule::vThreadsReport(void)
   pSchedule->m_pGeneralThreadVec->vGrabLock();
 
   i8 nThreads = pSchedule->m_pGeneralThreadVec->nItems();
+
+  vTrace("====================================\n"_Stz);
+  vTrace("General Threads: %lld\n"_Stz,nThreads);
+  if (nThreads)
+    vTrace("------------------------------------\n"_Stz);
+
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
     Thread* pThread = pSchedule->m_pGeneralThreadVec->pGet(i_Thread);
@@ -117,29 +123,36 @@ void Schedule::vThreadsReport(void)
     pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
-    vTrace("  Gen Thread %2lld %p"
-           " base %llx size %lld"
-           " user %lld system %lld usage %lld%% sleep %llds"
-           " %s %s"
-           " assigned %lld\n"_Stz,
-           pThread->iThreadNo(),
-           pThread,
+    vTrace("  [%02lld] "
+           "%p %2lld %s"
+           " base %p size %lldB"
+           " user %12lld system %12lld usage %02lld%% sleep %02llds"
+           " %11s"
+           " assigned %lld\n"_Stz
            
-           pThread->pPsxThd()->m_aStackBase,
-           pThread->pPsxThd()->m_iStackSize,
+           ,i_Thread
            
-           iUserTime,
-           iSystemTime,
-           iPercentageUsage,
-           iSleepSsec,
+           ,pThread
+           ,pThread->iThreadNo()
+           ,pThread->szThreadNm()
+
+           ,pThread->pPsxThd()->m_aStackBase
+           ,pThread->pPsxThd()->m_iStackSize
            
-           aHS[pThread->eThreadState()],
-           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
+           ,iUserTime
+           ,iSystemTime
+           ,iPercentageUsage
+           ,iSleepSsec
            
-           pThread->nAssignedTasks()
+           ,aHS[pThread->eThreadState()]
+           
+           ,pThread->nAssignedTasks()
            );
   }
   
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+
   pSchedule->m_pGeneralThreadVec->vDropLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,6 +160,12 @@ void Schedule::vThreadsReport(void)
   pSchedule->m_pDedicatedThreadVec->vGrabLock();
   
   nThreads = pSchedule->m_pDedicatedThreadVec->nItems();
+    
+  vTrace("====================================\n"_Stz);
+  vTrace("Dedicated Threads: %lld\n"_Stz,nThreads);
+  if (nThreads)
+    vTrace("------------------------------------\n"_Stz);
+
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
     Thread* pThread = pSchedule->m_pDedicatedThreadVec->pGet(i_Thread);
@@ -154,29 +173,36 @@ void Schedule::vThreadsReport(void)
     pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
-    vTrace("  Ded Thread %2lld %p"
-           " base %llx size %lld"
-           " user %lld system %lld usage %lld%% sleep %llds"
-           " %7s %s"
-           " assigned %lld\n"_Stz,
-           pThread->iThreadNo(),
-           pThread,
+    vTrace("  [%02lld] "
+           "%p %2lld %s"
+           " base %p size %lldB"
+           " user %12lld system %12lld usage %02lld%% sleep %02llds"
+           " %11s"
+           " assigned %lld\n"_Stz
            
-           pThread->pPsxThd()->m_aStackBase,
-           pThread->pPsxThd()->m_iStackSize,
+           ,i_Thread
            
-           iUserTime,
-           iSystemTime,
-           iPercentageUsage,
-           iSleepSsec,
+           ,pThread
+           ,pThread->iThreadNo()
+           ,pThread->szThreadNm()
+
+           ,pThread->pPsxThd()->m_aStackBase
+           ,pThread->pPsxThd()->m_iStackSize
            
-           aHS[pThread->eThreadState()],
-           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
+           ,iUserTime
+           ,iSystemTime
+           ,iPercentageUsage
+           ,iSleepSsec
            
-           pThread->nAssignedTasks()
+           ,aHS[pThread->eThreadState()]
+           
+           ,pThread->nAssignedTasks()
            );
   }
   
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+
   pSchedule->m_pDedicatedThreadVec->vDropLock();
 }
 

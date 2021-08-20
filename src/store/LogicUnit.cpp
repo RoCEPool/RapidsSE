@@ -131,22 +131,27 @@ LogicUnit::LogicUnit(void)
 ,          m_xpSends(this,RF_NONE,         nullptr,        "m_xpSends"_Stz)
 ,       m_xpShardDef(this,RF_NONE,         nullptr,        "m_xpShardDef"_Stz)
 ,         m_xpSocket(this,RF_NONE,         nullptr,        "m_xpSocket"_Stz)
-,   m_xpStreamDefLft(this,RF_NONE,         nullptr,        "m_xpStreamDefLft"_Stz)
-,   m_xpStreamDefRht(this,RF_NONE,         nullptr,        "m_xpStreamDefRht"_Stz)
-,   m_xpStreamDefOut(this,RF_NONE,         nullptr,        "m_xpStreamDefOut"_Stz)
-,      m_xpStreamSet(this,RF_NONE,         nullptr,        "m_xpStreamSet"_Stz)
-, m_xpStreamSetTable(this,RF_NONE,         nullptr,        "m_xpStreamSetTable"_Stz)
+
+,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,        "m_xpStreamDefLft"_Stz)
+,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDef::vRepair,        "m_xpStreamDefRht"_Stz)
+,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,        "m_xpStreamDefOut"_Stz)
+,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,        "m_xpStreamSet"_Stz)
+, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                   "m_xpStreamSetTable"_Stz)
+
 ,         m_xpSubset(this,RF_NONE,         nullptr,        "m_xpSubset"_Stz)
-,          m_xpTable(this,RF_NONE,         nullptr,        "m_xpTable"_Stz)
-,       m_xpTablePtn(this,RF_NONE,         nullptr,        "m_xpTablePtn"_Stz)
+,          m_xpTable(this,RF_SET_NULL,     nullptr,        "m_xpTable"_Stz)
+,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,        "m_xpTablePtn"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,        "m_xpTimer"_Stz)
-,       m_xpToBktCrw(this,RF_NONE,         nullptr,        "m_xpToBktCrw"_Stz)
-,       m_xpToBktRow(this,RF_NONE,         nullptr,        "m_xpToBktRow"_Stz)
+
+,       m_xpToBktCrw(this,RF_NONE,ToBktCrw::vRepairHashSet,   "m_xpToBktCrw"_Stz)
+,       m_xpToBktRow(this,RF_NONE,ToBktRow::vRepairHashSet,   "m_xpToBktRow"_Stz)
+
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,  "m_xpToNstRow"_Stz)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepair,  "m_xpToPtnCrw"_Stz)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepair,  "m_xpToPtnRow"_Stz)
-,          m_xpToRow(this,RF_NONE,         nullptr,        "m_xpToRow"_Stz)
-,             m_xpTx(this,RF_NONE,         nullptr,        "m_xpTx"_Stz)
+
+,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepair,     "m_xpToRow"_Stz)
+,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,     "m_xpTx"_Stz)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -315,9 +320,22 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpInfoSetRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
 
+  RASSERT(m_xpStreamDefLft.bIsNull());
+  RASSERT(m_xpStreamDefRht.bIsNull());
+  RASSERT(m_xpStreamDefOut.bIsNull());
+  RASSERT(m_xpStreamSet.bIsNull());
+  RASSERT(m_xpStreamSetTable.bIsNull());
+
+  RASSERT(m_xpTable.bIsNull());
+  RASSERT(m_xpTablePtn.bIsNull());
+
+  RASSERT(m_xpToBktCrw.bIsNull());
+  RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
   RASSERT(m_xpToPtnCrw.bIsNull());
   RASSERT(m_xpToPtnRow.bIsNull());
+  RASSERT(m_xpToRow.bIsNull());
+  RASSERT(m_xpTx.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );

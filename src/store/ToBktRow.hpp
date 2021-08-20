@@ -26,7 +26,9 @@ namespace STORE
     
     ToBktRow(void);
    ~ToBktRow(void) noexcept(false);
-  
+
+    static void vRepairHashSet(Object* pObject, eRF eRepair);
+
     void vConvert(RowBuffer* pRowBuffer);
   
     RowBuffer* pCompleted(i8 i_Ptn);

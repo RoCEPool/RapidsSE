@@ -33,10 +33,11 @@
   // create the table
 
   StreamDefLft[] sTableNm table::createTable to Table[]
+  nullptr to StreamDefLft[]
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                               */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : createTable_StreamDef
 
@@ -63,7 +64,7 @@
   // check ok to create table
   sTableNm createTable::checkCreate not if ( errorCode )
     to errorCode
-    StreamDefLft[].delete
+    //StreamDefLft[].delete
     errorCode op__execErr
     true
     exit

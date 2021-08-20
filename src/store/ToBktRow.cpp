@@ -47,6 +47,37 @@ ToBktRow::~ToBktRow(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair the ToBktCrw                                                        */
+/*----------------------------------------------------------------------------*/
+void ToBktRow::vRepairHashSet(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  ToBktRow* pToBktRow = _pToBktRow(pObject);
+
+  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
+
+    // delete all completed buffers
+    RowBuffer* pRowBuffer = pToBktRow->pCompleted(i_Ptn);
+    while(pRowBuffer) {
+      delete pRowBuffer;
+      pRowBuffer = pToBktRow->pCompleted(i_Ptn);
+    }
+
+    // delete dangling buffer
+    pRowBuffer = pToBktRow->pDangling(i_Ptn);
+    delete pRowBuffer;
+  }
+
+  // delete the toBktRow
+  delete pToBktRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

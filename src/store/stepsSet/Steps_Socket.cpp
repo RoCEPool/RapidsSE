@@ -401,7 +401,7 @@ void Step::vSocketSendObject(void)
 //    vTrace("%lld %p: vSocketSendObject: Job %s\n"_Stz,
 //           AM::iThisNodeNo(),
 //           pSocket,
-//           spJob.sz_detail(pJob));
+//           spJob.sz(pJob));
 
   }
 

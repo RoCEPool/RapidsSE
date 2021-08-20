@@ -202,6 +202,8 @@ cmdSyntax: answer :: answer ;
 
 : answer_cmdTags _cmdTags tagCopy: serviceOp_tags
 
+  //tags{ <dedicatedThd> = 1 }
+
 ;
 
 /*============================================================================*/

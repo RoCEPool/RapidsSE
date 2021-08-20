@@ -54,6 +54,32 @@ SP_Op::~SP_Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* sprint schedule version of op                                              */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Op::sz(Op* pOp)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 nQueuedOperands = pOp->nQueuedOperands();
+  
+  vInit();
+  
+  vCatf("Op {"
+        "%p "
+        "operands %lld "
+        "%s"
+        "}"_Stz
+
+        ,pOp
+        ,nQueuedOperands
+        ,pOp->szPath()
+  );
+        
+
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
 Stz* SP_Op::szAck(Op* pOp)
@@ -147,20 +173,6 @@ Stz* SP_Op::szPath(Op* pOp)
         ,pOp->szOpNm()
         );
 
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint schedule version of op                                              */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Op::szSchedule(Op* pOp)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-  
-  vCats(pOp->szPath());
-  
   return (Stz*) &m_caResult[0];
 }
 

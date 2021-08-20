@@ -72,6 +72,19 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the transaction                                                     */
+/*----------------------------------------------------------------------------*/
+void Tx::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  Tx* pTx = _pTx(pObject);
+
+  // delete the transaction
+  delete pTx;
+}
+
+/*----------------------------------------------------------------------------*/
 /* outline                                                                    */
 /*----------------------------------------------------------------------------*/
 void Tx::vOutline(s4K& sOutline)

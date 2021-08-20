@@ -38,44 +38,6 @@ SP_Thread::~SP_Thread(void) noexcept(false)
 Stz* SP_Thread::sz(Thread* pThread)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-  UNUSED(pThread);
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Thread::sz_log(Thread* pThread)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-  
-  SP_Gid spTaskId;
-  
-  StrLib::vSprint(m_caResult,
-                  "{%s %s%s}"_Stz,
-                  
-                  aHS[pThread->eThreadState()],
-                  
-                  spTaskId.sz(pThread->pTask()
-                                ? pThread->pTask()->iTaskId()
-                                : C_UNKNOWN),
-                  
-                  CN_NONE == pThread->eDedicated()
-                    ? ""_Stz
-                    : " dedicated"_Stz,
-
-                  C_VARGS_END);
-  
-  return (Stz*) &m_caResult[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Header and return Stz* to result                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SP_Thread::sz_schedule(Thread* pThread)
-{
-  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
   vInit();
   
@@ -87,7 +49,7 @@ Stz* SP_Thread::sz_schedule(Thread* pThread)
   
   vCatf("Thread {"
         "%p: "
-        "%s %s"
+        "%s %9s"
         "}"_Stz
               
         ,pThread

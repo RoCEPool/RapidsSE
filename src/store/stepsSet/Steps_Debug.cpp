@@ -29,6 +29,8 @@ void Step::vDebugBreakpoint(void)
 {
   ENTRY();
 
+  vSeeFrameStack();
+  
   BASE::vDebugPoint();
   
   EXIT();
