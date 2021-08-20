@@ -13,7 +13,7 @@
 
   // cleanup
   //StreamDefLft[].delete
-  StreamDefOut[].delete
+  //StreamDefOut[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in
   find: EATOPERAND_handler ZK_D_CRWBUFFER op[].handler!
