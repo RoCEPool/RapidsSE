@@ -157,13 +157,10 @@ void Step::vTaskDelete(void)
     m_pJob = nullptr;
   }
   
-  Stz* szThreadNm;
-  if (MY::pThread())
-    szThreadNm = MY::pThread()->szThreadNm();
-  else
-    szThreadNm = "PmyThread"_Stz;
+  Stz* szThreadNm = MY::szThreadNm();
 
   vGrabTaskLock(szThreadNm);
+
   vScheduleDelete();
 
   EXIT();

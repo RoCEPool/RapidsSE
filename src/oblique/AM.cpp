@@ -1798,7 +1798,7 @@ void AM::vDeleteOperand(Operand* pOperand)
   }
 }
 void AM::vDropTaskLock(Task* pTask) {
-  pTask->vDropTaskLock("AM"_Stz);
+  pTask->vDropTaskLock(MY::szCallerNm());
 }
 void AM::vRootConstant(Word* pConstantRoot) {
   gpAttachMap->m_pConstantRoot = pConstantRoot;
@@ -1807,7 +1807,7 @@ void AM::vRootWord(Word* pWordRoot) {
   gpAttachMap->m_pWordRoot = pWordRoot;
 }
 void AM::vGrabTaskLock(Task* pTask) {
-  pTask->vGrabTaskLock("AM"_Stz);
+  pTask->vGrabTaskLock(MY::szCallerNm());
 }
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_xSysArgs.m_nIndexEntries = nIndexEntries;
