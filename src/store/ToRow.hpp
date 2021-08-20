@@ -52,7 +52,9 @@ namespace STORE
     ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
           Format* pFmt, bool bPtnHash);
    ~ToRow(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
