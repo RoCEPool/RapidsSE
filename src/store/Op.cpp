@@ -484,7 +484,7 @@ void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
-  AM::vDropTaskLock(m_pTask);
+  AM::vDropTaskLock(m_pTask,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,7 +523,7 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vGrabTaskLock(m_pTask);
+  AM::vGrabTaskLock(m_pTask,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

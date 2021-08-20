@@ -515,8 +515,8 @@ namespace OBLIQUE
     static Queue* pOutputQueue(Session* pSession);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
-    static void vDropTaskLock(Task* pTask);
-    static void vGrabTaskLock(Task* pTask);
+    static void vDropTaskLock(Task* pTask, Stz* szFunc);
+    static void vGrabTaskLock(Task* pTask, Stz* szFunc);
     static void vIndexEntries(i8 nIndexEntries);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);

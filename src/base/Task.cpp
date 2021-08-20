@@ -16,7 +16,7 @@
 #include "SP_Word.hpp" //?
 #include "LogicUnit.hpp" //?
 
-#include "MY.hpp" 
+#include "MY.hpp"
 
 Atomic gixTask;
 
@@ -844,7 +844,7 @@ void Task::vDropAllLocks(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDropTaskLock(void)
+void Task::vDropTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -852,9 +852,10 @@ void Task::vDropTaskLock(void)
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
-    vTrace("vDropTaskLock: %s by %s\n"_Stz
+    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
+           ,szFunc
            );
     vThreadCallStackDump();
     vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
@@ -867,7 +868,7 @@ void Task::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGrabTaskLock(void)
+void Task::vGrabTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -877,9 +878,10 @@ void Task::vGrabTaskLock(void)
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
-    vTrace("vGrabTaskLock: %s by %s\n"_Stz
+    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
+           ,szFunc
            );
     vThreadCallStackDump();
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
