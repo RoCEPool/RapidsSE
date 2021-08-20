@@ -46,6 +46,10 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pBucketVec = new BucketVec;
 
   vAddBucket(pTable, tPtnNo);
+#ifdef WITH_BKTMAP_2N4P
+  // add second bucket here
+  vAddBucket(pTable, tPtnNo);
+#endif
 
   // Temporary: Be used for now as the only 1 bucket per partition location
   m_pBucket = pGetBucket(0);

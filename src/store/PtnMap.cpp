@@ -324,10 +324,27 @@ void PtnMap::vResetNodePtnArray(void)
 void PtnMap::vInitNodeBktArray(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PTNMAP, _FOOTER_);
 
+#ifdef WITH_BKTMAP_2N4P
+  //AM::PTNMAP::nPtnsInGrid()
+
+  i8 i_Ptn = 0;
+  i8 i_Bkt = 0;
+
+  while (i_Bkt < C_MAX_BUCKETS)
+  {
+    m_xaBkt[i_Bkt].m_i_Ptn = i_Ptn;
+    m_xaBkt[++i_Bkt].m_i_Bkt = i_Ptn;
+
+    i_Bkt++;
+    i_Ptn++;
+  }
+#else
+
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
     m_xaBkt[i_Ptn].m_i_Ptn = i_Ptn;
     m_xaBkt[i_Ptn].m_i_Bkt = i_Ptn;
   }
+#endif
 }
 
 /*============================================================================*/

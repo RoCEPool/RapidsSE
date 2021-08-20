@@ -64,6 +64,18 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pParcel      = nullptr;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
+#ifdef WITH_BKTMAP_2N4P
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
+
+      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo);
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+
+#else
   
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
   //        has started). Experimentally allows new, but non-active nodes to be
@@ -82,6 +94,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
@@ -564,10 +577,12 @@ TablePtn* Table::pTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
+#ifdef WITH_BKTMAP_2N4P
   // experiment on where we can map Bkt to Ptn
   // i_TablePtn could be a BktNo, gets mapped to PtnNo
   i8 i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnNo(i_TablePtn);
-  vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
+  //vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
+#endif
   
   return m_pTablePtnVec->pGet(i_TablePtn);
 }
