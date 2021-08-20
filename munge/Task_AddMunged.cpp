@@ -23888,7 +23888,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // cleanup\n"
     "  //StreamDefLft[].delete\n"
-    "  StreamDefOut[].delete\n"
+    "  //StreamDefOut[].delete\n"
     "\n"
     "  // set EATOPERAND handler for buffers and EOS markers coming in\n"
     "  find: EATOPERAND_handler ZK_D_CRWBUFFER op[].handler!\n"
