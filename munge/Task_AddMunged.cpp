@@ -8422,7 +8422,7 @@ void Task::vAddMunged(Task* )
     "\n"
     ": supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags\n"
     "\n"
-    "  //tags{ <dedicatedThd> = 1 }\n"
+    "  // tags{ <dedicatedThd> = 1 }\n"
     "\n"
     " ;\n"
     "\n"
