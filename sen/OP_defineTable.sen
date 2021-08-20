@@ -31,6 +31,7 @@
   // create the table
 
   StreamDefLft[] <tableNm> table::createTable to Table[]
+  nullptr to StreamDefLft[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +52,7 @@
   // check ok to create table
   defineTable::checkDefine not if ( errorCode )
     to errorCode
-    StreamDefLft[].delete
+    //StreamDefLft[].delete
     errorCode op__execErr
     true
     exit

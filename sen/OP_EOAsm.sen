@@ -252,6 +252,9 @@
   // execute plan STREAMDEF_handler
   ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
+  // StreamDef handler saves the streamDefLft as StreamDefOut
+  nullptr to StreamDefLft[]
+
   //StreamDefLft[].asSrcStreamDef
 
   // pipeout streamDefout if any

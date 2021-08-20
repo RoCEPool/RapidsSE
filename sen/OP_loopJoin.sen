@@ -28,7 +28,7 @@
 /* on ZK_M_END ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_End \handler
-  "ZK_M_END" .
+  //"ZK_M_END" .
   ZK_M_END_handler
 ;
 
@@ -36,14 +36,14 @@
 /* on ZK_M_ENDING ...                                                     END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_Ending \handler
-  "ZK_M_ENDING" .
+  //"ZK_M_ENDING" .
   ZK_M_ENDING_handler
 ;
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_EXITING ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : loopJoin_Exiting \handler
-  "ZK_M_EXITING" .
+  //"ZK_M_EXITING" .
   ZK_M_EXITING_handler
 ;
 
@@ -54,7 +54,7 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  "ZK_M_CLEANING" .
+  //"ZK_M_CLEANING" .
 
   // cleanup the pot
   PotRlu[].cleanup
