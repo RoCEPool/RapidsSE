@@ -17,6 +17,7 @@
 #include "LogicUnit.hpp" //?
 
 #include "MY.hpp"
+#include "HeadsUp.hpp"
 
 Atomic gixTask;
 
@@ -850,12 +851,16 @@ void Task::vDropTaskLock(Stz* szFunc)
   
   Stz* szCaller = MY::szCallerNm();
   
+  
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    HeadsUp oHeadsUp;
+    
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
-    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
+    vTrace("vDropTaskLock: %s by %s func %s %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
            ,szFunc
+           ,oHeadsUp.sz()
            );
     vThreadCallStackDump();
     vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
@@ -875,13 +880,17 @@ void Task::vGrabTaskLock(Stz* szFunc)
   Stz* szCaller = MY::szCallerNm();
 
   m_okLock.vGrabWrite();
-  
+
+
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    HeadsUp oHeadsUp;
+    
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
-    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
+    vTrace("vGrabTaskLock: %s by %s func %s %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
            ,szFunc
+           ,oHeadsUp.sz()
            );
     vThreadCallStackDump();
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
