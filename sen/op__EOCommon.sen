@@ -12,7 +12,7 @@
   params| eError |
 
   // cleanup
-  StreamDefLft[].delete
+  //StreamDefLft[].delete
   StreamDefOut[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in

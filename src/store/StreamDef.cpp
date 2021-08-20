@@ -100,7 +100,20 @@ StreamDef::~StreamDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* repair the logicCompiler                                                   */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  StreamDef* pStreamDef = _pStreamDef(pObject);
+
+  // delete the streamDef
+  delete pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append streamDef                                                           */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAppendStreamDef(StreamDef* pStreamDef)
 {
