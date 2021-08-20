@@ -90,7 +90,7 @@ Stz* MY::szJobNm(void)
 {
   _static_
   
-  Job* pJob = AM::pThisTLSJob();
+  Job* pJob = MY::pJob();
   
   if (! pJob)
     return "(no-job)"_Stz;
