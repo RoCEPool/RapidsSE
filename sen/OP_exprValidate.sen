@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : exprValidate_PlanOperand \handler
 
-PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to Operand[]
 
   // create the command error info set
   op__cmdErrInfoSet

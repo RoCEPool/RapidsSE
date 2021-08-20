@@ -175,7 +175,7 @@
 : loopJoin_EosMarker \handler
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
-  "ZK_M_EOS" .
+  //"ZK_M_EOS" .
 
   // execute the eosMarker asm handler
   ZK_M_EOS Counter0[] executeAsmArgs
