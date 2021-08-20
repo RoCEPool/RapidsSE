@@ -127,7 +127,7 @@ void Step::vTaskDropLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vDropTaskLock(m_pThread->szThreadNm());
+  pThatTask->vDropTaskLock();
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Step::vTaskDelete(void)
   
   Stz* szThreadNm = MY::szThreadNm();
 
-  vGrabTaskLock(szThreadNm);
+  vGrabTaskLock();
 
   vScheduleDelete();
 
@@ -202,7 +202,7 @@ void Step::vTaskGrabLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vGrabTaskLock(m_pThread->szThreadNm());
+  pThatTask->vGrabTaskLock();
 
   EXIT();
 }
@@ -414,7 +414,7 @@ void Step::vTaskSleepMsec(void)
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   vScheduleSleep();
 
   EXIT();
@@ -431,7 +431,7 @@ void Step::vTaskSleepSsec(void)
   i8 nMicroSeconds = nSeconds * C_1M;
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   vScheduleSleep();
 
   EXIT();
@@ -447,7 +447,7 @@ void Step::vTaskSleepUsec(void)
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
   vSleepUsec(nMicroSeconds);
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   vScheduleSleep();
 
   EXIT();
@@ -504,7 +504,7 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   vScheduleYield();
 
   EXIT();
@@ -517,7 +517,7 @@ void Step::vTaskYield_opLoop(void)
 {
   ENTRY();
     
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   RASSERT(bIsLocked());
   vScheduleYield();
 

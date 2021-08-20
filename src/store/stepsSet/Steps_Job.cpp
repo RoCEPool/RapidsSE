@@ -428,7 +428,7 @@ void Step::vJobCompleted(void)
   
   pJob->vJobState(JS_COMPLETED);
   
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
   vScheduleDelete();
   
   EXIT();
@@ -1076,7 +1076,7 @@ void Step::vJobSignalSession(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vGrabTaskLock(m_pThread->szThreadNm());
+  vGrabTaskLock();
 
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
@@ -1096,7 +1096,7 @@ void Step::vJobSignalSession(void)
   pSession->m_oMutex.vSignal(this);
   pSession->m_oMutex.vUnlock(this);
 
-  vDropTaskLock(m_pThread->szThreadNm());
+  vDropTaskLock();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

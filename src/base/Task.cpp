@@ -16,6 +16,8 @@
 #include "SP_Word.hpp" //?
 #include "LogicUnit.hpp" //?
 
+#include "MY.hpp" 
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -842,9 +844,11 @@ void Task::vDropAllLocks(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDropTaskLock(Stz* szCaller)
+void Task::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Stz* szCaller = MY::szCallerNm();
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
@@ -863,10 +867,12 @@ void Task::vDropTaskLock(Stz* szCaller)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGrabTaskLock(Stz* szCaller)
+void Task::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  Stz* szCaller = MY::szCallerNm();
+
   m_okLock.vGrabWrite();
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
