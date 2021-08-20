@@ -1776,7 +1776,7 @@ void Op::vSpawnOpTask(i8 iSessionId)
 
   if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
     
-    m_oOpTags.vDumpSet(true);
+    //m_oOpTags.vDumpSet(true);
     
     AM::vSpawnTaskDedicated_op(this);
   }

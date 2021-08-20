@@ -846,7 +846,13 @@ void Task::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  //vTrace("vDropTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
+    vTrace("vDropTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+    vThreadCallStackDump();
+    vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
+    vTrace("\n"_Stz);
+  }
   
   m_okLock.vDropWrite();
 }
@@ -858,9 +864,17 @@ void Task::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  //vTrace("vGrabTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
-  
   m_okLock.vGrabWrite();
+  
+  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
+    vTrace("vGrabTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+    vThreadCallStackDump();
+    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
+
+    vTrace("\n"_Stz);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
