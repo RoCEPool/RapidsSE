@@ -298,12 +298,14 @@ void Task::vVerifyTaskComposition(void)
   aFooter()->vAssertFooter();
   
   if (m_pJob.bIsNotNull()) {
-    //RASSERT(! *m_pOp);
+    RASSERT(m_pOp.bIsNull());
+    RASSERT(m_sTaskNm.bSame(m_pJob->szJobNm()));
     m_pJob->vVerifyJobComposition();
   }
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
+    RASSERT(m_sTaskNm.bSame(m_pOp->szOpNm()));
     m_pOp->vVerifyOpComposition();
   }
   else {
@@ -487,7 +489,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
-         pTask->szJobName(),
+         pTask->szJobNm(),
          pTask,
          aTS[pTask->m_eState]->azChar()
          );
@@ -844,6 +846,8 @@ void Task::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  //vTrace("vDropTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
+  
   m_okLock.vDropWrite();
 }
 
@@ -853,6 +857,8 @@ void Task::vDropTaskLock(void)
 void Task::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  //vTrace("vGrabTaskLock: %s\n"_Stz,m_sTaskNm.szStz());
   
   m_okLock.vGrabWrite();
 }
@@ -954,7 +960,7 @@ void Task::vJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* get the job name of this task                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Task::szJobName(void)
+Stz* Task::szJobNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1341,6 +1347,26 @@ i8 Task::iTaskId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get task name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Task::szTaskNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_sTaskNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task name                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskNm(Stz* szTaskNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_sTaskNm = szTaskNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
 Thread* Task::pvThread_DONT_DEREF(void)
@@ -1388,7 +1414,7 @@ void Task::vTracePoint(Stz* aMark)
         
          AM::szNodeNm(),
          AM::iThisNodeNo(),
-         szJobName(),
+         szJobNm(),
          m_oAcksRmg_task.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),

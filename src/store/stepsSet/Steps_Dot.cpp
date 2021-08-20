@@ -115,7 +115,7 @@ void Step::vDotVerbose(void)
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_SEN)) {
     vTrace("[%p %s] %s\n"_Stz,
            this,
-           szJobName(),
+           szJobNm(),
            xVariable.szStz());
   }
   

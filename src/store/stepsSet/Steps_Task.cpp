@@ -276,7 +276,7 @@ void Step::vTaskNameFetch(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  s256 sName((Stz*)pThatTask->szJobName());
+  s256 sName((Stz*)pThatTask->szJobNm());
   
   m_pDataStack->vPushStr(sName);
   

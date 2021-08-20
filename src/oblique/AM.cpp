@@ -1263,7 +1263,9 @@ Task* AM::TASK::pNew(Job* pJob)
 
   pTask->vJob(pJob);
   pJob->vTask(pTask);
-
+  
+  pTask->vTaskNm(pJob->szJobNm());
+  
   return pTask;
 }
 
@@ -1276,6 +1278,8 @@ Task* AM::TASK::pNew(Op* pOp)
 
   pTask->vOp(pOp);
   pOp->vTask(pTask);
+
+  pTask->vTaskNm(pOp->szOpNm());
 
   return pTask;
 }

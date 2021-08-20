@@ -160,7 +160,7 @@ namespace BASE
     bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    Stz* szJobName(void);
+    Stz* szJobNm(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMutexLock(void);
@@ -189,6 +189,10 @@ namespace BASE
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);
+  
+    Stz* szTaskNm(void);
+    void vTaskNm(Stz* szTaskNm);
+
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
