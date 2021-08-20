@@ -92,7 +92,12 @@ Stz* MY::szJobNm(void)
   
   Job* pJob = AM::pThisTLSJob();
   
-  return aCN[pJob->eGetClassNo()];
+  if (! pJob)
+    return "(no-job)"_Stz;
+  
+  Stz* szJobNm = pJob->szJobNm();
+  
+  return szJobNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +122,7 @@ Stz* MY::szOpNm(void)
   Op* pOp = MY::pOp();
   
   if (! pOp)
-    return ""_Stz;
+    return "(no-op)"_Stz;
   
   Stz* szOpNm = pOp->szOpNm();
   

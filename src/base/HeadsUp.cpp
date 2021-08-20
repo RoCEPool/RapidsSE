@@ -6,6 +6,13 @@
 
 #include "HeadsUp.hpp"
 
+#include "MY.hpp"
+#include "PsxThd.hpp"
+
+extern pthread_key_t giTLS_ThreadKey;
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_HandlerKey;
+extern pthread_key_t giTLS_StepKey;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -40,7 +47,28 @@ Stz* HeadsUp::sz(void)
   
   vInit();
   
-  vCats("HeadsUp -- "_Stz);
+  // thread/task/job/op/eventhandler/step
+
+  Stz* szThreadNm = MY::szThreadNm();
+  Stz* szTaskNm   = MY::szTaskNm();
+  Stz* szJobNm    = MY::szJobNm();
+  Stz* szOpNm     = MY::szOpNm();
+  
+  Stz* szEvNm     = (Stz*)PsxThd::pTlsGet(giTLS_HandlerKey);
+  Stz* szStepNm   = (Stz*)PsxThd::pTlsGet(giTLS_StepKey);
+ 
+
+  vCatf("H:%s T:%s J:%s O:%s E:%s S:%s"
+        ""_Stz
+
+        ,szThreadNm
+        ,szTaskNm
+        ,szJobNm
+        ,szOpNm
+        ,szEvNm
+        ,szStepNm
+
+        );
   
   return (Stz*) &m_caResult[0];
 }

@@ -856,10 +856,12 @@ void Task::vDropTaskLock(Stz* szFunc)
     HeadsUp oHeadsUp;
     
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
-    vTrace("vDropTaskLock: %s by %s func %s %s\n"_Stz
+    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
            ,szFunc
+           );
+    vTrace("HeadsUp: %s\n"_Stz
            ,oHeadsUp.sz()
            );
     vThreadCallStackDump();
@@ -886,10 +888,13 @@ void Task::vGrabTaskLock(Stz* szFunc)
     HeadsUp oHeadsUp;
     
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
-    vTrace("vGrabTaskLock: %s by %s func %s %s\n"_Stz
+    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
            ,szFunc
+           ,oHeadsUp.sz()
+           );
+    vTrace("HeadsUp: %s\n"_Stz
            ,oHeadsUp.sz()
            );
     vThreadCallStackDump();
