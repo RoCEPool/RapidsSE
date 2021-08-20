@@ -148,6 +148,8 @@ cmdSyntax: connector :: connector ;
 
 : connector_cmdTags _cmdTags tagCopy: serviceOp_tags
 
+  //tags{ <dedicatedThd> = 1 }
+
 ;
 
 /*============================================================================*/

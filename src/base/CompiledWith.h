@@ -92,6 +92,8 @@
 
 //#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
 
+//#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -55,7 +55,7 @@ Stz* SP_Task::sz(Task* pTask)
   
   vCatf("Task {"
         "%p "
-        "%s %s %s"_Stz
+        "%s %s %8s"_Stz
 
         ,pTask
         

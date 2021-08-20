@@ -70,6 +70,16 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
+/* RASSERT macro                                                              */
+/*----------------------------------------------------------------------------*/
+#define RASSERT_FATAL(condition) \
+  if (! (condition)) \
+    BASE::vThrowAssert(FK_RASSERT,\
+                      __func__,__FILE__,__LINE__,\
+                      (Stz*)#condition); \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pOBJECT,eCLASS) \

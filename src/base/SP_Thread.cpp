@@ -49,7 +49,7 @@ Stz* SP_Thread::sz(Thread* pThread)
   
   vCatf("Thread {"
         "%p: "
-        "%s %s"
+        "%s %9s"
         "}"_Stz
               
         ,pThread

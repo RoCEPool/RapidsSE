@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : recv_init ( -- )
 
-  CN_JOB task[] task.thread thread.dedicated!
+  //CN_JOB task[] task.thread thread.dedicated!
 
   NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!
 
@@ -137,7 +137,7 @@ cmdSyntax: recv :: recv ;
 
 : recv_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  tags{ <dedicatedThd> = 1 }
+  //tags{ <dedicatedThd> = 1 }
 
 ;
 

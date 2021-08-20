@@ -161,6 +161,10 @@ void Step::vThreadSleepMsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
+#ifdef WITH_DEDICATED_SLEEP
+  RASSERT_FATAL(CN_NONE != pThread->eDedicated());
+#endif
+  
   pThread->pPsxThd()->vSleepMsec(nMilliseconds,CN_WORD);
   
   EXIT();
@@ -176,6 +180,10 @@ void Step::vThreadSleepNsec(void)
   i8 nNanoseconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
+  
+#ifdef WITH_DEDICATED_SLEEP
+  RASSERT_FATAL(CN_NONE != pThread->eDedicated());
+#endif
   
   pThread->pPsxThd()->vSleepNsec(nNanoseconds,CN_WORD);
   
@@ -193,6 +201,10 @@ void Step::vThreadSleepSsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
+#ifdef WITH_DEDICATED_SLEEP
+  RASSERT_FATAL(CN_NONE != pThread->eDedicated());
+#endif
+  
   pThread->pPsxThd()->vSleepSsec(nSeconds,CN_WORD);
   
   EXIT();
@@ -208,6 +220,10 @@ void Step::vThreadSleepUsec(void)
   i8 nMicroseconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
+  
+#ifdef WITH_DEDICATED_SLEEP
+  RASSERT_FATAL(CN_NONE != pThread->eDedicated());
+#endif
   
   pThread->pPsxThd()->vSleepUsec(nMicroseconds,CN_WORD);
   
