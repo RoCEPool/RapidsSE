@@ -765,7 +765,7 @@ void Step::vSenTest(void)
 {
   ENTRY();
   
-  vTrace("[%s] Test\n"_Stz,szJobNm());
+  vTrace("[%s] Test\n"_Stz,szTaskNm());
   
   EXIT();
 }

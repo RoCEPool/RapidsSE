@@ -160,7 +160,6 @@ namespace BASE
     bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    Stz* szJobNm(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMutexLock(void);

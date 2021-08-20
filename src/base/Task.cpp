@@ -489,7 +489,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
-         pTask->szJobNm(),
+         pTask->szTaskNm(),
          pTask,
          aTS[pTask->m_eState]->azChar()
          );
@@ -958,21 +958,6 @@ void Task::vJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job name of this task                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Task::szJobNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_pJob)
-    return aCN[AM::eJobClass(m_pJob)];
-  else if (! m_pJob)
-    return "<no job>"_Stz;
-  else
-    return "<no jobClass>"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop locals frame                                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPop(void)
@@ -1414,7 +1399,7 @@ void Task::vTracePoint(Stz* aMark)
         
          AM::szNodeNm(),
          AM::iThisNodeNo(),
-         szJobNm(),
+         szTaskNm(),
          m_oAcksRmg_task.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),
