@@ -750,6 +750,8 @@ void Api::vCallBoot(void)
                       );
   pJob->vSeed(SS_SEED_RUN);
 
+  pJob->m_sJobNm = "boot"_Stz;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TagSet* pJobTags = pJob->pJobTags();

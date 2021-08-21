@@ -146,12 +146,12 @@ namespace BASE
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);
-    void vDropTaskLock(void);
+    void vDropTaskLock(Stz* szFunc);
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
     Word* pEventHandler(void);
-    void vGrabTaskLock(void);
+    void vGrabTaskLock(Stz* szFunc);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
@@ -160,7 +160,6 @@ namespace BASE
     bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMutexLock(void);
@@ -189,6 +188,10 @@ namespace BASE
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);
+  
+    Stz* szTaskNm(void);
+    void vTaskNm(Stz* szTaskNm);
+
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);

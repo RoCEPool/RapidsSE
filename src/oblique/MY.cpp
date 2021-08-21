@@ -37,6 +37,26 @@ i8 MY::iPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current caller name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szCallerNm(void)
+{
+  _static_
+    
+  Stz* szCallerNm;
+  
+  if (MY::pTask())
+    szCallerNm = MY::pTask()->szTaskNm();
+  else
+  if (MY::pThread())
+    szCallerNm = MY::pThread()->szThreadNm();
+  else
+    szCallerNm = "PmyThread"_Stz;
+
+  return szCallerNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current catalog name                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* MY::szCatalogNm(void)
@@ -70,9 +90,14 @@ Stz* MY::szJobNm(void)
 {
   _static_
   
-  Job* pJob = AM::pThisTLSJob();
+  Job* pJob = MY::pJob();
   
-  return aCN[pJob->eGetClassNo()];
+  if (! pJob)
+    return "(no-job)"_Stz;
+  
+  Stz* szJobNm = pJob->szJobNm();
+  
+  return szJobNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +122,7 @@ Stz* MY::szOpNm(void)
   Op* pOp = MY::pOp();
   
   if (! pOp)
-    return ""_Stz;
+    return "(no-op)"_Stz;
   
   Stz* szOpNm = pOp->szOpNm();
   
@@ -156,6 +181,23 @@ Stz* MY::szTableNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current task name                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szTaskNm(void)
+{
+  _static_
+  
+  Task* pTask = MY::pTask();
+  
+  if (! pTask)
+    return "(no-task)"_Stz;
+  
+  Stz* szTaskNm = pTask->szTaskNm();
+  
+  return szTaskNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current tenant name                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* MY::szTenantNm(void)
@@ -170,6 +212,22 @@ Stz* MY::szTenantNm(void)
   Stz* szTenantNm = pTenantDic->szDicNm();
   
   return szTenantNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current thread name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szThreadNm(void)
+{
+  _static_
+  
+  Stz* szThreadNm;
+  if (MY::pThread())
+    szThreadNm = MY::pThread()->szThreadNm();
+  else
+    szThreadNm = "PmyThread"_Stz;
+
+  return szThreadNm;
 }
 
 /*----------------------------------------------------------------------------*/

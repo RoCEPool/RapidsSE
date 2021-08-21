@@ -88,7 +88,9 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
-  
+
+  // Where do we see the BktNo, so that we can map it to the partition?
+
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->eCrossTopo(),
                                pParcel->tDstPtn(),

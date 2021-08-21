@@ -16,6 +16,9 @@
 #include "SP_Word.hpp" //?
 #include "LogicUnit.hpp" //?
 
+#include "MY.hpp"
+#include "HeadsUp.hpp"
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -298,12 +301,14 @@ void Task::vVerifyTaskComposition(void)
   aFooter()->vAssertFooter();
   
   if (m_pJob.bIsNotNull()) {
-    //RASSERT(! *m_pOp);
+    RASSERT(m_pOp.bIsNull());
+    RASSERT(m_sTaskNm.bSame(m_pJob->szJobNm()));
     m_pJob->vVerifyJobComposition();
   }
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
+    RASSERT(m_sTaskNm.bSame(m_pOp->szOpNm()));
     m_pOp->vVerifyOpComposition();
   }
   else {
@@ -487,7 +492,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
-         pTask->szJobName(),
+         pTask->szTaskNm(),
          pTask,
          aTS[pTask->m_eState]->azChar()
          );
@@ -840,9 +845,30 @@ void Task::vDropAllLocks(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDropTaskLock(void)
+void Task::vDropTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Stz* szCaller = MY::szCallerNm();
+  
+  
+  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    
+    vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
+    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
+           ,m_sTaskNm.szStz()
+           ,szCaller
+           ,szFunc
+           );
+//    vTrace("HeadsUp: %s\n"_Stz
+//           ,oHeadsUp.sz()
+//           );
+    HeadsUp oHeadsUp((Stz*)__func__);
+
+    vThreadCallStackDump();
+    vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
+    vTrace("\n"_Stz);
+  }
   
   m_okLock.vDropWrite();
 }
@@ -850,11 +876,35 @@ void Task::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGrabTaskLock(void)
+void Task::vGrabTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  Stz* szCaller = MY::szCallerNm();
+
   m_okLock.vGrabWrite();
+
+
+  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+    
+    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
+    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
+           ,m_sTaskNm.szStz()
+           ,szCaller
+           ,szFunc
+           ,szFunc
+           );
+//    vTrace("HeadsUp: %s\n"_Stz
+//           ,oHeadsUp.sz()
+//           );
+    HeadsUp oHeadsUp((Stz*)__func__);
+    
+    vThreadCallStackDump();
+    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
+
+    vTrace("\n"_Stz);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -949,21 +999,6 @@ void Task::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   m_pJob = pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job name of this task                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Task::szJobName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_pJob)
-    return aCN[AM::eJobClass(m_pJob)];
-  else if (! m_pJob)
-    return "<no job>"_Stz;
-  else
-    return "<no jobClass>"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1199,7 +1234,9 @@ void Task::vSeeFrameStack(void)
   
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                   // WORD
 
+  vTrace("\n"_Stz,spWord.sz(pWord));
   vTrace("Current Frame =%s\n"_Stz,spWord.sz(pWord));
+  vTrace("\n"_Stz,spWord.sz(pWord));
 
   m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
 }
@@ -1341,6 +1378,26 @@ i8 Task::iTaskId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get task name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Task::szTaskNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_sTaskNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task name                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskNm(Stz* szTaskNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_sTaskNm = szTaskNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
 Thread* Task::pvThread_DONT_DEREF(void)
@@ -1388,7 +1445,7 @@ void Task::vTracePoint(Stz* aMark)
         
          AM::szNodeNm(),
          AM::iThisNodeNo(),
-         szJobName(),
+         szTaskNm(),
          m_oAcksRmg_task.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),

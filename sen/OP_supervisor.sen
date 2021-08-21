@@ -11,17 +11,22 @@
 
   // "Supervisor Activity" .
   
+  //debug::breakPoint
+  
+
   // collect heartbeat related info
   Supervisor::collectInfo
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-  "Supervisor Job Started" .verbose
+  "Supervisor Job Started" .
   
+  //debug::breakPoint
+
   begin
  
     Supervisor::halt@ not if
@@ -63,7 +68,7 @@ cmdSyntax: supervisor :: supervisor ;
 
 : supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  //tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

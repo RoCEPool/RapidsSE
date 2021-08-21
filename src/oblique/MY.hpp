@@ -26,6 +26,7 @@ namespace OBLIQUE
     static i8 nNanoseconds(void);
     static i8 iPtn(void);
   
+    static Stz* szCallerNm(void);
     static Stz* szCatalogNm(void);
     static Stz* szGridNm(void);
     static Stz* szHostNm(void);
@@ -35,7 +36,9 @@ namespace OBLIQUE
     static Stz* szPipelineNm(void);
     static Stz* szSchemaNm(void);
     static Stz* szTableNm(void);
+    static Stz* szTaskNm(void);
     static Stz* szTenantNm(void);
+    static Stz* szThreadNm(void);
     static Stz* szWordNm(void);
   
     static Dic*       pCatalogDic(void);

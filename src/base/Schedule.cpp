@@ -124,7 +124,7 @@ void Schedule::vThreadsReport(void)
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  [%02lld] "
-           "%p %2lld"
+           "%p %2lld %s"
            " base %p size %lldB"
            " user %12lld system %12lld usage %02lld%% sleep %02llds"
            " %11s"
@@ -134,7 +134,8 @@ void Schedule::vThreadsReport(void)
            
            ,pThread
            ,pThread->iThreadNo()
-           
+           ,pThread->szThreadNm()
+
            ,pThread->pPsxThd()->m_aStackBase
            ,pThread->pPsxThd()->m_iStackSize
            
@@ -173,7 +174,7 @@ void Schedule::vThreadsReport(void)
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  [%02lld] "
-           "%p %2lld"
+           "%p %2lld %s"
            " base %p size %lldB"
            " user %12lld system %12lld usage %02lld%% sleep %02llds"
            " %11s"
@@ -183,7 +184,8 @@ void Schedule::vThreadsReport(void)
            
            ,pThread
            ,pThread->iThreadNo()
-           
+           ,pThread->szThreadNm()
+
            ,pThread->pPsxThd()->m_aStackBase
            ,pThread->pPsxThd()->m_iStackSize
            
