@@ -107,6 +107,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,   "m_xpNow"_Stz)
+,         m_xpObject(this,RF_NONE,         nullptr,        "m_xpObjec"_Stz)
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
 
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
@@ -121,7 +122,6 @@ LogicUnit::LogicUnit(void)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)
 ,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
-,      m_xpRegister0(this,RF_NONE,         nullptr,        "m_xpRegister0"_Stz)
 
 // Discuss with Ray
 ,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,        "m_xpRow"_Stz)

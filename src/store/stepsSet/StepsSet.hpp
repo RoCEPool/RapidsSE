@@ -1366,8 +1366,8 @@ public:
   void vRegTimerSet(void);
 
   // register
-  void vRegister0Get(void);
-  void vRegister0Set(void);
+  void vObjectGet(void);
+  void vObjectSet(void);
 
   // row buffer
   void vRowBufferOperandDump(void);
