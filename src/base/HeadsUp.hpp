@@ -14,6 +14,7 @@ namespace BASE
     
   public:
     HeadsUp(void);
+    HeadsUp(Stz* szFunc);
    ~HeadsUp(void) noexcept(false);
   
     Stz* sz();

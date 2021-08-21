@@ -27,6 +27,28 @@ HeadsUp::HeadsUp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+HeadsUp::HeadsUp(Stz* szFunc)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  _checkInitialised_(CN_SPID);
+  
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  vTrace("HeadsUp @ %s: %s\n"_Stz
+         ,szFunc
+         ,sz()
+         );
+  
+  Task* pTask = MY::pTask();
+  if (pTask)
+    pTask->vSeeFrameStack();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 HeadsUp::~HeadsUp(void) noexcept(false)

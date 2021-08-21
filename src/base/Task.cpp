@@ -853,7 +853,6 @@ void Task::vDropTaskLock(Stz* szFunc)
   
   
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
-    HeadsUp oHeadsUp;
     
     vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
     vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
@@ -861,9 +860,11 @@ void Task::vDropTaskLock(Stz* szFunc)
            ,szCaller
            ,szFunc
            );
-    vTrace("HeadsUp: %s\n"_Stz
-           ,oHeadsUp.sz()
-           );
+//    vTrace("HeadsUp: %s\n"_Stz
+//           ,oHeadsUp.sz()
+//           );
+    HeadsUp oHeadsUp((Stz*)__func__);
+
     vThreadCallStackDump();
     vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
     vTrace("\n"_Stz);
@@ -885,18 +886,19 @@ void Task::vGrabTaskLock(Stz* szFunc)
 
 
   if (m_sTaskNm.bSame("supervisor"_Stz)) {
-    HeadsUp oHeadsUp;
     
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
     vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
            ,m_sTaskNm.szStz()
            ,szCaller
            ,szFunc
-           ,oHeadsUp.sz()
+           ,szFunc
            );
-    vTrace("HeadsUp: %s\n"_Stz
-           ,oHeadsUp.sz()
-           );
+//    vTrace("HeadsUp: %s\n"_Stz
+//           ,oHeadsUp.sz()
+//           );
+    HeadsUp oHeadsUp((Stz*)__func__);
+    
     vThreadCallStackDump();
     vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
 
