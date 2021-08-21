@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 : recv_recvNext
   
-  nullptr to Register0[]
+  nullptr to Object[]
 
   Socket[].recvObject
   
@@ -37,7 +37,7 @@
     exit
   then
   
-  Socket[].object@\clear to Register0[]
+  Socket[].object@\clear to Object[]
 
   Socket[].success@
 ;
@@ -48,11 +48,11 @@
 : recv_dispatch ( -- )
 
   // null object (low memory)
-  Register0[] not if
+  object[] not if
     exit
   then
     
-  Register0[] Register0[] Object.postRecvWord@ execute
+  Object[] Object[] Object.postRecvWord@ execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : recv_StartMarker \handler
 

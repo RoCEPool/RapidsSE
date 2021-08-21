@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "LogicUnit.hpp"
 
 extern SizeHeap gxaSizeHeap[];
 
@@ -15,6 +16,10 @@ extern SizeHeap gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Object(void)
 {
+  vAddStep("object[]"_Stz,       &Step::vObjectGet);
+  vAddStep("object[].get"_Stz,   &Step::vObjectGet);
+  vAddStep("object[].set"_Stz,   &Step::vObjectSet);
+
   vAddStep("object.class@"_Stz,       &Step::vObjectClassFetch);
   vAddStep("object.class!"_Stz,       &Step::vObjectClassStore);
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
@@ -22,6 +27,26 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.postRecvWord@"_Stz,&Step::vObjectPostRecvWordFetch);
   vAddStep("object.preSendWord@"_Stz, &Step::vObjectPreSendWordFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* object[].get -- get the value in object                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* object[].set -- set the value in object                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectSet(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpObject = m_pDataStack->pPopPtr(__func__);
 }
 
 /*----------------------------------------------------------------------------*/

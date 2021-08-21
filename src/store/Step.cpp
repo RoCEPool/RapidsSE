@@ -155,7 +155,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Push();
 
   Step::vAddSteps_Range();
-  Step::vAddSteps_Register();
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();
