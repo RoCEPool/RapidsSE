@@ -19,7 +19,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
@@ -68,7 +68,7 @@ cmdSyntax: supervisor :: supervisor ;
 
 : supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  // tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

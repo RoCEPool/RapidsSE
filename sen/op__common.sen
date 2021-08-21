@@ -302,7 +302,13 @@
     pPipelineJob job.jobList@ JL_NONE ==
   while
     //pPipelineJob job.jobList@ "Job list %v" .printf
-    task::yield
+    
+    thread.dedicated@ if
+      10 thread::sleepMsec
+    else
+      task::yield
+    then
+    
   repeat
 
 
@@ -315,7 +321,13 @@
       pPipelineJob job.phase@ JP_EXECUTING == not
     while
       //pPipelineJob job.phase@ "Job phase %v" .printf
-      task::yield
+      
+      thread.dedicated@ if
+        10 thread::sleepMsec
+      else
+        task::yield
+      then
+    
     repeat
 
     // wait till the pipelinetask is in a WAIT state
@@ -325,7 +337,13 @@
       pPipelineTask task.isWaiting
     not while
       //pPipelineTask task.isWaiting "task waiting %v" .printf
-      task::yield
+      
+      thread.dedicated@ if
+        10 thread::sleepMsec
+      else
+        task::yield
+      then
+    
     repeat
 
   then
