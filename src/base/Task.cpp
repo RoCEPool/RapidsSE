@@ -1234,7 +1234,9 @@ void Task::vSeeFrameStack(void)
   
   Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);                   // WORD
 
+  vTrace("\n"_Stz,spWord.sz(pWord));
   vTrace("Current Frame =%s\n"_Stz,spWord.sz(pWord));
+  vTrace("\n"_Stz,spWord.sz(pWord));
 
   m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
 }
