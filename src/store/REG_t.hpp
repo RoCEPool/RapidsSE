@@ -111,8 +111,10 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void operator = (COMPONENT* pComponent)
     {
-      if (pComponent && ! AM::bInBufferPool(pComponent))
-        THROW("REG::operator =(pComponent) : invalid pComponent parameter"_Stz);
+      if (pComponent && ! AM::bInBufferPool(pComponent)) {
+        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
+      }
     
       m_pComponent = pComponent;
     }
@@ -122,9 +124,11 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     COMPONENT* operator -> (void)
     {
-      if (! m_pComponent)
+      if (! m_pComponent) {
+        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
         THROW("REG::operator ->(void) : m_pComponent member is null"_Stz);
-   
+      }
+    
       return m_pComponent;
     }
   
@@ -133,9 +137,11 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     COMPONENT* operator * (void)
     {
-      if (! m_pComponent)
+      if (! m_pComponent) {
+        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
         THROW("REG::operator *() : m_pComponent member is null"_Stz);
-      
+      }
+    
       return m_pComponent;
     }
     
@@ -154,9 +160,9 @@ namespace STORE
     void vDump(void)
     {
       if (m_pComponent) {
-        vTrace("%20s : %p ; \n"_Stz,
-               m_szRegNm,
-               m_pComponent
+        vTrace("%20s : %p ; \n"_Stz
+               ,m_szRegNm
+               ,m_pComponent
         );
       }
     }
