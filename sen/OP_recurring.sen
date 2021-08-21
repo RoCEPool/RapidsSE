@@ -28,10 +28,8 @@
     
   begin
 
-    //task::yield
-
-    "recurring sleeping..." .
     //<nSeconds> >int  thread::sleepSsec
+
     10 thread::sleepSsec
 
     recurring_activity
