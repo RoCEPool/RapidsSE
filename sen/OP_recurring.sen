@@ -11,10 +11,10 @@
 
   "Recurring Activity" .
   
-  jobs::seeDlist
-  jobs::seeLlist
-  jobs::seeOlist
-  jobs::seePlist
+  //jobs::seeDlist
+  //jobs::seeLlist
+  //jobs::seeOlist
+  //jobs::seePlist
   
   jobs::seeSqueue
 ;
@@ -68,7 +68,7 @@ cmdSyntax: recurring :: recurring <nSeconds> ;
 
 : recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  tags{ <dedicatedThd> = 1 }
+  // tags{ <dedicatedThd> = 1 }
 
 ;
 
