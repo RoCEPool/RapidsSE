@@ -68,7 +68,7 @@ cmdSyntax: supervisor :: supervisor ;
 
 : supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  tags{ <dedicatedThd> = 1 }
+  //tags{ <dedicatedThd> = 1 }
 
 ;
 
