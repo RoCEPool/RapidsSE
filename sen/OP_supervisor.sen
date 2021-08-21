@@ -12,7 +12,6 @@
   "Supervisor Activity" .
   
   //debug::breakPoint
-  
 
   // collect heartbeat related info
   Supervisor::collectInfo
@@ -25,8 +24,6 @@
 
   "Supervisor Job Started" .
   
-  //debug::breakPoint
-
   begin
  
     Supervisor::halt@ not if

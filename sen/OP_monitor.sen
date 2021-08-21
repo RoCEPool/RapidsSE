@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor::activity
 
-  //"Monitor Activity" .
+  "Monitor Activity" .
   
   // update node status based on heartbeat related info
   Monitor::updateNodeStatus
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
-  "Monitor Job Started" .verbose
+  "Monitor Job Started" .
 
   begin
 
@@ -60,7 +60,7 @@ cmdSyntax: monitor :: monitor ;
 
 : monitor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  //tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 
