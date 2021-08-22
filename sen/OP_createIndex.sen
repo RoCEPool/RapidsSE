@@ -81,8 +81,7 @@
   0 locals| sTableNm |
 
   // get the index def
-  Pipein[] to indexDef[]
-  nullptr to Pipein[]
+  Pipein[]\clear to indexDef[]
 
   // grab the ddl lock
   DdlLock[].grabRead

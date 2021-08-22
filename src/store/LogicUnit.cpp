@@ -93,9 +93,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,       "m_xpFile1"_Stz)
 ,        m_xpHandler(this,RF_NONE,         nullptr,             "m_xpHandler"_Stz)
 
-,          m_xpIndex(this,RF_NONE,         nullptr,        "m_xpIndex"_Stz)
-,       m_xpIndexDef(this,RF_NONE,         nullptr,        "m_xpIndexDef"_Stz)
-,    m_xpIndexStream(this,RF_NONE,         nullptr,        "m_xpIndexStream"_Stz)
+,          m_xpIndex(this,RF_SET_NULL,     nullptr,             "m_xpIndex"_Stz)
+,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,             "m_xpIndexDef"_Stz)
+,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,"m_xpIndexStream"_Stz)
 
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,      "m_xpInfoSet"_Stz)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,               "m_xpInfoSetTable"_Stz)
@@ -107,12 +107,11 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,   "m_xpNow"_Stz)
-,         m_xpObject(this,RF_NONE,         nullptr,        "m_xpObjec"_Stz)
+,         m_xpObject(this,RF_NONE,         nullptr,        "m_xpObject"_Stz)
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
 
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
-,       m_xpOperandC(this,RF_NONE,         nullptr,        "m_xpOperandC"_Stz)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,         "m_xpOperandOoO"_Stz)
 
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
@@ -317,6 +316,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
+  RASSERT(m_xpIndex.bIsNull());
+  RASSERT(m_xpIndexDef.bIsNull());
+  RASSERT(m_xpIndexStream.bIsNull());
+
   RASSERT(m_xpInfoSetRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
 
