@@ -581,9 +581,11 @@ void Schedule::vThreadAppendIdle(Thread* pThread)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
   
-  m_pIdleThreadQueue->vGrabLock();
+  RASSERT(m_pIdleThreadQueue->bIsLocked());
+  
+  //m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
-  m_pIdleThreadQueue->vDropLock();
+  //m_pIdleThreadQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,6 +595,8 @@ Thread* Schedule::pThreadPopIdleNL(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
+  RASSERT(m_pIdleThreadQueue->bIsLocked());
+
   //m_pIdleThreadQueue->vGrabLock();
   Thread* pThread = m_pIdleThreadQueue->pPopThread();
   //m_pIdleThreadQueue->vDropLock();

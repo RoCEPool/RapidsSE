@@ -805,9 +805,10 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
 
+  pThread->pMutex()->vLock(pKnownTask);
+  
   pThread->vTask(pKnownTask);
     
-  pThread->pMutex()->vLock(pKnownTask);
   pThread->pMutex()->vSignal(pKnownTask);
   pThread->pMutex()->vUnlock(pKnownTask);
   
@@ -837,6 +838,9 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   while (! pThread->pTask()) {
     
     // attempt to po a task from one of the ready queues
+    
+    pSchedule->vGrabThreadIdleQueue();
+ 
     Task* pPoppedTask = pSchedule->pPopReadyQueue();
     if (! pPoppedTask)
       pPoppedTask = pSchedule->pPopReadyQueueLP();
@@ -847,6 +851,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       pPoppedTask->vState(TS_DESISTED);
 
       pThread->vTask(pPoppedTask);
+      pSchedule->vDropThreadIdleQueue();
       break;
     }
     
@@ -854,7 +859,10 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     RASSERT(! pThread->pTask());
     pThread->vSetIdle();
+    
     pSchedule->vThreadAppendIdle(pThread);
+    
+    pSchedule->vDropThreadIdleQueue();
 
     ASSERT(pThread->pMutex()->bIsLockedByCaller(pThread));
     pThread->pMutex()->vWait(pThread);
