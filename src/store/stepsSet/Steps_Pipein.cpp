@@ -42,16 +42,39 @@ void Step::vPipeinBide(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
+  Operand* pOperand;
   
-  Operand* pOperand = pOp->pPopOoOLeft();
-  m_p_TaskLogicUnit->vSetPipein(pOperand);
+  // revised job/op model
+  Op* pOp = *m_pOp;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pThread->eDedicated()) {
     
-  if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
-    RASSERT(bIsLocked());
-    vScheduleBide();
+    vDropTaskLock((Stz*)__func__);
+    
+    while ( ! (pOperand = pOp->pPopOoOLeft()) ) {
+      vDropTaskLock((Stz*)__func__);
+      m_pThread->pPsxThd()->vSleepMsec(10,CN_TASK);
+
+    }
+    
+    m_p_TaskLogicUnit->vSetPipein(pOperand);
+    
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  else {
+    
+    pOperand = pOp->pPopOoOLeft();
+    m_p_TaskLogicUnit->vSetPipein(pOperand);
+    
+    if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
+      RASSERT(bIsLocked());
+      vScheduleBide();
+    }
+    
   }
   
   EXIT();
