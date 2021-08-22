@@ -50,15 +50,13 @@ void Step::vPipeinBide(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pThread->eDedicated()) {
-    
-    vDropTaskLock((Stz*)__func__);
-    
+        
     while ( ! (pOperand = pOp->pPopOoOLeft()) ) {
       vDropTaskLock((Stz*)__func__);
       m_pThread->pPsxThd()->vSleepMsec(10,CN_TASK);
 
     }
-    
+
     m_p_TaskLogicUnit->vSetPipein(pOperand);
     
   }
