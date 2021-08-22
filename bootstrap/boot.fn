@@ -490,6 +490,7 @@ function waitForClusterBoot() {
 
   done
 
+  kill -0 ${dotPid} &>/dev/null && kill -15 ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null
   true
 }
 
