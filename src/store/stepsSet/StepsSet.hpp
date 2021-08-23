@@ -163,10 +163,18 @@ public:
   void vCommandSpawnJob(void);
 
   // crwBuffer
-  void vCrwBufferDelete(void);
+  void vCrwBufferDeleteOld(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
+
+  void vCrwBufferAppendClose(void);
+  void vCrwBufferDelete(void);
+  void vCrwBufferGet(void);
+  void vCrwBufferGetAndClear(void);
+  void vCrwBufferIsNotNull(void);
+  void vCrwBufferIsNull(void);
+  void vCrwBufferSet(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
