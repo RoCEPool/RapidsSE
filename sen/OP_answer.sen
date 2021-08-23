@@ -120,6 +120,8 @@
 
   0 locals| nConns |
 
+  "Answer Demon Started" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
@@ -202,7 +204,7 @@ cmdSyntax: answer :: answer ;
 
 : answer_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  //tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

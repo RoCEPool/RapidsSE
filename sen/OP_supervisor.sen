@@ -9,31 +9,28 @@
 /*----------------------------------------------------------------------------*/
 : supervisor::activity
 
-  // "Supervisor Activity" .
+  //"Supervisor Activity" .
   
   //debug::breakPoint
-  
 
   // collect heartbeat related info
   Supervisor::collectInfo
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-  "Supervisor Job Started" .
+  "Supervisor Demon Started" .
   
-  //debug::breakPoint
-
   begin
  
     Supervisor::halt@ not if
       supervisor::activity
     then
     
-    args.supervisorSleep thread::sleepSsec
+    args.demonSleep thread::sleepSsec
 
   again
 
@@ -68,7 +65,7 @@ cmdSyntax: supervisor :: supervisor ;
 
 : supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  // tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

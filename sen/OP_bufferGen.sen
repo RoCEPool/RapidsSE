@@ -26,8 +26,8 @@
     Operand[].pipeOut
   loop
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
   true
 ;
 

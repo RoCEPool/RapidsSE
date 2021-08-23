@@ -52,12 +52,12 @@
 
 
 
-  args.tracepoint  if " --tracepoint"  str.cat then
-  args.verbose     if " --verbose"     str.cat then
-  args.dontFree    if " --dontFree"    str.cat then
-  args.freeCB      if " --freeCB"      str.cat then
-  args.metadata    if " --metadata"    str.cat then
-  args.munged      if " --munged"      str.cat then
+  args.tracepoint  if " --tracepoint"   str.cat then
+  args.verbose     if " --verbose"      str.cat then
+  args.dontFree    if " --dontFree"     str.cat then
+  args.freeCB      if " --freeSpecific" str.cat then
+  args.metadata    if " --metadata"     str.cat then
+  args.munged      if " --munged"       str.cat then
   args.heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
 
   " &" str.cat locals| sShellCmd |

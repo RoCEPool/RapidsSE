@@ -81,8 +81,7 @@
   0 locals| sTableNm |
 
   // get the index def
-  Pipein[] to indexDef[]
-  nullptr to Pipein[]
+  Pipein[]\clear to indexDef[]
 
   // grab the ddl lock
   DdlLock[].grabRead
@@ -114,8 +113,8 @@
   indexDef[].pipeout
 
   // pipeout EOSMARKER so populate index can do its work
-  Operand[].newEosMarker
-  Operand[].pipeout
+  Marker[].newEosMarker
+  Marker[].pipeout
 
   true
 ;

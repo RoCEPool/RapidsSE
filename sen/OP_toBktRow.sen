@@ -41,13 +41,13 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktRow[].completed to OperandB[]
+    I ToBktRow[].completed to RowBuffer[]
 
     begin
-      OperandB[].isNull not
+      RowBuffer[].isNull not
     while
-      OperandB[].pipeOut
-      I ToBktRow[].completed to OperandB[]
+      RowBuffer[].pipeOut
+      I ToBktRow[].completed to RowBuffer[]
     repeat
 
   loop
@@ -63,13 +63,13 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktRow[].dangling to OperandB[]
+    I ToBktRow[].dangling to RowBuffer[]
 
     begin
-      OperandB[].isNull not
+      RowBuffer[].isNull not
     while
-      OperandB[].pipeOut
-      I ToBktRow[].dangling to OperandB[]
+      RowBuffer[].pipeOut
+      I ToBktRow[].dangling to RowBuffer[]
     repeat
 
   loop

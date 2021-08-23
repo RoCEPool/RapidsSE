@@ -35,7 +35,7 @@ void BufferPool::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
                        bool bTouch, bool bProgress,
-                       bool bDontFree, bool bFreeCB)
+                       bool bDontFree, bool bFreeSpecific)
 : Object(CN_BUFFERPOOL)
 , m_okLock(this)
 {
@@ -46,7 +46,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
   m_pBase  = reinterpret_cast<PoolBuffer*>(this);
   m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
   m_bDontFree = bDontFree;
-  m_bFreeCB = bFreeCB;
+  m_bFreeSpecific = bFreeSpecific;
   
   m_sShmNm = aRegionName;
   m_iShmFD   = 0;
@@ -373,11 +373,11 @@ i8 BufferPool::iFreePercent(void)
 /*----------------------------------------------------------------------------*/
 /* free CrwBuffers back to heap?                                              */
 /*----------------------------------------------------------------------------*/
-bool BufferPool::bFreeCB(void)
+bool BufferPool::bFreeSpecific(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_bFreeCB;
+  return m_bFreeSpecific;
 }
 
 /*----------------------------------------------------------------------------*/

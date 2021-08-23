@@ -13,6 +13,13 @@
 #include "Op.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -28,6 +35,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
+  vAddStep("StreamDefOut[].newFromTable"_Stz,&Step::vStreamDefOutNewFromTable);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
@@ -147,6 +155,20 @@ void Step::vStreamDefOutNew(void)
     
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].newFromTable -- new a stream definition out from table      */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutNewFromTable(void)
+{
+  ENTRY();
+
+  RASSERT(! m_p_TaskLogicUnit->m_xpTable.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
+
   EXIT();
 }
 

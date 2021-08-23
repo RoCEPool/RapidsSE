@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "LogicUnit.hpp"
 
 extern SizeHeap gxaSizeHeap[];
 

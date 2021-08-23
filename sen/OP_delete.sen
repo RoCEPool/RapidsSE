@@ -187,8 +187,8 @@
       nullptr to PathIdentifier[]
 
       // pipeout an eosMarker
-      Operand[].newEosMarker
-      Operand[].pipeOut
+      Marker[].newEosMarker
+      Marker[].pipeOut
     else
       // position and fetch first buffer for next phrase
       Counter1[] beginDelete

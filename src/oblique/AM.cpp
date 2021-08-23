@@ -121,6 +121,8 @@
 #include "MY.hpp"
 #include "SP_Pointer.hpp"
 
+#include "HeadsUp.hpp"
+
 extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
@@ -978,32 +980,43 @@ void AM::SE::vWhereAmI(void)
 {
   printf("AM::SE::vWhereAmI()\n");
   
-  SP_Pointer spThread;
-  Thread* pThread = MY::pThread();
-  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
+  HeadsUp oHeadsUp((Stz*)__func__);
   
-  SP_Pointer spTask;
+//  SP_Pointer spThread;
+//  Thread* pThread = MY::pThread();
+//  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
+//
+//  SP_Pointer spTask;
   Task* pTask = MY::pTask();
-  vTrace("Task %s\n"_Stz,spTask.sz(pTask));
-
-  SP_Pointer spJob;
-  Job* pJob = MY::pJob();
-  vTrace("Job %s\n"_Stz,spJob.sz(pJob));
-
-  SP_Pointer spOp;
-  Op* pOp = MY::pOp();
-  vTrace("Op %s\n"_Stz,spOp.sz(pOp));
-
-  SP_Pointer spLogicUnit;
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
-  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
-
-  vTrace("\n"_Stz);
+//  vTrace("Task %s\n"_Stz,spTask.sz(pTask));
+//
+//  SP_Pointer spJob;
+//  Job* pJob = MY::pJob();
+//  vTrace("Job %s\n"_Stz,spJob.sz(pJob));
+//
+//  SP_Pointer spOp;
+//  Op* pOp = MY::pOp();
+//  vTrace("Op %s\n"_Stz,spOp.sz(pOp));
+//
+//  SP_Pointer spLogicUnit;
+//  LogicUnit* pLogicUnit = MY::pLogicUnit();
+//  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
+//
+//  vTrace("\n"_Stz);
   
   if (EC_NONE == pTask->eValidObject()) {
     pTask->vDump();
   }
-    
+  
+  
+  AM::pSchedule()->vDumpBidingSet();
+  AM::pSchedule()->vDumpExecutingSet();
+  AM::pSchedule()->vDumpReadyQueue();
+  AM::pSchedule()->vDumpSleepingQueue();
+  AM::pSchedule()->vDumpWaitingSet();
+
+  AM::pSchedule()->vThreadsReport();
+
   vTrace("\n"_Stz);
 }
 

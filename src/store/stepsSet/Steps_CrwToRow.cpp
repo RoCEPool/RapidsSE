@@ -56,7 +56,7 @@ void Step::vCrwToRowConvert(void)
 
   CrwToRow* pCrwToRow = *m_p_TaskLogicUnit->m_xpCrwToRow;
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
   
   bool bResult = pCrwToRow->bConvertCrwToRow(pCrwBuffer);
   UNUSED(bResult);

@@ -13,10 +13,10 @@
 
   PipeIn[]\clear to Operand[]
 
-  Operand[].crwDuplicate to operandB[]
-  nullptr to Operand[]
+  Operand[].crwDuplicate to crwBuffer[]
+  nullptr to crwBuffer[]
 
-  OperandB[].pipeOut
+  crwBuffer[].pipeOut
 
   true
 ;

@@ -94,6 +94,22 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vRepairList(Object* pObject, eRF eRepair)
+{
+  _static_
+  DataBuffer* pDataBuffer = _pDataBuffer(pObject);
+  DataBuffer* pNextDataBuffer;
+
+  while (pDataBuffer) {
+    pNextDataBuffer = _pDataBuffer(pDataBuffer->pNextLinkedBuffer());
+    AM::vDeleteOperand(pDataBuffer);
+    pDataBuffer = pNextDataBuffer;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the data buffer that contains the given address                        */
 /*----------------------------------------------------------------------------*/
 DataBuffer* DataBuffer::pToDataBuffer(void* aAddr)

@@ -11,12 +11,14 @@
 
   "Recurring Activity" .
   
-  jobs::seeDlist
-  jobs::seeLlist
-  jobs::seeOlist
-  jobs::seePlist
+  //jobs::seeDlist
+  //jobs::seeLlist
+  //jobs::seeOlist
+  //jobs::seePlist
   
   jobs::seeSqueue
+  
+  system::bpa
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,12 +26,15 @@
 /*----------------------------------------------------------------------------*/
 : recurring_StartMarker \handler
 
+  "Recurring Demon Started" .
+
+  // recurring_activity
+    
   begin
 
-    task::yield
+    //<nSeconds> >int  thread::sleepSsec
 
-    // "periodic sleeping..." .
-    <nSeconds> >int  task::sleepSsec
+    args.demonSleep thread::sleepSsec
 
     recurring_activity
 
@@ -64,6 +69,8 @@
 cmdSyntax: recurring :: recurring <nSeconds> ;
 
 : recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
+
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

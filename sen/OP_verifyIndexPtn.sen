@@ -26,8 +26,8 @@
   // verify partition of index
   Index[].verifyPtn assert
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

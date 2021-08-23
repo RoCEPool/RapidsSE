@@ -64,7 +64,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_CrwToRow();
   Step::vAddSteps_CsvBuffer();
   Step::vAddSteps_Cursor();
-  
+
+  Step::vAddSteps_DataBuffer();
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
   Step::vAddSteps_DevLftIxt();
@@ -80,7 +81,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Encode();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
-  Step::vAddSteps_Error();
+  Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_Executable();
   Step::vAddSteps_Expressions();
   Step::vAddSteps_ExprEval();
@@ -136,8 +137,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
-  Step::vAddSteps_OperandB();
-  Step::vAddSteps_OperandC();
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
@@ -155,7 +154,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Push();
 
   Step::vAddSteps_Range();
-  Step::vAddSteps_Register();
+  Step::vAddSteps_RecvdObject();
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();

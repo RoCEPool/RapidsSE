@@ -17,7 +17,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : passThru_EosMarker \handler
 
@@ -28,14 +28,14 @@
   Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
   Operand[].pipeOut
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : passThru_DataMarker \handler
 

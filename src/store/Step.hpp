@@ -46,7 +46,8 @@ namespace STORE
     static void vAddSteps_CrwToRow(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
-  
+
+    static void vAddSteps_DataBuffer(void);
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
     static void vAddSteps_DevLftIxt(void);
@@ -62,7 +63,7 @@ namespace STORE
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
     static void vAddSteps_Env(void);
-    static void vAddSteps_Error(void);
+    static void vAddSteps_ErrorMarker(void);
     static void vAddSteps_Executable(void);
     static void vAddSteps_ExprEval(void);
 
@@ -120,8 +121,6 @@ namespace STORE
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
     static void vAddSteps_Operand(void);
-    static void vAddSteps_OperandB(void);
-    static void vAddSteps_OperandC(void);
     static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
@@ -140,7 +139,7 @@ namespace STORE
     static void vAddSteps_Schedule(void);
 
     static void vAddSteps_Range(void);
-    static void vAddSteps_Register(void);
+    static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);

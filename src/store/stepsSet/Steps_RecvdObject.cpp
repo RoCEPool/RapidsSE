@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Register.cpp -- Register step group                                  */
+/* Steps_Object.cpp - object step group                                       */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,46 +7,65 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
-
-#include "Node_I.hpp"
-#include "Job.hpp"
 #include "LogicUnit.hpp"
+
+extern SizeHeap gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Register(void)
+void Step::vAddSteps_RecvdObject(void)
 {
-  vAddStep("Register0[]"_Stz,       &Step::vRegister0Get);
-  vAddStep("Register0[].get"_Stz,   &Step::vRegister0Get);
-  vAddStep("Register0[].set"_Stz,   &Step::vRegister0Set);
+  vAddStep("recvdObject[]"_Stz,          &Step::vRecvdObjectGet);
+  vAddStep("recvdObject[].get"_Stz,      &Step::vRecvdObjectGet);
+  vAddStep("recvdObject[].isNotNull"_Stz,&Step::vRecvdObjectIsNotNull);
+  vAddStep("recvdObject[].isNull"_Stz,   &Step::vRecvdObjectIsNull);
+  vAddStep("recvdObject[].set"_Stz,      &Step::vRecvdObjectSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Register0[].get -- get the value in register0                              */
+/* recvdObject[].get -- get the value in recveived object                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegister0Get(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRegister0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Register0[].set -- set the value in register0                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRegister0Set(void)
+void Step::vRecvdObjectGet(void)
 {
   ENTRY();
-  
-  m_p_TaskLogicUnit->m_xpRegister0 = m_pDataStack->pPopPtr(__func__);
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRecvdObject);
 }
 
 /*----------------------------------------------------------------------------*/
+/* recvdObject[].isNotNull -- is recvdObject not null ?                       */
 /*----------------------------------------------------------------------------*/
+void Step::vRecvdObjectIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRecvdObject.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
+/* recvdObject[].isNull -- is recvdObject null ?                              */
 /*----------------------------------------------------------------------------*/
+void Step::vRecvdObjectIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRecvdObject.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* recvdObject[].set -- set the value in recveived object                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRecvdObjectSet(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpRecvdObject = m_pDataStack->pPopPtr(__func__);
+}
 
 /*============================================================================*/
 /* end                                                                        */

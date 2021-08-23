@@ -17,8 +17,8 @@
 
   PipeIn[].pipeout
 
-  Operand[].newDestroyMarker
-  Operand[].pipeOut
+  Marker[].newDestroyMarker
+  Marker[].pipeOut
 
   true
 ;

@@ -149,6 +149,23 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+void CrwBuffer::vRepairList(Object* pObject, eRF eRepair)
+{
+  _static_
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
+  CrwBuffer* pNextCrwBuffer;
+
+  while (pCrwBuffer) {
+    pNextCrwBuffer = pCrwBuffer->pNextCrwBuffer();
+    AM::vDeleteOperand(pCrwBuffer);
+    pCrwBuffer = pNextCrwBuffer;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the crw buffer that contains the given address                         */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)

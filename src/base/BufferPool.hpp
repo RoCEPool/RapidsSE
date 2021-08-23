@@ -18,7 +18,7 @@ namespace BASE
     PoolBuffer* m_pBase;  // starting address of pool (large section)
     PoolBuffer* m_pLimit; // address after pool
     bool    m_bDontFree;  // dont actually free objects back to heap
-    bool    m_bFreeCB;    // but actually free CrwBuffers back to heap
+    bool    m_bFreeSpecific;    // but actually free CrwBuffers back to heap
 
     s32  m_sShmNm;        // shared memory region name
     int  m_iShmFD;        // shared memory file descriptor
@@ -44,7 +44,7 @@ namespace BASE
     
     BufferPool(Stz* aRegionName, i8 iRegionSize,
                bool bTouch, bool bProgress,
-               bool bDontFree, bool bFreeCB);
+               bool bDontFree, bool bFreeSpecific);
    ~BufferPool(void) noexcept(false);
   
     static void vSubSystem(TokenVec* pTokenVec);
@@ -69,7 +69,7 @@ namespace BASE
     void vFreeOtherBuffer(PoolBuffer* pPoolBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
-    bool bFreeCB(void);
+    bool bFreeSpecific(void);
     i8   iFreeSpace(void);
     void vGiveBuffers(void);
     bool bHasDataSpace(void);

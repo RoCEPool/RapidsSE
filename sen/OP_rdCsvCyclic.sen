@@ -9,12 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : rdCsvCyclic_catCsv
 
-  csvBuffer::new locals| pCsvBuffer |
+  csvBuffer::new to CsvBuffer[]
 
-  pCsvBuffer file0[] file.readChunk if
+  CsvBuffer[] file0[] file.readChunk if
     file0[] file.tell "read a csv chunk (tell %v)" .printf
-    pCsvBuffer to Operand[]
-    Operand[].pipeOut
+    CsvBuffer[].pipeOut
 
     "SLEEPING for 1 sec" .
     1 task::sleepSsec
@@ -67,8 +66,8 @@
     file0[].get file.close
     <fileNm> "File %v closed" .printf
 
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
 
   then
 

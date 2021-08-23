@@ -5,17 +5,25 @@
 " OP_waker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: waker::activity
+
+  Schedule::checkSleeping
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waker_StartMarker \handler
 
+  "Waker Demon Started" .
+
   begin
 
+    waker::activity
+
     10 thread::sleepMsec
-
-    // "checking..." .
-
-    Schedule::checkSleeping
 
   again
 
@@ -50,7 +58,7 @@ cmdSyntax: waker :: waker ;
 
 : waker_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  ////tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

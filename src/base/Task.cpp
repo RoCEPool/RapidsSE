@@ -79,6 +79,8 @@ void Task::operator delete(void* pTaskAddress)
 Task::Task(void)
 : Object(CN_TASK)
 , m_okLock(this,false)
+, m_oReadLocks(this)
+, m_oWriteLocks(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -124,8 +126,6 @@ Task::Task(void)
   m_pInput       = nullptr;
   
   m_p_TaskLogicUnit = nullptr;
-  
-  ASSERT(! m_oWriteLocks.nItems());
   
   _checkInitialised_(CN_TASK);
     
@@ -851,24 +851,21 @@ void Task::vDropTaskLock(Stz* szFunc)
   
   Stz* szCaller = MY::szCallerNm();
   
-  
-  if (m_sTaskNm.bSame("supervisor"_Stz)) {
-    
-    vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
-    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
-           ,m_sTaskNm.szStz()
-           ,szCaller
-           ,szFunc
-           );
-//    vTrace("HeadsUp: %s\n"_Stz
-//           ,oHeadsUp.sz()
+//  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+//
+//    vTrace("777777777777777777777777777777777777777777777777777 DROPPING\n"_Stz);
+//    vTrace("vDropTaskLock: %s by %s func %s\n"_Stz
+//           ,m_sTaskNm.szStz()
+//           ,szCaller
+//           ,szFunc
 //           );
-    HeadsUp oHeadsUp((Stz*)__func__);
-
-    vThreadCallStackDump();
-    vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
-    vTrace("\n"_Stz);
-  }
+//
+//    HeadsUp oHeadsUp((Stz*)__func__);
+//
+//    vThreadCallStackDump();
+//    vTrace("7777777777777777777777777777777777777777777777777777 DROPPED\n"_Stz);
+//    vTrace("\n"_Stz);
+//  }
   
   m_okLock.vDropWrite();
 }
@@ -885,26 +882,24 @@ void Task::vGrabTaskLock(Stz* szFunc)
   m_okLock.vGrabWrite();
 
 
-  if (m_sTaskNm.bSame("supervisor"_Stz)) {
-    
-    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
-    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
-           ,m_sTaskNm.szStz()
-           ,szCaller
-           ,szFunc
-           ,szFunc
-           );
-//    vTrace("HeadsUp: %s\n"_Stz
-//           ,oHeadsUp.sz()
+//  if (m_sTaskNm.bSame("supervisor"_Stz)) {
+//
+//    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBING\n"_Stz);
+//    vTrace("vGrabTaskLock: %s by %s func %s\n"_Stz
+//           ,m_sTaskNm.szStz()
+//           ,szCaller
+//           ,szFunc
+//           ,szFunc
 //           );
-    HeadsUp oHeadsUp((Stz*)__func__);
-    
-    vThreadCallStackDump();
-    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
-
-    vTrace("\n"_Stz);
-  }
-  
+//
+//    HeadsUp oHeadsUp((Stz*)__func__);
+//
+//    vThreadCallStackDump();
+//    vTrace("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL GRABBED\n"_Stz);
+//
+//    vTrace("\n"_Stz);
+//  }
+//
 }
 
 /*----------------------------------------------------------------------------*/

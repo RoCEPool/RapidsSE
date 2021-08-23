@@ -5,7 +5,7 @@
 " OP_toDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                        */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : OP_toDemon_DataMarker \handler
 
@@ -13,7 +13,7 @@
 
   ZK_M_DATAPULSE_handler
 
-  Operand[].newDataPulse operand[] 
+  Marker[].newDataPulse Marker[]
     "__anyDemon" find word.object@
     pipeline.pipeout
 ;

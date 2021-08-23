@@ -36,8 +36,8 @@
   PipeIn[].delete
 
   // pipeout an EOSMARKER
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

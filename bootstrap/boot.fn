@@ -247,35 +247,9 @@ function startCluster() {
     BOOT_TIMEOUT="${DEFAULT_BOOT_TIMEOUT}"
   fi
 
-  # We want to wait for the cluster to boot up, but timeout if it takes
-  # too long. We can't call the timeout command because it expects an 
-  # argument which is a command and not a bash function.
-  # So we will call waitForClusterBoot in the background and then create
-  # another background subshell task that sleeps for the desired timeout
-  # and tries to kill the waitForClusterBoot task. If the waitForClusterBoot
-  # task returns early then we kill the "killer" task instead.
-  # Inspiration from here:  https://stackoverflow.com/a/22384727
-  
-  waitForClusterBoot "${nodeNames[@]}" &
-  local bootWaitPid="$!"
+  # We want to wait for the cluster to boot up, but timeout if it takes too long.
+  waitForClusterBoot "${BOOT_TIMEOUT}" "${nodeNames[@]}" || true
 
-  # The timeout killer
-  ( 
-    sleep "${BOOT_TIMEOUT}"
-    echo "Cluster boot timed out" 
-    kill -0 "${bootWaitPid}" &>/dev/null && kill "${bootWaitPid}" &>/dev/null
-  ) &
-
-  local killerPid="$!"
-
-  wait "${bootWaitPid}" 2>/dev/null
-  kill -0 "${killerPid}" &>/dev/null && kill "${killerPid}" &>/dev/null
-  # We wait here and redirect stderr because it will print a message indicating that
-  # the subprocess was terminated. We want to suppress that.
-  # The actual kill command above simply sends a signal and does not wait for the
-  # process to exit.
-  wait "${killerPid}" 2>/dev/null
-  
   echo ""
 
   if printClusterStatus; then
@@ -425,16 +399,22 @@ function startCurrentNode() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Waits for all nodes in the cluster to boot and report that they are ready.
-## There is no timeout here. 
 ## Prints a "." for every second it waits
 ## Params:
+##  $1 - how many seconds to wait before declaring the boot unsuccessful.
 ##  $@ - (optional) the array of node names to be started. If not supplied then
 ##       all nodes will be started.
+## Returns a non-zero exit code if a timeout occurs
 
 # shellcheck disable=SC2120
 function waitForClusterBoot() {
 
   local dotPid
+
+  [ "$#" -ge 1 ] || errorExit "Invalid number of arguments to function waitForClusterBoot : $#"
+
+  local bootTimeout="$1"
+  shift
 
   local fullClusterStart
   local -a nodeNames
@@ -466,15 +446,33 @@ function waitForClusterBoot() {
   # If we run this function as a subshell and then kill it, we need to also
   # ensure that we kill the dot printer above.
   #shellcheck disable=SC2064
-  trap "kill -0 ${dotPid} &>/dev/null && kill ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null" SIGINT SIGHUP SIGTERM EXIT
+  trap "kill -0 ${dotPid} &>/dev/null && kill -15 ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null" SIGINT SIGHUP SIGTERM EXIT
 
   # Give a couple of seconds for SE to attempt to start up on each node.
   # If we don't then it may look like it isn't running.
+
+  local startTime
+  local currentTime
+  local targetTime
+
+  startTime="$(date +%s)"
+  targetTime=$((startTime + bootTimeout))
+
   sleep 2
 
   for row in "${nodeNames[@]}"; do
 
     while true; do
+      # Have we taken too long?
+      currentTime="$(date +%s)"
+      if [ "${currentTime}" -ge "${targetTime}" ]; then
+        kill -0 ${dotPid} &>/dev/null && kill -15 ${dotPid} &>/dev/null
+        echo "Cluster boot timed out"
+        wait ${dotPid} 2>/dev/null
+        false
+        return
+      fi
+
       # If SE is not running then stop waiting
       if [ -z "$(getRemoteRunningPid "${row}")" ]; then
         debugPrint "Node ${row} is not running"
@@ -492,7 +490,8 @@ function waitForClusterBoot() {
 
   done
 
-  kill "${dotPid}" &>/dev/null
+  kill -0 ${dotPid} &>/dev/null && kill -15 ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null
+  true
 }
 
 

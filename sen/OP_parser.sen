@@ -61,8 +61,8 @@
 
     LogicUnit[].compilerToExit if
       Operand[].delete
-      Operand[].newLeaveMarker
-      Operand[].pipeout
+      Marker[].newLeaveMarker
+      Marker[].pipeout
       true
       exit
     then
@@ -70,8 +70,8 @@
   then
 
   Operand[].pipeOut
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

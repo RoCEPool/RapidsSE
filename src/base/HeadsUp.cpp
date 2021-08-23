@@ -79,18 +79,27 @@ Stz* HeadsUp::sz(void)
   Stz* szEvNm     = (Stz*)PsxThd::pTlsGet(giTLS_HandlerKey);
   Stz* szStepNm   = (Stz*)PsxThd::pTlsGet(giTLS_StepKey);
  
-  Task* pTask = MY::pTask();
-  Stz* szLockInfo = pTask
-                      ? (pTask->bIsLocked() ? "locked"_Stz : "not-locked"_Stz)
-                      : ("unknown lock state"_Stz)
+  Thread* pThread = MY::pThread();
+  Stz* szThreadInfo = pThread
+                      ? (pThread->eDedicated()
+                          ? "dedicated"_Stz : "general"_Stz)
+                      : ("unknown"_Stz)
                      ;
   
-  vCatf("H:%s T:%s (%s) J:%s O:%s E:%s S:%s"
+  Task* pTask = MY::pTask();
+  Stz* szLockInfo = pTask
+                      ? (pTask->bIsLocked()
+                          ? "locked"_Stz : "not-locked"_Stz)
+                      : ("unknown"_Stz)
+                     ;
+  
+  vCatf("H:%s (%s) T:%s (%s) J:%s O:%s E:%s S:%s"
         ""_Stz
 
         ,szThreadNm
+          ,szThreadInfo
         ,szTaskNm
-        ,szLockInfo
+          ,szLockInfo
         ,szJobNm
         ,szOpNm
         ,szEvNm

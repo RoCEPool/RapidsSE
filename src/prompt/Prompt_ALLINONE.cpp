@@ -2892,6 +2892,15 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // NOTE: Need to wait for job to complete and cleanup
   // Loop C_ATTEMPTS times to wait for memory leaks to go away
   
+  
+  
+  if (gpBufferPool->bDontFree()) {
+    vTrace("bPrompt_memoryLeaks: skipping ... (--dontFree supplied)\n"_Stz);
+    goto L_END;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     nLeaksDetected = 0;

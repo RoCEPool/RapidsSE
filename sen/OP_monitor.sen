@@ -16,16 +16,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
-  "Monitor Job Started" .verbose
+  "Monitor Demon Started" .
 
   begin
 
     monitor::activity
-    args.supervisorSleep thread::sleepSsec
+    args.demonSleep thread::sleepSsec
 
   again
 
@@ -60,7 +60,7 @@ cmdSyntax: monitor :: monitor ;
 
 : monitor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  //tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

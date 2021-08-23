@@ -32,7 +32,9 @@ namespace STORE
     
     IndexStream(TablePtn* pTablePtn, Index* pIndex);
    ~IndexStream(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vClose(void);
     bool bDelete(void);
     bool bOpen(void);

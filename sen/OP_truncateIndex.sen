@@ -5,7 +5,7 @@
 " OP_truncateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : TruncateIndex_DataPulse \handler
 
@@ -16,14 +16,14 @@
   // truncate the buffers of the tablePtn
   Index[] TablePtn[].truncateIndex
 
-  Operand[].newDestroyMarker
-  Operand[].pipeOut
+  Marker[].newDestroyMarker
+  Marker[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : TruncateIndex_StartMarker \handler
 

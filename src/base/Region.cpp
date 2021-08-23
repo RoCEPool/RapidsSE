@@ -94,7 +94,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
                      void* aRegionAddr, i8 iRegionSize,
                      bool bTouch,       bool bProgress,
                      bool bLock,        bool bRestart,
-                     bool bDontFree,    bool bFreeCB)
+                     bool bDontFree,    bool bFreeSpecific)
 {
   UNUSED(bRestart);
   
@@ -141,7 +141,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
                                                bTouch, bProgress,
-                                               bDontFree, bFreeCB);
+                                               bDontFree, bFreeSpecific);
 
   
   if (bVerbose)

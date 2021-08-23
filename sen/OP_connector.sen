@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 : connector_StartMarker \handler
 
-  //"connector_StartMarker" .
+  "Connector Demon Started" .
 
   args.verbose if
     grid::thisNode@ job[] "Connector %v on node %v running" .printf
@@ -148,7 +148,7 @@ cmdSyntax: connector :: connector ;
 
 : connector_cmdTags _cmdTags tagCopy: serviceOp_tags
 
-  //tags{ <dedicatedThd> = 1 }
+  tags{ <dedicatedThd> = 1 }
 
 ;
 

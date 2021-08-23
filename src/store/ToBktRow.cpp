@@ -64,7 +64,7 @@ void ToBktRow::vRepairHashSet(Object* pObject, eRF eRepair)
     // delete all completed buffers
     RowBuffer* pRowBuffer = pToBktRow->pCompleted(i_Ptn);
     while(pRowBuffer) {
-      delete pRowBuffer;
+      AM::vDeleteOperand(pRowBuffer);
       pRowBuffer = pToBktRow->pCompleted(i_Ptn);
     }
 

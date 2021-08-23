@@ -62,8 +62,6 @@ assert::stack_0
 "e" .verbose
 
   "OP_eachJoin.sen"             include
-  "OP_eachRow.sen"              include
-  "OP_eachScan.sen"             include
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
   "OP_eachPath.sen"             include
@@ -187,7 +185,6 @@ assert::stack_0
   "OP_showCluster.sen"          include
   "OP_sigsegv.sen"              include
   "OP_sink.sen"                 include
-  "OP_sink2.sen"                include
   "OP_sizeIndex.sen"            include
   "OP_sizeTable.sen"            include
   "OP_sleep.sen"                include

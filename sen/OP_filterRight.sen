@@ -75,8 +75,8 @@
   PipeIn[].delete
 
   // pipeout an EndRowRht
-  Operand[].newEndRowRhtMarker
-  Operand[].pipeout
+  Marker[].newEndRowRhtMarker
+  Marker[].pipeout
 
   true
 ;
@@ -166,8 +166,8 @@
   PipeIn[].delete
 
   // pipeout a StartRowRht
-  Operand[].newStartRowRhtMarker
-  Operand[].pipeout
+  Marker[].newStartRowRhtMarker
+  Marker[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]

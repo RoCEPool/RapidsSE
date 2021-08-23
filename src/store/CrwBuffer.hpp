@@ -32,6 +32,7 @@ namespace STORE
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Crw*       pRefdCrw(Rrf xRef);
     static CrwBuffer* pRefdCrwBuffer(Rrf& xRef);
+    static void       vRepairList(Object* pObject, eRF eRepair);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
   

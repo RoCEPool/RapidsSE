@@ -112,8 +112,8 @@
   PotRlu[].pipeoutDanglingPtns
 
   // create a new eos marker
-  Operand[].newEosMarker
-  Operand[] to Pipein[]
+  Marker[].newEosMarker
+  Marker[] to Pipein[]
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
   ZK_M_EOS_handler
@@ -128,8 +128,8 @@
 
   //Pipein[].isNull if
     // create a new eos marker
-    //Operand[].newEosMarker
-    //Operand[] to Pipein[]
+    //Marker[].newEosMarker
+    //Marker[] to Pipein[]
   //then
 
   PipeIn[].pipeOut

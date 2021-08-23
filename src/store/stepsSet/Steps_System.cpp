@@ -15,6 +15,7 @@
 void Step::vAddSteps_System(void)
 {
   vAddStep("system::activeJobs"_Stz, &Step::vSystemActiveJobs);
+  vAddStep("system::bpa"_Stz,        &Step::vSystemBpa);
   vAddStep("system::open@"_Stz,      &Step::vSystemOpenFetch);
   vAddStep("system::open!"_Stz,      &Step::vSystemOpenStore);
   vAddStep("system::see"_Stz,        &Step::vSystemSee);
@@ -33,6 +34,18 @@ void Step::vSystemActiveJobs(void)
   
   m_pDataStack->vPushInt(nActiveJobs);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* system::bpa -- buffer pool analysis                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemBpa(void)
+{
+  ENTRY();
+  
+  PoolHelper::vPoolAnalyze();
+    
   EXIT();
 }
 

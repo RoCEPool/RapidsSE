@@ -163,10 +163,18 @@ public:
   void vCommandSpawnJob(void);
 
   // crwBuffer
-  void vCrwBufferDelete(void);
+  void vCrwBufferDeleteOld(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
+
+  void vCrwBufferAppendClose(void);
+  void vCrwBufferDelete(void);
+  void vCrwBufferGet(void);
+  void vCrwBufferGetAndClear(void);
+  void vCrwBufferIsNotNull(void);
+  void vCrwBufferIsNull(void);
+  void vCrwBufferSet(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -176,14 +184,28 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferDelete(void);
   void vCsvBufferNew(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
 
+  void vCsvBufferDelete(void);
+  void vCsvBufferGet(void);
+  void vCsvBufferGetAndClear(void);
+  void vCsvBufferIsNotNull(void);
+  void vCsvBufferIsNull(void);
+  void vCsvBufferSet(void);
+
   // cursor
   void vCursorFetch(void);
   void vCursorStore(void);
+
+  // dataBuffer
+  void vDataBufferDelete(void);
+  void vDataBufferGet(void);
+  void vDataBufferGetAndClear(void);
+  void vDataBufferIsNotNull(void);
+  void vDataBufferIsNull(void);
+  void vDataBufferSet(void);
 
   // ddllock
   void vDdlLockDropRead(void);
@@ -321,9 +343,6 @@ public:
 
   // env
   void vEnvGet(void);
-
-  // errors
-  void vErrorMsg(void);
 
   // extractRow
   void vExtractRowCreate(void);
@@ -914,7 +933,46 @@ public:
   void vLogicUnitTransform(void);
   void vLogicUnitTransformArgs(void);
 
-  // machine
+  // ErrorMarker[]
+  void vMarkerDelete(void);
+  void vMarkerGet(void);
+  void vMarkerGetAndClear(void);
+  void vMarkerIsNotNull(void);
+  void vMarkerIsNull(void);
+  void vMarkerNewCancelling(void);
+  void vMarkerNewCancelledMarker(void);
+  void vMarkerNewCsvBuffer(void);
+  void vMarkerNewCleaningMarker(void);
+  void vMarkerNewCleanedupMarker(void);
+  void vMarkerNewDataPulse(void);
+  void vMarkerNewDestroyMarker(void);
+  void vMarkerNewEachScanEosMarker(void);
+  void vMarkerNewEndMarker(void);
+  void vMarkerNewEndedMarker(void);
+  void vMarkerNewEndingMarker(void);
+  void vMarkerNewEndCrwRhtMarker(void);
+  void vMarkerNewEndRowRhtMarker(void);
+  void vMarkerNewEosMarker(void);
+  void vMarkerNewErroringMarker(void);
+  void vMarkerNewErroredMarker(void);
+  void vMarkerNewExitingMarker(void);
+  void vMarkerNewExitedMarker(void);
+  void vMarkerNewLeaveMarker(void);
+  void vMarkerNewLeavingMarker(void);
+  void vMarkerNewLeftMarker(void);
+  void vMarkerNewNextBufferMarker(void);
+  void vMarkerNewStartedMarker(void);
+  void vMarkerNewStartMarker(void);
+  void vMarkerNewStartCrwRhtMarker(void);
+  void vMarkerNewStartRowRhtMarker(void);
+  void vMarkerNewStreamDef(void);
+  void vMarkerNewStreamDefRht(void);
+  void vMarkerNewTrigger(void);
+  void vMarkerPipeIn(void);
+  void vMarkerPipeToOutput(void);
+  void vMarkerSet(void);
+
+// machine
   void vMachineCoreCount(void);
   void vMachineCpuFreq(void);
   void vMachineHostName(void);
@@ -1049,35 +1107,9 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCancelling(void);
-  void vOperandNewCancelledMarker(void);
   void vOperandNewCsvBuffer(void);
-  void vOperandNewCleaningMarker(void);
-  void vOperandNewCleanedupMarker(void);
-  void vOperandNewDataPulse(void);
-  void vOperandNewDestroyMarker(void);
-  void vOperandNewEachScanEosMarker(void);
-  void vOperandNewEndMarker(void);
-  void vOperandNewEndedMarker(void);
-  void vOperandNewEndingMarker(void);
-  void vOperandNewEndCrwRhtMarker(void);
-  void vOperandNewEndRowRhtMarker(void);
-  void vOperandNewEosMarker(void);
-  void vOperandNewErroringMarker(void);
-  void vOperandNewErroredMarker(void);
-  void vOperandNewExitingMarker(void);
-  void vOperandNewExitedMarker(void);
-  void vOperandNewLeaveMarker(void);
-  void vOperandNewLeavingMarker(void);
-  void vOperandNewLeftMarker(void);
   void vOperandNewNextBufferMarker(void);
-  void vOperandNewStartedMarker(void);
-  void vOperandNewStartMarker(void);
-  void vOperandNewStartCrwRhtMarker(void);
-  void vOperandNewStartRowRhtMarker(void);
   void vOperandNewStreamDef(void);
-  void vOperandNewStreamDefRht(void);
-  void vOperandNewTrigger(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
@@ -1088,21 +1120,6 @@ public:
   void vOperandRowToCsv(void);
   void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
-
-  // operandB
-  void vOperandBAppendClose(void);
-  void vOperandBDelete(void);
-  void vOperandBGet(void);
-  void vOperandBGetAndClear(void);
-  void vOperandBIsNotNull(void);
-  void vOperandBIsNull(void);
-  void vOperandBSet(void);
-
-  // operandC
-  void vOperandCCollect(void);
-  void vOperandCGet(void);
-  void vOperandCGetAndClear(void);
-  void vOperandCSet(void);
 
   // OperandOoO
   void vOperandOoODelete(void);
@@ -1358,6 +1375,12 @@ public:
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
 
+  // register
+  void vRecvdObjectGet(void);
+  void vRecvdObjectIsNotNull(void);
+  void vRecvdObjectIsNull(void);
+  void vRecvdObjectSet(void);
+
   // reg task
   void vRegTaskGet(void);
 
@@ -1365,11 +1388,13 @@ public:
   void vRegTimerGet(void);
   void vRegTimerSet(void);
 
-  // register
-  void vRegister0Get(void);
-  void vRegister0Set(void);
-
   // row buffer
+  void vRowBufferDelete(void);
+  void vRowBufferGet(void);
+  void vRowBufferGetAndClear(void);
+  void vRowBufferIsNotNull(void);
+  void vRowBufferIsNull(void);
+  void vRowBufferSet(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor
@@ -1628,6 +1653,7 @@ public:
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
+  void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
 
@@ -1705,6 +1731,7 @@ public:
 
   // system
   void vSystemActiveJobs(void);
+  void vSystemBpa(void);
   void vSystemOpenFetch(void);
   void vSystemOpenStore(void);
   void vSystemSee(void);

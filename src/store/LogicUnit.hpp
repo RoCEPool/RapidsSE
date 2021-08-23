@@ -150,7 +150,10 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
+    REG<CrwBuffer>      m_xpCrwBuffer;
     REG<CrwToRow>       m_xpCrwToRow;
+    REG<CsvBuffer>      m_xpCsvBuffer;
+    REG<DataBuffer>     m_xpDataBuffer;
     REG<Dir>            m_xpDir0;     // dir0[]
     REG<Dir>            m_xpDir1;     // dir1[]
     REG<ExprEval>       m_xpExprEval; // expr eval
@@ -164,14 +167,14 @@ namespace STORE
     REG<Table>          m_xpInfoSetTable;
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
+    REG<Operand>        m_xpMarker;
     REG<RowBuffer>      m_xpMemoryHog; // memoryHog
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
+    REG<Object>         m_xpRecvdObject;
     REG<Op>             m_xpOp;        // operator
     REG<Operand>        m_xpOperandA;  // operand A
-    REG<Operand>        m_xpOperandB;  // operand B
-    REG<Operand>        m_xpOperandC;  // operand C
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Operand>        m_xpPipein;    // Pipein
@@ -179,8 +182,8 @@ namespace STORE
     REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
-    REG<Object>         m_xpRegister0; // general purpose reg 0[]
     REG<Row>            m_xpInfoSetRow;
+    REG<RowBuffer>      m_xpRowBuffer;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to
     REG<Sends>          m_xpSends;     // consume Sends

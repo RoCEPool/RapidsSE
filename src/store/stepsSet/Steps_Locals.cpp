@@ -201,6 +201,21 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("CrwBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CrwBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("CsvBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CsvBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("DataBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("DataBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
     EXIT();
@@ -256,6 +271,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Marker[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Marker[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("MemoryHog[]"_Stz)) {
     pCurrentWord->vEncodeCall("MemoryHog[].set"_Stz);
     EXIT();
@@ -268,16 +288,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("OperandB[]"_Stz)) {
-    pCurrentWord->vEncodeCall("OperandB[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("OperandC[]"_Stz)) {
-    pCurrentWord->vEncodeCall("OperandC[].set"_Stz);
     EXIT();
     return;
   }
@@ -306,13 +316,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Register0[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Register0[].set"_Stz);
+  else if (szTerm->bSame("RecvdObject[]"_Stz)) {
+    pCurrentWord->vEncodeCall("RecvdObject[].set"_Stz);
     EXIT();
     return;
   }
   else if (szTerm->bSame("RowOnce[]"_Stz)) {
     pCurrentWord->vEncodeCall("RowOnce[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("RowBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("RowBuffer[].set"_Stz);
     EXIT();
     return;
   }

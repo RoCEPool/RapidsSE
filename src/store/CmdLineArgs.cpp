@@ -84,7 +84,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_nDummyLoop       = 0;
   m_xSysArgs.m_nEntries         = 0;
   m_xSysArgs.m_bEvents          = false;
-  m_xSysArgs.m_bFreeCB          = false;
+  m_xSysArgs.m_bFreeSpecific          = false;
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
   m_xSysArgs.m_nIndexEntries    = 0;
@@ -106,7 +106,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRestart         = true;
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
-  m_xSysArgs.m_nSupervisorSleep = 10;
+  m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
@@ -340,8 +340,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--freeCB"_Stz)) {
-      m_xSysArgs.m_bFreeCB = true;
+    if (szArg->bSame("--freeSpecific"_Stz)) {
+      m_xSysArgs.m_bFreeSpecific = true;
       continue;
     }
     
@@ -752,8 +752,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
         
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--supervisorSleep"_Stz)) {
-      m_xSysArgs.m_nSupervisorSleep = argv[++i_Arg].iToI8();
+    if (szArg->bSame("--demonSleep"_Stz)) {
+      m_xSysArgs.m_nDemonSleep = argv[++i_Arg].iToI8();
       continue;
     }
     

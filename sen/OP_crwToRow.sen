@@ -14,8 +14,8 @@
   nullptr to PipeIn[]
 
   // pipeout copy of stream def
-  StreamDefLft[].duplicate to OperandB[]
-  OperandB[].pipeOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].pipeOut
     
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
   
@@ -30,23 +30,22 @@
 /*----------------------------------------------------------------------------*/
 : crwToRow_CrwBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CrwBuffer[]
 
   crwToRow[].convert
 
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
 
   // test for any completed
-  crwToRow[].completed to OperandB[]
+  crwToRow[].completed to RowBuffer[]
   begin
-    OperandB[].isNull not
+    RowBuffer[].isNull not
   while
-    OperandB[].pipeOut
-      crwToRow[].completed to OperandB[]
+    RowBuffer[].pipeOut
+      crwToRow[].completed to RowBuffer[]
   repeat
 
-  Operand[].delete
+  CrwBuffer[].delete
 
   true
 ;
@@ -56,12 +55,12 @@
 /*----------------------------------------------------------------------------*/
 : crwToRow_EosMarker \handler
 
-  crwToRow[].dangling to OperandB[]
+  crwToRow[].dangling to RowBuffer[]
   begin
-    OperandB[].isNull not
+    RowBuffer[].isNull not
   while
-    OperandB[].pipeOut
-    crwToRow[].dangling to OperandB[]
+    RowBuffer[].pipeOut
+    crwToRow[].dangling to RowBuffer[]
   repeat
 
   // pipe out the eos marker

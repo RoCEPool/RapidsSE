@@ -27,10 +27,9 @@
 /*----------------------------------------------------------------------------*/
 : toNstRow_RowBuffer \handler
 
-  PipeIn[] ToNstRow[].convert to OperandB[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear ToNstRow[].convert to RowBuffer[]
 
-  OperandB[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

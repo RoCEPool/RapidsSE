@@ -118,7 +118,7 @@ void Step::vIndexDefNameStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].new -- new a stream definition out                              */
+/* indexDef[].new -- new a index definition                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefNew(void)
 {

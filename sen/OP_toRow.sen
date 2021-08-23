@@ -46,13 +46,15 @@
   //profile.end
 
   // test for any completed
-  ToRow[].completed to OperandB[]
+  ToRow[].completed to RowBuffer[]
   begin
-    OperandB[].isNull not
+    RowBuffer[].isNull not
   while
-    OperandB[].pipeOut
-    ToRow[].completed to OperandB[]
+    RowBuffer[].pipeOut
+    ToRow[].completed to RowBuffer[]
   repeat
+
+  RowBuffer[].isNull assert
 
   Operand[].delete
 
@@ -65,12 +67,12 @@
 : toRow_EosMarker \handler
 
   // test for any remainders
-  ToRow[].dangling to OperandB[]
+  ToRow[].dangling to RowBuffer[]
   begin
-    OperandB[].isNull not
+    RowBuffer[].isNull not
   while
-    OperandB[].pipeOut
-    ToRow[].dangling to OperandB[]
+    RowBuffer[].pipeOut
+    ToRow[].dangling to RowBuffer[]
   repeat
 
 

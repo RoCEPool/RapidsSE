@@ -22,8 +22,8 @@
     // mark pipeline as being cancelled
     true Pipeline::cancelled!
 
-    Operand[].newCancelling
-    Operand[].pipeOut
+    Marker[].newCancelling
+    Marker[].pipeOut
 
   then
 
@@ -39,8 +39,8 @@
   PipeIn[].delete
 
   // now pipeout a cleaning marker
-  Operand[].newCleaningMarker
-  Operand[].pipeOut
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -54,8 +54,8 @@
   Pipein[].delete
 
   // now pipeout an exiting marker
-  Operand[].newExitingMarker
-  Operand[].pipeOut
+  Marker[].newExitingMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -69,8 +69,8 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleaningMarker
-  Operand[].pipeOut
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -84,8 +84,8 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleaningMarker
-  Operand[].pipeOut
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -111,8 +111,8 @@
   PipeIn[].delete
 
   // now pipeout a cleanup marker
-  Operand[].newCleaningMarker
-  Operand[].pipeOut
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -168,14 +168,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_STARTED ...                                           */
+/* handler for ZK_M_STARTED ...                                               */
 /*----------------------------------------------------------------------------*/
 : start_StartedMarker \handler
 
   //"Operand:- ZK_M_STARTED" .verbose
   PipeIn[].delete
-  Operand[].newTrigger
-  Operand[].pipeOut
+  Marker[].newTrigger
+  Marker[].pipeOut
 
   true
 ;

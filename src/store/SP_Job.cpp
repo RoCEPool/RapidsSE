@@ -58,7 +58,7 @@ Stz* SP_Job::sz(Job* pJob)
         );
   
   if (pJob->iAcksOriginal()) {
-    vCatf("AcksRmg %lld (out of %lld)"_Stz
+    vCatf(" AcksRmg %lld (out of %lld)"_Stz
            ,pJob->iAcksRmg_printOnlyValue()
            ,pJob->iAcksOriginal()
            );
