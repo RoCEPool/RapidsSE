@@ -78,7 +78,6 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newStreamDefRht"_Stz,      &Step::vMarkerNewStreamDefRht);
   vAddStep("Marker[].newTrigger"_Stz,           &Step::vMarkerNewTrigger);
   vAddStep("Marker[].pipeIn"_Stz,               &Step::vMarkerPipeIn);
-  vAddStep("Marker[].pipeOut"_Stz,              &Step::vMarkerPipeOut);
   vAddStep("Marker[].pipeToOutput"_Stz,         &Step::vMarkerPipeToOutput);
   vAddStep("Marker[].set"_Stz,                  &Step::vMarkerSet);
 }
@@ -576,25 +575,6 @@ void Step::vMarkerPipeIn(void)
     
   m_p_TaskLogicUnit->m_xpMarker = pOperand;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].pipeOut -- append marker onto next operator in pipeline           */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerPipeOut(void)
-{
-  ENTRY();
-
-  ASSERT(*m_p_TaskLogicUnit->m_xpMarker);
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpMarker,this);
-
-  m_p_TaskLogicUnit->m_xpMarker = nullptr;
-
   EXIT();
 }
 

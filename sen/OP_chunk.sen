@@ -47,9 +47,8 @@
   repeat
 
   // send EOSMARKER
-  Operand[].newEosMarker
-  //"piping out an EOSMARKER" .
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

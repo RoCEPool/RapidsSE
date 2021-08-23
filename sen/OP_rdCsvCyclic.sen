@@ -66,8 +66,8 @@
     file0[].get file.close
     <fileNm> "File %v closed" .printf
 
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
 
   then
 

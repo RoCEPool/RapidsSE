@@ -28,8 +28,8 @@
   Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
   Operand[].pipeOut
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

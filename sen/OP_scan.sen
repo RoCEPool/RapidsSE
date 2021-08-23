@@ -81,8 +81,8 @@
     false to counter0[]
 
     // send an eos marker (there was no data)
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
 
   then
 

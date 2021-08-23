@@ -969,7 +969,6 @@ public:
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
   void vMarkerPipeIn(void);
-  void vMarkerPipeOut(void);
   void vMarkerPipeToOutput(void);
   void vMarkerSet(void);
 

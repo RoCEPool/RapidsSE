@@ -79,8 +79,8 @@
 
   //"Operand:- ZK_M_EOS" .verbose
   PipeIn[].pipeToOutput
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

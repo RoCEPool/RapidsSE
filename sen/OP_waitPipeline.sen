@@ -67,8 +67,8 @@
 
     "All ReturnPipeline's gathered" .
 
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
 
     Operand[].newDataPulse
     Operand[].pipeOut

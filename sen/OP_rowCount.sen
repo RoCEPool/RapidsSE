@@ -24,8 +24,8 @@
   // pipeout the infoset
   InfoSet[].pipeOut
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

@@ -113,8 +113,8 @@
   indexDef[].pipeout
 
   // pipeout EOSMARKER so populate index can do its work
-  Operand[].newEosMarker
-  Operand[].pipeout
+  Marker[].newEosMarker
+  Marker[].pipeout
 
   true
 ;

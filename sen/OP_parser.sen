@@ -70,8 +70,8 @@
   then
 
   Operand[].pipeOut
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;

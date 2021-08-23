@@ -178,8 +178,8 @@
       then
 
       // pipeout an eosMarker
-      Operand[].newEosMarker
-      Operand[].pipeOut
+      Marker[].newEosMarker
+      Marker[].pipeOut
     else
 
       TablePtn[].dropRead

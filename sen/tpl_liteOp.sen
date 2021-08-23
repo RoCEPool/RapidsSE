@@ -15,8 +15,8 @@
   PipeIn[].pipeOut
 
   /liteOp/_action if
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
   then
 
   true
