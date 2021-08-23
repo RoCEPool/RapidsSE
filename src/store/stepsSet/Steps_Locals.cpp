@@ -311,6 +311,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("RowBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("RowBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("SendNode[]"_Stz)) {
     pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
     EXIT();
