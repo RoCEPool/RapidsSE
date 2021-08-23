@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor::activity
 
-  "Monitor Activity" .
+  //"Monitor Activity" .
   
   // update node status based on heartbeat related info
   Monitor::updateNodeStatus
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
-  "Monitor Job Started" .
+  "Monitor Demon Started" .
 
   begin
 

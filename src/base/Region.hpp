@@ -14,7 +14,7 @@ namespace BASE
                         void *aRegionAddr, i8 iRegionSize,
                         bool bTouch, bool bProgress,
                         bool bLock, bool bRestart,
-                        bool bDontFree, bool bFreeCB);
+                        bool bDontFree, bool bFreeSpecific);
     static bool bTest(s32& sRegionName);
     static void vUnlink(s32& sRegionName);
     

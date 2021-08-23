@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor::activity
 
-  "Supervisor Activity" .
+  //"Supervisor Activity" .
   
   //debug::breakPoint
 
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-  "Supervisor Job Started" .
+  "Supervisor Demon Started" .
   
   begin
  

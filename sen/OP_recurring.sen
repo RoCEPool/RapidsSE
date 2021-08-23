@@ -24,13 +24,15 @@
 /*----------------------------------------------------------------------------*/
 : recurring_StartMarker \handler
 
-  recurring_activity
+  "Recurring Demon Started" .
+
+  // recurring_activity
     
   begin
 
     //<nSeconds> >int  thread::sleepSsec
 
-    10 thread::sleepSsec
+    args.supervisorSleep thread::sleepSsec
 
     recurring_activity
 

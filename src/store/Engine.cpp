@@ -954,7 +954,7 @@ void Engine::vOpenPool(void)
                     gxCmdLineArgs.m_xSysArgs.m_bLock,
                     gxCmdLineArgs.m_xSysArgs.m_bRestart,
                     gxCmdLineArgs.m_xSysArgs.m_bDontFree,
-                    gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
+                    gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
     
     if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       

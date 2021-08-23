@@ -125,12 +125,45 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ENTBUFFER != eWasClass) {
-      pObject->vSetClassNo(CN_FREEDNOT);
-      return;
-    }
+//    if (CN_ENTBUFFER != eWasClass) {
+//      pObject->vSetClassNo(CN_FREEDNOT);
+//      return;
+//    }
+//
+//    if ( ! gpBufferPool->bFreeSpecific() ) {
+//      pObject->vSetClassNo(CN_FREEDNOT);
+//      return;
+//    }
     
-    if ( ! gpBufferPool->bFreeCB() ) {
+    
+    if (gpBufferPool->bFreeSpecific() ) {
+      
+//      if ( CN_ENTBUFFER == eWasClass ||
+//           CN_CRWBUFFER == eWasClass ||
+//           CN_ROWBUFFER == eWasClass ||
+//           CN_CSVBUFFER == eWasClass ) {
+//        // free data/index blocks
+//      }
+//      else {
+//        // dont free everything else
+//        pObject->vSetClassNo(CN_FREEDNOT);
+//        return;
+//      }
+      
+      if ( CN_JOB       == eWasClass ||
+           CN_LOGICUNIT == eWasClass ||
+           CN_OP        == eWasClass ) {
+        
+        pObject->vSetClassNo(CN_FREEDNOT);
+        return;
+      }
+      else {
+        // free everything else
+      }
+      
+    }
+    else {
+      // dont free anything
       pObject->vSetClassNo(CN_FREEDNOT);
       return;
     }

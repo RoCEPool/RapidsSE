@@ -97,7 +97,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.config"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bConfig);
   Constants::vAddConstant("args.developer"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bDeveloper);
   Constants::vAddConstant("args.dontFree"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDontFree);
-  Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
+  Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
   Constants::vAddConstant("args.help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
   Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats);
