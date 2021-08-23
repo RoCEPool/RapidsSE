@@ -163,10 +163,18 @@ public:
   void vCommandSpawnJob(void);
 
   // crwBuffer
-  void vCrwBufferDelete(void);
+  void vCrwBufferDeleteOld(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
+
+  void vCrwBufferAppendClose(void);
+  void vCrwBufferDelete(void);
+  void vCrwBufferGet(void);
+  void vCrwBufferGetAndClear(void);
+  void vCrwBufferIsNotNull(void);
+  void vCrwBufferIsNull(void);
+  void vCrwBufferSet(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -184,6 +192,14 @@ public:
   // cursor
   void vCursorFetch(void);
   void vCursorStore(void);
+
+  // dataBuffer
+  void vDataBufferDelete(void);
+  void vDataBufferGet(void);
+  void vDataBufferGetAndClear(void);
+  void vDataBufferIsNotNull(void);
+  void vDataBufferIsNull(void);
+  void vDataBufferSet(void);
 
   // ddllock
   void vDdlLockDropRead(void);
@@ -1088,21 +1104,6 @@ public:
   void vOperandRowToCsv(void);
   void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
-
-  // operandB
-  void vOperandBAppendClose(void);
-  void vOperandBDelete(void);
-  void vOperandBGet(void);
-  void vOperandBGetAndClear(void);
-  void vOperandBIsNotNull(void);
-  void vOperandBIsNull(void);
-  void vOperandBSet(void);
-
-  // operandC
-  void vOperandCCollect(void);
-  void vOperandCGet(void);
-  void vOperandCGetAndClear(void);
-  void vOperandCSet(void);
 
   // OperandOoO
   void vOperandOoODelete(void);

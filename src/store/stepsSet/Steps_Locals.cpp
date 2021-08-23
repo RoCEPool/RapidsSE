@@ -201,6 +201,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("CrwBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CrwBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("DataBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("DataBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
     EXIT();
@@ -268,11 +278,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("OperandB[]"_Stz)) {
-    pCurrentWord->vEncodeCall("OperandB[].set"_Stz);
     EXIT();
     return;
   }

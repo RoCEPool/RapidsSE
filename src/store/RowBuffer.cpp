@@ -86,7 +86,7 @@ void RowBuffer::vRepairList(Object* pObject, eRF eRepair)
 
   while (pRowBuffer) {
     pNextRowBuffer = pRowBuffer->pNextRowBuffer();
-    delete pRowBuffer;
+    AM::vDeleteOperand(pRowBuffer);
     pRowBuffer = pNextRowBuffer;
   }
 }

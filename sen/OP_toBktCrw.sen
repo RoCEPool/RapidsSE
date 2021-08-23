@@ -12,11 +12,11 @@
   PipeIn[] to StreamDefLft[]
   nullptr to PipeIn[]
 
-  StreamDefLft[].duplicate to OperandB[]
+  StreamDefLft[].duplicate to StreamDefOut[]
 
   ToBktCrw[].create
 
-  OperandB[].pipeOut
+  StreamDefOut[].pipeOut
 
   true
 ;
@@ -47,14 +47,14 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktCrw[].completed to OperandB[]
+    I ToBktCrw[].completed to CrwBuffer[]
 
     begin
-      OperandB[].isNull not
+      CrwBuffer[].isNull not
     while
-      OperandB[].appendClose
-      OperandB[].pipeOut
-      I ToBktCrw[].completed to OperandB[]
+      CrwBuffer[].appendClose
+      CrwBuffer[].pipeOut
+      I ToBktCrw[].completed to CrwBuffer[]
     repeat
 
   loop
@@ -70,14 +70,14 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktCrw[].dangling to OperandB[]
+    I ToBktCrw[].dangling to CrwBuffer[]
 
     begin
-      OperandB[].isNull not
+      CrwBuffer[].isNull not
     while
-      OperandB[].appendClose
-      OperandB[].pipeOut
-      I ToBktCrw[].dangling to OperandB[]
+      CrwBuffer[].appendClose
+      CrwBuffer[].pipeOut
+      I ToBktCrw[].dangling to CrwBuffer[]
     repeat
 
   loop

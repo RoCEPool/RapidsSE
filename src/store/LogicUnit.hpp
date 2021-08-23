@@ -150,7 +150,9 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
+    REG<CrwBuffer>      m_xpCrwBuffer;
     REG<CrwToRow>       m_xpCrwToRow;
+    REG<DataBuffer>     m_xpDataBuffer;
     REG<Dir>            m_xpDir0;     // dir0[]
     REG<Dir>            m_xpDir1;     // dir1[]
     REG<ExprEval>       m_xpExprEval; // expr eval
@@ -171,7 +173,6 @@ namespace STORE
     REG<Object>         m_xpObject;
     REG<Op>             m_xpOp;        // operator
     REG<Operand>        m_xpOperandA;  // operand A
-    REG<Operand>        m_xpOperandB;  // operand B
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Operand>        m_xpPipein;    // Pipein

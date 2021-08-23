@@ -64,7 +64,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_CrwToRow();
   Step::vAddSteps_CsvBuffer();
   Step::vAddSteps_Cursor();
-  
+
+  Step::vAddSteps_DataBuffer();
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
   Step::vAddSteps_DevLftIxt();
@@ -136,7 +137,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
-  Step::vAddSteps_OperandB();
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
