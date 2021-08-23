@@ -127,8 +127,6 @@ Task::Task(void)
   
   m_p_TaskLogicUnit = nullptr;
   
-  ASSERT(! m_oWriteLocks.nItems());
-  
   _checkInitialised_(CN_TASK);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -5,6 +5,8 @@
 
 //!                    ** Do not include BASE.h **
 
+#include "eZK.h"
+
 namespace BASE
 {
   class Task;
