@@ -14,8 +14,8 @@
   nullptr to PipeIn[]
 
   // pipeout copy of stream def
-  StreamDefLft[].duplicate to OperandB[]
-  OperandB[].pipeOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].pipeOut
     
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
   

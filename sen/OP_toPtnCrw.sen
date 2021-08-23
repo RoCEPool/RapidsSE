@@ -12,11 +12,11 @@
   PipeIn[] to StreamDefLft[]
   nullptr to PipeIn[]
 
-  StreamDefLft[].duplicate to OperandB[]
+  StreamDefLft[].duplicate to StreamDefOut[]
 
   toPtnCrw[].create
 
-  OperandB[].pipeOut
+  StreamDefOut[].pipeOut
 
   true
 ;
