@@ -1359,16 +1359,18 @@ public:
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
 
+  // register
+  void vRecvdObjectGet(void);
+  void vRecvdObjectIsNotNull(void);
+  void vRecvdObjectIsNull(void);
+  void vRecvdObjectSet(void);
+
   // reg task
   void vRegTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);
-
-  // register
-  void vObjectGet(void);
-  void vObjectSet(void);
 
   // row buffer
   void vRowBufferDelete(void);

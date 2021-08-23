@@ -110,7 +110,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
 
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,   "m_xpNow"_Stz)
-,         m_xpObject(this,RF_NONE,         nullptr,        "m_xpObject"_Stz)
+,    m_xpRecvdObject(this,RF_NONE,         nullptr,        "m_xpRecvObject"_Stz)
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
 
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)

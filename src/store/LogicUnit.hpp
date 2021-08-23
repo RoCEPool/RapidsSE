@@ -170,7 +170,7 @@ namespace STORE
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
-    REG<Object>         m_xpObject;
+    REG<Object>         m_xpRecvdObject;
     REG<Op>             m_xpOp;        // operator
     REG<Operand>        m_xpOperandA;  // operand A
     REG<Operand>        m_xpOperandOoO; // operand OoO
