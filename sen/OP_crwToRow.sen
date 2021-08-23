@@ -38,12 +38,12 @@
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
 
   // test for any completed
-  crwToRow[].completed to OperandB[]
+  crwToRow[].completed to RowBuffer[]
   begin
-    OperandB[].isNull not
+    RowBuffer[].isNull not
   while
-    OperandB[].pipeOut
-      crwToRow[].completed to OperandB[]
+    RowBuffer[].pipeOut
+      crwToRow[].completed to RowBuffer[]
   repeat
 
   Operand[].delete
