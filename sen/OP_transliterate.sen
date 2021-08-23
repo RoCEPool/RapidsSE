@@ -77,8 +77,8 @@
 
     // Always exit at this point
     Operand[].delete
-    Operand[].newLeaveMarker
-    Operand[].pipeout
+    Marker[].newLeaveMarker
+    Marker[].pipeout
     true
     exit
   then

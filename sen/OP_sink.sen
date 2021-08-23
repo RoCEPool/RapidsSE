@@ -22,8 +22,8 @@
 
   //"Operand:- ZK_M_CANCELLING" .verbose
   PipeIn[].delete
-  Operand[].newCancelledMarker
-  Operand[]\clear to Pipein[]
+  Marker[].newCancelledMarker
+  Marker[]\clear to Pipein[]
 
   Pipein[].pipeOut
   true
@@ -36,8 +36,8 @@
 
   //"Operand:- ZK_M_CLEANING" .verbose
   PipeIn[].delete
-  Operand[].newCleanedupMarker
-  Operand[].pipeOut
+  Marker[].newCleanedupMarker
+  Marker[].pipeOut
   true
 
 ;
@@ -49,10 +49,8 @@
 
   //"Operand:- ZK_M_ENDING" .verbose
   PipeIn[].delete
-  Operand[].newEndedMarker
-  Operand[]\clear to Pipein[]
-
-  Pipein[].pipeOut
+  Marker[].newEndedMarker
+  Marker[].pipeOut
   true
 
 ;
@@ -66,8 +64,8 @@
   PipeIn[].delete
 
   // now pipeout an exit marker
-  Operand[].newErroredMarker
-  Operand[].pipeOut
+  Marker[].newErroredMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -89,8 +87,8 @@
     true Pipeline::errored!
 
     // now pipeout an exit marker
-    Operand[].newErroringMarker
-    Operand[].pipeOut
+    Marker[].newErroringMarker
+    Marker[].pipeOut
 
   //else
   //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
@@ -106,8 +104,8 @@
 
   //"Operand:- ZK_M_EXITING" .verbose
   PipeIn[].pipeToOutput
-  Operand[].newExitedMarker
-  Operand[].pipeOut
+  Marker[].newExitedMarker
+  Marker[].pipeOut
   Op.ackPipelineJob
 
   false
@@ -125,8 +123,8 @@
    true Pipeline::earlyExit!
 
    // now pipeout a leaving marker
-   Operand[].newLeavingMarker
-   Operand[].pipeOut
+   Marker[].newLeavingMarker
+   Marker[].pipeOut
 
   true
 ;
@@ -140,8 +138,8 @@
   PipeIn[].delete
 
   // now pipeout an exit marker
-  Operand[].newLeftMarker
-  Operand[].pipeOut
+  Marker[].newLeftMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -172,8 +170,8 @@
     exit
   then
 
-  Operand[].newEndingMarker
-  Operand[].pipeOut
+  Marker[].newEndingMarker
+  Marker[].pipeOut
   true
 ;
 
@@ -184,8 +182,8 @@
 
   //"Operand:- ZK_M_START" .verbose
   PipeIn[].delete
-  Operand[].newStartedMarker
-  Operand[].pipeOut
+  Marker[].newStartedMarker
+  Marker[].pipeOut
 
   true
 ;

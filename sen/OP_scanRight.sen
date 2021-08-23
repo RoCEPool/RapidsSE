@@ -91,8 +91,8 @@
   PipeIn[].pipeout
 
   // send a newRightMarker (there was no data)
-  Operand[].newStartCrwRhtMarker
-  Operand[].pipeOut
+  Marker[].newStartCrwRhtMarker
+  Marker[].pipeOut
 
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
@@ -120,8 +120,8 @@
     false to counter0[]
 
     // send an EndRightMarker (there was no data)
-    Operand[].newEndCrwRhtMarker
-    Operand[].pipeOut
+    Marker[].newEndCrwRhtMarker
+    Marker[].pipeOut
 
   then
 
@@ -160,8 +160,8 @@
     ptnStream[] ptnStream.close
 
     // send an EndRightMarker
-    Operand[].newEndCrwRhtMarker
-    Operand[].pipeOut
+    Marker[].newEndCrwRhtMarker
+    Marker[].pipeOut
 
   then
 
@@ -200,8 +200,8 @@
     ptnStream[] ptnStream.close
 
     // send an eachScanEosMarker
-    Operand[].newEndCrwRhtMarker
-    Operand[].pipeout
+    Marker[].newEndCrwRhtMarker
+    Marker[].pipeout
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -257,8 +257,8 @@
   // now pipe out the stream def for the right table
   //"piping out right streamDef" .
   // pipeout a streamDefRht marker first
-  Operand[].newStreamDefRht
-  Operand[].pipeout
+  Marker[].newStreamDefRht
+  Marker[].pipeout
 
   // pipeout the rht streamDef
   Operand[].newStreamDef

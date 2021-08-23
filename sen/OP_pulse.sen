@@ -13,8 +13,8 @@
   PipeIn[].delete
 
   // pipe out a datapulse
-  Operand[].newDataPulse
-  Operand[].pipeOut
+  Marker[].newDataPulse
+  Marker[].pipeOut
 
  Counter1[] if
   begin
@@ -29,15 +29,14 @@
     repeat
     0 to  Counter0[]
      Counter1[] "Sending DATAPULSE after %v mins" str.format .
-     Operand[].newDataPulse
-     Operand[].pipeOut
+     Marker[].newDataPulse
+     Marker[].pipeOut
      true
     while assert::stack_0 repeat
   then
 
-  Operand[].newEndMarker
-  //"piping out a endMarker" .
-  Operand[].pipeOut
+  Marker[].newEndMarker
+  Marker[].pipeOut
   //Op.ackPipelineJob
 
   true

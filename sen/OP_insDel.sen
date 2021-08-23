@@ -61,8 +61,8 @@
 : insDel_StreamDef \handler
 
   PipeIn[].delete
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Marker[].newStreamDef
+  Marker[].pipeOut
 
   true
 ;

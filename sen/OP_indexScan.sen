@@ -128,8 +128,8 @@
 
   //Pipein[].isNull if
     // create a new eos marker
-    //Operand[].newEosMarker
-    //Operand[] to Pipein[]
+    //Marker[].newEosMarker
+    //Marker[] to Pipein[]
   //then
 
   PipeIn[].pipeOut

@@ -44,8 +44,8 @@
 
   //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
-  Operand[].newDataPulse
-  Operand[].pipeToOutput
+  Marker[].newDataPulse
+  Marker[].pipeToOutput
 
   true
 ;
@@ -171,8 +171,8 @@
 
   //"Operand:- ZK_M_START" .verbose
   PipeIn[].pipeToOutput
-  Operand[].newStartMarker
-  Operand[].pipeOut
+  Marker[].newStartMarker
+  Marker[].pipeOut
 
   true
 ;

@@ -129,8 +129,8 @@
     false to counter0[]
 
     // pipe out an eos marker
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    Marker[].newEosMarker
+    Marker[].pipeOut
 
   then
  

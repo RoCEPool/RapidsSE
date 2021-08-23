@@ -70,11 +70,11 @@
     Marker[].newEosMarker
     Marker[].pipeOut
 
-    Operand[].newDataPulse
-    Operand[].pipeOut
+    Marker[].newDataPulse
+    Marker[].pipeOut
 
-    Operand[].newEndMarker
-    Operand[].pipeOut
+    Marker[].newEndMarker
+    Marker[].pipeOut
 
   then
 

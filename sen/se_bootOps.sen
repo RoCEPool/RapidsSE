@@ -185,7 +185,6 @@ assert::stack_0
   "OP_showCluster.sen"          include
   "OP_sigsegv.sen"              include
   "OP_sink.sen"                 include
-  "OP_sink2.sen"                include
   "OP_sizeIndex.sen"            include
   "OP_sizeTable.sen"            include
   "OP_sleep.sen"                include

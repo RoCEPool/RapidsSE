@@ -329,7 +329,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpList.bIsNull());
   RASSERT(m_xpLogicCompiler.bIsNull());
 
-  RASSERT(m_xpMarker.bIsNull());
+  //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
 
   RASSERT(m_xpPathIdentifier.bIsNull());
