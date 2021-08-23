@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "MY.hpp"
+
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "CmdLineArgs.hpp"
@@ -929,6 +931,13 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
     return;
   }
   
+//  Thread* pMyThread = MY::pThread();
+//  if (pMyThread &&
+//      (! pMyThread->eDedicated()) &&
+//      1 == gxCmdLineArgs.m_xSysArgs.m_nThreads) {
+//    vTrace("@UNI-THREAD @UNI-THREAD @UNI-THREAD @UNI-THREAD @UNI-THREAD "_Stz);
+//    vDebugPoint();
+//  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   RASSERT(TS_DESISTED == pKnownTask->eState());

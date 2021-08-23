@@ -374,11 +374,13 @@ Task* Schedule::pPopReadyQueue(void)
   
   Task* pTask;
   
-  if (! m_pReadyQueue->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
+//  if (! m_pReadyQueue->bGrabLock()) {
+//    // unable to lock queue (another thread must be processing it)
+//    // so move on to the next queue
+//    return nullptr;
+//  }
+  
+  m_pReadyQueue->vGrabLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
