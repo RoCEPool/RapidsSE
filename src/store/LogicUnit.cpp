@@ -123,7 +123,8 @@ LogicUnit::LogicUnit(void)
 ,          m_xpRange(this,RF_NONE,         nullptr,        "m_xpRange"_Stz)
 
 // Discuss with Ray
-,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,        "m_xpRow"_Stz)
+,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                "m_xpRow"_Stz)
+    ,       m_xpRowBuffer(this,RF_NONE,    RowBuffer::vRepairList, "m_xpRowBuffer"_Stz)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair, "m_xpRowOnce"_Stz)
 
 ,       m_xpSendNode(this,RF_NONE,         nullptr,        "m_xpSendNode"_Stz)

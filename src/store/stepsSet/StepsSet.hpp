@@ -1370,6 +1370,12 @@ public:
   void vObjectSet(void);
 
   // row buffer
+  void vRowBufferDelete(void);
+  void vRowBufferGet(void);
+  void vRowBufferGetAndClear(void);
+  void vRowBufferIsNotNull(void);
+  void vRowBufferIsNull(void);
+  void vRowBufferSet(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor

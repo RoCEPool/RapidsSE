@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "LogicUnit.hpp"
 #include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -15,7 +16,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RowBuffer(void)
 {
-  vAddStep("rowBuffer.operandDump"_Stz, &Step::vRowBufferOperandDump);
+  vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
+  vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
+  vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
+  vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
+  vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
+  vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
+  vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
+  vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +42,86 @@ void Step::vRowBufferOperandDump(void)
   
   pRowBuffer->vSlabReport();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].delete -- operand delete                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferDelete(void)
+{
+  ENTRY();
+
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpRowBuffer);
+
+  m_p_TaskLogicUnit->m_xpRowBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].get -- fetch operand                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRowBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].getAndClear -- fetch operand and set to nullptr                */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRowBuffer);
+
+  m_p_TaskLogicUnit->m_xpRowBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].isNotNull -- is RowBuffer not null ?                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].isNull -- is RowBuffer null ?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].set -- set operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferSet(void)
+{
+  ENTRY();
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
+
   EXIT();
 }
 
