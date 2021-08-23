@@ -94,6 +94,8 @@
 
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
+//#define WITH_REVISED_LATTICE EndDefine     // revised lattice code
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
