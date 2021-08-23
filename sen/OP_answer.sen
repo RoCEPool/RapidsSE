@@ -120,6 +120,8 @@
 
   0 locals| nConns |
 
+  "Answer Demon Started" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node

@@ -97,7 +97,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.config"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bConfig);
   Constants::vAddConstant("args.developer"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bDeveloper);
   Constants::vAddConstant("args.dontFree"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDontFree);
-  Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
+  Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
   Constants::vAddConstant("args.help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
   Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats);
@@ -124,7 +124,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.start"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bStop);
-  Constants::vAddConstant("args.supervisorSleep"_Stz,   gxCmdLineArgs.m_xSysArgs.m_nSupervisorSleep);
+  Constants::vAddConstant("args.demonSleep"_Stz,   gxCmdLineArgs.m_xSysArgs.m_nDemonSleep);
   Constants::vAddConstant("args.tablePtns"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("args.threads"_Stz,           gxCmdLineArgs.m_xSysArgs.m_nThreads);
   Constants::vAddConstant("args.touch"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bTouch);

@@ -17,6 +17,8 @@
 /*----------------------------------------------------------------------------*/
 : waker_StartMarker \handler
 
+  "Waker Demon Started" .
+
   begin
 
     waker::activity

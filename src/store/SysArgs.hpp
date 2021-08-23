@@ -73,7 +73,7 @@ namespace STORE
     i8   m_nDummyLoop;       // loop count for dummy threads
     i8   m_nEntries;         // no of entries per buffer
     bool m_bEvents;          // log events
-    bool m_bFreeCB;          // but free CrwBuffers back to heap
+    bool m_bFreeSpecific;          // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
     i8   m_nIndexEntries;  // no of entries per buffer
@@ -96,7 +96,7 @@ namespace STORE
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
-    i8   m_nSupervisorSleep; // sleep period for supervisor job
+    i8   m_nDemonSleep;      // sleep period for demons
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint
