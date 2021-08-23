@@ -32,7 +32,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer.delete"_Stz,        &Step::vCrwBufferDeleteOld);
   vAddStep("CrwBuffer.operandDump"_Stz,   &Step::vCrwBufferOperandDump);
 
-  vAddStep("CrwBuffer[].appendClose"_Stz,    &Step::vOperandBAppendClose);
+  vAddStep("CrwBuffer[].appendClose"_Stz, &Step::vCrwBufferAppendClose);
   vAddStep("CrwBuffer[]"_Stz,             &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
