@@ -271,6 +271,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Marker[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Marker[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("MemoryHog[]"_Stz)) {
     pCurrentWord->vEncodeCall("MemoryHog[].set"_Stz);
     EXIT();

@@ -2124,7 +2124,7 @@ void Task::vAddMunged(Task* )
     "\" OP_pulse.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_M_TRIGGER ...                                                 */\n"
+    "/* handler for ZK_M_TRIGGER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": pulse_Trigger \\handler\n"
     "\n"

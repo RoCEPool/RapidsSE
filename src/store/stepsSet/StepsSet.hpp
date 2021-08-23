@@ -1653,6 +1653,7 @@ public:
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
+  void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
 
