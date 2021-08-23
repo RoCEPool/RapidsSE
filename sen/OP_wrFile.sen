@@ -22,8 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : wrFile_CrwBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to Operand[]
 
   Operand[].writetoFile0
   nullptr to Operand[]

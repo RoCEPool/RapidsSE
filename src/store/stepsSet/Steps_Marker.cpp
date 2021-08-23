@@ -43,100 +43,100 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Marker(void)
 {
-  vAddStep("ErrorMarker[]"_Stz,                &Step::vErrorMarkerGet);
-  vAddStep("ErrorMarker[]\\clear"_Stz,         &Step::vErrorMarkerGetAndClear);
-  vAddStep("ErrorMarker[].delete"_Stz,         &Step::vErrorMarkerDelete);
-  vAddStep("ErrorMarker[].isNotNull"_Stz,      &Step::vErrorMarkerIsNotNull);
-  vAddStep("ErrorMarker[].isNull"_Stz,         &Step::vErrorMarkerIsNull);
-  vAddStep("ErrorMarker[].newErrorMarker"_Stz, &Step::vErrorMarkerNewErrorMarker);
-  vAddStep("ErrorMarker[].pipeIn"_Stz,         &Step::vErrorMarkerPipeIn);
-  vAddStep("ErrorMarker[].pipeOut"_Stz,        &Step::vErrorMarkerPipeOut);
-  vAddStep("ErrorMarker[].pipeToOutput"_Stz,   &Step::vErrorMarkerPipeToOutput);
-  vAddStep("ErrorMarker[].set"_Stz,            &Step::vErrorMarkerSet);
+  vAddStep("Marker[]"_Stz,                &Step::vMarkerGet);
+  vAddStep("Marker[]\\clear"_Stz,         &Step::vMarkerGetAndClear);
+  vAddStep("Marker[].delete"_Stz,         &Step::vMarkerDelete);
+  vAddStep("Marker[].isNotNull"_Stz,      &Step::vMarkerIsNotNull);
+  vAddStep("Marker[].isNull"_Stz,         &Step::vMarkerIsNull);
+  vAddStep("Marker[].newEosMarker"_Stz,   &Step::vMarkerNewEosMarker);
+  vAddStep("Marker[].pipeIn"_Stz,         &Step::vMarkerPipeIn);
+  vAddStep("Marker[].pipeOut"_Stz,        &Step::vMarkerPipeOut);
+  vAddStep("Marker[].pipeToOutput"_Stz,   &Step::vMarkerPipeToOutput);
+  vAddStep("Marker[].set"_Stz,            &Step::vMarkerSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].delete -- operand delete                                     */
+/* Marker[].delete -- operand delete                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerDelete(void)
+void Step::vMarkerDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpMarker);
   
-  m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;
+  m_p_TaskLogicUnit->m_xpMarker = nullptr;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].get -- fetch operand                                         */
+/* Marker[].get -- fetch operand                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerGet(void)
+void Step::vMarkerGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMarker);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].getAndClear -- fetch operand and set to nullptr              */
+/* Marker[].getAndClear -- fetch operand and set to nullptr                   */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerGetAndClear(void)
+void Step::vMarkerGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMarker);
   
-  m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;
+  m_p_TaskLogicUnit->m_xpMarker = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].isNotNull -- is narker not null ?                            */
+/* Marker[].isNotNull -- is narker not null ?                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerIsNotNull(void)
+void Step::vMarkerIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMarker.bIsNull() ? 0 : 1);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].isNull -- is operand null ?                                  */
+/* Marker[].isNull -- is operand null ?                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerIsNull(void)
+void Step::vMarkerIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMarker.bIsNull() ? 1 : 0);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].newErrorMarker -- new an error marker                        */
+/* Marker[].newEosMarker -- new an eos marker                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerNewErrorMarker(void)
+void Step::vMarkerNewEosMarker(void)
 {
   ENTRY();
   
-  ASSERT (m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull());
+  ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpErrorMarker = new Marker(OM_ERRORMARKER);
+  m_p_TaskLogicUnit->m_xpMarker = new Marker(OM_EOSMARKER);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].pipeIn -- move pipein operand into Marker                    */
+/* Marker[].pipeIn -- move pipein operand into Marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerPipeIn(void)
+void Step::vMarkerPipeIn(void)
 {
   ENTRY();
   
@@ -144,61 +144,61 @@ void Step::vErrorMarkerPipeIn(void)
 
   m_p_TaskLogicUnit->m_xpPipein = nullptr;
     
-  m_p_TaskLogicUnit->m_xpErrorMarker = pOperand;
+  m_p_TaskLogicUnit->m_xpMarker = pOperand;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].pipeOut -- append marker onto next operator in pipeline      */
+/* Marker[].pipeOut -- append marker onto next operator in pipeline           */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerPipeOut(void)
+void Step::vMarkerPipeOut(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  ASSERT(*m_p_TaskLogicUnit->m_xpMarker);
 
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpErrorMarker,this);
+  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpMarker,this);
 
-  m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;
+  m_p_TaskLogicUnit->m_xpMarker = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].pipeToOutput -- append operand to pipeline job buffer queue  */
+/* Marker[].pipeToOutput -- append operand to pipeline job buffer queue       */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerPipeToOutput(void)
+void Step::vMarkerPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  ASSERT(*m_p_TaskLogicUnit->m_xpMarker);
   
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpMarker);
   
-  m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;
+  m_p_TaskLogicUnit->m_xpMarker = nullptr;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ErrorMarker[].set -- set operand                                           */
+/* Marker[].set -- set operand                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMarkerSet(void)
+void Step::vMarkerSet(void)
 {
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull());
+  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpMarker.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpErrorMarker = _pOperand(pOperand);
+  m_p_TaskLogicUnit->m_xpMarker = _pOperand(pOperand);
   
   EXIT();
 }

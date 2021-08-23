@@ -30,8 +30,7 @@
 /*----------------------------------------------------------------------------*/
 : crwToRow_CrwBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CrwBuffer[]
 
   crwToRow[].convert
 
@@ -46,7 +45,7 @@
       crwToRow[].completed to RowBuffer[]
   repeat
 
-  Operand[].delete
+  CrwBuffer[].delete
 
   true
 ;

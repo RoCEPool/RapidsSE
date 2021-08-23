@@ -167,6 +167,7 @@ namespace STORE
     REG<Table>          m_xpInfoSetTable;
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
+    REG<Operand>        m_xpMarker;
     REG<RowBuffer>      m_xpMemoryHog; // memoryHog
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator

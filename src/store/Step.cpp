@@ -81,7 +81,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Encode();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
-  Step::vAddSteps_Error();
+  Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_Executable();
   Step::vAddSteps_Expressions();
   Step::vAddSteps_ExprEval();

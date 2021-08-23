@@ -344,9 +344,6 @@ public:
   // env
   void vEnvGet(void);
 
-  // errors
-  void vErrorMsg(void);
-
   // extractRow
   void vExtractRowCreate(void);
   void vExtractRowDelete(void);
@@ -936,7 +933,19 @@ public:
   void vLogicUnitTransform(void);
   void vLogicUnitTransformArgs(void);
 
-  // machine
+  // ErrorMarker[]
+  void vMarkerDelete(void);
+  void vMarkerGet(void);
+  void vMarkerGetAndClear(void);
+  void vMarkerIsNotNull(void);
+  void vMarkerIsNull(void);
+  void vMarkerNewEosMarker(void);
+  void vMarkerPipeIn(void);
+  void vMarkerPipeOut(void);
+  void vMarkerPipeToOutput(void);
+  void vMarkerSet(void);
+
+// machine
   void vMachineCoreCount(void);
   void vMachineCpuFreq(void);
   void vMachineHostName(void);
