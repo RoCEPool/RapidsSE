@@ -152,6 +152,7 @@ namespace STORE
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwBuffer>      m_xpCrwBuffer;
     REG<CrwToRow>       m_xpCrwToRow;
+    REG<CsvBuffer>      m_xpCsvBuffer;
     REG<DataBuffer>     m_xpDataBuffer;
     REG<Dir>            m_xpDir0;     // dir0[]
     REG<Dir>            m_xpDir1;     // dir1[]

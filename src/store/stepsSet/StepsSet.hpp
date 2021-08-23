@@ -184,10 +184,17 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferDelete(void);
+  void vCsvBufferDeleteOld(void);
   void vCsvBufferNew(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
+
+  void vCsvBufferDelete(void);
+  void vCsvBufferGet(void);
+  void vCsvBufferGetAndClear(void);
+  void vCsvBufferIsNotNull(void);
+  void vCsvBufferIsNull(void);
+  void vCsvBufferSet(void);
 
   // cursor
   void vCursorFetch(void);

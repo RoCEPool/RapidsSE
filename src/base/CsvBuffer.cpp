@@ -45,6 +45,10 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void CsvBuffer::vPostRecv(void* aCsvBuffer)
@@ -54,6 +58,21 @@ void CsvBuffer::vPostRecv(void* aCsvBuffer)
   CsvBuffer* pCsvBuffer = _pCsvBuffer(aCsvBuffer);
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair csvBuffer                                                           */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vRepairList(Object* pObject, eRF eRepair)
+{
+  _static_
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pObject);
+  CsvBuffer* pNextCsvBuffer;
+
+  while (pCsvBuffer) {
+    pNextCsvBuffer = pCsvBuffer->pNextBuffer();
+    AM::vDeleteOperand(pCsvBuffer);
+    pCsvBuffer = pNextCsvBuffer;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

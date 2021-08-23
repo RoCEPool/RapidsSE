@@ -84,9 +84,10 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,   "m_xpAggTimer"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
 ,       m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList, "m_xpCrwBuffer"_Stz)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,   "m_xpCrwToRow"_Stz)
+,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       "m_xpCrwToRow"_Stz)
+,       m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList, "m_xpCsvBuffer"_Stz)
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair, "m_xpDataBuffer"_Stz)
 ,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,        "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,        "m_xpDir1"_Stz)
@@ -307,6 +308,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpAggTimer.bIsNull());
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());
+  RASSERT(m_xpCsvBuffer.bIsNull());
   RASSERT(m_xpDataBuffer.bIsNull());
   RASSERT(m_xpDir0.bIsNull());
   RASSERT(m_xpDir1.bIsNull());
