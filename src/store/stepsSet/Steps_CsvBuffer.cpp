@@ -18,8 +18,7 @@
 void Step::vAddSteps_CsvBuffer(void)
 {
   vAddStep("csvBuffer::new"_Stz,        &Step::vCsvBufferNew);
-  
-  vAddStep("csvBuffer.delete"_Stz,      &Step::vCsvBufferDeleteOld);
+
   vAddStep("csvBuffer.operandDump"_Stz, &Step::vCsvBufferOperandDump);
   vAddStep("csvBuffer.print"_Stz,       &Step::vCsvBufferPrint);
 
@@ -48,20 +47,6 @@ void Step::vCsvBufferNew(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* csvBuffer.delete -- delete                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vCsvBufferDeleteOld(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
-
-  delete pCsvBuffer;
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* csvBuffer.operandDump -- operand dump of csvBuffer                         */

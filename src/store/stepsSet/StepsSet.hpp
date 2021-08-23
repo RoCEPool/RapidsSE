@@ -184,7 +184,6 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferDeleteOld(void);
   void vCsvBufferNew(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);

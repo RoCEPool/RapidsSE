@@ -9,15 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : catFile_csvBuffer
 
-  csvBuffer::new locals| pCsvBuffer |
+  csvBuffer::new to CsvBuffer[]
 
-  pCsvBuffer file0[] file.readChunk if
+  CsvBuffer[] file0[] file.readChunk if
     file0[] file.tell "read a csv chunk (tell %v)" .printf
-    pCsvBuffer to Operand[]
-    Operand[].pipeOut
+    CsvBuffer[].pipeOut
     true
   else
-    pCsvBuffer csvBuffer.delete
+    CsvBuffer[].delete
     false
   then
 ;
