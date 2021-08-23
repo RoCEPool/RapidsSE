@@ -11,8 +11,9 @@ namespace BASE
   class LatticeNL_t : public Object
   {  
   private:
-    u8 m_nItems;      // number of items currently in the lattice
-    i8 m_i_FirstFree; // subscript of first free cell
+    Task* m_pOwningTask; // which task
+    u8    m_nItems;      // number of items currently in the lattice
+    i8    m_i_FirstFree; // subscript of first free cell
     
     union {
       ITEM* m_pItem[MAX_ITEMS];      // array of items (proper objects)
@@ -27,7 +28,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LatticeNL_t(void);
+    LatticeNL_t(Task* pTask);
    ~LatticeNL_t(void) noexcept(false);
 
     //ITEM*& operator [](i8 i_Item);
@@ -98,12 +99,13 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(void)
+LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(Task* pTask)
 : Object(LAT_CN)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  m_nItems = 0;
+  m_pOwningTask = pTask;
+  m_nItems      = 0;
   m_i_FirstFree = 0;
   
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)

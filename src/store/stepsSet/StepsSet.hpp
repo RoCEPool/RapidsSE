@@ -1719,6 +1719,7 @@ public:
 
   // system
   void vSystemActiveJobs(void);
+  void vSystemBpa(void);
   void vSystemOpenFetch(void);
   void vSystemOpenStore(void);
   void vSystemSee(void);

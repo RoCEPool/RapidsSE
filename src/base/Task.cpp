@@ -79,6 +79,8 @@ void Task::operator delete(void* pTaskAddress)
 Task::Task(void)
 : Object(CN_TASK)
 , m_okLock(this,false)
+, m_oReadLocks(this)
+, m_oWriteLocks(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

@@ -15291,6 +15291,8 @@ void Task::vAddMunged(Task* )
     "  //jobs::seePlist\n"
     "  \n"
     "  jobs::seeSqueue\n"
+    "  \n"
+    "  system::bpa\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
