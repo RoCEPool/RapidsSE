@@ -206,6 +206,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("CsvBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CsvBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("DataBuffer[]"_Stz)) {
     pCurrentWord->vEncodeCall("DataBuffer[].set"_Stz);
     EXIT();
@@ -306,8 +311,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Object[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Object[].set"_Stz);
+  else if (szTerm->bSame("RecvdObject[]"_Stz)) {
+    pCurrentWord->vEncodeCall("RecvdObject[].set"_Stz);
     EXIT();
     return;
   }

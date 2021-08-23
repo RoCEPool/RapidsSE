@@ -33,7 +33,7 @@ void Step::vAddSteps_DataBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].delete -- operand delete                                       */
+/* DataBuffer[].delete -- operand delete                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferDelete(void)
 {
@@ -47,7 +47,7 @@ void Step::vDataBufferDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].get -- fetch operand                                           */
+/* DataBuffer[].get -- fetch operand                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferGet(void)
 {
@@ -59,7 +59,7 @@ void Step::vDataBufferGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].getAndClear -- fetch operand and set to nullptr                */
+/* DataBuffer[].getAndClear -- fetch operand and set to nullptr                */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferGetAndClear(void)
 {
@@ -73,7 +73,7 @@ void Step::vDataBufferGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].isNotNull -- is RowBuffer not null ?                           */
+/* DataBuffer[].isNotNull -- is RowBuffer not null ?                           */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferIsNotNull(void)
 {
@@ -85,7 +85,7 @@ void Step::vDataBufferIsNotNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].isNull -- is RowBuffer null ?                                  */
+/* DataBuffer[].isNull -- is RowBuffer null ?                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferIsNull(void)
 {
@@ -97,7 +97,7 @@ void Step::vDataBufferIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].set -- set operand                                             */
+/* DataBuffer[].set -- set operand                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vDataBufferSet(void)
 {

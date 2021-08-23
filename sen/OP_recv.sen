@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 : recv_recvNext
   
-  nullptr to Object[]
+  nullptr to recvdObject[]
 
   Socket[].recvObject
   
@@ -37,7 +37,7 @@
     exit
   then
   
-  Socket[].object@\clear to Object[]
+  Socket[].object@\clear to recvdObject[]
 
   Socket[].success@
 ;
@@ -48,11 +48,11 @@
 : recv_dispatch ( -- )
 
   // null object (low memory)
-  object[] not if
+  recvdObject[].isNull if
     exit
   then
     
-  Object[] Object[] Object.postRecvWord@ execute
+  recvdObject[] recvdObject[] object.postRecvWord@ execute
 ;
 
 /*----------------------------------------------------------------------------*/

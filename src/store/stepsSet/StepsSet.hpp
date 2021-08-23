@@ -184,10 +184,17 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferDelete(void);
+  void vCsvBufferDeleteOld(void);
   void vCsvBufferNew(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
+
+  void vCsvBufferDelete(void);
+  void vCsvBufferGet(void);
+  void vCsvBufferGetAndClear(void);
+  void vCsvBufferIsNotNull(void);
+  void vCsvBufferIsNull(void);
+  void vCsvBufferSet(void);
 
   // cursor
   void vCursorFetch(void);
@@ -1359,16 +1366,18 @@ public:
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
 
+  // register
+  void vRecvdObjectGet(void);
+  void vRecvdObjectIsNotNull(void);
+  void vRecvdObjectIsNull(void);
+  void vRecvdObjectSet(void);
+
   // reg task
   void vRegTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);
-
-  // register
-  void vObjectGet(void);
-  void vObjectSet(void);
 
   // row buffer
   void vRowBufferDelete(void);
