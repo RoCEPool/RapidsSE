@@ -206,6 +206,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("DataBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("DataBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
     EXIT();

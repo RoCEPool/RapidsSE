@@ -159,7 +159,7 @@ void CrwBuffer::vRepairList(Object* pObject, eRF eRepair)
 
   while (pCrwBuffer) {
     pNextCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-    delete pCrwBuffer;
+    AM::vDeleteOperand(pCrwBuffer);
     pCrwBuffer = pNextCrwBuffer;
   }
 }

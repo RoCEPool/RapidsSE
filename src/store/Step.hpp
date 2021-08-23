@@ -46,7 +46,8 @@ namespace STORE
     static void vAddSteps_CrwToRow(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
-  
+
+    static void vAddSteps_DataBuffer(void);
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
     static void vAddSteps_DevLftIxt(void);

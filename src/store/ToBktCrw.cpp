@@ -74,7 +74,7 @@ void ToBktCrw::vRepairHashSet(Object* pObject, eRF eRepair)
     // delete all completed buffers
     CrwBuffer* pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
     while(pCrwBuffer) {
-      delete pCrwBuffer;
+      AM::vDeleteOperand(pCrwBuffer);
       pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
     }
 

@@ -193,6 +193,14 @@ public:
   void vCursorFetch(void);
   void vCursorStore(void);
 
+  // dataBuffer
+  void vDataBufferDelete(void);
+  void vDataBufferGet(void);
+  void vDataBufferGetAndClear(void);
+  void vDataBufferIsNotNull(void);
+  void vDataBufferIsNull(void);
+  void vDataBufferSet(void);
+
   // ddllock
   void vDdlLockDropRead(void);
   void vDdlLockDropWrite(void);
