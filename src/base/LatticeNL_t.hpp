@@ -38,7 +38,6 @@ namespace BASE
     //ITEM*& operator [](i8 i_Item);
 
     i8    iAdd(ITEM* pItem);
-    void  vClear(void);
     i8    iFind(ITEM* pItem);
     i8    iFirst(void);
     ITEM* pGet(i8 i_Item);
@@ -199,25 +198,6 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
   m_nItems++;
   
   return i_Item;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all items                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vClear(void)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  m_nItems = 0;
-  m_i_NextFree = 0;
-  
-  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
-    m_i_NextFree[i_Item] = i_Item + 1;
-  m_i_NextFree[MAX_ITEMS - 1] = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
