@@ -96,7 +96,7 @@ namespace STORE
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
-    i8   m_nSupervisorSleep; // sleep period for supervisor job
+    i8   m_nDemonSleep;      // sleep period for demons
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint
