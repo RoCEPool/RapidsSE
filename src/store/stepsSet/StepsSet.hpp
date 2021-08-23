@@ -1105,21 +1105,6 @@ public:
   void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
 
-  // operandB
-  void vOperandBAppendClose(void);
-  void vOperandBDelete(void);
-  void vOperandBGet(void);
-  void vOperandBGetAndClear(void);
-  void vOperandBIsNotNull(void);
-  void vOperandBIsNull(void);
-  void vOperandBSet(void);
-
-  // operandC
-  void vOperandCCollect(void);
-  void vOperandCGet(void);
-  void vOperandCGetAndClear(void);
-  void vOperandCSet(void);
-
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);

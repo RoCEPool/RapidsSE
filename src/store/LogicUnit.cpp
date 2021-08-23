@@ -114,7 +114,6 @@ LogicUnit::LogicUnit(void)
 ,             m_xpOp(this,RF_NONE,         nullptr,        "m_xpOp"_Stz)
 
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
-,       m_xpOperandB(this,RF_NONE,         nullptr,        "m_xpOperandB"_Stz)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,         "m_xpOperandOoO"_Stz)
 
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)

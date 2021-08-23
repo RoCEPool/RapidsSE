@@ -173,7 +173,6 @@ namespace STORE
     REG<Object>         m_xpObject;
     REG<Op>             m_xpOp;        // operator
     REG<Operand>        m_xpOperandA;  // operand A
-    REG<Operand>        m_xpOperandB;  // operand B
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Operand>        m_xpPipein;    // Pipein
