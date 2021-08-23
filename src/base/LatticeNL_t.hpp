@@ -50,6 +50,16 @@ namespace BASE
 
   private:
   
+    i8   i_PopFree(void);
+    void vPushFree(i8 i_Free);
+
+    void vAddItem(ITEM* pItem, i8 i_Item);
+
+    i8   i_PrevItem(ITEM* pItem);
+
+    void  vRemoveItem(ITEM* pItem, i8 i_Prev);
+    
+
     Footer* aFooter(void);
   };
   
@@ -361,6 +371,101 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(i8 i_Item)
 
   m_nItems--;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop next i_Free from free chain                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::i_PopFree(void)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  if (C_UNKNOWN == m_i_FirstFree)
+    return C_UNKNOWN;
+  
+  i8 i_Free = m_i_FirstFree;
+  RASSERT(! m_pItem[i_Free]);
+  m_i_FirstFree = m_i_NextFree[m_i_FirstFree];
+  
+  return i_Free;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push i_Free onto free chain                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vPushFree(i8 i_Free)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  m_i_NextFree[m_i_FirstFree] = i_Free;
+  m_i_FirstFree = i_Free;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vAddItem(ITEM* pItem, i8 i_Item)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  m_pItem[i_Item] = pItem;
+  m_i_NextItem[i_Item] = m_i_FirstItem;
+  m_i_FirstItem = i_Item;
+  
+  m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::i_PrevItem(ITEM* pItem)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  i8 i_Prev = C_UNKNOWN;
+  
+  i8 i_Scan = m_i_FirstItem;
+  while (C_UNKNOWN != i_Scan) {
+    
+    if (pItem == m_pItem[i_Scan])
+      break;
+    
+    i_Prev = i_Scan;
+    i_Scan = m_i_NextItem[i_Scan];
+  }
+  
+  RASSERT(C_UNKNOWN != i_Scan);
+  
+  return i_Prev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove the given item                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemoveItem(ITEM* pItem, i8 i_Prev)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+
+  if (C_UNKNOWN == i_Prev) {
+    
+    m_i_FirstItem = m_i_NextItem[m_i_FirstItem];
+     
+    return;
+  }
+  
+  m_i_NextItem[i_Prev] = m_i_NextItem[m_i_NextItem[i_Prev]];
+  
+  m_nItems--;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
