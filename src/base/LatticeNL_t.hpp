@@ -15,11 +15,13 @@ namespace BASE
   private:
     Task* m_pOwningTask; // which task
     u8    m_nItems;      // number of items currently in the lattice
+    i8    m_i_FirstItem; // subscript of first item cell
     i8    m_i_FirstFree; // subscript of first free cell
-    
+
     union {
       ITEM* m_pItem[MAX_ITEMS];      // array of items (proper objects)
-      i8    m_i_NextFree[MAX_ITEMS]; // next free item chain
+      i8    m_i_NextItem[MAX_ITEMS]; // next item chain
+      i8    m_i_NextFree[MAX_ITEMS]; // next free chain
     };
     
     // must be last
@@ -108,10 +110,14 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(Task* pTask)
   
   m_pOwningTask = pTask;
   m_nItems      = 0;
+
+  m_i_FirstItem = C_UNKNOWN;
   m_i_FirstFree = 0;
-  
-  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+
+  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++) {
+    m_i_NextItem[i_Item] = C_UNKNOWN;
     m_i_NextFree[i_Item] = i_Item + 1;
+  }
   m_i_NextFree[MAX_ITEMS - 1] = C_UNKNOWN;
 
   _setFooter_();
