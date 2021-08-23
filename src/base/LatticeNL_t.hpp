@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "MY.hpp"
+
 extern BufferPool* gpBufferPool;
 
 namespace BASE
@@ -129,7 +131,7 @@ template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::~LatticeNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
+    
   for (u8 i_Item = (i8)0; (i8)i_Item < (i8)m_nItems; i_Item++) {
     ITEM* pItem = m_pItem[i_Item];
     delete pItem;
@@ -160,6 +162,9 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
   
   // get item number
@@ -188,6 +193,9 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vClear(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   m_nItems = 0;
   m_i_NextFree = 0;
   
@@ -204,6 +212,9 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     if (pItem == m_pItem[i_Item])
       return i_Item;
@@ -219,6 +230,9 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFirst(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     if (bIsItem(i_Item))
       return i_Item;
@@ -234,6 +248,9 @@ ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   
   ITEM* pItem = m_pItem[i_Item];
@@ -249,6 +266,9 @@ bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bIsItem(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   if (gpBufferPool->bValidAddress(m_pItem[i_Item]))
     return true;
   
@@ -263,6 +283,9 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  //RASSERT(m_pOwningTask == MY::pTask());
+
   ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   return m_nItems;
@@ -276,6 +299,9 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   i8 i_Next = i_Item + 1;
   
   for (;;) {
@@ -297,6 +323,9 @@ template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
 bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
 
   i8 i_Item = iFind(pItem);
   if (C_UNKNOWN == i_Item)
@@ -314,6 +343,9 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
+  RASSERT(m_pOwningTask == MY::pTask());
+
   ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
 
