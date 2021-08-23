@@ -97,12 +97,16 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     
 #ifdef WITH_KEEP_ROW_HASH
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
+
+    i8 i_Bkt = iHash % 16;
     
-    i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
+    //i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
 
-    i8 i_Bkt = AM::PTNMAP::iToBkt(i_Ptn);
+    //i8 i_Bkt = AM::PTNMAP::iToBkt(i_Ptn);
 
-    vCopyRow(i_Bkt,aRowSrc);
+    i8 i_Ptn = AM::PTNMAP::tToPtn(i_Bkt);
+
+    vCopyRow(i_Ptn,aRowSrc);
     vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld\n"_Stz, i_Row, i_Bkt);
 #else
     i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
