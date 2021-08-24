@@ -1075,7 +1075,7 @@ bool AM::SHOW::bBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show important point during boot?                                          */
+/* show inter-node connection?                                                */
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bConnection(void)
 {
@@ -1086,7 +1086,18 @@ bool AM::SHOW::bConnection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show important point during boot?                                          */
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bException(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show recurring information?                                                */
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bRecurring(void)
 {

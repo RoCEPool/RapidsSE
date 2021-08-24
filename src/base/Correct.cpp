@@ -527,7 +527,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 [[ noreturn ]] void BASE::vThrow_toHandler(Exception xException)
 {
 
-  //if (AM::bDeveloper() || AM::bDebugMode()) {
+  if (AM::SHOW::bException()) {
 
     fprintf(stderr,"\n");
     fprintf(stderr,
@@ -535,7 +535,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
             // 0123456789012345678901234567890123456789"
               "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
               "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
-              "ROW @THROW @THROW @THROW @THROW @THROW" // 120
+              "ROW @THROW @THROW @THROW @THROW @THROW"   // 120
               "\n"
             );
     fprintf(stderr,"\n");
@@ -543,7 +543,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     xException.vPrint();
     
     vThreadCallStackDump();
-  //}
+  }
 
   throw xException;
 }

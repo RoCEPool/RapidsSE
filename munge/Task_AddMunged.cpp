@@ -24096,7 +24096,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__failureRecovery\n"
     "\n"
-    "   args.developer if\n"
+    "  AM::SHOW::bException if\n"
     "    \"op__failureRecovery\" .\n"
     "    task::seeFrameStack\n"
     "    task::seeLockSets\n"

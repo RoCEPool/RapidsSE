@@ -15,6 +15,7 @@ void Step::vAddSteps_AM(void)
 {
   vAddStep("AM::SHOW::bBoot"_Stz,       &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bConnection"_Stz, &Step::vAM_Show_Connection);
+  vAddStep("AM::SHOW::bException"_Stz,  &Step::vAM_Show_Exception);
   vAddStep("AM::SHOW::bRecurring"_Stz,  &Step::vAM_Show_Recurring);
 }
 
@@ -42,6 +43,20 @@ void Step::vAM_Show_Connection(void)
   b8 bConnection = AM::SHOW::bConnection();
   
   m_pDataStack->vPushInt(bConnection);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::SHOW::bException -- <show_exception> ?                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_Show_Exception(void)
+{
+  ENTRY();
+
+  b8 bException = AM::SHOW::bException();
+  
+  m_pDataStack->vPushInt(bException);
 
   EXIT();
 }

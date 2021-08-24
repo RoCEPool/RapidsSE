@@ -478,7 +478,7 @@
 /*----------------------------------------------------------------------------*/
 : op__failureRecovery
 
-   args.developer if
+  AM::SHOW::bException if
     "op__failureRecovery" .
     task::seeFrameStack
     task::seeLockSets
