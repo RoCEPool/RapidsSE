@@ -47,8 +47,8 @@
     exit
   then
 
-  Operand[].pipeIn
-  Operand[]\clear DevLftIxt.crwBuffer!
+  Pipein[]\clear to CrwBuffer[]
+  CrwBuffer[]\clear DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
@@ -129,11 +129,11 @@
     exit
   then
 
-  Operand[].pipeIn
-  Operand[]\clear DevLftRow.rowBuffer!
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[]\clear DevLftRow.rowBuffer!
   ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  RowBuffer[].delete
 
   PotRlu[].pipeoutCompletedPtns
 

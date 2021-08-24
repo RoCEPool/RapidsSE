@@ -81,12 +81,12 @@
     true LogicUnit[].IsLftCrwBuffer!
   else
     //"loopJoin_CrwBuffer rht" .
-    Operand[].pipein
-    Operand[] DevRhtIxt.crwBuffer!
+    Pipein[]\clear to CrwBuffer[]
+    CrwBuffer[] DevRhtIxt.crwBuffer!
     ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
     // delete the right crwbuffer
-    Operand[].delete
+    CrwBuffer[].delete
     nullptr DevRhtIxt.crwBuffer!
   then
 
@@ -197,16 +197,16 @@
   //"ZK_D_ROWBUFFER" .
 
   Counter1[] 0 == if
-    Operand[].pipeIn
-    Operand[]\clear DevLftRow.rowBuffer!
+    Pipein[]\clear to RowBuffer[]
+    Rowbuffer[]\clear DevLftRow.rowBuffer!
     false LogicUnit[].IsLftCrwBuffer!
   else
-    Operand[].pipeIn
-    Operand[] DevRhtRow.rowBuffer!
+    Pipein[]\clear to RowBuffer[]
+    RowBuffer[] DevRhtRow.rowBuffer!
     ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
     // delete the right rowbuffer
-    Operand[].delete
+    RowBuffer[].delete
     nullptr DevRhtRow.rowBuffer!
   then
 
