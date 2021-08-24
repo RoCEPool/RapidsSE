@@ -57,7 +57,7 @@ void Step::vToBktRowRegConvert(void)
 
   pToBktRow->vConvert(pRowBuffer);
   
-  delete pRowBuffer;
+  //delete pRowBuffer;
   
   EXIT();
 }
