@@ -1078,6 +1078,17 @@ bool AM::SHOW::bBoot(void)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* show important point during boot?                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bRecurring(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
+    return true;
+  else
+    return false;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
