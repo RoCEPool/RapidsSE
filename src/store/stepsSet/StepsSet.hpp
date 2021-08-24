@@ -164,6 +164,7 @@ public:
 
   // crwBuffer
   void vCrwBufferDeleteOld(void);
+  void vCrwBufferDuplicate(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
@@ -965,7 +966,6 @@ public:
   void vMarkerNewStartMarker(void);
   void vMarkerNewStartCrwRhtMarker(void);
   void vMarkerNewStartRowRhtMarker(void);
-  void vMarkerNewStreamDef(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
   void vMarkerPipeIn(void);

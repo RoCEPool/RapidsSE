@@ -74,7 +74,6 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newStartMarker"_Stz,       &Step::vMarkerNewStartMarker);
   vAddStep("Marker[].newStartCrwRhtMarker"_Stz, &Step::vMarkerNewStartCrwRhtMarker);
   vAddStep("Marker[].newStartRowRhtMarker"_Stz, &Step::vMarkerNewStartRowRhtMarker);
-  vAddStep("Marker[].newStreamDef"_Stz,         &Step::vMarkerNewStreamDef);
   vAddStep("Marker[].newStreamDefRht"_Stz,      &Step::vMarkerNewStreamDefRht);
   vAddStep("Marker[].newTrigger"_Stz,           &Step::vMarkerNewTrigger);
   vAddStep("Marker[].pipeIn"_Stz,               &Step::vMarkerPipeIn);
@@ -511,23 +510,6 @@ void Step::vMarkerNewStartRowRhtMarker(void)
   ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
 
   m_p_TaskLogicUnit->m_xpMarker = new Marker(OM_STARTROWRHT);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newStreamDef -- new a stream def from Table[]                     */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewStreamDef(void)
-{
-  ENTRY();
-
-  ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
-
-  if (m_p_TaskLogicUnit->m_xpTable.bIsNull())
-    m_p_TaskLogicUnit->m_xpMarker = new StreamDef();
-  else
-    m_p_TaskLogicUnit->m_xpMarker = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
 
   EXIT();
 }

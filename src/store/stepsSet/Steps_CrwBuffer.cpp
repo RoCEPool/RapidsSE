@@ -25,6 +25,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer::new"_Stz,          &Step::vCrwBufferNew);
   
   vAddStep("CrwBuffer.delete"_Stz,        &Step::vCrwBufferDeleteOld);
+  vAddStep("CrwBuffer.duplicate"_Stz,     &Step::vCrwBufferDuplicate);
   vAddStep("CrwBuffer.operandDump"_Stz,   &Step::vCrwBufferOperandDump);
 
   vAddStep("CrwBuffer[].appendClose"_Stz, &Step::vCrwBufferAppendClose);
@@ -36,6 +37,23 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].isNull"_Stz,      &Step::vCrwBufferIsNull);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* crwBuffer.crwDuplicate -- duplicate crw buffer operand                     */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferDuplicate(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pNewCrwBuffer = new CrwBuffer;
+  pNewCrwBuffer->vCopy(pCrwBuffer);
+
+  m_pDataStack->vPushPtr(pNewCrwBuffer);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
