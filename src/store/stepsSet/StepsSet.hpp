@@ -46,6 +46,7 @@ public:
   void vAM_Show_Boot(void);
   void vAM_Show_Connection(void);
   void vAM_Show_Exception(void);
+  void vAM_Show_LowMem_Recv(void);
   void vAM_Show_Recurring(void);
 
   // api

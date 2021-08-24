@@ -13,10 +13,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AM(void)
 {
-  vAddStep("AM::SHOW::bBoot"_Stz,       &Step::vAM_Show_Boot);
-  vAddStep("AM::SHOW::bConnection"_Stz, &Step::vAM_Show_Connection);
-  vAddStep("AM::SHOW::bException"_Stz,  &Step::vAM_Show_Exception);
-  vAddStep("AM::SHOW::bRecurring"_Stz,  &Step::vAM_Show_Recurring);
+  vAddStep("AM::SHOW::bBoot"_Stz,        &Step::vAM_Show_Boot);
+  vAddStep("AM::SHOW::bConnection"_Stz,  &Step::vAM_Show_Connection);
+  vAddStep("AM::SHOW::bException"_Stz,   &Step::vAM_Show_Exception);
+  vAddStep("AM::SHOW::bLowMem_Recv"_Stz, &Step::vAM_Show_LowMem_Recv);
+  vAddStep("AM::SHOW::bRecurring"_Stz,   &Step::vAM_Show_Recurring);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +58,20 @@ void Step::vAM_Show_Exception(void)
   b8 bException = AM::SHOW::bException();
   
   m_pDataStack->vPushInt(bException);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::SHOW::bLowMem_Recv -- <show_lowmem_recv> ?                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_Show_LowMem_Recv(void)
+{
+  ENTRY();
+
+  b8 bLowMem_Recv = AM::SHOW::bLowMem_Recv();
+  
+  m_pDataStack->vPushInt(bLowMem_Recv);
 
   EXIT();
 }

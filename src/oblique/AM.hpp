@@ -359,6 +359,7 @@ namespace OBLIQUE
       static bool bBoot(void);
       static bool bConnection(void);
       static bool bException(void);
+      static bool bLowMem_Recv(void);
       static bool bRecurring(void);
     };
 

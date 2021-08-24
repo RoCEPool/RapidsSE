@@ -275,7 +275,8 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive and discard the body of the object (low memory condition)
-  vTrace("Socket::pRecvObject : LOW MEMORY\n"_Stz);
+  if (AM::SHOW::bLowMem_Recv())
+    vTrace("Socket::pRecvObject : LOW MEMORY\n"_Stz);
 
   void* aLowBuff = m_aLowBuff;
 

@@ -1097,6 +1097,17 @@ bool AM::SHOW::bException(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bLowMem_Recv(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show recurring information?                                                */
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bRecurring(void)
