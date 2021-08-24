@@ -48,7 +48,6 @@ void Step::vAddSteps_Operand(void)
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
-  vAddStep("Operand[].crwToEachRow"_Stz,   &Step::vOperandCrwToEachRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
@@ -68,22 +67,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwToEachRow -- convert a row of Crw operand to eachRowBuffer    */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwToEachRow(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 iRow = m_pDataStack->iPopInt(__func__);
-
-  EachRowBuffer* pEachRowBuffer = pCrwBuffer->pToEachRowBuffer(iRow);
-  m_pDataStack->vPushPtr(pEachRowBuffer);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

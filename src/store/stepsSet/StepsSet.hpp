@@ -175,8 +175,10 @@ public:
   void vCrwBufferGetAndClear(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
+  void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
+  void vCrwBufferWriteToFile0(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -199,9 +201,11 @@ public:
   void vCsvBufferGetAndClear(void);
   void vCsvBufferIsNotNull(void);
   void vCsvBufferIsNull(void);
+  void vCsvBufferIsReport(void);
   void vCsvBufferNew(void);
   void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCsvBufferWriteToFile0(void);
 
   // cursor
   void vCursorFetch(void);
@@ -1096,7 +1100,6 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCrwToEachRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
   void vOperandGetAndClear(void);

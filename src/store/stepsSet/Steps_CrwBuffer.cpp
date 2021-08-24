@@ -35,8 +35,10 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[].isNotNull"_Stz,   &Step::vCrwBufferIsNotNull);
   vAddStep("CrwBuffer[].isNull"_Stz,      &Step::vCrwBufferIsNull);
+  vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   vAddStep("CrwBuffer[].toCsv"_Stz,       &Step::vCrwBufferToCsv);
+  vAddStep("CrwBuffer[].writeToFile0"_Stz, &Step::vCrwBufferWriteToFile0);
   
 }
 
@@ -179,6 +181,19 @@ void Step::vCrwBufferIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* CrwBuffer[].isReport -- is crwBuffer for report processing ?               */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferIsReport(void)
+{
+  ENTRY();
+
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* CrwBuffer[].set -- set operand                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwBufferSet(void)
@@ -205,6 +220,28 @@ void Step::vCrwBufferToCsv(void)
   m_pDataStack->vPushPtr(pCrwBuffer->pToCsvBuffer());
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].writeToFile0 -- write to file0[]                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferWriteToFile0(void)
+{
+  ENTRY();
+
+  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
+  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+
+  byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
+  i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
+
+  bool b = m_p_TaskLogicUnit->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
+  ASSERT(b);
+  UNUSED(b);
+
 }
 
 /*============================================================================*/

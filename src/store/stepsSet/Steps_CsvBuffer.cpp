@@ -32,9 +32,11 @@ void Step::vAddSteps_CsvBuffer(void)
   vAddStep("csvBuffer[].get"_Stz,         &Step::vCsvBufferGet);
   vAddStep("csvBuffer[].isNotNull"_Stz,   &Step::vCsvBufferIsNotNull);
   vAddStep("csvBuffer[].isNull"_Stz,      &Step::vCsvBufferIsNull);
+  vAddStep("csvBuffer[].isReport"_Stz,    &Step::vCsvBufferIsReport);
   vAddStep("csvBuffer[].new"_Stz,         &Step::vCsvBufferNew);
   vAddStep("csvBuffer[].report"_Stz,      &Step::vCsvBufferReport);
   vAddStep("csvBuffer[].set"_Stz,         &Step::vCsvBufferSet);
+  vAddStep("csvBuffer[].writeToFile0"_Stz, &Step::vCsvBufferWriteToFile0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,6 +207,19 @@ void Step::vCsvBufferIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* CsvBuffer[].isReport -- is csvBuffer for report processing ?               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferIsReport(void)
+{
+  ENTRY();
+
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCsvBuffer;
+  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* CsvBuffer[].new -- new a csv buffer                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vCsvBufferNew(void)
@@ -245,6 +260,26 @@ void Step::vCsvBufferSet(void)
   m_p_TaskLogicUnit->m_xpCsvBuffer = _pCsvBuffer(pOperand);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].writeToFile0 -- write to file0[]                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferWriteToFile0(void)
+{
+  ENTRY();
+
+  ASSERT(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
+  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  char* aData = (char*)pCsvBuffer->ayDataArea();
+
+  m_p_TaskLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
+  //m_p_TaskLogicUnit->m_xpFile0->vFlush();
+
+
 }
 
 /*============================================================================*/
