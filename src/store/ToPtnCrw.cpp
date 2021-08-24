@@ -115,7 +115,7 @@ void ToPtnCrw::vConvert(RowBuffer* pRowBuffer)
   
   vAddRowsToBuffer(i_Ptn,pRowBuffer);
   
-  delete pRowBuffer;
+  //delete pRowBuffer;
   
   vDebugPoint();
 }
