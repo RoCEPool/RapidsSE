@@ -1110,18 +1110,14 @@ public:
   void vOperandInsdelIntoTable(void);
   void vOperandInvokePython(void);
   void vOperandInvokePythonShell(void);
-  void vOperandKind(void);
   void vOperandMorphClass(void);
   void vOperandNewNextBufferMarker(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
   void vOperandReport(void);
-  void vOperandRowRowCountFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
-  void vOperandRowToCsv(void);
-  void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO
@@ -1398,6 +1394,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
+  void vRowBufferToCsv(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor
