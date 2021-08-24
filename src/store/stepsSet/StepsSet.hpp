@@ -1115,8 +1115,6 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
   void vOperandPipeIn(void);
-  void vOperandPipeOutSet(void);
-  void vOperandPipeToOutput(void);
   void vOperandReport(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);

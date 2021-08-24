@@ -81,12 +81,12 @@
     true LogicUnit[].IsLftCrwBuffer!
   else
     //"loopJoin_CrwBuffer rht" .
-    Operand[].pipein
-    Operand[] DevRhtIxt.crwBuffer!
+    Pipein[]\clear to CrwBuffer[]
+    CrwBuffer[] DevRhtIxt.crwBuffer!
     ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
     // delete the right crwbuffer
-    Operand[].delete
+    CrwBuffer[].delete
     nullptr DevRhtIxt.crwBuffer!
   then
 

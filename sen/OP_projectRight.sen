@@ -47,8 +47,8 @@
     exit
   then
 
-  Operand[].pipeIn
-  Operand[] DevLftIxt.crwBuffer!
+  Pipein[]\clear to CrwBuffer[]
+  CrwBuffer[] DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete

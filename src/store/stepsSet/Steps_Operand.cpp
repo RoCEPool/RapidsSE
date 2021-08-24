@@ -57,8 +57,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
-  vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
-  vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
@@ -304,44 +302,6 @@ void Step::vOperandPipeIn(void)
   m_p_TaskLogicUnit->m_xpPipein = nullptr;
     
   m_p_TaskLogicUnit->m_xpOperandA = pOperand;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].pipeOutSet -- append operand set onto next operator in pipeline  */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandPipeOutSet(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
-  
-  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].pipeToOutput -- append operand onto the pipeline job buffer queue   */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandPipeToOutput(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
   
   EXIT();
 }
