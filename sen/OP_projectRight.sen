@@ -51,7 +51,7 @@
   CrwBuffer[] DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  CrwBuffer[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
