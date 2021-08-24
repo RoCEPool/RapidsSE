@@ -176,6 +176,7 @@ public:
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferSet(void);
+  void vCrwBufferToCsv(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -1095,9 +1096,6 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCrwDuplicate(void);
-  void vOperandCrwRowCountFetch(void);
-  void vOperandCrwToCsv(void);
   void vOperandCrwToEachRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);

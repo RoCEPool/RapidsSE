@@ -48,9 +48,6 @@ void Step::vAddSteps_Operand(void)
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
-  vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vOperandCrwDuplicate);
-  vAddStep("Operand[].crwRowCount@"_Stz,   &Step::vOperandCrwRowCountFetch);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
   vAddStep("Operand[].crwToEachRow"_Stz,   &Step::vOperandCrwToEachRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
@@ -71,52 +68,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwDuplicate -- duplicate crw buffer operand                     */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwDuplicate(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-
-  CrwBuffer* pNewCrwBuffer = new CrwBuffer;
-  pNewCrwBuffer->vCopy(pCrwBuffer);
-
-  m_pDataStack->vPushPtr(pNewCrwBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwRowCount@ -- get no of rows in the crw buffer                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwRowCountFetch(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 nRows = pCrwBuffer->nRows();
-
-  m_pDataStack->vPushInt(nRows);
-
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwToCsv -- convert Crw operand to Csv                           */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwToCsv(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  m_p_TaskLogicUnit->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
