@@ -213,8 +213,8 @@
   PipeIn[].pipeOut
 
   // new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of phrases

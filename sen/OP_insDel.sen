@@ -61,7 +61,7 @@
 : insDel_StreamDef \handler
 
   PipeIn[].delete
-  table[] streamDefOut[].newFromTable
+  Table[] streamDefOut[].newFromTable
   streamDefOut[].pipeOut
 
   true

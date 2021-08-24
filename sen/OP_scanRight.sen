@@ -44,10 +44,6 @@
   // pipe out the pulse marker
   PipeIn[].pipeOut
 
-  // pipe out a new a stream def
-  //Operand[].newStreamDef
-  //Operand[].pipeOut
-
   // grab table ptn read lock
   TablePtn[].grabRead_yieldLoop
 
@@ -261,8 +257,8 @@
   Marker[].pipeout
 
   // pipeout the rht streamDef
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
 
   true
 ;

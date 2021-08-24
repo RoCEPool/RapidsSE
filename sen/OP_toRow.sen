@@ -19,8 +19,8 @@
     ToRow[].create
 
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
-    Operand[].newStreamDef
-    Operand[].pipeOut
+    Table[] StreamDefOut[].newFromTable
+    StreamDefOut[].pipeOut
 
   then
 
