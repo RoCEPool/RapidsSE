@@ -99,11 +99,22 @@ ToRow::~ToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void ToRow::vRepair(Object* pObject, eRF eRepair)
+void ToRow::vRepairList(Object* pObject, eRF eRepair)
 {
   _static_
 
   ToRow* pToRow = _pToRow(pObject);
+
+  RowBuffer* pRowBuffer = pToRow->m_pRowBuffer;
+  RowBuffer* pNextRowBuffer;
+
+  while (pRowBuffer) {
+    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
+    AM::vDeleteOperand(pRowBuffer);
+    pRowBuffer = pNextRowBuffer;
+  }
+
+  pToRow->m_pRowBuffer = nullptr;
 
   // delete the toRow
   delete pToRow;
