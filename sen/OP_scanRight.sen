@@ -94,8 +94,8 @@
   ptnStream[] ptnStream.open if
 
    // pipe in ZK_M_NEXTBUFFER
-   Operand[].newNextBufferMarker
-   Operand[].pipeBackIn
+   Marker[].newNextBufferMarker
+   Marker[].pipeBackIn
 
     // force op loop to call scanRight_CrwBuffer to start processing buffers
     //"scanRight_RightCrwBuffer" word::find LogicUnit[].handler!
@@ -183,8 +183,8 @@
     Operand[].pipeOut
 
     // pipe in ZK_M_NEXTBUFFER
-    Operand[].newNextBufferMarker
-    Operand[].pipeBackIn
+    Marker[].newNextBufferMarker
+    Marker[].pipeBackIn
 
     // call this handler again to process next buffer
     //true LogicUnit[].callAgain!

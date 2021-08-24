@@ -1111,7 +1111,6 @@ public:
   void vOperandInvokePython(void);
   void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
-  void vOperandNewNextBufferMarker(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);

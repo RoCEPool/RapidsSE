@@ -56,7 +56,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
-  vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
@@ -290,20 +289,6 @@ void Step::vOperandMorphClass(void)
   
   pOperand->vSetClassNo((eCN)iClassNo);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newNextBufferMarker -- new a next buffer marker                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewNextBufferMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_NEXTBUFFERMARKER);
-
   EXIT();
 }
 
