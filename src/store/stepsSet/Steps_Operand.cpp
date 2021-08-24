@@ -66,7 +66,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
   vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
-  vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
@@ -467,24 +466,6 @@ void Step::vOperandNewNextBufferMarker(void)
 
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newStreamDef -- new a stream def from Table[]                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewStreamDef(void)
-{
-  ENTRY();
-  
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-  
-  if (m_p_TaskLogicUnit->m_xpTable.bIsNull())
-    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef();
-  else
-    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].pipeIn -- move pipein operand into operandA                      */

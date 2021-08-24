@@ -1109,7 +1109,6 @@ public:
   void vOperandMorphClass(void);
   void vOperandNewCsvBuffer(void);
   void vOperandNewNextBufferMarker(void);
-  void vOperandNewStreamDef(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
