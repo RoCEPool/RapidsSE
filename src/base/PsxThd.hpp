@@ -36,6 +36,7 @@ namespace BASE
     static bool  bIsJavaThread(void);
 
     static void  vMarkNonSeThread(void);
+    static bool  bIsSeThread(void);
 
     static void  vSleepers(void);
     static i8    iSpawnPosixThread(void* aFun(void*), void* aArg);

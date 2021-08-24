@@ -1202,6 +1202,16 @@ void AM::SYSTEM::vSystemOpen(bool bSystemOpen)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the system ready?                                                       */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bReady(void)
+{
+  _static_
+
+  return gpAttachMap->m_bReady;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Writes out a file that indicates that the system has booted and is ready   */
 /*----------------------------------------------------------------------------*/
 void AM::SYSTEM::vSystemReady(void)
@@ -1232,6 +1242,12 @@ void AM::SYSTEM::vSystemReady(void)
   }
 
   pReadyFile.vClose();
+  
+  gpAttachMap->m_bReady = true;
+  
+  vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
+         ,iPid
+         ,C_READY_FILE_PATH);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

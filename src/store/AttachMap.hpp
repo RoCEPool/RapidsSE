@@ -54,6 +54,7 @@ namespace STORE
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;
+    b8            m_bReady;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;

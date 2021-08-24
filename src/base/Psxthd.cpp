@@ -205,6 +205,19 @@ bool PsxThd::bIsJavaThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for C++ thread                                                        */
+/*----------------------------------------------------------------------------*/
+bool PsxThd::bIsSeThread(void)
+{
+  i8 iVal = (i8)pTlsGet(giTLS_ThreadKey);
+  
+  if (C_UNKNOWN != iVal)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark thread as not being an SE thread                                      */
 /*----------------------------------------------------------------------------*/
 void PsxThd::vMarkNonSeThread(void)
