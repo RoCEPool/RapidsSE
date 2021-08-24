@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* _archetype -- archetypical sql statement                                   */
+/*============================================================================*/
+
+create table T1 (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+create table T2 (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+create table T2 (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+load T1 "../TPCH/SF1/nation.tbl" ;
+load T2 "../TPCH/SF1/nation.tbl" ;
+load T3 "../TPCH/SF1/nation.tbl" ;
+
+
+SELECT n_regionkey, n_name, r_regionkey, r_name
+FROM region
+JOIN nation ON r_regionkey = n_regionkey;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -386,8 +386,7 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
       
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
   
-  bool bRemoved = pReadLocks->bRemove(pLock);
-  RASSERT(bRemoved);
+  pReadLocks->vRemove(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,8 +402,7 @@ void AM::LOCK::vJustReadLocked(Lock* pLock)
       
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
 
-  i8 i_Lock = pReadLocks->iAdd(pLock);
-  RASSERT(i_Lock != C_UNKNOWN);
+  pReadLocks->vAdd(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -420,8 +418,7 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
       
   LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
   
-  bool bRemoved = pWriteLocks->bRemove(pLock);
-  RASSERT(bRemoved);
+  pWriteLocks->vRemove(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,8 +434,7 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
       
   LockSet* pWriteLocks = pLockingTask->pWriteLocks();
   
-  i8 i_Lock = pWriteLocks->iAdd(pLock);
-  RASSERT(i_Lock != C_UNKNOWN);
+  pWriteLocks->vAdd(pLock);
 }
 
 
@@ -1072,6 +1068,143 @@ Session* AM::SESSION::pInternalSession(void)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 SHOW                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* show important point during boot?                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bBoot(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show dir calls ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bDir(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show dir call failures ?                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bDir_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR_FAILURE))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show inter-node connection?                                                */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bConnection(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bException(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show file calls ?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bFile(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show file call failures ?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bFile_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE_FAILURE))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bLowMem(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bLowMem_Recv(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show recurring information?                                                */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bRecurring(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show socket calls ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bSocket(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show socket call failures ?                                                */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bSocket_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET_FAILURE))
+    return true;
+  else
+    return false;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1210,6 +1343,16 @@ void AM::SYSTEM::vSystemOpen(bool bSystemOpen)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the system ready?                                                       */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bReady(void)
+{
+  _static_
+
+  return gpAttachMap->m_bReady;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Writes out a file that indicates that the system has booted and is ready   */
 /*----------------------------------------------------------------------------*/
 void AM::SYSTEM::vSystemReady(void)
@@ -1240,6 +1383,14 @@ void AM::SYSTEM::vSystemReady(void)
   }
 
   pReadyFile.vClose();
+  
+  gpAttachMap->m_bReady = true;
+  
+  if (AM::SHOW::bBoot()) {
+    vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
+           ,iPid
+           ,C_READY_FILE_PATH);
+  }
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

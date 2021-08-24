@@ -10,38 +10,36 @@
 : report_CrwBuffer \handler
 
   //"Operand:- ZK_D_CRWBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to Operand[]
+  PipeIn[]\clear to CrwBuffer[]
 
-  Operand[].isReport if
-    Operand[].writeToFile0
+  CrwBuffer[].isReport if
+    CrwBuffer[].writeToFile0
   else
-    Operand[].pipeOut
+    CrwBuffer[].pipeOut
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_CsvBuffer \handler
 
   //"Operand:- ZK_D_CSVBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to Operand[]
+  PipeIn[]\clear to CsvBuffer[]
 
-  Operand[].isReport if
-    Operand[].writeToFile0
+  CsvBuffer[].isReport if
+    CsvBuffer[].writeToFile0
   else
-    Operand[].pipeOut
+    CsvBuffer[].pipeOut
   then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ENTBUFFER ...                                               */
+/* handler for ZK_D_ENTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_EntBuffer \handler
 
@@ -59,7 +57,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               */
+/* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : report_EosMarker \handler
 
@@ -90,7 +88,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : report_StartMarker \handler
 

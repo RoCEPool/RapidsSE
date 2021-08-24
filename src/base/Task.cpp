@@ -248,7 +248,7 @@ void Task::vTaskLoop(void)
     // catch exception
     catch (Exception xException) {
       
-      if (AM::bDeveloper()) {
+      if (AM::SHOW::bException()) {
         fprintf(stderr,"\n");
         fprintf(stderr,
                 // 0         1         2         3
@@ -263,13 +263,13 @@ void Task::vTaskLoop(void)
       
       m_xException = xException;
       
-      if (AM::bDeveloper()) {
+      if (AM::SHOW::bException()) {
         vDumpOnException();
       }
       
       vExceptionHandler();
             
-      if (AM::bDeveloper()) {
+      if (AM::SHOW::bException()) {
         fprintf(stderr,"\n");
         fprintf(stderr,
                 // 0         1         2         3
@@ -325,7 +325,7 @@ void Task::vExceptionHandler(void)
 {
   _noPreconditions_
  
-  if (AM::bDeveloper()) {
+  if (AM::SHOW::bException()) {
     fprintf(stderr,"\n");
     fprintf(stderr,
             // 0         1         2         3
@@ -340,7 +340,7 @@ void Task::vExceptionHandler(void)
   
   vSetSenRecoverContext();
   
-  if (AM::bDeveloper()) {
+  if (AM::SHOW::bException()) {
     vSeeFrameStack();
   
     Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
@@ -1154,7 +1154,7 @@ void Task::vReleaseLockSets(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop all read locks held by this task
   
-  if (AM::bDeveloper())
+  if (AM::SHOW::bException())
     vTrace("Release Read Lock Set\n"_Stz);
   
   for (i8 i_Lock = m_oReadLocks.iFirst();
@@ -1162,7 +1162,7 @@ void Task::vReleaseLockSets(void)
        i_Lock = m_oReadLocks.iNext(i_Lock)) {
     Lock* pLock = m_oReadLocks.pGet(i_Lock);
     
-    if (AM::bDeveloper())
+    if (AM::SHOW::bException())
       vTrace("  Releasing read lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropRead();
@@ -1171,7 +1171,7 @@ void Task::vReleaseLockSets(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop all write locks held by this task
 
-  if (AM::bDeveloper())
+  if (AM::SHOW::bException())
     vTrace("Release Write Lock Set\n"_Stz);
   
   for (i8 i_Lock = m_oWriteLocks.iFirst();
@@ -1179,7 +1179,7 @@ void Task::vReleaseLockSets(void)
        i_Lock = m_oWriteLocks.iNext(i_Lock)) {
     Lock* pLock = m_oWriteLocks.pGet(i_Lock);
     
-    if (AM::bDeveloper())
+    if (AM::SHOW::bException())
       vTrace("  Releasing write lock %p\n"_Stz,spLock.sz(pLock));
     
     pLock->vDropWrite();

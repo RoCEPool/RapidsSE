@@ -14,6 +14,11 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
+  // delete if any infoset in the register
+  InfoSet[].isNotNull if
+    InfoSet[].delete
+  then
+
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
 
@@ -31,6 +36,11 @@
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
+
+  // delete if any infoset in the register
+  InfoSet[].isNotNull if
+    InfoSet[].delete
+  then
 
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
@@ -58,6 +68,11 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
+  // delete if any infoset in the register
+  InfoSet[].isNotNull if
+    InfoSet[].delete
+  then
+
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
 
@@ -84,6 +99,11 @@
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
+
+  // delete if any infoset in the register
+  InfoSet[].isNotNull if
+    InfoSet[].delete
+  then
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert

@@ -42,6 +42,20 @@ public:
   void vAggTimerSecs(void);
   void vAggTimerTicks(void);
 
+  // AM
+  void vAM_Show_Boot(void);
+  void vAM_Show_Dir(void);
+  void vAM_Show_Dir_Failure(void);
+  void vAM_Show_Connection(void);
+  void vAM_Show_Exception(void);
+  void vAM_Show_File(void);
+  void vAM_Show_File_Failure(void);
+  void vAM_Show_LowMem(void);
+  void vAM_Show_LowMem_Recv(void);
+  void vAM_Show_Recurring(void);
+  void vAM_Show_Socket(void);
+  void vAM_Show_Socket_Failure(void);
+
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
@@ -164,6 +178,7 @@ public:
 
   // crwBuffer
   void vCrwBufferDeleteOld(void);
+  void vCrwBufferDuplicate(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
@@ -174,7 +189,10 @@ public:
   void vCrwBufferGetAndClear(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
+  void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
+  void vCrwBufferToCsv(void);
+  void vCrwBufferWriteToFile0(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -184,16 +202,24 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferNew(void);
+  void vCsvBufferNewOld(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
+
+  void vCsvBufferCsvAppend(void);
+  void vCsvBufferCsvData(void);
+  void vCsvBufferCsvToRow(void);
 
   void vCsvBufferDelete(void);
   void vCsvBufferGet(void);
   void vCsvBufferGetAndClear(void);
   void vCsvBufferIsNotNull(void);
   void vCsvBufferIsNull(void);
+  void vCsvBufferIsReport(void);
+  void vCsvBufferNew(void);
+  void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCsvBufferWriteToFile0(void);
 
   // cursor
   void vCursorFetch(void);
@@ -283,6 +309,7 @@ public:
 
   // dot
   void vDot(void);
+  void vDotBoot(void);
   void vDotPut(void);
   void vDotNewline(void);
   void vDotVerbose(void);
@@ -552,6 +579,8 @@ public:
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
   void vInfoSetInfoRows(void);
+  void vInfoSetIsNotNull(void);
+  void vInfoSetIsNull(void);
   void vInfoSetIsProgress(void);
   void vInfoSetIsTotalUnits(void);
   void vInfoSetName(void);
@@ -965,7 +994,6 @@ public:
   void vMarkerNewStartMarker(void);
   void vMarkerNewStartCrwRhtMarker(void);
   void vMarkerNewStartRowRhtMarker(void);
-  void vMarkerNewStreamDef(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
   void vMarkerPipeIn(void);
@@ -1089,13 +1117,6 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCsvAppend(void);
-  void vOperandCrwDuplicate(void);
-  void vOperandCrwRowCountFetch(void);
-  void vOperandCrwToCsv(void);
-  void vOperandCrwToEachRow(void);
-  void vOperandCsvData(void);
-  void vOperandCsvToRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
   void vOperandGetAndClear(void);
@@ -1105,20 +1126,11 @@ public:
   void vOperandInsdelIntoTable(void);
   void vOperandInvokePython(void);
   void vOperandInvokePythonShell(void);
-  void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCsvBuffer(void);
-  void vOperandNewNextBufferMarker(void);
-  void vOperandNewStreamDef(void);
   void vOperandPipeIn(void);
-  void vOperandPipeOutSet(void);
-  void vOperandPipeToOutput(void);
   void vOperandReport(void);
-  void vOperandRowRowCountFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
-  void vOperandRowToCsv(void);
-  void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO
@@ -1395,6 +1407,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
+  void vRowBufferToCsv(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor

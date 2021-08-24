@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 : connector_attemptConnect ( -- )
 
-  args.verbose if
+  AM::SHOW::bConnection if
     Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
   then
 
@@ -59,8 +59,8 @@
 
  
   // print connection message
-  args.verbose if
-    Node[] node.no grid::thisNode@ "Node %v connected to node %v" .printf
+  AM::SHOW::bConnection if
+     Node[] node.no grid::thisNode@ "Node %v connected to node %v" .printf
   then
 
   // send this node's info to the node we just connected to
@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 : connector_StartMarker \handler
 
-  "Connector Demon Started" .
+  "Connector Demon Started" .boot
 
   args.verbose if
     grid::thisNode@ job[] "Connector %v on node %v running" .printf

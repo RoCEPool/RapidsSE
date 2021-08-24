@@ -158,7 +158,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
         gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-      vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      //vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;
@@ -167,7 +167,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
     if (! bExtendHeap()) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-      vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      //vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;
@@ -184,7 +184,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   m_okLock.vDropWrite();
   
-  bool bSetLogMemory = false;
+  //bool bSetLogMemory = false;
   
 
   //vVerify();

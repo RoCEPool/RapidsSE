@@ -48,13 +48,6 @@ void Step::vAddSteps_Operand(void)
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
-  vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
-  vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
-  vAddStep("Operand[].csvToRow"_Stz,       &Step::vOperandCsvToRow);
-  vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vOperandCrwDuplicate);
-  vAddStep("Operand[].crwRowCount@"_Stz,   &Step::vOperandCrwRowCountFetch);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
-  vAddStep("Operand[].crwToEachRow"_Stz,   &Step::vOperandCrwToEachRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
@@ -62,136 +55,11 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].isReport"_Stz,       &Step::vOperandIsReport);
   vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
-  vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
-  vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
-  vAddStep("Operand[].newNextBufferMarker"_Stz,&Step::vOperandNewNextBufferMarker);
-  vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
-  vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
-  vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
-  vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
-  vAddStep("Operand[].rowRowCount@"_Stz,      &Step::vOperandRowRowCountFetch);
-  vAddStep("Operand[].rowToCsv"_Stz,       &Step::vOperandRowToCsv);
-  vAddStep("Operand[].rowToEachRow"_Stz,   &Step::vOperandRowToEachRow);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwDuplicate -- duplicate crw buffer operand                     */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwDuplicate(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-
-  CrwBuffer* pNewCrwBuffer = new CrwBuffer;
-  pNewCrwBuffer->vCopy(pCrwBuffer);
-
-  m_pDataStack->vPushPtr(pNewCrwBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwRowCount@ -- get no of rows in the crw buffer                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwRowCountFetch(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 nRows = pCrwBuffer->nRows();
-
-  m_pDataStack->vPushInt(nRows);
-
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwToCsv -- convert Crw operand to Csv                           */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwToCsv(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  m_p_TaskLogicUnit->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwToEachRow -- convert a row of Crw operand to eachRowBuffer    */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCrwToEachRow(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 iRow = m_pDataStack->iPopInt(__func__);
-
-  EachRowBuffer* pEachRowBuffer = pCrwBuffer->pToEachRowBuffer(iRow);
-  m_pDataStack->vPushPtr(pEachRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvAppend -- append a csv row to the csv operand                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCsvAppend(void)
-{
-  ENTRY();
-  
-  s256 sCsvRow;
-  m_pDataStack->vPopStr(sCsvRow,__func__);
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 nBytes = sCsvRow.nSize();
-  if (pCsvBuffer->nFreeBytes() < nBytes + 1)
-    ASSERT(0);
-  
-  Stz* szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-  StrLib::vCopyLen(szRecord->azChar(),sCsvRow.azChar(),nBytes - 1);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvData -- return operand csv data                               */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCsvData(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  char* data = (char*)pCsvBuffer->ayDataArea();
-  m_pDataStack->vPushStz((Stz*)data);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvToRow -- convert csv nuffer operand to row buffer             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCsvToRow(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer =
-    _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
-  
-  bool b = pToRow->bConvertCsv(pCsvBuffer);
-  UNUSED(b);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,10 +166,10 @@ void Step::vOperandIsNull(void)
 void Step::vOperandIsReport(void)
 {
   ENTRY();
-  
+
   Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
-  
+
   EXIT();
 }
 
@@ -407,24 +275,6 @@ void Step::vOperandInvokePythonShell(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].kind -- decode operand into its operand kind                     */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandKind(void)
-{
-  ENTRY();
-  
-//  Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
-//
-//  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-  
-  eZK ePipeInOperand = m_p_TaskLogicUnit->m_ePipeInOperand;
-
-  m_pDataStack->vPushInt(ePipeInOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].morphClass -- change the class number of operand                 */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandMorphClass(void)
@@ -439,52 +289,6 @@ void Step::vOperandMorphClass(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newCsvBuffer -- new a csv buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewCsvBuffer(void)
-{
-  ENTRY();
-  
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-  
-  m_p_TaskLogicUnit->m_xpOperandA = new CsvBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newNextBufferMarker -- new a next buffer marker                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewNextBufferMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-
-  m_p_TaskLogicUnit->m_xpOperandA = new Marker(OM_NEXTBUFFERMARKER);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newStreamDef -- new a stream def from Table[]                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewStreamDef(void)
-{
-  ENTRY();
-  
-  ASSERT (m_p_TaskLogicUnit->m_xpOperandA.bIsNull());
-  
-  if (m_p_TaskLogicUnit->m_xpTable.bIsNull())
-    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef();
-  else
-    m_p_TaskLogicUnit->m_xpOperandA = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].pipeIn -- move pipein operand into operandA                      */
@@ -503,44 +307,6 @@ void Step::vOperandPipeIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].pipeOutSet -- append operand set onto next operator in pipeline  */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandPipeOutSet(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpOperandA,this);
-  
-  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].pipeToOutput -- append operand onto the pipeline job buffer queue   */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandPipeToOutput(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  m_p_TaskLogicUnit->m_xpOperandA = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].report -- mark operand for report processing ?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandReport(void)
@@ -549,21 +315,6 @@ void Step::vOperandReport(void)
   
   Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   pOperand->vTailProcessing(PT_REPORT);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].rowRowCount@ -- fetch the operand row count of rowBuffer         */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandRowRowCountFetch(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  
-  m_pDataStack->vPushInt(pRowBuffer->nRows());
   
   EXIT();
 }
@@ -627,38 +378,6 @@ void Step::vOperandUpsertIntoTable(void)
 //  // will delete this buffer
 //  pCrwBuffer->vIsPermanent(false);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].rowToCsv -- convert rowBuffer operand to csvBuffer               */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandRowToCsv(void)
-{
-  ENTRY();
-  
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
- 
-  m_p_TaskLogicUnit->m_xpOperandA = pRowBuffer->pToCsvBuffer();
-  
-  delete pRowBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].rowToEachRow -- convert a row of RowBuffer to eachRowBuffer      */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandRowToEachRow(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  i8 iRow = m_pDataStack->iPopInt(__func__);
-
-  EachRowBuffer* pEachRowBuffer = pRowBuffer->pToEachRowBuffer(iRow);
-  m_pDataStack->vPushPtr(pEachRowBuffer);
-
   EXIT();
 }
 

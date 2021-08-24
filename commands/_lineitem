@@ -2,8 +2,6 @@
 /*  _lineitem - create TPC-H Lineitem table                                   */
 /*============================================================================*/
 
-bc;
-
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B

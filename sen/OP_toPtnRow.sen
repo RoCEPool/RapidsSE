@@ -35,8 +35,9 @@
     exit
   then
 
-  PipeIn[] ToPtnRow[].convert
-  nullptr to Pipein[]
+  PipeIn[]\clear to RowBuffer[]
+  RowBuffer[] ToPtnRow[].convert
+  RowBuffer[].delete
 
   ptnmap::ptnsInGrid 0
   do

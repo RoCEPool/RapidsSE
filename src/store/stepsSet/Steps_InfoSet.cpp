@@ -52,6 +52,8 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
   vAddStep("InfoSet[].get"_Stz,              &Step::vInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,         &Step::vInfoSetInfoRows);
+  vAddStep("InfoSet[].isNotNull"_Stz,        &Step::vInfoSetIsNotNull);
+  vAddStep("InfoSet[].isNull"_Stz,           &Step::vInfoSetIsNull);
   vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
   vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
@@ -595,6 +597,30 @@ void Step::vInfoSetInfoRows(void)
   
   m_pDataStack->vPushInt(pInfoSet->nRows());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].isNotNull -- is operand not null ?                               */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpInfoSet.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].isNull -- is operand null ?                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpInfoSet.bIsNull() ? 1 : 0);
+
   EXIT();
 }
 

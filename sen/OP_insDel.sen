@@ -61,8 +61,8 @@
 : insDel_StreamDef \handler
 
   PipeIn[].delete
-  Marker[].newStreamDef
-  Marker[].pipeOut
+  Table[] streamDefOut[].newFromTable
+  streamDefOut[].pipeOut
 
   true
 ;

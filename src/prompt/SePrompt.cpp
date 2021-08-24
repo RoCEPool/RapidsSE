@@ -1011,23 +1011,23 @@ void SePrompt::vPromptUser(void)
   
 
   vInfo("[%s %lld] "
-        "%s%s%s"
-        "se %s %s %s> "_Stz,
+        "%s%s%s%s"
+        "%s se> "_Stz
         
-        szNodeNm,
-        iPid,
+        ,szNodeNm
+        ,iPid
         
-        AM::bBootError()      ? "*BOOTERROR* "  : "",
-        bLowMem               ? "*LOWMEMORY* "  : "",
-        AM::pSteps()     ? "*STEPTIMING* " : "",
+        ,AM::bBootError()  ? "*BOOTERROR* "  : ""
+        ,bLowMem           ? "*LOWMEMORY* "  : ""
+        ,AM::pSteps()      ? "*STEPTIMING* " : ""
         
-        AM::szVersionString(),
+        ,false             ? AM::szVersionString() : ""_Stz,
+        
 #ifdef WITH_DEBUG_VERSION
-        "debug",
+        "debug"
 #else
-        "release",
+        "release"
 #endif
-        bHasStarted           ? "booted" : "not-booted"
         );
 
   fflush(stdin);

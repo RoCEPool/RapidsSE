@@ -42,7 +42,9 @@
 /*----------------------------------------------------------------------------*/
 : toBktCrw_RowBuffer \handler
 
-  PipeIn[]\clear ToBktCrw[].convert
+  PipeIn[]\clear to RowBuffer[]
+  RowBuffer[] ToBktCrw[].convert
+  RowBuffer[].delete
 
   ptnmap::ptnsInGrid 0
   do

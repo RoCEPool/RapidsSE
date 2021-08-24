@@ -57,7 +57,7 @@ void Step::vToPtnRowRegConvert(void)
 
   pToPtnRow->vConvert(pRowBuffer);
   
-  delete pRowBuffer;
+  //delete pRowBuffer;
   
   EXIT();
 }

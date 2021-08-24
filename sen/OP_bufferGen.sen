@@ -22,8 +22,8 @@
       exit
     then
 
-    csvBuffer::new to Operand[]
-    Operand[].pipeOut
+    csvBuffer::new to CrwBuffer[]
+    CrwBuffer[].pipeOut
   loop
 
   Marker[].newEosMarker

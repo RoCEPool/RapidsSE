@@ -1,32 +1,12 @@
 /*============================================================================*/
-/* _supplierLoad - create and oldLoad TPC-H Supllier table for SF1               */
+/* _supplierLoad - create and load TPC-H Supllier table                       */
 /*============================================================================*/
 
-create table supplier (
-	 S_SUPPKEY       INTEGER NOT NULL,
-	 S_NAME          CHAR(25) NOT NULL,
-	 S_ADDRESS       VARCHAR(40) NOT NULL,
-	 S_NATIONKEY     INTEGER NOT NULL,
-	 S_PHONE         CHAR(15) NOT NULL,
-	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
-	 S_COMMENT       VARCHAR(101) NOT NULL
-);
-CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
-CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
+_supplier
 
-print "loading supplier.csv..." ;
+/time load supplier "/Users/Shared/tpch/SF1/supplier.csv" ;
 
-//docol stepsReset;
-oldLoad supplier "/tpch/SF1/supplier.csv" ;
-//docol stepsList;
-
-pwf ;
-lf ;
-
-//displayOff;
-timerStart;
-//predicateFetch supplier;
-timerEnd;
+// select * from supplier;
 
 /*============================================================================*/
 /* end                                                                        */

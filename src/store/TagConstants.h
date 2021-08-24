@@ -134,9 +134,24 @@ static Stz* C_VB_SOCKET          = "<vb_socket>"_Stz;
 static Stz* C_VB_THREAD          = "<vb_thread>"_Stz;
 static Stz* C_VB_WORD            = "<vb_word>"_Stz;
 
+static Stz* C_SEE_JOB            = "<see_job>"_Stz;
 static Stz* C_SEE_SHM            = "<see_shm>"_Stz;
 
-static Stz* C_SEE_JOB            = "<see_job>"_Stz;
+static Stz* C_SHOW_BOOT           = "<show_boot>"_Stz;
+static Stz* C_SHOW_DIR            = "<show_dir>"_Stz;
+static Stz* C_SHOW_DIR_FAILURE    = "<show_dir_failure>"_Stz;
+static Stz* C_SHOW_CONNECTION     = "<show_connection>"_Stz;
+static Stz* C_SHOW_EXCEPTION      = "<show_exception>"_Stz;
+static Stz* C_SHOW_FILE           = "<show_file>"_Stz;
+static Stz* C_SHOW_FILE_FAILURE   = "<show_file_failure>"_Stz;
+static Stz* C_SHOW_LOWMEM         = "<show_lowmem>"_Stz;
+static Stz* C_SHOW_LOWMEM_RECV    = "<show_lowmem_recv>"_Stz;
+static Stz* C_SHOW_RECURRING      = "<show_recurring>"_Stz;
+static Stz* C_SHOW_SOCKET         = "<show_socket>"_Stz;
+static Stz* C_SHOW_SOCKET_FAILURE = "<show_socket_failure>"_Stz;
+//                                   0123456789012345678901234567890
+//                                   0         1         2         3
+static Stz* C_NOSHOW_RECURRING    = "<noshow_recurring>"_Stz;
 
 /*============================================================================*/
 /* end                                                                        */

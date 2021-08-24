@@ -45,8 +45,8 @@
   PipeIn[].pipeOut
 
   // pipe out a new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
 
   // grab table ptn read lock
   TablePtn[].grabRead_yieldLoop
@@ -61,8 +61,8 @@
   ptnStream[] ptnStream.open if
 
     // pipe in ZK_M_NEXTBUFFER
-    Operand[].newNextBufferMarker
-    Operand[].pipeBackIn
+    Marker[].newNextBufferMarker
+    Marker[].pipeBackIn
 
     //"scan_RowCrwBuffer_next" word::find LogicUnit[].handler!
     //true LogicUnit[].callAgain!

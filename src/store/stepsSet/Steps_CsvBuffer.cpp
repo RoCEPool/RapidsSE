@@ -17,10 +17,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_CsvBuffer(void)
 {
-  vAddStep("csvBuffer::new"_Stz,        &Step::vCsvBufferNew);
+  vAddStep("csvBuffer::new"_Stz,        &Step::vCsvBufferNewOld);
 
   vAddStep("csvBuffer.operandDump"_Stz, &Step::vCsvBufferOperandDump);
   vAddStep("csvBuffer.print"_Stz,       &Step::vCsvBufferPrint);
+
+  vAddStep("csvBuffer[].csvAppend"_Stz,   &Step::vCsvBufferCsvAppend);
+  vAddStep("csvBuffer[].csvData"_Stz,     &Step::vCsvBufferCsvData);
+  vAddStep("csvBuffer[].csvToRow"_Stz,    &Step::vCsvBufferCsvToRow);
 
   vAddStep("csvBuffer[]"_Stz,             &Step::vCsvBufferGet);
   vAddStep("csvBuffer[]\\clear"_Stz,      &Step::vCsvBufferGetAndClear);
@@ -28,13 +32,17 @@ void Step::vAddSteps_CsvBuffer(void)
   vAddStep("csvBuffer[].get"_Stz,         &Step::vCsvBufferGet);
   vAddStep("csvBuffer[].isNotNull"_Stz,   &Step::vCsvBufferIsNotNull);
   vAddStep("csvBuffer[].isNull"_Stz,      &Step::vCsvBufferIsNull);
+  vAddStep("csvBuffer[].isReport"_Stz,    &Step::vCsvBufferIsReport);
+  vAddStep("csvBuffer[].new"_Stz,         &Step::vCsvBufferNew);
+  vAddStep("csvBuffer[].report"_Stz,      &Step::vCsvBufferReport);
   vAddStep("csvBuffer[].set"_Stz,         &Step::vCsvBufferSet);
+  vAddStep("csvBuffer[].writeToFile0"_Stz, &Step::vCsvBufferWriteToFile0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* csvBuffer::new -- create a new csv buffer                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCsvBufferNew(void)
+void Step::vCsvBufferNewOld(void)
 {
   ENTRY();
   
@@ -64,6 +72,59 @@ void Step::vCsvBufferOperandDump(void)
   
   vTrace("CsvBuffer: %lld(B)\n"_Stz,pCsvBuffer->nDataBytes());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].csvAppend -- append a csv row to the csv buffer                */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferCsvAppend(void)
+{
+  ENTRY();
+
+  s256 sCsvRow;
+  m_pDataStack->vPopStr(sCsvRow,__func__);
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  i8 nBytes = sCsvRow.nSize();
+  if (pCsvBuffer->nFreeBytes() < nBytes + 1)
+      ASSERT(0);
+
+  Stz* szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
+  StrLib::vCopyLen(szRecord->azChar(),sCsvRow.azChar(),nBytes - 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].csvData -- return csvBuffer data                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferCsvData(void)
+{
+  ENTRY();
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  char* data = (char*)pCsvBuffer->ayDataArea();
+  m_pDataStack->vPushStz((Stz*)data);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].csvToRow -- convert csv buffer to row buffer                   */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferCsvToRow(void)
+{
+  ENTRY();
+
+  CsvBuffer* pCsvBuffer =
+      _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+
+  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+
+  bool b = pToRow->bConvertCsv(pCsvBuffer);
+  UNUSED(b);
+
   EXIT();
 }
 
@@ -146,6 +207,46 @@ void Step::vCsvBufferIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* CsvBuffer[].isReport -- is csvBuffer for report processing ?               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferIsReport(void)
+{
+  ENTRY();
+
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCsvBuffer;
+  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].new -- new a csv buffer                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferNew(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpCsvBuffer = new CsvBuffer;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].report -- mark csvBuffer for report processing ?               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferReport(void)
+{
+  ENTRY();
+
+  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCsvBuffer;
+  pOperand->vTailProcessing(PT_REPORT);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* CsvBuffer[].set -- set operand                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vCsvBufferSet(void)
@@ -159,6 +260,26 @@ void Step::vCsvBufferSet(void)
   m_p_TaskLogicUnit->m_xpCsvBuffer = _pCsvBuffer(pOperand);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CsvBuffer[].writeToFile0 -- write to file0[]                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCsvBufferWriteToFile0(void)
+{
+  ENTRY();
+
+  ASSERT(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
+  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  char* aData = (char*)pCsvBuffer->ayDataArea();
+
+  m_p_TaskLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
+  //m_p_TaskLogicUnit->m_xpFile0->vFlush();
+
+
 }
 
 /*============================================================================*/

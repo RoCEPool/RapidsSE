@@ -52,11 +52,25 @@ ToPtnRow::~ToPtnRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the toPtnRow                                                        */
 /*----------------------------------------------------------------------------*/
-void ToPtnRow::vRepair(Object* pObject, eRF eRepair)
+void ToPtnRow::vRepairHashSet(Object* pObject, eRF eRepair)
 {
   _static_
 
   ToPtnRow* pToPtnRow = _pToPtnRow(pObject);
+
+  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
+
+    // delete all completed buffers
+    RowBuffer* pRowBuffer = pToPtnRow->pCompleted(i_Ptn);
+    while(pRowBuffer) {
+      AM::vDeleteOperand(pRowBuffer);
+      pRowBuffer = pToPtnRow->pCompleted(i_Ptn);
+    }
+
+    // delete dangling buffer
+    pRowBuffer = pToPtnRow->pDangling(i_Ptn);
+    delete pRowBuffer;
+  }
 
   // delete the toPtnRow
   delete pToPtnRow;

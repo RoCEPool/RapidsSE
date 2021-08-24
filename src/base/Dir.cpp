@@ -278,9 +278,9 @@ bool Dir::bOpen(Stz* szDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  if (! MY::pTask()) {
-    printf("Dir::bOpen %s (with no task)\n",szDirPath->azChar());
-  }
+//  if (! MY::pTask()) {
+//    printf("Dir::bOpen %s (with no task)\n",szDirPath->azChar());
+//  }
 
   ASSERT(bIsClosed());
   

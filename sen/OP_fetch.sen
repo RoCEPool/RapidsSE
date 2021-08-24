@@ -131,7 +131,7 @@
   case
     AT_SCAN of
       // read next buffer from ptn stream
-      ptnStream[] ptnStream.read to Operand[]
+      ptnStream[] ptnStream.read to DataBuffer[]
     endof
 
     // all other types of fetches, just fetchNext
@@ -140,12 +140,12 @@
     else
       rowOnce[]
     then
-    indexStream[].read to Operand[]
+    indexStream[].read to DataBuffer[]
 
   endcase
 
   // no more data for counter1[] phrase ?
-  Operand[].isNull if
+  DataBuffer[].isNull if
 
     // any more phrases ?
     Counter1[] 1 + to Counter1[]
@@ -191,7 +191,7 @@
   else
  
     // pipe out the read crw buffer
-    Operand[].pipeOut
+    DataBuffer[].pipeOut
  
     // call this handler again to process next buffer
     true LogicUnit[].callAgain!
@@ -212,8 +212,8 @@
   PipeIn[].pipeOut
 
   // new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of phrases

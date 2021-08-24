@@ -25,22 +25,21 @@
 
   //"Operand:- ZK_D_CRWBUFFER" .verbose
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CrwBuffer[]
 
   // check for low memory
   attachMap::isLowMemory if
     EC_LOW_MEMORY op__execErr
-    PipeIn[].delete
+    CrwBuffer[].delete
     true
     exit
   then
 
-  Operand[].crwToCsv
-  Operand[] to Subset[]
+  CrwBuffer[].toCsv to CsvBuffer[]
+  CsvBuffer[] to Subset[]
 
   begin
-    Operand[].isNull
+    CsvBuffer[].isNull
 
   not while
 
@@ -50,10 +49,10 @@
     Subset[].nextBuffer to Subset[]
 
     // now pipeout the Operand
-    Operand[].pipeOut
+    CsvBuffer[].pipeOut
 
     // move Subset to Operand
-    Subset[] to Operand[]
+    Subset[] to CsvBuffer[]
 
     assert::stack_0
   repeat
@@ -74,14 +73,13 @@
     exit
   then
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to RowBuffer[]
 
-  Operand[].rowToCsv
-  Operand[] to Subset[]
+  RowBuffer[].toCsv to CsvBuffer[]
+  CsvBuffer[] to Subset[]
 
   begin
-    Operand[].isNull
+    RowBuffer[].isNull
 
   not while
 
@@ -90,11 +88,11 @@
     // get the next buffer
     Subset[].nextBuffer to Subset[]
 
-    // now pipeout the Operand
-    Operand[].pipeOut
+    // now pipeout the RowBuffer
+    RowBuffer[].pipeOut
 
     // move Subset to Operand
-    Subset[] to Operand[]
+    Subset[] to RowBuffer[]
 
     assert::stack_0
   repeat
