@@ -570,6 +570,8 @@ public:
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
   void vInfoSetInfoRows(void);
+  void vInfoSetIsNotNull(void);
+  void vInfoSetIsNull(void);
   void vInfoSetIsProgress(void);
   void vInfoSetIsTotalUnits(void);
   void vInfoSetName(void);
