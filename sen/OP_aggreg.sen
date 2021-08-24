@@ -36,9 +36,11 @@
 
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  Operand[].pipeIn
-  Operand[] DevLftIxt.crwBuffer!
+  Pipein[]\clear to CrwBuffer[]
+  CrwBuffer[] DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
+
+  CrwBuffer[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -69,11 +71,11 @@
 
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
+  pipeIn[]\clear to RowBuffer[]
+  RowBuffer[] DevLftRow.rowBuffer!
   ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  RowBuffer[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
