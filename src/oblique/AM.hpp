@@ -371,6 +371,7 @@ namespace OBLIQUE
       static void vStarted(bool bStarted);
       static bool bSystemOpen(void);
       static void vSystemOpen(bool bSystemOpen);
+      static bool bReady(void);
       static void vSystemReady(void);
     };
 

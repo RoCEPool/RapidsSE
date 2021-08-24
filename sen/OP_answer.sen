@@ -75,16 +75,18 @@
 
   ////////// Watch out, if node is not in the grid yet |||||
 
-  " OP answer for " .
+  " OP answer for " .put
   begin
       pAnsweredNode not
     while
       50 thread::sleepMsec
-        sNodeName grid::findNodeByName to pAnsweredNode
-    repeat
+      sNodeName grid::findNodeByName to pAnsweredNode
+  repeat
+  
   pAnsweredNode not if
-  ">>>>>pAnsweredNode is null<<<<<" .
+    ">>>>>pAnsweredNode is null<<<<<" .
   then
+  
   //pSocket pAnsweredNode node.recvSocket!
   sNodeName .
   Socket[] pAnsweredNode node.recvSocket!
