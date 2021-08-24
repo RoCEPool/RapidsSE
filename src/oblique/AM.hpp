@@ -357,10 +357,16 @@ namespace OBLIQUE
     {
     public:
       static bool bBoot(void);
+      static bool bDir(void);
+      static bool bDir_Failure(void);
       static bool bConnection(void);
       static bool bException(void);
+      static bool bFile(void);
+      static bool bFile_Failure(void);
       static bool bLowMem_Recv(void);
       static bool bRecurring(void);
+      static bool bSocket(void);
+      static bool bSocket_Failure(void);
     };
 
     class SYSARGS

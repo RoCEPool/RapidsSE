@@ -675,7 +675,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   
   if (! m_aFile) {
     m_oSysCall.vError(errno);
-    fprintf(stderr, "OpenMode failed\n");
+    //fprintf(stderr, "OpenMode failed\n");
     vTrace("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
           m_sPath.azChar(),m_sOpenMode.azChar(),errno);
     return false;

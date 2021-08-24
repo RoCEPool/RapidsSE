@@ -1075,6 +1075,28 @@ bool AM::SHOW::bBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show dir calls ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bDir(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show dir call failures ?                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bDir_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR_FAILURE))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show inter-node connection?                                                */
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bConnection(void)
@@ -1090,7 +1112,29 @@ bool AM::SHOW::bConnection(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bException(void)
 {
-  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show file calls ?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bFile(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show file call failures ?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bFile_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE_FAILURE))
     return true;
   else
     return false;
@@ -1113,6 +1157,28 @@ bool AM::SHOW::bLowMem_Recv(void)
 bool AM::SHOW::bRecurring(void)
 {
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show socket calls ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bSocket(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show socket call failures ?                                                */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bSocket_Failure(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET_FAILURE))
     return true;
   else
     return false;
