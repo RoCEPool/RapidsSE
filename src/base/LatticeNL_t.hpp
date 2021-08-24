@@ -137,7 +137,7 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(Task* pTask)
 
   for (i8 i_Scan = 0; i_Scan < MAX_ITEMS; i_Scan++) {
     m_pItem[i_Scan]      = nullptr;
-    m_i_NextItem[i_Scan] = C_UNKNOWN;
+    m_i_NextItem[i_Scan] = -9;
     m_i_NextFree[i_Scan] = i_Scan + 1;
   }
   m_i_NextFree[MAX_ITEMS - 1] = C_UNKNOWN;
@@ -171,7 +171,7 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::~LatticeNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
     
-  RASSERT(m_pOwningTask == MY::pTask());
+  //RASSERT(m_pOwningTask == MY::pTask());
 
 }
 
@@ -235,7 +235,7 @@ template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
 i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  RASSERT(m_pOwningTask == MY::pTask());
+  //RASSERT(m_pOwningTask == MY::pTask());
 
   ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
@@ -534,8 +534,8 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vAddItem(ITEM* pItem, i8 i_Cell)
   
   m_nItems++;
   
-  vDumpItems();
-  vDumpNexts();
+  //vDumpItems();
+  //vDumpNexts();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -546,7 +546,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vDumpFrees(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  printf("Frees %02lld : ",m_i_FirstFree);
+  printf("Frees #%02lld @%02lld : ",m_nFreeCells,m_i_FirstFree);
   for (i8 i_Scan = 0; i_Scan < MAX_ITEMS; i_Scan++)
     printf("%02lld ",m_i_NextFree[i_Scan]);
   printf("\n");
@@ -560,7 +560,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vDumpItems(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
     
-  printf("Items %02lld : ",m_nItems);
+  printf("Items #%02lld @%02lld : ",m_nItems,m_i_FirstItem);
   
   for (i8 i_Scan = 0; i_Scan < MAX_ITEMS; i_Scan++) {
     ITEM* pItem = m_pItem[i_Scan];
@@ -568,7 +568,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vDumpItems(void)
       if (gpBufferPool->bValidAddress(pItem))
         printf("^p ",m_i_NextFree[i_Scan]);
       else
-        printf("xx ",m_i_NextFree[i_Scan]);
+        printf("^k ",m_i_NextFree[i_Scan]);
     else
       printf("-- ",m_i_NextFree[i_Scan]);
   }
@@ -583,7 +583,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vDumpNexts(void)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  printf("Nexts %02lld : ",m_nItems);
+  printf("Nexts #%02lld @%02lld : ",m_nItems,m_i_FirstItem);
   for (i8 i_Scan = 0; i_Scan < MAX_ITEMS; i_Scan++)
     printf("%02lld ",m_i_NextItem[i_Scan]);
   printf("\n");
@@ -633,7 +633,7 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::i_PopFree(void)
   
   m_i_NextFree[i_Free] = -9;
   
-  vDumpFrees();
+  //vDumpFrees();
 
   return i_Free;
 }
@@ -671,11 +671,12 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vPushFree(i8 i_Free)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  m_i_NextFree[m_i_FirstFree] = i_Free;
+  m_i_NextFree[i_Free] = m_i_FirstFree;
   m_i_FirstFree = i_Free;
   
   m_nFreeCells++;
 
+  //vDumpFrees();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,22 +689,27 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemoveItem(ITEM* pItem,
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
 
+  // remove item
   RASSERT(pItem == m_pItem[i_Item]);
   m_pItem[i_Item] = nullptr;
   
+  
   if (C_UNKNOWN == i_Prev) {
-    m_i_FirstItem = m_i_NextItem[m_i_FirstItem];
+    // i_Item is first in item chain
+    RASSERT(i_Item == m_i_FirstItem);
+    m_i_FirstItem = m_i_NextItem[i_Item];
   }
   else {
+    // prev is set to items next
     m_i_NextItem[i_Prev] = m_i_NextItem[m_i_NextItem[i_Item]];
   }
   
-  m_i_NextItem[i_Item] = -8;
+  m_i_NextItem[i_Item] = -9;
   
   m_nItems--;
   
-  vDumpItems();
-  vDumpNexts();
+  //vDumpItems();
+  //vDumpNexts();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,15 +720,15 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vValidate(Stz* szWhere)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  printf("%-9s::\n",szWhere);
+//  printf("%-9s::\n",szWhere);
+//
+//  vDumpFrees();
+//  vDumpItems();
+//  vDumpNexts();
   
-  vDumpItems();
-  vDumpNexts();
-  vDumpFrees();
-  
-  printf("\n");
+//  printf("\n");
 
-  RASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
+  RASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   i8 nItems = 0;
   for (i8 i_Item = m_i_FirstItem;
@@ -732,7 +738,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vValidate(Stz* szWhere)
     RASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
     
     ITEM* pItem = m_pItem[i_Item];
-    RASSERT(gpBufferPool->bValidAddress(pItem));
+    //RASSERT(gpBufferPool->bValidAddress(pItem));
     
     nItems++;
     RASSERT(nItems <= MAX_ITEMS);
@@ -741,7 +747,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vValidate(Stz* szWhere)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(m_nFreeCells >= 0 && m_nItems < m_nFreeCells);
+  RASSERT(m_nFreeCells >= 0 && m_nFreeCells <= MAX_ITEMS);
   
   i8 nFrees = 0;
   for (i8 i_Free = m_i_FirstFree;
