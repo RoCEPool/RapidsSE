@@ -42,6 +42,9 @@ public:
   void vAggTimerSecs(void);
   void vAggTimerTicks(void);
 
+  // AM
+  void vAM_Show_Recurring(void);
+
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);

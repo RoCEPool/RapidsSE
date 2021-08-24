@@ -210,6 +210,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
+  m_xSysArgs.m_oArgTags.vInsert(C_SHOW_RECURRING);
+
   i8 i_BootNode = 0;
   i8 i_HeartbeatNode = 0;
 
@@ -913,6 +915,9 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
   }
   
+  if (m_xSysArgs.m_oArgTags.bHasName(C_NOSHOW_RECURRING))
+    m_xSysArgs.m_oArgTags.vDelete(C_SHOW_RECURRING);
+
   //m_xSysArgs.m_oArgTags.vDumpSet(true);
   
   return true;

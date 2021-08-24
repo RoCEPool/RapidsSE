@@ -9,16 +9,22 @@
 /*----------------------------------------------------------------------------*/
 : recurring_activity ( -- )
 
-  "Recurring Activity" .
+  AM::SHOW::bRecurring if
   
-  //jobs::seeDlist
-  //jobs::seeLlist
-  //jobs::seeOlist
-  //jobs::seePlist
+    //jobs::seeDlist
+    //jobs::seeLlist
+    //jobs::seeOlist
+    //jobs::seePlist
   
-  jobs::seeSqueue
+    jobs::seeSqueue
   
-  system::bpa
+    system::bpa
+  
+  else
+  
+    // "No Recurring Activity" .
+    
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

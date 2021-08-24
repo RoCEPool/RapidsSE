@@ -25,6 +25,7 @@ namespace STORE
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
+    static void vAddSteps_AM(void);
     static void vAddSteps_Api(void);
     static void vAddSteps_SysArgs(void);
     static void vAddSteps_Arrange(void);
