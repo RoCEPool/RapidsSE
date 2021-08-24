@@ -386,8 +386,7 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
       
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
   
-  bool bRemoved = pReadLocks->bRemove(pLock);
-  RASSERT(bRemoved);
+  pReadLocks->vRemove(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,8 +402,7 @@ void AM::LOCK::vJustReadLocked(Lock* pLock)
       
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
 
-  i8 i_Lock = pReadLocks->iAdd(pLock);
-  RASSERT(i_Lock != C_UNKNOWN);
+  pReadLocks->vAdd(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -420,8 +418,7 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
       
   LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
   
-  bool bRemoved = pWriteLocks->bRemove(pLock);
-  RASSERT(bRemoved);
+  pWriteLocks->vRemove(pLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,8 +434,7 @@ void AM::LOCK::vJustWriteLocked(Lock* pLock)
       
   LockSet* pWriteLocks = pLockingTask->pWriteLocks();
   
-  i8 i_Lock = pWriteLocks->iAdd(pLock);
-  RASSERT(i_Lock != C_UNKNOWN);
+  pWriteLocks->vAdd(pLock);
 }
 
 

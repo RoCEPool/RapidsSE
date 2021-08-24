@@ -38,18 +38,13 @@ namespace BASE
 
     //ITEM*& operator [](i8 i_Item);
 
-    i8    iAdd(ITEM* pItem);
+    void  vAdd(ITEM* pItem);
     ITEM* pGet(i8 i_Item);
     i8    iFirst(void);
     i8    nItems(void);
     i8    iNext(i8 i_After);
-    bool  bRemove(ITEM* pItem);
+    void  vRemove(ITEM* pItem);
     
-
-    i8    iFind(ITEM* pItem);
-    bool  bIsItem(i8 i_Item);
-    void  vRemove(i8 i_Item);
-
     
   private:
   
@@ -172,20 +167,18 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::~LatticeNL_t(void) noexcept(false)
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vAdd(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   RASSERT(m_pOwningTask == MY::pTask());
 
-  vValidate("> iAdd"_Stz);
+  //vValidate("> iAdd"_Stz);
 
   i8 i_Free = i_PopFree();
   
   vAddItem(pItem,i_Free);
   
-  vValidate("< iAdd"_Stz);
-
-  return i_Free;
+  //vValidate("< iAdd"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,11 +243,11 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_After)
 /* remove the given item                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  vValidate("> bRemove"_Stz);
+  //vValidate("> bRemove"_Stz);
 
   i8 i_Prev;
   
@@ -268,9 +261,7 @@ bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
 
   vPushFree(i_Item);
 
-  vValidate("< bRemove"_Stz);
-
-  return true;
+  //vValidate("< bRemove"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
