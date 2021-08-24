@@ -88,7 +88,11 @@
   then
   
   //pSocket pAnsweredNode node.recvSocket!
-  sNodeName "Answered %v" .printf
+  
+  AM::SHOW::bConnection if
+    sNodeName "Answered %v" .printf
+  then
+  
   Socket[] pAnsweredNode node.recvSocket!
 
   nullptr to Socket[]
@@ -147,9 +151,9 @@
 
     pListeningSocket listen.accept to pAcceptedSocket
 
-    //args.verbose if
+    AM::SHOW::bConnection if
       iPort "Answered connection on port %v" .printf
-    //then
+    then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive node info
