@@ -30,7 +30,7 @@
       supervisor::activity
     then
     
-    args.demonSleep thread::sleepSsec
+    1 thread::sleepSsec
 
   again
 

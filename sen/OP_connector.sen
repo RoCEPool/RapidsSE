@@ -34,9 +34,9 @@
 /*----------------------------------------------------------------------------*/
 : connector_attemptConnect ( -- )
 
-  args.verbose if
+  //args.verbose if
     Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
-  then
+  //then
 
 
   // create a new socket for node
@@ -59,9 +59,9 @@
 
  
   // print connection message
-  args.verbose if
+  //args.verbose if
     Node[] node.no grid::thisNode@ "Node %v connected to node %v" .printf
-  then
+  //then
 
   // send this node's info to the node we just connected to
   connector_sendNodeInfo

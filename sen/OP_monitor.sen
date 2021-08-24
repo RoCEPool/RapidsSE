@@ -25,7 +25,7 @@
   begin
 
     monitor::activity
-    args.demonSleep thread::sleepSsec
+    1 thread::sleepSsec
 
   again
 
