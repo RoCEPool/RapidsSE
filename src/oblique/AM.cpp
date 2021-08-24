@@ -1064,6 +1064,22 @@ Session* AM::SESSION::pInternalSession(void)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 SHOW                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* show important point during boot?                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SHOW::bBoot(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
+    return true;
+  else
+    return false;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1245,9 +1261,11 @@ void AM::SYSTEM::vSystemReady(void)
   
   gpAttachMap->m_bReady = true;
   
-  vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
-         ,iPid
-         ,C_READY_FILE_PATH);
+  if (AM::SHOW::bBoot()) {
+    vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
+           ,iPid
+           ,C_READY_FILE_PATH);
+  }
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

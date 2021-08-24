@@ -444,7 +444,7 @@ void Op::vDotPrint(Stz* szText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  vTrace("[%s: op %s] "
+  vTrace("[%s: op %10s] "
          "%s"
          "\n"_Stz
          

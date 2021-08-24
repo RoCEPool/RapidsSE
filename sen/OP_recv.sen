@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 : recv_StartMarker \handler
 
-  "Receiver Demon Started" .
+  "Receiver Demon Started" .boot
 
   // initialise
   recv_init

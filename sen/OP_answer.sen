@@ -75,7 +75,7 @@
 
   ////////// Watch out, if node is not in the grid yet |||||
 
-  " OP answer for " .put
+  //" OP answer for " .put
   begin
       pAnsweredNode not
     while
@@ -88,7 +88,7 @@
   then
   
   //pSocket pAnsweredNode node.recvSocket!
-  sNodeName .
+  sNodeName "Answered %v" .printf
   Socket[] pAnsweredNode node.recvSocket!
 
   nullptr to Socket[]
@@ -122,7 +122,7 @@
 
   0 locals| nConns |
 
-  "Answer Demon Started" .
+  "Answer Demon Started" .boot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -147,9 +147,9 @@
 
     pListeningSocket listen.accept to pAcceptedSocket
 
-    args.verbose if
+    //args.verbose if
       iPort "Answered connection on port %v" .printf
-    then
+    //then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive node info
