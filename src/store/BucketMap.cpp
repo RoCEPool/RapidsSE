@@ -28,7 +28,7 @@ BucketMap::BucketMap(i8 nPartitions)
   RASSERT(nPartitions);
 
 #ifdef WITH_BKTMAP_2N4P
-  if (AM::PTNMAP::nPtnsInGrid() == 8) {
+  if (nPartitions == 8) {
     // Synthetic mapping, assign buckets to logical partitions
     tPN tPtnNo = 0;
     i8 i_Bkt = 0;
@@ -44,9 +44,9 @@ BucketMap::BucketMap(i8 nPartitions)
 
     }
 
-    //for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    //  vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
-    //}
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+      vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
+    }
 
   } else {
     // this to take care of internal tables ?

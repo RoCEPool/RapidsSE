@@ -326,6 +326,7 @@ namespace OBLIQUE
     public:
       static tPN tHashToDtdPtnNo(i8 iHash);
       static i8  iToBkt(tPN tPtnNo);
+      static tPN  tToPtn(i8 iBktNo);
       static i8  nKnownNodes(void);
       static i8  nPtnsPerNode(void);
       static i8  nPtnsInGrid(void);
