@@ -122,7 +122,7 @@
 
   0 locals| nConns |
 
-  "Answer Demon Started" .
+  "Answer Demon Started" .boot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -147,9 +147,9 @@
 
     pListeningSocket listen.accept to pAcceptedSocket
 
-    args.verbose if
+    //args.verbose if
       iPort "Answered connection on port %v" .printf
-    then
+    //then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive node info

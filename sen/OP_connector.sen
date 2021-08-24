@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 : connector_StartMarker \handler
 
-  "Connector Demon Started" .
+  "Connector Demon Started" .boot
 
   args.verbose if
     grid::thisNode@ job[] "Connector %v on node %v running" .printf

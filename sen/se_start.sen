@@ -107,7 +107,7 @@
   //system::started@ not if
     grid::setStartNode
     true system::started!
-    ": start_run completed" .
+    ": start_run completed" .boot
   //then
 
   "end start_run" .verbose

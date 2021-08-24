@@ -17,6 +17,7 @@
 void Step::vAddSteps_Dot(void)
 {
   vAddStep("."_Stz,            &Step::vDot);
+  vAddStep(".boot"_Stz,        &Step::vDotBoot);
   vAddStep(".put"_Stz,         &Step::vDotPut);
   vAddStep(".\\n"_Stz,         &Step::vDotNewline);
   vAddStep(".verbose"_Stz,     &Step::vDotVerbose);
@@ -37,6 +38,29 @@ void Step::vDot(void)
   }
   else {
     vDotPrint("%s"_Stz,xVariable.szStz());
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .boot -- print top value on stack                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vDotBoot(void)
+{
+  ENTRY();
+  
+  CellSingle xVariable;
+  m_pDataStack->vPopItem(xVariable,__func__);
+  
+  if (AM::SHOW::bBoot()) {
+
+    if (xVariable.bIsIntVal()) {
+      vDotPrint("%lld"_Stz,xVariable.iGetColVal());
+    }
+    else {
+      vDotPrint("%s"_Stz,xVariable.szStz());
+    }
   }
   
   EXIT();

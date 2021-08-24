@@ -207,7 +207,7 @@ LogicCompiler[].extractAsm
 
 assert::stack_0
 
-"se_boot.sen completed" .
+"se_boot.sen completed" .boot
 
 "end of se_boot.sen" .verbose
 

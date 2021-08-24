@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
-  "Monitor Demon Started" .
+  "Monitor Demon Started" .boot
 
   begin
 

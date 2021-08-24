@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : waker_StartMarker \handler
 
-  "Waker Demon Started" .
+  "Waker Demon Started" .boot
 
   begin
 

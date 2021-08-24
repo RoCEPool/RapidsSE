@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-  "Supervisor Demon Started" .
+  "Supervisor Demon Started" .boot
   
   begin
  

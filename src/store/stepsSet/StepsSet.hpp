@@ -283,6 +283,7 @@ public:
 
   // dot
   void vDot(void);
+  void vDotBoot(void);
   void vDotPut(void);
   void vDotNewline(void);
   void vDotVerbose(void);

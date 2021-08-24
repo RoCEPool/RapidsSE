@@ -1261,9 +1261,11 @@ void AM::SYSTEM::vSystemReady(void)
   
   gpAttachMap->m_bReady = true;
   
-  vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
-         ,iPid
-         ,C_READY_FILE_PATH);
+  if (AM::SHOW::bBoot()) {
+    vTrace("SYSTEM READY: pid %lld; refer %s\n"_Stz
+           ,iPid
+           ,C_READY_FILE_PATH);
+  }
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
