@@ -1024,7 +1024,7 @@ void SePrompt::vPromptUser(void)
         ,false             ? AM::szVersionString() : ""_Stz,
         
 #ifdef WITH_DEBUG_VERSION
-        "debug",
+        "debug"
 #else
         "release"
 #endif

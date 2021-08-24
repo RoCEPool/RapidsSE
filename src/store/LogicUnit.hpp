@@ -150,6 +150,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
+    REG<Operand>        m_xpBucket;
     REG<CrwBuffer>      m_xpCrwBuffer;
     REG<CrwToRow>       m_xpCrwToRow;
     REG<CsvBuffer>      m_xpCsvBuffer;
@@ -169,6 +170,7 @@ namespace STORE
     REG<LogicCompiler>  m_xpLogicCompiler;
     REG<Operand>        m_xpMarker;
     REG<RowBuffer>      m_xpMemoryHog; // memoryHog
+    REG<Operand>        m_xpMeta;
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
@@ -178,8 +180,10 @@ namespace STORE
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Operand>        m_xpPipein;    // Pipein
+    REG<Operand>        m_xpParcel;
     REG<Pipeline>       m_xpPipeline;  // pipeline spec generate by dynamo
     REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
+    REG<Operand>        m_xpPlanOperand;
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Row>            m_xpInfoSetRow;

@@ -41,7 +41,8 @@
 /*----------------------------------------------------------------------------*/
 : metaScan_Cleaning \handler
 
-  nullptr to Operand[]
+  //Myvan: I don't think we need this
+  //nullptr to Operand[]
 
   ZK_M_CLEANING_handler
 ;
@@ -54,8 +55,7 @@
   PipeIn[].pipeOut
   
   // pipeout the streamDef
-  StreamDefLft[] to Operand[]
-  Operand[].pipeOut
+  StreamDefLft[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

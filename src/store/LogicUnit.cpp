@@ -85,6 +85,7 @@ LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
+,         m_xpBucket(this,RF_NONE,         nullptr,                 "m_xpBucket"_Stz)
 ,       m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList, "m_xpCrwBuffer"_Stz)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       "m_xpCrwToRow"_Stz)
 ,       m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList, "m_xpCsvBuffer"_Stz)
@@ -106,8 +107,9 @@ LogicUnit::LogicUnit(void)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,               "m_xpInfoSetTable"_Stz)
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,    "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,"m_xpLogicCompiler"_Stz)
-    ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                "m_xpMarker"_Stz)
+,         m_xpMarker(this,RF_SET_NULL,     nullptr,                "m_xpMarker"_Stz)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,"m_xpMemoryHog"_Stz)
+,           m_xpMeta(this,RF_NONE,         nullptr,                "m_xpMeta"_Stz)
 
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
@@ -118,9 +120,10 @@ LogicUnit::LogicUnit(void)
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,         "m_xpOperandOoO"_Stz)
 
+,         m_xpParcel(this,RF_NONE,         nullptr,        "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
-
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
+,    m_xpPlanOperand(this,RF_NONE,         nullptr,        "m_xpPlanOperand"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)
@@ -307,6 +310,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
+  //RASSERT(m_xpBucket.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());
@@ -331,8 +335,11 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
+  //RASSERT(m_xpMeta.bIsNull());
 
   RASSERT(m_xpPathIdentifier.bIsNull());
+  //RASSERT(m_xpParcel.bIsNull());
+  //RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
   RASSERT(m_xpIndex.bIsNull());
   RASSERT(m_xpIndexDef.bIsNull());

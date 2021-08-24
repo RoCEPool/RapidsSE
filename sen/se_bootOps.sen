@@ -152,8 +152,6 @@ assert::stack_0
   "OP_projValidation.sen"       include
   "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
-  "OP_python.sen"               include
-  "OP_pythonShell.sen"          include
 
   "OP_pmetaGet.sen"             include
   "OP_pmetaRecv.sen"            include
