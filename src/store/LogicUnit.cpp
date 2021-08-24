@@ -153,9 +153,9 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,   "m_xpToBktCrw"_Stz)
 ,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,   "m_xpToBktRow"_Stz)
 
-,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,  "m_xpToNstRow"_Stz)
-,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepair,  "m_xpToPtnCrw"_Stz)
-,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepair,  "m_xpToPtnRow"_Stz)
+,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,         "m_xpToNstRow"_Stz)
+,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,   "m_xpToPtnCrw"_Stz)
+,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,  "m_xpToPtnRow"_Stz)
 
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepair,     "m_xpToRow"_Stz)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,     "m_xpTx"_Stz)

@@ -66,11 +66,25 @@ ToPtnCrw::~ToPtnCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the toPtnCrw                                                        */
 /*----------------------------------------------------------------------------*/
-void ToPtnCrw::vRepair(Object* pObject, eRF eRepair)
+void ToPtnCrw::vRepairHashSet(Object* pObject, eRF eRepair)
 {
   _static_
 
   ToPtnCrw* pToPtnCrw = _pToPtnCrw(pObject);
+
+  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
+
+    // delete all completed buffers
+    CrwBuffer* pCrwBuffer = pToPtnCrw->pCompleted(i_Ptn);
+    while(pCrwBuffer) {
+      AM::vDeleteOperand(pCrwBuffer);
+      pCrwBuffer = pToPtnCrw->pCompleted(i_Ptn);
+    }
+
+    // delete dangling buffer
+    pCrwBuffer = pToPtnCrw->pDangling(i_Ptn);
+    delete pCrwBuffer;
+  }
 
   // delete the toPtnCrw
   delete pToPtnCrw;
