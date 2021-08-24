@@ -20,6 +20,7 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::SHOW::bException"_Stz,      &Step::vAM_Show_Exception);
   vAddStep("AM::SHOW::bFile"_Stz,           &Step::vAM_Show_File);
   vAddStep("AM::SHOW::bFile_Failure"_Stz,   &Step::vAM_Show_File_Failure);
+  vAddStep("AM::SHOW::bLowMem"_Stz,         &Step::vAM_Show_LowMem);
   vAddStep("AM::SHOW::bLowMem_Recv"_Stz,    &Step::vAM_Show_LowMem_Recv);
   vAddStep("AM::SHOW::bRecurring"_Stz,      &Step::vAM_Show_Recurring);
   vAddStep("AM::SHOW::bSocket"_Stz,         &Step::vAM_Show_Socket);
@@ -120,6 +121,20 @@ void Step::vAM_Show_File_Failure(void)
   b8 bFile_Failure = AM::SHOW::bFile_Failure();
   
   m_pDataStack->vPushInt(bFile_Failure);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::SHOW::bLowMem -- <show_lowmem> ?                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_Show_LowMem(void)
+{
+  ENTRY();
+
+  b8 bLowMem = AM::SHOW::bLowMem();
+  
+  m_pDataStack->vPushInt(bLowMem);
 
   EXIT();
 }

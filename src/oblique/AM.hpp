@@ -363,6 +363,7 @@ namespace OBLIQUE
       static bool bException(void);
       static bool bFile(void);
       static bool bFile_Failure(void);
+      static bool bLowMem(void);
       static bool bLowMem_Recv(void);
       static bool bRecurring(void);
       static bool bSocket(void);

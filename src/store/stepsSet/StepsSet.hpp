@@ -50,6 +50,7 @@ public:
   void vAM_Show_Exception(void);
   void vAM_Show_File(void);
   void vAM_Show_File_Failure(void);
+  void vAM_Show_LowMem(void);
   void vAM_Show_LowMem_Recv(void);
   void vAM_Show_Recurring(void);
   void vAM_Show_Socket(void);

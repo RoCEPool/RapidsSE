@@ -144,6 +144,7 @@ static Stz* C_SHOW_CONNECTION     = "<show_connection>"_Stz;
 static Stz* C_SHOW_EXCEPTION      = "<show_exception>"_Stz;
 static Stz* C_SHOW_FILE           = "<show_file>"_Stz;
 static Stz* C_SHOW_FILE_FAILURE   = "<show_file_failure>"_Stz;
+static Stz* C_SHOW_LOWMEM         = "<show_lowmem>"_Stz;
 static Stz* C_SHOW_LOWMEM_RECV    = "<show_lowmem_recv>"_Stz;
 static Stz* C_SHOW_RECURRING      = "<show_recurring>"_Stz;
 static Stz* C_SHOW_SOCKET         = "<show_socket>"_Stz;

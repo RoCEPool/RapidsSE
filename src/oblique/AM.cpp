@@ -1143,6 +1143,17 @@ bool AM::SHOW::bFile_Failure(void)
 /*----------------------------------------------------------------------------*/
 /* show exception processing?                                                 */
 /*----------------------------------------------------------------------------*/
+bool AM::SHOW::bLowMem(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show exception processing?                                                 */
+/*----------------------------------------------------------------------------*/
 bool AM::SHOW::bLowMem_Recv(void)
 {
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
