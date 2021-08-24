@@ -68,7 +68,10 @@ Word::Word(Stz* szWordNm)
   m_pSkipNode  = nullptr;
   
   m_sWordNm    = szWordNm;
-  RASSERT(m_sWordNm.bSame(szWordNm));
+  
+  if (! m_sWordNm.bSame(szWordNm)) {
+    RASSERT(m_sWordNm.bSame(szWordNm));
+  }
   
   m_eWord      = WK_COLON;
 

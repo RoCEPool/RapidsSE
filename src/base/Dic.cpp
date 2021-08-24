@@ -222,6 +222,9 @@ Word* Dic::pFindWord(Stz* szWordNm)
 //    bTrace = true;
 //  }
   
+  if (szWordNm->nLength() > 31)
+    return nullptr;
+  
   Word* pSearchWord = new (nullptr) Word(szWordNm);
   
   m_okLock.vGrabRead();
