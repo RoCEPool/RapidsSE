@@ -88,7 +88,7 @@
 : insert_StartMarker \handler
 
   //"Operand:- ZK_M_START" .verbose
-  "Operand Insert:- ZK_M_START" .
+  //"Operand Insert:- ZK_M_START" .
   PipeIn[].pipeOut
 
   // create the infoSetTable for C_TDEF_PROGRESSUNITS
@@ -125,7 +125,7 @@
  : insert_req \operator
  
   LogReqEntry SEED_REQ
-  "OP_insert" .
+  // "OP_insert" .
   // init the counter to be used for progress
   0 to Counter0[]
 
