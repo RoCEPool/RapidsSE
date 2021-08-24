@@ -148,20 +148,10 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(Task* pTask)
   i8 nBytes = sizeof(LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>);
   
   _checkInitialisedSize_(nBytes);
-  
-#ifdef WITH_REVISED_LATTICE
-  //vValidate("Init"_Stz);
-#endif
-  
+    
   _postcondition_(_MAGIC_,LAT_CN,_FOOTER_);
 }
 
-
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-#ifdef WITH_REVISED_LATTICE
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -172,13 +162,11 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::~LatticeNL_t(void) noexcept(false)
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
     
   //RASSERT(m_pOwningTask == MY::pTask());
-
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
@@ -284,220 +272,6 @@ bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
 
   return true;
 }
-
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-#else
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::~LatticeNL_t(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-    
-  for (u8 i_Item = (i8)0; (i8)i_Item < (i8)m_nItems; i_Item++) {
-    ITEM* pItem = m_pItem[i_Item];
-    delete pItem;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add an item                                                                */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
-  
-  // get item number
-  i8 i_Item = m_i_FirstFree;
-
-  if (C_UNKNOWN == i_Item)
-    return C_UNKNOWN;
-  
-  m_i_FirstFree = m_i_NextFree[i_Item];
-  if (! (m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS))
-    vDebugPoint();
-  ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
-  
-  m_pItem[i_Item] = pItem;
-  
-  m_nItems++;
-  
-  return i_Item;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add an item                                                                */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
-    if (pItem == m_pItem[i_Item])
-      return i_Item;
-  
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subscript of first item                                                */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFirst(void)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
-    if (bIsItem(i_Item))
-      return i_Item;
-  
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
-  
-  ITEM* pItem = m_pItem[i_Item];
-  
-  return pItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is elememt an item (or free)                                               */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bIsItem(i8 i_Item)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  if (gpBufferPool->bValidAddress(m_pItem[i_Item]))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of actual items                                                 */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::nItems(void)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  //RASSERT(m_pOwningTask == MY::pTask());
-
-  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
-  
-  return m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next i_item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  i8 i_Next = i_Item + 1;
-  
-  for (;;) {
-  
-    if (i_Next >= MAX_ITEMS)
-      return C_UNKNOWN;
-  
-    if (bIsItem(i_Next))
-      return i_Next;
-    
-    i_Next++;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove the given item                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-bool LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::bRemove(ITEM* pItem)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  i8 i_Item = iFind(pItem);
-  if (C_UNKNOWN == i_Item)
-    return false;
-  
-  vRemove(i_Item);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove the given item                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(i8 i_Item)
-{
-  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
-  //RASSERT((! MY::pTask()) || m_pOwningTask == MY::pTask());
-  RASSERT(m_pOwningTask == MY::pTask());
-
-  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
-  ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
-
-  m_i_NextFree[i_Item] = m_i_FirstFree;
-  m_i_FirstFree = i_Item;
-  ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
-
-  m_nItems--;
-}
-
-#endif
-
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 
 /*----------------------------------------------------------------------------*/
 /* [] operator                                                                */
