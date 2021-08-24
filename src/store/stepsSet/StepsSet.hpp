@@ -185,15 +185,21 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferNew(void);
+  void vCsvBufferNewOld(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
+
+  void vCsvBufferCsvAppend(void);
+  void vCsvBufferCsvData(void);
+  void vCsvBufferCsvToRow(void);
 
   void vCsvBufferDelete(void);
   void vCsvBufferGet(void);
   void vCsvBufferGetAndClear(void);
   void vCsvBufferIsNotNull(void);
   void vCsvBufferIsNull(void);
+  void vCsvBufferNew(void);
+  void vCsvBufferReport(void);
   void vCsvBufferSet(void);
 
   // cursor
@@ -1089,13 +1095,10 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCsvAppend(void);
   void vOperandCrwDuplicate(void);
   void vOperandCrwRowCountFetch(void);
   void vOperandCrwToCsv(void);
   void vOperandCrwToEachRow(void);
-  void vOperandCsvData(void);
-  void vOperandCsvToRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
   void vOperandGetAndClear(void);
@@ -1107,7 +1110,6 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCsvBuffer(void);
   void vOperandNewNextBufferMarker(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);

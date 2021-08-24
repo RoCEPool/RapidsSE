@@ -5,14 +5,13 @@
 " OP_python.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : python_CsvBuffer \handler
 
   //"Operand:- ZK_D_CSVBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
-  Operand[].csvData
+  PipeIn[]\clear to CsvBuffer[]
+  CsvBuffer[].csvData
   <pythonFunction> <pythonFile> Operand[].invokePython
 
   true
