@@ -357,6 +357,7 @@ namespace OBLIQUE
     {
     public:
       static bool bBoot(void);
+      static bool bConnection(void);
       static bool bRecurring(void);
     };
 

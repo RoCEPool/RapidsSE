@@ -561,7 +561,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
     Node* pNode = (*oNode_I);
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
-    vTrace("Node :%lld\n"_Stz, iDstNode);
+    // RAY vTrace("Node :%lld\n"_Stz, iDstNode);
   }
 }
 

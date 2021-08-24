@@ -43,6 +43,8 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_Show_Boot(void);
+  void vAM_Show_Connection(void);
   void vAM_Show_Recurring(void);
 
   // api

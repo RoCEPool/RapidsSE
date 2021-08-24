@@ -139,6 +139,7 @@ static Stz* C_SEE_SHM            = "<see_shm>"_Stz;
 static Stz* C_SEE_JOB            = "<see_job>"_Stz;
 
 static Stz* C_SHOW_BOOT          = "<show_boot>"_Stz;
+static Stz* C_SHOW_CONNECTION    = "<show_connection>"_Stz;
 static Stz* C_SHOW_RECURRING     = "<show_recurring>"_Stz;
 static Stz* C_NOSHOW_RECURRING   = "<noshow_recurring>"_Stz;
 
