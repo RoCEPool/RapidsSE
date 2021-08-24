@@ -178,8 +178,10 @@ public:
   void vCrwBufferGetAndClear(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
+  void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
+  void vCrwBufferWriteToFile0(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -202,9 +204,11 @@ public:
   void vCsvBufferGetAndClear(void);
   void vCsvBufferIsNotNull(void);
   void vCsvBufferIsNull(void);
+  void vCsvBufferIsReport(void);
   void vCsvBufferNew(void);
   void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCsvBufferWriteToFile0(void);
 
   // cursor
   void vCursorFetch(void);
@@ -1100,7 +1104,6 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCrwToEachRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
   void vOperandGetAndClear(void);
@@ -1110,18 +1113,13 @@ public:
   void vOperandInsdelIntoTable(void);
   void vOperandInvokePython(void);
   void vOperandInvokePythonShell(void);
-  void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewNextBufferMarker(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
   void vOperandReport(void);
-  void vOperandRowRowCountFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
-  void vOperandRowToCsv(void);
-  void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO
@@ -1398,6 +1396,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
+  void vRowBufferToCsv(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor

@@ -24,6 +24,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
+  vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +122,21 @@ void Step::vRowBufferSet(void)
   ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull());
 
   m_p_TaskLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].toCsv -- convert rowBuffer operand to csvBuffer                */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferToCsv(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpRowBuffer);
+  m_pDataStack->vPushPtr(pRowBuffer->pToCsvBuffer());
+
+  delete pRowBuffer;
 
   EXIT();
 }

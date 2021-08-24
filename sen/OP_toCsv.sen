@@ -73,14 +73,13 @@
     exit
   then
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to RowBuffer[]
 
-  Operand[].rowToCsv
-  Operand[] to Subset[]
+  RowBuffer[].toCsv to CsvBuffer[]
+  CsvBuffer[] to Subset[]
 
   begin
-    Operand[].isNull
+    RowBuffer[].isNull
 
   not while
 
@@ -89,11 +88,11 @@
     // get the next buffer
     Subset[].nextBuffer to Subset[]
 
-    // now pipeout the Operand
-    Operand[].pipeOut
+    // now pipeout the RowBuffer
+    RowBuffer[].pipeOut
 
     // move Subset to Operand
-    Subset[] to Operand[]
+    Subset[] to RowBuffer[]
 
     assert::stack_0
   repeat
