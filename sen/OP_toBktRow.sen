@@ -35,8 +35,8 @@
     exit
   then
 
-  PipeIn[] ToBktRow[].convert
-  nullptr to Pipein[]
+  PipeIn[]\clear to RowBuffer[]
+  RowBuffer[] ToBktRow[].convert
 
   ptnmap::ptnsInGrid 0
   do

@@ -42,8 +42,8 @@
 /*----------------------------------------------------------------------------*/
 : toPtnCrw_RowBuffer \handler
 
-  PipeIn[] toPtnCrw[].convert
-  nullptr to PipeIn[]
+  PipeIn[]\clear to RowBuffer[]
+  RowBuffer[]\clear toPtnCrw[].convert
 
   ptnmap::ptnsInGrid 0
   do
