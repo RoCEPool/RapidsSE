@@ -209,13 +209,14 @@ void Output::vPrintResult(void)
 //    else
 //      vTrace("NOT SeThread\n"_Stz);
     
-    if (AM::SYSTEM::bReady())
-      vTrace("SYSTEM READY\n"_Stz);
-    else
-      vTrace("NOT READY\n"_Stz);
+//    if (AM::SYSTEM::bReady())
+//      vTrace("SYSTEM READY\n"_Stz);
+//    else
+//      vTrace("NOT READY\n"_Stz);
 
-    vTrace("\nsuccess: %lld rows fetched\n"_Stz,
-           *m_ixRowsProcessed);
+    if (AM::SYSTEM::bReady()) // || ! AM::SHOW::bBoot())
+      vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+             *m_ixRowsProcessed);
   }
 
   m_ixRowsProcessed = 0;

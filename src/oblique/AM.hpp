@@ -353,6 +353,12 @@ namespace OBLIQUE
       static Session* pInternalSession(void);
     };
 
+    class SHOW
+    {
+    public:
+      static bool bBoot(void);
+    };
+
     class SYSARGS
     {
     public:

@@ -75,7 +75,7 @@
 
   ////////// Watch out, if node is not in the grid yet |||||
 
-  " OP answer for " .put
+  //" OP answer for " .put
   begin
       pAnsweredNode not
     while
@@ -88,7 +88,7 @@
   then
   
   //pSocket pAnsweredNode node.recvSocket!
-  sNodeName .
+  sNodeName "Answered %v" .printf
   Socket[] pAnsweredNode node.recvSocket!
 
   nullptr to Socket[]
