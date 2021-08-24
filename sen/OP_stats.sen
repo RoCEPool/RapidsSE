@@ -17,8 +17,7 @@
 //    C_TDEF_LOCKSTATS Path[].pushNamedTableFolder
 //    Path[].toStr .
 //    C_TDEF_LOCKSTATS find execute to Table[]
-//    Operand[].newStreamDef
-//    Operand[] to StreamDefLft[]
+//    StreamDefLft[].new
 //    StreamDefLft[].asStr .
 //    nullptr to Operand[]
 //  then

@@ -165,9 +165,9 @@ void Step::vStreamDefOutNewFromTable(void)
 {
   ENTRY();
 
-  RASSERT(! m_p_TaskLogicUnit->m_xpTable.bIsNull());
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef(m_p_TaskLogicUnit->m_xpTable->pStreamDef());
+  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef(pTable->pStreamDef());
 
   EXIT();
 }

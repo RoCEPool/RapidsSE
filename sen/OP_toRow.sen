@@ -19,8 +19,8 @@
     ToRow[].create
 
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
-    Operand[].newStreamDef
-    Operand[].pipeOut
+    Table[] StreamDefOut[].newFromTable
+    StreamDefOut[].pipeOut
 
   then
 
@@ -35,13 +35,12 @@
 /*----------------------------------------------------------------------------*/
 : toRow_CsvBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CsvBuffer[]
 
   //Operand[]
   //profile.start
 
-  Operand[].csvToRow
+  CsvBuffer[].csvToRow
 
   //profile.end
 
@@ -56,7 +55,7 @@
 
   RowBuffer[].isNull assert
 
-  Operand[].delete
+  CsvBuffer[].delete
 
   true
 ;

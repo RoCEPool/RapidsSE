@@ -10,10 +10,9 @@
 : pythonShell_CsvBuffer \handler
 
   //"Operand:- ZK_D_CSVBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CsvBuffer[]
 
-  Operand[].csvData
+  CsvBuffer[].csvData
   <pythonFile> Operand[].invokePythonShell
 
   true

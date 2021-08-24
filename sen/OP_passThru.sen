@@ -23,10 +23,10 @@
 
   //"Operand:- ZK_M_EOS" .verbose
   PipeIn[].delete
-  Operand[].newCsvBuffer
-  Operand[].report
-  Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
-  Operand[].pipeOut
+  CsvBuffer[].new
+  CsvBuffer[].report
+  Counter0[] "passThru" "passThru,%v,%v\nn" str.format CsvBuffer[].csvAppend
+  CsvBuffer[].pipeOut
 
   Marker[].newEosMarker
   Marker[].pipeOut
@@ -43,8 +43,8 @@
   PipeIn[].pipeOut
 
   // new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
 
   true
 ;

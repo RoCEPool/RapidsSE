@@ -5,16 +5,13 @@
 " OP_dupCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */
+/* handler for ZK_D_CRWBUFFER ...                                   CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : dupCrw_CrwBuffer \handler
 
   //"Operand:- ZK_D_CRWBUFFER" .verbose
 
-  PipeIn[]\clear to Operand[]
-
-  Operand[].crwDuplicate to crwBuffer[]
-  nullptr to crwBuffer[]
+  Pipein[]\clear crwBuffer.duplicate to crwBuffer[]
 
   crwBuffer[].pipeOut
 

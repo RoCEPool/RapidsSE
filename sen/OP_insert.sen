@@ -112,8 +112,8 @@
 
   //"Operand:- ZK_D_STREAMDEF" .verbose
   PipeIn[].delete
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[].pipeOut
   
   true
 ;

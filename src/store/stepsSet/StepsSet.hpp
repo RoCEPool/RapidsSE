@@ -164,6 +164,7 @@ public:
 
   // crwBuffer
   void vCrwBufferDeleteOld(void);
+  void vCrwBufferDuplicate(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
@@ -175,6 +176,7 @@ public:
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferSet(void);
+  void vCrwBufferToCsv(void);
 
   // crw to row
   void vCrwToRowCompleted(void);
@@ -184,15 +186,21 @@ public:
   void vCrwToRowDelete(void);
 
   // csv buffer
-  void vCsvBufferNew(void);
+  void vCsvBufferNewOld(void);
   void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
+
+  void vCsvBufferCsvAppend(void);
+  void vCsvBufferCsvData(void);
+  void vCsvBufferCsvToRow(void);
 
   void vCsvBufferDelete(void);
   void vCsvBufferGet(void);
   void vCsvBufferGetAndClear(void);
   void vCsvBufferIsNotNull(void);
   void vCsvBufferIsNull(void);
+  void vCsvBufferNew(void);
+  void vCsvBufferReport(void);
   void vCsvBufferSet(void);
 
   // cursor
@@ -966,7 +974,6 @@ public:
   void vMarkerNewStartMarker(void);
   void vMarkerNewStartCrwRhtMarker(void);
   void vMarkerNewStartRowRhtMarker(void);
-  void vMarkerNewStreamDef(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
   void vMarkerPipeIn(void);
@@ -1090,13 +1097,7 @@ public:
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandCsvAppend(void);
-  void vOperandCrwDuplicate(void);
-  void vOperandCrwRowCountFetch(void);
-  void vOperandCrwToCsv(void);
   void vOperandCrwToEachRow(void);
-  void vOperandCsvData(void);
-  void vOperandCsvToRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
   void vOperandGetAndClear(void);
@@ -1108,9 +1109,7 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandMorphClass(void);
-  void vOperandNewCsvBuffer(void);
   void vOperandNewNextBufferMarker(void);
-  void vOperandNewStreamDef(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
