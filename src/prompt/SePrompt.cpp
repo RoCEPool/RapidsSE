@@ -85,7 +85,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
-  m_pJobTagSet = nullptr;
+  m_pCmdTagSet = nullptr;
   
   m_pPrintOp = nullptr;
   
@@ -100,9 +100,9 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
   
   if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
-    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
-    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
+    //m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
+    //m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
+    //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
   m_pInpTknVec = pInputGet()->pTokenVec();
@@ -237,7 +237,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     m_pInpTknVec = pInputGet()->pTokenVec();
-    m_pJobTagSet = m_pCurrentDeputy->pJobTagSet();
+    m_pCmdTagSet = m_pCurrentDeputy->pJobTagSet();
     
     Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo;
     
@@ -259,8 +259,8 @@ void SePrompt::vPromptLoop(void)
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
     if (*szCmdFile->azChar()) {
-      m_pJobTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_pJobTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
+      m_pCmdTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_pCmdTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
     if (! bPrepareJob()) {
@@ -368,7 +368,7 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  m_pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
 
@@ -635,7 +635,7 @@ bool SePrompt::bExecuteFunction(void)
   (pPromptDesc->m_fPrompt)(this);
   oTimer.vUpdate();
 
-  if (m_pJobTagSet->bHasName(C_TAG_TIME))
+  if (m_pCmdTagSet->bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
   return true;
@@ -945,16 +945,6 @@ i8 SePrompt::iNextSectionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the prompt settings tag set                                            */
-/*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pPmtTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_oPmtTagSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get original command text                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* SePrompt::szOriginalCommand(void)
@@ -1031,6 +1021,16 @@ void SePrompt::vPromptUser(void)
         );
 
   fflush(stdin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the prompt settings tag set                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pPmtTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oPmtTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1137,10 +1137,10 @@ void SePrompt::vResetExtractedTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJobTagSet->vReset();
-  m_pJobTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  m_pJobTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
+  m_pCmdTagSet->vReset();
+  m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
+  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
+  m_pCmdTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1351,6 +1351,17 @@ bool SePrompt::bSubSsnTags(void)
   
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the user/session tag set                                               */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pUsrTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oUsrTagSet;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
