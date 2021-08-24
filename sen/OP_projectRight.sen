@@ -131,11 +131,11 @@
     exit
   then
 
-  Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[] DevLftRow.rowBuffer!
   ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  RowBuffer[].delete
 
   PotRlu[].pipeoutCompletedPtns
 

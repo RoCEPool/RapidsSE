@@ -174,10 +174,10 @@
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
-  Operand[].pipeIn
-  Operand[] DevLftRow.rowBuffer!
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[] DevLftRow.rowBuffer!
   ZK_D_ROWBUFFER Counter0[] executeAsmArgs
-  Operand[].delete
+  RowBuffer[].delete
   PotRlu[].pipeoutCompletedPtns
 
   true
