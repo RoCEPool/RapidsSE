@@ -110,7 +110,7 @@ LogicUnit::LogicUnit(void)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,"m_xpLogicCompiler"_Stz)
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                "m_xpMarker"_Stz)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,"m_xpMemoryHog"_Stz)
-,           m_xpMeta(this,RF_NONE,         nullptr,                "m_xpMeta"_Stz)
+,           m_xpMeta(this,RF_REPAIR_DELETE, MetaGet::vRepair,      "m_xpMeta"_Stz)
 
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
