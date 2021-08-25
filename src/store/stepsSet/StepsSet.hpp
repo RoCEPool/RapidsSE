@@ -1166,6 +1166,14 @@ public:
   void vPathIdentifierTableFetch(void);
   void vPathIdentifierTableStore(void);
 
+  // PlanOperand
+  void vPlanOperandDelete(void);
+  void vPlanOperandGet(void);
+  void vPlanOperandGetAndClear(void);
+  void vPlanOperandIsNotNull(void);
+  void vPlanOperandIsNull(void);
+  void vPlanOperandSet(void);
+
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
