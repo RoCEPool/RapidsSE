@@ -39,18 +39,18 @@
 
     object@ word.name@ to sTableNm
 
-    // get size ofthe table
+    // find the table
     sTableNm op__table not if
       false
       exit
     then
 
     // skip definition only tables
-    Table[].isUserCreated not if
+    Table[].isUserCreated if
 
       0 Table[].size number.magnitude >str
 
-      // insert index size
+      // insert table size
       sTableNm streamSetTable[] StreamSet[].addTableSizes  not if
         StreamSet[].pipeOut
         streamSetTable[] streamSet[].new

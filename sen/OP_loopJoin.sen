@@ -112,17 +112,17 @@
     // execute the leftOuter asm handler for crwLft
     ZK_M_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
 
-    DevLftIxt.crwBuffer@ to Operand[]
-    Operand[].delete
+    DevLftIxt.crwBuffer@ to CrwBuffer[]
+    CrwBuffer[].delete
     nullptr DevLftIxt.crwBuffer!
   else
 
     // execute the leftOuter asm handler for rowLft
     ZK_M_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
 
-    DevLftRow.rowBuffer@ to Operand[]
-    Operand[].isNull not assert
-    Operand[].delete
+    DevLftRow.rowBuffer@ to RowBuffer[]
+    RowBuffer[].isNull not assert
+    RowBuffer[].delete
     nullptr DevLftRow.rowBuffer!
   then
 
@@ -149,17 +149,17 @@
     // execute the leftOuter asm handler for crwLft
     ZK_M_LEFTOUTER_CRWLFT Counter0[] executeAsmArgs
 
-    DevLftIxt.crwBuffer@ to Operand[]
-    Operand[].delete
+    DevLftIxt.crwBuffer@ to CrwBuffer[]
+    CrwBuffer[].delete
     nullptr DevLftIxt.crwBuffer!
   else
 
     // execute the leftOuter asm handler for rowLft
     ZK_M_LEFTOUTER_ROWLFT Counter0[] executeAsmArgs
 
-    DevLftRow.rowBuffer@ to Operand[]
-    Operand[].isNull not assert
-    Operand[].delete
+    DevLftRow.rowBuffer@ to RowBuffer[]
+    RowBuffer[].isNull not assert
+    RowBuffer[].delete
     nullptr DevLftRow.rowBuffer!
   then
 

@@ -37,6 +37,8 @@ tag default <scale_factor> = "SF1" ;
 /time load orders   "/Users/Shared/tpch/<scale_factor>/orders.csv"   ;
 /time load lineitem "/Users/Shared/tpch/<scale_factor>/lineitem.csv" ;
 
+tableSizes;
+
 space;
 
 /*============================================================================*/

@@ -62,12 +62,11 @@
 /*----------------------------------------------------------------------------*/
 : rowToList_RowBuffer \handler
 
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  Pipein[]\clear to RowBuffer[]
 
-  operand[] List[].addRowBuffer
+  RowBuffer[] List[].addRowBuffer
 
-  Operand[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

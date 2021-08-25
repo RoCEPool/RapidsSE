@@ -46,6 +46,10 @@ rows:
 load bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '19 invalid'
 
+tableSizes;
+rows:
+  (*, 'botTbl', '1MB');
+  
 // check no of rows
 tableScan bolTbl;
 rows: 101
