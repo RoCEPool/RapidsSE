@@ -5,7 +5,7 @@
 " OP_passThru.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : passThru_CsvBuffer \handler
 
@@ -82,7 +82,7 @@
 
   find: passThru_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
   find: passThru_EosMarker   ZK_M_EOS   op[].handler!
-  find: passThru_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: passThru_DataMarker  ZK_M_DATAPULSE op[].handler!
   find: passThru_StartMarker ZK_M_START op[].handler!
 
   op__loop

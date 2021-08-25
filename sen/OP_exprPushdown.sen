@@ -17,12 +17,12 @@
 /*----------------------------------------------------------------------------*/
 : exprPushdown_PlanOperand \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
   op__cmdErrInfoSet
 
-  Operand[] nullptr to Operand[] sqlCompiler::exprPushdown to Operand[]
+  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::exprPushdown to PlanOperand[]
 
    "exprPushdown" compiler_planOperand
 ;

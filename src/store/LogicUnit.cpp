@@ -52,6 +52,7 @@
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
 #include "PtnStream.hpp"
+#include "PlanOperand.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -123,7 +124,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpParcel(this,RF_NONE,         nullptr,        "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
-,    m_xpPlanOperand(this,RF_NONE,         nullptr,        "m_xpPlanOperand"_Stz)
+,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,  "m_xpPlanOperand"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)

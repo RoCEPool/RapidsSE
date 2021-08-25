@@ -306,6 +306,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PlanOperand[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PtnStream[]"_Stz)) {
     pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
     EXIT();
