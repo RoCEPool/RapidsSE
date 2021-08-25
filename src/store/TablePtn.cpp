@@ -231,16 +231,17 @@ void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
+
 #ifdef WITH_BKTMAP_2N4P
   // eventually, we have to append the rowbuffer into the correct bucket
   i8 iBktNo = pDataBuffer->iBucketNo();
   vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnNo());
   Bucket* pBucket = pGetBucket(iBktNo );
-  //pBucket->vAppendBuffer(pDataBuffer);
+  pBucket->vAppendBuffer(pDataBuffer);
   // let's insert the same data into the two buckets, because we don't have a way of
   // getting data from which bucket
-  m_pBucketVec->pGet(0)->vAppendBuffer(pDataBuffer);
-  m_pBucketVec->pGet(1)->vAppendBuffer(pDataBuffer);
+  //m_pBucketVec->pGet(0)->vAppendBuffer(pDataBuffer);
+  //m_pBucketVec->pGet(1)->vAppendBuffer(pDataBuffer);
 
 #else
   m_pBucket->vAppendBuffer(pDataBuffer);
