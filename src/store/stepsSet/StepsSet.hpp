@@ -1125,8 +1125,6 @@ public:
   void vOperandIsNotNull(void);
   void vOperandIsNull(void);
   void vOperandIsReport(void);
-  void vOperandInvokePython(void);
-  void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
   void vOperandPipeIn(void);
   void vOperandReport(void);

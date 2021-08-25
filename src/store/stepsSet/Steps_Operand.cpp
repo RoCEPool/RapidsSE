@@ -52,8 +52,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vOperandIsReport);
-  vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
-  vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
@@ -134,107 +132,6 @@ void Step::vOperandIsReport(void)
   Operand* pOperand = *m_p_TaskLogicUnit->m_xpOperandA;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].invokePython -- invoke python script                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandInvokePython(void)
-{
-  ENTRY();
-
-  s4K  pData;
-  s256 pPythonFile;
-  s256 pPythonFunction;
-  
-  // pop the python file name
-  m_pDataStack->vPopStr(pPythonFile, __func__);
-  
-  // pop the python function name
-  m_pDataStack->vPopStr(pPythonFunction, __func__);
-  
-  // pop the data to be printed
-  m_pDataStack->vPopStr(pData, __func__);
-
-#ifdef WITH_PYTHON_SUPPORT
-  
-  // Initialize the Python interpreter.
-  Py_Initialize();
-  PySys_SetPath((char*)("../Python"));
-  
-  // Create some Python objects
-  PyObject *pModuleName, *pModule, *pDict, *pFunction, *pArgs, *pArgString;
-  
-  // Convert the python file name to a Python string.
-  pModuleName = PyString_FromString(pPythonFile.azChar());
-  
-  // Import the file as a Python module.
-  pModule = PyImport_Import(pModuleName);
-  if (pModule == nullptr)
-  {
-    PyErr_Print();
-  }
-  // get the dictionary of the contents of the module.
-  pDict = PyModule_GetDict(pModule);
-  
-  // Get the function from the dictionary.
-  pFunction = PyDict_GetItemString(pDict, pPythonFunction.azChar());
-  
-  // Create a Python tuple to hold one argument to the method.
-  pArgs = PyTuple_New(1);
-
-  // covert the data argument to a python string and add to teh arg tuple
-  pArgString = PyString_FromString(pData.azChar());
-  PyTuple_SetItem(pArgs, 0, pArgString);
-  
-  // Call the function with the arguments.
-  PyObject* pResult = PyObject_CallObject(pFunction, pArgs);
-  
-  // Print a message if calling the method failed.
-  if(pResult == NULL) {
-    printf("Calling the print method failed.\n");
-    PyErr_Print();
-  }
-  
-  // Convert the result to a long from a Python object.
-  i8 iResult = PyInt_AsLong(pResult);
-  RASSERT(iResult);
-  
-  // Destroy the Python interpreter.
-  Py_Finalize();
-  
-#endif
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].invokePythonShell -- invoke python script from shell             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandInvokePythonShell(void)
-{
-  ENTRY();
-  
-  s4K  pData;
-  s256 pPythonFile;
-  
-  // pop the python file name
-  m_pDataStack->vPopStr(pPythonFile, __func__);
-  
-  // pop the data to be printed
-  m_pDataStack->vPopStr(pData, __func__);
-  
-  SysCall oSysCall;
-  s4K sCommand;
-  
-  sCommand.vSprint("python %s %s"_Stz, pPythonFile.azChar(), pData.azChar());
-  
-  i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
-  UNUSED(iExitStatus);
-
-  RASSERT(oSysCall.m_eStatus == SC_SUCCESS);
-  
   EXIT();
 }
 
