@@ -28,6 +28,7 @@
 #include "ExprEval.hpp"
 #include "Range.hpp"
 #include "ShardDef.hpp"
+#include "MetaGet.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -170,7 +171,7 @@ namespace STORE
     REG<LogicCompiler>  m_xpLogicCompiler;
     REG<Operand>        m_xpMarker;
     REG<RowBuffer>      m_xpMemoryHog; // memoryHog
-    REG<Operand>        m_xpMeta;
+    REG<MetaGet>        m_xpMeta;
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now

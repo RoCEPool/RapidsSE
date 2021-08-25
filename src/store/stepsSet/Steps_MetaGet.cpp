@@ -18,15 +18,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_MetaGet(void)
 {
-  vAddStep("Meta[]"_Stz,                &Step::vMetaGet);
-  vAddStep("Meta[]\\clear"_Stz,         &Step::vMetaGetAndClear);
-  vAddStep("Meta[].delete"_Stz,         &Step::vMetaDelete);
-  vAddStep("Meta[].isNotNull"_Stz,      &Step::vMetaIsNotNull);
-  vAddStep("Meta[].isNull"_Stz,         &Step::vMetaIsNull);
-  vAddStep("Meta[].set"_Stz,            &Step::vMetaSet);
+  vAddStep("Meta[]"_Stz,                   &Step::vMetaGet);
+  vAddStep("Meta[]\\clear"_Stz,            &Step::vMetaGetAndClear);
+  vAddStep("Meta[].delete"_Stz,            &Step::vMetaDelete);
+  vAddStep("Meta[].getTableName"_Stz,      &Step::vMetaGetGetTableName);
+  vAddStep("Meta[].isNotNull"_Stz,         &Step::vMetaIsNotNull);
+  vAddStep("Meta[].isNull"_Stz,            &Step::vMetaIsNull);
+  vAddStep("Meta[].set"_Stz,               &Step::vMetaSet);
 
-  vAddStep("MetaGet::getMetaData"_Stz,  &Step::vMetaGetGetMetadata);
-  vAddStep("MetaGet.getTableName"_Stz,  &Step::vMetaGetGetTableName);
+  vAddStep("MetaGet::getMetaData"_Stz,     &Step::vMetaGetGetMetadata);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,14 +130,14 @@ void Step::vMetaGetGetMetadata(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaGet.vMetaGetGetTableName -- get tableName from MetaGet object          */
+/* Meta[].getTableName -- get tableName from MetaGet object                   */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetGetTableName(void)
 {
   ENTRY();
   vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
 
-  MetaGet* pMetaGet = _pMetaGet(m_pDataStack->pPopPtr(__func__));
+  MetaGet* pMetaGet = *m_p_TaskLogicUnit->m_xpMeta;
 
   s32 sTableNm = pMetaGet->sTableName();
 
