@@ -1628,6 +1628,7 @@ public:
   void vStrRemoveSuffix(void);
   void vStrRemoveTailInt(void);
   void vStrReplace(void);
+  void vStrReplaceTags(void);
   void vStrRight(void);
   void vStrSame(void);
   void vStrSub(void);

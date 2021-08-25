@@ -75,10 +75,14 @@
 
   // 0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
+  <fileNm> locals| sFileNm_raw |
+  
+  job::tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
+
   PipeIn[].pipeOut
 
   // open the file for reading
-  <fileNm> OPEN_READ op__file discard
+  sFileNm OPEN_READ op__file discard
 
   // 1 ZK_M_START EG_ZK LogicUnit[].diaryNote
 

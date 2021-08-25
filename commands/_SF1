@@ -35,6 +35,34 @@ anTbl lineitem;
 // - - - - - - - - - - - - - - - - - - - - - -
 
 /*
+
+region  : r_regionkey
+
+nation  : n_regionkey n_nationkey
+
+supplier:             s_nationkey
+
+customer:             c_nationkey c_custkey
+
+orders  :                         c_custkey c_orderkey
+
+lineitem:                                   l_orderkey l_partkey  l_suppkey
+
+partsupp:                                              ps_partkey ps_suppkey
+
+part    :                                              p_partkey
+
+*/
+
+
+
+
+
+
+
+
+
+/*
 SELECT r_regionkey, r_name
   FROM region
 ;

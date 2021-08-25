@@ -32,7 +32,6 @@ namespace PROMPT
     Thread*   m_pThread;
 
     bool        m_bContinue;    // continue processing commands?
-    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts
     i8          m_iDebugMode;   // debug mode?
 
@@ -46,7 +45,11 @@ namespace PROMPT
     SeDeputy*   m_pCurrentDeputy;
   
     TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
-    TagSet*     m_pJobTagSet;   // extra tags gleaned from the prompt command
+
+    TagSet*     m_pCmdTagSet;   // extra tags gleaned from the prompt command
+    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
+    TagSet      m_oUsrTagSet;   // tag set which are passed to session
+
 
     // -- -- -- -- -- --
   
@@ -120,6 +123,7 @@ namespace PROMPT
     Stz* szOriginalCommand(void);
     void vOutline(s4K& sOutline);
     void vPromptUser(void);
+    TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
@@ -131,7 +135,6 @@ namespace PROMPT
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
-    TagSet* pPmtTagSet(void);
     Session* pSession(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
@@ -140,6 +143,7 @@ namespace PROMPT
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
+    TagSet* pUsrTagSet(void);
 
   
     ObjectSnapshot* pSnapshotAtTrackingMemory(void);

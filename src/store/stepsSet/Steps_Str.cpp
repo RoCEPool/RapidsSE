@@ -33,6 +33,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.removeSuffix"_Stz, &Step::vStrRemoveSuffix);
   vAddStep("str.removeTailInt"_Stz,&Step::vStrRemoveTailInt);
   vAddStep("str.replace"_Stz,      &Step::vStrReplace);
+  vAddStep("str.replaceTags"_Stz,  &Step::vStrReplaceTags);
   vAddStep("str.right"_Stz,        &Step::vStrRight);
   vAddStep("str.same"_Stz,         &Step::vStrSame);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
@@ -443,6 +444,46 @@ void Step::vStrReplace(void)
   StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
   
   m_pDataStack->vPushStr(sReplaced);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.replaceTags -- replace tag substrings                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vStrReplaceTags(void)
+{
+  ENTRY();
+  
+  s48K sBefore;
+  m_pDataStack->vPopStr(sBefore,__func__);
+
+  TagSet* pTags = _pTagSet(m_pDataStack->pPopPtr(__func__));
+
+  //pTags->vDumpSet(true);
+  
+  s48K sAfter;
+  
+  sAfter = sBefore;
+  
+  i8 nEnames = pTags->nEnames();
+  for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
+    
+    if (! pTags->bIsString(i_Tag))
+      continue;
+    
+    Stz* szName  = pTags->szName(i_Tag);
+    Stz* szValue = pTags->szValue(i_Tag);
+    
+    IGNORE_RETURN( StrLib::bReplace(sAfter.azChar(),
+                                    szName->azChar(),
+                                    szValue->azChar()) );
+  }
+  
+  //vTrace("Before: %s\n"_Stz,sBefore.szStz());
+  //vTrace("After : %s\n"_Stz,sAfter.szStz());
+
+  m_pDataStack->vPushStr(sAfter);
   
   EXIT();
 }
