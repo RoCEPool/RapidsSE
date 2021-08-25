@@ -90,6 +90,18 @@ void Parcel::vPostRecv(void* aParcel)
     pParcel->vSetItem(i_Obj,nullptr);
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the parcel                                                          */
+/*----------------------------------------------------------------------------*/
+void Parcel::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  Parcel* pParcel = _pParcel(pObject);
+
+  // delete the parcel
+  delete pParcel;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/

@@ -1380,10 +1380,17 @@ public:
   void vRegPathRestore(void);
 
   // Parcel
-  void vParcelDelete(void);
+  void vParcelDeleteOld(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
+
+  void vParcelDelete(void);
+  void vParcelGet(void);
+  void vParcelGetAndClear(void);
+  void vParcelIsNotNull(void);
+  void vParcelIsNull(void);
+  void vParcelSet(void);
 
   // reg Pipein
   void vPipeinBide(void);

@@ -121,7 +121,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpOperandA(this,RF_NONE,         nullptr,        "m_xpOperandA"_Stz)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,         "m_xpOperandOoO"_Stz)
 
-,         m_xpParcel(this,RF_NONE,         nullptr,        "m_xpParcel"_Stz)
+,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,  "m_xpPlanOperand"_Stz)
