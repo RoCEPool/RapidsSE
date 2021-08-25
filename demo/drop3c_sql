@@ -1,0 +1,188 @@
+/*============================================================================*/
+/* drop3c_sql -- drop 3 (part c) sql demo                                     */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* singles                                                                    */
+/*----------------------------------------------------------------------------*/
+
+SELECT count(*)  FROM region   ;
+SELECT count(*)  FROM nation   ;
+SELECT count(*)  FROM supplier ;
+SELECT count(*)  FROM customer ;
+SELECT count(*)  FROM orders   ;
+SELECT count(*)  FROM lineitem ;
+SELECT count(*)  FROM partsupp ;
+SELECT count(*)  FROM part     ;
+
+/*----------------------------------------------------------------------------*/
+/* doubles                                                                    */
+/*----------------------------------------------------------------------------*/
+
+print "";
+print "region JOIN nation";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "nation JOIN supplier";
+
+SELECT count(*)
+  FROM nation
+  JOIN supplier ON s_nationkey = n_nationkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "supplier JOIN customer";
+
+SELECT count(*)
+  FROM supplier
+  JOIN customer ON c_nationkey = s_nationkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "customer JOIN orders";
+
+SELECT count(*)
+  FROM customer
+  JOIN orders   ON o_custkey   = c_custkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "orders JOIN lineitem";
+
+SELECT count(*)
+  FROM orders
+  JOIN lineitem ON l_orderkey  = o_orderkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "lineitem JOIN partsupp";
+
+SELECT count(*)
+  FROM lineitem
+  JOIN partsupp ON ps_partkey = l_partkey and
+                   ps_suppkey = l_suppkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "partsupp JOIN part";
+
+SELECT count(*)
+  FROM partsupp
+  JOIN part     ON p_partkey = ps_partkey
+  ;
+
+/*----------------------------------------------------------------------------*/
+/* cascades                                                                   */
+/*----------------------------------------------------------------------------*/
+
+print "";
+print "region JOIN nation";
+
+SELECT count(*)
+  FROM region
+  JOIN nation ON n_regionkey = r_regionkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "region JOIN nation JOIN supplier";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "region JOIN nation JOIN supplier JOIN customer";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "region JOIN nation JOIN supplier JOIN customer JOIN orders";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+  JOIN orders   ON o_custkey   = c_custkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "region JOIN nation JOIN supplier JOIN customer JOIN orders JOIN lineitem";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+  JOIN orders   ON o_custkey   = c_custkey
+  JOIN lineitem ON l_orderkey  = o_orderkey
+;
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* PROBLEMS                                                                   */
+/*----------------------------------------------------------------------------*/
+
+/*
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+print "";
+print "region JOIN nation JOIN supplier JOIN customer JOIN orders JOIN lineitem JOIN part";
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+  JOIN orders   ON o_custkey   = c_custkey
+  JOIN lineitem ON l_orderkey  = o_orderkey
+  JOIN part     ON p_partkey   = l_partkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
