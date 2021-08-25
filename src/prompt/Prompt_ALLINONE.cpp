@@ -5232,12 +5232,17 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bDelete = false;
-  
+  bool bDefault = false;
+
   if (pTkn->bSame("delete"_Stz)) {
     bDelete = true;
     TKNpf();
   }
-  
+  if (pTkn->bSame("default"_Stz)) {
+    bDefault = true;
+    TKNpf();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bPmtTagSet = false;
@@ -5274,7 +5279,7 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
     else
       pUsrTagSet->vDelete(sTagNm);
 
-    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+    //vTrace("\nsuccess: 0 rows affected\n"_Stz);
     return true;
   }
     
@@ -5285,12 +5290,30 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
 
   sTagValue = pTkn->szChars();
 
-  if (bPmtTagSet)
-    pPmtTagSet->vReplace(sTagNm,sTagValue);
-  else
-    pUsrTagSet->vReplace(sTagNm,sTagValue);
+  if (bDefault) {
+
+    if (bPmtTagSet) {
+      if (! pPmtTagSet->bHasName(sTagNm))
+        pPmtTagSet->vReplace(sTagNm,sTagValue);
+    }
+    else {
+      if (! pUsrTagSet->bHasName(sTagNm))
+        pUsrTagSet->vReplace(sTagNm,sTagValue);
+    }
+
+  }
+  else {
+
+    if (bPmtTagSet) {
+      pPmtTagSet->vReplace(sTagNm,sTagValue);
+    }
+    else {
+      pUsrTagSet->vReplace(sTagNm,sTagValue);
+    }
+
+  }
   
-  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  //vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }

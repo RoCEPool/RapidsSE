@@ -455,17 +455,35 @@ void Step::vStrReplaceTags(void)
 {
   ENTRY();
   
-  s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  s48K sBefore;
+  m_pDataStack->vPopStr(sBefore,__func__);
 
   TagSet* pTags = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
-  s48K sReplaced;
+  //pTags->vDumpSet(true);
   
-  sReplaced = sString;
-  //StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
+  s48K sAfter;
   
-  m_pDataStack->vPushStr(sReplaced);
+  sAfter = sBefore;
+  
+  i8 nEnames = pTags->nEnames();
+  for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
+    
+    if (! pTags->bIsString(i_Tag))
+      continue;
+    
+    Stz* szName  = pTags->szName(i_Tag);
+    Stz* szValue = pTags->szValue(i_Tag);
+    
+    IGNORE_RETURN( StrLib::bReplace(sAfter.azChar(),
+                                    szName->azChar(),
+                                    szValue->azChar()) );
+  }
+  
+  //vTrace("Before: %s\n"_Stz,sBefore.szStz());
+  //vTrace("After : %s\n"_Stz,sAfter.szStz());
+
+  m_pDataStack->vPushStr(sAfter);
   
   EXIT();
 }
