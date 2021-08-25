@@ -9,15 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : rdCrwFile_crwBuffer
 
-  crwBuffer::new locals| pCrwBuffer |
+  crwBuffer::new to CrwBuffer[]
 
-  pCrwBuffer file0[] file.readCrwBlock if
+  CrwBuffer[] file0[] file.readCrwBlock if
     //file0[] file.tell "read a crw block (tell %v)" .printf
-    pCrwBuffer to Operand[]
-    Operand[].pipeOut
+    CrwBuffer[].pipeOut
     true
   else
-    pCrwBuffer crwBuffer.delete
+    CrwBuffer[].delete
     false
   then
 ;

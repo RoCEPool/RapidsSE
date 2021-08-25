@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : Scan_CancellingMarker \handler
 
-  Pipein[]\clear to Operand[]
+  Pipein[]\clear to Marker[]
 
   "Scan_CancellingMarker DRAINING PIPEIN" .
   PipeIn[].drain
 
-  Operand[].pipeOut
+  Marker[].pipeOut
   true
 ;
 

@@ -51,8 +51,8 @@
         exit
       then
 
-      infoSetRow[].get InfoSet[].rdCsvChunk to Operand[]
-      Operand[].pipeOut
+      infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
+      CsvBuffer[].pipeOut
       InfoSet[].nextRow to infoSetRow[]
 
     then
