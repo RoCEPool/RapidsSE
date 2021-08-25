@@ -114,8 +114,6 @@
 /*----------------------------------------------------------------------------*/
 : fetch_Cleaning \handler
 
-  nullptr to Operand[]  // ???? ALKA
-
   ZK_M_CLEANING_handler
 ;
 

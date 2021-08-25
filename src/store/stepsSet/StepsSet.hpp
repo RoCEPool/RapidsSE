@@ -220,6 +220,7 @@ public:
   void vCsvBufferNew(void);
   void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCrwBufferUpsertIntoTable(void);
   void vCsvBufferWriteToFile0(void);
 
   // cursor
@@ -1130,7 +1131,6 @@ public:
   void vOperandPipeIn(void);
   void vOperandReport(void);
   void vOperandSet(void);
-  void vOperandUpsertIntoTable(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO

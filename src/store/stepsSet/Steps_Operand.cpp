@@ -57,7 +57,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].morphClass"_Stz,     &Step::vOperandMorphClass);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
-  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
 }
 
@@ -320,28 +319,6 @@ void Step::vOperandToParcel(void)
                   pOp->pPipelineJob()->iJobId());
   
   m_pDataStack->vPushPtr(pParcel);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].upsertIntoTable -- insert operand into the table                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandUpsertIntoTable(void)
-{
-  ENTRY();
-  
-//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-//
-//  Op* pOp = m_pJob->m_pOp;
-//  tPN tPtnNo = pOp->tPtnNo();
-//  i8 i_TablePtn = Table:iPtnNoToTablePtn(tPtnNo);
-//
-//  m_p_TaskLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
-//
-//  // will delete this buffer
-//  pCrwBuffer->vIsPermanent(false);
   
   EXIT();
 }

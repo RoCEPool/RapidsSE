@@ -15,7 +15,7 @@
   CrwBuffer[].insdelIntoTable
   TablePtn[].dropWrite
 
-  Operand[].delete
+  CrwBuffer[].delete
 
   true
 ;
@@ -33,7 +33,7 @@
   RowBuffer[].insdelIntoTable
   TablePtn[].dropWrite
 
-  Operand[].delete
+  RowBuffer[].delete
 
   true
 ;
