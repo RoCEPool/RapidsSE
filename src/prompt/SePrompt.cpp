@@ -368,11 +368,12 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  m_pCmdTagSet->vCopy(& m_oUsrTagSet);
+
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
 
-  
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
     

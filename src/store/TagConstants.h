@@ -50,7 +50,6 @@ static Stz* C_TAG_SHM          = "<shm>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_SUMMARY      = "<summary>"_Stz;
 static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
-static Stz* C_TAG_TAGS         = "<tags>"_Stz;
 static Stz* C_TAG_TIME         = "<time>"_Stz;
 static Stz* C_TAG_TRACEAPI     = "<traceApi>"_Stz;
 static Stz* C_TAG_TRACEOP      = "<traceOp>"_Stz;
@@ -138,6 +137,7 @@ static Stz* C_SEE_JOB            = "<see_job>"_Stz;
 static Stz* C_SEE_SHM            = "<see_shm>"_Stz;
 
 static Stz* C_SHOW_BOOT           = "<show_boot>"_Stz;
+static Stz* C_SHOW_CMD_TAGS       = "<show_cmd_tags>"_Stz;
 static Stz* C_SHOW_DIR            = "<show_dir>"_Stz;
 static Stz* C_SHOW_DIR_FAILURE    = "<show_dir_failure>"_Stz;
 static Stz* C_SHOW_CONNECTION     = "<show_connection>"_Stz;

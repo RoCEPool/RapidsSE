@@ -33,6 +33,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.removeSuffix"_Stz, &Step::vStrRemoveSuffix);
   vAddStep("str.removeTailInt"_Stz,&Step::vStrRemoveTailInt);
   vAddStep("str.replace"_Stz,      &Step::vStrReplace);
+  vAddStep("str.replaceTags"_Stz,  &Step::vStrReplaceTags);
   vAddStep("str.right"_Stz,        &Step::vStrRight);
   vAddStep("str.same"_Stz,         &Step::vStrSame);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
@@ -441,6 +442,28 @@ void Step::vStrReplace(void)
   s48K sReplaced;
   
   StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
+  
+  m_pDataStack->vPushStr(sReplaced);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.replaceTags -- replace tag substrings                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vStrReplaceTags(void)
+{
+  ENTRY();
+  
+  s48K sString;
+  m_pDataStack->vPopStr(sString,__func__);
+
+  TagSet* pTags = _pTagSet(m_pDataStack->pPopPtr(__func__));
+
+  s48K sReplaced;
+  
+  sReplaced = sString;
+  //StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
   
   m_pDataStack->vPushStr(sReplaced);
   
