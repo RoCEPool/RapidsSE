@@ -20,7 +20,7 @@
   PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__cmdErrInfoSet
+  op__createCmdErrInfoSet
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::stageMarkers to PlanOperand[]
 
