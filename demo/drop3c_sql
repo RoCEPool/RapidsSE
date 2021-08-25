@@ -162,7 +162,8 @@ SELECT o_orderstatus,
        count(*) as cnt,
        sum(o_totalprice),
        avg(l_extendedprice),
-       max(l_partkey * c_custkey) - 1
+       max(l_partkey * c_custkey) - 1,
+       'literal'
   FROM region
   JOIN nation   ON n_regionkey = r_regionkey
   JOIN customer ON c_nationkey = n_nationkey
