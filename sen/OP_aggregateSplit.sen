@@ -24,7 +24,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::aggregateSplit to PlanOperand[]
 
-   "aggregateSplit" compiler_planOperand
+  "aggregateSplit" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

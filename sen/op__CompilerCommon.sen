@@ -40,6 +40,9 @@
       StreamSet[].delete
     then
 
+    // toggle to default abnormal handlers
+    "default_abnormalHandlers" FIND execute
+
     InfoSet[].pipeOut
     ErrorMarker[].newErrorMarker
     ErrorMarker[].pipeOut

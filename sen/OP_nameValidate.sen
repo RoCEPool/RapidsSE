@@ -24,7 +24,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::nameValidate to PlanOperand[]
 
-   "nameValidate" compiler_planOperand
+  "nameValidate" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

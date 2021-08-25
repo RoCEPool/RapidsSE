@@ -25,7 +25,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::corrBySquash to PlanOperand[]
 
-   "corrBySquash" compiler_planOperand
+  "corrBySquash" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

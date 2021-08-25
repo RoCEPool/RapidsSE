@@ -24,7 +24,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::partitionExplain to PlanOperand[]
 
-   "partitionExplain" compiler_planOperand
+  "partitionExplain" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

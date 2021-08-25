@@ -24,7 +24,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::stageMarkers to PlanOperand[]
 
-   "stageMarkers" compiler_planOperand
+  "stageMarkers" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

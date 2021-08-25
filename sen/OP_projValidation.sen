@@ -24,7 +24,7 @@
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::projValidation to PlanOperand[]
 
-   "projValidation" compiler_planOperand
+  "projValidation" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/
