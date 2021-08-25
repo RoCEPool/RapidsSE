@@ -281,6 +281,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Meta[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Meta[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Node[]"_Stz)) {
     pCurrentWord->vEncodeCall("Node[].set"_Stz);
     EXIT();
@@ -303,6 +308,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("PathIdentifier[]"_Stz)) {
     pCurrentWord->vEncodeCall("PathIdentifier[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PlanOperand[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
     EXIT();
     return;
   }

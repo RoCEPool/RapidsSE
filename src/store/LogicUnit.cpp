@@ -52,6 +52,7 @@
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
 #include "PtnStream.hpp"
+#include "PlanOperand.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -109,7 +110,7 @@ LogicUnit::LogicUnit(void)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,"m_xpLogicCompiler"_Stz)
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                "m_xpMarker"_Stz)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,"m_xpMemoryHog"_Stz)
-,           m_xpMeta(this,RF_NONE,         nullptr,                "m_xpMeta"_Stz)
+,           m_xpMeta(this,RF_REPAIR_DELETE, MetaGet::vRepair,      "m_xpMeta"_Stz)
 
 ,           m_xpNode(this,RF_NONE,         nullptr,        "m_xpNode"_Stz)
 ,         m_xpNode_I(this,RF_NONE,         nullptr,        "m_xpNode_I"_Stz)
@@ -123,7 +124,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpParcel(this,RF_NONE,         nullptr,        "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
 ,         m_xpPipein(this,RF_NONE,         nullptr,        "m_xpPipein"_Stz)
-,    m_xpPlanOperand(this,RF_NONE,         nullptr,        "m_xpPlanOperand"_Stz)
+,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,  "m_xpPlanOperand"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,        "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,        "m_xpPipelineSpec"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair, "m_xpPtnStream"_Stz)

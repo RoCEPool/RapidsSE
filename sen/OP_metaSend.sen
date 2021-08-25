@@ -11,7 +11,7 @@
 
  //"metaSend_metaGet handler" .
 
-  Operand[].pipein  // pop the pMetaGet and put in the Operand register
+  Pipein[]\clear to Meta[]  // pop the pMetaGet and put in the Meta register
   //Operand[] MetaGet.getTableName
   // print table name from the stack
   //.
@@ -20,11 +20,11 @@
   // then call C++ getParts to build the parcel and push the pParcel to the stack
   // op::pipeout pipe the pParcel out
 
-  Operand[] MetaGet.getTableName op__table assert
+  Meta[].getTableName op__table assert
   table[] MetaSend::getParts Op::pipeout
 
   // send EOSMARKER
-  nullptr to Operand[]
+  nullptr to Meta[]
   //Marker[].newEosMarker
   //Marker[].pipeOut
 

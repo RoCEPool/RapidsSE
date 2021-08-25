@@ -5,7 +5,7 @@
 " OP_metaGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_METAGET ...                                                 */
+/* handler for ZK_D_METAGET ...                                               */
 /*----------------------------------------------------------------------------*/
 : metaGet_getTable  \handler
 
@@ -16,10 +16,10 @@
 
   // create an instance of class MetaGet : public Operand
   // set the table name in MetaGet instance
-  <tableNm> metaGet::getMetaData locals| pMetaGet |
+  <tableNm> metaGet::getMetaData to Meta[]
 
   // pipeout the MetaGet instance
-  pMetaGet Op::pipeout
+  Meta[].pipeout
 
   true
   //stk

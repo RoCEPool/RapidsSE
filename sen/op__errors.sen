@@ -7,12 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* create the command error info set                                          */
 /*----------------------------------------------------------------------------*/
-: op__cmdErrInfoSet
+: op__createCmdErrInfoSet
 
   DdlLock[].testDrop
-
-  // toggle to default abnormal handlers
-  "default_abnormalHandlers" FIND execute
 
   // delete if any infoset in the register
   InfoSet[].isNotNull if
@@ -28,7 +25,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
+/* pipeout error info set                                                     */
+/*----------------------------------------------------------------------------*/
+: op__cmdErrOut
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
+  InfoSet[].pipeOut
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the command error info set and pipe it out                          */
 /*----------------------------------------------------------------------------*/
 : op__cmdErr params| errorCode errorMsg |
 

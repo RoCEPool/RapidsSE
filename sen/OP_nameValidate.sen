@@ -13,18 +13,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : nameValidate_PlanOperand \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__cmdErrInfoSet
+  op__createCmdErrInfoSet
 
-  Operand[] nullptr to Operand[] sqlCompiler::nameValidate to Operand[]
+  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::nameValidate to PlanOperand[]
 
-   "nameValidate" compiler_planOperand
+  "nameValidate" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

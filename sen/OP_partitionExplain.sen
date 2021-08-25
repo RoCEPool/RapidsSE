@@ -17,14 +17,14 @@
 /*----------------------------------------------------------------------------*/
 : partitionExplain_PlanOperand \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__cmdErrInfoSet
+  op__createCmdErrInfoSet
 
-  Operand[] nullptr to Operand[] sqlCompiler::partitionExplain to Operand[]
+  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::partitionExplain to PlanOperand[]
 
-   "partitionExplain" compiler_planOperand
+  "partitionExplain" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/

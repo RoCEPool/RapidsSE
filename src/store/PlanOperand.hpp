@@ -27,6 +27,8 @@ namespace STORE
     PlanOperand(Parser::PlanNode* pPlanNode);
    ~PlanOperand(void) noexcept(false);
 
+    static void vRepair(Object* pObject, eRF eRepair);
+
     Parser::PlanNode* pPlanNode(void);
   
   private:

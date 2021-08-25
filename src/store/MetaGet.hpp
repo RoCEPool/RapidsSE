@@ -21,6 +21,8 @@ namespace STORE {
     MetaGet(void);
     ~MetaGet(void) noexcept(false);
 
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vTableName(s32 sTblNm) { m_sTableName = sTblNm;}
     s32 sTableName(void) { return m_sTableName;}
 

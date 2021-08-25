@@ -1032,6 +1032,12 @@ public:
   void vMemoryWordDump(void);
 
   // metaGet
+  void vMetaDelete(void);
+  void vMetaGet(void);
+  void vMetaGetAndClear(void);
+  void vMetaIsNotNull(void);
+  void vMetaIsNull(void);
+  void vMetaSet(void);
   void vMetaGetGetMetadata(void);
   void vMetaGetGetTableName(void);
 
