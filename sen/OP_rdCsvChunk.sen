@@ -75,7 +75,9 @@
 
   // 0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  <fileNm> locals| sFileNm |
+  <fileNm> locals| sFileNm_raw |
+  
+  job::tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
 
   PipeIn[].pipeOut
 
