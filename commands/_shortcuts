@@ -23,6 +23,7 @@ shortcut d    _pipeline;
 shortcut drop1 "../demo/drop1_sql";
 shortcut drop2 "../demo/drop2_sql";
 shortcut drop3 "../demo/drop3_sql";
+shortcut drop3b "../demo/drop3b_sql";
 shortcut dc   "../Expressions/_dynCompiler";
 shortcut dl   _pipelineLineItem;
 shortcut ef1  "../Expressions/_expr_filter_1";

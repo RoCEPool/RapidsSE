@@ -2,19 +2,19 @@
 /* _tpch -- create and load TPC-H tables                                      */
 /*============================================================================*/
 
-//                   ------------------- Scale Factor (SF) --------------------
-// -TABLE-  -ROWS-   0001   001    01     1    10   100    1K   10K  100K    1M
-// region   5           5     5     5     5     5     5     5     5     5     5
-// nation   25         25    25    25    25    25    25    25    25    25    25
-// supplier SF*10K     10   100    1K   10K  100K    1M   10M  100M    1G   10G
-// customer SF*150K   150  1.5K   15K  150K  1.5M   15M  150M  1.5G   15G  150G
-// orders   SF*1.5M  1.5K   15K  150K  1.5M   15M  150M  1.5G   15G  150G  1.5T
-// lineitem SF*6M      6K   60K  600K    6M   60M  600M    6G   60G  600G    6T
-// partsupp SF*800K   800    8K   80K  800K    8M   80M  800M    8G   80G  800G
-// part     SF*200K   200    2K   20K  200K    2M   20M  200M    2G   20G  200G
-//                   ----  ----  ----  ----  ----  ----  ----  ----  ----  ----
-//                   8.6K   86K  860K  8.6M   86M  860M  8.6G   86G  860G  8.6T
-//        inuseSpace  2MB  20MB 200MB   2GB  20GB 200GB   2TB  20TB 200TB   2PB
+//                  -------------------- Scale Factor (SF) ---------------------
+// -TABLE-  -ROWS-  0.001  0.01   0.1 |    1    10   100    1K   10K  100K    1M
+// region   5           5     5     5 |    5     5     5     5     5     5     5
+// nation   25         25    25    25 |   25    25    25    25    25    25    25
+// supplier SF*10K     10   100    1K |  10K  100K    1M   10M  100M    1G   10G
+// customer SF*150K   150  1.5K   15K | 150K  1.5M   15M  150M  1.5G   15G  150G
+// orders   SF*1.5M  1.5K   15K  150K | 1.5M   15M  150M  1.5G   15G  150G  1.5T
+// lineitem SF*6M      6K   60K  600K |   6M   60M  600M    6G   60G  600G    6T
+// partsupp SF*800K   800    8K   80K | 800K    8M   80M  800M    8G   80G  800G
+// part     SF*200K   200    2K   20K | 200K    2M   20M  200M    2G   20G  200G
+//                   ----  ----  ----   ----  ----  ----  ----  ----  ----  ----
+//                   8.6K   86K  860K   8.6M   86M  860M  8.6G   86G  860G  8.6T
+//        inuseSpace  2MB  20MB 200MB    2GB  20GB 200GB   2TB  20TB 200TB   2PB
 
 
 _region
@@ -35,11 +35,12 @@ tag default <scale_factor> = "SF_0001" ;
 /time load region   "/Users/Shared/tpch/<scale_factor>/region.csv"   ;
 /time load nation   "/Users/Shared/tpch/<scale_factor>/nation.csv"   ;
 /time load supplier "/Users/Shared/tpch/<scale_factor>/supplier.csv" ;
-/time load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
-/time load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
 /time load customer "/Users/Shared/tpch/<scale_factor>/customer.csv" ;
 /time load orders   "/Users/Shared/tpch/<scale_factor>/orders.csv"   ;
 /time load lineitem "/Users/Shared/tpch/<scale_factor>/lineitem.csv" ;
+/time load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
+/time load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
+
 
 tableSizes;
 
@@ -64,7 +65,7 @@ supplier:             s_nationkey
 
 customer:             c_nationkey c_custkey
 
-orders  :                         c_custkey c_orderkey
+orders  :                         o_custkey o_orderkey
 
 lineitem:                                   l_orderkey l_partkey  l_suppkey
 

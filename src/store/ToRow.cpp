@@ -739,6 +739,8 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 0) begin csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  //iTraceBits = 0xFFFFFFFFFFFFFFFF;
+  
   if (iTraceBits & C_BIT_BeginCsvChunk)
     vTrace("L_Begin: csvChunk >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvChunk,64,false));
