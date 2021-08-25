@@ -456,7 +456,7 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
     // PX cases which send this parcel to a specific partition
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      vTrace("vSendToPartition  \n"_Stz);
+      //vTrace("vSendToPartition  \n"_Stz);
       Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
       tPN tDstPtnNo_stream = pStream->tPtnNo();
       vSendToPartition(pSrcOp,tDstPtnNo_stream);
