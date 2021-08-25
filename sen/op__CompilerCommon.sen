@@ -35,17 +35,14 @@
   params| sOperatorName |
 
   PlanOperand[].isNull if
+
     // We got an error, but were we going to do an explain?
     StreamSet[].isNull not if
       StreamSet[].delete
     then
 
-    // toggle to default abnormal handlers
-    "default_abnormalHandlers" FIND execute
+    op__cmdErrOut
 
-    InfoSet[].pipeOut
-    ErrorMarker[].newErrorMarker
-    ErrorMarker[].pipeOut
     true
     exit
   then

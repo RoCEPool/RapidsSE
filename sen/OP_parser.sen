@@ -25,12 +25,7 @@
   <sqlStatement> sqlCompiler::parser to PlanOperand[]
 
   PlanOperand[].isNull if
-    // toggle to default abnormal handlers
-    "default_abnormalHandlers" FIND execute
-
-    InfoSet[].pipeOut
-    ErrorMarker[].newErrorMarker
-    ErrorMarker[].pipeOut
+    op__cmdErrOut
     true
     exit
   then
