@@ -10,14 +10,103 @@
 #include "Steps.hpp"
 #include "MetaGet.hpp"
 
+#include "LogicUnit.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_MetaGet(void)
 {
-  vAddStep("MetaGet::getMetaData"_Stz,&Step::vMetaGetGetMetadata);
-  vAddStep("MetaGet.getTableName"_Stz,&Step::vMetaGetGetTableName);
+  vAddStep("Meta[]"_Stz,                &Step::vMetaGet);
+  vAddStep("Meta[]\\clear"_Stz,         &Step::vMetaGetAndClear);
+  vAddStep("Meta[].delete"_Stz,         &Step::vMetaDelete);
+  vAddStep("Meta[].isNotNull"_Stz,      &Step::vMetaIsNotNull);
+  vAddStep("Meta[].isNull"_Stz,         &Step::vMetaIsNull);
+  vAddStep("Meta[].set"_Stz,            &Step::vMetaSet);
+
+  vAddStep("MetaGet::getMetaData"_Stz,  &Step::vMetaGetGetMetadata);
+  vAddStep("MetaGet.getTableName"_Stz,  &Step::vMetaGetGetTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].delete -- planOperand delete                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDelete(void)
+{
+  ENTRY();
+
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpMeta);
+
+  m_p_TaskLogicUnit->m_xpMeta = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].get -- fetch planOperand                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMeta);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].getAndClear -- fetch planOperand and set to nullptr                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMeta);
+
+  m_p_TaskLogicUnit->m_xpMeta = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].isNotNull -- is planOperand not null ?                              */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMeta.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].isNull -- is planOperand null ?                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMeta.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Meta[].set -- set planOperand                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaSet(void)
+{
+  ENTRY();
+
+  MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
+
+  ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMeta.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpMeta = pMeta;
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
