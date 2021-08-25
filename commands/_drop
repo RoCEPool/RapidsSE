@@ -1,0 +1,20 @@
+/*============================================================================*/
+/* _drop -- drop TPC-H tables                                                 */
+/*============================================================================*/
+
+/time drop table region;
+/time drop table nation;
+/time drop table supplier;
+/time drop table customer;
+/time drop table orders;
+/time drop table lineitem;
+/time drop table partsupp;
+/time drop table part;
+
+tableSizes;
+
+space;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

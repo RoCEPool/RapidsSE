@@ -151,37 +151,28 @@ SELECT count(*)
   JOIN lineitem ON l_orderkey  = o_orderkey
 ;
 
-
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* PROBLEMS                                                                   */
+/* large statement                                                            */
 /*----------------------------------------------------------------------------*/
-
-/*
-
-// - - - - - - - - - - - - - - - - - - - - - -
 
 print "";
-print "region JOIN nation JOIN supplier JOIN customer JOIN orders JOIN lineitem JOIN part";
+print "---";
 
-SELECT count(*)
+SELECT o_orderstatus,
+       count(*) as cnt,
+       sum(o_totalprice),
+       avg(l_extendedprice),
+       max(l_partkey * c_custkey) - 1
   FROM region
   JOIN nation   ON n_regionkey = r_regionkey
-  JOIN supplier ON s_nationkey = n_nationkey
-  JOIN customer ON c_nationkey = s_nationkey
+  JOIN customer ON c_nationkey = n_nationkey
   JOIN orders   ON o_custkey   = c_custkey
   JOIN lineitem ON l_orderkey  = o_orderkey
-  JOIN part     ON p_partkey   = l_partkey
+ WHERE
+       o_orderdate < DATE '1998-12-01'
+ GROUP BY o_orderstatus
+HAVING cnt > 1000
 ;
-
-// - - - - - - - - - - - - - - - - - - - - - -
-
-*/
 
 /*============================================================================*/
 /* end                                                                        */

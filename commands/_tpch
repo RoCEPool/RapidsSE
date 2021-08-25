@@ -16,7 +16,6 @@
 //                   8.6K   86K  860K   8.6M   86M  860M  8.6G   86G  860G  8.6T
 //        inuseSpace  2MB  20MB 200MB    2GB  20GB 200GB   2TB  20TB 200TB   2PB
 
-
 _region
 _nation
 _supplier
@@ -25,10 +24,6 @@ _orders
 _lineitem
 _partsupp
 _part
-
-status;
-
-space;
 
 tag default <scale_factor> = "SF_0001" ;
 
@@ -41,21 +36,7 @@ tag default <scale_factor> = "SF_0001" ;
 /time load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
 /time load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
 
-
-tableSizes;
-
-space;
-
-count region;
-count nation;
-count supplier;
-count customer;
-count orders;
-count lineitem;
-count partsupp;
-count part;
-
-/*
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 region  : r_regionkey
 
@@ -73,7 +54,31 @@ partsupp:                                              ps_partkey ps_suppkey
 
 part    :                                              p_partkey
 
-*/
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+5          25         10         150         1500           6000           800         200
+R region   N nation   S supplier C customer  O orders       L lineitem     PS partsupp P part
+_REGIONKEY _NATIONKEY _SUPPKEY   _CUSTKEY    _ORDERKEY      _ORDERKEY      _PARTKEY    _PARTKEY
+_NAME      _NAME      _NAME      _NAME       _CUSTKEY       _PARTKEY       _SUPPKEY    _NAME
+_COMMENT   _REGIONKEY _ADDRESS   _ADDRESS    _ORDERSTATUS   _SUPPKEY       _AVAILQTY   _MFGR
+_          _COMMENT   _NATIONKEY _NATIONKEY  _TOTALPRICE    _LINENUMBER    _SUPPLYCOST _BRAND
+_          _          _PHONE     _PHONE      _ORDERDATE     _QUANTITY      _COMMENT    _TYPE
+_          _          _ACCTBAL   _ACCTBAL    _ORDERPRIORITY _EXTENDEDPRICE _           _SIZE
+_          _          _COMMENT   _MKTSEGMENT _CLERK         _DISCOUNT      _           _CONTAINER
+_          _          _          _COMMENT    _SHIPPRIORITY  _TAX           _           _RETAILPRICE
+_          _          _          _           _              _RETURNFLAG    _           _COMMENT
+_          _          _          _           _              _LINESTATUS    _           _
+_          _          _          _           _              _SHIPDATE      _           _
+_          _          _          _           _              _COMMITDATE    _           _
+_          _          _          _           _              _RECEIPTDATE   _           _
+_          _          _          _           _              _SHIPINSTRUCT  _           _
+_          _          _          _           _              _SHIPMODE      _           _
+_          _          _          _           _              _COMMENT       _           _
+_          _          _          _           _              _
+          
+          
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*============================================================================*/
 /* end                                                                        */
