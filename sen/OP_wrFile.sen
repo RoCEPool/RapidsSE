@@ -22,24 +22,23 @@
 /*----------------------------------------------------------------------------*/
 : wrFile_CrwBuffer \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to CrwBuffer[]
 
-  Operand[].writetoFile0
-  nullptr to Operand[]
+  CrwBuffer[].writetoFile0
+  nullptr to CrwBuffer[]
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                               */
+/* handler for ZK_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_CsvBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CsvBuffer[]
 
-  Operand[].writetoFile0
-  Operand[].delete
+  CsvBuffer[].writetoFile0
+  CsvBuffer[].delete
 
   true
 ;

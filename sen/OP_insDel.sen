@@ -5,37 +5,35 @@
 " OP_insDel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_CrwBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CrwBuffer[]
 
   TablePtn[].grabWrite_yieldLoop
-  Operand[].insdelIntoTable
+  CrwBuffer[].insdelIntoTable
   TablePtn[].dropWrite
 
-  Operand[].delete
+  CrwBuffer[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                               */
+/* handler for ZK_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_RowBuffer \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to RowBuffer[]
 
   "insDel_RowBuffer" .
 
   TablePtn[].grabWrite_yieldLoop
-  Operand[].insdelIntoTable
+  RowBuffer[].insdelIntoTable
   TablePtn[].dropWrite
 
-  Operand[].delete
+  RowBuffer[].delete
 
   true
 ;

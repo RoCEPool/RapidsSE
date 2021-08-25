@@ -187,6 +187,7 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferIsReport(void);
@@ -219,6 +220,7 @@ public:
   void vCsvBufferNew(void);
   void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCrwBufferUpsertIntoTable(void);
   void vCsvBufferWriteToFile0(void);
 
   // cursor
@@ -1123,14 +1125,10 @@ public:
   void vOperandIsNotNull(void);
   void vOperandIsNull(void);
   void vOperandIsReport(void);
-  void vOperandInsdelIntoTable(void);
-  void vOperandInvokePython(void);
-  void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
   void vOperandPipeIn(void);
   void vOperandReport(void);
   void vOperandSet(void);
-  void vOperandUpsertIntoTable(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO
@@ -1167,6 +1165,14 @@ public:
   void vPathIdentifierShowPaths(void);
   void vPathIdentifierTableFetch(void);
   void vPathIdentifierTableStore(void);
+
+  // PlanOperand
+  void vPlanOperandDelete(void);
+  void vPlanOperandGet(void);
+  void vPlanOperandGetAndClear(void);
+  void vPlanOperandIsNotNull(void);
+  void vPlanOperandIsNull(void);
+  void vPlanOperandSet(void);
 
   // persistence
   void vPersistenceCheckpoint(void);
@@ -1404,6 +1410,7 @@ public:
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
+  void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
