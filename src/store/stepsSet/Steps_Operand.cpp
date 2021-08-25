@@ -49,7 +49,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
-  vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vOperandIsReport);
@@ -98,40 +97,6 @@ void Step::vOperandGetAndClear(void)
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandA);
   
   m_p_TaskLogicUnit->m_xpOperandA = nullptr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].insdelIntoTable -- insert-delete operand into the table          */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandInsdelIntoTable(void)
-{
-  ENTRY();
-
-//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-//
-//  Op* pOp = m_pJob->m_pOp;
-//  tPN tPtnNo = pOp->tPtnNo();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
-//
-//  if (CN_CRWBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
-//    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-//    // will delete this buffer
-//    pCrwBuffer->vIsPermanent(false);
-//    m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
-//
-//  }
-//  else
-//  if (CN_ROWBUFFER == (*m_p_TaskLogicUnit->m_xpOperandA)->eGetClassNo()) {
-//    // will delete this buffer
-//    RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-//    pRowBuffer->vIsPermanent(false);
-//    m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
-//  }
-//  else {
-//    NEVER_REACH;
-//  }
 
   EXIT();
 }

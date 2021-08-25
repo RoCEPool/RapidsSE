@@ -187,6 +187,7 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferIsReport(void);
@@ -1123,7 +1124,6 @@ public:
   void vOperandIsNotNull(void);
   void vOperandIsNull(void);
   void vOperandIsReport(void);
-  void vOperandInsdelIntoTable(void);
   void vOperandInvokePython(void);
   void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
@@ -1404,6 +1404,7 @@ public:
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
+  void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);

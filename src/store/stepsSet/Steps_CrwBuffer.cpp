@@ -33,6 +33,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
+  vAddStep("CrwBuffer[].insdelIntoTable"_Stz,&Step::vCrwBufferInsdelIntoTable);
   vAddStep("CrwBuffer[].isNotNull"_Stz,   &Step::vCrwBufferIsNotNull);
   vAddStep("CrwBuffer[].isNull"_Stz,      &Step::vCrwBufferIsNull);
   vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
@@ -152,6 +153,28 @@ void Step::vCrwBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 
   m_p_TaskLogicUnit->m_xpCrwBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].insdelIntoTable -- insert-delete crwBuffer into the table      */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferInsdelIntoTable(void)
+{
+  ENTRY();
+
+//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+//
+//  Op* pOp = m_pJob->m_pOp;
+//  tPN tPtnNo = pOp->tPtnNo();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+//
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+//  // will delete this buffer
+//  pCrwBuffer->vIsPermanent(false);
+//  m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
+//
 
   EXIT();
 }
