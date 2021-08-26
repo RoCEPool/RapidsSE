@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketGet_req \operator
 
-  SEED_REQ
+  _op_begin_
   "bucketGet_req" .
   op__topology
 

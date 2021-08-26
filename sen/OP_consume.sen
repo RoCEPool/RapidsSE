@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : consumeOp_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   <Sends> >int Sends[].new
 

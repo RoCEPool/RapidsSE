@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : postProject_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   op__topology
 

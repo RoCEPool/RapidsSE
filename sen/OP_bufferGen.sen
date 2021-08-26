@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : BufferGen_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   <nBuffers> "Number of buffers: %v" .printf
 

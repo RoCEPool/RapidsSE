@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
  : insert_req \operator
  
-  SEED_REQ
+  _op_begin_
   // "OP_insert" .
   // init the counter to be used for progress
   0 to Counter0[]

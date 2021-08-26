@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
  : dupCrw_req \operator
 
-  SEED_REQ
+  _op_begin_
   "dupCrw_req" .
   op__topology
 

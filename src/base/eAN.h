@@ -27,7 +27,7 @@ enum eAN // action numbers
 /*    */ AN_SEED_END,
 /*    */ AN_SEED_EXE,
 /*    */ AN_SEED_RCV,
-/*    */ AN_SEED_REQ,
+/*    */ AN__op_begin_,
 /*    */ AN_SEED_RUN,
 /*    */ AN_SEND_JOB,
 /*    */ AN_SPAWN_JOB,

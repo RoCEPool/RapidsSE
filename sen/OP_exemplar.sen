@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : exemplar_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   // set topology, next stage and op
   op__topology

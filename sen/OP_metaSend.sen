@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_req \operator
 
-  SEED_REQ
+  _op_begin_
   //"metaSend_req" .
 
   op__topology

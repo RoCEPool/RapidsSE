@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : indexScan_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   // get whether compiled or not
   <compiled> >int to Counter0[]

@@ -1164,7 +1164,7 @@ void Job::vSetFromCascade(Stz* szCascade)
 
   m_oJobTags.vReplace(C_TAG_CMD,szCascade);
 
-  vSeed(SS_SEED_REQ);
+  vSeed(SS__op_begin_);
 
   //m_oJobTags.vDumpSet(true);
 }

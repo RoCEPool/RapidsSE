@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : scan_req \operator
 
-  SEED_REQ
+  _op_begin_
 
   "<catalogNm>"  job::tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
