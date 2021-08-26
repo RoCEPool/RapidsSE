@@ -29,7 +29,7 @@ void Step::vAddSteps_BucketSend(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* BucketSend.getBucketCrw -- get parts of bucket-object          */
+/* BucketSend.getBucketCrw -- get parts of bucket-object                      */
 /*----------------------------------------------------------------------------*/
 void Step::vBucketSendGetBucketCrw(void)
 {

@@ -151,7 +151,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
-    REG<Operand>        m_xpBucket;
+    REG<Bucket>         m_xpBucket;
     REG<CrwBuffer>      m_xpCrwBuffer;
     REG<CrwToRow>       m_xpCrwToRow;
     REG<CsvBuffer>      m_xpCsvBuffer;
