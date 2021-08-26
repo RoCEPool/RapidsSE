@@ -10,10 +10,10 @@
 : metaRecv_Parcel \handler
   " metaRecv_Parcel" .
 
-  Operand[].pipein  // pop the pParcel and put in the Operand register
+  Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 
   // returns table ptr
-  Operand[]\clear MetaRecv::putParts locals| pTable |
+  Parcel[]\clear MetaRecv::putParts locals| pTable |
 
   // get table name to create folder
   pTable table.getName locals| sTableNm |

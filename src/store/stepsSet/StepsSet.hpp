@@ -461,6 +461,13 @@ public:
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
 
+  void vGridDelete(void);
+  void vGridGet(void);
+  void vGridGetAndClear(void);
+  void vGridIsNotNull(void);
+  void vGridIsNull(void);
+  void vGridSet(void);
+
   // group by
   void vGroupByApplyBuffer(void);
   void vGroupByApplyEntry(void);
@@ -2029,7 +2036,6 @@ public:
 
   // toRow
   void vToRowCompleted(void);
-  void vToRowConvert(void);
   void vToRowCreate(void);
   void vToRowDangling(void);
   void vToRowDelete(void);

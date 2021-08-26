@@ -132,14 +132,14 @@
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to Operand[]
+  ptnStream[] ptnStream.read to CrwBuffer[]
 
-  Operand[].isNotNull if
+  CrwBuffer[].isNotNull if
     // read a next crw buffer
 
-    Operand[] DevLftIxt.crwBuffer!
+    CrwBuffer[] DevLftIxt.crwBuffer!
     ZK_D_CRWBUFFER Counter0[] executeAsmArgs
-    Operand[].delete
+    CrwBuffer[].delete
 
     // call this handler again to process next buffer
     true LogicUnit[].callAgain!

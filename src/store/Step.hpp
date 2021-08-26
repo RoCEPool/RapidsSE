@@ -140,7 +140,6 @@ namespace STORE
   
     static void vAddSteps_Schedule(void);
 
-    static void vAddSteps_Range(void);
     static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);

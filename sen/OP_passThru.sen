@@ -11,7 +11,7 @@
 
   //"Operand:- ZK_D_CSVBUFFER" .verbose
   Counter0[] 1 + to  Counter0[]
-  Operand[].delete
+  PipeIn[].delete
 
   true
 ;

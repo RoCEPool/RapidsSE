@@ -30,7 +30,6 @@
 void Step::vAddSteps_ToRow(void)
 {
   vAddStep("toRow[].completed"_Stz,     &Step::vToRowCompleted);
-  vAddStep("toRow[].convert"_Stz,       &Step::vToRowConvert);
   vAddStep("toRow[].create"_Stz,        &Step::vToRowCreate);
   vAddStep("toRow[].dangling"_Stz,      &Step::vToRowDangling);
   vAddStep("toRow[].delete"_Stz,        &Step::vToRowDelete);
@@ -51,26 +50,6 @@ void Step::vToRowCompleted(void)
   
   m_pDataStack->vPushPtr(pRowBuffer);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* toRow[].convert -- convert csv buffer                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vToRowConvert(void)
-{
-  ENTRY();
-
-  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
-  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
-
-  char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
-  
-  bool bResult = pToRow->bConvertCsv(azCsvChunk,pCsvMeta);
-  UNUSED(bResult);
-  
   EXIT();
 }
 

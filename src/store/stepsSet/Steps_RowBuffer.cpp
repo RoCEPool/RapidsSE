@@ -94,7 +94,7 @@ void Step::vRowBufferInsdelIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+//  ASSERT(*m_p_TaskLogicUnit->m_xpRowBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  tPN tPtnNo = pOp->tPtnNo();
@@ -102,7 +102,7 @@ void Step::vRowBufferInsdelIntoTable(void)
 //
 
 //  // will delete this buffer
-//  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+//  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpRowBuffer);
 //  pRowBuffer->vIsPermanent(false);
 //  m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
 

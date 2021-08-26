@@ -2,45 +2,37 @@
 /* drop3b_sql -- drop 3 sql demo                                              */
 /*============================================================================*/
 
-SELECT count(*)
-  FROM region
-;
 
 // - - - - - - - - - - - - - - - - - - - - - -
+// join 2 tables
 
-SELECT count(*)
-  FROM region
-  JOIN nation ON n_regionkey = r_regionkey
-;
-
-// - - - - - - - - - - - - - - - - - - - - - -
 
 SELECT count(*)
   FROM region
   JOIN nation   ON n_regionkey = r_regionkey
-  JOIN supplier ON s_nationkey = n_nationkey
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - -
-
-SELECT count(*)
-  FROM region
-  JOIN nation   ON n_regionkey = r_regionkey
-  JOIN supplier ON s_nationkey = n_nationkey
-  JOIN customer ON c_nationkey = s_nationkey
+// CROSS JOIN
+SELECT N1.n_name, N2.n_name
+  FROM nation N1, nation N2
 ;
 
+// natural join
+SELECT n_name, r_name
+  FROM region, nation;
+ 
 // - - - - - - - - - - - - - - - - - - - - - -
+// join 4 tables
 
 SELECT count(*)
   FROM region
   JOIN nation   ON n_regionkey = r_regionkey
   JOIN supplier ON s_nationkey = n_nationkey
   JOIN customer ON c_nationkey = s_nationkey
-  JOIN orders   ON o_custkey   = c_custkey
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - -
+// join 6 tables
 
 SELECT count(*)
   FROM region
@@ -52,45 +44,61 @@ SELECT count(*)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - -
+// large
 
-explain stage transliterate SELECT count(*)
+
+explain
+stage transliterate
+
+SELECT o_orderstatus,
+       count(*) as cnt,
+       sum(o_totalprice),
+       avg(l_extendedprice),
+       max(l_partkey * c_custkey) - 1,
+       'literal'
   FROM region
   JOIN nation   ON n_regionkey = r_regionkey
-  JOIN supplier ON s_nationkey = n_nationkey
-  JOIN customer ON c_nationkey = s_nationkey
+  JOIN customer ON c_nationkey = n_nationkey
   JOIN orders   ON o_custkey   = c_custkey
   JOIN lineitem ON l_orderkey  = o_orderkey
-  JOIN part     ON p_partkey   = l_partkey
-;
-
-/*
-SELECT count(*)
-  FROM customer
-  JOIN orders   ON o_custkey = c_custkey
+ WHERE l_linenumber > 1 + 1
+   and o_orderdate  < DATE '1998-12-01'
+ GROUP BY o_orderstatus
+HAVING cnt > 1000
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - -
+// Q3-like
 
-SELECT count(*)
-  FROM orders
-  JOIN lineitem   ON l_orderkey = o_orderkey
+SELECT
+       l_orderkey,
+       sum(l_extendedprice*(1-l_discount)) as revenue,
+       o_orderdate,
+       o_shippriority
+  FROM
+       customer
+  JOIN
+       orders   ON o_custkey   = c_custkey
+  JOIN
+       lineitem ON l_orderkey  = o_orderkey
+ GROUP BY
+       l_orderkey,
+       o_orderdate,
+       o_shippriority
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - -
+// OOM
 
-SELECT count(*)
-  FROM partsupp
-  JOIN part   ON p_partkey = ps_partkey
-;
+_lineitem
 
-// - - - - - - - - - - - - - - - - - - - - - -
+lscol lineitem
 
-SELECT count(*)
-  FROM lineitem
-  JOIN partsupp  ON ps_partkey = l_partkey and
-                    ps_suppkey = l_suppkey
-;
-*/
+/time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+
+space;
+
+/time truncate lineitem;
 
 /*============================================================================*/
 /* end                                                                        */

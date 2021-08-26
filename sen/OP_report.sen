@@ -44,6 +44,7 @@
 : report_EntBuffer \handler
 
   //"Operand:- ZK_D_ENTBUFFER" .verbose
+  /*
   PipeIn[] to Operand[]
   nullptr to Operand[]
 
@@ -52,7 +53,7 @@
   else
     Operand[].pipeOut
   then
-
+  */
   true
 ;
 
@@ -70,10 +71,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_SRTBUFFER ...                                               */
+/* handler for ZK_D_SRTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_SrtBuffer \handler
 
+/*
   //"Operand:- ZK_D_SRTBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to Operand[]
@@ -83,7 +85,7 @@
   else
     Operand[].pipeOut
   then
-
+*/
   true
 ;
 

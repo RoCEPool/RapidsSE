@@ -158,6 +158,10 @@ SELECT count(*)
 print "";
 print "---";
 
+
+explain
+stage transliterate
+
 SELECT o_orderstatus,
        count(*) as cnt,
        sum(o_totalprice),
@@ -169,12 +173,65 @@ SELECT o_orderstatus,
   JOIN customer ON c_nationkey = n_nationkey
   JOIN orders   ON o_custkey   = c_custkey
   JOIN lineitem ON l_orderkey  = o_orderkey
- WHERE
-       o_orderdate < DATE '1998-12-01'
+ WHERE l_linenumber > 1 + 1
+   and o_orderdate  < DATE '1998-12-01'
  GROUP BY o_orderstatus
 HAVING cnt > 1000
 ;
 
+
+
+SELECT l_returnflag,
+       l_linestatus,
+       count(*)
+  FROM lineitem
+ GROUP BY l_returnflag,
+          l_linestatus
+;
+
+// Q3-like
+
+SELECT
+       l_orderkey,
+       sum(l_extendedprice*(1-l_discount)) as revenue,
+       o_orderdate,
+       o_shippriority
+  FROM
+       customer
+  JOIN
+       orders   ON o_custkey   = c_custkey
+  JOIN
+       lineitem ON l_orderkey  = o_orderkey
+ GROUP BY
+       l_orderkey,
+       o_orderdate,
+       o_shippriority
+;
+
+
+// CROSS JOIN
+SELECT N1.n_name, N2.n_name
+  FROM nation N1, nation N2
+;
+
+// OUTER JOIN
+SELECT N1.n_name, N2.n_name
+  FROM nation N1
+  LEFT OUTER JOIN nation2 N2 ON N1.n_nationkey = N2.n_nationkey
+;
+
+// natural join
+SELECT n_name, r_name
+  FROM region, nation;
+  
+  
+SELECT n_name,
+       r_name,
+       s_name,
+       ps_suppkey
+FROM region, nation, supplier, partsupp;
+
+// /time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
