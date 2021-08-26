@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
  : totalCount_req \operator
  
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   0 to Counter0[]
 

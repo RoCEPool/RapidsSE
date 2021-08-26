@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
  : insert_req \operator
  
-  LogReqEntry SEED_REQ
+  SEED_REQ
   // "OP_insert" .
   // init the counter to be used for progress
   0 to Counter0[]

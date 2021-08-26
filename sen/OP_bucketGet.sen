@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketGet_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   "bucketGet_req" .
   op__topology
 

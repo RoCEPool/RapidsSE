@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
  : pulse_req \operator
  
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   0 locals| hours   |
   0 locals| minutes |

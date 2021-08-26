@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketSend0_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   //"bucketSend0_req" .
 
   op__topology

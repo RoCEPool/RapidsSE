@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : eatAll_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   // set topology, next stage and op
   op__topology

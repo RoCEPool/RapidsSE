@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : indexScan_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   // get whether compiled or not
   <compiled> >int to Counter0[]

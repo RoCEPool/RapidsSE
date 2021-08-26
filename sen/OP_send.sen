@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
  : send_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   // set the send kind
   <sendKind> >int op.SendKind!

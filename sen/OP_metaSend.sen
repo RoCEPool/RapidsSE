@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   //"metaSend_req" .
 
   op__topology

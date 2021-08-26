@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : BufferGen_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   <nBuffers> "Number of buffers: %v" .printf
 

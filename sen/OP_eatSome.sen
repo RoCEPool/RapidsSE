@@ -21,7 +21,7 @@
 
   find: OP_eatSome_Opr locals| pEatSomeHandler |
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   // set topology, next stage and op
   op__topology

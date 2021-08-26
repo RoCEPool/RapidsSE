@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   op__topology
 

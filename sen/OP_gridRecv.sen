@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : gridRecv_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   //"gridRecv_req" .
 
   op__topology

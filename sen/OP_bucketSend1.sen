@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketSend_req \operator
   "bucketSend_req" .
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
   "<catalogNm>"  job::tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>

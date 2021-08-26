@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
  : rdCsvChunk_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
 
 //  "<note>"  job::tagSet@ tagSet.hasName if
 //    <note> LogicUnit[].diaryJobNote

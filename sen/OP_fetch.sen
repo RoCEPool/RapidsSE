@@ -268,7 +268,7 @@
 /*----------------------------------------------------------------------------*/
 : fetch_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   //<tableNm> <predicate> "PARAMETERS %v %v" str.format .
 
   op__topology

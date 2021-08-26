@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
  : dupCrw_req \operator
 
-  LogReqEntry SEED_REQ
+  SEED_REQ
   "dupCrw_req" .
   op__topology
 
