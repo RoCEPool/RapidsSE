@@ -198,21 +198,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has </flow/> and if so print the jobs ename set           */
-/*----------------------------------------------------------------------------*/
-: job::</seeFlow/>
-
-  "</flow/>"
-    job::tagSet@ tagSet.hasName
-  if
-
-    r@ locate .
-    job::tagSet@ tagSet.asStr .
-
-  then
-;
-
-/*----------------------------------------------------------------------------*/
 /* this job has completed; coordinate with invoker                            */
 /*----------------------------------------------------------------------------*/
 : job::informInvokerOfCompletion
