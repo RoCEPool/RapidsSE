@@ -39,7 +39,7 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 Bucket::Bucket(Table* pTable, tPN tPtnNo)
     : Object(CN_BUCKET)
-    , m_okLock(this)
+    //, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
@@ -125,8 +125,9 @@ void Bucket::vDropRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropRead();
+  //ASSERT(m_okLock.bIsLocked());
+  //m_okLock.vDropRead();
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,8 +137,9 @@ void Bucket::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropWrite();
+  //ASSERT(m_okLock.bIsLocked());
+  //m_okLock.vDropWrite();
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +149,7 @@ bool Bucket::bGrabRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_okLock.bGrabRead();
+  //return m_okLock.bGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +159,8 @@ bool Bucket::bGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_okLock.bGrabWrite();
+  //return m_okLock.bGrabWrite();
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +170,8 @@ bool Bucket::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_okLock.bIsLocked();
+  //return m_okLock.bIsLocked();
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

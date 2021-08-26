@@ -226,6 +226,11 @@ bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
+#ifdef WITH_BKTMAP_2N4P
+  if (!pIndexTree) {
+    return false;
+  }
+#endif
   
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
