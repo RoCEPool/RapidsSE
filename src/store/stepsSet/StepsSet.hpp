@@ -712,6 +712,7 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
+  void vJobRetire(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);

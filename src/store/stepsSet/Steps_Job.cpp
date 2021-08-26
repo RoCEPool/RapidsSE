@@ -81,6 +81,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
+  vAddStep("job.retire"_Stz,           &Step::vJobRetire);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -915,6 +916,20 @@ void Step::vJobRemoveParticipant(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.retire -- retire the job                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRetire(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  // to be coded ...
+  
+  EXIT();
+}
+  
 /*----------------------------------------------------------------------------*/
 /* job.seedDecode -- decode seed for received job                             */
 /*----------------------------------------------------------------------------*/
