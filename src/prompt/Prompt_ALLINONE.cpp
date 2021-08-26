@@ -2903,6 +2903,8 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
+    Api::vReapJobs();
+    
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
     
