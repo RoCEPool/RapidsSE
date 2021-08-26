@@ -98,6 +98,8 @@
 
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
+//#define WITH_JOB_REAPING EndDefine         // reaper job lifecycle
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

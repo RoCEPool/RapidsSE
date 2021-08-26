@@ -35,8 +35,8 @@
 
   // "*** throw_req EXITS" .
   LogReqExit
+  _op_release_resources_
   _op_retires_
-  job::deleteThis
   DONE_REQ_OP
 ;
 

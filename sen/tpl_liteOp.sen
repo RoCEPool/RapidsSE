@@ -41,7 +41,6 @@
   op__loop
 
   LogReqExit
-  job::deleteThis
   DONE_REQ_OP
 ;
 "

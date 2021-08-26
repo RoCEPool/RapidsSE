@@ -544,8 +544,11 @@ void Api::vReapJobs(void)
 {
   _static_
   
+#ifdef WITH_JOB_REAPING
+  
   // to be coded...
   
+#endif
 }
 
 
