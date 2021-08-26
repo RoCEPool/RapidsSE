@@ -2,7 +2,6 @@
 /* _ldErr -- test oldLoad errors using TPC-H Lineitem table                      */
 /*============================================================================*/
 
-bc;
 
 create table lineitem (
 

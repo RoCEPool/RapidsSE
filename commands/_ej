@@ -2,7 +2,6 @@
 /* _EachJoin - each join (loop join)                                          */
 /*============================================================================*/
 
-bc;
 
 create table T (
 	 N_NATIONKEY       INTEGER NOT NULL,

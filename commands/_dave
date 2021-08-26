@@ -2,7 +2,6 @@
 /* _dave -- create sequence of tables test                                    */
 /*============================================================================*/
 
-bc;
 
 /time create table t0000 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
 /time create table t0001 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);

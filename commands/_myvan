@@ -2,7 +2,6 @@
 /* _myvan                                                                       */
 /*============================================================================*/
 
-//bc; assume the system is already started the cluster
 
 create table bolTbl2 (
   bol_col1   BOOLEAN     NOT NULL,

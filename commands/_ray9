@@ -2,7 +2,6 @@
 /* _ray9 : testing removal of old load 19 Nov 2020                            */
 /*============================================================================*/
 
-bc;
 
 create table bolTbl (
   bol_col1   BOOLEAN     NOT NULL,

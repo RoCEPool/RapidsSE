@@ -2,7 +2,6 @@
 /* _li - create and oldLoad TPC-H Lineitem table for SF1                         */
 /*============================================================================*/
 
-bc;
 
 _lineitem
 

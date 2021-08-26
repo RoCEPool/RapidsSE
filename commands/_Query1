@@ -4,7 +4,6 @@
 
 print "Starting cluster..." ;
 
-bc;
 
 print "Cluster started" ;
 

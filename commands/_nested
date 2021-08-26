@@ -2,7 +2,6 @@
 /* _nested - nested pipeline test                                             */
 /*============================================================================*/
 
-bc;
 
 pipeline nestTest
 begin

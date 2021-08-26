@@ -2,7 +2,6 @@
 /* _jindex10 -- index entry testing                                           */
 /*============================================================================*/
 
-bc;
 
 create table j10 (
   j10_key   INTEGER,

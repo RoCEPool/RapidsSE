@@ -2,7 +2,6 @@
 /*  _clLineitem - create and oldLoad TPC-H Lineitem table for SF1                */
 /*============================================================================*/
 
-bc;
 
 print "creating LineItem...";
 

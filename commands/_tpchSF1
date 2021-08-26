@@ -2,7 +2,6 @@
 /* _TPCH/SF1-- tpc-h creation, oldLoad, predicateFetch and drop for scale factor 1         */
 /*============================================================================*/
 
-bc;
 
 print "-----------------------------------------------------------------------";
 /time create table customer (

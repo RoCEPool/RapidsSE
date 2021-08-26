@@ -2,7 +2,6 @@
 /* _testDTE -- test for date                                                  */
 /*============================================================================*/
 
-bc;
 indexEntries 50;
 
 create table jidxDte (

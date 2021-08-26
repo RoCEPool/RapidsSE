@@ -2,7 +2,6 @@
 /* _sensorEvents - create sensor events table                                 */
 /*============================================================================*/
 
-bc;
 
 create table sensorEvents (
   S_SENSOR INTEGER NOT NULL,
