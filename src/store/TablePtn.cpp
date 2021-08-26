@@ -47,13 +47,13 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
 
   m_pBucketVec = new BucketVec;
 
-  vAddBucket(pTable, tPtnNo);
-
 #ifdef WITH_BKTMAP_2N4P
-  // add second bucket here
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
+  {
+    vAddBucket(pTable, tPtnNo);
+  }
+#else
   vAddBucket(pTable, tPtnNo);
-  m_pBucket = nullptr; // for now to test that we have to deal with multiple bucket
-
 #endif
 
   _checkInitialised_(CN_TABLEPTN);
@@ -210,15 +210,13 @@ i8 TablePtn::nBuckets(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree *pIndexTree) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_MULTI_BUCKET
+
+  // Add index for all buckets
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vAddIndex(pIndexTree);
   }
-#else
 
-  m_pBucket->vAddIndex(pIndexTree);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +245,6 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::nBuffers(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_MULTI_BUCKET
 
   i8 nBufferCount = 0;
 
@@ -256,10 +253,6 @@ i8 TablePtn::nBuffers(void) {
     nBufferCount += pBucket->nBuffers();
   }
   return nBufferCount;
-#else
-  i8 nBufferCount = m_pBucket->nBuffers();
-  return nBufferCount;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,16 +261,11 @@ i8 TablePtn::nBuffers(void) {
 void TablePtn::vDump(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_MULTI_BUCKET
-
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vDump();
   }
 
-#else
-  m_pBucket->vDump();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,7 +296,7 @@ IndexTreeVec *TablePtn::pIndexTreeVec(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 #ifdef WITH_MULTI_BUCKET
-  // OK, this one it tricky, which bucket ? Ray?
+  // OK, this one it tricky, which bucket ? RAY?
 
   IndexTreeVec *pIndexTreeVec = nullptr;
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
