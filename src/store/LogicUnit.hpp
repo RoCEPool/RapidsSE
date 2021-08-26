@@ -161,6 +161,7 @@ namespace STORE
     REG<ExprEval>       m_xpExprEval; // expr eval
     REG<File>           m_xpFile0;    // file0[]
     REG<File>           m_xpFile1;    // file1[]
+    REG<Grid>           m_xpGrid;
     REG<Word>           m_xpHandler;  // which handler is to be/was called
     REG<Index>          m_xpIndex;
     REG<IndexDef>       m_xpIndexDef;

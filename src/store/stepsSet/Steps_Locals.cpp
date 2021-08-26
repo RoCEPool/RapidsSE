@@ -226,6 +226,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Grid[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Grid[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Index[]"_Stz)) {
     pCurrentWord->vEncodeCall("Index[].set"_Stz);
     EXIT();

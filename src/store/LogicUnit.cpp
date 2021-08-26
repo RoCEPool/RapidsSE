@@ -97,6 +97,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       "m_xpExprEval"_Stz)
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile1"_Stz)
+,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
 ,        m_xpHandler(this,RF_NONE,         nullptr,                 "m_xpHandler"_Stz)
 ,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 "m_xpIndexDef"_Stz)
@@ -312,6 +313,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());
+  RASSERT(m_xpGrid.bIsNull());
 
   RASSERT(m_xpInfoSet.bIsNull());
   RASSERT(m_xpInfoSetRow.bIsNull());
@@ -322,11 +324,11 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
-  //RASSERT(m_xpMeta.bIsNull());
+  RASSERT(m_xpMeta.bIsNull());
 
   RASSERT(m_xpPathIdentifier.bIsNull());
-  //RASSERT(m_xpParcel.bIsNull());
-  //RASSERT(m_xpPlanOperand.bIsNull());
+  RASSERT(m_xpParcel.bIsNull());
+  RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
   RASSERT(m_xpIndex.bIsNull());
   RASSERT(m_xpIndexDef.bIsNull());
