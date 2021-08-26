@@ -187,6 +187,8 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
+  Api::vReapJobs();
+  
   EXIT();
 }
 
