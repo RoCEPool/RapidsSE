@@ -95,12 +95,12 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 #ifdef    WITH_BKTMAP_2N4P
-    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt = iHash % 16;
+    i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
+    i8 i_Bkt1 = iHash1 % 16;
 
-    i8 i_Ptn = AM::PTNMAP::tToPtn(i_Bkt);
+    i8 i_Ptn1 = AM::PTNMAP::tToPtn(i_Bkt1);
 
-    vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, i_Ptn);
+    vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1);
 #endif
 
 

@@ -13,6 +13,8 @@ namespace STORE
   class TablePtn : public Object
   {
   private:
+    Lock   m_okLock;  // lock on the partition
+    eCN    m_eKind;   // what kind of table partition
 
 
     Bucket* m_pBucket; // Temporary: Be used for now as the only 1 bucket per partition location
