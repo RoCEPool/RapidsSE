@@ -187,7 +187,6 @@ namespace STORE
     REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
     REG<Operand>        m_xpPlanOperand;
     REG<PtnStream>      m_xpPtnStream;
-    REG<Range>          m_xpRange;     // range
     REG<Row>            m_xpInfoSetRow;
     REG<RowBuffer>      m_xpRowBuffer;
     REG<RowOnce>        m_xpRowOnce;

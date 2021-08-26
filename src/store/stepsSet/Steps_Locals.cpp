@@ -331,11 +331,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Range[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Range[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("RecvdObject[]"_Stz)) {
     pCurrentWord->vEncodeCall("RecvdObject[].set"_Stz);
     EXIT();
