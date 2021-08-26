@@ -55,7 +55,7 @@
   find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
   op__loop
 
-  LogReqExit
+   
   _op_release_resources_
   _op_retires_
   

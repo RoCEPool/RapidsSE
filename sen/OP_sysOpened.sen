@@ -32,7 +32,7 @@
   op__loop
 
   // "*** sysOpened_req EXITS" .
-  LogReqExit
+   
   _op_release_resources_
   _op_retires_
   

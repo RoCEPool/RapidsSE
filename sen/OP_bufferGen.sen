@@ -47,7 +47,7 @@
   op__loop
 
   "*** BufferGen EXITS" .
-  LogReqExit
+   
   _op_release_resources_
   _op_retires_
   
