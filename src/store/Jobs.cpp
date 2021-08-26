@@ -5,7 +5,9 @@
 #include "BASE.h"
 
 #include "Jobs.hpp"
+#include "Job.hpp"
 
+#include "JobList.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,6 +49,20 @@ Jobs::~Jobs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create job lists                                                           */
+/*----------------------------------------------------------------------------*/
+void Jobs::vCreateJobLists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+
+  m_pDemonJobs         = new JobList(STORE::bJobCompare, JL_DEMON);
+  m_pLocalJobs         = new JobList(STORE::bJobCompare, JL_LOCAL);
+  m_pOriginatingJobs   = new JobList(STORE::bJobCompare, JL_ORIGINATING);
+  m_pParticipatingJobs = new JobList(STORE::bJobCompare, JL_PARTICIPATING);
+  m_pRetiredJobs       = new JobList(STORE::bJobCompare, JL_RETIRED);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get demon job list                                                         */
