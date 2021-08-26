@@ -165,13 +165,13 @@ void Step::vCrwBufferInsdelIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
+//  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  tPN tPtnNo = pOp->tPtnNo();
 //  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
 //
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 //  // will delete this buffer
 //  pCrwBuffer->vIsPermanent(false);
 //  m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
@@ -253,8 +253,8 @@ void Step::vCrwBufferUpsertIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpOperandA);
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpOperandA);
+//  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  tPN tPtnNo = pOp->tPtnNo();

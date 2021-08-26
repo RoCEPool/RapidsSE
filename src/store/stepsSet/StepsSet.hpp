@@ -2036,7 +2036,6 @@ public:
 
   // toRow
   void vToRowCompleted(void);
-  void vToRowConvert(void);
   void vToRowCreate(void);
   void vToRowDangling(void);
   void vToRowDelete(void);

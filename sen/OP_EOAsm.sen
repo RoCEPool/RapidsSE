@@ -211,11 +211,11 @@
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // Invoked from PULSEMARKER call again?
-  Operand[].isNull not if
+  Marker[].isNull not if
     //"PULSEMARKER created an EOSMARKER" .
     // there should be no Pipein EOSMARKER
     Pipein[].isNull assert
-    Operand[] to Pipein[]
+    Marker[]\clear to Pipein[]
   then
 
   // Invoked from PULSEMARKER call again?
