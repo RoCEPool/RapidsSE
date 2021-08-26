@@ -53,9 +53,7 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   // add second bucket here
   vAddBucket(pTable, tPtnNo);
   m_pBucket = nullptr; // for now to test that we have to deal with multiple bucket
-#else
-  // Temporary: Be used for now as the only 1 bucket per partition location
-  m_pBucket = pGetBucket(0);
+
 #endif
 
   _checkInitialised_(CN_TABLEPTN);
@@ -87,23 +85,9 @@ TablePtn::~TablePtn(void) noexcept(false) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropRead(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
-  /*for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket* pBucket = m_pBucketVec->pGet(i_Bucket);
-    ASSERT(pBucket->bIsLocked());
-    pBucket->vDropRead();
-  }*/
 
   ASSERT(m_okLock.bIsLocked());
   m_okLock.vDropRead();
-
-#else
-  //ASSERT(m_pBucket->bIsLocked());
-  //m_pBucket->vDropRead();
-
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropRead();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,22 +96,8 @@ void TablePtn::vDropRead(void) {
 void TablePtn::vDropWrite(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  /*for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket* pBucket = m_pBucketVec->pGet(i_Bucket);
-    ASSERT(pBucket->bIsLocked());
-    pBucket->vDropWrite();
-  } */
   ASSERT(m_okLock.bIsLocked());
   m_okLock.vDropWrite();
-#else
-  /*
-  ASSERT(m_pBucket->bIsLocked());
-  m_pBucket->vDropWrite();*/
-
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropWrite();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,17 +105,9 @@ void TablePtn::vDropWrite(void) {
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bGrabRead(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
-  /*for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket* pBucket = m_pBucketVec->pGet(i_Bucket);
-    ASSERT(pBucket->bIsLocked());
-    pBucket->bGrabRead();
-  }*/
+
   return m_okLock.bGrabRead();
-#else
-  //return m_pBucket->bGrabRead();
-  return m_okLock.bGrabRead();
-#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +116,6 @@ bool TablePtn::bGrabRead(void) {
 bool TablePtn::bGrabWrite(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  //return m_pBucket->bGrabWrite();
   return m_okLock.bGrabWrite();
 }
 
@@ -163,7 +124,6 @@ bool TablePtn::bGrabWrite(void) {
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //return m_pBucket->bIsLocked();
   return m_okLock.bIsLocked();
 }
 
@@ -172,7 +132,6 @@ bool TablePtn::bIsLocked(void) {
 /*----------------------------------------------------------------------------*/
 eCN TablePtn::eKind(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //return m_pBucket->eKind();
   return m_eKind;
 }
 
@@ -181,7 +140,6 @@ eCN TablePtn::eKind(void) {
 /*----------------------------------------------------------------------------*/
 tPN TablePtn::tPtnNo(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //return m_pBucket->tPtnNo();
   return m_tPtnNo;
 }
 
@@ -190,7 +148,6 @@ tPN TablePtn::tPtnNo(void) {
 /*----------------------------------------------------------------------------*/
 Table *TablePtn::pTable(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //return m_pBucket->pTable();
   return m_pTable;
 }
 
@@ -253,7 +210,7 @@ i8 TablePtn::nBuckets(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree *pIndexTree) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vAddIndex(pIndexTree);
@@ -281,7 +238,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   pBucket->vAppendBuffer(pDataBuffer);
 
 #else
-  m_pBucket->vAppendBuffer(pDataBuffer);
+  pGetBucket(0)->vAppendBuffer(pDataBuffer);
 #endif
 }
 
@@ -290,7 +247,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::nBuffers(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
 
   i8 nBufferCount = 0;
 
@@ -301,7 +258,6 @@ i8 TablePtn::nBuffers(void) {
   return nBufferCount;
 #else
   i8 nBufferCount = m_pBucket->nBuffers();
-
   return nBufferCount;
 #endif
 }
@@ -312,7 +268,7 @@ i8 TablePtn::nBuffers(void) {
 void TablePtn::vDump(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
@@ -329,7 +285,7 @@ void TablePtn::vDump(void) {
 /*----------------------------------------------------------------------------*/
 IndexTree *TablePtn::pIndexTree(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   IndexTree *pIndexTree = nullptr;
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
@@ -351,8 +307,8 @@ IndexTree *TablePtn::pIndexTree(i8 iIndexNo) {
 IndexTreeVec *TablePtn::pIndexTreeVec(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  // OK, this one it tricky, which bucket ?
+#ifdef WITH_MULTI_BUCKET
+  // OK, this one it tricky, which bucket ? Ray?
 
   IndexTreeVec *pIndexTreeVec = nullptr;
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -386,7 +342,7 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
   pBucket->vInsertIndexEntries(pCrwBuffer);
 
 #else
-  m_pBucket->vInsertIndexEntries(pCrwBuffer);
+  m_pBucketVec->pGet(0)->vInsertIndexEntries(pCrwBuffer);
 #endif
 }
 
@@ -396,8 +352,8 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
 bool TablePtn::bPopulateIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  // Should it be only one bucket has this indexNo ? RAY
+#ifdef WITH_MULTI_BUCKET
+  // Should it be only one bucket has this indexNo ? RAY ?
   bool b = false;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -419,8 +375,8 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo) {
 CrwBuffer *TablePtn::pRootCrwBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  // Which bucket ? RAY
+#ifdef WITH_MULTI_BUCKET
+  // Which bucket ? RAY ?
   CrwBuffer *pRootBuffer = nullptr;
 
 
@@ -442,8 +398,8 @@ CrwBuffer *TablePtn::pRootCrwBuffer(void) {
 /*----------------------------------------------------------------------------*/
 DataBuffer *TablePtn::pRootBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
-  // Which bucket ? RAY
+#ifdef WITH_MULTI_BUCKET
+  // Which bucket ? RAY ?
   DataBuffer *pRootBuffer = nullptr;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -465,7 +421,7 @@ DataBuffer *TablePtn::pRootBuffer(void) {
 RowBuffer *TablePtn::pRootRowBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY
   RowBuffer *pRootBuffer = nullptr;
 
@@ -487,7 +443,7 @@ RowBuffer *TablePtn::pRootRowBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vRemoveIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // Should it be only one bucket has this indexNo ? RAY
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -507,7 +463,7 @@ void TablePtn::vRemoveIndex(i8 iIndexNo) {
 void TablePtn::vTruncate(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // truncate all buckets
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -526,7 +482,7 @@ void TablePtn::vTruncate(void) {
 void TablePtn::vTruncateIndex(Index *pIndex) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // truncate all index
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -545,7 +501,7 @@ void TablePtn::vTruncateIndex(Index *pIndex) {
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bVerifyTable(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // verify all tables
   bool bVerify = false;
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -569,7 +525,7 @@ bool TablePtn::bVerifyTable(void) {
 void TablePtn::vVisualizeTable(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_MULTI_BUCKET
   // visualize all buckets
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
