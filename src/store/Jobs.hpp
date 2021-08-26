@@ -15,6 +15,7 @@ namespace STORE
     JobList*  m_pLocalJobs;
     JobList*  m_pOriginatingJobs;
     JobList*  m_pParticipatingJobs;
+    JobList*  m_pRetiredJobs;
 
     // must be last
     Footer m_xFooter;
@@ -26,6 +27,12 @@ namespace STORE
     Jobs(void);
    ~Jobs(void) noexcept(false);
   
+    JobList* pDemonJobs(void);
+    JobList* pLocalJobs(void);
+    JobList* pOriginatingJobs(void);
+    JobList* pParticipatingJobs(void);
+    JobList* pRetiredJobs(void);
+
     Footer* aFooter(void);
   };
   
