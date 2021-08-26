@@ -59,6 +59,7 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiReapJobs(void);
   void vApiSpawnDemon(void);
 
   // arrange
