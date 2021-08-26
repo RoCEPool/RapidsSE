@@ -54,29 +54,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for ZK_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
  0 0 locals| sPipeline sOperatorName |
 
-  PipeIn[] to Operand[]
-    nullptr to PipeIn[]
+  PipeIn[]\clear to PlanOperand[]
 
-  Operand[] sqlCompiler::transliterate to sPipeline
+  PlanOperand[] sqlCompiler::transliterate to sPipeline
 
   "transliterate" to sOperatorName
-  Operand[] sOperatorName sqlCompiler::hasExplain if
+  PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute special explain for this operator
-    Operand[] sPipeline sOperatorName sqlCompiler::doExplainTliterate
+    PlanOperand[] sPipeline sOperatorName sqlCompiler::doExplainTliterate
 
     // pipeout explain
     StreamSet[].isNull not assert
     StreamSet[].pipeout
 
     // Always exit at this point
-    Operand[].delete
+    PlanOperand[].delete
     Marker[].newLeaveMarker
     Marker[].pipeout
     true
@@ -85,8 +84,8 @@
 
   // We couldn't delete the plan in sqlCompiler::transliterate because
   // it might have needed to have been explained
-  Operand[] sqlCompiler::deletePlan
-  Operand[].delete
+  PlanOperand[] sqlCompiler::deletePlan
+  PlanOperand[].delete
 
   //sPipeline .
 
@@ -152,6 +151,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

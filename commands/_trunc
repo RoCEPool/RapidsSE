@@ -1,0 +1,16 @@
+/*============================================================================*/
+/* _trunc -- truncate TPC-H tables                                            */
+/*============================================================================*/
+
+/time truncate region   ;
+/time truncate nation   ;
+/time truncate supplier ;
+/time truncate customer ;
+/time truncate orders   ;
+/time truncate lineitem ;
+/time truncate partsupp ;
+/time truncate part     ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -226,6 +226,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Grid[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Grid[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Index[]"_Stz)) {
     pCurrentWord->vEncodeCall("Index[].set"_Stz);
     EXIT();
@@ -281,6 +286,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Meta[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Meta[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Node[]"_Stz)) {
     pCurrentWord->vEncodeCall("Node[].set"_Stz);
     EXIT();
@@ -306,13 +316,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("PtnStream[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
+  else if (szTerm->bSame("Parcel[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Parcel[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Range[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Range[].set"_Stz);
+  else if (szTerm->bSame("PlanOperand[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PtnStream[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
     EXIT();
     return;
   }

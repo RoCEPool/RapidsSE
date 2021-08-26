@@ -1240,9 +1240,9 @@ i8 AM::SYSTEM::nActiveJobs(void)
 {
   _static_
     
-  i8 nActiveJobs =   gpAttachMap->m_pJobs->m_pLocalJobs->nJobs()
-                   + gpAttachMap->m_pJobs->m_pOriginatingJobs->nJobs()
-                   + gpAttachMap->m_pJobs->m_pParticipatingJobs->nJobs()
+  i8 nActiveJobs =   gpAttachMap->m_pJobs->pLocalJobs()->nJobs()
+                   + gpAttachMap->m_pJobs->pOriginatingJobs()->nJobs()
+                   + gpAttachMap->m_pJobs->pParticipatingJobs()->nJobs()
                    ;
   
   return nActiveJobs;
@@ -1743,7 +1743,7 @@ BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
 JobList* AM::pDemonJobs(void) {
-  return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
+  return gpAttachMap->m_pJobs->pDemonJobs();                                }
 MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
@@ -1752,16 +1752,16 @@ Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : null
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
-  return gpAttachMap->m_pJobs->m_pLocalJobs;                                }
+  return gpAttachMap->m_pJobs->pLocalJobs();                                }
 Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
 bool AM::bLogging(void)       { return false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
 JobList* AM::pOriginatingJobs(void) {
-  return gpAttachMap->m_pJobs->m_pOriginatingJobs; }
+  return gpAttachMap->m_pJobs->pOriginatingJobs(); }
 JobList* AM::pParticipatingJobs(void) {
-  return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
+  return gpAttachMap->m_pJobs->pParticipatingJobs(); }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }

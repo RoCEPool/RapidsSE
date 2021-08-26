@@ -11,8 +11,8 @@
 
  "bucketSend0_bucketGet handler" .
 
-  Operand[].pipein  // pop the pBucket and put in the Operand register
-  //Operand[] MetaGet.getTableName
+  Pipein[]\clear to Bucket[]  // pop the pBucket and put in the Bucket register
+  //Bucket[] MetaGet.getTableName
   // print table name from the stack
   //.
 
@@ -20,11 +20,21 @@
   // then call C++ getBucketCrw to build the rows and push the rows to the stack
 
   // toHshCrw
-  Operand[] BucketSend.getBucketCrw Op::pipeout
+  Bucket[] BucketSend.getBucketCrw Op::pipeout
+
+  /*
+  ** Myvan :
+  ** We can change :
+  ** Bucket[] BucketSend.getBucketCrw Op::pipeout
+  ** to
+  ** Bucket[].getBucketCrw CrwBuffer[]
+  ** CrwBuffer[].pipeout
+  */
+
   //Operand[] BucketSend.getBucketPtnStream Op::pipeout
 
   // send EOSMARKER
-  nullptr to Operand[]
+  nullptr to Bucket[]
 
   true
 
@@ -46,6 +56,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

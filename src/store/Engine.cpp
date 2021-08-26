@@ -1494,14 +1494,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
 
-  gpAttachMap->m_pJobs->m_pDemonJobs =
-      new JobList(STORE::bJobCompare, JL_DEMON);
-  gpAttachMap->m_pJobs->m_pLocalJobs =
-      new JobList(STORE::bJobCompare, JL_LOCAL);
-  gpAttachMap->m_pJobs->m_pOriginatingJobs =
-      new JobList(STORE::bJobCompare, JL_ORIGINATING);
-  gpAttachMap->m_pJobs->m_pParticipatingJobs =
-      new JobList(STORE::bJobCompare, JL_PARTICIPATING);
+  gpAttachMap->m_pJobs->vCreateJobLists();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes

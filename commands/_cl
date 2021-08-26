@@ -2,7 +2,6 @@
 /* _cl -- cache line test                                                     */
 /*============================================================================*/
 
-bc;
 
 create table EachType (
   bcd decimal,

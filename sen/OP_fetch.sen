@@ -114,8 +114,6 @@
 /*----------------------------------------------------------------------------*/
 : fetch_Cleaning \handler
 
-  nullptr to Operand[]  // ???? ALKA
-
   ZK_M_CLEANING_handler
 ;
 
@@ -283,6 +281,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

@@ -2903,6 +2903,8 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
+    Api::vReapJobs();
+    
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
     
@@ -5213,6 +5215,7 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
   i8 nTokens = pTknVec->nTokens();
   
   TagSet* pPmtTagSet = pPrompt->pPmtTagSet();
+  TagSet* pUsrTagSet = pPrompt->pUsrTagSet();
 
   Token* pTkn;
   i8 i_Tkn = 0;
@@ -5231,21 +5234,31 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bDelete = false;
-  
+  bool bDefault = false;
+
   if (pTkn->bSame("delete"_Stz)) {
     bDelete = true;
     TKNpf();
   }
-  
+  if (pTkn->bSame("default"_Stz)) {
+    bDefault = true;
+    TKNpf();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bPmtTagSet = false;
-  
+
   if (pTkn->bSame("prompt"_Stz)) {
     bPmtTagSet = true;
     TKNpf();
   }
-  
+  else
+  if (pTkn->bSame("user"_Stz)) {
+    bPmtTagSet = false;
+    TKNpf();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTkn->bSame("<"_Stz)) {
@@ -5262,10 +5275,13 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDelete) {
+    
     if (bPmtTagSet)
       pPmtTagSet->vDelete(sTagNm);
+    else
+      pUsrTagSet->vDelete(sTagNm);
 
-    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+    //vTrace("\nsuccess: 0 rows affected\n"_Stz);
     return true;
   }
     
@@ -5276,9 +5292,30 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
 
   sTagValue = pTkn->szChars();
 
-  if (bPmtTagSet)
-    pPmtTagSet->vReplace(sTagNm,sTagValue);
-  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  if (bDefault) {
+
+    if (bPmtTagSet) {
+      if (! pPmtTagSet->bHasName(sTagNm))
+        pPmtTagSet->vReplace(sTagNm,sTagValue);
+    }
+    else {
+      if (! pUsrTagSet->bHasName(sTagNm))
+        pUsrTagSet->vReplace(sTagNm,sTagValue);
+    }
+
+  }
+  else {
+
+    if (bPmtTagSet) {
+      pPmtTagSet->vReplace(sTagNm,sTagValue);
+    }
+    else {
+      pUsrTagSet->vReplace(sTagNm,sTagValue);
+    }
+
+  }
+  
+  //vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }
@@ -5309,7 +5346,12 @@ bool PROMPT::bPrompt_tags(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
+  TagSet* pPmtTagSet = pPrompt->pPmtTagSet();
+  TagSet* pUsrTagSet = pPrompt->pUsrTagSet();
 
+  pPmtTagSet->vDumpSet(true);
+  pUsrTagSet->vDumpSet(true);
+  
   return true;
 }
 

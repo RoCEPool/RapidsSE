@@ -134,7 +134,6 @@
 : delete_Cleaning \handler
 
   //"ZK_M_CLEANING_handler" .verbose
-  nullptr to Operand[]
 
   ZK_M_CLEANING_handler
 ;
@@ -283,6 +282,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

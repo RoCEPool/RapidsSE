@@ -75,7 +75,8 @@ Schedule::Schedule(void)
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
-  
+  m_pRetiredSet    = new TaskList(QK_RETIRED_SET);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   _checkInitialised_(CN_SCHEDULE);
@@ -269,6 +270,29 @@ void Schedule::vAddExecutingSet(Task* pTask)
   m_pExecutingSet->vAddTask(pTask);
   
   m_pExecutingSet->vDropLock();
+  
+  // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to retired set                                                    */
+/*----------------------------------------------------------------------------*/
+void Schedule::vAddRetiredSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+  
+  RASSERT(pTask->bIsLocked());
+
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
+  pTask->vQueue(QK_RETIRED_SET);
+  
+  m_pRetiredSet->vGrabLock();
+  
+  m_pRetiredSet->vAddTask(pTask);
+    
+  m_pRetiredSet->vDropLock();
   
   // **do not touch task**
 }
@@ -520,7 +544,27 @@ void Schedule::vRemoveExecutingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from waiting queue                                             */
+/* remove task from retired set                                               */
+/*----------------------------------------------------------------------------*/
+void Schedule::vRemoveRetiredSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+  
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+  
+  RASSERT(TS_RETIRED == pTask->eState());
+  RASSERT(QK_RETIRED_SET == pTask->eQueue());
+  
+  m_pRetiredSet->vGrabLock();
+  m_pRetiredSet->vRemoveTask(pTask);
+  m_pRetiredSet->vDropLock();
+  
+  pTask->vQueue(QK_NONE);
+  pTask->vState(TS_REAPABLE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from waiting set                                               */
 /*----------------------------------------------------------------------------*/
 void Schedule::vRemoveWaitingSet(Task* pTask)
 {

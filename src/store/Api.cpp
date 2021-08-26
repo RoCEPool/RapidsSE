@@ -441,8 +441,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     //pJob->pTagSet()->vPrint();
   }
   
-  if ( pPrepareJob->bHasTag(C_TAG_TAGS))
-    pPrepareJobTags->vDumpSet();
+  if ( pPrepareJob->bHasTag(C_SHOW_CMD_TAGS))
+    pPrepareJobTags->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -537,6 +537,16 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* reap all ended jobs                                                        */
+/*----------------------------------------------------------------------------*/
+void Api::vReapJobs(void)
+{
+  _static_
+  
+  // to be coded...
+  
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1109,18 +1119,7 @@ void Api::vCreateTaskForJob(Job* pJob)
 
   pTask = AM::TASK::pNew(pJob);
   
-
-  Job* pThisJob = AM::pThisTLSJob();
-  
-  if (pJob->bHasTag(C_TAG_TAGS) ||
-      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
-    pJob->pJobTags()->vDumpSet();
-
-  if (! pJob->bHasTag(C_TAG_TAGS))
-    BASE::vDebugPoint();
-
-  //AM::LOGICUNIT::vNew(pTask,pJob);
-  
+    
   if (! pJob->pJobLogicUnit()) {
     pJob->vNewJobLogicUnit();
   }

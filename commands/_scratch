@@ -1,4 +1,3 @@
-bc;
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,

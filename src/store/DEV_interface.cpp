@@ -2065,7 +2065,7 @@ void vDev_REG_EOSMARKER_NEW(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpOperandA = new Marker(OM_EOSMARKER);
+  pLogicUnit->m_xpMarker = new Marker(OM_EOSMARKER);
 }
 
 /*----------------------------------------------------------------------------*/

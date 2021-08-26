@@ -33,6 +33,7 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::addProcedure"_Stz,   &Step::vApiAddProcedure);
   vAddStep("api::executeCommand"_Stz, &Step::vApiExecuteCommand);
+  vAddStep("api::reapJobs"_Stz,       &Step::vApiReapJobs);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
 }
 
@@ -175,6 +176,18 @@ void Step::vApiExecuteCommand(void)
   //delete pReqTknVec;
   delete pWithTagStrTknVec;
   
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapJobs -- reap retired jobs                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapJobs(void)
+{
+  ENTRY();
+  
+  Api::vReapJobs();
   
   EXIT();
 }

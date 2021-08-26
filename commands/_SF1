@@ -2,37 +2,55 @@
 /* _SF1 - create and load TPC-H tables for SF1                                */
 /*============================================================================*/
 
-               // -ROWS-           @SF1  @SF10  @SF100  @SF1K  @SF10K  @SF100K
-_regionLoad    // 5 rows              5      5       5      5       5        5
-
-_nationLoad    // 25 rows            25     25      25     25      25       25
-
-_supplierLoad  // SF * 10K rows     10K   100K      1M    10M    100M       1G
-
-_partLoad      // SF * 200K rows   200K     2M     20M   200M      2G      20G
-
-_partsuppLoad  // SF * 800K rows   800K     8M     80M   800M      8G      80G
-
-_customerLoad  // SF * 150K rows   150K   1.5M     15M   150M    1.5G      15G
-
-_ordersLoad    // SF * 1.5M rows   1.5M    15M    150M   1.5G     15G     150G
-  
-_lineitemLoad  // SF * 6M rows       6M    60M    600M     6G     60G     600G
-               //                  ----   ----    ----   ----    ----     ----
-               //                  8.6M    86M    860M   8.6G     86G     860G
-               // SE inuseSpace     2GB
+_regionLoad
+_nationLoad
+_supplierLoad
+_customerLoad
+_ordersLoad
+_lineitemLoad
+_partsuppLoad
+_partLoad
 
 /*
 anTbl region;
 anTbl nation;
 anTbl supplier;
-anTbl part;
-anTbl partsupp;
 anTbl customer;
+anTbl orders;
 anTbl lineitem;
+anTbl partsupp;
+anTbl part;
 */
 
 // - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+
+region  : r_regionkey
+
+nation  : n_regionkey n_nationkey
+
+supplier:             s_nationkey
+
+customer:             c_nationkey c_custkey
+
+orders  :                         c_custkey c_orderkey
+
+lineitem:                                   l_orderkey l_partkey  l_suppkey
+
+partsupp:                                              ps_partkey ps_suppkey
+
+part    :                                              p_partkey
+
+*/
+
+
+
+
+
+
+
+
 
 /*
 SELECT r_regionkey, r_name

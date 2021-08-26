@@ -32,7 +32,7 @@ void Step::vAddSteps_CrwToRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].completed -- full row buffer                                       */
+/* crwToRow[].completed -- full row buffer                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwToRowCompleted(void)
 {
@@ -48,7 +48,7 @@ void Step::vCrwToRowCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].convert -- convert csv buffer                                      */
+/* crwToRow[].convert -- convert csv buffer                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwToRowConvert(void)
 {
@@ -65,7 +65,7 @@ void Step::vCrwToRowConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].create -- create toRow                                             */
+/* crwToRow[].create -- create toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwToRowCreate(void)
 {
@@ -81,7 +81,7 @@ void Step::vCrwToRowCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].dangling -- fetch row buffer                                       */
+/* crwToRow[].dangling -- fetch row buffer                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwToRowDangling(void)
 {
@@ -100,7 +100,7 @@ void Step::vCrwToRowDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].delete -- delete toRow                                             */
+/* crwToRow[].delete -- delete toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwToRowDelete(void)
 {

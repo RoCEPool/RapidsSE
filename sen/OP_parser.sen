@@ -20,14 +20,12 @@
   Pipein[].pipeout
 
   // create the command error info set
-  op__cmdErrInfoSet
+  op__createCmdErrInfoSet
 
-  <sqlStatement> sqlCompiler::parser to Operand[]
+  <sqlStatement> sqlCompiler::parser to PlanOperand[]
 
-  Operand[].isNull if
-    InfoSet[].pipeOut
-    ErrorMarker[].newErrorMarker
-    ErrorMarker[].pipeOut
+  PlanOperand[].isNull if
+    op__cmdErrOut
     true
     exit
   then
@@ -36,10 +34,10 @@
   InfoSet[].delete
 
   // does the sql have an explain ?
-  Operand[] "parser" sqlCompiler::hasExplain if
+  PlanOperand[] "parser" sqlCompiler::hasExplain if
 
     // Get the tabledef for the explain format
-    Operand[] sqlCompiler::explainFormat to stringA[]
+    PlanOperand[] sqlCompiler::explainFormat to stringA[]
 
     // find the explain tabledef
     stringA[] op__tableDef_streamSet assert
@@ -51,7 +49,7 @@
     streamSetTable[] StreamSet[].new
 
     // execute explain for this operator
-    Operand[] "parser" sqlCompiler::doExplain
+    PlanOperand[] "parser" sqlCompiler::doExplain
 
     // pipeout streamDef of explain
     StreamDefLft[].pipeout
@@ -60,7 +58,7 @@
     StreamSet[].pipeout
 
     LogicUnit[].compilerToExit if
-      Operand[].delete
+      PlanOperand[].delete
       Marker[].newLeaveMarker
       Marker[].pipeout
       true
@@ -69,7 +67,7 @@
 
   then
 
-  Operand[].pipeOut
+  PlanOperand[].pipeOut
   Marker[].newEosMarker
   Marker[].pipeOut
 
@@ -94,6 +92,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

@@ -145,6 +145,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
   Step::vAddSteps_PathIdentifier();
+  Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Plist();
   Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
@@ -154,7 +155,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
 
-  Step::vAddSteps_Range();
   Step::vAddSteps_RecvdObject();
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();

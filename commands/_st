@@ -2,7 +2,6 @@
 /* _st -- schema stress test                                                  */
 /*============================================================================*/
 
-bc;
 
 //docol schemaTest;
 docol schemaTestAll;

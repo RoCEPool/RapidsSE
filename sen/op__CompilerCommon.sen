@@ -34,15 +34,15 @@
 
   params| sOperatorName |
 
-  Operand[].isNull if
+  PlanOperand[].isNull if
+
     // We got an error, but were we going to do an explain?
     StreamSet[].isNull not if
       StreamSet[].delete
     then
 
-    InfoSet[].pipeOut
-    ErrorMarker[].newErrorMarker
-    ErrorMarker[].pipeOut
+    op__cmdErrOut
+
     true
     exit
   then
@@ -51,16 +51,16 @@
   InfoSet[].delete
 
   // does the sql have an explain ?
-  Operand[] sOperatorName sqlCompiler::hasExplain if
+  PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute explain for this operator
-    Operand[] sOperatorName sqlCompiler::doExplain
+    PlanOperand[] sOperatorName sqlCompiler::doExplain
 
     // pipeout explain
     StreamSet[].pipeout
 
     LogicUnit[].compilerToExit if
-      Operand[].delete
+      PlanOperand[].delete
       Marker[].newLeaveMarker
       Marker[].pipeout
       true
@@ -69,7 +69,7 @@
 
   then
 
-  Operand[].pipeOut
+  PlanOperand[].pipeOut
 
   true
  ;

@@ -18,14 +18,14 @@
 /*----------------------------------------------------------------------------*/
 : corrBySquash_PlanOperand \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__cmdErrInfoSet
+  op__createCmdErrInfoSet
 
-  Operand[] nullptr to Operand[] sqlCompiler::corrBySquash to Operand[]
+  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::corrBySquash to PlanOperand[]
 
-   "corrBySquash" compiler_planOperand
+  "corrBySquash" compiler_planOperand
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +51,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

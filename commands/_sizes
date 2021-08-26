@@ -1,0 +1,20 @@
+/*============================================================================*/
+/* _sizes -- sizes of TPC-H tables                                            */
+/*============================================================================*/
+
+/time count region;
+/time count nation;
+/time count supplier;
+/time count customer;
+/time count orders;
+/time count lineitem;
+/time count partsupp;
+/time count part;
+
+tableSizes;
+
+space;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

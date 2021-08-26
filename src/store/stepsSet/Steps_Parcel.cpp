@@ -24,16 +24,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Parcel(void)
 {
-  vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
-  vAddStep("parcel.label"_Stz,      &Step::vParcelLabel);
-  vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
-  vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
+  vAddStep("parcel::delete"_Stz,          &Step::vParcelDeleteOld);
+  vAddStep("parcel.label"_Stz,            &Step::vParcelLabel);
+  vAddStep("parcel.pipeOut"_Stz,          &Step::vParcelPipeOut);
+  vAddStep("parcel.sendOut"_Stz,          &Step::vParcelSendOut);
+
+  vAddStep("Parcel[]"_Stz,                &Step::vParcelGet);
+  vAddStep("Parcel[]\\clear"_Stz,         &Step::vParcelGetAndClear);
+  vAddStep("Parcel[].delete"_Stz,         &Step::vParcelDelete);
+  vAddStep("Parcel[].isNotNull"_Stz,      &Step::vParcelIsNotNull);
+  vAddStep("Parcel[].isNull"_Stz,         &Step::vParcelIsNull);
+  vAddStep("Parcel[].set"_Stz,            &Step::vParcelSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* parcel::delete -- delete parcel                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vParcelDelete(void)
+void Step::vParcelDeleteOld(void)
 {
   ENTRY();
 
@@ -138,6 +145,85 @@ void Step::vParcelSendOut(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Parcel[].delete -- parcel delete                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelDelete(void)
+{
+  ENTRY();
+
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpParcel);
+
+  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].get -- fetch parcel                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].getAndClear -- fetch parcel and set to nullptr                    */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+
+  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].isNotNull -- is parcel not null ?                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].isNull -- is parcel null ?                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].set -- set parcel                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelSet(void)
+{
+  ENTRY();
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  ASSERT(! pParcel || m_p_TaskLogicUnit->m_xpParcel.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpParcel = _pParcel(pParcel);
+
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

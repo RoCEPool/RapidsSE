@@ -37,6 +37,19 @@ PlanOperand::~PlanOperand(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the plan operand                                                    */
+/*----------------------------------------------------------------------------*/
+void PlanOperand::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  PlanOperand* pPlanOperand = _pPlanOperand(pObject);
+
+  // delete the planOperand
+  delete pPlanOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the object                                                             */
 /*----------------------------------------------------------------------------*/
 Parser::PlanNode* PlanOperand::pPlanNode(void)

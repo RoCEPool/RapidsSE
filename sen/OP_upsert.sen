@@ -5,20 +5,19 @@
 " OP_upsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : upsertOp_CrwBuffer \handler
 
   //"Operand:- ZK_D_CRWBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to CrwBuffer[]
 
   tx[].begin
   TablePtn[].grabWrite_yieldLoop
-  Operand[].upsertIntoTable
+  CrwBuffer[].upsertIntoTable
   TablePtn[].dropWrite
   tx[].commit
-  Operand[].delete
+  CrwBuffer[].delete
 
   true
 ;
@@ -68,6 +67,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

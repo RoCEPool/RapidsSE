@@ -2,7 +2,6 @@
 /* _SF10 - create and oldLoad TPC-H Lineitem table for SF10                      */
 /*============================================================================*/
 
-bc;
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B

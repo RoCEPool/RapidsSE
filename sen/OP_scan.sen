@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : Scan_CancellingMarker \handler
 
-  Pipein[]\clear to Operand[]
+  Pipein[]\clear to Marker[]
 
   "Scan_CancellingMarker DRAINING PIPEIN" .
   PipeIn[].drain
 
-  Operand[].pipeOut
+  Marker[].pipeOut
   true
 ;
 
@@ -99,13 +99,13 @@
   debug::flag@ if "(Revised) scan_NextBuffer handler" . then
 
   // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to Operand[]
+  ptnStream[] ptnStream.read to CrwBuffer[]
  
-  Operand[].isNotNull if
+  CrwBuffer[].isNotNull if
     // read a next crw buffer
 
     // pipe out the read crw buffer
-    Operand[].pipeOut
+    CrwBuffer[].pipeOut
 
     // requeue ZK_M_NEXTBUFFER
     Pipein[].pipeBackin
@@ -197,6 +197,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

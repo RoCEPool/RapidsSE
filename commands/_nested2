@@ -2,7 +2,6 @@
 /* _nested2 - nested pipeline test                                            */
 /*============================================================================*/
 
-bc;
 
 create table nation (
    N_NATIONKEY       INTEGER NOT NULL,

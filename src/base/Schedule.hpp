@@ -36,7 +36,10 @@ namespace BASE
     TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
-  
+    TaskList*  m_pRetiredSet;      // set of retired tasks waiting to be deleted
+                                   //   (this may go, adding initially for
+                                   //    consistency)
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
     // must be last
@@ -58,8 +61,9 @@ namespace BASE
   private:
     void vAddBidingSet(Task* pTask);
     void vAddExecutingSet(Task* pTask);
-    void vAddWaitingSet(Task* pTask);
+    void vAddRetiredSet(Task* pTask);
     void vAddSleepingQueue(Task* pTask);
+    void vAddWaitingSet(Task* pTask);
 
     void vAppendReadyQueue(Task* pTask);
     void vAppendReadyQueueLP(Task* pTask);
@@ -70,6 +74,7 @@ namespace BASE
   
     void vRemoveBidingSet(Task* pTask);
     void vRemoveExecutingSet(Task* pTask);
+    void vRemoveRetiredSet(Task* pTask);
     void vRemoveWaitingSet(Task* pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - -

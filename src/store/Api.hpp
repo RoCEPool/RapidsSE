@@ -37,7 +37,9 @@ namespace STORE
   static void vWaitJob(Session* pSession);
 
   static void vPushOperand(Session* pSession, Operand* pOperand);
-  
+ 
+  static void vReapJobs(void);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);

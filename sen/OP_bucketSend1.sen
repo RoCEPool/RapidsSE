@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : bucketSend_CancellingMarker \handler
 
-  Pipein[]\clear to Operand[]
+  Pipein[]\clear to Marker[]
 
   "Bucket_CancellingMarker DRAINING PIPEIN" .
   PipeIn[].drain
 
-  Operand[].pipeOut
+  Marker[].pipeOut
   true
 ;
 
@@ -39,7 +39,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_NEXTBUFFER...                                         */
+/* handler for ZK_M_NEXTBUFFER...                                             */
 /*----------------------------------------------------------------------------*/
 // ": bucketSend_NextBufferMarker" .
 
@@ -48,13 +48,13 @@
   debug::flag@ if "(Revised) scan_NextBufferMarker handler" . then
 
   // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to Operand[]
+  ptnStream[] ptnStream.read to DataBuffer[]
 
-  Operand[].isNotNull if
+  DataBuffer[].isNotNull if
     // read a next crw buffer
 
     // pipe out the read crw buffer
-    Operand[].pipeOut
+    DataBuffer[].pipeOut
 
     // requeue ZK_M_NEXTBUFFER
     Pipein[].pipeBackin
@@ -205,6 +205,7 @@
   op__loop
 
   LogReqExit
+  _op_retires_
   job::deleteThis
   DONE_REQ_OP
 ;

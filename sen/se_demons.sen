@@ -118,6 +118,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* reaper demon pipeline command                                              */
+/*----------------------------------------------------------------------------*/
+: reaperDemonPipeline
+
+  "
+    pipelineLocal reaperDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | reap | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* recurring demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
 : recurDemonPipeline

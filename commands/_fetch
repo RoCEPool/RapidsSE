@@ -3,7 +3,6 @@
 /*----------------------------------------------------------------------------*/
 
 // strat cluster
-bc;;
 
 // begin tracking memory
 trackMemory;

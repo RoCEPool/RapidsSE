@@ -31,6 +31,8 @@ namespace STORE
     Bucket(Table* pTable, tPN tPtnNo);
     ~Bucket(void) noexcept(false);
 
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);

@@ -59,6 +59,7 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiReapJobs(void);
   void vApiSpawnDemon(void);
 
   // arrange
@@ -187,6 +188,7 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferIsReport(void);
@@ -219,6 +221,7 @@ public:
   void vCsvBufferNew(void);
   void vCsvBufferReport(void);
   void vCsvBufferSet(void);
+  void vCrwBufferUpsertIntoTable(void);
   void vCsvBufferWriteToFile0(void);
 
   // cursor
@@ -458,6 +461,13 @@ public:
   void vGridThisNodeFetch(void);
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
+
+  void vGridDelete(void);
+  void vGridGet(void);
+  void vGridGetAndClear(void);
+  void vGridIsNotNull(void);
+  void vGridIsNull(void);
+  void vGridSet(void);
 
   // group by
   void vGroupByApplyBuffer(void);
@@ -702,6 +712,7 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
+  void vJobRetire(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
@@ -1030,6 +1041,12 @@ public:
   void vMemoryWordDump(void);
 
   // metaGet
+  void vMetaDelete(void);
+  void vMetaGet(void);
+  void vMetaGetAndClear(void);
+  void vMetaIsNotNull(void);
+  void vMetaIsNull(void);
+  void vMetaSet(void);
   void vMetaGetGetMetadata(void);
   void vMetaGetGetTableName(void);
 
@@ -1123,14 +1140,10 @@ public:
   void vOperandIsNotNull(void);
   void vOperandIsNull(void);
   void vOperandIsReport(void);
-  void vOperandInsdelIntoTable(void);
-  void vOperandInvokePython(void);
-  void vOperandInvokePythonShell(void);
   void vOperandMorphClass(void);
   void vOperandPipeIn(void);
   void vOperandReport(void);
   void vOperandSet(void);
-  void vOperandUpsertIntoTable(void);
   void vOperandWriteToFile0(void);
 
   // OperandOoO
@@ -1167,6 +1180,14 @@ public:
   void vPathIdentifierShowPaths(void);
   void vPathIdentifierTableFetch(void);
   void vPathIdentifierTableStore(void);
+
+  // PlanOperand
+  void vPlanOperandDelete(void);
+  void vPlanOperandGet(void);
+  void vPlanOperandGetAndClear(void);
+  void vPlanOperandIsNotNull(void);
+  void vPlanOperandIsNull(void);
+  void vPlanOperandSet(void);
 
   // persistence
   void vPersistenceCheckpoint(void);
@@ -1368,10 +1389,17 @@ public:
   void vRegPathRestore(void);
 
   // Parcel
-  void vParcelDelete(void);
+  void vParcelDeleteOld(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
+
+  void vParcelDelete(void);
+  void vParcelGet(void);
+  void vParcelGetAndClear(void);
+  void vParcelIsNotNull(void);
+  void vParcelIsNull(void);
+  void vParcelSet(void);
 
   // reg Pipein
   void vPipeinBide(void);
@@ -1404,6 +1432,7 @@ public:
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
+  void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
@@ -1627,6 +1656,7 @@ public:
   void vStrRemoveSuffix(void);
   void vStrRemoveTailInt(void);
   void vStrReplace(void);
+  void vStrReplaceTags(void);
   void vStrRight(void);
   void vStrSame(void);
   void vStrSub(void);
@@ -2008,7 +2038,6 @@ public:
 
   // toRow
   void vToRowCompleted(void);
-  void vToRowConvert(void);
   void vToRowCreate(void);
   void vToRowDangling(void);
   void vToRowDelete(void);

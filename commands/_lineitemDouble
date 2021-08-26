@@ -2,7 +2,6 @@
 /* _lineitem2 - create and load TPC-H LineItem2 table                         */
 /*============================================================================*/
 
-bc;
 
 create table LineItem2
  (

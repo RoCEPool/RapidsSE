@@ -14,7 +14,6 @@
 ../../tests/tests1N4P/Insert/testList
 ../../tests/tests1N4P/Load/testList
 ../../tests/tests1N4P/LocalFunctions/testList
-../../tests/tests1N4P/Misc/testList
 ../../tests/tests1N4P/Operators/testList
 ../../tests/tests1N4P/PartitionKey/testList
 ../../tests/tests1N4P/Queries/testList

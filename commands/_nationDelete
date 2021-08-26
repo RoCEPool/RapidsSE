@@ -2,7 +2,6 @@
 /* _nationDelete - delete rows from TPC-H Nation table                        */
 /*============================================================================*/
 
-bc;
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,

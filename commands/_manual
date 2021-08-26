@@ -28,7 +28,6 @@ print "pwf";
 pwf;
 
 print "starting the cluster...";
-bc;
 
 
 print "cf tables";

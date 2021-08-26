@@ -47,6 +47,13 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
+
+  vAddStep("Grid[]"_Stz,                &Step::vGridGet);
+  vAddStep("Grid[]\\clear"_Stz,         &Step::vGridGetAndClear);
+  vAddStep("Grid[].delete"_Stz,         &Step::vGridDelete);
+  vAddStep("Grid[].isNotNull"_Stz,      &Step::vGridIsNotNull);
+  vAddStep("Grid[].isNull"_Stz,         &Step::vGridIsNull);
+  vAddStep("Grid[].set"_Stz,            &Step::vGridSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +285,7 @@ void Step::vGridTablePtnToPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::thisNode@ -- get this node from the grid                              */
+/* grid::thisNode@ -- get this node from the grid                             */
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeFetch(void)
 {
@@ -292,7 +299,7 @@ void Step::vGridThisNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::thisNodeName@ -- get this node name from the grid                     */
+/* grid::thisNodeName@ -- get this node name from the grid                    */
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeNameFetch(void)
 {
@@ -322,6 +329,86 @@ void Step::vGridToNode(void)
   
   m_pDataStack->vPushInt(i_Node);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].delete -- operand delete                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vGridDelete(void)
+{
+  ENTRY();
+
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpGrid);
+
+  m_p_TaskLogicUnit->m_xpGrid = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].get -- fetch operand                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vGridGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpGrid);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].getAndClear -- fetch operand and set to nullptr                     */
+/*----------------------------------------------------------------------------*/
+void Step::vGridGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpGrid);
+
+  m_p_TaskLogicUnit->m_xpGrid = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].isNotNull -- is narker not null ?                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vGridIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpGrid.bIsNull() ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].isNull -- is operand null ?                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vGridIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpGrid.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Grid[].set -- set operand                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vGridSet(void)
+{
+  ENTRY();
+
+  Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+
+  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpGrid.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpGrid = pGrid;
+
   EXIT();
 }
 
