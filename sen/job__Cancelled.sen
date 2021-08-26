@@ -93,7 +93,6 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
-    job::deleteThis
     DONE_RCV
     exit                                                         // *EARLY EXIT*
   then
@@ -116,7 +115,6 @@
   JobRef[].return
 
   // delete this completed __cancelled job
-  job::deleteThis
   DONE_RCV
 ;
 

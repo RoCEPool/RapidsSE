@@ -125,7 +125,6 @@
 
   LogReqExit
   _op_retires_
-  job::deleteThis
   DONE_REQ_OP
 ;
 
