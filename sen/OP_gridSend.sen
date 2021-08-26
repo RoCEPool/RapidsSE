@@ -11,7 +11,7 @@
 
  ">>>>>>>>> gridSend_gridObject handler" .
 
-  Operand[].pipein  // pop the pgridObject and put in the Operand register
+  Pipein[]\clear to grid[]  // pop the pgridObject and put in the grid register
 
 
   // pass the table name to op__table to get the table[] register
@@ -19,10 +19,10 @@
   // op::pipeout pipe the pParcel out
 
 
-  Operand[] grid::getParts Op::pipeout
+  grid[] grid::getParts Op::pipeout
 
   // send EOSMARKER
-  nullptr to Operand[]
+  nullptr to grid[]
 
 
   true
