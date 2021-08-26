@@ -41,7 +41,8 @@
     op__loop
 
     LogReqExit
-    DONE_REQ_OP
+    
+  HAZARD
   ;
 "
 ;
