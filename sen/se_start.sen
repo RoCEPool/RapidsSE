@@ -67,6 +67,11 @@
     "Error Code %v" .printf
   then
 
+  // spawn reaper demon
+  "" false reaperDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   //spawn recurring demon
   "" false recurDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
