@@ -461,6 +461,13 @@ public:
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
 
+  void vGridDelete(void);
+  void vGridGet(void);
+  void vGridGetAndClear(void);
+  void vGridIsNotNull(void);
+  void vGridIsNull(void);
+  void vGridSet(void);
+
   // group by
   void vGroupByApplyBuffer(void);
   void vGroupByApplyEntry(void);
