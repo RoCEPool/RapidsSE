@@ -16,7 +16,8 @@
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     //"got error" .
-    job::error! DONE_REQ
+    job::error!
+    DONE_REQ
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
