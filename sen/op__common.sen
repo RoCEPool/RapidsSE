@@ -509,9 +509,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  DdlLock[].testDrop
-
-  Done_Finally
+  
   task::scheduledelete
 ;
 
@@ -544,6 +542,13 @@
 /*----------------------------------------------------------------------------*/
 : _lu_finalise_
 
+  DdlLock[].testDrop
+  
+  // check this task has no job reference
+  JobRef[].none
+
+  // check this task has no ddl lock
+  DdlLock[].none
 ;
 
 
