@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* se_start.sen -- Start System                                               */
+/* job__Start.sen -- Start System                                             */
 /*============================================================================*/
 
-" se_start.sen" .verbose
+" job__Start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
 
-" start_run" .verbose
+" _Start" .verbose
 
-: start_run ( -- <R> )
+: _Start ( -- <R> )
 
-  "start_run" .verbose
+  "_Start" .verbose
 
   // define the apriori procedures
   start::defProc_Create
@@ -108,10 +108,10 @@
   //system::started@ not if
     grid::setStartNode
     true system::started!
-    ": start_run completed" .boot
+    ": _Start completed" .boot
   //then
 
-  "end start_run" .verbose
+  "end _Start" .verbose
 
   // delete task instead of returning to nowhere
   task::scheduleDelete

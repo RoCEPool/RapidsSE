@@ -5077,9 +5077,144 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [33] OP_chunk.sen
+  // munge of [33] job__Start.sen
 
   gszaMungedText[33] =
+    "\" munged job__Start.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* job__Start.sen -- Start System                                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" job__Start.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* start system                                                               */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "\" _Start\" .verbose\n"
+    "\n"
+    ": _Start ( -- <R> )\n"
+    "\n"
+    "  \"_Start\" .verbose\n"
+    "\n"
+    "  // define the apriori procedures\n"
+    "  start::defProc_Create\n"
+    "  start::defProc_Drop\n"
+    "  start::defProc_Scan\n"
+    "  start::defProc_Load\n"
+    "  start::defProc_Api\n"
+    "  start::defProc_File\n"
+    "  start::defProc_Elasticity\n"
+    "  start::defProc_SteadyState\n"
+    "  start::defProc_UnloadReload\n"
+    "  start::defProc_ForgetRebalance\n"
+    "  start::defProc_Query\n"
+    "  start::defProc_DynCompiler\n"
+    "  start::defProc_TPCH\n"
+    "  start::defProc_TPCH_ASM\n"
+    "  start::defProc_TPCH_ASM_I\n"
+    "  start::defProc_Planner\n"
+    "  start::defProc_Meta\n"
+    "  start::defProc_SqlCompiler\n"
+    "\n"
+    "  // define the apriori system tables\n"
+    "  \"define the apriori system tables\" .verbose\n"
+    "  start::defineInfoSets1\n"
+    "  start::defineInfoSets2\n"
+    "\n"
+    "  // define the apriori infoset tables\n"
+    "  \"define the apriori infoset tables\" .verbose\n"
+    "  start::defineInfoSets3\n"
+    "  start::defineInternalTables\n"
+    "\n"
+    "  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+    "  //\n"
+    "  // This point onwards the SE execution model has been fully booted\n"
+    "  // and we can now spawn jobs\n"
+    "  //\n"
+    "  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+    "\n"
+    "  \"spawning demons\" .verbose\n"
+    "\n"
+    "  // spawn supervisor demon\n"
+    "  \"\" false superDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn monitor demon\n"
+    "  \"\" false monDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn reaper demon\n"
+    "  \"\" false reaperDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  //spawn recurring demon\n"
+    "  \"\" false recurDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn stat demon\n"
+    "  \"\" false statDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn waker demon\n"
+    "  \"\" false wakerDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn answer demon\n"
+    "  \"\" false answerDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn connector demon\n"
+    "  \"\" false connDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "\n"
+    "  // spawn event demon\n"
+    "  \"\" false eventDemonPipeline api::spawnDemon not if\n"
+    "    \"Error Code %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  // spawn metadata demon\n"
+    "//  \"\" false metaDemonPipeline api::spawnDemon not if\n"
+    "//    \"Error Code %v\" .printf\n"
+    "//  then\n"
+    "\n"
+    "\n"
+    "  //system::started@ not if\n"
+    "    grid::setStartNode\n"
+    "    true system::started!\n"
+    "    \": _Start completed\" .boot\n"
+    "  //then\n"
+    "\n"
+    "  \"end _Start\" .verbose\n"
+    "\n"
+    "  // delete task instead of returning to nowhere\n"
+    "  task::scheduleDelete\n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 33 CONSTANT job__Start.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [34] OP_chunk.sen
+
+  gszaMungedText[34] =
     "\" munged OP_chunk.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_chunk.sen -- Operator chunk                                             */\n"
@@ -5212,13 +5347,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 33 CONSTANT OP_chunk.sen "_Stz;
+  szSubScriptDef = " 34 CONSTANT OP_chunk.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [34] OP_sizeIndex.sen
+  // munge of [35] OP_sizeIndex.sen
 
-  gszaMungedText[34] =
+  gszaMungedText[35] =
     "\" munged OP_sizeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeIndex.sen -- Operator size index                                    */\n"
@@ -5279,13 +5414,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 34 CONSTANT OP_sizeIndex.sen "_Stz;
+  szSubScriptDef = " 35 CONSTANT OP_sizeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [35] se_pipeline.sen
+  // munge of [36] se_pipeline.sen
 
-  gszaMungedText[35] =
+  gszaMungedText[36] =
     "\" munged se_pipeline.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_pipeline.sen -- supplementary pipeline words                            */\n"
@@ -5543,13 +5678,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 35 CONSTANT se_pipeline.sen "_Stz;
+  szSubScriptDef = " 36 CONSTANT se_pipeline.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [36] OP_fetch.sen
+  // munge of [37] OP_fetch.sen
 
-  gszaMungedText[36] =
+  gszaMungedText[37] =
     "\" munged OP_fetch.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_fetch.sen -- Operator fetch                                             */\n"
@@ -5856,13 +5991,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 36 CONSTANT OP_fetch.sen "_Stz;
+  szSubScriptDef = " 37 CONSTANT OP_fetch.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [37] OP_wrFile.sen
+  // munge of [38] OP_wrFile.sen
 
-  gszaMungedText[37] =
+  gszaMungedText[38] =
     "\" munged OP_wrFile.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_wrFile.sen -- write to file                                             */\n"
@@ -5961,13 +6096,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 37 CONSTANT OP_wrFile.sen "_Stz;
+  szSubScriptDef = " 38 CONSTANT OP_wrFile.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [38] se_stepTests.sen
+  // munge of [39] se_stepTests.sen
 
-  gszaMungedText[38] =
+  gszaMungedText[39] =
     "\" munged se_stepTests.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_stepTests.sen -- step tests                                             */\n"
@@ -6048,13 +6183,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 38 CONSTANT se_stepTests.sen "_Stz;
+  szSubScriptDef = " 39 CONSTANT se_stepTests.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [39] se_experiments.sen
+  // munge of [40] se_experiments.sen
 
-  gszaMungedText[39] =
+  gszaMungedText[40] =
     "\" munged se_experiments.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_experiments.sen -- forth experiments                                    */\n"
@@ -6242,13 +6377,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 39 CONSTANT se_experiments.sen "_Stz;
+  szSubScriptDef = " 40 CONSTANT se_experiments.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [40] OP_ping.sen
+  // munge of [41] OP_ping.sen
 
-  gszaMungedText[40] =
+  gszaMungedText[41] =
     "\" munged OP_ping.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_ping.sen -- Operator space                                             */\n"
@@ -6310,13 +6445,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 40 CONSTANT OP_ping.sen "_Stz;
+  szSubScriptDef = " 41 CONSTANT OP_ping.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [41] op__CompilerCommon.sen
+  // munge of [42] op__CompilerCommon.sen
 
-  gszaMungedText[41] =
+  gszaMungedText[42] =
     "\" munged op__CompilerCommon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__Compilercommon.sen -- SqlCompiler operator common words                */\n"
@@ -6401,13 +6536,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 41 CONSTANT op__CompilerCommon.sen "_Stz;
+  szSubScriptDef = " 42 CONSTANT op__CompilerCommon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [42] OP_nameValidate.sen
+  // munge of [43] OP_nameValidate.sen
 
-  gszaMungedText[42] =
+  gszaMungedText[43] =
     "\" munged OP_nameValidate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nameValidate.sen -- Name Validate Op (SQL Compiler)                     */\n"
@@ -6487,13 +6622,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 42 CONSTANT OP_nameValidate.sen "_Stz;
+  szSubScriptDef = " 43 CONSTANT OP_nameValidate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [43] OP_tableSizes.sen
+  // munge of [44] OP_tableSizes.sen
 
-  gszaMungedText[43] =
+  gszaMungedText[44] =
     "\" munged OP_tableSizes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_tableSizes.sen -- Operator table sizes                                  */\n"
@@ -6589,142 +6724,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 43 CONSTANT OP_tableSizes.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [44] se_start.sen
-
-  gszaMungedText[44] =
-    "\" munged se_start.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_start.sen -- Start System                                               */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" se_start.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* start system                                                               */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "\" start_run\" .verbose\n"
-    "\n"
-    ": start_run ( -- <R> )\n"
-    "\n"
-    "  \"start_run\" .verbose\n"
-    "\n"
-    "  // define the apriori procedures\n"
-    "  start::defProc_Create\n"
-    "  start::defProc_Drop\n"
-    "  start::defProc_Scan\n"
-    "  start::defProc_Load\n"
-    "  start::defProc_Api\n"
-    "  start::defProc_File\n"
-    "  start::defProc_Elasticity\n"
-    "  start::defProc_SteadyState\n"
-    "  start::defProc_UnloadReload\n"
-    "  start::defProc_ForgetRebalance\n"
-    "  start::defProc_Query\n"
-    "  start::defProc_DynCompiler\n"
-    "  start::defProc_TPCH\n"
-    "  start::defProc_TPCH_ASM\n"
-    "  start::defProc_TPCH_ASM_I\n"
-    "  start::defProc_Planner\n"
-    "  start::defProc_Meta\n"
-    "  start::defProc_SqlCompiler\n"
-    "\n"
-    "  // define the apriori system tables\n"
-    "  \"define the apriori system tables\" .verbose\n"
-    "  start::defineInfoSets1\n"
-    "  start::defineInfoSets2\n"
-    "\n"
-    "  // define the apriori infoset tables\n"
-    "  \"define the apriori infoset tables\" .verbose\n"
-    "  start::defineInfoSets3\n"
-    "  start::defineInternalTables\n"
-    "\n"
-    "  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-    "  //\n"
-    "  // This point onwards the SE execution model has been fully booted\n"
-    "  // and we can now spawn jobs\n"
-    "  //\n"
-    "  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-    "\n"
-    "  \"spawning demons\" .verbose\n"
-    "\n"
-    "  // spawn supervisor demon\n"
-    "  \"\" false superDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn monitor demon\n"
-    "  \"\" false monDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn reaper demon\n"
-    "  \"\" false reaperDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  //spawn recurring demon\n"
-    "  \"\" false recurDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn stat demon\n"
-    "  \"\" false statDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn waker demon\n"
-    "  \"\" false wakerDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn answer demon\n"
-    "  \"\" false answerDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn connector demon\n"
-    "  \"\" false connDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "\n"
-    "  // spawn event demon\n"
-    "  \"\" false eventDemonPipeline api::spawnDemon not if\n"
-    "    \"Error Code %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  // spawn metadata demon\n"
-    "//  \"\" false metaDemonPipeline api::spawnDemon not if\n"
-    "//    \"Error Code %v\" .printf\n"
-    "//  then\n"
-    "\n"
-    "\n"
-    "  //system::started@ not if\n"
-    "    grid::setStartNode\n"
-    "    true system::started!\n"
-    "    \": start_run completed\" .boot\n"
-    "  //then\n"
-    "\n"
-    "  \"end start_run\" .verbose\n"
-    "\n"
-    "  // delete task instead of returning to nowhere\n"
-    "  task::scheduleDelete\n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 44 CONSTANT se_start.sen "_Stz;
+  szSubScriptDef = " 44 CONSTANT OP_tableSizes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28855,7 +28855,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "        \"se_defineTables.sen\"         include // second last\n"
     "        \n"
-    "        \"se_start.sen\"                include // last last\n"
+    "        \"job__Start.sen\"              include // last last\n"
     "\n"
     ".\\n\n"
     "\n"

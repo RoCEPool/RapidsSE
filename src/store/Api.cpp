@@ -839,7 +839,7 @@ void Api::RunStartJob(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"start_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"_Start"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
