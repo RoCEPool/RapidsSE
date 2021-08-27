@@ -44,7 +44,6 @@
   find: gridSend_gridObject ZK_D_GRID op[].handler!
   op__loop
 
-  LogReqExit
   _op_release_resources_
   _op_retires_
   DONE_REQ_OP

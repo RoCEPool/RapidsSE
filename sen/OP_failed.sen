@@ -36,7 +36,6 @@
   op__loop
 
   "*** failed_req EXITS" .
-  LogReqExit
   _op_release_resources_
   _op_retires_
   DONE_REQ_OP

@@ -127,7 +127,6 @@
   // execute the operator's handler for the operand
   PipeIn[].kind op[].handler@ execute
 
-  LogReqExit
   _op_release_resources_
   _op_retires_
   DONE_REQ_OP
