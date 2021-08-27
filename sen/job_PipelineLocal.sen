@@ -5,6 +5,24 @@
 " job_PipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* done executing a req seed                                                  */
+/*----------------------------------------------------------------------------*/
+: DONE_REQ ( -- )
+
+  DdlLock[].testDrop
+
+  //"Signalling the thread waiting on job completion" .
+  Done_Finally
+
+  job::informInvokerOfCompletion
+
+  // task has no job
+  task::scheduledelete
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline request on origin                                     */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal_req _eeh_suffix ( -- )
