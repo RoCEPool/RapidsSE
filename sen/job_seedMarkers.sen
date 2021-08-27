@@ -26,8 +26,6 @@
 
   // check this task has no ddl lock
   DdlLock[].none
-
-  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/

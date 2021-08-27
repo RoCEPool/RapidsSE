@@ -1857,7 +1857,6 @@ public:
   void vTaskBreakPoint(void);
   void vTaskDestructorTraceFetch(void);
   void vTaskDestructorTraceStore(void);
-  void vTaskDoneFinally(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskDelete(void);

@@ -25,7 +25,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::acks!"_Stz,          &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::scheduledelete"_Stz, &Step::vTaskDelete);
-  vAddStep("task::doneFinally"_Stz,    &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
@@ -102,18 +101,6 @@ void Step::vTaskBreakPoint(void)
 {
   ENTRY();
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::doneFinally -- set done finally as been executed                     */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDoneFinally(void)
-{
-  ENTRY();
-  
- m_bDoneFinally = true;
-  
   EXIT();
 }
 

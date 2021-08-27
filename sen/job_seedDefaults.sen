@@ -31,8 +31,6 @@
 
   DdlLock[].testDrop
 
-  task::doneFinally
-
   //"Signalling waiting thread" .
   job::informInvokerOfCompletion
   // task has no job
@@ -58,7 +56,6 @@
   "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if
 
-      task::doneFinally
       job::error!
 
       //"Signalling waiting thread" .
@@ -94,8 +91,6 @@
   else
     job[] job.removeOriginator  // this is currently being done by job_ended
   then
-
-  task::doneFinally
 
   //"Signalling waiting thread" .
   job::informInvokerOfCompletion
@@ -134,8 +129,6 @@
   nullptr job[] job.seedWord!
   
   2pcReply::job__begun
-
-  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,8 +158,6 @@
   nullptr job[] job.seedWord!
 
   2pcReply::job__executed
-
-  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -192,8 +183,6 @@
   job[] job.removeParticipant
 
   2pcReply::job__ended
-
-  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -217,8 +206,6 @@
   job[] job.removeParticipant
 
   2pcReply::job__cancelled
-
-  task::doneFinally
 ;
 
 /*============================================================================*/
