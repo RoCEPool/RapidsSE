@@ -32,7 +32,7 @@
 "
   : /localLiteOp/_req \\operator
 
-    _op_begin_
+    LogReqEntry SEED_REQ
 
     op__topology
 
@@ -40,9 +40,8 @@
 
     op__loop
 
-     
-    
-  HAZARD
+    LogReqExit
+    DONE_REQ_OP
   ;
 "
 ;

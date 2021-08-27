@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : exemplar_req \operator
 
-  _op_begin_
+  LogReqEntry SEED_REQ
 
   // set topology, next stage and op
   op__topology
@@ -29,11 +29,10 @@
   op__loop
 
   "*** OP_exemplar_req EXITS" .
-   
+  LogReqExit
   _op_release_resources_
   _op_retires_
-  
-  HAZARD
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/

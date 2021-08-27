@@ -14,6 +14,8 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeedLocal_req _req_suffix ( -- )
 
+  task::seedInitially
+
   [ senCompiler::current@ word.name@ encode::push ] .
   <jobNm> .
 
@@ -55,10 +57,12 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist_req _req_suffix ( -- )
 
+  task::seedInitially
+
   "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if
 
-      task::doneFinally
+      task::seedInitially task::doneFinally
       job::error!
 
       //"Signalling waiting thread" .
@@ -115,6 +119,8 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist_beg _beg_suffix ( -- )
 
+  task::seedInitially
+
   // [ senCompiler::current@ word.name@ encode::push ] .
 
   JP_BEGINNING job[] job.phase!
@@ -142,6 +148,8 @@
 /* execute default                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist_exe _exe_suffix
+
+  task::seedInitially
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -174,6 +182,8 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist_end _end_suffix ( -- )
 
+  task::seedInitially
+
   // [ senCompiler::current@ word.name@ encode::push ] .
 
   //grid::thisNodeName@ "(%v) defaultSeedDist _end" .printf
@@ -200,6 +210,8 @@
 /* cancel default                                (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist_can _can_suffix ( -- )
+
+  task::seedInitially
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 

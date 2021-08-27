@@ -17,6 +17,8 @@
   // "req_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,6 +29,8 @@
   // "beg_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +41,8 @@
   // "exe_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +53,8 @@
   // "end_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +65,8 @@
   // "can_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +77,8 @@
   //"run_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +89,8 @@
   // "std_entryHook" .
 
   job::assertCorrectness
+
+  Seed_Initially
 ;
 
 

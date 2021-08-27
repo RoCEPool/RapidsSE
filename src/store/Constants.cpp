@@ -281,7 +281,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
   /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
   /*  0 */ vAddConstant("AN_SEED_RCV"_Stz,           AN_SEED_RCV);
-  /*  0 */ vAddConstant("AN__op_begin_"_Stz,           AN__op_begin_);
+  /*  0 */ vAddConstant("AN_SEED_REQ"_Stz,           AN_SEED_REQ);
   /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
@@ -644,7 +644,7 @@ void Constants::vAddConstantsCpp(void)
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
-  /*  1 */ vAddConstant("SS__op_begin_"_Stz,    SS__op_begin_);
+  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
   /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
   /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
   /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);

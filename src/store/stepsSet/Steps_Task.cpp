@@ -31,6 +31,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
+  vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
   vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
@@ -349,6 +350,18 @@ void Step::vTaskReleaseLockSets(void)
   ENTRY();
   
   vReleaseLockSets();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seedInitially -- set seed initially as been executed                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeedInitially(void)
+{
+  ENTRY();
+  
+  m_bSeedInitially = true;
 
   EXIT();
 }

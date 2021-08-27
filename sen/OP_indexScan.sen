@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : indexScan_req \operator
 
-  _op_begin_
+  LogReqEntry SEED_REQ
 
   // get whether compiled or not
   <compiled> >int to Counter0[]
@@ -169,11 +169,10 @@
 
   op__loop
 
-   
+  LogReqExit
   _op_release_resources_
   _op_retires_
-  
-  HAZARD
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/

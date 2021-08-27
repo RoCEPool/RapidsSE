@@ -6,7 +6,7 @@
 enum eSS // seed string
 {
   /*  0 */ SS_SEED_RUN=0,
-  /*  1 */ SS__op_begin_,
+  /*  1 */ SS_SEED_REQ,
   /*  2 */ SS_SEED_RCV,
   /*  3 */ SS_SEED_EXE,
   /*  4 */ SS_SEED_END,
@@ -21,7 +21,7 @@ enum eSS // seed string
 static Stz* aSS[]
 {
   /*  0 */ "SS_SEED_RUN"_Stz,
-  /*  1 */ "SS__op_begin_"_Stz,
+  /*  1 */ "SS_SEED_REQ"_Stz,
   /*  2 */ "SS_SEED_RCV"_Stz,
   /*  3 */ "SS_SEED_EXE"_Stz,
   /*  4 */ "SS_SEED_END"_Stz,

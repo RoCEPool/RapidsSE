@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : sigsegv_req \operator
 
-  _op_begin_
+  LogReqEntry SEED_REQ
 
   op__topology
 
@@ -35,11 +35,10 @@
   op__loop
 
   // "*** sigsegv_req EXITS" .
-   
+  LogReqExit
   _op_release_resources_
   _op_retires_
-  
-  HAZARD
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketSend_req \operator
   "bucketSend_req" .
-  _op_begin_
+  LogReqEntry SEED_REQ
 
   "<catalogNm>"  job::tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
@@ -204,11 +204,10 @@
 
   op__loop
 
-   
+  LogReqExit
   _op_release_resources_
   _op_retires_
-  
-  HAZARD
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/

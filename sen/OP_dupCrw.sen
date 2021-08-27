@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
  : dupCrw_req \operator
 
-  _op_begin_
+  LogReqEntry SEED_REQ
   "dupCrw_req" .
   op__topology
 
@@ -34,11 +34,10 @@
  
   op__loop
 
-   
+  LogReqExit
   _op_release_resources_
   _op_retires_
-  
-  HAZARD
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/

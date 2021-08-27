@@ -73,7 +73,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // m_oOpTags
   m_pTask = nullptr;
   
-  m_eSeed = SS__op_begin_;
+  m_eSeed = SS_SEED_REQ;
   m_pSeedWord = nullptr;
   
   // -- -- -- -- -- --

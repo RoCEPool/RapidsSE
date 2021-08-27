@@ -108,6 +108,7 @@ Task::Task(void)
   m_pSeedWord       = nullptr;
   m_pRecoveryWord  = nullptr;
   
+  m_bSeedInitially  = false;
   m_bDoneFinally    = false;
 
   // m_oDicStack
@@ -148,6 +149,7 @@ Task::~Task(void) noexcept(false)
 
   //RASSERT(! m_pJob);
 
+  RASSERT(m_bSeedInitially);
   RASSERT(m_bDoneFinally);
   
   ASSERT(! m_oWriteLocks.nItems());
