@@ -11,8 +11,7 @@
 
   DdlLock[].testDrop
 
-  //"Signalling the thread waiting on job completion" .
-  Done_Finally
+  _job_finalise_
 
   job::informInvokerOfCompletion
 

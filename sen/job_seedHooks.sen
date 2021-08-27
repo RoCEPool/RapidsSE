@@ -100,7 +100,7 @@
 
   DdlLock[].testDrop
 
-  Done_Finally
+  _job_finalise_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@
 
   DdlLock[].testDrop
 
-  Done_Finally
+  _job_finalise_
 
   job::completed
 
@@ -154,7 +154,7 @@
 
   // "can_exitHook" .
 
-  Done_Finally
+  _job_finalise_
 
  job::completed
 
@@ -170,7 +170,7 @@
 
   DdlLock[].testDrop
 
-  Done_Finally
+  _job_finalise_
 
   job::completed
 

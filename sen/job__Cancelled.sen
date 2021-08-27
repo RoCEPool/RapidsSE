@@ -12,7 +12,8 @@
 
   DdlLock[].testDrop
 
-  Done_Finally
+  _job_finalise_
+  
   task::scheduledelete
 
   HAZARD

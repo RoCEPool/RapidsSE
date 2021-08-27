@@ -34,7 +34,7 @@
 
   //"Hello World!" .
   
-  Done_Finally
+  _job_finalise_
   job::completed
 
   HAZARD
@@ -47,7 +47,7 @@
 
    >interpret
    
-   Done_Finally
+   _job_finalise_
    job::completed
 
    HAZARD
