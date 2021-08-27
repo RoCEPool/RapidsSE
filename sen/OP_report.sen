@@ -124,7 +124,7 @@
 
   _lu_finalise_
   
-  _op_retires_
+  op__retires
   
   HAZARD
 ;

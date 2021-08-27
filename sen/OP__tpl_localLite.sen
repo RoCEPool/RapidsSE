@@ -41,7 +41,7 @@
     op__loop
 
     _op_release_resources_
-    _op_retires_
+    op__retires
     
   HAZARD
   ;
