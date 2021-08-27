@@ -155,11 +155,6 @@
 /*----------------------------------------------------------------------------*/
 : DONE_REQ_OP ( -- )
 
-  DdlLock[].testDrop
-
-  Done_Finally
-  task::scheduledelete
-
   HAZARD
 ;
 
