@@ -32,79 +32,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* done executing a beg seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_BEG ( -- )
-
-  DdlLock[].testDrop
-
-  JP_BEGUN job[] job.phase!
-
-  Done_Finally
-  task::scheduledelete
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* done executing a can seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_CAN ( -- )
-
-  DdlLock[].testDrop
-
-  JP_CANCELED job[] job.phase!
-
-  Done_Finally
-  job::completed
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* done executing a end seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_END ( -- )
-
-  DdlLock[].testDrop
-
-  JP_ENDED job[] job.phase!
-
-  Done_Finally
-  job::completed
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* return from job execution on node                                          */
-/*----------------------------------------------------------------------------*/
-: DONE_EXE ( -- )
-
-  DdlLock[].testDrop
-
-  JP_EXECUTED job[] job.phase!
-
-  Done_Finally
-  task::scheduledelete
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* done executing a kid seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_KID ( -- )
-
-  DdlLock[].testDrop
-
-  Done_Finally
-  task::scheduledelete
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /* done executing a rcv seed                                                  */
 /*----------------------------------------------------------------------------*/
 : DONE_RCV ( -- )
@@ -130,19 +57,6 @@
   job::informInvokerOfCompletion
 
   // task has no job 
-  task::scheduledelete
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* done executing a run seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_RUN ( -- )
-
-  DdlLock[].testDrop
-
-  Done_Finally
   task::scheduledelete
 
   HAZARD
