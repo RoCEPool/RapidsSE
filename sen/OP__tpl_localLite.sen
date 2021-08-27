@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* tpl_localLiteOp.sen -- templates for local lite op                         */
+/* OP__tpl_locallite.sen -- templates for local lite op                         */
 /*============================================================================*/
 
-" tpl_localLiteOp.sen" .verbose
+" OP__tpl_locallite.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_DataMarker
+: OP__tpl_locallite_DataMarker
 
 "
   : /localLiteOp/_DataMarker \\handler
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_req
+: OP__tpl_locallite_req
 
 "
   : /localLiteOp/_req \\operator
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 0 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_procedure0
+: OP__tpl_locallite_procedure0
 
 "
   procedureLocal /localLiteOp/
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 1 parameter                                    */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_procedure1
+: OP__tpl_locallite_procedure1
 
 "
   procedureLocal /localLiteOp/
@@ -89,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 2 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_procedure2
+: OP__tpl_locallite_procedure2
 
   "
     procedureLocal /localLiteOp/

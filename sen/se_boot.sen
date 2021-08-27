@@ -26,8 +26,8 @@ assert::stack_0
         "se_dbg.sen"              include
 
 "se_boot 8" .verbose
-        "tpl_liteOp.sen"          include
-        "tpl_localLiteOp.sen"     include
+        "OP__tpl_lite.sen"          include
+        "OP__tpl_locallite.sen"     include
         "cmd_cmdTags.sen"         include
         "cmd_compiler.sen"        include
 

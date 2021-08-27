@@ -2457,9 +2457,131 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [11] job_seedDefaults.sen
+  // munge of [11] OP__tpl_localLite.sen
 
   gszaMungedText[11] =
+    "\" munged OP__tpl_localLite.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP__tpl_locallite.sen -- templates for local lite op                         */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP__tpl_locallite.sen\" .verbose\n"
+    "    \n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* on ZK_M_DATAPULSE ...                                                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_locallite_DataMarker\n"
+    "\n"
+    "\"\n"
+    "  : /localLiteOp/_DataMarker \\\\handler\n"
+    "\n"
+    "    PipeIn[].pipeOut\n"
+    "\n"
+    "    /localLiteOp/_action if\n"
+    "      Marker[].newEosMarker\n"
+    "      Marker[].pipeOut\n"
+    "    then\n"
+    "\n"
+    "    true\n"
+    "  ;\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for localLiteOp req                        (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_locallite_req\n"
+    "\n"
+    "\"\n"
+    "  : /localLiteOp/_req \\\\operator\n"
+    "\n"
+    "    LogReqEntry SEED_REQ\n"
+    "\n"
+    "    op__topology\n"
+    "\n"
+    "    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
+    "\n"
+    "    op__loop\n"
+    "\n"
+    "    LogReqExit\n"
+    "    _op_release_resources_\n"
+    "    _op_retires_\n"
+    "    DONE_REQ_OP\n"
+    "  ;\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* local liteOp procedure with 0 parameters                                   */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_locallite_procedure0\n"
+    "\n"
+    "\"\n"
+    "  procedureLocal /localLiteOp/\n"
+    "    tags <lowMemory>\n"
+    "  begin\n"
+    "\n"
+    "  stage stageA on origin :\n"
+    "    start | pulse once | /localLiteOp/ |\n"
+    "      output | sink | stageA\n"
+    "\n"
+    "  end\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* local liteOp procedure with 1 parameter                                    */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_locallite_procedure1\n"
+    "\n"
+    "\"\n"
+    "  procedureLocal /localLiteOp/\n"
+    "    tags <lowMemory>\n"
+    "    parameters $param\n"
+    "  begin\n"
+    "\n"
+    "  stage stageA on origin :\n"
+    "    start | pulse once | /localLiteOp/ $param |\n"
+    "      output | sink | stageA\n"
+    "\n"
+    "  end\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* local liteOp procedure with 2 parameters                                   */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_locallite_procedure2\n"
+    "\n"
+    "  \"\n"
+    "    procedureLocal /localLiteOp/\n"
+    "      tags <lowMemory>\n"
+    "      parameters $param0 $param1\n"
+    "    begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | /localLiteOp/ $param0 $param1 |\n"
+    "        output | sink | stageA\n"
+    "\n"
+    "    end\n"
+    "  \"\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 11 CONSTANT OP__tpl_localLite.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [12] job_seedDefaults.sen
+
+  gszaMungedText[12] =
     "\" munged job_seedDefaults.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedDefaults.sen -- Default Job Seeds                                  */\n"
@@ -2703,129 +2825,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 11 CONSTANT job_seedDefaults.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [12] tpl_localLiteOp.sen
-
-  gszaMungedText[12] =
-    "\" munged tpl_localLiteOp.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* tpl_localLiteOp.sen -- templates for local lite op                         */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" tpl_localLiteOp.sen\" .verbose\n"
-    "    \n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* on ZK_M_DATAPULSE ...                                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_localLiteOp_DataMarker\n"
-    "\n"
-    "\"\n"
-    "  : /localLiteOp/_DataMarker \\\\handler\n"
-    "\n"
-    "    PipeIn[].pipeOut\n"
-    "\n"
-    "    /localLiteOp/_action if\n"
-    "      Marker[].newEosMarker\n"
-    "      Marker[].pipeOut\n"
-    "    then\n"
-    "\n"
-    "    true\n"
-    "  ;\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for localLiteOp req                        (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_localLiteOp_req\n"
-    "\n"
-    "\"\n"
-    "  : /localLiteOp/_req \\\\operator\n"
-    "\n"
-    "    LogReqEntry SEED_REQ\n"
-    "\n"
-    "    op__topology\n"
-    "\n"
-    "    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
-    "\n"
-    "    op__loop\n"
-    "\n"
-    "    LogReqExit\n"
-    "    _op_release_resources_\n"
-    "    _op_retires_\n"
-    "    DONE_REQ_OP\n"
-    "  ;\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* local liteOp procedure with 0 parameters                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_localLiteOp_procedure0\n"
-    "\n"
-    "\"\n"
-    "  procedureLocal /localLiteOp/\n"
-    "    tags <lowMemory>\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "    start | pulse once | /localLiteOp/ |\n"
-    "      output | sink | stageA\n"
-    "\n"
-    "  end\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* local liteOp procedure with 1 parameter                                    */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_localLiteOp_procedure1\n"
-    "\n"
-    "\"\n"
-    "  procedureLocal /localLiteOp/\n"
-    "    tags <lowMemory>\n"
-    "    parameters $param\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "    start | pulse once | /localLiteOp/ $param |\n"
-    "      output | sink | stageA\n"
-    "\n"
-    "  end\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* local liteOp procedure with 2 parameters                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_localLiteOp_procedure2\n"
-    "\n"
-    "  \"\n"
-    "    procedureLocal /localLiteOp/\n"
-    "      tags <lowMemory>\n"
-    "      parameters $param0 $param1\n"
-    "    begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | /localLiteOp/ $param0 $param1 |\n"
-    "        output | sink | stageA\n"
-    "\n"
-    "    end\n"
-    "  \"\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 12 CONSTANT tpl_localLiteOp.sen "_Stz;
+  szSubScriptDef = " 12 CONSTANT job_seedDefaults.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27672,15 +27672,15 @@ void Task::vAddMunged(Task* )
     "  \"<params>\" pCmdTagSet tagSet.getStr >int locals| iParams |\n"
     "\n"
     "  iParams 2 == if\n"
-    "    \"/liteOp/\" sOpNm tpl_liteOp_procedure2 str.replace to sText\n"
+    "    \"/liteOp/\" sOpNm OP__tpl_lite_procedure2 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 1 == if\n"
-    "    \"/liteOp/\" sOpNm tpl_liteOp_procedure1 str.replace to sText\n"
+    "    \"/liteOp/\" sOpNm OP__tpl_lite_procedure1 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 0 == assert\n"
-    "    \"/liteOp/\" sOpNm tpl_liteOp_procedure0 str.replace to sText\n"
+    "    \"/liteOp/\" sOpNm OP__tpl_lite_procedure0 str.replace to sText\n"
     "    sText procedure::add\n"
     "  then then\n"
     " ;\n"
@@ -27706,15 +27706,15 @@ void Task::vAddMunged(Task* )
     "  \"<params>\" pCmdTagSet tagSet.getStr >int to iParams\n"
     "\n"
     "  iParams 2 == if\n"
-    "    \"/localLiteOp/\" sOpNm tpl_localLiteOp_procedure2 str.replace to sText\n"
+    "    \"/localLiteOp/\" sOpNm OP__tpl_locallite_procedure2 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 1 == if\n"
-    "    \"/localLiteOp/\" sOpNm tpl_localLiteOp_procedure1 str.replace to sText\n"
+    "    \"/localLiteOp/\" sOpNm OP__tpl_locallite_procedure1 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 0 == assert\n"
-    "    \"/localLiteOp/\" sOpNm tpl_localLiteOp_procedure0 str.replace to sText\n"
+    "    \"/localLiteOp/\" sOpNm OP__tpl_locallite_procedure0 str.replace to sText\n"
     "    sText procedure::add\n"
     "  then then\n"
     " ;\n"
@@ -27757,11 +27757,11 @@ void Task::vAddMunged(Task* )
     "  // sOpNm \"LiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize word : sOpNm_DataMarker \\\\handler ... ;\n"
-    "  \"/liteOp/\" sOpNm tpl_liteOp_DataMarker str.replace to sText\n"
+    "  \"/liteOp/\" sOpNm OP__tpl_lite_DataMarker str.replace to sText\n"
     "  sText >interpret\n"
     "\n"
     "  // synthesize word : sOpNm_req ... ;\n"
-    "  \"/liteOp/\" sOpNm tpl_liteOp_req str.replace to sText\n"
+    "  \"/liteOp/\" sOpNm OP__tpl_lite_req str.replace to sText\n"
     "  sText >interpret\n"
     " ;\n"
     "\n"
@@ -27781,11 +27781,11 @@ void Task::vAddMunged(Task* )
     "  // sOpNm \"LocalLiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize : sOpNm_DataMarker\n"
-    "  \"/localLiteOp/\" sOpNm tpl_localLiteOp_DataMarker str.replace to sText\n"
+    "  \"/localLiteOp/\" sOpNm OP__tpl_locallite_DataMarker str.replace to sText\n"
     "  sText >interpret\n"
     "\n"
     "  // synthesize : sOpNm_req\n"
-    "  \"/localLiteOp/\" sOpNm tpl_localLiteOp_req str.replace to sText\n"
+    "  \"/localLiteOp/\" sOpNm OP__tpl_locallite_req str.replace to sText\n"
     "  sText >interpret\n"
     " ;\n"
     "\n"
@@ -28644,8 +28644,8 @@ void Task::vAddMunged(Task* )
     "        \"se_dbg.sen\"              include\n"
     "\n"
     "\"se_boot 8\" .verbose\n"
-    "        \"tpl_liteOp.sen\"          include\n"
-    "        \"tpl_localLiteOp.sen\"     include\n"
+    "        \"OP__tpl_lite.sen\"          include\n"
+    "        \"OP__tpl_locallite.sen\"     include\n"
     "        \"cmd_cmdTags.sen\"         include\n"
     "        \"cmd_compiler.sen\"        include\n"
     "\n"
@@ -29133,146 +29133,9 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [221] tpl_liteOp.sen
+  // munge of [221] OP_throw.sen
 
   gszaMungedText[221] =
-    "\" munged tpl_liteOp.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* tpl_liteOp.sen -- templates for lite op                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" tpl_liteOp.sen\" .verbose\n"
-    "    \n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* on ZK_M_DATAPULSE ...                                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_liteOp_DataMarker\n"
-    "\n"
-    "\"\n"
-    ": /liteOp/_DataMarker \\\\handler\n"
-    "\n"
-    "  PipeIn[].pipeOut\n"
-    "\n"
-    "  /liteOp/_action if\n"
-    "    Marker[].newEosMarker\n"
-    "    Marker[].pipeOut\n"
-    "  then\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for liteOp req                             (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_liteOp_req\n"
-    "\n"
-    "\"\n"
-    ": /liteOp/_req \\\\operator\n"
-    " \n"
-    "  LogReqEntry SEED_REQ\n"
-    "\n"
-    "  op__topology\n"
-    "\n"
-    "  find: /liteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
-    "\n"
-    "  op__loop\n"
-    "\n"
-    "  LogReqExit\n"
-    "  _op_release_resources_\n"
-    "  _op_retires_\n"
-    "  DONE_REQ_OP\n"
-    " ;\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* liteOp procedure with 0 parameters                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_liteOp_procedure0\n"
-    "\n"
-    "\"\n"
-    "  procedure /liteOp/\n"
-    "    tags <lowMemory>\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | stageB\n"
-    "\n"
-    "    stage stageB on all nodes :\n"
-    "      /liteOp/ | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "      output | sink | stageA\n"
-    "\n"
-    "  end\n"
-    "\"\n"
-    " ;\n"
-    "    \n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* liteOp procedure with 1 parameter                                          */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_liteOp_procedure1\n"
-    "\n"
-    "\"\n"
-    "  procedure /liteOp/\n"
-    "    tags <lowMemory>\n"
-    "    parameters $param\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "    start | pulse once | stageB\n"
-    "\n"
-    "  stage stageB on all nodes :\n"
-    "    /liteOp/ $param | stageC\n"
-    "\n"
-    "  stage stageC on origin :\n"
-    "    output | sink | stageA\n"
-    "\n"
-    "  end\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* liteOp procedure with 2 parameters                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": tpl_liteOp_procedure2\n"
-    "\n"
-    "\"\n"
-    "  procedure /liteOp/\n"
-    "    tags <lowMemory>\n"
-    "    parameters $param0 $param1\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "    start | pulse once | stageB\n"
-    "\n"
-    "  stage stageB on all nodes :\n"
-    "    /liteOp/ $param0 $param1 | stageC\n"
-    "\n"
-    "  stage stageC on origin :\n"
-    "    output | sink | stageA\n"
-    "\n"
-    "  end\n"
-    "\"\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 221 CONSTANT tpl_liteOp.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [222] OP_throw.sen
-
-  gszaMungedText[222] =
     "\" munged OP_throw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_throw.sen -- throw a C++ excpetion                                      */\n"
@@ -29332,13 +29195,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 222 CONSTANT OP_throw.sen "_Stz;
+  szSubScriptDef = " 221 CONSTANT OP_throw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [223] db_tenant.sen
+  // munge of [222] db_tenant.sen
 
-  gszaMungedText[223] =
+  gszaMungedText[222] =
     "\" munged db_tenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_tenant.sen -- tenant related words                                      */\n"
@@ -29463,13 +29326,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 223 CONSTANT db_tenant.sen "_Stz;
+  szSubScriptDef = " 222 CONSTANT db_tenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [224] OP_unload.sen
+  // munge of [223] OP_unload.sen
 
-  gszaMungedText[224] =
+  gszaMungedText[223] =
     "\" munged OP_unload.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_unload.sen -- unload                                                    */\n"
@@ -29548,13 +29411,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 224 CONSTANT OP_unload.sen "_Stz;
+  szSubScriptDef = " 223 CONSTANT OP_unload.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [225] OP_report.sen
+  // munge of [224] OP_report.sen
 
-  gszaMungedText[225] =
+  gszaMungedText[224] =
     "\" munged OP_report.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_report.sen -- Operator report                                           */\n"
@@ -29702,13 +29565,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 225 CONSTANT OP_report.sen "_Stz;
+  szSubScriptDef = " 224 CONSTANT OP_report.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [226] se_proceduresB.sen
+  // munge of [225] se_proceduresB.sen
 
-  gszaMungedText[226] =
+  gszaMungedText[225] =
     "\" munged se_proceduresB.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_procedures.sen -- define procedures                                     */\n"
@@ -30621,13 +30484,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 226 CONSTANT se_proceduresB.sen "_Stz;
+  szSubScriptDef = " 225 CONSTANT se_proceduresB.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [227] test_logic.sen
+  // munge of [226] test_logic.sen
 
-  gszaMungedText[227] =
+  gszaMungedText[226] =
     "\" munged test_logic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_logic.sen -- logic unit testing                                       */\n"
@@ -30684,13 +30547,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 227 CONSTANT test_logic.sen "_Stz;
+  szSubScriptDef = " 226 CONSTANT test_logic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [228] test_misc.sen
+  // munge of [227] test_misc.sen
 
-  gszaMungedText[228] =
+  gszaMungedText[227] =
     "\" munged test_misc.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_misc.sen -- miscellaneous testing                                     */\n"
@@ -30875,13 +30738,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 228 CONSTANT test_misc.sen "_Stz;
+  szSubScriptDef = " 227 CONSTANT test_misc.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [229] OP_exprPushdown.sen
+  // munge of [228] OP_exprPushdown.sen
 
-  gszaMungedText[229] =
+  gszaMungedText[228] =
     "\" munged OP_exprPushdown.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_exprPushdown.sen -- Push expr generation down in the plan (SQL Compiler)*/\n"
@@ -30960,13 +30823,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 229 CONSTANT OP_exprPushdown.sen "_Stz;
+  szSubScriptDef = " 228 CONSTANT OP_exprPushdown.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [230] OP_crwToRow.sen
+  // munge of [229] OP_crwToRow.sen
 
-  gszaMungedText[230] =
+  gszaMungedText[229] =
     "\" munged OP_crwToRow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_crwToRow.sen -- Convert crw buffers to row buffers                      */\n"
@@ -31082,13 +30945,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 230 CONSTANT OP_crwToRow.sen "_Stz;
+  szSubScriptDef = " 229 CONSTANT OP_crwToRow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [231] OP_namedInsert.sen
+  // munge of [230] OP_namedInsert.sen
 
-  gszaMungedText[231] =
+  gszaMungedText[230] =
     "\" munged OP_namedInsert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_namedInsert.sen -- Operator namedInsert                                 */\n"
@@ -31184,13 +31047,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 231 CONSTANT OP_namedInsert.sen "_Stz;
+  szSubScriptDef = " 230 CONSTANT OP_namedInsert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [232] test_flow.sen
+  // munge of [231] test_flow.sen
 
-  gszaMungedText[232] =
+  gszaMungedText[231] =
     "\" munged test_flow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_flow.sen -- flow control unit testing                                 */\n"
@@ -31231,13 +31094,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 232 CONSTANT test_flow.sen "_Stz;
+  szSubScriptDef = " 231 CONSTANT test_flow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [233] OP_rdCsvChunk.sen
+  // munge of [232] OP_rdCsvChunk.sen
 
-  gszaMungedText[233] =
+  gszaMungedText[232] =
     "\" munged OP_rdCsvChunk.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_rdCsvChunk.sen -- Op Read Csv Chunk                                     */\n"
@@ -31375,13 +31238,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 233 CONSTANT OP_rdCsvChunk.sen "_Stz;
+  szSubScriptDef = " 232 CONSTANT OP_rdCsvChunk.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [234] OP_monitor.sen
+  // munge of [233] OP_monitor.sen
 
-  gszaMungedText[234] =
+  gszaMungedText[233] =
     "\" munged OP_monitor.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_monitor.sen -- Monitor Operator                                         */\n"
@@ -31457,13 +31320,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 234 CONSTANT OP_monitor.sen "_Stz;
+  szSubScriptDef = " 233 CONSTANT OP_monitor.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [235] OP_project.sen
+  // munge of [234] OP_project.sen
 
-  gszaMungedText[235] =
+  gszaMungedText[234] =
     "\" munged OP_project.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_project.sen -- Operator project columns                                 */\n"
@@ -31668,13 +31531,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 235 CONSTANT OP_project.sen "_Stz;
+  szSubScriptDef = " 234 CONSTANT OP_project.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [236] OP_EOAsm2.sen
+  // munge of [235] OP_EOAsm2.sen
 
-  gszaMungedText[236] =
+  gszaMungedText[235] =
     "\" munged OP_EOAsm2.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_EOAsm2.sen -- sql                                                        */\n"
@@ -31944,13 +31807,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 236 CONSTANT OP_EOAsm2.sen "_Stz;
+  szSubScriptDef = " 235 CONSTANT OP_EOAsm2.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [237] job_seedSuffixs.sen
+  // munge of [236] job_seedSuffixs.sen
 
-  gszaMungedText[237] =
+  gszaMungedText[236] =
     "\" munged job_seedSuffixs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedSuffixs.sen -- Job Seed Suffixes                                   */\n"
@@ -32112,13 +31975,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 237 CONSTANT job_seedSuffixs.sen "_Stz;
+  szSubScriptDef = " 236 CONSTANT job_seedSuffixs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [238] OP_sizeTable.sen
+  // munge of [237] OP_sizeTable.sen
 
-  gszaMungedText[238] =
+  gszaMungedText[237] =
     "\" munged OP_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeTable.sen -- Operator size table                                    */\n"
@@ -32179,13 +32042,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 238 CONSTANT OP_sizeTable.sen "_Stz;
+  szSubScriptDef = " 237 CONSTANT OP_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [239] OP_recv.sen
+  // munge of [238] OP_recv.sen
 
-  gszaMungedText[239] =
+  gszaMungedText[238] =
     "\" munged OP_recv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recv.sen -- Operator recv                                               */\n"
@@ -32340,13 +32203,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 239 CONSTANT OP_recv.sen "_Stz;
+  szSubScriptDef = " 238 CONSTANT OP_recv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [240] OP_dropCatalog.sen
+  // munge of [239] OP_dropCatalog.sen
 
-  gszaMungedText[240] =
+  gszaMungedText[239] =
     "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
@@ -32415,13 +32278,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 240 CONSTANT OP_dropCatalog.sen "_Stz;
+  szSubScriptDef = " 239 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [241] OP_limit.sen
+  // munge of [240] OP_limit.sen
 
-  gszaMungedText[241] =
+  gszaMungedText[240] =
     "\" munged OP_limit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_limit.sen -- Operator limit rows                                        */\n"
@@ -32613,13 +32476,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 241 CONSTANT OP_limit.sen "_Stz;
+  szSubScriptDef = " 240 CONSTANT OP_limit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [242] OP_pmetaRecv.sen
+  // munge of [241] OP_pmetaRecv.sen
 
-  gszaMungedText[242] =
+  gszaMungedText[241] =
     "\" munged OP_pmetaRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pmetaRecv.sen -- Operator meta recv                                      */\n"
@@ -32700,13 +32563,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 242 CONSTANT OP_pmetaRecv.sen "_Stz;
+  szSubScriptDef = " 241 CONSTANT OP_pmetaRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [243] OP_answer.sen
+  // munge of [242] OP_answer.sen
 
-  gszaMungedText[243] =
+  gszaMungedText[242] =
     "\" munged OP_answer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_answer.sen -- Operator answer                                           */\n"
@@ -32932,13 +32795,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 243 CONSTANT OP_answer.sen "_Stz;
+  szSubScriptDef = " 242 CONSTANT OP_answer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [244] job_seedMarkers.sen
+  // munge of [243] job_seedMarkers.sen
 
-  gszaMungedText[244] =
+  gszaMungedText[243] =
     "\" munged job_seedMarkers.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedMarkers.sen -- Job Seed Marker words                               */\n"
@@ -33258,7 +33121,144 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 244 CONSTANT job_seedMarkers.sen "_Stz;
+  szSubScriptDef = " 243 CONSTANT job_seedMarkers.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [244] OP__tpl_lite.sen
+
+  gszaMungedText[244] =
+    "\" munged OP__tpl_lite.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP__tpl_lite.sen -- templates for lite op                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP__tpl_lite.sen\" .verbose\n"
+    "    \n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* on ZK_M_DATAPULSE ...                                                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_lite_DataMarker\n"
+    "\n"
+    "\"\n"
+    ": /liteOp/_DataMarker \\\\handler\n"
+    "\n"
+    "  PipeIn[].pipeOut\n"
+    "\n"
+    "  /liteOp/_action if\n"
+    "    Marker[].newEosMarker\n"
+    "    Marker[].pipeOut\n"
+    "  then\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for liteOp req                             (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_lite_req\n"
+    "\n"
+    "\"\n"
+    ": /liteOp/_req \\\\operator\n"
+    " \n"
+    "  LogReqEntry SEED_REQ\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: /liteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  LogReqExit\n"
+    "  _op_release_resources_\n"
+    "  _op_retires_\n"
+    "  DONE_REQ_OP\n"
+    " ;\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* liteOp procedure with 0 parameters                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_lite_procedure0\n"
+    "\n"
+    "\"\n"
+    "  procedure /liteOp/\n"
+    "    tags <lowMemory>\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | stageB\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "      /liteOp/ | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "      output | sink | stageA\n"
+    "\n"
+    "  end\n"
+    "\"\n"
+    " ;\n"
+    "    \n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* liteOp procedure with 1 parameter                                          */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_lite_procedure1\n"
+    "\n"
+    "\"\n"
+    "  procedure /liteOp/\n"
+    "    tags <lowMemory>\n"
+    "    parameters $param\n"
+    "  begin\n"
+    "\n"
+    "  stage stageA on origin :\n"
+    "    start | pulse once | stageB\n"
+    "\n"
+    "  stage stageB on all nodes :\n"
+    "    /liteOp/ $param | stageC\n"
+    "\n"
+    "  stage stageC on origin :\n"
+    "    output | sink | stageA\n"
+    "\n"
+    "  end\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* liteOp procedure with 2 parameters                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP__tpl_lite_procedure2\n"
+    "\n"
+    "\"\n"
+    "  procedure /liteOp/\n"
+    "    tags <lowMemory>\n"
+    "    parameters $param0 $param1\n"
+    "  begin\n"
+    "\n"
+    "  stage stageA on origin :\n"
+    "    start | pulse once | stageB\n"
+    "\n"
+    "  stage stageB on all nodes :\n"
+    "    /liteOp/ $param0 $param1 | stageC\n"
+    "\n"
+    "  stage stageC on origin :\n"
+    "    output | sink | stageA\n"
+    "\n"
+    "  end\n"
+    "\"\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 244 CONSTANT OP__tpl_lite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -710,7 +710,7 @@ void Step::vSenSemicolon(void)
     
   //m_pSenCompiler->vCurrentWord(nullptr);
     
-//  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
+//  if (pCurrentWord->szWordNm()->bSame("OP__tpl_lite_PulseMarker"_Stz))
 //    AM::WORD::vDisassemble(pCurrentWord,&m_oDicStack);
   
   EXIT();

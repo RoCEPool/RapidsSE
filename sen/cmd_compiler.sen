@@ -73,15 +73,15 @@
   "<params>" pCmdTagSet tagSet.getStr >int locals| iParams |
 
   iParams 2 == if
-    "/liteOp/" sOpNm tpl_liteOp_procedure2 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure2 str.replace to sText
     sText procedure::add
   else
   iParams 1 == if
-    "/liteOp/" sOpNm tpl_liteOp_procedure1 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure1 str.replace to sText
     sText procedure::add
   else
   iParams 0 == assert
-    "/liteOp/" sOpNm tpl_liteOp_procedure0 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure0 str.replace to sText
     sText procedure::add
   then then
 ;
@@ -107,15 +107,15 @@
   "<params>" pCmdTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure2 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure2 str.replace to sText
     sText procedure::add
   else
   iParams 1 == if
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure1 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure1 str.replace to sText
     sText procedure::add
   else
   iParams 0 == assert
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure0 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure0 str.replace to sText
     sText procedure::add
   then then
 ;
@@ -158,11 +158,11 @@
   // sOpNm "LiteOP: %v" .printf
 
   // synthesize word : sOpNm_DataMarker \\handler ... ;
-  "/liteOp/" sOpNm tpl_liteOp_DataMarker str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize word : sOpNm_req ... ;
-  "/liteOp/" sOpNm tpl_liteOp_req str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_req str.replace to sText
   sText >interpret
 ;
 
@@ -182,11 +182,11 @@
   // sOpNm "LocalLiteOP: %v" .printf
 
   // synthesize : sOpNm_DataMarker
-  "/localLiteOp/" sOpNm tpl_localLiteOp_DataMarker str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize : sOpNm_req
-  "/localLiteOp/" sOpNm tpl_localLiteOp_req str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_req str.replace to sText
   sText >interpret
 ;
 
