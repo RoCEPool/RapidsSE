@@ -5,11 +5,10 @@
 " job_Pipeline.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* pipeline request (on originating node)                                     */
+/* request execution of a distributed pipeline (on originating node)          */
 /*----------------------------------------------------------------------------*/
 : pipeline::request _eeh_suffix ( -- <R> )
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on origin to check its syntax
   
   <cmd> Pipeline::compileStmt dup
@@ -19,6 +18,26 @@
     Pipeline::deleteSpec
     discard
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin pipeline job on participating node                                   */
+/*----------------------------------------------------------------------------*/
+: pipeline::begin _eeh_suffix ( -- )
+
+  job[] job.phase@ JP_BEGINNING assert
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline statement on participants (should not expect an error)
+  
+  <cmd> Pipeline::compileStmt
+  EC_NONE == assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // begin the pipeline job (spawning jobs for ops etc)
+  
+  Pipeline::create
+  Pipeline::spawnOpTasks
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +71,7 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enqueue startmarker to start op to execute the pipeline job
+  // enqueue start-marker to start op to execute the pipeline job
   
   //<pipelineNm> "%v execute" .printf
   Pipeline::enqueueStart not if
@@ -62,31 +81,11 @@
   then
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for operators to finish
+  // wait for all operators to ack this job
   
   //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
   task::wait
   //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
-;
-
-/*----------------------------------------------------------------------------*/
-/* check resources for pipeline on participating node                         */
-/*----------------------------------------------------------------------------*/
-: pipeline::checkResources _eeh_suffix ( -- )
-
-  job[] job.phase@ JP_BEGINNING assert
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline statement 
-  
-  <cmd> Pipeline::compileStmt
-  EC_NONE == assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job (spawning jobs for ops etc)
-  
-  Pipeline::create
-  Pipeline::spawnOpTasks
 ;
 
 /*----------------------------------------------------------------------------*/

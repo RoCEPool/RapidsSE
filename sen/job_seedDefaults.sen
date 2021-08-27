@@ -118,7 +118,7 @@
 
   job::becomeParticipant
 
-  <jobNm> "::checkResources" str.cat find dup if
+  <jobNm> "::begin" str.cat find dup if
     execute
 
   else
