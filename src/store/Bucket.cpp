@@ -37,7 +37,7 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bucket::Bucket(Table* pTable, tPN tPtnNo)
+Bucket::Bucket(Table* pTable, tPN tPtnNo, eCN eKind)
     : Object(CN_BUCKET)
     //, m_okLock(this)
 {
@@ -45,23 +45,7 @@ Bucket::Bucket(Table* pTable, tPN tPtnNo)
 
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
-
-  eTT eTableKind = m_pTable->eKind();
-  switch (eTableKind) {
-    case TT_INFOSET:
-      NEVER_REACH;
-      break;
-    case TT_INTERNAL:
-      m_eKind = CN_ROWTABLEPTN;
-      break;
-    case TT_NORMAL:
-      m_eKind = CN_CRWTABLEPTN;
-      break;
-    case TT_REPLICATED:
-      NEVER_REACH;
-      break;
-    default: NEVER_REACH;
-  }
+  m_eKind = eKind;
 
   switch (m_eKind) {
     case CN_ROWTABLEPTN:
@@ -118,61 +102,7 @@ void Bucket::vRepair(Object* pObject, eRF eRepair)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* drop a read lock on the partition                                          */
-/*----------------------------------------------------------------------------*/
-void Bucket::vDropRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  //ASSERT(m_okLock.bIsLocked());
-  //m_okLock.vDropRead();
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a write lock on the partition                                         */
-/*----------------------------------------------------------------------------*/
-void Bucket::vDropWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  //ASSERT(m_okLock.bIsLocked());
-  //m_okLock.vDropWrite();
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a read lock on the partition                           */
-/*----------------------------------------------------------------------------*/
-bool Bucket::bGrabRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  //return m_okLock.bGrabRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a write lock on the partition                          */
-/*----------------------------------------------------------------------------*/
-bool Bucket::bGrabWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  //return m_okLock.bGrabWrite();
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the table partition locked?                                             */
-/*----------------------------------------------------------------------------*/
-bool Bucket::bIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  //return m_okLock.bIsLocked();
-  NEVER_REACH
-}
 
 /*----------------------------------------------------------------------------*/
 /* return tablePtn kind                                                       */

@@ -16,7 +16,8 @@ namespace STORE
     Lock   m_okLock;  // lock on the partition
     eCN    m_eKind;   // what kind of table partition
 
-    BucketVec* m_pBucketVec;
+    BucketVec*    m_pBucketVec;     // vector of buckets
+    IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
 
     Table* m_pTable;  // table this partition belongs to
     tPN    m_tPtnNo;  // partition number (in grid)
@@ -43,7 +44,7 @@ namespace STORE
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vSetBucket(i8 iBucket);
-    void vAddBucket(Table* pTable, tPN tPtnNo);
+    void vAddBucket(Table* pTable, tPN tPtnNo, eCN eKind);
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);

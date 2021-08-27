@@ -28,16 +28,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Bucket(Table* pTable, tPN tPtnNo);
+    Bucket(Table* pTable, tPN tPtnNo, eCN eKind);
     ~Bucket(void) noexcept(false);
 
     static void vRepair(Object* pObject, eRF eRepair);
 
-    void vDropRead(void);
-    void vDropWrite();
-    bool bGrabRead(void);
-    bool bGrabWrite(void);
-    bool bIsLocked(void);
+
     eCN  eKind(void);
     tPN  tPtnNo(void);
     Table* pTable(void);

@@ -46,14 +46,33 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   m_tPtnNo = tPtnNo;
 
   m_pBucketVec = new BucketVec;
+  m_pIndexTreeVec  = new IndexTreeVec;
+
+  eTT eTableKind = m_pTable->eKind();
+  switch (eTableKind) {
+    case TT_INFOSET:
+      NEVER_REACH;
+      break;
+    case TT_INTERNAL:
+      m_eKind = CN_ROWTABLEPTN;
+      break;
+    case TT_NORMAL:
+      m_eKind = CN_CRWTABLEPTN;
+      break;
+    case TT_REPLICATED:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
 
 #ifdef WITH_BKTMAP_2N4P
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
   {
-    vAddBucket(pTable, tPtnNo);
+    vAddBucket(pTable, tPtnNo, m_eKind);
   }
 #else
-  vAddBucket(pTable, tPtnNo);
+  vAddBucket(pTable, tPtnNo, m_eKind);
 #endif
 
   _checkInitialised_(CN_TABLEPTN);
@@ -72,8 +91,12 @@ TablePtn::~TablePtn(void) noexcept(false) {
     delete m_pBucketVec->pGet(i_Bucket);
   }
   m_pBucketVec->vClear();
+
   // delete bucket vector
   delete m_pBucketVec;
+
+  // delete the index data vector
+  delete m_pIndexTreeVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,9 +182,9 @@ Table *TablePtn::pTable(void) {
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo) {
+void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo, eCN eKind) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnNo);
+  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
 
@@ -211,11 +234,17 @@ i8 TablePtn::nBuckets(void) {
 void TablePtn::vAddIndex(IndexTree *pIndexTree) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
+#ifdef WITH_MULTI_BUCKET
+  ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
+  m_pIndexTreeVec->vAdd(pIndexTree);
+#else
+
   // Add index for all buckets
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vAddIndex(pIndexTree);
   }
+#endif
 
 }
 
@@ -224,6 +253,23 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  // Note: After append buffer we need to insert into index
+  // We need code for append buffer here
+
+  // now insert entries from the buffer into the indexes
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+      break;
+    case CN_ROWTABLEPTN:
+      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
+      break;
+    default:
+      NEVER_REACH;
+  }
+
 
 
 #ifdef WITH_BKTMAP_2N4P
@@ -274,13 +320,18 @@ void TablePtn::vDump(void) {
 IndexTree *TablePtn::pIndexTree(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 #ifdef WITH_MULTI_BUCKET
-  IndexTree *pIndexTree = nullptr;
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pIndexTree = pBucket->pIndexTree(iIndexNo);
-    if (pIndexTree)
+  // Index tree at the tableptn
+
+  IndexTree* pIndexTree = nullptr;
+  i8 nIndexes = m_pIndexTreeVec->nItems();
+
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    Index* pIndex = pIndexTree->pIndex();
+    if (pIndex->iIndexNo() == iIndexNo)
       break;
   }
+
   return pIndexTree;
 #else
   IndexTree *pIndexTree = m_pBucket->pIndexTree(iIndexNo);
@@ -296,16 +347,7 @@ IndexTreeVec *TablePtn::pIndexTreeVec(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 #ifdef WITH_MULTI_BUCKET
-  // OK, this one it tricky, which bucket ? RAY?
-
-  IndexTreeVec *pIndexTreeVec = nullptr;
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pIndexTreeVec = pBucket->pIndexTreeVec();
-    if (pIndexTreeVec)
-      break;
-  }
-  return pIndexTreeVec;
+  return m_pIndexTreeVec;
 #else
   IndexTreeVec *pIndexTreeVec = m_pBucket->pIndexTreeVec();
 
@@ -319,19 +361,18 @@ IndexTreeVec *TablePtn::pIndexTreeVec(void) {
 void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+  // get no of indexes of the table
+  i8 nIndexes = m_pIndexTreeVec->nItems();
 
-  /*for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket* pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vInsertIndexEntries(pCrwBuffer);
-  }*/
-  i8 iBktNo = pCrwBuffer->iBucketNo();
-  Bucket *pBucket = pGetBucket(iBktNo);
-  pBucket->vInsertIndexEntries(pCrwBuffer);
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
 
-#else
-  m_pBucketVec->pGet(0)->vInsertIndexEntries(pCrwBuffer);
-#endif
+    // get index
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+
+    // insert entries from EntBuffer into the index
+    pIndexTree->vInsertEntries(pCrwBuffer);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,8 +381,22 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
 bool TablePtn::bPopulateIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
+  /* Need API to handle get all rows to replace get root
+  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
+
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
+
+  while (pCrwBuffer) {
+    pIndexTree->vInsertEntries(pCrwBuffer);
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
+  }
+
+  return true;
+   */
+
 #ifdef WITH_MULTI_BUCKET
   // Should it be only one bucket has this indexNo ? RAY ?
+  // tableptn level
   bool b = false;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -365,6 +420,8 @@ CrwBuffer *TablePtn::pRootCrwBuffer(void) {
 
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY ?
+  // this concept doesn't work anymore, will be removed from the system
+  // new api to access all rows from ptn stream
   CrwBuffer *pRootBuffer = nullptr;
 
 
@@ -388,6 +445,8 @@ DataBuffer *TablePtn::pRootBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY ?
+  // this concept doesn't work anymore, will be removed from the system
+  // new api to access all rows from ptn stream
   DataBuffer *pRootBuffer = nullptr;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -411,6 +470,8 @@ RowBuffer *TablePtn::pRootRowBuffer(void) {
 
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY
+  // this concept doesn't work anymore, will be removed from the system
+  // new api to access all rows from ptn stream
   RowBuffer *pRootBuffer = nullptr;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -431,18 +492,12 @@ RowBuffer *TablePtn::pRootRowBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vRemoveIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_MULTI_BUCKET
-  // Should it be only one bucket has this indexNo ? RAY
 
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vRemoveIndex(iIndexNo);
-  }
+  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
 
-#else
-  m_pBucket->vRemoveIndex(iIndexNo);
-#endif
-
+  // remove the index from the IdxDataVec
+  m_pIndexTreeVec->vRemove(pIndexTree);
+  delete pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/
