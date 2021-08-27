@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : consumeOp_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   <Sends> >int Sends[].new
 
@@ -228,7 +228,8 @@
 
   Sends[].delete
 
-  _op_release_resources_
+  _lu_finalise_
+  
   _op_retires_
   
   HAZARD

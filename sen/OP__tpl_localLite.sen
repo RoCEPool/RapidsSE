@@ -32,7 +32,7 @@
 "
   : /localLiteOp/_req \\operator
 
-    LogReqEntry SEED_REQ
+    _lu_initialise_
 
     op__topology
 

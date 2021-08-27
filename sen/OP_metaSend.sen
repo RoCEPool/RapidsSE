@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
   //"metaSend_req" .
 
   op__topology
@@ -47,7 +47,8 @@
   find: metaSend_metaGet ZK_D_METAGET op[].handler!
   op__loop
 
-  _op_release_resources_
+  _lu_finalise_
+  
   _op_retires_
   
   HAZARD

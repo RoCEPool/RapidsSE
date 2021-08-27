@@ -21,16 +21,16 @@
 /*----------------------------------------------------------------------------*/
  : adjustPtns_req \operator
  
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   op__topology
 
   find: adjustPtns_DataPulse ZK_M_DATAPULSE op[].handler!
 
   op__loop
-
-  _op_release_resources_
-  _op_release_resources_
+  
+  _lu_finalise_
+  
   _op_retires_
   
   HAZARD

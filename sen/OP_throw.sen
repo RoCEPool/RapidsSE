@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : throw_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   op__topology
 
@@ -34,7 +34,8 @@
   op__loop
 
   // "*** throw_req EXITS" .
-  _op_release_resources_
+  _lu_finalise_
+  
   _op_retires_
   
   HAZARD
