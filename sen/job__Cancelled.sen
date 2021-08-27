@@ -52,8 +52,9 @@
 /*----------------------------------------------------------------------------*/
 : _Cancelled_run _run_suffix
 
-  SEED_RUN
-
+  <path> str.toStrVec Path[].set
+  
+  
   job[] locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 

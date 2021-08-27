@@ -12,7 +12,7 @@
 
 : start_run ( -- <R> )
 
-  SEED_RUN
+  // <path> str.toStrVec Path[].set
 
   nullptr locals| pParentJob |
 
