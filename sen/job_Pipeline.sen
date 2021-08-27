@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* job_Pipeline.sen -- Job Pipeline                                           */
+/* job_Pipeline.sen -- Pipeline Job (being a distributed job)                 */
 /*============================================================================*/
 
 " job_Pipeline.sen" .verbose
@@ -10,7 +10,8 @@
 : pipeline::request _eeh_suffix ( -- <R> )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline command
+  // compile the pipeline statement on origin to check its syntax
+  
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     job::error! exit
@@ -21,17 +22,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Pipeline job on a node                                         */
+/* execute pipeline job on participating node                                 */
 /*----------------------------------------------------------------------------*/
 : pipeline::execute _eeh_suffix ( -- )
 
   task[] locals| pTask |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // run optional <pre_execute> word
 
-  // run <pre_execute>
-
-  "<pre_execute>"
-  job::tagSet@ tagSet.hasName if
+  "<pre_execute>" job::tagSet@ tagSet.hasName if
     "<pre_execute>"
     job::tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
@@ -48,38 +48,43 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
+  
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute the pipeline job (send startmarker to start)
+  // enqueue startmarker to start op to execute the pipeline job
+  
   //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart if
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // wait for operators to finish
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
-    task::wait
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
-  else
+  Pipeline::enqueueStart not if
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
     pTask task.dropLock
+    exit
   then
-
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for operators to finish
+  
+  //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
+  task::wait
+  //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_pipeline job check resources                                   */
+/* check resources for pipeline on participating node                         */
 /*----------------------------------------------------------------------------*/
 : pipeline::checkResources _eeh_suffix ( -- )
 
+  job[] job.phase@ JP_BEGINNING assert
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline command
+  // compile the pipeline statement 
+  
   <cmd> Pipeline::compileStmt
   EC_NONE == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
+  
   Pipeline::create
   Pipeline::spawnOpTasks
 ;
