@@ -200,16 +200,9 @@
 /*----------------------------------------------------------------------------*/
 /* test if this job has </flow/> and if so print the jobs ename set           */
 /*----------------------------------------------------------------------------*/
-: job::</seeFlow/>
+: job::seeTags
 
-  "</flow/>"
-    job::tagSet@ tagSet.hasName
-  if
-
-    r@ locate .
-    job::tagSet@ tagSet.asStr .
-
-  then
+  job::tagSet@ tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
