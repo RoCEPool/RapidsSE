@@ -813,9 +813,9 @@ void Api::vCallBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call start                                                                 */
+/* run the start job                                                          */
 /*----------------------------------------------------------------------------*/
-void Api::vCallStart(void)
+void Api::RunStartJob(void)
 {
   _static_
 

@@ -12,10 +12,6 @@
 
 : start_run ( -- <R> )
 
-  // <path> str.toStrVec Path[].set
-
-  nullptr locals| pParentJob |
-
   "start_run" .verbose
 
   // define the apriori procedures

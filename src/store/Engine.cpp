@@ -1575,8 +1575,8 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Running Start\n"_Stz);
-  Api::vCallStart();
+    vInfo("  Running Start Job\n"_Stz);
+  Api::RunStartJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
