@@ -19,7 +19,7 @@
 : distJob_tags
   tags{
     <distJob> = 1
-    <jobKind>  = JK_DIST2PC
+    <jobKind>  = JK_PIPELINE
   }
 ;
         

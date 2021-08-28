@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* _req makes the word being compile a request seed with name: /wordNm/_req   */
 /*----------------------------------------------------------------------------*/
-: ::geb_suffix immediate _suffix
+: ::req_suffix immediate _suffix
 
   // append _req to name of word being compiled
   // "_req" word::addSuffix

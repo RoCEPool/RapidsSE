@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedLocal_req ::geb_suffix ( -- )
+: defaultSeedLocal_req ::req_suffix ( -- )
 
   [ senCompiler::current@ word.name@ encode::push ] .
   <jobNm> .
@@ -48,9 +48,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* request default                                      (on originating node) */
+/* request                                              (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist_req ::geb_suffix ( -- )
+: pipelineSeed_req ::req_suffix ( -- )
 
   "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if
@@ -105,9 +105,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin default                                 (on each participating node) */
+/* begin                                         (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist_beg _beg_suffix ( -- )
+: pipelineSeed_beg _beg_suffix ( -- )
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -131,9 +131,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute default                               (on each participating node) */
+/* execute                                       (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist_exe _exe_suffix
+: pipelineSeed_exe _exe_suffix
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -160,13 +160,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end default                                   (on each participating node) */
+/* end                                           (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist_end _end_suffix ( -- )
+: pipelineSeed_end _end_suffix ( -- )
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  //grid::thisNodeName@ "(%v) defaultSeedDist _end" .printf
+  //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
 
   JP_ENDING job[] job.phase!
 
@@ -185,9 +185,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel default                                (on each participating node) */
+/* cancel                                        (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist_can _can_suffix ( -- )
+: pipelineSeed_can _can_suffix ( -- )
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 

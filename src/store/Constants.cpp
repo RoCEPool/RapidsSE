@@ -560,7 +560,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
   /*  1 */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
   /*  2 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
-  /*  3 */ vAddConstant("JK_DIST2PC"_Stz,   JK_DIST2PC);
+  /*  3 */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
   /*  4 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
   /*  5 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
   /*  6 */ vAddConstant("JK_INFO"_Stz,      JK_INFO);

@@ -5,13 +5,13 @@
 " cmd_info.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* test if info word is about a distributed job                               */
+/* test if info word is about a pipeline job                                  */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutDistJob params| pInfoWrd |
+: _cmdTags.aboutPipelineJob params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
-  "<jobKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+  "<jobKind>" pInfTagSet tagSet.getInt JK_PIPELINE == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,16 +52,6 @@
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
   "<localLiteOp>" pInfTagSet tagSet.hasName if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if info word is a service command                                     */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.aboutServiceCmd params| pInfoWrd |
-
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
-
-  "<cmdKind>" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
