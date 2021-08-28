@@ -46,7 +46,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "req_exitHook" senCompiler::current@ word.exitHook!
+  //"req_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "beg_exitHook" senCompiler::current@ word.exitHook!
+  //"beg_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "exe_exitHook" senCompiler::current@ word.exitHook!
+  //"exe_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "end_exitHook" senCompiler::current@ word.exitHook!
+  //"end_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +105,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "can_exitHook" senCompiler::current@ word.exitHook!
+  //"can_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*============================================================================*/

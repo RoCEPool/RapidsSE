@@ -67,6 +67,8 @@
       // task has no job
       task::scheduledelete
 
+      req_exitHook
+      
       exit
 
     then
@@ -101,6 +103,8 @@
   // task has no job
   task::scheduledelete
 
+  req_exitHook
+  
   HAZARD
 ;
 
@@ -132,6 +136,8 @@
   nullptr job[] job.seedWord!
   
   job[] "Job__Begun::replyToOrigin" find execute
+  
+  beg_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,6 +167,8 @@
   nullptr job[] job.seedWord!
 
   job[] "Job__Executed::replyToOrigin" find execute
+  
+  exe_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -186,6 +194,8 @@
   job[] job.removeParticipant
 
   job[] "Job__Ended::replyToOrigin" find execute
+  
+  end_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -209,6 +219,8 @@
   job[] job.removeParticipant
 
   job[] "Job__Cancelled::replyToOrigin" find execute
+  
+  can_exitHook
 ;
 
 /*============================================================================*/
