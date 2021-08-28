@@ -49,7 +49,7 @@ assert::stack_0
         "job_seedHooks.sen"       include
         "job_seedSuffixs.sen"     include
         "job_2pcReply.sen"        include
-        "job_seedDefaults.sen"    include
+        "job_seedPipeline.sen"    include
         
         // -- -- -- -- -- -- -- -- -- --
 
