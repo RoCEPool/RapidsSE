@@ -131,7 +131,7 @@
   JP_BEGUN job[] job.phase!
   nullptr job[] job.seedWord!
   
-  job[] "Job__Begun::send" find execute
+  job[] "Job__Begun::replyToOrigin" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@
   JP_EXECUTED job[] job.phase!
   nullptr job[] job.seedWord!
 
-  job[] "Job__Executed::send" find execute
+  job[] "Job__Executed::replyToOrigin" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +185,7 @@
 
   job[] job.removeParticipant
 
-  job[] "Job__Ended::send" find execute
+  job[] "Job__Ended::replyToOrigin" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +208,7 @@
 
   job[] job.removeParticipant
 
-  job[] "Job__Cancelled::send" find execute
+  job[] "Job__Cancelled::replyToOrigin" find execute
 ;
 
 /*============================================================================*/

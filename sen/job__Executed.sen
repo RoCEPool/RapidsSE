@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Executed back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::send ( pJobParticipant -- )
+: Job__Executed::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 

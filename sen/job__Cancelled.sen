@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Cancelled back to originating node                               */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled::send ( pJobParticipant -- )
+: Job__Cancelled::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 

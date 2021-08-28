@@ -11,9 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Begun back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::send ( pJobParticipant -- )
-
-  params| pJobParticipant |
+: Job__Begun::replyToOrigin params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
