@@ -14,7 +14,7 @@ namespace STORE
   {
   private:
     Lock   m_okLock;  // lock on the partition
-    eCN    m_eKind;   // what kind of table partition
+    //eCN    m_eKind;   // what kind of table partition
 
     BucketVec* m_pBucketVec;
 
@@ -37,7 +37,7 @@ namespace STORE
     bool bGrabRead(void);
     bool bGrabWrite(void);
     bool bIsLocked(void);
-    eCN  eKind(void);
+    //eCN  eKind(void);
     tPN  tPtnNo(void);
     Table* pTable(void);
 
