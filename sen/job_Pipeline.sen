@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::request _eeh_suffix ( -- <R> )
 
+  job::assertCorrectness
+
   // compile the pipeline statement on origin to check its syntax
   
   <cmd> Pipeline::compileStmt dup
@@ -24,6 +26,8 @@
 /* begin pipeline job on participating node                                   */
 /*----------------------------------------------------------------------------*/
 : pipeline::begin _eeh_suffix ( -- )
+
+  job::assertCorrectness
 
   job[] job.phase@ JP_BEGINNING assert
   
@@ -46,6 +50,9 @@
 : pipeline::execute _eeh_suffix ( -- )
 
   task[] locals| pTask |
+  
+    job::assertCorrectness
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
@@ -92,12 +99,18 @@
 /* end pipeline job on participating node                                     */
 /*----------------------------------------------------------------------------*/
 : pipeline::end _eeh_suffix ( -- )
+
+  job::assertCorrectness
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end pipeline job on participating node                                     */
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel _eeh_suffix ( -- )
+
+  job::assertCorrectness
+
 ;
 
 /*----------------------------------------------------------------------------*/

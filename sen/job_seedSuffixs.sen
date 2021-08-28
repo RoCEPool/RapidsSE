@@ -49,7 +49,7 @@
   "req_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to req_entryHook into word being compiled
-  POSTPONE req_entryHook
+  //POSTPONE req_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@
   "beg_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to beg_entryHook into word being compiled
-  POSTPONE beg_entryHook
+  //POSTPONE beg_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@
   "exe_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to exe_entryHook into word being compiled
-  POSTPONE exe_entryHook
+  //POSTPONE exe_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@
   "end_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to end_entryHook into word being compiled
-  POSTPONE end_entryHook
+  //POSTPONE end_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@
   "can_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to can_entryHook into word being compiled
-  POSTPONE can_entryHook
+  //POSTPONE can_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +137,7 @@
   "run_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to beg_entryHook into word being compiled
-  POSTPONE run_entryHook
+  //POSTPONE run_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@
   "std_exitHook" senCompiler::current@ word.exitHook!
 
   // add call to std_entryHook into word being compiled
-  POSTPONE std_entryHook
+  //POSTPONE std_entryHook
 ;
 
 /*============================================================================*/
