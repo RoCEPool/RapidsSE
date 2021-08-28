@@ -110,6 +110,7 @@
   bAmDecider not if
     JobRef[].return
     DONE_RCV
+    run_exitHook
     exit                                                         // *EARLY EXIT*
   then
 
@@ -132,6 +133,8 @@
 
   // delete this completed __cancelled job
   DONE_RCV
+  
+  run_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/

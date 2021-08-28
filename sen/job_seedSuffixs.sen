@@ -119,7 +119,7 @@
   //word::seed#
 
   // set exit hook of word being compiled
-  "run_exitHook" senCompiler::current@ word.exitHook!
+  //"run_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*----------------------------------------------------------------------------*/

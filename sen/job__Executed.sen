@@ -70,6 +70,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
+    run_exitHook
     exit                                                         // *EARLY EXIT*
   then
   //grid::thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
@@ -80,6 +81,8 @@
   // send a job__end to all participants
   JobRef[] Job__End::distribute
   JobRef[].return
+
+  run_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/

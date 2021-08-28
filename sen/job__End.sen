@@ -78,6 +78,8 @@
   JM_SEED_END JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
   JobRef[].return
+  
+  run_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/

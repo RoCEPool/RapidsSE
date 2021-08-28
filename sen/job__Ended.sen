@@ -68,6 +68,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
+    run_exitHook
     exit                                                         // *EARLY EXIT*
   then
   //grid::thisNodeName@ "(%v) ENDED AM DECIDER" .printf
@@ -87,6 +88,8 @@
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
   JobRef[].return
+  
+  run_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/

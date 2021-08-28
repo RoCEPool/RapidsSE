@@ -77,6 +77,8 @@
   JM_SEED_EXE JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
   JobRef[].return
+  
+  run_exitHook
 ;
 
 /*----------------------------------------------------------------------------*/
