@@ -32,7 +32,6 @@
 #include "EnumGroups.h"
 #include "eAN.h"
 #include "eAT.h"
-#include "eCK.h"
 #include "eDL.h"
 #include "ePD.h"
 #include "ePP.h"
@@ -296,13 +295,6 @@ void Constants::vAddConstantsCpp(void)
   /*  5 */ vAddConstant("AT_SCAN"_Stz,     AT_SCAN);
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
   
-  // CK_ : command kind
-  /*  0 */ vAddConstant("CK_NONE"_Stz,     CK_NONE);
-  /*  0 */ vAddConstant("CK_COMMAND"_Stz,  CK_COMMAND);
-  /*  0 */ vAddConstant("CK_CHILD"_Stz,    CK_CHILD);
-  /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
-
-  
   // CN_ : class number
   /*    */ vAddConstant("CN_EACHROWBUFFER"_Stz,CN_EACHROWBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
@@ -465,7 +457,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_AT"_Stz,   EG_AT);
   vAddConstant("EG_BO"_Stz,   EG_BO);
   vAddConstant("EG_CC"_Stz,   EG_CC);
-  vAddConstant("EG_CK"_Stz,   EG_CK);
   vAddConstant("EG_CM"_Stz,   EG_CM);
   vAddConstant("EG_CN"_Stz,   EG_CN);
   vAddConstant("EG_CP"_Stz,   EG_CP);

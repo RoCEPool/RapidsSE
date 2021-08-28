@@ -10,7 +10,6 @@
 #include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
-#include "eCK.h"
 #include "eCP.h"
 #include "eCX.h"
 #include "eDL.h"
@@ -3206,7 +3205,6 @@ static Stz* aEG[]
   "EG_BO"_Stz,
 
   "EG_CC"_Stz,
-  "EG_CK"_Stz,
   "EG_CM"_Stz,
   "EG_CN"_Stz,
   "EG_CP"_Stz,
@@ -3337,7 +3335,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_BO: return aBO[i_Enum];
       
     case EG_CC: return aCC[i_Enum];
-    case EG_CK: return aCK[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
     case EG_CP: return aCP[i_Enum];
