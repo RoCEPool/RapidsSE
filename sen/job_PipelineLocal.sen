@@ -92,6 +92,8 @@
   then
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  
+  std_exitHook
   DONE_REQ
 ;
 
