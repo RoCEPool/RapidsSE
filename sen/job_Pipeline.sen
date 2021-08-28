@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* request execution of a distributed pipeline (on originating node)          */
 /*----------------------------------------------------------------------------*/
-: pipeline::request _eeh_suffix ( -- <R> )
+: pipeline::request ( -- <R> )
 
   job::assertCorrectness
 
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* begin pipeline job on participating node                                   */
 /*----------------------------------------------------------------------------*/
-: pipeline::begin _eeh_suffix ( -- )
+: pipeline::begin ( -- )
 
   job::assertCorrectness
 
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute pipeline job on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: pipeline::execute _eeh_suffix ( -- )
+: pipeline::execute ( -- )
 
   task[] locals| pTask |
   
@@ -101,7 +101,7 @@
 /*----------------------------------------------------------------------------*/
 /* end pipeline job on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::end _eeh_suffix ( -- )
+: pipeline::end ( -- )
 
   job::assertCorrectness
 
@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /* end pipeline job on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::cancel _eeh_suffix ( -- )
+: pipeline::cancel ( -- )
 
   job::assertCorrectness
 

@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* request                                              (on originating node) */
 /*----------------------------------------------------------------------------*/
-: pipelineSeed_req ::req_suffix ( -- )
+: pipelineSeed_req ::req_suffix [ word::seed# ]
 
   "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if
@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /* begin                                         (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: pipelineSeed_beg _beg_suffix ( -- )
+: pipelineSeed_beg _beg_suffix [ word::seed# ]
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -137,7 +137,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute                                       (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: pipelineSeed_exe _exe_suffix
+: pipelineSeed_exe _exe_suffix [ word::seed# ]
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 /* end                                           (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: pipelineSeed_end _end_suffix ( -- )
+: pipelineSeed_end _end_suffix [ word::seed# ]
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -191,7 +191,7 @@
 /*----------------------------------------------------------------------------*/
 /* cancel                                        (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: pipelineSeed_can _can_suffix ( -- )
+: pipelineSeed_can _can_suffix [ word::seed# ]
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 

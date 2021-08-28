@@ -43,7 +43,7 @@
   // append _req to name of word being compiled
   // "_req" word::addSuffix
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "req_exitHook" senCompiler::current@ word.exitHook!
@@ -58,9 +58,9 @@
   // "_beg" word::addSuffix
 
   // the compiled word is a seed
-  find: seed senCompiler::current@ word.category!
+  //find: seed senCompiler::current@ word.category!
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "beg_exitHook" senCompiler::current@ word.exitHook!
@@ -74,7 +74,7 @@
   // append _exe to name of word being compiled
   // "_exe" word::addSuffix
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "exe_exitHook" senCompiler::current@ word.exitHook!
@@ -88,7 +88,7 @@
   // append _end to name of word being compiled
   // "_end" word::addSuffix
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "end_exitHook" senCompiler::current@ word.exitHook!
@@ -102,18 +102,10 @@
   // append _can to name of word being compiled
   // "_can" word::addSuffix
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "can_exitHook" senCompiler::current@ word.exitHook!
-;
-
-/*----------------------------------------------------------------------------*/
-/* adds a standard entry and exit hook to word being compiled                 */
-/*----------------------------------------------------------------------------*/
-: _eeh_suffix immediate _suffix
-
-  //"std_exitHook" senCompiler::current@ word.exitHook!
 ;
 
 /*============================================================================*/
