@@ -6,40 +6,6 @@
 
 
 /******************************************************************************/
-/**                                LOCAL JOBS                                **/
-/******************************************************************************/
-
-/*----------------------------------------------------------------------------*/
-/* request default                                      (on originating node) */
-/*----------------------------------------------------------------------------*/
-: defaultSeedLocal_req ::req_suffix ( -- )
-
-  [ senCompiler::current@ word.name@ encode::push ] .
-  <jobNm> .
-
-  //debug::breakPoint
-
-  <path> str.toStrVec Path[].set
-
-  job::acquireDdlLock
-
-  <jobNm> "::request" str.cat find dup if
-    execute
-  else
-    discard
-  then
-
-  DdlLock[].testDrop
-
-  //"Signalling waiting thread" .
-  job::informInvokerOfCompletion
-  // task has no job
-  task::scheduledelete
-
-  HAZARD
-;
-
-/******************************************************************************/
 /**                             DISTRIBUTED JOBS                             **/
 /******************************************************************************/
 
