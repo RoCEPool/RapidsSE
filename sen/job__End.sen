@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__End on participating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _End_run _run_suffix [ word::seed# ]
+: _End_run [ word::seed# ]
 
   //
   // where: on the participating node

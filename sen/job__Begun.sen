@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* run this received Job__Begun on originating node  recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Begun_run _run_suffix  [ word::seed# ]
+: _Begun_run [ word::seed# ]
 
 
 

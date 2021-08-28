@@ -109,20 +109,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _run makes the word being compile a seed with name: <wordNm>_run           */
-/*----------------------------------------------------------------------------*/
-: _run_suffix immediate _suffix
-
-  // append _beg to name of word being compiled
-  // "_run" word::addSuffix
-
-  //word::seed#
-
-  // set exit hook of word being compiled
-  //"run_exitHook" senCompiler::current@ word.exitHook!
-;
-
-/*----------------------------------------------------------------------------*/
 /* adds a standard entry and exit hook to word being compiled                 */
 /*----------------------------------------------------------------------------*/
 : _eeh_suffix immediate _suffix
