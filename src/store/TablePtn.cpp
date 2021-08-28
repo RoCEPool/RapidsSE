@@ -257,6 +257,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // Note: After append buffer we need to insert into index
   // We need code for append buffer here
 
+  #ifdef WITH_BKTMAP_2N4P
+  // >>> Need to come back to this
   // now insert entries from the buffer into the indexes
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
@@ -272,7 +274,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
 
 
-#ifdef WITH_BKTMAP_2N4P
+
   // eventually, we have to append the rowbuffer into the correct bucket
 
   i8 iBktNo = pDataBuffer->iBucketNo();
@@ -319,9 +321,8 @@ void TablePtn::vDump(void) {
 /*----------------------------------------------------------------------------*/
 IndexTree *TablePtn::pIndexTree(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-#ifdef WITH_MULTI_BUCKET
-  // Index tree at the tableptn
 
+#ifdef WITH_MULTI_BUCKET
   IndexTree* pIndexTree = nullptr;
   i8 nIndexes = m_pIndexTreeVec->nItems();
 
@@ -366,7 +367,6 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
 
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-
     // get index
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
 
@@ -381,35 +381,42 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
 bool TablePtn::bPopulateIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  /* Need API to handle get all rows to replace get root
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-
-  CrwBuffer* pCrwBuffer = m_pRootBuffer;
-
-  while (pCrwBuffer) {
-    pIndexTree->vInsertEntries(pCrwBuffer);
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-  }
-
-  return true;
-   */
-
 #ifdef WITH_MULTI_BUCKET
   // Should it be only one bucket has this indexNo ? RAY ?
   // tableptn level
-  bool b = false;
+  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    b = pBucket->bPopulateIndex(iIndexNo);
-    if (b) break;
+    pBucket->bPopulateIndexTree(pIndexTree);
   }
-  return b;
+
+  return true;
 #else
   bool b = m_pBucket->bPopulateIndex(iIndexNo);
 
   return b;
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  i8 nRowsTotal    = 0;
+  i8 nBuffersTotal = 0;
+
+  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
+    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
+    pBucket->vAnalyze(nBuffers, nRows);
+  }
+
+
+  nRowsTotal += nRows;
+  nBuffersTotal += nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,8 +514,24 @@ void TablePtn::vTruncate(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 #ifdef WITH_MULTI_BUCKET
-  // truncate all buckets
+  // truncate for all buckets
 
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      // first truncate all indexes for this table ptn
+      for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
+        IndexTree *pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
+        pIndexTree->vTruncate();
+      }
+      break;
+    case CN_ROWTABLEPTN:
+      // Row buffer doesn't have index
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  // Now, truncate all data
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vTruncate();
@@ -526,13 +549,23 @@ void TablePtn::vTruncateIndex(Index *pIndex) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 #ifdef WITH_MULTI_BUCKET
-  // truncate all index
+  // truncate all index, only for Crw buffer
+  bool bFoundIndex = false;
 
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    // Make sure we don't crash at nullptr
-    pBucket->vTruncateIndex(pIndex);
+  // find the index to be truncated for this table ptn
+  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
+
+    if (pIndexTree->pIndex() == pIndex) {
+      bFoundIndex = true;
+      // truncate the index
+      pIndexTree->vTruncate();
+      break;
+    }
   }
+
+  ASSERT(bFoundIndex);
+
 
 #else
   m_pBucket->vTruncateIndex(pIndex);
@@ -549,7 +582,6 @@ bool TablePtn::bVerifyTable(void) {
   bool bVerify = false;
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    // Make sure we don't crash at nullptr
     bVerify = pBucket->bVerifyTable();
     if (!bVerify)
       break;
@@ -573,7 +605,6 @@ void TablePtn::vVisualizeTable(void) {
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    // Make sure we don't crash at nullptr
     pBucket->vVisualizeTable();
   }
 #else

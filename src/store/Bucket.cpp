@@ -306,6 +306,29 @@ bool Bucket::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries into given index for all rows in this partition             */
+/*----------------------------------------------------------------------------*/
+bool Bucket::bPopulateIndexTree(IndexTree *pIndexTree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
+
+  bool b;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      b = m_pCrwTablePtn->bPopulateIndexTree(pIndexTree);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the root crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* Bucket::pRootCrwBuffer(void)
@@ -460,7 +483,8 @@ void Bucket::vVisualizeTable(void)
       m_pCrwTablePtn->vVisualizeTable();
       break;
     case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vTruncate();
+      //m_pRowTablePtn->vTruncate(); TRUNCATE not VISUALIZE?  RAY?
+      m_pRowTablePtn->vVisualizeTable();
       break;
     default: NEVER_REACH;
   }

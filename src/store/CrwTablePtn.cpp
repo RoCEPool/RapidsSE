@@ -238,6 +238,22 @@ bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries into given index for all rows in this partition             */
+/*----------------------------------------------------------------------------*/
+bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
+
+  while (pCrwBuffer) {
+    pIndexTree->vInsertEntries(pCrwBuffer);
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
+  }
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* get the root row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
@@ -279,10 +295,11 @@ void CrwTablePtn::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
   // first truncate all indexes for this table ptn
+  /* This code gets moved to TablePtn
   for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     pIndexTree->vTruncate();
-  }
+  } */
   
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
@@ -345,7 +362,7 @@ void CrwTablePtn::vVisualizeTable(void)
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
   while (pCrwBuffer) {
-    // print the decile of the this buffer
+    // print the decile of this buffer
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }

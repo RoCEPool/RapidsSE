@@ -14,7 +14,8 @@ namespace STORE
 
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
-    
+
+    // Note that the IndexTreeVec gets moved upto TablePtn
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
       
     // must be last
@@ -36,6 +37,7 @@ namespace STORE
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     tPN  tPtnNo(void);
     bool bPopulateIndex(i8 iIndexNo);
+    bool bPopulateIndexTree(IndexTree* pIndexTree);
     void vRemoveIndex(i8 iIndexNo);
     CrwBuffer* pRootCrwBuffer(void);
     Table* pTable(void);

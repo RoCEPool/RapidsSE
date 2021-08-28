@@ -212,7 +212,7 @@ void RowTablePtn::vVisualizeTable(void)
   RowBuffer* pRowBuffer = m_pRootBuffer;
   
   while (pRowBuffer) {
-    // print the decile of the this buffer
+    // print the decile of this buffer
     vTrace("%lld"_Stz, pRowBuffer->iDecile());
     pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
