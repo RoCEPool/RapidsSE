@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTenant req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropTenant_req \operator
+: dropTenant::geb \operator
 
   _lu_initialise_
 

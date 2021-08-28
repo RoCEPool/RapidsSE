@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : call_req \operator
+ : call::geb \operator
 
   _lu_initialise_
 

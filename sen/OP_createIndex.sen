@@ -122,7 +122,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createIndex req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createIndex_req \operator
+: createIndex::geb \operator
 
   _lu_initialise_
 

@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: exprPushdown_req \operator
+: exprPushdown::geb \operator
 
   _lu_initialise_
 

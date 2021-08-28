@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropIndex req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropIndex_req \operator
+: dropIndex::geb \operator
 
   _lu_initialise_
 

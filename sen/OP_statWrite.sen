@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for statWrite req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : statWrite_req \operator
+ : statWrite::geb \operator
  
   _lu_initialise_
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : via_req \operator
+ : via::geb \operator
 
   _lu_initialise_
 

@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropTable req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropTable_req \operator
+: dropTable::geb \operator
 
   _lu_initialise_
 

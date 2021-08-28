@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for upsert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : upsertOp_req \operator
+ : upsertOp::geb \operator
  
   _lu_initialise_
 

@@ -52,7 +52,7 @@ extern pthread_key_t giTLS_StepKey;
 //    return pOp;
 //  }
 //  
-//  sWordNm.vConcat("_req"_Stz);
+//  sWordNm.vConcat("::geb"_Stz);
 //  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
 //    pOp = Api::pOpCreate(pOpWord);
 //    return pOp;
@@ -575,7 +575,7 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
 //  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
 //
 //  s32 sOpReq = pTkn0->szChars();
-//  sOpReq.vConcat("_req"_Stz);
+//  sOpReq.vConcat("::geb"_Stz);
 //
 //  Word* pOp_maybe = pDicRoot->pFindWord(sOpReq);
 //

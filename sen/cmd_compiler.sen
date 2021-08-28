@@ -161,8 +161,8 @@
   "/liteOp/" sOpNm OP__tpl_lite_DataMarker str.replace to sText
   sText >interpret
 
-  // synthesize word : sOpNm_req ... ;
-  "/liteOp/" sOpNm OP__tpl_lite_req str.replace to sText
+  // synthesize word : sOpNm::geb ... ;
+  "/liteOp/" sOpNm OP__tpl_lite::geb str.replace to sText
   sText >interpret
 ;
 
@@ -185,8 +185,8 @@
   "/localLiteOp/" sOpNm OP__tpl_locallite_DataMarker str.replace to sText
   sText >interpret
 
-  // synthesize : sOpNm_req
-  "/localLiteOp/" sOpNm OP__tpl_locallite_req str.replace to sText
+  // synthesize : sOpNm::geb
+  "/localLiteOp/" sOpNm OP__tpl_locallite::geb str.replace to sText
   sText >interpret
 ;
 
@@ -217,7 +217,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forDistJob params| pwCmdTags |
 
-  "<seedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
+  "<seedReq>" "defaultSeedDist" "::geb" pwCmdTags _cmdTags.addSeedTag
 
   "<seedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedTag
 
@@ -241,7 +241,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forLocalOp params| pwCmdTags |
 
-  "<seedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
+  "<seedReq>" "defaultSeedLocal" "::geb" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/

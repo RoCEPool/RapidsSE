@@ -27,10 +27,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: OP__tpl_locallite_req
+: OP__tpl_locallite::geb
 
 "
-  : /localLiteOp/_req \\operator
+  : /localLiteOp/::geb \\operator
 
     _lu_initialise_
 

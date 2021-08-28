@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createCatalog req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createCatalog_req \operator
+: createCatalog::geb \operator
 
   _lu_initialise_
 

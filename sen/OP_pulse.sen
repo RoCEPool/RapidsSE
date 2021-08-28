@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for pulse request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : pulse_req \operator
+ : pulse::geb \operator
  
   _lu_initialise_
 

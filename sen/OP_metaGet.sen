@@ -29,10 +29,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaGet_req \operator
+: metaGet::geb \operator
 
   _lu_initialise_
-  "metaGet_req" .
+  "metaGet::geb" .
   op__topology
 
   //find: metaGet_getTable   ZK_M_START   op[].handler!

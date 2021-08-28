@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for recurring req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : recurring_req \operator
+ : recurring::geb \operator
  
   _lu_initialise_
 

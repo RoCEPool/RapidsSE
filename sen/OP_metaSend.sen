@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metasend request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaSend_req \operator
+: metaSend::geb \operator
 
   _lu_initialise_
-  //"metaSend_req" .
+  //"metaSend::geb" .
 
   op__topology
 

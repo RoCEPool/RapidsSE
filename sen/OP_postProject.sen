@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: postProject_req \operator
+: postProject::geb \operator
 
   _lu_initialise_
 

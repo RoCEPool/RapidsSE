@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* exemplar request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: exemplar_req \operator
+: exemplar::geb \operator
 
   _lu_initialise_
 
@@ -28,7 +28,7 @@
 
   op__loop
 
-  "*** OP_exemplar_req EXITS" .
+  "*** OP_exemplar::geb EXITS" .
   _lu_finalise_
   
   op__retires

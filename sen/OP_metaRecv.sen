@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaRecv request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaRecv_req \operator
+: metaRecv::geb \operator
 
   _lu_initialise_
-  "metaRecv_req" .
+  "metaRecv::geb" .
 
   op__topology
 
