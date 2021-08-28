@@ -10,6 +10,8 @@
 
 #include "Job.hpp"
 #include "TagConstants.h"
+#include "HeadsUp.hpp"
+#include "MY.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -29,6 +31,9 @@ void Step::vAddSteps_Dot(void)
 void Step::vDot(void)
 {
   ENTRY();
+  
+//  HeadsUp oHeadsUp((Stz*)__func__);
+//  MY::pTask()->vSeeFrameStack();
   
   CellSingle xVariable;
   m_pDataStack->vPopItem(xVariable,__func__);
