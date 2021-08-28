@@ -116,7 +116,7 @@
   // append _beg to name of word being compiled
   // "_run" word::addSuffix
 
-  word::seed#
+  //word::seed#
 
   // set exit hook of word being compiled
   "run_exitHook" senCompiler::current@ word.exitHook!

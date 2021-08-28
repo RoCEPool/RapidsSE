@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job__Cancelled on originating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Cancelled_run _run_suffix
+: _Cancelled_run _run_suffix  [ word::seed# ]
 
   <path> str.toStrVec Path[].set
   
