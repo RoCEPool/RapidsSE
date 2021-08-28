@@ -15,7 +15,7 @@
   
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
-    job::error! exit
+    job::error!
   else
     Pipeline::deleteSpec
     discard
@@ -84,15 +84,12 @@
   Pipeline::enqueueStart not if
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
     pTask task.dropLock
-    exit
+  else
+
+    // wait for all operators to ack this job
+    task::wait
+
   then
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for all operators to ack this job
-  
-  //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
-  task::wait
-  //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
 ;
 
 /*----------------------------------------------------------------------------*/
