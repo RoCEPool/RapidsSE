@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* exemplar request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: exemplar::nigeb \operator
+: exemplar_req \operator
 
   _lu_initialise_
 
@@ -28,7 +28,7 @@
 
   op__loop
 
-  "*** OP_exemplar::nigeb EXITS" .
+  "*** OP_exemplar_req EXITS" .
   _lu_finalise_
   
   op__retires

@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: compilerOpEg::nigeb \operator
+: compilerOpEg_req \operator
 
   _lu_initialise_
 

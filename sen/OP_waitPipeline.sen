@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : waitPipeline::nigeb \operator
+ : waitPipeline_req \operator
 
   _lu_initialise_
 

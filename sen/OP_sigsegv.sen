@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* sigsegv request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sigsegv::nigeb \operator
+: sigsegv_req \operator
 
   _lu_initialise_
 
@@ -34,7 +34,7 @@
 
   op__loop
 
-  // "*** sigsegv::nigeb EXITS" .
+  // "*** sigsegv_req EXITS" .
   _lu_finalise_
   
   op__retires

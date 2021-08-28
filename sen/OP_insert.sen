@@ -122,7 +122,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : insert::nigeb \operator
+ : insert_req \operator
  
   _lu_initialise_
   // "OP_insert" .

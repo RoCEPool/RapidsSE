@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropSchema req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropSchema::nigeb \operator
+: dropSchema_req \operator
 
   _lu_initialise_
 

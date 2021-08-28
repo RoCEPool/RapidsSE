@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: explainPlan::nigeb \operator
+: explainPlan_req \operator
 
   _lu_initialise_
 

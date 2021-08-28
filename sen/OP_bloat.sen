@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* bloat request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bloat::nigeb \operator
+: bloat_req \operator
 
   _lu_initialise_
 
@@ -45,7 +45,7 @@
 
   op__loop
 
-  // "*** bloat::nigeb EXITS" .
+  // "*** bloat_req EXITS" .
   _lu_finalise_
   
   op__retires

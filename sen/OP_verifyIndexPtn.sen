@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for compactIndex req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : VerifyIndexPtn::nigeb \operator
+ : VerifyIndexPtn_req \operator
 
   _lu_initialise_
 

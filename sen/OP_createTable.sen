@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createTable::nigeb \operator
+: createTable_req \operator
 
   _lu_initialise_
 

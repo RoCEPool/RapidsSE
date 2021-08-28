@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* failed request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: failed::nigeb \operator
+: failed_req \operator
 
   _lu_initialise_
 
@@ -35,7 +35,7 @@
 
   op__loop
 
-  "*** failed::nigeb EXITS" .
+  "*** failed_req EXITS" .
   _lu_finalise_
   
   op__retires

@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for populateIndex req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: populateIndex::nigeb \operator
+: populateIndex_req \operator
 
   _lu_initialise_
 

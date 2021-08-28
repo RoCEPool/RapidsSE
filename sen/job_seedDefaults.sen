@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedLocal::nigeb ::geb_suffix ( -- )
+: defaultSeedLocal_req ::geb_suffix ( -- )
 
   [ senCompiler::current@ word.name@ encode::push ] .
   <jobNm> .
@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist::nigeb ::geb_suffix ( -- )
+: defaultSeedDist_req ::geb_suffix ( -- )
 
   "<preCheck>" job::tagSet@ tagSet.hasName if
     <preCheck> find execute not if

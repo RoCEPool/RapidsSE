@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridRecv request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridRecv::nigeb \operator
+: gridRecv_req \operator
 
   _lu_initialise_
-  //"gridRecv::nigeb" .
+  //"gridRecv_req" .
 
   op__topology
 

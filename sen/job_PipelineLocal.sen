@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline request on origin                                     */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal::nigeb _eeh_suffix ( -- )
+: pipelineLocal_req _eeh_suffix ( -- )
 
   task[] locals| pTask |
 

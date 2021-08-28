@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metasend request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaSend::nigeb \operator
+: metaSend_req \operator
 
   _lu_initialise_
-  //"metaSend::nigeb" .
+  //"metaSend_req" .
 
   op__topology
 

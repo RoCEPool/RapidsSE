@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: partitionExplain::nigeb \operator
+: partitionExplain_req \operator
 
   _lu_initialise_
 

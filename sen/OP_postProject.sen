@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: postProject::nigeb \operator
+: postProject_req \operator
 
   _lu_initialise_
 

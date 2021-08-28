@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for passThru req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : passThru::nigeb \operator
+ : passThru_req \operator
 
   _lu_initialise_
 

@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for defineTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: defineTable::nigeb \operator
+: defineTable_req \operator
 
   _lu_initialise_
 

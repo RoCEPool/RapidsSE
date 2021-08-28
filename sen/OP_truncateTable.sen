@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for TruncateOp req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : truncateTable::nigeb \operator
+ : truncateTable_req \operator
 
   _lu_initialise_
 

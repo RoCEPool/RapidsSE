@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* toDemon request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toDemonOp::nigeb \operator
+: toDemonOp_req \operator
 
   _lu_initialise_
 
@@ -31,7 +31,7 @@
 
   op__loop
 
-  "*** toDemonOp::nigeb EXITS" .
+  "*** toDemonOp_req EXITS" .
   _lu_finalise_
   
   op__retires

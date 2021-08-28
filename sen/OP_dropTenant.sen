@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTenant req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropTenant::nigeb \operator
+: dropTenant_req \operator
 
   _lu_initialise_
 

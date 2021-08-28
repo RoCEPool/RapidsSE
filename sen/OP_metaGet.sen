@@ -29,10 +29,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaGet::nigeb \operator
+: metaGet_req \operator
 
   _lu_initialise_
-  "metaGet::nigeb" .
+  "metaGet_req" .
   op__topology
 
   //find: metaGet_getTable   ZK_M_START   op[].handler!

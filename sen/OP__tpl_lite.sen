@@ -27,10 +27,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for liteOp req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: OP__tpl_lite::nigeb
+: OP__tpl_lite_req
 
 "
-: /liteOp/::nigeb \\operator
+: /liteOp/_req \\operator
  
   _lu_initialise_
 

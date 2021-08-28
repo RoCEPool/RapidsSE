@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for pmetaGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pmetaGet::nigeb \operator
+: pmetaGet_req \operator
 
   _lu_initialise_
 

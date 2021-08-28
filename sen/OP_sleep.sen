@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* sleep request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sleep::nigeb \operator
+: sleep_req \operator
 
   _lu_initialise_
 
@@ -31,7 +31,7 @@
 
   op__loop
 
-  // "*** sleep::nigeb EXITS" .
+  // "*** sleep_req EXITS" .
   _lu_finalise_
   
   op__retires

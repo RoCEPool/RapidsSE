@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for spawn node                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : spawnNode::nigeb \operator
+ : spawnNode_req \operator
  
   _lu_initialise_
 

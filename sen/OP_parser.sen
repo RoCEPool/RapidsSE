@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: parser::nigeb \operator
+: parser_req \operator
 
   _lu_initialise_
 

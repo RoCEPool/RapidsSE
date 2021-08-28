@@ -284,7 +284,7 @@
 /*----------------------------------------------------------------------------*/
 /* projectRight request                                                  SPAWN */
 /*----------------------------------------------------------------------------*/
-: projectRight::nigeb \operator
+: projectRight_req \operator
 
   _lu_initialise_
 

@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: projValidation::nigeb \operator
+: projValidation_req \operator
 
   _lu_initialise_
 

@@ -99,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for receiver req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : recv::nigeb \operator
+ : recv_req \operator
  
   _lu_initialise_
 

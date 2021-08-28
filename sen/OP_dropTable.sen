@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropTable req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropTable::nigeb \operator
+: dropTable_req \operator
 
   _lu_initialise_
 

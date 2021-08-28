@@ -24,10 +24,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dupCrw req                                               SPAWN */
 /*----------------------------------------------------------------------------*/
- : dupCrw::nigeb \operator
+ : dupCrw_req \operator
 
   _lu_initialise_
-  "dupCrw::nigeb" .
+  "dupCrw_req" .
   op__topology
 
   find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER op[].handler!

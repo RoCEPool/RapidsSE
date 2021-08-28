@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* throw request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: throw::nigeb \operator
+: throw_req \operator
 
   _lu_initialise_
 
@@ -33,7 +33,7 @@
 
   op__loop
 
-  // "*** throw::nigeb EXITS" .
+  // "*** throw_req EXITS" .
   _lu_finalise_
   
   op__retires

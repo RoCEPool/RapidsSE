@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for send request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : send::nigeb \operator
+ : send_req \operator
 
   _lu_initialise_
 

@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metasend request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pmetaSend::nigeb \operator
+: pmetaSend_req \operator
 
   _lu_initialise_
 

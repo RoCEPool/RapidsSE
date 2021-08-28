@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaRecv request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaRecv::nigeb \operator
+: metaRecv_req \operator
 
   _lu_initialise_
-  "metaRecv::nigeb" .
+  "metaRecv_req" .
 
   op__topology
 

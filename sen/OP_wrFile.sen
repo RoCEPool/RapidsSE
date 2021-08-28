@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for wrFile req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : wrFile::nigeb \operator
+ : wrFile_req \operator
  
   _lu_initialise_
 
