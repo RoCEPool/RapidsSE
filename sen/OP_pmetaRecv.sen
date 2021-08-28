@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaRecv request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pmetaRecv::geb \operator
+: pmetaRecv::nigeb \operator
 
   _lu_initialise_
 

@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysOpen request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysOpen::geb \operator
+: sysOpen::nigeb \operator
 
   _lu_initialise_
 
@@ -29,7 +29,7 @@
 
   op__loop
 
-  // "*** sysOpen::geb EXITS" .
+  // "*** sysOpen::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

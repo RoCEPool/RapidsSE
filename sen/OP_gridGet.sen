@@ -31,10 +31,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridGet::geb \operator
+: gridGet::nigeb \operator
 
   _lu_initialise_
-  //"gridGet::geb" .
+  //"gridGet::nigeb" .
   op__topology
 
 

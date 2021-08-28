@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for monitor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: monitor::geb \operator
+: monitor::nigeb \operator
  
   _lu_initialise_
 

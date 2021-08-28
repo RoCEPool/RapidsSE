@@ -184,8 +184,8 @@
 /*----------------------------------------------------------------------------*/
 /* bucketSend request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketSend::geb \operator
-  "bucketSend::geb" .
+: bucketSend::nigeb \operator
+  "bucketSend::nigeb" .
   _lu_initialise_
 
   "<catalogNm>"  job::tagSet@ tagSet.hasName if

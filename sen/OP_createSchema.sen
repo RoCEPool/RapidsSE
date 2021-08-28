@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createSchema req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createSchema::geb \operator
+: createSchema::nigeb \operator
 
   _lu_initialise_
 

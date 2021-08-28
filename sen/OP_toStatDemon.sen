@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toStatDemon::geb \operator
+: toStatDemon::nigeb \operator
 
   _lu_initialise_
 
@@ -65,7 +65,7 @@
 
   op__loop
 
-  //"*** toStatDOp::geb EXITS" .
+  //"*** toStatDOp::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

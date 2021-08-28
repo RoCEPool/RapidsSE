@@ -33,10 +33,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridsend request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridSend::geb \operator
+: gridSend::nigeb \operator
 
   _lu_initialise_
-  //"gridSend::geb" .
+  //"gridSend::nigeb" .
 
   op__topology
 

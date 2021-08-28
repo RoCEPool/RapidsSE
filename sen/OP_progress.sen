@@ -90,7 +90,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for progress req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : progress::geb \operator
+ : progress::nigeb \operator
  
   _lu_initialise_
 

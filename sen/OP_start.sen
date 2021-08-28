@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for start request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : start::geb \operator
+ : start::nigeb \operator
  
   _lu_initialise_
 

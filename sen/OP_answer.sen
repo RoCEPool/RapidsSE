@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for answer req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : answer::geb \operator
+ : answer::nigeb \operator
  
   _lu_initialise_
 

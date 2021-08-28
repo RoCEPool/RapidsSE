@@ -267,7 +267,7 @@
 /*----------------------------------------------------------------------------*/
 /* delete request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: delete::geb \operator
+: delete::nigeb \operator
 
   _lu_initialise_
   //<tableNm> <predicate> "PARAMETERS %v %v" str.format .

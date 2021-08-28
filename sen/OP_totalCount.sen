@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for progress req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : totalCount::geb \operator
+ : totalCount::nigeb \operator
  
   _lu_initialise_
 

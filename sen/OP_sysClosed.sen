@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysClosed request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysClosed::geb \operator
+: sysClosed::nigeb \operator
 
   _lu_initialise_
 
@@ -42,7 +42,7 @@
 
   op__loop
 
-  // "*** sysClosed::geb EXITS" .
+  // "*** sysClosed::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

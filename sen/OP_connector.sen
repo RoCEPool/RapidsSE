@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for connector req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : connector::geb \operator
+ : connector::nigeb \operator
  
   _lu_initialise_
 

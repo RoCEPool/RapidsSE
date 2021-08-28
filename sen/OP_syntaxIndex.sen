@@ -119,7 +119,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for syntaxTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: syntaxIndex::geb \operator
+: syntaxIndex::nigeb \operator
 
   _lu_initialise_
 

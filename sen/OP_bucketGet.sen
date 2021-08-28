@@ -31,10 +31,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for bucketGet request                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketGet::geb \operator
+: bucketGet::nigeb \operator
 
   _lu_initialise_
-  "bucketGet::geb" .
+  "bucketGet::nigeb" .
   op__topology
 
   find: bucketGet_getBucket   ZK_M_DATAPULSE   op[].handler!

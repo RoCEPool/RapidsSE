@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: nameValidate::geb \operator
+: nameValidate::nigeb \operator
 
   _lu_initialise_
 

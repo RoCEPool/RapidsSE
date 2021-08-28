@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: partitionPlan::geb \operator
+: partitionPlan::nigeb \operator
 
   _lu_initialise_
 

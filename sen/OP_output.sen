@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for output request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: output::geb \operator
+: output::nigeb \operator
 
   _lu_initialise_
 

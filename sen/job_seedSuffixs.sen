@@ -36,12 +36,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* ::geb makes the word being compile a request seed with name: /wordNm/::geb   */
+/* ::nigeb makes the word being compile a request seed with name: /wordNm/::nigeb   */
 /*----------------------------------------------------------------------------*/
 : ::geb_suffix immediate _suffix
 
-  // append ::geb to name of word being compiled
-  // "::geb" word::addSuffix
+  // append ::nigeb to name of word being compiled
+  // "::nigeb" word::addSuffix
 
   word::seed#
 

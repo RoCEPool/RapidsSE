@@ -44,10 +44,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute for bucketsend request                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketSend0::geb \operator
+: bucketSend0::nigeb \operator
 
   _lu_initialise_
-  //"bucketSend0::geb" .
+  //"bucketSend0::nigeb" .
 
   op__topology
 

@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BufferGen::geb \operator
+: BufferGen::nigeb \operator
 
   _lu_initialise_
 

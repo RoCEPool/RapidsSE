@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for consumeOp req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: consumeOp::geb \operator
+: consumeOp::nigeb \operator
 
   _lu_initialise_
 

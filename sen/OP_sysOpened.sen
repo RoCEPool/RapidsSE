@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysOpened request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysOpened::geb \operator
+: sysOpened::nigeb \operator
 
   _lu_initialise_
 
@@ -31,7 +31,7 @@
 
   op__loop
 
-  // "*** sysOpened::geb EXITS" .
+  // "*** sysOpened::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

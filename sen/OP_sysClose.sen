@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysClose request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysClose::geb \operator
+: sysClose::nigeb \operator
 
   _lu_initialise_
 
@@ -29,7 +29,7 @@
 
   op__loop
 
-  // "*** sysClose::geb EXITS" .
+  // "*** sysClose::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

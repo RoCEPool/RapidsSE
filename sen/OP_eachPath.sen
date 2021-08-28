@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : eachPath::geb \operator
+ : eachPath::nigeb \operator
 
   _lu_initialise_
 

@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for add node                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : adjustPtns::geb \operator
+ : adjustPtns::nigeb \operator
  
   _lu_initialise_
 

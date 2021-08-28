@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* eatAll request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: eatAll::geb \operator
+: eatAll::nigeb \operator
 
   _lu_initialise_
 
@@ -31,7 +31,7 @@
 
   op__loop
 
-  "*** eatAll::geb EXITS" .
+  "*** eatAll::nigeb EXITS" .
   _lu_finalise_
   
   op__retires

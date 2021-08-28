@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* eatSome request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: eatSome::geb \operator
+: eatSome::nigeb \operator
 
   find: OP_eatSome_Opr locals| pEatSomeHandler |
 

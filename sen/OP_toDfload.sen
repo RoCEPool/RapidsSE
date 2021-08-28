@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toDfload::geb \operator
+ : toDfload::nigeb \operator
 
   _lu_initialise_
 

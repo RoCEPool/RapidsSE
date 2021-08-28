@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sqlInit::geb \operator
+: sqlInit::nigeb \operator
 
   _lu_initialise_
 

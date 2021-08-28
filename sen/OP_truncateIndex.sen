@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for Truncate req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : TruncateIndex::geb \operator
+ : TruncateIndex::nigeb \operator
 
   _lu_initialise_
 

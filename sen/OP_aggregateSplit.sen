@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: aggregateSplit::geb \operator
+: aggregateSplit::nigeb \operator
 
   _lu_initialise_
 

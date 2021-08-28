@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for supervisor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: supervisor::geb \operator
+: supervisor::nigeb \operator
  
   _lu_initialise_
 

@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for reachChunk req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : rdCsvChunk::geb \operator
+ : rdCsvChunk::nigeb \operator
 
   _lu_initialise_
 

@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createCatalog req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropCatalog::geb \operator
+: dropCatalog::nigeb \operator
 
   _lu_initialise_
 
