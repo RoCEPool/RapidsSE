@@ -4,6 +4,48 @@
 
 " job_seedPipeline.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* distribute current originating job to all participating nodes              */
+/*----------------------------------------------------------------------------*/
+: job::sendToParticipants ( -- )
+
+  job[] locals| pJob |
+
+  // create the response vector in the orginating job to receive responses
+  //pJob job.createResponseVec
+
+  // set the no of acks expected by originator job
+  //   to be the number of defined nodes in the grid
+  grid::knownNodes pJob job.acksRemaining!
+
+  // grab this task's lock
+  task[] task.grabLock
+
+  // set acks for originator task
+  1 task::acks!
+
+  // send the job to each connected node in the grid
+
+  0 locals| pNode |
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no pJob job.forward
+    else
+"++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
+;
+
 
 /*----------------------------------------------------------------------------*/
 /***                          - Originating Node -                          ***/
@@ -44,7 +86,7 @@
   job[] job.hasError not if
 
     // distribute the job
-    job::distributeConnected
+    job::sendToParticipants
 
     // wait for the signal from deciding job__ended/cancelled
     task::wait
@@ -89,7 +131,7 @@
   JP_BEGUN job[] job.phase!
   nullptr job[] job.seedWord!
   
-  2pcReply::job__begun
+  job[] "Job__Begun::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +160,7 @@
   JP_EXECUTED job[] job.phase!
   nullptr job[] job.seedWord!
 
-  2pcReply::job__executed
+  job[] "Job__Executed::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +185,7 @@
 
   job[] job.removeParticipant
 
-  2pcReply::job__ended
+  job[] "Job__Ended::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +208,7 @@
 
   job[] job.removeParticipant
 
-  2pcReply::job__cancelled
+  job[] "Job__Cancelled::send" find execute
 ;
 
 /*============================================================================*/
