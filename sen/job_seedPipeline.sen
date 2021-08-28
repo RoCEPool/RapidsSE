@@ -174,7 +174,7 @@
 
   JP_ENDING job[] job.phase!
 
-  <jobNm> "::releaseResources" str.cat find dup if
+  <jobNm> "::end" str.cat find dup if
     execute
   else
     discard
@@ -197,7 +197,7 @@
 
   JP_CANCELING job[] job.phase!
 
-  <jobNm> "::releaseResources" str.cat find dup if
+  <jobNm> "::cancel" str.cat find dup if
     execute
   else
     discard
