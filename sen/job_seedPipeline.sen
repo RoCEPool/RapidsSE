@@ -63,7 +63,6 @@
   then
 
   HAZARD
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,58 +74,11 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_beg [ word::seed# ]
 
-  // [ senCompiler::current@ word.name@ encode::push ] .
-
-  JP_BEGINNING job[] job.phase!
-
-  <path> str.toStrVec Path[].set
-
-  job::becomeParticipant
-
   <jobNm> "::begin" str.cat find dup if
     execute
   else
     discard
   then
-
-
-
-  // : pipeline::begin ( -- )
-
-  job::assertCorrectness
-
-  job[] job.phase@ JP_BEGINNING assert
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline statement on participants (should not expect an error)
-  
-  <cmd> Pipeline::compileStmt
-  EC_NONE == assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job (spawning jobs for ops etc)
-  
-  Pipeline::create
-  Pipeline::spawnOpTasks
-
-
-
-
-
-
-
-
-
-
-
-  JP_BEGUN job[] job.phase!
-  nullptr job[] job.seedWord!
-  
-  job[] "Job__Begun::replyToOrigin" find execute
-  
-  DdlLock[].testDrop
-
-  task::scheduledelete
 
   HAZARD
 ;
