@@ -290,6 +290,13 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <cmdDesc>  = "--desc for job--"
     <ddlLock>  = DL_GRAB_READ
     <preCheck> = bClusterStarted
+    
+    <seedReq>  = "pipelineSeed_req"
+    <seedRcv>  = "pipelineSeed_beg"
+    <seedExe>  = "pipelineSeed_exe"
+    <seedEnd>  = "pipelineSeed_end"
+    <seedCan>  = "pipelineSeed_can"
+
   }
 ;
 

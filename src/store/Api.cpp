@@ -430,6 +430,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   pPrepareJobTags->vCopy(pSsnTags);
 
+  //pCmdTags->vDumpSet(true);
+  
   pPrepareJobTags->vCopy(pCmdTags);
   
   if (AM::TRACE::bVerbose(C_VB_API))

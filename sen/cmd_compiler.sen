@@ -213,22 +213,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags for a pipeline job                                       */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forPipelineJob params| pwCmdTags |
-
-  "<seedReq>" "pipelineSeed" "_req" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedRcv>" "pipelineSeed" "_beg" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedExe>" "pipelineSeed" "_exe" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedEnd>" "pipelineSeed" "_end" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedCan>" "pipelineSeed" "_can" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
 /* add the seed tags for a generic job                                        */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forGenericJob params| pwCmdTags |
@@ -253,7 +237,7 @@
 
   pwCmdTags _cmdTags.aboutPipelineJob if
     //<jobKind> == JK_PIPELINE
-    pwCmdTags cmd::addSeedTags_forPipelineJob
+
   else
   pwCmdTags _cmdTags.aboutGenericJob if
     //<jobKind> == JK_GENERIC
