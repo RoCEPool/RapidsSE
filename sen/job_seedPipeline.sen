@@ -57,6 +57,7 @@
 : pipelineSeed_req [ word::seed# ]
 
   "<preCheck>" job::tagSet@ tagSet.hasName if
+  
     <preCheck> find execute not if
 
       job::error!
@@ -86,6 +87,24 @@
   else
     discard
   then
+  
+  
+  // // // pipeline::request
+  
+  job::assertCorrectness
+
+  // compile the pipeline statement on origin to check its syntax
+  
+  <cmd> Pipeline::compileStmt dup
+  EC_NONE != if
+    job::error!
+  else
+    Pipeline::deleteSpec
+    discard
+  then
+
+  
+  
 
   job[] job.hasError not if
 

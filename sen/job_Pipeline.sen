@@ -9,17 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::request ( -- <R> )
 
-  job::assertCorrectness
-
-  // compile the pipeline statement on origin to check its syntax
-  
-  <cmd> Pipeline::compileStmt dup
-  EC_NONE != if
-    job::error!
-  else
-    Pipeline::deleteSpec
-    discard
-  then
 ;
 
 /*----------------------------------------------------------------------------*/
