@@ -45,7 +45,6 @@ assert::stack_0
 
 "se_boot 5" .verbose
         "job_words.sen"           include
-        "job_seedPipeline.sen"    include
     
         "tag_tagSets.sen"         include
 
@@ -60,6 +59,7 @@ assert::stack_0
 
         "job_Pipeline.sen"        include
         "job_PipelineLocal.sen"   include
+        "job_pipelineSeeds.sen"   include
 
 "se_boot 4" .verbose
 
