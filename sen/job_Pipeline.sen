@@ -14,6 +14,74 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::request ( -- <R> )
 
+  "<preCheck>" job::tagSet@ tagSet.hasName if
+  
+    <preCheck> find execute not if
+
+      job::error!
+
+      //"Signalling waiting thread" .
+      job::informInvokerOfCompletion
+
+      // task has no job
+      task::scheduledelete
+
+      DdlLock[].testDrop
+
+      _job_finalise_
+
+      exit                                                         // EARLY EXIT
+
+    then
+  then
+
+  // [ senCompiler::current@ word.name@ encode::push ] .
+  // <jobNm> .
+
+  job::becomeOriginator
+
+  
+  
+  // : pipeline::request
+  
+  job::assertCorrectness
+
+  // compile the pipeline statement on origin to check its syntax
+  
+  <cmd> Pipeline::compileStmt dup
+  EC_NONE != if
+    job::error!
+  else
+    Pipeline::deleteSpec
+    discard
+  then
+
+  
+  
+
+  job[] job.hasError not if
+
+    // distribute the job
+    job::sendToParticipants
+
+    // wait for the signal from deciding job__ended/cancelled
+    task::wait
+
+  else
+    job[] job.removeOriginator  // this is currently being done by job_ended
+  then
+
+  //"Signalling waiting thread" .
+  job::informInvokerOfCompletion
+
+  // task has no job
+  task::scheduledelete
+
+  DdlLock[].testDrop
+
+  _job_finalise_
+
+  HAZARD
 
 ;
 
