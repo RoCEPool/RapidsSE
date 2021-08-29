@@ -78,7 +78,7 @@
   JobRef[] job.scheduleNextPhase
   JobRef[].return
   
-  run_exitHook
+  job_exit
 ;
 
 /*----------------------------------------------------------------------------*/

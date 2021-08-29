@@ -45,12 +45,10 @@ assert::stack_0
 
 "se_boot 5" .verbose
         "job_words.sen"           include
-        "job_seeds.sen"           include
         "job_seedPipeline.sen"    include
-        
-        // -- -- -- -- -- -- -- -- -- --
-
+    
         "tag_tagSets.sen"         include
+
 
         "job__Ended.sen"          include
         "job__End.sen"            include
@@ -62,11 +60,6 @@ assert::stack_0
 
         "job_Pipeline.sen"        include
         "job_PipelineLocal.sen"   include
-
-      //"otherJobs"               include-subdir
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 "se_boot 4" .verbose
 
