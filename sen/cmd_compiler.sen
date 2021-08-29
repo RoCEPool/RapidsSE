@@ -213,16 +213,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags for a local job                                          */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forLocalJob params| pwCmdTags |
-
-  //pwCmdTags word.name@ "addSeedTags_forLocalJob %v" .printf
-  
-  "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
 /* add the seed tags required by a command (pipeline, generic, local)         */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_toCmdTags params| pwCmdTags |
@@ -239,8 +229,9 @@
   else
   pwCmdTags _cmdTags.aboutLocalJob if
     //<jobKind> == JK_LOCAL
-    pwCmdTags cmd::addSeedTags_forLocalJob
     
+    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
+
   else
   
   then then then

@@ -83,7 +83,7 @@
       sSuffix str.cat to sTagValue
   then
 
-  // sTagValue  sTagNm "%v = %v" .printf
+  sTagValue  sTagNm "%v = %v" .printf
     
   sTagNm sTagValue pTagSet tagSet.insertStr
 ;
