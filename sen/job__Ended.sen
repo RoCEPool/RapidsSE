@@ -101,6 +101,8 @@ cmdSyntax: _Ended :: _Ended ;
 : _Ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_ended_run"
+    <path>     = "/"
   }
 ;
 

@@ -94,6 +94,8 @@ cmdSyntax: _Executed :: _Executed ;
 : _Executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_executed_run"
+    <path>     = "/"
   }
 ;
 

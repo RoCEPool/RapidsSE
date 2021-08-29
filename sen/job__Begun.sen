@@ -102,6 +102,8 @@ cmdSyntax: _Begun :: _Begun ;
 : _Begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_begun_run"
+    <path>     = "/"
   }
 ;
 

@@ -146,6 +146,8 @@ cmdSyntax: _Cancelled :: _Cancelled ;
 : _Cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_cancelled_run"
+    <path>     = "/"
   }
 ;
 

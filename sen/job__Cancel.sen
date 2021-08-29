@@ -90,6 +90,8 @@ cmdSyntax: _Cancel :: _Cancel ;
 : _Cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_cancel_run"
+    <path>     = "/"
   }
 ;
 

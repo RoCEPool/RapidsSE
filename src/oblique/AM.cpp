@@ -1037,6 +1037,9 @@ Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
   }
 
   ASSERT(szSeed)
+
+  if (szSeed->nLength() < 3)
+    pTags->vDumpSet(true);
   
   return szSeed;
 }

@@ -90,6 +90,8 @@ cmdSyntax: _Execute :: _Execute ;
 : _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_execute_run"
+    <path>     = "/"
   }
 ;
 
