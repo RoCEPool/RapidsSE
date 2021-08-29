@@ -14,11 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_req [ word::seed# ]
 
-  <jobNm> "::request" str.cat find dup if
-    execute
-  else
-    discard
-  then
+  pipeline::request
 
   HAZARD
 ;
@@ -32,12 +28,8 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_beg [ word::seed# ]
 
-  <jobNm> "::begin" str.cat find dup if
-    execute
-  else
-    discard
-  then
-
+  pipeline::begin
+  
   HAZARD
 ;
 
@@ -46,12 +38,8 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_exe [ word::seed# ]
 
-  <jobNm> "::execute" str.cat find dup if
-    execute
-  else
-    discard
-  then
-
+  pipeline::execute
+  
   HAZARD
 ;
 
@@ -60,12 +48,8 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_end [ word::seed# ]
 
-  <jobNm> "::end" str.cat find dup if
-    execute
-  else
-    discard
-  then
-
+  pipeline::end
+  
   HAZARD
 ;
 
@@ -74,12 +58,8 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_can [ word::seed# ]
 
-  <jobNm> "::cancel" str.cat find dup if
-    execute
-  else
-    discard
-  then
-
+  pipeline::cancel
+  
   HAZARD
 ;
 

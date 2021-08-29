@@ -285,7 +285,7 @@
 
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-: pipeline_cmdTags _cmdTags tagCopy: distJob_tags
+: pipeline_cmdTags _cmdTags tagCopy: pipelineJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <ddlLock>  = DL_GRAB_READ
