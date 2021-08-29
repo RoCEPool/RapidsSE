@@ -217,6 +217,8 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forLocalJob params| pwCmdTags |
 
+  pwCmdTags word.name@ "addSeedTags_forLocalJob %v" .printf
+  
   "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
 ;
 
@@ -235,9 +237,13 @@
     //<jobKind> == JK_GENERIC
 
   else
+  pwCmdTags _cmdTags.aboutLocalJob if
     //<jobKind> == JK_LOCAL
     pwCmdTags cmd::addSeedTags_forLocalJob
-  then then
+    
+  else
+  
+  then then then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -278,9 +284,9 @@
     "<ddlLock>" "DL_NONE" pCmdTagSet tagSet.addTag
   then
 
-  "<jobKind>" pCmdTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
-  then
+  //"<jobKind>" pCmdTagSet tagSet.hasName not if
+  //  "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
+  //then
 
   "<priority>" pCmdTagSet tagSet.hasName not if
     "<priority>" "PY_NORMAL" pCmdTagSet tagSet.addTag
