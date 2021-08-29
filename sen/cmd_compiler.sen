@@ -213,14 +213,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags for a generic job                                        */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forGenericJob params| pwCmdTags |
-
-  "<seedReq>" "**unknown**" "_run" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
 /* add the seed tags for a local job                                          */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forLocalJob params| pwCmdTags |
@@ -241,7 +233,7 @@
   else
   pwCmdTags _cmdTags.aboutGenericJob if
     //<jobKind> == JK_GENERIC
-    pwCmdTags cmd::addSeedTags_forGenericJob
+
   else
     //<jobKind> == JK_LOCAL
     pwCmdTags cmd::addSeedTags_forLocalJob
