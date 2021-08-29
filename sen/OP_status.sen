@@ -40,6 +40,8 @@ cmdSyntax: status :: status ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __status
     <params>    = 0
+    
+    <seedReq>   = "status_req"
   }
 ;
     

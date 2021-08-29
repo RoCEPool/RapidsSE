@@ -1147,7 +1147,7 @@
   procedure dumpGrid
   begin
     stage stageA on origin :
-      start | pulse once | dumpGrindInfo  | output | sink | stageA
+      start | pulse once | dumpGridInfo  | output | sink | stageA
 
   end ;
   "

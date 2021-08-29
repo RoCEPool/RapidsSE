@@ -63,6 +63,8 @@ cmdSyntax: catFile :: catFile <FileNm> ;
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
+    
+    <seedReq>   = "catFile_req"
   }
 ;
 

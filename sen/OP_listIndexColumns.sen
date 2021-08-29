@@ -60,6 +60,7 @@ cmdSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listColumns
     <params>      = 2
+    <seedReq>     = "lsidxcol_req"
   }
 ;
 

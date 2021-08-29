@@ -6,9 +6,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* dumpGrindInfo action                                                       */
+/* dumpGridInfo act ion                                                       */
 /*----------------------------------------------------------------------------*/
-: dumpGrindInfo_action
+: dumpGridInfo_action
 
   grid::dumpInfo locals| pDumpBuffer |
   //pDumpBuffer .
@@ -23,12 +23,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: dumpGrindInfo :: dumpGrindInfo  ;
+cmdSyntax: dumpGridInfo :: dumpGridInfo  ;
 
-: dumpGrindInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
+: dumpGridInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 0
+    <seedReq>     = "dumpGridInfo_req"
   }
 ;
 

@@ -63,6 +63,7 @@ cmdSyntax: lscat :: lscat ;
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listContents
     <params>      = 0
+    <seedReq>     = "lscat_req"
   }
 ;
     

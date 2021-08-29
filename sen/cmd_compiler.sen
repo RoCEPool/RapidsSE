@@ -217,7 +217,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forLocalJob params| pwCmdTags |
 
-  pwCmdTags word.name@ "addSeedTags_forLocalJob %v" .printf
+  //pwCmdTags word.name@ "addSeedTags_forLocalJob %v" .printf
   
   "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
 ;

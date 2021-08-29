@@ -456,6 +456,7 @@
 : localLiteOp_tags tagCopy: operator_tags
   tags{
     <localLiteOp> = 1
+    <jobKind>     = JK_LOCAL
   }
 ;
 

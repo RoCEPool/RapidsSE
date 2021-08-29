@@ -28,6 +28,8 @@ cmdSyntax: docol :: docol <routineNm> ;
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
+    
+    <seedReq>   = "docol_req"
   }
 ;
     
