@@ -16,21 +16,6 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::begin ( -- )
 
-  job::assertCorrectness
-
-  job[] job.phase@ JP_BEGINNING assert
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline statement on participants (should not expect an error)
-  
-  <cmd> Pipeline::compileStmt
-  EC_NONE == assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job (spawning jobs for ops etc)
-  
-  Pipeline::create
-  Pipeline::spawnOpTasks
 ;
 
 /*----------------------------------------------------------------------------*/
