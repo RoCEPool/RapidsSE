@@ -46,9 +46,7 @@ assert::stack_0
 "se_boot 5" .verbose
         "job_words.sen"           include
         "job_seedMarkers.sen"     include
-        "job_seedHooks.sen"       include
-        "job_seedSuffixs.sen"     include
-        "job_seedPipeline.sen"    include
+         "job_seedPipeline.sen"    include
         
         // -- -- -- -- -- -- -- -- -- --
 
