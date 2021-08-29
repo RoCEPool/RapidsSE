@@ -88,80 +88,11 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_exe [ word::seed# ]
 
-  // [ senCompiler::current@ word.name@ encode::push ] .
-
-  JP_EXECUTING job[] job.phase!
-
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  // set task's dictionary stack from path in job
-
-  <path> str.toStrVec Path[].set
-  //task::dump
-
-  job::acquireDdlLock
-
   <jobNm> "::execute" str.cat find dup if
     execute
   else
     discard
   then
-
-  // : pipeline::execute ( -- )
-
-  task[] locals| pTask |
-  
-  job::assertCorrectness
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // run optional <pre_execute> word
-
-  "<pre_execute>" job::tagSet@ tagSet.hasName if
-    "<pre_execute>"
-    job::tagSet@ tagSet.getStr locals| sPreExe |
-    sPreExe find
-    dup not if
-      sPreExe "Unable to find pre execute word: %v" .printf
-      process::quit
-    then
-      execute
-  else
-    args.verbose if
-      <pipelineNm> "No pre execute word for pipeline: %v" .printf
-    then
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab the task lock
-  
-  pTask task.grabLock
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enqueue start-marker to start op to execute the pipeline job
-  
-  //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart not if
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    pTask task.dropLock
-  else
-
-    // wait for all operators to ack this job
-    task::wait
-
-  then
-  
-  
-
-
-
-  JP_EXECUTED job[] job.phase!
-  nullptr job[] job.seedWord!
-
-  job[] "Job__Executed::replyToOrigin" find execute
-  
-  DdlLock[].testDrop
-
-  task::scheduledelete
 
   HAZARD
 ;
@@ -171,30 +102,11 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_end [ word::seed# ]
 
-  // [ senCompiler::current@ word.name@ encode::push ] .
-
-  //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
-
-  JP_ENDING job[] job.phase!
-
   <jobNm> "::end" str.cat find dup if
     execute
   else
     discard
   then
-
-  JP_ENDED job[] job.phase!
-  nullptr job[] job.seedWord!
-
-  job[] job.removeParticipant
-
-  job[] "Job__Ended::replyToOrigin" find execute
-  
-  DdlLock[].testDrop
-
-  _job_finalise_
-
-  job::completed
 
   HAZARD
 ;
