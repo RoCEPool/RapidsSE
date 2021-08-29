@@ -4,70 +4,40 @@
 
 " job_Pipeline.sen" .verbose
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                               ON ORIGIN                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 /*----------------------------------------------------------------------------*/
 /* request execution of a distributed pipeline (on originating node)          */
 /*----------------------------------------------------------------------------*/
 : pipeline::request ( -- <R> )
 
+
 ;
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                          ON ALL PARTICIPANTS                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 /*----------------------------------------------------------------------------*/
-/* begin pipeline job on participating node                                   */
+/* begin pipeline job                                                         */
 /*----------------------------------------------------------------------------*/
 : pipeline::begin ( -- )
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute pipeline job on participating node                                 */
+/* execute pipeline job                                                       */
 /*----------------------------------------------------------------------------*/
 : pipeline::execute ( -- )
 
-  task[] locals| pTask |
-  
-    job::assertCorrectness
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // run optional <pre_execute> word
-
-  "<pre_execute>" job::tagSet@ tagSet.hasName if
-    "<pre_execute>"
-    job::tagSet@ tagSet.getStr locals| sPreExe |
-    sPreExe find
-    dup not if
-      sPreExe "Unable to find pre execute word: %v" .printf
-      process::quit
-    then
-      execute
-  else
-    args.verbose if
-      <pipelineNm> "No pre execute word for pipeline: %v" .printf
-    then
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab the task lock
-  
-  pTask task.grabLock
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enqueue start-marker to start op to execute the pipeline job
-  
-  //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart not if
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    pTask task.dropLock
-  else
-
-    // wait for all operators to ack this job
-    task::wait
-
-  then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job on participating node                                     */
+/* end pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
 
@@ -75,7 +45,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job on participating node                                     */
+/* end pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
 
