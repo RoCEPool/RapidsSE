@@ -15,7 +15,7 @@ create table boolTable (
 success
 
 // check columns of partition key
-lspartcol boolTable;
+lsPtncol boolTable;
 rows:
   ('key1','BOOLEAN',0,0,false,true)
 

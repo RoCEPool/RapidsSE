@@ -14,7 +14,7 @@ print "loading j10.csv..." ;
 oldLoad j1 "../JTEST/j10.csv" ;
 oldLoad j10 "../JTEST/j10.csv" ;
 
-lspart;
+lsPtn;
 
 print "fethcing j10";
 

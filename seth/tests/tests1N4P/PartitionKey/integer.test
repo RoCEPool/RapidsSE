@@ -16,7 +16,7 @@ create table dataTable (
 success
 
 // check columns of partition key
-lspartcol dataTable;
+lsPtncol dataTable;
 rows:
   ('key','INTEGER',19,0,false,true)
 

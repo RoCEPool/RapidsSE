@@ -32,7 +32,7 @@ space;
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "List-Partitions";
 
-lsparts;
+lsPtns;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "pwf";
@@ -170,7 +170,7 @@ lscol lineitem;
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "List Partition Columns";
 
-lspartcol lineitem;
+lsPtncol lineitem;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "List Index Columns";

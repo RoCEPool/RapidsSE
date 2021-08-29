@@ -55,9 +55,9 @@ lsidxcol       - List columns of an index
 .br 
 lsidx          - List indexes of a table
 .br 
-lspartcol      - List partition columns of a table
+lsPtncol      - List partition columns of a table
 .br 
-lspart         - List partitions
+lsPtn         - List partitions
 .br 
 lssch          - List schemas
 .br 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lsparts_action
+: lsPtns_action
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -43,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: lsparts :: lsparts ;
+cmdSyntax: lsPtns :: lsPtns ;
 
-: lsparts_cmdTags _cmdTags tagCopy: liteOp_tags
+: lsPtns_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __listPartitions

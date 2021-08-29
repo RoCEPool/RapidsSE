@@ -14,7 +14,7 @@ create table createT1 (
 success
 
 -- check columns of partition key
-lspartcol createT1;
+lsPtncol createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
@@ -23,7 +23,7 @@ drop table createT1;
 success
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 failure contains: 'Table does not exist'
 
 create table createT1 (
@@ -33,7 +33,7 @@ create table createT1 (
 failure contains: 'invalid command'
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 failure contains: 'Table does not exist'
 
 create table createT1 (
@@ -43,7 +43,7 @@ create table createT1 (
 failure contains: 'invalid command'
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 failure contains: 'Table does not exist'
 
 create table createT1 (
@@ -83,7 +83,7 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
@@ -98,7 +98,7 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 rows:
   ('name','VARCHAR',32,0,false,true)
 
@@ -113,7 +113,7 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 rows:
  ('key','INTEGER',19,0,false,true)
  ('name','VARCHAR',32,0,false,true)
@@ -129,7 +129,7 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lspartcol createT1;
+lsPtncol createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
   ('name','VARCHAR',32,0,false,true)
