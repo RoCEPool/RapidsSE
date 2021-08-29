@@ -339,6 +339,49 @@
 
 
 
+/*----------------------------------------------------------------------------*/
+/* distribute current originating job to all participating nodes              */
+/*----------------------------------------------------------------------------*/
+: job::sendToParticipants ( -- )
+
+  job[] locals| pJob |
+
+  // create the response vector in the orginating job to receive responses
+  //pJob job.createResponseVec
+
+  // set the no of acks expected by originator job
+  //   to be the number of defined nodes in the grid
+  grid::knownNodes pJob job.acksRemaining!
+
+  // grab this task's lock
+  task[] task.grabLock
+
+  // set acks for originator task
+  1 task::acks!
+
+  // send the job to each connected node in the grid
+
+  0 locals| pNode |
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no pJob job.forward
+    else
+"++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

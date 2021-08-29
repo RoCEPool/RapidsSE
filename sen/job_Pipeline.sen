@@ -82,7 +82,6 @@
   _job_finalise_
 
   HAZARD
-
 ;
 
 
@@ -144,7 +143,6 @@
   task::scheduledelete
 
   HAZARD
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +220,6 @@
   task::scheduledelete
 
   HAZARD
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -255,10 +252,6 @@
   job::completed
 
   HAZARD
-
-  
-  
-  
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +260,23 @@
 : pipeline::cancel ( -- )
 
   job::assertCorrectness
+  
+    // [ senCompiler::current@ word.name@ encode::push ] .
+
+  JP_CANCELING job[] job.phase!
+
+  JP_CANCELED job[] job.phase!
+  nullptr job[] job.seedWord!
+
+  job[] job.removeParticipant
+
+  job[] "Job__Cancelled::replyToOrigin" find execute
+  
+  _job_finalise_
+
+  job::completed
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
