@@ -5,15 +5,16 @@
 " job_PipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* done executing                                                             */
+/* terminate this pipeline                                                    */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::termination ( -- )
 
-  DdlLock[].testDrop
+  _lu_finalise_
 
   _job_finalise_
 
-  task::scheduledelete
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
 
   HAZARD
 ;
