@@ -426,7 +426,6 @@
 /*----------------------------------------------------------------------------*/
 : operator_tags
   tags{
-    //<jobKind>  = JK_LOCAL
     <ddlLock>  = DL_GRAB_READ
   }
 ;
@@ -438,7 +437,6 @@
 : op_tags tagCopy: operator_tags
   tags{
     <op> = 1
-    <jobKind>  = JK_LOCAL
   }
 ;
 
@@ -465,10 +463,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: serviceOp_tags tagCopy: op_tags
+: serviceOp_tags tagCopy: operator_tags
   tags{
     <serviceOp> = 1
-    
     <jobKind>  = JK_LOCAL
   }
 ;
