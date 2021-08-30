@@ -1,29 +1,24 @@
 /*============================================================================*/
-/* eCK.h -- Command Kind                                                      */
+/* DeleteHelper.hpp -- a delete helper                                        */
 /*============================================================================*/
 #pragma once
 
-enum eCK // command kind
+namespace BASE
 {
-  /* 0 */ CK_NONE=0,
+  class DeleteHelper
+  {
+  public:
+    Object* m_pDeleter;
+    Stz*    m_szFunc;
   
-  /* 1 */ CK_COMMAND,
-  /* 2 */ CK_CHILD,
-  /* 3 */ CK_SERVICE,
+  public:
+    DeleteHelper(void);
+   ~DeleteHelper(void) noexcept(false);
   
-  /* 4 */ CK_ENUMS
-};
-
-static Stz* aCK[]
-{
-  /* 0 */ "none"_Stz,
+    void vDeleteBy(Object* pDeleter, Stz* szFunc);
+  };
   
-  /* 1 */ "command"_Stz,
-  /* 2 */ "child"_Stz,
-  /* 3 */ "service"_Stz,
-  
-  /* 4 */ "enums"_Stz
-};
+}
 
 /*============================================================================*/
 /* end                                                                        */
