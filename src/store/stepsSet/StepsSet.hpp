@@ -731,6 +731,8 @@ public:
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
 
+  void vJob2pcDelete(void);
+
   // job ref
   void vJobRefHasTask(void);
   void vJobRefPointer(void);
