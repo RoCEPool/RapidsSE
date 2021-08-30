@@ -31,6 +31,7 @@ void Step::vAddSteps_StreamDefRht(void)
   vAddStep("StreamDefRht[]"_Stz,                 &Step::vStreamDefRhtGet);
   vAddStep("StreamDefRht[]\\clear"_Stz,          &Step::vStreamDefRhtGetAndClear);
   vAddStep("StreamDefRht[].delete"_Stz,          &Step::vStreamDefRhtDelete);
+  vAddStep("StreamDefRht[].duplicate"_Stz,       &Step::vStreamDefRhtDuplicate);
   vAddStep("StreamDefRht[].get"_Stz,             &Step::vStreamDefRhtGet);
   vAddStep("StreamDefRht[].isNull"_Stz,          &Step::vStreamDefRhtIsNull);
   vAddStep("StreamDefRht[].new"_Stz,             &Step::vStreamDefRhtNew);
@@ -50,6 +51,22 @@ void Step::vStreamDefRhtDelete(void)
   
   m_p_TaskLogicUnit->m_xpStreamDefRht = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefRht[].duplicate -- new a duplicate streamDefRht                   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefRhtDuplicate(void)
+{
+  ENTRY();
+
+  ASSERT (* m_p_TaskLogicUnit->m_xpStreamDefRht);
+
+  StreamDefRht* pStreamDefRht = new StreamDefRht(* m_p_TaskLogicUnit->m_xpStreamDefRht);
+
+  m_pDataStack->vPushPtr(pStreamDefRht);
+
   EXIT();
 }
 
@@ -92,7 +109,7 @@ void Step::vStreamDefRhtIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefRht[].new -- new a stream def from Table[]                        */
+/* StreamDefRht[].new -- new a stream def from another streamDef              */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefRhtNew(void)
 {
@@ -100,23 +117,25 @@ void Step::vStreamDefRhtNew(void)
 
   ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
+  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDefRht(pStreamDef);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefRht[].newFromTable -- new a stream definition out from table      */
+/* StreamDefRht[].newFromTable -- new a stream definition from table          */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefRhtNewFromTable(void)
 {
   ENTRY();
 
+  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
+  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDefRht(pTable->pStreamDef());
 
   EXIT();
 }
@@ -128,9 +147,9 @@ void Step::vStreamDefRhtPrint(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = _pStreamDef(*m_p_TaskLogicUnit->m_xpStreamDefRht);
-  
-  pStreamDef->vPrint();
+  StreamDefRht* pStreamDefRht = _pStreamDefRht(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+
+  pStreamDefRht->vPrint();
 
   EXIT();
 }
@@ -142,7 +161,7 @@ void Step::vStreamDefRhtSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_p_TaskLogicUnit->m_xpStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

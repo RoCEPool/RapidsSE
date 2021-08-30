@@ -15,7 +15,7 @@ StreamDef* STORE::_pStreamDef(void* aAddr)
 {
   StreamDef* pStreamDef = reinterpret_cast<StreamDef*>(aAddr);
   
-  RASSERT_TYPE(pStreamDef,CN_STREAMDEF);
+  //RASSERT_TYPE(pStreamDef,CN_STREAMDEF);
   
   return pStreamDef;
 }

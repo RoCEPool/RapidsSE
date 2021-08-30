@@ -15,7 +15,7 @@ StreamDefRht* STORE::_pStreamDefRht(void* aAddr)
 {
   StreamDefRht* pStreamDefRht = reinterpret_cast<StreamDefRht*>(aAddr);
   
-  RASSERT_TYPE(pStreamDefRht,CN_STREAMDEFRHT);
+  //RASSERT_TYPE(pStreamDefRht,CN_STREAMDEFRHT);
   
   return pStreamDefRht;
 }

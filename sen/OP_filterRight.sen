@@ -193,8 +193,9 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_STREAMDEFRHT ...                                              INIT */
 /*----------------------------------------------------------------------------*/
-: filterRight_StreamDefRht \handler
+: filterRight_M_StreamDefRht \handler
 
+  0 assert
   0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
 
   PipeIn[].pipeout
@@ -206,38 +207,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEFRHT ...                                      STREAMDEFRHT */
 /*----------------------------------------------------------------------------*/
-: filterRight_StreamDef \handler
+: filterRight_StreamDefRht \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
-  // filterRight gets the left streamDef, then right streamDef
-  // it needs to store the right streamDef in left
-  // and left in right (which it will pipeout)
-  Counter2[] 0 == if
-
-      //"filterRight_StreamDef got left streamDef" .
-      // move pipein[] to StreamDefRht[]
-      Pipein[]\clear to StreamDefRht[]
-      StreamDefRht[].pipeout
-
-      true
-      exit
-  then
-
   // would have received a streamDefRht marker
 
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
+  // move pipein[] to StreamDefRht[]
+  Pipein[]\clear to StreamDefRht[]
 
   // evaluate the expression
   ExprEval[].new
-  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefRht[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+  <etc> StreamDefRht[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -258,13 +245,16 @@
   then
 
   // set the streamDef in the DevLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
+  StreamDefRht[] DevLftRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
-  false streamDefOut[] PotRlu[].rowPix!
+  false StreamDefOut[] PotRlu[].rowPix!
+
+  StreamDefOut[] StreamDefRht[].new
+  StreamDefOut[].delete
 
   // pipeout the streamDefOut
-  StreamDefOut[].pipeout
+  StreamDefRht[].pipeout
 
   // create the compiler
   Counter0[] if
@@ -302,8 +292,7 @@
   find: filterRight_StartMarker      ZK_M_START       op[].handler!
   find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!
   find: filterRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!
-  find: filterRight_StreamDef        ZK_D_STREAMDEF   op[].handler!
-  find: filterRight_StreamDefRht     ZK_M_STREAMDEFRHT op[].handler!
+  find: filterRight_StreamDefRht     ZK_D_STREAMDEFRHT op[].handler!
 
   op__loop
 

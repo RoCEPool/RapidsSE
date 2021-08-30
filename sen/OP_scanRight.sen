@@ -253,12 +253,12 @@
   // now pipe out the stream def for the right table
   //"piping out right streamDef" .
   // pipeout a streamDefRht marker first
-  Marker[].newStreamDefRht
-  Marker[].pipeout
+  //Marker[].newStreamDefRht
+  //Marker[].pipeout
 
   // pipeout the rht streamDef
-  Table[] StreamDefOut[].newFromTable
-  StreamDefOut[].pipeOut
+  Table[] StreamDefRht[].newFromTable
+  StreamDefRht[].pipeOut
 
   true
 ;

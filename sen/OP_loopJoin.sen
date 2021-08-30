@@ -269,8 +269,9 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_STREAMDEFRHT ...                                              INIT */
 /*----------------------------------------------------------------------------*/
-: loopJoin_StreamDefRht \handler
+: loopJoin_M_StreamDefRht \handler
 
+  0 assert
   0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
 
   //"ZK_M_STREAMDEFRHT" .
@@ -292,22 +293,29 @@
 
   EC_NONE locals| eError |
 
-  Counter2[] 0 == if
-    //"ZK_D_STREAMDEF left" .
-    //"loopJoin_StreamDef got left streamDef" .
-    // move pipein[] to StreamDefLft[]
-    Pipein[]\clear to StreamDefLft[]
+  //"ZK_D_STREAMDEF left" .
+  //"loopJoin_StreamDef got left streamDef" .
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
 
-    true
-    exit
-  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEFRHT ...                                      STREAMDEFRHT */
+/*----------------------------------------------------------------------------*/
+: loopJoin_StreamDefRht \handler
+
+  0 ZK_D_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
 
   // would have received a streamDefRht marker
-  //"ZK_D_STREAMDEF rht" .
+  //"ZK_D_STREAMDEFRHT rht" .
 
   // We have received the ZK_M_STARTCRWRHT
   // Hence this the right table stream def
-  //"loopJoin_StreamDef got right streamDef" .
+  //"loopJoin_StreamDefRht got right streamDefRht" .
 
   // move pipein[] to StreamDefRht[]
   Pipein[]\clear to StreamDefRht[]
@@ -385,7 +393,7 @@
   find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   op[].handler!
   find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   op[].handler!
   find: loopJoin_StreamDef        ZK_D_STREAMDEF     op[].handler!
-  find: loopJoin_StreamDefRht     ZK_M_STREAMDEFRHT  op[].handler!
+  find: loopJoin_StreamDefRht     ZK_D_STREAMDEFRHT  op[].handler!
 
   find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!
   find: loopJoin_End               ZK_M_END            op[].handler!

@@ -74,7 +74,7 @@ void Step::vStreamDefLftAsSrcStreamDef(void)
   
   StreamDef* pStreamDef = *m_p_TaskLogicUnit->m_xpStreamDefLft;
 
-  StreamDef* pStreamDefOld = m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef;
+  StreamDef* pStreamDefOld = _pStreamDef(m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef);
   if (pStreamDefOld)
     delete pStreamDefOld;
 
