@@ -584,6 +584,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
   /*  0 */ vAddConstant("JS_COMPLETED"_Stz, JS_COMPLETED);
   /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
+  /*  0 */ vAddConstant("JS_RETIRED"_Stz,   JS_RETIRED);
   /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);
 
   // C_MAX : MAX
