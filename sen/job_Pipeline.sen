@@ -68,8 +68,9 @@
     task::wait
 
   else
-    job[] job.removeOriginator  // this is currently being done by job_ended
   then
+
+  job[] job.removeOriginator  // this is currently being done by job_ended
 
   //"Signalling waiting thread" .
   job::informInvokerOfCompletion
