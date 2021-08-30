@@ -335,7 +335,7 @@ IndexTree *TablePtn::pIndexTree(i8 iIndexNo) {
 
   return pIndexTree;
 #else
-  IndexTree *pIndexTree = m_pBucket->pIndexTree(iIndexNo);
+  IndexTree *pIndexTree = m_pBucketVec->pGet(0)->pIndexTree(iIndexNo);
 
   return pIndexTree;
 #endif
@@ -350,7 +350,7 @@ IndexTreeVec *TablePtn::pIndexTreeVec(void) {
 #ifdef WITH_MULTI_BUCKET
   return m_pIndexTreeVec;
 #else
-  IndexTreeVec *pIndexTreeVec = m_pBucket->pIndexTreeVec();
+  IndexTreeVec *pIndexTreeVec = m_pBucketVec->pGet(0)->pIndexTreeVec();
 
   return pIndexTreeVec;
 #endif
@@ -391,7 +391,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo) {
 
   return true;
 #else
-  bool b = m_pBucket->bPopulateIndex(iIndexNo);
+  bool b = m_pBucketVec->pGet(0)->bPopulateIndex(iIndexNo);
 
   return b;
 #endif
@@ -461,7 +461,7 @@ DataBuffer *TablePtn::pRootBuffer(void) {
   }
   return pRootBuffer;
 #else
-  DataBuffer* pRootBuffer = m_pBucket->pRootBuffer();
+  DataBuffer* pRootBuffer = m_pBucketVec->pGet(0)->pRootBuffer();
 
   return pRootBuffer;
 #endif
@@ -489,7 +489,7 @@ RowBuffer *TablePtn::pRootRowBuffer(void) {
   }
   return pRootBuffer;
 #else
-  RowBuffer* pRootBuffer = m_pBucket->pRootRowBuffer();
+  RowBuffer* pRootBuffer = m_pBucketVec->pGet(0)->pRootRowBuffer();
 
   return pRootBuffer;
 #endif
@@ -565,7 +565,7 @@ void TablePtn::vTruncateIndex(Index *pIndex) {
 
 
 #else
-  m_pBucket->vTruncateIndex(pIndex);
+  m_pBucketVec->pGet(0)->vTruncateIndex(pIndex);
 #endif
 }
 
@@ -585,7 +585,7 @@ bool TablePtn::bVerifyTable(void) {
   }
   return bVerify;
 #else
-  bool bVerify = m_pBucket->bVerifyTable();
+  bool bVerify = m_pBucketVec->pGet(0)->bVerifyTable();
 
   return bVerify;
 #endif
@@ -605,7 +605,7 @@ void TablePtn::vVisualizeTable(void) {
     pBucket->vVisualizeTable();
   }
 #else
-  m_pBucket->vVisualizeTable();
+  m_pBucketVec->pGet(0)->vVisualizeTable();
 #endif
 }
 
