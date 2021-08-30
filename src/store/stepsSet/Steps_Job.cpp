@@ -36,6 +36,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
@@ -81,6 +82,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
+  vAddStep("job.removeRetired"_Stz,    &Step::vJobRemoveRetired);
   vAddStep("job.retire"_Stz,           &Step::vJobRetire);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
@@ -197,6 +199,26 @@ void Step::vJobAddParticipant(void)
 //  AM::pParticipatingJobs()->vDropLock();
   
   AM::vJob_AddParticipating(pJob);
+
+  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addRetired -- add job to retired job set                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAddRetired(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+//  AM::pParticipatingJobs()->vGrabLock();
+//  AM::pParticipatingJobs()->vAddJob(pJob);
+//  AM::pParticipatingJobs()->vDropLock();
+  
+  AM::vJob_AddRetired(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -911,6 +933,29 @@ void Step::vJobRemoveParticipant(void)
     vTrace("------------------------------------\n"_Stz);
     
     bRemove = AM::bJob_RemoveParticipating(pJob,true);
+  }
+     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removeRetired -- remove job from retired job set                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRemoveRetired(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  bool bRemove = AM::bJob_RemoveRetired(pJob);
+
+  if (! bRemove) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld from reited\n"_Stz,
+           aCN[pJob->eGetClassNo()],pJob->iJobId());
+    vTrace("------------------------------------\n"_Stz);
+    
+    bRemove = AM::bJob_RemoveRetired(pJob,true);
   }
      
   EXIT();

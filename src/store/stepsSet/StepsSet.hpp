@@ -661,6 +661,7 @@ public:
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
+  void vJobAddRetired(void);
   void vJobAssertBegin(void);
   void vJobAssertCorrectness(void);
   void vJobAssertNeutral(void);
@@ -712,6 +713,7 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
+  void vJobRemoveRetired(void);
   void vJobRetire(void);
 
   void vJobSeedDecode(void);

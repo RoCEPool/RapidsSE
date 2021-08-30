@@ -1764,6 +1764,8 @@ JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pJobs->pOriginatingJobs(); }
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
+JobList* AM::pRetiredJobs(void) {
+  return gpAttachMap->m_pJobs->pRetiredJobs(); }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
@@ -3645,6 +3647,16 @@ void AM::vJob_AddParticipating(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to retired list                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddRetired(Job* pJob)
+{
+  AM::pRetiredJobs()->vGrabLock();
+  AM::pRetiredJobs()->vAddJob(pJob);
+  AM::pRetiredJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump demon job list                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
@@ -3767,6 +3779,22 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   return bRemoved;
 }
 
+/*----------------------------------------------------------------------------*/
+/* remove job from retired list                                               */
+/*----------------------------------------------------------------------------*/
+bool AM::bJob_RemoveRetired(Job* pJob, bool bDump)
+{
+  AM::pRetiredJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pRetiredJobs()->vContentDump();
+
+  bool bRemoved = AM::pRetiredJobs()->bRemoveJob(pJob);
+  
+  AM::pRetiredJobs()->vDropLock();
+    
+  return bRemoved;
+}
 
 /*----------------------------------------------------------------------------*/
 /* update heartbeat info for a given node by ID                               */

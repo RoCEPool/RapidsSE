@@ -496,6 +496,7 @@ namespace OBLIQUE
     static Stz* szNodeNm(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
+    static JobList* pRetiredJobs(void);
     static i8   iPid(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
@@ -702,6 +703,7 @@ namespace OBLIQUE
     static void vJob_AddLocal(Job* pJob);
     static void vJob_AddOriginating(Job* pJob);
     static void vJob_AddParticipating(Job* pJob);
+    static void vJob_AddRetired(Job* pJob);
     static void vJob_DumpDemon(void);
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
@@ -711,7 +713,8 @@ namespace OBLIQUE
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
-  
+    static bool bJob_RemoveRetired(Job* pJob, bool bDump=false);
+
   };
 
 }
