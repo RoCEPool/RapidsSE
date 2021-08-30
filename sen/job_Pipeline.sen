@@ -86,9 +86,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* request execution of a distributed pipeline (on originating node)          */
+/* launch of a distributed pipeline (on originating node)                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::request ( -- <R> )
+: pipeline::origin ( -- <R> )
 
   job::assertCorrectness
 

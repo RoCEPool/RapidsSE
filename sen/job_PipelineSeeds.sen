@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_req [ word::seed# ]
 
-  pipeline::request
+  pipeline::origin
 
   HAZARD
 ;
