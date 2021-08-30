@@ -128,6 +128,11 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
       RASSERT(!pThread->pTask());
       break;
             
+    case TR_RETIRE_THIS_TASK: // task is retiring
+      vTaskSelf_RetireThisTask(pSelfTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
+            
     default:
       NEVER_REACH;
   }
@@ -188,6 +193,41 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   // delete case: task is to be deleted
 
   pSelfTask->vState(TS_DELETING);
+  
+  pSelfTask->vDropTaskLock((Stz*)__func__);
+  
+  delete pSelfTask; // note: this is the only point where tasks get deleted
+
+  /** do not touch task **/
+}
+
+/*----------------------------------------------------------------------------*/
+/* task transitions to TS_RETIRED state                                       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
+{
+  _static_
+  
+  //
+  // example: op task has ack'd the pipeline job and now just self-delete
+  //
+  // who delete's the job in these cases?
+  //
+  
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_RETIRE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
+
+  // add assert on entry point
+
+  pSelfTask->vTranstionClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete case: task is to be deleted
+
+  pSelfTask->vState(TS_RETIRED);
   
   pSelfTask->vDropTaskLock((Stz*)__func__);
   

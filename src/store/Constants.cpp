@@ -667,10 +667,11 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("TR_NONE"_Stz,             TR_NONE);
   /*  1 */ vAddConstant("TR_BIDE_FOR_OPERAND"_Stz, TR_BIDE_FOR_OPERAND);
   /*  2 */ vAddConstant("TR_DELETE_THIS_TASK"_Stz, TR_DELETE_THIS_TASK);
-  /*  3 */ vAddConstant("TR_SLEEP_SOME_TIME"_Stz,  TR_SLEEP_SOME_TIME);
-  /*  4 */ vAddConstant("TR_WAIT_FOR_RESUME"_Stz,  TR_WAIT_FOR_RESUME);
-  /*  5 */ vAddConstant("TR_YIELD_FOR_OTHERS"_Stz, TR_YIELD_FOR_OTHERS);
-  /*  6 */ vAddConstant("TR_ENUMS"_Stz,            TR_ENUMS);
+  /*  3 */ vAddConstant("TR_RETIRE_THIS_TASK"_Stz, TR_RETIRE_THIS_TASK);
+  /*  4 */ vAddConstant("TR_SLEEP_SOME_TIME"_Stz,  TR_SLEEP_SOME_TIME);
+  /*  5 */ vAddConstant("TR_WAIT_FOR_RESUME"_Stz,  TR_WAIT_FOR_RESUME);
+  /*  6 */ vAddConstant("TR_YIELD_FOR_OTHERS"_Stz, TR_YIELD_FOR_OTHERS);
+  /*  7 */ vAddConstant("TR_ENUMS"_Stz,            TR_ENUMS);
   
   // UK_ : function type
   /*  0 */ vAddConstant("UK_NONE"_Stz,       UK_NONE);
