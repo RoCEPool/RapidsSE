@@ -94,7 +94,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : connector_StartMarker \handler
 
@@ -117,8 +117,6 @@
   //grid::thisNodeName@ "Node %v : SE cluster started" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  job::completed
 
   HAZARD
 ;
