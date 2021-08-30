@@ -142,7 +142,7 @@
   JP_BEGUN job[] job.phase!
   nullptr job[] job.seedWord!
   
-  job[] "Job__Begun::replyToOrigin" find execute
+  job[] Job__Begun::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -219,7 +219,7 @@
   JP_EXECUTED job[] job.phase!
   nullptr job[] job.seedWord!
 
-  job[] "Job__Executed::replyToOrigin" find execute
+  job[] Job__Executed::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -249,7 +249,7 @@
 
   job[] job.removeParticipant
 
-  job[] "Job__Ended::replyToOrigin" find execute
+  job[] Job__Ended::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -276,7 +276,7 @@
 
   job[] job.removeParticipant
 
-  job[] "Job__Cancelled::replyToOrigin" find execute
+  job[] Job__Cancelled::replyToOrigin
   
   _job_finalise_
 
