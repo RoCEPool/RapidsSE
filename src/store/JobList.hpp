@@ -30,11 +30,14 @@ namespace STORE
     void   vDropLock(void);
     Job*   pFindJob(i8 iJobId);
     Job*   pFindJob(Job* pJob__Find);
+    SkipNode* pFirst(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);
     bool   bHasJobClass(eCN eJobClass);
     bool   bIsLocked(void);
     i8     nJobs(void);
+    SkipNode* pNext(SkipNode* pPrev);
+    Job*   pPopJob(void);
     bool   bRemoveJob(Job* pJob);
     void   vSee(void);
 

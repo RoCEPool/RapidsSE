@@ -546,11 +546,17 @@ void Api::vReapJobs(void)
 {
   _static_
   
-#ifdef WITH_JOB_REAPING
+//#ifdef WITH_JOB_REAPING
   
-  // to be coded...
+  JobList* pRetiredJobs = AM::pRetiredJobs();
   
-#endif
+  
+//  while (Job* pJob = pRetiredJobs->pPopJob()) {
+//    if (pJob)
+//      {;}
+//  }
+  
+//#endif
 }
 
 

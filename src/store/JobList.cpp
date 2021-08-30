@@ -156,6 +156,20 @@ Job* JobList::pFindJob(Job* pJob__Find)
 }
 
 /*----------------------------------------------------------------------------*/
+/* first job in the jobs skip list                                            */
+/*----------------------------------------------------------------------------*/
+SkipNode* JobList::pFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+
+  SkipNode* pNode = m_pJobsSkipList->pFirst(0);
+  
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void JobList::vGrabLock(void)
@@ -211,6 +225,20 @@ bool JobList::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   return m_okLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
+/* next job in the jobs skip list                                             */
+/*----------------------------------------------------------------------------*/
+SkipNode* JobList::pNext(SkipNode* pPrev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+
+  SkipNode* pNode = m_pJobsSkipList->pNext(pPrev,0);
+  
+  return pNode;
 }
 
 /*----------------------------------------------------------------------------*/
