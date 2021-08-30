@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: monitor :: monitor ;
 
-: monitor_cmdTags _cmdTags tagCopy: serviceOp_tags
+: monitor_cmdTags _cmdTags tagCopy: op_tags
 
   tags{ <dedicatedThd> = 1 }
 

@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: recurring :: recurring <nSeconds> ;
 
-: recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
+: recurring_cmdTags _cmdTags tagCopy: op_tags
 
   tags{ <dedicatedThd> = 1 }
 

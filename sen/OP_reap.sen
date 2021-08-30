@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: reap :: reap ;
 
-: reap_cmdTags _cmdTags tagCopy: serviceOp_tags
+: reap_cmdTags _cmdTags tagCopy: op_tags
 
   tags{ <dedicatedThd> = 1 }
 ;
