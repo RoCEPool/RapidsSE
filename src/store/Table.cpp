@@ -305,13 +305,6 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
   TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 
   pTablePtn->vAnalyze(nBuffers, nRows);
-
-  /*
-  CrwBuffer* pCrwBuffer = pTablePtn->pRootCrwBuffer();
-  
-  if (pCrwBuffer)
-    pCrwBuffer->vAnalyze(nBuffers, nRows);
-    */
   
   nRowsTotal += nRows;
   nBuffersTotal += nBuffers;

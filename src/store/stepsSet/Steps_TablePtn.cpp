@@ -186,7 +186,8 @@ void Step::vTablePtnPopulateIndex(void)
 void Step::vTablePtnRoot(void)
 {
   ENTRY();
-  
+  // Nobody should call this
+  vTrace(">>>>>>>>>>>>>>>>>>>>>  Step::vTablePtnRoot\n"_Stz);
   TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());

@@ -257,7 +257,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // Note: After append buffer we need to insert into index
   // We need code for append buffer here
 
-  #ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_BKTMAP_2N4P
   // >>> Need to come back to this
   // now insert entries from the buffer into the indexes
   switch (m_eKind) {
@@ -382,8 +382,6 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 #ifdef WITH_MULTI_BUCKET
-  // Should it be only one bucket has this indexNo ? RAY ?
-  // tableptn level
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
@@ -414,7 +412,6 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
     pBucket->vAnalyze(nBuffers, nRows);
   }
 
-
   nRowsTotal += nRows;
   nBuffersTotal += nBuffers;
 }
@@ -425,12 +422,10 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
 CrwBuffer *TablePtn::pRootCrwBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_MULTI_BUCKET
-  // Which bucket ? RAY ?
-  // this concept doesn't work anymore, will be removed from the system
-  // new api to access all rows from ptn stream
-  CrwBuffer *pRootBuffer = nullptr;
+  //vTrace("TablePtn::pRootCrwBuffer \n"_Stz);
+  //NEVER_REACH;
 
+  CrwBuffer *pRootBuffer = nullptr;
 
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
@@ -438,11 +433,7 @@ CrwBuffer *TablePtn::pRootCrwBuffer(void) {
     if (pRootBuffer) break;
   }
   return pRootBuffer;
-#else
-  CrwBuffer* pRootBuffer = m_pBucket->pRootCrwBuffer();
 
-  return pRootBuffer;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,6 +441,13 @@ CrwBuffer *TablePtn::pRootCrwBuffer(void) {
 /*----------------------------------------------------------------------------*/
 DataBuffer *TablePtn::pRootBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  //vTrace("TablePtn::pRootBuffer \n"_Stz);
+  //NEVER_REACH;
+
+
+
+
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY ?
   // this concept doesn't work anymore, will be removed from the system
@@ -474,6 +472,9 @@ DataBuffer *TablePtn::pRootBuffer(void) {
 /*----------------------------------------------------------------------------*/
 RowBuffer *TablePtn::pRootRowBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  //vTrace("TablePtn::pRootRowBuffer \n"_Stz);
+  //NEVER_REACH;
+
 
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY
@@ -513,7 +514,6 @@ void TablePtn::vRemoveIndex(i8 iIndexNo) {
 void TablePtn::vTruncate(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_MULTI_BUCKET
   // truncate for all buckets
 
   switch (m_eKind) {
@@ -537,9 +537,6 @@ void TablePtn::vTruncate(void) {
     pBucket->vTruncate();
   }
 
-#else
-  m_pBucket->vTruncate();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

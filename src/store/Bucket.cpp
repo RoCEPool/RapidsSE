@@ -472,6 +472,20 @@ bool Bucket::bVerifyTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+void Bucket::vAnalyze(i8& nBuffers, i8& nRows)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
+
+  CrwBuffer* pCrwBuffer = pRootCrwBuffer();
+
+  if (pCrwBuffer)
+    pCrwBuffer->vAnalyze(nBuffers, nRows);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* visualize the table data of this partition                                 */
 /*----------------------------------------------------------------------------*/
 void Bucket::vVisualizeTable(void)
