@@ -267,7 +267,7 @@
 
   _job_finalise_
   
-  JS_COMPLETED job::state!
+  JS_DELETABLE job::state!
 
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!

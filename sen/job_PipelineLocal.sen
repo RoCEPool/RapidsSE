@@ -35,7 +35,7 @@
   EC_NONE != if
     //"got error" .
     job::error!
-    job::informInvokerOfCompletion
+    job[] job.signalSession
     pipelineLocal::termination
   then
 
@@ -95,8 +95,7 @@
   
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
-  job::informInvokerOfCompletion
-
+  job[] job.signalSession
   pipelineLocal::termination
 ;
 

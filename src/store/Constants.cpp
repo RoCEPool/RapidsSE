@@ -582,7 +582,7 @@ void Constants::vAddConstantsCpp(void)
   // JS_ : job state
   /*  0 */ vAddConstant("JS_NONE"_Stz,      JS_NONE);
   /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
-  /*  0 */ vAddConstant("JS_COMPLETED"_Stz, JS_COMPLETED);
+  /*  0 */ vAddConstant("JS_DELETABLE"_Stz, JS_DELETABLE);
   /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
   /*  0 */ vAddConstant("JS_RETIRED"_Stz,   JS_RETIRED);
   /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);

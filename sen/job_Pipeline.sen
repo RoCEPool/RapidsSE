@@ -50,26 +50,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* this job has completed; coordinate with invoker                            */
-/*----------------------------------------------------------------------------*/
-: job::informInvokerOfCompletion
-
-  <plProtocol> PP_SIGNAL_SESSION == if
-    //"signalling session" .
-    job[] job.signalSession
-
-  else <plProtocol> PP_RETURN_PIPELINE == if
-    "unused plProtocol" .
-    HAZARD
-
-  else
-    "unknown plProtocol" .
-    HAZARD
-    
-  then then
-;
-
-/*----------------------------------------------------------------------------*/
 /* terminate this origin pipeline                                             */
 /*----------------------------------------------------------------------------*/
 : pipeline::terminate_origin ( -- )
@@ -89,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::terminate_participant ( -- )
   
-  JS_COMPLETED job::state!
+  JS_DELETABLE job::state!
   
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!
@@ -113,8 +93,8 @@
 
       job::error!
 
-      job::informInvokerOfCompletion
-
+      job[] job.signalSession
+    
       pipeline::terminate_origin
 
       HAZARD
@@ -165,8 +145,8 @@
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
   
-  job::informInvokerOfCompletion
-
+  job[] job.signalSession
+  
   pipeline::terminate_origin
   
   HAZARD
