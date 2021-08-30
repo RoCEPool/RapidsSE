@@ -529,7 +529,12 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       }
       break;
     }
-      
+
+    case CN_STREAMDEFRHT: {
+      NEVER_REACH;
+      break;
+    }
+
     // -- -- -- -- -- --
     case CN_STREAMSET: {
       StreamSet* pStreamSet = _pStreamSet(pOperand);

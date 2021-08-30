@@ -762,6 +762,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_STARTROWRHT"_Stz,     ZK_M_STARTROWRHT);
   /*  0 */ vAddConstant("ZK_M_STARTED"_Stz,         ZK_M_STARTED);
   /*  0 */ vAddConstant("ZK_D_STREAMDEF"_Stz,       ZK_D_STREAMDEF);
+  /*  0 */ vAddConstant("ZK_D_STREAMDEFRHT"_Stz,    ZK_D_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_M_STREAMDEFRHT"_Stz,    ZK_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_D_STREAMSET"_Stz,       ZK_D_STREAMSET);
   /*  0 */ vAddConstant("ZK_D_TABLE"_Stz,           ZK_D_TABLE);

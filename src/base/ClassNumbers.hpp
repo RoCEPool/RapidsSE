@@ -287,6 +287,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STEPS,
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
+  /* */ CN_STREAMDEFRHT,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
   /* */ CN_STZLIST,
@@ -634,6 +635,7 @@ static Stz* aCN[]
   /* */ "STEPS"_Stz,                // CN_STEPS
   /* */ "STRAND"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
+  /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
   /* */ "STZLIST"_Stz,              // CN_STZLIST

@@ -35,6 +35,7 @@ bool BASE::_bIsValidOperand(eCN eClass)
     case CN_PROFILE:
     case CN_ROWBUFFER:
     case CN_STREAMDEF:
+    case CN_STREAMDEFRHT:
     case CN_STREAMSET:
       return true;
     default:
@@ -92,7 +93,8 @@ bool Operand::bIsBuffer(void)
   eCN eClass = this->eGetClassNo();
   
   if (eClass == CN_INFOSET || eClass == CN_MARKER ||
-      eClass == CN_PROFILE || eClass == CN_STREAMDEF)
+      eClass == CN_PROFILE || eClass == CN_STREAMDEF ||
+      eClass == CN_STREAMDEFRHT)
     return false;
   else
     return true;
@@ -135,7 +137,7 @@ bool Operand::bIsStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return eGetClassNo() == CN_STREAMDEF ? true : false;
+  return eGetClassNo() == CN_STREAMDEF || eGetClassNo() == CN_STREAMDEFRHT ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

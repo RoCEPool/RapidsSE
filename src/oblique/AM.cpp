@@ -109,6 +109,7 @@
 
 #include "Step.hpp"
 #include "StreamDef.hpp"
+#include "StreamDefRht.hpp"
 
 #include "SP_Word.hpp"
 
@@ -1909,6 +1910,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pStreamDef;
       break;
     }
+
+    case CN_STREAMDEFRHT: {
+      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
+      delete pStreamDefRht;
+      break;
+    }
       
     case CN_STREAMSET: {
       StreamSet* pStreamSet = _pStreamSet(pOperand);
@@ -2626,10 +2633,20 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
     return pNewMarker;
   }
   else {
-    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF);
-    StreamDef* pStreamDef = _pStreamDef(pOperand);
-    StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
-    return pNewStreamDef;
+    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF ||
+           pOperand->eGetClassNo() == CN_STREAMDEFRHT);
+
+    if (pOperand->eGetClassNo() == CN_STREAMDEF) {
+      StreamDef* pStreamDef = _pStreamDef(pOperand);
+      StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
+      return pNewStreamDef;
+    }
+    else {
+      ASSERT(pOperand->eGetClassNo() == CN_STREAMDEFRHT);
+      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
+      StreamDefRht* pNewStreamDefRht = new StreamDefRht(pStreamDefRht);
+      return pNewStreamDefRht;
+    }
   }
   
 }
@@ -2785,6 +2802,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
     //case CN_SRTBUFFER:    eOperand = ZK_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = ZK_D_STREAMDEF;      break;
+    case CN_STREAMDEFRHT: eOperand = ZK_D_STREAMDEFRHT;   break;
     case CN_STREAMSET:    eOperand = ZK_D_STREAMSET;      break;
     case CN_METAGET:      eOperand = ZK_D_METAGET;        break;
     case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
