@@ -40,7 +40,7 @@ void Step::vAddSteps_StreamDefLft(void)
   vAddStep("StreamDefLft[].name"_Stz,            &Step::vStreamDefLftName);
   vAddStep("StreamDefLft[].new"_Stz,             &Step::vStreamDefLftNew);
   vAddStep("StreamDefLft[].newToCsvStream"_Stz,  &Step::vStreamDefLftNewToCsv);
-  vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefLftParse);
+  vAddStep("StreamDef::parse"_Stz,               &Step::vStreamDefLftParse);
   vAddStep("StreamDefLft[].pipeIn"_Stz,          &Step::vStreamDefLftPipeIn);
   vAddStep("StreamDefLft[].print"_Stz,           &Step::vStreamDefLftPrint);
   vAddStep("StreamDefLft[].rowSize"_Stz,         &Step::vStreamDefLftRowSize);

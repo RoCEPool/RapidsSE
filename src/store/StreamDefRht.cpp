@@ -52,8 +52,8 @@ StreamDefRht::StreamDefRht(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StreamDefRht::StreamDefRht(StreamDefRht* pStreamDefRht)
-: StreamDefBase(CN_STREAMDEFRHT, pStreamDefRht)
+StreamDefRht::StreamDefRht(StreamDefBase* pStreamDef)
+: StreamDefBase(CN_STREAMDEFRHT, pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEFRHT,_FOOTER_);
 }

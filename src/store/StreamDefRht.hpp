@@ -23,7 +23,7 @@ namespace STORE
     void  operator delete(void*);
 
     StreamDefRht(void);
-    StreamDefRht(StreamDefRht *pStreamDefRht);
+    StreamDefRht(StreamDefBase *pStreamDef);
     ~StreamDefRht(void) noexcept(false);
 
     static void vPostRecv(void* aStreamDefRht);

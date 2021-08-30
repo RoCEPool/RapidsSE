@@ -21,6 +21,7 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "StageSpec.hpp"
+#include "StreamDefRht.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -33,6 +34,7 @@ void Step::vAddSteps_StreamDefRht(void)
   vAddStep("StreamDefRht[].get"_Stz,             &Step::vStreamDefRhtGet);
   vAddStep("StreamDefRht[].isNull"_Stz,          &Step::vStreamDefRhtIsNull);
   vAddStep("StreamDefRht[].new"_Stz,             &Step::vStreamDefRhtNew);
+  vAddStep("StreamDefRht[].newFromTable"_Stz,    &Step::vStreamDefRhtNewFromTable);
   vAddStep("StreamDefRht[].print"_Stz,           &Step::vStreamDefRhtPrint);
   vAddStep("StreamDefRht[].set"_Stz,             &Step::vStreamDefRhtSet);
 }
@@ -97,6 +99,20 @@ void Step::vStreamDefRhtNew(void)
   ENTRY();
 
   ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefRht[].newFromTable -- new a stream definition out from table      */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefRhtNewFromTable(void)
+{
+  ENTRY();
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
