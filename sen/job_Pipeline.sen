@@ -23,8 +23,6 @@
   //   to be the number of defined nodes in the grid
   grid::knownNodes pJob job.acksRemaining!
 
-  // grab this task's lock
-  task[] task.grabLock
 
   // set acks for originator task
   1 task::acks!
@@ -137,6 +135,9 @@
 
   job[] job.hasError not if
 
+    // grab this task's lock
+    task[] task.grabLock
+    
     // distribute the job
     job::sendToParticipants
 
