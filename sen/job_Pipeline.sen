@@ -151,7 +151,8 @@
   job[] job.removeOriginator
 
   job[] job.addRetired
-  job[] job.removeRetired
+  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
+  
   job::informInvokerOfCompletion
 
   pipeline::termination

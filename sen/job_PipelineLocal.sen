@@ -94,7 +94,7 @@
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
   
   job[] job.addRetired
-  job[] job.removeRetired
+  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
   job::informInvokerOfCompletion
 
   pipelineLocal::termination
