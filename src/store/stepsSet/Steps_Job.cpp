@@ -29,7 +29,6 @@
 void Step::vAddSteps_Job(void)
 {
   vAddStep("job::assertCorrectness"_Stz,  &Step::vJobAssertCorrectness);
-  vAddStep("job::retire"_Stz,             &Step::vJobRetire);
   vAddStep("job::state@"_Stz,             &Step::vJobStateFetch);
   vAddStep("job::state!"_Stz,             &Step::vJobStateStore);
 
@@ -942,23 +941,6 @@ void Step::vJobRemoveRetired(void)
     bRemove = AM::bJob_RemoveRetired(pJob,true);
   }
      
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::retire -- retire the job                                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRetire(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob;
-  
-  pJob->vJobState(JS_COMPLETED);
-  
-  vGrabTaskLock((Stz*)__func__);
-  vScheduleDelete();
-
   EXIT();
 }
   
