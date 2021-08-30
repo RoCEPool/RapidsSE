@@ -266,9 +266,12 @@
   DdlLock[].testDrop
 
   _job_finalise_
+  
+  JS_COMPLETED job::state!
 
-  job::2pcDeleteImmediate
-
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
+  
   HAZARD
 ;
 
