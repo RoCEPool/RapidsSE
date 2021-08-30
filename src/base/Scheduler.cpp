@@ -202,7 +202,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_COMPLETED state and is deleted                      */
+/* task transitions to TS_RETIRED state                                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
 {

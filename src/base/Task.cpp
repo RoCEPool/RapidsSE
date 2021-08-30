@@ -1343,8 +1343,8 @@ void Task::vState(eTS eState)
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
   switch (eState) {
+    case TS_COMPLETED: pStats->Task.m_nCompleted++; break;
     case TS_EXECUTING: pStats->Task.m_nExecuting++; break;
-    case TS_COMPLETED: pStats->Task.m_nExited++;    break;
     case TS_READY:     pStats->Task.m_nReady++;     break;
     case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
     case TS_WAITING:   pStats->Task.m_nWaiting++;   break;
