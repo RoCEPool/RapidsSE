@@ -40,7 +40,6 @@
 
       job::error!
 
-      //"Signalling waiting thread" .
       job::informInvokerOfCompletion
 
       pipeline::termination
@@ -87,7 +86,6 @@
 
   job[] job.removeOriginator
 
-  //"Signalling waiting thread" .
   job::informInvokerOfCompletion
 
   pipeline::termination

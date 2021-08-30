@@ -94,6 +94,7 @@
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
   
   job::informInvokerOfCompletion
+  
   pipelineLocal::termination
 ;
 
