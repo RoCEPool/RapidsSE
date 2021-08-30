@@ -95,9 +95,8 @@
   
   job[] job.addRetired
   job[] job.removeRetired
-
   job::informInvokerOfCompletion
-  
+
   pipelineLocal::termination
 ;
 
