@@ -542,23 +542,42 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* reap all ended jobs                                                        */
 /*----------------------------------------------------------------------------*/
-void Api::vReapJobs(void)
+bool Api::bReapJob(void)
 {
   _static_
   
-//#ifdef WITH_JOB_REAPING
+#ifdef WITH_JOB_REAPING
+  
+  Job* pReapableJob = nullptr;
   
   JobList* pRetiredJobs = AM::pRetiredJobs();
-  
-  
-//  while (Job* pJob = pRetiredJobs->pPopJob()) {
-//    if (pJob)
-//      {;}
-//  }
-  
-//#endif
-}
 
+  pRetiredJobs->vGrabLock();
+
+  for (SkipNode* pCursor = pRetiredJobs->pFirst();
+       pCursor;
+       pCursor = pRetiredJobs->pNext(pCursor)) {
+    
+    Job* pRetiredJob = _pJob(pCursor->m_pObject);
+    
+    if (pRetiredJob) {
+      pReapableJob = pRetiredJob;
+      break;
+    }
+  }
+
+  if (! pReapableJob) {
+    pRetiredJobs->vDropLock();
+    return false;
+  }
+  
+  pRetiredJobs->vDropLock();
+  return true;
+  
+#endif
+  
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is the command a shortform?                                                */
