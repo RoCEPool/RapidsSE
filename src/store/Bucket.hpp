@@ -33,8 +33,6 @@ namespace STORE
 
     static void vRepair(Object* pObject, eRF eRepair);
 
-
-    eCN  eKind(void);
     tPN  tPtnNo(void);
     Table* pTable(void);
 

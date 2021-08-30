@@ -38,7 +38,7 @@ namespace STORE
     bool bGrabRead(void);
     bool bGrabWrite(void);
     bool bIsLocked(void);
-    //eCN  eKind(void);
+    eCN  eKind(void);
     tPN  tPtnNo(void);
     Table* pTable(void);
 

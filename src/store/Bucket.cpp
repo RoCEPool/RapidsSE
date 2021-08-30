@@ -104,15 +104,7 @@ void Bucket::vRepair(Object* pObject, eRF eRepair)
 
 
 
-/*----------------------------------------------------------------------------*/
-/* return tablePtn kind                                                       */
-/*----------------------------------------------------------------------------*/
-eCN Bucket::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_eKind;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
@@ -497,8 +489,12 @@ void Bucket::vVisualizeTable(void)
       m_pCrwTablePtn->vVisualizeTable();
       break;
     case CN_ROWTABLEPTN:
-      //m_pRowTablePtn->vTruncate(); TRUNCATE not VISUALIZE?  RAY?
+#ifdef WITH_MULTI_BUCKET
       m_pRowTablePtn->vVisualizeTable();
+#else
+      m_pRowTablePtn->vTruncate(); //TRUNCATE not VISUALIZE?  RAY?
+#endif
+
       break;
     default: NEVER_REACH;
   }

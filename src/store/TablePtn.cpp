@@ -153,10 +153,10 @@ bool TablePtn::bIsLocked(void) {
 /*----------------------------------------------------------------------------*/
 /* return tablePtn kind                                                       */
 /*----------------------------------------------------------------------------*/
-//eCN TablePtn::eKind(void) {
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-//  return m_eKind;
-//}
+eCN TablePtn::eKind(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  return m_eKind;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
@@ -521,7 +521,7 @@ void TablePtn::vTruncate(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   // truncate for all buckets
-
+#ifdef WITH_MULTI_BUCKET
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       // first truncate all indexes for this table ptn
@@ -536,6 +536,8 @@ void TablePtn::vTruncate(void) {
     default:
       NEVER_REACH;
   }
+
+#endif
 
   // Now, truncate all data
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {

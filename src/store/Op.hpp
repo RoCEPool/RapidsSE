@@ -8,7 +8,10 @@
 #include "eZK.h"
 #include "eSS.h"
 
+
 #include "DeleteHelper_t.hpp"
+
+namespace BASE { class OperandQueue; }
 
 namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 

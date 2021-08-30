@@ -36,6 +36,14 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(void)
 }
 
 #include "Job.hpp"
+#include "Op.hpp"
+#include "OpSpec.hpp"
+#include "Pipeline.hpp"
+#include "PipelineSpec.hpp"
+#include "Stage.hpp"
+#include "StageSpec.hpp"
+#include "Stream.hpp"
+#include "Task.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

@@ -295,11 +295,13 @@ void CrwTablePtn::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
   // first truncate all indexes for this table ptn
-  /* This code gets moved to TablePtn
+  // This code gets moved to TablePtn
+  //#ifdef WITH_MULTI_BUCKET
   for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     pIndexTree->vTruncate();
-  } */
+  }
+  //#endif
   
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
