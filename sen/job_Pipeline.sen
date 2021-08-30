@@ -88,8 +88,11 @@
 /* terminate this participant pipeline                                        */
 /*----------------------------------------------------------------------------*/
 : pipeline::terminate_participant ( -- )
-
-  job::completed
+  
+  JS_COMPLETED job::state!
+  
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
 
   HAZARD
 ;

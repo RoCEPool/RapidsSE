@@ -670,7 +670,6 @@ public:
   void vJobAssertReceived(void);
 
   void vJobClass(void);
-  void vJobCompleted(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);

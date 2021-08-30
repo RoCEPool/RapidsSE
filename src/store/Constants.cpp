@@ -578,7 +578,14 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELING"_Stz, JP_CANCELING);
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
-  
+
+  // JS_ : job state
+  /*  0 */ vAddConstant("JS_NONE"_Stz,      JS_NONE);
+  /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
+  /*  0 */ vAddConstant("JS_COMPLETED"_Stz, JS_COMPLETED);
+  /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
+  /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);
+
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
   /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);
