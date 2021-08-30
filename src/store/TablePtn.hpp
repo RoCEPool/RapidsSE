@@ -14,7 +14,7 @@ namespace STORE
   {
   private:
     Lock   m_okLock;  // lock on the partition
-    //eCN    m_eKind;   // what kind of table partition
+    eCN    m_eKind;   // what kind of table partition
 
     BucketVec*    m_pBucketVec;     // vector of buckets
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
