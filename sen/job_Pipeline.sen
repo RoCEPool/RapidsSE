@@ -70,9 +70,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* terminate this pipeline                                                    */
+/* terminate this origin pipeline                                             */
 /*----------------------------------------------------------------------------*/
-: pipeline::termination ( -- )
+: pipeline::terminate_origin ( -- )
 
 
   _lu_finalise_
@@ -81,6 +81,16 @@
 
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* terminate this participant pipeline                                        */
+/*----------------------------------------------------------------------------*/
+: pipeline::terminate_participant ( -- )
+
+  job::completed
 
   HAZARD
 ;
@@ -103,7 +113,7 @@
 
       job::informInvokerOfCompletion
 
-      pipeline::termination
+      pipeline::terminate_origin
 
       HAZARD
 
@@ -155,7 +165,7 @@
   
   job::informInvokerOfCompletion
 
-  pipeline::termination
+  pipeline::terminate_origin
   
   HAZARD
 ;
@@ -321,7 +331,7 @@
 
   _job_finalise_
 
-  job::completed
+  pipeline::terminate_participant
 
   HAZARD
 ;
@@ -346,7 +356,7 @@
   
   _job_finalise_
 
-  job::completed
+  pipeline::terminate_participant
 
   HAZARD
 ;

@@ -814,31 +814,6 @@ void vTest10(void)
 /*----------------------------------------------------------------------------*/
 void vTest11(void)
 {
-  vTrace("Test 11 -- API for Compiler\n"_Stz);
-
-  Timer oTimer;
-  oTimer.vStart();
-  
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-
-  TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"helloWorldImm"_Stz);
-  //pJobTags->vDumpSet();
-  pJob->vSeed(SS_SEED_RUN);
-
-  
-  Task* pImmTask = AM::TASK::pNew(pJob);
-  
-  Api::vCallImmediate(pImmTask);
-
-  Api::vDeleteImmediate(&pImmTask);
-  
-  oTimer.vUpdate();
-  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -846,19 +821,6 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  vTrace("Test 12 -- series of | operators\n"_Stz);
-  
-  Text* pText1 = new Text("1"_Stz);
-  Text* pText2 = new Text("2"_Stz);
-  Text* pText3 = new Text("3"_Stz);
-
-  *pText1 | pText2 | pText3;
-  
-  vTrace("Text %s\n"_Stz,pText1->szGet());
-  
-  delete pText1;
-  delete pText2;
-  delete pText3;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,17 +828,7 @@ void vTest12(void)
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
-  vTrace("Test 13 -- SeApi | operators series test\n"_Stz);
-  
-  SeApi* pSeApi = new SeApi;
 
-  *pSeApi
-    | pSeApi->pAdd("op0"_Stz,"arg0"_Stz)
-    | pSeApi->pAdd("op1"_Stz,"arg1"_Stz)
-    | pSeApi->pAdd("op2"_Stz,"arg2"_Stz)
-  ;
-  
-  vTrace("SeApi %s\n"_Stz,pSeApi->szGet());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -884,40 +836,6 @@ void vTest13(void)
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
-  vTrace("Test 14 -- API for Compiler calls >interpret\n"_Stz);
-  
-  Timer oTimer;
-  oTimer.vStart();
-  
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-
-  TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
-  //pJobTags->vDumpSet();
-  pJob->vSeed(SS_SEED_RUN);
-
-  
-  Task* pImmTask = AM::TASK::pNew(pJob);
-  
-  
-  SeApi* pSeApi = new SeApi;
-  *pSeApi
-    | pSeApi->pAdd("."_Stz,"1 1 +"_Stz);
-
-  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
-  
-  Api::vCallImmediate(pImmTask);
-
-  Api::vDeleteImmediate(&pImmTask);
-  
-  delete pSeApi;
-
-  oTimer.vUpdate();
-  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 
 }
 
@@ -926,40 +844,6 @@ void vTest14(void)
 /*----------------------------------------------------------------------------*/
 void vTest15(void)
 {
-  vTrace("Test 15 -- API for Compiler calls >interpret\n"_Stz);
-  
-  Timer oTimer;
-  oTimer.vStart();
-  
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-
-  TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
-  //pJobTags->vDumpSet();
-  pJob->vSeed(SS_SEED_RUN);
-
-  
-  Task* pImmTask = AM::TASK::pNew(pJob);
-  
-  
-  SeApi* pSeApi = new SeApi;
-  *pSeApi
-    | pSeApi->pAdd("filter_seapi"_Stz,""_Stz);
-
-  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
-  
-  Api::vCallImmediate(pImmTask);
-
-  Api::vDeleteImmediate(&pImmTask);
-  
-  delete pSeApi;
-  
-  oTimer.vUpdate();
-  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,104 +851,9 @@ void vTest15(void)
 /*----------------------------------------------------------------------------*/
 void vTest16(void)
 {
-  vTrace("Test 16 -- API for Compiler calls >interpret\n"_Stz);
-  
-  Timer oTimer;
-  oTimer.vStart();
-  
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-
-  TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz);
-  //pJobTags->vDumpSet();
-  pJob->vSeed(SS_SEED_RUN);
-
-  
-  Task* pImmTask = AM::TASK::pNew(pJob);
-  
-
-  pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
-  
-  Api::vCallImmediate(pImmTask);
-
-  RowSingleList* pRowSingleList =
-    (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
-  
-  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
-  
-  while (pIter->bHasNext()) {
-    RowSingle* pRowSingle = pIter->pNext();
-    pRowSingle->vPrintRow();
-  }
-  
-  Api::vDeleteImmediate(&pImmTask);
-  
-  delete pIter;
-
-  oTimer.vUpdate();
-  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
-
 }
 
 /*----------------------------------------------------------------------------*/
-
-#define SEAPI() \
-  \
-  SeApi* pSeApi = new SeApi; \
-  \
-  Job* pJob = new Job(\
-                      AM::GRID::iThisNodeNo(), \
-                      AM::SESSION::iInternalSession(), \
-                      1 \
-                      ); \
-  \
-  TagSet* pJobTags = pJob->pJobTags(); \
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz); \
-  pJobTags->vReplace(C_TAG_SEEDRUN,">interpretImm"_Stz); \
-  pJob->vSeed(SS_SEED_RUN); \
-  \
-  Task* pImmTask = AM::TASK::pNew(pJob); \
-  \
-  RowSingleList* pRowSingleList = nullptr;
-  
-
-#define Scan(_TableNm) \
-    *pSeApi \
-  | pSeApi->pEncode("scan"_Stz,#_TableNm##_Stz)
-
-#define Filter(_szExpr) \
-  pSeApi->pEncode("tbd..."_Stz,"Filter"_Stz)
-
-#define Project(_szExpr) \
-    pSeApi->pEncode("tbd..."_Stz,"Project"_Stz)
-
-#define Sort(_szExpr) \
-    pSeApi->pEncode("tbd..."_Stz,"Sort"_Stz)
-
-#define Into(_pList) \
-    pSeApi->pEncode("into"_Stz); \
-  \
-  \
-  vTrace("imm %s\n"_Stz,pSeApi->szGet()); \
-  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet()); \
-  Api::vCallImmediate(pImmTask); \
-  pRowSingleList = \
-    (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
-
-
-#define ENDSEAPI() \
-  \
-  delete pSeApi; \
-  \
-  if (pRowSingleList) { \
-    pRowSingleList->vDeleteAll(); \
-    delete pRowSingleList; \
-    pRowSingleList = nullptr; \
-  }
 
 
 /*----------------------------------------------------------------------------*/
@@ -1072,22 +861,6 @@ void vTest16(void)
 /*----------------------------------------------------------------------------*/
 void vTest17(void)
 {
-  vTrace("Test 17 -- SEAPI macros\n"_Stz);
-
-  SEAPI();
-    
-  Scan(Tables) | Into(pRowSingleList);
-  
-  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
-
-  while (pIter->bHasNext()) {
-    RowSingle* pRowSingle = pIter->pNext();
-    pRowSingle->vPrintRow();
-  }
-
-  delete pIter;
-  
-  ENDSEAPI();
 }
 
 /*----------------------------------------------------------------------------*/
