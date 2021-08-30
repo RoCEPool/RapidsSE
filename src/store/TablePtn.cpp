@@ -361,7 +361,7 @@ IndexTreeVec *TablePtn::pIndexTreeVec(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
+#ifdef WITH_MULTI_BUCKET
   // get no of indexes of the table
   i8 nIndexes = m_pIndexTreeVec->nItems();
 
@@ -373,6 +373,9 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer) {
     // insert entries from EntBuffer into the index
     pIndexTree->vInsertEntries(pCrwBuffer);
   }
+#else
+  m_pBucketVec->pGet(0)->vInsertIndexEntries(pCrwBuffer);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,12 +503,15 @@ RowBuffer *TablePtn::pRootRowBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void TablePtn::vRemoveIndex(i8 iIndexNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
+#ifdef WITH_MULTI_BUCKET
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
 
   // remove the index from the IdxDataVec
   m_pIndexTreeVec->vRemove(pIndexTree);
   delete pIndexTree;
+#else
+  m_pBucketVec->pGet(0)->vRemoveIndex(iIndexNo);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
