@@ -78,7 +78,7 @@
   JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
   JobRef[].return
   
-  job_exit
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/

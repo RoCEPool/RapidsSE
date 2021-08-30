@@ -143,7 +143,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_RUNNING;
+  m_eJobState = JS_ACTIVE;
   m_eError_job    = EC_NONE;
   
   // -- d -------------------
@@ -201,7 +201,7 @@ Job::Job(eCN eClassNo)
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
+  m_eJobState = JS_ACTIVE;
   
   m_bNormalSides = true; //
   m_bWasReceived = false;
@@ -967,7 +967,7 @@ void Job::vResetForCascade(Session* pSession)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_RUNNING;
+  m_eJobState = JS_ACTIVE;
 
   // -- d -------------------
   delete m_pJobLogicUnit; m_pJobLogicUnit = nullptr;

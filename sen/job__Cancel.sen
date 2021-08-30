@@ -78,7 +78,7 @@
   JobRef[] job.scheduleNextPhase
   JobRef[].return
   
-  job_exit
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/

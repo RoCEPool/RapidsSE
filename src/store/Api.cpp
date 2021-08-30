@@ -1212,9 +1212,9 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
 {
   _static_
   
-  RASSERT(JS_RUNNING != pJob->eJobState());
+  RASSERT(JS_ACTIVE != pJob->eJobState());
     
-  pJob->vJobState(JS_RUNNING);
+  pJob->vJobState(JS_ACTIVE);
   
   pSession->m_oMutex.vUnlock(pSession);
 }
