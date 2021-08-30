@@ -10,10 +10,29 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* done executing                                                             */
+/*----------------------------------------------------------------------------*/
+: pipeline::termination ( -- )
+
+  DdlLock[].testDrop
+
+  _job_finalise_
+
+  task::scheduledelete
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
 /* request execution of a distributed pipeline (on originating node)          */
 /*----------------------------------------------------------------------------*/
 : pipeline::request ( -- <R> )
 
+  job::assertCorrectness
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pre-check
+  
   "<preCheck>" job::tagSet@ tagSet.hasName if
   
     <preCheck> find execute not if
@@ -23,29 +42,21 @@
       //"Signalling waiting thread" .
       job::informInvokerOfCompletion
 
-      // task has no job
-      task::scheduledelete
+      pipeline::termination
 
-      DdlLock[].testDrop
-
-      _job_finalise_
-
-      exit                                                         // EARLY EXIT
+      HAZARD
 
     then
   then
 
-  // [ senCompiler::current@ word.name@ encode::push ] .
-  // <jobNm> .
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // become an originator
+  
   job::becomeOriginator
 
-  
-  
-  // : pipeline::request
-  
-  job::assertCorrectness
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on origin to check its syntax
   
   <cmd> Pipeline::compileStmt dup
@@ -56,9 +67,6 @@
     discard
   then
 
-  
-  
-
   job[] job.hasError not if
 
     // distribute the job
@@ -68,6 +76,7 @@
     task::wait
 
   else
+  
   then
 
   job[] job.removeOriginator  // this is currently being done by job_ended
@@ -75,13 +84,8 @@
   //"Signalling waiting thread" .
   job::informInvokerOfCompletion
 
-  // task has no job
-  task::scheduledelete
-
-  DdlLock[].testDrop
-
-  _job_finalise_
-
+  pipeline::termination
+  
   HAZARD
 ;
 

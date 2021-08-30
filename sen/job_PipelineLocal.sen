@@ -5,17 +5,14 @@
 " job_PipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* done executing a req seed                                                  */
+/* done executing                                                             */
 /*----------------------------------------------------------------------------*/
-: DONE_REQ ( -- )
+: pipelineLocal::termination ( -- )
 
   DdlLock[].testDrop
 
   _job_finalise_
 
-  job::informInvokerOfCompletion
-
-  // task has no job
   task::scheduledelete
 
   HAZARD
@@ -32,11 +29,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
+  
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     //"got error" .
     job::error!
-    DONE_REQ
+    job::informInvokerOfCompletion
+    pipelineLocal::termination
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,7 +92,8 @@
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
   
-  DONE_REQ
+  job::informInvokerOfCompletion
+  pipelineLocal::termination
 ;
 
 /*----------------------------------------------------------------------------*/
