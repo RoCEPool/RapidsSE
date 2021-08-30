@@ -92,7 +92,9 @@ void JobList::vAddJob(Job* pJob)
   ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
-          (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) );
+          (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
+          (JL_RETIRED       == m_eJobsList && ! pJob->bWasReceived())
+         );
   pJob->vJobList(m_eJobsList);
   
   m_pJobsSkipList->bInsert(pJob);
