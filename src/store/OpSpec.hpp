@@ -5,14 +5,14 @@
 
 #include "eXK.h"
 
-#include "DeleteHelper.hpp"
+#include "DeleteHelper_t.hpp"
 
 namespace STORE { class PipelineSpec; class StageSpec; }
 
 namespace STORE
 {
   class OpSpec : public Object,
-                 public DeleteHelper
+                 public DeleteHelper_t
   {
   private:
     s32  m_sOpNm;       // op name

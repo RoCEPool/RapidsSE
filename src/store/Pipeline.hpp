@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "DeleteHelper.hpp"
+#include "DeleteHelper_t.hpp"
 
 
 namespace STORE { class Stage; class PipelineSpec; }
@@ -11,7 +11,7 @@ namespace STORE { class Stage; class PipelineSpec; }
 namespace STORE
 {
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                   public DeleteHelper
+                   public DeleteHelper_t
 
   {
   private:

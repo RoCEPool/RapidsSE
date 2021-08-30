@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* DeleteHelper.cpp -- a delete helper                                        */
+/* DeleteHelper_t.cpp -- a delete helper                                     */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "DeleteHelper.hpp"
+#include "DeleteHelper_t.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DeleteHelper::DeleteHelper(void)
+DeleteHelper_t::DeleteHelper_t(void)
 {
   m_pDeleter = nullptr;
   m_szFunc   = nullptr;
@@ -22,7 +22,7 @@ DeleteHelper::DeleteHelper(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-DeleteHelper::~DeleteHelper(void) noexcept(false)
+DeleteHelper_t::~DeleteHelper_t(void) noexcept(false)
 {
 }
 
@@ -33,7 +33,7 @@ DeleteHelper::~DeleteHelper(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set who is going to delete this object                                     */
 /*----------------------------------------------------------------------------*/
-void DeleteHelper::vDeleteBy(Object* pDeleter, Stz* szFunc)
+void DeleteHelper_t::vDeleteBy(Object* pDeleter, Stz* szFunc)
 {
   m_pDeleter = pDeleter;
   m_szFunc   = szFunc;
