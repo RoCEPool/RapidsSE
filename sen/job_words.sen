@@ -53,35 +53,6 @@
   setPath
 ;
 
-/*----------------------------------------------------------------------------*/
-/* job becomes a participant on participant node                              */
-/*----------------------------------------------------------------------------*/
-: job::becomeParticipant ( -- )
-
-  job[] locals| pJob |
-
-  // set participant node in job
-  grid::thisNode@ pJob job.participant!
-
-  // add job to participant job list
-  pJob job.addParticipant
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has </flow/> and if so print the jobs ename set           */
-/*----------------------------------------------------------------------------*/
-: job::</seeXfer/>
-
-  "</xfer/>"
-  job::tagSet@ tagSet.hasName
-  if
-
-   r@ locate .
-   job::tagSet@ tagSet.asStr .
-
-  then
-;
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,8 +80,6 @@
   //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
-
-  job::</seeXfer/>
 
   Socket[].grabWrite
 
@@ -161,19 +130,6 @@
   pJob job.spawn
 ;
 
-/*----------------------------------------------------------------------------*/
-/* add this job into originator list                                          */
-/*----------------------------------------------------------------------------*/
-: job::becomeOriginator ( -- )
-
-   // set originating task
-  task[] job[] job.originatingTask!
-
-  job[] job.id@ job[] job.originatingId!
-
-  // add job to originator jobs
-  job[] job.addOriginator
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

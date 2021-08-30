@@ -53,9 +53,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
   
-  job::becomeOriginator
+   // set originating task
+  task[] job[] job.originatingTask!
 
+  job[] job.id@ job[] job.originatingId!
 
+  // add job to originator jobs
+  job[] job.addOriginator
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on origin to check its syntax
   
@@ -79,7 +84,7 @@
   
   then
 
-  job[] job.removeOriginator  // this is currently being done by job_ended
+  job[] job.removeOriginator
 
   //"Signalling waiting thread" .
   job::informInvokerOfCompletion
@@ -105,7 +110,13 @@
 
   <path> str.toStrVec Path[].set
 
-  job::becomeParticipant
+  job[] locals| pJob |
+
+  // set participant node in job
+  grid::thisNode@ pJob job.participant!
+
+  // add job to participant job list
+  pJob job.addParticipant
 
 
 
@@ -127,16 +138,6 @@
   
   Pipeline::create
   Pipeline::spawnOpTasks
-
-
-
-
-
-
-
-
-
-
 
   JP_BEGUN job[] job.phase!
   nullptr job[] job.seedWord!
