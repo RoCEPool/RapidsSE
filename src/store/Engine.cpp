@@ -43,6 +43,7 @@
 #include "Index.hpp"
 #include "BucketMap.hpp"
 #include "CrwBuffer.hpp"
+#include "StreamDefRht.hpp"
 #include "StreamSet.hpp"
 #include "Marker.hpp"
 
@@ -1092,6 +1093,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
   gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
+  gxaSizeHeap[CN_STREAMDEFRHT].m_fpPostRecvFn = (fpPOSTFN*)StreamDefRht::vPostRecv;
   gxaSizeHeap[CN_STREAMSET].m_fpPostRecvFn = (fpPOSTFN*)StreamSet::vPostRecv;
   gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;
 }

@@ -154,6 +154,7 @@
 #include "StageSpec.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
+#include "StreamDefRht.hpp"
 #include "StzList.hpp"
 
 #include "SP_Gid.hpp"
@@ -473,6 +474,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
+  { sizeof(StreamDefRht),       HT_T_LARGE   ,0 }, // CN_STREAMDEFRHT
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_STRING_T
   { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST

@@ -1709,6 +1709,7 @@ public:
   void vStreamDefRhtGetAndClear(void);
   void vStreamDefRhtIsNull(void);
   void vStreamDefRhtNew(void);
+  void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
