@@ -32,6 +32,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::completed"_Stz,          &Step::vJobCompleted);
   vAddStep("job::retire"_Stz,             &Step::vJobRetire);
   vAddStep("job::2pcDeleteImmediate"_Stz, &Step::vJob2pcDelete);
+  vAddStep("job::state@"_Stz,             &Step::vJobStateFetch);
+  vAddStep("job::state!"_Stz,             &Step::vJobStateStore);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
@@ -99,8 +101,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
-  
-  vAddStep("job::tagSet@"_Stz,          &Step::vJobTagSetFetch);
+
+  vAddStep("job::tagSet@"_Stz,         &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   
@@ -1229,6 +1231,37 @@ void Step::vJobSpawn(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job.phase@ -- fetch the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobStateFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  m_pDataStack->vPushInt(pJob->eJobState());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.phase! -- store the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobStateStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  i8 iJobState = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vJobState((eJS)iJobState);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* job::tagSet@ -- push ptr to job TagSet                                      */

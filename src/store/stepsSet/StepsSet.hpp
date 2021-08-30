@@ -727,6 +727,8 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
+  void vJobStateFetch(void);
+  void vJobStateStore(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
