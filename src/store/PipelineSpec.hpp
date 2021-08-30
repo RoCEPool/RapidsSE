@@ -11,7 +11,7 @@ namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 namespace STORE
 {
   class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>,
-                      public DeleteHelper_t
+                      public DeleteHelper_t<PipelineSpec>
   {
     friend class STORE::Dynamo;
 
@@ -50,7 +50,6 @@ namespace STORE
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     i8   iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);

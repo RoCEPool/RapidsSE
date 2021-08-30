@@ -10,7 +10,7 @@ namespace STORE { class Stream; class StageSpec; }
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>,
-                public DeleteHelper_t
+                public DeleteHelper_t<Stage>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -33,7 +33,6 @@ namespace STORE
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     Stream* pGetPartitionStream(i8 i_Ptn);
     Stream* pGetNodeStream(i8 i_Node);
     i8   nOpsOnNode(i8 iNode);

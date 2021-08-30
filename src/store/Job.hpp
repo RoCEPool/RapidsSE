@@ -24,7 +24,7 @@ namespace STORE
 {
   class Job : public Object,
               public CRM<Job>,
-              public DeleteHelper_t
+              public DeleteHelper_t<Job>
   {
   public:
   
@@ -133,7 +133,6 @@ namespace STORE
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     bool bByPromptTag(void);
     void vContentDump(void);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);

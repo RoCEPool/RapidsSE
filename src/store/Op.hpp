@@ -15,7 +15,7 @@ namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 namespace STORE
 {
   class Op : public Operand,
-             public DeleteHelper_t
+             public DeleteHelper_t<Op>
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -106,7 +106,6 @@ namespace STORE
     ePX  eCrossTopo(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);

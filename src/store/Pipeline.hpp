@@ -11,7 +11,7 @@ namespace STORE { class Stage; class PipelineSpec; }
 namespace STORE
 {
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                   public DeleteHelper_t
+                   public DeleteHelper_t<Pipeline>
 
   {
   private:
@@ -75,7 +75,6 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     bool bEarlyExit(void);
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);

@@ -11,7 +11,7 @@ namespace STORE { class Op; class StageSpec; }
 namespace STORE
 {
   class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>,
-                 public DeleteHelper_t
+                 public DeleteHelper_t<Stream>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -44,7 +44,6 @@ namespace STORE
     i8   i_Node(void);
     i8   i_Stream(void);
 
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     Pipeline* pPipeline(void);
     tPN  tPtnNo(void);
   

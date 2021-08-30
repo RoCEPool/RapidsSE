@@ -12,7 +12,7 @@ namespace STORE { class PipelineSpec; class StageSpec; }
 namespace STORE
 {
   class OpSpec : public Object,
-                 public DeleteHelper_t
+                 public DeleteHelper_t<OpSpec>
   {
   private:
     s32  m_sOpNm;       // op name
@@ -43,7 +43,6 @@ namespace STORE
   
     bool bAppendRight(void);
     void vAppendRight(bool bRight);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);

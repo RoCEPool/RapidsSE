@@ -478,19 +478,6 @@ void Job::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete this                                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vDeleteThis(Object* pDeleter, Stz* szFunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pDeleter = pDeleter;
-  m_szFunc   = szFunc;
-
-  delete this;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this job has a /diary ename tag                                    */
 /*----------------------------------------------------------------------------*/
 bool Job::bDiaryTag(void)

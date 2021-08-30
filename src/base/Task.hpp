@@ -26,7 +26,7 @@ namespace BASE
   
   class Task : public Object,
                public ListItem_t<Task>,
-               public DeleteHelper_t
+               public DeleteHelper_t<Task>
   {
   friend class STORE::Step;
   
@@ -143,7 +143,6 @@ namespace BASE
     void vContentDump(void);
     Word* pCurWord(void);
     void vDeleteInput(void);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);

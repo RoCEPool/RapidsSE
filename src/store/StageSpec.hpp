@@ -12,7 +12,7 @@
 namespace STORE
 {
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>,
-                    public DeleteHelper_t
+                    public DeleteHelper_t<StageSpec>
   {
   private:
     s32  m_sStageNm;    // stage name
@@ -40,7 +40,6 @@ namespace STORE
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
-    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     OpSpec* pFindOpSpec(Stz* szFindNm);
     bool bNodeTopo(void);
     OpSpec* pOpSpec(i8 i_Op);
