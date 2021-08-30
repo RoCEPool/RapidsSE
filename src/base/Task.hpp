@@ -122,7 +122,8 @@ namespace BASE
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-  
+    static void vDebug(void);
+
     void vTaskLoop(void);
     void vExceptionHandler(void);
     void vExceptionTrace(void);
@@ -142,7 +143,7 @@ namespace BASE
     void vContentDump(void);
     Word* pCurWord(void);
     void vDeleteInput(void);
-    static void vDebug(void);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);

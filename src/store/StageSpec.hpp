@@ -40,6 +40,7 @@ namespace STORE
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     OpSpec* pFindOpSpec(Stz* szFindNm);
     bool bNodeTopo(void);
     OpSpec* pOpSpec(i8 i_Op);

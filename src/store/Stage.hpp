@@ -32,15 +32,16 @@ namespace STORE
     Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
    ~Stage(void) noexcept(false);
       
-    void    vCancelPipeline(Task* pTriggeringTask);
+    void vCancelPipeline(Task* pTriggeringTask);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     Stream* pGetPartitionStream(i8 i_Ptn);
     Stream* pGetNodeStream(i8 i_Node);
-    i8      nOpsOnNode(i8 iNode);
+    i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
-    Op*     pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
-    Stz*    szStageNm(void);
+    Op*  pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
+    Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
-    bool    bStartPipeline(void);
+    bool bStartPipeline(void);
   
   private:
     void    vCreateStreams(void);

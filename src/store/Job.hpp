@@ -133,6 +133,7 @@ namespace STORE
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     bool bByPromptTag(void);
     void vContentDump(void);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);

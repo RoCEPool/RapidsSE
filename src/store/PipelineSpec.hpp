@@ -50,10 +50,11 @@ namespace STORE
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    i8 iDepth(void);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
+    i8   iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);
-    i8 nNestedPipelineSpecs(void);
+    i8   nNestedPipelineSpecs(void);
     PipelineSpec* pNestedPipelineSpec(i8 i_NestedPipeline);
     PipelineSpec* pParentPipelineSpec(void);
     i8   i_PipelineSpec(void);

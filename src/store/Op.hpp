@@ -106,6 +106,7 @@ namespace STORE
     ePX  eCrossTopo(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);

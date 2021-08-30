@@ -44,6 +44,7 @@ namespace STORE
     i8   i_Node(void);
     i8   i_Stream(void);
 
+    void vDeleteThis(Object* pDeleter, Stz* szFunc);
     Pipeline* pPipeline(void);
     tPN  tPtnNo(void);
   
