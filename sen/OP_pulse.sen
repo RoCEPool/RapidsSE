@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
  : pulse_req \operator
  
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   0 locals| hours   |
   0 locals| minutes |
@@ -78,10 +78,11 @@
 
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

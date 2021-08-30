@@ -28,14 +28,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job::assertCorrectness"_Stz, &Step::vJobAssertCorrectness);
-  vAddStep("job::completed"_Stz,         &Step::vJobCompleted);
+  vAddStep("job::assertCorrectness"_Stz,  &Step::vJobAssertCorrectness);
+  vAddStep("job::state@"_Stz,             &Step::vJobStateFetch);
+  vAddStep("job::state!"_Stz,             &Step::vJobStateStore);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("job.addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
@@ -81,7 +83,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
-  vAddStep("job.retire"_Stz,           &Step::vJobRetire);
+  vAddStep("job.removeRetired"_Stz,    &Step::vJobRemoveRetired);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -96,8 +98,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
-  
-  vAddStep("job::tagSet@"_Stz,          &Step::vJobTagSetFetch);
+
+  vAddStep("job::tagSet@"_Stz,         &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   
@@ -197,6 +199,26 @@ void Step::vJobAddParticipant(void)
 //  AM::pParticipatingJobs()->vDropLock();
   
   AM::vJob_AddParticipating(pJob);
+
+  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addRetired -- add job to retired job set                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAddRetired(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+//  AM::pParticipatingJobs()->vGrabLock();
+//  AM::pParticipatingJobs()->vAddJob(pJob);
+//  AM::pParticipatingJobs()->vDropLock();
+  
+  AM::vJob_AddRetired(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -414,23 +436,6 @@ void Step::vJobClass(void)
   eCN eClass = pJob->eGetClassNo();
   
   m_pDataStack->vPushInt(eClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::completed --                                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobCompleted(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob;
-  
-  pJob->vJobState(JS_COMPLETED);
-  
-  vGrabTaskLock((Stz*)__func__);
-  vScheduleDelete();
   
   EXIT();
 }
@@ -917,16 +922,25 @@ void Step::vJobRemoveParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.retire -- retire the job                                               */
+/* job.removeRetired -- remove job from retired job set                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRetire(void)
+void Step::vJobRemoveRetired(void)
 {
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  // to be coded ...
   
+  bool bRemove = AM::bJob_RemoveRetired(pJob);
+
+  if (! bRemove) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld from reited\n"_Stz,
+           aCN[pJob->eGetClassNo()],pJob->iJobId());
+    vTrace("------------------------------------\n"_Stz);
+    
+    bRemove = AM::bJob_RemoveRetired(pJob,true);
+  }
+     
   EXIT();
 }
   
@@ -1163,6 +1177,37 @@ void Step::vJobSpawn(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job.phase@ -- fetch the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobStateFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  m_pDataStack->vPushInt(pJob->eJobState());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.phase! -- store the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobStateStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  i8 iJobState = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vJobState((eJS)iJobState);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* job::tagSet@ -- push ptr to job TagSet                                      */

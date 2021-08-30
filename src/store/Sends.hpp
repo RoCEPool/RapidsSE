@@ -21,7 +21,7 @@ namespace STORE
     i8             m_iEosMarkers;        // eos markers received by consumeOp
     i8             m_iLeavingMarkers;    // leaving markers received by consumeOp
     i8             m_iStartMarkers;      // start markers received by consumeOp
-    i8             m_iStreamDefRhtMarkers; // streamDefRht markers received by consumeOp
+    i8             m_iStreamDefRhts;     // streamDefRht's received by consumeOp
     i8             m_iStreamDefs;        // stream def's received by consumeOp
     
     // must be last

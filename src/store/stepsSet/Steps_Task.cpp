@@ -25,19 +25,18 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::acks!"_Stz,          &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::scheduledelete"_Stz, &Step::vTaskDelete);
-  vAddStep("task::doneFinally"_Stz,    &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
-  vAddStep("task::seedInitially"_Stz,  &Step::vTaskSeedInitially);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
   vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
+  vAddStep("task::transition!"_Stz,    &Step::vTaskTransitionStore);
   vAddStep("task::wait"_Stz,           &Step::vTaskWait);
   vAddStep("task::yield"_Stz,          &Step::vTaskYield);
   vAddStep("task::yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
@@ -103,18 +102,6 @@ void Step::vTaskBreakPoint(void)
 {
   ENTRY();
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::doneFinally -- set done finally as been executed                     */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDoneFinally(void)
-{
-  ENTRY();
-  
- m_bDoneFinally = true;
-  
   EXIT();
 }
 
@@ -355,18 +342,6 @@ void Step::vTaskReleaseLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seedInitially -- set seed initially as been executed                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSeedInitially(void)
-{
-  ENTRY();
-  
-  m_bSeedInitially = true;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task::seeFrameStack -- see event handler frames (aka return stack)         */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeeFrameStack(void)
@@ -481,6 +456,21 @@ void Step::vTaskThread(void)
   Thread* pThread = pThatTask->m_pThread;
   m_pDataStack->vPushPtr(pThread);
   ASSERT(pThread);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::transition! -- transition store                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskTransitionStore(void)
+{
+  ENTRY();
+  
+  eTR eTransition = (eTR)m_pDataStack->iPopInt(__func__);
+
+  RASSERT(bIsLocked());
+  m_eTransition = eTransition;
   
   EXIT();
 }

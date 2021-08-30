@@ -268,7 +268,7 @@
 /*----------------------------------------------------------------------------*/
 : fetch_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
   //<tableNm> <predicate> "PARAMETERS %v %v" str.format .
 
   op__topology
@@ -280,10 +280,11 @@
 
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

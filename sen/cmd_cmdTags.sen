@@ -5,95 +5,109 @@
 " cmd_info.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* test if info word is about a distributed job                               */
+/* test if info word is about a pipeline job                                  */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutDistJob params| pInfoWrd |
+: _cmdTags.aboutPipelineJob params| pwCmdTags |
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  pwCmdTags word.TagSet@ locals| pTagSet |
 
-  "<jobKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+  "<jobKind>" pTagSet tagSet.getInt JK_PIPELINE == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a generic job                                   */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutGenericJob params| pInfoWrd |
+: _cmdTags.aboutGenericJob params| pwCmdTags |
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  pwCmdTags word.TagSet@ locals| pTagSet |
 
-  "<jobKind>" pInfTagSet tagSet.getInt JK_GENERIC == if true else false then
+  "<jobKind>" pTagSet tagSet.getInt JK_GENERIC == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a local job                                     */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutLocalJob params| pInfoWrd |
+: _cmdTags.aboutLocalJob params| pwCmdTags |
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  pwCmdTags word.TagSet@ locals| pTagSet |
 
-  "<jobKind>" pInfTagSet tagSet.getInt JK_LOCAL == if true else false then
+  "<jobKind>" pTagSet tagSet.getInt JK_LOCAL == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a lite op                                       */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutLiteOp params| pInfoWrd |
+: _cmdTags.aboutLiteOp params| pwCmdTags |
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  pwCmdTags word.TagSet@ locals| pTagSet |
 
-  "<liteOp>" pInfTagSet tagSet.hasName if true else false then
+  "<liteOp>" pTagSet tagSet.hasName if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a local lite op                                 */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.aboutLocalLiteOp params| pInfoWrd |
+: _cmdTags.aboutLocalLiteOp params| pwCmdTags |
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  pwCmdTags word.TagSet@ locals| pTagSet |
 
-  "<localLiteOp>" pInfTagSet tagSet.hasName if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if info word is a service command                                     */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.aboutServiceCmd params| pInfoWrd |
-
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
-
-  "<cmdKind>" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then
+  "<localLiteOp>" pTagSet tagSet.hasName if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* does a seed by the name of Cmd_Suffix exist ?                              */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.doesSeedExist? params| pInfoWrd sSeedSuffix |
+: _cmdTags.doesSeedExist? params| pwCmdTags sSuffix |
 
-  pInfoWrd word.name_trunc locals| sCmdNm |
+  pwCmdTags word.name_trunc locals| sCmdNm |
 
-  sCmdNm sSeedSuffix str.cat locals| sSeedNm |
+  sCmdNm sSuffix str.cat locals| sTagNm |
 
-  sSeedNm find if true else false then
+  sTagNm find if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
+/* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.addSeedTag params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+: _cmdTags.addSeedTag_local params| pwCmdTags sSuffix sProper sTagNm |
 
-  0 locals| sSeedNm_Suffix |
+  pwCmdTags word.TagSet@ locals| pTagSet |
+  
+  0 locals| sTagValue |
 
-  sSeedSuffix pInfoWrd _cmdTags.doesSeedExist? if
-    pInfoWrd word.name_trunc
-      sSeedSuffix str.cat to sSeedNm_Suffix
+  sSuffix pwCmdTags _cmdTags.doesSeedExist? if
+    pwCmdTags word.name_trunc
+      sSuffix str.cat to sTagValue
   else
-    sDefaultSeed
-      sSeedSuffix str.cat to sSeedNm_Suffix
+    sProper
+      sSuffix str.cat to sTagValue
   then
 
-  pInfoWrd word.TagSet@ locals| pInfTagSet |
+  //sTagValue  sTagNm "%v = %v" .printf
+    
+  sTagNm sTagValue pTagSet tagSet.insertStr
+;
 
-  sSeedNm sSeedNm_Suffix pInfTagSet tagSet.insertStr
+/*----------------------------------------------------------------------------*/
+/* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
+/*----------------------------------------------------------------------------*/
+: _cmdTags.addSeedTag_op params| pwCmdTags sSuffix sProper sTagNm |
+
+  pwCmdTags word.TagSet@ locals| pTagSet |
+  
+  0 locals| sTagValue |
+
+  sSuffix pwCmdTags _cmdTags.doesSeedExist? if
+    pwCmdTags word.name_trunc
+      sSuffix str.cat to sTagValue
+  else
+    sProper
+      sSuffix str.cat to sTagValue
+  then
+
+  //sTagValue  sTagNm "%v = %v" .printf
+    
+  sTagNm sTagValue pTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/

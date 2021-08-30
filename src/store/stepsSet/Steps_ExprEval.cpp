@@ -12,6 +12,7 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 #include "IndexTree.hpp"
+#include "StreamDefRht.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -133,9 +134,10 @@ void Step::vExprEvalEvaluateLoopJoin(void)
 
   ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef*    pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDefRht* pStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
+  StreamDef*    pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
 
   s4K sJoinExpr;
   m_pDataStack->vPopStr(sJoinExpr, __func__);

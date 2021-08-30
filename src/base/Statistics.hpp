@@ -115,8 +115,8 @@ namespace BASE
   
   struct {
     i8 m_nAcks;
+    i8 m_nCompleted;
     i8 m_nExecuting;
-    i8 m_nExited;
     i8 m_nReady;
     i8 m_nSleeping;
     i8 m_nWaiting;

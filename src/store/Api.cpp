@@ -430,6 +430,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   pPrepareJobTags->vCopy(pSsnTags);
 
+  //pCmdTags->vDumpSet(true);
+  
   pPrepareJobTags->vCopy(pCmdTags);
   
   if (AM::TRACE::bVerbose(C_VB_API))
@@ -540,17 +542,42 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* reap all ended jobs                                                        */
 /*----------------------------------------------------------------------------*/
-void Api::vReapJobs(void)
+bool Api::bReapJob(void)
 {
   _static_
   
 #ifdef WITH_JOB_REAPING
   
-  // to be coded...
+  Job* pReapableJob = nullptr;
+  
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+
+  pRetiredJobs->vGrabLock();
+
+  for (SkipNode* pCursor = pRetiredJobs->pFirst();
+       pCursor;
+       pCursor = pRetiredJobs->pNext(pCursor)) {
+    
+    Job* pRetiredJob = _pJob(pCursor->m_pObject);
+    
+    if (pRetiredJob) {
+      pReapableJob = pRetiredJob;
+      break;
+    }
+  }
+
+  if (! pReapableJob) {
+    pRetiredJobs->vDropLock();
+    return false;
+  }
+  
+  pRetiredJobs->vDropLock();
+  return true;
   
 #endif
+  
+  return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* is the command a shortform?                                                */
@@ -813,9 +840,9 @@ void Api::vCallBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call start                                                                 */
+/* run the start job                                                          */
 /*----------------------------------------------------------------------------*/
-void Api::vCallStart(void)
+void Api::RunStartJob(void)
 {
   _static_
 
@@ -839,7 +866,7 @@ void Api::vCallStart(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"start_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"_Start"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1185,9 +1212,9 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
 {
   _static_
   
-  RASSERT(JS_RUNNING != pJob->eJobState());
+  RASSERT(JS_ACTIVE != pJob->eJobState());
     
-  pJob->vJobState(JS_RUNNING);
+  pJob->vJobState(JS_ACTIVE);
   
   pSession->m_oMutex.vUnlock(pSession);
 }

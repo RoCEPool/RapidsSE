@@ -32,7 +32,6 @@
 #include "EnumGroups.h"
 #include "eAN.h"
 #include "eAT.h"
-#include "eCK.h"
 #include "eDL.h"
 #include "ePD.h"
 #include "ePP.h"
@@ -296,13 +295,6 @@ void Constants::vAddConstantsCpp(void)
   /*  5 */ vAddConstant("AT_SCAN"_Stz,     AT_SCAN);
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
   
-  // CK_ : command kind
-  /*  0 */ vAddConstant("CK_NONE"_Stz,     CK_NONE);
-  /*  0 */ vAddConstant("CK_COMMAND"_Stz,  CK_COMMAND);
-  /*  0 */ vAddConstant("CK_CHILD"_Stz,    CK_CHILD);
-  /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
-
-  
   // CN_ : class number
   /*    */ vAddConstant("CN_EACHROWBUFFER"_Stz,CN_EACHROWBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
@@ -465,7 +457,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_AT"_Stz,   EG_AT);
   vAddConstant("EG_BO"_Stz,   EG_BO);
   vAddConstant("EG_CC"_Stz,   EG_CC);
-  vAddConstant("EG_CK"_Stz,   EG_CK);
   vAddConstant("EG_CM"_Stz,   EG_CM);
   vAddConstant("EG_CN"_Stz,   EG_CN);
   vAddConstant("EG_CP"_Stz,   EG_CP);
@@ -560,7 +551,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
   /*  1 */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
   /*  2 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
-  /*  3 */ vAddConstant("JK_DIST2PC"_Stz,   JK_DIST2PC);
+  /*  3 */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
   /*  4 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
   /*  5 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
   /*  6 */ vAddConstant("JK_INFO"_Stz,      JK_INFO);
@@ -587,7 +578,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELING"_Stz, JP_CANCELING);
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
-  
+
+  // JS_ : job state
+  /*  0 */ vAddConstant("JS_NONE"_Stz,      JS_NONE);
+  /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
+  /*  0 */ vAddConstant("JS_DELETABLE"_Stz, JS_DELETABLE);
+  /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
+  /*  0 */ vAddConstant("JS_RETIRED"_Stz,   JS_RETIRED);
+  /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);
+
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
   /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);
@@ -672,6 +671,16 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
  
+  // TR_ : task transition
+  /*  0 */ vAddConstant("TR_NONE"_Stz,             TR_NONE);
+  /*  1 */ vAddConstant("TR_BIDE_FOR_OPERAND"_Stz, TR_BIDE_FOR_OPERAND);
+  /*  2 */ vAddConstant("TR_DELETE_THIS_TASK"_Stz, TR_DELETE_THIS_TASK);
+  /*  3 */ vAddConstant("TR_RETIRE_THIS_TASK"_Stz, TR_RETIRE_THIS_TASK);
+  /*  4 */ vAddConstant("TR_SLEEP_SOME_TIME"_Stz,  TR_SLEEP_SOME_TIME);
+  /*  5 */ vAddConstant("TR_WAIT_FOR_RESUME"_Stz,  TR_WAIT_FOR_RESUME);
+  /*  6 */ vAddConstant("TR_YIELD_FOR_OTHERS"_Stz, TR_YIELD_FOR_OTHERS);
+  /*  7 */ vAddConstant("TR_ENUMS"_Stz,            TR_ENUMS);
+  
   // UK_ : function type
   /*  0 */ vAddConstant("UK_NONE"_Stz,       UK_NONE);
   /*  0 */ vAddConstant("UK_AGG"_Stz,        UK_AGG);
@@ -684,7 +693,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("WK_CPPOBJECT"_Stz,  WK_CPPOBJECT);
   /*  0 */ vAddConstant("WK_INTRINSIC"_Stz,  WK_INTRINSIC);
   /*  0 */ vAddConstant("WK_LOCAL"_Stz,      WK_LOCAL);
-  /*  0 */ vAddConstant("WK_COLON"_Stz,    WK_COLON);
+  /*  0 */ vAddConstant("WK_COLON"_Stz,      WK_COLON);
   /*  0 */ vAddConstant("WK_ENUMS"_Stz,      WK_ENUMS);
   
   // XP_ : transaction phase
@@ -762,6 +771,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_M_STARTROWRHT"_Stz,     ZK_M_STARTROWRHT);
   /*  0 */ vAddConstant("ZK_M_STARTED"_Stz,         ZK_M_STARTED);
   /*  0 */ vAddConstant("ZK_D_STREAMDEF"_Stz,       ZK_D_STREAMDEF);
+  /*  0 */ vAddConstant("ZK_D_STREAMDEFRHT"_Stz,    ZK_D_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_M_STREAMDEFRHT"_Stz,    ZK_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("ZK_D_STREAMSET"_Stz,       ZK_D_STREAMSET);
   /*  0 */ vAddConstant("ZK_D_TABLE"_Stz,           ZK_D_TABLE);

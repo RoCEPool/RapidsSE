@@ -89,9 +89,6 @@ namespace BASE
   public:
     Word* m_pRecoveryWord;  // sen word called to recover from failure
 
-    bool  m_bSeedInitially; // seed_initially sentinel has been executed
-    bool  m_bDoneFinally;   // done_finally sentinel has been executed
-
     DicStack m_oDicStack;         // dictionary stack
     DicStack m_oSaveDicStack;    // save dictionary stack
 

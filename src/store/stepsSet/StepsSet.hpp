@@ -661,6 +661,7 @@ public:
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
+  void vJobAddRetired(void);
   void vJobAssertBegin(void);
   void vJobAssertCorrectness(void);
   void vJobAssertNeutral(void);
@@ -669,7 +670,6 @@ public:
   void vJobAssertReceived(void);
 
   void vJobClass(void);
-  void vJobCompleted(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
@@ -712,7 +712,7 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
-  void vJobRetire(void);
+  void vJobRemoveRetired(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
@@ -725,6 +725,8 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
+  void vJobStateFetch(void);
+  void vJobStateStore(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
@@ -1707,6 +1709,7 @@ public:
   void vStreamDefRhtGetAndClear(void);
   void vStreamDefRhtIsNull(void);
   void vStreamDefRhtNew(void);
+  void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
@@ -1857,7 +1860,6 @@ public:
   void vTaskBreakPoint(void);
   void vTaskDestructorTraceFetch(void);
   void vTaskDestructorTraceStore(void);
-  void vTaskDoneFinally(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskDelete(void);
@@ -1873,7 +1875,6 @@ public:
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskReleaseLockSets(void);
-  void vTaskSeedInitially(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
   void vTaskSeeLogicUnitRegisters(void);
@@ -1883,6 +1884,7 @@ public:
   void vTaskSleepUsec(void);
   void vTaskStateFetch(void);
   void vTaskThread(void);
+  void vTaskTransitionStore(void);
   void vTaskWait(void);
   void vTaskYield(void);
   void vTaskYield_opLoop(void);

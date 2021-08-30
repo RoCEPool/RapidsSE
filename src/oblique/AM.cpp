@@ -10,7 +10,6 @@
 #include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
-#include "eCK.h"
 #include "eCP.h"
 #include "eCX.h"
 #include "eDL.h"
@@ -110,6 +109,7 @@
 
 #include "Step.hpp"
 #include "StreamDef.hpp"
+#include "StreamDefRht.hpp"
 
 #include "SP_Word.hpp"
 
@@ -1038,6 +1038,9 @@ Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
   }
 
   ASSERT(szSeed)
+
+  if (szSeed->nLength() < 3)
+    pTags->vDumpSet(true);
   
   return szSeed;
 }
@@ -1762,6 +1765,8 @@ JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pJobs->pOriginatingJobs(); }
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
+JobList* AM::pRetiredJobs(void) {
+  return gpAttachMap->m_pJobs->pRetiredJobs(); }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
@@ -1903,6 +1908,12 @@ void AM::vDeleteOperand(Operand* pOperand)
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = _pStreamDef(pOperand);
       delete pStreamDef;
+      break;
+    }
+
+    case CN_STREAMDEFRHT: {
+      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
+      delete pStreamDefRht;
       break;
     }
       
@@ -2622,10 +2633,20 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
     return pNewMarker;
   }
   else {
-    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF);
-    StreamDef* pStreamDef = _pStreamDef(pOperand);
-    StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
-    return pNewStreamDef;
+    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF ||
+           pOperand->eGetClassNo() == CN_STREAMDEFRHT);
+
+    if (pOperand->eGetClassNo() == CN_STREAMDEF) {
+      StreamDef* pStreamDef = _pStreamDef(pOperand);
+      StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
+      return pNewStreamDef;
+    }
+    else {
+      ASSERT(pOperand->eGetClassNo() == CN_STREAMDEFRHT);
+      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
+      StreamDefRht* pNewStreamDefRht = new StreamDefRht(pStreamDefRht);
+      return pNewStreamDefRht;
+    }
   }
   
 }
@@ -2781,6 +2802,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
     //case CN_SRTBUFFER:    eOperand = ZK_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = ZK_D_STREAMDEF;      break;
+    case CN_STREAMDEFRHT: eOperand = ZK_D_STREAMDEFRHT;   break;
     case CN_STREAMSET:    eOperand = ZK_D_STREAMSET;      break;
     case CN_METAGET:      eOperand = ZK_D_METAGET;        break;
     case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
@@ -3206,7 +3228,6 @@ static Stz* aEG[]
   "EG_BO"_Stz,
 
   "EG_CC"_Stz,
-  "EG_CK"_Stz,
   "EG_CM"_Stz,
   "EG_CN"_Stz,
   "EG_CP"_Stz,
@@ -3337,7 +3358,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_BO: return aBO[i_Enum];
       
     case EG_CC: return aCC[i_Enum];
-    case EG_CK: return aCK[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
     case EG_CP: return aCP[i_Enum];
@@ -3645,6 +3665,16 @@ void AM::vJob_AddParticipating(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to retired list                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddRetired(Job* pJob)
+{
+  AM::pRetiredJobs()->vGrabLock();
+  AM::pRetiredJobs()->vAddJob(pJob);
+  AM::pRetiredJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump demon job list                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
@@ -3767,6 +3797,22 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   return bRemoved;
 }
 
+/*----------------------------------------------------------------------------*/
+/* remove job from retired list                                               */
+/*----------------------------------------------------------------------------*/
+bool AM::bJob_RemoveRetired(Job* pJob, bool bDump)
+{
+  AM::pRetiredJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pRetiredJobs()->vContentDump();
+
+  bool bRemoved = AM::pRetiredJobs()->bRemoveJob(pJob);
+  
+  AM::pRetiredJobs()->vDropLock();
+    
+  return bRemoved;
+}
 
 /*----------------------------------------------------------------------------*/
 /* update heartbeat info for a given node by ID                               */

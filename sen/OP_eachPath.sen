@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
  : eachPath_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   op__topology
 
@@ -52,10 +52,11 @@
 
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -91,8 +91,6 @@
   // loop, receiving and executing jobs
   recv_loop
 
-  job::completed
-
   HAZARD
 ;
 
@@ -101,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
  : recv_req \operator
  
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   op__topology
 
@@ -127,10 +125,11 @@
   // execute the operator's handler for the operand
   PipeIn[].kind op[].handler@ execute
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +137,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: recv :: recv ;
 
-: recv_cmdTags _cmdTags tagCopy: serviceOp_tags
+: recv_cmdTags _cmdTags tagCopy: op_tags
 
   tags{ <dedicatedThd> = 1 }
 

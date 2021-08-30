@@ -18,7 +18,6 @@ enum eEG // enum groups
   EG_BO,
 
   EG_CC,
-  EG_CK,
   EG_CM,
   EG_CN,
   EG_CP,

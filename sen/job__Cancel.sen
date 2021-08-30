@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Cancel on participating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Cancel_run _run_suffix
+: _Cancel_run [ word::seed# ]
 
   //
   // where: on the participating node
@@ -77,6 +77,8 @@
   JM_SEED_CAN JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
   JobRef[].return
+  
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +90,8 @@ cmdSyntax: _Cancel :: _Cancel ;
 : _Cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_cancel_run"
+    <path>     = "/"
   }
 ;
 

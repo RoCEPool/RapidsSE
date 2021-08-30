@@ -5,19 +5,38 @@
 " job_PipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* terminate this pipeline                                                    */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::termination ( -- )
+
+  _lu_finalise_
+
+  _job_finalise_
+
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline request on origin                                     */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal_req _eeh_suffix ( -- )
+: pipelineLocal_req ( -- )
+
+  job::assertCorrectness
 
   task[] locals| pTask |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
+  
   <cmd> Pipeline::compileStmt dup
   EC_NONE != if
     //"got error" .
     job::error!
-    DONE_REQ
+    job[] job.signalSession
+    pipelineLocal::termination
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,15 +92,11 @@
   then
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
-  DONE_REQ
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_pipeline job check resources                                   */
-/*----------------------------------------------------------------------------*/
-: pipelineLocal::checkResources _eeh_suffix ( -- )
-
-
+  
+  job[] job.addRetired
+  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
+  job[] job.signalSession
+  pipelineLocal::termination
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,6 +111,8 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
     <jobKind>  = JK_LOCAL
     //<ddlLock>  = DL_GRAB_READ
+    
+    <seedReq>   = "pipelineLocal_req"
   }
 ;
 

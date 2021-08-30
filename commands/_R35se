@@ -171,23 +171,23 @@ se lscol j10;
 
 print "";
 print "=====================================================================";
-print "lspartcol of table when not in tables";
+print "lsPtncol of table when not in tables";
 print "=====================================================================";
 se cf ..;
-se lspartcol j10;
+se lsPtncol j10;
 se cf tables;
 
 print "";
 print "=====================================================================";
-print "lspartcol of non-existent table";
+print "lsPtncol of non-existent table";
 print "=====================================================================";
-se lspartcol k10;
+se lsPtncol k10;
 
 print "";
 print "=====================================================================";
-print "lspartcol";
+print "lsPtncol";
 print "=====================================================================";
-se lspartcol j10;
+se lsPtncol j10;
 
 print "";
 print "=====================================================================";

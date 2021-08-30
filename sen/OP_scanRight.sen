@@ -253,12 +253,12 @@
   // now pipe out the stream def for the right table
   //"piping out right streamDef" .
   // pipeout a streamDefRht marker first
-  Marker[].newStreamDefRht
-  Marker[].pipeout
+  //Marker[].newStreamDefRht
+  //Marker[].pipeout
 
   // pipeout the rht streamDef
-  Table[] StreamDefOut[].newFromTable
-  StreamDefOut[].pipeOut
+  Table[] StreamDefRht[].newFromTable
+  StreamDefRht[].pipeOut
 
   true
 ;
@@ -268,7 +268,7 @@
 /*----------------------------------------------------------------------------*/
 : scanRight_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   "<catalogNm>"  job::tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
@@ -290,10 +290,11 @@
 
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

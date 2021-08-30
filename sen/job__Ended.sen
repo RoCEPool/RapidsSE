@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Ended back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Ended::send ( pJobParticipant -- )
+: Job__Ended::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Ended on originating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Ended_run _run_suffix
+: _Ended_run [ word::seed# ]
 
   job[] locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
@@ -68,6 +68,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
+    _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
   //grid::thisNodeName@ "(%v) ENDED AM DECIDER" .printf
@@ -81,12 +82,14 @@
   repeat
 
   // remove the originating job from the originator jobs
-  JobRef[] job.removeOriginator
+  //JobRef[] job.removeOriginator
 
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
   JobRef[].return
+  
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -98,6 +101,8 @@ cmdSyntax: _Ended :: _Ended ;
 : _Ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_ended_run"
+    <path>     = "/"
   }
 ;
 

@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : bucketSend0_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
   //"bucketSend0_req" .
 
   op__topology
@@ -55,10 +55,11 @@
   find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

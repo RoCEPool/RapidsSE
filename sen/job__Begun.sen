@@ -11,9 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Begun back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::send ( pJobParticipant -- )
-
-  params| pJobParticipant |
+: Job__Begun::replyToOrigin params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
@@ -39,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* run this received Job__Begun on originating node  recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Begun_run _run_suffix
+: _Begun_run [ word::seed# ]
 
 
 
@@ -82,6 +80,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
+    _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
 
@@ -91,6 +90,7 @@
   // distribute Job__Execute to all participants
   JobRef[] Job__Execute::distribute
   JobRef[].return
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +102,8 @@ cmdSyntax: _Begun :: _Begun ;
 : _Begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_begun_run"
+    <path>     = "/"
   }
 ;
 

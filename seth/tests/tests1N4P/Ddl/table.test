@@ -474,11 +474,11 @@ drop table T1 ;
 success
 
 ///////////////
-// lspartcol //
+// lsPtncol //
 ///////////////
 
-// lspartcol on invalid table
-lspartcol noTable;
+// lsPtncol on invalid table
+lsPtncol noTable;
 failure contains: 'Table does not exist'
 
 // (17) create table t1
@@ -492,16 +492,16 @@ success
 cf ~;
 success
 
-// lspartcol not in tables
-lspartcol T1;
+// lsPtncol not in tables
+lsPtncol T1;
 failure contains: 'not in tables'
 
 // move to tables folder
 cf "~tables";
 success
 
-// lspartcol
-lspartcol T1;
+// lsPtncol
+lsPtncol T1;
 rows:
  ('key','INTEGER',19,0,false,true)
 
@@ -516,8 +516,8 @@ create table T1 (
 ) partition by (name);
 success
 
-// lspartcol
-lspartcol T1;
+// lsPtncol
+lsPtncol T1;
 rows:
   ('name','VARCHAR',32,0,false,true)
 
@@ -532,8 +532,8 @@ create table T1 (
 ) partition by (name, key);
 success
 
-// lspartcol
-lspartcol T1;
+// lsPtncol
+lsPtncol T1;
 rows:
   ('name','VARCHAR',32,0,false,true)
   ('key','INTEGER',19,0,false,true)

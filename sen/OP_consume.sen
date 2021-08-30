@@ -184,11 +184,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_STREAMDEFRHT ...                                          */
+/* handler for ZK_D_STREAMDEFRHT ...                                          */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StreamDefRht \handler
 
-  //"Operand:- ZK_M_STREAMDEFRHT" .verbose
+  //"Operand:- ZK_D_STREAMDEFRHT" .verbose
   Sends[].handleStreamDefRht if
     PipeIn[].pipeOut
   else
@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : consumeOp_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
 
   <Sends> >int Sends[].new
 
@@ -222,16 +222,17 @@
   find: consumeOp_LeavingMarker  ZK_M_LEAVING    op[].handler!
   find: consumeOp_StartMarker    ZK_M_START      op[].handler!
   find: consumeOp_StreamDef      ZK_D_STREAMDEF  op[].handler!
-  find: consumeOp_StreamDefRht   ZK_M_STREAMDEFRHT  op[].handler!
+  find: consumeOp_StreamDefRht   ZK_D_STREAMDEFRHT  op[].handler!
 
   op__loop
 
   Sends[].delete
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 
 ;
 /*----------------------------------------------------------------------------*/

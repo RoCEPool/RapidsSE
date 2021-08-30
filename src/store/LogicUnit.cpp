@@ -122,8 +122,8 @@ LogicUnit::LogicUnit(void)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
 
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
-,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefRht"_Stz)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefOut"_Stz)
+,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   "m_xpStreamDefRht"_Stz)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamSet"_Stz)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpStreamSetTable"_Stz)
 

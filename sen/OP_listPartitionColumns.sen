@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lspartcol_action
+: lsptncol_action
 
   0 locals| nPtnCols |
 
@@ -55,13 +55,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: lspartcol :: lspartcol <tableNm> ;
+cmdSyntax: lsptncol :: lsptncol <tableNm> ;
 
-: lspartcol_cmdTags _cmdTags tagCopy: localLiteOp_tags
+: lsptncol_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listColumns
     <params>      = 1
+    <seedReq>     = "lsptncol_req"
   }
 ;
     

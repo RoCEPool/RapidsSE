@@ -29,6 +29,7 @@
 #include "Range.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
+#include "StreamDefRht.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -195,8 +196,8 @@ namespace STORE
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDefLft;
-    REG<StreamDef>      m_xpStreamDefRht;
     REG<StreamDef>      m_xpStreamDefOut;
+    REG<StreamDefRht>   m_xpStreamDefRht;
     REG<Operand>        m_xpStreamSet;
     REG<Table>          m_xpStreamSetTable;
     REG<Operand>        m_xpSubset;

@@ -4,6 +4,21 @@
 
 " job__Cancelled.sen" .verbose
 
+
+/*----------------------------------------------------------------------------*/
+/* done executing a rcv seed                                                  */
+/*----------------------------------------------------------------------------*/
+: DONE_RCV ( -- )
+
+  DdlLock[].testDrop
+
+  _job_finalise_
+  
+  task::scheduledelete
+
+  HAZARD
+;
+
 ////////////////////////////////////////////////////////////////////////////////
 //                            on participating node                           //
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Cancelled back to originating node                               */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled::send ( pJobParticipant -- )
+: Job__Cancelled::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
@@ -50,10 +65,11 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job__Cancelled on originating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Cancelled_run _run_suffix
+: _Cancelled_run [ word::seed# ]
 
-  SEED_RUN
-
+  <path> str.toStrVec Path[].set
+  
+  
   job[] locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
@@ -94,6 +110,7 @@
   bAmDecider not if
     JobRef[].return
     DONE_RCV
+    _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
 
@@ -107,7 +124,7 @@
   repeat
 
   // remove the originating job from the originator jobs
-  JobRef[] job.removeOriginator
+  //JobRef[] job.removeOriginator
 
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
@@ -116,6 +133,8 @@
 
   // delete this completed __cancelled job
   DONE_RCV
+  
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +146,8 @@ cmdSyntax: _Cancelled :: _Cancelled ;
 : _Cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_cancelled_run"
+    <path>     = "/"
   }
 ;
 

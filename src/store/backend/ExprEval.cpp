@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "IndexDef.hpp"
-#include "StreamDef.hpp"
+#include "StreamDefBase.hpp"
 
 #include "ExprEval.hpp"
 #include "SN_Dte.hpp"
@@ -127,7 +127,7 @@ void ExprEval::vRepair(Object* pObject, eRF eRepair)
 /*----------------------------------------------------------------------------*/
 /* evalue the projection expression                                           */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns)
+eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -167,8 +167,8 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 /*----------------------------------------------------------------------------*/
 /* evalue the index join expression                                           */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eEvaluateIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                                 StreamDef* pStreamDefOut, IndexDef* pIndexDefRht,
+eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht,
+                                 StreamDefBase* pStreamDefOut, IndexDef* pIndexDefRht,
                                  Stz* sJoinExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
@@ -233,8 +233,8 @@ eEC ExprEval::eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns)
 /*----------------------------------------------------------------------------*/
 /* evaluate the join expression                                               */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eEvaluateLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                            StreamDef* pStreamDefOut, Stz* sJoinExpr)
+eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht,
+                            StreamDefBase* pStreamDefOut, Stz* sJoinExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -398,7 +398,7 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 /*----------------------------------------------------------------------------*/
 /* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn) {
+void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn) {
 
   pStreamDefOut->vAddColumn(pColumn->szColNm(),
                             pColumn->eColumnType(),
@@ -409,7 +409,7 @@ void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColum
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed from left table                      */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectLeftColumns(StreamDef* pStreamDefLft, TokenVec* pTknVec)
+eEC ExprEval::eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -462,7 +462,7 @@ eEC ExprEval::eCollectLeftColumns(StreamDef* pStreamDefLft, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed from right table                     */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectRightColumns(StreamDef* pStreamDefRht, TokenVec* pTknVec)
+eEC ExprEval::eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -515,7 +515,7 @@ eEC ExprEval::eCollectRightColumns(StreamDef* pStreamDefRht, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
+eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -666,7 +666,7 @@ void ExprEval::vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack) {
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -753,7 +753,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       }
 
       // set expr type
-      eExprType = StreamDef::eColumn(pTkn->szChars());
+      eExprType = StreamDefBase::eColumn(pTkn->szChars());
       pColumnExpr->vColumnType(eExprType);
 
       // HACK!!!
@@ -1288,8 +1288,8 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 /*----------------------------------------------------------------------------*/
 /* parse indexJoin lower and upper bounds                                     */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                                 StreamDef* pStreamDefOut, IndexDef* pIndexDefRht,
+eEC ExprEval::eExprEvalIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht,
+                                 StreamDefBase* pStreamDefOut, IndexDef* pIndexDefRht,
                                  TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
@@ -1318,7 +1318,7 @@ eEC ExprEval::eExprEvalIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDef
 /*----------------------------------------------------------------------------*/
 /* parse indexScan lower and upper bounds                                     */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
+eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexDef,
                                  bool bLeftTable, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
@@ -1633,8 +1633,8 @@ eEC ExprEval::eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef,
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                            StreamDef* pStreamDefOut, TokenVec* pTknVec)
+eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht,
+                            StreamDefBase* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -1842,7 +1842,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -1905,7 +1905,7 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       }
 
       // extract expr type
-      eExprType = StreamDef::eColumn(pTkn->szChars());
+      eExprType = StreamDefBase::eColumn(pTkn->szChars());
       pColumnExpr->vColumnType(eExprType);
 
       // HACK!!!

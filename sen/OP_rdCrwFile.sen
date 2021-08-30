@@ -53,7 +53,8 @@ cmdSyntax: rdCrwFile :: rdCrwFile <FileNm> ;
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
-  }
+    <seedReq>     = "rdCrwFile_req"
+}
 ;
 
 /*============================================================================*/

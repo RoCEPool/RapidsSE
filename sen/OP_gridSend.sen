@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : gridSend_req \operator
 
-  LogReqEntry SEED_REQ
+  _lu_initialise_
   //"gridSend_req" .
 
   op__topology
@@ -44,10 +44,11 @@
   find: gridSend_gridObject ZK_D_GRID op[].handler!
   op__loop
 
-  LogReqExit
-  _op_release_resources_
-  _op_retires_
-  DONE_REQ_OP
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

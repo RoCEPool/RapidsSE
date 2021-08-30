@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Executed back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::send ( pJobParticipant -- )
+: Job__Executed::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Executed on originating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Executed_run _run_suffix
+: _Executed_run [ word::seed# ]
 
   job[] locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
@@ -70,6 +70,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
+    _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
   //grid::thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
@@ -80,6 +81,8 @@
   // send a job__end to all participants
   JobRef[] Job__End::distribute
   JobRef[].return
+
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +94,8 @@ cmdSyntax: _Executed :: _Executed ;
 : _Executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_executed_run"
+    <path>     = "/"
   }
 ;
 

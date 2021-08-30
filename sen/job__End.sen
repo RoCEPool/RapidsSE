@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__End on participating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _End_run _run_suffix
+: _End_run [ word::seed# ]
 
   //
   // where: on the participating node
@@ -78,6 +78,8 @@
   JM_SEED_END JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
   JobRef[].return
+  
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +91,9 @@ cmdSyntax: _End :: _End ;
 : _End_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-  }
+    <seedRun>  = "_end_run"
+    <path>     = "/"
+}
 ;
 
 

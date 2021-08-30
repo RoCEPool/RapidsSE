@@ -73,15 +73,15 @@
   "<params>" pCmdTagSet tagSet.getStr >int locals| iParams |
 
   iParams 2 == if
-    "/liteOp/" sOpNm tpl_liteOp_procedure2 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure2 str.replace to sText
     sText procedure::add
   else
   iParams 1 == if
-    "/liteOp/" sOpNm tpl_liteOp_procedure1 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure1 str.replace to sText
     sText procedure::add
   else
   iParams 0 == assert
-    "/liteOp/" sOpNm tpl_liteOp_procedure0 str.replace to sText
+    "/liteOp/" sOpNm OP__tpl_lite_procedure0 str.replace to sText
     sText procedure::add
   then then
 ;
@@ -107,15 +107,15 @@
   "<params>" pCmdTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure2 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure2 str.replace to sText
     sText procedure::add
   else
   iParams 1 == if
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure1 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure1 str.replace to sText
     sText procedure::add
   else
   iParams 0 == assert
-    "/localLiteOp/" sOpNm tpl_localLiteOp_procedure0 str.replace to sText
+    "/localLiteOp/" sOpNm OP__tpl_locallite_procedure0 str.replace to sText
     sText procedure::add
   then then
 ;
@@ -158,11 +158,11 @@
   // sOpNm "LiteOP: %v" .printf
 
   // synthesize word : sOpNm_DataMarker \\handler ... ;
-  "/liteOp/" sOpNm tpl_liteOp_DataMarker str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize word : sOpNm_req ... ;
-  "/liteOp/" sOpNm tpl_liteOp_req str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_req str.replace to sText
   sText >interpret
 ;
 
@@ -182,11 +182,11 @@
   // sOpNm "LocalLiteOP: %v" .printf
 
   // synthesize : sOpNm_DataMarker
-  "/localLiteOp/" sOpNm tpl_localLiteOp_DataMarker str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize : sOpNm_req
-  "/localLiteOp/" sOpNm tpl_localLiteOp_req str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_req str.replace to sText
   sText >interpret
 ;
 
@@ -213,55 +213,32 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags for a distributed job                                    */
+/* add the seed tags required by a command (pipeline, generic, local)         */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forDistJob params| pwCmdTags |
-
-  "<seedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedExe>" "defaultSeedDist" "_exe" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedEnd>" "defaultSeedDist" "_end" pwCmdTags _cmdTags.addSeedTag
-
-  "<seedCan>" "defaultSeedDist" "_can" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
-/* add the seed tags for a generic job                                        */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forGenericJob params| pwCmdTags |
-
-  "<seedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
-/* add the seed tags for a local op                                           */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_forLocalOp params| pwCmdTags |
-
-  "<seedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
-;
-
-/*----------------------------------------------------------------------------*/
-/* add the seed tags required by a command (distributed, generic, local)      */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_toCmdTagSet params| pwCmdTags |
+: cmd::addSeedTags_toCmdTags params| pwCmdTags |
 
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
-  pwCmdTags _cmdTags.aboutDistJob if
-    //<jobKind> == JK_DIST2PC
-    pwCmdTags cmd::addSeedTags_forDistJob
+  pwCmdTags _cmdTags.aboutPipelineJob if
+    //<jobKind> == JK_PIPELINE
+
   else
   pwCmdTags _cmdTags.aboutGenericJob if
     //<jobKind> == JK_GENERIC
-    pwCmdTags cmd::addSeedTags_forGenericJob
+
   else
+  pwCmdTags _cmdTags.aboutLocalJob if
     //<jobKind> == JK_LOCAL
-    pwCmdTags cmd::addSeedTags_forLocalOp
-  then then
+    
+    //pwCmdTags word.name@ "addSeedTags: %v is a local job" .printf
+    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
+
+  else
+
+    // pwCmdTags word.name@ "addSeedTags: %v is an op" .printf
+    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
+
+  then then then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +249,7 @@
   find: _cmdTags locals| pwCmdTagsCatg |
 
   iterate-words word@ word.category@ pwCmdTagsCatg eql if
-    word@ cmd::addSeedTags_toCmdTagSet
+    word@ cmd::addSeedTags_toCmdTags
   then next-word
 ;
 
@@ -302,9 +279,9 @@
     "<ddlLock>" "DL_NONE" pCmdTagSet tagSet.addTag
   then
 
-  "<jobKind>" pCmdTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
-  then
+  //"<jobKind>" pCmdTagSet tagSet.hasName not if
+  //  "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
+  //then
 
   "<priority>" pCmdTagSet tagSet.hasName not if
     "<priority>" "PY_NORMAL" pCmdTagSet tagSet.addTag
@@ -357,9 +334,9 @@
   0 locals| sDecode |
   eJobKind case
     
-    JK_DIST2PC of "JK_DIST2PC" to sDecode endof
-    JK_GENERIC of "JK_GENERIC" to sDecode endof
-    JK_LOCAL   of "JK_LOCAL"   to sDecode endof
+    JK_PIPELINE of "JK_PIPELINE" to sDecode endof
+    JK_GENERIC  of "JK_GENERIC"  to sDecode endof
+    JK_LOCAL    of "JK_LOCAL"    to sDecode endof
     "JK_???" to sDecode
 
   endcase

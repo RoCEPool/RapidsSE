@@ -59,8 +59,8 @@ lf;
 print "lscol";
 lscol j10;
 
-print "lspartcol";
-lspartcol j10;
+print "lsPtncol";
+lsPtncol j10;
 
 print "lstbl...";
 lstbl;

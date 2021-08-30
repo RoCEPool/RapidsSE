@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Execute on participating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Execute_run _run_suffix
+: _Execute_run [ word::seed# ]
 
   //
   // where: on the participating node
@@ -77,6 +77,8 @@
   JM_SEED_EXE JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
   JobRef[].return
+  
+  _job_2pc_delete_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +90,8 @@ cmdSyntax: _Execute :: _Execute ;
 : _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
+    <seedRun>  = "_execute_run"
+    <path>     = "/"
   }
 ;
 

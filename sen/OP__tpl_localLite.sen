@@ -1,121 +1,108 @@
 /*============================================================================*/
-/* tpl_liteOp.sen -- templates for lite op                                    */
+/* OP__tpl_locallite.sen -- templates for local lite op                         */
 /*============================================================================*/
 
-" tpl_liteOp.sen" .verbose
+" OP__tpl_locallite.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: tpl_liteOp_DataMarker
+: OP__tpl_locallite_DataMarker
 
 "
-: /liteOp/_DataMarker \\handler
+  : /localLiteOp/_DataMarker \\handler
 
-  PipeIn[].pipeOut
+    PipeIn[].pipeOut
 
-  /liteOp/_action if
-    Marker[].newEosMarker
-    Marker[].pipeOut
-  then
+    /localLiteOp/_action if
+      Marker[].newEosMarker
+      Marker[].pipeOut
+    then
 
-  true
-;
+    true
+  ;
 "
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for liteOp req                             (on node where spawned) */
+/* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: tpl_liteOp_req
+: OP__tpl_locallite_req
 
 "
-: /liteOp/_req \\operator
- 
-  LogReqEntry SEED_REQ
+  : /localLiteOp/_req \\operator
 
-  op__topology
+    _lu_initialise_
 
-  find: /liteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!
+    op__topology
 
-  op__loop
+    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!
 
-  LogReqExit
-  DONE_REQ_OP
+    op__loop
+
+    _op_release_resources_
+    op__retires
+    
+  HAZARD
+  ;
+"
 ;
-"
-;
 
 
 /*----------------------------------------------------------------------------*/
-/* liteOp procedure with 0 parameters                                         */
+/* local liteOp procedure with 0 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: tpl_liteOp_procedure0
+: OP__tpl_locallite_procedure0
 
 "
-  procedure /liteOp/
+  procedureLocal /localLiteOp/
     tags <lowMemory>
   begin
 
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all nodes :
-      /liteOp/ | stageC
-
-    stage stageC on origin :
+  stage stageA on origin :
+    start | pulse once | /localLiteOp/ |
       output | sink | stageA
 
   end
 "
 ;
-    
+
 /*----------------------------------------------------------------------------*/
-/* liteOp procedure with 1 parameter                                          */
+/* local liteOp procedure with 1 parameter                                    */
 /*----------------------------------------------------------------------------*/
-: tpl_liteOp_procedure1
+: OP__tpl_locallite_procedure1
 
 "
-  procedure /liteOp/
+  procedureLocal /localLiteOp/
     tags <lowMemory>
     parameters $param
   begin
 
   stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all nodes :
-    /liteOp/ $param | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
+    start | pulse once | /localLiteOp/ $param |
+      output | sink | stageA
 
   end
 "
 ;
 
 /*----------------------------------------------------------------------------*/
-/* liteOp procedure with 2 parameters                                         */
+/* local liteOp procedure with 2 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: tpl_liteOp_procedure2
+: OP__tpl_locallite_procedure2
 
-"
-  procedure /liteOp/
-    tags <lowMemory>
-    parameters $param0 $param1
-  begin
+  "
+    procedureLocal /localLiteOp/
+      tags <lowMemory>
+      parameters $param0 $param1
+    begin
 
-  stage stageA on origin :
-    start | pulse once | stageB
+    stage stageA on origin :
+      start | pulse once | /localLiteOp/ $param0 $param1 |
+        output | sink | stageA
 
-  stage stageB on all nodes :
-    /liteOp/ $param0 $param1 | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-  end
-"
+    end
+  "
 ;
 
 /*============================================================================*/

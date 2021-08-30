@@ -53,9 +53,10 @@ void Dic::vAddWord(Word* pWord)
   
   ASSERT(pWord->eGetClassNo() == CN_WORD);
       
-//  vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
+  //vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
+  
   bool bTrace = false;
-//  if (pWord->szWordNm()->bSame("defaultSeedDist_beg"_Stz)) {
+//  if (pWord->szWordNm()->bSame("pipelineSeed_beg"_Stz)) {
 //    vTrace("\n\n"_Stz);
 //    vListWords();
 //    vTrace("\n\n"_Stz);

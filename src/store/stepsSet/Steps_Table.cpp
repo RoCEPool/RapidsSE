@@ -135,7 +135,7 @@ void Step::vTableAsAltStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  StreamDef* pStreamDefOld = m_p_TaskLogicUnit->m_pDevAltRow->m_pStreamDef;
+  StreamDef* pStreamDefOld = _pStreamDef(m_p_TaskLogicUnit->m_pDevAltRow->m_pStreamDef);
   if (pStreamDefOld)
     delete pStreamDefOld;
 
@@ -155,7 +155,7 @@ void Step::vTableAsSrcStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  StreamDef* pStreamDefOld = m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef;
+  StreamDef* pStreamDefOld = _pStreamDef(m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef);
   if (pStreamDefOld)
     delete pStreamDefOld;
 
