@@ -8,11 +8,14 @@
 #include "eZK.h"
 #include "eSS.h"
 
+#include "DeleteHelper.hpp"
+
 namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class Op : public Operand
+  class Op : public Operand,
+             public DeleteHelper
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --

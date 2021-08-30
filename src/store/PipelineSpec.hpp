@@ -3,13 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "DeleteHelper.hpp"
+
+
 namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
+  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>,
+                      public DeleteHelper
   {
-  
     friend class STORE::Dynamo;
 
   private:

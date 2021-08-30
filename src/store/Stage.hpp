@@ -3,11 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "DeleteHelper.hpp"
+
 namespace STORE { class Stream; class StageSpec; }
 
 namespace STORE
 {
-  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>,
+                public DeleteHelper
   {
   private:
     s32  m_sPipelineNm; // pipeline name
