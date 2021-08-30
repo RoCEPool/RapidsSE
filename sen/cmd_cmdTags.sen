@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 /* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.addSeedTag params| pwCmdTags sSuffix sProper sTagNm |
+: _cmdTags.addSeedTag_local params| pwCmdTags sSuffix sProper sTagNm |
 
   pwCmdTags word.TagSet@ locals| pTagSet |
   
@@ -83,7 +83,29 @@
       sSuffix str.cat to sTagValue
   then
 
-  sTagValue  sTagNm "%v = %v" .printf
+  //sTagValue  sTagNm "%v = %v" .printf
+    
+  sTagNm sTagValue pTagSet tagSet.insertStr
+;
+
+/*----------------------------------------------------------------------------*/
+/* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
+/*----------------------------------------------------------------------------*/
+: _cmdTags.addSeedTag_op params| pwCmdTags sSuffix sProper sTagNm |
+
+  pwCmdTags word.TagSet@ locals| pTagSet |
+  
+  0 locals| sTagValue |
+
+  sSuffix pwCmdTags _cmdTags.doesSeedExist? if
+    pwCmdTags word.name_trunc
+      sSuffix str.cat to sTagValue
+  else
+    sProper
+      sSuffix str.cat to sTagValue
+  then
+
+  //sTagValue  sTagNm "%v = %v" .printf
     
   sTagNm sTagValue pTagSet tagSet.insertStr
 ;

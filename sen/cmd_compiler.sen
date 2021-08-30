@@ -230,11 +230,13 @@
   pwCmdTags _cmdTags.aboutLocalJob if
     //<jobKind> == JK_LOCAL
     
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
+    //pwCmdTags word.name@ "addSeedTags: %v is a local job" .printf
+    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
 
   else
 
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag
+    // pwCmdTags word.name@ "addSeedTags: %v is an op" .printf
+    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
 
   then then then
 ;
