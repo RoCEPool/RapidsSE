@@ -376,8 +376,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
-    //delete *m_xpPipeline;
-    m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
+    delete *m_xpPipeline;
+    //m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
   
   if (m_pRluDiary) {
