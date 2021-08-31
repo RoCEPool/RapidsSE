@@ -48,6 +48,9 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eClassNo, const std::type_info& rTypeI
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
+  //if (CN_PIPELINESPEC == m_eClassNo)
+  //  vTrace("%s deleted by %s()\n"_Stz,aCN[m_eClassNo],m_szFunc);
+  
   /*
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
