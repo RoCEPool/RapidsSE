@@ -13,11 +13,12 @@ namespace BASE
   public:
     Object* m_pDeleter;
     Stz*    m_szFunc;
-  
+    
+    eCN     m_eClassNo;
     const std::type_info& m_rTypeId;
   
   public:
-    DeleteHelper_t(const std::type_info& rTypeId);
+    DeleteHelper_t(eCN eClassNo, const std::type_info& rTypeId);
    ~DeleteHelper_t(void) noexcept(false);
 
     void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
@@ -30,15 +31,16 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(const std::type_info& rTypeId)
+DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eClassNo, const std::type_info& rTypeId)
 : m_rTypeId(rTypeId)
 {
   m_pDeleter = nullptr;
   m_szFunc   = nullptr;
   
+  m_eClassNo = eClassNo;
+  
   //m_rTypeId  = rTypeId;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

@@ -33,7 +33,7 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
                tPN tPtnNo, i8 i_Node)
-: DeleteHelper_t<Stream>(typeid(Stream))
+: DeleteHelper_t<Stream>(CN_STREAM,typeid(Stream))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
