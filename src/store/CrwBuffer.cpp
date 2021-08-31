@@ -813,9 +813,9 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 void CrwBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-#ifdef WITH_MULTI_BUCKET
+  #ifdef WITH_MULTI_BUCKET
   vTrace("CrwBuffer::vTruncate\n"_Stz);
-#endif
+  #endif
   CrwBuffer* pNextBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
