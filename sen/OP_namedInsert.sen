@@ -44,7 +44,7 @@
   0 Table[].tablePtnGet to TablePtn[]
   
   TablePtn[].grabWrite_msecLoop
-  //nullptr to Operand[]
+  //nullptr to NamedBuffer[]
   NamedBuffer[]\clear TablePtn[].appendBuffer
   TablePtn[].dropWrite
 

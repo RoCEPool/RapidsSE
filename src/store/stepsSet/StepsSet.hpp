@@ -1144,19 +1144,6 @@ public:
   // operand
   void vOperandToParcel(void);
 
-  // operand[]
-  void vOperandDelete(void);
-  void vOperandGet(void);
-  void vOperandGetAndClear(void);
-  void vOperandIsNotNull(void);
-  void vOperandIsNull(void);
-  void vOperandIsReport(void);
-  void vOperandMorphClass(void);
-  void vOperandPipeIn(void);
-  void vOperandReport(void);
-  void vOperandSet(void);
-  void vOperandWriteToFile0(void);
-
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);
