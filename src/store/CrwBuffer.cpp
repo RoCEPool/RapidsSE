@@ -813,16 +813,11 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 void CrwBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
   #ifdef WITH_MULTI_BUCKET
   vTrace("CrwBuffer::vTruncate\n"_Stz);
   #endif
->>>>>>> parent of 48d2aff9a8... debug truncate table, checkin with #ifdef but to keep the code updated...
-=======
-  
->>>>>>> parent of 774b9aec49... debug truncate table, checkin with #ifdef but to keep the code update...
+
   CrwBuffer* pNextBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
