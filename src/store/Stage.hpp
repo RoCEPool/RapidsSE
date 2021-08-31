@@ -3,11 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "DeleteHelper_t.hpp"
+
 namespace STORE { class Stream; class StageSpec; }
 
 namespace STORE
 {
-  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>,
+                public DeleteHelper_t<Stage>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -29,15 +32,15 @@ namespace STORE
     Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
    ~Stage(void) noexcept(false);
       
-    void    vCancelPipeline(Task* pTriggeringTask);
+    void vCancelPipeline(Task* pTriggeringTask);
     Stream* pGetPartitionStream(i8 i_Ptn);
     Stream* pGetNodeStream(i8 i_Node);
-    i8      nOpsOnNode(i8 iNode);
+    i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
-    Op*     pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
-    Stz*    szStageNm(void);
+    Op*  pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
+    Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
-    bool    bStartPipeline(void);
+    bool bStartPipeline(void);
   
   private:
     void    vCreateStreams(void);

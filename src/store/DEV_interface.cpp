@@ -2206,10 +2206,15 @@ void vDev_REG_PTNSTREAM_READ(void* aLU)
 {
   _static_
 
+  // Alka: 31 August 2021
+  // Not used.
+  // Adding RASSERT as we no longer have OperandA
+  // So if we revoke this we need to use another register
+  RASSERT(0);
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   PtnStream* pPtnStream = *pLogicUnit->m_xpPtnStream;
-  pLogicUnit->m_xpOperandA = pPtnStream->pRead();
+  //pLogicUnit->m_xpOperandA = pPtnStream->pRead();
 }
 
 /*----------------------------------------------------------------------------*/

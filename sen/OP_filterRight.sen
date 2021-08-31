@@ -191,27 +191,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_STREAMDEFRHT ...                                              INIT */
-/*----------------------------------------------------------------------------*/
-: filterRight_M_StreamDefRht \handler
-
-  0 assert
-  0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
-
-  PipeIn[].pipeout
-
-  // record receipt of streamDef right marker
-  1 to Counter2[]
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEFRHT ...                                      STREAMDEFRHT */
 /*----------------------------------------------------------------------------*/
 : filterRight_StreamDefRht \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -246,6 +230,7 @@
 
   // set the streamDef in the DevLftRow
   StreamDefRht[] DevLftRow.streamDef!
+  nullptr to StreamDefRht[]
 
   // create rowPix in potRlu[] from streamDefOut[]
   false StreamDefOut[] PotRlu[].rowPix!

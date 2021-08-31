@@ -3,11 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "DeleteHelper_t.hpp"
+
+
 namespace STORE { class Stage; class PipelineSpec; }
 
 namespace STORE
 {
-  class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
+  class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
+                   public DeleteHelper_t<Pipeline>
+
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -67,28 +72,28 @@ namespace STORE
     Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
-    bool     bCancel(Task* pTriggeringTask);
-    void     vCancelled(bool bCancelled);
-    bool     bCancelled(void);
-    bool     bEarlyExit(void);
-    void     vEarlyExit(bool bEarlyExit);
-    bool     bErrored(void);
-    void     vErrored(bool bErrored);
-    i8       i_Origin(void);
-    Op*      pOp0(void);
-    i8       nOpsOnNode(i8 iNode);
-    Op*      pOpToPulse(void);
-    Job*     pPipelineJob(void);
-    Stz*     szPipelineNm(void);
+    bool bCancel(Task* pTriggeringTask);
+    void vCancelled(bool bCancelled);
+    bool bCancelled(void);
+    bool bEarlyExit(void);
+    void vEarlyExit(bool bEarlyExit);
+    bool bErrored(void);
+    void vErrored(bool bErrored);
+    i8   i_Origin(void);
+    Op*  pOp0(void);
+    i8   nOpsOnNode(i8 iNode);
+    Op*  pOpToPulse(void);
+    Job* pPipelineJob(void);
+    Stz* szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
-    bool     bPulsed(void);
-    void     vPulsed(bool bPulsed);
-    bool     bPulsedLimit(void);
-    void     vSetupJob(void);
-    void     vSpawnOpTasks(i8 iSessionId, i8 iNode);
+    bool bPulsed(void);
+    void vPulsed(bool bPulsed);
+    bool bPulsedLimit(void);
+    void vSetupJob(void);
+    void vSpawnOpTasks(i8 iSessionId, i8 iNode);
 
   private:
-    void     vCreateStages();
+    void vCreateStages();
 
     Footer* aFooter(void);
   };

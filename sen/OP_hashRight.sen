@@ -40,7 +40,7 @@
 
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // ignore crwBuffer if not received startCrwRhtMarker
+  // pipeout crwBuffer if not received startCrwRhtMarker
   Counter1[] 0 == if
      Pipein[].pipeout
     true
@@ -137,6 +137,8 @@
 
   RowBuffer[].delete
 
+  Marker[].newStartRowRhtMarker
+  Marker[].pipeout
   PotRlu[].pipeoutCompletedPtns
 
   true
@@ -168,8 +170,8 @@
   PipeIn[].delete
 
   // pipeout a StartRowRht
-  Marker[].newStartRowRhtMarker
-  Marker[].pipeout
+  //Marker[].newStartRowRhtMarker
+  //Marker[].pipeout
 
   // record receipt of start right marker
   1 to Counter1[]
@@ -193,56 +195,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_STREAMDEFRHT ...                                              INIT */
+/* on ZK_D_STREAMDEFRHT ...                                              INIT */
 /*----------------------------------------------------------------------------*/
 : hashRight_StreamDefRht \handler
 
-  0 ZK_M_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
-
-  PipeIn[].pipeout
-
-  // record receipt of streamDef right marker
-  1 to Counter2[]
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: hashRight_StreamDef \handler
-
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_D_STREAMDEFRHT EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
-"TADA1" .
-
-  // hashRight gets the left streamDef, then right streamDef
-  // it needs to store the right streamDef in left
-  // and left in right (which it will pipeout)
-    Counter2[] 0 == if
-
-    //"hashRight_StreamDef got left streamDef" .
-    // move pipein[] to StreamDefRht[]
-    Pipein[]\clear to StreamDefRht[]
-    StreamDefRht[].pipeout
-    "TADA2" .
-
-    true
-    exit
-  then
-
-"TADA3" .
-
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
+  // move pipein[] to StreamDefRht[]
+  Pipein[]\clear to StreamDefRht[]
 
   // evaluate the expression
   ExprEval[].new
-  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefRht[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+  <etc> StreamDefRht[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -250,8 +218,6 @@
     true
     exit
   then
-
-"TADA4" .
 
   // generate the asm for the hash
   ExprEval[] LogicUnit[].genHash to eError
@@ -265,13 +231,18 @@
   then
 
   // set the streamDef in the DevLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
+  StreamDefRht[]\clear DevLftRow.streamDef!
+  nullptr to StreamDefRht[]
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
   // pipeout the streamDefOut
-  StreamDefOut[].pipeout
+  StreamDefOut[] StreamDefRht[].new
+  StreamDefOut[].delete
+
+  // pipeout the streamDefOut
+  StreamDefRht[].pipeout
 
   // create the compiler
   Counter0[] if
@@ -309,8 +280,7 @@
   find: hashRight_StartMarker     ZK_M_START      op[].handler!
   find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT op[].handler!
   find: hashRight_StartRowRht     ZK_M_STARTROWRHT op[].handler!
-  find: hashRight_StreamDef       ZK_D_STREAMDEF    op[].handler!
-  find: hashRight_StreamDefRht    ZK_M_STREAMDEFRHT op[].handler!
+  find: hashRight_StreamDefRht    ZK_D_STREAMDEFRHT op[].handler!
 
   op__loop
 

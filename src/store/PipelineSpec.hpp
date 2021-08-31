@@ -3,13 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "DeleteHelper_t.hpp"
+
+
 namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
+  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>,
+                      public DeleteHelper_t<PipelineSpec>
   {
-  
     friend class STORE::Dynamo;
 
   private:
@@ -47,10 +50,10 @@ namespace STORE
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    i8 iDepth(void);
+    i8   iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);
-    i8 nNestedPipelineSpecs(void);
+    i8   nNestedPipelineSpecs(void);
     PipelineSpec* pNestedPipelineSpec(i8 i_NestedPipeline);
     PipelineSpec* pParentPipelineSpec(void);
     i8   i_PipelineSpec(void);

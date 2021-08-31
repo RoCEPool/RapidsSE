@@ -9,6 +9,8 @@
 #include "eTS.h"
 #include "TraceLock.hpp"
 
+#include "DeleteHelper_t.hpp"
+
 namespace BASE
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -23,7 +25,8 @@ namespace BASE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Object,
-               public ListItem_t<Task>
+               public ListItem_t<Task>,
+               public DeleteHelper_t<Task>
   {
   friend class STORE::Step;
   
@@ -119,7 +122,8 @@ namespace BASE
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-  
+    static void vDebug(void);
+
     void vTaskLoop(void);
     void vExceptionHandler(void);
     void vExceptionTrace(void);
@@ -139,7 +143,6 @@ namespace BASE
     void vContentDump(void);
     Word* pCurWord(void);
     void vDeleteInput(void);
-    static void vDebug(void);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);

@@ -10,6 +10,9 @@
 #include "eRS.h"
 #include "eSS.h"
 
+#include "DeleteHelper_t.hpp"
+
+
 /*                      IMPORTANT NOTE
  
     If you add a pointer member into this class then modify
@@ -20,7 +23,8 @@
 namespace STORE
 {
   class Job : public Object,
-              public CRM<Job>
+              public CRM<Job>,
+              public DeleteHelper_t<Job>
   {
   public:
   

@@ -7,10 +7,12 @@
 #include "ePX.h"
 
 #include "OpSpec.hpp"
+#include "DeleteHelper_t.hpp"
 
 namespace STORE
 {
-  class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
+  class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>,
+                    public DeleteHelper_t<StageSpec>
   {
   private:
     s32  m_sStageNm;    // stage name

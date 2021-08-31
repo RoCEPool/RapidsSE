@@ -1068,6 +1068,15 @@ public:
   void vNamedBufferNameFetch(void);
   void vNamedBufferNameStore(void);
 
+  void vNamedBufferDelete(void);
+  void vNamedBufferGet(void);
+  void vNamedBufferGetAndClear(void);
+  void vNamedBufferIsNotNull(void);
+  void vNamedBufferIsNull(void);
+  void vNamedBufferMorphClass(void);
+  void vNamedBufferPipeIn(void);
+  void vNamedBufferSet(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeGet(void);
@@ -1134,19 +1143,6 @@ public:
 
   // operand
   void vOperandToParcel(void);
-
-  // operand[]
-  void vOperandDelete(void);
-  void vOperandGet(void);
-  void vOperandGetAndClear(void);
-  void vOperandIsNotNull(void);
-  void vOperandIsNull(void);
-  void vOperandIsReport(void);
-  void vOperandMorphClass(void);
-  void vOperandPipeIn(void);
-  void vOperandReport(void);
-  void vOperandSet(void);
-  void vOperandWriteToFile0(void);
 
   // OperandOoO
   void vOperandOoODelete(void);

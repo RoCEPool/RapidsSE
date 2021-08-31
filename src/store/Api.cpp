@@ -129,7 +129,7 @@ void Api::vDeleteJob(Session* pSession)
   
   
   pSession->m_pSsnJob = nullptr;
-  delete pJob;
+  pJob->vDeleteThis(pJob,nullptr,(Stz*)__func__);
   
   
   if (pSession->m_pOutput->m_pStreamDef_result) {
