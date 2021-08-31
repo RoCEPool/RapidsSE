@@ -6,6 +6,7 @@
 
 #include "DevROW.hpp"
 #include "StreamDef.hpp"
+#include "StreamDefRht.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -44,8 +45,14 @@ DevROW::~DevROW(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
 
-  if (m_pStreamDef)
-    delete m_pStreamDef;
+  if (m_pStreamDef) {
+    if (m_pStreamDef->eGetClassNo() == CN_STREAMDEF)
+      delete m_pStreamDef;
+    else {
+      StreamDefRht* pStreamDefRht = _pStreamDefRht(m_pStreamDef);
+      delete pStreamDefRht;
+    }
+  }
 }
 
 

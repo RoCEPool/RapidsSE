@@ -71,8 +71,13 @@ void Step::vStreamDefOutDelete(void)
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
   
   m_p_TaskLogicUnit->m_xpStreamDefOut = nullptr;
-  
-  delete pStreamDefOut;
+
+  if (pStreamDefOut->eGetClassNo() == CN_STREAMDEF)
+    delete pStreamDefOut;
+  else {
+    StreamDefRht* pStreamDefRht = _pStreamDefRht(pStreamDefOut);
+    delete pStreamDefRht;
+  }
 
   EXIT();
 }

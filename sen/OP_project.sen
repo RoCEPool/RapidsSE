@@ -34,6 +34,7 @@
 
   Pipein[]\clear to CrwBuffer[]
   CrwBuffer[] DevLftIxt.crwBuffer!
+  nullptr to CrwBuffer[]
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
