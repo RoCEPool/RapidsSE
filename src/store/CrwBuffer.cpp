@@ -813,7 +813,6 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 void CrwBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
   CrwBuffer* pNextBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
