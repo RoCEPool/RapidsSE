@@ -114,14 +114,11 @@ LogicUnit::LogicUnit(void)
 
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
-
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
-
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
-
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
-
+,         m_xpSocket(this,RF_NEVER,         nullptr,                 "m_xpSocket"_Stz)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefOut"_Stz)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   "m_xpStreamDefRht"_Stz)
@@ -152,7 +149,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpSendNode(this,RF_NONE,         nullptr,                 "m_xpSendNode"_Stz)
 ,          m_xpSends(this,RF_NONE,         nullptr,                 "m_xpSends"_Stz)
 ,       m_xpShardDef(this,RF_NONE,         nullptr,                 "m_xpShardDef"_Stz)
-,         m_xpSocket(this,RF_NONE,         nullptr,                 "m_xpSocket"_Stz)
 ,         m_xpSubset(this,RF_NONE,         nullptr,                 "m_xpSubset"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
@@ -350,6 +346,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
 
+  RASSERT(m_xpSocket.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());
   RASSERT(m_xpStreamDefRht.bIsNull());
   RASSERT(m_xpStreamDefOut.bIsNull());

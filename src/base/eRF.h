@@ -10,6 +10,7 @@ enum eRF // repair from failure
   /*    */ RF_REPAIR_DELETE,
   /*    */ RF_REPAIR_ONLY,
   /*    */ RF_DELETE_ONLY,
+  /*    */ RF_NEVER,
   /*    */ RF_SET_NULL,
 
   /*    */ RF_ENUMS,
