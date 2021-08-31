@@ -16,51 +16,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_NamedBuffer(void)
 {
-  vAddStep("namedBuffer.name@"_Stz, &Step::vNamedBufferNameFetch);
-  vAddStep("namedBuffer.name!"_Stz, &Step::vNamedBufferNameStore);
-
   vAddStep("NamedBuffer[]"_Stz,            &Step::vNamedBufferGet);
   vAddStep("NamedBuffer[]\\clear"_Stz,     &Step::vNamedBufferGetAndClear);
   vAddStep("NamedBuffer[].delete"_Stz,     &Step::vNamedBufferDelete);
   vAddStep("NamedBuffer[].isNotNull"_Stz,  &Step::vNamedBufferIsNotNull);
   vAddStep("NamedBuffer[].isNull"_Stz,     &Step::vNamedBufferIsNull);
   vAddStep("NamedBuffer[].morphClass"_Stz, &Step::vNamedBufferMorphClass);
+  vAddStep("namedBuffer[].name@"_Stz,      &Step::vNamedBufferNameFetch);
+  vAddStep("namedBuffer[].name!"_Stz,      &Step::vNamedBufferNameStore);
   vAddStep("NamedBuffer[].pipeIn"_Stz,     &Step::vNamedBufferPipeIn);
   vAddStep("NamedBuffer[].set"_Stz,        &Step::vNamedBufferSet);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* namedBuffer.name@ -- fetch name of NamedBuffer                             */
-/*----------------------------------------------------------------------------*/
-void Step::vNamedBufferNameFetch(void)
-{
-  ENTRY();
-  
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
-  
-  Stz* szBufferNm = pNamedBuffer->szBufferNm();
-  
-  m_pDataStack->vPushStz(szBufferNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* namedBuffer.name! -- store name of NamedBuffer                             */
-/*----------------------------------------------------------------------------*/
-void Step::vNamedBufferNameStore(void)
-{
-  ENTRY();
-  
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sBufferNm;
-  m_pDataStack->vPopStr(sBufferNm,__func__);
-
-  pNamedBuffer->vBufferNm(sBufferNm);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +106,39 @@ void Step::vNamedBufferMorphClass(void)
   NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
 
   pNamedBuffer->vSetClassNo((eCN)iClassNo);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* namedBuffer.name@ -- fetch name of NamedBuffer                             */
+/*----------------------------------------------------------------------------*/
+void Step::vNamedBufferNameFetch(void)
+{
+  ENTRY();
+
+  NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
+
+  Stz* szBufferNm = pNamedBuffer->szBufferNm();
+
+  m_pDataStack->vPushStz(szBufferNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* namedBuffer.name! -- store name of NamedBuffer                             */
+/*----------------------------------------------------------------------------*/
+void Step::vNamedBufferNameStore(void)
+{
+  ENTRY();
+
+  NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
+
+  s32 sBufferNm;
+  m_pDataStack->vPopStr(sBufferNm,__func__);
+
+  pNamedBuffer->vBufferNm(sBufferNm);
 
   EXIT();
 }
