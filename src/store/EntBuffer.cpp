@@ -1813,7 +1813,7 @@ i8 EntBuffer::nTreeInsertCnt(void)
 void EntBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+
   EntBuffer* pNextBuffer;
   
   if (m_iBufferHeight != 0) {

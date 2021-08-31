@@ -256,6 +256,26 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
   // Note: After append buffer we need to insert into index
   // We need code for append buffer here
+#ifdef WITH_MULTI_BUCKET
+
+  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
+    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
+    pBucket->vAppendBuffer(pDataBuffer);
+  }
+
+// now insert entries from the buffer into the indexes
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+      break;
+    case CN_ROWTABLEPTN:
+      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
+      break;
+    default:
+      NEVER_REACH;
+  }
+#endif
 
 #ifdef WITH_BKTMAP_2N4P
   // >>> Need to come back to this
@@ -527,7 +547,7 @@ void TablePtn::vTruncate(void) {
       // first truncate all indexes for this table ptn
       for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
         IndexTree *pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
-        pIndexTree->vTruncate();
+        if (pIndexTree) pIndexTree->vTruncate();
       }
       break;
     case CN_ROWTABLEPTN:
@@ -537,14 +557,20 @@ void TablePtn::vTruncate(void) {
       NEVER_REACH;
   }
 
-#endif
-
   // Now, truncate all data
   for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vTruncate();
   }
 
+
+#else
+  // Now, truncate all data
+  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
+    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
+    pBucket->vTruncate();
+  }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

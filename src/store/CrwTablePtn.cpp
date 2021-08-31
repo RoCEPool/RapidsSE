@@ -121,8 +121,10 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   m_pCurrentBuffer = pCrwBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef WITH_MULTI_BUCKET
   // now insert entries from the buffer into the indexes
   vInsertIndexEntries(pCrwBuffer);
+#endif
   
 }
 
@@ -163,7 +165,10 @@ void CrwTablePtn::vDump(void)
 IndexTree* CrwTablePtn::pIndexTree(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
+
   IndexTree* pIndexTree = nullptr;
   i8 nIndexes = m_pIndexTreeVec->nItems();
   
@@ -183,7 +188,9 @@ IndexTree* CrwTablePtn::pIndexTree(i8 iIndexNo)
 IndexTreeVec* CrwTablePtn::pIndexTreeVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
   return m_pIndexTreeVec;
 }
 
@@ -193,7 +200,9 @@ IndexTreeVec* CrwTablePtn::pIndexTreeVec(void)
 void CrwTablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
   // get no of indexes of the table
   i8 nIndexes = m_pIndexTreeVec->nItems();
   
@@ -224,7 +233,9 @@ tPN CrwTablePtn::tPtnNo(void)
 bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
@@ -279,7 +290,9 @@ Table* CrwTablePtn::pTable(void)
 void CrwTablePtn::vRemoveIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
   // remove the index from the IdxDataVec
@@ -296,12 +309,12 @@ void CrwTablePtn::vTruncate(void)
   
   // first truncate all indexes for this table ptn
   // This code gets moved to TablePtn
-  //#ifdef WITH_MULTI_BUCKET
+  #ifndef WITH_MULTI_BUCKET
   for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     pIndexTree->vTruncate();
   }
-  //#endif
+  #endif
   
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
@@ -316,7 +329,9 @@ void CrwTablePtn::vTruncate(void)
 void CrwTablePtn::vTruncateIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+  #ifdef  WITH_MULTI_BUCKET
+  NEVER_REACH;
+  #endif
   bool bFoundIndex = false;
   
   // find the index to be truncated for this table ptn
