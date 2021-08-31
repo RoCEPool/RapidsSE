@@ -77,14 +77,14 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
   m_xSysArgs.m_iDelay           = 0;
-  m_xSysArgs.m_bDeveloper       = false;
+  m_xSysArgs.m_bDeveloper       = true;                                 //false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
   m_xSysArgs.m_nDummySleep      = 10;
   m_xSysArgs.m_nDummyLoop       = 0;
   m_xSysArgs.m_nEntries         = 0;
   m_xSysArgs.m_bEvents          = false;
-  m_xSysArgs.m_bFreeSpecific          = false;
+  m_xSysArgs.m_bFreeSpecific    = false;
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
   m_xSysArgs.m_nIndexEntries    = 0;
@@ -121,6 +121,8 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bUteApiDemo      = false;
 
   _checkInitialised_(CN_CMDLINEARGS);
+  
+                              m_xSysArgs.m_oArgTags.vInsert(C_SHOW_EXCEPTION,1);
   
   vEnvironmentVariables();
 }
