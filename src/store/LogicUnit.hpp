@@ -34,6 +34,7 @@
 #include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "PipelineSpec.hpp"
+#include "NamedBuffer.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -174,6 +175,7 @@ namespace STORE
     REG<Operand>        m_xpMarker;
     REG<RowBuffer>      m_xpMemoryHog; // memoryHog
     REG<MetaGet>        m_xpMeta;
+    REG<NamedBuffer>    m_xpNamedBuffer;
     REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now

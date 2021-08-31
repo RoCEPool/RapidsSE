@@ -109,6 +109,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 "m_xpMarker"_Stz)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpMemoryHog"_Stz)
 ,           m_xpMeta(this,RF_REPAIR_DELETE, MetaGet::vRepair,       "m_xpMeta"_Stz)
+,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,"m_xpNamedBuffer"_Stz)
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            "m_xpNow"_Stz)
 
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
@@ -335,6 +336,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpMeta.bIsNull());
+
+  RASSERT(m_xpNamedBuffer.bIsNull());
 
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpParcel.bIsNull());
