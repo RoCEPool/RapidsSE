@@ -61,7 +61,7 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  delete m_pPipelineSpec;
+  m_pPipelineSpec->vGuardedDelete(m_pPipelineSpec,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

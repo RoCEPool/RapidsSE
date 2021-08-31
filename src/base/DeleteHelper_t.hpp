@@ -5,7 +5,6 @@
 
 #include <typeinfo>
 
-
 namespace BASE
 {
   template<class CLASS>
@@ -16,24 +15,14 @@ namespace BASE
     Stz*    m_szFunc;
   
   public:
-    DeleteHelper_t(void);
+    DeleteHelper_t(void); //const std::type_info& rTypeId);
    ~DeleteHelper_t(void) noexcept(false);
 
     void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
   };
-  
 }
 
-#include "Job.hpp"
-#include "Op.hpp"
-#include "OpSpec.hpp"
-#include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
-#include "Stage.hpp"
-#include "StageSpec.hpp"
-#include "Stream.hpp"
-#include "Task.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -52,11 +41,106 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(void)
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
+  /*
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job
+  
   if (typeid(CLASS) == typeid(Job)) {
     if (! m_szFunc)
       vDebugPoint();
     RASSERT(m_szFunc);
+    
+    vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // actual
+  
+  else
+  if (typeid(CLASS) == typeid(Pipeline)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("Pipeline deleted by %s()\n"_Stz,m_szFunc);
+  }
+  
+  else
+  if (typeid(CLASS) == typeid(Stage)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
+  }
+  
+  else
+  if (typeid(CLASS) == typeid(Stream)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("Stream deleted by %s()\n"_Stz,m_szFunc);
+  }
+  
+  else
+  if (typeid(CLASS) == typeid(Op)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("Op deleted by %s()\n"_Stz,m_szFunc);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // specs
+  
+  else
+  if (typeid(CLASS) == typeid(PipelineSpec)) {
+    if (! m_szFunc)
+      vDebugPoint();
+    RASSERT(m_szFunc);
+    
+    vTrace("PipelineSpec deleted by %s()\n"_Stz,m_szFunc);
+  }
+  
+  else
+  if (typeid(CLASS) == typeid(StageSpec)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("StageSpec deleted by %s()\n"_Stz,m_szFunc);
+  }
+  
+  else
+  if (typeid(CLASS) == typeid(OpSpec)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("OpSpec deleted by %s()\n"_Stz,m_szFunc);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task
+  
+  else
+  if (typeid(CLASS) == typeid(Task)) {
+//    if (! m_szFunc)
+//      vDebugPoint();
+//    RASSERT(m_szFunc);
+    
+    vTrace("Task deleted by %s()\n"_Stz,m_szFunc);
+  }
+
+  
+  else {
+    // ?
+  }
+*/
+  
 }
 
 /*----------------------------------------------------------------------------*/
