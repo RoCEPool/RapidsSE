@@ -77,7 +77,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
   m_xSysArgs.m_iDelay           = 0;
-  m_xSysArgs.m_bDeveloper       = true;                                 //false;
+  m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
   m_xSysArgs.m_nDummySleep      = 10;
@@ -112,8 +112,8 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
-  m_xSysArgs.m_bVBlong          = true;                                 //false;
-  m_xSysArgs.m_bVerbose         = true;                                 //false;
+  m_xSysArgs.m_bVBlong          = false;
+  m_xSysArgs.m_bVerbose         = false;
   m_xSysArgs.m_bWelcome         = true;
 
   m_xSysArgs.m_bUtility         = false;
