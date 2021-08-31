@@ -35,7 +35,7 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
                            PipelineSpec* p_ParentPipelineSpec,
                            TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
-: DeleteHelper_t<PipelineSpec>(0) // typeid(PipelineSpec))
+: DeleteHelper_t<PipelineSpec>(typeid(PipelineSpec))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   

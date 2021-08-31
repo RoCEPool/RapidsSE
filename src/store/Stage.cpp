@@ -35,7 +35,7 @@ __aFooterFunction(Stage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
-: DeleteHelper_t<Stage>(0) // typeid(Stage))
+: DeleteHelper_t<Stage>(typeid(Stage))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
