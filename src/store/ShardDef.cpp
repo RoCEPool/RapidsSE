@@ -131,6 +131,18 @@ void ShardDef::vPostRecv(void* aShardDef)
   pShardDef->vResetPointers();
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the shardDef                                                        */
+/*----------------------------------------------------------------------------*/
+void ShardDef::vRepair(Object* pObject, eRF eRepair)
+{
+  _static_
+
+  ShardDef* pShardDef = _pShardDef(pObject);
+
+  // delete the shardDef
+  delete pShardDef;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
