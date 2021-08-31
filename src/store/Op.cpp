@@ -49,6 +49,7 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Operand(CN_OP)
+, DeleteHelper_t<Op>(0) // typeid(Op))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -147,6 +148,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 /*----------------------------------------------------------------------------*/
 Op::Op(Stz* szOpNm)
 : Operand(CN_OP)
+, DeleteHelper_t<Op>(0) // typeid(Op))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     

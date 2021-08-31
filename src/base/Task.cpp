@@ -78,7 +78,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(void)
 : Object(CN_TASK)
-//, DeleteHelper_t<Task>(0) // typeid(Task))
+, DeleteHelper_t<Task>(0) // typeid(Task))
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
