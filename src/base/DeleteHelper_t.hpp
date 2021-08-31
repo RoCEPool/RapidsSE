@@ -25,16 +25,6 @@ namespace BASE
   
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(void)
-{
-  m_pDeleter = nullptr;
-  m_szFunc   = nullptr;
-}
-
 #include "Job.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -46,14 +36,27 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(void)
 #include "Task.hpp"
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template<class CLASS>
+DeleteHelper_t<CLASS>::DeleteHelper_t(void)
+{
+  m_pDeleter = nullptr;
+  m_szFunc   = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
-//  if (typeid(CLASS) == typeid(Job)) {
-//    vTrace("~DeleteHelper_t: testing Job\n"_Stz);
-//  }
+  if (typeid(CLASS) == typeid(Job)) {
+    if (! m_pDeleter || ! m_szFunc)
+      vDebugPoint();
+    //RASSERT(m_pDeleter && m_szFunc);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
