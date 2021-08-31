@@ -31,21 +31,21 @@
 /*----------------------------------------------------------------------------*/
 : OP_namedInsert \handler
 
-  PipeIn[]\clear to Operand[]
+  PipeIn[]\clear to NamedBuffer[]
 
-  Operand[] namedBuffer.name@ locals| sBufferNm |
+  NamedBuffer[] namedBuffer.name@ locals| sBufferNm |
 
   sBufferNm locateNamedTable
 
 
-  //CN_CRWBUFFER Operand[].morphClass
-  CN_ROWBUFFER Operand[].morphClass
+  //CN_CRWBUFFER NamedBuffer[].morphClass
+  CN_ROWBUFFER NamedBuffer[].morphClass
 
   0 Table[].tablePtnGet to TablePtn[]
   
   TablePtn[].grabWrite_msecLoop
   //nullptr to Operand[]
-  Operand[]\clear TablePtn[].appendBuffer
+  NamedBuffer[]\clear TablePtn[].appendBuffer
   TablePtn[].dropWrite
 
   //sBufferNm "$$$ OP_namedInsert %v" .printf

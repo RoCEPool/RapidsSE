@@ -1068,6 +1068,15 @@ public:
   void vNamedBufferNameFetch(void);
   void vNamedBufferNameStore(void);
 
+  void vNamedBufferDelete(void);
+  void vNamedBufferGet(void);
+  void vNamedBufferGetAndClear(void);
+  void vNamedBufferIsNotNull(void);
+  void vNamedBufferIsNull(void);
+  void vNamedBufferMorphClass(void);
+  void vNamedBufferPipeIn(void);
+  void vNamedBufferSet(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeGet(void);
