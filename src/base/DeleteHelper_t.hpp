@@ -19,8 +19,8 @@ namespace BASE
     DeleteHelper_t(void);
    ~DeleteHelper_t(void) noexcept(false);
 
-    void vDeleteExplicit(Object* pDeleter, Stz* szFunc);
-    void vDeleteThis(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
+    void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
+    void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
   };
   
 }
@@ -63,22 +63,12 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* set who is going to delete this object                                     */
-/*----------------------------------------------------------------------------*/
-template<class CLASS>
-void DeleteHelper_t<CLASS>::vDeleteExplicit(Object* pDeleter, Stz* szFunc)
-{
-  m_pDeleter = pDeleter;
-  m_szFunc   = szFunc;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* delete this                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vDeleteThis(CLASS*& prThis,
+void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
                                         Object* pDeleter,
                                         Stz* szFunc)
 {
@@ -89,6 +79,17 @@ void DeleteHelper_t<CLASS>::vDeleteThis(CLASS*& prThis,
   
   prThis = nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set who is going to explicitly delete this object                          */
+/*----------------------------------------------------------------------------*/
+template<class CLASS>
+void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc)
+{
+  m_pDeleter = pDeleter;
+  m_szFunc   = szFunc;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

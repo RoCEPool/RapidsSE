@@ -3005,7 +3005,7 @@ void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
   
   Job* pJob = * ppJob;
   
-  pJob->vDeleteThis(pJob,pDeleter,szFunc);
+  pJob->vGuardedDelete(pJob,pDeleter,szFunc);
   
   * ppJob = nullptr;
 }
