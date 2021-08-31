@@ -22,6 +22,7 @@ __aFooterFunction(StageSpec)
 StageSpec::StageSpec(i8 i_StageSpec,
                      Stz* szStageNm,
                      PipelineSpec* pPipelineSpec)
+: DeleteHelper_t<StageSpec>(CN_STAGESPEC,typeid(StageSpec))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   

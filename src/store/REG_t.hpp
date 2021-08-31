@@ -168,6 +168,14 @@ namespace STORE
     }
 
     /*------------------------------------------------------------------------*/
+    /* gurded delete object                                                   */
+    /*------------------------------------------------------------------------*/
+    bool vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
+    {
+      m_pComponent->vGuardedDelete(m_pComponent,pDeleter,(Stz*)__func__);
+    }
+
+    /*------------------------------------------------------------------------*/
     /* is there a pointer?                                                    */
     /*------------------------------------------------------------------------*/
     bool bIsNotNull(void)

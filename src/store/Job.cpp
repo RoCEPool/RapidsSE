@@ -115,6 +115,7 @@ Job::Job(i8 i_Origin,     // originated on which node
          i8 iCmdNo        // the sequence no of the request from that session)
         )
 : Object(CN_JOB)
+, DeleteHelper_t<Job>(CN_JOB,typeid(Job))
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -186,6 +187,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
+, DeleteHelper_t<Job>(CN_JOB,typeid(Job))
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     

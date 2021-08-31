@@ -30,6 +30,7 @@ __aFooterFunction(Pipeline)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
+: DeleteHelper_t<Pipeline>(CN_PIPELINE,typeid(Pipeline))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -61,7 +62,7 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  delete m_pPipelineSpec;
+  m_pPipelineSpec->vGuardedDelete(m_pPipelineSpec,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

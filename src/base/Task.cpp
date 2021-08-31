@@ -78,6 +78,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(void)
 : Object(CN_TASK)
+, DeleteHelper_t<Task>(CN_TASK,typeid(Task)) 
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -169,7 +170,7 @@ Task::~Task(void) noexcept(false)
   if (m_pJob) {
     Job* pJob = *m_pJob;
     m_pJob = nullptr;
-    AM::vJobDelete(&pJob);
+    AM::vJobDelete(&pJob,this,(Stz*)__func__);
   }
       
   delete m_pProfile;
