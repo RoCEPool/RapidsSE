@@ -482,7 +482,7 @@ i8 CrwBuffer::iLengthList(void)
 CrwBuffer* CrwBuffer::pNextCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
+  
   return _pCrwBuffer(this->pNextLinkedBuffer());
 }
 
@@ -832,9 +832,6 @@ void CrwBuffer::vTruncate(void)
   while (pNextBuffer) {
     CrwBuffer* pThisBuffer = pNextBuffer;
     pNextBuffer = pNextBuffer->pNextCrwBuffer();
-#ifdef WITH_MULTI_BUCKET
-    if (pThisBuffer == pNextBuffer) break; // could be the last entry ...
-#endif
     delete pThisBuffer;
   }
   delete this;

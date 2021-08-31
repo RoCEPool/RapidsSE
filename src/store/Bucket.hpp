@@ -10,6 +10,7 @@ namespace STORE
   class Bucket : public Object
   {
   private:
+    //Lock   m_okLock;  // lock on the partition
     Table* m_pTable;  // table this partition belongs to
     tPN    m_tPtnNo;  // partition number (in grid)
 
