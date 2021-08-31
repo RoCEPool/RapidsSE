@@ -19,6 +19,7 @@ namespace BASE
     DeleteHelper_t(void);
    ~DeleteHelper_t(void) noexcept(false);
 
+    void vDeleteExplicit(Object* pDeleter, Stz* szFunc);
     void vDeleteThis(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
   };
   
@@ -52,16 +53,26 @@ template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
   if (typeid(CLASS) == typeid(Job)) {
-    vDebugPoint();
     if (! m_szFunc)
       vDebugPoint();
-    //RASSERT(m_pDeleter && m_szFunc);
+    RASSERT(m_szFunc);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set who is going to delete this object                                     */
+/*----------------------------------------------------------------------------*/
+template<class CLASS>
+void DeleteHelper_t<CLASS>::vDeleteExplicit(Object* pDeleter, Stz* szFunc)
+{
+  m_pDeleter = pDeleter;
+  m_szFunc   = szFunc;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* delete this                                                                */

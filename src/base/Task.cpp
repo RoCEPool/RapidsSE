@@ -169,7 +169,7 @@ Task::~Task(void) noexcept(false)
   if (m_pJob) {
     Job* pJob = *m_pJob;
     m_pJob = nullptr;
-    AM::vJobDelete(&pJob);
+    AM::vJobDelete(&pJob,this,(Stz*)__func__);
   }
       
   delete m_pProfile;

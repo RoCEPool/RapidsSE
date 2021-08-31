@@ -3001,9 +3001,11 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 
-void AM::vJobDelete(Job** ppJob) {
+void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
   
-  delete * ppJob;
+  Job* pJob = * ppJob;
+  
+  pJob->vDeleteThis(pJob,pDeleter,szFunc);
   
   * ppJob = nullptr;
 }

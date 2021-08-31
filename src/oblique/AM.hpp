@@ -592,7 +592,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
-    static void vJobDelete(Job** ppJob);
+    static void vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
