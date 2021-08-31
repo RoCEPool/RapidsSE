@@ -112,7 +112,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
-  m_xSysArgs.m_bVBlong          = false;
+  m_xSysArgs.m_bVBlong          = true;                                 //false;
   m_xSysArgs.m_bVerbose         = true;                                 //false;
   m_xSysArgs.m_bWelcome         = true;
 
