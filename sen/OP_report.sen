@@ -45,13 +45,13 @@
 
   //"Operand:- ZK_D_ENTBUFFER" .verbose
   /*
-  PipeIn[] to Operand[]
-  nullptr to Operand[]
+  PipeIn[] to EntBuffer[]
+  nullptr to EntBuffer[]
 
-  Operand[].isReport if
-    Operand[].writeToFile0
+  EntBuffer[].isReport if
+    EntBuffer[].writeToFile0
   else
-    Operand[].pipeOut
+    EntBuffer[].pipeOut
   then
   */
   true
@@ -77,13 +77,13 @@
 
 /*
   //"Operand:- ZK_D_SRTBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to Operand[]
+  PipeIn[] to SrtBuffer[]
+  nullptr to SrtBuffer[]
 
-  Operand[].isReport if
-    Operand[].writeToFile0
+  SrtBuffer[].isReport if
+    SrtBuffer[].writeToFile0
   else
-    Operand[].pipeOut
+    SrtBuffer[].pipeOut
   then
 */
   true
