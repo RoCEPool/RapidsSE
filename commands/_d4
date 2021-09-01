@@ -12,15 +12,27 @@ _lineitem
 _partsupp
 _part
 
-//CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
-//CREATE INDEX customer_idx1 ON customer(c_custkey);
-//CREATE INDEX orders_idx1   ON orders(o_orderdate);
-//CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
-//CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
-//CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
-//CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
-//CREATE INDEX part_idx1     ON part(p_brand);
+create index supplier_idx1 on supplier(s_suppkey);
+create index customer_idx1 on customer(c_custkey);
+create index orders_idx1   on orders(o_orderkey);
+create index orders_idx2   on orders(o_custkey);
+create index lineitem_idx1 on lineitem(l_orderkey);
+create index lineitem_idx2 on lineitem(l_partkey);
+create index lineitem_idx3 on lineitem(l_suppkey);
+create index partsupp_idx1 on partsupp(ps_partkey);
+create index partsupp_idx2 on partsupp(ps_suppkey);
+create index part_idx1     on part(p_partkey);
 
+lstbl;
+
+lsidx region;
+lsidx nation;
+lsidx supplier;
+lsidx customer;
+lsidx orders;
+lsidx lineitem;
+lsidx partsupp;
+lsidx part;
 
 tag default <scale_factor> = "SF_0001" ;
 
