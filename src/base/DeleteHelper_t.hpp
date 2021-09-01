@@ -66,7 +66,7 @@ template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(void)
 {
   
-  return;
+  //return;
   
   //if (CN_PIPELINESPEC == m_eThisClassNo)
   //  vTrace("%s deleted by %s()\n"_Stz,aCN[m_eClassNo],m_szFunc);
@@ -85,33 +85,35 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
                || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
               )
             );
-    RASSERT(CN_PIPELINE == m_eDeleterClassNo);
+    RASSERT(CN_PIPELINE == m_eDeleterClassNo ||
+            CN_TASK == m_eDeleterClassNo);
   }
 
   else if (CN_STAGESPEC == m_eThisClassNo) {
-    vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
+    //vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
     
     if (! m_szFunc)
       vDebugPoint();
     RASSERT(m_szFunc &&
-              (    m_szFunc->bSame("~Pipeline"_Stz)
-               //|| m_szFunc->bSame("???"_Stz)
+              (    m_szFunc->bSame("~PipelineSpec"_Stz)
               )
             );
     RASSERT(CN_PIPELINESPEC == m_eDeleterClassNo);
   }
 
   else if (CN_OPSPEC == m_eThisClassNo) {
-    vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
+    //vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
     
     if (! m_szFunc)
       vDebugPoint();
     RASSERT(m_szFunc &&
               (   m_szFunc->bSame("vStageFirstSend"_Stz)
-              //|| m_szFunc->bSame("???"_Stz)
+               || m_szFunc->bSame("vStageSubsequentSend"_Stz)
+               || m_szFunc->bSame("~StageSpec"_Stz)
               )
             );
-    RASSERT(CN_PIPELINESPEC == m_eDeleterClassNo);
+    RASSERT(CN_STAGESPEC == m_eDeleterClassNo ||
+            CN_PIPELINESPEC == m_eDeleterClassNo);
   }
 
   else {
