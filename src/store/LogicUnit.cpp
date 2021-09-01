@@ -162,9 +162,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpSubset(this,RF_NONE,         nullptr,                 "m_xpSubset"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
-// TO GO
-,       m_xpOperandA(this,RF_NONE,         nullptr,                 "m_xpOperandA"_Stz)
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   

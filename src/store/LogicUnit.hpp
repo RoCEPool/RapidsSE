@@ -181,7 +181,6 @@ namespace STORE
     REG<Now>            m_xpNow;       // now
     REG<Object>         m_xpRecvdObject;
     REG<Op>             m_xpOp;        // operator
-    REG<Operand>        m_xpOperandA;  // operand A
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Parcel>         m_xpParcel;
