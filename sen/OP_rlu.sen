@@ -128,8 +128,7 @@
 
   // evaluate the project expression
   Filter[].new
-  StreamDefOut[].new
-  <project> StreamDefLft[] StreamDefOut[] Filter[].evaluate to eError
+  <filter> StreamDefLft[] nullptr Filter[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -139,8 +138,9 @@
   then
 
   // generate the asm for projection
-  Filter[] ExprEval[] LogicUnit[].genFilterProject to eError
+  ExprEval[] Filter[] LogicUnit[].genFilterProject to eError
   ExprEval[].delete
+  Filter[].delete
 
   // check for error
   eError EC_NONE == not if
