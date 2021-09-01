@@ -130,6 +130,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
 
+,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                 "m_xpSendNode"_Stz)
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       "m_xpShardDef"_Stz)
 ,         m_xpSocket(this,RF_NEVER,        nullptr,                 "m_xpSocket"_Stz)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
@@ -158,8 +159,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
 ,    m_xpRecvdObject(this,RF_NONE,         nullptr,                 "m_xpRecvObject"_Stz)
-,       m_xpSendNode(this,RF_NEVER,         nullptr,                 "m_xpSendNode"_Stz)
-,          m_xpSends(this,RF_NEVER,         nullptr,                 "m_xpSends"_Stz)
+,          m_xpSends(this,RF_NEVER,        nullptr,                 "m_xpSends"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
 {
@@ -355,6 +355,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
 
+  RASSERT(m_xpSendNode.bIsNull());
   RASSERT(m_xpShardDef.bIsNull());
   RASSERT(m_xpSocket.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());
