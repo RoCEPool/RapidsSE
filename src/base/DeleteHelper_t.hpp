@@ -83,9 +83,11 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
     RASSERT(m_szFunc &&
               (   m_szFunc->bSame("~Pipeline"_Stz)
                || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
+               || m_szFunc->bSame("pCompile"_Stz)
               )
             );
-    RASSERT(CN_PIPELINE == m_eDeleterClassNo ||
+    RASSERT(CN_DYNAMO == m_eDeleterClassNo   ||
+            CN_PIPELINE == m_eDeleterClassNo ||
             CN_TASK == m_eDeleterClassNo);
   }
 
