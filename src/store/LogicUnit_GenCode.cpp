@@ -518,7 +518,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_PROJECT_ROUTINE, "CRW_PROJECT_STAR"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_STAR
@@ -655,7 +657,9 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
   oFile.vPrint("%s"_Stz, pFilter->m_sProjectAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_PROJECT_ROUTINE, "CRW_PROJECT_STAR"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_STAR
