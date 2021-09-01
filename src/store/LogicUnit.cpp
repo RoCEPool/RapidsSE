@@ -132,6 +132,7 @@ LogicUnit::LogicUnit(void)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
 
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                 "m_xpSendNode"_Stz)
+,          m_xpSends(this,RF_NEVER,        nullptr,                 "m_xpSends"_Stz)
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       "m_xpShardDef"_Stz)
 ,         m_xpSocket(this,RF_NEVER,        nullptr,                 "m_xpSocket"_Stz)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
@@ -160,7 +161,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpPipein(this,RF_NONE,         nullptr,                 "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
-,          m_xpSends(this,RF_NEVER,        nullptr,                 "m_xpSends"_Stz)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -357,6 +357,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRowBuffer.bIsNull());
 
   RASSERT(m_xpSendNode.bIsNull());
+  RASSERT(m_xpSends.bIsNull());
   RASSERT(m_xpShardDef.bIsNull());
   RASSERT(m_xpSocket.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());
