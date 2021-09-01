@@ -87,37 +87,49 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         "m_xpBucket"_Stz)
+
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  "m_xpCrwBuffer"_Stz)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       "m_xpCrwToRow"_Stz)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList, "m_xpCsvBuffer"_Stz)
+
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     "m_xpDataBuffer"_Stz)
 ,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir0"_Stz)
 ,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir1"_Stz)
+
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        "m_xpErrorMarker"_Stz)
 ,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       "m_xpExprEval"_Stz)
+
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile0"_Stz)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile1"_Stz)
 ,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
+
 ,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 "m_xpIndex"_Stz)
 ,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 "m_xpIndexDef"_Stz)
 ,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,    "m_xpIndexStream"_Stz)
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        "m_xpInfoSet"_Stz)
 ,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 "m_xpRow"_Stz)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpInfoSetTable"_Stz)
+
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      "m_xpList"_Stz)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  "m_xpLogicCompiler"_Stz)
+
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 "m_xpMarker"_Stz)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpMemoryHog"_Stz)
 ,           m_xpMeta(this,RF_REPAIR_DELETE, MetaGet::vRepair,       "m_xpMeta"_Stz)
+
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,"m_xpNamedBuffer"_Stz)
+,           m_xpNode(this,RF_NEVER,        nullptr,                 "m_xpNode"_Stz)
+,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 "m_xpNode_I"_Stz)
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            "m_xpNow"_Stz)
 
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
+
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
+
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       "m_xpShardDef"_Stz)
 ,         m_xpSocket(this,RF_NEVER,        nullptr,                 "m_xpSocket"_Stz)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
@@ -128,7 +140,6 @@ LogicUnit::LogicUnit(void)
 
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 "m_xpTablePtn"_Stz)
-
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,"m_xpToBktCrw"_Stz)
 ,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,"m_xpToBktRow"_Stz)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       "m_xpToNstRow"_Stz)
@@ -138,17 +149,16 @@ LogicUnit::LogicUnit(void)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          "m_xpTx"_Stz)
 
 
-,        m_xpHandler(this,RF_NONE,         nullptr,                 "m_xpHandler"_Stz)
+,        m_xpHandler(this,RF_NONE,        nullptr,                 "m_xpHandler"_Stz)
+
 ,             m_xpOp(this,RF_NONE,         nullptr,                 "m_xpOp"_Stz)
 ,     m_xpOperandOoO(this,RF_NONE,         nullptr,                 "m_xpOperandOoO"_Stz)
 ,         m_xpPipein(this,RF_NONE,         nullptr,                 "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
-,           m_xpNode(this,RF_NONE,         nullptr,                 "m_xpNode"_Stz)
-,         m_xpNode_I(this,RF_NONE,         nullptr,                 "m_xpNode_I"_Stz)
 ,    m_xpRecvdObject(this,RF_NONE,         nullptr,                 "m_xpRecvObject"_Stz)
-,       m_xpSendNode(this,RF_NONE,         nullptr,                 "m_xpSendNode"_Stz)
-,          m_xpSends(this,RF_NONE,         nullptr,                 "m_xpSends"_Stz)
+,       m_xpSendNode(this,RF_NEVER,         nullptr,                 "m_xpSendNode"_Stz)
+,          m_xpSends(this,RF_NEVER,         nullptr,                 "m_xpSends"_Stz)
 ,         m_xpSubset(this,RF_NONE,         nullptr,                 "m_xpSubset"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
@@ -322,6 +332,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpFile1.bIsNull());
   RASSERT(m_xpGrid.bIsNull());
 
+  RASSERT(m_xpIndex.bIsNull());
+  RASSERT(m_xpIndexDef.bIsNull());
+  RASSERT(m_xpIndexStream.bIsNull());
   RASSERT(m_xpInfoSet.bIsNull());
   RASSERT(m_xpInfoSetRow.bIsNull());
   RASSERT(m_xpInfoSetTable.bIsNull());
@@ -334,14 +347,13 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpMeta.bIsNull());
 
   RASSERT(m_xpNamedBuffer.bIsNull());
+  RASSERT(m_xpNode.bIsNull());
+  RASSERT(m_xpNode_I.bIsNull());
 
-  RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpParcel.bIsNull());
+  RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
-  RASSERT(m_xpIndex.bIsNull());
-  RASSERT(m_xpIndexDef.bIsNull());
-  RASSERT(m_xpIndexStream.bIsNull());
 
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
