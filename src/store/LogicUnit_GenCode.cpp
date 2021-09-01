@@ -541,7 +541,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_PROJECT_ROUTINE, "ROW_PROJECT_STAR"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROWPROJECT_STAR
@@ -662,9 +664,34 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_PROJECT_STAR
+  // CRW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
+  // add the columns to be projected to PROJECT_COLUMNS
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uExprEvalColumns);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pProject->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROW_PROJECT_COLUMNS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uExprEvalColumns);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pProject->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_FILTER_BEGIN
@@ -680,7 +707,9 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
   oFile.vPrint("%s"_Stz, pFilter->m_sProjectAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_PROJECT_ROUTINE, "ROW_PROJECT_STAR"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROWPROJECT_STAR
