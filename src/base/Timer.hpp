@@ -22,7 +22,9 @@ namespace BASE
   
     Timer(void);
    ~Timer(void) noexcept(false);
-    
+
+    static void vRepair(Object* pObject, eRF eRepair);
+
     void vReset(void);
     void vSet(i8 iStart, i8 iUpdate);
     void vStart(void);
