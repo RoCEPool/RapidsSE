@@ -223,11 +223,16 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void vRepair(void)
     {
+
       // m_pComponent already NULL ?
       if ( !m_pComponent ) {
         // nothing to do
         return;
       }
+
+      // RF_REPAIR_NEVER ?
+      // Should never reach here for a RF_REPAIR_NEVER ?
+      RASSERT(m_eRepair != RF_REPAIR_NEVER);
 
       // RF_REPAIR_NONE ?
       if (m_eRepair == RF_REPAIR_NONE) {
