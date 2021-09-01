@@ -21,6 +21,7 @@ namespace BASE
     ~Operand(void) noexcept(false);
 
     static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepairList(Object* pObject, eRF eRepair);
 
     bool bIsBuffer(void);
     bool bIsInfoSet(void);

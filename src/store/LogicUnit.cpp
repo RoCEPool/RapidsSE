@@ -137,6 +137,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   "m_xpStreamDefRht"_Stz)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamSet"_Stz)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpStreamSetTable"_Stz)
+,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    "m_xpSubset"_Stz)
 
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 "m_xpTablePtn"_Stz)
@@ -159,7 +160,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpRecvdObject(this,RF_NONE,         nullptr,                 "m_xpRecvObject"_Stz)
 ,       m_xpSendNode(this,RF_NEVER,         nullptr,                 "m_xpSendNode"_Stz)
 ,          m_xpSends(this,RF_NEVER,         nullptr,                 "m_xpSends"_Stz)
-,         m_xpSubset(this,RF_NONE,         nullptr,                 "m_xpSubset"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
 {
@@ -362,6 +362,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpStreamDefOut.bIsNull());
   RASSERT(m_xpStreamSet.bIsNull());
   RASSERT(m_xpStreamSetTable.bIsNull());
+  RASSERT(m_xpSubset.bIsNull());
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
@@ -497,7 +498,7 @@ void LogicUnit::vCleanup(void)
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object> *p_Reg = m_paReg[i_Reg];
     // execute register repare
-    if (p_Reg->m_szRegNm->bSame("m_xpInfoSetTable"_Stz))
+    if (p_Reg->m_szRegNm->bSame("m_xpSubset"_Stz))
       int i = 1;
     p_Reg->vRepair();
   }
