@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* _rlu - RLU                                                                 */
+/*============================================================================*/
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading T1.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+create table  T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading T2.csv..." ;
+load  T2 "../DATA/Joins/T2.csv" ;
+
+pipeline test
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >=  "
+    | project 0 "type integer $2 , type varchar $4 "
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end
+;
+
+explain stage transliterate select b,d from T1 where b >= 500;
+
+pipeline test
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | rlu 0 filter "type boolean $2 500 >=" , project "type integer $2 , type varchar $4"
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

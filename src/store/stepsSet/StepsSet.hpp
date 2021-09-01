@@ -442,8 +442,12 @@ public:
 
   // filter
   void vFilterGet(void);
+  void vFilterDelete(void);
   void vFilterNew(void);
-  void vFilterRows(void);
+  void vFilterEvaluate(void);
+  void vFilterEvaluateIndexScan(void);
+  void vFilterEvaluateIndexJoin(void);
+  void vFilterEvaluateLoopJoin(void);
   void vFilterSet(void);
 
   // grid
@@ -958,6 +962,7 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenFilterProject(void);
   void vLogicUnitGenHash(void);
   void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);

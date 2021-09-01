@@ -163,6 +163,7 @@ namespace STORE
     REG<ExprEval>       m_xpExprEval; // expr eval
     REG<File>           m_xpFile0;    // file0[]
     REG<File>           m_xpFile1;    // file1[]
+    REG<ExprEval>       m_xpFilter;   // expr eval
     REG<Grid>           m_xpGrid;
     REG<Word>           m_xpHandler;  // which handler is to be/was called
     REG<Index>          m_xpIndex;
@@ -355,6 +356,7 @@ namespace STORE
 
     eEC eGenerateAggregate(ExprEval* pExprEval);
     eEC eGenerateFilter(ExprEval* pExprEval);
+    eEC eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject);
     eEC eGenerateGroupBy(ExprEval* pExprEval);
     eEC eGenerateHash(ExprEval* pExprEval);
     eEC eGenerateIndexJoin(ExprEval* pExprEval);

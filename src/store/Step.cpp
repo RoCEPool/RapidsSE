@@ -88,6 +88,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
+  Step::vAddSteps_Filter();
 
   Step::vAddSteps_Grid();
   

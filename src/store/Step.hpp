@@ -70,6 +70,7 @@ namespace STORE
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
+    static void vAddSteps_Filter(void);
 
     static void vAddSteps_Grid(void);
   
