@@ -122,8 +122,11 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 "m_xpNode_I"_Stz)
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            "m_xpNow"_Stz)
 
+,     m_xpOperandOoO(this,RF_NEVER,        nullptr,                 "m_xpOperandOoO"_Stz)
+
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
+,         m_xpPipein(this,RF_NEVER,        nullptr,                 "m_xpPipein"_Stz)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
 
@@ -153,12 +156,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      "m_xpToRow"_Stz)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          "m_xpTx"_Stz)
 
-
 ,        m_xpHandler(this,RF_NONE,        nullptr,                 "m_xpHandler"_Stz)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                 "m_xpOp"_Stz)
-,     m_xpOperandOoO(this,RF_NONE,         nullptr,                 "m_xpOperandOoO"_Stz)
-,         m_xpPipein(this,RF_NONE,         nullptr,                 "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
 
@@ -347,8 +347,11 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpNode.bIsNull());
   RASSERT(m_xpNode_I.bIsNull());
 
+  RASSERT(m_xpOperandOoO.bIsNull());
+
   RASSERT(m_xpParcel.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
+  RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
