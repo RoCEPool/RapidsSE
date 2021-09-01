@@ -77,9 +77,9 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   
   if (CN_PIPELINESPEC == m_eThisClassNo) {
     //vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
-    
     if (! m_szFunc)
       vDebugPoint();
+    
     RASSERT(m_szFunc &&
               (   m_szFunc->bSame("~Pipeline"_Stz)
                || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
@@ -91,9 +91,9 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
 
   else if (CN_STAGESPEC == m_eThisClassNo) {
     //vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
-    
     if (! m_szFunc)
       vDebugPoint();
+    
     RASSERT(m_szFunc &&
               (    m_szFunc->bSame("~PipelineSpec"_Stz)
               )
@@ -103,21 +103,45 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
 
   else if (CN_OPSPEC == m_eThisClassNo) {
     //vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
-    
     if (! m_szFunc)
       vDebugPoint();
+    
     RASSERT(m_szFunc &&
               (   m_szFunc->bSame("vStageFirstSend"_Stz)
                || m_szFunc->bSame("vStageSubsequentSend"_Stz)
                || m_szFunc->bSame("~StageSpec"_Stz)
               )
-            );
+           );
     RASSERT(CN_STAGESPEC == m_eDeleterClassNo ||
             CN_PIPELINESPEC == m_eDeleterClassNo);
   }
 
-  else {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job
+  
+  if (CN_JOB == m_eThisClassNo) {
+    //vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
     
+    RASSERT(m_szFunc &&
+              (   m_szFunc->bSame("vDeleteJob"_Stz)
+               || m_szFunc->bSame("vJobDelete"_Stz)
+               || m_szFunc->bSame("pFindJob"_Stz)
+               || m_szFunc->bSame("~Task"_Stz)
+              )
+            );
+    
+    RASSERT(CN_API   == m_eDeleterClassNo ||
+            CN_TASK == m_eDeleterClassNo ||
+            CN_JOBLIST == m_eDeleterClassNo);
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  else {
+    // ???
   }
 
 
@@ -237,7 +261,7 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
-  m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_NONE;
+  m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
   
   vAssertDelete();
@@ -255,8 +279,7 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
 template<class CLASS>
 void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc)
 {
-  
-  m_eDeleterClassNo = pDeleter->eGetClassNo();
+  m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
 
   vAssertDelete();

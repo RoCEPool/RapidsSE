@@ -106,6 +106,7 @@
 #include "PredicateVec.hpp"
 
 #include "AccessPath.hpp"
+#include "Api.hpp"
 #include "AttachMap.hpp"
 
 #include "Exemplar.hpp"
@@ -205,6 +206,7 @@ SizeHeap gxaSizeHeap[]
   { 'A' - ('A' - 1),            HT_INVALID   ,0 }, // CN__A__
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
+  { sizeof(Api),                HT_INVALID   ,0 }, // CN_API
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
   { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC
@@ -215,8 +217,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
-  { sizeof(Bucket),             HT_T_TINY   ,0 }, // CN_BUCKET
-  { sizeof(BucketGet),          HT_T_TINY   ,0 }, // CN_BUCKETGET
+  { sizeof(Bucket),             HT_T_TINY    ,0 }, // CN_BUCKET
+  { sizeof(BucketGet),          HT_T_TINY    ,0 }, // CN_BUCKETGET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
   { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
@@ -261,7 +263,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
-  { sizeof(ClassFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(ClassFlags),         HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
