@@ -127,6 +127,7 @@ LogicUnit::LogicUnit(void)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
 
+,    m_xpRecvdObject(this,RF_NEVER,        nullptr,                 "m_xpRecvObject"_Stz)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
 
@@ -158,7 +159,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpPipein(this,RF_NONE,         nullptr,                 "m_xpPipein"_Stz)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
-,    m_xpRecvdObject(this,RF_NONE,         nullptr,                 "m_xpRecvObject"_Stz)
 ,          m_xpSends(this,RF_NEVER,        nullptr,                 "m_xpSends"_Stz)
 ,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
@@ -352,6 +352,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
+  RASSERT(m_xpRecvdObject.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
 
