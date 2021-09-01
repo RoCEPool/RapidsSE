@@ -12,6 +12,16 @@ _lineitem
 _partsupp
 _part
 
+//CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
+//CREATE INDEX customer_idx1 ON customer(c_custkey);
+//CREATE INDEX orders_idx1   ON orders(o_orderdate);
+//CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
+//CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
+//CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
+//CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
+//CREATE INDEX part_idx1     ON part(p_brand);
+
+
 tag default <scale_factor> = "SF_0001" ;
 
 /time load region   "/Users/Shared/tpch/<scale_factor>/region.csv"   ;

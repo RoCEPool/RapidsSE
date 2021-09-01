@@ -25,7 +25,7 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
-, DeleteHelper_t<OpSpec>(CN_OPSPEC,typeid(OpSpec))
+, DeleteHelper_t<OpSpec>(CN_OPSPEC)//,typeid(OpSpec))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
