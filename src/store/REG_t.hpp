@@ -224,8 +224,14 @@ namespace STORE
     void vRepair(void)
     {
       // m_pComponent already NULL ?
-      // Nothing to be done
       if ( !m_pComponent ) {
+        // nothing to do
+        return;
+      }
+
+      // RF_REPAIR_NONE ?
+      if (m_eRepair == RF_REPAIR_NONE) {
+        // nothing to do
         return;
       }
 
