@@ -143,6 +143,7 @@ LogicUnit::LogicUnit(void)
 
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 "m_xpTable"_Stz)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 "m_xpTablePtn"_Stz)
+,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          "m_xpTimer"_Stz)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,"m_xpToBktCrw"_Stz)
 ,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,"m_xpToBktRow"_Stz)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       "m_xpToNstRow"_Stz)
@@ -160,7 +161,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
 ,          m_xpSends(this,RF_NEVER,        nullptr,                 "m_xpSends"_Stz)
-,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -368,6 +368,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
+  RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToBktCrw.bIsNull());
   RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
@@ -382,9 +383,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
-
-  if (! m_xpTimer.bIsNull())
-    delete *m_xpTimer;
 
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
