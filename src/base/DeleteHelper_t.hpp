@@ -73,7 +73,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // actual
+  // spec
   
   if (CN_PIPELINESPEC == m_eThisClassNo) {
     //vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
@@ -121,7 +121,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job
   
-  if (CN_JOB == m_eThisClassNo) {
+  else if (CN_JOB == m_eThisClassNo) {
     //vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
@@ -141,6 +141,21 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // actual
+  
+  else if (CN_PIPELINE == m_eThisClassNo) {
+    //vTrace("Pipeline deleted by %s()\n"_Stz,m_szFunc);
+    vDebugPoint();
+    
+    RASSERT(m_szFunc &&
+              (    m_szFunc->bSame("~LogicUnit"_Stz)
+              )
+            );
+    RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   else {
     // ???
@@ -150,16 +165,6 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   
   /*
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job
-  
-  if (typeid(CLASS) == typeid(Job)) {
-    if (! m_szFunc)
-      vDebugPoint();
-    RASSERT(m_szFunc);
-    
-    vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actual
