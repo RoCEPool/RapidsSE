@@ -152,8 +152,18 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
               )
             );
     RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
-
   }
+//  else if (CN_STAGE == m_eThisClassNo) {
+//    vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
+//    
+//    vDebugPoint();
+//    
+//    RASSERT(m_szFunc &&
+//              (    m_szFunc->bSame("~LogicUnit"_Stz)
+//              )
+//            );
+//    RASSERT(CN_PIPELINE == m_eDeleterClassNo);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -169,23 +179,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actual
   
-  else
-  if (typeid(CLASS) == typeid(Pipeline)) {
-//    if (! m_szFunc)
-//      vDebugPoint();
-//    RASSERT(m_szFunc);
-    
-    vTrace("Pipeline deleted by %s()\n"_Stz,m_szFunc);
-  }
   
-  else
-  if (typeid(CLASS) == typeid(Stage)) {
-//    if (! m_szFunc)
-//      vDebugPoint();
-//    RASSERT(m_szFunc);
-    
-    vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
-  }
   
   else
   if (typeid(CLASS) == typeid(Stream)) {
