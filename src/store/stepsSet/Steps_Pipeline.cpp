@@ -247,7 +247,7 @@ void Step::vPipelineDeleteSpec(void)
   
   LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
-  if (*pLogicUnit->m_xpPipelineSpec) {
+  if (pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
     pLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
     

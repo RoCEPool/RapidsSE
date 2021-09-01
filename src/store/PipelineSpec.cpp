@@ -988,7 +988,8 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
     pStageSpec->vRemove(pOpSpec_isStage);
-    delete pOpSpec_isStage;
+    //delete pOpSpec_isStage;
+    pOpSpec_isStage->vGuardedDelete(pOpSpec_isStage,this,(Stz*)__func__);
     return;
   }
 

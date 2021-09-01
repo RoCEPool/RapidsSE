@@ -172,7 +172,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
     {
-      m_pComponent->vGuardedDelete(m_pComponent,pDeleter,(Stz*)__func__);
+      m_pComponent->vGuardedDelete(m_pComponent,pDeleter,szFunc);
     }
 
     /*------------------------------------------------------------------------*/
