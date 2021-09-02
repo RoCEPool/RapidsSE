@@ -66,7 +66,7 @@ template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(void)
 {
   
-  return;
+  //return;
   
   //if (CN_PIPELINESPEC == m_eThisClassNo)
   //  vTrace("%s deleted by %s()\n"_Stz,aCN[m_eClassNo],m_szFunc);
@@ -76,7 +76,9 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // spec
   
   if (CN_PIPELINESPEC == m_eThisClassNo) {
-    //vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
+    vTrace("PipelineSpec %p deleted from %s()\n"_Stz
+           ,this
+           ,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
