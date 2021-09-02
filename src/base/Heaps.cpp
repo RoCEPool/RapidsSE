@@ -115,12 +115,11 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   eCN eWasClass = pObject->eGetClassNo();
   
-  if (! (eWasClass > 0 && eWasClass < CN_ENUMS) ) {
+  if (! (eWasClass > CN_NONE && eWasClass < CN_ENUMS) ) {
     vTrace("Heaps::vFree:: invalid class %lld\n"_Stz
-           "%p class now %lld %lls; was %lld %lls\n"_Stz
            ,(i8)eWasClass
            );
-    RASSERT(eWasClass > 0 && eWasClass < CN_ENUMS);
+    RASSERT(eWasClass > CN_NONE && eWasClass < CN_ENUMS);
   }
     
   RU_Memory* pRU_Memory = AM::pRU_Memory();
@@ -181,6 +180,21 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // actually free the object and return its space for reuse
   
   eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
+ 
+  if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
+
+    vTrace("Heaps::vFree:: invalid heap %lld "_Stz
+           "%p class %lld %lls\n"_Stz
+           ,(i8)eHeap
+           
+           ,pObject
+           ,(i8)eWasClass
+           ,aCN[eWasClass]
+           );
+    RASSERT(eWasClass > 0 && eWasClass < CN_ENUMS);
+
+
+  }
   
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
 
