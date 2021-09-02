@@ -27,9 +27,7 @@ select l_orderkey,
     and o_orderdate < DATE '1995-03-15'
     and l_shipdate > DATE '1995-03-15'
     group by l_orderkey, o_orderdate, o_shippriority;
-rows:
-  (701)
-
+rows: 701
 
 CLEANUP {
   bye;
