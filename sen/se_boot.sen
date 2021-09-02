@@ -198,6 +198,36 @@ assert::stack_0
 
 "end of se_boot.sen" .verbose
 
+/*
+
+Sen Naming Notes
+----------------
+
+*) \catg is a \\category
+
+*) \folder , \table , \index
+
+*) We make a folder -- like we mkdir in Unix
+
+*) We remove a folder -- like we rmdir in Unix
+
+*) path[].pushFolder folder[].popFolder as in pushd and popd shell commands
+
+  refer: https://en.wikipedia.org/wiki/Pushd_and_popd
+
+*) word.isaIndex , word.isaTable , word.isAFolder
+
+   should this pattern be word.isaIndex etc
+
+*) word.checkIsAFolder
+
+*) name::isNotKnownXyz
+
+-- END --
+
+*/
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
