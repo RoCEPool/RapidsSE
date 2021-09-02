@@ -145,7 +145,7 @@ namespace STORE
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::operator ->: "
-               "%p class now %lld %lls; was %lld %lls\n"_Stz
+               "%p class now %lld %s; was %lld %s\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
                ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
@@ -177,7 +177,7 @@ namespace STORE
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::operator *: "
-               "%p class now %lld %lls; was %lld %lls\n"_Stz
+               "%p class now %lld %s; was %lld %s\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
                ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
@@ -206,7 +206,7 @@ namespace STORE
       if (CLASSNO != eClassNo_xchk ||
           eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::vDeleteComponent: "
-               "%p class now %lld %lls; was %lld %lls\n"_Stz
+               "%p class now %lld %s; was %lld %s\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
                ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
@@ -250,7 +250,7 @@ namespace STORE
       if (CLASSNO != eClassNo_xchk ||
           eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::vGuardedDeleteComponent: "
-               "%p class now %lld %lls; was %lld %lls\n"_Stz
+               "%p class now %lld %s; was %lld %s\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
                ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
