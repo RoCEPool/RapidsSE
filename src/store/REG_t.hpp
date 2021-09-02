@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  template <class COMPONENT>
+  template <class COMPONENT, eCN CLASSNO>
   class REG
   {
   public:
@@ -39,10 +39,10 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT>(LogicUnit* pLogicUnit,
-                   eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
-                   Stz* szRegNm)
+    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
+                           eRF eRepair,
+                           void (*fpRepair)(Object* pObject, eRF eRepair),
+                           Stz* szRegNm)
     {
       m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
@@ -67,12 +67,12 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT>(LogicUnit* pLogicUnit,
-                   eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
-                   bool bNullOnDelete,
-                   bool bDeleteOnFailure,
-                   Stz* szRegNm)
+    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
+                           eRF eRepair,
+                           void (*fpRepair)(Object* pObject, eRF eRepair),
+                           bool bNullOnDelete,
+                           bool bDeleteOnFailure,
+                           Stz* szRegNm)
     {
       m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
@@ -97,7 +97,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REG<COMPONENT>(void)
+    ~REG<COMPONENT,CLASSNO>(void)
     {
       RASSERT(m_bInitialised);
       RASSERT(m_bFinalised);
@@ -203,7 +203,8 @@ namespace STORE
       // temp
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (eClassNo_xchk != m_eClassNo) {
+      if (CLASSNO != eClassNo_xchk ||
+          eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::vDeleteComponent: "
                "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent
@@ -246,7 +247,8 @@ namespace STORE
       // temp
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (eClassNo_xchk != m_eClassNo) {
+      if (CLASSNO != eClassNo_xchk ||
+          eClassNo_xchk != m_eClassNo) {
         vTrace("REG<>::vGuardedDeleteComponent: "
                "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent

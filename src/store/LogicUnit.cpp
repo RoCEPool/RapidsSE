@@ -479,7 +479,7 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 /*----------------------------------------------------------------------------*/
 /* add reg                                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vAddReg(REG<Object>* pReg)
+void LogicUnit::vAddReg(REG<Object,CN_NONE>* pReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
 
@@ -507,7 +507,7 @@ void LogicUnit::vCleanup(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object> *p_Reg = m_paReg[i_Reg];
+    REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
     // execute register repare
     if (p_Reg->m_szRegNm->bSame("m_xpSubset"_Stz))
       int i = 1;
@@ -748,7 +748,7 @@ void LogicUnit::vFailure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object>* p_Reg = m_paReg[i_Reg];
+    REG<Object,CN_NONE>* p_Reg = m_paReg[i_Reg];
     
     p_Reg->vRepair();
   }

@@ -494,7 +494,7 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 {
   _static_
 
-  pLogicUnit->vAddReg(static_cast< REG<Object>* >(aReg));
+  pLogicUnit->vAddReg(static_cast< REG<Object,CN_NONE>* >(aReg));
   
 }
 
