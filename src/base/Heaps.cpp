@@ -115,6 +115,14 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   eCN eWasClass = pObject->eGetClassNo();
   
+  if (! (eWasClass > 0 && eWasClass < CN_ENUMS) ) {
+    vTrace("Heaps::vFree:: invalid class %lld\n"_Stz
+           "%p class now %lld %lls; was %lld %lls\n"_Stz
+           ,(i8)eWasClass
+           );
+    RASSERT(eWasClass > 0 && eWasClass < CN_ENUMS);
+  }
+    
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
