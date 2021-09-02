@@ -885,8 +885,13 @@ void vDev_IXT_IDX_NEXT(i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  pDevIXT->m_aEnt =
-     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt =
+        EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt, &pDevIXT->m_pEntBuffer);
+  }
+  else {
+    pDevIXT->m_aEnt = nullptr;
+  }
 
   P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;
