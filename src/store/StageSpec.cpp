@@ -49,6 +49,15 @@ StageSpec::StageSpec(i8 i_StageSpec,
 StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  i8 nOpSpecs = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
+    OpSpec* pOpSpec = pGet(i_Op);
+    
+    pOpSpec->vGuardedDelete(pOpSpec,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 /*----------------------------------------------------------------------------*/

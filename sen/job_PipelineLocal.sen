@@ -35,6 +35,9 @@
   EC_NONE != if
     //"got error" .
     job::error!
+    
+    Pipeline::deleteSpec
+        
     job[] job.signalSession
     pipelineLocal::termination
   then

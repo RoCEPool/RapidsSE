@@ -60,6 +60,15 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+    
+  i8 nStageSpecs = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
+    StageSpec* pStageSpec = pGet(i_Stage);
+    
+    pStageSpec->vGuardedDelete(pStageSpec,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 
@@ -1032,7 +1041,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
-  delete pOpSpec;
+  pOpSpec->vGuardedDelete(pOpSpec,this,(Stz*)__func__);
 
   pOpSpecSend->vOtherStage(i_NextStage);
   pOpSpecSend->vOtherOp(0);
