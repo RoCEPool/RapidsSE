@@ -225,6 +225,8 @@ void Step::vPipelineCreate(void)
   
   m_pJob->vPipeline_job(pPipeline);
   
+  pLogicUnit->m_xpPipelineSpec = nullptr;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
