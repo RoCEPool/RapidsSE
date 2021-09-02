@@ -142,6 +142,15 @@ namespace STORE
       // temp
     
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
+      if (eClassNo_xchk != m_eClassNo) {
+        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+               ,m_pComponent
+               ,(i8)eClassNo_xchk
+               ,aCN[eClassNo_xchk]
+               ,(i8)m_eClassNo
+               ,aCN[m_eClassNo]
+               );
+      }
       RASSERT(eClassNo_xchk == m_eClassNo);
     
       // end-temp
@@ -162,6 +171,15 @@ namespace STORE
       // temp
   
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
+      if (eClassNo_xchk != m_eClassNo) {
+        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+               ,m_pComponent
+               ,(i8)eClassNo_xchk
+               ,aCN[eClassNo_xchk]
+               ,(i8)m_eClassNo
+               ,aCN[m_eClassNo]
+               );
+      }
       RASSERT(eClassNo_xchk == m_eClassNo);
   
       // end-temp
@@ -178,6 +196,15 @@ namespace STORE
       // temp
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
+      if (eClassNo_xchk != m_eClassNo) {
+        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+               ,m_pComponent
+               ,(i8)eClassNo_xchk
+               ,aCN[eClassNo_xchk]
+               ,(i8)m_eClassNo
+               ,aCN[m_eClassNo]
+               );
+      }
       RASSERT(eClassNo_xchk == m_eClassNo);
 
       // end-temp
@@ -209,6 +236,15 @@ namespace STORE
       // temp
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
+      if (eClassNo_xchk != m_eClassNo) {
+        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+               ,m_pComponent
+               ,(i8)eClassNo_xchk
+               ,aCN[eClassNo_xchk]
+               ,(i8)m_eClassNo
+               ,aCN[m_eClassNo]
+               );
+      }
       RASSERT(eClassNo_xchk == m_eClassNo);
 
       // end-temp

@@ -79,7 +79,7 @@ void BASE::vCheckAssumptions(void)
     
   ALWAYS(8 == sizeof(Header));
   ALWAYS(8 == sizeof(Object));
-  ALWAYS(16 == sizeof(Footer));
+  ALWAYS(32 == sizeof(Footer));
   
 
   ALWAYS(8 == sizeof(Id));
