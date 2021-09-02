@@ -36,7 +36,7 @@ namespace BASE
     eXP  ePhase(void);
     void vPhase(eXP ePhase);
   
-  private:
+  //private:
     Footer* aFooter(void);
   };
     

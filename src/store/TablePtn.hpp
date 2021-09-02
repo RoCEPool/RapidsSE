@@ -65,7 +65,7 @@ namespace STORE
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     
-  private:
+  //private:
     Footer* aFooter(void);
   };
   

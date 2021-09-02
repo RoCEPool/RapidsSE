@@ -48,7 +48,7 @@ namespace BASE
     void       vTake(i8 nBytes);
     i8         nTrim(void);
 
-  private:
+  //private:
     Footer* aFooter(void);
   };
   

@@ -37,7 +37,7 @@ namespace STORE
     i8    i_Node(void);
     Node* pNode(void);
 
-  private:
+  //private:
     Footer* aFooter(void);
   };
   

@@ -68,6 +68,7 @@ namespace STORE
 
   private:
     void vNewRowBuffer(void);
+  public:
     Footer* aFooter(void);
   };
 

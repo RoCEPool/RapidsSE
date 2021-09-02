@@ -31,7 +31,7 @@ namespace STORE
     void vReset(void);
     bool bSeek(i8 iBufferNo);
 
-  private:
+  //private:
     Footer* aFooter(void);
   };
   

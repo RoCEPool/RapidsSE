@@ -184,7 +184,7 @@ namespace STORE
     void vVerifyOpComposition(void);
     void vWorkQuanta(i8 iWorkQuanta);
     
-  private:
+  //private:
     Footer* aFooter(void);
     
   };

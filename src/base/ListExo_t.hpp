@@ -231,6 +231,7 @@ namespace BASE
     
     void vValidateList(void);
   
+  public:
     Footer* aFooter(void);
   };
 

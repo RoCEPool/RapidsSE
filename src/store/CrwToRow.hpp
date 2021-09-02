@@ -34,6 +34,7 @@ namespace STORE
     void vAllotNewRow(void);
     void vNewRowBuffer(void);
   
+  public:
     Footer* aFooter(void);
   };
 

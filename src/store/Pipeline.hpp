@@ -95,6 +95,7 @@ namespace STORE
   private:
     void vCreateStages();
 
+  public:
     Footer* aFooter(void);
   };
   

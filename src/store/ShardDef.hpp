@@ -77,6 +77,7 @@ namespace STORE
     eEC eParsePartitionBy(TokenVec* pTknVec);
     eEC eParseRowSize(TokenVec* pTknVec);
     
+  public:
     Footer* aFooter(void);
   };
   

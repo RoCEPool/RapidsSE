@@ -123,6 +123,7 @@ namespace STORE
     
       if (pComponent) {
         m_eClassNo = m_pComponent->eGetClassNo();
+        //pComponent->aFooter()->vFiller0((i8)this);
       }
       else {
         m_eClassNo = CN_NONE;
@@ -143,12 +144,15 @@ namespace STORE
     
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+        vTrace("REG<>::operator ->: "
+               "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
-               ,aCN[eClassNo_xchk]
+               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
+                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
                ,(i8)m_eClassNo
-               ,aCN[m_eClassNo]
+               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
+                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
                );
       }
       RASSERT(eClassNo_xchk == m_eClassNo);
@@ -172,12 +176,15 @@ namespace STORE
   
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+        vTrace("REG<>::operator *: "
+               "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
-               ,aCN[eClassNo_xchk]
+               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
+                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
                ,(i8)m_eClassNo
-               ,aCN[m_eClassNo]
+               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
+                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
                );
       }
       RASSERT(eClassNo_xchk == m_eClassNo);
@@ -197,12 +204,15 @@ namespace STORE
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+        vTrace("REG<>::vDeleteComponent: "
+               "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
-               ,aCN[eClassNo_xchk]
+               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
+                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
                ,(i8)m_eClassNo
-               ,aCN[m_eClassNo]
+               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
+                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
                );
       }
       RASSERT(eClassNo_xchk == m_eClassNo);
@@ -237,12 +247,15 @@ namespace STORE
 
       eCN eClassNo_xchk = m_pComponent->eGetClassNo();
       if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>->: %p class now %lld %lls; was %lld %lls\n"_Stz
+        vTrace("REG<>::vGuardedDeleteComponent: "
+               "%p class now %lld %lls; was %lld %lls\n"_Stz
                ,m_pComponent
                ,(i8)eClassNo_xchk
-               ,aCN[eClassNo_xchk]
+               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
+                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
                ,(i8)m_eClassNo
-               ,aCN[m_eClassNo]
+               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
+                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
                );
       }
       RASSERT(eClassNo_xchk == m_eClassNo);

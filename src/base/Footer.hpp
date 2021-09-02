@@ -26,6 +26,10 @@ namespace BASE
    ~Footer(void);
     
     void vAssertFooter(void) const;
+    i8   iFiller0(void);
+    void vFiller0(i8 iFiller0);
+    i8   iFiller1(void);
+    void vFiller1(i8 iFiller1);
     eEC  eValidFooter(void);
     void vSetFooter(void);
     void vSprint(Stz* szHeader);

@@ -157,7 +157,7 @@ namespace STORE
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
 
-
+  public:
     Footer* aFooter(void);
   };
   
