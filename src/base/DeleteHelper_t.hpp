@@ -52,7 +52,7 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
-  vAssertDelete();
+  //vAssertDelete();
 }
 
 /*----------------------------------------------------------------------------*/
