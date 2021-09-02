@@ -116,10 +116,18 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   eCN eWasClass = pObject->eGetClassNo();
   
   if (! (eWasClass > CN_NONE && eWasClass < CN_ENUMS) ) {
-    vTrace("Heaps::vFree:: invalid class %lld\n"_Stz
+    vTrace("Heaps::vFree:: %p invalid class %lld\n"_Stz
+           ,pObject
            ,(i8)eWasClass
            );
     RASSERT(eWasClass > CN_NONE && eWasClass < CN_ENUMS);
+  }
+    
+  if (! (CN_FREECHUNK != eWasClass) ) {
+    vTrace("Heaps::vFree:: %p attemptingto free a CN_FREECHUNK\n"_Stz
+           ,pObject
+           );
+    RASSERT(CN_FREECHUNK != eWasClass);
   }
     
   RU_Memory* pRU_Memory = AM::pRU_Memory();
@@ -184,7 +192,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
 
     vTrace("Heaps::vFree:: invalid heap %lld "_Stz
-           "%p class %lld `%lls`\n"_Stz
+           "%p class %lld `%s`\n"_Stz
            ,(i8)eHeap
            
            ,pObject
