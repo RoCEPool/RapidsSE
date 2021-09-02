@@ -391,7 +391,13 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
+    
+    Pipeline* pPipeline = *m_xpPipeline;
+    RASSERT(pPipeline);
+    RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
+    
     delete *m_xpPipeline;
+    
     //m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
   
