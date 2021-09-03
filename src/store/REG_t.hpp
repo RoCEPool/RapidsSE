@@ -7,20 +7,18 @@
 
 namespace STORE
 {
-  template <class COMPONENT, eCN CLASSNO>
+  template <class COMPONENT>
   class REG
   {
   public:
-
-    COMPONENT* m_pComponent; // pointer to the component object
-    eCN        m_eClassNo;   // class no of the component
-
+  
     LogicUnit* m_p_LogicUnit; // which logic unit
     Stz*       m_szRegNm;     // register name
     eRF        m_eRepair;     // how to repair
   
     void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
+    COMPONENT* m_pComponent; // pointer to the component object
 
     struct {
       
@@ -40,7 +38,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
                    eRF eRepair,
                    void (*fpRepair)(Object* pObject, eRF eRepair),
                    Stz* szRegNm)
@@ -51,8 +49,7 @@ namespace STORE
       m_fpRepair   = fpRepair;
     
       m_pComponent = nullptr;
-      m_eClassNo   = CLASSNO;
-
+      
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -68,7 +65,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
                    eRF eRepair,
                    void (*fpRepair)(Object* pObject, eRF eRepair),
                    bool bNullOnDelete,
@@ -81,8 +78,7 @@ namespace STORE
       m_fpRepair   = fpRepair;
 
       m_pComponent = nullptr;
-      m_eClassNo   = CLASSNO;
-    
+
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -98,7 +94,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REG<COMPONENT,CLASSNO>(void)
+    ~REG<COMPONENT>(void)
     {
       RASSERT(m_bInitialised);
       RASSERT(m_bFinalised);
