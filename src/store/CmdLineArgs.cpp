@@ -113,7 +113,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
   m_xSysArgs.m_bVBlong          = false;
-  m_xSysArgs.m_bVerbose         = true;                                 //false;
+  m_xSysArgs.m_bVerbose         = false;
   m_xSysArgs.m_bWelcome         = true;
 
   m_xSysArgs.m_bUtility         = false;
