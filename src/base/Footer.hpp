@@ -11,6 +11,9 @@ namespace BASE
   class Footer
   {
   private:
+    i8 m__filler0;
+    i8 m__filler1;
+  
     i8 m_iWhenAllocated;
   
     union {
