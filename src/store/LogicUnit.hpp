@@ -132,7 +132,8 @@ namespace STORE
 
   //----------------------------------------------------------------------------
 
-  class LogicUnit : public Object
+  class LogicUnit : public Object,
+                    public DeleteHelper_t<LogicUnit>
   {
   private:
   

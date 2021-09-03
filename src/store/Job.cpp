@@ -257,7 +257,8 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
-  AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
+  if (m_pJobLogicUnit)
+    AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
 
   //if (m_pTask)
   //  vDebugPoint();

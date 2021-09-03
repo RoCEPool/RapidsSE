@@ -129,27 +129,50 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 //  }
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // job
-//
-//  else if (CN_JOB == m_eThisClassNo) {
-//    if (bTrace)
-//      vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
+  // job
+
+  if (CN_JOB == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Job %p deleted by %s()\n"_Stz,this,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (   m_szFunc->bSame("vDeleteJob"_Stz)
+               || m_szFunc->bSame("vJobDelete"_Stz)
+               || m_szFunc->bSame("pFindJob"_Stz)
+               || m_szFunc->bSame("~Task"_Stz)
+              )
+            );
+
+    RASSERT(CN_API   == m_eDeleterClassNo ||
+            CN_TASK == m_eDeleterClassNo ||
+            CN_JOBLIST == m_eDeleterClassNo);
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // logic unit
+
+  if (CN_LOGICUNIT == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("LogicUnit %p deleted by %s()\n"_Stz,this,m_szFunc);
 //    if (! m_szFunc)
 //      vDebugPoint();
 //
 //    RASSERT(m_szFunc &&
-//              (   m_szFunc->bSame("vDeleteJob"_Stz)
-//               || m_szFunc->bSame("vJobDelete"_Stz)
-//               || m_szFunc->bSame("pFindJob"_Stz)
-//               || m_szFunc->bSame("~Task"_Stz)
+//              (   m_szFunc->bSame("~Job"_Stz)
+//               || m_szFunc->bSame("~Op"_Stz)
+//               || m_szFunc->bSame("vDelete"_Stz)
 //              )
 //            );
 //
 //    RASSERT(CN_API   == m_eDeleterClassNo ||
-//            CN_TASK == m_eDeleterClassNo ||
-//            CN_JOBLIST == m_eDeleterClassNo);
+//            CN_OP    == m_eDeleterClassNo  ||
+//            CN_JOB   == m_eDeleterClassNo);
 //
-//  }
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actual
@@ -161,11 +184,11 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
     if (! m_szFunc)
       vDebugPoint();
 
-    RASSERT(m_szFunc &&
-              (    m_szFunc->bSame("~LogicUnit"_Stz)
-              )
-            );
-    RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
+//    RASSERT(m_szFunc &&
+//              (    m_szFunc->bSame("~LogicUnit"_Stz)
+//              )
+//            );
+//    RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
   }
   
 //  else if (CN_STAGE == m_eThisClassNo) {

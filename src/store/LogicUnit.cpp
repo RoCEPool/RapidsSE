@@ -85,6 +85,7 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
+, DeleteHelper_t<LogicUnit>(CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         "m_xpBucket"_Stz)
 
@@ -396,9 +397,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     RASSERT(pPipeline);
     RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
     
-    //delete *m_xpPipeline;
+    delete *m_xpPipeline;
     
-    m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
+    //m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
   
   if (m_pRluDiary) {

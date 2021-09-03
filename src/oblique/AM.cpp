@@ -504,9 +504,13 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 {
   
-  delete * ppLogicUnit;
+  //delete * ppLogicUnit;
   
+  LogicUnit* pLogicUnit = * ppLogicUnit;
   * ppLogicUnit = nullptr;
+  
+  pLogicUnit->vGuardedDelete(pLogicUnit,nullptr,(Stz*)__func__);
+
 }
 
 
