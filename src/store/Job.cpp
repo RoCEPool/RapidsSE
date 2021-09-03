@@ -1001,7 +1001,7 @@ void Job::vReport(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
+  vTrace("Job %llx id %s ackRemaining %lld\n"_Stz,
          this,
          iJobId(),
          m_oAcksRmg_job.iPrintOnlyValue());

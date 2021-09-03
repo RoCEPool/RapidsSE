@@ -191,7 +191,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
 
     vTrace("Heaps::vFree:: invalid heap %lld "_Stz
-           "%p class %lld %lls\n"_Stz
+           "%p class %lld %s\n"_Stz
            ,(i8)eHeap
            
            ,pObject
