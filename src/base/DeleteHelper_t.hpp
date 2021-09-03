@@ -60,11 +60,13 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 {
-  
+  if (false)
+    {;}
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spec
-  
-  if (CN_PIPELINESPEC == m_eThisClassNo) {
+    
+  else if (CN_PIPELINESPEC == m_eThisClassNo) {
     if (bTrace)
       vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
@@ -72,7 +74,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
 //    RASSERT(m_szFunc &&
 //              (   m_szFunc->bSame("~Pipeline"_Stz)
-//               || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
+//               || m_szFunc->bSame("vPipelineSpecDelete"_Stz)
 //               || m_szFunc->bSame("pCompile"_Stz)
 //              )
 //            );
@@ -114,7 +116,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job
 
-  if (CN_JOB == m_eThisClassNo) {
+  else if (CN_JOB == m_eThisClassNo) {
     if (bTrace)
       vTrace("Job %p being deleted from %s()\n"_Stz,this,m_szFunc);
     if (! m_szFunc)
@@ -135,9 +137,28 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task
+
+  else if (CN_TASK == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Task %p being deleted from %s()\n"_Stz,this,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+//    RASSERT(m_szFunc &&
+//              (   m_szFunc->bSame("???"_Stz)
+//               || m_szFunc->bSame("???"_Stz)
+//              )
+//            );
+//
+//    RASSERT(CN_API     == m_eDeleterClassNo);
+//
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logic unit
 
-  if (CN_LOGICUNIT == m_eThisClassNo) {
+  else if (CN_LOGICUNIT == m_eThisClassNo) {
     if (bTrace)
       vTrace("LogicUnit %p being deleted from %s()\n"_Stz,this,m_szFunc);
 //    if (! m_szFunc)
@@ -160,8 +181,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actual
   
-  //else
-  if (CN_PIPELINE == m_eThisClassNo) {
+  else if (CN_PIPELINE == m_eThisClassNo) {
     if (bTrace)
       vTrace("Pipeline %p being deleted from %s()\n"_Stz,this,m_szFunc);
 //    if (! m_szFunc)
@@ -215,12 +235,26 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  else if (CN_FREECHUNK == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("FreeChunk being deleted from %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+  }
+
   else {
     // ???
     vTrace("Unrecognised class being deleted\n"_Stz);
-    vTrace("m_eThisClassNo=%lld\n"_Stz,m_eThisClassNo);
-    vTrace("m_szFunc=%s\n"_Stz,m_szFunc);
-    vTrace("m_eDeleterClassNo=%lld\n"_Stz,m_eDeleterClassNo);
+    vTrace("m_eThisClassNo=%lld:%s\n"_Stz
+           ,m_eThisClassNo
+           ,aCN[m_eThisClassNo]
+           );
+    vTrace("m_szFunc=%s\n"_Stz
+           ,m_szFunc);
+    vTrace("m_eDeleterClassNo=%lld:%s\n"_Stz
+           ,m_eDeleterClassNo
+           ,aCN[m_eDeleterClassNo]
+           );
   }
 
 }

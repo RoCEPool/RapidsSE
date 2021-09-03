@@ -1204,10 +1204,8 @@ public:
   void vPipelineCreate(void);
   void vPipelineSpawnOpTasks(void);
 
-
   void vPipelineCancelledStore(void);
   void vPipelineCompileStmt(void);
-  void vPipelineDeleteSpec(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
@@ -1216,6 +1214,11 @@ public:
   void vPipelineErroredFetch(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
+
+  // pipelinespec
+
+  void vPipelineSpecDelete(void);
+  void vPipelineSpecGet(void);
 
 
   // plan

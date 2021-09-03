@@ -37,7 +37,6 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
   vAddStep("Pipeline::compileStmt"_Stz,  &Step::vPipelineCompileStmt);
   vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
-  vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline::enqueueStart"_Stz, &Step::vPipelineEnqueueStart);
@@ -233,22 +232,6 @@ void Step::vPipelineCreate(void)
       vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
-  }
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline::deleteSpec -- delete the pipeline spec                           */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineDeleteSpec(void)
-{
-  ENTRY();
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  if (pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
-    pLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
     
   EXIT();

@@ -121,11 +121,18 @@ namespace STORE
       }
     
       if (pComponent && CN_NONE != m_eClassNo) {
+        
         eCN eClassNo = pComponent->eGetClassNo();
-        vTrace("Attempting to assign %p %lld\n"_Stz
-               ,pComponent
-               ,eClassNo
-               );
+        
+        if (eClassNo != m_eClassNo)
+          vTrace("Attempting to assign %p %lld:%s into REG<%lld:%s>::%s\n"_Stz
+                 ,pComponent
+                 ,eClassNo
+                 ,aCN[eClassNo]
+                 ,CLASSNO
+                 ,aCN[CLASSNO]
+                 ,m_szRegNm
+                 );
         RASSERT(eClassNo == m_eClassNo);
       }
     

@@ -121,7 +121,7 @@
   EC_NONE != if
     job::error!
   else
-    Pipeline::deleteSpec
+    PipelineSpec[].delete
     discard
   then
 
