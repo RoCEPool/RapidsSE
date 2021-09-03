@@ -123,7 +123,7 @@ CmdLineArgs::CmdLineArgs(void)
   _checkInitialised_(CN_CMDLINEARGS);
   
   m_xSysArgs.m_oArgTags.vInsert(C_SHOW_EXCEPTION,1);
-  m_xSysArgs.m_oArgTags.vInsert(C_NO_FREE,1);
+  //m_xSysArgs.m_oArgTags.vInsert(C_NO_FREE,1);
 
   vEnvironmentVariables();
 }
