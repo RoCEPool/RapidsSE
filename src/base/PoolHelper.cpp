@@ -493,10 +493,10 @@ void PoolHelper::vObjectValidate(void)
 {
   _static_
   
-  AM::pHeaps()->Transient.m_pTiny->vValidateContents();
-  AM::pHeaps()->Transient.m_pSmall->vValidateContents();
-  AM::pHeaps()->Transient.m_pMedium->vValidateContents();
-  AM::pHeaps()->Transient.m_pLarge->vValidateContents();
+  AM::pHeaps()->Transient.m_pTiny->vObjectValidate();
+  AM::pHeaps()->Transient.m_pSmall->vObjectValidate();
+  AM::pHeaps()->Transient.m_pMedium->vObjectValidate();
+  AM::pHeaps()->Transient.m_pLarge->vObjectValidate();
 }
 
 /*----------------------------------------------------------------------------*/

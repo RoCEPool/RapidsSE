@@ -115,13 +115,6 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   eCN eWasClass = pObject->eGetClassNo();
   
-  if (! (CN_FREECHUNK != eWasClass) ) {
-    vTrace("Heaps::vFree:: %p attempting to free a CN_FREECHUNK\n"_Stz
-           ,pObject
-           );
-  }
-  RASSERT(CN_FREECHUNK != eWasClass);
-
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
