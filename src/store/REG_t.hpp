@@ -120,6 +120,11 @@ namespace STORE
         THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
       }
     
+    if (pComponent && CN_NONE != m_eClassNo) {
+      eCN eClassNo = pComponent->eGetClassNo();
+      RASSERT(eClassNo == m_eClassNo);
+    }
+    
       m_pComponent = pComponent;
     }
   
