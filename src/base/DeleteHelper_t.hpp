@@ -33,17 +33,12 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo
-                                      //, const std::type_info& rTypeId
-                                      )
-//: m_rTypeId(rTypeId)
+DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo)
 {
   m_eDeleterClassNo = CN_NONE;
   m_szFunc          = nullptr;
   
   m_eThisClassNo    = eThisClassNo;
-  
-  //m_rTypeId  = rTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,15 +47,6 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
-//  if (! m_szFunc)
-//    vDebugPoint();
-//
-//  if (! m_eDeleterClassNo)
-//    vDebugPoint();
-//
-//  RASSERT(m_szFunc);
-//  RASSERT(m_eDeleterClassNo);
-  
   vAssertDelete(false);
 }
 
@@ -123,6 +109,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 //    RASSERT(CN_STAGESPEC == m_eDeleterClassNo ||
 //            CN_PIPELINESPEC == m_eDeleterClassNo);
   }
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job
@@ -230,17 +217,13 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   else {
     // ???
+    vTrace("Unrecognised class being deleted\n"_Stz);
+    vTrace("m_eThisClassNo=%lld\n"_Stz,m_eThisClassNo);
+    vTrace("m_szFunc=%s\n"_Stz,m_szFunc);
+    vTrace("m_eDeleterClassNo=%lld\n"_Stz,m_eDeleterClassNo);
   }
 
-
-  
-
 }
-
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* delete this                                                                */
