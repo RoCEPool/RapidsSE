@@ -43,7 +43,6 @@ public:
   void vAggTimerTicks(void);
 
   // AM
-  void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
   void vAM_Show_Dir_Failure(void);

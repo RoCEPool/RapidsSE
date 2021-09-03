@@ -19,12 +19,10 @@ SubSysFn __Heaps("Heaps"_Stz,(fpSELFFN*)Heaps::vSubSystem,
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Heaps::Heaps(i8 bNoFree)
+Heaps::Heaps(void)
 : Object(CN_HEAPMEM)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
-  
-  m_bNoFree = bNoFree;
   
   Transient.m_pTiny   = nullptr;
   Transient.m_pSmall  = nullptr;
@@ -110,9 +108,8 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
 void Heaps::vFree(Object* pObject, bool bPersistent)
-{  
+{
   UNUSED(bPersistent);
-  
 
   Heaps* pHeaps = AM::pHeaps();
   
@@ -137,16 +134,6 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   if (pRU_Memory)
     AM::vFreeInc(pRU_Memory, eWasClass);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pHeaps->m_bNoFree) {
-    if (   CN_PIPELINESPEC == eWasClass
-        || CN_STAGESPEC    == eWasClass
-        || CN_OPSPEC       == eWasClass
-        )
-    return;
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dont-free capability
   

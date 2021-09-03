@@ -2894,7 +2894,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   
   
-  if (gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree) {
+  if (gpBufferPool->bDontFree()) {
     vTrace("bPrompt_memoryLeaks: skipping ... (--dontFree supplied)\n"_Stz);
     goto L_END;
   }
