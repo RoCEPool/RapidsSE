@@ -2058,7 +2058,7 @@ void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpStreamDefOut = pLogicUnit->m_xpStreamDefLft;
+  pLogicUnit->m_xpStreamDefOut = * pLogicUnit->m_xpStreamDefLft;
 }
 
 /*----------------------------------------------------------------------------*/
