@@ -288,6 +288,12 @@ namespace OBLIQUE
       static u8   uDdlLockWord(void);
     };
   
+    class NO
+    {
+    public:
+      static bool bFree(void);
+    };
+
     class OBJECT
     {
     public:

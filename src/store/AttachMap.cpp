@@ -50,8 +50,9 @@ void* AttachMap::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AttachMap::AttachMap(void)
+AttachMap::AttachMap(bool bNoFree)
 : Object(CN_ATTACHMAP)
+, m_xHeaps(bNoFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   
