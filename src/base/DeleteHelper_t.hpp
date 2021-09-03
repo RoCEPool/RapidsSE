@@ -167,18 +167,44 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
     RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
   }
   
-//  else if (CN_STAGE == m_eThisClassNo) {
-//    if (bTrace)
-//      vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
-//
-//    vDebugPoint();
-//
-//    RASSERT(m_szFunc &&
-//              (    m_szFunc->bSame("~LogicUnit"_Stz)
-//              )
-//            );
-//    RASSERT(CN_PIPELINE == m_eDeleterClassNo);
-//  }
+  else if (CN_STAGE == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (    m_szFunc->bSame("~Pipeline"_Stz)
+              )
+            );
+    RASSERT(CN_PIPELINE == m_eDeleterClassNo);
+  }
+
+  else if (CN_STREAM == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Stream deleted by %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (    m_szFunc->bSame("~Stage"_Stz)
+              )
+            );
+    RASSERT(CN_STAGE == m_eDeleterClassNo);
+  }
+
+  else if (CN_OP == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Op deleted by %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (    m_szFunc->bSame("~Stream"_Stz)
+              )
+            );
+    RASSERT(CN_STREAM == m_eDeleterClassNo);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -298,7 +324,7 @@ void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc
   m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
 
-  vAssertDelete(true);
+  vAssertDelete(false);
 }
 
 

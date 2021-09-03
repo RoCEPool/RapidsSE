@@ -286,7 +286,7 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  eCN eFreeClass = pObject->eGetClassNo();
+  eCN eWasClass = pObject->eGetClassNo();
   
   
 //  if (eEC eError = pObject->eValidObject()) {
@@ -304,7 +304,7 @@ void Heap::vFreeObject(Object* pObject)
 //    //vTrace("Object %p valid\n"_Stz,pObject);
 //  }
 
-  if (CN_LARGETRANSIENT == eFreeClass) {
+  if (CN_LARGETRANSIENT == eWasClass) {
     
     if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
@@ -324,7 +324,7 @@ void Heap::vFreeObject(Object* pObject)
   m_okLock.vGrabWrite();
   
   FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pObject);
-  vPushFree(aFreeChunk,pObject->eGetClassNo());
+  vPushFree(aFreeChunk,eWasClass);
   
   m_nCurrAllocated--;
 
@@ -548,7 +548,8 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   
   aFreeChunk->vSetClassNo(CN_FREECHUNK);
   aFreeChunk->vNextFree(m_pFreeHead);
-  
+  aFreeChunk->vWasClass(eWasClass);
+
 #ifdef WITH_CHECK_INITIALISED
   i8 nBytes = m_nObjectSize - sizeof(FreeChunk);
   void* aAddress = aAdd<void*>(aFreeChunk,sizeof(FreeChunk));

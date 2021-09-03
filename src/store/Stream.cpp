@@ -63,6 +63,15 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
 Stream::~Stream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vGuardedDelete(pOp,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -116,33 +116,39 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 
   Heaps* pHeaps = AM::pHeaps();
   
-  eCN eWasClass = pObject->eGetClassNo();
+  eCN eObjectClass = pObject->eGetClassNo();
   
-  if (! (eWasClass > CN_NONE && eWasClass < CN_ENUMS) ) {
+  if (! (eObjectClass > CN_NONE && eObjectClass < CN_ENUMS) ) {
     vTrace("Heaps::vFree:: invalid class %lld\n"_Stz
-           ,(i8)eWasClass
+           ,(i8)eObjectClass
            );
-    RASSERT(eWasClass > CN_NONE && eWasClass < CN_ENUMS);
+    RASSERT(eObjectClass > CN_NONE && eObjectClass < CN_ENUMS);
   }
 
-  if (! (CN_FREECHUNK != eWasClass) ) {
-    vTrace("Heaps::vFree:: %p attempting to free a CN_FREECHUNK\n"_Stz
+  if (! (CN_FREECHUNK != eObjectClass) ) {
+    FreeChunk* pFreeChunk = (FreeChunk*)(pObject);
+    eCN eWasClass = pFreeChunk->eWasClass();
+
+    vTrace("Heaps::vFree:: %p "
+           "attempting to free a CN_FREECHUNK(was %lld `%s`)\n"_Stz
            ,pObject
+           ,eWasClass
+           ,aCN[eWasClass]
            );
-    RASSERT(CN_FREECHUNK != eWasClass);
+    RASSERT(CN_FREECHUNK != eObjectClass);
   }
 
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
-    AM::vFreeInc(pRU_Memory, eWasClass);
+    AM::vFreeInc(pRU_Memory, eObjectClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pHeaps->m_bNoFree) {
-    if (   CN_PIPELINESPEC == eWasClass
-        || CN_STAGESPEC    == eWasClass
-        || CN_OPSPEC       == eWasClass
+    if (   CN_PIPELINESPEC == eObjectClass
+        || CN_STAGESPEC    == eObjectClass
+        || CN_OPSPEC       == eObjectClass
         )
     return;
   }
@@ -177,9 +183,9 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 //        return;
 //      }
       
-      if ( CN_JOB       == eWasClass ||
-           CN_LOGICUNIT == eWasClass ||
-           CN_OP        == eWasClass ) {
+      if ( CN_JOB       == eObjectClass ||
+           CN_LOGICUNIT == eObjectClass ||
+           CN_OP        == eObjectClass ) {
         
         pObject->vSetClassNo(CN_FREEDNOT);
         return;
@@ -199,7 +205,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
-  eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
+  eHT eHeap = gxaSizeHeap[eObjectClass].m_eWhichHeap;
   
   if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
 
@@ -208,10 +214,10 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            ,(i8)eHeap
            
            ,pObject
-           ,(i8)eWasClass
-           ,aCN[eWasClass]
+           ,(i8)eObjectClass
+           ,aCN[eObjectClass]
            );
-    RASSERT(eWasClass > 0 && eWasClass < CN_ENUMS);
+    RASSERT(eHeap > HT_INVALID && eHeap < HT_ENUMS);
   }
 
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
@@ -229,7 +235,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eWasClass].m_nVtableAdjust);
+  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eObjectClass].m_nVtableAdjust);
   
   pHeap->vFreeObject(pObject);
 }

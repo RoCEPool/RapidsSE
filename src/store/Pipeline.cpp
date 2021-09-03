@@ -62,6 +62,15 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vGuardedDelete(pStage,this,(Stz*)__func__);
+  }
+
+  vClear();
+
   m_pPipelineSpec->vGuardedDelete(m_pPipelineSpec,this,(Stz*)__func__);
 }
 

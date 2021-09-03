@@ -59,6 +59,15 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  i8 nStreams = this->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
+    
+    pStream->vGuardedDelete(pStream,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 /*----------------------------------------------------------------------------*/
