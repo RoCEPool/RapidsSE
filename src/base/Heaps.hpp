@@ -14,6 +14,8 @@ namespace BASE
   {
   public:
   
+    i8 m_bNoFree;
+  
     struct {
       Heap* m_pTiny;
       Heap* m_pSmall;
@@ -36,7 +38,7 @@ namespace BASE
     } Persistent;
 
   public:
-    Heaps(void);
+    Heaps(i8 bNoFree);
   
     static void vSubSystem(TokenVec* pTokenVec);
 

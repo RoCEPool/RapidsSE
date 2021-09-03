@@ -588,6 +588,17 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
   return uLockWord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* <no_free>                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::NO::bFree(void)
+{
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE))
+    return true;
+  else
+    return false;
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

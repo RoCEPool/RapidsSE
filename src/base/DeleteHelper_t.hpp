@@ -106,7 +106,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_STAGESPEC == m_eThisClassNo) {
-    //vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
+    vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -118,7 +118,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_OPSPEC == m_eThisClassNo) {
-    //vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
+    vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
