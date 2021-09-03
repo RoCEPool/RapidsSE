@@ -217,16 +217,18 @@ void Step::vPipelineCreate(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
+  PipelineSpec* pPiplineSpec = *pLogicUnit->m_xpPipelineSpec;
+  pLogicUnit->m_xpPipelineSpec = nullptr;
+
   pLogicUnit->m_xpPipeline =
     new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
+                 pPiplineSpec,
                  m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
   
   m_pJob->vPipeline_job(pPipeline);
   
-  pLogicUnit->m_xpPipelineSpec = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
