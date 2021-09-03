@@ -19,12 +19,10 @@ SubSysFn __Heaps("Heaps"_Stz,(fpSELFFN*)Heaps::vSubSystem,
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Heaps::Heaps(i8 bNoFree)
+Heaps::Heaps(void)
 : Object(CN_HEAPMEM)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
-  
-  m_bNoFree = bNoFree;
   
   Transient.m_pTiny   = nullptr;
   Transient.m_pSmall  = nullptr;
@@ -110,44 +108,18 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
 void Heaps::vFree(Object* pObject, bool bPersistent)
-{  
+{
   UNUSED(bPersistent);
-  
 
   Heaps* pHeaps = AM::pHeaps();
   
   eCN eWasClass = pObject->eGetClassNo();
   
-  if (! (eWasClass > CN_NONE && eWasClass < CN_ENUMS) ) {
-    vTrace("Heaps::vFree:: %p invalid class %lld\n"_Stz
-           ,pObject
-           ,(i8)eWasClass
-           );
-    RASSERT(eWasClass > CN_NONE && eWasClass < CN_ENUMS);
-  }
-    
-  if (! (CN_FREECHUNK != eWasClass) ) {
-    vTrace("Heaps::vFree:: %p attemptingto free a CN_FREECHUNK\n"_Stz
-           ,pObject
-           );
-    RASSERT(CN_FREECHUNK != eWasClass);
-  }
-    
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
     AM::vFreeInc(pRU_Memory, eWasClass);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pHeaps->m_bNoFree) {
-    if (   CN_PIPELINESPEC == eWasClass
-        || CN_STAGESPEC    == eWasClass
-        || CN_OPSPEC       == eWasClass
-        )
-    return;
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dont-free capability
   
@@ -201,21 +173,6 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // actually free the object and return its space for reuse
   
   eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
- 
-  if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
-
-    vTrace("Heaps::vFree:: invalid heap %lld "_Stz
-           "%p class %lld `%s`\n"_Stz
-           ,(i8)eHeap
-           
-           ,pObject
-           ,(i8)eWasClass
-           ,aCN[eWasClass]
-           );
-    RASSERT(eWasClass > 0 && eWasClass < CN_ENUMS);
-
-
-  }
   
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
 

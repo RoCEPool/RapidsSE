@@ -42,7 +42,7 @@ namespace STORE
     void vReset(void);
     void vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey);
 
-  //private:
+  private:
     Footer* aFooter(void);
   };
   

@@ -145,78 +145,78 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
-    REF<Job> m_xpJobRef;   // job reference
+    REF<Job>            m_xpJobRef;   // job reference
     
-    REG<Object,CN_NONE>*        m_paReg[C_MAX_REGS];
+    REG<Object>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;  // aggregate timer
-    REG<Bucket,         CN_BUCKET        > m_xpBucket;
-    REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
-    REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
-    REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
-    REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
-    REG<Dir,            CN_DIR           > m_xpDir0;     // dir0[]
-    REG<Dir,            CN_DIR           > m_xpDir1;     // dir1[]
-    REG<ExprEval,       CN_EXPREVAL      > m_xpExprEval; // expr eval
-    REG<File,           CN_FILE          > m_xpFile0;    // file0[]
-    REG<File,           CN_FILE          > m_xpFile1;    // file1[]
-    REG<ExprEval,       CN_EXPREVAL      > m_xpFilter;   // expr eval
-    REG<Grid,           CN_GRID          > m_xpGrid;
-    REG<Word,           CN_WORD          > m_xpHandler;  // handler to be called
-    REG<Index,          CN_INDEX         > m_xpIndex;
-    REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
-    REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
-    REG<Table,          CN_TABLE         > m_xpInfoSetTable;
-    REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
-    REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
-    REG<Operand,        CN_NONE          > m_xpMarker;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog; // memoryHog
-    REG<MetaGet,        CN_METAGET       > m_xpMeta;
-    REG<NamedBuffer,    CN_NAMEDBUFFER   > m_xpNamedBuffer;
-    REG<Node,           CN_NODE          > m_xpNode;      // node reference
-    REG<Node_I,         CN_NODE_I        > m_xpNode_I;    // node iterator
-    REG<Now,            CN_NOW           > m_xpNow;       // now
-    REG<Object,         CN_NONE          > m_xpRecvdObject;
-    REG<Op,             CN_OP            > m_xpOp;        // operator
-    REG<Operand,        CN_NONE          > m_xpOperandOoO; // operand OoO
-    REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
-    REG<Parcel,         CN_PARCEL        > m_xpParcel;
-    REG<Operand,        CN_NONE          > m_xpPipein;    // Pipein
-    REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;  // penerate by dynamo
-    REG<PipelineSpec,   CN_PIPELINESPEC  > m_xpPipelineSpec; // pipeline spec
-    REG<Operand,        CN_NONE          > m_xpPlanOperand;
-    REG<PtnStream,      CN_PTNSTREAM     >  m_xpPtnStream;
-    REG<Row,            CN_ROW           > m_xpInfoSetRow;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
-    REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
-    REG<Node,           CN_NODE          > m_xpSendNode;  // node to send to
-    REG<Sends,          CN_SENDS         > m_xpSends;     // consume Sends
-    REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
-    REG<Socket,         CN_SOCKET        > m_xpSocket;
-    REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
-    REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefOut;
-    REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
-    REG<Operand,        CN_NONE          > m_xpStreamSet;
-    REG<Table,          CN_TABLE         > m_xpStreamSetTable;
-    REG<Operand,        CN_NONE          > m_xpSubset;
-    REG<Table,          CN_TABLE         > m_xpTable;
-    REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
-    REG<Timer,          CN_TIMER         > m_xpTimer;     // timer
-    REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
-    REG<ToBktRow,       CN_TOBKTROW      > m_xpToBktRow;
-    REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
-    REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
-    REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
-    REG<ToRow,          CN_TOROW         > m_xpToRow;
-    REG<Tx,             CN_TX            > m_xpTx;
+    REG<AggTimer>       m_xpAggTimer;  // aggregate timer
+    REG<Bucket>         m_xpBucket;
+    REG<CrwBuffer>      m_xpCrwBuffer;
+    REG<CrwToRow>       m_xpCrwToRow;
+    REG<CsvBuffer>      m_xpCsvBuffer;
+    REG<DataBuffer>     m_xpDataBuffer;
+    REG<Dir>            m_xpDir0;     // dir0[]
+    REG<Dir>            m_xpDir1;     // dir1[]
+    REG<ExprEval>       m_xpExprEval; // expr eval
+    REG<File>           m_xpFile0;    // file0[]
+    REG<File>           m_xpFile1;    // file1[]
+    REG<ExprEval>       m_xpFilter;   // expr eval
+    REG<Grid>           m_xpGrid;
+    REG<Word>           m_xpHandler;  // which handler is to be/was called
+    REG<Index>          m_xpIndex;
+    REG<IndexDef>       m_xpIndexDef;
+    REG<IndexStream>    m_xpIndexStream;
+    REG<InfoSet>        m_xpInfoSet;
+    REG<Table>          m_xpInfoSetTable;
+    REG<RowSingleList>  m_xpList;
+    REG<LogicCompiler>  m_xpLogicCompiler;
+    REG<Operand>        m_xpMarker;
+    REG<RowBuffer>      m_xpMemoryHog; // memoryHog
+    REG<MetaGet>        m_xpMeta;
+    REG<NamedBuffer>    m_xpNamedBuffer;
+    REG<Node>           m_xpNode;      // node reference
+    REG<Node_I>         m_xpNode_I;    // node iterator
+    REG<Now>            m_xpNow;       // now
+    REG<Object>         m_xpRecvdObject;
+    REG<Op>             m_xpOp;        // operator
+    REG<Operand>        m_xpOperandOoO; // operand OoO
+    REG<PathIdentifier> m_xpPathIdentifier;
+    REG<Parcel>         m_xpParcel;
+    REG<Operand>        m_xpPipein;    // Pipein
+    REG<Pipeline>       m_xpPipeline;  // pipeline spec generate by dynamo
+    REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
+    REG<Operand>        m_xpPlanOperand;
+    REG<PtnStream>      m_xpPtnStream;
+    REG<Row>            m_xpInfoSetRow;
+    REG<RowBuffer>      m_xpRowBuffer;
+    REG<RowOnce>        m_xpRowOnce;
+    REG<Node>           m_xpSendNode;  // node to send to
+    REG<Sends>          m_xpSends;     // consume Sends
+    REG<ShardDef>       m_xpShardDef;
+    REG<Socket>         m_xpSocket;
+    REG<StreamDef>      m_xpStreamDefLft;
+    REG<StreamDef>      m_xpStreamDefOut;
+    REG<StreamDefRht>   m_xpStreamDefRht;
+    REG<Operand>        m_xpStreamSet;
+    REG<Table>          m_xpStreamSetTable;
+    REG<Operand>        m_xpSubset;
+    REG<Table>          m_xpTable;
+    REG<TablePtn>       m_xpTablePtn;
+    REG<Timer>          m_xpTimer;     // timer
+    REG<ToBktCrw>       m_xpToBktCrw;
+    REG<ToBktRow>       m_xpToBktRow;
+    REG<ToNstRow>       m_xpToNstRow;
+    REG<ToPtnCrw>       m_xpToPtnCrw;
+    REG<ToPtnRow>       m_xpToPtnRow;
+    REG<ToRow>          m_xpToRow;
+    REG<Tx>             m_xpTx;
 
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    REG<Operand,CN_NONE> m_xpErrorMarker;  // error marker
+    REG<Operand>        m_xpErrorMarker;  // error marker
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -302,7 +302,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    void vAddReg(REG<Object,CN_NONE>* pReg);
+    void vAddReg(REG<Object>* pReg);
     void vCC(i8 i_Cond);
     void vCleanup(void);
     eEO  eCode(i8 i_Code);

@@ -117,7 +117,7 @@ namespace BASE
     char* aWspArea(void);
 
   
-  //private:
+  private:
     Footer* aFooter(void);
   };
   

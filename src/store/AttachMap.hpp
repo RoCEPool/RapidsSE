@@ -78,7 +78,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    AttachMap(bool bNoFree);
+    AttachMap(void);
    ~AttachMap(void) noexcept(false);
     
     static void vSubSystem(TokenVec* pTokenVec);

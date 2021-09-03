@@ -11,9 +11,6 @@ namespace BASE
   class Footer
   {
   private:
-    i8 m__filler0;
-    i8 m__filler1;
-  
     i8 m_iWhenAllocated;
   
     union {
@@ -26,10 +23,6 @@ namespace BASE
    ~Footer(void);
     
     void vAssertFooter(void) const;
-    i8   iFiller0(void);
-    void vFiller0(i8 iFiller0);
-    i8   iFiller1(void);
-    void vFiller1(i8 iFiller1);
     eEC  eValidFooter(void);
     void vSetFooter(void);
     void vSprint(Stz* szHeader);

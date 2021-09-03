@@ -30,6 +30,8 @@ namespace STORE
 
     PipelineSpec* pCompile(void);
 
+    PipelineSpec* pPipelineSpec(void);
+
   private:
     Footer* aFooter(void);
   };

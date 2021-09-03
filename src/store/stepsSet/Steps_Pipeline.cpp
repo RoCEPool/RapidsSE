@@ -130,8 +130,7 @@ void Step::vPipelineCompileStmt(void)
       
       // b) clean compile, but does not pass pre-execution requirments
 
-      //delete pPipelineSpec;
-      pPipelineSpec->vGuardedDelete(pPipelineSpec,this,(Stz*)__func__);
+      delete pPipelineSpec;
       m_pDataStack->vPushInt(eError);
       
     }
@@ -217,18 +216,14 @@ void Step::vPipelineCreate(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
-  PipelineSpec* pPiplineSpec = *pLogicUnit->m_xpPipelineSpec;
-  pLogicUnit->m_xpPipelineSpec = nullptr;
-
   pLogicUnit->m_xpPipeline =
     new Pipeline(m_pJob,
-                 pPiplineSpec,
+                 *pLogicUnit->m_xpPipelineSpec,
                  m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
   
   m_pJob->vPipeline_job(pPipeline);
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline

@@ -56,7 +56,7 @@ Stz* SP_Pointer::sz(Object* pPointer)
   }
 
   StrLib::vSprint(m_caResult
-                  ,"Pointer %p class %lld %s"_Stz
+                  ,"Pointer %p class %lld %lls"_Stz
                   
                   ,pPointer
                   ,pPointer->eGetClassNo()

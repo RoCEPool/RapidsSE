@@ -1590,7 +1590,7 @@ void vTest30(void)
 
  for (i8 i = 0; i < iTimes; i++) {
    uPattern = RndLib::uInteger();
-   vTrace("[%02lld] %s\n"_Stz,i,spBits.sz(uPattern));
+   vTrace("[%02lld] %lls\n"_Stz,i,spBits.sz(uPattern));
  }
 }
 

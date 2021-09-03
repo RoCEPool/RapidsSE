@@ -81,7 +81,6 @@ namespace STORE
   
     void v_CallSbr(i8 i_Label);
   
-  public:
     Footer* aFooter(void);
   };
   

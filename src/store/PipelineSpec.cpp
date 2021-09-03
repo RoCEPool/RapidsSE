@@ -52,8 +52,6 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
   _checkInitialised_(CN_PIPELINESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  vTrace("new PipelineSpec %p\n"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/

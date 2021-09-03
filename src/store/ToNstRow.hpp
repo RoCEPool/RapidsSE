@@ -23,7 +23,7 @@ namespace STORE
 
     void vConvert(RowBuffer* pRowBuffer);
   
-  //private:
+  private:
   
     Footer* aFooter(void);
   };

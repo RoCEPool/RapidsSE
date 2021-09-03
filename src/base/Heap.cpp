@@ -288,22 +288,7 @@ void Heap::vFreeObject(Object* pObject)
 
   eCN eFreeClass = pObject->eGetClassNo();
   
-//  if (eEC eError = pObject->eValidObject()) {
-//    
-//    if (EC_OBJECT_FOOTER_INVALID == eError) {
-//      vTrace("Object %p %s is not valid : %s\n"_Stz,
-//             pObject,aCN[pObject->eGetClassNo()],aEC[eError]);
-//    }
-//    else {
-//      vTrace("Object %p is not valid : %s\n"_Stz,
-//             pObject,aEC[eError]);
-//    }
-//  }
-//  else {
-//    //vTrace("Object %p valid\n"_Stz,pObject);
-//  }
-
-  if (CN_LARGETRANSIENT == eFreeClass) {
+  if (CN_LARGETRANSIENT == eGetClassNo()) {
     
     if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
@@ -367,48 +352,9 @@ i8 Heap::nObjectSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* form report string                                                         */
-/*----------------------------------------------------------------------------*/
-void Heap::vSummaryReport(String* pReportString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
-  s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
-
-  pReportString->szStz()->vSprint(
-                                  
-    "%16s (%6s)"
-    " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
-                                  
-    aCN[eGetClassNo()],
-    sMagSize.azChar(),
-                                  
-    nBufferCount(),
-    nCurrAllocated(),
-    nFreeChunks(),
-    sMagSum.szStz()
-    );
-}
-
-/*----------------------------------------------------------------------------*/
-/* get computed size of heap                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Heap::nTotalHeapSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  i8 iSum =   nCurrAllocated() * nObjectSize()
-            +
-              nFreeChunks() * nObjectSize();
-  
-  return iSum;
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate all the objects in this heap                                      */
 /*----------------------------------------------------------------------------*/
-void Heap::vValidateContents(void)
+void Heap::vObjectValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -452,6 +398,45 @@ void Heap::vValidateContents(void)
   }
   
   vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* form report string                                                         */
+/*----------------------------------------------------------------------------*/
+void Heap::vSummaryReport(String* pReportString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
+  s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
+
+  pReportString->szStz()->vSprint(
+                                  
+    "%16s (%6s)"
+    " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
+                                  
+    aCN[eGetClassNo()],
+    sMagSize.azChar(),
+                                  
+    nBufferCount(),
+    nCurrAllocated(),
+    nFreeChunks(),
+    sMagSum.szStz()
+    );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get computed size of heap                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Heap::nTotalHeapSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 iSum =   nCurrAllocated() * nObjectSize()
+            +
+              nFreeChunks() * nObjectSize();
+  
+  return iSum;
 }
 
 /*----------------------------------------------------------------------------*/

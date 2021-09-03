@@ -245,7 +245,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DdlLock),            HT_T_TINY    ,0 }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 }, // CN_DECIDER
-  { sizeof(DefinitionNode),     HT_T_SMALL   ,-8 }, // CN_DEFINITIONNODE
+  { sizeof(DefinitionNode),     HT_T_TINY    ,-8 }, // CN_DEFINITIONNODE
   { sizeof(DevIXT),             HT_T_TINY    ,0 }, // CN_DEVIXT
   { sizeof(DevROW),             HT_T_TINY    ,0 }, // CN_DEVROW
   { sizeof(Dic),                HT_T_TINY    ,0 }, // CN_DIC
@@ -378,7 +378,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),          HT_T_TINY    ,0 }, // CN_PLANNERLOCK
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),      HT_T_SMALL   ,0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
   { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
   { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
@@ -386,7 +386,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
-  { sizeof(PrimitiveNode),        HT_T_SMALL   , -8 }, // CN_PRIMITIVENODE
+  { sizeof(PrimitiveNode),        HT_T_TINY    , -8 }, // CN_PRIMITIVENODE
   { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
   { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
@@ -408,7 +408,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
   { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
-  { sizeof(RootNode),           HT_T_SMALL   ,-8 }, // CN_ROOTNODE
+  { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE
   { sizeof(Row),                HT_T_LARGE   ,0 }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_T_MEDIUM  ,0 }, // CN_ROWAGG
   { 0,                          HT_INVALID   ,0 }, // CN_ROWBOX

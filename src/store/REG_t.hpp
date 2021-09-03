@@ -7,19 +7,18 @@
 
 namespace STORE
 {
-  template <class COMPONENT, eCN CLASSNO>
+  template <class COMPONENT>
   class REG
   {
   public:
   
-    COMPONENT* m_pComponent; // pointer to the component object
-    eCN        m_eClassNo;   // class no of the component
-
     LogicUnit* m_p_LogicUnit; // which logic unit
     Stz*       m_szRegNm;     // register name
     eRF        m_eRepair;     // how to repair
   
     void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
+
+    COMPONENT* m_pComponent; // pointer to the component object
 
     struct {
       
@@ -39,10 +38,10 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
-                           eRF eRepair,
-                           void (*fpRepair)(Object* pObject, eRF eRepair),
-                           Stz* szRegNm)
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
+                   eRF eRepair,
+                   void (*fpRepair)(Object* pObject, eRF eRepair),
+                   Stz* szRegNm)
     {
       m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
@@ -50,8 +49,7 @@ namespace STORE
       m_fpRepair   = fpRepair;
     
       m_pComponent = nullptr;
-      m_eClassNo   = CN_NONE;
-    
+      
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -67,12 +65,12 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
-                           eRF eRepair,
-                           void (*fpRepair)(Object* pObject, eRF eRepair),
-                           bool bNullOnDelete,
-                           bool bDeleteOnFailure,
-                           Stz* szRegNm)
+    REG<COMPONENT>(LogicUnit* pLogicUnit,
+                   eRF eRepair,
+                   void (*fpRepair)(Object* pObject, eRF eRepair),
+                   bool bNullOnDelete,
+                   bool bDeleteOnFailure,
+                   Stz* szRegNm)
     {
       m_p_LogicUnit = pLogicUnit;
       m_szRegNm    = szRegNm;
@@ -80,7 +78,6 @@ namespace STORE
       m_fpRepair   = fpRepair;
 
       m_pComponent = nullptr;
-      m_eClassNo   = CN_NONE;
 
       m_bUseAllowed      = true;
       m_bInitialised     = true;
@@ -97,7 +94,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REG<COMPONENT,CLASSNO>(void)
+    ~REG<COMPONENT>(void)
     {
       RASSERT(m_bInitialised);
       RASSERT(m_bFinalised);
@@ -120,14 +117,6 @@ namespace STORE
       }
     
       m_pComponent = pComponent;
-    
-      if (pComponent) {
-        m_eClassNo = m_pComponent->eGetClassNo();
-        //pComponent->aFooter()->vFiller0((i8)this);
-      }
-      else {
-        m_eClassNo = CN_NONE;
-      }
     }
   
     /*------------------------------------------------------------------------*/
@@ -139,25 +128,6 @@ namespace STORE
         vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
         THROW("REG::operator ->(void) : m_pComponent member is null"_Stz);
       }
-    
-      // temp
-    
-      eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>::operator ->: "
-               "%p class now %lld %s; was %lld %s\n"_Stz
-               ,m_pComponent
-               ,(i8)eClassNo_xchk
-               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
-                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
-               ,(i8)m_eClassNo
-               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
-                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
-               );
-      }
-      RASSERT(eClassNo_xchk == m_eClassNo);
-    
-      // end-temp
     
       return m_pComponent;
     }
@@ -172,25 +142,6 @@ namespace STORE
         THROW("REG::operator *() : m_pComponent member is null"_Stz);
       }
     
-      // temp
-  
-      eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>::operator *: "
-               "%p class now %lld %s; was %lld %s\n"_Stz
-               ,m_pComponent
-               ,(i8)eClassNo_xchk
-               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
-                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
-               ,(i8)m_eClassNo
-               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
-                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
-               );
-      }
-      RASSERT(eClassNo_xchk == m_eClassNo);
-  
-      // end-temp
-    
       return m_pComponent;
     }
     
@@ -199,29 +150,6 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool vDeleteComponent(void)
     {
-    
-      // temp
-
-      eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (CLASSNO != eClassNo_xchk ||
-          eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>::vDeleteComponent: "
-               "%p class now %lld %s; was %lld %s\n"_Stz
-               ,m_pComponent
-               ,(i8)eClassNo_xchk
-               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
-                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
-               ,(i8)m_eClassNo
-               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
-                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
-               );
-      }
-      RASSERT(eClassNo_xchk == m_eClassNo);
-
-      // end-temp
-
-      m_eClassNo   = CN_NONE;
-    
       delete m_pComponent;
       m_pComponent = nullptr;
     }
@@ -244,28 +172,6 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     bool vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
     {
-      // temp
-
-      eCN eClassNo_xchk = m_pComponent->eGetClassNo();
-      if (CLASSNO != eClassNo_xchk ||
-          eClassNo_xchk != m_eClassNo) {
-        vTrace("REG<>::vGuardedDeleteComponent: "
-               "%p class now %lld %s; was %lld %s\n"_Stz
-               ,m_pComponent
-               ,(i8)eClassNo_xchk
-               ,(eClassNo_xchk > 0 && eClassNo_xchk < CN_ENUMS)
-                  ? aCN[eClassNo_xchk] : "(invalid eCN)"_Stz
-               ,(i8)m_eClassNo
-               ,(m_eClassNo > 0 && m_eClassNo < CN_ENUMS)
-                  ? aCN[m_eClassNo] : "(invalid eCN)"_Stz
-               );
-      }
-      RASSERT(eClassNo_xchk == m_eClassNo);
-
-      // end-temp
-
-      m_eClassNo = CN_NONE;
-
       m_pComponent->vGuardedDelete(m_pComponent,pDeleter,szFunc);
     }
 

@@ -38,7 +38,6 @@ namespace STORE
     void vCopyRow(i8 i_Ptn, Row* aRowSrc);
     void vNewDstRow(i8 i_Ptn);
 
-  public:
     Footer* aFooter(void);
   };
 

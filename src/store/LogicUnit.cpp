@@ -479,7 +479,7 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 /*----------------------------------------------------------------------------*/
 /* add reg                                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vAddReg(REG<Object,CN_NONE>* pReg)
+void LogicUnit::vAddReg(REG<Object>* pReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
 
@@ -507,7 +507,7 @@ void LogicUnit::vCleanup(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
+    REG<Object> *p_Reg = m_paReg[i_Reg];
     // execute register repare
     if (p_Reg->m_szRegNm->bSame("m_xpSubset"_Stz))
       int i = 1;
@@ -748,7 +748,7 @@ void LogicUnit::vFailure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object,CN_NONE>* p_Reg = m_paReg[i_Reg];
+    REG<Object>* p_Reg = m_paReg[i_Reg];
     
     p_Reg->vRepair();
   }
@@ -1412,7 +1412,7 @@ void LogicUnit::vDumpCode(void)
     
     if (-1 == EoArgs[eCode].m_nArgBytes) {
       char* azArg = (char*) & m_eaCode[i_Code+2];
-      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],azArg);
+      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
       i_Code += 2 + StrLib::nSize(azArg);
     }
     else
@@ -1420,7 +1420,7 @@ void LogicUnit::vDumpCode(void)
         EA_DATE == EoArgs[eCode].m_eArgument) {
       i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
-      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
       i_Code += 2 + sizeof(i8);
     }
     else

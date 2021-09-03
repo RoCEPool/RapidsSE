@@ -96,7 +96,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(0);
     
-    StrLib::vSprint((Stz*)m_caResult,"IntElm0 %s %lld"_Stz,
+    StrLib::vSprint((Stz*)m_caResult,"IntElm0 %lls %lld"_Stz,
                     aDM[pCol->eDatum()],
                     *(i8*)aKey);
     return;

@@ -81,7 +81,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_TablePtn, i8 nQueueLength,
 //  if (401 == i_Sql) {
 //    if (m_xaDiaryEnt[m_nDiaryEnt].m_iAction)
 //
-//      vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%s,%s\n"_Stz,
+//      vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
 //
 //              i_Sql,
 //              i_TablePtn,
@@ -213,7 +213,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
       
-      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,%s,%s\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,%lls,%s\n"_Stz,
              
                     i_Ent,
                     (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,

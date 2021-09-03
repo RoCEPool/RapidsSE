@@ -69,7 +69,6 @@ namespace STORE
   private:
     bool bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);
   
-  public:
     Footer* aFooter(void);
   };
   

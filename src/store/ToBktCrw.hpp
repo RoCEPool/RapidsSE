@@ -41,7 +41,6 @@ namespace STORE
     void vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer);
     CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 
-  public:
     Footer* aFooter(void);
   };
 

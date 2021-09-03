@@ -494,7 +494,7 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 {
   _static_
 
-  pLogicUnit->vAddReg(static_cast< REG<Object,CN_NONE>* >(aReg));
+  pLogicUnit->vAddReg(static_cast< REG<Object>* >(aReg));
   
 }
 
@@ -586,17 +586,6 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
   u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
   
   return uLockWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* <no_free>                                                                  */
-/*----------------------------------------------------------------------------*/
-bool AM::NO::bFree(void)
-{
-  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE))
-    return true;
-  else
-    return false;
 }
 
 

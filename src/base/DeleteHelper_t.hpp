@@ -52,19 +52,7 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
-  //vAssertDelete();
-  
-  if (CN_PIPELINESPEC == m_eThisClassNo) {
-    RASSERT(m_szFunc &&
-              (   m_szFunc->bSame("~Pipeline"_Stz)
-               || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
-               || m_szFunc->bSame("pCompile"_Stz)
-              )
-            );
-    RASSERT(CN_DYNAMO == m_eDeleterClassNo   ||
-            CN_PIPELINE == m_eDeleterClassNo ||
-            CN_TASK == m_eDeleterClassNo);
-  }
+  vAssertDelete();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,13 +60,13 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assert delete is valid                                                     */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(void)
 {
   
-  //return;
+  return;
   
   //if (CN_PIPELINESPEC == m_eThisClassNo)
   //  vTrace("%s deleted by %s()\n"_Stz,aCN[m_eClassNo],m_szFunc);
@@ -88,9 +76,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // spec
   
   if (CN_PIPELINESPEC == m_eThisClassNo) {
-    vTrace("PipelineSpec %p deleted from %s()\n"_Stz
-           ,this
-           ,m_szFunc);
+    //vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -106,7 +92,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_STAGESPEC == m_eThisClassNo) {
-    vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
+    //vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -118,7 +104,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_OPSPEC == m_eThisClassNo) {
-    vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
+    //vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -186,6 +172,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
 
+  
   /*
   
 
@@ -275,9 +262,6 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
-  RASSERT(this == prThis);
-
-  
   m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
   

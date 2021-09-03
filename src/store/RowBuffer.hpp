@@ -63,7 +63,7 @@ namespace STORE
 
     bool bVerify(void);
   
-  //private:
+  private:
 
     i8   iToOffset(Stz* szStr);
   
