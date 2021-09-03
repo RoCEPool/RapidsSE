@@ -46,10 +46,10 @@ namespace BASE
     void    vGrabLock(void);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
-    void    vObjectValidate(void);
     void    vSummaryReport(String* pReportString);
     i8      nTotalHeapSize(void);
-        
+    void    vValidateContents(void);
+
   private:
     bool bExtendHeap(void);
     FreeChunk* pPopFree(void);
