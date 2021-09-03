@@ -21,7 +21,7 @@ namespace BASE
     DeleteHelper_t(eCN eClassNo);//, const std::type_info& rTypeId);
    ~DeleteHelper_t(void) noexcept(false);
 
-    void vAssertDelete(void);
+    void vAssertDelete(bool bTrace=false);
 
     void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
@@ -52,7 +52,16 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo
 template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
-  vAssertDelete();
+//  if (! m_szFunc)
+//    vDebugPoint();
+//
+//  if (! m_eDeleterClassNo)
+//    vDebugPoint();
+//
+//  RASSERT(m_szFunc);
+//  RASSERT(m_eDeleterClassNo);
+  
+  vAssertDelete(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,11 +72,9 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vAssertDelete(void)
+void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 {
-  
-  return;
-  
+    
   //if (CN_PIPELINESPEC == m_eThisClassNo)
   //  vTrace("%s deleted by %s()\n"_Stz,aCN[m_eClassNo],m_szFunc);
   
@@ -76,7 +83,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // spec
   
   if (CN_PIPELINESPEC == m_eThisClassNo) {
-    //vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
+    if (bTrace)
+      vTrace("PipelineSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -92,7 +100,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_STAGESPEC == m_eThisClassNo) {
-    vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
+    if (bTrace)
+      vTrace("StageSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -104,7 +113,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
   else if (CN_OPSPEC == m_eThisClassNo) {
-    vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
+    if (bTrace)
+      vTrace("OpSpec deleted from %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -122,7 +132,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // job
   
   else if (CN_JOB == m_eThisClassNo) {
-    //vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
+    if (bTrace)
+      vTrace("Job deleted by %s()\n"_Stz,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
     
@@ -143,18 +154,22 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actual
   
-//  else if (CN_PIPELINE == m_eThisClassNo) {
-//    //vTrace("Pipeline deleted by %s()\n"_Stz,m_szFunc);
-//    vDebugPoint();
-//
-//    RASSERT(m_szFunc &&
-//              (    m_szFunc->bSame("~LogicUnit"_Stz)
-//              )
-//            );
-//    RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
-//  }
+  else if (CN_PIPELINE == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("Pipeline deleted by %s()\n"_Stz,m_szFunc);
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (    m_szFunc->bSame("~LogicUnit"_Stz)
+              )
+            );
+    RASSERT(CN_LOGICUNIT == m_eDeleterClassNo);
+  }
+  
 //  else if (CN_STAGE == m_eThisClassNo) {
-//    vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
+//    if (bTrace)
+//      vTrace("Stage deleted by %s()\n"_Stz,m_szFunc);
 //
 //    vDebugPoint();
 //
@@ -265,7 +280,7 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
   m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
   
-  vAssertDelete();
+  vAssertDelete(false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -283,7 +298,7 @@ void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc
   m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
 
-  vAssertDelete();
+  vAssertDelete(true);
 }
 
 
