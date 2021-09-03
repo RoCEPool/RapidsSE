@@ -62,26 +62,20 @@ PipelineSpec* Dynamo::pCompile(void)
   if (PipelineSpec::bCompile(nullptr,
                              m_p_PipelineJob->pJobTags(),
                              m_pScanner,                                
-                             m_p_PipelineSpec_root))
-    return m_p_PipelineSpec_root;
+                             m_p_PipelineSpec_root)) {
+    
+    PipelineSpec* pPipelineSpce = m_p_PipelineSpec_root;
+    m_p_PipelineSpec_root = nullptr;
+    
+    return pPipelineSpce;
+  }
   
   m_p_PipelineSpec_root->vGuardedDelete(m_p_PipelineSpec_root,
                                         this,(Stz*)__func__);
   //delete m_p_PipelineSpec_root;
-  
-  m_p_PipelineSpec_root = nullptr;
+  //m_p_PipelineSpec_root = nullptr;
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the pipeline spec                                                      */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  return m_p_PipelineSpec_root;
 }
 
 /*============================================================================*/

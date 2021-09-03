@@ -53,6 +53,18 @@ template<class CLASS>
 DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 {
   //vAssertDelete();
+  
+  if (CN_PIPELINESPEC == m_eThisClassNo) {
+    RASSERT(m_szFunc &&
+              (   m_szFunc->bSame("~Pipeline"_Stz)
+               || m_szFunc->bSame("vPipelineDeleteSpec"_Stz)
+               || m_szFunc->bSame("pCompile"_Stz)
+              )
+            );
+    RASSERT(CN_DYNAMO == m_eDeleterClassNo   ||
+            CN_PIPELINE == m_eDeleterClassNo ||
+            CN_TASK == m_eDeleterClassNo);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +72,7 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* assert delete is valid                                                     */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(void)
@@ -174,7 +186,6 @@ void DeleteHelper_t<CLASS>::vAssertDelete(void)
   }
 
 
-  
   /*
   
 
@@ -264,6 +275,9 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
+  RASSERT(this == prThis);
+
+  
   m_eDeleterClassNo = pDeleter ? pDeleter->eGetClassNo() : CN_API;
   m_szFunc          = szFunc;
   
