@@ -931,11 +931,11 @@ Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
+  Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
   
-  //RASSERT(pPipeline == m_pPipeline_job);
+  RASSERT(pPipeline == m_pPipeline_job);
   
-  return m_pPipeline_job;
+  return pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
