@@ -426,7 +426,11 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prInstance,
   //delete (CLASS*)this;
   
   RASSERT(prInstance == m_pInstance);
+  if (CN_PIPELINE == m_eThisClassNo)
+    vTrace("vGuardedDelete: delete m_pInstance (PIPELINE)\n"_Stz);
   delete m_pInstance;
+  if (CN_PIPELINE == m_eThisClassNo)
+    vTrace("vGuardedDelete: return from delete m_pInstance (PIPELINE)\n"_Stz);
 
   prInstance = nullptr;
 }
