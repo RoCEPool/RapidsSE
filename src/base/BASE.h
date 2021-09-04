@@ -193,6 +193,7 @@ extern d8 C_D8_MID;
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
+#include "FreedNot.hpp"
 #include "BufferPool.hpp"
 #include "PoolHelper.hpp"
 #include "ResourceHelper.hpp"

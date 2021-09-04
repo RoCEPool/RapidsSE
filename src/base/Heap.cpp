@@ -192,6 +192,12 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //eLastClass = eAllocClass;
   
   ASSERT(CacheLine::bOnCacheLineBoundary(pObject));
+  
+  if ((Object*)0x2048091aa040 == pObject) {
+    vTrace("AllocObject:: %p %s:%-3lld\n"_Stz,
+           pObject,aCN[eAllocClass],eAllocClass);
+    vDebugPoint();
+  }
   return pObject;
 }
 
@@ -287,7 +293,13 @@ void Heap::vFreeObject(Object* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eCN eWasClass = pObject->eGetClassNo();
-  
+
+  if ((Object*)0x2048091aa040 == pObject) {
+    vTrace("vFreeObject:: %p %s:%-3lld\n"_Stz,
+           pObject,aCN[eWasClass],eWasClass);
+    vDebugPoint();
+  }
+
   
 //  if (eEC eError = pObject->eValidObject()) {
 //    

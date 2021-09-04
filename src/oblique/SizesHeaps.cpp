@@ -275,7 +275,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 }, // CN_FREECHUNK
-  { 0,                          HT_INVALID   ,0 }, // CN_FREEDNOT
+  { sizeof(FreedNot),           HT_INVALID   ,0 }, // CN_FREEDNOT
   { 0,                          HT_INVALID   ,0 }, // CN_FREEITEM
   { sizeof(FreqDist),           HT_T_SMALL   ,0 }, // CN_FREQDIST
 
