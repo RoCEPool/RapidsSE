@@ -343,14 +343,14 @@ void Heap::vFreeObject(Object* pObject)
 
   eCN eClassNo = pObject->eGetClassNo();
 
-//  if ((Object*)0x2048091aa040 == pObject) {
-//    vTrace("vFreeObject:: %p %s:%-3lld\n"_Stz,
-//           pObject,aCN[eWasClass],eWasClass);
-//    vDebugPoint();
-//  }
-
+  if ((Object*)0x2048091aa040 == pObject) {
+    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,
+           pObject,aCN[eClassNo],eClassNo);
+    vDebugPoint();
+  }
+  else
   if (CN_PIPELINE == eClassNo) {
-    vTrace("FreeObject:: %p %s:%-3lld\n"_Stz,
+    vTrace("FreeObject:: %p %s:%-3lld (class)\n"_Stz,
            pObject,aCN[eClassNo],eClassNo);
     vDebugPoint();
   }
