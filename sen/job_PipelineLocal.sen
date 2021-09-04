@@ -32,18 +32,27 @@
   // compile the pipeline command
   
   <cmd> Pipeline::compileStmt dup
-  EC_NONE != if
+  EC_NONE == if
+    // clean compile
+    
+  else
     //"got error" .
     job::error!
     
     PipelineSpec[].delete
         
+    // cross check
+    PipelineSpec[] not assert
+
     job[] job.signalSession
     pipelineLocal::termination
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
+  
+  PipelineSpec[] assert
+
   Pipeline::create
   Pipeline::spawnOpTasks
 
