@@ -118,12 +118,17 @@
   // compile the pipeline statement on origin to check its syntax
   
   <cmd> Pipeline::compileStmt dup
-  EC_NONE != if
-    job::error!
-  else
-    PipelineSpec[].delete
+  EC_NONE == if
+    // clean compile of pipeline statement
     discard
+    PipelineSpec[].delete
+  else
+    // pipeline statement didnt compile
+    job::error!
   then
+
+  // cross check
+  PipelineSpec[] not assert
 
   job[] job.hasError not if
 

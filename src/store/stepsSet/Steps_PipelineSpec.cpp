@@ -33,7 +33,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PipelineSpec(void)
 {
+  vAddStep("PipelineSpec[]"_Stz,          &Step::vPipelineSpecGet);
   vAddStep("PipelineSpec[].delete"_Stz,   &Step::vPipelineSpecDelete);
+  vAddStep("PipelineSpec[].get"_Stz,      &Step::vPipelineSpecGet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +54,20 @@ void Step::vPipelineSpecDelete(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* PipelineSpec[].get -- get pipeline spec                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpecGet(void)
+{
+  ENTRY();
 
+  if (m_p_TaskLogicUnit->m_xpPipelineSpec.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpPipelineSpec);
+  else
+    m_pDataStack->vPushPtr(nullptr);
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */
