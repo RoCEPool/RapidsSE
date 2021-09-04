@@ -193,8 +193,14 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   ASSERT(CacheLine::bOnCacheLineBoundary(pObject));
     
+  if ((Object*)0x2048091aa040 == pObject) {
+    vTrace("AllocObject:: %p %s:%-3lld (address)\n"_Stz,
+           pObject,aCN[eAllocClass],eAllocClass);
+    vDebugPoint();
+  }
+  else
   if (CN_PIPELINE == eAllocClass) {
-    vTrace("AllocObject:: %p %s:%-3lld\n"_Stz,
+    vTrace("AllocObject:: %p %s:%-3lld (class)\n"_Stz,
            pObject,aCN[eAllocClass],eAllocClass);
     vDebugPoint();
   }
