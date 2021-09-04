@@ -208,12 +208,12 @@ Op::~Op(void) noexcept(false)
     RASSERT(this == m_pOpLogicUnit->pOp());
     RASSERT(! m_pOpLogicUnit->pJob());
 
-    delete m_pOpLogicUnit;
-    m_pOpLogicUnit = nullptr;
-    
-    //LogicUnit* pLogicUnit = *m_pOpLogicUnit;
+    //delete m_pOpLogicUnit;
     //m_pOpLogicUnit = nullptr;
-    //pLogicUnit->vGuardedDelete(pLogicUnit,this,(Stz*)__func__);
+    
+    LogicUnit* pLogicUnit = *m_pOpLogicUnit;
+    m_pOpLogicUnit = nullptr;
+    pLogicUnit->vGuardedDelete(pLogicUnit,this,(Stz*)__func__);
   }
   
   if (m_pQueueLeft->nItems() != 0) {

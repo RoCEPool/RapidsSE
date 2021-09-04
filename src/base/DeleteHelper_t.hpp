@@ -161,20 +161,20 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_LOGICUNIT == m_eThisClassNo) {
     if (bTrace)
       vTrace("LogicUnit %p being deleted from %s()\n"_Stz,this,m_szFunc);
-//    if (! m_szFunc)
-//      vDebugPoint();
-//
-//    RASSERT(m_szFunc &&
-//              (   m_szFunc->bSame("~Job"_Stz)
-//               || m_szFunc->bSame("~Op"_Stz)
-//               || m_szFunc->bSame("vDelete"_Stz)
-//              )
-//            );
-//
-//    RASSERT(CN_API   == m_eDeleterClassNo ||
-//            CN_OP    == m_eDeleterClassNo  ||
-//            CN_JOB   == m_eDeleterClassNo);
-//
+    if (! m_szFunc)
+      vDebugPoint();
+
+    RASSERT(m_szFunc &&
+              (   m_szFunc->bSame("~Job"_Stz)
+               || m_szFunc->bSame("~Op"_Stz)
+               || m_szFunc->bSame("vDelete"_Stz)
+              )
+            );
+
+    RASSERT(CN_API   == m_eDeleterClassNo ||
+            CN_OP    == m_eDeleterClassNo  ||
+            CN_JOB   == m_eDeleterClassNo);
+
   }
 
 

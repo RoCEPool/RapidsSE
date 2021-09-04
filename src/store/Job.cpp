@@ -252,9 +252,11 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
     
-  if (m_pJobLogicUnit)
-    AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
-
+  if (m_pJobLogicUnit) {
+    //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
+    m_pJobLogicUnit->vGuardedDelete(m_pJobLogicUnit,this,(Stz*)__func__);
+  }
+  
   //if (m_pTask)
   //  vDebugPoint();
   
@@ -955,12 +957,18 @@ void Job::vResetForCascade(Session* pSession)
   m_eJobState = JS_ACTIVE;
 
   // -- d -------------------
-  delete m_pJobLogicUnit; m_pJobLogicUnit = nullptr;
+  if (m_pJobLogicUnit) {
+    delete m_pJobLogicUnit;
+    m_pJobLogicUnit = nullptr;
+  }
   // m_oJobTags
   // m_xResult ???
   
   // -- e -------------------
-  delete m_pSingularOp;  m_pSingularOp  = nullptr;
+  if (m_pSingularOp) {
+    delete m_pSingularOp;
+    m_pSingularOp  = nullptr;
+  }
 
   // -- f -------------------
   m__dpOriginatingTask = nullptr;
