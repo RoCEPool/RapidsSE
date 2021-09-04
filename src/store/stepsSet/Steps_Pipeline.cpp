@@ -35,7 +35,6 @@ void Step::vAddSteps_Pipeline(void)
 {
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::compileStmt"_Stz,  &Step::vPipelineCompileStmt);
   vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
@@ -85,122 +84,6 @@ void Step::vPipelineCancelledStore(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Pipeline::compileStmt -- compile pipeline statement into a pipelines spec  */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineCompileStmt(void)
-{
-  ENTRY();
-    
-  sSTMT sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // use dynamo to compile the pipeline statement
-  
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
-    
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test compilation result
-  
-  if (pPipelineSpec) {
-    
-    eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
-    
-    if (EC_NONE == eError) {
-      
-      // a) clean compile, passes pre-execution requirments
-      
-      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        
-        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-      }
-      
-      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-      m_pDataStack->vPushInt(EC_NONE);
-      
-    }
-    else {
-      
-      // b) clean compile, but does not pass pre-execution requirments
-
-      delete pPipelineSpec;
-      m_pDataStack->vPushInt(eError);
-      
-    }
-
-  }
-  else {
-    
-    // c) failed to compile
-    
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-
-  }
-  
-  delete pDynamo;
-  
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-//void Step::vPipelineCompileStmt(void)
-//{
-//  ENTRY();
-//
-//  sSTMT sPipelineStmt;
-//  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-//
-//
-//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-//
-//  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
-//
-//  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-//
-//
-//  if (pPipelineSpec) {
-//
-//    if (AM::SYSTEM::bPassesLowMem(m_pJob)) {
-//
-//      // clean compile, passes low memory test
-//
-//      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-//
-//        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-//        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-//      }
-//
-//      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-//      m_pDataStack->vPushInt(EC_NONE);
-//
-//    }
-//    else {
-//
-//      // clean compile, but does not pass low memory test
-//
-//      delete pPipelineSpec;
-//      m_pDataStack->vPushInt(EC_LOW_MEMORY);
-//
-//    }
-//
-//  }
-//  else {
-//
-//    // failed to compile
-//
-//    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-//
-//  }
-//
-//  delete pDynamo;
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* Pipeline::create -- create the pipeline, stages, streams and ops           */

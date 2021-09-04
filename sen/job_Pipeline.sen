@@ -117,7 +117,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on origin to check its syntax
   
-  <cmd> Pipeline::compileStmt dup
+  <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // clean compile of pipeline statement
     discard
@@ -193,7 +193,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
-  <cmd> Pipeline::compileStmt
+  <cmd> Dynamo::compileStmt
   EC_NONE == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

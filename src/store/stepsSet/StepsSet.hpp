@@ -337,6 +337,8 @@ public:
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  void vDynamoCompileStmt(void);
+
   // encode
   void vEncodeCurrentCall(void);
   void vEncodeCurrentPush(void);
@@ -1205,7 +1207,6 @@ public:
   void vPipelineSpawnOpTasks(void);
 
   void vPipelineCancelledStore(void);
-  void vPipelineCompileStmt(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);

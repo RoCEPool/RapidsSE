@@ -31,7 +31,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   
-  <cmd> Pipeline::compileStmt dup
+  <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // clean compile
     
