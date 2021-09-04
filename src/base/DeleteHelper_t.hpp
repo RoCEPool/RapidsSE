@@ -22,6 +22,7 @@ namespace BASE
    ~DeleteHelper_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
+    void vAssertNew(bool bTrace=false);
 
     void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
@@ -39,6 +40,9 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo)
   m_szFunc          = nullptr;
   
   m_eThisClassNo    = eThisClassNo;
+  
+  vAssertNew(true);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +59,7 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* assert delete                                                              */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
 void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
@@ -68,7 +72,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_FREECHUNK == m_eThisClassNo) {
     if (bTrace)
-      vTrace("FreeChunk %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
   }
@@ -78,7 +83,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   else if (CN_LOGICUNIT == m_eThisClassNo) {
     if (bTrace)
-      vTrace("LogicUnit %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -101,7 +107,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   else if (CN_JOB == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Job %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -124,7 +131,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_OP == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Op %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -140,7 +148,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_OPSPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("OpSpec %p deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -159,7 +168,9 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   else if (CN_PIPELINE == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Pipeline %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
+
     if (! m_szFunc)
       vDebugPoint();
 
@@ -175,7 +186,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
     
   else if (CN_PIPELINESPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("PipelineSpec %p deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -195,7 +207,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_STAGE == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Stage %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -211,7 +224,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_STAGESPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("StageSpec %p deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -228,7 +242,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 
   else if (CN_TASK == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Task %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -247,7 +262,8 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   
   else if (CN_STREAM == m_eThisClassNo) {
     if (bTrace)
-      vTrace("Stream %p being deleted from %s()\n"_Stz,this,m_szFunc);
+      vTrace("del %12s:%-3lld %p from %s()\n"_Stz,
+             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -273,6 +289,105 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
            ,m_eDeleterClassNo
            ,aCN[m_eDeleterClassNo]
            );
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert new                                                                 */
+/*----------------------------------------------------------------------------*/
+template<class CLASS>
+void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
+{
+  if (false)
+    {;}
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // logic unit
+
+  else if (CN_LOGICUNIT == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job
+
+  else if (CN_JOB == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // op
+  
+  else if (CN_OP == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // opSpec
+  
+  else if (CN_OPSPEC == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeline
+
+  else if (CN_PIPELINE == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipelineSpec
+    
+  else if (CN_PIPELINESPEC == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stage
+  
+  else if (CN_STAGE == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stageSpec
+  
+  else if (CN_STAGESPEC == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task
+
+  else if (CN_TASK == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stream
+  
+  else if (CN_STREAM == m_eThisClassNo) {
+    if (bTrace)
+      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // huh???
+  
+  else {
+    vTrace("new %12s:%-3lld %p\n"_Stz,"(unknown)"_Stz,this);
   }
 
 }
