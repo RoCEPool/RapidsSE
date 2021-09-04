@@ -958,8 +958,9 @@ void Job::vResetForCascade(Session* pSession)
 
   // -- d -------------------
   if (m_pJobLogicUnit) {
-    delete m_pJobLogicUnit;
-    m_pJobLogicUnit = nullptr;
+    //delete m_pJobLogicUnit;
+    //m_pJobLogicUnit = nullptr;
+    m_pJobLogicUnit->vGuardedDelete(m_pJobLogicUnit,this,"vResetForCascade"_Stz);
   }
   // m_oJobTags
   // m_xResult ???

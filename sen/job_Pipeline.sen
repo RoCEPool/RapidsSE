@@ -78,7 +78,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* launch of a distributed pipeline (on originating node)                     */
+/* launch of a distributed pipeline on originating node                       */
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
@@ -163,9 +163,9 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* begin pipeline job                                                         */
+/* begin pipeline job on participant node                                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::begin ( -- )
+: pipeline::participant ( -- )
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
@@ -180,11 +180,6 @@
 
   // add job to participant job list
   pJob job.addParticipant
-
-
-
-
-  // : pipeline::begin ( -- )
 
   job::assertCorrectness
 

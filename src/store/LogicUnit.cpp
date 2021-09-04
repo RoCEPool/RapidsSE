@@ -397,9 +397,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     RASSERT(pPipeline);
     RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
     
-    delete *m_xpPipeline;
+    //delete *m_xpPipeline;
     
-    //m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
+    m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
   
   if (m_pRluDiary) {
