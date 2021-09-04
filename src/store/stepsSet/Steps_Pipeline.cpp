@@ -35,7 +35,6 @@ void Step::vAddSteps_Pipeline(void)
 {
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline::enqueueStart"_Stz, &Step::vPipelineEnqueueStart);
@@ -45,8 +44,9 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
   
   vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
-  
-  vAddStep("Pipeline::spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+    
+  vAddStep("Pipeline[].create"_Stz,      &Step::vPipelineCreate);
+  vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@ void Step::vPipelineCancelledStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::create -- create the pipeline, stages, streams and ops           */
+/* Pipeline[].create -- create the pipeline, stages, streams and ops           */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCreate(void)
 {
@@ -94,14 +94,14 @@ void Step::vPipelineCreate(void)
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
   LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
+
+  PipelineSpec* pPipelineSpec = *pLogicUnit->m_xpPipelineSpec;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
   pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
-                 m_pJob->iOriginatorNode());
+    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
     
@@ -280,7 +280,7 @@ void Step::vPipelinePulsedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
+/* Pipeline[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpawnOpTasks(void)
 {

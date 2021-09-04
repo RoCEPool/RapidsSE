@@ -199,8 +199,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
-  Pipeline::create
-  Pipeline::spawnOpTasks
+  Pipeline[].create
+  Pipeline[].spawnOpTasks
 
   JP_BEGUN job[] job.phase!
   nullptr job[] job.seedWord!

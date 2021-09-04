@@ -53,8 +53,8 @@
   
   PipelineSpec[] assert
 
-  Pipeline::create
-  Pipeline::spawnOpTasks
+  Pipeline[].create
+  Pipeline[].spawnOpTasks
 
   // run <pre_execute>
 
