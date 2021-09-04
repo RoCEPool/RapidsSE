@@ -168,7 +168,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* delete object                                                          */
     /*------------------------------------------------------------------------*/
-    bool vDeleteComponent(void)
+    void vDeleteComponent(void)
     {
       delete m_pComponent;
       m_pComponent = nullptr;
@@ -190,7 +190,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* gurded delete object                                                   */
     /*------------------------------------------------------------------------*/
-    bool vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
+    void vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
     {
       m_pComponent->vGuardedDelete(m_pComponent,pDeleter,szFunc);
     }
@@ -233,7 +233,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* set null on delete                                                     */
     /*------------------------------------------------------------------------*/
-    bool vNullOnDelete(bool bNullOnDelete)
+    void vNullOnDelete(bool bNullOnDelete)
     {
       m_bNullOnDelete = bNullOnDelete;
     }
@@ -290,7 +290,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* use is allowed                                                         */
     /*------------------------------------------------------------------------*/
-    bool vUseAllowed(void)
+    void vUseAllowed(void)
     {
       m_bNullOnDelete = true;
     }
@@ -298,7 +298,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* initialised                                                            */
     /*------------------------------------------------------------------------*/
-    bool vInitialised(void)
+    void vInitialised(void)
     {
       m_bNullOnDelete = true;
     }
@@ -306,7 +306,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* finalised                                                              */
     /*------------------------------------------------------------------------*/
-    bool vFinalised(void)
+    void vFinalised(void)
     {
       m_bFinalised = true;
     }
