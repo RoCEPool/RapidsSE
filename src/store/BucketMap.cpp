@@ -28,10 +28,11 @@ BucketMap::BucketMap(i8 nPartitions)
   RASSERT(nPartitions);
 
 #ifdef WITH_BKTMAP_2N4P
-  if (nPartitions == 8) {
+  if (nPartitions <= 8) {
     // Synthetic mapping, assign buckets to logical partitions
     tPN tPtnNo = 0;
     i8 i_Bkt = 0;
+
 
     while (i_Bkt < C_MAX_BUCKETS)
     {
@@ -44,8 +45,51 @@ BucketMap::BucketMap(i8 nPartitions)
 
     }
 
+
+   // Random 1
+   /*
+    m_taInLglPtn[0] = 0;
+    m_taInLglPtn[1] = 1;
+    m_taInLglPtn[2] = 2;
+    m_taInLglPtn[3] = 3;
+    m_taInLglPtn[4] = 4;
+    m_taInLglPtn[5] = 5;
+    m_taInLglPtn[6] = 6;
+    m_taInLglPtn[7] = 7;
+    m_taInLglPtn[8] = 0;
+    m_taInLglPtn[9] = 1;
+    m_taInLglPtn[10] = 2;
+    m_taInLglPtn[11] = 3;
+    m_taInLglPtn[12] = 4;
+    m_taInLglPtn[13] = 5;
+    m_taInLglPtn[14] = 6;
+    m_taInLglPtn[15] = 7;
+    */
+
+   //Random 2
+    /*
+    m_taInLglPtn[0] = 0;
+    m_taInLglPtn[1] = 7;
+    m_taInLglPtn[2] = 2;
+    m_taInLglPtn[3] = 3;
+    m_taInLglPtn[4] = 1;
+    m_taInLglPtn[5] = 5;
+    m_taInLglPtn[6] = 4;
+    m_taInLglPtn[7] = 7;
+    m_taInLglPtn[8] = 0;
+    m_taInLglPtn[9] = 1;
+    m_taInLglPtn[10] = 2;
+    m_taInLglPtn[11] = 3;
+    m_taInLglPtn[12] = 6;
+    m_taInLglPtn[13] = 5;
+    m_taInLglPtn[14] = 6;
+    m_taInLglPtn[15] = 7;
+     */
+
+
+
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
+    //  vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
     }
 
   } else {
@@ -129,6 +173,21 @@ tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
   tPN tPtnNo = m_taInLglPtn[iBucketId];
   
   return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which bucket logical partition is currently mapped to                  */
+/*----------------------------------------------------------------------------*/
+i8 BucketMap::iWhichBucket(tPN tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  i8 iBkt=-1;
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    if (m_taInLglPtn[i_Bkt] == tPtnNo)
+      iBkt = i_Bkt;
+  }
+
+  return iBkt;
 }
 
 /*============================================================================*/

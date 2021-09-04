@@ -197,6 +197,14 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bucket no from a PtnNo                                                 */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vPtnToBkt(tPN tPtnNo)
+{
+  vToBucketNo(tPtnNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vPostRecv(void* aCrwBuffer)
@@ -814,10 +822,6 @@ void CrwBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 
-#ifdef WITH_MULTI_BUCKET
-  vTrace("CrwBuffer::vTruncate\n"_Stz);
-#endif
-
   CrwBuffer* pNextBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -827,9 +831,6 @@ void CrwBuffer::vTruncate(void)
   while (pNextBuffer) {
     CrwBuffer* pThisBuffer = pNextBuffer;
     pNextBuffer = pNextBuffer->pNextCrwBuffer();
-#ifdef WITH_MULTI_BUCKET
-    if (pThisBuffer == pNextBuffer) break; // could be the last entry ...
-#endif
     delete pThisBuffer;
   }
   delete this;

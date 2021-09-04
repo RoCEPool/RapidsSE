@@ -227,6 +227,21 @@ void DataBuffer::vBucketNo(i8 iBucketNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bucket no from a PtnNo                                                 */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vToBucketNo(tPN tPtnNo)
+{
+  if (!m_pTable) {
+    vTrace("No table from DataBuffer\n"_Stz);
+  } else {
+    vTrace("table from DataBuffer:%s\n"_Stz, m_pTable->szTableNm()->azChar());
+    m_iBucketNo = m_pTable->iPtnToBkt(tPtnNo);
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vBufferHeight(i8 iBufferHeight)

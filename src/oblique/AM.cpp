@@ -57,6 +57,7 @@
 #include "Crw.hpp"
 
 #include "PtnMap.hpp"
+#include "BucketMap.hpp"
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -899,18 +900,20 @@ tPN AM::PTNMAP::tHashToDtdPtnNo(i8 iHash)
 /*----------------------------------------------------------------------------*/
 /* convert PtnNo to Bkt No                                                    */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iToBkt(tPN tPtnNo)
+/*
+i8 AM::BKTMAP::iToBkt(tPN tPtnNo)
 {
-  return gpAttachMap->m_pPtnMap->iToBkt(tPtnNo);
-}
+  return 0; //gpAttachMap->m_pBucketMap->iWhichBucket(tPtnNo);
+}*/
 
 /*----------------------------------------------------------------------------*/
 /* convert Bkt No PtnNo                                                     */
 /*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tToPtn(i8 iBktNo)
+/*
+tPN AM::BKTMAP::tToPtn(i8 iBktNo)
 {
-  return gpAttachMap->m_pPtnMap->tToPtn(iBktNo);
-}
+  return 1;//gpAttachMap->m_pBucketMap->tWhichLglPtnNo(iBktNo);
+}*/
 
 /*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */

@@ -255,6 +255,7 @@ bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
 bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+  if (!m_pRootBuffer) return true;
 
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
 

@@ -32,8 +32,6 @@ PtnMap::PtnMap(i8 nKnownNodes, i8 nPtnsPerNode)
   m_nPtnsInGrid  = C_UNKNOWN;
 
   vResetNodePtnArray();
-
-  vInitNodeBktArray();
   
   _checkInitialised_(CN_PTNMAP);
   
@@ -94,26 +92,6 @@ tPN PtnMap::tHashToDtdPtnNo(i8 iHash)
   i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
 
   return tDtdPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert tPN to Bkt No                                                      */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::iToBkt(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  return tPtnNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnNo].m_i_Bkt : 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert iBkt to tPN                                                        */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tToPtn(i8 iBktNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  return iBktNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) iBktNo].m_i_Ptn : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,34 +296,7 @@ void PtnMap::vResetNodePtnArray(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* initialize the Bkt array                                                   */
-/*----------------------------------------------------------------------------*/
-void PtnMap::vInitNodeBktArray(void) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PTNMAP, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  //AM::PTNMAP::nPtnsInGrid()
-
-  i8 i_Ptn = 0;
-  i8 i_Bkt = 0;
-
-  while (i_Bkt < C_MAX_BUCKETS)
-  {
-    m_xaBkt[i_Bkt].m_i_Ptn = i_Ptn;
-    m_xaBkt[++i_Bkt].m_i_Bkt = i_Ptn;
-
-    i_Bkt++;
-    i_Ptn++;
-  }
-#else
-
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++) {
-    m_xaBkt[i_Ptn].m_i_Ptn = i_Ptn;
-    m_xaBkt[i_Ptn].m_i_Bkt = i_Ptn;
-  }
-#endif
-}
 
 /*============================================================================*/
 /* end                                                                        */

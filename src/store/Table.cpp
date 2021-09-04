@@ -245,7 +245,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 
   tPN tPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
 
-  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
+  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnNo);
   
   return tPtnNo;
 }
@@ -330,6 +330,23 @@ void Table::vBucketMap(BucketMap* pBucketMap)
   m_pBucketMap = pBucketMap;
   
   m_pBucketMap->pLocation()->vSet();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get the partition No from Bucket No                                        */
+/*----------------------------------------------------------------------------*/
+tPN  Table::tBktToPtn(i8 iBktNo)
+{
+  return m_pBucketMap->tWhichLglPtnNo(iBktNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the Bucket No from partition No                                        */
+/*----------------------------------------------------------------------------*/
+i8  Table::iPtnToBkt(tPN tPtnNo)
+{
+  return m_pBucketMap->iWhichBucket(tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/

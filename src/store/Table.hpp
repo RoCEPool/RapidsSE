@@ -7,6 +7,7 @@
 #include "Index.hpp"
 #include "eTT.h"
 #include "Parcel.hpp"
+//#include "TablePtn.hpp"
 
 namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
@@ -76,6 +77,9 @@ namespace STORE
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
+
+    tPN     tBktToPtn(i8 iBktNo);
+    i8      iPtnToBkt(tPN tPtnNo);
     i8      iToPartition(i8 iRowHash);
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);

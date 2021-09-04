@@ -30,6 +30,7 @@ namespace STORE
   
     void vResetPointers(void);
     tPN  tWhichLglPtnNo(i8 iBucketId);
+    i8   iWhichBucket(tPN tPtnNo);
   
   private:
     Footer* aFooter(void);

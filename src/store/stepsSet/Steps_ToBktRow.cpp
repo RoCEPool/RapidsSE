@@ -10,9 +10,16 @@
 
 #include "RowBuffer.hpp"
 
+
 #include "Node_I.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -55,7 +62,11 @@ void Step::vToBktRowRegConvert(void)
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToBktRow->vConvert(pRowBuffer);
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
+
+  pToBktRow->vConvert(pTable, pRowBuffer);
   
   //delete pRowBuffer;
   

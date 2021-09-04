@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : toBktRow_StartMarker \handler
 
+  <tableNm> op__table discard
+
   ToBktRow[].create
 
   ZK_M_START_handler
@@ -36,7 +38,7 @@
   then
 
   PipeIn[]\clear to RowBuffer[]
-  RowBuffer[] ToBktRow[].convert
+  Table[] RowBuffer[] ToBktRow[].convert
   RowBuffer[].delete
 
   ptnmap::ptnsInGrid 0
@@ -111,7 +113,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toBktRow :: toBktRow ;
+cmdSyntax: toBktRow :: toBktRow <tableNm> ;
 
 : toBktRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

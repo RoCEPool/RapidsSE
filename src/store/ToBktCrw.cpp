@@ -217,8 +217,12 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(i8 i_Ptn)
   pCrwBuffer->vPtnNo(i_Ptn);
 
   // Set the bucket number
-  i8 iBktNo = AM::PTNMAP::iToBkt(i_Ptn);
-  pCrwBuffer->vBucketNo(iBktNo);
+  tPN tpn = pCrwBuffer->tPtnNo();
+  pCrwBuffer->vPtnToBkt(i_Ptn);
+
+
+  //i8 iBktNo = pCrwBuffer->pTable()-> //AM::BKTMAP::iToBkt(i_Ptn);   // HACK
+  //pCrwBuffer->vBucketNo(iBktNo);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);
