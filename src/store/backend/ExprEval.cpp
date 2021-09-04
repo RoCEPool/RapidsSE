@@ -1593,13 +1593,13 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     if (bLeftTable) {
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
+      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     }
     else {
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
+      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
@@ -1611,13 +1611,13 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     if (bLeftTable) {
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
+      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     }
     else {
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
+      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
