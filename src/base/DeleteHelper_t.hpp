@@ -11,7 +11,7 @@ namespace BASE
   class DeleteHelper_t
   {
   public:
-    Object* m_pObject;
+    CLASS*  m_pInstance;
     Object* m_pDeleter;
     eCN     m_eDeleterClassNo;
     Stz*    m_szFunc;
@@ -20,13 +20,13 @@ namespace BASE
     //const std::type_info& m_rTypeId;
   
   public:
-    DeleteHelper_t(Object* pObject, eCN eClassNo);
+    DeleteHelper_t(CLASS* pInstance, eCN eClassNo);
    ~DeleteHelper_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
     void vAssertNew(bool bTrace=false);
 
-    void vGuardedDelete(CLASS*& prObject, Object* pDeleter, Stz* szFunc);
+    void vGuardedDelete(CLASS*& prInstance, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
   };
 }
@@ -36,9 +36,9 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(Object* pObject, eCN eThisClassNo)
+DeleteHelper_t<CLASS>::DeleteHelper_t(CLASS* pInstance, eCN eThisClassNo)
 {
-  m_pObject         = pObject;
+  m_pInstance       = pInstance;
   m_pDeleter        = nullptr;
   m_eDeleterClassNo = CN_NONE;
   m_szFunc          = nullptr;
@@ -88,7 +88,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_LOGICUNIT == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -112,7 +112,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_JOB == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -136,7 +136,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_OP == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -153,7 +153,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_OPSPEC == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -173,7 +173,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_PIPELINE == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
 
     if (! m_szFunc)
       vDebugPoint();
@@ -191,7 +191,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_PIPELINESPEC == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -212,7 +212,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_STAGE == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -229,7 +229,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_STAGESPEC == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -247,7 +247,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_TASK == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -267,7 +267,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   else if (CN_STREAM == m_eThisClassNo) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eThisClassNo],m_eThisClassNo,this,m_szFunc,m_pDeleter);
+             aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance,m_szFunc,m_pDeleter);
     if (! m_szFunc)
       vDebugPoint();
 
@@ -282,7 +282,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
   // huh???
   
   else {
-    vTrace("Unrecognised %p class being deleted\n"_Stz,this);
+    vTrace("Unrecognised %p class being deleted\n"_Stz,m_pInstance);
     vTrace("m_eThisClassNo=%lld:%s\n"_Stz
            ,m_eThisClassNo
            ,aCN[m_eThisClassNo]
@@ -311,7 +311,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_LOGICUNIT == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -319,7 +320,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_JOB == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -327,7 +329,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_OP == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -335,7 +338,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_OPSPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -343,7 +347,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_PIPELINE == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -351,7 +356,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
     
   else if (CN_PIPELINESPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -359,7 +365,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STAGE == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -367,7 +374,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STAGESPEC == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
   
 
@@ -376,7 +384,8 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_TASK == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -384,14 +393,16 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STREAM == m_eThisClassNo) {
     if (bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz,aCN[m_eThisClassNo],m_eThisClassNo,this);
+      vTrace("new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eThisClassNo],m_eThisClassNo,m_pInstance);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // huh???
   
   else {
-    vTrace("new %12s:%-3lld %p\n"_Stz,"(unknown)"_Stz,this);
+    vTrace("new %12s:%-3lld %p\n"_Stz,"(unknown)"_Stz
+           ,m_pInstance);
   }
 
 }
@@ -400,7 +411,7 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 /* delete this                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prObject,
+void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prInstance,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
@@ -414,10 +425,10 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prObject,
 
   //delete (CLASS*)this;
   
-  RASSERT(prObject == m_pObject);
-  delete (CLASS*)m_pObject;
+  RASSERT(prInstance == m_pInstance);
+  delete m_pInstance;
 
-  prObject = nullptr;
+  prInstance = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
