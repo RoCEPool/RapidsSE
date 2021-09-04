@@ -76,7 +76,6 @@ namespace STORE
 
   private:
     // -- participating job maintains
-    Pipeline* m_pPipeline_job;  // pipeline the job represents         POST_RECV
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
   
@@ -168,7 +167,6 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
-    void vPipeline_job(Pipeline* pPipeline_job);
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);

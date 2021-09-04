@@ -104,9 +104,7 @@ void Step::vPipelineCreate(void)
                  m_pJob->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-  
-  m_pJob->vPipeline_job(pPipeline);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {

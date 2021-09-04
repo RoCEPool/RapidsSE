@@ -119,9 +119,6 @@ Job::Job(i8 i_Origin,     // originated on which node
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-
-  m_pPipeline_job = nullptr;
-  
   
   m_eSeed      = SS_ENUMS;
   m_pSeedWord  = nullptr;
@@ -191,8 +188,6 @@ Job::Job(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
-  m_pPipeline_job = nullptr;
-
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
@@ -360,7 +355,6 @@ void Job::vPostRecv(void* aReceivedJob)
   // revised job/op model
   pReceivedJob->vNullJobLogicUnit();
 
-  pReceivedJob->m_pPipeline_job = nullptr;
   pReceivedJob->m_pSingularOp = nullptr;
 
   if (pReceivedJob->bHasTag(C_SEE_JOB))
@@ -932,20 +926,8 @@ Pipeline* Job::pPipeline_job(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
-  
-  RASSERT(pPipeline == m_pPipeline_job);
-  
+    
   return pPipeline;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set pipeline                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vPipeline_job(Pipeline* pPipeline_job)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pPipeline_job =  pPipeline_job;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1050,7 +1032,6 @@ void Job::vSee(void)
          "          oAcksRmg "  "%lld"  " \n"  // 14
          "            eError "  "%s"    " \n"  // 15
 
-         "         pPipeline "  "%s"    " \n"  // 16
          "       pSingularOp "  "%s"    " \n"  // 17
 
          "  pOriginatingTask "  "%s"    " \n"  // 18
@@ -1079,7 +1060,6 @@ void Job::vSee(void)
          ,spTimer.sz(& m_oTimer)     // 13
          ,m_oAcksRmg_job.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
-         ,spvPipeline.sz(m_pPipeline_job)  // 16
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvOriginatingTask.sz(m__dpOriginatingTask) // 18
          ,m_iOriginatingId           // 19
