@@ -44,6 +44,7 @@ namespace BASE
 
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
+    static void vDumpHeaps(void);
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vSummaryReport(void);

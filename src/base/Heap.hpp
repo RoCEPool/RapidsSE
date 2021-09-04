@@ -39,6 +39,7 @@ namespace BASE
     i8      nBufferCount(void);
     i8      nCurrAllocated(void);
     void    vDropLock(void);
+    void    vDumpHeap(void);
     HeapBuffer* pFirstBuffer(void);
     void    vFixedHeap(bool bFixed);
     i8      nFreeChunks(void);

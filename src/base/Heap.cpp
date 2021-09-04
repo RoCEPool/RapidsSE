@@ -198,6 +198,13 @@ Object* Heap::pAllocObject(eCN eAllocClass)
            pObject,aCN[eAllocClass],eAllocClass);
     vDebugPoint();
   }
+  
+  if (CN_PIPELINE == eAllocClass) {
+    vTrace("AllocObject:: %p %s:%-3lld\n"_Stz,
+           pObject,aCN[eAllocClass],eAllocClass);
+    vDebugPoint();
+  }
+  
   return pObject;
 }
 
@@ -251,6 +258,54 @@ void Heap::vDropLock(void)
   
   ASSERT(m_okLock.bIsLocked());
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the heap                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vDumpHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vGrabLock();
+
+  i8 nSizeObject = nObjectSize();
+  
+  for (HeapBuffer* pHeapBuffer = pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,nSizeObject)) {
+      
+      eCN eChunkClass = aChunk->eGetClassNo();
+      
+      if (CN_FREECHUNK == eChunkClass) {
+                
+        vTrace("%p %s:%-3lld (was %s:%-3lld)\n"_Stz
+               ,aChunk
+               ,aCN[eChunkClass]
+               ,eChunkClass
+               ,aCN[aChunk->eWasClass()]
+               ,aChunk->eWasClass()
+               );
+
+        continue;
+      }
+  
+      Object* pObject = (Object*)aChunk;
+      
+      vTrace("%p %s:%-3lld\n"_Stz
+             ,pObject
+             ,aCN[pObject->eGetClassNo()]
+             ,pObject->eGetClassNo()
+             );
+    }
+
+  }
+  
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -105,6 +105,20 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   return pObject;
 }
 
+/*----------------------------------------------------------------------------*/
+/* detailed dump of all heaps                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vDumpHeaps(void)
+{
+  eHT eHeap = HT_INVALID;
+  
+  for (Heap* pHeap = AM::pHeaps()->pEachHeap(eHeap);
+       pHeap;
+       pHeap = AM::pHeaps()->pEachHeap(eHeap)) {
+    
+    pHeap->vDumpHeap();
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* free an object back to heap                                                */
@@ -135,6 +149,8 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            ,eWasClass
            ,aCN[eWasClass]
            );
+    
+    
     RASSERT(CN_FREECHUNK != eObjectClass);
   }
 

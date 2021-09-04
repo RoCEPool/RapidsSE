@@ -85,7 +85,7 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-, DeleteHelper_t<LogicUnit>(CN_LOGICUNIT)
+, DeleteHelper_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         "m_xpBucket"_Stz)
 

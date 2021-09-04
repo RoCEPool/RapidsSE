@@ -11,6 +11,7 @@ namespace BASE
   class DeleteHelper_t
   {
   public:
+    Object* m_pObject;
     Object* m_pDeleter;
     eCN     m_eDeleterClassNo;
     Stz*    m_szFunc;
@@ -19,13 +20,13 @@ namespace BASE
     //const std::type_info& m_rTypeId;
   
   public:
-    DeleteHelper_t(eCN eClassNo);//, const std::type_info& rTypeId);
+    DeleteHelper_t(Object* pObject, eCN eClassNo);
    ~DeleteHelper_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
     void vAssertNew(bool bTrace=false);
 
-    void vGuardedDelete(CLASS*& prThis, Object* pDeleter, Stz* szFunc);
+    void vGuardedDelete(CLASS*& prObject, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
   };
 }
@@ -35,8 +36,9 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(eCN eThisClassNo)
+DeleteHelper_t<CLASS>::DeleteHelper_t(Object* pObject, eCN eThisClassNo)
 {
+  m_pObject         = pObject;
   m_pDeleter        = nullptr;
   m_eDeleterClassNo = CN_NONE;
   m_szFunc          = nullptr;
@@ -398,7 +400,7 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 /* delete this                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
+void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prObject,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
@@ -410,9 +412,12 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prThis,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete (CLASS*)this;
+  //delete (CLASS*)this;
   
-  prThis = nullptr;
+  RASSERT(prObject == m_pObject);
+  delete (CLASS*)m_pObject;
+
+  prObject = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
