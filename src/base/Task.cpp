@@ -229,7 +229,11 @@ void Task::vTaskLoop(void)
     // call the non-virtual member/step function against this task
     try {
       
+      this->vAssertSelf(this);
+      
       (this->*fpStepFn) ();
+
+      this->vAssertSelf(this);
 
       //
       // for example if the step function is:

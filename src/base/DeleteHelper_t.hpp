@@ -12,19 +12,19 @@ namespace BASE
   {
   public:
     CLASS*  m_pInstance;
+    eCN     m_eThisClassNo;
+  
     Object* m_pDeleter;
     eCN     m_eDeleterClassNo;
     Stz*    m_szFunc;
-    
-    eCN     m_eThisClassNo;
-    //const std::type_info& m_rTypeId;
-  
+      
   public:
     DeleteHelper_t(CLASS* pInstance, eCN eClassNo);
    ~DeleteHelper_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
     void vAssertNew(bool bTrace=false);
+    void vAssertSelf(CLASS* pInstance);
 
     void vGuardedDelete(CLASS** ppInstance, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
@@ -405,6 +405,17 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
            ,m_pInstance);
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert self                                                                */
+/*----------------------------------------------------------------------------*/
+template<class CLASS>
+void DeleteHelper_t<CLASS>::vAssertSelf(CLASS* pInstance)
+{
+  RASSERT(pInstance == m_pInstance);
+
+  RASSERT(m_eThisClassNo == m_pInstance->eGetClassNo());
 }
 
 /*----------------------------------------------------------------------------*/
