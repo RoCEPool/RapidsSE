@@ -244,7 +244,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // freeChunk
   
   else if (CN_FREECHUNK == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -255,7 +255,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // job
 
   else if (CN_JOB == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -274,7 +274,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // logic unit
 
   else if (CN_LOGICUNIT == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -304,11 +304,14 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // op
   
   else if (CN_OP == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
       vDebugPoint();
+    
+    RASSERT( bDELETE_RULE(CN_STREAM, "~Stream"_Stz ) );
+
 
 //    RASSERT(szFunNm &&
 //              (    szFunNm->bSame("~Stream"_Stz)
@@ -321,7 +324,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // opSpec
   
   else if (CN_OPSPEC == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -346,12 +349,15 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // pipeline
 
   else if (CN_PIPELINE == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
 
     if (! szFunNm)
       vDebugPoint();
+    
+    RASSERT( bDELETE_RULE(CN_LOGICUNIT, "~LogicUnit"_Stz ) );
+
 //
 //    RASSERT(szFunNm &&
 //              (    szFunNm->bSame("~LogicUnit"_Stz)
@@ -364,7 +370,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // pipelineSpec
     
   else if (CN_PIPELINESPEC == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -391,11 +397,13 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // stage
   
   else if (CN_STAGE == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
       vDebugPoint();
+
+    RASSERT( bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz ) );
 
 //    RASSERT(szFunNm &&
 //              (    szFunNm->bSame("~Pipeline"_Stz)
@@ -408,7 +416,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // stageSpec
   
   else if (CN_STAGESPEC == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -425,10 +433,29 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stream
+  
+  else if (CN_STREAM == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
+    if (! szFunNm)
+      vDebugPoint();
+
+    RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
+
+//    RASSERT(szFunNm &&
+//              (    szFunNm->bSame("~Stage"_Stz)
+//              )
+//            );
+//    RASSERT(CN_STAGE == eDeleter);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task
 
   else if (CN_TASK == eInstance) {
-    if (bTrace && bTrace)
+    if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
@@ -446,23 +473,6 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 //
 //    RASSERT(CN_API     == eDeleter);
 
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stream
-  
-  else if (CN_STREAM == eInstance) {
-    if (bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
-    if (! szFunNm)
-      vDebugPoint();
-
-//    RASSERT(szFunNm &&
-//              (    szFunNm->bSame("~Stage"_Stz)
-//              )
-//            );
-//    RASSERT(CN_STAGE == eDeleter);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
