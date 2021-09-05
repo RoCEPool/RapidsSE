@@ -65,7 +65,7 @@ PipelineSpec* Dynamo::pCompile(void)
                              m_p_PipelineSpec_root))
     return m_p_PipelineSpec_root;
   
-  m_p_PipelineSpec_root->vGuardedDelete(m_p_PipelineSpec_root,
+  m_p_PipelineSpec_root->vGuardedDelete(&m_p_PipelineSpec_root,
                                         this,(Stz*)__func__);
   //delete m_p_PipelineSpec_root;
   

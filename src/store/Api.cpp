@@ -129,7 +129,7 @@ void Api::vDeleteJob(Session* pSession)
   
   
   pSession->m_pSsnJob = nullptr;
-  pJob->vGuardedDelete(pJob,nullptr,(Stz*)__func__);
+  pJob->vGuardedDelete(&pJob,nullptr,(Stz*)__func__);
   
   
   if (pSession->m_pOutput->m_pStreamDef_result) {
@@ -933,7 +933,7 @@ void Api::vDeleteImmediate(Task** ppTask)
   
   //delete pJob;
   if (pJob)
-    pJob->vGuardedDelete(pJob,nullptr,(Stz*)__func__);
+    pJob->vGuardedDelete(&pJob,nullptr,(Stz*)__func__);
   
   
   //delete pTask;

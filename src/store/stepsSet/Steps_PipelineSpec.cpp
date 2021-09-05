@@ -44,11 +44,10 @@ void Step::vAddSteps_PipelineSpec(void)
 void Step::vPipelineSpecDelete(void)
 {
   ENTRY();
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  if (pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
-    pLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,(Stz*)__func__);
+   
+  if (m_p_TaskLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+    m_p_TaskLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,
+                                                                (Stz*)__func__);
   }
     
   EXIT();

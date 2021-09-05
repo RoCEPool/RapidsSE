@@ -254,7 +254,7 @@ Job::~Job(void) noexcept(false)
     
   if (m_pJobLogicUnit) {
     //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
-    m_pJobLogicUnit->vGuardedDelete(m_pJobLogicUnit,this,(Stz*)__func__);
+    m_pJobLogicUnit->vGuardedDelete(&m_pJobLogicUnit,this,(Stz*)__func__);
   }
   
   //if (m_pTask)
@@ -960,7 +960,7 @@ void Job::vResetForCascade(Session* pSession)
   if (m_pJobLogicUnit) {
     //delete m_pJobLogicUnit;
     //m_pJobLogicUnit = nullptr;
-    m_pJobLogicUnit->vGuardedDelete(m_pJobLogicUnit,this,"vResetForCascade"_Stz);
+    m_pJobLogicUnit->vGuardedDelete(&m_pJobLogicUnit,this,"vResetForCascade"_Stz);
   }
   // m_oJobTags
   // m_xResult ???

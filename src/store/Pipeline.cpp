@@ -66,12 +66,12 @@ Pipeline::~Pipeline(void) noexcept(false)
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
     
-    pStage->vGuardedDelete(pStage,this,(Stz*)__func__);
+    pStage->vGuardedDelete(&pStage,this,(Stz*)__func__);
   }
 
   vClear();
 
-  m_pPipelineSpec->vGuardedDelete(m_pPipelineSpec,this,(Stz*)__func__);
+  m_pPipelineSpec->vGuardedDelete(&m_pPipelineSpec,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

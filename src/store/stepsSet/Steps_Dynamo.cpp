@@ -82,7 +82,7 @@ void Step::vDynamoCompileStmt(void)
       // b) clean compile, but does not pass pre-execution requirments
 
       //delete pPipelineSpec;
-      pPipelineSpec->vGuardedDelete(pPipelineSpec,this,(Stz*)__func__);
+      pPipelineSpec->vGuardedDelete(&pPipelineSpec,this,(Stz*)__func__);
       m_pDataStack->vPushInt(eError);
       
     }

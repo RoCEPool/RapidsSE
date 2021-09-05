@@ -65,7 +65,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec* pStageSpec = pGet(i_Stage);
     
-    pStageSpec->vGuardedDelete(pStageSpec,this,(Stz*)__func__);
+    pStageSpec->vGuardedDelete(&pStageSpec,this,(Stz*)__func__);
   }
 
   vClear();
@@ -998,7 +998,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
     RASSERT(i_Op == pStageSpec->nItems() - 1);
     pStageSpec->vRemove(pOpSpec_isStage);
     //delete pOpSpec_isStage;
-    pOpSpec_isStage->vGuardedDelete(pOpSpec_isStage,this,(Stz*)__func__);
+    pOpSpec_isStage->vGuardedDelete(&pOpSpec_isStage,this,(Stz*)__func__);
     return;
   }
 
@@ -1041,7 +1041,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
-  pOpSpec->vGuardedDelete(pOpSpec,this,(Stz*)__func__);
+  pOpSpec->vGuardedDelete(&pOpSpec,this,(Stz*)__func__);
 
   pOpSpecSend->vOtherStage(i_NextStage);
   pOpSpecSend->vOtherOp(0);

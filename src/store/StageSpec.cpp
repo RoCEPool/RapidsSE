@@ -54,7 +54,7 @@ StageSpec::~StageSpec(void) noexcept(false)
   for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
     OpSpec* pOpSpec = pGet(i_Op);
     
-    pOpSpec->vGuardedDelete(pOpSpec,this,(Stz*)__func__);
+    pOpSpec->vGuardedDelete(&pOpSpec,this,(Stz*)__func__);
   }
 
   vClear();
