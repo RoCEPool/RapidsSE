@@ -400,7 +400,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     //delete *m_xpPipeline;
     
     //vTrace("~LogicUnit:: guarded delete of m_xpPipeline\n"_Stz);
-    m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
+    m_xpPipeline.vGuardedDeleteComponent(CN_PIPELINE,
+                                         CN_LOGICUNIT,this,(Stz*)__func__);
     //vTrace("~LogicUnit:: return from guarded delete of m_xpPipeline\n"_Stz);
   }
   

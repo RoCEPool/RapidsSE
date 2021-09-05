@@ -213,7 +213,8 @@ Op::~Op(void) noexcept(false)
     
     LogicUnit* pLogicUnit = *m_pOpLogicUnit;
     m_pOpLogicUnit = nullptr;
-    pLogicUnit->vGuardedDelete(&pLogicUnit,this,(Stz*)__func__);
+    pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
+                               CN_OP,this,(Stz*)__func__);
   }
   
   if (m_pQueueLeft->nItems() != 0) {

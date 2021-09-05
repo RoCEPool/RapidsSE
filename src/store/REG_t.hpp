@@ -190,9 +190,12 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* gurded delete object                                                   */
     /*------------------------------------------------------------------------*/
-    void vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
+    void vGuardedDeleteComponent(eCN eClassNo,
+                                 eCN eDeleterClassNo, Object* pDeleter, Stz* szFunc)
     {
-      m_pComponent->vGuardedDelete(&m_pComponent,pDeleter,szFunc);
+      RASSERT(CLASSNO == eClassNo);
+      m_pComponent->vGuardedDelete(CLASSNO,&m_pComponent,
+                                   eDeleterClassNo,pDeleter,szFunc);
     }
 
     /*------------------------------------------------------------------------*/

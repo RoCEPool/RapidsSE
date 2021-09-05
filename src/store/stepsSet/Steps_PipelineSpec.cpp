@@ -46,8 +46,9 @@ void Step::vPipelineSpecDelete(void)
   ENTRY();
    
   if (m_p_TaskLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
-    m_p_TaskLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,
-                                                                (Stz*)__func__);
+    m_p_TaskLogicUnit
+      ->m_xpPipelineSpec.vGuardedDeleteComponent(CN_PIPELINESPEC,
+                                                 CN_STEP,this,(Stz*)__func__);
   }
     
   EXIT();

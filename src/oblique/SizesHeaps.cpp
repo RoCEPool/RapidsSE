@@ -206,6 +206,7 @@ SizeHeap gxaSizeHeap[]
   { 'A' - ('A' - 1),            HT_INVALID   ,0 }, // CN__A__
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
+  { 0,                          HT_INVALID   ,0 }, // CN_AM
   { sizeof(Api),                HT_INVALID   ,0 }, // CN_API
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
@@ -432,6 +433,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
   { sizeof(Scanner),            HT_T_TINY    ,0 }, // CN_SCANNER
+  { sizeof(Scheduler),          HT_INVALID   ,0 }, // CN_SCHEDULER
   { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
@@ -473,6 +475,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
+  { 0,                          HT_INVALID   ,0 }, // CN_STEP
   { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF

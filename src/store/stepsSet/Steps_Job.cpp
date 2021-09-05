@@ -468,7 +468,8 @@ void Step::vJobDelete(void)
   eCN eClass = pJob->eGetClassNo();
   UNUSED(eClass);
 
-  pJob->vGuardedDelete(&pJob,this,(Stz*)__func__);
+  pJob->vGuardedDelete(CN_STEP,&pJob,
+                       CN_JOB,this,(Stz*)__func__);
 
   EXIT();
 }

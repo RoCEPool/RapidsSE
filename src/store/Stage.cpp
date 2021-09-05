@@ -64,7 +64,8 @@ Stage::~Stage(void) noexcept(false)
   for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
     Stream* pStream = pGet(i_Stream);
     
-    pStream->vGuardedDelete(&pStream,this,(Stz*)__func__);
+    pStream->vGuardedDelete(CN_STREAM,&pStream,
+                            CN_STAGE,this,(Stz*)__func__);
   }
 
   vClear();

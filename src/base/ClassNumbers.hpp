@@ -18,6 +18,7 @@ enum eCN : u2 // Class Number
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
   /* */ CN_AGGTIMER,
+  /* */ CN_AM,
   /* */ CN_API,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
@@ -244,6 +245,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCANNER,
+  /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
@@ -284,6 +286,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
   /* */ CN_STATISTICS,
+  /* */ CN_STEP,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPS,
   /* */ CN_STREAM,
@@ -367,6 +370,7 @@ static Stz* aCN[]
   /* */ "_A__"_Stz,                 // CN__A__
   /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
+  /* */ "AM"_Stz,                   // CN_AM
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
@@ -593,6 +597,7 @@ static Stz* aCN[]
  
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCANNER"_Stz,              // CN_SCANNER
+  /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
@@ -633,6 +638,7 @@ static Stz* aCN[]
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
+  /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS
   /* */ "STRAND"_Stz,               // CN_STREAM

@@ -68,7 +68,8 @@ Stream::~Stream(void) noexcept(false)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pGet(i_Op);
     
-    pOp->vGuardedDelete(&pOp,this,(Stz*)__func__);
+    pOp->vGuardedDelete(CN_OP,&pOp,
+                        CN_STREAM,this,(Stz*)__func__);
   }
 
   vClear();
