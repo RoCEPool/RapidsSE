@@ -345,6 +345,8 @@ void Job::vPostRecv(void* aReceivedJob)
   _static_
   
   Job* pReceivedJob = _pJob(aReceivedJob);
+
+  pReceivedJob->vInductGuard(pReceivedJob);
   
   pReceivedJob->vWasReceived(true);
   
@@ -359,6 +361,8 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->m_pSingularOp = nullptr;
 
+
+  
   if (pReceivedJob->bHasTag(C_SEE_JOB))
     pReceivedJob->vSee();
   
