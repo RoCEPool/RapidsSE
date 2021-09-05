@@ -280,6 +280,12 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (! szFunNm)
       vDebugPoint();
 
+    RASSERT(   bDELETE_RULE(CN_AM,  "vDelete"_Stz         )
+            || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
+            || bDELETE_RULE(CN_JOB, "vResetForCascade"_Stz)
+            || bDELETE_RULE(CN_OP,  "~Op"_Stz             )
+            );
+
 //    RASSERT(szFunNm &&
 //              (   szFunNm->bSame("~Job"_Stz)
 //               || szFunNm->bSame("~Op"_Stz)

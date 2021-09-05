@@ -255,7 +255,7 @@ Job::~Job(void) noexcept(false)
   if (m_pJobLogicUnit) {
     //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
-                                    CN_API,this,(Stz*)__func__);
+                                    CN_JOB,this,(Stz*)__func__);
   }
   
   //if (m_pTask)
