@@ -198,7 +198,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   
   //delete pSelfTask;
   
-  pSelfTask->vGuardedDelete(pSelfTask,nullptr,(Stz*)__func__);
+  pSelfTask->vGuardedDelete(&pSelfTask,nullptr,(Stz*)__func__);
 
   /** do not touch task **/
 }
@@ -235,7 +235,7 @@ void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
   
   //delete pSelfTask;
 
-  pSelfTask->vGuardedDelete(pSelfTask,nullptr,(Stz*)__func__);
+  pSelfTask->vGuardedDelete(&pSelfTask,nullptr,(Stz*)__func__);
   /** do not touch task **/
 }
 

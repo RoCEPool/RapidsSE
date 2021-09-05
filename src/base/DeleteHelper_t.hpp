@@ -26,7 +26,7 @@ namespace BASE
     void vAssertDelete(bool bTrace=false);
     void vAssertNew(bool bTrace=false);
 
-    void vGuardedDelete(CLASS*& prInstance, Object* pDeleter, Stz* szFunc);
+    void vGuardedDelete(CLASS** ppInstance, Object* pDeleter, Stz* szFunc);
     void vGuardedDeleteExplicit(Object* pDeleter, Stz* szFunc);
   };
 }
@@ -411,7 +411,7 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 /* delete this                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prInstance,
+void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS** ppInstance,
                                            Object* pDeleter,
                                            Stz* szFunc)
 {
@@ -424,15 +424,22 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(CLASS*& prInstance,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //delete (CLASS*)this;
+  if (*ppInstance != m_pInstance) {
+    vTrace("vGuardedDelete: *ppInstance %p != m_pInstance %p\n"_Stz
+           ,*ppInstance
+           ,m_pInstance
+           );
+  }
   
-  RASSERT(prInstance == m_pInstance);
+  RASSERT(*ppInstance == m_pInstance);
+  
   if (CN_PIPELINE == m_eThisClassNo)
     vTrace("vGuardedDelete: delete m_pInstance (PIPELINE)\n"_Stz);
   delete m_pInstance;
   if (CN_PIPELINE == m_eThisClassNo)
     vTrace("vGuardedDelete: return from delete m_pInstance (PIPELINE)\n"_Stz);
 
-  prInstance = nullptr;
+  * ppInstance = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
