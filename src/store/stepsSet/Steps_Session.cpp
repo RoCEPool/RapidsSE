@@ -37,6 +37,9 @@ void Step::vAddSteps_Session(void)
   vAddStep("session::todo!"_Stz,         &Step::vSessionToDoStore);
   vAddStep("session::tx@"_Stz,           &Step::vSessionTxFetch);
   vAddStep("session::tx!"_Stz,           &Step::vSessionTxStore);
+  
+  vAddStep("session[].signal"_Stz,       &Step::vSessionSignal);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,6 +288,62 @@ void Step::vSessionTxStore(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* session[].signal -- signal the waiting session                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionSignal(void)
+{
+  ENTRY();
+  
+  // there will be a thread waiting on completion of the job
+  // this could be a prompt thread or a java thread via the connector
+  
+  Job* pJob = MY::pJob();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pJob->bHasTag_noWait()) {
+    //! this is incomplete ... memory leak; job & task need to be deleted
+    EXIT();
+    return;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vGrabTaskLock((Stz*)__func__);
+
+  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
+  
+  pJob->vJobState(JS_SIGNALLED);
+
+  i8 i_Session = pJob->m_i_Session;
+  
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  Sessions::vMarkSignalled(pSession);
+  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
+  
+
+  
+  vJob(nullptr);
+
+  pSession->m_oMutex.vLock(this);
+  pSession->m_oMutex.vSignal(this);
+  pSession->m_oMutex.vUnlock(this);
+
+  vDropTaskLock((Stz*)__func__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //vScheduleCompletion();
+  
+
+  
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

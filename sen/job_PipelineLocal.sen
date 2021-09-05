@@ -44,8 +44,9 @@
     // cross check
     PipelineSpec[] not assert
 
-    job[] job.signalSession
+    Session[].signal
     pipelineLocal::termination
+    
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,7 +108,9 @@
   
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
-  job[] job.signalSession
+      
+  Session[].signal
+
   pipelineLocal::termination
 ;
 

@@ -729,7 +729,6 @@ public:
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
   void vJobStateFetch(void);
@@ -1567,6 +1566,7 @@ public:
   void vSessionHasCascadeStore(void);
   void vSessionPid(void);
   void vSessionSee(void);
+  void vSessionSignal(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);

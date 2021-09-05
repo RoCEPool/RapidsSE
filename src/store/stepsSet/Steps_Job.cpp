@@ -93,7 +93,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
   vAddStep("job.singularOp@"_Stz,      &Step::vJobSingularOpFetch);
   vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
@@ -1082,60 +1081,6 @@ void Step::vJobShow(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   UNUSED(pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.signalSession -- signal the waiting session                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSignalSession(void)
-{
-  ENTRY();
-  
-  // there will be a thread waiting on completion of the job
-  // this could be a prompt thread or a java thread via the connector
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pJob->bHasTag_noWait()) {
-    //! this is incomplete ... memory leak; job & task need to be deleted
-    EXIT();
-    return;
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vGrabTaskLock((Stz*)__func__);
-
-  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
-  
-  pJob->vJobState(JS_SIGNALLED);
-
-  i8 i_Session = pJob->m_i_Session;
-  
-  Session* pSession = AM::pSessions()->pGetSession(i_Session);
-  Sessions::vMarkSignalled(pSession);
-  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
-  
-
-  
-  vJob(nullptr);
-
-  pSession->m_oMutex.vLock(this);
-  pSession->m_oMutex.vSignal(this);
-  pSession->m_oMutex.vUnlock(this);
-
-  vDropTaskLock((Stz*)__func__);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vScheduleCompletion();
-  
-
-  
   EXIT();
 }
 

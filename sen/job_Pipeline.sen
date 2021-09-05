@@ -93,7 +93,7 @@
 
       job::error!
 
-      job[] job.signalSession
+      Session[].signal
     
       pipeline::terminate_origin
 
@@ -150,8 +150,8 @@
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
   
-  job[] job.signalSession
-  
+  Session[].signal
+
   pipeline::terminate_origin
   
   HAZARD
