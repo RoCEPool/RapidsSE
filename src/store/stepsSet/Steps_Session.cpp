@@ -315,7 +315,7 @@ void Step::vSessionSignal(void)
 
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
-  pJob->vJobState(JS_SIGNALLED);
+  //pJob->vJobState(JS_SIGNALLED);
 
   i8 i_Session = pJob->m_i_Session;
   

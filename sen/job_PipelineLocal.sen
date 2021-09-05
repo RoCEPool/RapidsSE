@@ -44,6 +44,8 @@
     // cross check
     PipelineSpec[] not assert
 
+    JS_SIGNALLED job::state!
+      
     task[] task.grabLock
     Session[].signal
     task[] task.dropLock
@@ -111,6 +113,8 @@
   
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
+      
+  JS_SIGNALLED job::state!
       
   task[] task.grabLock
   Session[].signal
