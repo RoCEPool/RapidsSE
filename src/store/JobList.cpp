@@ -136,7 +136,8 @@ Job* JobList::pFindJob(i8 iJobId)
 //    vDropLock();
 //  }
   
-  pJob__Find->vGuardedDeleteExplicit(CN_JOBLIST,this,
+  pJob__Find->vGuardedDeleteExplicit(CN_JOB,
+                                     CN_JOBLIST,this,
                                      (Stz*)__func__);
   delete pJob__Find;
 

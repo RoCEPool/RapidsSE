@@ -233,9 +233,11 @@ namespace OBLIQUE
     class EE
     {
     public:
-      static void vAssertEEDelete(eCN eInstanceClassNo,
+      static void vAssertEEDelete(eCN eInstance,
                                   Object* pInstance,
-                                  eCN eDeleterClassNo,
+                                  
+                                  eCN eExpecting,
+                                  eCN eDeleter,
                                   Object* pDeleter,
                                   Stz* szDelFunc,
                                   bool bTrace);
