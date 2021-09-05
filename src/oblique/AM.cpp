@@ -327,6 +327,11 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (! szFunNm)
       vDebugPoint();
 
+    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vStageFirstSend"_Stz     )
+            || bDELETE_RULE(CN_PIPELINESPEC, "vStageSubsequentSend"_Stz)
+            || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz          )
+            );
+    
 //    RASSERT(szFunNm &&
 //              (   szFunNm->bSame("vStageFirstSend"_Stz)
 //               || szFunNm->bSame("vStageSubsequentSend"_Stz)
@@ -365,6 +370,12 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (! szFunNm)
       vDebugPoint();
 
+    RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
+            || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompileStmt"_Stz )
+            || bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz          )
+            || bDELETE_RULE(CN_STEP,     "vPipelineSpecDelete"_Stz)
+            );
+
 //    RASSERT(szFunNm &&
 //              (   szFunNm->bSame("~Pipeline"_Stz)
 //               || szFunNm->bSame("vPipelineSpecDelete"_Stz)
@@ -402,6 +413,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szFunNm,pDeleter);
     if (! szFunNm)
       vDebugPoint();
+
+    RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
 
 //    RASSERT(szFunNm &&
 //              (    szFunNm->bSame("~PipelineSpec"_Stz)
