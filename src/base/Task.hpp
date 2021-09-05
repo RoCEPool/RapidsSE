@@ -9,7 +9,7 @@
 #include "eTS.h"
 #include "TraceLock.hpp"
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 namespace BASE
 {  
@@ -26,7 +26,7 @@ namespace BASE
   
   class Task : public Object,
                public ListItem_t<Task>,
-               public DeleteHelper_t<Task>
+               public LifeGuard_t<Task>
   {
   friend class STORE::Step;
   

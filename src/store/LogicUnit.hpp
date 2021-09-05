@@ -133,7 +133,7 @@ namespace STORE
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object,
-                    public DeleteHelper_t<LogicUnit>
+                    public LifeGuard_t<LogicUnit>
   {
   private:
   

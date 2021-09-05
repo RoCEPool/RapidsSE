@@ -30,7 +30,7 @@ __aFooterFunction(Pipeline)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
-: DeleteHelper_t<Pipeline>(this,CN_PIPELINE)
+: LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   

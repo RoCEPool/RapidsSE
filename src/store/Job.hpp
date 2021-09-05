@@ -10,7 +10,7 @@
 #include "eRS.h"
 #include "eSS.h"
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -24,7 +24,7 @@ namespace STORE
 {
   class Job : public Object,
               public CRM<Job>,
-              public DeleteHelper_t<Job>
+              public LifeGuard_t<Job>
   {
   public:
   

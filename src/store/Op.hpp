@@ -9,7 +9,7 @@
 #include "eSS.h"
 
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 namespace BASE { class OperandQueue; }
 
@@ -18,7 +18,7 @@ namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 namespace STORE
 {
   class Op : public Operand,
-             public DeleteHelper_t<Op>
+             public LifeGuard_t<Op>
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --

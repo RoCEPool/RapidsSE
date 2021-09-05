@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DeleteHelper_t.hpp -- a delete helper                                      */
+/* LifeGuard_t.hpp -- lifecycle rules and helper for EE componentry           */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 namespace BASE
 {
   template<class CLASS>
-  class DeleteHelper_t
+  class LifeGuard_t
   {
   public:
     CLASS*  m_pInstance;
@@ -21,8 +21,8 @@ namespace BASE
     bool    m_bTrace;
       
   public:
-    DeleteHelper_t(CLASS* pInstance, eCN eClassNo);
-   ~DeleteHelper_t(void) noexcept(false);
+    LifeGuard_t(CLASS* pInstance, eCN eClassNo);
+   ~LifeGuard_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
     void vAssertNew(bool bTrace=false);
@@ -46,7 +46,7 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::DeleteHelper_t(CLASS* pInstance, eCN eThisClassNo)
+LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
 {
   m_pInstance       = pInstance;
   m_eThisClassNo    = eThisClassNo;
@@ -65,7 +65,7 @@ DeleteHelper_t<CLASS>::DeleteHelper_t(CLASS* pInstance, eCN eThisClassNo)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
+LifeGuard_t<CLASS>::~LifeGuard_t(void) noexcept(false)
 {
   vAssertDelete(false);
 }
@@ -78,7 +78,7 @@ DeleteHelper_t<CLASS>::~DeleteHelper_t(void) noexcept(false)
 /* assert delete                                                              */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
+void LifeGuard_t<CLASS>::vAssertDelete(bool bTrace)
 {
   if (false)
     {;}
@@ -313,7 +313,7 @@ void DeleteHelper_t<CLASS>::vAssertDelete(bool bTrace)
 /* assert new                                                                 */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
+void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
 {
   if (false)
     {;}
@@ -423,7 +423,7 @@ void DeleteHelper_t<CLASS>::vAssertNew(bool bTrace)
 /* assert self                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vAssertSelf(CLASS* pInstance)
+void LifeGuard_t<CLASS>::vAssertSelf(CLASS* pInstance)
 {
   RASSERT(pInstance == m_pInstance);
 
@@ -434,7 +434,7 @@ void DeleteHelper_t<CLASS>::vAssertSelf(CLASS* pInstance)
 /* delete this                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vGuardedDelete(eCN eClassNo,
+void LifeGuard_t<CLASS>::vGuardedDelete(eCN eClassNo,
                                            CLASS** ppInstance,
                                            eCN eDeleterClassNo,
                                            Object* pDeleter,
@@ -475,7 +475,7 @@ void DeleteHelper_t<CLASS>::vGuardedDelete(eCN eClassNo,
 /* set who is going to explicitly delete this object                          */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(eCN eDeleterClassNo,
+void LifeGuard_t<CLASS>::vGuardedDeleteExplicit(eCN eDeleterClassNo,
                                                    Object* pDeleter,
                                                    Stz* szDelFunc)
 {
@@ -490,7 +490,7 @@ void DeleteHelper_t<CLASS>::vGuardedDeleteExplicit(eCN eDeleterClassNo,
 /* post recv() induction                                                      */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void DeleteHelper_t<CLASS>::vInductGuard(CLASS* pInstance)
+void LifeGuard_t<CLASS>::vInductGuard(CLASS* pInstance)
 {
   
   m_pInstance    = pInstance;
