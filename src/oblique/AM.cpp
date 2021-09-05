@@ -421,6 +421,10 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (! szFunNm)
       vDebugPoint();
 
+    RASSERT(   bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_RetireThisTask"_Stz)
+            );
+
 //    RASSERT(szFunNm &&
 //              (   szFunNm->bSame("vTaskSelf_DeleteThisTask"_Stz)
 //               || szFunNm->bSame("???"_Stz)
