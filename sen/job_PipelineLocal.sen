@@ -44,7 +44,10 @@
     // cross check
     PipelineSpec[] not assert
 
+    task[] task.grabLock
     Session[].signal
+    task[] task.dropLock
+    
     pipelineLocal::termination
     
   then
@@ -109,8 +112,10 @@
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
       
+  task[] task.grabLock
   Session[].signal
-
+  task[] task.dropLock
+ 
   pipelineLocal::termination
 ;
 

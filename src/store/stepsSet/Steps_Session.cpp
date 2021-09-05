@@ -303,15 +303,15 @@ void Step::vSessionSignal(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pJob->bHasTag_noWait()) {
-    //! this is incomplete ... memory leak; job & task need to be deleted
-    EXIT();
-    return;
-  }
+//  if (pJob->bHasTag_noWait()) {
+//    //! this is incomplete ... memory leak; job & task need to be deleted
+//    EXIT();
+//    return;
+//  }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vGrabTaskLock((Stz*)__func__);
+//  vGrabTaskLock((Stz*)__func__);
 
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
@@ -331,7 +331,7 @@ void Step::vSessionSignal(void)
   pSession->m_oMutex.vSignal(this);
   pSession->m_oMutex.vUnlock(this);
 
-  vDropTaskLock((Stz*)__func__);
+//  vDropTaskLock((Stz*)__func__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
