@@ -5,6 +5,8 @@
 
 #include <typeinfo>
 
+#include "AM.hpp"
+
 namespace BASE
 {
   template<class CLASS>
@@ -48,11 +50,11 @@ namespace BASE
 template<class CLASS>
 LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
 {
-  m_pInstance       = pInstance;
   m_eThisClassNo    = eThisClassNo;
+  m_pInstance       = pInstance;
   
-  m_pDeleter        = nullptr;
   m_eDeleterClassNo = CN_NONE;
+  m_pDeleter        = nullptr;
   m_szDelFunc       = nullptr;
   
   m_bTrace = false;
@@ -80,6 +82,11 @@ LifeGuard_t<CLASS>::~LifeGuard_t(void) noexcept(false)
 template<class CLASS>
 void LifeGuard_t<CLASS>::vAssertDelete(bool bTrace)
 {
+  AM::EE::vAssertEEDelete(m_eThisClassNo,m_pInstance,
+                         m_eDeleterClassNo,m_pDeleter,
+                         m_szDelFunc,m_bTrace && bTrace);
+ 
+#if 0
   if (false)
     {;}
 
@@ -306,7 +313,7 @@ void LifeGuard_t<CLASS>::vAssertDelete(bool bTrace)
            ,aCN[m_eDeleterClassNo]
            );
   }
-
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

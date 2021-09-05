@@ -230,6 +230,17 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
+    class EE
+    {
+    public:
+      static void vAssertEEDelete(eCN eInstanceClassNo,
+                                  Object* pInstance,
+                                  eCN eDeleterClassNo,
+                                  Object* pDeleter,
+                                  Stz* szDelFunc,
+                                  bool bTrace);
+    };
+  
     class ENGINE
     {
     public:
