@@ -239,7 +239,7 @@ namespace OBLIQUE
                                   eCN eExpecting,
                                   eCN eDeleter,
                                   Object* pDeleter,
-                                  Stz* szDelFunc,
+                                  Stz* szDelFunNm,
                                   bool bTrace);
     };
   
