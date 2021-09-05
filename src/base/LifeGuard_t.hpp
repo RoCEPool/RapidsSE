@@ -37,12 +37,12 @@ namespace BASE
                         Object* pDeleter,
                         Stz* szDelFunc);
   
-    void vGuardedDeleteExplicit(eCN eExpecting,
-                                eCN eDeleter,
-                                Object* pDeleter,
-                                Stz* szDelFunc);
+//    void vGuardedDeleteExplicit(eCN eExpecting,
+//                                eCN eDeleter,
+//                                Object* pDeleter,
+//                                Stz* szDelFunc);
   
-    void vInductGuard(CLASS* pInstance);
+    void vInductIntoNode(CLASS* pInstance);
   };
 }
 
@@ -451,7 +451,7 @@ void LifeGuard_t<CLASS>::vGuardedDelete(eCN eExpecting,
                                         Object* pDeleter,
                                         Stz* szDelFunc)
 {
-  m_eExpecting  = eExpecting;
+  m_eExpecting = eExpecting;
   m_eDeleter   = eDeleterClassNo;
   m_pDeleter   = pDeleter;
   m_szDelFunNm = szDelFunc;
@@ -486,28 +486,28 @@ void LifeGuard_t<CLASS>::vGuardedDelete(eCN eExpecting,
 /*----------------------------------------------------------------------------*/
 /* set who is going to explicitly delete this object                          */
 /*----------------------------------------------------------------------------*/
-template<class CLASS>
-void LifeGuard_t<CLASS>::vGuardedDeleteExplicit(eCN eExpecting,
-                                                eCN eDeleter,
-                                                Object* pDeleter,
-                                                Stz* szDelFunNm)
-{
-  m_eExpecting  = eExpecting;
-  m_eDeleter   = eDeleter;
-  m_pDeleter   = pDeleter;
-  m_szDelFunNm = szDelFunNm;
-
-  vAssertDelete(false);
-}
+//template<class CLASS>
+//void LifeGuard_t<CLASS>::vGuardedDeleteExplicit(eCN eExpecting,
+//                                                eCN eDeleter,
+//                                                Object* pDeleter,
+//                                                Stz* szDelFunNm)
+//{
+//  m_eExpecting = eExpecting;
+//  m_eDeleter   = eDeleter;
+//  m_pDeleter   = pDeleter;
+//  m_szDelFunNm = szDelFunNm;
+//
+//  vAssertDelete(false);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* post recv() induction                                                      */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-void LifeGuard_t<CLASS>::vInductGuard(CLASS* pInstance)
+void LifeGuard_t<CLASS>::vInductIntoNode(CLASS* pInstance)
 {
   
-  m_pInstance    = pInstance;
+  m_pInstance = pInstance;
   m_eInstance = m_pInstance->eGetClassNo();
   
   RASSERT(! m_pDeleter);

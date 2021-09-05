@@ -347,7 +347,7 @@ void Job::vPostRecv(void* aReceivedJob)
   
   Job* pReceivedJob = _pJob(aReceivedJob);
 
-  pReceivedJob->vInductGuard(pReceivedJob);
+  pReceivedJob->vInductIntoNode(pReceivedJob);
   
   pReceivedJob->vWasReceived(true);
   
