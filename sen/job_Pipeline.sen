@@ -71,6 +71,9 @@
     <preCheck> find execute not if
 
       job::error!
+      
+      DdlLock[].testDrop
+
 
       JS_SIGNALLED job::state!
       
@@ -110,6 +113,7 @@
   else
     // pipeline statement didnt compile
     job::error!
+    DdlLock[].testDrop
   then
 
   // cross check

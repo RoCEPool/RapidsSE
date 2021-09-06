@@ -43,8 +43,12 @@
 
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
+    
       EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
+      DdlLock[].testDrop
+      
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
+      
       Path[].popIndexesFolder
       Path[].popNamedTableFolder
       folder[].isTables assert
@@ -57,6 +61,8 @@
 /*
   pIndex index.populate not if ( errorCode )
     job::error!
+    DdlLock[].testDrop
+
     Path[].popIndexesFolder
     Path[].popNamedTableFolder
     folder[].isTables assert

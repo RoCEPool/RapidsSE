@@ -226,7 +226,7 @@
 /*----------------------------------------------------------------------------*/
 : job::error! params| errorCode |
 
-  DdlLock[].testDrop
+  //DdlLock[].testDrop
 
   errorCode job[] job.error!
 ;

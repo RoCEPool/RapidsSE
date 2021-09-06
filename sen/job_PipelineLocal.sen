@@ -37,6 +37,8 @@
     //"got error" .
     job::error!
     
+    DdlLock[].testDrop
+
     PipelineSpec[].delete
         
     // cross check
