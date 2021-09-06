@@ -144,6 +144,8 @@ void Step::vTaskDelete(void)
     m_pJob = nullptr;
   }
   
+  RASSERT(! m_pJob);
+  
   Stz* szThreadNm = MY::szThreadNm();
 
   vGrabTaskLock((Stz*)__func__);

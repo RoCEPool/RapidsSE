@@ -14,15 +14,9 @@
 /*----------------------------------------------------------------------------*/
 : job::sendToParticipants ( -- )
 
-  job[] locals| pJob |
-
-  // create the response vector in the orginating job to receive responses
-  //pJob job.createResponseVec
-
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid
-  grid::knownNodes pJob job.acksRemaining!
-
+  grid::knownNodes Job[] job.acksRemaining!
 
   // set acks for originator task
   1 task::acks!
@@ -37,7 +31,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.no pJob job.forward
+      pNode node.no job[] job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -47,21 +41,6 @@
   repeat
 
   node_I[].delete
-;
-
-/*----------------------------------------------------------------------------*/
-/* terminate this origin pipeline                                             */
-/*----------------------------------------------------------------------------*/
-: pipeline::terminate_origin ( -- )
-
-  _lu_finalise_
-
-  _job_finalise_
-
-  task[] task.grabLock
-  TR_DELETE_THIS_TASK task::transition!
-
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,8 +78,13 @@
       Session[].signal
       task[] task.dropLock
 
-      pipeline::terminate_origin
+      _lu_finalise_
 
+      _job_finalise_
+
+      task[] task.grabLock
+      TR_DELETE_THIS_TASK task::transition!
+      
       HAZARD
 
     then
@@ -160,7 +144,12 @@
   Session[].signal
   task[] task.dropLock
 
-  pipeline::terminate_origin
+  _lu_finalise_
+
+  _job_finalise_
+
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
   
   HAZARD
 ;
