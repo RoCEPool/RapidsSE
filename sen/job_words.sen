@@ -393,11 +393,11 @@
 /*----------------------------------------------------------------------------*/
 : job::unlinkTaskAndJob_tbr
 
-  task::job@ if
+  task[].job@ if
   
-    nullptr task::job@ job.task!
+    nullptr task[].job@ job.task!
     
-    nullptr task::job!
+    nullptr task[].job!
   then
 ;
 
