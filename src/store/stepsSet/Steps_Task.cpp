@@ -143,6 +143,9 @@ void Step::vTaskDelete(void)
     m_pJob->vTask(nullptr);
     m_pJob = nullptr;
   }
+  else {
+    NEVER_REACH
+  }
   
   RASSERT(! m_pJob);
   

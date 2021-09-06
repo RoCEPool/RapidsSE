@@ -24326,7 +24326,7 @@ void Task::vAddMunged(Task* )
     ": op__retires\n"
     "\n"
     "  \n"
-    "  task::scheduledelete\n"
+    "  //task::scheduledelete\n"
     "\n"
     "  task[] task.grabLock\n"
     "  TR_DELETE_THIS_TASK task::transition!\n"
