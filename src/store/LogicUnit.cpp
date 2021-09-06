@@ -1575,6 +1575,10 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 
 #endif
 
+
+#define EO_ENTER EndDefine
+#define EO_EXIT EndDefine
+
 i8 giaVectorSet[] =
 {
 /* 00 */ L_QUANTITY,
