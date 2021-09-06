@@ -130,7 +130,6 @@
   //JobRef[] job.removeOriginator
 
   // notify the originating task
-  //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
   JobRef[].returnReference
 

@@ -94,9 +94,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
   
-   // set originating task
-  task[] job[] job.originatingTask!
-
   job[] job.id@ job[] job.originatingId!
 
   // add job to originator jobs

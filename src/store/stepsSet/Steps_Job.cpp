@@ -68,8 +68,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
-  vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
-  vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
@@ -698,37 +696,6 @@ void Step::vJobOriginatingIdStore(void)
   i8 iOriginatingId = m_pDataStack->iPopInt(__func__);
   
   pJob->m_iOriginatingId = iOriginatingId;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask@ -- fetch the originating task from the job            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->m__dpOriginatingTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask! -- store the originating task in the job              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pOriginatingTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TASK == pOriginatingTask->eGetClassNo());
-  
-  pJob->m__dpOriginatingTask = pOriginatingTask;
   
   EXIT();
 }
