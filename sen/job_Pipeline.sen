@@ -44,18 +44,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* terminate this participant pipeline                                        */
-/*----------------------------------------------------------------------------*/
-: pipeline::terminate_participant ( -- )
-  
-  JS_DELETABLE Job[].state!
-  
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /* launch of a distributed pipeline on originating node                       */
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
@@ -298,7 +286,9 @@
   
   DdlLock[].testDrop
 
-  pipeline::terminate_participant
+  JS_DELETABLE Job[].state!
+  
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -323,7 +313,9 @@
 
   Job[] Job__Cancelled::replyToOrigin
   
-  pipeline::terminate_participant
+  JS_DELETABLE Job[].state!
+  
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
