@@ -97,7 +97,7 @@
   job[] job.id@ job[] job.originatingId!
 
   // add job to originator jobs
-  job[] job.addOriginator
+  job[] Job[].addOriginator
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on origin to check its syntax
@@ -130,9 +130,9 @@
   
   then
 
-  job[] job.removeOriginator
-  job[] job.addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
+  job[] Job[].removeOriginator
+  job[] Job[].addRetired
+  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] Job[].removeRetired ?]
   
   JS_SIGNALLED job::state!
   //Task[].grabLock
@@ -169,7 +169,7 @@
   grid::thisNode@ pJob job.participant!
 
   // add job to participant job list
-  pJob job.addParticipant
+  pJob Job[].addParticipant
 
   job::assertCorrectness
 
@@ -299,7 +299,7 @@
   JP_ENDED job[] job.phase!
   nullptr job[] job.seedWord!
 
-  job[] job.removeParticipant
+  job[] Job[].removeParticipant
 
   job[] Job__Ended::replyToOrigin
   
@@ -326,7 +326,7 @@
   JP_CANCELED job[] job.phase!
   nullptr job[] job.seedWord!
 
-  job[] job.removeParticipant
+  job[] Job[].removeParticipant
 
   job[] Job__Cancelled::replyToOrigin
   

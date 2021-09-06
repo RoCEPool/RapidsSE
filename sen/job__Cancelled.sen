@@ -127,7 +127,7 @@
   repeat
 
   // remove the originating job from the originator jobs
-  //JobRef[] job.removeOriginator
+  //JobRef[] Job[].removeOriginator
 
   // notify the originating task
   JobRef[] job.task@ task.ack

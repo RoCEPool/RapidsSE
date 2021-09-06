@@ -33,11 +33,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::state!"_Stz,             &Step::vJobStateStore);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
-  vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
-  vAddStep("job.addLocal"_Stz,         &Step::vJobAddLocal);
-  vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
-  vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
-  vAddStep("job.addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
@@ -76,10 +71,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
-  vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
-  vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
-  vAddStep("job.removeRetired"_Stz,    &Step::vJobRemoveRetired);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -97,8 +88,18 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   
   
-  vAddStep("job[]"_Stz,      &Step::vRegJobGet);
+  vAddStep("job[]"_Stz,                  &Step::vRegJobGet);
 
+  vAddStep("Job[].addDemon"_Stz,         &Step::vJobAddDemon);
+  vAddStep("Job[].addLocal"_Stz,         &Step::vJobAddLocal);
+  vAddStep("Job[].addOriginator"_Stz,    &Step::vJobAddOriginator);
+  vAddStep("Job[].addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("Job[].addRetired"_Stz,       &Step::vJobAddRetired);
+  
+  vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
+  vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
+  vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
+  vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
 }
 
 
@@ -119,7 +120,7 @@ void Step::vJobAcksRemaining(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.addDemon -- add job to demon job set                                   */
+/* Job[].addDemon -- add job to demon job set                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddDemon(void)
 {
@@ -141,7 +142,7 @@ void Step::vJobAddDemon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.addLocal -- add job to local job set                                   */
+/* Job[].addLocal -- add job to local job set                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddLocal(void)
 {
@@ -157,7 +158,7 @@ void Step::vJobAddLocal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.addOriginator -- add job to originator job set                         */
+/* Job[].addOriginator -- add job to originator job set                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddOriginator(void)
 {
@@ -179,7 +180,7 @@ void Step::vJobAddOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.addParticipant -- add job to participant job set                       */
+/* Job[].addParticipant -- add job to participant job set                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddParticipant(void)
 {
@@ -199,7 +200,7 @@ void Step::vJobAddParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.addRetired -- add job to retired job set                               */
+/* Job[].addRetired -- add job to retired job set                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddRetired(void)
 {
@@ -738,7 +739,7 @@ void Step::vJobPhaseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removeLocal -- remove job from local job set                           */
+/* Job[].removeLocal -- remove job from local job set                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveLocal(void)
 {
@@ -761,7 +762,7 @@ void Step::vJobRemoveLocal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removeOriginator -- remove job from originator job set                 */
+/* Job[].removeOriginator -- remove job from originator job set                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveOriginator(void)
 {
@@ -784,7 +785,7 @@ void Step::vJobRemoveOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removeParticipant -- remove job from participant job set               */
+/* Job[].removeParticipant -- remove job from participant job set               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveParticipant(void)
 {
@@ -807,7 +808,7 @@ void Step::vJobRemoveParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removeRetired -- remove job from retired job set                       */
+/* Job[].removeRetired -- remove job from retired job set                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveRetired(void)
 {
