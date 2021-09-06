@@ -131,27 +131,15 @@
   then
 
   job[] job.removeOriginator
-
   job[] job.addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
   
   JS_SIGNALLED job::state!
-
   task[].grabLock
   Session[].signal
   task[].dropLock
-
-
-  //_lu_finalise_
  
   DdlLock[].testDrop
- 
-  // check this task has no job reference
-  JobRef[].none
- 
-  DdlLock[].none
-
-
  
   task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
