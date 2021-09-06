@@ -15,20 +15,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegTask(void)
 {
-  vAddStep("Task[]"_Stz,              &Step::vRegTaskGet);
+  vAddStep("Task[]"_Stz,                &Step::vRegTaskGet);
   
-  vAddStep("Task[].dropLock"_Stz,     &Step::vTaskDropLock);
-  vAddStep("Task[].grabLock"_Stz,     &Step::vTaskGrabLock);
+  vAddStep("Task[].acksRemaining!"_Stz, &Step::vTaskAcksStore);
 
-  vAddStep("Task[].job@"_Stz,         &Step::vTaskJobFetch);
-  vAddStep("Task[].job!"_Stz,         &Step::vTaskJobStore);
+  vAddStep("Task[].dropLock"_Stz,       &Step::vTaskDropLock);
+  vAddStep("Task[].grabLock"_Stz,       &Step::vTaskGrabLock);
+
+  vAddStep("Task[].job@"_Stz,           &Step::vTaskJobFetch);
+  vAddStep("Task[].job!"_Stz,           &Step::vTaskJobStore);
   
-  vAddStep("Task[].transition!"_Stz,  &Step::vTaskTransitionStore);
+  vAddStep("Task[].transition!"_Stz,    &Step::vTaskTransitionStore);
   
-  vAddStep("Task[].wait"_Stz,         &Step::vTaskWait);
+  vAddStep("Task[].wait"_Stz,           &Step::vTaskWait);
   
-  vAddStep("Task[].yield"_Stz,        &Step::vTaskYield);
-  vAddStep("Task[].yield_opLoop"_Stz, &Step::vTaskYield_opLoop);
+  vAddStep("Task[].yield"_Stz,          &Step::vTaskYield);
+  vAddStep("Task[].yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,6 +44,25 @@ void Step::vRegTaskGet(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Task[].acksRemaining! -- store value into given tasks m_oAcksRmg_task      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskAcksStore(void)
+{
+  ENTRY();
+    
+  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
+  
+  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
+
+  RASSERT(bIsLocked());
+  
+  vAcksRmg(nAcksRequired);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Task[].grabLock -- grab this task's lock                                    */

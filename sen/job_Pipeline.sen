@@ -14,13 +14,6 @@
 /*----------------------------------------------------------------------------*/
 : job::distributeParticipants ( -- )
 
-  // set the no of acks expected by originator job
-  //   to be the number of defined nodes in the grid
-  grid::knownNodes Job[] job.acksRemaining!
-
-  // set acks for originator task
-  1 task::acks!
-
   // send the job to each connected node in the grid
 
   0 locals| pNode |
@@ -106,9 +99,19 @@
   // distribute the participants of this job and execute them
   
   Job[].error@ not if
-    // compiled without error..
+    // + compiled without error..
+    
     Task[].grabLock
+    
+    // set the no of acks expected by originator job
+    //   to be the number of defined nodes in the grid
+    grid::knownNodes Job[] job.acksRemaining!
+
+    // set acks for originator task
+    1 Task[].acksRemaining!
+
     job::distributeParticipants
+    
     Task[].wait
   then
 

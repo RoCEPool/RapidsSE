@@ -22,7 +22,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
-  vAddStep("task::acks!"_Stz,          &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
@@ -64,24 +63,6 @@ void Step::vTaskAck(void)
   if (bWasQueued)
     gpAttachMap->m_oStatistics.Task.m_nAcks++;
 #endif
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::acks! -- store value into given tasks m_oAcksRmg_task                      */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskAcksStore(void)
-{
-  ENTRY();
-    
-  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
-  
-  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
-
-  RASSERT(bIsLocked());
-  
-  vAcksRmg(nAcksRequired);
   
   EXIT();
 }
