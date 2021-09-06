@@ -7,6 +7,7 @@
 #include "eED.h"
 #include "eEO.h"
 #include "ePX.h"
+#include "eLR.h"
 
 #include "RowSingle.hpp"
 
@@ -86,82 +87,82 @@ LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
-,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         "m_xpBucket"_Stz)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
-,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  "m_xpCrwBuffer"_Stz)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       "m_xpCrwToRow"_Stz)
-,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList, "m_xpCsvBuffer"_Stz)
+,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
+,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       LR_CRWTOROW)
+,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList,  LR_CSVBUFFER)
 
-,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     "m_xpDataBuffer"_Stz)
-,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir0"_Stz)
-,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir1"_Stz)
+,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     LR_DATABUFFER)
+,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR0)
+,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR1)
 
-,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        "m_xpErrorMarker"_Stz)
-,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       "m_xpExprEval"_Stz)
+,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        LR_ERRORMARKER)
+,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       LR_EXPEVAL)
 
-,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile0"_Stz)
-,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile1"_Stz)
-,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       "m_xpExprEval"_Stz)
-,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
-,        m_xpHandler(this,RF_REPAIR_NONE,  nullptr,                 "m_xpHandler"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE0)
+,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE1)
+,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       LR_FILTER)
+,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_GRID)
+,        m_xpHandler(this,RF_REPAIR_NONE,  nullptr,                 LR_HANDLER)
 
-,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 "m_xpIndex"_Stz)
-,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 "m_xpIndexDef"_Stz)
-,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,    "m_xpIndexStream"_Stz)
-,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        "m_xpInfoSet"_Stz)
-,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 "m_xpRow"_Stz)
-,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpInfoSetTable"_Stz)
+,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 LR_INDEX)
+,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 LR_INDEXDEF)
+,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,    LR_INDEXSTREAM)
+,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        LR_INFOSET)
+,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 LR_INFOSETROW)
+,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 LR_INFOSETTABLE)
 
-,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      "m_xpList"_Stz)
-,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  "m_xpLogicCompiler"_Stz)
+,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      LR_LIST)
+,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
 
-,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 "m_xpMarker"_Stz)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpMemoryHog"_Stz)
-,           m_xpMeta(this,RF_REPAIR_DELETE,MetaGet::vRepair,       "m_xpMeta"_Stz)
+,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 LR_MARKER)
+,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_MEMORYHOG)
+,           m_xpMeta(this,RF_REPAIR_DELETE,MetaGet::vRepair,        LR_META)
 
-,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,"m_xpNamedBuffer"_Stz)
-,           m_xpNode(this,RF_REPAIR_NEVER,  nullptr,                 "m_xpNode"_Stz)
-,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 "m_xpNode_I"_Stz)
-,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            "m_xpNow"_Stz)
+,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,LR_NAMEDBUFFER)
+,           m_xpNode(this,RF_REPAIR_NEVER,  nullptr,                LR_NODE)
+,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 LR_NODE_I)
+,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            LR_NOW)
 
-,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 "m_xpOperandOoO"_Stz)
+,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
 
-,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
-, m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
-,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 "m_xpPipein"_Stz)
-,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
-,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
+,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
+, m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
+,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
+,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
+,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
 
-,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 "m_xpRecvObject"_Stz)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
-,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
+,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
+,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_ROWBUFFER)
+,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        LR_ROWONCE)
 
-,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                 "m_xpSendNode"_Stz)
-,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                 "m_xpSends"_Stz)
-,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       "m_xpShardDef"_Stz)
-,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 "m_xpSocket"_Stz)
-,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
-,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefOut"_Stz)
-,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   "m_xpStreamDefRht"_Stz)
-,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamSet"_Stz)
-, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpStreamSetTable"_Stz)
-,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    "m_xpSubset"_Stz)
+,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                 LR_SENDNODE)
+,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                 LR_SENDS)
+,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       LR_SHARDDEF)
+,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 LR_SOCKET)
+,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFLFT)
+,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFOUT)
+,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   LR_STREAMDEFRHT)
+,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
+, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
+,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
 
-,          m_xpTable(this,RF_SET_NULL,     nullptr,                 "m_xpTable"_Stz)
-,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 "m_xpTablePtn"_Stz)
-,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          "m_xpTimer"_Stz)
-,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,"m_xpToBktCrw"_Stz)
-,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,"m_xpToBktRow"_Stz)
-,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       "m_xpToNstRow"_Stz)
-,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,"m_xpToPtnCrw"_Stz)
-,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,"m_xpToPtnRow"_Stz)
-,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      "m_xpToRow"_Stz)
-,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          "m_xpTx"_Stz)
+,          m_xpTable(this,RF_SET_NULL,     nullptr,                 LR_TABLE)
+,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 LR_TABLEPTN)
+,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
+,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
+,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,LR_TOBKTROW)
+,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       LR_TONSTROW)
+,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
+,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
+,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
+,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
 
-,             m_xpOp(this,RF_NONE,         nullptr,                 "m_xpOp"_Stz)
-,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
-,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
+,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
+,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
+,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -513,8 +514,6 @@ void LogicUnit::vCleanup(void)
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
     // execute register repare
-    if (p_Reg->m_szRegNm->bSame("m_xpSubset"_Stz))
-      int i = 1;
     p_Reg->vRepair();
   }
 

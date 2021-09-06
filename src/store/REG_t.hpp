@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eRF.h"
+#include "eLR.h"
 
 namespace STORE
 {
@@ -15,9 +16,9 @@ namespace STORE
     COMPONENT* m_pComponent; // pointer to the component object
     eCN        m_eClassNo;   // class no of the component
 
-    LogicUnit* m_p_LogicUnit; // which logic unit
-    Stz*       m_szRegNm;     // register name
-    eRF        m_eRepair;     // how to repair
+    LogicUnit* m_p_LogicUnit;    // which logic unit
+    eLR        m_eLogicUnitReg;  // LU register
+    eRF        m_eRepair;        // how to repair
   
     void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
@@ -43,12 +44,12 @@ namespace STORE
     REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
                    eRF eRepair,
                    void (*fpRepair)(Object* pObject, eRF eRepair),
-                   Stz* szRegNm)
+                   eLR eLogicUnitReg)
     {
-      m_p_LogicUnit = pLogicUnit;
-      m_szRegNm    = szRegNm;
-      m_eRepair    = eRepair;
-      m_fpRepair   = fpRepair;
+      m_p_LogicUnit   = pLogicUnit;
+      m_eLogicUnitReg = eLogicUnitReg;
+      m_eRepair       = eRepair;
+      m_fpRepair      = fpRepair;
     
       m_pComponent = nullptr;
       m_eClassNo   = CLASSNO;
@@ -73,10 +74,10 @@ namespace STORE
                    void (*fpRepair)(Object* pObject, eRF eRepair),
                    bool bNullOnDelete,
                    bool bDeleteOnFailure,
-                   Stz* szRegNm)
+                   eLR eLogicUnitReg)
     {
-      m_p_LogicUnit = pLogicUnit;
-      m_szRegNm    = szRegNm;
+      m_p_LogicUnit   = pLogicUnit;
+      m_eLogicUnitReg = eLogicUnitReg;
       m_eRepair    = eRepair;
       m_fpRepair   = fpRepair;
 
@@ -116,7 +117,7 @@ namespace STORE
     void operator = (COMPONENT* pComponent)
     {
       if (pComponent && ! AM::bInBufferPool(pComponent)) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
       }
     
@@ -131,7 +132,7 @@ namespace STORE
                  ,aCN[eClassNo]
                  ,CLASSNO
                  ,aCN[CLASSNO]
-                 ,m_szRegNm
+                 ,aLR[m_eLogicUnitReg]
                  );
         RASSERT(eClassNo == m_eClassNo);
       }
@@ -145,7 +146,7 @@ namespace STORE
     COMPONENT* operator -> (void)
     {
       if (! m_pComponent) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator ->(void) : m_pComponent member is null"_Stz);
       }
     
@@ -158,7 +159,7 @@ namespace STORE
     COMPONENT* operator * (void)
     {
       if (! m_pComponent) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator *() : m_pComponent member is null"_Stz);
       }
     
@@ -181,7 +182,7 @@ namespace STORE
     {
       if (m_pComponent) {
         vTrace("%20s : %p ; \n"_Stz
-               ,m_szRegNm
+               ,aLR[m_eLogicUnitReg]
                ,m_pComponent
         );
       }
@@ -319,7 +320,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void vRegNm(Stz* szRegNm)
     {
-      m_szRegNm = C_NO_NAME;
+      m_eLogicUnitReg = LR_NONE;
     }
 
     /*------------------------------------------------------------------------*/
