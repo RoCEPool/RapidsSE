@@ -77,7 +77,11 @@ create table LineItem
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
+create index lineitem_idx1 on lineitem (l_shipdate);
+create index lineitem_idx2 on lineitem (l_orderkey);
+
 /time load lineitem "../TPCH/SF_0001/lineitem.csv";
+///time load lineitem "../TPCH/SF1/lineitem.tbl";
 /*
 
 select sum(l_orderkey) from lineitem where l_shipdate >= DATE '1994-01-01';
@@ -89,8 +93,8 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter 0 "type boolean $11 DATE '1994-01-01' >=  "
-    | project 0 "type integer $1 ) sum "
+    | filter 1 "type boolean $11 DATE '1994-01-01' >=  "
+    | project 1 "type integer $1 ) sum "
     | stageC
 
   stage stageC on origin :
@@ -106,7 +110,7 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | rlu 0 filter "type boolean $11 DATE '1994-01-01' >= " , project "type integer $1 ) sum"
+    | rlu 1 filter "type boolean $11 DATE '1994-01-01' >= " , project "type integer $1 ) sum"
     | stageC
 
   stage stageC on origin :

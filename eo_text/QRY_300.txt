@@ -5,7 +5,7 @@ Routine QRY_300
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 300
@@ -129,7 +129,7 @@ Label GOT_CUS
 
   EO_PRINTF "**QRY_300 TO BE CALLED AGAIN**\n"
   EO_CALLAGAIN
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 Label PRC_CUS
@@ -167,7 +167,7 @@ Label NXT_CUSTOMER
 
 // end of CUSTOMER
 Label QRY_300_DONE
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

@@ -8,7 +8,7 @@ macro AM_QUERY_INIT
   Routine QUERY_<queryNo>  // C_TAG_QUERY_NO
   // initialization   
   EO_INIT             
-  EO_ENTER            
+  EO_ENTER_LU
   EO_SQL <subQueryNo>  // C_TAG_SUBQUERY_NO
 
   // check for ZK_M_DATAPULSE
@@ -64,7 +64,7 @@ macro AM_QUERY_DONE
 //----------------------------------------------------------------------------//
   // QUERY_DONE
   Label QUERY_DONE
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 //----------------------------------------------------------------------------//

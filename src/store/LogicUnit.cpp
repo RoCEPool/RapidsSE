@@ -3888,19 +3888,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
               
-      case EO_ENTER: ArgNil(); //  diarise routine enter
-        dLU0(EO_ENTER);
+      case EO_ENTER_LU: ArgNil(); //  diarise routine enter
+        dLU0(EO_ENTER_LU);
         aRluCommon->m_nEnterCount++;
         vRlu_ENTER(pLU);
         break;//+endCase
         
-      case EO_EXIT: ArgNil(); // diarise routine exit
-        dLU0(EO_EXIT);
+      case EO_EXIT_LU: ArgNil(); // diarise routine exit
+        dLU0(EO_EXIT_LU);
         vRlu_EXIT(pLU);
         break;//+endCase
 
       case EO_HANDLER: GetStr(iArg); // set logicUnit handler
-        dLU0(EO_EXIT);
+        dLU0(EO_HANDLER);
         vRlu_HANDLER(pLU, (Stz*)iArg);
         break;//+endCase
 

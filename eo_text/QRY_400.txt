@@ -6,7 +6,7 @@ Routine QRY_400
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 400
