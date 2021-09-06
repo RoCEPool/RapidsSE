@@ -108,6 +108,8 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
+  
+  vAddStep("Job[].walk"_Stz,             &Step::vJobWalk);
 }
 
 
@@ -1170,8 +1172,19 @@ void Step::vJobTaskStore_other(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Job[].walk -- walk the job                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobWalk(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
 
-
+  pJob->vWalk(nullptr);
+  
+  EXIT();
+}
 
 
 /*----------------------------------------------------------------------------*/

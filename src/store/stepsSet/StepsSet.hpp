@@ -736,6 +736,8 @@ public:
   void vJobTaskStore(void);
   void vJobTaskStore_other(void);
 
+  void vJobWalk(void);
+
   // job ref
   void vJobRefHasTask(void);
   void vJobRefPointer(void);

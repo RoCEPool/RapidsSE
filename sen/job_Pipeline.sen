@@ -277,7 +277,11 @@
   // [ senCompiler::current@ word.name@ encode::push ] .
 
   //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
-
+  
+  //"<job_walk>" job::tagSet@ tagSet.hasName if
+  //  Job[].walk
+  //then
+  
   JP_ENDING Job[].phase!
 
   JP_ENDED Job[].phase!
