@@ -11,8 +11,6 @@
 : DONE_RCV ( -- )
 
   DdlLock[].testDrop
-
-  //_job_finalise_
   
   job::unlinkTaskAndJob_tbr
 

@@ -80,8 +80,6 @@
 
       _lu_finalise_
 
-      //_job_finalise_
-
       Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
       
       HAZARD
@@ -289,8 +287,6 @@
   
   DdlLock[].testDrop
 
-  //_job_finalise_
-
   pipeline::terminate_participant
 
   HAZARD
@@ -314,8 +310,6 @@
 
   Job[] Job__Cancelled::replyToOrigin
   
-  //_job_finalise_
-
   pipeline::terminate_participant
 
   HAZARD
