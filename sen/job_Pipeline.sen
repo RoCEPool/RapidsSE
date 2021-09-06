@@ -188,6 +188,8 @@
   Task[].job@ if
     nullptr Task[].job@ job.task!
     nullptr Task[].job!
+  else
+    HAZARD
   then
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
@@ -265,6 +267,8 @@
   Task[].job@ if
     nullptr Task[].job@ job.task!
     nullptr Task[].job!
+  else
+    HAZARD
   then
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
