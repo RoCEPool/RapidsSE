@@ -53,8 +53,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
-  vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
-  vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
@@ -90,6 +88,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
 
+  vAddStep("Job[].originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
+  vAddStep("Job[].originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
+  
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
   
@@ -622,28 +623,28 @@ void Step::vJobNoWaitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.originatingId@ -- fetch originating id from job                        */
+/* Job[].originatingId@ -- fetch originating id from job                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginatingIdFetch(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   m_pDataStack->vPushInt(pJob->m_iOriginatingId);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.originatingId! -- store originating id into job                        */
+/* Job[].originatingId! -- store originating id into job                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginatingIdStore(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   i8 iOriginatingId = m_pDataStack->iPopInt(__func__);
   
   pJob->m_iOriginatingId = iOriginatingId;

@@ -10,9 +10,9 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* distribute current originating job to all participating nodes              */
+/* distribute current originating job to all nodes as participating job       */
 /*----------------------------------------------------------------------------*/
-: job::sendToParticipants ( -- )
+: job::distributeParticipants ( -- )
 
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid
@@ -75,9 +75,9 @@
 
       JS_SIGNALLED Job[].state!
       
-      Task[].grabLock
+      //Task[].grabLock
       Session[].signal
-      Task[].dropLock
+      //Task[].dropLock
 
       _lu_finalise_
 
@@ -94,13 +94,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
   
-  Job[] job.id@ Job[] job.originatingId!
+  Job[] job.id@ Job[].originatingId!
 
-  // add job to originator jobs
-  Job[].addOriginator
+  Job[].addOriginator           // add this job to originator job list
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline statement on origin to check its syntax
+  // compile pipeline statement on origin to check its syntax
   
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
@@ -116,21 +115,18 @@
   // cross check
   PipelineSpec[] not assert
 
-  Job[].error@ not if
-
-    // grab this task's lock
-    Task[].grabLock
-    
-    // distribute the job
-    job::sendToParticipants
-
-    // wait for the signal from deciding job__ended/cancelled
-    Task[].wait
-
-  else
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the participants of this job and execute them
   
+  Job[].error@ not if
+    Task[].grabLock
+    job::distributeParticipants
+    Task[].wait
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we're back as the originator
+  
   Job[].removeOriginator
   Job[].addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
