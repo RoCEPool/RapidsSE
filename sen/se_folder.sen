@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* get current folder                                                         */
 /*----------------------------------------------------------------------------*/
-: folder[] ( -- )
+: Folder[] ( -- )
 
   Path[].depth 1 - Path[].pick
 ;
@@ -42,10 +42,10 @@
 /*----------------------------------------------------------------------------*/
 /* get current folder contents                                                */
 /*----------------------------------------------------------------------------*/
-: folder[].contentStr ( -- s )
+: Folder[].contentStr ( -- s )
 
   ""
-  folder[] dic.lastWord dup iterate
+  Folder[] dic.lastWord dup iterate
 
     object@ word.name@ str.cat
 
@@ -124,7 +124,7 @@ dicLock.dropwrite
 /*----------------------------------------------------------------------------*/
 : name::isSubFolder params| sTableNm | ( t | f )
 
-  sTableNm folder[].findSymbol locals| pwWord |
+  sTableNm Folder[].findSymbol locals| pwWord |
 
   pwWord not if false exit then
 
@@ -143,7 +143,7 @@ dicLock.dropwrite
 
   Path[].toStr .put "::" .put .\n
 
-  folder[] dic.lastWord
+  Folder[] dic.lastWord
   begin dup while
     dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
     word.prev

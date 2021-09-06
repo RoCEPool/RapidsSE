@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : _Executed_run [ word::seed# ]
 
-  job[] locals| pJob__Executed |
+  Job[] locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
   0 0 0 locals| iParticipantNode error bAmDecider |

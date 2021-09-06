@@ -73,7 +73,7 @@
   <path> str.toStrVec Path[].set
   
   
-  job[] locals| pJob__Cancelled |
+  Job[] locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |

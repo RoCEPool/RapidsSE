@@ -34,7 +34,7 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate
 
     object@ word.name@ to sTableNm

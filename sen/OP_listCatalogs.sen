@@ -13,7 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
-  folder[].checkIsCatalogs not if
+  Folder[].checkIsCatalogs not if
     to errorCode
     errorCode op__execErr
     false
@@ -35,7 +35,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
     object@ word.name@
     streamSetTable[] StreamSet[].addListContents not if

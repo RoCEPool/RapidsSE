@@ -150,20 +150,20 @@ assert::stack_0
     //  /tenants/boray
     //  /tenants/boray/catalogs
     "boray" :makeTenantFolder
-    "boray" folder[].findSymbol execute
+    "boray" Folder[].findSymbol execute
     Path[].pushFolder
 
-      "catalogs" folder[].findSymbol execute
+      "catalogs" Folder[].findSymbol execute
       Path[].pushFolder
 
         // make 'rapidsse' catalog folder:
         //  /tenants/boray/catalogs/rapidsse
         //  /tenants/boray/catalogs/rapidsse/schemas
         "rapidsse" :makeCatalogFolder
-        "rapidsse" folder[].findSymbol execute
+        "rapidsse" Folder[].findSymbol execute
         Path[].pushFolder
 
-          "schemas" folder[].findSymbol execute
+          "schemas" Folder[].findSymbol execute
           Path[].pushFolder
 
             // make 'public' schema folder:
@@ -211,7 +211,7 @@ Sen Naming Notes
 
 *) We remove a folder -- like we rmdir in Unix
 
-*) path[].pushFolder folder[].popFolder as in pushd and popd shell commands
+*) path[].pushFolder Folder[].popFolder as in pushd and popd shell commands
 
   refer: https://en.wikipedia.org/wiki/Pushd_and_popd
 

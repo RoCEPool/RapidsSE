@@ -88,7 +88,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   
   
-  vAddStep("job[]"_Stz,                  &Step::vRegJobGet);
+  vAddStep("Job[]"_Stz,                  &Step::vRegJobGet);
 
   vAddStep("Job[].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("Job[].addLocal"_Stz,         &Step::vJobAddLocal);
@@ -1107,7 +1107,7 @@ void Step::vJobTaskStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job[].get -- get task                                                      */
+/* Job[].get -- get task                                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vRegJobGet(void)
 {

@@ -60,7 +60,7 @@
   //
   // where: on the participating node
   //
-  job[] locals| pJob__Execute |
+  Job[] locals| pJob__Execute |
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |

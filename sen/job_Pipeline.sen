@@ -31,7 +31,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.no job[] job.forward
+      pNode node.no Job[] job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -70,7 +70,7 @@
   
     <preCheck> find execute not if
 
-      job::error!
+      Job[] job.error!
       
       DdlLock[].testDrop
 
@@ -97,7 +97,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
   
-  job[] job.id@ job[] job.originatingId!
+  Job[] job.id@ Job[] job.originatingId!
 
   // add job to originator jobs
   Job[].addOriginator
@@ -112,14 +112,14 @@
     PipelineSpec[].delete
   else
     // pipeline statement didnt compile
-    job::error!
+    Job[] job.error!
     DdlLock[].testDrop
   then
 
   // cross check
   PipelineSpec[] not assert
 
-  job[] job.hasError not if
+  Job[] job.hasError not if
 
     // grab this task's lock
     Task[].grabLock
@@ -163,11 +163,11 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_BEGINNING job[] job.phase!
+  JP_BEGINNING Job[] job.phase!
 
   <path> str.toStrVec Path[].set
 
-  job[] locals| pJob |
+  Job[] locals| pJob |
 
   // set participant node in job
   grid::thisNode@ pJob job.participant!
@@ -177,7 +177,7 @@
 
   job::assertCorrectness
 
-  job[] job.phase@ JP_BEGINNING assert
+  Job[] job.phase@ JP_BEGINNING assert
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
@@ -191,10 +191,10 @@
   Pipeline[].create
   Pipeline[].spawnOpTasks
 
-  JP_BEGUN job[] job.phase!
-  nullptr job[] job.seedWord!
+  JP_BEGUN Job[] job.phase!
+  nullptr Job[] job.seedWord!
   
-  job[] Job__Begun::replyToOrigin
+  Job[] Job__Begun::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -213,7 +213,7 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_EXECUTING job[] job.phase!
+  JP_EXECUTING Job[] job.phase!
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
@@ -269,10 +269,10 @@
 
 
 
-  JP_EXECUTED job[] job.phase!
-  nullptr job[] job.seedWord!
+  JP_EXECUTED Job[] job.phase!
+  nullptr Job[] job.seedWord!
 
-  job[] Job__Executed::replyToOrigin
+  Job[] Job__Executed::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -297,15 +297,15 @@
 
   //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
 
-  JP_ENDING job[] job.phase!
+  JP_ENDING Job[] job.phase!
 
 
-  JP_ENDED job[] job.phase!
-  nullptr job[] job.seedWord!
+  JP_ENDED Job[] job.phase!
+  nullptr Job[] job.seedWord!
 
   Job[].removeParticipant
 
-  job[] Job__Ended::replyToOrigin
+  Job[] Job__Ended::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -325,14 +325,14 @@
   
     // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_CANCELING job[] job.phase!
+  JP_CANCELING Job[] job.phase!
 
-  JP_CANCELED job[] job.phase!
-  nullptr job[] job.seedWord!
+  JP_CANCELED Job[] job.phase!
+  nullptr Job[] job.seedWord!
 
   Job[].removeParticipant
 
-  job[] Job__Cancelled::replyToOrigin
+  Job[] Job__Cancelled::replyToOrigin
   
   _job_finalise_
 

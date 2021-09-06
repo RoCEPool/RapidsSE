@@ -21,7 +21,7 @@
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.same if
-    folder[] dic.name@ "tenants" str.same not if Path[].popFolder then
+    Folder[] dic.name@ "tenants" str.same not if Path[].popFolder then
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -32,7 +32,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.same if
-    begin folder[] dic.name@ "tenants" str.same not while Path[].popFolder repeat
+    begin Folder[] dic.name@ "tenants" str.same not while Path[].popFolder repeat
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -75,7 +75,7 @@
   // otherwise we expect a name of a sub-folder to which we push path to
   //  push sub-folder
 
-  sFolderNm folder[].findSymbol to pCurrentFolder
+  sFolderNm Folder[].findSymbol to pCurrentFolder
 
   pCurrentFolder word.checkIsAFolder not if
     op__execErr

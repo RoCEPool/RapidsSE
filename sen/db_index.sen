@@ -20,9 +20,9 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder has the name "indexes" (i.e. is ../indexes)          */
 /*----------------------------------------------------------------------------*/
-: folder[].isIndexes ( t | f )
+: Folder[].isIndexes ( t | f )
 
-  folder[] dic.name@ "indexes" str.same
+  Folder[] dic.name@ "indexes" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : check::folderIsIndexes ( t | ec f )
 
-  folder[].isIndexes if true exit then
+  Folder[].isIndexes if true exit then
 
   EC_NOT_IN_INDEXES false
 ;
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : check::nameIsUnknownIndex params| sIndexNm | ( t | ec f )
 
-  sIndexNm folder[].findSymbol not if true exit then
+  sIndexNm Folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
 ;
 
@@ -97,14 +97,14 @@
   sIndexNm check::nameIsaIndex not if
     Path[].popIndexesFolder
     Path[].popNamedTableFolder
-    folder[].isTables assert
+    Folder[].isTables assert
     false
     exit
   then
 
   Path[].popIndexesFolder
   Path[].popNamedTableFolder
-  folder[].isTables assert
+  Folder[].isTables assert
 
   true
 ;
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 : index::newIndex params| sIndexNm |
 
-  folder[].isIndexes assert
+  Folder[].isIndexes assert
 
   find: \index locals| pwIndexCatg |
 
@@ -179,7 +179,7 @@
 /*----------------------------------------------------------------------------*/
 : index::createIndex params| pTable sIndexNm pIndexDef |
 
-  folder[].isIndexes assert
+  Folder[].isIndexes assert
 
   pIndexDef sIndexNm pTable index::makeIndexAssembly locals| pIndex |
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegFolder.cpp - folder[] step group                                  */
+/* Steps_RegFolder.cpp - Folder[] step group                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegFolder(void)
 {
-  vAddStep("folder[].findSymbol"_Stz,     &Step::vRegFolderFindSymbol);
+  vAddStep("Folder[].findSymbol"_Stz,     &Step::vRegFolderFindSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

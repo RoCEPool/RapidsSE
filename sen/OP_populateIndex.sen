@@ -15,11 +15,11 @@
 
   Counter0[] grid::knownNodes == if
     // get the index def
-    Pipein[] to indexDef[]
+    Pipein[] to IndexDef[]
     nullptr to Pipein[]
 
-    indexDef[].tableName@ to sTableNm
-    indexDef[].delete
+    IndexDef[].tableName@ to sTableNm
+    IndexDef[].delete
 
     sTableNm <indexNm> op__table_index not if
       true
@@ -57,7 +57,7 @@
   TablePtn[].dropWrite
 
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   Pipein[].pipeout
 

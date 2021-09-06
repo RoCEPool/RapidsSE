@@ -20,9 +20,9 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder has the name "tables" (i.e. is ../tables)           */
 /*----------------------------------------------------------------------------*/
-: folder[].isTables ( t | f )
+: Folder[].isTables ( t | f )
 
-  folder[] dic.name@ "tables" str.same
+  Folder[] dic.name@ "tables" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : check::folderIsTables ( t | ec f )
 
-  folder[].isTables if true exit then
+  Folder[].isTables if true exit then
 
   EC_NOT_IN_TABLES false
 ;
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : check::folderHasNamedTable params| sTblFolderNm | ( t | ec f )
 
-  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
+  sTblFolderNm Folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
 ;
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : check::nameIsUnknownTable params| sTableNm | ( t | ec f )
 
-  sTableNm folder[].findSymbol not if true exit then
+  sTableNm Folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
 ;
 
@@ -117,7 +117,7 @@
   Path[].popNamedTableFolder
 
   // assert we are back in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   true
 ;
@@ -152,7 +152,7 @@
   then
 
   // make: ../schemas/public/tables/t \folder
-  sTblFolderNm folder[] folder::makeSubFolder
+  sTblFolderNm Folder[] folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -210,12 +210,12 @@
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pStreamDef | ( pTable )
 
- folder[].isTables assert
+ Folder[].isTables assert
  sTableNm name::isSubFolder not assert
 
  pStreamDef sTableNm table::makeTableAssembly locals| pTable |
 
- folder[].isTables assert
+ Folder[].isTables assert
  sTableNm name::isSubFolder assert
 
  pTable

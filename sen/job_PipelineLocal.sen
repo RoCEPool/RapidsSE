@@ -35,7 +35,7 @@
     
   else
     //"got error" .
-    job::error!
+    Job[] job.error!
     
     DdlLock[].testDrop
 
@@ -81,7 +81,7 @@
   then
 
   // add job to the local job list
-  job[] job.jobList@ JL_DEMON == not if
+  Job[] job.jobList@ JL_DEMON == not if
     Job[].addLocal
   then
 
@@ -105,7 +105,7 @@
   then
 
   // remove job from the local job list
-  job[] job.jobList@ JL_DEMON == not if
+  Job[] job.jobList@ JL_DEMON == not if
     Job[].removeLocal
   then
 

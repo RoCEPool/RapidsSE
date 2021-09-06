@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : _Ended_run [ word::seed# ]
 
-  job[] locals| pJob__Ended |
+  Job[] locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
   0 locals| bAmDecider |

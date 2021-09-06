@@ -20,17 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder is ../catalogs                                      */
 /*----------------------------------------------------------------------------*/
-: folder[].isCatalogs
+: Folder[].isCatalogs
 
-  folder[] dic.name@ "catalogs" str.same
+  Folder[] dic.name@ "catalogs" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../catalogs                                        */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsCatalogs
+: Folder[].checkIsCatalogs
 
-  folder[].isCatalogs if true exit then
+  Folder[].isCatalogs if true exit then
   EC_NOT_IN_CATALOGS false
 ;
 
@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsCatalog ( word )
 
-  folder[].findSymbol if true exit then
+  Folder[].findSymbol if true exit then
   EC_NOT_A_CATALOG false
 ;
 
@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownCatalog ( word )
 
-  folder[].findSymbol not if true exit then
+  Folder[].findSymbol not if true exit then
   EC_CATALOG_EXISTS false
 ;
 
@@ -69,7 +69,7 @@
 
   params| sCatalogNm |
 
-  folder[].checkIsCatalogs not if false exit then
+  Folder[].checkIsCatalogs not if false exit then
   //sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
   sCatalogNm checkIsCatalog  not if false exit then
   //folder.isEmpty   not if false exit then

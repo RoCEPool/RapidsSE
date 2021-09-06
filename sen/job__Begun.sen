@@ -52,7 +52,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  job[] locals| pJob__Begun |
+  Job[] locals| pJob__Begun |
 
   pJob__Begun job.id@ locals| iJobId |
 

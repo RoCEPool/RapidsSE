@@ -20,17 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder is ../tables                                        */
 /*----------------------------------------------------------------------------*/
-: folder[].isSchemas
+: Folder[].isSchemas
 
-  folder[] dic.name@ "schemas" str.same
+  Folder[] dic.name@ "schemas" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../schemas                                         */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsSchemas
+: Folder[].checkIsSchemas
 
-  folder[].isSchemas if true exit then
+  Folder[].isSchemas if true exit then
   
   EC_NOT_IN_SCHEMAS false
 ;
@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsSchema ( word )
 
-  folder[].findSymbol if true exit then
+  Folder[].findSymbol if true exit then
   EC_NOT_A_SCHEMA false
 ;
 
@@ -61,7 +61,7 @@
 
   params| sSchemaNm |
 
-  folder[].checkIsSchemas not if false exit then
+  Folder[].checkIsSchemas not if false exit then
   //sSchemaNm word::isKnown not if EC_NO_SUCH_SCHEMA false exit then
   sSchemaNm checkIsSchema  not if false exit then
   //folder.isEmpty   not if false exit then

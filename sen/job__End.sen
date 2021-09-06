@@ -61,7 +61,7 @@
   // where: on the participating node
   //
   //grid::thisNodeName@ "(%v) RECEIVED END" .printf
-  job[] locals| pJob__End |
+  Job[] locals| pJob__End |
 
   // find the job to be executed in the participating jobs
   pJob__End job.id@ locals| iJobId |
