@@ -74,7 +74,6 @@
       
       DdlLock[].testDrop
 
-
       JS_SIGNALLED job::state!
       
       Task[].grabLock
@@ -119,7 +118,7 @@
   // cross check
   PipelineSpec[] not assert
 
-  Job[] job.hasError not if
+  Job[].error@ not if
 
     // grab this task's lock
     Task[].grabLock

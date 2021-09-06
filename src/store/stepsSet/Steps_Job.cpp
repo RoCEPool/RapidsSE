@@ -44,10 +44,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-
-
-  vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
@@ -514,20 +510,6 @@ void Step::vJobErrorStore(void)
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.hasError -- return true if job has error                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobHasError(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->bJobHasError());
   
   EXIT();
 }

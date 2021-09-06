@@ -688,8 +688,6 @@ public:
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
 
-  void vJobHasError(void);
-
   void vJobIdFetch(void);
   void vJobIsExecuting(void);
 
