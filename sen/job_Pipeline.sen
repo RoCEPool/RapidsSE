@@ -146,19 +146,16 @@
 
 
   //_lu_finalise_
+ 
   DdlLock[].testDrop
+ 
   // check this task has no job reference
   JobRef[].none
-  // check this task has no ddl lock
+ 
   DdlLock[].none
 
 
-  //_job_finalise_
-  // check this task has no job reference
-  JobRef[].none
-  // check this task has no ddl lock
-  DdlLock[].none
-
+ 
   task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
   

@@ -68,7 +68,7 @@
 
   // stall till job's previous phase (task) has completed
   begin
-    jobRef[].hasTask
+    JobRef[].hasTask
   while
     task::yield
   repeat
@@ -76,7 +76,7 @@
   // execute the cancel seed of the job on this participating node
   JM_SEED_CAN JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
-  JobRef[].return
+  JobRef[].returnReference
   
   _job_2pc_delete_
 ;

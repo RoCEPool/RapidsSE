@@ -52,8 +52,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
 
-  vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
-  vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
 
@@ -518,50 +516,6 @@ void Step::vJobErrorStore(void)
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::findOriginator -- find job from originator job set                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobFindOriginator(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-  
-  Job* pJobFound = AM::pJob_FindOriginating(iJobId);
-  RASSERT(pJobFound);
-  
-  
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
-  
-  
-  m_pDataStack->vPushPtr(pJobFound);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::findParticipant -- find job from participant job set                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobFindParticipant(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-    
-  Job* pJobFound = AM::pJob_FindParticipating(iJobId);
-  RASSERT(pJobFound);
-  
-  
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
-  
-  
-  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }

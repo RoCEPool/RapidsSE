@@ -67,7 +67,7 @@
   //grid::thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].return
+    JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
@@ -87,7 +87,7 @@
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
-  JobRef[].return
+  JobRef[].returnReference
   
   _job_2pc_delete_
 ;
