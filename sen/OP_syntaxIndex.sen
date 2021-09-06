@@ -79,9 +79,9 @@
 
   // parse the smt and get the table name
   sSmt Job[] indexDef::parseTableName to sTableNm
-  Job[] job.error@ to errorCode
+  Job[].error@ to errorCode
   sTableNm "" str.equal if
-    Job[] job.error@ to errorCode
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -98,7 +98,7 @@
   sSmt Table[] Job[] indexDef::parse to IndexDef[]
 
   IndexDef[].isNull if
-    Job[] job.error@ to errorCode
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit

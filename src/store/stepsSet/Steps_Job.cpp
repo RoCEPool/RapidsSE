@@ -44,8 +44,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-  vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
-  vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
 
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
@@ -96,6 +94,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("Job[].addRetired"_Stz,       &Step::vJobAddRetired);
   
+  vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
+  vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
+
   vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -487,13 +488,13 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.error@ -- fetch the job error for the node                             */
+/* Job[].error@ -- fetch the job error                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushInt(pJob->eJobError());
   
@@ -501,14 +502,14 @@ void Step::vJobErrorFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.error! -- store the job error for the node                             */
+/* Job[].error! -- store the job error                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorStore(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;

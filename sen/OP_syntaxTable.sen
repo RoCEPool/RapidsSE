@@ -18,7 +18,7 @@
   Job[] streamDef::parse to StreamDefLft[]
 
   StreamDefLft[].isNull if
-    Job[] job.error@ to errorCode
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit

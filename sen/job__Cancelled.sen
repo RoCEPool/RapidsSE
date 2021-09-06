@@ -40,14 +40,6 @@
   // new a temporary Job__Cancelled
   pJobParticipant job__Cancelled::new to pJob__Cancelled
 
-  // get error if any
-  //pJobParticipant job.error@ to error
-
-  //error EC_NONE != if
-    // set error in executed job
-    //error pJob__Cancelled jobCancelled.error!
-  //then
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the cancelled job
@@ -91,7 +83,7 @@
   //pJob__Cancelled jobCancelled.error@ to error
 
   // set the error code in JobRef[]
-  //error iParticipantNode JobRef[] job.error!
+  //error iParticipantNode JobRef[] Job[].error!
   //error EC_NONE != if
     // set error in executed job
     //pJob__Cancelled iParticipantNode JobRef[] job.participantResponse!

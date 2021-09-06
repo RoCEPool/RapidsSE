@@ -35,7 +35,7 @@
     
   else
     //"got error" .
-    Job[] job.error!
+    Job[].error!
     
     DdlLock[].testDrop
 

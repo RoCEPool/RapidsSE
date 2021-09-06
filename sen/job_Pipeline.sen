@@ -70,7 +70,7 @@
   
     <preCheck> find execute not if
 
-      Job[] job.error!
+      Job[].error!
       
       DdlLock[].testDrop
 
@@ -112,7 +112,7 @@
     PipelineSpec[].delete
   else
     // pipeline statement didnt compile
-    Job[] job.error!
+    Job[].error!
     DdlLock[].testDrop
   then
 
