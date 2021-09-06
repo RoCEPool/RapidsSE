@@ -15,10 +15,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegTask(void)
 {
-  vAddStep("task[]"_Stz,      &Step::vRegTaskGet);
+  vAddStep("task[]"_Stz,           &Step::vRegTaskGet);
   
-  vAddStep("task.dropLock"_Stz,        &Step::vTaskDropLock);
-  vAddStep("task.grabLock"_Stz,        &Step::vTaskGrabLock);
+  vAddStep("task[].dropLock"_Stz,  &Step::vTaskDropLock);
+  vAddStep("task[].grabLock"_Stz,  &Step::vTaskGrabLock);
 
   vAddStep("task::job@"_Stz,           &Step::vTaskJobFetch);
   vAddStep("task::job!"_Stz,           &Step::vTaskJobStore);
@@ -41,29 +41,25 @@ void Step::vRegTaskGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.grabLock -- grab lock of task on data stack                           */
+/* task[].grabLock -- grab this task's lock                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskGrabLock(void)
 {
   ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  pThatTask->vGrabTaskLock((Stz*)__func__);
+    
+  vGrabTaskLock((Stz*)__func__);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.dropLock -- drop lock of task on data stack                           */
+/* task[].dropLock -- drop this task's lock                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDropLock(void)
 {
   ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  pThatTask->vDropTaskLock((Stz*)__func__);
+    
+  vDropTaskLock((Stz*)__func__);
   
   EXIT();
 }

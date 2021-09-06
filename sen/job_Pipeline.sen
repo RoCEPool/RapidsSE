@@ -50,7 +50,7 @@
   
   JS_DELETABLE job::state!
   
-  task[] task.grabLock
+  task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
 
   HAZARD
@@ -74,15 +74,15 @@
 
       JS_SIGNALLED job::state!
       
-      task[] task.grabLock
+      task[].grabLock
       Session[].signal
-      task[] task.dropLock
+      task[].dropLock
 
       _lu_finalise_
 
       _job_finalise_
 
-      task[] task.grabLock
+      task[].grabLock
       TR_DELETE_THIS_TASK task::transition!
       
       HAZARD
@@ -121,7 +121,7 @@
   job[] job.hasError not if
 
     // grab this task's lock
-    task[] task.grabLock
+    task[].grabLock
     
     // distribute the job
     job::sendToParticipants
@@ -140,15 +140,15 @@
   
   JS_SIGNALLED job::state!
 
-  task[] task.grabLock
+  task[].grabLock
   Session[].signal
-  task[] task.dropLock
+  task[].dropLock
 
   _lu_finalise_
 
   _job_finalise_
 
-  task[] task.grabLock
+  task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
   
   HAZARD
@@ -203,7 +203,7 @@
 
   job::unlinkTaskAndJob_tbr
 
-  task[] task.grabLock
+  task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
 
   HAZARD
@@ -227,8 +227,6 @@
   job::acquireDdlLock
 
   // : pipeline::execute ( -- )
-
-  task[] locals| pTask |
   
   job::assertCorrectness
 
@@ -254,7 +252,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
   
-  pTask task.grabLock
+  task[].grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
@@ -262,7 +260,7 @@
   //<pipelineNm> "%v execute" .printf
   Pipeline::enqueueStart not if
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    pTask task.dropLock
+    Task[].dropLock
   else
 
     // wait for all operators to ack this job
@@ -283,7 +281,7 @@
 
   job::unlinkTaskAndJob_tbr
 
-  task[] task.grabLock
+  Task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
 
   HAZARD

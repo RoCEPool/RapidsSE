@@ -116,7 +116,7 @@
   // delete task instead of returning to nowhere
   job::unlinkTaskAndJob_tbr
   
-  task[] task.grabLock
+  task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
 
   HAZARD
