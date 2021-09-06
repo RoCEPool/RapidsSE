@@ -20,12 +20,8 @@ void Step::vAddSteps_RegTask(void)
   vAddStep("task[].dropLock"_Stz,  &Step::vTaskDropLock);
   vAddStep("task[].grabLock"_Stz,  &Step::vTaskGrabLock);
 
-  vAddStep("task::job@"_Stz,           &Step::vTaskJobFetch);
-  vAddStep("task::job!"_Stz,           &Step::vTaskJobStore);
-
-  vAddStep("task.job@"_Stz,            &Step::vTaskJobFetch);
-  vAddStep("task.job!"_Stz,            &Step::vTaskJobStore);
-
+  vAddStep("task[].job@"_Stz,      &Step::vTaskJobFetch);
+  vAddStep("task[].job!"_Stz,      &Step::vTaskJobStore);
 }
 
 /*----------------------------------------------------------------------------*/
