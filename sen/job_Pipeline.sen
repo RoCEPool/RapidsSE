@@ -170,7 +170,7 @@
   Pipeline[].spawnOpTasks
 
   JP_BEGUN Job[].phase!
-  nullptr Job[] job.seedWord!
+  nullptr Job[].seedWord!
   
   Job[] Job__Begun::replyToOrigin
   
@@ -247,7 +247,7 @@
   then
   
   JP_EXECUTED Job[].phase!
-  nullptr Job[] job.seedWord!
+  nullptr Job[].seedWord!
 
   Job[] Job__Executed::replyToOrigin
   
@@ -278,7 +278,7 @@
   JP_ENDING Job[].phase!
 
   JP_ENDED Job[].phase!
-  nullptr Job[] job.seedWord!
+  nullptr Job[].seedWord!
 
   Job[].removeParticipant
 
@@ -307,7 +307,7 @@
   JP_CANCELING Job[].phase!
 
   JP_CANCELED Job[].phase!
-  nullptr Job[] job.seedWord!
+  nullptr Job[].seedWord!
 
   Job[].removeParticipant
 
