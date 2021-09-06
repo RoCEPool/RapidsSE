@@ -732,7 +732,9 @@ public:
   void vJobStateStore(void);
 
   void vJobTaskFetch(void);
+  void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
+  void vJobTaskStore_other(void);
 
   // job ref
   void vJobRefHasTask(void);
