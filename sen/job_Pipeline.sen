@@ -135,9 +135,9 @@
   [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
   
   JS_SIGNALLED job::state!
-  task[].grabLock
+  //task[].grabLock
   Session[].signal
-  task[].dropLock
+  //task[].dropLock
  
   DdlLock[].testDrop
  
