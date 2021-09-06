@@ -189,7 +189,7 @@
   DdlLock[].testDrop
 
   // unlink task and job
-  nullptr Task[].job@ job.task!
+  nullptr Job[].task!
   nullptr Task[].job!
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
@@ -266,7 +266,7 @@
   DdlLock[].testDrop
 
   // unlink task and job
-  nullptr Task[].job@ job.task!
+  nullptr Job[].task!
   nullptr Task[].job!
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
