@@ -80,7 +80,7 @@
 
       _lu_finalise_
 
-      _job_finalise_
+      //_job_finalise_
 
       Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
       
@@ -253,10 +253,6 @@
 
   then
   
-  
-
-
-
   JP_EXECUTED Job[].phase!
   nullptr Job[] job.seedWord!
 
@@ -278,14 +274,11 @@
 
   job::assertCorrectness
   
-  
-  
   // [ senCompiler::current@ word.name@ encode::push ] .
 
   //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
 
   JP_ENDING Job[].phase!
-
 
   JP_ENDED Job[].phase!
   nullptr Job[] job.seedWord!
@@ -296,7 +289,7 @@
   
   DdlLock[].testDrop
 
-  _job_finalise_
+  //_job_finalise_
 
   pipeline::terminate_participant
 
@@ -321,7 +314,7 @@
 
   Job[] Job__Cancelled::replyToOrigin
   
-  _job_finalise_
+  //_job_finalise_
 
   pipeline::terminate_participant
 

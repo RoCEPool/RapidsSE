@@ -11,7 +11,9 @@
 
   _lu_finalise_
 
-  _job_finalise_
+
+  //_job_finalise_
+  DdlLock[].none
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
