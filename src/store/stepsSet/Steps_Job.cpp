@@ -52,8 +52,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
 
-  vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
-  vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
 
@@ -70,8 +68,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
-  vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
-  vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
@@ -93,8 +89,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.singularOp@"_Stz,      &Step::vJobSingularOpFetch);
-  vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
 
@@ -523,50 +517,6 @@ void Step::vJobErrorStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job::findOriginator -- find job from originator job set                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobFindOriginator(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-  
-  Job* pJobFound = AM::pJob_FindOriginating(iJobId);
-  RASSERT(pJobFound);
-  
-  
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
-  
-  
-  m_pDataStack->vPushPtr(pJobFound);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::findParticipant -- find job from participant job set                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobFindParticipant(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-    
-  Job* pJobFound = AM::pJob_FindParticipating(iJobId);
-  RASSERT(pJobFound);
-  
-  
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
-  
-  
-  m_pDataStack->vPushPtr(pJobFound);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.hasError -- return true if job has error                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobHasError(void)
@@ -591,41 +541,6 @@ void Step::vJobIdFetch(void)
   
   m_pDataStack->vPushInt(pJob->iJobId());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.singularOp@ -- fetch the input op                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSingularOpFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->pSingularOp());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.singularOp! -- store the input op                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSingularOpStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  pJob->vSingularOp(pOp);
-  
-  // get the job in the session
-  Job* pJob_Originating = pOp->pPipelineJob()->m__dpOriginatingTask->pJob();
-
-  pJob_Originating->vSingularOp(pOp);
-
   EXIT();
 }
 
@@ -744,37 +659,6 @@ void Step::vJobOriginatingIdStore(void)
   i8 iOriginatingId = m_pDataStack->iPopInt(__func__);
   
   pJob->m_iOriginatingId = iOriginatingId;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask@ -- fetch the originating task from the job            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->m__dpOriginatingTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask! -- store the originating task in the job              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pOriginatingTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TASK == pOriginatingTask->eGetClassNo());
-  
-  pJob->m__dpOriginatingTask = pOriginatingTask;
   
   EXIT();
 }

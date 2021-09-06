@@ -69,7 +69,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].return
+    JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
@@ -80,7 +80,7 @@
 
   // send a job__end to all participants
   JobRef[] Job__End::distribute
-  JobRef[].return
+  JobRef[].returnReference
 
   _job_2pc_delete_
 ;

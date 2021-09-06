@@ -54,7 +54,6 @@ namespace STORE
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
     i8   m_i_Participant;  // participant node no (FromNodeNo?)
-    bool m_bNormalSides;   // normal side semantics?
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -83,7 +82,6 @@ namespace STORE
     // job running as responder on origin                   RESPONDER
   
     // -- responding to which originator
-    Task*  m__dpOriginatingTask; // dist ptr of originating task of the request
     i8     m_iOriginatingId;     // job id of originating job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -166,8 +164,6 @@ namespace STORE
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
-    bool bNormalSides(void);
-    void vNormalSides(bool bNormalSides);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
@@ -188,7 +184,6 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
-    Stz* szSide(void);
     void vSignalJobMutex(void);
     Task* pTask(void);
     void vTask(Task* pTask);
