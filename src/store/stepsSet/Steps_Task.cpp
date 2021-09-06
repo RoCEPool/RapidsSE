@@ -141,13 +141,13 @@ void Step::vTaskDelete(void)
   ENTRY();
     
   // unlink task and job
-  if (m_pJob) {
-    m_pJob->vTask(nullptr);
-    m_pJob = nullptr;
-  }
-  else {
-    NEVER_REACH
-  }
+//  if (m_pJob) {
+//    m_pJob->vTask(nullptr);
+//    m_pJob = nullptr;
+//  }
+//  else {
+//    NEVER_REACH
+//  }
   
   RASSERT(! m_pJob);
   
@@ -241,12 +241,14 @@ void Step::vTaskJobFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  Job* pJob = pThatTask->m_pJob;
-  
-  m_pDataStack->vPushPtr(pJob);
-  
+//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+//
+//  Job* pJob = pThatTask->m_pJob;
+//
+//  m_pDataStack->vPushPtr(pJob);
+
+  m_pDataStack->vPushPtr(m_pJob);
+
   EXIT();
 }
 
@@ -257,12 +259,16 @@ void Step::vTaskJobStore(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
+//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+//
+//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+//
+//  pThatTask->m_pJob = pJob;
+   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->m_pJob = pJob;
-  
+  m_pJob = pJob;
+
   EXIT();
 }
 

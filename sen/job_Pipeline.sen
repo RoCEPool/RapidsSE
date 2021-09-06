@@ -201,6 +201,7 @@
   
   DdlLock[].testDrop
 
+  job::unlinkTaskAndJob_tbd
   task::scheduledelete
 
   task[] task.grabLock
@@ -281,6 +282,7 @@
   
   DdlLock[].testDrop
 
+  job::unlinkTaskAndJob_tbd
   task::scheduledelete
 
   task[] task.grabLock
