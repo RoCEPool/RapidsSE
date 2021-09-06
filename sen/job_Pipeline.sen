@@ -60,6 +60,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
+  Task[].job@ Job[] equal assert
+
   job::assertCorrectness
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,6 +153,8 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
+  Task[].job@ Job[] equal assert
+
   JP_BEGINNING Job[].phase!
 
   <path> str.toStrVec Path[].set
@@ -185,12 +189,8 @@
   DdlLock[].testDrop
 
   // unlink task and job
-  Task[].job@ if
-    nullptr Task[].job@ job.task!
-    nullptr Task[].job!
-  else
-    HAZARD
-  then
+  nullptr Task[].job@ job.task!
+  nullptr Task[].job!
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
@@ -203,6 +203,8 @@
 : pipeline::execute ( -- )
 
   // [ senCompiler::current@ word.name@ encode::push ] .
+
+  Task[].job@ Job[] equal assert
 
   JP_EXECUTING Job[].phase!
 
@@ -264,12 +266,8 @@
   DdlLock[].testDrop
 
   // unlink task and job
-  Task[].job@ if
-    nullptr Task[].job@ job.task!
-    nullptr Task[].job!
-  else
-    HAZARD
-  then
+  nullptr Task[].job@ job.task!
+  nullptr Task[].job!
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
@@ -280,6 +278,8 @@
 /* end pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
+
+  Task[].job@ Job[] equal assert
 
   job::assertCorrectness
   
@@ -307,6 +307,8 @@
 /* end pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
+
+  Task[].job@ Job[] equal assert
 
   job::assertCorrectness
   

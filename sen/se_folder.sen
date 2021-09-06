@@ -128,7 +128,7 @@ dicLock.dropwrite
 
   pwWord not if false exit then
 
-  pwWord word.category@ find: \folder eql
+  pwWord word.category@ find: \folder equal
 ;
 
 

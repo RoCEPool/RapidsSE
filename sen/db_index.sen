@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : word.isaIndex params| pwIndex |
 
-  pwIndex word.category@ find: \index eql
+  pwIndex word.category@ find: \index equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@
 
   pwIndex not if EC_NO_SUCH_INDEX false exit then
 
-  pwIndex word.category@ find: \index eql if true exit then
+  pwIndex word.category@ find: \index equal if true exit then
 
   EC_NOT_AN_INDEX false
 ;

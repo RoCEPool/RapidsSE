@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : word.isaTable params| pwTable | ( t | f )
 
-  pwTable word.category@ find: \table eql
+  pwTable word.category@ find: \table equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@
 
   pwTable not if EC_NO_SUCH_TABLE false exit then
 
-  pwTable word.category@ find: \table eql if true exit then
+  pwTable word.category@ find: \table equal if true exit then
 
   EC_NOT_A_TABLE false
 ;

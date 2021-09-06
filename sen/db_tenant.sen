@@ -39,8 +39,8 @@
 /*----------------------------------------------------------------------------*/
 : Path[].checkIsTenant ( word )
 
-  dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: \tenant eql if true exit then
+  dup word.category@ find: \folder equal not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ find: \tenant equal if true exit then
   EC_NOT_A_TENANT false
 ;
 
