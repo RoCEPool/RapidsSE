@@ -9,10 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::termination ( -- )
 
-  _lu_finalise_
+  DdlLock[].testDrop
 
-
-  DdlLock[].none
+  JobRef[].none
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
