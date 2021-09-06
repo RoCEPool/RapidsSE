@@ -91,6 +91,7 @@ namespace STORE
     bool bPulsedLimit(void);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
+    void vWalk(void* aArg);
 
   private:
     void vCreateStages();

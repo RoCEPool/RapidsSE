@@ -182,6 +182,7 @@ namespace STORE
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
+    void vWalk(void* aArg);
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

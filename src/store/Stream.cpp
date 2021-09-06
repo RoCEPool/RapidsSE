@@ -236,6 +236,32 @@ void Stream::vSynthesiseName(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stream::vWalk(void* aArg)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vWalk(aArg);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

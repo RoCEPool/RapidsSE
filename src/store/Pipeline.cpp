@@ -356,6 +356,32 @@ void Pipeline::vSpawnOpTasks(i8 iSessionId, i8 iNode)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vWalk(aArg);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -193,6 +193,7 @@ namespace STORE
     void vUnlockJobMutex(void);
     void vVerifyJobComposition(void);
     void vWaitJobMutex(void);
+    void vWalk(void* aArg);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 

@@ -1242,6 +1242,28 @@ void Job::vVerifyJobComposition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  Pipeline* pPipeline = this->pPipeline_job();
+  pPipeline->vWalk(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get was received flag                                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bWasReceived(void)

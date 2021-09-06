@@ -41,7 +41,8 @@ namespace STORE
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);
-  
+    void vWalk(void* aArg);
+
   private:
     void    vCreateStreams(void);
 

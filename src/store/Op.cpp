@@ -1877,6 +1877,25 @@ void Op::vVerifyOpComposition(void)
   RASSERT(m_pOpLogicUnit);
 }
 
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+  
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */

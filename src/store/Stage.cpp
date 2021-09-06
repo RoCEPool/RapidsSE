@@ -296,6 +296,32 @@ bool Stage::bStartPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stage::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStreams = this->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
+    
+    pStream->vWalk(aArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
