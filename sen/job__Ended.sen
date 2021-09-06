@@ -85,7 +85,7 @@
   //Job[].removeOriginator
 
   // notify the originating task
-  JobRef[] job.task@ task.ack
+  JobRef[].task@ task.ack
   JobRef[].returnReference
   
   _job_2pc_delete_

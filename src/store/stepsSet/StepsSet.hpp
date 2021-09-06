@@ -740,6 +740,7 @@ public:
   void vJobRefNone(void);
   void vJobRefReturn(void);
   void vJobRefReferences(void);
+  void vJobRefTaskFetch(void);
 
   // job generic
   void vJob__BegunNew(void);

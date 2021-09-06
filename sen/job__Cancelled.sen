@@ -114,7 +114,7 @@
   //Job[].removeOriginator
 
   // notify the originating task
-  JobRef[] job.task@ task.ack
+  JobRef[].task@ task.ack
   JobRef[].returnReference
 
   // delete this completed __cancelled job

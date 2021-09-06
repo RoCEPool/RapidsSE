@@ -18,14 +18,18 @@
 void Step::vAddSteps_JobRef(void)
 {
   vAddStep("JobRef[]"_Stz,                 &Step::vJobRefPointer);
+
   vAddStep("JobRef[].findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("JobRef[].findParticipant"_Stz, &Step::vJobFindParticipant);
+
   vAddStep("JobRef[].hasTask"_Stz,         &Step::vJobRefHasTask);
+
   vAddStep("JobRef[].none"_Stz,            &Step::vJobRefNone);
+
   vAddStep("JobRef[].returnReference"_Stz, &Step::vJobRefReturn);
   vAddStep("JobRef[].references"_Stz,      &Step::vJobRefReferences);
   
-  
+  vAddStep("JobRef[].task@"_Stz,           &Step::vJobRefTaskFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,7 +135,7 @@ void Step::vJobRefReferences(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].returnReference -- return the job reference                                */
+/* JobRef[].returnReference -- return the job reference                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefReturn(void)
 {
@@ -139,6 +143,20 @@ void Step::vJobRefReturn(void)
   
   if (m_p_TaskLogicUnit->m_xpJobRef.bHasReference())
     m_p_TaskLogicUnit->m_xpJobRef.vReturnRef();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].task@ -- get the task of the referenced job                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRefTaskFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  m_pDataStack->vPushPtr(pJob->pTask());
 
   EXIT();
 }
