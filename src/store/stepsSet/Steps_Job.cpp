@@ -59,8 +59,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
-  vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
-  vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
+  vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
 
@@ -91,6 +90,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
 
+  vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
+  vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
+  
   vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -694,28 +696,42 @@ void Step::vJobParticipantStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.phase@ -- fetch the job phase                                          */
+/* Job[].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseFetch(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   m_pDataStack->vPushInt(pJob->eJobPhase());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.phase! -- store the job phase                                          */
+/* Job[].phase@ -- fetch the job phase                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPhaseFetch_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->eJobPhase());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].phase! -- store the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseStore(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   i8 iJobPhase = m_pDataStack->iPopAsInt(__func__);
   
   pJob->vJobPhase((eJP)iJobPhase);
@@ -996,7 +1012,7 @@ void Step::vJobSpawn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.phase@ -- fetch the job phase                                          */
+/* Job[].phase@ -- fetch the job phase                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobStateFetch(void)
 {
@@ -1010,7 +1026,7 @@ void Step::vJobStateFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.phase! -- store the job phase                                          */
+/* Job[].phase! -- store the job phase                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobStateStore(void)
 {

@@ -707,6 +707,7 @@ public:
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
+  void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
 

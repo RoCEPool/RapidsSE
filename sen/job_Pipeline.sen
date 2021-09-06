@@ -159,21 +159,19 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_BEGINNING Job[] job.phase!
+  JP_BEGINNING Job[].phase!
 
   <path> str.toStrVec Path[].set
 
-  Job[] locals| pJob |
-
   // set participant node in job
-  grid::thisNode@ pJob job.participant!
+  grid::thisNode@ Job[] job.participant!
 
   // add job to participant job list
   Job[].addParticipant
 
   job::assertCorrectness
 
-  Job[] job.phase@ JP_BEGINNING assert
+  Job[].phase@ JP_BEGINNING assert
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
@@ -187,7 +185,7 @@
   Pipeline[].create
   Pipeline[].spawnOpTasks
 
-  JP_BEGUN Job[] job.phase!
+  JP_BEGUN Job[].phase!
   nullptr Job[] job.seedWord!
   
   Job[] Job__Begun::replyToOrigin
@@ -208,7 +206,7 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_EXECUTING Job[] job.phase!
+  JP_EXECUTING Job[].phase!
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
@@ -264,7 +262,7 @@
 
 
 
-  JP_EXECUTED Job[] job.phase!
+  JP_EXECUTED Job[].phase!
   nullptr Job[] job.seedWord!
 
   Job[] Job__Executed::replyToOrigin
@@ -291,10 +289,10 @@
 
   //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
 
-  JP_ENDING Job[] job.phase!
+  JP_ENDING Job[].phase!
 
 
-  JP_ENDED Job[] job.phase!
+  JP_ENDED Job[].phase!
   nullptr Job[] job.seedWord!
 
   Job[].removeParticipant
@@ -319,9 +317,9 @@
   
     // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_CANCELING Job[] job.phase!
+  JP_CANCELING Job[].phase!
 
-  JP_CANCELED Job[] job.phase!
+  JP_CANCELED Job[].phase!
   nullptr Job[] job.seedWord!
 
   Job[].removeParticipant
