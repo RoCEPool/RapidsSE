@@ -1,0 +1,75 @@
+--------------------------------------------------------------------------------
+-- tpch query3 (SF_0001)
+--------------------------------------------------------------------------------
+/*  (original Query)
+  select l_orderkey,
+      sum(l_extendedprice*(1-l_discount)) as revenue,
+      o_orderdate,
+      o_shippriority
+      from customer, orders, lineitem
+      where c_mktsegment = 'BUILDING'
+      and c_custkey = o_custkey
+      and l_orderkey = o_orderkey
+      and o_orderdate < '1995-03-15'
+      and l_shipdate > '1995-03-15'
+      group by l_orderkey, o_orderdate, o_shippriority
+      order by revenue desc, o_orderdate;
+
+
+*/
+//------------------------------------------------------------------------------
+// pipeline by compiler
+/*
+explain stage transliterate
+  select l_orderkey,
+        sum(l_extendedprice*(1-l_discount)) as revenue,
+        o_orderdate,
+        o_shippriority
+        from customer, orders, lineitem
+        where c_mktsegment = 'BUILDING'
+        and c_custkey = o_custkey
+        and l_orderkey = o_orderkey
+        and o_orderdate < DATE '1995-03-15'
+        and l_shipdate > DATE '1995-03-15'
+        group by l_orderkey, o_orderdate, o_shippriority;
+
+ pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageMarker3636
+   stage stageMarker3636 on all partitions :
+     scan rapidsse public customer
+     | stageMarker3639 broadcast
+   stage stageMarker3639 on all partitions :
+     scanRight rapidsse public orders
+     | loopJoin 0 " 1  "
+     | stageMarker3642 broadcast
+   stage stageMarker3642 on all partitions :
+     scanRight rapidsse public lineitem
+     | loopJoin 0 " 1  "
+     | stageMarker3645
+   stage stageMarker3645 on all partitions :
+     filter 1 " type BOOLEAN  $7 'BUILDING'  ==  $1 $10 ==  and  $18 $9 ==  and  $13 DATE '1995-03-15'  <  and  $28 DATE '1995-03-15'  >  and  "
+     | aggreg 0 " type INTEGER as l_orderkey $18 , type DECIMAL )  $23 1  $24 -  *  sum  , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 "
+     | stageMarker3648
+   stage stageMarker3648 on all nodes :
+     aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+     | stageMarker3651
+   stage stageMarker3651 on origin :
+     aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL as revenue )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+*/
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

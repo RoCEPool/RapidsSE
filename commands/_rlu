@@ -77,8 +77,11 @@ create table LineItem
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
-/time load lineitem "../TPCH/SF1/lineitem.tbl";
+/time load lineitem "../TPCH/SF_0001/lineitem.csv";
 /*
+
+select sum(l_orderkey) from lineitem where l_shipdate >= DATE '1994-01-01';
+
 /time pipeline test
 begin
   stage stageA on origin :
@@ -87,7 +90,7 @@ begin
   stage stageB on all partitions :
     scan lineitem
     | filter 0 "type boolean $11 DATE '1994-01-01' >=  "
-    | project 0 "type integer $1 "
+    | project 0 "type integer $1 ) sum "
     | stageC
 
   stage stageC on origin :
@@ -96,14 +99,14 @@ end
 ;
 
 
-/time pipeline test
+/time pipeline test_rlu
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
     scan lineitem
-    | rlu 0 filter "type boolean $11 DATE '1994-01-01' >= " , project "type integer $1"
+    | rlu 0 filter "type boolean $11 DATE '1994-01-01' >= " , project "type integer $1 ) sum"
     | stageC
 
   stage stageC on origin :
