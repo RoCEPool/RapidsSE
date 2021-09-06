@@ -599,29 +599,6 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
     oTagSet.vAppend(C_TAG_EOS_PROCESS_ROUTINE, "ROWBUFFER_TRAVERSAL"_Stz);
     oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_EOSMARKER_GBY, &oTagSet, sMacro));
     oTagSet.vReset();
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ROWBUFFER_TRAVERSAL
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //   to execute PROJECT_COLUMNS for each row
-    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_EXPR_AGG"_Stz);
-    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROWBUFFER_TRAVERSAL, &oTagSet, sMacro));
-    oTagSet.vReset();
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ROW_EXPR_AGG
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //   to execute ROW_EXPR_AGG for each row in rowbuffer
-    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_EXPR_AGG, &oTagSet, sMacro));
-
-
-    oFile.vPrint("  // *** begin generated code: m_sProject *** //\n"_Stz);
-    oFile.vPrint("%s"_Stz, pProject->m_sProjectAsm.azChar());
-    oFile.vPrint("  // *** end generated code: m_sProject *** //\n"_Stz);
-
-    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_EXPR_AGG_END, &oTagSet, sMacro));
-
-
   } else
     oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
@@ -754,6 +731,28 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
     oFile.vPrint("  // *** end generated code: m_sAggInitAsm *** //\n"_Stz);
 
     oFile.vPrint(LogicCompiler::szGetMacro(AM_ROWBUFFER_AGGINIT_END, &oTagSet, sMacro));
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ROWBUFFER_TRAVERSAL
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //   to execute PROJECT_COLUMNS for each row
+    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_EXPR_AGG"_Stz);
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROWBUFFER_TRAVERSAL, &oTagSet, sMacro));
+    oTagSet.vReset();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ROW_EXPR_AGG
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //   to execute ROW_EXPR_AGG for each row in rowbuffer
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_EXPR_AGG, &oTagSet, sMacro));
+
+
+    oFile.vPrint("  // *** begin generated code: m_sProject *** //\n"_Stz);
+    oFile.vPrint("%s"_Stz, pProject->m_sProjectAsm.azChar());
+    oFile.vPrint("  // *** end generated code: m_sProject *** //\n"_Stz);
+
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_EXPR_AGG_END, &oTagSet, sMacro));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
