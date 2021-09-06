@@ -12,7 +12,11 @@
 
   DdlLock[].testDrop
   
-  job::unlinkTaskAndJob_tbr
+  // unlink task and job
+  Task[].job@ if
+    nullptr Task[].job@ job.task!
+    nullptr Task[].job!
+  then
 
   Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
