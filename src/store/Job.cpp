@@ -135,7 +135,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   // -- b -------------------
   m_bWasReceived     = false;
   m_i_Participant = C_UNKNOWN;
-  m_bNormalSides     = true;
   
   // -- c -------------------
   m_eJobKind  = JK_NONE;
@@ -199,7 +198,6 @@ Job::Job(eCN eClassNo)
   m_eJobList  = JL_NONE;
   m_eJobState = JS_ACTIVE;
   
-  m_bNormalSides = true; //
   m_bWasReceived = false;
   
   m_oTimer.vStart();
@@ -497,12 +495,11 @@ void Job::vDotPrint(Stz* szText)
   
   m_oTimer.vUpdate();
   
-  vTrace("[%s: job %s %s %s] "
+  vTrace("[%s: job %s %s] "
          "%s"
          "\n"_Stz
          
          ,AM::pGrid()->pThisNode()->szNodeNm()
-         ,szSide()
          ,m_sJobNm.szStz()
          ,spTimer.sz(&m_oTimer)
          
@@ -802,26 +799,6 @@ Stz* Job::szNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return side semantics                                                      */
-/*----------------------------------------------------------------------------*/
-bool Job::bNormalSides(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bNormalSides;
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for job mutex to be signalled                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vNormalSides(bool bNormalSides)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bNormalSides = bNormalSides;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operand queue report                                                       */
 /*----------------------------------------------------------------------------*/
 void Job::vOperandQueueReport(File* pFile, bool bStdOut)
@@ -946,7 +923,6 @@ void Job::vResetForCascade(Session* pSession)
   // -- b -------------------
   m_bWasReceived     = false;
   m_i_Participant = C_UNKNOWN;
-  m_bNormalSides     = true;
 
   // -- c -------------------
   m_eJobKind  = JK_NONE;
@@ -1029,7 +1005,6 @@ void Job::vSee(void)
 
          "      bWasReceived "  "%s"    " \n"  // 7
          "     i_Participant "  "%lld"  " \n"  // 8
-         "      bNormalSides "  "%s"    " \n"  // 9
 
          "         eJobState "  "%s"    " \n"  // 10
          "         eJobPhase "  "%s"    " \n"  // 11
@@ -1059,7 +1034,6 @@ void Job::vSee(void)
          ,m_iCmdNo                   // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_i_Participant            // 8
-         ,m_bNormalSides ? "true" : "false" // 9
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
@@ -1165,28 +1139,6 @@ void Job::vSetSeedWord(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 }
-
-/*----------------------------------------------------------------------------*/
-/* get which side the job is on (originator or participant)                   */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szSide(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_bWasReceived) {
-    if (m_bNormalSides)
-      return "partpt"_Stz;
-    else
-      return "origin"_Stz;
-  }
-  else {
-    if (m_bNormalSides)
-      return "origin"_Stz;
-    else
-      return "partpt"_Stz;
-  }
-}
-
 
 
 
