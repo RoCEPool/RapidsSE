@@ -1868,7 +1868,6 @@ public:
   void vTaskDestructorTraceStore(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
-  void vTaskDelete(void);
   void vTaskException(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);

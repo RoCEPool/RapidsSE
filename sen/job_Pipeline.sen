@@ -201,7 +201,7 @@
   
   DdlLock[].testDrop
 
-  task::scheduledelete
+  job::unlinkTaskAndJob_tbr
 
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!
@@ -281,7 +281,7 @@
   
   DdlLock[].testDrop
 
-  task::scheduledelete
+  job::unlinkTaskAndJob_tbr
 
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!

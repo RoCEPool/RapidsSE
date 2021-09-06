@@ -14,7 +14,7 @@
 
   _job_finalise_
   
-  task::scheduledelete
+  job::unlinkTaskAndJob_tbr
 
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!

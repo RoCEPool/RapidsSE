@@ -114,7 +114,7 @@
   "end _Start" .verbose
 
   // delete task instead of returning to nowhere
-  task::scheduleDelete
+  job::unlinkTaskAndJob_tbr
   
   task[] task.grabLock
   TR_DELETE_THIS_TASK task::transition!
