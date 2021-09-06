@@ -80,7 +80,7 @@
 
   // add job to the local job list
   job[] job.jobList@ JL_DEMON == not if
-    job[] Job[].addLocal
+    Job[].addLocal
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,13 +104,13 @@
 
   // remove job from the local job list
   job[] job.jobList@ JL_DEMON == not if
-    job[] Job[].removeLocal
+    Job[].removeLocal
   then
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
   
-  job[] Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] Job[].removeRetired ?]
+  Job[].addRetired
+  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
       
   JS_SIGNALLED job::state!
       

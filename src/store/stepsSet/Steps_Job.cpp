@@ -126,7 +126,7 @@ void Step::vJobAddDemon(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // add the job to the originating jobs
   //  AM::pOriginatingJobs()->vGrabLock();
@@ -134,7 +134,7 @@ void Step::vJobAddDemon(void)
   //  AM::pOriginatingJobs()->vDropLock();
   
   
-  AM::vJob_AddDemon(pJob);
+  AM::vJob_AddDemon(* m_pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -148,9 +148,9 @@ void Step::vJobAddLocal(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vJob_AddLocal(pJob);
+  AM::vJob_AddLocal(* m_pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -164,7 +164,7 @@ void Step::vJobAddOriginator(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
     
   // add the job to the originating jobs
 //  AM::pOriginatingJobs()->vGrabLock();
@@ -172,7 +172,7 @@ void Step::vJobAddOriginator(void)
 //  AM::pOriginatingJobs()->vDropLock();
   
 
-  AM::vJob_AddOriginating(pJob);
+  AM::vJob_AddOriginating(* m_pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
       
@@ -186,13 +186,13 @@ void Step::vJobAddParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  AM::vJob_AddParticipating(pJob);
+  AM::vJob_AddParticipating(* m_pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -206,13 +206,13 @@ void Step::vJobAddRetired(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  AM::vJob_AddRetired(pJob);
+  AM::vJob_AddRetired(* m_pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -745,7 +745,7 @@ void Step::vJobRemoveLocal(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = * m_pJob;
   
   bool bRemove = AM::bJob_RemoveLocal(pJob);
   
@@ -768,7 +768,7 @@ void Step::vJobRemoveOriginator(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = * m_pJob;
   
   bool bRemove = AM::bJob_RemoveOriginating(pJob);
 
@@ -791,7 +791,7 @@ void Step::vJobRemoveParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = * m_pJob;
   
   bool bRemove = AM::bJob_RemoveParticipating(pJob);
 
@@ -814,7 +814,7 @@ void Step::vJobRemoveRetired(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = * m_pJob;
   
   bool bRemove = AM::bJob_RemoveRetired(pJob);
 
