@@ -24,7 +24,6 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::acks!"_Stz,          &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
-  vAddStep("task::scheduledelete"_Stz, &Step::vTaskDelete);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
   vAddStep("task::job@"_Stz,           &Step::vTaskJobFetch);
@@ -130,33 +129,6 @@ void Step::vTaskDump(void)
   
   vDump();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::scheduledelete -- remove task from scheduler and delete              */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDelete(void)
-{
-  ENTRY();
-    
-  // unlink task and job
-//  if (m_pJob) {
-//    m_pJob->vTask(nullptr);
-//    m_pJob = nullptr;
-//  }
-//  else {
-//    NEVER_REACH
-//  }
-  
-  RASSERT(! m_pJob);
-  
-//  Stz* szThreadNm = MY::szThreadNm();
-
-  //vGrabTaskLock((Stz*)__func__);
-
-  //vScheduleDelete();
-
   EXIT();
 }
 

@@ -257,11 +257,6 @@ Job::~Job(void) noexcept(false)
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
                                     CN_JOB,this,(Stz*)__func__);
   }
-  
-  //if (m_pTask)
-  //  vDebugPoint();
-  
-  //AM::vTaskDelete(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
