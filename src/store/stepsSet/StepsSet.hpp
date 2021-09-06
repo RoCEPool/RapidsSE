@@ -691,8 +691,6 @@ public:
   void vJobHasError(void);
 
   void vJobIdFetch(void);
-  void vJobSingularOpFetch(void);
-  void vJobSingularOpStore(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);

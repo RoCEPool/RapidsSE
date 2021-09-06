@@ -83,7 +83,6 @@ namespace STORE
     // job running as responder on origin                   RESPONDER
   
     // -- responding to which originator
-    Task*  m__dpOriginatingTask; // dist ptr of originating task of the request
     i8     m_iOriginatingId;     // job id of originating job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --

@@ -89,8 +89,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.singularOp@"_Stz,      &Step::vJobSingularOpFetch);
-  vAddStep("job.singularOp!"_Stz,      &Step::vJobSingularOpStore);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
 
@@ -543,41 +541,6 @@ void Step::vJobIdFetch(void)
   
   m_pDataStack->vPushInt(pJob->iJobId());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.singularOp@ -- fetch the input op                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSingularOpFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pJob->pSingularOp());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.singularOp! -- store the input op                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSingularOpStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  pJob->vSingularOp(pOp);
-  
-  // get the job in the session
-  Job* pJob_Originating = pOp->pPipelineJob()->m__dpOriginatingTask->pJob();
-
-  pJob_Originating->vSingularOp(pOp);
-
   EXIT();
 }
 

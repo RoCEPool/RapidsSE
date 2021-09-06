@@ -156,7 +156,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_pSingularOp  = nullptr;
 
   // -- f -------------------
-  m__dpOriginatingTask = nullptr;
   m_iOriginatingId     = C_UNKNOWN;
 
   // -- g -------------------
@@ -208,7 +207,6 @@ Job::Job(eCN eClassNo)
   //m_oAcksRmg_task
   
   m_pTask              = nullptr;
-  m__dpOriginatingTask = nullptr;
   m_iOriginatingId     = C_UNKNOWN;
 
   m_i_Participant = C_UNKNOWN;
@@ -973,7 +971,6 @@ void Job::vResetForCascade(Session* pSession)
   }
 
   // -- f -------------------
-  m__dpOriginatingTask = nullptr;
   m_iOriginatingId     = C_UNKNOWN;
 
   // -- g -------------------
@@ -1044,7 +1041,6 @@ void Job::vSee(void)
 
          "       pSingularOp "  "%s"    " \n"  // 17
 
-         "  pOriginatingTask "  "%s"    " \n"  // 18
          "    iOriginatingId "  "%lld"  " \n"  // 19
  
          "             eSeed "  "%s"    " \n"  // 20
@@ -1071,7 +1067,6 @@ void Job::vSee(void)
          ,m_oAcksRmg_job.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
-         ,spvOriginatingTask.sz(m__dpOriginatingTask) // 18
          ,m_iOriginatingId           // 19
          ,aSS[m_eSeed]               // 20
          ,spvTask.sz(m_pTask)        // 21
