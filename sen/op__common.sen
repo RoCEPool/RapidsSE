@@ -372,11 +372,7 @@
 /*----------------------------------------------------------------------------*/
 : op__callHandler
   
-  //Task[] task.dropLock //OoO
-
   LogicUnit[].handler@ execute
-  
-  //Task[] task.grabLock //OoO
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -389,7 +385,7 @@
 
   op__pipelineJobWait
   
-  //Task[] task.grabLock //OoO
+  //task[].grabLock //OoO
 
   begin  iContinue while
     
@@ -440,7 +436,7 @@
     iOperandYield 1 + to iOperandYield
     iOperandYield task::operandYield@ >= if
       task::yield_opLoop
-      //Task[] task.grabLock //OoO
+      //task[].grabLock //OoO
       0 to iOperandYield
     then
 
@@ -469,8 +465,6 @@
   repeat
   
   iContinue not assert
-  
-  //Task[] task.dropLock //OoO
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -509,7 +503,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  task[] task.grabLock
+  task[].grabLock
   TR_DELETE_THIS_TASK task::transition!
 ;
 
