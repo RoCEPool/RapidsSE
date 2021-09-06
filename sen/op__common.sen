@@ -511,6 +511,9 @@
 
   
   task::scheduledelete
+
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
 ;
 
 /*----------------------------------------------------------------------------*/

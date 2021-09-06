@@ -364,24 +364,19 @@ void Task::vAddAxioms(void)
   // Temporary ifdef till we get sen files embedded in the executable
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//#ifdef WITH_APPLE
   sDefinition =
   "axiom: boot_run"
   "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::scheduleDelete"
+  
+  // "  task::scheduleDelete"
+  
+  "  task[] task.grabLock"
+  "  TR_DELETE_THIS_TASK task::transition!"
+
   "  ;"_Stz;
-//#else
-//  sDefinition =
-//  "axiom: boot_run"
-//  "  \"boot_run\" .verbose"
-//  "  \"se_boot.sen\" include"
-//  "  \"boot_run exit_rt\" .verbose"
-//  "  task::scheduleDelete"
-//  "  ;"_Stz;
-//#endif
   
   pCompileAxiomColon(sDefinition);
   

@@ -115,6 +115,10 @@
 
   // delete task instead of returning to nowhere
   task::scheduleDelete
+  
+  task[] task.grabLock
+  TR_DELETE_THIS_TASK task::transition!
+
   HAZARD
 ;
 
