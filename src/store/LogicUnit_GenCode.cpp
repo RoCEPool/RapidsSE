@@ -1122,6 +1122,8 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_CRWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_LEFTOUTER_ROWLFT, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
@@ -1134,6 +1136,11 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "INDEX_SCAN"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_DATAPULSE, &oTagSet, sMacro));
   oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1173,11 +1180,6 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   //   handler intiates index iteration
   oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_SCAN_END, &oTagSet, sMacro));
   oTagSet.vReset();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query Done
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_STAR
