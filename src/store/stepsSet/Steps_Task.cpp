@@ -27,6 +27,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::scheduledelete"_Stz, &Step::vTaskDelete);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
+  vAddStep("task::job@"_Stz,           &Step::vTaskJobFetch);
+  vAddStep("task::job!"_Stz,           &Step::vTaskJobStore);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
