@@ -104,6 +104,15 @@ echo
 echo "search local" >> /etc/resolv.conf
 
 # ----------------------------------------------------------------------------------------
+# /etc/hosts shortcuts
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
+echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
+
+# ----------------------------------------------------------------------------------------
 # Change permissions to allow for writing to /opt
 echo
 echo "*** Setting /opt permissions ***"
