@@ -26,8 +26,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
-  vAddStep("task::job@"_Stz,           &Step::vTaskJobFetch);
-  vAddStep("task::job!"_Stz,           &Step::vTaskJobStore);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
@@ -43,12 +41,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
 
   vAddStep("task.ack"_Stz,             &Step::vTaskAck);
-  vAddStep("task.dropLock"_Stz,        &Step::vTaskDropLock);
-  vAddStep("task.grabLock"_Stz,        &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,        &Step::vTaskIsAckSet);
   vAddStep("task.isWaiting"_Stz,       &Step::vTaskIsWaiting);
-  vAddStep("task.job@"_Stz,            &Step::vTaskJobFetch);
-  vAddStep("task.job!"_Stz,            &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,           &Step::vTaskNameFetch);
   vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
   vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
@@ -107,20 +101,6 @@ void Step::vTaskBreakPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.dropLock -- drop lock of task on data stack                           */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDropLock(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  pThatTask->vDropTaskLock((Stz*)__func__);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDump(void)
@@ -160,20 +140,6 @@ void Step::vTaskException(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.grabLock -- grab lock of task on data stack                           */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskGrabLock(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  pThatTask->vGrabTaskLock((Stz*)__func__);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task.isAckSet -- is task ack set?                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsAckSet(void)
@@ -203,44 +169,6 @@ void Step::vTaskIsWaiting(void)
   
   m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.job@ -- push job of given task                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskJobFetch(void)
-{
-  ENTRY();
-  
-//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-//
-//  Job* pJob = pThatTask->m_pJob;
-//
-//  m_pDataStack->vPushPtr(pJob);
-
-  m_pDataStack->vPushPtr(m_pJob);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.job! -- store job into given task                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskJobStore(void)
-{
-  ENTRY();
-  
-//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-//
-//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-//
-//  pThatTask->m_pJob = pJob;
-   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pJob = pJob;
-
   EXIT();
 }
 

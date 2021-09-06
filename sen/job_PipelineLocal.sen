@@ -26,8 +26,6 @@
 
   job::assertCorrectness
 
-  task[] locals| pTask |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   
@@ -87,7 +85,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
-  pTask task.grabLock
+  Task[] task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
@@ -101,7 +99,7 @@
     //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
   else
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    pTask task.dropLock
+    Task[] task.dropLock
   then
 
   // remove job from the local job list
