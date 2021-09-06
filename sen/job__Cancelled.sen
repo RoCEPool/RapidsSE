@@ -76,17 +76,8 @@
   iJobId olist::findJob discard
 
   // get the participant node from where this job__begun started
-  pJob__Cancelled job.participant@ to iParticipantNode
+  pJob__Cancelled job.participantNode@ to iParticipantNode
 
-  // get the error code from job__cancelled
-  //pJob__Cancelled jobCancelled.error@ to error
-
-  // set the error code in JobRef[]
-  //error iParticipantNode JobRef[] Job[].error!
-  //error EC_NONE != if
-    // set error in executed job
-    //pJob__Cancelled iParticipantNode JobRef[] job.participantResponse!
-  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node

@@ -706,6 +706,7 @@ public:
 
 
   void vJobParticipantFetch(void);
+  void vJobParticipantFetch_other(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
   void vJobPhaseFetch_other(void);

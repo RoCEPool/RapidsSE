@@ -65,7 +65,7 @@
   iJobId olist::findJob discard
 
   // get the participant node from where this job__begun started
-  pJob__Begun job.participant@ to iParticipantNode
+  pJob__Begun job.participantNode@ to iParticipantNode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node

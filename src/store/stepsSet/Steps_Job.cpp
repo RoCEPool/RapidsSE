@@ -55,11 +55,9 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
   
-  vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
-  vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
+  vAddStep("job.participantNode@"_Stz, &Step::vJobParticipantFetch_other);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
-
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -92,6 +90,9 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("Job[].originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("Job[].originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
+  
+  vAddStep("Job[].participantNode@"_Stz, &Step::vJobParticipantFetch);
+  vAddStep("Job[].participantNode!"_Stz, &Step::vJobParticipantStore);
   
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
@@ -683,9 +684,23 @@ void Step::vJobOriginatorFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participant@ -- fetch the participant node from the job                */
+/* job.participantNode@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  m_pDataStack->vPushInt(pJob->iParticipantNode());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.participantNode@ -- fetch the participant node from the job                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParticipantFetch_other(void)
 {
   ENTRY();
   
@@ -703,8 +718,8 @@ void Step::vJobParticipantStore(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  Job* pJob = * m_pJob;
+
   i8 iParticipantNode = m_pDataStack->iPopAsInt(__func__);
   
   pJob->vParticipantNode(iParticipantNode);

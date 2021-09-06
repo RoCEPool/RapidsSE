@@ -158,8 +158,8 @@
 
   <path> str.toStrVec Path[].set
 
-  // set participant node in job
-  grid::thisNode@ Job[] job.participant!
+  // set participant node of job
+  grid::thisNode@ Job[].participantNode!
 
   // add job to participant job list
   Job[].addParticipant

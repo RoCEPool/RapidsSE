@@ -65,10 +65,6 @@
 
   params| pJob |
 
- //   pJob job.participant@
- //   pJob job.Id@
- //   pJob object.class@ class::name
- // "NOTICE: %v jobId %v executed on node %v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/
