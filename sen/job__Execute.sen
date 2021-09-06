@@ -70,7 +70,7 @@
   begin
     JobRef[].hasTask
   while
-    task::yield
+    Task[].yield 
   repeat
 
   // execute the job on this participating node

@@ -370,8 +370,8 @@ void Task::vAddAxioms(void)
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task[].grabLock"
-  "  TR_DELETE_THIS_TASK task::transition!"
+  "  Task[].grabLock"
+  "  TR_DELETE_THIS_TASK Task[].transition!"
 
   "  ;"_Stz;
   

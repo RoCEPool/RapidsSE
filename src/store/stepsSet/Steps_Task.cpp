@@ -35,10 +35,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
-  vAddStep("task::transition!"_Stz,    &Step::vTaskTransitionStore);
-  vAddStep("task::wait"_Stz,           &Step::vTaskWait);
-  vAddStep("task::yield"_Stz,          &Step::vTaskYield);
-  vAddStep("task::yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
 
   vAddStep("task.ack"_Stz,             &Step::vTaskAck);
   vAddStep("task.isAckSet"_Stz,        &Step::vTaskIsAckSet);
@@ -370,60 +366,6 @@ void Step::vTaskThread(void)
   m_pDataStack->vPushPtr(pThread);
   ASSERT(pThread);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::transition! -- transition store                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskTransitionStore(void)
-{
-  ENTRY();
-  
-  eTR eTransition = (eTR)m_pDataStack->iPopInt(__func__);
-
-  RASSERT(bIsLocked());
-  m_eTransition = eTransition;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::wait -- this task waits for signal                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskWait(void)
-{
-  ENTRY();
-  
-  vScheduleWait();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::yield -- this task yields                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskYield(void)
-{
-  ENTRY();
-    
-  vGrabTaskLock((Stz*)__func__);
-  vScheduleYield();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::yield -- this task yields                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskYield_opLoop(void)
-{
-  ENTRY();
-    
-  vGrabTaskLock((Stz*)__func__);
-  RASSERT(bIsLocked());
-  vScheduleYield();
-
   EXIT();
 }
 

@@ -269,8 +269,8 @@
   
   JS_DELETABLE job::state!
 
-  task[].grabLock
-  TR_DELETE_THIS_TASK task::transition!
+  Task[].grabLock
+  TR_DELETE_THIS_TASK Task[].transition!
   
   HAZARD
 ;
@@ -393,11 +393,11 @@
 /*----------------------------------------------------------------------------*/
 : job::unlinkTaskAndJob_tbr
 
-  task[].job@ if
+  Task[].job@ if
   
-    nullptr task[].job@ job.task!
+    nullptr Task[].job@ job.task!
     
-    nullptr task[].job!
+    nullptr Task[].job!
   then
 ;
 

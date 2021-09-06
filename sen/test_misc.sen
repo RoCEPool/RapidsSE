@@ -134,7 +134,7 @@ traceon
 
   10 0 do
     I .
-    task::yield
+    Task[].yield 
   loop
 ;
 

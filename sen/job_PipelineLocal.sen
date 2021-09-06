@@ -13,8 +13,8 @@
 
   _job_finalise_
 
-  task[].grabLock
-  TR_DELETE_THIS_TASK task::transition!
+  Task[].grabLock
+  TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -44,9 +44,9 @@
 
     JS_SIGNALLED job::state!
       
-    task[].grabLock
+    Task[].grabLock
     Session[].signal
-    task[].dropLock
+    Task[].dropLock
     
     pipelineLocal::termination
     
@@ -85,7 +85,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
-  task[].grabLock
+  Task[].grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
@@ -94,12 +94,12 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
-    task::wait
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on Task[].wait" .printf
+    Task[].wait
     //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
   else
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    task[].dropLock
+    Task[].dropLock
   then
 
   // remove job from the local job list
@@ -114,9 +114,9 @@
       
   JS_SIGNALLED job::state!
       
-  task[].grabLock
+  Task[].grabLock
   Session[].signal
-  task[].dropLock
+  Task[].dropLock
  
   pipelineLocal::termination
 ;

@@ -306,7 +306,7 @@
     thread.dedicated@ if
       10 thread::sleepMsec
     else
-      task::yield
+      Task[].yield 
     then
     
   repeat
@@ -325,7 +325,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        task::yield
+        Task[].yield 
       then
     
     repeat
@@ -341,7 +341,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        task::yield
+        Task[].yield 
       then
     
     repeat
@@ -385,7 +385,7 @@
 
   op__pipelineJobWait
   
-  //task[].grabLock //OoO
+  //Task[].grabLock //OoO
 
   begin  iContinue while
     
@@ -435,8 +435,8 @@
 
     iOperandYield 1 + to iOperandYield
     iOperandYield task::operandYield@ >= if
-      task::yield_opLoop
-      //task[].grabLock //OoO
+      Task[].yield_opLoop
+      //Task[].grabLock //OoO
       0 to iOperandYield
     then
 
@@ -503,8 +503,8 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  task[].grabLock
-  TR_DELETE_THIS_TASK task::transition!
+  Task[].grabLock
+  TR_DELETE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/
