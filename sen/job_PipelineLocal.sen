@@ -13,8 +13,7 @@
 
   _job_finalise_
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -44,7 +43,7 @@
     // cross check
     PipelineSpec[] not assert
 
-    JS_SIGNALLED job::state!
+    JS_SIGNALLED Job[].state!
       
     Task[].grabLock
     Session[].signal
@@ -114,7 +113,7 @@
   Job[].addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
       
-  JS_SIGNALLED job::state!
+  JS_SIGNALLED Job[].state!
       
   Task[].grabLock
   Session[].signal

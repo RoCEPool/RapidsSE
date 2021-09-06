@@ -48,10 +48,9 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::terminate_participant ( -- )
   
-  JS_DELETABLE job::state!
+  JS_DELETABLE Job[].state!
   
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -74,7 +73,7 @@
       
       DdlLock[].testDrop
 
-      JS_SIGNALLED job::state!
+      JS_SIGNALLED Job[].state!
       
       Task[].grabLock
       Session[].signal
@@ -84,8 +83,7 @@
 
       _job_finalise_
 
-      Task[].grabLock
-      TR_DELETE_THIS_TASK Task[].transition!
+      Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -137,15 +135,14 @@
   Job[].addRetired
   [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
   
-  JS_SIGNALLED job::state!
+  JS_SIGNALLED Job[].state!
   //Task[].grabLock
   Session[].signal
   //Task[].dropLock
  
   DdlLock[].testDrop
  
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
   
   HAZARD
 ;
@@ -199,8 +196,7 @@
 
   job::unlinkTaskAndJob_tbr
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -277,8 +273,7 @@
 
   job::unlinkTaskAndJob_tbr
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;

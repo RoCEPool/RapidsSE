@@ -16,8 +16,7 @@
   
   job::unlinkTaskAndJob_tbr
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;

@@ -29,8 +29,6 @@
 void Step::vAddSteps_Job(void)
 {
   vAddStep("job::assertCorrectness"_Stz,  &Step::vJobAssertCorrectness);
-  vAddStep("job::state@"_Stz,             &Step::vJobStateFetch);
-  vAddStep("job::state!"_Stz,             &Step::vJobStateStore);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
@@ -97,6 +95,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
+  
+  vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
+  vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
+
 }
 
 

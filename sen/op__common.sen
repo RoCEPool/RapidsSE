@@ -306,7 +306,7 @@
     thread.dedicated@ if
       10 thread::sleepMsec
     else
-      Task[].yield 
+      Task[].yield
     then
     
   repeat
@@ -325,7 +325,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield 
+        Task[].yield
       then
     
     repeat
@@ -341,7 +341,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield 
+        Task[].yield
       then
     
     repeat
@@ -503,8 +503,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

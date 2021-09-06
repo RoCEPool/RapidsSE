@@ -258,10 +258,9 @@
 
   _job_finalise_
   
-  JS_DELETABLE job::state!
+  JS_DELETABLE Job[].state!
 
-  Task[].grabLock
-  TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
   
   HAZARD
 ;
