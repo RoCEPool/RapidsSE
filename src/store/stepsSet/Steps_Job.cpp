@@ -42,7 +42,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-  vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
+  vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
@@ -88,6 +88,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
 
+  vAddStep("Job[].id@"_Stz,              &Step::vJobIdFetch);
+  
   vAddStep("Job[].originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("Job[].originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
   
@@ -122,7 +124,7 @@ void Step::vJobAcksRemaining(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].addDemon -- add job to demon job set                                   */
+/* Job[].addDemon -- add job to demon job set                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddDemon(void)
 {
@@ -144,7 +146,7 @@ void Step::vJobAddDemon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].addLocal -- add job to local job set                                   */
+/* Job[].addLocal -- add job to local job set                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddLocal(void)
 {
@@ -160,7 +162,7 @@ void Step::vJobAddLocal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].addOriginator -- add job to originator job set                         */
+/* Job[].addOriginator -- add job to originator job set                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddOriginator(void)
 {
@@ -182,7 +184,7 @@ void Step::vJobAddOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].addParticipant -- add job to participant job set                       */
+/* Job[].addParticipant -- add job to participant job set                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddParticipant(void)
 {
@@ -202,7 +204,7 @@ void Step::vJobAddParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].addRetired -- add job to retired job set                               */
+/* Job[].addRetired -- add job to retired job set                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddRetired(void)
 {
@@ -520,9 +522,23 @@ void Step::vJobErrorStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.id@ -- fetch the job id of the job                                     */
+/* Job[].id@ -- fetch the job id of the job                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  m_pDataStack->vPushInt(pJob->iJobId());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.id@ -- fetch the job id of the job                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobIdFetch_other(void)
 {
   ENTRY();
   
@@ -623,7 +639,7 @@ void Step::vJobNoWaitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].originatingId@ -- fetch originating id from job                        */
+/* Job[].originatingId@ -- fetch originating id from job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginatingIdFetch(void)
 {
@@ -637,7 +653,7 @@ void Step::vJobOriginatingIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].originatingId! -- store originating id into job                        */
+/* Job[].originatingId! -- store originating id into job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginatingIdStore(void)
 {
@@ -653,7 +669,7 @@ void Step::vJobOriginatingIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job::originator@ -- fetch the originator node from the job                  */
+/* job::originator@ -- fetch the originator node from the job                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginatorFetch(void)
 {
@@ -741,7 +757,7 @@ void Step::vJobPhaseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].removeLocal -- remove job from local job set                           */
+/* Job[].removeLocal -- remove job from local job set                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveLocal(void)
 {
@@ -764,7 +780,7 @@ void Step::vJobRemoveLocal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].removeOriginator -- remove job from originator job set                 */
+/* Job[].removeOriginator -- remove job from originator job set               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveOriginator(void)
 {
@@ -787,7 +803,7 @@ void Step::vJobRemoveOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].removeParticipant -- remove job from participant job set               */
+/* Job[].removeParticipant -- remove job from participant job set             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveParticipant(void)
 {
@@ -810,7 +826,7 @@ void Step::vJobRemoveParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].removeRetired -- remove job from retired job set                       */
+/* Job[].removeRetired -- remove job from retired job set                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveRetired(void)
 {
@@ -1013,7 +1029,7 @@ void Step::vJobSpawn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].phase@ -- fetch the job phase                                          */
+/* Job[].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobStateFetch(void)
 {
@@ -1027,7 +1043,7 @@ void Step::vJobStateFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job[].phase! -- store the job phase                                          */
+/* Job[].phase! -- store the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobStateStore(void)
 {
@@ -1044,7 +1060,7 @@ void Step::vJobStateStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job::tagSet@ -- push ptr to job TagSet                                      */
+/* job::tagSet@ -- push ptr to job TagSet                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobTagSetFetch(void)
 {
@@ -1138,8 +1154,6 @@ void Step::vRegJobGet(void)
   EXIT();
 }
 
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

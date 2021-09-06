@@ -66,18 +66,17 @@
   // pre-check
   
   "<preCheck>" job::tagSet@ tagSet.hasName if
-  
+    // tag exists..
+    
     <preCheck> find execute not if
-
+      // - preCheck word does not exist
+      
       Job[].error!
       
       DdlLock[].testDrop
 
       JS_SIGNALLED Job[].state!
-      
-      //Task[].grabLock
       Session[].signal
-      //Task[].dropLock
 
       _lu_finalise_
 
@@ -94,20 +93,21 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
   
-  Job[] job.id@ Job[].originatingId!
+//       1         2         3
+//34567890123456789012345678901234567890
+  Job[].id@ Job[].originatingId!  // this job id is propageted as the originator
+  Job[].addOriginator             // add this job to originator job list
 
-  Job[].addOriginator           // add this job to originator job list
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
   
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
-    // clean compile of pipeline statement
+    // + clean compile
     discard
     PipelineSpec[].delete
   else
-    // pipeline statement didnt compile
+    // - didnt compile
     Job[].error!
     DdlLock[].testDrop
   then
@@ -119,6 +119,7 @@
   // distribute the participants of this job and execute them
   
   Job[].error@ not if
+    // compiled without error..
     Task[].grabLock
     job::distributeParticipants
     Task[].wait
@@ -132,9 +133,7 @@
   [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
   
   JS_SIGNALLED Job[].state!
-  //Task[].grabLock
   Session[].signal
-  //Task[].dropLock
  
   DdlLock[].testDrop
  

@@ -689,6 +689,7 @@ public:
   void vJobFindParticipant(void);
 
   void vJobIdFetch(void);
+  void vJobIdFetch_other(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
