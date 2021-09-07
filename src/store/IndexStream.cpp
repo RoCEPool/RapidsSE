@@ -82,7 +82,7 @@ IndexStream::~IndexStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the indexStream                                                     */
 /*----------------------------------------------------------------------------*/
-void IndexStream::vRepair(Object* pObject, eRF eRepair)
+void IndexStream::vRepair(Object* pObject)
 {
   _static_
 

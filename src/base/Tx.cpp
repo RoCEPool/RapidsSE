@@ -74,7 +74,7 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* repair the transaction                                                     */
 /*----------------------------------------------------------------------------*/
-void Tx::vRepair(Object* pObject, eRF eRepair)
+void Tx::vRepair(Object* pObject)
 {
   _static_
 

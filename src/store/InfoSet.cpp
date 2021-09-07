@@ -87,7 +87,7 @@ InfoSet::~InfoSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the aggregate time                                                  */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vRepair(Object* pObject, eRF eRepair)
+void InfoSet::vRepair(Object* pObject)
 {
   _static_
 

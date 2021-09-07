@@ -20,7 +20,7 @@ namespace STORE
     eLR        m_eLogicUnitReg;  // LU register
     eRF        m_eRepair;        // how to repair
   
-    void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
+    void     (*m_fpRepair)(Object*); // the component repair function
 
 
     struct {
@@ -43,7 +43,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
+                   void (*fpRepair)(Object* pObject),
                    eLR eLogicUnitReg)
     {
       m_p_LogicUnit   = pLogicUnit;
@@ -71,7 +71,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
+                   void (*fpRepair)(Object* pObject),
                    bool bNullOnDelete,
                    bool bDeleteOnFailure,
                    eLR eLogicUnitReg)
@@ -275,7 +275,7 @@ namespace STORE
       // Following code to be uncommented once all repairs in place
       /*
       RASSERT(m_fpRepair);
-      m_fpRepair((Object *) m_pComponent, m_eRepair);
+      m_fpRepair((Object *) m_pComponent;
 
       // null the component
       m_pComponent = nullptr;
@@ -283,7 +283,7 @@ namespace STORE
 
       // execute the repair function ?
       if (m_fpRepair) {
-        m_fpRepair((Object *) m_pComponent, m_eRepair);
+        m_fpRepair((Object *) m_pComponent);
 
         // null the component
         m_pComponent = nullptr;

@@ -439,7 +439,7 @@ eEO LogicCompiler::eFindEO(Stz* szEOname)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vRepair(Object* pObject, eRF eRepair)
+void LogicCompiler::vRepair(Object* pObject)
 {
   _static_
 

@@ -74,7 +74,7 @@ Operand::~Operand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair operand                                                             */
 /*----------------------------------------------------------------------------*/
-void Operand::vRepair(Object* pObject, eRF eRepair)
+void Operand::vRepair(Object* pObject)
 {
   _static_
 
@@ -87,7 +87,7 @@ void Operand::vRepair(Object* pObject, eRF eRepair)
 /*----------------------------------------------------------------------------*/
 /* repair list of operands                                                    */
 /*----------------------------------------------------------------------------*/
-void Operand::vRepairList(Object* pObject, eRF eRepair)
+void Operand::vRepairList(Object* pObject)
 {
   _static_
 

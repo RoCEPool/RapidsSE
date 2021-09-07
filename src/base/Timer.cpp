@@ -71,7 +71,7 @@ Timer::~Timer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the timer                                                           */
 /*----------------------------------------------------------------------------*/
-void Timer::vRepair(Object* pObject, eRF eRepair)
+void Timer::vRepair(Object* pObject)
 {
   _static_
 

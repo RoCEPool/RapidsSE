@@ -26,7 +26,7 @@ namespace BASE
    ~Tx(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     void vContentDump(void);
     void vOutline(s4K& sOutline);

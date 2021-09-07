@@ -30,7 +30,7 @@ namespace BASE
    ~CsvBuffer(void) noexcept(false);
   
     static void       vPostRecv(void* aCsvBuffer);
-    static void       vRepairList(Object* pObject, eRF eRepair);
+    static void       vRepairList(Object* pObject);
 
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);

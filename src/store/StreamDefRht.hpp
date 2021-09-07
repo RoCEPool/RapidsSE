@@ -27,7 +27,7 @@ namespace STORE
     ~StreamDefRht(void) noexcept(false);
 
     static void vPostRecv(void* aStreamDefRht);
-    static void vRepair(Object *pObject, eRF eRepair);
+    static void vRepair(Object *pObject);
 
     Footer* aFooter(void);
 

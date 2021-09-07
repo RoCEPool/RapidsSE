@@ -172,7 +172,7 @@ bool Dir::bRemove(Stz* szDirPath)
 /*----------------------------------------------------------------------------*/
 /* repair the dir                                                             */
 /*----------------------------------------------------------------------------*/
-void Dir::vRepair(Object* pObject, eRF eRepair)
+void Dir::vRepair(Object* pObject)
 {
   _static_
 

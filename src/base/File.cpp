@@ -169,7 +169,7 @@ void File::vListOfOpenFiles(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* repair the file                                                            */
 /*----------------------------------------------------------------------------*/
-void File::vRepair(Object* pObject, eRF eRepair)
+void File::vRepair(Object* pObject)
 {
   _static_
 

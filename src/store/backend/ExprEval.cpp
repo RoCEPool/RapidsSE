@@ -110,7 +110,7 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the exprEval                                                        */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vRepair(Object* pObject, eRF eRepair)
+void ExprEval::vRepair(Object* pObject)
 {
   _static_
 

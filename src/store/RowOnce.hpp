@@ -22,7 +22,7 @@ namespace STORE
     RowOnce(void);
     ~RowOnce(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     bool bRowSeen(Rrf xRowRef);
   

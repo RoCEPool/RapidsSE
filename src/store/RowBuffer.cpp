@@ -78,7 +78,7 @@ void RowBuffer::vPostRecv(void* aRowBuffer)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRepairList(Object* pObject, eRF eRepair)
+void RowBuffer::vRepairList(Object* pObject)
 {
   _static_
   RowBuffer* pRowBuffer = _pRowBuffer(pObject);
