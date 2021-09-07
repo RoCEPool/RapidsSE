@@ -318,9 +318,9 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* set register name                                                      */
     /*------------------------------------------------------------------------*/
-    void vRegNm(Stz* szRegNm)
+    void vRegNm(eLR eLogicUnitReg)
     {
-      m_eLogicUnitReg = LR_NONE;
+      m_eLogicUnitReg = eLogicUnitReg;
     }
 
     /*------------------------------------------------------------------------*/

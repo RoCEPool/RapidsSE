@@ -126,13 +126,16 @@ LogicUnit::LogicUnit(void)
 ,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 LR_NODE_I)
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            LR_NOW)
 
+,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
-
-,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
+,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
+,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
+,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
+
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_ROWBUFFER)
@@ -159,10 +162,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
-
-,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
-,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
-,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -1916,9 +1915,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_BCDINT:
+      case EO_DIV_BCDINT: // bcd / int
         EO_ENTER(eCode);
-        ArgNil(); // bcd / int
+        ArgNil();
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_BCDINT(iTopA, iTopB);
