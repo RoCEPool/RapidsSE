@@ -1382,10 +1382,9 @@ function validateFirewallParallel() {
   mapfile -t sequentialServers < <(nonUniqueHosts "${nodeNames[@]}")
 
   if [ -z "${sequentialServers[@]:-}" ]; then
-    echo "Got null sequentialServers"
     sequentialServers=()
   fi
-
+  
   # Launch all of the unique server name UDP tests
   for nodeName in "${nodeNames[@]}"; do
 
@@ -1449,8 +1448,8 @@ function validateFirewallParallel() {
   # Wait for all parallel jobs to finish and collate all parallel results
   for pid in "${jobPids[@]}"; do
     local pidResult
-    wait "${pid}"
-    pidResult="$?"
+    pidResult=0
+    wait "${pid}" || pidResult="$?"
 
     if [ "${pidResult}" -eq 0 ]; then
       # All good
