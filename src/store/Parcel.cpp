@@ -165,7 +165,7 @@ tPN Parcel::tDstPtn(void)
     vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld  m_tDstPtn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnNo(), (i8)m_tDstPtn);
 
     //m_tDstPtn = pBuffer->iBucketNo();
-    //m_tDstPtn = pBuffer->tPtnNo();
+    m_tDstPtn = pBuffer->tPtnNo();
   }
 #endif
   return m_tDstPtn;
