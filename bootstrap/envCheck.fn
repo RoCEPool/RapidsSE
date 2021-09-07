@@ -74,6 +74,9 @@ function validateInstallationEnvironment() {
   # Check that gcc is installed and is new enough
   validateGcc
 
+  # Check that libAtomic.so.1 is installed
+  validateLibAtomic
+
   # Check that bash has the correct version
   validateBash
 
@@ -150,6 +153,9 @@ function validateNodeAdditionEnvironment() {
 
   # Check that gcc is installed and is new enough
   validateGcc "${nodeNames[@]}"
+
+  # Check that libAtomic.so.1 is installed
+  validateLibAtomic "${nodeNames[@]}"
 
   # Check that bash has the correct version
   validateBash "${nodeNames[@]}"
@@ -889,6 +895,65 @@ function validateGcc() {
     errorExit "${errMsg}"
   fi
 }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that libAtomic.so.1 is installed on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateLibAtomic() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating libAtomic"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    remoteCmd="/usr/sbin/ldconfig -p | grep libatomic.so.1"
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! ssh "${sshArgs[@]}" &>/dev/null; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="Dependant library libAtomic.so.1 is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errMsg+="\n\nlibAtomic can be installed with \"yum install libatomic\" (or an equivalent command for different package managers)."
+
+    errorExit "${errMsg}"
+  fi
+}
+
+#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that bash is installed and is new enough on each node.
