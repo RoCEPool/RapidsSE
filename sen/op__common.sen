@@ -401,8 +401,15 @@
 /*----------------------------------------------------------------------------*/
 : op__callHandler
 
+  // inc operand count
+  OperandCount[].inc
+
+  // start timer
   BM_TimerBegin
+
   LogicUnit[].handler@ execute
+
+  // update timer
   BM_TimerUpdate
 ;
 

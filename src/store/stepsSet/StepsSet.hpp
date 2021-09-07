@@ -1153,6 +1153,9 @@ public:
   // operand
   void vOperandToParcel(void);
 
+  // operandCount
+  void vOperandCountInc(void);
+
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);

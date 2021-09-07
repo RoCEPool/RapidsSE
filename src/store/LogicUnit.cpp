@@ -182,6 +182,8 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
+  m_iOperandCount = 0;
+
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
@@ -390,6 +392,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
 
+  // repair the timers here
+  AggTimer::vRepair(m_xpAggTimer.m_pComponent);
+  Timer::vRepair(m_xpTimer.m_pComponent);
+
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
     
@@ -512,12 +518,15 @@ void LogicUnit::vCleanup(void)
 
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
-    // execute register repare
 
-    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
-      vTrace("OP: %s Time: %lldms\n"_Stz, m_pOp->szOpNm(), m_xpAggTimer->iMicroseconds());
+//    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+//      vTrace("OP: %s Time: %lldms; Operands: %lld; \n"_Stz,
+//             m_pOp->szOpNm(),
+//             m_iOperandCount,
+//             m_xpAggTimer->iMicroseconds());
 
-    if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+    // execute register repair
+    if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg != LR_AGGTIMER)
       p_Reg->vRepair();
   }
 
