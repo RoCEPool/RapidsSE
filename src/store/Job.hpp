@@ -36,6 +36,8 @@ namespace STORE
     s32         m_sJobNm;    // name of job
     eJK         m_eJobKind;  // job kind: (needs work)
 
+    b8          m_bReapable; // can job be reaped?
+  
     eSS         m_eSeed;  // sen word to start execution
     Word*       m_pSeedWord; // seed word of this job                  POST_RECV
 

@@ -38,7 +38,7 @@ namespace STORE
 
   static void vPushOperand(Session* pSession, Operand* pOperand);
  
-  static bool bReapJob(void);
+  static bool bReapJob(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

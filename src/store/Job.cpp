@@ -120,6 +120,8 @@ Job::Job(i8 i_Origin,     // originated on which node
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
+  m_bReapable  = false;
+  
   m_eSeed      = SS_ENUMS;
   m_pSeedWord  = nullptr;
   
@@ -186,6 +188,8 @@ Job::Job(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
+  m_bReapable  = false;
+
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;

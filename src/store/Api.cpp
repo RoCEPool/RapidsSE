@@ -126,11 +126,16 @@ void Api::vDeleteJob(Session* pSession)
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
 
-  
-  
   pSession->m_pSsnJob = nullptr;
-  pJob->vGuardedDelete(CN_JOB,&pJob,
-                       CN_API,nullptr,(Stz*)__func__);
+  
+  
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    pJob->m_bReapable = true;
+  }
+  else {
+    pJob->vGuardedDelete(CN_JOB,&pJob,
+                         CN_API,nullptr,(Stz*)__func__);
+  }
   
   
   if (pSession->m_pOutput->m_pStreamDef_result) {
@@ -546,7 +551,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
-bool Api::bReapJob(void)
+bool Api::bReapJob(bool bForce)
 {
   _static_
   
@@ -576,7 +581,7 @@ bool Api::bReapJob(void)
     
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
-    if (pRetiredJob) {
+    if (pRetiredJob && (pRetiredJob->m_bReapable || bForce) ) {
       pReapableJob = pRetiredJob;
       break;
     }
