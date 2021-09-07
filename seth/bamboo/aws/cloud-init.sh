@@ -15,7 +15,7 @@ echo "*************************************"
 echo
 echo "*** Installing the SSD mount script ***"
 echo
-cat << 'EOF' >> "/etc/rc.local"
+cat << 'EOF' >> "/etc/rc.d/rc.local"
 
 # ----------------------------------------------------------------------------------------
 # Setup the SSDs on each boot
@@ -82,7 +82,8 @@ EOF
 echo
 echo "*** Running the SSD mount script ***"
 echo
-bash /etc/rc.local
+chmod +x /etc/rc.d/rc.local
+bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
