@@ -1432,6 +1432,16 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
   return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get sysargs tag set                                                        */
+/*----------------------------------------------------------------------------*/
+TagSet* AM::SYSARGS::pTagSet(void)
+{
+  _static_
+  
+  return & gpAttachMap->m_xSysArgs.m_oArgTags;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 SYSTEM                                     */

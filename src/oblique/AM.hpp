@@ -395,6 +395,7 @@ namespace OBLIQUE
     public:
       static i8 nDefinedNodes(void);
       static i8 nPtnsPerNode(void);
+      static TagSet* pTagSet(void);
     };
 
     class SYSTEM

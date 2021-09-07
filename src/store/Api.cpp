@@ -541,14 +541,12 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reap all ended jobs                                                        */
+/* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
 bool Api::bReapJob(void)
 {
   _static_
-  
-#ifdef WITH_JOB_REAPING
-  
+    
   Job* pReapableJob = nullptr;
   
   JobList* pRetiredJobs = AM::pRetiredJobs();
@@ -573,10 +571,10 @@ bool Api::bReapJob(void)
   }
   
   pRetiredJobs->vDropLock();
-  return true;
   
-#endif
+  // DELETE THE JOB
   
+  // THIS SHOULD BE TRUE
   return false;
 }
 

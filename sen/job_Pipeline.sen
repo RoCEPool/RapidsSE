@@ -120,7 +120,18 @@
   
   Job[].removeOriginator
   Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
+  
+  [? WITH_JOB_REAPING
+  
+    ?if
+    
+      "reaping" .
+    
+    ?else
+    
+      Job[].removeRetired
+      
+  ?]
   
   JS_SIGNALLED Job[].state!
   Session[].signal
@@ -289,7 +300,18 @@
 
   Job[].removeParticipant
   Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
+  
+  [? WITH_JOB_REAPING
+   
+    ?if
+    
+      "reaping" .
+    
+    ?else
+    
+      Job[].removeRetired
+    
+  ?]
 
   Job[] Job__Ended::replyToOrigin
   
@@ -320,7 +342,18 @@
 
   Job[].removeParticipant
   Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
+  
+  [? WITH_JOB_REAPING
+  
+    ?if
+    
+      "reaping" .
+      
+    ?else
+    
+      Job[].removeRetired
+      
+  ?]
 
   Job[] Job__Cancelled::replyToOrigin
   

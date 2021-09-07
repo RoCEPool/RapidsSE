@@ -1785,6 +1785,7 @@ public:
   // args
   void vSysArgsDefinedNodes(void);
   void vSysArgsPrint(void);
+  void vSysArgsTagSet(void);
 
   // system
   void vSystemActiveJobs(void);

@@ -16,6 +16,7 @@ void Step::vAddSteps_SysArgs(void)
 {
   vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
   vAddStep("sysargs::print"_Stz,         &Step::vSysArgsPrint);
+  vAddStep("sysargs::tagSet"_Stz,        &Step::vSysArgsTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +31,6 @@ void Step::vSysArgsDefinedNodes(void)
   EXIT();
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* sysargs::print -- print system arguments                                   */
 /*----------------------------------------------------------------------------*/
@@ -40,6 +40,18 @@ void Step::vSysArgsPrint(void)
   
   AM::vPrintStartupInfo();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::tagSet -- get sysargs tag set                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsTagSet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(AM::SYSARGS::pTagSet());
+
   EXIT();
 }
 
