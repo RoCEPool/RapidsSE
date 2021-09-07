@@ -1906,7 +1906,7 @@ function collectHostSizeInfo() {
     ) &
   done
   
-  wait
+  wait || true
 
   while IFS='' read -r line 
   do
