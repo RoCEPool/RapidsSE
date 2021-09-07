@@ -42,7 +42,7 @@
 
     args.demonSleep thread::sleepSsec
 
-    recurring_activity
+    // recurring_activity
 
   again
 ;
