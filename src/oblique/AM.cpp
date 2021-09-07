@@ -288,7 +288,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
               || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
               || bDELETE_RULE(CN_API,     "vDeleteJob"_Stz      )
               || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-              || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz      )
+              || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
               );
     }
   }

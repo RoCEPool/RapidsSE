@@ -49,7 +49,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary job__cancel
-  pJob__Cancel job.delete
+  pJob__Cancel job.delete2pc
 ;
 
 /*----------------------------------------------------------------------------*/

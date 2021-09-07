@@ -679,7 +679,7 @@ public:
   void vJobClass(void);
 
   void vJobDec2pcAcksRmg(void);
-  void vJobDelete(void);
+  void vJobDelete2pc(void);
 
   void vJobTagSetFetch(void);
   void vJobErrorStore(void);

@@ -40,7 +40,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
-  vAddStep("job.delete"_Stz,           &Step::vJobDelete);
+  vAddStep("job.delete2pc"_Stz,        &Step::vJobDelete2pc);
   
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
@@ -460,7 +460,7 @@ void Step::vJobPrintMember(void)
 /*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobDelete(void)
+void Step::vJobDelete2pc(void)
 {
   ENTRY();
   
