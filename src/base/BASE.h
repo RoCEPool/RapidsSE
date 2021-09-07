@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <string.h>
+#include <functional> // for std::function
+
 //typedef unsigned long size_t;
 
 #define EndDefine
