@@ -312,7 +312,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
 
   // registers should have been repaired
-  RASSERT(m_xpAggTimer.bIsNull());
+  //RASSERT(m_xpAggTimer.bIsNull());
   RASSERT(m_xpBucket.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
@@ -374,7 +374,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
-  RASSERT(m_xpTimer.bIsNull());
+  //RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToBktCrw.bIsNull());
   RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
@@ -513,7 +513,12 @@ void LogicUnit::vCleanup(void)
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
     // execute register repare
-    p_Reg->vRepair();
+
+    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+      vTrace("OP: %s Time: %lldms\n"_Stz, m_pOp->szOpNm(), m_xpAggTimer->iMicroseconds());
+
+    if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+      p_Reg->vRepair();
   }
 
 }
