@@ -503,7 +503,20 @@ void Step::vJobErrorFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
+  Job* pJob = nullptr;
+
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
 
   m_pDataStack->vPushInt(pJob->eJobError());
   
