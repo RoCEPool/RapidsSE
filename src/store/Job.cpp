@@ -1266,25 +1266,17 @@ void Job::vWalk(void* aArg)
 /*----------------------------------------------------------------------------*/
 /* walk                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job::vWalkLambda(std::function<void(Object* pObject)> fLambda)
+void Job::vWalkLambda(i8 iDepth,
+                      std::function<void(Object* pObject, i8 iDepth)> vfClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-//  eCN eClassNo = eGetClassNo();
-//  
-//  vTrace("Walk %8s:%ll03d %p\n"_Stz
-//         
-//         ,aCN[eClassNo]
-//         ,(i8)eClassNo
-//         ,this
-//         );
-  
-  fLambda(this);
+    
+  vfClosure(this,iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
-//  Pipeline* pPipeline = this->pPipeline_job();
-//  pPipeline->vWalk(aArg);
+  Pipeline* pPipeline = this->pPipeline_job();
+  pPipeline->vWalkLambda(iDepth + 1,vfClosure);
 }
 
 /*----------------------------------------------------------------------------*/

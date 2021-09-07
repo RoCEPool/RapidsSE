@@ -1196,11 +1196,19 @@ void Step::vJobWalk(void)
 
   //pJob->vWalk(nullptr);
   
-  auto fClosure = [](Object* pObject) {
-    vTrace("Closure: %p\n"_Stz,pObject);
+  auto fClosure = [](Object* pObject, i8 iDepth) {
+    
+    eCN  eClassNo  = pObject->eGetClassNo();
+    Stz* szClassNm = aCN[eClassNo];
+
+    vTrace("%sClosure: %p %s:%03lld\n"_Stz
+           ,Stz::szTab(iDepth)
+           ,pObject
+           ,szClassNm
+           ,eClassNo);
   };
   
-  pJob->vWalkLambda(fClosure);
+  pJob->vWalkLambda(0,fClosure);
   
   EXIT();
 }

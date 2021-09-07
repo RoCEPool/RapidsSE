@@ -42,6 +42,9 @@ namespace STORE
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);
     void vWalk(void* aArg);
+    void vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
 
   private:
     void    vCreateStreams(void);

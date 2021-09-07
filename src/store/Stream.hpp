@@ -52,6 +52,9 @@ namespace STORE
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
     Stz* szStreamNm(void);
     void vWalk(void* aArg);
+    void vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
 
   private:
     void vCreateOps();

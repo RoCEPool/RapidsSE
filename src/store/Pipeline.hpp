@@ -92,6 +92,9 @@ namespace STORE
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
     void vWalk(void* aArg);
+    void vWalkLambda(
+            i8 iDepth,
+            std::function<void(Object* pObject, i8 iDepth)> vfClosure);
 
   private:
     void vCreateStages();

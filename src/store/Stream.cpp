@@ -262,6 +262,28 @@ void Stream::vWalk(void* aArg)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stream::vWalkLambda(
+               i8 iDepth,
+               std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  vfClosure(this,iDepth);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vWalkLambda(iDepth+1,vfClosure);
+  }
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

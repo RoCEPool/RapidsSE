@@ -10869,7 +10869,7 @@ void Task::vAddMunged(Task* )
     "  //grid::thisNodeName@ \"(%v) pipelineSeed _end\" .printf\n"
     "  \n"
     "  //\"<job_walk>\" job::tagSet@ tagSet.hasName if\n"
-    "    Job[].walk\n"
+    "    //Job[].walk\n"
     "  //then\n"
     "  \n"
     "  JP_ENDING Job[].phase!\n"
