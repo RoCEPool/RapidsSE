@@ -110,16 +110,34 @@
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
   
-  Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
-      
-  JS_SIGNALLED Job[].state!
-      
-  Task[].grabLock
-  Session[].signal
-  Task[].dropLock
+  
+  
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
+
+    "would leave local in retired list" .
  
-  pipelineLocal::termination
+    JS_SIGNALLED Job[].state!
+    "B) would leave local in retired list" .
+    Session[].signal
+    "C) would leave local in retired list" .
+
+    JS_DELETABLE Job[].state!
+    "D) would leave local in retired list" .
+
+    Job[].addRetired
+    "E) would leave local in retired list" .
+    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    "F) would leave local in retired list" .
+
+  else
+  
+    JS_SIGNALLED Job[].state!
+    Session[].signal
+
+    pipelineLocal::termination
+
+  then
+  
 ;
 
 /*----------------------------------------------------------------------------*/

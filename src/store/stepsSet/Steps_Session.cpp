@@ -324,9 +324,12 @@ void Step::vSessionSignal(void)
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
 
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+  }
+  else {
+    vJob(nullptr);
+  }
   
-  vJob(nullptr);
-
   pSession->m_oMutex.vLock(this);
   pSession->m_oMutex.vSignal(this);
   pSession->m_oMutex.vUnlock(this);
