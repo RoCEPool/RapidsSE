@@ -76,7 +76,7 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* repair the grid                                                            */
 /*----------------------------------------------------------------------------*/
-void Grid::vRepair(Object* pObject, eRF eRepair)
+void Grid::vRepair(Object* pObject)
 {
   _static_
 

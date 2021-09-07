@@ -53,7 +53,7 @@ namespace STORE
           Format* pFmt, bool bPtnHash);
    ~ToRow(void) noexcept(false);
 
-    static void vRepairList(Object* pObject, eRF eRepair);
+    static void vRepairList(Object* pObject);
 
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);

@@ -53,7 +53,7 @@ ToNstRow::~ToNstRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vRepair(Object* pObject, eRF eRepair)
+void ToNstRow::vRepair(Object* pObject)
 {
   _static_
 

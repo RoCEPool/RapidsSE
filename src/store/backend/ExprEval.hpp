@@ -94,7 +94,7 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     eEC eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns);
     eEC eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht,

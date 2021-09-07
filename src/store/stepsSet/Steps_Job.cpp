@@ -1194,7 +1194,13 @@ void Step::vJobWalk(void)
   
   Job* pJob = * m_pJob;
 
-  pJob->vWalk(nullptr);
+  //pJob->vWalk(nullptr);
+  
+  auto fClosure = [](Object* pObject) {
+    vTrace("Closure: %p\n"_Stz,pObject);
+  };
+  
+  pJob->vWalkLambda(fClosure);
   
   EXIT();
 }

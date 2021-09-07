@@ -88,7 +88,7 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 /*----------------------------------------------------------------------------*/
 /* repair the bucket                                                          */
 /*----------------------------------------------------------------------------*/
-void Bucket::vRepair(Object* pObject, eRF eRepair)
+void Bucket::vRepair(Object* pObject)
 {
   _static_
 

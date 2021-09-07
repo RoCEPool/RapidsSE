@@ -23,7 +23,7 @@ namespace BASE
     Now(void);
     ~Now(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     void vSetNow(void);
     void vSetNowUTC(void);

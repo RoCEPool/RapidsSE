@@ -35,7 +35,7 @@ namespace STORE
     RowSingle(StreamDef* pStreamDef);
     ~RowSingle(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);

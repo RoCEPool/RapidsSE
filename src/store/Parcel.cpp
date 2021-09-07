@@ -93,7 +93,7 @@ void Parcel::vPostRecv(void* aParcel)
 /*----------------------------------------------------------------------------*/
 /* repair the parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vRepair(Object* pObject, eRF eRepair)
+void Parcel::vRepair(Object* pObject)
 {
   _static_
 

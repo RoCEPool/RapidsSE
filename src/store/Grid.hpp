@@ -35,7 +35,7 @@ namespace STORE
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     void vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
                           Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);

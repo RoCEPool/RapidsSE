@@ -30,7 +30,7 @@ namespace STORE
     PathIdentifier(void);
     ~PathIdentifier(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);

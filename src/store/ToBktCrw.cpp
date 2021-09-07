@@ -63,7 +63,7 @@ ToBktCrw::~ToBktCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the ToBktCrw                                                        */
 /*----------------------------------------------------------------------------*/
-void ToBktCrw::vRepairHashSet(Object* pObject, eRF eRepair)
+void ToBktCrw::vRepairHashSet(Object* pObject)
 {
   _static_
 

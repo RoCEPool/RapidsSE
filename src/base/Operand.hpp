@@ -20,8 +20,8 @@ namespace BASE
     Operand(eCN eClass);
     ~Operand(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
-    static void vRepairList(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
+    static void vRepairList(Object* pObject);
 
     bool bIsBuffer(void);
     bool bIsInfoSet(void);

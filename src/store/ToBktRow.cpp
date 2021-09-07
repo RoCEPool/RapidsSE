@@ -53,7 +53,7 @@ ToBktRow::~ToBktRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the ToBktCrw                                                        */
 /*----------------------------------------------------------------------------*/
-void ToBktRow::vRepairHashSet(Object* pObject, eRF eRepair)
+void ToBktRow::vRepairHashSet(Object* pObject)
 {
   _static_
 

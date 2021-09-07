@@ -194,6 +194,7 @@ namespace STORE
     void vVerifyJobComposition(void);
     void vWaitJobMutex(void);
     void vWalk(void* aArg);
+    void vWalkLambda(std::function<void(Object* pObject)> fLambda);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 
