@@ -93,7 +93,7 @@ void JobList::vAddJob(Job* pJob)
           (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
-          (JL_RETIRED       == m_eJobsList && ! pJob->bWasReceived())
+          (JL_RETIRED       == m_eJobsList)
          );
   pJob->vJobList(m_eJobsList);
   
