@@ -95,7 +95,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
 
 --verfified
 rows: 16
-
+*/
 
 // 4-way join supplier, partsupp, nation, region
 select s_acctbal, s_name, n_name, s_address, s_phone, s_comment
@@ -112,7 +112,7 @@ rows: 80
 select p_partkey, p_mfgr
       from part, partsupp, nation, region
       where p_partkey = ps_partkey
-      and p_size < 15
+      and p_size = 15
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE';
 --verfified
@@ -141,7 +141,7 @@ select min(ps_supplycost)
 rows:
 --verfified
   (3.14)
-*/
+
 CLEANUP {
   bye;
   mute
