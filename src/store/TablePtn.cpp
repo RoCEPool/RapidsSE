@@ -67,8 +67,8 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   }
 
 #ifdef WITH_BKTMAP_2N4P
-  //for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
-    for (i8 i_Bkt=0; i_Bkt < 1; i_Bkt++)
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
+  //  for (i8 i_Bkt=0; i_Bkt < 1; i_Bkt++)
   {
     vAddBucket(pTable, tPtnNo, m_eKind);
   }
@@ -261,14 +261,31 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 #ifdef WITH_MULTI_BUCKET
   // append buffer first, then indexes
 
-  i8 iBktNo = pDataBuffer->iBucketNo();
+  // Convert partition to bucket
+  i8 iBktNo =  m_pTable->iPtnToBkt(pDataBuffer->tPtnNo());
+  //i8 iBktNo = pDataBuffer->iBucketNo();
   vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnNo());
 
+  i8 nItems = m_pBucketVec->nItems();
+  Bucket *pBucket = nullptr;
+  if (iBktNo >= 0 && iBktNo < nItems) {
+    pBucket = m_pBucketVec->pGet(iBktNo);
+  } else {
+    pBucket = m_pBucketVec->pGet(0);
+  }
+
+  if (pBucket) {
+    pBucket->vAppendBuffer(pDataBuffer);
+  } else {
+    vTrace(">>>>>>>>>>>>>>>>> No bucket for available \n"_Stz);
+  }
+
+  /*
   i8 nItems = m_pBucketVec->nItems();
   for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vAppendBuffer(pDataBuffer);
-  }
+  }*/
 
   // now insert entries from the buffer into the indexes
   switch (m_eKind) {

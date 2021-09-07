@@ -169,7 +169,7 @@ Table* DataBuffer::pTable(void)
 void DataBuffer::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+  vTrace("DataBuffer::vTable\n"_Stz);
   m_pTable = pTable;
   vStreamDef(pTable->pStreamDef());
 }
@@ -232,9 +232,9 @@ void DataBuffer::vBucketNo(i8 iBucketNo)
 void DataBuffer::vToBucketNo(tPN tPtnNo)
 {
   if (!m_pTable) {
-    vTrace("No table from DataBuffer\n"_Stz);
+    vTrace("DataBuffer::vToBucketNo No table from DataBuffer\n"_Stz);
   } else {
-    vTrace("table from DataBuffer:%s\n"_Stz, m_pTable->szTableNm()->azChar());
+    vTrace("DataBuffer::vToBucketNo table from DataBuffer:%s\n"_Stz, m_pTable->szTableNm()->azChar());
     m_iBucketNo = m_pTable->iPtnToBkt(tPtnNo);
   }
 

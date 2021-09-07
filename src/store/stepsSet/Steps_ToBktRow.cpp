@@ -64,7 +64,7 @@ void Step::vToBktRowRegConvert(void)
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
+  //vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
 
   pToBktRow->vConvert(pTable, pRowBuffer);
   

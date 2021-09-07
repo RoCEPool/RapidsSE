@@ -146,8 +146,8 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
     i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
-
-    i8 i_Ptn1 = pTable->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
+    // convert Bktt No to Ptn No
+    i8 i_Ptn1 = pTable->tBktToPtn(i_Bkt1);
 
     vCopyRow(i_Ptn1,aRowSrc);
 
