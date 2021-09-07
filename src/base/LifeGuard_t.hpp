@@ -57,11 +57,11 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
   m_pInstance = pInstance;
   
   m_eExpecting = CN_NONE;
-  m_eDeleter  = CN_NONE;
-  m_pDeleter  = nullptr;
-  m_szDelFunNm = nullptr;
+  m_eDeleter   = CN_NONE;
+  m_pDeleter   = nullptr;
+  m_szDelFunNm  = nullptr;
   
-  m_bTrace = false;
+  m_bTrace = true;
   
   vAssertNew(true);
 

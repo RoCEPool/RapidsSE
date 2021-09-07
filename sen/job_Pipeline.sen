@@ -119,31 +119,23 @@
   // we're back as the originator
   
   Job[].removeOriginator
-  Job[].addRetired
   
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
 
     "would leave originator in retired list" .
-
-    Job[].removeRetired
       
+    DdlLock[].testDrop
     JS_SIGNALLED Job[].state!
-  
     Session[].signal
  
-    DdlLock[].testDrop
- 
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Job[].addRetired
+    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
-
-    Job[].removeRetired
       
-    JS_SIGNALLED Job[].state!
-  
-    Session[].signal
- 
     DdlLock[].testDrop
+    JS_SIGNALLED Job[].state!
+    Session[].signal
  
     Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
   
@@ -309,31 +301,26 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  Job[].addRetired
-  
   
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
 
     "would leave participant (ended) in retired list" .
 
-    Job[].removeRetired
-
-    Job[] Job__Ended::replyToOrigin
-  
     DdlLock[].testDrop
+    
+    Job[] Job__Ended::replyToOrigin
 
     JS_DELETABLE Job[].state!
   
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Job[].addRetired
+    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     
-    Job[].removeRetired
-
+    DdlLock[].testDrop
+    
     Job[] Job__Ended::replyToOrigin
   
-    DdlLock[].testDrop
-
     JS_DELETABLE Job[].state!
   
     Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
@@ -361,24 +348,21 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  Job[].addRetired
-  
-  
+    
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
     
     "would leave participant (cancelled) in retired list" .
 
-    Job[].removeRetired
+    Job[].addRetired
 
     Job[] Job__Cancelled::replyToOrigin
   
     JS_DELETABLE Job[].state!
   
+    Job[].addRetired
     Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
 
   else
-
-    Job[].removeRetired
     
     Job[] Job__Cancelled::replyToOrigin
   

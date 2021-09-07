@@ -540,6 +540,9 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#define TRUE(condition)  true
+#define FALSE(condition) false
+
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
@@ -552,9 +555,9 @@ bool Api::bReapJob(void)
   }
   else {
     vTrace("Not attempting to reap retired list\n"_Stz);
+    return false;
   }
     
-  return false;
   
   
   
@@ -565,6 +568,8 @@ bool Api::bReapJob(void)
 
   pRetiredJobs->vGrabLock();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   for (SkipNode* pCursor = pRetiredJobs->pFirst();
        pCursor;
        pCursor = pRetiredJobs->pNext(pCursor)) {
@@ -579,15 +584,21 @@ bool Api::bReapJob(void)
 
   if (! pReapableJob) {
     pRetiredJobs->vDropLock();
-    return false;
+    return FALSE(nothing_to_reap);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pRetiredJobs->vDropLock();
   
-  // DELETE THE JOB
+  // delete the retired job
+  pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
+                               CN_API,nullptr,(Stz*)__func__);
   
-  // THIS SHOULD BE TRUE
-  return false;
+//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+
+  return TRUE(reaped_a_job);
 }
 
 /*----------------------------------------------------------------------------*/

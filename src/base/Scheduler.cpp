@@ -228,7 +228,7 @@ void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
   pSelfTask->vTranstionClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete case: task is to be deleted
+  // delete case: task is to be repeaed
 
   pSelfTask->vState(TS_RETIRED);
   
@@ -236,8 +236,8 @@ void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
   
   //delete pSelfTask;
 
-  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
-                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
   /** do not touch task **/
 }
 
