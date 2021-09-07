@@ -257,25 +257,48 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 
   else if (CN_JOB == eInstance) {
     if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+      vTrace("del %12s:%-3lld %p "
+             "from %s() "
+             "by %12s:%-3lld %p\n"_Stz
+             
+             ,aCN[eInstance],(i8)eInstance,pInstance
+             
+             ,szDelFunNm
+             
+             ,aCN[eDeleter],(i8)eDeleter,pDeleter
+             );
 
-    RASSERT(   bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
-            || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
-            || bDELETE_RULE(CN_API,     "vDeleteJob"_Stz      )
-            || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-            || bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz      )
-            );
+    if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+
+      RASSERT(   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
+              
+//              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
+//              || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
+//              || bDELETE_RULE(CN_API,     "vDeleteJob"_Stz      )
+//              || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+//              || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz      )
+              );
+    }
+    else {
+      
+      RASSERT(   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
+
+              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
+              || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
+              || bDELETE_RULE(CN_API,     "vDeleteJob"_Stz      )
+              || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+              || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz      )
+              );
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logic unit
 
   else if (CN_LOGICUNIT == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_AM,  "vDelete"_Stz         )
             || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
@@ -288,9 +311,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // op
   
   else if (CN_OP == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STREAM, "~Stream"_Stz ) );
   }
@@ -299,9 +322,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // opSpec
   
   else if (CN_OPSPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vStageFirstSend"_Stz     )
             || bDELETE_RULE(CN_PIPELINESPEC, "vStageSubsequentSend"_Stz)
@@ -313,9 +336,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // pipeline
 
   else if (CN_PIPELINE == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_LOGICUNIT, "~LogicUnit"_Stz ) );
   }
@@ -324,9 +347,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // pipelineSpec
     
   else if (CN_PIPELINESPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
             || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompileStmt"_Stz )
@@ -339,9 +362,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // stage
   
   else if (CN_STAGE == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT( bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz ) );
   }
@@ -350,9 +373,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // stageSpec
   
   else if (CN_STAGESPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
   }
@@ -362,9 +385,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // stream
   
   else if (CN_STREAM == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
   }
@@ -373,9 +396,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // task
 
   else if (CN_TASK == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+//    if (bTrace)
+//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
             || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_RetireThisTask"_Stz)

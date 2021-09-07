@@ -36,16 +36,10 @@ namespace BASE
                         eCN eDeleter,
                         Object* pDeleter,
                         Stz* szDelFunc);
-  
-//    void vGuardedDeleteExplicit(eCN eExpecting,
-//                                eCN eDeleter,
-//                                Object* pDeleter,
-//                                Stz* szDelFunc);
-  
+    
     void vInductIntoNode(CLASS* pInstance);
   };
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -63,8 +57,7 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
   
   m_bTrace = true;
   
-  vAssertNew(true);
-
+  vAssertNew(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,236 +82,7 @@ void LifeGuard_t<CLASS>::vAssertDelete(bool bTrace)
   AM::EE::vAssertEEDelete(m_eInstance,m_pInstance,
                           m_eExpecting,m_eDeleter,m_pDeleter,
                           m_szDelFunNm,m_bTrace && bTrace);
- 
-#if 0
-  if (false)
-    {;}
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // freeChunk
-  
-  else if (CN_FREECHUNK == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,this,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // logic unit
-
-  else if (CN_LOGICUNIT == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (   m_szDelFunNm->bSame("~Job"_Stz)
-//               || m_szDelFunNm->bSame("~Op"_Stz)
-//               || m_szDelFunNm->bSame("vDelete"_Stz)
-//               || m_szDelFunNm->bSame("vResetForCascade"_Stz)
-//              )
-//            );
-//
-//    RASSERT(CN_API   == m_eDeleter ||
-//            CN_OP    == m_eDeleter  ||
-//            CN_JOB   == m_eDeleter);
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job
-
-  else if (CN_JOB == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (   m_szDelFunNm->bSame("vDeleteJob"_Stz)
-//               || m_szDelFunNm->bSame("vJobDelete"_Stz)
-//               || m_szDelFunNm->bSame("pFindJob"_Stz)
-//               || m_szDelFunNm->bSame("~Task"_Stz)
-//              )
-//            );
-//
-//    RASSERT(CN_API   == m_eDeleter ||
-//            CN_TASK == m_eDeleter ||
-//            CN_JOBLIST == m_eDeleter);
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // op
-  
-  else if (CN_OP == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (    m_szDelFunNm->bSame("~Stream"_Stz)
-//              )
-//            );
-//    RASSERT(CN_STREAM == m_eDeleter);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // opSpec
-  
-  else if (CN_OPSPEC == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (   m_szDelFunNm->bSame("vStageFirstSend"_Stz)
-//               || m_szDelFunNm->bSame("vStageSubsequentSend"_Stz)
-//               || m_szDelFunNm->bSame("~StageSpec"_Stz)
-//              )
-//           );
-//    RASSERT(CN_STAGESPEC == m_eDeleter ||
-//            CN_PIPELINESPEC == m_eDeleter);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipeline
-
-  else if (CN_PIPELINE == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-
-    if (! m_szDelFunNm)
-      vDebugPoint();
-//
-//    RASSERT(m_szDelFunNm &&
-//              (    m_szDelFunNm->bSame("~LogicUnit"_Stz)
-//              )
-//            );
-//    RASSERT(CN_LOGICUNIT == m_eDeleter);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipelineSpec
-    
-  else if (CN_PIPELINESPEC == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (   m_szDelFunNm->bSame("~Pipeline"_Stz)
-//               || m_szDelFunNm->bSame("vPipelineSpecDelete"_Stz)
-//               || m_szDelFunNm->bSame("pCompile"_Stz)
-//              )
-//            );
-//    RASSERT(CN_DYNAMO == m_eDeleter   ||
-//            CN_PIPELINE == m_eDeleter ||
-//            CN_TASK == m_eDeleter);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stage
-  
-  else if (CN_STAGE == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (    m_szDelFunNm->bSame("~Pipeline"_Stz)
-//              )
-//            );
-//    RASSERT(CN_PIPELINE == m_eDeleter);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stageSpec
-  
-  else if (CN_STAGESPEC == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (    m_szDelFunNm->bSame("~PipelineSpec"_Stz)
-//              )
-//            );
-//    RASSERT(CN_PIPELINESPEC == m_eDeleter);
-  }
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task
-
-  else if (CN_TASK == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (   m_szDelFunNm->bSame("vTaskSelf_DeleteThisTask"_Stz)
-//               || m_szDelFunNm->bSame("???"_Stz)
-//              )
-//            );
-//
-//    RASSERT(CN_API     == m_eDeleter);
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stream
-  
-  else if (CN_STREAM == m_eInstance) {
-    if (m_bTrace && bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[m_eInstance],m_eInstance,m_pInstance,m_szDelFunNm,m_pDeleter);
-    if (! m_szDelFunNm)
-      vDebugPoint();
-
-//    RASSERT(m_szDelFunNm &&
-//              (    m_szDelFunNm->bSame("~Stage"_Stz)
-//              )
-//            );
-//    RASSERT(CN_STAGE == m_eDeleter);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // huh???
-  
-  else {
-    vTrace("Unrecognised %p class being deleted\n"_Stz,m_pInstance);
-    vTrace("m_eInstance=%lld:%s\n"_Stz
-           ,m_eInstance
-           ,aCN[m_eInstance]
-           );
-    vTrace("m_szDelFunNm=%s\n"_Stz
-           ,m_szDelFunNm);
-    vTrace("m_eDeleter=%lld:%s\n"_Stz
-           ,m_eDeleter
-           ,aCN[m_eDeleter]
-           );
-  }
-#endif
-}
+ }
 
 /*----------------------------------------------------------------------------*/
 /* assert new                                                                 */
@@ -482,23 +246,6 @@ void LifeGuard_t<CLASS>::vGuardedDelete(eCN eExpecting,
 
   * ppInstance = nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set who is going to explicitly delete this object                          */
-/*----------------------------------------------------------------------------*/
-//template<class CLASS>
-//void LifeGuard_t<CLASS>::vGuardedDeleteExplicit(eCN eExpecting,
-//                                                eCN eDeleter,
-//                                                Object* pDeleter,
-//                                                Stz* szDelFunNm)
-//{
-//  m_eExpecting = eExpecting;
-//  m_eDeleter   = eDeleter;
-//  m_pDeleter   = pDeleter;
-//  m_szDelFunNm = szDelFunNm;
-//
-//  vAssertDelete(false);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* post recv() induction                                                      */
