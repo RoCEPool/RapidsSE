@@ -288,8 +288,8 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
+  //Job[].addRetired
+  //[? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
 
   Job[] Job__Ended::replyToOrigin
   
@@ -319,8 +319,8 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
+  //Job[].addRetired
+  //[? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
 
   Job[] Job__Cancelled::replyToOrigin
   
