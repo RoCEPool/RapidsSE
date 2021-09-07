@@ -121,24 +121,34 @@
   Job[].removeOriginator
   Job[].addRetired
   
-  [? WITH_JOB_REAPING
-  
-    ?if
-    
-      "reaping" .
-    
-    ?else
-    
-      Job[].removeRetired
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
+
+    "would leave originator in retired list" .
+
+    Job[].removeRetired
       
-  ?]
+    JS_SIGNALLED Job[].state!
   
-  JS_SIGNALLED Job[].state!
-  Session[].signal
+    Session[].signal
  
-  DdlLock[].testDrop
+    DdlLock[].testDrop
  
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  else
+
+    Job[].removeRetired
+      
+    JS_SIGNALLED Job[].state!
+  
+    Session[].signal
+ 
+    DdlLock[].testDrop
+ 
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  
+  then
+
   
   HAZARD
 ;
@@ -301,25 +311,35 @@
   Job[].removeParticipant
   Job[].addRetired
   
-  [? WITH_JOB_REAPING
-   
-    ?if
-    
-      "reaping" .
-    
-    ?else
-    
-      Job[].removeRetired
-    
-  ?]
-
-  Job[] Job__Ended::replyToOrigin
   
-  DdlLock[].testDrop
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
 
-  JS_DELETABLE Job[].state!
+    "would leave participant (ended) in retired list" .
+
+    Job[].removeRetired
+
+    Job[] Job__Ended::replyToOrigin
   
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    DdlLock[].testDrop
+
+    JS_DELETABLE Job[].state!
+  
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  else
+    
+    Job[].removeRetired
+
+    Job[] Job__Ended::replyToOrigin
+  
+    DdlLock[].testDrop
+
+    JS_DELETABLE Job[].state!
+  
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  then
+
 
   HAZARD
 ;
@@ -343,23 +363,31 @@
   Job[].removeParticipant
   Job[].addRetired
   
-  [? WITH_JOB_REAPING
   
-    ?if
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
     
-      "reaping" .
-      
-    ?else
-    
-      Job[].removeRetired
-      
-  ?]
+    "would leave participant (cancelled) in retired list" .
 
-  Job[] Job__Cancelled::replyToOrigin
+    Job[].removeRetired
+
+    Job[] Job__Cancelled::replyToOrigin
   
-  JS_DELETABLE Job[].state!
+    JS_DELETABLE Job[].state!
   
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  else
+
+    Job[].removeRetired
+    
+    Job[] Job__Cancelled::replyToOrigin
+  
+    JS_DELETABLE Job[].state!
+  
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  then
+
 
   HAZARD
 ;

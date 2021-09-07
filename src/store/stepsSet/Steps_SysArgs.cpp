@@ -16,7 +16,7 @@ void Step::vAddSteps_SysArgs(void)
 {
   vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
   vAddStep("sysargs::print"_Stz,         &Step::vSysArgsPrint);
-  vAddStep("sysargs::tagSet"_Stz,        &Step::vSysArgsTagSet);
+  vAddStep("sysargs::tagSet@"_Stz,       &Step::vSysArgsTagSet);
 }
 
 /*----------------------------------------------------------------------------*/

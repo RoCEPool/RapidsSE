@@ -546,7 +546,19 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 bool Api::bReapJob(void)
 {
   _static_
+  
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    vTrace("Would attempt to reap retired list\n"_Stz);
+  }
+  else {
+    vTrace("Not attempting to reap retired list\n"_Stz);
+  }
     
+  return false;
+  
+  
+  
+  
   Job* pReapableJob = nullptr;
   
   JobList* pRetiredJobs = AM::pRetiredJobs();
