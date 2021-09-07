@@ -21,8 +21,83 @@
       and r_name = 'EUROPE' )
        order by s_acctbal desc, n_name, s_name, p_partkey;
 
+  rows: 0
 */
 
+/*
+// modified query for the SF_0001 dataset
+// p_size < 15
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size < 15
+      and p_type like '%BRASS'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE' )
+       order by s_acctbal desc, n_name, s_name, p_partkey;
+
+    -- verfified
+    rows:
+    (6820.35,'Supplier#000000007','UNITED KINGDOM',47,'Manufacturer#4','s:4TicNGB4uO6PaSqNBUq','33-990-965-2201','s unwind silently furiously regular courts. final requests are deposits. requests wake quietly blit')
+
+
+// modified query for the SF_0001 dataset
+// p_size < 15, removed LIKE
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size < 15
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE' );
+
+  -- verified
+  rows: 4
+
+*/
+
+// Below queries modified for dataset SF0001
+// p_size < 15 and NO LIKE
+
+/////////////////////
+// Q02_0           //
+/////////////////////
+
+// loopJoin running OOM with 5-way join
+/*
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+    from part, supplier, partsupp, nation, region
+    where p_partkey = ps_partkey
+    and s_suppkey = ps_suppkey
+    and p_size < 15
+    and s_nationkey = n_nationkey
+    and n_regionkey = r_regionkey
+    and r_name = 'EUROPE';
+
+--verfified
+rows: 16
+
+
+// 4-way join supplier, partsupp, nation, region
 select s_acctbal, s_name, n_name, s_address, s_phone, s_comment
    from supplier, partsupp, nation, region
     where
@@ -30,16 +105,33 @@ select s_acctbal, s_name, n_name, s_address, s_phone, s_comment
     and s_nationkey = n_nationkey
     and n_regionkey = r_regionkey
     and r_name = 'EUROPE';
+--verfified
 rows: 80
 
+// 4-way join part, partsupp, nation, region
 select p_partkey, p_mfgr
-     from part, partsupp, nation, region
+      from part, partsupp, nation, region
       where p_partkey = ps_partkey
-      and p_size = 15
+      and p_size < 15
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE';
+--verfified
 rows: 40
 
+// 4-way join part, supplier, partsupp, nation
+select s_acctbal, s_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size = 15
+      and s_nationkey = n_nationkey;
+
+--verfified
+rows: 8
+
+/////////////////////
+// Q02_1           //
+/////////////////////
 select min(ps_supplycost)
       from partsupp, supplier, nation, region
       where s_suppkey = ps_suppkey
@@ -47,8 +139,9 @@ select min(ps_supplycost)
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE';
 rows:
+--verfified
   (3.14)
-
+*/
 CLEANUP {
   bye;
   mute
