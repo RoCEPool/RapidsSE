@@ -424,7 +424,7 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -550,7 +550,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -767,7 +767,7 @@ eEC LogicUnit::eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -879,7 +879,7 @@ eEC LogicUnit::eGenerateHash(ExprEval* pExprEval) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1083,7 +1083,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1202,7 +1202,7 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1410,7 +1410,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1501,7 +1501,7 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1726,7 +1726,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
@@ -1841,7 +1841,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
 
-  i8 nBytes = oFile.nReadFile(sText);
+  IGNORE_RETURN(oFile.nReadFile(sText));
   oFile.vClose();
 
   bool bResult = bGenerateAsm(sText);
