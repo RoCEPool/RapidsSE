@@ -1381,6 +1381,10 @@ function validateFirewallParallel() {
   local -a sequentialServers=()
   mapfile -t sequentialServers < <(nonUniqueHosts "${nodeNames[@]}")
 
+  if [ -z "${sequentialServers[@]:-}" ]; then
+    sequentialServers=()
+  fi
+
   # Launch all of the unique server name UDP tests
   for nodeName in "${nodeNames[@]}"; do
 
