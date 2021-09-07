@@ -22,8 +22,21 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_OperandCount(void)
 {
+  vAddStep("OperandCount[]"_Stz,      &Step::vOperandCountGet);
+  vAddStep("OperandCount[].get"_Stz,  &Step::vOperandCountGet);
   vAddStep("OperandCount[].inc"_Stz,  &Step::vOperandCountInc);
-  
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandCount[].get -- fetch operandCount                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCountGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_iOperandCount);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

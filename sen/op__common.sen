@@ -487,7 +487,11 @@
 
     // pop next operand from queue into PipeIn[]
     PipeIn[].bideNext
-    
+
+    PipeIn[].isBuffer if
+      BuffersIn[].inc
+    then
+
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
     PipeIn[].kind op[].isOperandValid not if

@@ -229,6 +229,8 @@ namespace STORE
     REG<Tx,             CN_TX            > m_xpTx;
 
     i8                  m_iOperandCount;
+    i8                  m_iBuffersIn;
+    i8                  m_iBuffersOut;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -15,6 +15,7 @@
 #include "StageSpec.hpp"
 
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -183,9 +184,13 @@ void Step::vOpPipeOut(void)
   
   // revised job/op model
     Op* pOp = *m_pOp;
-  
+
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
+  if (pOperand->bIsBuffer()) {
+    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+    pLogicUnit->m_iBuffersOut++;
+  }
   pOp->vPipeToNextOp(pOperand,this);
 
   EXIT();

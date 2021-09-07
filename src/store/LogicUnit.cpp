@@ -183,6 +183,8 @@ LogicUnit::LogicUnit(void)
   m_bIsLftCrwBuffer = false;
 
   m_iOperandCount = 0;
+  m_iBuffersIn    = 0;
+  m_iBuffersOut   = 0;
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;
@@ -520,10 +522,12 @@ void LogicUnit::vCleanup(void)
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
 //    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
-//      vTrace("OP: %s Time: %lldms; Operands: %lld; \n"_Stz,
+//      vTrace("%12s Time: %8lldms; Operands: %6lld; Buff-in: %6lld; Buff-out: %6lld;\n"_Stz,
 //             m_pOp->szOpNm(),
+//             m_xpAggTimer->iMicroseconds(),
 //             m_iOperandCount,
-//             m_xpAggTimer->iMicroseconds());
+//             m_iBuffersIn,
+//             m_iBuffersOut);
 
     // execute register repair
     if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg != LR_AGGTIMER)
