@@ -95,6 +95,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
   
+  vAddStep("Job[].reapable@"_Stz,        &Step::vJobReapableFetch);
+  vAddStep("Job[].reapable!"_Stz,        &Step::vJobReapableStore);
   vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -222,9 +224,15 @@ void Step::vJobAddRetired(void)
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  AM::vJob_AddRetired(* m_pJob);
+  Job* pJob = * m_pJob;
+  
+  vTrace("Addingd Job %p ID %lld to retired list\n"_Stz,
+         pJob,
+         pJob->iJobId() & 0xFFFFFFFF
+         );
 
-  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+  AM::vJob_AddRetired(pJob);
+
     
   EXIT();
 }
@@ -785,6 +793,36 @@ void Step::vJobPhaseStore(void)
   i8 iJobPhase = m_pDataStack->iPopAsInt(__func__);
   
   pJob->vJobPhase((eJP)iJobPhase);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].reapable@ -- fetch the job reapable flag                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReapableFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  m_pDataStack->vPushInt(pJob->m_bReapable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].reapable! -- store the job reapable flag                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReapableStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->m_bReapable = iJobReapable;
   
   EXIT();
 }

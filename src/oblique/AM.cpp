@@ -235,13 +235,18 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 {
   _static_
   
-  RASSERT(eExpecting == eInstance);
   RASSERT(szDelFunNm);
 
+  if (eExpecting != eInstance) {
+    
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (false)
     {;}
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // freeChunk
   
   else if (CN_FREECHUNK == eInstance) {
@@ -252,7 +257,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     NEVER_REACH;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // job
 
   else if (CN_JOB == eInstance) {
@@ -305,7 +310,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     }
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // logic unit
 
   else if (CN_LOGICUNIT == eInstance) {
@@ -320,7 +325,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // op
   
   else if (CN_OP == eInstance) {
@@ -331,7 +336,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT( bDELETE_RULE(CN_STREAM, "~Stream"_Stz ) );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // opSpec
   
   else if (CN_OPSPEC == eInstance) {
@@ -345,7 +350,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             );
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // pipeline
 
   else if (CN_PIPELINE == eInstance) {
@@ -356,7 +361,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT( bDELETE_RULE(CN_LOGICUNIT, "~LogicUnit"_Stz ) );
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // pipelineSpec
     
   else if (CN_PIPELINESPEC == eInstance) {
@@ -371,7 +376,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // stage
   
   else if (CN_STAGE == eInstance) {
@@ -382,7 +387,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT( bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz ) );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // stageSpec
   
   else if (CN_STAGESPEC == eInstance) {
@@ -394,7 +399,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   }
   
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // stream
   
   else if (CN_STREAM == eInstance) {
@@ -405,7 +410,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // task
 
   else if (CN_TASK == eInstance) {
@@ -418,7 +423,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             );
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // unknown???
   
   else {
@@ -432,6 +437,10 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     
     NEVER_REACH;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(eExpecting == eInstance);
 
 }
 

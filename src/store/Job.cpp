@@ -44,9 +44,12 @@ Job* STORE::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
-  if (pJob && ! _bIsValidJob(pJob->eGetClassNo()) )
-      vTrace("_pJob got class %s\n"_Stz,aCN[pJob->eGetClassNo()]);
-      
+  if (pJob && ! _bIsValidJob(pJob->eGetClassNo()) ) {
+      vTrace("_pJob %p got class %s\n"_Stz,
+             pJob,
+             aCN[pJob->eGetClassNo()]);
+    vDebugPoint();
+  }
   //RASSERT( ! pJob || _bIsValidJob(pJob->eGetClassNo()) );
   
   return pJob;

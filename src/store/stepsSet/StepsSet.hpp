@@ -713,6 +713,8 @@ public:
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
 
+  void vJobReapableFetch(void);
+  void vJobReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);

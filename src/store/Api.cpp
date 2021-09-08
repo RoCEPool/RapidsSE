@@ -130,6 +130,9 @@ void Api::vDeleteJob(Session* pSession)
   
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    vTrace("Setting reapable job %p %lld\n"_Stz
+           ,pJob
+           ,pJob->iJobId() & 0xFFFFFF);
     pJob->m_bReapable = true;
   }
   else {
@@ -556,7 +559,7 @@ bool Api::bReapJob(bool bForce)
   _static_
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    vTrace("Would attempt to reap retired list\n"_Stz);
+    vTrace("Reap retired list\n"_Stz);
   }
   else {
     vTrace("Not attempting to reap retired list\n"_Stz);
@@ -571,6 +574,11 @@ bool Api::bReapJob(bool bForce)
   
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
+  if (! pRetiredJobs->nJobs()) {
+    vTrace("Emtpry retired list\n"_Stz);
+    return FALSE(empty_list);
+  }
+  
   pRetiredJobs->vGrabLock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -581,9 +589,16 @@ bool Api::bReapJob(bool bForce)
     
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
-    if (pRetiredJob && (pRetiredJob->m_bReapable || bForce) ) {
-      pReapableJob = pRetiredJob;
-      break;
+    if (pRetiredJob) {
+      if (pRetiredJob->m_bReapable || bForce) {
+        pReapableJob = pRetiredJob;
+        break;
+      }
+      else {
+        vTrace("Cant reap retired job %p %lld\n"_Stz
+               ,pRetiredJob
+               ,pRetiredJob->iJobId() & 0xFFFFFF);
+      }
     }
   }
 
@@ -594,9 +609,13 @@ bool Api::bReapJob(bool bForce)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  bool bWasRemoved = pRetiredJobs->bRemoveJob(pReapableJob);
+  RASSERT(bWasRemoved);
+  
   pRetiredJobs->vDropLock();
   
   // delete the retired job
+
   pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
                                CN_API,nullptr,(Stz*)__func__);
   
@@ -1260,7 +1279,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
+    //vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
 
     pSession->m_oMutex.vWait(pSession);
     

@@ -311,7 +311,9 @@
     Job[] Job__Ended::replyToOrigin
 
     JS_DELETABLE Job[].state!
-  
+
+    true Job[].reapable!
+
     Job[].addRetired
     Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
