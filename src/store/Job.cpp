@@ -260,6 +260,9 @@ Job::~Job(void) noexcept(false)
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
                                     CN_JOB,this,(Stz*)__func__);
   }
+  else if (C_UNKNOWN != m_i_Origin) {
+    vDebugPoint();
+  }
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
 

@@ -235,7 +235,16 @@
 
   JS_DELETABLE Job[].state!
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
+  
+    true Job[].reapable!
+
+    Job[].addRetired
+    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+
+  else
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  then
   
   HAZARD
 ;

@@ -21,6 +21,7 @@ reap;
 sleep 3;
 reap;
 
+trackMemory;
 _region
 _nation
 _nation2
@@ -41,7 +42,7 @@ tag default <scale_factor> = "SF_0001" ;
 /time load lineitem "/Users/Shared/tpch/<scale_factor>/lineitem.csv" ;
 /time load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
 /time load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
-
+memoryLeaks;
 
 print "About to run select" ;
 reap;
@@ -49,7 +50,7 @@ sleep 3;
 reap;
 
 trackMemory;
-select * from nation;
+//select * from nation;
 memoryLeaks;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

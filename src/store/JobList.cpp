@@ -333,6 +333,11 @@ void JobList::vSee(void)
            ,pJob->iAcksOriginal()
            );
 
+    vTrace("logicUnit %p task %p"_Stz
+           ,pJob->m_pJobLogicUnit
+           ,pJob->pJobTask()
+           );
+
 
     vTrace("\n"_Stz);
   }

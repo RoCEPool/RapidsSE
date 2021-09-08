@@ -876,6 +876,7 @@ public:
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
+  void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
 
   // kbase

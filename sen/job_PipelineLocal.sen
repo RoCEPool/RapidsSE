@@ -121,6 +121,7 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
 
+    true Job[].reapable!
     Job[].addRetired
     Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 

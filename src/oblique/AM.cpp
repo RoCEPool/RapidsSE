@@ -316,9 +316,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // logic unit
 
   else if (CN_LOGICUNIT == eInstance) {
-//    if (bTrace)
-//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_AM,  "vDelete"_Stz         )
             || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
@@ -331,9 +331,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // op
   
   else if (CN_OP == eInstance) {
-//    if (bTrace)
-//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STREAM, "~Stream"_Stz ) );
   }
@@ -416,18 +416,21 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // task
 
   else if (CN_TASK == eInstance) {
-//    if (bTrace)
-//      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-//             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
       
       if ( ! (   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
-              || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz))
+              || bDELETE_RULE(CN_OP,        "~Op"_Stz)
+              || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+             )
           )
           vDebugPoint();
           
       RASSERT(   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
+              || bDELETE_RULE(CN_OP,        "~Op"_Stz)
               || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
               );
     }

@@ -130,6 +130,7 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
+    //true Job[].reapable!
     Job[].addRetired
     Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
@@ -357,12 +358,11 @@
     
     "would leave participant (cancelled) in retired list" .
 
-    Job[].addRetired
-
     Job[] Job__Cancelled::replyToOrigin
   
     JS_DELETABLE Job[].state!
   
+    true Job[].reapable!
     Job[].addRetired
     Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 

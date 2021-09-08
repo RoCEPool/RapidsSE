@@ -216,6 +216,9 @@ Op::~Op(void) noexcept(false)
     pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
                                CN_OP,this,(Stz*)__func__);
   }
+  else {
+    vDebugPoint();
+  }
   
   if (m_pQueueLeft->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
@@ -239,6 +242,19 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueLeft;
   delete m_pQueueRight;
   delete m_pQueueOoO;
+  
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    if (* m_pTask) {
+      Task* pTask = *m_pTask;
+      m_pTask = nullptr;
+      
+      pTask->vState(TS_DELETING);
+      pTask->vGuardedDelete(CN_TASK,&pTask,
+                            CN_OP,this,(Stz*)__func__);
+
+    }
+  }
+  
 
   -- gixOp;
 }
