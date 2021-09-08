@@ -534,9 +534,7 @@ void LogicUnit::vCleanup(void)
     if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg != LR_AGGTIMER)
       p_Reg->vRepair();
   }
-
 }
-
 /*----------------------------------------------------------------------------*/
 /* get eCode at given i_Code                                                  */
 /*----------------------------------------------------------------------------*/
