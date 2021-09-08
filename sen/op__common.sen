@@ -409,8 +409,10 @@
 
   LogicUnit[].handler@ execute
 
-  // update timer
-  BM_TimerUpdate
+  dup if
+    // update timer
+    BM_TimerUpdate
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
