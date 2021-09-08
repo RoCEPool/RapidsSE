@@ -261,11 +261,14 @@ Job::~Job(void) noexcept(false)
                                     CN_JOB,this,(Stz*)__func__);
   }
   
-  if (m_pTask) {
-    m_pTask->vState(TS_DELETING);
-    m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
-                            CN_JOB,this,(Stz*)__func__);
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
 
+    if (m_pTask) {
+      m_pTask->vState(TS_DELETING);
+      m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
+                              CN_JOB,this,(Stz*)__func__);
+
+    }
   }
 }
 

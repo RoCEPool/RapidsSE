@@ -120,9 +120,11 @@
   
   Job[].removeOriginator
   
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
+  session::hasCascade@ not
+  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName
+  and if
 
-    "would leave originator in retired list" .
+    "puting originator in retired list" .
       
     DdlLock[].testDrop
     JS_SIGNALLED Job[].state!
