@@ -37,7 +37,7 @@ tag default <scale_factor> = "SF_0001" ;
 /time load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
 /time load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
 
-//select * from nation;
+select * from nation;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
