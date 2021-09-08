@@ -104,7 +104,8 @@ void JobList::vAddJob(Job* pJob)
          );
   pJob->vJobList(m_eJobsList);
   
-  m_pJobsSkipList->bInsert(pJob);
+  bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  RASSERT(bWasInserted);
 }
 
 /*----------------------------------------------------------------------------*/

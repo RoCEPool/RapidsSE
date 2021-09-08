@@ -1340,9 +1340,40 @@ eEC STORE::eJob_checkCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare two jobs by their address                                          */
+/*----------------------------------------------------------------------------*/
+bool STORE::bJobCompare_addr(void* aJobInsert, void* aJobScan, bool& bMatch)
+{
+  Job* pJobInsert = _pJob(aJobInsert);
+  Job* pJobScan   = _pJob(aJobScan);
+  
+  eCN eClassJobScan = pJobScan->eGetClassNo();
+  RASSERT(_bIsValidJob(eClassJobScan));
+  
+  if (! pJobScan)
+    return false;
+  
+  // do the job id's match?
+//if (pJobInsert->iJobId() == pJobScan->iJobId())
+  if (pJobInsert == pJobScan)
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this job to be inserted lexicography after the scan?
+  
+//if (pJobInsert->iJobId() > pJobScan->iJobId())
+  if (pJobInsert > pJobScan)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compare two jobs by their jobId                                            */
 /*----------------------------------------------------------------------------*/
-bool STORE::bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch)
+bool STORE::bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch)
 {
   Job* pJobInsert = _pJob(aJobInsert);
   Job* pJobScan   = _pJob(aJobScan);

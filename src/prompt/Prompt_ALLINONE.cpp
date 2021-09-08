@@ -2979,8 +2979,8 @@ L_END:
   
   vTrace("\nsuccess: %lld rows affected\n"_Stz, nLeaksDetected);
   
-  if (nLeaksDetected)
-    bPrompt_memoryLeaks_dump(pPrompt);
+  //if (nLeaksDetected)
+  //  bPrompt_memoryLeaks_dump(pPrompt);
   
   if (nLeaksDetected && bFatal)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -5750,6 +5750,9 @@ PromptFun __Prompt_trackMemory (
 bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
+
+  while (Api::bReapJob(TRUE(force_reap)))
+    {;}
 
   pPrompt->vTrackMemory(true);
 

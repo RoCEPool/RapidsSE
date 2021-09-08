@@ -55,9 +55,9 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
   m_pDeleter   = nullptr;
   m_szDelFunNm  = nullptr;
   
-  m_bTrace = true;
+  m_bTrace = false;
   
-  vAssertNew(false);
+  vAssertNew(true);
 }
 
 /*----------------------------------------------------------------------------*/
