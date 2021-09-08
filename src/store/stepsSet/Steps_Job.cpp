@@ -226,6 +226,8 @@ void Step::vJobAddRetired(void)
   
   Job* pJob = * m_pJob;
   
+  RASSERT(pJob->pJobTask());
+  
   vTrace("Addingd Job %p ID %lld to retired list\n"_Stz,
          pJob,
          pJob->iJobId() & 0xFFFFFFFF

@@ -3986,6 +3986,37 @@ bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_reap.cpp -- explicilty reap the retired list                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_reap (
+  PF_MEMORYLEAKS,              // prompt function
+  "Prompt_reap"_Stz,           // name of the prompt function
+  "reap retired job list"_Stz, // comment about the function
+  "reap"_Stz,                  // the prompt command
+  nullptr,                     // the second word
+  bPrompt_reap,               // prompt function
+  true,                        // enabled
+
+  true,                        // visible
+  "reap"_Stz,                  // help
+  ""_Stz                       // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  while (Api::bReapJob(TRUE(force_reap)))
+    {;}
+      
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_resources.cpp -- print resource report                              */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
