@@ -25,6 +25,7 @@ namespace BASE
     Operand*  pPopOoO(void);
     Operand*  pPopQueue(void);
     i8        nQueuedOperands(void);
+    i8        nMaxOperands(void);
       
     Footer* aFooter(void);
   };

@@ -522,9 +522,10 @@ void LogicUnit::vCleanup(void)
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
 //    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
-//      vTrace("%16s Time: %8lldus; Operands: %6lld; Buff-in: %6lld; Buff-out: %6lld;\n"_Stz,
+//      vTrace("%16s cpu: %8lldus; maxq: %6lld; Operands: %6lld; buff-in: %6lld; buff-out: %6lld;\n"_Stz,
 //             m_pOp->szOpNm(),
 //             m_xpAggTimer->iMicroseconds(),
+//             m_pOp->nMaxQueue(),
 //             m_iOperandCount,
 //             m_iBuffersIn,
 //             m_iBuffersOut);
