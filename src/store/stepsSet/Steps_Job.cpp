@@ -1069,7 +1069,7 @@ void Step::vJobScheduleNextPhase(void)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Task* pTaskParticipant = pJobParticipant->pTask();
+  Task* pTaskParticipant = pJobParticipant->pJobTask();
   RASSERT(! pTaskParticipant);
   
   AM::vScheduleNextPhase(pJobParticipant,this);
@@ -1086,7 +1086,7 @@ void Step::vJobSpawn(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Task* pTask = pJob->pTask();
+  Task* pTask = pJob->pJobTask();
   RASSERT(! pTask);
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
@@ -1168,7 +1168,7 @@ void Step::vJobTaskFetch(void)
   
   Job* pJob = * m_pJob;
 
-  m_pDataStack->vPushPtr(pJob->pTask());
+  m_pDataStack->vPushPtr(pJob->pJobTask());
   
   EXIT();
 }
@@ -1182,7 +1182,7 @@ void Step::vJobTaskFetch_other(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushPtr(pJob->pTask());
+  m_pDataStack->vPushPtr(pJob->pJobTask());
   
   EXIT();
 }
@@ -1200,7 +1200,7 @@ void Step::vJobTaskStore(void)
   
   // for the moment this should always be null
   ASSERT(! pTask);
-  pJob->vTask(pTask);
+  pJob->vJobTask(pTask);
   
   EXIT();
 }
@@ -1218,7 +1218,7 @@ void Step::vJobTaskStore_other(void)
   
   // for the moment this should always be null
   ASSERT(! pTask);
-  pJob->vTask(pTask);
+  pJob->vJobTask(pTask);
   
   EXIT();
 }

@@ -353,7 +353,7 @@ void Job::vPostRecv(void* aReceivedJob)
   
   pReceivedJob->vSeedWord(nullptr);
   
-  pReceivedJob->vTask(nullptr);
+  pReceivedJob->vJobTask(nullptr);
 
   // revised job/op model
   pReceivedJob->vNullJobLogicUnit();
@@ -1190,7 +1190,7 @@ bool Job::bSummaryTag(void)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-Task* Job::pTask(void)
+Task* Job::pJobTask(void)
 {
   return m_pTask;
 }
@@ -1198,9 +1198,13 @@ Task* Job::pTask(void)
 /*----------------------------------------------------------------------------*/
 /* set task                                                                   */
 /*----------------------------------------------------------------------------*/
-void Job::vTask(Task* pTask)
+void Job::vJobTask(Task* pTask)
 {
   ASSERT(! pTask || ! m_pTask);
+  
+  if (! pTask)
+    vDebugPoint();
+  
   m_pTask = pTask;
 }
 

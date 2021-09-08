@@ -2903,7 +2903,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    while (Api::bReapJob(true))
+    while (Api::bReapJob(TRUE(force_reap)))
       {;}
     
     nLeaksDetected = 0;

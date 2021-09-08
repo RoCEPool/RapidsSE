@@ -612,7 +612,7 @@ void PsxThd::vGetPolicy(void)
 
   mach_msg_type_number_t policy_count = THREAD_AFFINITY_POLICY_COUNT;
 
-  boolean_t get_default = FALSE;
+  boolean_t get_default = false;
 
   iReturn = thread_policy_get(uThreadPort,
                               THREAD_AFFINITY_POLICY,

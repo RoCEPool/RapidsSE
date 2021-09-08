@@ -20,6 +20,10 @@
 #define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
 
+#define TRUE(condition)  true
+#define FALSE(condition) false
+
+
 //------------------------------------------------------------------------------
 
 namespace BASE { } using namespace BASE;

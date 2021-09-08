@@ -141,7 +141,7 @@ void Step::vPipelineEnqueueStart(void)
   if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(m_pJob->pTask(),nOps);
+    AM::vSetAcksRmg(m_pJob->pJobTask(),nOps);
   
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);

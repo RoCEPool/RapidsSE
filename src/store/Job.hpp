@@ -89,14 +89,14 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job execution                                        execution
 
-    // -- tasking
-    Task* m_pTask;  // task executing this job                         POST_RECV
 
     // -- logic unit
     LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
 
   private:
-    
+    // -- tasking
+    Task* m_pTask;  // task executing this job                         POST_RECV
+
     // must be last
     Footer m_xFooter;
     
@@ -187,8 +187,8 @@ namespace STORE
     bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
-    Task* pTask(void);
-    void vTask(Task* pTask);
+    Task* pJobTask(void);
+    void vJobTask(Task* pTask);
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);

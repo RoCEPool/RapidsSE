@@ -1693,7 +1693,7 @@ Task* AM::TASK::pNew(Job* pJob)
   Task* pTask = AM::TASK::pNew();
 
   pTask->vJob(pJob);
-  pJob->vTask(pTask);
+  pJob->vJobTask(pTask);
   
   pTask->vTaskNm(pJob->szJobNm());
   
@@ -2311,7 +2311,7 @@ void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pTask();
+  Task* pTask = pJob->pJobTask();
   return pTask;
 }
 bool AM::bJobIsForeign(i8 iJobId) {

@@ -85,7 +85,7 @@ void Step::vJobRefHasTask(void)
   
   Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
   
-  m_pDataStack->vPushInt(pJob->pTask() ? true : false);
+  m_pDataStack->vPushInt(pJob->pJobTask() ? true : false);
   
   EXIT();
 }
@@ -156,7 +156,7 @@ void Step::vJobRefTaskFetch(void)
   
   Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
-  m_pDataStack->vPushPtr(pJob->pTask());
+  m_pDataStack->vPushPtr(pJob->pJobTask());
 
   EXIT();
 }
