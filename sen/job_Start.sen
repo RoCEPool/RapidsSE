@@ -111,7 +111,7 @@
     ": _Start completed" .boot
   //then
 
-  "end _Start" .verbose
+  "end _Start" .
 
   // unlink task and job
   Task[].job@ if

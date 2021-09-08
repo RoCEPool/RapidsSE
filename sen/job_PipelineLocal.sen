@@ -116,18 +116,13 @@
 
     "would leave local in retired list" .
  
-    JS_SIGNALLED Job[].state!
-    "B) would leave local in retired list" .
-    Session[].signal
-    "C) would leave local in retired list" .
+    DdlLock[].testDrop
 
-    JS_DELETABLE Job[].state!
-    "D) would leave local in retired list" .
+    JS_SIGNALLED Job[].state!
+    Session[].signal
 
     Job[].addRetired
-    "E) would leave local in retired list" .
     Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
-    "F) would leave local in retired list" .
 
   else
   

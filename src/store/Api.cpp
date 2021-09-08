@@ -1260,6 +1260,8 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
+    vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
+
     pSession->m_oMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
