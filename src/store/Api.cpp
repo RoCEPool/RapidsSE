@@ -612,6 +612,9 @@ bool Api::bReapJob(bool bForce)
   pRetiredJobs->vDropLock();
   
   // delete the retired job
+  
+  RASSERT(pReapableJob->pJobTask());
+
 
   pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
                                CN_API,nullptr,(Stz*)__func__);
@@ -879,7 +882,15 @@ void Api::vCallBoot(void)
   
   vCallImmediate(pBootTask);
   
-  vDeleteImmediate(&pBootTask);
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    pBootTask->vDropTaskLock((Stz*)__func__);
+    pJob->vGuardedDelete(CN_JOB,&pJob,
+                         CN_API,nullptr,(Stz*)__func__);
+
+  }
+  else {
+    vDeleteImmediate(&pBootTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

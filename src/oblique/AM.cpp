@@ -278,7 +278,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       if ( !
              (   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
-              || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+              //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+              || bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
               || bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
               || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
              )
@@ -287,7 +288,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       
       RASSERT(   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
-              || bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+              //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
+              || bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
               || bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
               || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
 
@@ -418,9 +420,22 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 //      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
 //             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
-            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_RetireThisTask"_Stz)
-            );
+    if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+      
+      if ( ! (   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
+              || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz))
+          )
+          vDebugPoint();
+          
+      RASSERT(   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
+              || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+              );
+    }
+    else {
+      RASSERT(   bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+              || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_RetireThisTask"_Stz)
+              );
+    }
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- --

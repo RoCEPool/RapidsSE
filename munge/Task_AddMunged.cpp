@@ -10966,7 +10966,7 @@ void Task::vAddMunged(Task* )
     "    JS_DELETABLE Job[].state!\n"
     "  \n"
     "    Job[].addRetired\n"
-    "    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!\n"
+    "    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!\n"
     "\n"
     "  else\n"
     "    \n"

@@ -262,7 +262,10 @@ Job::~Job(void) noexcept(false)
   }
   
   if (m_pTask) {
-    vDebugPoint();
+    m_pTask->vState(TS_DELETING);
+    m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
+                            CN_JOB,this,(Stz*)__func__);
+
   }
 }
 
