@@ -183,8 +183,30 @@ i8 BucketMap::iWhichBucket(tPN tPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_taInLglPtn[i_Bkt] == tPtnNo)
+    if (m_taInLglPtn[i_Bkt] == tPtnNo) {
       iBkt = i_Bkt;
+      break;
+    }
+  }
+
+  return iBkt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next bucket logical partition is currently mapped to                   */
+/* We can have a partition mapped into multiple buckets                       */
+/*----------------------------------------------------------------------------*/
+i8 BucketMap::iWhichBucketNext(tPN tPtnNo, i8 iBktNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  i8 iBkt=-1;
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    if (m_taInLglPtn[i_Bkt] == tPtnNo) {
+      if (i_Bkt != iBktNo) {
+        iBkt = i_Bkt;
+        break;
+      }
+    }
   }
 
   return iBkt;

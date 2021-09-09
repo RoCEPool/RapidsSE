@@ -350,6 +350,14 @@ i8  Table::iPtnToBkt(tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the Next Bucket No from partition No                                   */
+/*----------------------------------------------------------------------------*/
+i8  Table::iPtnToBktNext(tPN tPtnNo, i8 iBktNo)
+{
+  return m_pBucketMap->iWhichBucketNext(tPtnNo, iBktNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of buffers in this table                                        */
 /*----------------------------------------------------------------------------*/
 i8 Table::nBuffers(void)
@@ -596,7 +604,10 @@ TablePtn* Table::pTablePtn(i8 i_TablePtn)
   // i_TablePtn could be a BktNo, gets mapped to PtnNo
   i8 i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnNo(i_TablePtn);
   vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
-  return m_pTablePtnVec->pGet(i_TblPtnFromBkt);
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TblPtnFromBkt);
+  pTablePtn->vSetMappedPtn(i_TblPtnFromBkt);
+  return pTablePtn;
+  //return m_pTablePtnVec->pGet(i_TblPtnFromBkt);
 #else
   
   return m_pTablePtnVec->pGet(i_TablePtn);

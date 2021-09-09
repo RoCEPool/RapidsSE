@@ -93,6 +93,7 @@
 #include "Bucket.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
+#include "PtnStm_cursor.hpp"
 #include "PtnStream.hpp"
 #include "Table.hpp"
 
@@ -388,6 +389,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
   { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
+  { sizeof(PtnStm_cursor),        HT_T_TINY    ,0 }, // CN_PTNSTMCURSOR
   { sizeof(PtnStream),            HT_T_TINY    ,0 }, // CN_PTNSTREAM
   { sizeof(TypedCell),/*yes*/     HT_INVALID   ,0 }, // CN_PTRVAL
 

@@ -48,6 +48,8 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
 
+  m_tMappedPtn = -1;
+
   eTT eTableKind = m_pTable->eKind();
   switch (eTableKind) {
     case TT_INFOSET:
@@ -67,8 +69,8 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   }
 
 #ifdef WITH_BKTMAP_2N4P
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
-  //  for (i8 i_Bkt=0; i_Bkt < 1; i_Bkt++)
+  //for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
   {
     vAddBucket(pTable, tPtnNo, m_eKind);
   }
@@ -169,6 +171,25 @@ tPN TablePtn::tPtnNo(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set a mapped ptn number to be used                                         */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vSetMappedPtn(tPN tPtn) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  // Set the ptn to be used
+  m_tMappedPtn = tPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the partition number (in bucket map) of this table partition           */
+/*----------------------------------------------------------------------------*/
+tPN  TablePtn::tMappedPtnNo(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  return m_tMappedPtn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table *TablePtn::pTable(void) {
@@ -218,8 +239,10 @@ void TablePtn::vSetBucket(i8 iBucket) {
 /*----------------------------------------------------------------------------*/
 Bucket *TablePtn::pGetBucket(i8 i_Bucket) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  return m_pBucketVec->pGet(i_Bucket);
+  if (i_Bucket >= 0 && i_Bucket < m_pBucketVec->nItems())
+    return m_pBucketVec->pGet(i_Bucket);
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,13 +294,13 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   if (iBktNo >= 0 && iBktNo < nItems) {
     pBucket = m_pBucketVec->pGet(iBktNo);
   } else {
-    pBucket = m_pBucketVec->pGet(0);
+    //pBucket = m_pBucketVec->pGet(0);
   }
 
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
   } else {
-    vTrace(">>>>>>>>>>>>>>>>> No bucket for available \n"_Stz);
+    vTrace(">>>>>>>>>>>>>>>>> No bucket for BktNo:%lld available \n"_Stz, iBktNo);
   }
 
   /*
@@ -456,7 +479,7 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
 CrwBuffer *TablePtn::pRootCrwBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  //vTrace("TablePtn::pRootCrwBuffer \n"_Stz);
+  vTrace("=====================TablePtn::pRootCrwBuffer \n"_Stz);
   //NEVER_REACH;
 
   CrwBuffer *pRootBuffer = nullptr;
@@ -476,7 +499,7 @@ CrwBuffer *TablePtn::pRootCrwBuffer(void) {
 DataBuffer *TablePtn::pRootBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  //vTrace("TablePtn::pRootBuffer \n"_Stz);
+  vTrace("===================TablePtn::pRootBuffer \n"_Stz);
   //NEVER_REACH;
 
 
@@ -506,7 +529,7 @@ DataBuffer *TablePtn::pRootBuffer(void) {
 /*----------------------------------------------------------------------------*/
 RowBuffer *TablePtn::pRootRowBuffer(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //vTrace("TablePtn::pRootRowBuffer \n"_Stz);
+  vTrace("==================TablePtn::pRootRowBuffer \n"_Stz);
   //NEVER_REACH;
 
 

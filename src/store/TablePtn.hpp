@@ -21,6 +21,7 @@ namespace STORE
 
     Table* m_pTable;  // table this partition belongs to
     tPN    m_tPtnNo;  // partition number (in grid)
+    tPN    m_tMappedPtn;
 
   
     // must be last
@@ -40,6 +41,8 @@ namespace STORE
     bool bIsLocked(void);
     eCN  eKind(void);
     tPN  tPtnNo(void);
+    void vSetMappedPtn(tPN tPtn);
+    tPN  tMappedPtnNo(void);
     Table* pTable(void);
 
     Bucket* pGetBucket(i8 i_Bucket);

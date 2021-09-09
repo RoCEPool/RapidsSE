@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+//#include "PtnStm_cursor.hpp"
+namespace STORE { class PtnStm_cursor;}
+
 namespace STORE
 {
   class PtnStream : public Object
@@ -12,6 +15,7 @@ namespace STORE
     DataBuffer* m_pNextBuffer;
     i8         m_iLglBufferNo;
 
+    PtnStm_cursor*  m_pPtnStm_cursor;
     // must be last
     Footer m_xFooter;
     

@@ -13,6 +13,7 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
+#include "PtnStm_cursor.hpp"
 #include "PtnStream.hpp"
 #include "Table.hpp"
 #include "Bucket.hpp"

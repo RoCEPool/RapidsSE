@@ -188,6 +188,7 @@ void Step::vTablePtnRoot(void)
   ENTRY();
   // Nobody should call this
   vTrace(">>>>>>>>>>>>>>>>>>>>>  Step::vTablePtnRoot\n"_Stz);
+  NEVER_REACH;
   TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());

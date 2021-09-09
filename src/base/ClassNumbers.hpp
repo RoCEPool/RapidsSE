@@ -201,6 +201,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PROFILE,
   /* */ CN_PSXTHD,
   /* */ CN_PTNMAP,
+  /* */ CN_PTNSTMCURSOR,
   /* */ CN_PTNSTREAM,
   /* */ CN_PTRVAL,
   
@@ -549,6 +550,7 @@ static Stz* aCN[]
   /* */ "PROFILE"_Stz,              // CN_PROFILE
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
+  /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
    
