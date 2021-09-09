@@ -276,21 +276,24 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
 
       if ( !
-             (   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
+             (
+              
+              //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
               //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-              || bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
-              || bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
+              //|| bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
+                 bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
               || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
              )
           )
         vDebugPoint();
       
-      RASSERT(   bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
+      RASSERT(
+              //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
               //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-              || bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
-              || bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
+              //|| bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
+                 bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
               || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
 
 //              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )

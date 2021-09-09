@@ -123,8 +123,6 @@
   session::hasCascade@ not
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName
   and if
-
-    "puting originator in retired list" .
       
     DdlLock[].testDrop
     JS_SIGNALLED Job[].state!
@@ -307,8 +305,6 @@
   
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
 
-    "would leave participant (ended) in retired list" .
-
     DdlLock[].testDrop
     
     Job[] Job__Ended::replyToOrigin
@@ -356,8 +352,6 @@
     
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
     
-    "would leave participant (cancelled) in retired list" .
-
     Job[] Job__Cancelled::replyToOrigin
   
     JS_DELETABLE Job[].state!

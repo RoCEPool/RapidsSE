@@ -275,6 +275,7 @@
   jobs::seeLlist
   jobs::seeOlist
   jobs::seePlist
+  jobs::seeRlist
 
   jobs::seeSqueue
 

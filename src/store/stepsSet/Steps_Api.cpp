@@ -187,7 +187,7 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  while (Api::bReapJob(TRUE(dont_force)))
+  while (Api::bReapJob(TRUE(force)))
     {;}
 
   EXIT();

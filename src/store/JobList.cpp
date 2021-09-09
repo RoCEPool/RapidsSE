@@ -86,14 +86,14 @@ void JobList::vAddJob(Job* pJob)
   
   ASSERT(bIsLocked());
   
-  vTrace("inserting %s "
-         "job %p %s %lld "
-         "task %p\n"_Stz
-
-         ,aJL[m_eJobsList]
-         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
-         ,pJob->pJobTask()
-         );
+//  vTrace("inserting %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
   
   ASSERT(JL_NONE == pJob->eJobList());
   ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
@@ -147,8 +147,8 @@ Job* JobList::pFindJob(i8 iJobId)
 //  pJob__Find->vGuardedDeleteExplicit(CN_JOB,
 //                                     CN_JOBLIST,this,
 //                                     (Stz*)__func__);
-  pJob__Find->vGuardedDelete(CN_JOB,(Job**)&pJob__Find,
-                             CN_JOBLIST,this,(Stz*)__func__);
+//  pJob__Find->vGuardedDelete(CN_JOB,(Job**)&pJob__Find,
+//                             CN_JOBLIST,this,(Stz*)__func__);
   delete pJob__Find;
 
   return pJobFound;
@@ -265,14 +265,14 @@ bool JobList::bRemoveJob(Job* pJob)
   
   ASSERT(m_okLock.bIsLocked());
     
-  vTrace("removing %s "
-         "job %p %s %lld "
-         "task %p\n"_Stz
-         
-         ,aJL[m_eJobsList]
-         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
-         ,pJob->pJobTask()
-         );
+//  vTrace("removing %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//         
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
  
   ASSERT(m_eJobsList == pJob->eJobList());
   

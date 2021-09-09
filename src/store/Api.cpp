@@ -130,9 +130,9 @@ void Api::vDeleteJob(Session* pSession)
   
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    vTrace("Setting reapable job %p %lld\n"_Stz
-           ,pJob
-           ,pJob->iJobId() & 0xFFFFFF);
+//    vTrace("Setting reapable job %p %lld\n"_Stz
+//           ,pJob
+//           ,pJob->iJobId() & 0xFFFFFF);
     pJob->m_bReapable = true;
   }
   else {
@@ -556,7 +556,7 @@ bool Api::bReapJob(bool bForce)
   _static_
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    vTrace("Reap retired list\n"_Stz);
+    //vTrace("Reap retired list\n"_Stz);
   }
   else {
     vTrace("Not attempting to reap retired list\n"_Stz);
@@ -572,7 +572,7 @@ bool Api::bReapJob(bool bForce)
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
   if (! pRetiredJobs->nJobs()) {
-    vTrace("Emtpry retired list\n"_Stz);
+    //vTrace("Empty retired list\n"_Stz);
     return FALSE(empty_list);
   }
   
@@ -884,8 +884,11 @@ void Api::vCallBoot(void)
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
     pBootTask->vDropTaskLock((Stz*)__func__);
-    pJob->vGuardedDelete(CN_JOB,&pJob,
-                         CN_API,nullptr,(Stz*)__func__);
+//    pJob->vGuardedDelete(CN_JOB,&pJob,
+//                         CN_API,nullptr,(Stz*)__func__);
+    
+    while (Api::bReapJob(TRUE(force_reap)))
+      {;}
 
   }
   else {

@@ -365,15 +365,30 @@ void Task::vAddAxioms(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   sDefinition =
-  "axiom: boot_run"
-  "  \"boot_run\" .verbose"
-  "  args.munged if \"compiling munged dictionary...\" . then"
-  "  \"se_boot.sen\" include"
-  "  \"boot_run exit_rt\" .verbose"
-  "  Task[].grabLock"
-  "  TR_DELETE_THIS_TASK Task[].transition!"
-
-  "  ;"_Stz;
+  
+    "axiom: boot_run                            \
+                                                \
+      \"boot_run\" .verbose                     \
+                                                \
+      Job[] assert                              \
+      Job[].addLocal                            \
+                                                \
+      args.munged if                            \
+        \"compiling munged dictionary...\" .    \
+      then                                      \
+                                                \
+      \"se_boot.sen\" include                   \
+                                                \
+      \"boot_run exit_rt\" .verbose             \
+                                                \
+      Job[].removeLocal                         \
+      true Job[].reapable!                      \
+      Job[].addRetired                          \
+                                                \
+      Task[].grabLock                           \
+      TR_RETIRE_THIS_TASK Task[].transition!    \
+                                                \
+    ;"_Stz;
   
   pCompileAxiomColon(sDefinition);
   

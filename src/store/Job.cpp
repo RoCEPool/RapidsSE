@@ -187,7 +187,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 , CRM<Job>(this)
-, LifeGuard_t<Job>(this,CN_JOB)
+, LifeGuard_t<Job>(this,CN_JOB,TRUE(disable_lifeGiard))
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     

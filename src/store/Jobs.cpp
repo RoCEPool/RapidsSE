@@ -62,7 +62,7 @@ void Jobs::vCreateJobLists(void)
   m_pOriginatingJobs   = new JobList(STORE::bJobCompare_id, JL_ORIGINATING);
   m_pParticipatingJobs = new JobList(STORE::bJobCompare_id, JL_PARTICIPATING);
   
-  m_pRetiredJobs       = new JobList(STORE::bJobCompare_addr, JL_RETIRED);
+  m_pRetiredJobs       = new JobList(nullptr, JL_RETIRED);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,9 +22,10 @@ namespace BASE
     Stz*    m_szDelFunNm;
   
     bool    m_bTrace;
+    bool    m_bDisable;
       
   public:
-    LifeGuard_t(CLASS* pInstance, eCN eClassNo);
+    LifeGuard_t(CLASS* pInstance, eCN eClassNo, bool bDisable=false);
    ~LifeGuard_t(void) noexcept(false);
 
     void vAssertDelete(bool bTrace=false);
@@ -45,7 +46,7 @@ namespace BASE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<class CLASS>
-LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
+LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo, bool bDisable)
 {
   m_eInstance = eThisClassNo;
   m_pInstance = pInstance;
@@ -56,7 +57,8 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
   m_szDelFunNm  = nullptr;
   
   m_bTrace = false;
-  
+  m_bDisable = bDisable;
+
   vAssertNew(true);
 }
 
@@ -66,6 +68,9 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo)
 template<class CLASS>
 LifeGuard_t<CLASS>::~LifeGuard_t(void) noexcept(false)
 {
+  if (m_bDisable);
+    return;
+  
   vAssertDelete(false);
 }
 
