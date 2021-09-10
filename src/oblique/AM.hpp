@@ -420,6 +420,7 @@ namespace OBLIQUE
       static Task* pNew(void);
       static Task* pNew(Job* pJob);
       static Task* pNew(Op* pOp);
+      static void vRetire(Task* pTask);
       static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
   

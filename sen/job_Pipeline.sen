@@ -64,9 +64,7 @@
       JS_SIGNALLED Job[].state!
       Session[].signal
 
-      Task[].grabLock
-        true Job[].reapable!
-        TR_RETIRE_THIS_TASK Task[].transition!
+      Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -132,10 +130,7 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
-    Job[].addRetired
-    Task[].grabLock
-      true Job[].reapable!
-      TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
 
   else
       
@@ -163,7 +158,7 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  "pipeline::paeticipant" .
+  "pipeline::participant a" .
 
   JobRef[].none
   
@@ -178,16 +173,26 @@
 
   // add job to participant job list
   Job[].addParticipant
+  "pipeline::participant b" .
 
   job::assertCorrectness
+  "pipeline::participant b2" .
 
   Job[].phase@ JP_BEGINNING assert
-  
+  "pipeline::participant b3" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
   <cmd> Dynamo::compileStmt
-  EC_NONE == assert
+  "pipeline::participant b4" .
+  EC_NONE
+  "pipeline::participant b5" .
+  ==
+  "pipeline::participant b6" .
+  assert
+  
+  "pipeline::participant c" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
@@ -198,9 +203,13 @@
   JP_BEGUN Job[].phase!
   nullptr Job[].seedWord!
   
+  "pipeline::participant d" .
+   
   Job[] Job__Begun::replyToOrigin
   
   DdlLock[].testDrop
+
+  "pipeline::participant e" .
 
   // unlink task and job
   nullptr Job[].task!
@@ -324,10 +333,7 @@
 
     JS_DELETABLE Job[].state!
 
-    Job[].addRetired
-    Task[].grabLock
-       true Job[].reapable!
-       TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     
@@ -371,10 +377,7 @@
   
     JS_DELETABLE Job[].state!
   
-    Job[].addRetired
-    Task[].grabLock
-      true Job[].reapable!
-      TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     

@@ -16,6 +16,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "Job.hpp"
 #include "StageSpec.hpp"
 #include "MY.hpp"
 #include "Parcel.hpp"
@@ -99,7 +100,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  SMA<Job> pPipelineJob;
+  SMA<Job,CN_JOB> pPipelineJob;
   
   pPipelineJob = pStream->pPipeline()->pPipelineJob();
   
@@ -979,6 +980,21 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job of this op                                                         */
+/*----------------------------------------------------------------------------*/
+Job* Op::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stream*   pStream   = this->pStream();
+  Stage*    pStage    = pStream->pStage();
+  Pipeline* pPipeline = pStage->pPipeline();
+  Job*      pJob      = pPipeline->pPipelineJob();
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate next local round robin                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iLocalRobinNext(void)
@@ -1344,7 +1360,7 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  SMA<Job> pPipelineJob;
+  SMA<Job,CN_JOB> pPipelineJob;
   
   pPipelineJob = m_p_Pipeline_op->pPipelineJob();
 
@@ -1807,7 +1823,9 @@ void Op::vSpawnOpTask(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-
+  Job* pJob = this->pJob();
+  pJob->vIncActiveOps();
+  
   if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
     
     //m_oOpTags.vDumpSet(true);

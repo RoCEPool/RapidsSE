@@ -1217,7 +1217,24 @@ void Task::vResetSenContext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get save path stack                                                       */
+/* retire                                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vRetire(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(QK_NONE == eQueue());
+  RASSERT(TR_NONE == eTransition());
+
+  RASSERT(TS_DESISTED == eState());
+  
+  AM::TASK::vRetire(this);
+  
+  vState(TS_RETIRED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get save path stack                                                        */
 /*----------------------------------------------------------------------------*/
 DicStack* Task::pSaveDicStack(void)
 {

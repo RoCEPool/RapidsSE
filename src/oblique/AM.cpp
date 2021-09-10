@@ -1737,6 +1737,26 @@ Task* AM::TASK::pNew(Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vRetire(Task* pTask)
+{
+  if (Op* pOp = pTask->pOp()) {
+    // retiring op of job
+    Job* pJob = pOp->pJob();
+    pJob->vDecActiveOps();
+  }
+  else
+  if (Job* pJob = pTask->pJob_task()) {
+    // retiring job
+    pJob->vReapable(true);
+  }
+  else {
+    NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* trigger biding task                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)

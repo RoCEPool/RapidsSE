@@ -32,14 +32,14 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    Gid<CN_JOB> m_xJobId;    // this job's id
-    s32         m_sJobNm;    // name of job
-    eJK         m_eJobKind;  // job kind: (needs work)
+    Gid<CN_JOB> m_xJobId;     // this job's id
+    s32         m_sJobNm;     // name of job
+    eJK         m_eJobKind;   // job kind: (needs work)
 
-    b8          m_bReapable; // can job be reaped?
-  
-    eSS         m_eSeed;  // sen word to start execution
-    Word*       m_pSeedWord; // seed word of this job                  POST_RECV
+    b8          m_bReapable;  // can job be reaped?
+    Atomic      m_noActiveOps; // number of active ops
+    eSS         m_eSeed;      // sen word to start execution
+    Word*       m_pSeedWord;  // seed word of this job                  POST_RECV
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -136,8 +136,10 @@ namespace STORE
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(i8& nAcksWereRemaining);
+    i8   nActiveOps(void);
     bool bByPromptTag(void);
     void vContentDump(void);
+    void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
@@ -145,6 +147,7 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
+    void vIncActiveOps(void);
     bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
@@ -171,6 +174,8 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
+    bool bReapable(void);
+    void vReapable(bool bReapable);
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);

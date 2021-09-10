@@ -591,7 +591,10 @@ bool Api::bReapJob(void)
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
     if (pRetiredJob) {
-      if (pRetiredJob->m_bReapable) {
+      i8 nActiveOps = pRetiredJob->nActiveOps();
+      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+             ,pRetiredJob,nActiveOps);
+      if (pRetiredJob->m_bReapable && ! nActiveOps) {
         pReapableJob = pRetiredJob;
         break;
       }
@@ -618,6 +621,8 @@ bool Api::bReapJob(void)
   // delete the retired job
   
   RASSERT(pReapableJob->pJobTask());
+  pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
+  pReapableJob->pJobTask()->vDropTaskLock((Stz*)__func__);
 
 
   pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,

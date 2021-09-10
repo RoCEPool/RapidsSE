@@ -549,8 +549,7 @@
 
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
     
-    Task[].grabLock
-      TR_RETIRE_THIS_TASK Task[].transition!
+    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
 

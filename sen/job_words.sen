@@ -238,10 +238,7 @@
   "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
   
 
-    Job[].addRetired
-    Task[].grabLock
-      true Job[].reapable!
-      TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!

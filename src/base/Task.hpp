@@ -40,11 +40,11 @@ namespace BASE
     // n/a                   // kind
 
     // -- belongs to
-    SMA<Job> m_pJob_task; // which job this task is executing
-    SMA<Op>  m_pOp;  // whic this task is executing
+    SMA<Job,CN_JOB> m_pJob_task; // which job this task is executing
+    SMA<Op,CN_OP>   m_pOp;  // whic this task is executing
   
     // -- refers to
-    SMA<Thread>  m_pThread;  // current thread executing this task
+    SMA<Thread, CN_THREAD>  m_pThread;  // current thread executing this task
 
     // -- state
     eTS m_eState;  // task state (running, sleeping, ...)
@@ -178,6 +178,7 @@ namespace BASE
     void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vReseed(void);
+    void vRetire(void);
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);

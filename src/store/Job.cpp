@@ -409,6 +409,18 @@ i8 Job::iAcksOriginal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the number of active ops                                               */
+/*----------------------------------------------------------------------------*/
+i8 Job::nActiveOps(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  i8 nActive = * m_noActiveOps;
+  
+  return nActive;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the number of acks required by the job                                 */
 /*----------------------------------------------------------------------------*/
 i8 Job::iAcksRmg_printOnlyValue(void)
@@ -597,6 +609,16 @@ bool Job::bHasTag_time(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement number of active op's                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vDecActiveOps(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  -- m_noActiveOps;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
 Op* Job::pSingularOp(void)
@@ -628,6 +650,16 @@ bool Job::bIsPipeline(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* icrement number of active op's                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vIncActiveOps(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ++ m_noActiveOps;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -933,6 +965,26 @@ Pipeline* Job::pPipeline_job(void)
   Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
     
   return pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is job reapable?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bReapable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bReapable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job reapable?                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vReapable(bool bReapable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bReapable = bReapable;
 }
 
 /*----------------------------------------------------------------------------*/
