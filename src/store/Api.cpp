@@ -134,6 +134,10 @@ void Api::vDeleteJob(Session* pSession)
 //           ,pJob
 //           ,pJob->iJobId() & 0xFFFFFF);
     pJob->m_bReapable = true;
+    
+    // temp
+    while (Api::bReapJob(FALSE(force_reap)))
+      {;}
   }
   else {
     pJob->vGuardedDelete(CN_JOB,&pJob,
