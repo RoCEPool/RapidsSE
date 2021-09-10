@@ -79,10 +79,10 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
     eCN eClass = aChunk->eGetClassNo();
     //vTrace("Analyse : %p %lld\n"_Stz,aChunk,eClass);
     
-    if (eClass >= CN_ENUMS || eClass < 1) {
-      vTrace("Ghost Object: %p %lld\n"_Stz,aChunk,(i8)eClass);
-      continue;
-    }
+//    if (eClass >= CN_ENUMS || eClass < 1) {
+//      vTrace("Ghost Object: %p %lld\n"_Stz,aChunk,(i8)eClass);
+//      continue;
+//    }
     
     if (CN_FREECHUNK == eClass)
       continue;

@@ -14824,7 +14824,7 @@ void Task::vAddMunged(Task* )
     "    //<nSeconds> >int  thread::sleepSsec\n"
     "\n"
     "    //args.demonSleep thread::sleepSsec\n"
-    "    10 thread::sleepSsec\n"
+    "    30 thread::sleepSsec\n"
     "\n"
     "    recurring_activity\n"
     "\n"
