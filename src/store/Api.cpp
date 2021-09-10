@@ -130,14 +130,12 @@ void Api::vDeleteJob(Session* pSession)
   
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-//    vTrace("Setting reapable job %p %lld\n"_Stz
-//           ,pJob
-//           ,pJob->iJobId() & 0xFFFFFF);
-    pJob->m_bReapable = true;
     
-    // temp
-    while (Api::bReapJob())
-      {;}
+    if (AM::SYSARGS::pTagSet()->bHasName("<reap_immedate>"_Stz)) {
+      while (Api::bReapJob())
+        {;}
+    }
+    
   }
   else {
     pJob->vGuardedDelete(CN_JOB,&pJob,
@@ -150,8 +148,6 @@ void Api::vDeleteJob(Session* pSession)
     pSession->m_pOutput->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
-  
-  
   
   pSession->m_pOutput->m_bExitMarker      = false;
   pSession->m_pOutput->m_bExitEarlyMarker = false;
@@ -592,8 +588,8 @@ bool Api::bReapJob(void)
     
     if (pRetiredJob) {
       i8 nActiveOps = pRetiredJob->nActiveOps();
-      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
-             ,pRetiredJob,nActiveOps);
+//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+//             ,pRetiredJob,nActiveOps);
       if (pRetiredJob->m_bReapable && ! nActiveOps) {
         pReapableJob = pRetiredJob;
         break;

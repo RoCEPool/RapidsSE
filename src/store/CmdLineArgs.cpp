@@ -125,6 +125,8 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_oArgTags.vInsert(C_SHOW_EXCEPTION,1);
   //m_xSysArgs.m_oArgTags.vInsert(C_NO_FREE,1);
   m_xSysArgs.m_oArgTags.vInsert("<with_job_reaping>"_Stz,1);
+  m_xSysArgs.m_oArgTags.vInsert("<reap_immedate>"_Stz,1);
+  m_xSysArgs.m_oArgTags.vInsert("<show_command>"_Stz,1);
 
   vEnvironmentVariables();
 }

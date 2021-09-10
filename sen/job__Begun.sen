@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Begun::replyToOrigin params| pJobParticipant |
 
-  "Job__Begun::replyToOrigin" .
+  // "Job__Begun::replyToOrigin" .
   
   pJobParticipant job.id@ locals| iJobId |
 
@@ -42,7 +42,7 @@
 : _Begun_run [ word::seed# ]
 
 
-  "_Begun_run" .
+  // "_Begun_run" .
 
   //
   // where:  On the originator node.

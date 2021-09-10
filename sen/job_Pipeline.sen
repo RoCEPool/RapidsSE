@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
-  "pipeline::origin" .
+  //"pipeline::origin" .
   
   Task[].job@ Job[] equal assert
 
@@ -82,6 +82,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
+  
+  "<show_command>" sysargs::tagSet@ tagSet.hasName if
+    <cmd> .
+  then
   
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
@@ -158,7 +162,7 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  "pipeline::participant a" .
+  // "pipeline::participant a" .
 
   JobRef[].none
   
@@ -173,27 +177,14 @@
 
   // add job to participant job list
   Job[].addParticipant
-  "pipeline::participant b" .
-
   job::assertCorrectness
-  "pipeline::participant b2" .
-
   Job[].phase@ JP_BEGINNING assert
-  "pipeline::participant b3" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
-  <cmd> Dynamo::compileStmt
-  "pipeline::participant b4" .
-  EC_NONE
-  "pipeline::participant b5" .
-  ==
-  "pipeline::participant b6" .
-  assert
+  <cmd> Dynamo::compileStmt EC_NONE == assert
   
-  "pipeline::participant c" .
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
@@ -202,14 +193,10 @@
 
   JP_BEGUN Job[].phase!
   nullptr Job[].seedWord!
-  
-  "pipeline::participant d" .
-   
+     
   Job[] Job__Begun::replyToOrigin
   
   DdlLock[].testDrop
-
-  "pipeline::participant e" .
 
   // unlink task and job
   nullptr Job[].task!
@@ -227,7 +214,7 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  "pipeline::execute" .
+  // "pipeline::execute" .
   
   Task[].job@ Job[] equal assert
 
@@ -304,7 +291,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
 
-  "pipeline::end" .
+  // "pipeline::end" .
 
   Task[].job@ Job[] equal assert
 
@@ -356,7 +343,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
 
-  "pipeline::cancel" .
+  // "pipeline::cancel" .
   
   Task[].job@ Job[] equal assert
 
