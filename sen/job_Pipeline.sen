@@ -41,6 +41,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
+  "pipeline::origin" .
+  
   Task[].job@ Job[] equal assert
 
   job::assertCorrectness
@@ -62,7 +64,9 @@
       JS_SIGNALLED Job[].state!
       Session[].signal
 
-      Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+      Task[].grabLock
+        true Job[].reapable!
+        TR_RETIRE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -128,9 +132,10 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
-    //true Job[].reapable!
     Job[].addRetired
-    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    Task[].grabLock
+      true Job[].reapable!
+      TR_RETIRE_THIS_TASK Task[].transition!
 
   else
       
@@ -158,6 +163,10 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
+  "pipeline::paeticipant" .
+
+  JobRef[].none
+  
   Task[].job@ Job[] equal assert
 
   JP_BEGINNING Job[].phase!
@@ -209,6 +218,8 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
+  "pipeline::execute" .
+  
   Task[].job@ Job[] equal assert
 
   JP_EXECUTING Job[].phase!
@@ -284,6 +295,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
 
+  "pipeline::end" .
+
   Task[].job@ Job[] equal assert
 
   job::assertCorrectness
@@ -311,10 +324,10 @@
 
     JS_DELETABLE Job[].state!
 
-    true Job[].reapable!
-
     Job[].addRetired
-    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    Task[].grabLock
+       true Job[].reapable!
+       TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     
@@ -337,6 +350,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
 
+  "pipeline::cancel" .
+  
   Task[].job@ Job[] equal assert
 
   job::assertCorrectness
@@ -356,9 +371,10 @@
   
     JS_DELETABLE Job[].state!
   
-    true Job[].reapable!
     Job[].addRetired
-    Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    Task[].grabLock
+      true Job[].reapable!
+      TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     

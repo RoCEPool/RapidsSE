@@ -244,11 +244,22 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueOoO;
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    if (* m_pTask) {
+    if (m_pTask.bIsNotNull()) {
       Task* pTask = *m_pTask;
+      
+      while (TS_RETIRED != m_pTask->eState() ) {
+        vTrace("Napping\n"_Stz);
+        AM::vNapMsec(10, eGetClassNo());
+      }
+
+      
+      pTask->vGrabTaskLock((Stz*)__func__);
+      RASSERT(TS_RETIRED == pTask->eState());
+      pTask->vState(TS_DELETING);
+      pTask->vDropTaskLock((Stz*)__func__);
+      
       m_pTask = nullptr;
       
-      pTask->vState(TS_DELETING);
       pTask->vGuardedDelete(CN_TASK,&pTask,
                             CN_OP,this,(Stz*)__func__);
 

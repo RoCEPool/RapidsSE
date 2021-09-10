@@ -14,11 +14,12 @@
   
   // unlink task and job
   Task[].job@ if
-    nullptr Task[].job@ job.task!
-    nullptr Task[].job!
+    //nullptr Task[].job@ job.task!
+    //nullptr Task[].job!
   then
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;

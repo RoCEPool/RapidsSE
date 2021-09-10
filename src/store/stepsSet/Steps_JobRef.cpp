@@ -111,7 +111,7 @@ void Step::vJobRefNone(void)
 {
   ENTRY();
   
-  if (! pJob() || ! pJob()->pJobLogicUnit()) {
+  if (! pJob_task() || ! pJob_task()->pJobLogicUnit()) {
     EXIT();
     return;
   }

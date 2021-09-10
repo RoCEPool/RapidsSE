@@ -13,6 +13,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Execute::distribute params| pJobOriginator |
 
+  "Job__Execute::distribute" .
+
   //
   // where: on the originator node
   //
@@ -57,6 +59,8 @@
 /*----------------------------------------------------------------------------*/
 : _Execute_run [ word::seed# ]
 
+  "_Execute_run" .
+
   //
   // where: on the participating node
   //
@@ -70,8 +74,12 @@
   begin
     JobRef[].hasTask
   while
-    Task[].yield 
+    "job still has task" .
+    Task[].yield
   repeat
+  
+    "_Execute_run" .
+
 
   // execute the job on this participating node
   JM_SEED_EXE JobRef[] job.seed!

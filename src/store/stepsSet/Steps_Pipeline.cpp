@@ -101,7 +101,7 @@ void Step::vPipelineCreate(void)
   // create a pipeline
   
   pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
+    new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
     
@@ -141,7 +141,7 @@ void Step::vPipelineEnqueueStart(void)
   if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(m_pJob->pJobTask(),nOps);
+    AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);
@@ -293,7 +293,7 @@ void Step::vPipelineSpawnOpTasks(void)
   
   Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
   
-  pPipeline->vSpawnOpTasks(m_pJob->m_i_Session, iThisNode);
+  pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
   
   EXIT();
 }

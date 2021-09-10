@@ -250,11 +250,17 @@ Job::~Job(void) noexcept(false)
   
   //! this assert may fail if a job completes before its references
   //! are completely returned
-  while (nReferences()) {
-    vTrace("Napping\n"_Stz);
-    AM::vNapMsec(10, eGetClassNo());
+  if (JK_GENERIC != m_eJobKind && JK_NONE != m_eJobKind) {
+    while (nReferences() || TS_RETIRED != m_pTask->eState() ) {
+      vTrace("Napping\n"_Stz);
+      AM::vNapMsec(10, eGetClassNo());
+    }
   }
-    
+
+  RASSERT(JK_GENERIC == m_eJobKind ||
+          JK_NONE    == m_eJobKind ||
+          m_bReapable);
+  
   if (m_pJobLogicUnit) {
     //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
@@ -267,7 +273,9 @@ Job::~Job(void) noexcept(false)
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
 
     if (m_pTask) {
+      m_pTask->vGrabTaskLock((Stz*)__func__);
       m_pTask->vState(TS_DELETING);
+      m_pTask->vDropTaskLock((Stz*)__func__);
       m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
                               CN_JOB,this,(Stz*)__func__);
 

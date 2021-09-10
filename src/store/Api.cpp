@@ -136,7 +136,7 @@ void Api::vDeleteJob(Session* pSession)
     pJob->m_bReapable = true;
     
     // temp
-    while (Api::bReapJob(FALSE(force_reap)))
+    while (Api::bReapJob())
       {;}
   }
   else {
@@ -555,7 +555,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
-bool Api::bReapJob(bool bForce)
+bool Api::bReapJob(void)
 {
   _static_
   
@@ -591,7 +591,7 @@ bool Api::bReapJob(bool bForce)
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
     if (pRetiredJob) {
-      if (pRetiredJob->m_bReapable || bForce) {
+      if (pRetiredJob->m_bReapable) {
         pReapableJob = pRetiredJob;
         break;
       }
@@ -887,11 +887,12 @@ void Api::vCallBoot(void)
   vCallImmediate(pBootTask);
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    pBootTask->vState(TS_RETIRED);
     pBootTask->vDropTaskLock((Stz*)__func__);
 //    pJob->vGuardedDelete(CN_JOB,&pJob,
 //                         CN_API,nullptr,(Stz*)__func__);
     
-    while (Api::bReapJob(TRUE(force_reap)))
+    while (Api::bReapJob())
       {;}
 
   }
@@ -960,7 +961,17 @@ void Api::RunStartJob(void)
 
   vCallImmediate(pStartTask);
 
-  vDeleteImmediate(&pStartTask);
+  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+    pStartTask->vState(TS_RETIRED);
+    pStartTask->vDropTaskLock((Stz*)__func__);
+    
+    while (Api::bReapJob())
+      {;}
+
+  }
+  else {
+    vDeleteImmediate(&pStartTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -985,12 +996,14 @@ void Api::vCallImmediate(Task* pImmediateTask)
 /*----------------------------------------------------------------------------*/
 void Api::vDeleteImmediate(Task** ppTask)
 {
+  NEVER_REACH;
+  
   Task* pTask = *ppTask;
   *ppTask = nullptr;
 
   pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
+  Job* pJob = pTask->pJob_task();
+  pTask->vJob_task(nullptr);
   
   //delete pJob;
   if (pJob)
@@ -1255,6 +1268,7 @@ void Api::vCreateTaskForOp(Op* pOp)
   RASSERT(! pTask);
 
   pTask = AM::TASK::pNew(pOp);
+  pOp->vTask(pTask);
   
   pTask->vSeedTask();
 }

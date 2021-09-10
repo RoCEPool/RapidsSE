@@ -179,6 +179,9 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   // who delete's the job in these cases?
   //
   
+  if (!pSelfTask->bIsLocked())
+    AM::SE::vWhereAmI();
+  
   RASSERT(pSelfTask->bIsLocked());
   RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition());
   RASSERT(TS_DESISTED == pSelfTask->eState());

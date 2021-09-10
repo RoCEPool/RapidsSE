@@ -127,7 +127,7 @@ void Step::vApiExecuteCommand(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob_task->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
@@ -187,7 +187,7 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  while (Api::bReapJob(TRUE(force)))
+  while (Api::bReapJob())
     {;}
 
   EXIT();

@@ -13,10 +13,12 @@
   
     //jobs::seeDlist
     //jobs::seeLlist
-    //jobs::seeOlist
-    //jobs::seePlist
+    jobs::seeOlist
+    jobs::seePlist
     jobs::seeRlist
-    //jobs::seeSqueue
+    
+    jobs::seeSqueue
+    
     //system::bpa
   
   else

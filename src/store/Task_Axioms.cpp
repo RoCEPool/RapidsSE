@@ -382,11 +382,11 @@ void Task::vAddAxioms(void)
       \"boot_run exit_rt\" .verbose             \
                                                 \
       Job[].removeLocal                         \
-      true Job[].reapable!                      \
-      Job[].addRetired                          \
                                                 \
+      Job[].addRetired                          \
       Task[].grabLock                           \
-      TR_RETIRE_THIS_TASK Task[].transition!    \
+        true Job[].reapable!                    \
+        TR_RETIRE_THIS_TASK Task[].transition!  \
                                                 \
     ;"_Stz;
   

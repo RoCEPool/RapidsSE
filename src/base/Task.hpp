@@ -40,7 +40,7 @@ namespace BASE
     // n/a                   // kind
 
     // -- belongs to
-    SMA<Job> m_pJob; // which job this task is executing
+    SMA<Job> m_pJob_task; // which job this task is executing
     SMA<Op>  m_pOp;  // whic this task is executing
   
     // -- refers to
@@ -158,8 +158,8 @@ namespace BASE
     bool bIsStart(void);
     void vIsStart(bool bIsStart);
     bool bIsTaskLocked(void);
-    Job* pJob(void);
-    void vJob(Job* pJob);
+    Job* pJob_task(void);
+    void vJob_task(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMutexLock(void);

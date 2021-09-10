@@ -327,7 +327,7 @@ void Step::vSessionSignal(void)
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
   }
   else {
-    vJob(nullptr);
+    vJob_task(nullptr);
   }
   
   pSession->m_oMutex.vLock(this);

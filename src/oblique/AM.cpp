@@ -1713,7 +1713,7 @@ Task* AM::TASK::pNew(Job* pJob)
 {
   Task* pTask = AM::TASK::pNew();
 
-  pTask->vJob(pJob);
+  pTask->vJob_task(pJob);
   pJob->vJobTask(pTask);
   
   pTask->vTaskNm(pJob->szJobNm());
@@ -2451,7 +2451,7 @@ void AM::vTaskDump(void) {
 
 void AM::vTaskDump(Task* pTask)
 {
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
     
   if (! pJob)
     return;
@@ -2476,7 +2476,7 @@ void AM::vTaskDump(Task* pTask)
 
 
 LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   return pJob->pJobLogicUnit();
 }
 
@@ -2491,7 +2491,7 @@ void AM::vTraceDumpDropLock(void)
 
 void AM::vTaskFullTrace(Task* pTask)
 {
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
 
   // dump api state
   //AM::vDumpApi();
@@ -2525,7 +2525,7 @@ Job* AM::pThisTLSJob(void) {
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   return pJob;
 }
 
@@ -2549,7 +2549,7 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
 
   return pLogicUnit;
@@ -2577,7 +2577,7 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
 
   Tx* pTx = *pLogicUnit->m_xpTx;
@@ -3298,11 +3298,11 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 Job* AM::pTaskJob(void) {
-  return pThisTLSTask()->pJob();
+  return pThisTLSTask()->pJob_task();
 }
 Job* AM::pTaskJob(Task* pTask) {
   if (pTask)
-    return pTask->pJob();
+    return pTask->pJob_task();
   else
     return nullptr;
 }
