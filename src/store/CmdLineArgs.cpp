@@ -931,8 +931,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     m_xSysArgs.m_oArgTags.vInsert("<show_command>"_Stz,1);
 
-    if (m_xSysArgs.m_iRegionSize < C_8GB)
-      m_xSysArgs.m_iRegionSize = C_8GB;
+//    if (m_xSysArgs.m_iRegionSize < C_8GB)
+//      m_xSysArgs.m_iRegionSize = C_8GB;
   }
   
   return true;
