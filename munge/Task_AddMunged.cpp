@@ -2110,7 +2110,7 @@ void Task::vAddMunged(Task* )
     "    // args.demonSleep thread::sleepSsec\n"
     "    1 thread::sleepSsec\n"
     "\n"
-    "    reap_activity\n"
+    "    //reap_activity\n"
     "\n"
     "  again\n"
     " ;\n"

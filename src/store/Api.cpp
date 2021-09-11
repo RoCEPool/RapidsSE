@@ -132,8 +132,9 @@ void Api::vDeleteJob(Session* pSession)
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
     
     if (AM::SYSARGS::pTagSet()->bHasName("<reap_immedate>"_Stz)) {
-      while (Api::bReapJob())
-        {;}
+      while (AM::pRetiredJobs()->nJobs())
+        while (Api::bReapJob())
+          {;}
     }
     
   }
@@ -897,8 +898,9 @@ void Api::vCallBoot(void)
 //    pJob->vGuardedDelete(CN_JOB,&pJob,
 //                         CN_API,nullptr,(Stz*)__func__);
     
-    while (Api::bReapJob())
-      {;}
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
 
   }
   else {
@@ -970,8 +972,9 @@ void Api::RunStartJob(void)
     pStartTask->vState(TS_RETIRED);
     pStartTask->vDropTaskLock((Stz*)__func__);
     
-    while (Api::bReapJob())
-      {;}
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
 
   }
   else {

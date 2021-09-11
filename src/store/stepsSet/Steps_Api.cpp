@@ -18,6 +18,7 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Job.hpp"
+#include "JobList.hpp"
 #include "LogicUnit.hpp"
 
 #include "Procedure.hpp"
@@ -187,8 +188,9 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  while (Api::bReapJob())
-    {;}
+  while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
 
   EXIT();
 }

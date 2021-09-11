@@ -2903,8 +2903,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    while (Api::bReapJob())
-      {;}
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
     
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -4010,8 +4011,9 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  while (Api::bReapJob())
-    {;}
+  while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
       
   return true;
 }
@@ -5751,8 +5753,9 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  while (Api::bReapJob())
-    {;}
+  while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
 
   pPrompt->vTrackMemory(true);
 
