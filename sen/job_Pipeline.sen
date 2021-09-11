@@ -181,7 +181,7 @@
   
   "<show_command>" sysargs::tagSet@ tagSet.hasName if
     <cmd> .
-    system::bpa
+    //system::bpa
   then
   
 

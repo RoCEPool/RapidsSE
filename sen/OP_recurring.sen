@@ -13,8 +13,8 @@
   
     //jobs::seeDlist
     //jobs::seeLlist
-    jobs::seeOlist
-    jobs::seePlist
+    //jobs::seeOlist
+    //jobs::seePlist
     jobs::seeRlist
     
     jobs::seeSqueue
@@ -42,7 +42,7 @@
     //<nSeconds> >int  thread::sleepSsec
 
     //args.demonSleep thread::sleepSsec
-    30 thread::sleepSsec
+    3 thread::sleepSsec
 
     recurring_activity
 
