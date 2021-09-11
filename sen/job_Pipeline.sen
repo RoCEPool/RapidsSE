@@ -126,8 +126,8 @@
   Job[].removeOriginator
   
   session::hasCascade@ not
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName
-  and if
+    "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName and
+  if
       
     DdlLock[].testDrop
     JobRef[].none
@@ -187,10 +187,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
-  //"<show_command>" sysargs::tagSet@ tagSet.hasName if
-    //<cmd> .
-    //system::bpa
-  //then
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> .
+    system::bpa
+  then
   
 
   <cmd> Dynamo::compileStmt EC_NONE == assert
@@ -210,9 +211,9 @@
 
   Task[].grabLock
 
-    true Job[].reapable!
+    //true Job[].reapable!
     
-    // about to delete task so unlink task and job
+    // about to delete task (but not this job) so unlink task and job
     nullptr Job[].task!
     nullptr Task[].job!
     
@@ -287,15 +288,18 @@
   JP_EXECUTED Job[].phase!
   nullptr Job[].seedWord!
 
+  DdlLock[].testDrop
+  JobRef[].none
+  
   Job[] Job__Executed::replyToOrigin
   
-  DdlLock[].testDrop
-
-  // unlink task and job
-  nullptr Job[].task!
-  nullptr Task[].job!
-
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock
+  
+    // about to delete task (but not this job) so unlink task and job
+    nullptr Job[].task!
+    nullptr Task[].job!
+  
+    TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -333,8 +337,8 @@
     Job[] Job__Ended::replyToOrigin
 
     JS_DELETABLE Job[].state!
-
     Job[].addRetired
+    
     Task[].grabLock
       true Job[].reapable!
       TR_RETIRE_THIS_TASK Task[].transition!
