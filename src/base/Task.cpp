@@ -1228,9 +1228,9 @@ void Task::vRetire(void)
 
   RASSERT(TS_DESISTED == eState());
   
-  AM::TASK::vRetire(this);
-  
   vState(TS_RETIRED);
+  
+  AM::TASK::vRetire(this);
 }
 
 /*----------------------------------------------------------------------------*/

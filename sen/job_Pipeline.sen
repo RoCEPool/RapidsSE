@@ -64,7 +64,7 @@
       JS_SIGNALLED Job[].state!
       Session[].signal
 
-      Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
+      Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -134,7 +134,7 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
-    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
       
@@ -320,7 +320,7 @@
 
     JS_DELETABLE Job[].state!
 
-    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     
@@ -364,7 +364,7 @@
   
     JS_DELETABLE Job[].state!
   
-    Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     

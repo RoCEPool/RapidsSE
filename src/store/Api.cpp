@@ -567,8 +567,6 @@ bool Api::bReapJob(void)
   
   
   
-  Job* pReapableJob = nullptr;
-  
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
   if (! pRetiredJobs->nJobs()) {
@@ -579,6 +577,8 @@ bool Api::bReapJob(void)
   pRetiredJobs->vGrabLock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Job* pReapableJob = nullptr;
   
   for (SkipNode* pCursor = pRetiredJobs->pFirst();
        pCursor;
@@ -595,9 +595,13 @@ bool Api::bReapJob(void)
         break;
       }
       else {
-        vTrace("Cant reap retired job %p %lld\n"_Stz
-               ,pRetiredJob
-               ,pRetiredJob->iJobId() & 0xFFFFFF);
+        vTrace("Cant reap retired job %p %lld "
+               "activeOps %lld %s "
+               "\n"_Stz
+               
+               ,pRetiredJob,pRetiredJob->iJobId() & 0xFFFFFF
+               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+               );
       }
     }
   }

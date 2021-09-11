@@ -119,7 +119,8 @@
     //nullptr Task[].job!
   then
 
-  Job[].addRetired Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
+  Job[].addRetired
+  Task[].grabLock true Job[].reapable! TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
