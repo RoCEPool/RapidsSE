@@ -11,15 +11,15 @@
 
   AM::SHOW::bRecurring if
   
-    //jobs::seeDlist
-    //jobs::seeLlist
-    //jobs::seeOlist
-    //jobs::seePlist
+    jobs::seeDlist
+    jobs::seeLlist
+    jobs::seeOlist
+    jobs::seePlist
     jobs::seeRlist
     
     jobs::seeSqueue
     
-    //system::bpa
+    system::bpa
   
   else
   
@@ -42,7 +42,7 @@
     //<nSeconds> >int  thread::sleepSsec
 
     //args.demonSleep thread::sleepSsec
-    3 thread::sleepSsec
+    30 thread::sleepSsec
 
     recurring_activity
 
