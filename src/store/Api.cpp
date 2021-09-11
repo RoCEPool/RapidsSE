@@ -131,6 +131,8 @@ void Api::vDeleteJob(Session* pSession)
   
   if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
     
+    pJob->vReapable(true);
+    
     if (AM::SYSARGS::pTagSet()->bHasName("<reap_immedate>"_Stz)) {
       //while (AM::pRetiredJobs()->nJobs())
         while (Api::bReapJob())
@@ -597,10 +599,12 @@ bool Api::bReapJob(void)
       }
       else {
         vTrace("Cant reap retired job %p %lld "
+               "%s %s "
                "activeOps %lld %s "
                "\n"_Stz
                
                ,pRetiredJob,pRetiredJob->iJobId() & 0xFFFFFF
+               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
                ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
                );
       }

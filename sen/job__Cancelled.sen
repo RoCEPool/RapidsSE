@@ -19,6 +19,7 @@
   then
 
   Task[].grabLock
+    true Job[].reapable!
     TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD

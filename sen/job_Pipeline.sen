@@ -61,10 +61,13 @@
       DdlLock[].testDrop
       JobRef[].none
 
+      Job[].addRetired
+      
       JS_SIGNALLED Job[].state!
-      Session[].signal
+        Session[].signal
 
-      Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+      Task[].grabLock
+        TR_RETIRE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -127,10 +130,15 @@
   and if
       
     DdlLock[].testDrop
+    JobRef[].none
+
+    Job[].addRetired
+    
     JS_SIGNALLED Job[].state!
-    Session[].signal
- 
-    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+      Session[].signal
+      
+    Task[].grabLock
+      TR_RETIRE_THIS_TASK Task[].transition!
 
   else
       
@@ -179,10 +187,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
-  "<show_command>" sysargs::tagSet@ tagSet.hasName if
-    <cmd> .
+  //"<show_command>" sysargs::tagSet@ tagSet.hasName if
+    //<cmd> .
     //system::bpa
-  then
+  //then
   
 
   <cmd> Dynamo::compileStmt EC_NONE == assert
@@ -200,11 +208,15 @@
   
   DdlLock[].testDrop
 
-  // unlink task and job
-  nullptr Job[].task!
-  nullptr Task[].job!
+  Task[].grabLock
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    true Job[].reapable!
+    
+    // about to delete task so unlink task and job
+    nullptr Job[].task!
+    nullptr Task[].job!
+    
+    TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -322,7 +334,10 @@
 
     JS_DELETABLE Job[].state!
 
-    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired
+    Task[].grabLock
+      true Job[].reapable!
+      TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     
@@ -366,7 +381,10 @@
   
     JS_DELETABLE Job[].state!
   
-    Job[].addRetired Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+    Job[].addRetired
+    Task[].grabLock
+      true Job[].reapable!
+      TR_RETIRE_THIS_TASK Task[].transition!
 
   else
     

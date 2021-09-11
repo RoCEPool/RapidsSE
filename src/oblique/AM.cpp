@@ -1749,7 +1749,7 @@ void AM::TASK::vRetire(Task* pTask)
   else
   if (Job* pJob = pTask->pJob_task()) {
     // retiring job
-    pJob->vReapable(true);
+    //pJob->vReapable(true);
   }
   else {
     NEVER_REACH;
