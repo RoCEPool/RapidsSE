@@ -188,7 +188,7 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  while (AM::pRetiredJobs()->nJobs())
+  //while (AM::pRetiredJobs()->nJobs())
     while (Api::bReapJob())
       {;}
 
