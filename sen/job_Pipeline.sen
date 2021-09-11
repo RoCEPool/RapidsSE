@@ -83,10 +83,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
   
-  "<show_command>" sysargs::tagSet@ tagSet.hasName if
-    <cmd> .
-  then
-  
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // + clean compile
@@ -183,6 +179,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
+  "<show_command>" sysargs::tagSet@ tagSet.hasName if
+    <cmd> .
+    system::bpa
+  then
+  
+
   <cmd> Dynamo::compileStmt EC_NONE == assert
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
