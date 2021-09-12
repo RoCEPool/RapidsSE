@@ -526,8 +526,8 @@ void LogicUnit::vCleanup(void)
       if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
       vTrace("%16s: "
              "cpu %8lldus "
-             "maxq %6lld; "
-             "Operands %6lld [buff-in: %6lld; buff-out: %6lld] "
+             "maxq %6lld "
+             "operands %6lld [buffIn %6lld buffOut %6lld] "
              "\n"_Stz
              
              ,m_pOp->szOpNm()

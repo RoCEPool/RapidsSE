@@ -165,21 +165,6 @@ Task::~Task(void) noexcept(false)
   
   delete m_pSenCompiler;
   delete m_pInput;
-
-    
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-
-  }
-  else {
-
-    if (m_pJob_task) {
-      Job* pJob = *m_pJob_task;
-      m_pJob_task = nullptr;
-      AM::vJobDelete(&pJob,this,(Stz*)__func__);
-    }
-
-  }
-  
   
   delete m_pProfile;
   m_pProfile = nullptr;

@@ -129,21 +129,8 @@ void Api::vDeleteJob(Session* pSession)
   pSession->m_pSsnJob = nullptr;
   
   
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    
-    pJob->vReapable(true);
-    
-    if (AM::SYSARGS::pTagSet()->bHasName("<reap_immedate>"_Stz)) {
-      //while (AM::pRetiredJobs()->nJobs())
-        while (Api::bReapJob())
-          {;}
-    }
-    
-  }
-  else {
-    pJob->vGuardedDelete(CN_JOB,&pJob,
-                         CN_API,nullptr,(Stz*)__func__);
-  }
+  pJob->vReapable(true);
+      
   
   
   if (pSession->m_pOutput->m_pStreamDef_result) {
@@ -557,16 +544,7 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 bool Api::bReapJob(void)
 {
   _static_
-  
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    //vTrace("Reap retired list\n"_Stz);
-  }
-  else {
-    vTrace("Not attempting to reap retired list\n"_Stz);
-    return false;
-  }
-    
-  
+   
   
   
   
@@ -896,20 +874,12 @@ void Api::vCallBoot(void)
   
   vCallImmediate(pBootTask);
   
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    pBootTask->vState(TS_RETIRED);
-    pBootTask->vDropTaskLock((Stz*)__func__);
-//    pJob->vGuardedDelete(CN_JOB,&pJob,
-//                         CN_API,nullptr,(Stz*)__func__);
-    
-    //while (AM::pRetiredJobs()->nJobs())
-      while (Api::bReapJob())
-        {;}
+  pBootTask->vState(TS_RETIRED);
+  pBootTask->vDropTaskLock((Stz*)__func__);
 
-  }
-  else {
-    vDeleteImmediate(&pBootTask);
-  }
+  while (Api::bReapJob())
+    {;}
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,18 +942,12 @@ void Api::RunStartJob(void)
 
   vCallImmediate(pStartTask);
 
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-    pStartTask->vState(TS_RETIRED);
-    pStartTask->vDropTaskLock((Stz*)__func__);
-    
-    //while (AM::pRetiredJobs()->nJobs())
-      while (Api::bReapJob())
-        {;}
+  pStartTask->vState(TS_RETIRED);
+  pStartTask->vDropTaskLock((Stz*)__func__);
+  
+    while (Api::bReapJob())
+      {;}
 
-  }
-  else {
-    vDeleteImmediate(&pStartTask);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

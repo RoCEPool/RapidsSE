@@ -322,14 +322,7 @@ void Step::vSessionSignal(void)
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
-  
-
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
-  }
-  else {
-    vJob_task(nullptr);
-  }
-  
+    
   pSession->m_oMutex.vLock(this);
   //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
   pSession->m_oMutex.vSignal(this);

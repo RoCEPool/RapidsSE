@@ -270,16 +270,13 @@ Job::~Job(void) noexcept(false)
     vDebugPoint();
   }
   
-  if (AM::SYSARGS::pTagSet()->bHasName("<with_job_reaping>"_Stz)) {
+  if (m_pTask) {
+    m_pTask->vGrabTaskLock((Stz*)__func__);
+    m_pTask->vState(TS_DELETING);
+    m_pTask->vDropTaskLock((Stz*)__func__);
+    m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
+                            CN_JOB,this,(Stz*)__func__);
 
-    if (m_pTask) {
-      m_pTask->vGrabTaskLock((Stz*)__func__);
-      m_pTask->vState(TS_DELETING);
-      m_pTask->vDropTaskLock((Stz*)__func__);
-      m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
-                              CN_JOB,this,(Stz*)__func__);
-
-    }
   }
 }
 
