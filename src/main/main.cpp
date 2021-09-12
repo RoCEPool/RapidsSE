@@ -159,6 +159,8 @@ int main(int argc, char* argv[])
 
 /*
 
+ ./rapidsse --node NODE2 127.0.0.1 5542 --name NODE2 --start --prompt --metadata --killprev --noMunge --developer --heartbeat BROADCAST 8888 --partitionsPerNode 4
+
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
  # first node

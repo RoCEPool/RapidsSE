@@ -154,6 +154,14 @@ public:
   void vBuildHostName(void);
   void vBuildUserName(void);
 
+  // BuffersIn
+  void vBuffersInInc(void);
+  void vBuffersInGet(void);
+
+  // BuffersOut
+  void vBuffersOutInc(void);
+  void vBuffersOutGet(void);
+
   // class
   void vClassName(void);
   void vClassPostRecvWordStore(void);
@@ -1158,6 +1166,7 @@ public:
 
   // operandCount
   void vOperandCountInc(void);
+  void vOperandCountGet(void);
 
   // OperandOoO
   void vOperandOoODelete(void);
@@ -1422,6 +1431,7 @@ public:
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
+  void vPipeinIsBuffer(void);
   void vPipeinIsNull(void);
   void vPipeinKind(void);
   void vPipeinNext(void);

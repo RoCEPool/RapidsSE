@@ -301,7 +301,7 @@
 
   op[].init
 
-  //BM_TimerNew
+  BM_TimerNew
 
   "<diary>" job::tagSet@ tagSet.hasName if
     rluDiary_init
@@ -339,8 +339,6 @@
     then
     
   repeat
-
-  //pPipelineJob job.jobList@ "Job list %v" .printf
 
 
   // ensure pipeline job is executing and task is waiting
@@ -407,12 +405,14 @@
   OperandCount[].inc
 
   // start timer
-  //BM_TimerBegin
+  BM_TimerBegin
 
   LogicUnit[].handler@ execute
 
-  // update timer
-  //BM_TimerUpdate
+  dup if
+    // update timer
+    BM_TimerUpdate
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -424,8 +424,6 @@
   1 locals| iContinue |
 
   op__pipelineJobWait
-
-  Job[] assert
   
   //Task[].grabLock //OoO
 
@@ -491,7 +489,11 @@
 
     // pop next operand from queue into PipeIn[]
     PipeIn[].bideNext
-    
+
+    PipeIn[].isBuffer if
+      BuffersIn[].inc
+    then
+
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
     PipeIn[].kind op[].isOperandValid not if
@@ -507,8 +509,6 @@
   repeat
   
   iContinue not assert
-  
-  Job[] assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -547,16 +547,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
-    
-    Task[].grabLock
-      TR_RETIRE_THIS_TASK Task[].transition!
-
-  else
-
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
-  
-  then
+  Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

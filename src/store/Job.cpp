@@ -653,6 +653,19 @@ bool Job::bIsPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a local pipeline job?                                              */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsPipelineLocal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_sJobNm.bSame("pipelineLocal"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* icrement number of active op's                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vIncActiveOps(void)

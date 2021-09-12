@@ -45,11 +45,11 @@ INCLUDE 'query1.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
-INCLUDE 'query2.test';
+//INCLUDE 'query2.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
-INCLUDE 'query3.test';
+//INCLUDE 'query3.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';

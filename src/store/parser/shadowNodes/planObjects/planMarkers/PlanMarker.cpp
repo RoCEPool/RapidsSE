@@ -74,7 +74,7 @@ void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExpl
 void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
-      ASSERT(bIsOfType(pNode));
+  ASSERT(bIsOfType(pNode));
 
   if (bIsExactType(szType)) {
     // Explain any common attributes of this object

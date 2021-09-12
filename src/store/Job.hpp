@@ -149,6 +149,7 @@ namespace STORE
     bool bHasTag_noWait(void);
     void vIncActiveOps(void);
     bool bIsPipeline(void);
+    bool bIsPipelineLocal(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);

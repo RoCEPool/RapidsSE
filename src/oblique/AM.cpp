@@ -1750,6 +1750,9 @@ void AM::TASK::vRetire(Task* pTask)
   if (Job* pJob = pTask->pJob_task()) {
     // retiring job
     //pJob->vReapable(true);
+//    if (pJob->bIsPipelineLocal()) {
+//      Op* pOp = pJob->pSingularOp();
+//    }
   }
   else {
     NEVER_REACH;

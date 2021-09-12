@@ -125,6 +125,7 @@ namespace STORE
     bool bIsOperandValid(i8 i_OperandKind);
     i8   iLocalRobinNext(void);
     Job* pJob(void);
+    i8   nMaxQueue(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);

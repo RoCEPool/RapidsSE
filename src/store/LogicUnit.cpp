@@ -183,6 +183,8 @@ LogicUnit::LogicUnit(void)
   m_bIsLftCrwBuffer = false;
 
   m_iOperandCount = 0;
+  m_iBuffersIn    = 0;
+  m_iBuffersOut   = 0;
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;
@@ -519,19 +521,27 @@ void LogicUnit::vCleanup(void)
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
-//    if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
-//      vTrace("OP: %s Time: %lldms; Operands: %lld; \n"_Stz,
-//             m_pOp->szOpNm(),
-//             m_iOperandCount,
-//             m_xpAggTimer->iMicroseconds());
-
+    if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
+      
+      if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+      vTrace("%16s: "
+             "cpu %8lldus "
+             "maxq %6lld; "
+             "Operands %6lld [buff-in: %6lld; buff-out: %6lld] "
+             "\n"_Stz
+             
+             ,m_pOp->szOpNm()
+             ,m_xpAggTimer->iMicroseconds()
+             ,m_pOp->nMaxQueue()
+             ,m_iOperandCount,m_iBuffersIn,m_iBuffersOut
+             );
+    }
+    
     // execute register repair
     if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg != LR_AGGTIMER)
       p_Reg->vRepair();
   }
-
 }
-
 /*----------------------------------------------------------------------------*/
 /* get eCode at given i_Code                                                  */
 /*----------------------------------------------------------------------------*/
