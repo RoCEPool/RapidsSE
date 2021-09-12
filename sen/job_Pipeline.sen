@@ -126,7 +126,6 @@
   Job[].removeOriginator
   
   session::hasCascade@ not
-    "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName and
   if
       
     DdlLock[].testDrop
@@ -328,31 +327,17 @@
 
   Job[].removeParticipant
   
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
 
-    DdlLock[].testDrop
-    
-    Job[] Job__Ended::replyToOrigin
-
-    JS_DELETABLE Job[].state!
-    Job[].addRetired
-    
-    Task[].grabLock
-      true Job[].reapable!
-      TR_RETIRE_THIS_TASK Task[].transition!
-
-  else
-    
-    DdlLock[].testDrop
-    
-    Job[] Job__Ended::replyToOrigin
+  DdlLock[].testDrop
   
-    JS_DELETABLE Job[].state!
+  Job[] Job__Ended::replyToOrigin
+
+  JS_DELETABLE Job[].state!
+  Job[].addRetired
   
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
-
-  then
-
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -377,27 +362,14 @@
 
   Job[].removeParticipant
     
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
-    
-    Job[] Job__Cancelled::replyToOrigin
-  
-    JS_DELETABLE Job[].state!
-  
-    Job[].addRetired
-    Task[].grabLock
-      true Job[].reapable!
-      TR_RETIRE_THIS_TASK Task[].transition!
+  Job[] Job__Cancelled::replyToOrigin
 
-  else
-    
-    Job[] Job__Cancelled::replyToOrigin
-  
-    JS_DELETABLE Job[].state!
-  
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  JS_DELETABLE Job[].state!
 
-  then
-
+  Job[].addRetired
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;

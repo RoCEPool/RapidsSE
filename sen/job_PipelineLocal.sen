@@ -110,34 +110,19 @@
     Job[].removeLocal
   then
 
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
   
   
+  DdlLock[].testDrop
+  JobRef[].none
+
+  Job[].addRetired
   
-  "<with_job_reaping>" sysargs::tagSet@ tagSet.hasName if
-
-    //"would leave local in retired list" .
- 
-    DdlLock[].testDrop
-    JobRef[].none
-
-    Job[].addRetired
-    
-    JS_SIGNALLED Job[].state!
-      Session[].signal
-
-    Task[].grabLock
-      TR_RETIRE_THIS_TASK Task[].transition!
-
-  else
-  
-    JS_SIGNALLED Job[].state!
+  JS_SIGNALLED Job[].state!
     Session[].signal
 
-    pipelineLocal::termination
-
-  then
-  
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/
