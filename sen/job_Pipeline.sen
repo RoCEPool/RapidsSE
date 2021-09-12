@@ -210,8 +210,6 @@
   DdlLock[].testDrop
 
   Task[].grabLock
-
-    //true Job[].reapable!
     
     // about to delete task (but not this job) so unlink task and job
     nullptr Job[].task!

@@ -10819,8 +10819,6 @@ void Task::vAddMunged(Task* )
     "  DdlLock[].testDrop\n"
     "\n"
     "  Task[].grabLock\n"
-    "\n"
-    "    //true Job[].reapable!\n"
     "    \n"
     "    // about to delete task (but not this job) so unlink task and job\n"
     "    nullptr Job[].task!\n"
