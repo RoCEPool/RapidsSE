@@ -105,10 +105,15 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
     i8 i_Ptn1 = 0; //pTable->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
+    if (pRowBuffer->pTable()) {
+      i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);
+      vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1);
+    }
+
 
     vCopyRow(i_Ptn1,aRowSrc);
 
-    vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1);
+
 #endif
 
 
@@ -142,34 +147,18 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
-//#ifdef    WITH_BKTMAP_2N4P
-    i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
-    // convert Bktt No to Ptn No
-    i8 i_Ptn1 = pTable->tBktToPtn(i_Bkt1);
-
-    vCopyRow(i_Ptn1,aRowSrc);
-
-    vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1);
-//#endif
-
-/*
-#ifdef WITH_KEEP_ROW_HASH
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
+    i8 i_Bkt = iHash % C_MAX_BUCKETS;
 
-    i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(iHash);
+    // convert Bkt No to Ptn No
+    i8 i_Ptn = pTable->tBktToPtn(i_Bkt);
 
-    //i8 i_Bkt = AM::PTNMAP::iToBkt(i_Ptn);
+    vCopyRow(i_Ptn,aRowSrc);
 
-    //vCopyRow(i_Bkt,aRowSrc);
-    //vTrace("WITH_KEEP_ROW_HASH ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, i_Ptn);
-#else
-i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
+    vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, i_Ptn);
 
-vCopyRow(i_Ptn,aRowSrc);
-#endif
- */
+
   }
 }
 

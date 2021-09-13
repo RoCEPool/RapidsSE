@@ -41,19 +41,13 @@ PtnStm_cursor::PtnStm_cursor(TablePtn* pTablePtn)
   m_iLglBufferNo = -1; // correct
 
   m_pCurBuffer = nullptr;
+  m_pCurBkt    = nullptr;
 
-  vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnNo());
-  vTrace("m_pTablePtn->tMappedPtnNo():%lld \n"_Stz, m_pTablePtn->tMappedPtnNo());
+  m_tCurPtnNo = -1;
+  m_iCurBktNo = -1;
 
-  m_tCurPtnNo = m_pTablePtn->tMappedPtnNo(); //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
 
-  m_iCurBktNo = m_pTablePtn->pTable()->iPtnToBkt(m_tCurPtnNo);
 
-  vTrace("BktNo:%lld\n"_Stz,m_iCurBktNo );
-
-  m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
-  if (m_pCurBkt)
-    m_pCurBuffer = m_pCurBkt->pRootBuffer();
 
 
   _checkInitialised_(CN_PTNSTMCURSOR);
@@ -130,10 +124,25 @@ void PtnStm_cursor::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
   vTrace("vReset\n"_Stz);
+
+  // decrypting the partition ID into the partition number
+  tPN tPtnNo = AM::PTNMAP::tPtnIDToPtnNo(m_pTablePtn->tPtnNo());
+
+  vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnNo());
+  vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo(), tPtnNo);
+
+  m_tCurPtnNo = tPtnNo; //m_pTablePtn->tMappedPtnNo(); //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
+
   m_iCurBktNo = m_pTablePtn->pTable()->iPtnToBkt(m_tCurPtnNo);
 
+  vTrace("BktNo:%lld\n"_Stz,m_iCurBktNo );
+
   m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
-  m_pCurBuffer = m_pCurBkt->pRootBuffer();
+  if (m_pCurBkt)
+    m_pCurBuffer = m_pCurBkt->pRootBuffer();
+  else
+    m_pCurBuffer = nullptr;
+  //////
 
   m_iLglBufferNo = -1; // correct
 }

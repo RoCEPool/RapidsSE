@@ -944,6 +944,17 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert given Ptn ID to local partition number                             */
+/*----------------------------------------------------------------------------*/
+tPN AM::PTNMAP::tPtnIDToPtnNo(tPN tPtnID)
+{
+
+  // decrypting the partition ID into the partition number
+  tPN tPtnNo = (tPtnID - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
 tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)

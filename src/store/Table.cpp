@@ -245,7 +245,9 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 
   tPN tPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
 
-  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnNo);
+  // This trace is to remind us that the grid-wide ptnNo is not the same as the local ptnNo
+  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz,
+         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnNo);
   
   return tPtnNo;
 }

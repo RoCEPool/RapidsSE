@@ -330,6 +330,7 @@ namespace OBLIQUE
       static i8  nKnownNodes(void);
       static i8  nPtnsPerNode(void);
       static i8  nPtnsInGrid(void);
+      static tPN tPtnIDToPtnNo(tPN tPtnID);
       static tPN tRobinToDtdPtnNo(i8 iRobin);
       static tPN tRobinToLclPtnNo(i8 iRobin);
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
