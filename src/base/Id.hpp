@@ -22,9 +22,13 @@ class Id
 
   Id(void);
   
+  i8   nNodeBits(void);
+  u8   uNodeMask(void);
   u8   uNodeNo(void);
   void vNodeNo(u8 uNodeNo);
 
+  i8   nObjectBits(void);
+  u8   uObjectMask(void);
   u8   uObjectNo(void);
   void vObjectNo(u8 uObjectNo);
 };
