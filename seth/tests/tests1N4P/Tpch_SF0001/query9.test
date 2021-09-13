@@ -17,6 +17,8 @@ select nation, o_year, sum(amount) as sum_profit
     and p_name like '%green%' ) as profit
     group by nation, o_year
     order by nation, o_year desc;
+--verfied
+rows: 41
 
 */
 
