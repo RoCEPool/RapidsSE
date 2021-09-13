@@ -158,6 +158,7 @@ b1 TableSubquery::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 TableSubquery::bIsCorrelated(QueryNode* pNode)
 {
+  UNUSED(pNode); // in release
   ASSERT(bIsOfType(pNode));
 
   // All table subqueries are non-correlated

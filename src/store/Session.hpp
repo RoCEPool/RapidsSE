@@ -19,7 +19,7 @@ namespace STORE
     // a)
   
     // -- id, name and kind
-    Gid<CN_SESSION> m_xSessionId;  // session id in grid
+    Gid_t<CN_SESSION> m_xSessionId;  // session id in grid
     s32             m_sSessionNm;  // name of this session
     eSK             m_eSession;    // session kind
 

@@ -119,6 +119,11 @@ void PartitionPlan::vPartitionSubquerySection(QueryNode* pSubqueryMarker,
   auto fTopDownVisitor =
       [] (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
     if (SubqueryMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_SKIP_SUBTREE;
     }
@@ -179,6 +184,8 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
                                                      PlanNode* pRootNode,
                                                      QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pRootNode);
+
   // The canonical representation of a SELECT query will look a bit like this:
   //              ProjectOp            (post project)
   //              LimitOp              (LIMIT)
@@ -284,6 +291,7 @@ QueryNode* PartitionPlan::pConsolidateChains(QueryNode* pOriginChain,
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(StatementMarker::bIsOfType(pNode));
 
   QueryNode* pStmtMarker = pNode->pDeepCopy(true, nullptr);
@@ -295,6 +303,7 @@ void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pCh
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(TableScanOp::bIsExactType(pNode));
 
   QueryNode* pTableScanNode = pNode->pDeepCopy(true);
@@ -322,6 +331,7 @@ void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(AggregateOp::bIsExactType(pNode));
 
   // AggregateOps are not post-projects and they must have an aggregation.
@@ -352,6 +362,7 @@ void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(ExplainOp::bIsExactType(pNode));
 
 //  QueryNode* pExplainNode = pNode->pDeepCopy(true, nullptr);
@@ -373,6 +384,7 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(FilterOp::bIsExactType(pNode));
 
   QueryNode* pExpr = FilterOp::pFilterExpr(pNode);
@@ -401,6 +413,7 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(LimitOp::bIsExactType(pNode));
   b1 bCanPushDownLimitOp = PartitionPlan::bCanPushDownLimitOp(pNode);
 
@@ -437,6 +450,7 @@ void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(OrderOp::bIsExactType(pNode));
   b1 bCanPushDownOrderOp = PartitionPlan::bCanPushDownOrderOp(pNode);
 
@@ -467,6 +481,7 @@ void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(ProjectOp::bIsExactType(pNode));
 
   b1 bHasAnAggregate = ProjectOp::bHasAnAggregate(pNode);
@@ -542,6 +557,7 @@ void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionJoinOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(JoinOp::bIsOfType(pNode));
 
   // Joins only run on the partitions
@@ -564,6 +580,8 @@ b1 PartitionPlan::bIsPostProject(QueryNode* pProjectOp)
   ASSERT(ProjectOp::bIsExactType(pProjectOp));
 
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
+
     // A projectOp occurring above a LimitOp or OrderOp of an unpartitioned plan
     // must be a post-project
     if (LimitOp::bIsOfType(pNode)) return true;
@@ -601,6 +619,7 @@ b1 PartitionPlan::bCanPushDownOrderOp(QueryNode* pOrderOp)
   // a lambda that returns a pointer to a node for any condition where an OrderOp
   // cannot be pushed down.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
 
     QueryNode* pOp = _pQueryNode(pNode);
 
@@ -638,6 +657,7 @@ b1 PartitionPlan::bCanPushDownLimitOp(QueryNode* pLimitOp)
   // a lambda that returns a pointer to a node for any condition where an LimitOp
   // cannot be pushed down.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
 
     QueryNode* pOp = _pQueryNode(pNode);
 

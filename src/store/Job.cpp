@@ -122,6 +122,8 @@ Job::Job(i8 i_Origin,     // originated on which node
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+ 
+  m_tJobId.vNextJobId();
   
   m_bReapable  = false;
   
@@ -191,6 +193,8 @@ Job::Job(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
+  //m_tJobId.vNextJobId();
+
   m_bReapable  = false;
 
   m_i_Origin     = C_UNKNOWN;

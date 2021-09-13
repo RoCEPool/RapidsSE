@@ -147,6 +147,7 @@ b1 UnionOp::bIsExactType(Stz* szType)
 Stz* UnionOp::szSqlKeyword(QueryNode* pNode)
 {
   _static_
+  UNUSED(pNode); // in release
   ASSERT(bIsOfType(pNode));
 
   return C_SQL_KEYWORD;

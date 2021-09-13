@@ -148,6 +148,8 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
                                        QueryNodeList* pColumnExprList,
                                        PlanNode* pRootNode)
 {
+  UNUSED(nColumns);
+
   ASSERT(pAggList);
   ASSERT(pAggList->nItems() > 0);
   ASSERT(pParentNode);

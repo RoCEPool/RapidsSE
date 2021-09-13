@@ -19,7 +19,7 @@ namespace STORE
     // a)
 
     // -- id, name and kind
-    Gid<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
+    Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32              m_sPipelineNm;  // name of this pipeline
     // n/a                           // kind
 

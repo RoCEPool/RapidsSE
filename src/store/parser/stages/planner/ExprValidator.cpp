@@ -252,8 +252,6 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
     UNUSED(sPath);
     UNUSED(iDepth);
 
-    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
-
     if (!JoinOp::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }

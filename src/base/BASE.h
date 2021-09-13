@@ -168,6 +168,8 @@ extern d8 C_D8_MID;
 #include "Shell.hpp"
 
 #include "Gid_t.hpp"
+#include "JobId.hpp"
+#include "PtnId.hpp"
 #include "Lock.hpp"
 #include "MasterLock.hpp"
 #include "DdlLock.hpp"

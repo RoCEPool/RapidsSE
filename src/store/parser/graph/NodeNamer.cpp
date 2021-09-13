@@ -40,6 +40,7 @@ void NodeNamer::vGenerateName(Stz* szNodeType, s256& sNameBuf)
   char* ps = StrLib::acLast(szNodeType->azChar());
   b1 bFound = StrLib::bBackward(&ps, szNodeType->azChar(), '/');
   ASSERT(bFound);
+  UNUSED(bFound); // in release
 
   Stz* szPrefix = (Stz*) (ps + 1);
   sNameBuf.vSprint("%s%04lld"_Stz, szPrefix, ms_pObjId->iInc());
