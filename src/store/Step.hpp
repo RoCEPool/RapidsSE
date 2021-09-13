@@ -139,6 +139,7 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
+    static void vAddSteps_PuGen(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_Schedule(void);
