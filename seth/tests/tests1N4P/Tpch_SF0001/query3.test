@@ -14,7 +14,6 @@
       and l_shipdate > '1995-03-15'
       group by l_orderkey, o_orderdate, o_shippriority
       order by revenue desc, o_orderdate;
-*/
 
 // RUNS OOM with loopJoin
 select l_orderkey,

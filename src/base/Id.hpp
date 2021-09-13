@@ -22,6 +22,9 @@ class Id
 
   Id(void);
   
+  i8   iAsI8(void);
+  void vAsI8(i8 iAsI8);
+
   i8   nNodeBits(void);
   u8   uNodeMask(void);
   u8   uNodeNo(void);
