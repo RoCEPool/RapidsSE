@@ -1,0 +1,53 @@
+/*============================================================================*/
+/* pp_puLoad.sen -- puLoad procedure                                          */
+/*============================================================================*/
+
+" pp_puLoad.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate and load a pu table                                               */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Load" .verbose
+
+: start::defProc_puLoad
+  
+  STD_PATH
+  "
+  procedure puLoad
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | stageB robin
+
+    stage stageB on all partitions on origin :
+        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
+      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
+      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
+      | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
+      | stageC hashcast
+
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | stageD
+
+    stage stageD on origin :
+        progress 'puLoad'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
