@@ -9,6 +9,11 @@ class JobId : public Gid_t<CN_JOB>
 
   JobId(void);
     
+  operator JobId*(void);
+  
+  void operator =(i8 iAsI8);
+  void operator =(JobId tJobId);
+
   i8   nJobBits(void);
   u8   uJobMask(void);
   u8   uJobNo(void);
