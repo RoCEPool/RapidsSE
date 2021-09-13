@@ -19,7 +19,7 @@ namespace BASE
     OperandQueue(void);
     ~OperandQueue(void) noexcept(false);
     
-    void      vAppendOperand(Operand* pOperand);
+    i8        iAppendOperand(Operand* pOperand);
     bool      bPeekOoO(void);
     bool      bPeekQueue(void);
     Operand*  pPopOoO(void);

@@ -352,7 +352,13 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  m_pQueueLeft->vAppendOperand(pOperand);
+  i8 nOperands = m_pQueueLeft->iAppendOperand(pOperand);
+
+  if (m_pOpLogicUnit->m_xpStats.bIsNotNull()) {
+    if (nOperands > m_pOpLogicUnit->m_xpStats->m_nMaxQs)
+      m_pOpLogicUnit->m_xpStats->m_nMaxQs = nOperands;
+  }
+
 
   AM::vOperandsInc();
 
@@ -379,7 +385,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  m_pQueueOoO->vAppendOperand(pOperand);
+  IGNORE_RETURN(m_pQueueOoO->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
 
@@ -411,7 +417,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
     
   vGrabTaskLock();
   
-  m_pQueueRight->vAppendOperand(pOperand);
+  i8 nOperands = m_pQueueRight->iAppendOperand(pOperand);
   
   AM::vOperandsInc();
 
@@ -1004,16 +1010,6 @@ i8 Op::iLocalRobinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get max queue                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Op::nMaxQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  return m_pQueueLeft->nMaxItems();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next op                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextOp(void)
@@ -1466,7 +1462,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   
   vOpTrace(pOperand,(Stz*)__func__);
   
-  pOutputQueue->vAppend(pOperand);
+  IGNORE_RETURN(pOutputQueue->iAppend(pOperand));
 }
 
 /*----------------------------------------------------------------------------*/

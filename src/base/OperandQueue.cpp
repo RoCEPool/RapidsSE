@@ -38,11 +38,11 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append thread to end of queue                                              */
 /*----------------------------------------------------------------------------*/
-void OperandQueue::vAppendOperand(Operand* pOperand)
+i8 OperandQueue::iAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  Queue::vAppend(pOperand);
+  return Queue::iAppend(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
