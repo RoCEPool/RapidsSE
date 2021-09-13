@@ -525,6 +525,7 @@ void LogicUnit::vCleanup(void)
              "cpu %8lldus "
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
+             "NewRowBuffers %6lld [DelRowBuffers %6lld] "
              "\n"_Stz
              
              ,m_pOp->szOpNm()
@@ -533,6 +534,8 @@ void LogicUnit::vCleanup(void)
              ,m_xpStats->m_nOperands
              ,m_xpStats->m_nBuffIn
              ,m_xpStats->m_nBuffOut
+             ,m_xpStats->m_nNewRowBuffer
+             ,m_xpStats->m_nDelRowBuffer
              );
     }
     

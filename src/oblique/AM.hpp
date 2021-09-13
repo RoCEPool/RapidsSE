@@ -688,6 +688,7 @@ namespace OBLIQUE
     static void vTaskMutexWait(Task* pTask);
     static void vTaskFullTrace(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
+    static LogicUnit* pTaskOpLogicUnit(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 

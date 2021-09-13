@@ -2475,7 +2475,10 @@ void AM::vTaskDump(Task* pTask)
 
 
 
-
+LogicUnit* AM::pTaskOpLogicUnit(Task* pTask) {
+  Op* pOp = pTask->pOp();
+  return pOp->pOpLogicUnit();
+}
 
 LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   Job* pJob = pTask->pJob_task();
