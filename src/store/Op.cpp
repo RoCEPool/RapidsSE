@@ -16,6 +16,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "Job.hpp"
 #include "StageSpec.hpp"
 #include "MY.hpp"
 #include "Parcel.hpp"
@@ -49,7 +50,7 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Operand(CN_OP)
-, DeleteHelper_t<Op>(CN_OP,typeid(Op))
+, LifeGuard_t<Op>(this,CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -99,7 +100,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  SMA<Job> pPipelineJob;
+  SMA<Job,CN_JOB> pPipelineJob;
   
   pPipelineJob = pStream->pPipeline()->pPipelineJob();
   
@@ -148,7 +149,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 /*----------------------------------------------------------------------------*/
 Op::Op(Stz* szOpNm)
 : Operand(CN_OP)
-, DeleteHelper_t<Op>(CN_OP,typeid(Op))
+, LifeGuard_t<Op>(this,CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
@@ -208,8 +209,16 @@ Op::~Op(void) noexcept(false)
     RASSERT(this == m_pOpLogicUnit->pOp());
     RASSERT(! m_pOpLogicUnit->pJob());
 
-    delete m_pOpLogicUnit;
+    //delete m_pOpLogicUnit;
+    //m_pOpLogicUnit = nullptr;
+    
+    LogicUnit* pLogicUnit = *m_pOpLogicUnit;
     m_pOpLogicUnit = nullptr;
+    pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
+                               CN_OP,this,(Stz*)__func__);
+  }
+  else {
+    vDebugPoint();
   }
   
   if (m_pQueueLeft->nItems() != 0) {
@@ -234,6 +243,29 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueLeft;
   delete m_pQueueRight;
   delete m_pQueueOoO;
+  
+  if (m_pTask.bIsNotNull()) {
+    Task* pTask = *m_pTask;
+    
+    while (TS_RETIRED != m_pTask->eState() ) {
+      vTrace("Napping\n"_Stz);
+      AM::vNapMsec(10, eGetClassNo());
+    }
+
+    
+    pTask->vGrabTaskLock((Stz*)__func__);
+    RASSERT(TS_RETIRED == pTask->eState());
+    pTask->vState(TS_DELETING);
+    pTask->vDropTaskLock((Stz*)__func__);
+    
+    m_pTask = nullptr;
+    
+    pTask->vGuardedDelete(CN_TASK,&pTask,
+                          CN_OP,this,(Stz*)__func__);
+
+  }
+
+  
 
   -- gixOp;
 }
@@ -320,7 +352,13 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  m_pQueueLeft->vAppendOperand(pOperand);
+  i8 nOperands = m_pQueueLeft->iAppendOperand(pOperand);
+
+  if (m_pOpLogicUnit->m_xpStats.bIsNotNull()) {
+    if (nOperands > m_pOpLogicUnit->m_xpStats->m_nMaxQs)
+      m_pOpLogicUnit->m_xpStats->m_nMaxQs = nOperands;
+  }
+
 
   AM::vOperandsInc();
 
@@ -347,7 +385,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  m_pQueueOoO->vAppendOperand(pOperand);
+  IGNORE_RETURN(m_pQueueOoO->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
 
@@ -379,7 +417,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
     
   vGrabTaskLock();
   
-  m_pQueueRight->vAppendOperand(pOperand);
+  i8 nOperands = m_pQueueRight->iAppendOperand(pOperand);
   
   AM::vOperandsInc();
 
@@ -947,6 +985,21 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job of this op                                                         */
+/*----------------------------------------------------------------------------*/
+Job* Op::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stream*   pStream   = this->pStream();
+  Stage*    pStage    = pStream->pStage();
+  Pipeline* pPipeline = pStage->pPipeline();
+  Job*      pJob      = pPipeline->pPipelineJob();
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate next local round robin                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iLocalRobinNext(void)
@@ -1312,7 +1365,7 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  SMA<Job> pPipelineJob;
+  SMA<Job,CN_JOB> pPipelineJob;
   
   pPipelineJob = m_p_Pipeline_op->pPipelineJob();
 
@@ -1409,7 +1462,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   
   vOpTrace(pOperand,(Stz*)__func__);
   
-  pOutputQueue->vAppend(pOperand);
+  IGNORE_RETURN(pOutputQueue->iAppend(pOperand));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1775,7 +1828,9 @@ void Op::vSpawnOpTask(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-
+  Job* pJob = this->pJob();
+  pJob->vIncActiveOps();
+  
   if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
     
     //m_oOpTags.vDumpSet(true);
@@ -1872,6 +1927,40 @@ void Op::vVerifyOpComposition(void)
   RASSERT(m_pOpLogicUnit);
 }
 
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+  
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  vfClosure(this,iDepth);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */

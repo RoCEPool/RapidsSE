@@ -10,7 +10,7 @@
 #include "eRS.h"
 #include "eSS.h"
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -24,7 +24,7 @@ namespace STORE
 {
   class Job : public Object,
               public CRM<Job>,
-              public DeleteHelper_t<Job>
+              public LifeGuard_t<Job>
   {
   public:
   
@@ -32,12 +32,15 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    Gid<CN_JOB> m_xJobId;    // this job's id
-    s32         m_sJobNm;    // name of job
-    eJK         m_eJobKind;  // job kind: (needs work)
+    //Gid_t<CN_JOB> m_xJobId;     // this job's id
+    JobId       m_tJobId;     // this job's id
+    s32         m_sJobNm;     // name of job
+    eJK         m_eJobKind;   // job kind: (needs work)
 
-    eSS         m_eSeed;  // sen word to start execution
-    Word*       m_pSeedWord; // seed word of this job                  POST_RECV
+    b8          m_bReapable;  // can job be reaped?
+    Atomic      m_noActiveOps; // number of active ops
+    eSS         m_eSeed;      // sen word to start execution
+    Word*       m_pSeedWord;  // seed word of this job                  POST_RECV
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -54,7 +57,6 @@ namespace STORE
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
     i8   m_i_Participant;  // participant node no (FromNodeNo?)
-    bool m_bNormalSides;   // normal side semantics?
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -76,7 +78,6 @@ namespace STORE
 
   private:
     // -- participating job maintains
-    Pipeline* m_pPipeline_job;  // pipeline the job represents         POST_RECV
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
   
@@ -84,20 +85,19 @@ namespace STORE
     // job running as responder on origin                   RESPONDER
   
     // -- responding to which originator
-    Task*  m__dpOriginatingTask; // dist ptr of originating task of the request
     i8     m_iOriginatingId;     // job id of originating job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job execution                                        execution
 
-    // -- tasking
-    Task* m_pTask;  // task executing this job                         POST_RECV
 
     // -- logic unit
     LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
 
   private:
-    
+    // -- tasking
+    Task* m_pTask;  // task executing this job                         POST_RECV
+
     // must be last
     Footer m_xFooter;
     
@@ -124,15 +124,23 @@ namespace STORE
     static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
-  
+
+    void vAssertEEDelete(eCN eClassNo,
+                         Object* pInstance,
+                         eCN eDeleterClassNo,
+                         Object* pDeleter,
+                         Stz* szDelFunc);
+
     static void vPostRecv(void* aJob);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(i8& nAcksWereRemaining);
+    i8   nActiveOps(void);
     bool bByPromptTag(void);
     void vContentDump(void);
+    void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
@@ -140,8 +148,11 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
+    void vIncActiveOps(void);
     bool bIsPipeline(void);
+    bool bIsPipelineLocal(void);
     i8   iJobId(void);
+    JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     bool bJobHasError(void);
@@ -161,14 +172,13 @@ namespace STORE
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
-    bool bNormalSides(void);
-    void vNormalSides(bool bNormalSides);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
-    void vPipeline_job(Pipeline* pPipeline_job);
+    bool bReapable(void);
+    void vReapable(bool bReapable);
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);
@@ -184,16 +194,19 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
-    Stz* szSide(void);
     void vSignalJobMutex(void);
-    Task* pTask(void);
-    void vTask(Task* pTask);
+    Task* pJobTask(void);
+    void vJobTask(Task* pTask);
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
     void vUnlockJobMutex(void);
     void vVerifyJobComposition(void);
     void vWaitJobMutex(void);
+    void vWalk(void* aArg);
+    void vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 
@@ -213,7 +226,8 @@ namespace STORE
   eEC  eJob_checkCluster(void);
   void vJob_postRecv(Job* pJob);
 
-  bool bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch);
+  bool bJobCompare_addr(void* aJobInsert, void* aJobScan, bool& bMatch);
+  bool bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch);
 }
 
 

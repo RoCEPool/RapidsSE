@@ -9,7 +9,7 @@
 #include "eSS.h"
 
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 namespace BASE { class OperandQueue; }
 
@@ -18,14 +18,14 @@ namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 namespace STORE
 {
   class Op : public Operand,
-             public DeleteHelper_t<Op>
+             public LifeGuard_t<Op>
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // operator
 
     // -- id, name and kind
-    Gid<CN_OP> m_xOpId;     // op id in grid
+    Gid_t<CN_OP> m_xOpId;     // op id in grid
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
   
@@ -35,19 +35,19 @@ namespace STORE
     bool       m_bTraceAck; // tracing ack of this operator
 
     // -- belongs to
-    SMA<Stream> m_pStream;  // which stream (of stage of pipeline of job)
+    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
     i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    SMA<OpSpec>    m_pOpSpec;   // specification of this operator
-    SMA<Pipeline>  m_p_Pipeline_op; // which pipeline
-    SMA<Word>      m_pSeedWord; // seed word of this operator
+    SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
+    SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
+    SMA<Word,CN_WORD>      m_pSeedWord; // seed word of this operator
 
     // -- owns
-    SMA<LogicUnit> m_pOpLogicUnit;  // logic unit of op
+    SMA<LogicUnit,CN_LOGICUNIT> m_pOpLogicUnit;  // logic unit of op
 
     // -- executed by
-    SMA<Task>      m_pTask;    // which task is currenty executing this op
+    SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
 
     // can these go???
     bool m_bPulsedLimit;  // is this a pulsed operand?
@@ -67,9 +67,9 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
   
-    SMA<OperandQueue> m_pQueueLeft;   // left input queue
-    SMA<OperandQueue> m_pQueueRight;  // right input queue
-    SMA<OperandQueue> m_pQueueOoO;    // out-of-order queue
+    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
+    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
+    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
@@ -82,9 +82,9 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // delete these???
 
-    SMA<Operand> m_pOutboundOperand;  // operand to be piped out
+    SMA<Operand,CN_NONE> m_pOutboundOperand;  // operand to be piped out
 
-    SMA<Op>      m_pDownstreamOp;     // downstream op  DELETE
+    SMA<Op,CN_OP>      m_pDownstreamOp;     // downstream op  DELETE
     
     // must be last
     Footer m_xFooter;
@@ -124,6 +124,7 @@ namespace STORE
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
     i8   iLocalRobinNext(void);
+    Job* pJob(void);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);
@@ -182,6 +183,10 @@ namespace STORE
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
+    void vWalk(void* aArg);
+    void vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

@@ -14,13 +14,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Address(void)
 {
-  vAddStep("eql"_Stz,             &Step::vAddressEqual);
+  vAddStep("equal"_Stz,             &Step::vAddressEqual);
   vAddStep("@"_Stz,               &Step::vAddressFetch);
   vAddStep("!"_Stz,               &Step::vAddressStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* eql -- test top two address on data stack for equality                     */
+/* equal -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
 void Step::vAddressEqual(void)
 {

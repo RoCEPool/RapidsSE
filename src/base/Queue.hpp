@@ -12,6 +12,7 @@ namespace BASE
   private:
     Lock     m_okLock;
     i8       m_nItems;
+
     QueueBuffer* m_pTopBuffer;
     QueueBuffer* m_pEndBuffer;
     
@@ -27,7 +28,7 @@ namespace BASE
     ~Queue(void) noexcept(false);
     
 
-    void vAppend(Object* pObject);
+    i8   iAppend(Object* pObject);
     void vContentDump(Stz* aTab);
     i8   nItems(void);
     Object* pPeek(void);

@@ -439,7 +439,7 @@ eEO LogicCompiler::eFindEO(Stz* szEOname)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vRepair(Object* pObject, eRF eRepair)
+void LogicCompiler::vRepair(Object* pObject)
 {
   _static_
 
@@ -1038,6 +1038,9 @@ void LogicCompiler::v_DynPreliminary(void)
   "         aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; "
   "         *(++aiDstk) = nSize; "
   "      } "
+  "\n"
+  "\n  #define EO_ENTER(eCode) "
+  "\n  #define EO_EXIT(eCode) "
   "\n";
 
   s16KB sReplaced;

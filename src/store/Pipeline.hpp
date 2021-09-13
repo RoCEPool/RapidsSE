@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 
 namespace STORE { class Stage; class PipelineSpec; }
@@ -11,7 +11,7 @@ namespace STORE { class Stage; class PipelineSpec; }
 namespace STORE
 {
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                   public DeleteHelper_t<Pipeline>
+                   public LifeGuard_t<Pipeline>
 
   {
   private:
@@ -19,7 +19,7 @@ namespace STORE
     // a)
 
     // -- id, name and kind
-    Gid<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
+    Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32              m_sPipelineNm;  // name of this pipeline
     // n/a                           // kind
 
@@ -91,6 +91,10 @@ namespace STORE
     bool bPulsedLimit(void);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
+    void vWalk(void* aArg);
+    void vWalkLambda(
+            i8 iDepth,
+            std::function<void(Object* pObject, i8 iDepth)> vfClosure);
 
   private:
     void vCreateStages();

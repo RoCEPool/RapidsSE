@@ -4,21 +4,24 @@
 #pragma once
 
 #include "eRF.h"
+#include "eLR.h"
 
 namespace STORE
 {
-  template <class COMPONENT>
+  template <class COMPONENT, eCN CLASSNO>
   class REG
   {
   public:
-  
-    LogicUnit* m_p_LogicUnit; // which logic unit
-    Stz*       m_szRegNm;     // register name
-    eRF        m_eRepair;     // how to repair
-  
-    void     (*m_fpRepair)(Object*, eRF eRepair); // the component repair function
 
     COMPONENT* m_pComponent; // pointer to the component object
+    eCN        m_eClassNo;   // class no of the component
+
+    LogicUnit* m_p_LogicUnit;    // which logic unit
+    eLR        m_eLogicUnitReg;  // LU register
+    eRF        m_eRepair;        // how to repair
+  
+    void     (*m_fpRepair)(Object*); // the component repair function
+
 
     struct {
       
@@ -38,18 +41,19 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT>(LogicUnit* pLogicUnit,
+    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
-                   Stz* szRegNm)
+                   void (*fpRepair)(Object* pObject),
+                   eLR eLogicUnitReg)
     {
-      m_p_LogicUnit = pLogicUnit;
-      m_szRegNm    = szRegNm;
-      m_eRepair    = eRepair;
-      m_fpRepair   = fpRepair;
+      m_p_LogicUnit   = pLogicUnit;
+      m_eLogicUnitReg = eLogicUnitReg;
+      m_eRepair       = eRepair;
+      m_fpRepair      = fpRepair;
     
       m_pComponent = nullptr;
-      
+      m_eClassNo   = CLASSNO;
+
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -65,20 +69,21 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<COMPONENT>(LogicUnit* pLogicUnit,
+    REG<COMPONENT,CLASSNO>(LogicUnit* pLogicUnit,
                    eRF eRepair,
-                   void (*fpRepair)(Object* pObject, eRF eRepair),
+                   void (*fpRepair)(Object* pObject),
                    bool bNullOnDelete,
                    bool bDeleteOnFailure,
-                   Stz* szRegNm)
+                   eLR eLogicUnitReg)
     {
-      m_p_LogicUnit = pLogicUnit;
-      m_szRegNm    = szRegNm;
+      m_p_LogicUnit   = pLogicUnit;
+      m_eLogicUnitReg = eLogicUnitReg;
       m_eRepair    = eRepair;
       m_fpRepair   = fpRepair;
 
       m_pComponent = nullptr;
-
+      m_eClassNo   = CLASSNO;
+    
       m_bUseAllowed      = true;
       m_bInitialised     = true;
       m_bFinalised       = true;
@@ -94,7 +99,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REG<COMPONENT>(void)
+    ~REG<COMPONENT,CLASSNO>(void)
     {
       RASSERT(m_bInitialised);
       RASSERT(m_bFinalised);
@@ -112,8 +117,24 @@ namespace STORE
     void operator = (COMPONENT* pComponent)
     {
       if (pComponent && ! AM::bInBufferPool(pComponent)) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
+      }
+    
+      if (pComponent && CN_NONE != m_eClassNo) {
+        
+        eCN eClassNo = pComponent->eGetClassNo();
+        
+        if (eClassNo != m_eClassNo)
+          vTrace("Attempting to assign %p %lld:%s into REG<%lld:%s>::%s\n"_Stz
+                 ,pComponent
+                 ,eClassNo
+                 ,aCN[eClassNo]
+                 ,CLASSNO
+                 ,aCN[CLASSNO]
+                 ,aLR[m_eLogicUnitReg]
+                 );
+        RASSERT(eClassNo == m_eClassNo);
       }
     
       m_pComponent = pComponent;
@@ -125,7 +146,7 @@ namespace STORE
     COMPONENT* operator -> (void)
     {
       if (! m_pComponent) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator ->(void) : m_pComponent member is null"_Stz);
       }
     
@@ -138,7 +159,7 @@ namespace STORE
     COMPONENT* operator * (void)
     {
       if (! m_pComponent) {
-        vTrace("%20s: %p \n"_Stz,m_szRegNm,m_pComponent);
+        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
         THROW("REG::operator *() : m_pComponent member is null"_Stz);
       }
     
@@ -148,7 +169,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* delete object                                                          */
     /*------------------------------------------------------------------------*/
-    bool vDeleteComponent(void)
+    void vDeleteComponent(void)
     {
       delete m_pComponent;
       m_pComponent = nullptr;
@@ -161,7 +182,7 @@ namespace STORE
     {
       if (m_pComponent) {
         vTrace("%20s : %p ; \n"_Stz
-               ,m_szRegNm
+               ,aLR[m_eLogicUnitReg]
                ,m_pComponent
         );
       }
@@ -170,9 +191,12 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* gurded delete object                                                   */
     /*------------------------------------------------------------------------*/
-    bool vGuardedDeleteComponent(Object* pDeleter, Stz* szFunc)
+    void vGuardedDeleteComponent(eCN eClassNo,
+                                 eCN eDeleterClassNo, Object* pDeleter, Stz* szFunc)
     {
-      m_pComponent->vGuardedDelete(m_pComponent,pDeleter,(Stz*)__func__);
+      RASSERT(CLASSNO == eClassNo);
+      m_pComponent->vGuardedDelete(CLASSNO,&m_pComponent,
+                                   eDeleterClassNo,pDeleter,szFunc);
     }
 
     /*------------------------------------------------------------------------*/
@@ -213,7 +237,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* set null on delete                                                     */
     /*------------------------------------------------------------------------*/
-    bool vNullOnDelete(bool bNullOnDelete)
+    void vNullOnDelete(bool bNullOnDelete)
     {
       m_bNullOnDelete = bNullOnDelete;
     }
@@ -223,9 +247,20 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void vRepair(void)
     {
+
       // m_pComponent already NULL ?
-      // Nothing to be done
       if ( !m_pComponent ) {
+        // nothing to do
+        return;
+      }
+
+      // RF_REPAIR_NEVER ?
+      // Should never reach here for a RF_REPAIR_NEVER ?
+      RASSERT(m_eRepair != RF_REPAIR_NEVER);
+
+      // RF_REPAIR_NONE ?
+      if (m_eRepair == RF_REPAIR_NONE) {
+        // nothing to do
         return;
       }
 
@@ -240,7 +275,7 @@ namespace STORE
       // Following code to be uncommented once all repairs in place
       /*
       RASSERT(m_fpRepair);
-      m_fpRepair((Object *) m_pComponent, m_eRepair);
+      m_fpRepair((Object *) m_pComponent;
 
       // null the component
       m_pComponent = nullptr;
@@ -248,7 +283,7 @@ namespace STORE
 
       // execute the repair function ?
       if (m_fpRepair) {
-        m_fpRepair((Object *) m_pComponent, m_eRepair);
+        m_fpRepair((Object *) m_pComponent);
 
         // null the component
         m_pComponent = nullptr;
@@ -259,7 +294,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* use is allowed                                                         */
     /*------------------------------------------------------------------------*/
-    bool vUseAllowed(void)
+    void vUseAllowed(void)
     {
       m_bNullOnDelete = true;
     }
@@ -267,7 +302,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* initialised                                                            */
     /*------------------------------------------------------------------------*/
-    bool vInitialised(void)
+    void vInitialised(void)
     {
       m_bNullOnDelete = true;
     }
@@ -275,7 +310,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* finalised                                                              */
     /*------------------------------------------------------------------------*/
-    bool vFinalised(void)
+    void vFinalised(void)
     {
       m_bFinalised = true;
     }
@@ -283,9 +318,9 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     /* set register name                                                      */
     /*------------------------------------------------------------------------*/
-    void vRegNm(Stz* szRegNm)
+    void vRegNm(eLR eLogicUnitReg)
     {
-      m_szRegNm = C_NO_NAME;
+      m_eLogicUnitReg = eLogicUnitReg;
     }
 
     /*------------------------------------------------------------------------*/

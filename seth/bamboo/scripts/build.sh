@@ -129,6 +129,9 @@ echo ""
 # First, kill any rogue SE and SETH instances owned by the current user.
 killRogueInstances
 
+# Remove any existing installers, if any
+rm -f "${OUT_DIR:?}"/*.run &>/dev/null
+
 # Build RapidsSE for a given target type
 compileSE "${TARGET}"
 

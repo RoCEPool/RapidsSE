@@ -17,15 +17,67 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobRef(void)
 {
-  vAddStep("JobRef[]"_Stz,         &Step::vJobRefPointer);
-  vAddStep("JobRef[].none"_Stz,    &Step::vJobRefNone);
-  vAddStep("JobRef[].return"_Stz,  &Step::vJobRefReturn);
-  vAddStep("JobRef[].references"_Stz,  &Step::vJobRefReferences);
-  vAddStep("JobRef[].hasTask"_Stz, &Step::vJobRefHasTask);
+  vAddStep("JobRef[]"_Stz,                 &Step::vJobRefPointer);
+
+  vAddStep("JobRef[].findOriginator"_Stz,  &Step::vJobFindOriginator);
+  vAddStep("JobRef[].findParticipant"_Stz, &Step::vJobFindParticipant);
+
+  vAddStep("JobRef[].hasTask"_Stz,         &Step::vJobRefHasTask);
+
+  vAddStep("JobRef[].none"_Stz,            &Step::vJobRefNone);
+
+  vAddStep("JobRef[].returnReference"_Stz, &Step::vJobRefReturn);
+  vAddStep("JobRef[].references"_Stz,      &Step::vJobRefReferences);
+  
+  vAddStep("JobRef[].task@"_Stz,           &Step::vJobRefTaskFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobRef[].hasTask -- does the jobRef have a task ?                          */
+/* JobRef[].findOriginator -- find job from originator job set                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobFindOriginator(void)
+{
+  ENTRY();
+  
+  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
+  
+  Job* pJobFound = AM::pJob_FindOriginating(iJobId);
+  RASSERT(pJobFound);
+  
+  
+  //! borrow the job ref [ this needs to be done under lock ]
+  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
+  
+  
+  m_pDataStack->vPushPtr(pJobFound);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].findParticipant -- find job from participant job set                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobFindParticipant(void)
+{
+  ENTRY();
+  
+  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
+    
+  Job* pJobFound = AM::pJob_FindParticipating(iJobId);
+  RASSERT(pJobFound);
+  
+  
+  //! borrow the job ref [ this needs to be done under lock ]
+  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
+  
+  
+  m_pDataStack->vPushPtr(pJobFound);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].hasTask -- does the jobRef have a task ?                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefHasTask(void)
 {
@@ -33,7 +85,7 @@ void Step::vJobRefHasTask(void)
   
   Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
   
-  m_pDataStack->vPushInt(pJob->pTask() ? true : false);
+  m_pDataStack->vPushInt(pJob->pJobTask() ? true : false);
   
   EXIT();
 }
@@ -59,7 +111,7 @@ void Step::vJobRefNone(void)
 {
   ENTRY();
   
-  if (! pJob() || ! pJob()->pJobLogicUnit()) {
+  if (! pJob_task() || ! pJob_task()->pJobLogicUnit()) {
     EXIT();
     return;
   }
@@ -83,7 +135,7 @@ void Step::vJobRefReferences(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].return -- return the job reference                                */
+/* JobRef[].returnReference -- return the job reference                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefReturn(void)
 {
@@ -91,6 +143,20 @@ void Step::vJobRefReturn(void)
   
   if (m_p_TaskLogicUnit->m_xpJobRef.bHasReference())
     m_p_TaskLogicUnit->m_xpJobRef.vReturnRef();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].task@ -- get the task of the referenced job                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRefTaskFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  m_pDataStack->vPushPtr(pJob->pJobTask());
 
   EXIT();
 }

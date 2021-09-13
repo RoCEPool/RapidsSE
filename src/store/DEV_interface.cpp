@@ -885,8 +885,13 @@ void vDev_IXT_IDX_NEXT(i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  pDevIXT->m_aEnt =
-     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt =
+        EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt, &pDevIXT->m_pEntBuffer);
+  }
+  else {
+    pDevIXT->m_aEnt = nullptr;
+  }
 
   P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;
@@ -2053,7 +2058,7 @@ void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpStreamDefOut = pLogicUnit->m_xpStreamDefLft;
+  pLogicUnit->m_xpStreamDefOut = * pLogicUnit->m_xpStreamDefLft;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2109,7 +2114,7 @@ void vDev_RLU_INDEXDEF_DELETE(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new indexDef[]                                                             */
+/* new IndexDef[]                                                             */
 /*----------------------------------------------------------------------------*/
 void vDev_RLU_INDEXDEF_NEW(i8** aaiDstk)
 {

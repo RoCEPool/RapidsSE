@@ -524,7 +524,7 @@ true find: CASE word.immediate!
 
   depth 0 == if exit_rt then
 
-  task[] task.name@ "TypedStack of task %v has grown" .printf
+  Task[] task.name@ "TypedStack of task %v has grown" .printf
 
   debug::breakpoint
 ;

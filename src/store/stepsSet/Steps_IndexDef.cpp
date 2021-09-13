@@ -28,23 +28,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_IndexDef(void)
 {
-  vAddStep("indexDef[]"_Stz,          &Step::vIndexDefGet);
-  vAddStep("indexDef[].addColumn"_Stz,&Step::vIndexDefAddColumn);
-  vAddStep("indexDef[].delete"_Stz,   &Step::vIndexDefDelete);
-  vAddStep("indexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
-  vAddStep("indexDef[].name!"_Stz,    &Step::vIndexDefNameStore);
-  vAddStep("indexDef[].new"_Stz,      &Step::vIndexDefNew);
+  vAddStep("IndexDef[]"_Stz,          &Step::vIndexDefGet);
+  vAddStep("IndexDef[].addColumn"_Stz,&Step::vIndexDefAddColumn);
+  vAddStep("IndexDef[].delete"_Stz,   &Step::vIndexDefDelete);
+  vAddStep("IndexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
+  vAddStep("IndexDef[].name!"_Stz,    &Step::vIndexDefNameStore);
+  vAddStep("IndexDef[].new"_Stz,      &Step::vIndexDefNew);
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
   vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
-  vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
+  vAddStep("IndexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
-  vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
-  vAddStep("indexDef[].tableName!"_Stz, &Step::vIndexDefTableNameStore);
+  vAddStep("IndexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
+  vAddStep("IndexDef[].tableName!"_Stz, &Step::vIndexDefTableNameStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].addColumn -- add a columnto the indexDef                        */
+/* IndexDef[].addColumn -- add a columnto the indexDef                        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefAddColumn(void)
 {
@@ -63,7 +63,7 @@ void Step::vIndexDefAddColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].delete -- delete index definition                               */
+/* IndexDef[].delete -- delete index definition                               */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefDelete(void)
 {
@@ -79,7 +79,7 @@ void Step::vIndexDefDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].get -- get indexDef                                             */
+/* IndexDef[].get -- get indexDef                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefGet(void)
 {
@@ -91,7 +91,7 @@ void Step::vIndexDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].isNull -- is indexDef null ?                                    */
+/* IndexDef[].isNull -- is indexDef null ?                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefIsNull(void)
 {
@@ -103,7 +103,7 @@ void Step::vIndexDefIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].name! -- set name                                               */
+/* IndexDef[].name! -- set name                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefNameStore(void)
 {
@@ -118,7 +118,7 @@ void Step::vIndexDefNameStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].new -- new a index definition                                   */
+/* IndexDef[].new -- new a index definition                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefNew(void)
 {
@@ -210,7 +210,7 @@ void Step::vIndexDefParse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].set -- set indexDef                                             */
+/* IndexDef[].set -- set indexDef                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefSet(void)
 {
@@ -270,7 +270,7 @@ void Step::vIndexDefParseTableName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].tableName@ -- fetch tableNm from indexDef                       */
+/* IndexDef[].tableName@ -- fetch tableNm from indexDef                       */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefTableNameFetch(void)
 {
@@ -286,7 +286,7 @@ void Step::vIndexDefTableNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef[].tableName! -- store tableNm in indexDef                         */
+/* IndexDef[].tableName! -- store tableNm in indexDef                         */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefTableNameStore(void)
 {

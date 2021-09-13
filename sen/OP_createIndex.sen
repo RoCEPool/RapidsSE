@@ -11,11 +11,11 @@
 
   0 locals| sTableNm |
 
-  indexDef[].tableName@ to sTableNm
+  IndexDef[].tableName@ to sTableNm
 
   // assert initial folder is ./tables
   //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // change working folder to : ./t/indexes
@@ -43,11 +43,15 @@
 
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
-      EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
+    
+      EC_INVALID_COLUMNS_UNIQUE_INDEX Job[].error!
+      DdlLock[].testDrop
+      
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
+      
       Path[].popIndexesFolder
       Path[].popNamedTableFolder
-      folder[].isTables assert
+      Folder[].isTables assert
       exit
     then
   then
@@ -56,10 +60,12 @@
   // populate the index
 /*
   pIndex index.populate not if ( errorCode )
-    job::error!
+    Job[].error!
+    DdlLock[].testDrop
+
     Path[].popIndexesFolder
     Path[].popNamedTableFolder
-    folder[].isTables assert
+    Folder[].isTables assert
     exit
   then
 */
@@ -68,7 +74,7 @@
 
   Path[].popIndexesFolder
   Path[].popNamedTableFolder
-  folder[].isTables assert
+  Folder[].isTables assert
 ;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -81,7 +87,7 @@
   0 locals| sTableNm |
 
   // get the index def
-  Pipein[]\clear to indexDef[]
+  Pipein[]\clear to IndexDef[]
 
   // grab the ddl lock
   DdlLock[].grabRead
@@ -97,20 +103,20 @@
 */
 
   // should be in tables
-  folder[].isTables assert
-  indexDef[].tableName@ to sTableNm
+  Folder[].isTables assert
+  IndexDef[].tableName@ to sTableNm
 
   // create the index
   createIndex::createNamedIndex
-  nullptr to indexDef[]
+  nullptr to IndexDef[]
 
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   // pipeout indexDef with the tableNm for populate index
-  indexDef[].new
-  sTableNm indexDef[].tableName!
-  indexDef[].pipeout
+  IndexDef[].new
+  sTableNm IndexDef[].tableName!
+  IndexDef[].pipeout
 
   // pipeout EOSMARKER so populate index can do its work
   Marker[].newEosMarker

@@ -339,7 +339,73 @@
                       ]
                     },
 
-// Path: /__root__/definitions/object/planObject/planMarker/statementMarker
+// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker
+                    {
+                      name: "subqueryMarker",
+                      value: "Marks the start of some type of subquery. This is an abstract base type.",
+                      properties: [
+                        {
+                          // Add a constraint that children of subqueryMarker objects must be
+                          // either a StatementMarker or StageMarker.
+                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {
+                            name: "childType",
+                            type: "/__root__/primitives/constraints/childType",
+                            children: [
+                              {
+                                name: "childTypeParam1",
+                                type: "/__root__/definitions/object/valueObject/stringObject",
+                                value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
+                              },
+                              {
+                                name: "childTypeParam2",
+                                type: "/__root__/definitions/object/valueObject/stringObject",
+                                value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
+                              }
+                            ]
+                          }]
+                        }
+                      ],
+                      children: [
+
+// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery
+                        {
+                          name: "mainSubquery",
+                          value: "Identifies the primary subquery to be executed.",
+                          properties: [],
+                        },
+
+// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery
+                        {
+                          name: "tableSubquery",
+                          value: "Identifies a subquery emanating from a WITH or FROM clause",
+                          properties: [
+                            {
+                              // Table subqueries must have a table alias
+                              name: "tableAlias",
+                              value: "The virtual table name that this tableSubquery is known as",
+                              type: "/__root__/definitions/object/valueObject/stringObject"
+                            }
+                          ],
+                        },
+
+// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
+                        {
+                          name: "exprSubquery",
+                          value: "Identifies a subquery emanating from an expression",
+                          properties: [
+                            {
+                              name: "correlatedColumns",
+                              value: "A list of columnRef expressions representing the columns that are correlated with the parent query",
+                              type: "/__root__/definitions/object/list/columnRefs"
+                            }
+                          ],
+                        }
+
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker
+
+                    // Path: /__root__/definitions/object/planObject/planMarker/statementMarker
                     {
                       name: "statementMarker",
                       value: "Marks the start of a logical query or subquery. It identifies the type of query.",
@@ -1799,7 +1865,7 @@
                 {
                   // NOTE: Not to be confused with columnDefs
                   name: "columnRefs",
-                  value: "A list of column definition objects",
+                  value: "A list of column reference objects",
                   properties: [
                     // We add a constraint that all children must be of type /definitions/object/compound/columnRef
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
@@ -2127,7 +2193,7 @@
                 // Add a constraint that the children of a plan node must be a single statementMarker node
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/statementMarker" }
+                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
                   ]},
                   { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
                     { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }

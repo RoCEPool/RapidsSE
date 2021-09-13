@@ -15,7 +15,7 @@ namespace BASE
     Object(eCN eClass);
   
     static bool bInspect(Object* pObject);
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);

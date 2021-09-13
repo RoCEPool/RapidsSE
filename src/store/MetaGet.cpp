@@ -63,7 +63,7 @@ _precondition_(_ADDRESS_,_MAGIC_, CN_METAGET,_FOOTER_);
 /*----------------------------------------------------------------------------*/
 /* repair the meta get                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaGet::vRepair(Object* pObject, eRF eRepair)
+void MetaGet::vRepair(Object* pObject)
 {
   _static_
 

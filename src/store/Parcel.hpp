@@ -36,7 +36,7 @@ namespace STORE
     Parcel(void);
    ~Parcel(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
   public:
     static void vPostRecv(void* aParcel);

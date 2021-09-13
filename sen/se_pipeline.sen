@@ -44,7 +44,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: indexDef[].pipeOut
+: IndexDef[].pipeOut
 
   IndexDef[]
     nullptr to IndexDef[]

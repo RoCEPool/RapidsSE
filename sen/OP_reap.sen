@@ -21,7 +21,8 @@
     
   begin
 
-    args.demonSleep thread::sleepSsec
+    // args.demonSleep thread::sleepSsec
+    1 thread::sleepSsec
 
     reap_activity
 

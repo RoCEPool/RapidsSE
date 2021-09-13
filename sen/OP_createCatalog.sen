@@ -24,7 +24,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in catalogs
-  folder[].checkIsCatalogs not if
+  Folder[].checkIsCatalogs not if
     to errorCode
     errorCode op__execErr
     true

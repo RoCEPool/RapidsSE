@@ -1,0 +1,319 @@
+/*============================================================================*/
+/* d4_pu.sen -- Power Unit Testing                                            */
+/*============================================================================*/
+
+" d4_pu.sen" .
+
+Path[].save
+Path[].root
+  
+: pu_bump params| iTest | iTest 10 * ;
+
+/*----------------------------------------------------------------------------*/
+/* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
+/*----------------------------------------------------------------------------*/
+: pu_pipeline params| iTest sFrag |
+  
+  "pipeline pu0"
+    iTest >str                    str.cat
+  " begin"                        str.cat
+    " stage stageA on origin : "  str.cat
+    sFrag                         str.cat
+    " | stageA"                   str.cat
+  " end ;"                        str.cat
+
+  .
+  
+  counter0[] 1 + to counter0[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join | filter | agggby | sink                              */
+/*----------------------------------------------------------------------------*/
+: pu_sink params| iTest sFrag |
+
+  sFrag " | sink" str.cat
+    iTest pu_pipeline
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join | filter | agggby                                     */
+/*----------------------------------------------------------------------------*/
+: pu_agggby params| iTest sFrag |
+
+  iTest 100 * to iTest
+
+  iTest 1 + to iTest
+  sFrag
+    " | project" str.cat
+    " <1 group>"   str.cat
+    iTest pu_sink
+
+  iTest 1 + to iTest
+  sFrag
+    " | project" str.cat
+    " <10 groups>"   str.cat
+    iTest pu_sink
+
+  iTest 1 + to iTest
+  sFrag
+    " | project" str.cat
+    " <100 groups>"   str.cat
+    iTest pu_sink
+
+  iTest 1 + to iTest
+  sFrag
+    " | project" str.cat
+    " <1000 groups>"   str.cat
+    iTest pu_sink
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join | filter                                              */
+/*----------------------------------------------------------------------------*/
+: pu_postFilter params| iTest sFrag |
+
+  iTest 100 * to iTest
+
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.1>"   str.cat
+    iTest pu_agggby
+
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.3>"   str.cat
+    iTest pu_agggby
+
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.6>"   str.cat
+    iTest pu_agggby
+
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.9>"   str.cat
+    iTest pu_agggby
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join                                                       */
+/*----------------------------------------------------------------------------*/
+: pu_join params| iTest sFrag |
+
+  iTest 100 * to iTest
+  
+  iTest 1 + to iTest
+  sFrag
+    " | join T10k <key>" str.cat
+    iTest pu_postFilter
+    
+  iTest 1 + to iTest
+  sFrag
+    " | join T100k <key>" str.cat
+    iTest pu_postFilter
+    
+  iTest 1 + to iTest
+  sFrag
+    " | join T1m <key>" str.cat
+    iTest pu_postFilter
+    
+  iTest 1 + to iTest
+  sFrag
+    " | join T10m <key>" str.cat
+    iTest pu_postFilter
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter                                                              */
+/*----------------------------------------------------------------------------*/
+: pu_preFilter params| iTest sFrag |
+
+  iTest 100 * to iTest
+  
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.1>"        str.cat
+    iTest pu_join
+    
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.3>"        str.cat
+    iTest pu_join
+    
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.6>"       str.cat
+    iTest pu_join
+    
+  iTest 1 + to iTest
+  sFrag
+    " | filter" str.cat
+    " <0.9>"        str.cat
+    iTest pu_join
+;
+
+/*----------------------------------------------------------------------------*/
+/*  scan                                                                      */
+/*----------------------------------------------------------------------------*/
+: pu_scan params| iTest sFrag |
+  
+  iTest 1000 * to iTest
+  
+  iTest 1 + to iTest
+    sFrag "scan T10k" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "scan T100k" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "scan T1m" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "scan T10m" str.cat
+    iTest pu_preFilter
+;
+
+/*----------------------------------------------------------------------------*/
+/* range interval                                                             */
+/*----------------------------------------------------------------------------*/
+: pu_interval params| iTest sFrag |
+  
+  iTest 100 * to iTest
+  
+  iTest 1 + to iTest
+    sFrag "<0.01>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.03>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.06>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.09>" str.cat
+    iTest pu_preFilter
+    
+  // - - - - - - - - - - -
+  iTest 1 + to iTest
+    sFrag "<0.10>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.30>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.60>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<0.90>" str.cat
+    iTest pu_preFilter
+    
+  // - - - - - - - - - - -
+  iTest 1 + to iTest
+    sFrag "<1.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<3.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<6.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<9.00>" str.cat
+    iTest pu_preFilter
+    
+  // - - - - - - - - - - -
+  iTest 1 + to iTest
+    sFrag "<10.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<30.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<60.00>" str.cat
+    iTest pu_preFilter
+
+  iTest 1 + to iTest
+    sFrag "<90.00>" str.cat
+    iTest pu_preFilter
+    
+
+;
+
+/*----------------------------------------------------------------------------*/
+/*  range                                                                     */
+/*----------------------------------------------------------------------------*/
+: pu_range params| iTest sFrag |
+  
+  iTest 100 * to iTest
+  
+  iTest 1 + to iTest
+    sFrag "range T10k" str.cat
+    iTest pu_interval
+
+  iTest 1 + to iTest
+    sFrag "range T100k" str.cat
+    iTest pu_interval
+
+  iTest 1 + to iTest
+    sFrag "range T1m" str.cat
+    iTest pu_interval
+
+  iTest 1 + to iTest
+    sFrag "range T10m" str.cat
+    iTest pu_interval
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: pu_begin
+
+  "" 1 pu_scan
+  
+  "" 2 pu_range
+
+  counter0[] .
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate pu tests                                                          */
+/*----------------------------------------------------------------------------*/
+: pu_gen \prompt
+
+  pu_begin
+;
+
+/*----------------------------------------------------------------------------*/
+/* run pu tests                                                               */
+/*----------------------------------------------------------------------------*/
+: pu_run \prompt
+
+;
+
+Path[].Restore
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

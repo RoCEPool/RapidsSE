@@ -72,9 +72,9 @@ Operand::~Operand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair list of operands                                                    */
+/* repair operand                                                             */
 /*----------------------------------------------------------------------------*/
-void Operand::vRepair(Object* pObject, eRF eRepair)
+void Operand::vRepair(Object* pObject)
 {
   _static_
 
@@ -82,6 +82,25 @@ void Operand::vRepair(Object* pObject, eRF eRepair)
 
   // delete the operand
   AM::vDeleteOperand(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* repair list of operands                                                    */
+/*----------------------------------------------------------------------------*/
+void Operand::vRepairList(Object* pObject)
+{
+  _static_
+
+  Operand* pOperand = _pOperand(pObject);
+
+  Operand* pNextOperand;
+
+  while (pOperand) {
+    pNextOperand = pOperand->pNextItem();
+    AM::vDeleteOperand(pOperand);
+    pOperand = pNextOperand;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

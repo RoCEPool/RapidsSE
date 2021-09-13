@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 : pipelineSeed_beg [ word::seed# ]
 
-  pipeline::begin
+  pipeline::participant
   
   HAZARD
 ;

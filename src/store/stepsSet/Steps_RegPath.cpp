@@ -21,6 +21,7 @@ void Step::vAddSteps_RegPath(void)
   vAddStep("Path[].dump"_Stz,          &Step::vRegPathDump);
   vAddStep("Path[].pick"_Stz,          &Step::vRegPathPick);
   vAddStep("Path[].pushFolder"_Stz,    &Step::vRegPathPush);
+  vAddStep("Path[].root"_Stz,          &Step::vRegPathRoot);
   vAddStep("Path[].save"_Stz,          &Step::vRegPathSave);
   vAddStep("Path[].restore"_Stz,       &Step::vRegPathRestore);
 }
@@ -103,6 +104,19 @@ void Step::vRegPathPush(void)
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
    m_oDicStack.vPush(pDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Path[].root -- set path to root dictionary                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPathRoot(void)
+{
+  ENTRY();
+  
+  while (m_oDicStack.nItems())
+    m_oDicStack.vDiscard();
   
   EXIT();
 }

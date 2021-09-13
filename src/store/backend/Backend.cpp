@@ -23,6 +23,9 @@
 #include "ShadowRoot.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
 #include "ExplainOp.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
@@ -156,32 +159,60 @@ bool Backend::bTransliterate(String* sPipeline) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the plan node of the plan
-  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(m_pPlanRoot);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(m_pPlanRoot);
   ASSERT(pPlanNode);
 
-  QueryNode* pStartingNode = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pStartingNode = pPlanNode;
 
-  // Skip over any explain markers and ExplainOps at the top
-  while (ExplainMarker::bIsOfType(pStartingNode) || ExplainOp::bIsOfType(pStartingNode)) {
-    ASSERT(pStartingNode);
-    pStartingNode = _pQueryNode(pStartingNode->pFirstChild());
+  // Handle an EXPLAIN of a plan. In this case pPlanNode will only have 1 child
+  // which is a MainSubquery. The MainSubquery will have an ExplainMarker which
+  // will have an ExplainOp. This may potentially be followed by another MainSubquery
+  // and the pattern restarts again.
+  while (pStartingNode->nChildren() == 1 &&
+          MainSubquery::bIsOfType(pStartingNode->pFirstChild()) &&
+         ExplainMarker::bIsOfType(pStartingNode->pFirstChild()->pFirstChild()) &&
+             ExplainOp::bIsOfType(pStartingNode->pFirstChild()->pFirstChild()->pFirstChild()) ) {
+
+    pStartingNode = _pQueryNode(pStartingNode->pFirstChild()->pFirstChild()->pFirstChild());
   }
 
-  // The plan node should have one child which is a StageMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StageMarker::bIsOfType(pStartingNode));
-  QueryNode* pStageMarker = _pQueryNode(pStartingNode);
+  // At this point, pStartingNode is pointing to a node who will have children that
+  // represent the subqueries in the statement. There must be one child which is
+  // of type MainSubquery.
+  PlanNodeIter* pIter = pStartingNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pSubqueryMarker = _pQueryNode(pIter->pNext());
+    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
-  // append the start stage
-  vAppendStartStage();
+    if (TableSubquery::bIsOfType(pSubqueryMarker)) {
+      // TODO: handle table subqueries here. They should be encountered before
+      //       the MainSubquery child is hit.
+      NOT_IMPLEMENTED_YET
 
-  // We want to iterate over each logical subgraph, bounded by StageMarkers,
-  // and generate the pipeline for each statement
-  GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
+    } else if (MainSubquery::bIsOfType(pSubqueryMarker)) {
+      QueryNode* pMainSubqueryMarker = _pQueryNode(pSubqueryMarker);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vAppendLastStage("on origin"_Stz);
+      // The MainSubquery node should have one child which is a StageMarker node
+      ASSERT(pMainSubqueryMarker->nChildren() == 1);
+      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
+      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
 
+      // append the start stage
+      vAppendStartStage();
+
+      // We want to iterate over each logical subgraph, bounded by StageMarkers,
+      // and generate the pipeline for each statement
+      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vAppendLastStage("on origin"_Stz);
+
+    } else {
+      NEVER_REACH
+    }
+  }
+
+  delete pIter;
   return true;
 }
 

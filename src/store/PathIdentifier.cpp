@@ -106,7 +106,7 @@ PathIdentifier::~PathIdentifier(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the pathIdentifier                                                  */
 /*----------------------------------------------------------------------------*/
-void PathIdentifier::vRepair(Object* pObject, eRF eRepair)
+void PathIdentifier::vRepair(Object* pObject)
 {
   _static_
 

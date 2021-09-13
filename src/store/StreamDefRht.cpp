@@ -83,7 +83,7 @@ void StreamDefRht::vPostRecv(void* aStreamDefRht)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void StreamDefRht::vRepair(Object* pObject, eRF eRepair)
+void StreamDefRht::vRepair(Object* pObject)
 {
   _static_
 

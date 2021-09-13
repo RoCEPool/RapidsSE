@@ -24,7 +24,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
     object@ word.isaTable if

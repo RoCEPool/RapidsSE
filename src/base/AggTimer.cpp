@@ -72,7 +72,7 @@ AggTimer::~AggTimer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the aggregate time                                                  */
 /*----------------------------------------------------------------------------*/
-void AggTimer::vRepair(Object* pObject, eRF eRepair)
+void AggTimer::vRepair(Object* pObject)
 {
   _static_
 

@@ -41,11 +41,22 @@ namespace BASE
    ~SkipListNL(void) noexcept(false);
     
     void  vCheck(void);
+  
+    bool  bCompareAddr(void* aInsert, void* aScan, bool& bMatch);
+
     void  vContents(void (*fvDump)(void* pObject));
     bool  bDeleteAll(void);
     bool  bExists(void* pObject);
-    void* pFind(void* pObject, bool bTrace=false,
+  
+    void* pFind(void* pObject,
+                bool bTrace=false,
                 CompareFp fpCompare_alt = nullptr);
+  
+    void* pFind2(void* pObject,
+                bool bTrace=false,
+                std::function<bool(void* aInsert,
+                                   void* aScan,
+                                   bool& bMatch)> bfCompareClosure = nullptr);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject, bool bTrace=false);
     i8    nItems(void);
@@ -57,10 +68,23 @@ namespace BASE
   
   private:
     i8 iRandomLevel(void);
-    SkipNode* pPosition(void* Ent, bool& bEqualTo,
-                        SkipNode** pRevise, bool bTrace,
-                        CompareFp fpCompare);
   
+    SkipNode* pPosition(void* Ent,
+                        bool& bEqualTo,
+                        SkipNode** pRevise,
+                        bool bTrace,
+                        CompareFp fpCompare
+                        );
+  
+    SkipNode* pPosition2(void* Ent,
+                        bool& bEqualTo,
+                        SkipNode** pRevise,
+                        bool bTrace,
+                        std::function<bool(void* aInsert,
+                                           void* aScan,
+                                           bool& bMatch)> bfCompareClosure
+                        );
+
     void vValidate(void);
   
     Footer* aFooter(void);

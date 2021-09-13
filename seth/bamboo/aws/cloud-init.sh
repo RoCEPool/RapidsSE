@@ -15,7 +15,7 @@ echo "*************************************"
 echo
 echo "*** Installing the SSD mount script ***"
 echo
-cat << 'EOF' >> "/etc/rc.local"
+cat << 'EOF' >> "/etc/rc.d/rc.local"
 
 # ----------------------------------------------------------------------------------------
 # Setup the SSDs on each boot
@@ -82,7 +82,8 @@ EOF
 echo
 echo "*** Running the SSD mount script ***"
 echo
-bash /etc/rc.local
+chmod +x /etc/rc.d/rc.local
+bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
@@ -102,6 +103,15 @@ echo
 echo "*** Setting DNS domain name search qualifier ***"
 echo
 echo "search local" >> /etc/resolv.conf
+
+# ----------------------------------------------------------------------------------------
+# /etc/hosts shortcuts
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
+echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
 
 # ----------------------------------------------------------------------------------------
 # Change permissions to allow for writing to /opt

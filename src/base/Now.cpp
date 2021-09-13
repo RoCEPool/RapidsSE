@@ -45,7 +45,7 @@ Now::~Now(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the Now (tough one)                                                 */
 /*----------------------------------------------------------------------------*/
-void Now::vRepair(Object* pObject, eRF eRepair)
+void Now::vRepair(Object* pObject)
 {
   _static_
 

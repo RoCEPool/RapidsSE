@@ -152,7 +152,7 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void CrwBuffer::vRepairList(Object* pObject, eRF eRepair)
+void CrwBuffer::vRepairList(Object* pObject)
 {
   _static_
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);

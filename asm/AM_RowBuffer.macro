@@ -297,7 +297,7 @@ macro AM_ROW_FILTER_END
 //----------------------------------------------------------------------------//
   // ROW_FILTER_END
   EO_RETURN_FALSE
-  EO_CALL ROW_PROJECT_STAR
+  EO_CALL <projectRoutine>
 
   EO_RETURN
 endMacro

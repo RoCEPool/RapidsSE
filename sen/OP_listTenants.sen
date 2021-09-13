@@ -13,7 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tenants folder
-  folder[].checkIsTenants not if
+  Folder[].checkIsTenants not if
     to errorCode
     errorCode op__execErr
     false
@@ -35,7 +35,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
     object@ word.name@
     streamSetTable[] StreamSet[].addListContents  not if

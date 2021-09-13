@@ -1050,7 +1050,7 @@ function nonUniqueHosts() {
     local currentVal
 
     hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    currentVal="${hostMap["${hostname}"]}"
+    currentVal="${hostMap["${hostname}"]:-0}"
     ((currentVal+=1))
     hostMap["${hostname}"]="${currentVal}"
   done

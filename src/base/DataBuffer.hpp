@@ -29,7 +29,7 @@ namespace BASE
    ~DataBuffer(void) noexcept(false);
 
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
-    static void        vRepairList(Object* pObject, eRF eRepair);
+    static void        vRepairList(Object* pObject);
     static DataBuffer* pToDataBuffer(void* aAddr);
 
     void       vStreamDef(StreamDef* pStreamDef);

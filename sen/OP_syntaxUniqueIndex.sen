@@ -29,7 +29,7 @@
   Table[] table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
     Path[].popNamedTableFolder
-    folder[].isTables assert
+    Folder[].isTables assert
     false exit
   then
 
@@ -38,13 +38,13 @@
 
   // push into indexes: ../schemas/public/tables/t/indexes
   Path[].pushIndexesFolder
-  folder[].isIndexes assert
+  Folder[].isIndexes assert
 
   // error if given name already exists
   <indexNm> check::nameIsUnknownIndex not if
     Path[].popIndexesFolder
     Path[].popNamedTableFolder
-    folder[].isTables assert
+    Folder[].isTables assert
     false exit
   then
 
@@ -53,7 +53,7 @@
 
   Path[].popIndexesFolder
   Path[].popNamedTableFolder
-  folder[].isTables assert
+  Folder[].isTables assert
 
   true
 ;
@@ -73,9 +73,9 @@
   sSmt .
 
   // parse the smt and get the table name
-  sSmt job[] indexDef::parseTableName to sTableNm
+  sSmt Job[] indexDef::parseTableName to sTableNm
   sTableNm "" str.equal if
-    job[] job.error@ to errorCode
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -89,10 +89,10 @@
     exit
   then
 
-  sSmt Table[] job[] indexDef::parse to indexDef[]
+  sSmt Table[] Job[] indexDef::parse to IndexDef[]
 
-  indexDef[].isNull if
-    job[] job.error@ to errorCode
+  IndexDef[].isNull if
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -100,12 +100,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
-  indexDef[].pipeout
+  IndexDef[].pipeout
 
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   true
 ;

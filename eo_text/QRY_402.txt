@@ -5,7 +5,7 @@ Routine QRY_402
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 402
@@ -118,7 +118,7 @@ Label ROWBUFFER_HANDLER
   EO_JMP QRY_402_DONE
 
 Label QRY_402_DONE
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 

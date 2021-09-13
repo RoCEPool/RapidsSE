@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 
 namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
@@ -11,7 +11,7 @@ namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 namespace STORE
 {
   class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>,
-                      public DeleteHelper_t<PipelineSpec>
+                      public LifeGuard_t<PipelineSpec>
   {
     friend class STORE::Dynamo;
 

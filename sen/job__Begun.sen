@@ -13,6 +13,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Begun::replyToOrigin params| pJobParticipant |
 
+  // "Job__Begun::replyToOrigin" .
+  
   pJobParticipant job.id@ locals| iJobId |
 
   0 locals| pJob__Begun |
@@ -27,7 +29,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Begun job.delete
+  pJob__Begun job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +42,7 @@
 : _Begun_run [ word::seed# ]
 
 
+  // "_Begun_run" .
 
   //
   // where:  On the originator node.
@@ -52,7 +55,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  job[] locals| pJob__Begun |
+  Job[] locals| pJob__Begun |
 
   pJob__Begun job.id@ locals| iJobId |
 
@@ -65,7 +68,7 @@
   iJobId olist::findJob discard
 
   // get the participant node from where this job__begun started
-  pJob__Begun job.participant@ to iParticipantNode
+  pJob__Begun job.participantNode@ to iParticipantNode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
@@ -79,7 +82,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].return
+    JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
@@ -89,7 +92,7 @@
 
   // distribute Job__Execute to all participants
   JobRef[] Job__Execute::distribute
-  JobRef[].return
+  JobRef[].returnReference
   _job_2pc_delete_
 ;
 

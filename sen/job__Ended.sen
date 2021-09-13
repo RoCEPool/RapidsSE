@@ -31,7 +31,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Ended job.delete
+  pJob__Ended job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : _Ended_run [ word::seed# ]
 
-  job[] locals| pJob__Ended |
+  Job[] locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
   0 locals| bAmDecider |
@@ -67,7 +67,7 @@
   //grid::thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].return
+    JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
@@ -82,12 +82,11 @@
   repeat
 
   // remove the originating job from the originator jobs
-  //JobRef[] job.removeOriginator
+  //Job[].removeOriginator
 
   // notify the originating task
-  //JobRef[] job.originatingTask@ task.ack
-  JobRef[] job.task@ task.ack
-  JobRef[].return
+  JobRef[].task@ task.ack
+  JobRef[].returnReference
   
   _job_2pc_delete_
 ;

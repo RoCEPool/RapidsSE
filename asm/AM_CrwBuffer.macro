@@ -256,7 +256,7 @@ endMacro
 macro AM_CRW_FILTER_END
   // CRW_FILTER_END
   EO_RETURN_FALSE
-  EO_CALL CRW_PROJECT_STAR
+  EO_CALL <projectRoutine>
   //EO_ROW_DST_PRINT
   EO_RETURN
 endMacro

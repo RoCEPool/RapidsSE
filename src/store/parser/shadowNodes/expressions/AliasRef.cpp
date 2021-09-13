@@ -177,6 +177,8 @@ b1 AliasRef::bIsSymbolicallyEqual(QueryNode* pAliasRef1, QueryNode* pAliasRef2)
   QueryNode* pAliasedExpr1 = pAliasedExpr(pAliasRef1);
   QueryNode* pAliasedExpr2 = pAliasedExpr(pAliasRef2);
   ASSERT(Expr::bIsSymbolicallyEqual(pAliasedExpr1, pAliasedExpr2));
+  UNUSED(pAliasedExpr1); // in release
+  UNUSED(pAliasedExpr2); // in release
 
   return true;
 }

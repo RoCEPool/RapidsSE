@@ -64,11 +64,11 @@ Stz* SP_Job::sz(Job* pJob)
            );
   }
   
-  if (pJob->pPipeline_job()) {
-    vCatf(" %s"_Stz
-          ,pJob->pPipeline_job()->szPipelineNm()
-          );
-  }
+  //if (pJob->pPipeline_job()) {
+  //  vCatf(" %s"_Stz
+  //        ,pJob->pPipeline_job()->szPipelineNm()
+  //        );
+  //}
   
   vCats("}"_Stz);
 

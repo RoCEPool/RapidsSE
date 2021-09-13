@@ -25,7 +25,7 @@ namespace BASE
     AggTimer(void);
    ~AggTimer(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     void vAdd(i8 iTicks);
     void vAdd(Timer* pTimer);

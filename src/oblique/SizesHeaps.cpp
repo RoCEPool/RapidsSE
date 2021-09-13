@@ -106,6 +106,7 @@
 #include "PredicateVec.hpp"
 
 #include "AccessPath.hpp"
+#include "Api.hpp"
 #include "AttachMap.hpp"
 
 #include "Exemplar.hpp"
@@ -205,6 +206,8 @@ SizeHeap gxaSizeHeap[]
   { 'A' - ('A' - 1),            HT_INVALID   ,0 }, // CN__A__
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
+  { 0,                          HT_INVALID   ,0 }, // CN_AM
+  { sizeof(Api),                HT_INVALID   ,0 }, // CN_API
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
   { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC
@@ -215,8 +218,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
-  { sizeof(Bucket),             HT_T_TINY   ,0 }, // CN_BUCKET
-  { sizeof(BucketGet),          HT_T_TINY   ,0 }, // CN_BUCKETGET
+  { sizeof(Bucket),             HT_T_TINY    ,0 }, // CN_BUCKET
+  { sizeof(BucketGet),          HT_T_TINY    ,0 }, // CN_BUCKETGET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
   { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
@@ -261,7 +264,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
-  { sizeof(ClassFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(ClassFlags),         HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
@@ -273,7 +276,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 }, // CN_FREECHUNK
-  { 0,                          HT_INVALID   ,0 }, // CN_FREEDNOT
+  { sizeof(FreedNot),           HT_INVALID   ,0 }, // CN_FREEDNOT
   { 0,                          HT_INVALID   ,0 }, // CN_FREEITEM
   { sizeof(FreqDist),           HT_T_SMALL   ,0 }, // CN_FREQDIST
 
@@ -430,6 +433,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
   { sizeof(Scanner),            HT_T_TINY    ,0 }, // CN_SCANNER
+  { sizeof(Scheduler),          HT_INVALID   ,0 }, // CN_SCHEDULER
   { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
@@ -470,7 +474,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
+  { sizeof(Stats),              HT_T_SMALL   ,0 }, // CN_STATS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
+  { 0,                          HT_INVALID   ,0 }, // CN_STEP
   { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF

@@ -33,7 +33,7 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
                tPN tPtnNo, i8 i_Node)
-: DeleteHelper_t<Stream>(CN_STREAM,typeid(Stream))
+: LifeGuard_t<Stream>(this,CN_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -63,6 +63,16 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
 Stream::~Stream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vGuardedDelete(CN_OP,&pOp,
+                        CN_STREAM,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +235,54 @@ void Stream::vSynthesiseName(void)
                           m_pStageSpec->szStageNm());
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stream::vWalk(void* aArg)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vWalk(aArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stream::vWalkLambda(
+               i8 iDepth,
+               std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  vfClosure(this,iDepth);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nOps = this->nItems();
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pGet(i_Op);
+    
+    pOp->vWalkLambda(iDepth+1,vfClosure);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

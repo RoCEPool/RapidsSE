@@ -254,7 +254,7 @@ void Step::vInfoSetAddRowCount(void)
   StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
   
   // get the table partition
-  Job* pJob = m_pJob;
+  Job* pJob = m_pJob_task;
   tPN tPtnNo = m_pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   

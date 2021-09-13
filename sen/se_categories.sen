@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : \folder \\category ;
 
-: isFolder word.category@ find: \folder eql ;
+: isFolder word.category@ find: \folder equal ;
 
 : folders \prompt find: \folder word::ofCatg ;
 

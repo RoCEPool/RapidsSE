@@ -51,6 +51,7 @@
     // now pipeout the Operand
     CsvBuffer[].pipeOut
 
+
     // move Subset to Operand
     Subset[] to CsvBuffer[]
 
@@ -61,7 +62,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                     ROWBUFFER */
+/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : toCsv_RowBuffer \handler
 

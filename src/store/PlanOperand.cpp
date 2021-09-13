@@ -39,7 +39,7 @@ PlanOperand::~PlanOperand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the plan operand                                                    */
 /*----------------------------------------------------------------------------*/
-void PlanOperand::vRepair(Object* pObject, eRF eRepair)
+void PlanOperand::vRepair(Object* pObject)
 {
   _static_
 

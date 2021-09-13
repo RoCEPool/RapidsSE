@@ -61,7 +61,7 @@ void CsvBuffer::vPostRecv(void* aCsvBuffer)
 /*----------------------------------------------------------------------------*/
 /* repair csvBuffer                                                           */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vRepairList(Object* pObject, eRF eRepair)
+void CsvBuffer::vRepairList(Object* pObject)
 {
   _static_
   CsvBuffer* pCsvBuffer = _pCsvBuffer(pObject);

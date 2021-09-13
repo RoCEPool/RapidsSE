@@ -1,0 +1,172 @@
+--------------------------------------------------------------------------------
+-- tpch query6 (SF_0001)
+--------------------------------------------------------------------------------
+/*  (original Query)
+
+select sum(l_extendedprice*l_discount) as revenue
+    from lineitem
+    where l_shipdate >= '1994-01-01'
+    and l_shipdate < '1995-01-01'
+    and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+    and l_quantity < 24;
+
+*/
+
+//------------------------------------------------------------------------------
+// pipeline by compiler
+/* (Missing decimal literal filter)
+explain stage transliterate
+  select sum(l_extendedprice*l_discount) as revenue
+    from lineitem
+    where l_shipdate >= DATE '1994-01-01'
+    and l_shipdate < DATE '1995-01-01'
+    and l_quantity < 24;
+*/
+  pipeline unnamed
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1642
+    stage stageMarker1642 on all partitions :
+      scan rapidsse public lineitem
+      | filter 1 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  $5 24  <  and  "
+      | project 0 " type DECIMAL )  $6 $7 *  sum  "
+      | stageMarker1645
+    stage stageMarker1645 on all nodes :
+      project 0 " type DECIMAL )  $1 sum  "
+      | stageMarker1648
+    stage stageMarker1648 on origin :
+      project 0 " type DECIMAL as revenue )  $1 sum  "
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+
+  row: (7259008.99)
+
+//------------------------------------------------------------------------------
+// (Added decimal filter : changed range as data does not have TPCH range)
+
+  pipeline unnamed
+    begin
+      stage stageStart on origin :
+        start
+        | pulse once
+        | stageMarker1642
+      stage stageMarker1642 on all partitions :
+        scan rapidsse public lineitem
+        | filter 1 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  $5 24  <  and  "
+        | filter  1 "type boolean $7 1.06 0.01 - >=  $7 1.06 0.01 +  <= and"
+        | project 0 " type DECIMAL )  $6 $7 *  sum  "
+        | stageMarker1645
+      stage stageMarker1645 on all nodes :
+        project 0 " type DECIMAL )  $1 sum  "
+        | stageMarker1648
+      stage stageMarker1648 on origin :
+        project 0 " type DECIMAL as revenue )  $1 sum  "
+        | stageLast
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+    end ;
+
+row: (2080353.68)
+
+
+//------------------------------------------------------------------------------
+// Combined filters
+
+  pipeline unnamed
+    begin
+      stage stageStart on origin :
+        start
+        | pulse once
+        | stageMarker1642
+      stage stageMarker1642 on all partitions :
+        scan rapidsse public lineitem
+        | filter 1 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  $5 24  <  and
+          $7 1.06 0.01 - >=  and $7 1.06 0.01 +  <= and"
+        | project 0 " type DECIMAL )  $6 $7 *  sum  "
+        | stageMarker1645
+      stage stageMarker1645 on all nodes :
+        project 0 " type DECIMAL )  $1 sum  "
+        | stageMarker1648
+      stage stageMarker1648 on origin :
+        project 0 " type DECIMAL as revenue )  $1 sum  "
+        | stageLast
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+    end ;
+
+row: (2080353.68)
+
+//------------------------------------------------------------------------------
+// Combined filter and project (with aggregate)
+
+  pipeline unnamed
+    begin
+      stage stageStart on origin :
+        start
+        | pulse once
+        | stageMarker1642
+      stage stageMarker1642 on all partitions :
+        scan rapidsse public lineitem
+        | rlu 0 filter "type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  $5 24  <  and
+          $7 1.06 0.01 - >=  and $7 1.06 0.01 +  <= and" ,
+          project "type DECIMAL )  $6 $7 *  sum  "
+        | stageMarker1645
+      stage stageMarker1645 on all nodes :
+        project 0 " type DECIMAL )  $1 sum  "
+        | stageMarker1648
+      stage stageMarker1648 on origin :
+        project 0 " type DECIMAL as revenue )  $1 sum  "
+        | stageLast
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+  end ;
+
+row: (2080353.68)
+
+//------------------------------------------------------------------------------
+// IndexScan + Combined filter and project (with aggregate)
+
+  pipeline unnamed
+    begin
+      stage stageStart on origin :
+        start
+        | pulse once
+        | stageMarker1642
+      stage stageMarker1642 on all partitions :
+        indexScan 1 lineitem lineitem_idx1 "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' < "
+        | rlu 1 filter "type BOOLEAN $5 24  <
+          $7 1.06 0.01 - >=  and $7 1.06 0.01 +  <= and" ,
+          project "type DECIMAL )  $6 $7 *  sum  "
+        | stageMarker1645
+      stage stageMarker1645 on all nodes :
+        project 0 " type DECIMAL )  $1 sum  "
+        | stageMarker1648
+      stage stageMarker1648 on origin :
+        project 0 " type DECIMAL as revenue )  $1 sum  "
+        | stageLast
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+  end ;
+
+row: (2080353.68)
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

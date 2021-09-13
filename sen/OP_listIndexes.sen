@@ -50,10 +50,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
-    object@ word.name@ folder[].findSymbol execute to pIndex
+    object@ word.name@ Folder[].findSymbol execute to pIndex
 
     pIndex streamSetTable[] StreamSet[].addListIndex  not if
       StreamSet[].pipeOut
@@ -70,7 +70,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   Path[].popNamedTableFolder
-  folder[].isTables assert
+  Folder[].isTables assert
 
   // pipeout the infoset
   StreamSet[].pipeOut

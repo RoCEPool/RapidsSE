@@ -16,6 +16,7 @@
 #include "ShadowPlan.hpp"
 
 #include "StatementMarker.hpp"
+#include "SubqueryMarker.hpp"
 #include "TableScanOp.hpp"
 #include "AggregateOp.hpp"
 #include "ExplainOp.hpp"
@@ -75,14 +76,67 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
   ASSERT(pPlanRoot);
   ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
 
-  QueryNodeStack* pStmtSectionStack = new QueryNodeStack;
 
-  // Iterate each node, looking for a StatementMarker
-  auto fVisitor = [pRootNode, pPlanRoot, pStmtSectionStack]
+  // Iterate each node, looking for a SubqueryMarkers
+  auto fVisitor = [pRootNode]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!SubqueryMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pSubqueryMarker = _pQueryNode(pNode);
+    vPartitionSubquerySection(pSubqueryMarker, pRootNode);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Iterate from the bottom up so that parent nodes can encapsulate child nodes and branches
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot, false, true, fVisitor, nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parallelises a SubqueryMarker section.                                     */
+/*----------------------------------------------------------------------------*/
+void PartitionPlan::vPartitionSubquerySection(QueryNode* pSubqueryMarker,
+                                              PlanNode*  pRootNode)
+{
+  ASSERT(pSubqueryMarker);
+  ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+  ASSERT(pSubqueryMarker->nChildren() == 1);
+
+  QueryNodeStack* pStmtSectionStack = new QueryNodeStack;
+
+  // Walk this subquery, looking for a StatementMarker. We need to only walk
+  // the current subquery. We do this by defining a callback lambda for the
+  // top-down entry of a node and the bottom up callback. The top-down entry
+  // will allow us to skip subtrees if we encounter another subqueryMarker.
+
+  auto fTopDownVisitor =
+      [] (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    if (SubqueryMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  auto fBottomUpVisitor = [pRootNode, pStmtSectionStack]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(eEvent);
     UNUSED(pvArg);
 
     if (!StatementMarker::bIsOfType(pNode)) {
@@ -91,14 +145,20 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 
     QueryNode* pStatementMarker = _pQueryNode(pNode);
 
-    QueryNode* pPartitionedSection = pPartitionStatementSection(pStatementMarker, pRootNode, pPlanRoot, pStmtSectionStack);
+    QueryNode* pPartitionedSection = pPartitionStatementSection(pStatementMarker, pRootNode, pStmtSectionStack);
     pStmtSectionStack->vPush(pPartitionedSection);
 
     return GraphNav::WALK_CONTINUE;
   };
 
-  // Iterate from the bottom up so that parent nodes can encapsulate child nodes and branches
-  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
+  // We use a top-down walk but the main action occurs in the "exit" event, so
+  // it behaves like a bottom-up walk from the callback's perspective.
+  GraphNav::bGlobalWalk(pSubqueryMarker->pFirstChild(),
+                        false,
+                        true,
+                        fTopDownVisitor,
+                        fBottomUpVisitor,
+                        nullptr);
 
   while (pStmtSectionStack->nItems() > 1) {
     QueryNode* pSection1 = pStmtSectionStack->pPop();
@@ -110,8 +170,8 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 
   RASSERT(pStmtSectionStack->nItems() == 1);
 
-  // Replace the logical plan with the partitioned plan
-  GraphEditor::vReplaceChild(pPlanRoot, _pQueryNode(pPlanRoot->pFirstChild()), pStmtSectionStack->pPop());
+  // Replace this subquery's logical plan with the partitioned plan
+  GraphEditor::vReplaceChild(pSubqueryMarker, _pQueryNode(pSubqueryMarker->pFirstChild()), pStmtSectionStack->pPop());
 
   ASSERT(pStmtSectionStack->nItems() == 0);
   delete pStmtSectionStack;
@@ -122,9 +182,10 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker,
                                                      PlanNode* pRootNode,
-                                                     QueryNode* pPlanRoot,
                                                      QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pRootNode);
+
   // The canonical representation of a SELECT query will look a bit like this:
   //              ProjectOp            (post project)
   //              LimitOp              (LIMIT)
@@ -230,6 +291,7 @@ QueryNode* PartitionPlan::pConsolidateChains(QueryNode* pOriginChain,
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(StatementMarker::bIsOfType(pNode));
 
   QueryNode* pStmtMarker = pNode->pDeepCopy(true, nullptr);
@@ -241,6 +303,7 @@ void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pCh
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(TableScanOp::bIsExactType(pNode));
 
   QueryNode* pTableScanNode = pNode->pDeepCopy(true);
@@ -268,6 +331,7 @@ void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(AggregateOp::bIsExactType(pNode));
 
   // AggregateOps are not post-projects and they must have an aggregation.
@@ -298,15 +362,20 @@ void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(ExplainOp::bIsExactType(pNode));
 
-  QueryNode* pExplainNode = pNode->pDeepCopy(true, nullptr);
+//  QueryNode* pExplainNode = pNode->pDeepCopy(true, nullptr);
+//
+//  // ExplainOps occur in their own StatementMarker section. There must already
+//  // be another chain in the pStmtSectionStack that we need to join up to this one.
+//  ASSERT(pStmtSectionStack->nItems() > 0);
+//  pExplainNode->vAppendChild(pStmtSectionStack->pPop());
+//
+//  vPushOnOriginChain(pExplainNode, pChains);
 
-  // ExplainOps occur in their own StatementMarker section. There must already
-  // be another chain in the pStmtSectionStack that we need to join up to this one.
-  ASSERT(pStmtSectionStack->nItems() > 0);
-  pExplainNode->vAppendChild(pStmtSectionStack->pPop());
-
+  QueryNode* pExplainNode = pNode->pDeepCopy(true);
+  ASSERT(pStmtSectionStack->nItems() == 0);
   vPushOnOriginChain(pExplainNode, pChains);
 }
 
@@ -315,6 +384,7 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(FilterOp::bIsExactType(pNode));
 
   QueryNode* pExpr = FilterOp::pFilterExpr(pNode);
@@ -343,6 +413,7 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(LimitOp::bIsExactType(pNode));
   b1 bCanPushDownLimitOp = PartitionPlan::bCanPushDownLimitOp(pNode);
 
@@ -379,6 +450,7 @@ void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(OrderOp::bIsExactType(pNode));
   b1 bCanPushDownOrderOp = PartitionPlan::bCanPushDownOrderOp(pNode);
 
@@ -409,6 +481,7 @@ void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(ProjectOp::bIsExactType(pNode));
 
   b1 bHasAnAggregate = ProjectOp::bHasAnAggregate(pNode);
@@ -484,6 +557,7 @@ void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains, Qu
 /*----------------------------------------------------------------------------*/
 void PartitionPlan::vPartitionJoinOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
+  UNUSED(pStmtSectionStack);
   ASSERT(JoinOp::bIsOfType(pNode));
 
   // Joins only run on the partitions
@@ -506,6 +580,8 @@ b1 PartitionPlan::bIsPostProject(QueryNode* pProjectOp)
   ASSERT(ProjectOp::bIsExactType(pProjectOp));
 
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
+
     // A projectOp occurring above a LimitOp or OrderOp of an unpartitioned plan
     // must be a post-project
     if (LimitOp::bIsOfType(pNode)) return true;
@@ -543,6 +619,7 @@ b1 PartitionPlan::bCanPushDownOrderOp(QueryNode* pOrderOp)
   // a lambda that returns a pointer to a node for any condition where an OrderOp
   // cannot be pushed down.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
 
     QueryNode* pOp = _pQueryNode(pNode);
 
@@ -580,6 +657,7 @@ b1 PartitionPlan::bCanPushDownLimitOp(QueryNode* pLimitOp)
   // a lambda that returns a pointer to a node for any condition where an LimitOp
   // cannot be pushed down.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
 
     QueryNode* pOp = _pQueryNode(pNode);
 

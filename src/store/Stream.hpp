@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "DeleteHelper_t.hpp"
+#include "LifeGuard_t.hpp"
 
 
 namespace STORE { class Op; class StageSpec; }
@@ -11,7 +11,7 @@ namespace STORE { class Op; class StageSpec; }
 namespace STORE
 {
   class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>,
-                 public DeleteHelper_t<Stream>
+                 public LifeGuard_t<Stream>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -51,6 +51,10 @@ namespace STORE
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
     Stz* szStreamNm(void);
+    void vWalk(void* aArg);
+    void vWalkLambda(
+           i8 iDepth,
+           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
 
   private:
     void vCreateOps();

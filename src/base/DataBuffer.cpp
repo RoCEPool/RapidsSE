@@ -96,7 +96,7 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vRepairList(Object* pObject, eRF eRepair)
+void DataBuffer::vRepairList(Object* pObject)
 {
   _static_
   DataBuffer* pDataBuffer = _pDataBuffer(pObject);

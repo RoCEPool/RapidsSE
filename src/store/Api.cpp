@@ -126,10 +126,11 @@ void Api::vDeleteJob(Session* pSession)
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
 
-  
-  
   pSession->m_pSsnJob = nullptr;
-  pJob->vGuardedDelete(pJob,nullptr,(Stz*)__func__);
+  
+  
+  pJob->vReapable(true);
+      
   
   
   if (pSession->m_pOutput->m_pStreamDef_result) {
@@ -137,8 +138,6 @@ void Api::vDeleteJob(Session* pSession)
     pSession->m_pOutput->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
-  
-  
   
   pSession->m_pOutput->m_bExitMarker      = false;
   pSession->m_pOutput->m_bExitEarlyMarker = false;
@@ -493,13 +492,13 @@ void Api::vSubmitJob(Session* pSession)
   RASSERT(JS_LOCKED == pSubmitJob->eJobState());
 
   
-  RASSERT(! pSubmitJob->pTask());
+  RASSERT(! pSubmitJob->pJobTask());
   
   vCreateTaskForJob(pSubmitJob);
   
   pSubmitJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pJobTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,20 +539,28 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reap all ended jobs                                                        */
+/* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
 bool Api::bReapJob(void)
 {
   _static_
+   
   
-#ifdef WITH_JOB_REAPING
   
-  Job* pReapableJob = nullptr;
   
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
+  if (! pRetiredJobs->nJobs()) {
+    //vTrace("Empty retired list\n"_Stz);
+    return FALSE(empty_list);
+  }
+  
   pRetiredJobs->vGrabLock();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Job* pReapableJob = nullptr;
+  
   for (SkipNode* pCursor = pRetiredJobs->pFirst();
        pCursor;
        pCursor = pRetiredJobs->pNext(pCursor)) {
@@ -561,22 +568,53 @@ bool Api::bReapJob(void)
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
     if (pRetiredJob) {
-      pReapableJob = pRetiredJob;
-      break;
+      i8 nActiveOps = pRetiredJob->nActiveOps();
+//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+//             ,pRetiredJob,nActiveOps);
+      if (pRetiredJob->m_bReapable && ! nActiveOps) {
+        pReapableJob = pRetiredJob;
+        break;
+      }
+      else {
+        vTrace("Cant reap retired job %p %lld "
+               "%s %s "
+               "activeOps %lld %s "
+               "\n"_Stz
+               
+               ,pRetiredJob,pRetiredJob->iJobId() & 0xFFFFFF
+               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+               );
+      }
     }
   }
 
   if (! pReapableJob) {
     pRetiredJobs->vDropLock();
-    return false;
+    return FALSE(nothing_to_reap);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool bWasRemoved = pRetiredJobs->bRemoveJob(pReapableJob);
+  RASSERT(bWasRemoved);
+  
   pRetiredJobs->vDropLock();
-  return true;
   
-#endif
+  // delete the retired job
   
-  return false;
+  RASSERT(pReapableJob->pJobTask());
+  pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
+  pReapableJob->pJobTask()->vDropTaskLock((Stz*)__func__);
+
+
+  pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
+                               CN_API,nullptr,(Stz*)__func__);
+  
+//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+
+  return TRUE(reaped_a_job);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -836,7 +874,12 @@ void Api::vCallBoot(void)
   
   vCallImmediate(pBootTask);
   
-  vDeleteImmediate(&pBootTask);
+  pBootTask->vState(TS_RETIRED);
+  pBootTask->vDropTaskLock((Stz*)__func__);
+
+  while (Api::bReapJob())
+    {;}
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -899,7 +942,12 @@ void Api::RunStartJob(void)
 
   vCallImmediate(pStartTask);
 
-  vDeleteImmediate(&pStartTask);
+  pStartTask->vState(TS_RETIRED);
+  pStartTask->vDropTaskLock((Stz*)__func__);
+  
+    while (Api::bReapJob())
+      {;}
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -924,13 +972,20 @@ void Api::vCallImmediate(Task* pImmediateTask)
 /*----------------------------------------------------------------------------*/
 void Api::vDeleteImmediate(Task** ppTask)
 {
+  NEVER_REACH;
+  
   Task* pTask = *ppTask;
   *ppTask = nullptr;
 
   pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
-  delete pJob;
+  Job* pJob = pTask->pJob_task();
+  pTask->vJob_task(nullptr);
+  
+  //delete pJob;
+  if (pJob)
+    pJob->vGuardedDelete(CN_JOB,&pJob,
+                         CN_API,nullptr,(Stz*)__func__);
+  
   
   //delete pTask;
 }
@@ -944,7 +999,7 @@ void Api::vSpawnTask_job(Job* pJob)
   
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddOp(pJob->pTask());
+  Scheduler::vTaskApi_AddOp(pJob->pJobTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -969,7 +1024,7 @@ void Api::vSpawnTaskDedicated_job(Job* pJob)
   //RASSERT(! pJob->pTask());
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
+  Scheduler::vTaskApi_AddDedicated(pJob->pJobTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -993,10 +1048,10 @@ void Api::vSpawnTask_demonJob(Job* pJob)
 {
   _static_
   
-  RASSERT(! pJob->pTask());
+  RASSERT(! pJob->pJobTask());
 
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddService(pJob->pTask());
+  Scheduler::vTaskApi_AddService(pJob->pJobTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1008,7 +1063,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
   
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddReceived(pJob->pTask());
+  Scheduler::vTaskApi_AddReceived(pJob->pJobTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1029,7 +1084,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   RASSERT(JS_LOCKED == pJob->eJobState());
 
   
-  RASSERT(! pJob->pTask());
+  RASSERT(! pJob->pJobTask());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -1044,7 +1099,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   vCreateTaskForJob(pJob);
   
   pJob->vTimerStart();
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pJobTask());
 
   if (! pJob->bHasTag_noWait()) {
     //pSession->m_oMutex.vObserve(true);
@@ -1068,7 +1123,7 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
   // THIS NOW DOESNT READ CORRECTLY
   vCreateTaskForJob(pParticipantJob);
   
-  Task* pTaskParticipant = pParticipantJob->pTask();
+  Task* pTaskParticipant = pParticipantJob->pJobTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
 }
 
@@ -1144,7 +1199,7 @@ void Api::vCreateTaskForJob(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask = pJob->pTask();
+  Task* pTask = pJob->pJobTask();
   RASSERT(! pTask);
 
   pTask = AM::TASK::pNew(pJob);
@@ -1189,6 +1244,7 @@ void Api::vCreateTaskForOp(Op* pOp)
   RASSERT(! pTask);
 
   pTask = AM::TASK::pNew(pOp);
+  pOp->vTask(pTask);
   
   pTask->vSeedTask();
 }
@@ -1228,6 +1284,8 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
+    //vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
+
     pSession->m_oMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);

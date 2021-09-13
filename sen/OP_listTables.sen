@@ -35,7 +35,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
 
-  folder[] dic.lastWord dup
+  Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm

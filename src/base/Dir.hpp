@@ -45,7 +45,7 @@ namespace BASE
     static bool bExists(Stz* szDirPath);
     static bool bMake(Stz* szDirPath);
     static bool bRemove(Stz* szDirPath);
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
     
     void vClose(void);
     Stz* szEntryNm(void);

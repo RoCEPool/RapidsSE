@@ -48,8 +48,6 @@ void NestedLoopJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pNestedLoopJoinOp = _pQueryNode(pNode);
-
   s2K sPredicateBuf;
   QueryNode* pPredicate = pJoinPredicate(pNode);
   ASSERT(pPredicate);

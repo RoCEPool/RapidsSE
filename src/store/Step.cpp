@@ -78,7 +78,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Dir();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
-  
+  Step::vAddSteps_Dynamo();
+
   Step::vAddSteps_Encode();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
@@ -88,6 +89,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
+  Step::vAddSteps_Filter();
 
   Step::vAddSteps_Grid();
   
@@ -144,6 +146,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
+  Step::vAddSteps_PipelineSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Plist();
@@ -180,6 +183,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
+  Step::vAddSteps_Stats();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();

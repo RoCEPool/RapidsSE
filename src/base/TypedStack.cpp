@@ -559,7 +559,7 @@ void TypedStack::vStackContents(s48K& sStackContents)
                                 aTypedCell->aFip());
     }
     else if (CN_STZVAL == eClass) {
-      sStackContents.vCatSprint("\"%lls\""_Stz,
+      sStackContents.vCatSprint("\"%s\""_Stz,
                                 aTypedCell->azChar());
     }
     else {

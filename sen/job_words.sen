@@ -65,10 +65,6 @@
 
   params| pJob |
 
- //   pJob job.participant@
- //   pJob job.Id@
- //   pJob object.class@ class::name
- // "NOTICE: %v jobId %v executed on node %v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -194,42 +190,11 @@
 ;
 
 
-
-/******************************************************************************/
-/***                              Done Markers                              ***/
-/******************************************************************************/
-
-/*----------------------------------------------------------------------------*/
-/* done executing any seed                                                    */
-/*----------------------------------------------------------------------------*/
-: _job_finalise_ ( -- )
-
-  // check this task has no job reference
-  JobRef[].none
-
-  // check this task has no ddl lock
-  DdlLock[].none
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
 /******************************************************************************/
 /***                                  Misc                                  ***/
 /******************************************************************************/
 
 
-/*----------------------------------------------------------------------------*/
-/* job has encountered an error                                               */
-/*----------------------------------------------------------------------------*/
-: job::error! params| errorCode |
-
-  DdlLock[].testDrop
-
-  errorCode job[] job.error!
-;
 
 
 
@@ -264,13 +229,17 @@
 : _job_2pc_delete_
 
   DdlLock[].testDrop
-
-  _job_finalise_
   
-  JS_DELETABLE job::state!
+  // check this task has no job reference
+  JobRef[].none
 
-  task[] task.grabLock
-  TR_DELETE_THIS_TASK task::transition!
+  JS_DELETABLE Job[].state!
+
+  Job[].addRetired
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
+
   
   HAZARD
 ;
@@ -387,8 +356,6 @@
   // check this task has no ddl lock
   DdlLock[].none
 ;
-
-
 
 /*============================================================================*/
 /* end                                                                        */

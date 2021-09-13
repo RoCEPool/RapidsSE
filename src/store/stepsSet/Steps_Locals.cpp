@@ -361,6 +361,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Stats[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stats[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("StreamDefLft[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDefLft[].set"_Stz);
     EXIT();
@@ -446,7 +451,7 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodePush(xMetaNm);
     pCurrentWord->vEncodeCall("swap"_Stz);
 
-    //pCurrentWord->vEncodeCall("job[]"_Stz);
+    //pCurrentWord->vEncodeCall("Job[]"_Stz);
     //pCurrentWord->vEncodeCall("job.session@"_Stz);
     pCurrentWord->vEncodeCall("session::tagSet@"_Stz);
     

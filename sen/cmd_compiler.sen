@@ -127,7 +127,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+  iterate-words word@ word.category@ pwCmdTagsCatg equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthProc_lliteOp
@@ -197,7 +197,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+  iterate-words word@ word.category@ pwCmdTagsCatg equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthWords_lliteOp
@@ -248,7 +248,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+  iterate-words word@ word.category@ pwCmdTagsCatg equal if
     word@ cmd::addSeedTags_toCmdTags
   then next-word
 ;
@@ -295,7 +295,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+  iterate-words word@ word.category@ pwCmdTagsCatg equal if
     word@ cmd::addSettings_toCmdTagSet
   then next-word
 ;

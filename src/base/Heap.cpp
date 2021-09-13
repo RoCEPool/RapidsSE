@@ -159,6 +159,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      vTrace("LOW MEMORY!!!\n"_Stz);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;
@@ -192,6 +193,19 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //eLastClass = eAllocClass;
   
   ASSERT(CacheLine::bOnCacheLineBoundary(pObject));
+    
+//  if ((Object*)0x2048091aa040 == pObject) {
+//    vTrace("AllocObject:: %p %s:%-3lld (address)\n"_Stz,
+//           pObject,aCN[eAllocClass],eAllocClass);
+//    vDebugPoint();
+//  }
+//  else
+//  if (CN_PIPELINE == eAllocClass) {
+//    vTrace("AllocObject:: %p %s:%-3lld (class)\n"_Stz,
+//           pObject,aCN[eAllocClass],eAllocClass);
+//    vDebugPoint();
+//  }
+  
   return pObject;
 }
 
@@ -248,6 +262,54 @@ void Heap::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the heap                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vDumpHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vGrabLock();
+
+  i8 nSizeObject = nObjectSize();
+  
+  for (HeapBuffer* pHeapBuffer = pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,nSizeObject)) {
+      
+      eCN eChunkClass = aChunk->eGetClassNo();
+      
+      if (CN_FREECHUNK == eChunkClass) {
+                
+        vTrace("%p %s:%-3lld (was %s:%-3lld)\n"_Stz
+               ,aChunk
+               ,aCN[eChunkClass]
+               ,eChunkClass
+               ,aCN[aChunk->eWasClass()]
+               ,aChunk->eWasClass()
+               );
+
+        continue;
+      }
+  
+      Object* pObject = (Object*)aChunk;
+      
+      vTrace("%p %s:%-3lld\n"_Stz
+             ,pObject
+             ,aCN[pObject->eGetClassNo()]
+             ,pObject->eGetClassNo()
+             );
+    }
+
+  }
+  
+  vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first buffer                                                       */
 /*----------------------------------------------------------------------------*/
 HeapBuffer* Heap::pFirstBuffer(void)
@@ -286,9 +348,37 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  eCN eFreeClass = pObject->eGetClassNo();
+  eCN eClassNo = pObject->eGetClassNo();
+
+//  if ((Object*)0x2048091aa040 == pObject) {
+//    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,
+//           pObject,aCN[eClassNo],eClassNo);
+//    vDebugPoint();
+//  }
+//  else
+//  if (CN_PIPELINE == eClassNo) {
+//    vTrace("FreeObject:: %p %s:%-3lld (class)\n"_Stz,
+//           pObject,aCN[eClassNo],eClassNo);
+//    vDebugPoint();
+//  }
+
   
-  if (CN_LARGETRANSIENT == eGetClassNo()) {
+//  if (eEC eError = pObject->eValidObject()) {
+//    
+//    if (EC_OBJECT_FOOTER_INVALID == eError) {
+//      vTrace("Object %p %s is not valid : %s\n"_Stz,
+//             pObject,aCN[pObject->eGetClassNo()],aEC[eError]);
+//    }
+//    else {
+//      vTrace("Object %p is not valid : %s\n"_Stz,
+//             pObject,aEC[eError]);
+//    }
+//  }
+//  else {
+//    //vTrace("Object %p valid\n"_Stz,pObject);
+//  }
+
+  if (CN_LARGETRANSIENT == eClassNo) {
     
     if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
@@ -308,7 +398,7 @@ void Heap::vFreeObject(Object* pObject)
   m_okLock.vGrabWrite();
   
   FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pObject);
-  vPushFree(aFreeChunk,pObject->eGetClassNo());
+  vPushFree(aFreeChunk,eClassNo);
   
   m_nCurrAllocated--;
 
@@ -352,9 +442,48 @@ i8 Heap::nObjectSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* form report string                                                         */
+/*----------------------------------------------------------------------------*/
+void Heap::vSummaryReport(String* pReportString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
+  s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
+
+  pReportString->szStz()->vSprint(
+                                  
+    "%16s (%6s)"
+    " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
+                                  
+    aCN[eGetClassNo()],
+    sMagSize.azChar(),
+                                  
+    nBufferCount(),
+    nCurrAllocated(),
+    nFreeChunks(),
+    sMagSum.szStz()
+    );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get computed size of heap                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Heap::nTotalHeapSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 iSum =   nCurrAllocated() * nObjectSize()
+            +
+              nFreeChunks() * nObjectSize();
+  
+  return iSum;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate all the objects in this heap                                      */
 /*----------------------------------------------------------------------------*/
-void Heap::vObjectValidate(void)
+void Heap::vValidateContents(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -398,45 +527,6 @@ void Heap::vObjectValidate(void)
   }
   
   vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* form report string                                                         */
-/*----------------------------------------------------------------------------*/
-void Heap::vSummaryReport(String* pReportString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
-  s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
-
-  pReportString->szStz()->vSprint(
-                                  
-    "%16s (%6s)"
-    " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
-                                  
-    aCN[eGetClassNo()],
-    sMagSize.azChar(),
-                                  
-    nBufferCount(),
-    nCurrAllocated(),
-    nFreeChunks(),
-    sMagSum.szStz()
-    );
-}
-
-/*----------------------------------------------------------------------------*/
-/* get computed size of heap                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Heap::nTotalHeapSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  i8 iSum =   nCurrAllocated() * nObjectSize()
-            +
-              nFreeChunks() * nObjectSize();
-  
-  return iSum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,7 +622,8 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   
   aFreeChunk->vSetClassNo(CN_FREECHUNK);
   aFreeChunk->vNextFree(m_pFreeHead);
-  
+  aFreeChunk->vWasClass(eWasClass);
+
 #ifdef WITH_CHECK_INITIALISED
   i8 nBytes = m_nObjectSize - sizeof(FreeChunk);
   void* aAddress = aAdd<void*>(aFreeChunk,sizeof(FreeChunk));

@@ -6,6 +6,8 @@
 #include "ShadowPlan.hpp"
 
 #include "QueryNode.hpp"
+#include "MainSubquery.hpp"
+#include "GraphNav.hpp"
 
 using namespace Parser;
 
@@ -50,6 +52,21 @@ b1 ShadowPlan::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, const_cast<Stz*>(C_PLAN_DEFN));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the one and only main subquery child node                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* ShadowPlan::pMainSubquery(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  auto fCondition = [](PlanNode* pChild) { return MainSubquery::bIsOfType(pChild); };
+
+  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pNode));
+  ASSERT(pMainSubquery);
+
+  return pMainSubquery;
+}
 
 /*============================================================================*/
 /* end                                                                        */

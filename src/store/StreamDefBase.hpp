@@ -27,7 +27,7 @@ namespace STORE
 
    ~StreamDefBase(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     static eCT eColumn(Stz* szType);
     static void vPostRecv(void* aStreamDef);

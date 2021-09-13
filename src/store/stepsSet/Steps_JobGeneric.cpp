@@ -40,9 +40,8 @@ void Step::vJob__BegunNew(void)
                            pDistJob->m_iCmdNo
                            );
   
-  pJobBegun->m_xJobId = pDistJob->iJobId();
+  pJobBegun->m_tJobId = pDistJob->tJobId();
   pJobBegun->vParticipantNode(AM::pGrid()->iThisNodeNo());
-  pJobBegun->vNormalSides(false);
   pJobBegun->vJobKind(JK_GENERIC);
 
   pJobBegun->vJobNm("_begun"_Stz);
@@ -81,7 +80,7 @@ void Step::vJob__CancelNew(void)
                             pDistJob->m_iCmdNo
                             );
   
-  pJobCancel->m_xJobId = pDistJob->iJobId();
+  pJobCancel->m_tJobId = pDistJob->tJobId();
   pJobCancel->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobCancel->vJobKind(JK_GENERIC);
 
@@ -120,9 +119,8 @@ void Step::vJob__CancelledNew(void)
                                pDistJob->m_iCmdNo
                                );
   
-  pJobCancelled->m_xJobId = pDistJob->iJobId();
+  pJobCancelled->m_tJobId = pDistJob->tJobId();
   pJobCancelled->vParticipantNode(AM::pGrid()->iThisNodeNo());
-  pJobCancelled->vNormalSides(false);
   pJobCancelled->vJobKind(JK_GENERIC);
   
   TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
@@ -162,7 +160,7 @@ void Step::vJob__EndNew(void)
                          pDistJob->m_iCmdNo
                          );
   
-  pJobEnd->m_xJobId = pDistJob->iJobId();
+  pJobEnd->m_tJobId = pDistJob->tJobId();
   pJobEnd->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobEnd->vJobKind(JK_GENERIC);
     
@@ -202,9 +200,8 @@ void Step::vJob__EndedNew(void)
                            pDistJob->m_iCmdNo
                            );
   
-  pJobEnded->m_xJobId = pDistJob->iJobId();
+  pJobEnded->m_tJobId = pDistJob->tJobId();
   pJobEnded->vParticipantNode(AM::pGrid()->iThisNodeNo());
-  pJobEnded->vNormalSides(false);
   pJobEnded->vJobKind(JK_GENERIC);
   
   
@@ -244,7 +241,8 @@ void Step::vJob__ExecuteNew(void)
                              pDistJob->m_i_Session,
                              pDistJob->m_iCmdNo
                              );
-  pJobExecute->m_xJobId = pDistJob->iJobId();
+  
+  pJobExecute->m_tJobId = pDistJob->tJobId();
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobExecute->vJobKind(JK_GENERIC);
   
@@ -285,12 +283,10 @@ void Step::vJob__ExecutedNew(void)
                               pDistJob->m_i_Session,
                               pDistJob->m_iCmdNo
                               );
-  pJobExecuted->m_xJobId = pDistJob->iJobId();
+  
+  pJobExecuted->m_tJobId = pDistJob->tJobId();
   pJobExecuted->vParticipantNode(AM::pGrid()->iThisNodeNo());
-  pJobExecuted->vNormalSides(false);
   pJobExecuted->vJobKind(JK_GENERIC);
-  
-  
   
   TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
 

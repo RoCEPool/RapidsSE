@@ -51,6 +51,7 @@ namespace Parser
     Footer* aFooter(void);
     
     antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)               override;
+    antlrcpp::Any visitStatementChoice(sqlParser::StatementChoiceContext *pCtx)   override;
     antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *pCtx) override;
     antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *pCtx)       override;
     antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *pCtx) override;

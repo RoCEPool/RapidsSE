@@ -1,0 +1,39 @@
+--------------------------------------------------------------------------------
+-- supplier table
+--------------------------------------------------------------------------------
+
+// create a table
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          VARCHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         VARCHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
+);
+success
+
+
+//------------------------------------------------------------------------------
+// create an index on suppkey
+create index supplier_idx1 on supplier (S_SUPPKEY);
+affected: 0
+
+-----------------------------------------------------------------------
+// load the table
+load supplier "../TPCH/SF_0001/supplier.csv";
+success
+
+select count(*) from supplier;
+rows: (10)
+
+compactidx supplier supplier_idx1;
+success
+
+CLEANUP {
+
+  bye;
+  mute
+}
+

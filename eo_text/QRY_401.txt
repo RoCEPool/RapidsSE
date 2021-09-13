@@ -5,7 +5,7 @@ Routine QRY_401
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 401
@@ -148,7 +148,7 @@ Label NEXT_RSB_SRC
 
 
 Label QRY_401_DONE
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

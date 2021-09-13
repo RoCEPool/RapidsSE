@@ -122,7 +122,9 @@ CmdLineArgs::CmdLineArgs(void)
 
   _checkInitialised_(CN_CMDLINEARGS);
   
-                              m_xSysArgs.m_oArgTags.vInsert(C_SHOW_EXCEPTION,1);
+  m_xSysArgs.m_oArgTags.vInsert(C_SHOW_EXCEPTION,1);
+  //m_xSysArgs.m_oArgTags.vInsert(C_NO_FREE,1);
+  //m_xSysArgs.m_oArgTags.vInsert("<bamboo>"_Stz,1);
   
   vEnvironmentVariables();
 }
@@ -922,6 +924,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   //m_xSysArgs.m_oArgTags.vDumpSet(true);
   
+  if (m_xSysArgs.m_oArgTags.bHasName("<bamboo>"_Stz)) {
+    
+    m_xSysArgs.m_oArgTags.vInsert("<show_command>"_Stz,1);
+    m_xSysArgs.m_oArgTags.vInsert("<show_op_report>"_Stz,1);
+
+//    if (m_xSysArgs.m_iRegionSize < C_8GB)
+//      m_xSysArgs.m_iRegionSize = C_8GB;
+  }
+  
   return true;
 }
 
@@ -960,8 +971,8 @@ void CmdLineArgs::vPrintStartupInfo(void)
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // print startup information
-  if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    return;
+  //if (! AM::AM::TRACE::bVerbose(C_VB_BOOT))
+  //  return;
   
   
   if (gxCmdLineArgs.m_xSysArgs.m_bVerbose) {

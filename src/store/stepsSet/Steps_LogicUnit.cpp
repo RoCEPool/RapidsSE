@@ -49,6 +49,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
+  vAddStep("LogicUnit[].genFilterProject"_Stz,&Step::vLogicUnitGenFilterProject);
   vAddStep("LogicUnit[].genHash"_Stz,       &Step::vLogicUnitGenHash);
   vAddStep("LogicUnit[].genIndexJoin"_Stz,  &Step::vLogicUnitGenIndexJoin);
   vAddStep("LogicUnit[].genIndexScan"_Stz,  &Step::vLogicUnitGenIndexScan);
@@ -430,6 +431,23 @@ void Step::vLogicUnitGenFilter(void)
   ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   eEC eError = m_p_TaskLogicUnit->eGenerateFilter(pExprEval);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genFilterProject -- generate filter & project asm text - file  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenFilterProject(void)
+{
+  ENTRY();
+
+  ExprEval* pFilter = _pExprEval(m_pDataStack->pPopPtr(__func__));
+  ExprEval* pProject = _pExprEval(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = m_p_TaskLogicUnit->eGenerateFilterProject(pFilter, pProject);
 
   m_pDataStack->vPushInt(eError);
 

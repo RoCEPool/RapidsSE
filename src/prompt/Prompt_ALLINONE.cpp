@@ -2894,7 +2894,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   
   
-  if (gpBufferPool->bDontFree()) {
+  if (gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree) {
     vTrace("bPrompt_memoryLeaks: skipping ... (--dontFree supplied)\n"_Stz);
     goto L_END;
   }
@@ -2903,8 +2903,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    while (Api::bReapJob())
-      {;}
+    //while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
     
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -2979,8 +2980,8 @@ L_END:
   
   vTrace("\nsuccess: %lld rows affected\n"_Stz, nLeaksDetected);
   
-  if (nLeaksDetected)
-    bPrompt_memoryLeaks_dump(pPrompt);
+  //if (nLeaksDetected)
+  //  bPrompt_memoryLeaks_dump(pPrompt);
   
   if (nLeaksDetected && bFatal)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -3982,6 +3983,38 @@ bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
   AM::pSchedule()->vDumpReadyQueue();
   AM::pSchedule()->vDumpReadyQueueLP();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_reap.cpp -- explicilty reap the retired list                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_reap (
+  PF_MEMORYLEAKS,              // prompt function
+  "Prompt_reap"_Stz,           // name of the prompt function
+  "reap retired job list"_Stz, // comment about the function
+  "reap"_Stz,                  // the prompt command
+  nullptr,                     // the second word
+  bPrompt_reap,               // prompt function
+  true,                        // enabled
+
+  true,                        // visible
+  "reap"_Stz,                  // help
+  ""_Stz                       // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  //while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
+      
   return true;
 }
 
@@ -5719,6 +5752,10 @@ PromptFun __Prompt_trackMemory (
 bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
+
+  //while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
 
   pPrompt->vTrackMemory(true);
 

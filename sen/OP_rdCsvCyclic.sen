@@ -41,7 +41,7 @@
 
     <nTimes> >int 0 do
 
-      task::yield
+      Task[].yield 
 
       begin
         // check for low memory

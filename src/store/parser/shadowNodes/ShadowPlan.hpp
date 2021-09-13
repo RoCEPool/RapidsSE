@@ -24,6 +24,9 @@ namespace Parser
 
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
+
+    // Returns the one and only main subquery child node
+    static QueryNode* pMainSubquery(QueryNode* pNode);
   };
 
 }
