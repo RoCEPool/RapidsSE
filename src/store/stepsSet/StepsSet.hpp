@@ -1411,6 +1411,7 @@ public:
   void vRegPathPush(void);
   void vRegPathSave(void);
   void vRegPathRestore(void);
+  void vRegPathRoot(void);
 
   // Parcel
   void vParcelDeleteOld(void);
