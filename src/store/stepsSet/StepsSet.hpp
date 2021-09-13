@@ -154,14 +154,6 @@ public:
   void vBuildHostName(void);
   void vBuildUserName(void);
 
-  // BuffersIn
-  void vBuffersInInc(void);
-  void vBuffersInGet(void);
-
-  // BuffersOut
-  void vBuffersOutInc(void);
-  void vBuffersOutGet(void);
-
   // class
   void vClassName(void);
   void vClassPostRecvWordStore(void);

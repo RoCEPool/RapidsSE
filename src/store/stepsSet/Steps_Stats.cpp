@@ -28,7 +28,7 @@ void Step::vAddSteps_Stats(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* stats[].BuffInInc -- inc the buffersIn                                     */
+/* stats[].BuffInInc -- inc the buffIn                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vStatsBuffInInc(void)
 {
