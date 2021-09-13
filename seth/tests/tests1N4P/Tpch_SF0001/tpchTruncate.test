@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------
+-- tpch truncate tables (SF1)
+-------------------------------------------------------------------------------
+
+truncate customer;
+success
+
+truncate supplier;
+success
+
+truncate orders;
+success
+
+truncate partsupp;
+success
+
+truncate part;
+success
+
+truncate region;
+success
+
+truncate lineitem;
+success
+
+truncate nation;
+success
+
+CLEANUP {
+
+}
+
+

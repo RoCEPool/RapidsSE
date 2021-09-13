@@ -5,7 +5,7 @@ Routine QRY_302
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 302
@@ -149,13 +149,13 @@ Label NXT_SRC
 
 // --
 Label QRY_302_DONE
-EO_EXIT
+EO_EXIT_LU
 EO_RETURN
 
 // --
 Label QRY_END
 
-EO_EXIT
+EO_EXIT_LU
 EO_RETURN
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 // END ROUTINE: QRY_302                                           Q302

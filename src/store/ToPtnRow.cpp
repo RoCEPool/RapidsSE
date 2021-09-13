@@ -52,7 +52,7 @@ ToPtnRow::~ToPtnRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the toPtnRow                                                        */
 /*----------------------------------------------------------------------------*/
-void ToPtnRow::vRepairHashSet(Object* pObject, eRF eRepair)
+void ToPtnRow::vRepairHashSet(Object* pObject)
 {
   _static_
 

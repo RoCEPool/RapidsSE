@@ -60,7 +60,8 @@ namespace STORE
     static void vAddSteps_Dir(void);
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
-  
+    static void vAddSteps_Dynamo(void);
+
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
     static void vAddSteps_Env(void);
@@ -70,6 +71,7 @@ namespace STORE
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
+    static void vAddSteps_Filter(void);
 
     static void vAddSteps_Grid(void);
   
@@ -127,6 +129,7 @@ namespace STORE
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
+    static void vAddSteps_PipelineSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
     static void vAddSteps_Plist(void);
@@ -165,6 +168,7 @@ namespace STORE
     static void vAddSteps_Socket(void);
     static void vAddSteps_SqlCompiler(void);
     static void vAddSteps_SsnState(void);
+    static void vAddSteps_Stats(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_StringA(void);

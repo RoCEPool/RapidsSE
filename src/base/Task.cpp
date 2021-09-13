@@ -78,7 +78,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(void)
 : Object(CN_TASK)
-, DeleteHelper_t<Task>(CN_TASK,typeid(Task)) 
+, LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -88,7 +88,7 @@ Task::Task(void)
   m_pProfile     = nullptr;
 
   m_pThread      = nullptr;
-  m_pJob         = nullptr;
+  m_pJob_task         = nullptr;
   m_pOp          = nullptr;
   
   m_bIsStart     = false;
@@ -145,7 +145,7 @@ Task::~Task(void) noexcept(false)
   //RASSERT(! bIsLocked());
   RASSERT(! m_pThread);
 
-  //RASSERT(! m_pJob);
+  //RASSERT(! m_pJob_task);
   
   ASSERT(! m_oWriteLocks.nItems());
 
@@ -165,14 +165,7 @@ Task::~Task(void) noexcept(false)
   
   delete m_pSenCompiler;
   delete m_pInput;
-
-    
-  if (m_pJob) {
-    Job* pJob = *m_pJob;
-    m_pJob = nullptr;
-    AM::vJobDelete(&pJob,this,(Stz*)__func__);
-  }
-      
+  
   delete m_pProfile;
   m_pProfile = nullptr;
   
@@ -209,8 +202,8 @@ void Task::vTaskLoop(void)
   
   vVerifyTaskComposition();
   
-  if (m_pJob.bIsNotNull())
-    m_p_TaskLogicUnit = m_pJob->pJobLogicUnit();
+  if (m_pJob_task.bIsNotNull())
+    m_p_TaskLogicUnit = m_pJob_task->pJobLogicUnit();
   else
   if (m_pOp.bIsNotNull())
     m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
@@ -229,7 +222,11 @@ void Task::vTaskLoop(void)
     // call the non-virtual member/step function against this task
     try {
       
+      this->vAssertSelf(this);
+      
       (this->*fpStepFn) ();
+
+      this->vAssertSelf(this);
 
       //
       // for example if the step function is:
@@ -295,14 +292,14 @@ void Task::vVerifyTaskComposition(void)
   RASSERT(CN_TASK == eGetClassNo());
   aFooter()->vAssertFooter();
   
-  if (m_pJob.bIsNotNull()) {
+  if (m_pJob_task.bIsNotNull()) {
     RASSERT(m_pOp.bIsNull());
-    RASSERT(m_sTaskNm.bSame(m_pJob->szJobNm()));
-    m_pJob->vVerifyJobComposition();
+    RASSERT(m_sTaskNm.bSame(m_pJob_task->szJobNm()));
+    m_pJob_task->vVerifyJobComposition();
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob.bIsNull());
+    RASSERT(m_pJob_task.bIsNull());
     RASSERT(m_sTaskNm.bSame(m_pOp->szOpNm()));
     m_pOp->vVerifyOpComposition();
   }
@@ -366,9 +363,9 @@ void Task::vDumpOnException(void)
  
   vTrace("\n"_Stz);
 
-  if (m_pJob.bIsNotNull()) {
+  if (m_pJob_task.bIsNotNull()) {
     vTrace("1) Task (for Job)\n"_Stz);
-    vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
+    vTrace("m_pJob_task=%p %s\n"_Stz,*m_pJob_task,m_pJob_task->szJobNm());
 
   }
   else
@@ -398,11 +395,11 @@ void Task::vDumpOnException(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (m_pJob.bIsNotNull()) {
+  if (m_pJob_task.bIsNotNull()) {
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
     
-    vTrace("m_pJob::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pJob->pSeedWord()));
+    vTrace("m_pJob_task::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pJob_task->pSeedWord()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -448,7 +445,7 @@ void Task::vExceptionTrace(void)
 {
   _noPreconditions_
   
-//  if (m_pJob->pJobTags()->bHasName("<recover>"_Stz))
+//  if (m_pJob_task->pJobTags()->bHasName("<recover>"_Stz))
 //    return;
   
   //
@@ -675,8 +672,8 @@ void Task::vDotPrint(Stz* szFormat, ...)
   sFormatted.vSprintVA(szFormat,vaArgs);
   va_end(vaArgs);
   
-  if (m_pJob.bIsNotNull()) {
-    m_pJob->vDotPrint(sFormatted);
+  if (m_pJob_task.bIsNotNull()) {
+    m_pJob_task->vDotPrint(sFormatted);
   }
   else
   {
@@ -736,8 +733,8 @@ void Task::vDump(void)
 
   // dump the logicUnit registers
   // revised job/op model
-  if (m_pJob)
-    m_pJob->pJobLogicUnit()->vDumpRegisters();
+  if (m_pJob_task)
+    m_pJob_task->pJobLogicUnit()->vDumpRegisters();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   AM::vTraceDumpDropLock();
@@ -974,21 +971,22 @@ bool Task::bIsTaskLocked(void)
 /*----------------------------------------------------------------------------*/
 /* get the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-Job* Task::pJob(void)
+Job* Task::pJob_task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pJob;
+  return m_pJob_task;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob(Job* pJob)
+void Task::vJob_task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pJob = pJob;
+  RASSERT(pJob);
+  m_pJob_task = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1204,7 +1202,24 @@ void Task::vResetSenContext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get save path stack                                                       */
+/* retire                                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vRetire(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(QK_NONE == eQueue());
+  RASSERT(TR_NONE == eTransition());
+
+  RASSERT(TS_DESISTED == eState());
+  
+  vState(TS_RETIRED);
+  
+  AM::TASK::vRetire(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get save path stack                                                        */
 /*----------------------------------------------------------------------------*/
 DicStack* Task::pSaveDicStack(void)
 {
@@ -1287,8 +1302,8 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  if (m_pJob.bIsNotNull()) {
-    m_pSeedWord = m_pJob->pSeedWord();
+  if (m_pJob_task.bIsNotNull()) {
+    m_pSeedWord = m_pJob_task->pSeedWord();
   }
   else
   if (m_pOp.bIsNotNull()) {

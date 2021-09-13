@@ -49,7 +49,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary Job__End
-  pJob__End job.delete
+  pJob__End job.delete2pc
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
   // where: on the participating node
   //
   //grid::thisNodeName@ "(%v) RECEIVED END" .printf
-  job[] locals| pJob__End |
+  Job[] locals| pJob__End |
 
   // find the job to be executed in the participating jobs
   pJob__End job.id@ locals| iJobId |
@@ -69,15 +69,15 @@
 
   // stall till job's previous phase (task) has completed
   begin
-    jobRef[].hasTask
+    JobRef[].hasTask
   while
-    task::yield
+    Task[].yield 
   repeat
 
   // execute the end seed of the job on this participating node
   JM_SEED_END JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
-  JobRef[].return
+  JobRef[].returnReference
   
   _job_2pc_delete_
 ;

@@ -8,7 +8,7 @@
 /* check if word is not a schema                                              */
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownSchema ( word )
-  folder[].findSymbol not if true exit then
+  Folder[].findSymbol not if true exit then
   EC_SCHEMA_EXISTS false
 ;
 
@@ -32,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in schemas
-  folder[].checkIsSchemas not if
+  Folder[].checkIsSchemas not if
     to errorCode
     errorCode op__execErr
     true

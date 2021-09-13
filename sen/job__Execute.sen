@@ -13,6 +13,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Execute::distribute params| pJobOriginator |
 
+  // "Job__Execute::distribute" .
+
   //
   // where: on the originator node
   //
@@ -49,7 +51,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary job__execute
-  pJob__Execute job.delete
+  pJob__Execute job.delete2pc
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,10 +59,12 @@
 /*----------------------------------------------------------------------------*/
 : _Execute_run [ word::seed# ]
 
+  // "_Execute_run" .
+
   //
   // where: on the participating node
   //
-  job[] locals| pJob__Execute |
+  Job[] locals| pJob__Execute |
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |
@@ -68,15 +72,19 @@
 
   // stall till job's previous phase (task) has completed
   begin
-    jobRef[].hasTask
+    JobRef[].hasTask
   while
-    task::yield
+    "job still has task" .
+    Task[].yield
   repeat
+  
+  // "_Execute_run" .
+
 
   // execute the job on this participating node
   JM_SEED_EXE JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
-  JobRef[].return
+  JobRef[].returnReference
   
   _job_2pc_delete_
 ;

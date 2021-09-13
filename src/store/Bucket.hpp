@@ -31,7 +31,7 @@ namespace STORE
     Bucket(Table* pTable, tPN tPtnNo, eCN eKind);
     ~Bucket(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     tPN  tPtnNo(void);
     Table* pTable(void);

@@ -7,6 +7,7 @@
 #include "eED.h"
 #include "eEO.h"
 #include "ePX.h"
+#include "eLR.h"
 
 #include "RowSingle.hpp"
 
@@ -85,82 +86,83 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
-,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       "m_xpAggTimer"_Stz)
-,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         "m_xpBucket"_Stz)
+, LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
+,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
-,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  "m_xpCrwBuffer"_Stz)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       "m_xpCrwToRow"_Stz)
-,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList, "m_xpCsvBuffer"_Stz)
+,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
+,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       LR_CRWTOROW)
+,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList,  LR_CSVBUFFER)
 
-,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     "m_xpDataBuffer"_Stz)
-,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir0"_Stz)
-,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            "m_xpDir1"_Stz)
+,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     LR_DATABUFFER)
+,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR0)
+,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR1)
 
-,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        "m_xpErrorMarker"_Stz)
-,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       "m_xpExprEval"_Stz)
+,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        LR_ERRORMARKER)
+,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       LR_EXPEVAL)
 
-,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile0"_Stz)
-,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           "m_xpFile1"_Stz)
-,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
+,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE0)
+,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE1)
+,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       LR_FILTER)
+,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_GRID)
+,        m_xpHandler(this,RF_REPAIR_NONE,  nullptr,                 LR_HANDLER)
 
-,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 "m_xpIndex"_Stz)
-,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 "m_xpIndexDef"_Stz)
-,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,    "m_xpIndexStream"_Stz)
-,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        "m_xpInfoSet"_Stz)
-,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 "m_xpRow"_Stz)
-,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpInfoSetTable"_Stz)
+,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 LR_INDEX)
+,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                 LR_INDEXDEF)
+,    m_xpIndexStream(this,RF_REPAIR_DELETE,IndexStream::vRepair,    LR_INDEXSTREAM)
+,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        LR_INFOSET)
+,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 LR_INFOSETROW)
+,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 LR_INFOSETTABLE)
 
-,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      "m_xpList"_Stz)
-,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  "m_xpLogicCompiler"_Stz)
+,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      LR_LIST)
+,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
 
-,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 "m_xpMarker"_Stz)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpMemoryHog"_Stz)
-,           m_xpMeta(this,RF_REPAIR_DELETE, MetaGet::vRepair,       "m_xpMeta"_Stz)
+,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 LR_MARKER)
+,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_MEMORYHOG)
+,           m_xpMeta(this,RF_REPAIR_DELETE,MetaGet::vRepair,        LR_META)
 
-,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,"m_xpNamedBuffer"_Stz)
-,           m_xpNode(this,RF_NEVER,        nullptr,                 "m_xpNode"_Stz)
-,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 "m_xpNode_I"_Stz)
-,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            "m_xpNow"_Stz)
+,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,LR_NAMEDBUFFER)
+,           m_xpNode(this,RF_REPAIR_NEVER,  nullptr,                LR_NODE)
+,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 LR_NODE_I)
+,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            LR_NOW)
 
-,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         "m_xpParcel"_Stz)
-, m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, "m_xpPathIdentifier"_Stz)
-,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    "m_xpPlanOperand"_Stz)
-,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      "m_xpPtnStream"_Stz)
-
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  "m_xpRowBuffer"_Stz)
-,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        "m_xpRowOnce"_Stz)
-
-,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       "m_xpShardDef"_Stz)
-,         m_xpSocket(this,RF_NEVER,        nullptr,                 "m_xpSocket"_Stz)
-,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefLft"_Stz)
-,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamDefOut"_Stz)
-,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   "m_xpStreamDefRht"_Stz)
-,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      "m_xpStreamSet"_Stz)
-, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 "m_xpStreamSetTable"_Stz)
-
-,          m_xpTable(this,RF_SET_NULL,     nullptr,                 "m_xpTable"_Stz)
-,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 "m_xpTablePtn"_Stz)
-,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,"m_xpToBktCrw"_Stz)
-,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,"m_xpToBktRow"_Stz)
-,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       "m_xpToNstRow"_Stz)
-,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,"m_xpToPtnCrw"_Stz)
-,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,"m_xpToPtnRow"_Stz)
-,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      "m_xpToRow"_Stz)
-,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          "m_xpTx"_Stz)
+,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
+,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
+, m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
+,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
+,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
+,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
+,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
+,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
+,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
 
 
-,        m_xpHandler(this,RF_NONE,        nullptr,                 "m_xpHandler"_Stz)
+,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
+,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_ROWBUFFER)
+,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        LR_ROWONCE)
 
-,             m_xpOp(this,RF_NONE,         nullptr,                 "m_xpOp"_Stz)
-,     m_xpOperandOoO(this,RF_NONE,         nullptr,                 "m_xpOperandOoO"_Stz)
-,         m_xpPipein(this,RF_NONE,         nullptr,                 "m_xpPipein"_Stz)
-,       m_xpPipeline(this,RF_NONE,         nullptr,                 "m_xpPipeline"_Stz)
-,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 "m_xpPipelineSpec"_Stz)
-,    m_xpRecvdObject(this,RF_NONE,         nullptr,                 "m_xpRecvObject"_Stz)
-,       m_xpSendNode(this,RF_NEVER,         nullptr,                 "m_xpSendNode"_Stz)
-,          m_xpSends(this,RF_NEVER,         nullptr,                 "m_xpSends"_Stz)
-,         m_xpSubset(this,RF_NONE,         nullptr,                 "m_xpSubset"_Stz)
-,          m_xpTimer(this,RF_NONE,         nullptr,                 "m_xpTimer"_Stz)
+,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                 LR_SENDNODE)
+,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                 LR_SENDS)
+,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       LR_SHARDDEF)
+,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 LR_SOCKET)
+,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                 LR_STATS)
+,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFLFT)
+,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFOUT)
+,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   LR_STREAMDEFRHT)
+,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
+, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
+,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
+
+,          m_xpTable(this,RF_SET_NULL,     nullptr,                 LR_TABLE)
+,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 LR_TABLEPTN)
+,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
+,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
+,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,LR_TOBKTROW)
+,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       LR_TONSTROW)
+,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
+,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
+,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
+,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -327,6 +329,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());
+  RASSERT(m_xpFilter.bIsNull());
   RASSERT(m_xpGrid.bIsNull());
 
   RASSERT(m_xpIndex.bIsNull());
@@ -347,24 +350,33 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpNode.bIsNull());
   RASSERT(m_xpNode_I.bIsNull());
 
+  RASSERT(m_xpOperandOoO.bIsNull());
+
   RASSERT(m_xpParcel.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
+  RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
+  RASSERT(m_xpRecvdObject.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
 
+  RASSERT(m_xpSendNode.bIsNull());
+  RASSERT(m_xpSends.bIsNull());
   RASSERT(m_xpShardDef.bIsNull());
   RASSERT(m_xpSocket.bIsNull());
+  //RASSERT(m_xpStats.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());
   RASSERT(m_xpStreamDefRht.bIsNull());
   RASSERT(m_xpStreamDefOut.bIsNull());
   RASSERT(m_xpStreamSet.bIsNull());
   RASSERT(m_xpStreamSetTable.bIsNull());
+  RASSERT(m_xpSubset.bIsNull());
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
+  RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToBktCrw.bIsNull());
   RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
@@ -380,13 +392,22 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
 
-  if (! m_xpTimer.bIsNull())
-    delete *m_xpTimer;
+  // repair the stats here
+  Stats::vRepair(m_xpStats.m_pComponent);
 
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
-    delete *m_xpPipeline;
-    //m_xpPipeline.vGuardedDeleteComponent(this,(Stz*)__func__);
+    
+    Pipeline* pPipeline = *m_xpPipeline;
+    RASSERT(pPipeline);
+    RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
+    
+    //delete *m_xpPipeline;
+    
+    //vTrace("~LogicUnit:: guarded delete of m_xpPipeline\n"_Stz);
+    m_xpPipeline.vGuardedDeleteComponent(CN_PIPELINE,
+                                         CN_LOGICUNIT,this,(Stz*)__func__);
+    //vTrace("~LogicUnit:: return from guarded delete of m_xpPipeline\n"_Stz);
   }
   
   if (m_pRluDiary) {
@@ -467,7 +488,7 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 /*----------------------------------------------------------------------------*/
 /* add reg                                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vAddReg(REG<Object>* pReg)
+void LogicUnit::vAddReg(REG<Object,CN_NONE>* pReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
 
@@ -495,15 +516,34 @@ void LogicUnit::vCleanup(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object> *p_Reg = m_paReg[i_Reg];
-    // execute register repare
-    if (p_Reg->m_szRegNm->bSame("m_xpInfoSetTable"_Stz))
-      int i = 1;
-    p_Reg->vRepair();
+    REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
+
+    if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
+      
+      if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
+      vTrace("%16s: "
+             "cpu %8lldus "
+             "maxq %6lld "
+             "operands %6lld [buffIn %6lld buffOut %6lld] "
+             "NewRowBuffers %6lld [DelRowBuffers %6lld] "
+             "\n"_Stz
+             
+             ,m_pOp->szOpNm()
+             ,m_xpStats->iMicroseconds()
+             ,m_xpStats->m_nMaxQs
+             ,m_xpStats->m_nOperands
+             ,m_xpStats->m_nBuffIn
+             ,m_xpStats->m_nBuffOut
+             ,m_xpStats->m_nNewRowBuffer
+             ,m_xpStats->m_nDelRowBuffer
+             );
+    }
+    
+    // execute register repair
+    if (p_Reg->m_eLogicUnitReg != LR_STATS)
+      p_Reg->vRepair();
   }
-
 }
-
 /*----------------------------------------------------------------------------*/
 /* get eCode at given i_Code                                                  */
 /*----------------------------------------------------------------------------*/
@@ -736,7 +776,7 @@ void LogicUnit::vFailure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
-    REG<Object>* p_Reg = m_paReg[i_Reg];
+    REG<Object,CN_NONE>* p_Reg = m_paReg[i_Reg];
     
     p_Reg->vRepair();
   }
@@ -1400,7 +1440,7 @@ void LogicUnit::vDumpCode(void)
     
     if (-1 == EoArgs[eCode].m_nArgBytes) {
       char* azArg = (char*) & m_eaCode[i_Code+2];
-      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
+      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],azArg);
       i_Code += 2 + StrLib::nSize(azArg);
     }
     else
@@ -1408,7 +1448,7 @@ void LogicUnit::vDumpCode(void)
         EA_DATE == EoArgs[eCode].m_eArgument) {
       i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
-      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
       i_Code += 2 + sizeof(i8);
     }
     else
@@ -1560,6 +1600,10 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 
 #endif
 
+
+#define EO_ENTER(eCode)
+#define EO_EXIT(eCode)
+
 i8 giaVectorSet[] =
 {
 /* 00 */ L_QUANTITY,
@@ -1678,842 +1722,1175 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // add top two numbers and push result
 
-      case EO_ADD_BCDBCD: ArgNil(); // bcd + bcd
+      case EO_ADD_BCDBCD: // bcd + bcd
+        EO_ENTER(eCode);
+        ArgNil();
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_BCDBCD(iTopA, iTopB);
         dLU3(EO_ADD_BCDBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_BCDFLT: ArgNil(); // bcd + flt
+      case EO_ADD_BCDFLT: // bcd + flt
+        EO_ENTER(eCode);
+        ArgNil();
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_FLTBCD(iTopB, iTopA);
         dLU3(EO_ADD_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_BCDINT: ArgNil(); // bcd + int
+      case EO_ADD_BCDINT: // bcd + int
+        EO_ENTER(eCode);
+        ArgNil();
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_INTBCD(iTopB, iTopA);
         dLU3(EO_ADD_BCDINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_DTEIVL: ArgNil(); // dte + ivl
+      case EO_ADD_DTEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // dte + ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_DTEIVL(iTopA, iTopB);
         dLU3(EO_ADD_DTEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_FLTBCD: ArgNil(); // flt + bcd
+      case EO_ADD_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt + bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_FLTBCD(iTopA, iTopB);
         dLU3(EO_ADD_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_FLTINT: ArgNil(); // flt + int
+      case EO_ADD_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_FLTINT(iTopA, iTopB);
         dLU3(EO_ADD_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_FLTFLT: ArgNil(); // flt + flt
+      case EO_ADD_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt + flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_FLTFLT(iTopA, iTopB);
         dLU3(EO_ADD_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_INTBCD: ArgNil(); // int + bcd
+      case EO_ADD_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int + bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_INTBCD(iTopA, iTopB);
         dLU3(EO_ADD_BCDINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_INTFLT: ArgNil(); // int + flt
+      case EO_ADD_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int + flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_FLTINT(iTopB, iTopA);
         dLU3(EO_ADD_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_INTINT: ArgNil(); // int + int
+      case EO_ADD_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_INTINT(iTopA, iTopB);
         dLU3(EO_ADD_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_IVLDTE: ArgNil(); // ivl + dte
+      case EO_ADD_IVLDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl + dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLDTE(iTopA, iTopB);
         dLU3(EO_ADD_IVLDTE,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_IVLIVL: ArgNil(); // ivl + ivl
+      case EO_ADD_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl + ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLIVL(iTopA, iTopB);
         dLU3(EO_ADD_IVLIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_IVLTME: ArgNil(); // ivl + tme
+      case EO_ADD_IVLTME:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl + tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLTME(iTopA, iTopB);
         dLU3(EO_ADD_IVLTME,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_IVLTSP: ArgNil(); // ivl + tsp
+      case EO_ADD_IVLTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl + tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLTSP(iTopA, iTopB);
         dLU3(EO_ADD_IVLTME,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_TMEIVL: ArgNil(); // tme + ivl
+      case EO_ADD_TMEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tme + ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLTME(iTopB, iTopA);
         dLU3(EO_ADD_TMEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_TSPIVL: ArgNil(); // tsp + ivl
+      case EO_ADD_TSPIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp + ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_IVLTSP(iTopB, iTopA);
         dLU3(EO_ADD_TSPIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_UNKXYZ: ArgNil(); // unk + xyz
+      case EO_ADD_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk + xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_ADD_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ADD_XYZUNK: ArgNil(); // xyz + unk
+      case EO_ADD_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz + unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
+      case EO_DIV_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd / bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_BCDBCD(iTopA, iTopB);
         dLU3(EO_DIV_BCDBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_BCDFLT: ArgNil(); // bcd / flt
+      case EO_DIV_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd / flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_BCDFLT(iTopA, iTopB);
         dLU3(EO_DIV_BCDFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_BCDINT: ArgNil(); // bcd / int
+      case EO_DIV_BCDINT: // bcd / int
+        EO_ENTER(eCode);
+        ArgNil();
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_BCDINT(iTopA, iTopB);
         dLU3(EO_DIV_BCDINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_DTEIVL: ArgNil(); // dte / ivl
+      case EO_DIV_DTEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // dte / ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_DTEIVL(iTopA, iTopB);
         dLU3(EO_DIV_DTEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_FLTBCD: ArgNil(); // flt / bcd
+      case EO_DIV_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt / bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_FLTBCD(iTopA, iTopB);
         dLU3(EO_DIV_FLTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_FLTINT: ArgNil(); // flt / int
+      case EO_DIV_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt / int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_FLTINT(iTopA, iTopB);
         dLU3(EO_DIV_FLTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_FLTFLT: ArgNil(); // flt / flt
+      case EO_DIV_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt / flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_FLTFLT(iTopA, iTopB);
         dLU3(EO_DIV_FLTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_INTBCD: ArgNil(); // int / bcd
+      case EO_DIV_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int / bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_INTBCD(iTopA, iTopB);
         dLU3(EO_DIV_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_INTFLT: ArgNil(); // int / flt
+      case EO_DIV_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int / flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_INTFLT(iTopA, iTopB);
         dLU3(EO_DIV_INTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_INTINT: ArgNil(); // int / int
+      case EO_DIV_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int / int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_INTINT(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_IVLDTE: ArgNil(); // ivl / dte
+      case EO_DIV_IVLDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl / dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_IVLDTE(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_IVLIVL: ArgNil(); // ivl / ivl
+      case EO_DIV_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl / ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_IVLIVL(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_IVLTME: ArgNil(); // ivl / tme
+      case EO_DIV_IVLTME:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl / tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_IVLTME(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_IVLTSP: ArgNil(); // ivl / tsp
+      case EO_DIV_IVLTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl / tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_IVLTSP(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_TMEIVL: ArgNil(); // tme / ivl
+      case EO_DIV_TMEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tme / ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_TMEIVL(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_TSPIVL: ArgNil(); // tsp / ivl
+      case EO_DIV_TSPIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp / ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Div_TSPIVL(iTopA, iTopB);
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_UNKXYZ: ArgNil(); // unk / xyz
+      case EO_DIV_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk / xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_DIV_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DIV_XYZUNK: ArgNil(); // xyz / unk
+      case EO_DIV_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz / unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_DIV_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_MOD_INTINT: ArgNil(); // int % int
+      case EO_MOD_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int % int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mod_INTINT(iTopA, iTopB);
         dLU3(EO_MOD_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MOD_UNKXYZ: ArgNil(); // unk % xyz
+      case EO_MOD_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk % xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_MOD_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MOD_XYZUNK: ArgNil(); // xyz % unk
+      case EO_MOD_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz % unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_MOD_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_BCDBCD: ArgNil(); // bcd * bcd
+      case EO_MUL_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd * bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_BCDBCD(iTopB, iTopA);
         dLU3(EO_MUL_BCDBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_BCDFLT: ArgNil(); // bcd * flt
+      case EO_MUL_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd * flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_BCDFLT(iTopA, iTopB);
         dLU3(EO_MUL_BCDFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_BCDINT: ArgNil(); // bcd * int
+      case EO_MUL_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_BCDINT(iTopA, iTopB);
         dLU3(EO_MUL_BCDINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_DTEIVL: ArgNil(); // dte * ivl
+      case EO_MUL_DTEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // dte * ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_DTEIVL(iTopA, iTopB);
         dLU3(EO_MUL_DTEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_FLTBCD: ArgNil(); // flt * bcd
+      case EO_MUL_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt * bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_BCDFLT(iTopB, iTopA);
         dLU3(EO_MUL_FLTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_FLTINT: ArgNil(); // flt * int
+      case EO_MUL_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_FLTINT(iTopA, iTopB);
         dLU3(EO_MUL_FLTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_FLTFLT: ArgNil(); // flt * flt
+      case EO_MUL_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt * flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_FLTFLT(iTopA, iTopB);
         dLU3(EO_MUL_FLTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_INTBCD: ArgNil(); // int * bcd
+      case EO_MUL_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int * bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_INTBCD(iTopA, iTopB);
         dLU3(EO_MUL_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_INTFLT: ArgNil(); // int * flt
+      case EO_MUL_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int * flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_FLTINT(iTopB, iTopA);
         dLU3(EO_MUL_INTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_INTINT: ArgNil(); // int * int
+      case EO_MUL_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_INTINT(iTopA, iTopB);
         dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_IVLDTE: ArgNil(); // ivl * dte
+      case EO_MUL_IVLDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl * dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLDTE(iTopA, iTopB);
         dLU3(EO_MUL_IVLDTE,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_IVLIVL: ArgNil(); // ivl * ivl
+      case EO_MUL_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl * ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLIVL(iTopA, iTopB);
         dLU3(EO_MUL_IVLIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_IVLTME: ArgNil(); // ivl * tme
+      case EO_MUL_IVLTME:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl * tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLTME(iTopA, iTopB);
         dLU3(EO_MUL_IVLTME,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_IVLTSP: ArgNil(); // ivl * tsp
+      case EO_MUL_IVLTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl * tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLTSP(iTopA, iTopB);
         dLU3(EO_MUL_IVLTSP,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_TMEIVL: ArgNil(); // tme * ivl
+      case EO_MUL_TMEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tme * ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLTME(iTopB, iTopA);
         dLU3(EO_MUL_TMEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_TSPIVL: ArgNil(); // tsp * ivl
+      case EO_MUL_TSPIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp * ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Mul_IVLTSP(iTopB, iTopA);
         dLU3(EO_MUL_TSPIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_UNKXYZ: ArgNil(); // unk * xyz
+      case EO_MUL_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk * xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_MUL_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_MUL_XYZUNK: ArgNil(); // xyz * unk
+      case EO_MUL_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz * unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_MUL_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NEG_BCD: ArgNil(); // neg bcd
+      case EO_NEG_BCD:
+        EO_ENTER(eCode);
+        ArgNil(); // neg bcd
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         iRes  = iMathLib_Neg_BCD(iTopA);
         dLU2(EO_NEG_BCD,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NEG_FLT: ArgNil(); // neg flt
+      case EO_NEG_FLT:
+        EO_ENTER(eCode);
+        ArgNil(); // neg flt
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         iRes  = iMathLib_Neg_FLT(iTopA);
         dLU2(EO_NEG_FLT,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NEG_INT: ArgNil(); // neg int
+      case EO_NEG_INT:
+        EO_ENTER(eCode);
+        ArgNil(); // neg int
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         iRes  = iMathLib_Neg_INT(iTopA);
         dLU2(EO_NEG_INT,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NEG_IVL: ArgNil(); // neg ivl
+      case EO_NEG_IVL:
+        EO_ENTER(eCode);
+        ArgNil(); // neg ivl
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         iRes  = iMathLib_Neg_IVL(iTopA);
         dLU2(EO_NEG_IVL,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // subtract second int from top push result
-      case EO_SUB_BCDBCD: ArgNil(); // bcd - bcd
+      case EO_SUB_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd - bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_BCDBCD(iTopA, iTopB);
         dLU3(EO_SUB_BCDBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_BCDFLT: ArgNil(); // bcd - flt
+      case EO_SUB_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd - flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_BCDFLT(iTopA, iTopB);
         dLU3(EO_SUB_BCDFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_BCDINT: ArgNil(); // bcd - int
+      case EO_SUB_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd - int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_BCDINT(iTopA, iTopB);
         dLU3(EO_SUB_BCDINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_FLTBCD: ArgNil(); // flt - bcd
+      case EO_SUB_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt - bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_FLTBCD(iTopA, iTopB);
         dLU3(EO_SUB_FLTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_FLTINT: ArgNil(); // flt - int
+      case EO_SUB_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt - int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_FLTINT(iTopA, iTopB);
         dLU3(EO_SUB_FLTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_FLTFLT: ArgNil(); // flt - flt
+      case EO_SUB_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt - flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_FLTFLT(iTopA, iTopB);
         dLU3(EO_SUB_FLTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_INTBCD: ArgNil(); // int - bcd
+      case EO_SUB_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int - bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_INTBCD(iTopA, iTopB);
         dLU3(EO_SUB_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_INTFLT: ArgNil(); // int - flt
+      case EO_SUB_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int - flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_INTFLT(iTopA, iTopB);
         dLU3(EO_SUB_INTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_INTINT: ArgNil(); // int - int
+      case EO_SUB_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int - int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_INTINT(iTopA, iTopB);
         dLU3(EO_SUB_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_IVLDTE: ArgNil(); // ivl - dte
+      case EO_SUB_IVLDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl - dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_IVLDTE(iTopA, iTopB);
         dLU3(EO_SUB_IVLDTE,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_IVLIVL: ArgNil(); // ivl - ivl
+      case EO_SUB_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl - ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_IVLIVL(iTopA, iTopB);
         dLU3(EO_SUB_IVLIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_IVLTME: ArgNil(); // ivl - tme
+      case EO_SUB_IVLTME:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl - tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_IVLTME(iTopA, iTopB);
         dLU3(EO_SUB_IVLTME,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_IVLTSP: ArgNil(); // ivl - tsp
+      case EO_SUB_IVLTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl - tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_IVLTSP(iTopA, iTopB);
         dLU3(EO_SUB_IVLTSP,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_TMEIVL: ArgNil(); // tme - ivl
+      case EO_SUB_TMEIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tme - ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_TMEIVL(iTopA, iTopB);
         dLU3(EO_SUB_TMEIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_TSPIVL: ArgNil(); // tsp - ivl
+      case EO_SUB_TSPIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp - ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Sub_TSPIVL(iTopA, iTopB);
         dLU3(EO_SUB_TSPIVL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_UNKXYZ: ArgNil(); // unk - xyz
+      case EO_SUB_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk - xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_SUB_XYZUNK: ArgNil(); // xyz - unk
+      case EO_SUB_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz - unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_SUB_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
-      case EO_CTR_0_DEC: ArgNil(); // dec counter 0
+      case EO_CTR_0_DEC:
+        EO_ENTER(eCode);
+        ArgNil(); // dec counter 0
         aRluCommon->m_iCtr0--;
         dLU1(EO_CTR_0_DEC,aRluCommon->m_iCtr0);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_CTR_0_INC: ArgNil(); // inc counter 0
+      case EO_CTR_0_INC:
+        EO_ENTER(eCode);
+        ArgNil(); // inc counter 0
         aRluCommon->m_iCtr0++;
         dLU1(EO_CTR_0_INC,aRluCommon->m_iCtr0);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_CTR_0_POP: ArgNil(); // pop counter 0
+      case EO_CTR_0_POP:
+        EO_ENTER(eCode);
+        ArgNil(); // pop counter 0
         aRluCommon->m_iCtr0 = *(aiDstk--);
         dLU1(EO_CTR_0_POP,aRluCommon->m_iCtr0);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_CTR_0_PUSH: ArgNil(); // push counter 0
+      case EO_CTR_0_PUSH:
+        EO_ENTER(eCode);
+        ArgNil(); // push counter 0
         dLU1(EO_CTR_0_PUSH,aRluCommon->m_iCtr0);
         *(++aiDstk) = aRluCommon->m_iCtr0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
-      case EO_JMP: ArgGet(iArg); // jump to location
+      case EO_JMP:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // jump to location
         dLU1(EO_JMP,iArg);
         JumpTo(iArg,EO_JMP); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_JMP_FALSE: ArgGet(iArg); // pop top and jump to location if false
+      case EO_JMP_FALSE:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if false
         dLU1(EO_JMP_FALSE,iArg);
         if (! *(aiDstk--))
           JumpTo(iArg,EO_JMP_FALSE); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_JMP_TRUE: ArgGet(iArg); // pop top and jump to location if true
+      case EO_JMP_TRUE:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if true
         dLU1(EO_JMP_TRUE,iArg);
         iRes = *(aiDstk);
         if (*(aiDstk--))
           JumpTo(iArg,EO_JMP_TRUE); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_JMP_LESS: ArgGet(iArg); // pop top and jump to location if <
+      case EO_JMP_LESS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if <
         dLU1(EO_JMP_LESS,iArg);
         if (*(aiDstk--) < 0)
           JumpTo(iArg,EO_JMP_LESS); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_JMP_LESSEQUAL: ArgGet(iArg); // pop top and jump to location if <=
+      case EO_JMP_LESSEQUAL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if <=
         dLU1(EO_JMP_LESSEQUAL,iArg);
         if (*(aiDstk--) <= 0)
           JumpTo(iArg,EO_JMP_LESSEQUAL); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_JMP_EQUAL: ArgGet(iArg); // pop top and jump to location if ==
+      case EO_JMP_EQUAL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if ==
         dLU1(EO_JMP_EQUAL,iArg);
         if (*(aiDstk--) == 0)
           JumpTo(iArg,EO_JMP_EQUAL); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_JMP_NOTEQUAL: ArgGet(iArg); // pop top and jump to location if !=
+      case EO_JMP_NOTEQUAL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if !=
         dLU1(EO_JMP_NOTEQUAL,iArg);
         if (*(aiDstk--) != 0)
           JumpTo(iArg,EO_JMP_NOTEQUAL); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_JMP_GREATEREQUAL: ArgGet(iArg); // pop top and jump to location if >=
+      case EO_JMP_GREATEREQUAL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if >=
         dLU1(EO_JMP_GREATEREQUAL,iArg);
         if (*(aiDstk--) >= 0)
           JumpTo(iArg,EO_JMP_GREATEREQUAL); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_JMP_GREATER: ArgGet(iArg); // pop top and jump to location if >
+      case EO_JMP_GREATER:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop top and jump to location if >
         dLU1(EO_JMP_GREATER,iArg);
         if (*(aiDstk--) > 0)
           JumpTo(iArg,EO_JMP_GREATER); // aeCode = & m_eaCode[iArg];
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
-      case EO_LGL_AND: ArgNil(); // logical and top two int's, push result
+      case EO_LGL_AND:
+        EO_ENTER(eCode);
+        ArgNil(); // logical and top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes = iMathLib_Lgl_AND(iTopA, iTopB);
         dLU3(EO_LGL_AND,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_LGL_OR: ArgNil(); // logical or top two int's, push result
+      case EO_LGL_OR:
+        EO_ENTER(eCode);
+        ArgNil(); // logical or top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes = iMathLib_Lgl_OR(iTopA, iTopB);
         dLU3(EO_LGL_OR,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_LGL_NOT: ArgNil(); // logical not top int, push result
+      case EO_LGL_NOT:
+        EO_ENTER(eCode);
+        ArgNil(); // logical not top int, push result
         iTopA = *(aiDstk--);
         iRes = iMathLib_Lgl_NOT(iTopA);
         dLU2(EO_LGL_NOT,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LGL_XOR: ArgNil(); // logical xor top two int's, push result
+      case EO_LGL_XOR:
+        EO_ENTER(eCode);
+        ArgNil(); // logical xor top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes = iMathLib_Lgl_XOR(iTopA, iTopB);
         dLU3(EO_LGL_XOR,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // null test operators
-      case EO_ISNULL: ArgNil(); // test if top is null( NO POPPING) , push result
+      case EO_ISNULL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if top is null( NO POPPING) , push result
         iTopA = *(aiDstk);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
         dLU2(EO_ISNULL,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ISNULL_STR: ArgNil(); // test if top is null string ( NO POPPING) , push result
+      case EO_ISNULL_STR:
+        EO_ENTER(eCode);
+        ArgNil(); // test if top is null string ( NO POPPING) , push result
         // get topA string
         iRes = ((i8)*aiDstk == C_DATUM_NULL) ? 1 : 0;
         dLU2(EO_ISNULL_STR,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ISNOTNULL: ArgNil(); // test if top is not null, push result
+      case EO_ISNOTNULL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if top is not null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
         dLU2(EO_ISNOTNULL,iTopA,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pot
-      case EO_POT_USE_STREAMDEFOUT: ArgGet(iArg); // use streamDefOut in the pot locals
+      case EO_POT_USE_STREAMDEFOUT:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // use streamDefOut in the pot locals
         dLU0(EO_POT_USE_STREAMDEFOUT);
         iTopA = *(aiDstk--);
         vDev_POT_USE_STREAMDEFOUT(pLU,iArg);
+        EO_EXIT(eCode);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // prints
-      case EO_PRINT: ArgNil(); // print top
+      case EO_PRINT:
+        EO_ENTER(eCode);
+        ArgNil(); // print top
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
 
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
             
-      case EO_PRINTF: GetStr(iArg); // formatted print
+      case EO_PRINTF:
+        EO_ENTER(eCode);
+        GetStr(iArg); // formatted print
 #ifdef WITH_TRACE_LOGICUNIT
         dLU0(EO_PRINTF);
         vLib_PRINTF(pLU,(Stz*)iArg,&aiDstk);
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
-      case EO_DATE: ArgGet(iArg); // push date
+      case EO_DATE:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push date
         dLU1(EO_DATE,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_INTEGER: ArgGet(iArg); // push integer
+      case EO_INTEGER:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push integer
         dLU1(EO_INTEGER,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_PUSHNULL: ArgNil(); // push null
+      case EO_PUSHNULL:
+        EO_ENTER(eCode);
+        ArgNil(); // push null
         dLU0(EO_PUSHNULL);
         *(++aiDstk) = C_DATUM_NULL;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_PUSH_MINUS1: ArgNil(); // push integer -1
+      case EO_PUSH_MINUS1:
+        EO_ENTER(eCode);
+        ArgNil(); // push integer -1
         dLU0(EO_PUSH_MINUS1);
         *(++aiDstk) = -1;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_PUSH_0: ArgNil(); // push integer 0
+      case EO_PUSH_0:
+        EO_ENTER(eCode);
+        ArgNil(); // push integer 0
         dLU0(EO_PUSH_0);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_PUSH_1: ArgNil(); // push integer 1
+      case EO_PUSH_1:
+        EO_ENTER(eCode);
+        ArgNil(); // push integer 1
         dLU0(EO_PUSH_1);
         *(++aiDstk) = 1;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
+      case EO_RANDOM:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push random number 0..arg-1
         iRes = iLib_RANDOM(pLU,iArg);
         dLU2(EO_RANDOM,iArg,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_STRING: GetStr(iArg); // push string
+      case EO_STRING:
+        EO_ENTER(eCode);
+        GetStr(iArg); // push string
         dLU1(EO_STRING,iArg);
         S_PushStr(iArg);
         //vRlu_DUMP(pLU,aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_TIME: ArgGet(iArg); // push time
+      case EO_TIME:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push time
         dLU1(EO_TIME,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_TIMESTAMP: ArgGet(iArg); // push timestamp
+      case EO_TIMESTAMP:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push timestamp
         dLU1(EO_TIMESTAMP,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2521,135 +2898,185 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // EQUAL
-      case EO_EQ_BCDBCD: ArgNil(); // bcd == bcd
+      case EO_EQ_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd == bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_BCDBCD(iTopA, iTopB);
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_BCDFLT: ArgNil(); // bcd == flt
+      case EO_EQ_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd == flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_FLTBCD(iTopB, iTopA);
         dLU3(EO_EQ_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_BCDINT: ArgNil(); // bcd == int
+      case EO_EQ_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd == int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_INTBCD(iTopB, iTopA);
         dLU3(EO_EQ_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_BOLBOL: ArgNil(); // bol == bol
+      case EO_EQ_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol == bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_BOLBOL(iTopA, iTopB);
         dLU3(EO_EQ_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_DTEDTE: ArgNil(); // dte == dte
+      case EO_EQ_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte == dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_DTEDTE(iTopA, iTopB);
         dLU3(EO_EQ_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_DTETSP: ArgNil(); // dte == tsp
+      case EO_EQ_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte == tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_DTETSP(iTopA, iTopB);
         dLU3(EO_EQ_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_FLTBCD: ArgNil(); // flt == bcd
+      case EO_EQ_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt == bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_FLTBCD(iTopA, iTopB);
         dLU3(EO_EQ_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_FLTFLT: ArgNil(); // flt == flt
+      case EO_EQ_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt == flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_FLTFLT(iTopA, iTopB);
         dLU3(EO_EQ_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_FLTINT: ArgNil(); // flt == int
+      case EO_EQ_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt == int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_FLTINT(iTopA, iTopB);
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_INTBCD: ArgNil(); // int == bcd
+      case EO_EQ_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int == bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_INTBCD(iTopA, iTopB);
         dLU3(EO_EQ_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_INTFLT: ArgNil(); // int == flt
+      case EO_EQ_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int == flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_FLTINT(iTopB, iTopA);
         dLU3(EO_EQ_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_INTINT: ArgNil(); // int == int
+      case EO_EQ_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int == int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_INTINT(iTopA, iTopB);
         dLU3(EO_EQ_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_EQ_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl == ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_IVLIVL(iTopA, iTopB);
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_TMETME: ArgNil(); // tme == tme
+      case EO_EQ_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme == tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_TMETME(iTopA, iTopB);
         dLU3(EO_EQ_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_TSPDTE: ArgNil(); // tsp == dte
+      case EO_EQ_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp == dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_TSPDTE(iTopA, iTopB);
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_TSPTSP: ArgNil(); // tsp == tsp
+      case EO_EQ_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp == tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Eq_TSPTSP(iTopA, iTopB);
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_VCHVCH: ArgNil(); // vch == vch
+      case EO_EQ_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch == vch
         // get topB string
         iTopB = *(aiDstk--);
         if (iTopB == C_DATUM_NULL) {
@@ -2678,156 +3105,213 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
             *(++aiDstk) = iRes;
           }
         }
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_UNKXYZ: ArgNil(); // unk == xyz
+      case EO_EQ_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk == xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_EQ_XYZUNK: ArgNil(); // xyz == unk
+      case EO_EQ_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz == unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // GRETAER THAN EQUAL
-      case EO_GE_BCDBCD: ArgNil(); // bcd >= bcd
+      case EO_GE_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd >= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_BCDBCD(iTopA, iTopB);
         dLU3(EO_GE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_BCDFLT: ArgNil(); // bcd >= bcd
+      case EO_GE_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd >= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_BCDFLT(iTopA, iTopB);
         dLU3(EO_GE_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_BCDINT: ArgNil(); // bcd >= int
+      case EO_GE_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd >= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_BCDINT(iTopA, iTopB);
         dLU3(EO_GE_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_BOLBOL: ArgNil(); // bol >= bol
+      case EO_GE_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol >= bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_BOLBOL(iTopA, iTopB);
         dLU3(EO_GE_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_DTEDTE: ArgNil(); // dte >= dte
+      case EO_GE_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte >= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_DTEDTE(iTopA, iTopB);
         dLU3(EO_GE_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_DTETSP: ArgNil(); // dte >= tsp
+      case EO_GE_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte >= tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_DTETSP(iTopA, iTopB);
         dLU3(EO_GE_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_FLTBCD: ArgNil(); // flt >= bcd
+      case EO_GE_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt >= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_FLTBCD(iTopA, iTopB);
         dLU3(EO_GE_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_FLTFLT: ArgNil(); // flt >= flt
+      case EO_GE_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt >= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_FLTFLT(iTopA, iTopB);
         dLU3(EO_GE_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_FLTINT: ArgNil(); // flt >= int
+      case EO_GE_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt >= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_FLTINT(iTopA, iTopB);
         dLU3(EO_GE_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_INTBCD: ArgNil(); // int >= bcd
+      case EO_GE_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int >= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_INTBCD(iTopA, iTopB);
         dLU3(EO_GE_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_INTFLT: ArgNil(); // int >= flt
+      case EO_GE_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int >= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_INTFLT(iTopA, iTopB);
         dLU3(EO_GE_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_INTINT: ArgNil(); // int >= int
+      case EO_GE_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int >= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_INTINT(iTopA, iTopB);
         dLU3(EO_GE_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_IVLIVL: ArgNil(); // ivl >= ivl
+      case EO_GE_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl >= ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_IVLIVL(iTopA, iTopB);
         dLU3(EO_GE_IVLIVL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_TMETME: ArgNil(); // tme >= tme
+      case EO_GE_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme >= tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_TMETME(iTopA, iTopB);
         dLU3(EO_GE_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_TSPDTE: ArgNil(); // tsp >= dte
+      case EO_GE_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp >= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_TSPDTE(iTopA, iTopB);
         dLU3(EO_GE_TSPDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GE_TSPTSP: ArgNil(); // tsp >= tsp
+      case EO_GE_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp >= tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ge_TSPTSP(iTopA, iTopB);
         dLU3(EO_GE_TSPTSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GE_VCHVCH: ArgNil(); // vch >= vch
+      case EO_GE_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch >= vch
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
@@ -2842,156 +3326,213 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Ge_VCHVCH(azTopA, azTopB);
         dLU3(EO_GE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GE_UNKXYZ: ArgNil(); // unk >= xyz
+      case EO_GE_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk >= xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_GE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GE_XYZUNK: ArgNil(); // xyz >= unk
+      case EO_GE_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz >= unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_GE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // GREATER THAN
 
-      case EO_GT_BCDBCD: ArgNil(); // bcd > bcd
+      case EO_GT_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd > bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_BCDBCD(iTopA, iTopB);
         dLU3(EO_GT_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_GT_BCDFLT: ArgNil(); // bcd > bcd
+      case EO_GT_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd > bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_BCDFLT(iTopA, iTopB);
         dLU3(EO_GT_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_BCDINT: ArgNil(); // bcd > int
+      case EO_GT_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd > int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_BCDINT(iTopA, iTopB);
         dLU3(EO_GT_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_BOLBOL: ArgNil(); // bol > bol
+      case EO_GT_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol > bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_BOLBOL(iTopA, iTopB);
         dLU3(EO_GT_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_DTEDTE: ArgNil(); // dte > dte
+      case EO_GT_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte > dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_DTEDTE(iTopA, iTopB);
         dLU3(EO_GT_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_DTETSP: ArgNil(); // dte > tsp
+      case EO_GT_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte > tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_DTETSP(iTopA, iTopB);
         dLU3(EO_GT_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_FLTBCD: ArgNil(); // flt > bcd
+      case EO_GT_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt > bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_FLTBCD(iTopA, iTopB);
         dLU3(EO_GT_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_FLTFLT: ArgNil(); // flt > flt
+      case EO_GT_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt > flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_FLTFLT(iTopA, iTopB);
         dLU3(EO_GT_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_FLTINT: ArgNil(); // flt > int
+      case EO_GT_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt > int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_FLTINT(iTopA, iTopB);
         dLU3(EO_GT_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_INTBCD: ArgNil(); // int > bcd
+      case EO_GT_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int > bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_INTBCD(iTopA, iTopB);
         dLU3(EO_GT_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_INTFLT: ArgNil(); // int > flt
+      case EO_GT_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int > flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_INTFLT(iTopA, iTopB);
         dLU3(EO_GT_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_INTINT: ArgNil(); // int > int
+      case EO_GT_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int > int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_INTINT(iTopA, iTopB);
         dLU3(EO_GT_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_IVLIVL: ArgNil(); // ivl > ivl
+      case EO_GT_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl > ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_IVLIVL(iTopA, iTopB);
         dLU3(EO_GT_IVLIVL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_TMETME: ArgNil(); // tme > tme
+      case EO_GT_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme > tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_TMETME(iTopA, iTopB);
         dLU3(EO_GT_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_TSPDTE: ArgNil(); // tsp > dte
+      case EO_GT_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp > dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_TSPDTE(iTopA, iTopB);
         dLU3(EO_GT_TSPDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_TSPTSP: ArgNil(); // tsp > tsp
+      case EO_GT_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp > tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Gt_TSPTSP(iTopA, iTopB);
         dLU3(EO_GT_TSPTSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_VCHVCH: ArgNil(); // vch > vch
+      case EO_GT_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch > vch
         // get topB string
         //vRlu_DUMP(pLU,aiDstk);
         iTopB = *(aiDstk--);
@@ -3008,156 +3549,213 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         //vRlu_DUMP(pLU,aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_UNKXYZ: ArgNil(); // unk > xyz
+      case EO_GT_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk > xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_GT_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_GT_XYZUNK: ArgNil(); // xyz > unk
+      case EO_GT_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz > unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_GT_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // LESS THAN EQUAL
 
-      case EO_LE_BCDBCD: ArgNil(); // bcd <= bcd
+      case EO_LE_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd <= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_BCDBCD(iTopA, iTopB);
         dLU3(EO_LE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_LE_BCDFLT: ArgNil(); // bcd <= bcd
+      case EO_LE_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd <= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_BCDFLT(iTopA, iTopB);
         dLU3(EO_LE_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_BCDINT: ArgNil(); // bcd <= int
+      case EO_LE_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd <= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_BCDINT(iTopA, iTopB);
         dLU3(EO_LE_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_BOLBOL: ArgNil(); // bol <= bol
+      case EO_LE_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol <= bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_BOLBOL(iTopA, iTopB);
         dLU3(EO_LE_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_DTEDTE: ArgNil(); // dte <= dte
+      case EO_LE_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte <= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_DTEDTE(iTopA, iTopB);
         dLU3(EO_LE_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_DTETSP: ArgNil(); // dte <= tsp
+      case EO_LE_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte <= tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_DTETSP(iTopA, iTopB);
         dLU3(EO_LE_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_FLTBCD: ArgNil(); // flt <= bcd
+      case EO_LE_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt <= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_FLTBCD(iTopA, iTopB);
         dLU3(EO_LE_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_FLTFLT: ArgNil(); // flt <= flt
+      case EO_LE_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt <= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_FLTFLT(iTopA, iTopB);
         dLU3(EO_LE_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_FLTINT: ArgNil(); // flt <= int
+      case EO_LE_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt <= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_FLTINT(iTopA, iTopB);
         dLU3(EO_LE_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_INTBCD: ArgNil(); // int <= bcd
+      case EO_LE_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int <= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_INTBCD(iTopA, iTopB);
         dLU3(EO_LE_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_INTFLT: ArgNil(); // int <= flt
+      case EO_LE_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int <= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_INTFLT(iTopA, iTopB);
         dLU3(EO_LE_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_INTINT: ArgNil(); // int <= int
+      case EO_LE_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int <= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_INTINT(iTopA, iTopB);
         dLU3(EO_LE_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_IVLIVL: ArgNil(); // ivl <= ivl
+      case EO_LE_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl <= ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_IVLIVL(iTopA, iTopB);
         dLU3(EO_LE_IVLIVL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_TMETME: ArgNil(); // tme <= tme
+      case EO_LE_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme <= tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_TMETME(iTopA, iTopB);
         dLU3(EO_LE_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_TSPDTE: ArgNil(); // tsp <= dte
+      case EO_LE_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp <= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_TSPDTE(iTopA, iTopB);
         dLU3(EO_LE_TSPDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_TSPTSP: ArgNil(); // tsp <= tsp
+      case EO_LE_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp <= tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Le_TSPTSP(iTopA, iTopB);
         dLU3(EO_LE_TSPTSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_VCHVCH: ArgNil(); // vch <= vch
+      case EO_LE_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch <= vch
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
@@ -3172,156 +3770,213 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Le_VCHVCH(azTopA, azTopB);
         dLU3(EO_LE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_UNKXYZ: ArgNil(); // unk <= xyz
+      case EO_LE_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk <= xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_LE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LE_XYZUNK: ArgNil(); // xyz <= unk
+      case EO_LE_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz <= unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_LE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // LESS THAN
 
-      case EO_LT_BCDBCD: ArgNil(); // bcd < bcd
+      case EO_LT_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd < bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_BCDBCD(iTopA, iTopB);
         dLU3(EO_LT_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_BCDFLT: ArgNil(); // bcd < bcd
+      case EO_LT_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd < bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_BCDFLT(iTopA, iTopB);
         dLU3(EO_LT_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_BCDINT: ArgNil(); // bcd < int
+      case EO_LT_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd < int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_BCDINT(iTopA, iTopB);
         dLU3(EO_LT_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_BOLBOL: ArgNil(); // bol < bol
+      case EO_LT_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol < bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_BOLBOL(iTopA, iTopB);
         dLU3(EO_LT_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_DTEDTE: ArgNil(); // dte < dte
+      case EO_LT_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte < dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_DTEDTE(iTopA, iTopB);
         dLU3(EO_LT_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_DTETSP: ArgNil(); // dte < tsp
+      case EO_LT_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte < tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_DTETSP(iTopA, iTopB);
         dLU3(EO_LT_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_FLTBCD: ArgNil(); // flt < bcd
+      case EO_LT_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt < bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_FLTBCD(iTopA, iTopB);
         dLU3(EO_LT_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_FLTFLT: ArgNil(); // flt < flt
+      case EO_LT_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt < flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_FLTFLT(iTopA, iTopB);
         dLU3(EO_LT_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_FLTINT: ArgNil(); // flt < int
+      case EO_LT_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt < int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_FLTINT(iTopA, iTopB);
         dLU3(EO_LT_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_INTBCD: ArgNil(); // int < bcd
+      case EO_LT_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int < bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_INTBCD(iTopA, iTopB);
         dLU3(EO_LT_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_INTFLT: ArgNil(); // int < flt
+      case EO_LT_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int < flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_INTFLT(iTopA, iTopB);
         dLU3(EO_LT_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_INTINT: ArgNil(); // int < int
+      case EO_LT_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int < int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_INTINT(iTopA, iTopB);
         dLU3(EO_LT_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_IVLIVL: ArgNil(); // ivl < ivl
+      case EO_LT_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl < ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_IVLIVL(iTopA, iTopB);
         dLU3(EO_LT_IVLIVL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_TMETME: ArgNil(); // tme < tme
+      case EO_LT_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme < tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_TMETME(iTopA, iTopB);
         dLU3(EO_LT_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_TSPDTE: ArgNil(); // tsp < dte
+      case EO_LT_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp < dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_TSPDTE(iTopA, iTopB);
         dLU3(EO_LT_TSPDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_TSPTSP: ArgNil(); // tsp < tsp
+      case EO_LT_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp < tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Lt_TSPTSP(iTopA, iTopB);
         dLU3(EO_LT_TSPTSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_VCHVCH: ArgNil(); // vch < vch
+      case EO_LT_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch < vch
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
@@ -3336,156 +3991,213 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Lt_VCHVCH(azTopA, azTopB);
         dLU3(EO_LT_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_UNKXYZ: ArgNil(); // unk < xyz
+      case EO_LT_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk < xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_LT_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_LT_XYZUNK: ArgNil(); // xyz < unk
+      case EO_LT_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz < unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_LT_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // NOT EQUAL
 
-      case EO_NE_BCDBCD: ArgNil(); // bcd != bcd
+      case EO_NE_BCDBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd != bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_BCDBCD(iTopA, iTopB);
         dLU3(EO_NE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_BCDFLT: ArgNil(); // bcd != bcd
+      case EO_NE_BCDFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd != bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_BCDFLT(iTopA, iTopB);
         dLU3(EO_NE_BCDFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_BCDINT: ArgNil(); // bcd != int
+      case EO_NE_BCDINT:
+        EO_ENTER(eCode);
+        ArgNil(); // bcd != int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_BCDINT(iTopA, iTopB);
         dLU3(EO_NE_BCDINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_BOLBOL: ArgNil(); // bol != bol
+      case EO_NE_BOLBOL:
+        EO_ENTER(eCode);
+        ArgNil(); // bol != bol
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_BOLBOL(iTopA, iTopB);
         dLU3(EO_NE_BOLBOL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_DTEDTE: ArgNil(); // dte != dte
+      case EO_NE_DTEDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // dte != dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_DTEDTE(iTopA, iTopB);
         dLU3(EO_NE_DTEDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_DTETSP: ArgNil(); // dte != tsp
+      case EO_NE_DTETSP:
+        EO_ENTER(eCode);
+        ArgNil(); // dte != tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_DTETSP(iTopA, iTopB);
         dLU3(EO_NE_DTETSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_FLTBCD: ArgNil(); // flt != bcd
+      case EO_NE_FLTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // flt != bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_FLTBCD(iTopA, iTopB);
         dLU3(EO_NE_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_FLTFLT: ArgNil(); // flt != flt
+      case EO_NE_FLTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt != flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_FLTFLT(iTopA, iTopB);
         dLU3(EO_NE_FLTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_FLTINT: ArgNil(); // flt != int
+      case EO_NE_FLTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // flt != int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_FLTINT(iTopA, iTopB);
         dLU3(EO_NE_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_INTBCD: ArgNil(); // int != bcd
+      case EO_NE_INTBCD:
+        EO_ENTER(eCode);
+        ArgNil(); // int != bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_INTBCD(iTopA, iTopB);
         dLU3(EO_NE_INTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_INTFLT: ArgNil(); // int != flt
+      case EO_NE_INTFLT:
+        EO_ENTER(eCode);
+        ArgNil(); // int != flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_INTFLT(iTopA, iTopB);
         dLU3(EO_NE_INTFLT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_INTINT: ArgNil(); // int != int
+      case EO_NE_INTINT:
+        EO_ENTER(eCode);
+        ArgNil(); // int != int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_INTINT(iTopA, iTopB);
         dLU3(EO_NE_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_IVLIVL: ArgNil(); // ivl != ivl
+      case EO_NE_IVLIVL:
+        EO_ENTER(eCode);
+        ArgNil(); // ivl != ivl
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_IVLIVL(iTopA, iTopB);
         dLU3(EO_NE_IVLIVL, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_TMETME: ArgNil(); // tme != tme
+      case EO_NE_TMETME:
+        EO_ENTER(eCode);
+        ArgNil(); // tme != tme
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_TMETME(iTopA, iTopB);
         dLU3(EO_NE_TMETME, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_TSPDTE: ArgNil(); // tsp != dte
+      case EO_NE_TSPDTE:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp != dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_TSPDTE(iTopA, iTopB);
         dLU3(EO_NE_TSPDTE, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_TSPTSP: ArgNil(); // tsp != tsp
+      case EO_NE_TSPTSP:
+        EO_ENTER(eCode);
+        ArgNil(); // tsp != tsp
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iMathLib_Ne_TSPTSP(iTopA, iTopB);
         dLU3(EO_NE_TSPTSP, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_VCHVCH: ArgNil(); // vch != vch
+      case EO_NE_VCHVCH:
+        EO_ENTER(eCode);
+        ArgNil(); // vch != vch
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
@@ -3500,221 +4212,329 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Ne_VCHVCH(azTopA, azTopB);
         dLU3(EO_NE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_UNKXYZ: ArgNil(); // unk != xyz
+      case EO_NE_UNKXYZ:
+        EO_ENTER(eCode);
+        ArgNil(); // unk != xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_NE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_NE_XYZUNK: ArgNil(); // xyz != unk
+      case EO_NE_XYZUNK:
+        EO_ENTER(eCode);
+        ArgNil(); // xyz != unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_NE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // column pushes
-      case EO_PUSH_COLUMN_LENGTH: ArgGet(iArg); // push columnn length
+      case EO_PUSH_COLUMN_LENGTH:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push columnn length
         dLU1(EO_PUSH_COLUMN_LENGTH,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_COLUMN_SCALE:  ArgGet(iArg); // push columnn scale
+      case EO_PUSH_COLUMN_SCALE:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push columnn scale
         dLU1(EO_PUSH_COLUMN_SCALE,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_COLUMN_TYPE: ArgGet(iArg); // push columnn type
+      case EO_PUSH_COLUMN_TYPE:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push columnn type
         dLU1(EO_PUSH_COLUMN_TYPE,iArg);
         *(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device pushes
-      case EO_PUSH_DEVIXT_ALT: ArgNil(); // push alt ixt device
+      case EO_PUSH_DEVIXT_ALT:
+        EO_ENTER(eCode);
+        ArgNil(); // push alt ixt device
         dLU0(EO_PUSH_DEVIXT_ALT);
         P_PushPtr(aRluCommon->m_pDevAltIxt);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_ENT: ArgNil(); // push entry from ixt device
+      case EO_PUSH_DEVIXT_ENT:
+        EO_ENTER(eCode);
+        ArgNil(); // push entry from ixt device
         dLU0(EO_PUSH_DEVIXT_ENT);
         vDev_IXT_PUSH_ENT(&aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_LFT: ArgNil(); // push lft ixt devive
+      case EO_PUSH_DEVIXT_LFT:
+        EO_ENTER(eCode);
+        ArgNil(); // push lft ixt devive
         dLU0(EO_PUSH_DEVIXT_LFT);
         P_PushPtr(aRluCommon->m_pDevLftIxt);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_RHT: ArgNil(); // push rht ixt devive
+      case EO_PUSH_DEVIXT_RHT:
+        EO_ENTER(eCode);
+        ArgNil(); // push rht ixt devive
         dLU0(EO_PUSH_DEVIXT_RHT);
         P_PushPtr(aRluCommon->m_pDevRhtIxt);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device
+      case EO_PUSH_DEVIXT_TMP:
+        EO_ENTER(eCode);
+        ArgNil(); // push tmp ixt device
         dLU0(EO_PUSH_DEVIXT_TMP);
         P_PushPtr(aRluCommon->m_pDevTmpIxt);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device pushes
-      case EO_PUSH_DEVROW_ALT: ArgNil(); // push alt row device
+      case EO_PUSH_DEVROW_ALT:
+        EO_ENTER(eCode);
+        ArgNil(); // push alt row device
         dLU0(EO_PUSH_DEVROW_ALT);
         P_PushPtr(aRluCommon->m_pDevAltRow);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_DST: ArgNil(); // push dst row device
+      case EO_PUSH_DEVROW_DST:
+        EO_ENTER(eCode);
+        ArgNil(); // push dst row device
         dLU0(EO_PUSH_DEVROW_DST);
         P_PushPtr(aRluCommon->m_pDevDstRow);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_LFT: ArgNil(); // push lft row device
+      case EO_PUSH_DEVROW_LFT:
+        EO_ENTER(eCode);
+        ArgNil(); // push lft row device
         dLU0(EO_PUSH_DEVROW_LFT);
         P_PushPtr(aRluCommon->m_pDevLftRow);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_RHT: ArgNil(); // push rht row device
+      case EO_PUSH_DEVROW_RHT:
+        EO_ENTER(eCode);
+        ArgNil(); // push rht row device
         dLU0(EO_PUSH_DEVROW_RHT);
         P_PushPtr(aRluCommon->m_pDevRhtRow);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu pushes
-      case EO_PUSH_RLU_COLSET: ArgNil(); // push rlu colset
+      case EO_PUSH_RLU_COLSET:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu colset
         dLU0(EO_PUSH_RLU_COLSET);
         P_PushPtr(aRluCommon->m_iaColSet);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_ENT: ArgNil(); // push rlu ent
+      case EO_PUSH_RLU_ENT:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu ent
         dLU0(EO_PUSH_RLU_ENT);
         P_PushPtr(aRluCommon->m_aWrkEnt);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_ENTWRK: ArgNil(); // push rlu entwrk
+      case EO_PUSH_RLU_ENTWRK:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu entwrk
         dLU0(EO_PUSH_RLU_ENTWRK);
         P_PushPtr(aRluCommon->m_pEntWrk);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_INDEXDEF: ArgNil(); // push rlu indexDef
+      case EO_PUSH_RLU_INDEXDEF:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu indexDef
         dLU0(EO_PUSH_RLU_INDEXDEF);
         P_PushPtr(aRluCommon->m_pIndexDef);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_POT: ArgNil(); // push rlu pot
+      case EO_PUSH_RLU_POT:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu pot
         dLU0(EO_PUSH_RLU_POT);
         P_PushPtr(aRluCommon->m_pPot);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_PTN: ArgNil(); // push rlu partition
+      case EO_PUSH_RLU_PTN:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu partition
         dLU0(EO_PUSH_RLU_PTN);
         P_PushPtr(aRluCommon->m_i_Ptn);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_RLU_ROWPIX: ArgNil(); // push rlu row pix
+      case EO_PUSH_RLU_ROWPIX:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu row pix
         dLU0(EO_PUSH_RLU_ROWPIX);
         P_PushPtr(aRluCommon->m_pRowPix);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // locals pushes
-      case EO_PUSH_RLU_LOCALS: ArgNil(); // push rlu locals
+      case EO_PUSH_RLU_LOCALS:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu locals
         dLU0(EO_PUSH_RLU_LOCALS);
         aiLocals = aRluCommon->m_iaLocals - 1;
         P_PushPtr(&aiLocals);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // indextree pushes
-      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push rlu indextree
+      case EO_PUSH_RLU_INDEXTREE:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu indextree
         dLU0(EO_PUSH_RLU_INDEXTREE);
         P_PushPtr(aRluCommon->m_pIndexTree);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // joinmap push
-      case EO_PUSH_RLU_JOINMAP_BYTE: ArgNil(); // push rlu joinmap byte
+      case EO_PUSH_RLU_JOINMAP_BYTE:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu joinmap byte
         dLU0(EO_PUSH_RLU_JOINMAP_BYTE);
         iTopA = *(aiDstk--);
         I_PushInt(aRluCommon->m_baJoinMap[iTopA]);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table ptn
-      case EO_TABLEPTN_DROPREAD: ArgNil(); // drop the tableptn read lock
+      case EO_TABLEPTN_DROPREAD:
+        EO_ENTER(eCode);
+        ArgNil(); // drop the tableptn read lock
         dLU0(EO_TABLEPTN_DROPREAD);
         vDev_TABLEPTN_DROPREAD(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_TABLEPTN_GRABREAD: ArgNil(); // grab the tableptn read lock
+      case EO_TABLEPTN_GRABREAD:
+        EO_ENTER(eCode);
+        ArgNil(); // grab the tableptn read lock
         dLU0(EO_TABLEPTN_GRABREAD);
         vDev_TABLEPTN_GRABREAD(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
-      case EO_INC: ArgNil(); // increment top, push result
+      case EO_INC:
+        EO_ENTER(eCode);
+        ArgNil(); // increment top, push result
         iTopA = *aiDstk;
         iRes = iTopA + 1;
         dLU2(EO_INC,iTopA,iRes);
         *aiDstk = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEC: ArgNil(); // decrement top, push result
+      case EO_DEC:
+        EO_ENTER(eCode);
+        ArgNil(); // decrement top, push result
         iTopA = *aiDstk;
         iRes = iTopA - 1;
         dLU2(EO_DEC,iTopA,iRes);
         *aiDstk = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DUP: ArgNil(); // duplicate top
+      case EO_DUP:
+        EO_ENTER(eCode);
+        ArgNil(); // duplicate top
         iTopA = *aiDstk;
         dLU1(EO_DUP,iTopA);
         *(++aiDstk) = iTopA;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DUP_STR: ArgNil(); // duplicate top string
+      case EO_DUP_STR:
+        EO_ENTER(eCode);
+        ArgNil(); // duplicate top string
         //vRlu_DUMP(pLU,aiDstk);
         S_StrDup();
         //vRlu_DUMP(pLU,aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
 
-      case EO_POP: ArgNil(); // pop / discard top
+      case EO_POP:
+        EO_ENTER(eCode);
+        ArgNil(); // pop / discard top
         aiDstk--;
         dLU0(EO_POP);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_POP_LOCALI: ArgGet(iArg); // pop into a local reg
+      case EO_POP_LOCALI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop into a local reg
         dLU1(EO_POP_LOCALI, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
         iTopA = *(aiDstk--);
         vLib_SET_LOCAL(pLU, iArg, iTopA);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_POP_LOCALS: ArgGet(iArg); // pop into a local reg
+      case EO_POP_LOCALS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // pop into a local reg
         dLU1(EO_POP_LOCALS, iArg);
         //if (iArg >= C_LOGIC_LOCALS)
         //  vLib_ASSERT(pLU,0);
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_POP_STR: ArgNil(); // pop / discard top string
+      case EO_POP_STR:
+        EO_ENTER(eCode);
+        ArgNil(); // pop / discard top string
         dLU0(EO_POP);
         S_StrDrp();
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PUSH_LOCALI: { ArgGet(iArg); // push a local reg
+      case EO_PUSH_LOCALI: {
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
         d8 x = (d8) aRluCommon->m_iaLocals[iArg];
         *(++aiDstk) = aRluCommon->m_iaLocals[iArg]; //iLib_GET_LOCAL(pLU, iArg);
       }
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
+      case EO_PUSH_LOCALS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALS, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
 
@@ -3726,11 +4546,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         } else {
           S_PushStr(azSrc);
         }
+        EO_EXIT(eCode);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
-      case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
+      case EO_STR_COMPARE:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top stradr and compare str on stack
         dLU0(EO_STR_COMPARE);
         szTopB = (Stz*) *(aiDstk--);
       
@@ -3739,27 +4562,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
         aiDstk -= nWordRoundedStrBytes(nSize)/8;
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
        // string operators
-      case EO_STR_COMPARE_a: ArgNil(); // pop top two azStr and compare
+      case EO_STR_COMPARE_a:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top two azStr and compare
         dLU0(EO_STR_COMPARE_a);
         azTopB = (char*) *(aiDstk--);
         azTopA = (char*) *(aiDstk--);
         iRes = strcmp(azTopA,azTopB);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
+      case EO_STR_PRINTADR:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top and print iArg as addr of string
 #ifdef WITH_TRACE_LOGICUNIT
         azTopA = (char*) *(aiDstk--);
         dLU1(EO_STR_PRINTADR,azTopA);
         printf("[Q%lld.%lld] %s\n",
                aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,azTopA);
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_STR_PRINTSTK: ArgNil(); // pop string from top and print
+      case EO_STR_PRINTSTK:
+        EO_ENTER(eCode);
+        ArgNil(); // pop string from top and print
         iTopA = *(aiDstk--);
         szTopA = (Stz*) (aiDstk-(iTopA/8 + 1));
         printf("EO_STR_PRINTSTK : %lld %p\n",iTopA,(char*)szTopA);
@@ -3767,27 +4599,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         printf("[Q%lld,%lld] %s\n",
                aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,(char*)szTopA);
         aiDstk -= (iTopA/8) + 2;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_STR_LITERAL: { GetStr(iArg); // push address of string literal
+      case EO_STR_LITERAL: {
+        EO_ENTER(eCode);
+        GetStr(iArg); // push address of string literal
         dLU1(EO_STR_LITERAL, iArg);
         Stz *sZ = (Stz *) iArg;
         *(++aiDstk) = (i8) iArg;
       }
+        EO_EXIT(eCode);
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // subroutine operators
-      case EO_CALL: ArgGet(iArg); // call subroutine at location
+      case EO_CALL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // call subroutine at location
         dLU1(EO_CALL,iArg);
 #ifdef __TINYC__
 #else
         * (aeaRstk++) = (eEO*)aeCode;
         aeCode = & m_eaCode[iArg];
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RETURN: ArgNil(); // return from subroutine and
+      case EO_RETURN:
+        EO_ENTER(eCode);
+        ArgNil(); // return from subroutine and
         dLU0(EO_RETURN);
 #ifdef __TINYC__
         return aiDstk;
@@ -3801,9 +4642,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         aeCode = (char*)(* (--aeaRstk));
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RETURN_FALSE: ArgNil(); // return from subroutine on false
+      case EO_RETURN_FALSE:
+        EO_ENTER(eCode);
+        ArgNil(); // return from subroutine on false
         dLU0(EO_RETURN);
 #ifdef __TINYC__
         if (! *(aiDstk--))
@@ -3822,9 +4666,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
 
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RETURN_TRUE: ArgNil(); // return from subroutine on true
+      case EO_RETURN_TRUE:
+        EO_ENTER(eCode);
+        ArgNil(); // return from subroutine on true
         dLU0(EO_RETURN);
 #ifdef __TINYC__
         if ( *(aiDstk--))
@@ -3843,53 +4690,80 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
 
 #endif
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
-      case EO_ASSERT: ArgNil(); // pop top and assert
+      case EO_ASSERT:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top and assert
         iTopA = *(aiDstk--);
         dLU1(EO_ASSERT,iTopA);
         vLib_ASSERT(pLU,(void*)iTopA);
+        EO_EXIT(eCode);
         break;//+endCase
               
-      case EO_BREAKPOINT: ArgNil(); // breakpoint
+      case EO_BREAKPOINT:
+        EO_ENTER(eCode);
+        ArgNil(); // breakpoint
         dLU0(EO_BREAKPOINT);
         vLib_BREAKPOINT(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_CALLAGAIN: ArgNil(); // set call again
+      case EO_CALLAGAIN:
+        EO_ENTER(eCode);
+        ArgNil(); // set call again
         dLU0(EO_CALLAGAIN);
         aRluCommon->m_bCallAgain = 1;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_CALLEDAGAIN: ArgNil(); // push called again
+      case EO_CALLEDAGAIN:
+        EO_ENTER(eCode);
+        ArgNil(); // push called again
         dLU0(EO_CALLEDAGAIN);
         *(++aiDstk) = aRluCommon->m_bCalledAgain;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DUMP: ArgNil(); // stack dump
+      case EO_DUMP:
+        EO_ENTER(eCode);
+        ArgNil(); // stack dump
         dLU0(EO_DUMP);
         //vRlu_DUMP(pLU,aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
               
-      case EO_ENTER: ArgNil(); //  diarise routine enter
-        dLU0(EO_ENTER);
+      case EO_ENTER_LU:
+        EO_ENTER(eCode);
+        ArgNil(); //  diarise routine enter
+        dLU0(EO_ENTER_LU);
         aRluCommon->m_nEnterCount++;
         vRlu_ENTER(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_EXIT: ArgNil(); // diarise routine exit
-        dLU0(EO_EXIT);
+      case EO_EXIT_LU:
+        EO_ENTER(eCode);
+        ArgNil(); // diarise routine exit
+        dLU0(EO_EXIT_LU);
         vRlu_EXIT(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_HANDLER: GetStr(iArg); // set logicUnit handler
-        dLU0(EO_EXIT);
+      case EO_HANDLER:
+        EO_ENTER(eCode);
+        GetStr(iArg); // set logicUnit handler
+        dLU0(EO_HANDLER);
         vRlu_HANDLER(pLU, (Stz*)iArg);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_INIT: ArgNil(); // initialise the rlu common
+      case EO_INIT:
+        EO_ENTER(eCode);
+        ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);
 #ifdef __TINYC__
@@ -3901,9 +4775,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         //printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0,
         //       aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_INTEGRITY: ArgNil(); // integrity  check
+      case EO_INTEGRITY:
+        EO_ENTER(eCode);
+        ArgNil(); // integrity  check
         dLU0(EO_INTEGRITY);
         if (aRluCommon->m_iaDataStack != aiDstk) {
           printf("Dstk growth\n");
@@ -3913,49 +4790,77 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           printf("Dstk underflow\n");
           vLib_ASSERT(pLU,(void*)0);
         }
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_NEVERREACH: ArgNil(); // always assert
+      case EO_NEVERREACH:
+        EO_ENTER(eCode);
+        ArgNil(); // always assert
         dLU0(EO_NEVERREACH);
         vLib_ASSERT(pLU,0);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_SANITY: ArgNil(); // sanity check
+      case EO_SANITY:
+        EO_ENTER(eCode);
+        ArgNil(); // sanity check
         dLU0(EO_SANITY);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_SLEEP: ArgNil(); // sleep for top seconds
+      case EO_SLEEP:
+        EO_ENTER(eCode);
+        ArgNil(); // sleep for top seconds
         iTopA = *(aiDstk--);
         dLU1(EO_SLEEP,iTopA);
         vLib_SLEEP(pLU,iTopA);
+        EO_EXIT(eCode);
         break;//+endCase
               
-      case EO_SQL: ArgGet(iArg); //  set sql no
+      case EO_SQL:
+        EO_ENTER(eCode);
+        ArgGet(iArg); //  set sql no
         dLU0(EO_SQL);
         aRluCommon->m_iSql = iArg;
         vRlu_QUERYFRAG(pLU,iArg);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TABLEPTN: ArgNil(); // push i_TablePtn
+      case EO_TABLEPTN:
+        EO_ENTER(eCode);
+        ArgNil(); // push i_TablePtn
         dLU1(EO_TABLEPTN,aRluCommon->m_i_TablePtn);
         *(++aiDstk) = aRluCommon->m_i_TablePtn;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TRACEOFF: ArgNil(); // set trace off
+      case EO_TRACEOFF:
+        EO_ENTER(eCode);
+        ArgNil(); // set trace off
         aRluCommon->m_bTrace = 0;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TRACEON: ArgNil(); // set trace on
+      case EO_TRACEON:
+        EO_ENTER(eCode);
+        ArgNil(); // set trace on
         aRluCommon->m_bTrace = 1;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_NOOP: ArgNil(); // no op
+      case EO_NOOP:
+        EO_ENTER(eCode);
+        ArgNil(); // no op
         dLU0(EO_NOOP);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ERROR: ArgNil(); // error marker
+      case EO_ERROR:
+        EO_ENTER(eCode);
+        ArgNil(); // error marker
         dLU0(EO_ERROR);
         vLib_ERROR(pLU,"Code compiled with error"_Stz);
+        EO_EXIT(eCode);
         break;//+endCase
         
 
@@ -3964,99 +4869,147 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
-      case EO_DTE_NOW: ArgNil(); // push current date
+      case EO_DTE_NOW:
+        EO_ENTER(eCode);
+        ArgNil(); // push current date
         iRes = iLib_DTE_NOW(pLU);
         dLU1(EO_DTE_NOW,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DTE_PRINT: ArgNil(); // pop top and print as date
+      case EO_DTE_PRINT:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top and print as date
         iTopA = *(aiDstk--);
         szRes = szLib_DTE_PRINT(pLU,iTopA);
         printf("[Q%lld.%lld] %s\n",
                aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,(char*)szRes);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
+      case EO_DTE_YEAR:
+        EO_ENTER(eCode);
+        ArgNil(); // pop top, push year of date
         iTopA = *(aiDstk--);
         iRes = iLib_DTE_YEAR(pLU,iTopA);
         dLU1(EO_DTE_NOW,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // hashing
-      case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
+      case EO_HSH_ADD_HASHI:
+        EO_ENTER(eCode);
+        ArgNil(); // add hash of top int to running hash
         iTopA = *(aiDstk--);
         dLU1(EO_HSH_ADD_HASHI,iTopA);
         vLib_HSH_ADD_HASHI(pLU,iTopA);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_HSH_RESET: ArgNil(); // reset hash
+      case EO_HSH_RESET:
+        EO_ENTER(eCode);
+        ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
         aRluCommon->m_iHash = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
-      case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
+      case EO_PTN_CALC:
+        EO_ENTER(eCode);
+        ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
         vLib_PTN_CALC(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
+      case EO_PTN_PUSH:
+        EO_ENTER(eCode);
+        ArgNil(); // push m_i_Ptn
         dLU1(EO_PTN_PUSH,aRluCommon->m_i_Ptn);
         *(++aiDstk) = aRluCommon->m_i_Ptn;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PTN_RESET: ArgNil(); // reset running m_iHash
+      case EO_PTN_RESET:
+        EO_ENTER(eCode);
+        ArgNil(); // reset running m_iHash
         dLU0(EO_PTN_RESET);
         aRluCommon->m_iHash = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
+      case EO_PTN_RUNNING:
+        EO_ENTER(eCode);
+        ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
         vLib_PTN_RUNNING(pLU,iTopA);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // timer
-      case EO_TMR_SINCE: ArgNil(); // get nsecs since ::constructor
+      case EO_TMR_SINCE:
+        EO_ENTER(eCode);
+        ArgNil(); // get nsecs since ::constructor
         iRes = iRlu_TMR_SINCE(pLU);
         dLU1(EO_TMR_SINCE,iRes);
-        *(++aiDstk) = iRes;        break;//+endCase
-        
-      case EO_TMR_START: ArgNil(); // timer start
-        dLU0(EO_TMR_START);
-        vRlu_TMR_START(pLU);
+        *(++aiDstk) = iRes;        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
+      case EO_TMR_START:
+        EO_ENTER(eCode);
+        ArgNil(); // timer start
+        dLU0(EO_TMR_START);
+        vRlu_TMR_START(pLU);
+        EO_EXIT(eCode);
+        break;//+endCase
+        
+      case EO_TMR_NSECS:
+        EO_ENTER(eCode);
+        ArgNil(); // push timer nanoseconds
         iRes = iRlu_TMR_NSECS(pLU);
         dLU1(EO_TMR_NSECS,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TMR_UPDATE: ArgNil(); // timer update
+      case EO_TMR_UPDATE:
+        EO_ENTER(eCode);
+        ArgNil(); // timer update
         dLU0(EO_TMR_UPDATE);
         vRlu_TMR_UPDATE(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
+      case EO_TMR_AGG_ADD:
+        EO_ENTER(eCode);
+        ArgNil(); // add timer to agg timer
         dLU0(EO_TMR_AGG_ADD);
         vRlu_TMR_AGG_ADD(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
+      case EO_TMR_AGG_NSECS:
+        EO_ENTER(eCode);
+        ArgNil(); // push agg nanoseconds
         iRes = iRlu_TMR_AGG_NSECS(pLU);
         dLU1(EO_TMR_AGG_NSECS,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
+      case EO_TMR_AGG_RESET:
+        EO_ENTER(eCode);
+        ArgNil(); // reset agg timer
         dLU0(EO_TMR_AGG_RESET);
         vRlu_TMR_AGG_RESET(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
           
 
@@ -4064,15 +5017,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu column set
-      case EO_RLU_SET_COLUMN: ArgGet(iArg); // add column to set
+      case EO_RLU_SET_COLUMN:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // add column to set
         dLU1(EO_RLU_SET_COLUMN,iArg);
         aRluCommon->m_iaColSet[--aRluCommon->m_i_ColSet] = iArg;
         //*(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         // columns set
-      case EO_RLU_SET_COLUMNS: { ArgGet(iArg); // add columns to set
+      case EO_RLU_SET_COLUMNS: {
+        EO_ENTER(eCode);
+        ArgGet(iArg); // add columns to set
         dLU1(EO_RLU_SET_COLUMNS, iArg);
         i8 iCol = 0;
 
@@ -4095,503 +5053,758 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         aRluCommon->m_iaColSet[iCol] = C_UNKNOWN;
       }
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_SET_ITEMS: ArgGet(iArg); // set number of column items
+      case EO_RLU_SET_ITEMS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // set number of column items
         dLU1(EO_RLU_SET_ITEMS,iArg);
         aRluCommon->m_i_ColSet = iArg;
         aRluCommon->m_iaColSet[aRluCommon->m_i_ColSet] = C_UNKNOWN;
         //*(++aiDstk) = -1;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu joinmap reset
-      case EO_RLU_RESET_JOINMAP: ArgNil(); // set byte in joinmap if not already set
+      case EO_RLU_RESET_JOINMAP:
+        EO_ENTER(eCode);
+        ArgNil(); // set byte in joinmap if not already set
         dLU0(EO_RLU_RESET_JOINMAP);
         for (i8 i_Byte = 0; i_Byte < aRluCommon->m_nJoinMapCnt; i_Byte++)
           m_xRluCommon.m_baJoinMap[i_Byte] = 0;
         aRluCommon->m_nJoinMapCnt = 0;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu joinmap set
-      case EO_RLU_SET_JOINMAP_BYTE: ArgNil(); // set byte in joinmap
+      case EO_RLU_SET_JOINMAP_BYTE:
+        EO_ENTER(eCode);
+        ArgNil(); // set byte in joinmap
         dLU0(EO_RLU_SET_JOINMAP_BYTE);
         iTopA = *(aiDstk--);
         aRluCommon->m_baJoinMap[iTopA] = 1;
         aRluCommon->m_nJoinMapCnt++;
         //*(++aiDstk) = iArg;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu operators
-      case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDef in rlu
+      case EO_RLU_INDEXDEF_ADDCOLUMN:
+        EO_ENTER(eCode);
+        ArgNil(); // add a column to indexDef in rlu
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
         vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);  // dstk: column name / column type / indexdef
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_INDEXDEF_DELETE: ArgNil();   // delete the indexDef from rlu
+      case EO_RLU_INDEXDEF_DELETE:
+        EO_ENTER(eCode);
+        ArgNil();   // delete the indexDef from rlu
         dLU0(EO_RLU_INDEXDEF_DELETE);
         vDev_RLU_INDEXDEF_DELETE(&aiDstk);     // dstk: indexdef
         aRluCommon->m_pIndexDef = nullptr;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_INDEXDEF_NEW: ArgNil();      // new an indexDef in the rlu
+      case EO_RLU_INDEXDEF_NEW:
+        EO_ENTER(eCode);
+        ArgNil();      // new an indexDef in the rlu
         dLU0(EO_RLU_INDEXDEF_NEW);
         vDev_RLU_INDEXDEF_NEW(&aiDstk);        // dstk: name
         aRluCommon->m_pIndexDef = P_PopPtr();
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_INDEXTREE_NEW: ArgNil();     // new an indexTree in the rlu
+      case EO_RLU_INDEXTREE_NEW:
+        EO_ENTER(eCode);
+        ArgNil();     // new an indexTree in the rlu
         dLU0(EO_RLU_INDEXTREE_NEW);
         vDev_RLU_INDEXTREE_NEW(&aiDstk);       // dstk: indexdef
         aRluCommon->m_pIndexTree = P_PopPtr();
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_ROWPIX_PRINT: ArgNil();      // print row pix from rlu
+      case EO_RLU_ROWPIX_PRINT:
+        EO_ENTER(eCode);
+        ArgNil();      // print row pix from rlu
         dLU0(EO_RLU_ROWPIX_PRINT);
         vDev_RLU_ROWPIX_PRINT(&aiDstk);        // dstk: rowPix
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_RLU_POT_COMPLETED: ArgNil();     // do we have a full pot buffer ?
+      case EO_RLU_POT_COMPLETED:
+        EO_ENTER(eCode);
+        ArgNil();     // do we have a full pot buffer ?
         dLU0(EO_RLU_POT_COMPLETED);
         *(++aiDstk) = aRluCommon->m_bPotCompleted;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device col operators
-      case EO_DEVIXT_COLS_TO_LOCALS: ArgNil(); // inflate dev columns direct into locals
+      case EO_DEVIXT_COLS_TO_LOCALS:
+        EO_ENTER(eCode);
+        ArgNil(); // inflate dev columns direct into locals
         dLU0(EO_DEVIXT_COLS_TO_LOCALS);
         //vRlu_DUMP(pLU,aiDstk);
         vDev_IXT_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow / devIxt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_COLS_TO_ROW: ArgNil();    // inflate dev columns to dev row
+      case EO_DEVIXT_COLS_TO_ROW:
+        EO_ENTER(eCode);
+        ArgNil();    // inflate dev columns to dev row
         dLU0(EO_DEVIXT_COLS_TO_ROW);
         vDev_IXT_COLS_TO_ROW(&aiDstk);         // devRow / devIxt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_COLS_TO_ROW_OFS: ArgNil();  // inflate dev columns to dev row at offset column
+      case EO_DEVIXT_COLS_TO_ROW_OFS:
+        EO_ENTER(eCode);
+        ArgNil();  // inflate dev columns to dev row at offset column
         dLU0(EO_DEVIXT_COLS_TO_ROW_OFS);
         vDev_IXT_COLS_TO_ROW_OFS(&aiDstk);         // devRow / devIxt
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device col operators
-      case EO_DEVROW_COLS_PUSHSET_PST: ArgNil(); // push column value from dev
+      case EO_DEVROW_COLS_PUSHSET_PST:
+        EO_ENTER(eCode);
+        ArgNil(); // push column value from dev
         vDev_ROW_COLS_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
         dLU0(EO_DEVROW_COLS_PUSHSET_PST);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
+      case EO_DEVROW_COLS_TO_LOCALS:
+        EO_ENTER(eCode);
+        ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COLS_TO_LOCALS);
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_COLS_TO_ROW: ArgNil(); // row buffer columns of row dev into row
+      case EO_DEVROW_COLS_TO_ROW:
+        EO_ENTER(eCode);
+        ArgNil(); // row buffer columns of row dev into row
         dLU0(EO_DEVROW_COLS_TO_ROW);
         vDev_ROW_COLS_TO_ROW(&aiDstk);      //  src devRow / dst devRow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_COLS_TO_ROW_OFS: ArgNil(); // row buffer columns of row dev into row at offset column
+      case EO_DEVROW_COLS_TO_ROW_OFS:
+        EO_ENTER(eCode);
+        ArgNil(); // row buffer columns of row dev into row at offset column
         dLU0(EO_DEVROW_COLS_TO_ROW_OFS);
         vDev_ROW_COLS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_NULS_TO_ROW_OFS: ArgNil(); // row buffer columns of row dev into row at offset column
+      case EO_DEVROW_NULS_TO_ROW_OFS:
+        EO_ENTER(eCode);
+        ArgNil(); // row buffer columns of row dev into row at offset column
         dLU0(EO_DEVROW_NULS_TO_ROW_OFS);
         vDev_ROW_NULS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
+        EO_EXIT(eCode);
         break;//+endCase
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device crwbuffer operators
-      case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
+      case EO_DEVIXT_CRWBUF_BEGIN:
+        EO_ENTER(eCode);
+        ArgNil(); // begin row traverse
         dLU0(EO_DEVIXT_CRWBUF_BEGIN);
         vDev_IXT_CRWBUF_BEGIN(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_FINDCRW: ArgNil(); // find crw row given rowno
+      case EO_DEVIXT_CRWBUF_FINDCRW:
+        EO_ENTER(eCode);
+        ArgNil(); // find crw row given rowno
         dLU0(EO_DEVIXT_CRWBUF_FINDCRW);
         vDev_IXT_CRWBUF_FINDCRW(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_NEXT: ArgNil(); // move to next row
+      case EO_DEVIXT_CRWBUF_NEXT:
+        EO_ENTER(eCode);
+        ArgNil(); // move to next row
         dLU0(EO_DEVIXT_CRWBUF_NEXT);
         vDev_IXT_CRWBUF_NEXT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
+      case EO_DEVIXT_CRWBUF_NULL:
+        EO_ENTER(eCode);
+        ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
         vDev_IXT_CRWBUF_NULL(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_ROWCNT: ArgNil(); // push row count of crwbuffer
+      case EO_DEVIXT_CRWBUF_ROWCNT:
+        EO_ENTER(eCode);
+        ArgNil(); // push row count of crwbuffer
         dLU0(EO_DEVIXT_CRWBUF_ROWCNT);
         vDev_IXT_CRWBUF_ROWCNT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_ROWNO: ArgNil(); // push rowno of crwbuffer
+      case EO_DEVIXT_CRWBUF_ROWNO:
+        EO_ENTER(eCode);
+        ArgNil(); // push rowno of crwbuffer
         dLU0(EO_DEVIXT_CRWBUF_ROWNO);
         vDev_IXT_CRWBUF_ROWNO(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_CRWBUF_TEST: ArgNil(); // test for crw
+      case EO_DEVIXT_CRWBUF_TEST:
+        EO_ENTER(eCode);
+        ArgNil(); // test for crw
         dLU0(EO_DEVIXT_CRWBUF_TEST);
         vDev_IXT_CRWBUF_TEST(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entry operators
-      case EO_DEVIXT_ENT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
+      case EO_DEVIXT_ENT_DEREF:
+        EO_ENTER(eCode);
+        ArgNil(); // deref Crw using m_aEnt.ref
         dLU0(EO_DEVIXT_ENT_DEREF);
         vDev_IXT_ENT_DEREF(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_ENT_FINDI: ArgNil(); // find entry with int key
+      case EO_DEVIXT_ENT_FINDI:
+        EO_ENTER(eCode);
+        ArgNil(); // find entry with int key
         dLU0(EO_DEVIXT_ENT_FINDI);
         P_PushPtr(aRluCommon->m_aWrkEnt);
         vDev_IXT_ENT_FIND(&aiDstk);       // devixt / entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_ENT_NEXT: ArgNil(); // move to next m_pEnt
+      case EO_DEVIXT_ENT_NEXT:
+        EO_ENTER(eCode);
+        ArgNil(); // move to next m_pEnt
         dLU0(EO_DEVIXT_ENT_NEXT);
         vDev_IXT_ENT_NEXT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
+      case EO_DEVIXT_ENT_POSPRIOR:
+        EO_ENTER(eCode);
+        ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_DEVIXT_ENT_POSPRIOR);
         P_PushPtr(aRluCommon->m_aWrkEnt);
         vDev_IXT_ENT_POSPRIOR(&aiDstk);      // devixt / entry
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENT_PUSH: ArgNil(); // push entry on the stack
+      case EO_DEVIXT_ENT_PUSH:
+        EO_ENTER(eCode);
+        ArgNil(); // push entry on the stack
         dLU0(EO_DEVIXT_ENT_PUSH);
         vDev_IXT_ENT_PUSH(&aiDstk);         // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
+      case EO_DEVIXT_ENT_PUSHELMI0:
+        EO_ENTER(eCode);
+        ArgNil(); // push entry elm 0 int
         dLU0(EO_DEVIXT_ENT_PUSHELMI0);
         vDev_IXT_ENT_PUSHELMI0(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
+      case EO_DEVIXT_ENT_PUSHELMS0:
+        EO_ENTER(eCode);
+        ArgNil(); // push entry elm 0 str
         dLU0(EO_DEVIXT_ENT_PUSHELMS0);
         vDev_IXT_ENT_PUSHELMS0(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
+      case EO_DEVIXT_ENT_PUSHUPPER:
+        EO_ENTER(eCode);
+        ArgNil(); // push entry on the stack
         dLU0(EO_DEVIXT_ENT_PUSHUPPER);
         vDev_IXT_ENT_PUSHUPPER(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entry relational operators
-      case EO_DEVIXT_ENTKEY_LESS: ArgNil(); // test if dev m_pEnt.key <  ent.key
+      case EO_DEVIXT_ENTKEY_LESS:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key <  ent.key
         vDev_IXT_ENT_COMPARE(&aiDstk);      // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_LESS, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENTKEY_LESSEQUAL: ArgNil(); // test if dev m_pEnt.key <= m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_LESSEQUAL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key <= m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);           // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp || KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_LESSEQUAL, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENTKEY_EQUAL: ArgNil(); // test if dev m_pEnt.key == m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_EQUAL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key == m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);       // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_EQUAL, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENTKEY_NOTEQUAL: ArgNil(); // test if dev m_pEnt.key != m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_NOTEQUAL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key != m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);          // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_SAME != iCmp);
         dLU1(EO_DEVIXT_ENTKEY_NOTEQUAL, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENTKEY_GREATEREQUAL: ArgNil(); // test if dev m_pEnt.key >= m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_GREATEREQUAL:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key >= m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);              // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp || KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_GREATEREQUAL, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_ENTKEY_GREATER: ArgNil(); // test if dev m_pEnt.key >  m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_GREATER:
+        EO_ENTER(eCode);
+        ArgNil(); // test if dev m_pEnt.key >  m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);         // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_GREATER, iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_ENTKEY_PRINTKEYS: ArgNil(); // print dev m_pEnt.key and other working key
+      case EO_DEVIXT_ENTKEY_PRINTKEYS:
+        EO_ENTER(eCode);
+        ArgNil(); // print dev m_pEnt.key and other working key
         vDev_IXT_ENT_PRINTKEYS(&aiDstk);         // devixt / entry
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entwrk operators
-      case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
+      case EO_ENTWRK_PRINT:
+        EO_ENTER(eCode);
+        ArgNil(); // print m_oEntWrk
         dLU0(EO_ENTWRK_PRINT);
         vDev_ENTWRK_PRINT(&aiDstk);   // entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_PUSHELMI: ArgGet(iArg); // push element of entwrk
+      case EO_ENTWRK_PUSHELMI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push element of entwrk
         dLU0(EO_ENTWRK_PUSHELMI);
         *(++aiDstk) = iArg;
         vDev_ENTWRK_PUSHELMI(&aiDstk);   // entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_PUSHELMS: ArgGet(iArg); // push string element of entwrk
+      case EO_ENTWRK_PUSHELMS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // push string element of entwrk
         dLU0(EO_ENTWRK_PUSHELMS);
         *(++aiDstk) = iArg;
         vDev_ENTWRK_PUSHELMS(&aiDstk);   // entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
+      case EO_ENTWRK_RESET:
+        EO_ENTER(eCode);
+        ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
         vDev_ENTWRK_RESET(&aiDstk);   // entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_SETENTKND: ArgNil(); // set the ent kind
+      case EO_ENTWRK_SETENTKND:
+        EO_ENTER(eCode);
+        ArgNil(); // set the ent kind
         dLU0(EO_ENTWRK_SETENTKND);
         vDev_ENTWRK_SETENTKND(&aiDstk);   // int /entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
+      case EO_ENTWRK_SETINTELM:
+        EO_ENTER(eCode);
+        ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
         vDev_ENTWRK_SETINTELM(&aiDstk);   // int /entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_ENTWRK_SETSTZELM: ArgNil(); // append next element value (stz)
+      case EO_ENTWRK_SETSTZELM:
+        EO_ENTER(eCode);
+        ArgNil(); // append next element value (stz)
         dLU0(EO_ENTWRK_SETSTZELM);
         vDev_ENTWRK_SETSTZELM(&aiDstk);   // stz /entry
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device index operators
-      case EO_DEVIXT_IDX_DEL: ArgNil(); // delete current m_aEnt from indexTree
+      case EO_DEVIXT_IDX_DEL:
+        EO_ENTER(eCode);
+        ArgNil(); // delete current m_aEnt from indexTree
         dLU0(EO_DEVIXT_IDX_DEL);
         vDev_IXT_IDX_DEL(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_IDX_DUMP: ArgNil(); // dump index tree
+      case EO_DEVIXT_IDX_DUMP:
+        EO_ENTER(eCode);
+        ArgNil(); // dump index tree
         dLU0(EO_DEVIXT_IDX_DUMP);
         vDev_IXT_IDX_DUMP(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in dev index
+      case EO_DEVIXT_IDX_ENTRIES:
+        EO_ENTER(eCode);
+        ArgNil(); // push number of entries in dev index
         dLU0(EO_DEVIXT_IDX_ENTRIES);
         vDev_IXT_IDX_ENTRIES(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_IDX_INS: ArgNil(); // insert an entry into the indexTree
+      case EO_DEVIXT_IDX_INS:
+        EO_ENTER(eCode);
+        ArgNil(); // insert an entry into the indexTree
         dLU0(EO_DEVIXT_IDX_INS);
         vDev_IXT_IDX_INS(&aiDstk);      // devixt/ entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse
+      case EO_DEVIXT_IDX_BEGIN:
+        EO_ENTER(eCode);
+        ArgNil(); // begin linear traverse
         dLU0(EO_DEVIXT_IDX_BEGIN);
         vDev_IXT_IDX_BEGIN(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
+      case EO_DEVIXT_IDX_NEXT:
+        EO_ENTER(eCode);
+        ArgNil(); // traverse to next entry
         dLU0(EO_DEVIXT_IDX_NEXT);
         vDev_IXT_IDX_NEXT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_LBOUND_GE: ArgNil(); // pos in buffer to entry before LBOUND
+      case EO_DEVIXT_LBOUND_GE:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND_GE);
         vDev_IXT_POS_LBOUND_GE(&aiDstk);  // entry / devixt
-      break;//+endCase
+      EO_EXIT(eCode);
+        break;//+endCase
 
-      case EO_DEVIXT_LBOUND_GT: ArgNil(); // pos in buffer to entry before LBOUND
+      case EO_DEVIXT_LBOUND_GT:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND_GT);
         vDev_IXT_POS_LBOUND_GT(&aiDstk);  // entry / devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_UBOUND_LE: ArgNil(); // pos in buffer to entry for UBOUND
+      case EO_DEVIXT_UBOUND_LE:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_DEVIXT_UBOUND_LE);
         vDev_IXT_POS_UBOUND_LE(&aiDstk);      // entry / devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
+      case EO_DEVIXT_UBOUND_LT:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_DEVIXT_UBOUND_LT);
         vDev_IXT_POS_UBOUND_LT(&aiDstk);  // entry / devixt
+        EO_EXIT(eCode);
         break;//+endCase
         
-      case EO_DEVIXT_CMP_KEYS: ArgNil(); // compare keys of two devices
+      case EO_DEVIXT_CMP_KEYS:
+        EO_ENTER(eCode);
+        ArgNil(); // compare keys of two devices
         dLU0(EO_DEVIXT_CMP_KEYS);
         vDev_IXT_CMP_KEYS(&aiDstk);     // entry / entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_POS_BYKEY: ArgNil(); // position alt ixt using src.key
+      case EO_DEVIXT_POS_BYKEY:
+        EO_ENTER(eCode);
+        ArgNil(); // position alt ixt using src.key
         dLU0(EO_DEVIXT_POS_BYKEY);
         vDev_IXT_POS_BYKEY(&aiDstk);      // devixt / entry
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent
+      case EO_DEVIXT_ENT_PRINT:
+        EO_ENTER(eCode);
+        ArgNil(); // print ent
         dLU0(EO_DEVIXT_ENT_PRINT);
         vDev_IXT_ENT_PRINT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device index set operators
-      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // ALKA: set the index name
+      case EO_DEVIXT_INDEXNM_SET:
+        EO_ENTER(eCode);
+        GetStr(iArg); // ALKA: set the index name
         dLU0(EO_DEVIXT_INDEXNM_SET);
         S_PushStr(iArg);
         vDev_IXT_INDEXNM_SET(&aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
+      case EO_DEVIXT_INDEXTREE_SET:
+        EO_ENTER(eCode);
+        ArgNil(); // set indexTree from indexTree[]
         dLU0(EO_DEVIXT_INDEXTREE_SET);
         vDev_IXT_INDEXTREE_SET(&aiDstk);      // indextree / devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device entWrk operators
-      case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
+      case EO_DEVROW_ENTWRK_APPENDELMI:
+        EO_ENTER(eCode);
+        ArgNil(); // append next element value (int)
         dLU0(EO_DEVROW_ENTWRK_APPENDELMI);
         vDev_ROW_ENTWRK_APPENDELMI(&aiDstk);      // entry / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
+      case EO_DEVROW_ENTWRK_APPENDELMS:
+        EO_ENTER(eCode);
+        ArgNil(); // append next element value (str)
         dLU0(EO_DEVROW_ENTWRK_APPENDELMS);
         vDev_ROW_ENTWRK_APPENDELMS(&aiDstk);      // entry / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ENTWRK_CREATEPAY: ArgGet(iArg); // ALKA: create a payload in entwrk
+      case EO_DEVROW_ENTWRK_CREATEPAY:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // ALKA: create a payload in entwrk
         dLU1(EO_DEVROW_ENTWRK_CREATEPAY,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_ENTWRK_CREATEPAY(&aiDstk);          // entry / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_TABLENM_SET: GetStr(iArg); // ALKA: set tablenm in dev row
+      case EO_DEVROW_TABLENM_SET:
+        EO_ENTER(eCode);
+        GetStr(iArg); // ALKA: set tablenm in dev row
         dLU0(EO_DEVROW_TABLENM_SET);
         S_PushStr(iArg);
         vDev_ROW_TABLENM_SET(&aiDstk);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device row operators
-      case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
+      case EO_DEVROW_ROW_NEW:
+        EO_ENTER(eCode);
+        ArgNil(); // create new row
         dLU0(EO_DEVROW_ROW_NEW);
         vDev_ROW_ROW_NEW(&aiDstk);     // devrow / pot /ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROW_PRINT: ArgNil(); // print row
+      case EO_DEVROW_ROW_PRINT:
+        EO_ENTER(eCode);
+        ArgNil(); // print row
         dLU0(EO_DEVROW_ROW_PRINT);
         vDev_ROW_ROW_PRINT(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROW_SET: ArgNil(); // set dst row
+      case EO_DEVROW_ROW_SET:
+        EO_ENTER(eCode);
+        ArgNil(); // set dst row
         dLU0(EO_DEVROW_ROW_SET);
         vDev_ROW_ROW_SET(&aiDstk);      // rowNo / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROW_TEST: ArgNil(); // test for row
+      case EO_DEVROW_ROW_TEST:
+        EO_ENTER(eCode);
+        ArgNil(); // test for row
         dLU0(EO_DEVROW_ROW_TEST);
         vDev_ROW_ROW_TEST(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROW_ZERO: ArgNil(); // zero device row
+      case EO_DEVROW_ROW_ZERO:
+        EO_ENTER(eCode);
+        ArgNil(); // zero device row
         dLU0(EO_DEVROW_ROW_ZERO);
         vDev_ROW_ROW_ZERO(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device row buffer operators
-      case EO_DEVROW_ROWBUF_BEGIN: ArgNil(); // begin row traverse
+      case EO_DEVROW_ROWBUF_BEGIN:
+        EO_ENTER(eCode);
+        ArgNil(); // begin row traverse
         dLU0(EO_DEVROW_ROWBUF_BEGIN);
         vDev_ROW_ROWBUF_BEGIN(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_FINDROW: ArgNil(); // find crw row given rowno
+      case EO_DEVROW_ROWBUF_FINDROW:
+        EO_ENTER(eCode);
+        ArgNil(); // find crw row given rowno
         dLU0(EO_DEVROW_ROWBUF_FINDROW);
         vDev_ROW_ROWBUF_FINDROW(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_NEXT: ArgNil(); // move to next row
+      case EO_DEVROW_ROWBUF_NEXT:
+        EO_ENTER(eCode);
+        ArgNil(); // move to next row
         dLU0(EO_DEVROW_ROWBUF_NEXT);
         vDev_ROW_ROWBUF_NEXT(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_NULL: ArgNil(); // null the buffer
+      case EO_DEVROW_ROWBUF_NULL:
+        EO_ENTER(eCode);
+        ArgNil(); // null the buffer
         dLU0(EO_DEVROW_ROWBUF_NULL);
         vDev_ROW_ROWBUF_NULL(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_RESET: ArgNil(); // reset rowslab
+      case EO_DEVROW_ROWBUF_RESET:
+        EO_ENTER(eCode);
+        ArgNil(); // reset rowslab
         dLU0(EO_DEVROW_ROWBUF_RESET);
         vDev_ROW_ROWBUF_RESET(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_ROWCNT: ArgNil(); // push row count of rowbuffer
+      case EO_DEVROW_ROWBUF_ROWCNT:
+        EO_ENTER(eCode);
+        ArgNil(); // push row count of rowbuffer
         dLU0(EO_DEVROW_ROWBUF_ROWCNT);
         vDev_ROW_ROWBUF_ROWCNT(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_ROWNO: ArgNil(); // push rowno of crwbuffer
+      case EO_DEVROW_ROWBUF_ROWNO:
+        EO_ENTER(eCode);
+        ArgNil(); // push rowno of crwbuffer
         dLU0(EO_DEVROW_ROWBUF_ROWNO);
         vDev_ROW_ROWBUF_ROWNO(&aiDstk);      // devixt
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_ROWBUF_TEST: ArgNil(); // test for buffer
+      case EO_DEVROW_ROWBUF_TEST:
+        EO_ENTER(eCode);
+        ArgNil(); // test for buffer
         dLU0(EO_DEVROW_ROWBUF_TEST);
         vDev_ROW_ROWBUF_TEST(&aiDstk);      // devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       //  row device column operators
-      case EO_DEVROW_POPCOLI: ArgGet(iArg); // ALKA: pop and deposit top into dev column
+      case EO_DEVROW_POPCOLI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // ALKA: pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU2(EO_DEVROW_POPCOLI,iArg,iTopA);
         vDev_ROW_POPCOLI(&aiDstk);          // columnNo / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_POPCOLS: ArgGet(iArg); // ALKA : pop and deposit top into dev column
+      case EO_DEVROW_POPCOLS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // ALKA : pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU1(EO_DEVROW_POPCOLS,iArg);
         vDev_ROW_POPCOLS(&aiDstk);         // columnNo / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // ALKA: push column
+      case EO_DEVROW_PUSHCOLI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // ALKA: push column
         dLU1(EO_DEVROW_PUSHCOLI,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_PUSHCOLI(&aiDstk);         // columnNo / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVROW_PUSHCOLS: ArgGet(iArg); // ALKA: push column
+      case EO_DEVROW_PUSHCOLS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // ALKA: push column
         dLU1(EO_DEVROW_PUSHCOLS,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_PUSHCOLS(&aiDstk);          // columnNo / devrow
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load operators
-      case EO_PAY_ADDRESS: ArgNil(); // get payload address
+      case EO_PAY_ADDRESS:
+        EO_ENTER(eCode);
+        ArgNil(); // get payload address
         dLU0(EO_PAY_ADDRESS);
         vDev_PAY_ADDRESS(&aiDstk);
         aiPayload = (i8*)*(aiDstk--);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
+      case EO_PAY_FETCH_COLI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // fetch a column from entry payload
         iRes = aiPayload[iArg];
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
+      case EO_PAY_FETCH_COLS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // fetch a column from entry payload
         if (aiPayload[iArg] == C_DATUM_NULL) {
           *(++aiDstk) = C_DATUM_NULL;
         }
@@ -4602,18 +5815,25 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           dLU2(EO_PAY_FETCH_COLS, iArg, (i8) azSrc);
           S_PushStr(azSrc);
         }
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
+      case EO_PAY_STORE_COLI:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // store a column into entry payload
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iTopA);
         aiPayload[iArg] = iTopA;
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
+      case EO_PAY_STORE_COLS:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLS,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -4622,26 +5842,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // set int element
-      case EO_ENTWRK_SETINTELM_OLD: ArgNil(); // append next element value (int)
+      case EO_ENTWRK_SETINTELM_OLD:
+        EO_ENTER(eCode);
+        ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM_OLD);
         vDev_ENTWRK_SETINTELM_OLD(&aiDstk);   // int /entry
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device col operators
-      case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
+      case EO_DEVIXT_COL_PUSHSET_ADR:
+        EO_ENTER(eCode);
+        ArgNil(); // push column value from dev crw
         vDev_IXT_COL_PUSHSET_ADR(&aiDstk);
         dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from dev
+      case EO_DEVIXT_COL_PUSHSET_PST:
+        EO_ENTER(eCode);
+        ArgNil(); // push column value from dev
         vDev_IXT_COL_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // key
-      case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two lcl varchar(1) to int
+      case EO_KEY_LCL2C_TO_I:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // convert two lcl varchar(1) to int
         dLU1(EO_KEY_LCL2C_TO_I,iArg);
         aiLocals = aRluCommon->m_iaLocals;
 //        azTopA = (char*)aiLocals[giaVectorSet[iArg]];
@@ -4651,9 +5882,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         *(++aiDstk) = *(char*)aiLocals[giaVectorSet[iArg]] * 256
                       + *(char*)aiLocals[giaVectorSet[iArg+1]];
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_KEY_ROW2C_TO_I: ArgGet(iArg); // convert two row varchar(1) to int
+      case EO_KEY_ROW2C_TO_I:
+        EO_ENTER(eCode);
+        ArgGet(iArg); // convert two row varchar(1) to int
         dLU1(EO_KEY_ROW2C_TO_I,iArg);
         azTopA = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevLftRow,
                                            giaVectorSet[iArg]);
@@ -4661,61 +5895,91 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                                            giaVectorSet[iArg+1]);
         iRes = *azTopA * 256 + *azTopB;
         *(++aiDstk) = iRes;
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // register operators
-      case EO_REG_EOSMARKER_NEW: ArgNil(); // new an EosMarker in OperandA[]
+      case EO_REG_EOSMARKER_NEW:
+        EO_ENTER(eCode);
+        ArgNil(); // new an EosMarker in OperandA[]
         dLU0(EO_REG_EOSMARKER_NEW);
         vDev_REG_EOSMARKER_NEW(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
+      case EO_REG_PTNSTREAM_CLOSE:
+        EO_ENTER(eCode);
+        ArgNil(); // close ptnStream[]
         dLU0(EO_REG_PTNSTREAM_CLOSE);
         vDev_REG_PTNSTREAM_CLOSE(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_PTNSTREAM_DELETE: ArgNil(); // delete ptnStream[]
+      case EO_REG_PTNSTREAM_DELETE:
+        EO_ENTER(eCode);
+        ArgNil(); // delete ptnStream[]
         dLU0(EO_REG_PTNSTREAM_DELETE);
         vDev_REG_PTNSTREAM_DELETE(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_PTNSTREAM_NEW: ArgNil(); // new an ptnStream in ptnStream[]
+      case EO_REG_PTNSTREAM_NEW:
+        EO_ENTER(eCode);
+        ArgNil(); // new an ptnStream in ptnStream[]
         dLU0(EO_REG_PTNSTREAM_NEW);
         vDev_REG_PTNSTREAM_NEW(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_PTNSTREAM_OPEN: ArgNil(); // new an ptnStream in ptnStream[]
+      case EO_REG_PTNSTREAM_OPEN:
+        EO_ENTER(eCode);
+        ArgNil(); // new an ptnStream in ptnStream[]
         dLU0(EO_REG_PTNSTREAM_OPEN);
         vDev_REG_PTNSTREAM_OPEN(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_PTNSTREAM_READ: ArgNil(); // read from ptnStream[]
+      case EO_REG_PTNSTREAM_READ:
+        EO_ENTER(eCode);
+        ArgNil(); // read from ptnStream[]
         dLU0(EO_REG_PTNSTREAM_READ);
         vDev_REG_PTNSTREAM_READ(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDefLft[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT:
+        EO_ENTER(eCode);
+        ArgNil(); // new a streamDefOut[] from StreamDefLft[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new a streamDef in streamDefOut[]
+      case EO_REG_STREAMDEFOUT_NEW:
+        EO_ENTER(eCode);
+        ArgNil(); // new a streamDef in streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_NEW);
         vDev_REG_STREAMDEFOUT_NEW(pLU);
+        EO_EXIT(eCode);
         break;//+endCase
 
-      case EO_REG_STREAMDEFOUT_ADDCOLUMN: GetStr(iArg); // add a column to streamDefOut[]
+      case EO_REG_STREAMDEFOUT_ADDCOLUMN:
+        EO_ENTER(eCode);
+        GetStr(iArg); // add a column to streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_ADDCOLUMN);
         iTopA = *(aiDstk--); // column type
         iTopB = *(aiDstk--); // column length
         iTopC = *(aiDstk--); // column scale
         vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
+        EO_EXIT(eCode);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // super fragments
-      case EO_SUPER_Q100: { ArgNil(); // super frag for Q100
+      case EO_SUPER_Q100: {
+        EO_ENTER(eCode);
+        ArgNil(); // super frag for Q100
         i8 iWrkA, iWrkB, iWrkC;
         aiLocals = aRluCommon->m_iaLocals;
 
@@ -4742,6 +6006,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         aiPayload[Q100_COUNT_ORDER]++;
       }
+        EO_EXIT(eCode);
         break;//+endCase
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -484,7 +484,9 @@ template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
 void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vValidate(Stz* szWhere)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
-  
+
+  UNUSED(szWhere);
+
 //  printf("%-9s::\n",szWhere);
 //
 //  vDumpFrees();

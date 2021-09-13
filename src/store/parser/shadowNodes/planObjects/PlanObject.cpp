@@ -106,7 +106,7 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
       // Print the object type (e.g. FilterOp)
       // Special case for StatementMarkers
       if (StatementMarker::bIsOfType(pNode)) {
-        sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
+        sBuf.vCatSprint("statementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
 
       } else {
         sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
@@ -302,6 +302,7 @@ b1 PlanObject::bNodeHasLocation(QueryNode* pNode)
   Location::eLO eLocType = Location::eLocationType(pLocationNode);
   ASSERT(eLocType > Location::LO_NONE);
   ASSERT(eLocType < Location::LO_NENUMS);
+  UNUSED(eLocType); // in release
   return true;
 }
 
@@ -315,6 +316,15 @@ void PlanObject::vAppendIndent(s48K &sBuf, i8 iIndentLevel, eIndentFormat eForma
   ASSERT(eFormat < PlanObject::IF_NENUMS);
 
   Stz* szIndent = aIndentFormat[eFormat];
+
+  if (iIndentLevel == 0) {
+    if (eFormat == IF_ARROW) {
+      // This just makes it clearer to identify the main subquery and any table subqueries
+      sBuf.vConcat("\n∆ "_Stz);
+    } else if (eFormat == IF_PLAIN) {
+      sBuf.vConcat("  "_Stz);
+    }
+  }
 
   for (i8 i=0; i<iIndentLevel; i++) {
     sBuf.vConcat(szIndent);

@@ -30,7 +30,7 @@ __aFooterFunction(Pipeline)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
-: DeleteHelper_t<Pipeline>(CN_PIPELINE,typeid(Pipeline))
+: LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -62,7 +62,18 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pPipelineSpec->vGuardedDelete(m_pPipelineSpec,this,(Stz*)__func__);
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vGuardedDelete(CN_STAGE,&pStage,
+                           CN_PIPELINE,this,(Stz*)__func__);
+  }
+
+  vClear();
+
+  m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
+                                  CN_PIPELINE,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,6 +355,55 @@ void Pipeline::vSpawnOpTasks(i8 iSessionId, i8 iNode)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vWalk(aArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vWalkLambda(
+                 i8 iDepth,
+                 std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  vfClosure(this,iDepth);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vWalkLambda(iDepth+1,vfClosure);
+  }
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

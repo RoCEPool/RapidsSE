@@ -39,6 +39,7 @@ namespace BASE
     i8      nBufferCount(void);
     i8      nCurrAllocated(void);
     void    vDropLock(void);
+    void    vDumpHeap(void);
     HeapBuffer* pFirstBuffer(void);
     void    vFixedHeap(bool bFixed);
     i8      nFreeChunks(void);
@@ -46,10 +47,10 @@ namespace BASE
     void    vGrabLock(void);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
-    void    vObjectValidate(void);
     void    vSummaryReport(String* pReportString);
     i8      nTotalHeapSize(void);
-        
+    void    vValidateContents(void);
+
   private:
     bool bExtendHeap(void);
     FreeChunk* pPopFree(void);

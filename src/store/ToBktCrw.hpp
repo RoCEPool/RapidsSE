@@ -29,7 +29,7 @@ namespace STORE
     ToBktCrw(StreamDef* pStreamDef);
    ~ToBktCrw(void) noexcept(false);
 
-    static void vRepairHashSet(Object* pObject, eRF eRepair);
+    static void vRepairHashSet(Object* pObject);
 
     void vConvert(RowBuffer* pRowBuffer);
   

@@ -19,8 +19,8 @@
 
   sDemonNm >createInRoot locals| pDemonWd |
 
-  job[] pDemonWd word.object!
-  job[] job.addDemon
+  Job[] pDemonWd word.object!
+  Job[].addDemon
 ;
 
 /*----------------------------------------------------------------------------*/

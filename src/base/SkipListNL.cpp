@@ -124,6 +124,30 @@ void SkipListNL::vCheck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare skip items by their address                                        */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bCompareAddr(void* aInsert, void* aScan, bool& bMatch)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+    
+  if (! aScan)
+    return false;
+  
+  if (aInsert == aScan)
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this inserting lexicography after the scan?
+  
+  if (aInsert > aScan)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* list contents                                                              */
 /*----------------------------------------------------------------------------*/
 void SkipListNL::vContents(void (*fvDump)(void* pObject))
@@ -186,7 +210,12 @@ bool SkipListNL::bExists(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-void* SkipListNL::pFind(void* pObject, bool bTrace, CompareFp fpCompare_alt)
+
+#if 1
+
+void* SkipListNL::pFind(void* pObject,
+                        bool bTrace,
+                        CompareFp fpCompare_alt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
@@ -207,6 +236,38 @@ void* SkipListNL::pFind(void* pObject, bool bTrace, CompareFp fpCompare_alt)
   else
     return nullptr;
 }
+
+#else
+
+/*----------------------------------------------------------------------------*/
+
+void* SkipListNL::pFind(void* pObject,
+                        bool bTrace,
+                        std::function<void(void* aInsert,
+                                           void* aScan,
+                                           bool& bMatch)> bfCompareClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  bool bEqualTo;
+  
+  SkipNode* pNode = pPosition(pObject,
+                              bEqualTo,
+                              nullptr,
+                              bTrace,
+                              fpCompare_alt ? fpCompare_alt : m_fpCompare
+                              );
+  ASSERT(pNode); // logic check
+  
+  if ( ! pNode->m_pRight[0] )
+    return nullptr;
+  else if (bEqualTo)
+    return pNode->m_pRight[0]->m_pObject;
+  else
+    return nullptr;
+}
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get first node                                                             */
@@ -430,8 +491,13 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 
 #define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
-                                SkipNode** aPriorVec, bool bTrace,
+
+#if 1
+
+SkipNode* SkipListNL::pPosition(void* pSearchForObject,
+                                bool& bEqualTo,
+                                SkipNode** aPriorVec,
+                                bool bTrace,
                                 CompareFp fpCompare)
 {
   bEqualTo = false;
@@ -445,13 +511,23 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
     // inner loop: go right a number of nodes until we find
     //               ObjectInsert < ObjectNext at current level
     
+    bool bPosObjIsGT;
+    
     while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
       
       
       // compare the object being searched for
-      bool bPosObjIsGT = fpCompare(pSearchForObject,
+      if (fpCompare) {
+        
+        bPosObjIsGT = fpCompare(pSearchForObject,
+                                pRightNode->m_pObject,
+                                bEqualTo);
+      }
+      else {
+        bPosObjIsGT = bCompareAddr(pSearchForObject,
                                    pRightNode->m_pObject,
                                    bEqualTo);
+      }
       
       if (bTrace) {
         vTrace("Pos ^%lld: "_Stz,iLevel);
@@ -484,6 +560,84 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
   
   return pPriorNode;
 }
+
+
+/*----------------------------------------------------------------------------*/
+
+#else
+
+SkipNode* SkipListNL::pPosition(void* pSearchForObject,
+                                bool& bEqualTo,
+                                SkipNode** aPriorVec,
+                                bool bTrace,
+                                std::function<void(void* aInsert,
+                                                   void* aScan,
+                                                   bool& bMatch)> bfCompareClosure))
+{
+  bEqualTo = false;
+
+  SkipNode* pPriorNode = m_pHead;
+  i8 iLevel = m_iHeight;
+  
+  do {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: go right a number of nodes until we find
+    //               ObjectInsert < ObjectNext at current level
+    
+    bool bPosObjIsGT;
+    
+    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
+      
+      
+      // compare the object being searched for
+      if (fpCompare) {
+        
+        bPosObjIsGT = fpCompare(pSearchForObject,
+                                pRightNode->m_pObject,
+                                bEqualTo);
+      }
+      else {
+        bPosObjIsGT = bCompareAddr(pSearchForObject,
+                                   pRightNode->m_pObject,
+                                   bEqualTo);
+      }
+      
+      if (bTrace) {
+        vTrace("Pos ^%lld: "_Stz,iLevel);
+          m_fpPrint(pSearchForObject);
+          vTrace(" v "_Stz);
+          m_fpPrint(pRightNode->m_pObject);
+          vTrace(" : %s\n"_Stz,bPosObjIsGT ? "GT moveRight" : "LE goDown" );
+      }
+      
+      if (bPosObjIsGT) {
+        moveScanToRight(pPriorNode,iLevel);
+      }
+      else {
+        break;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: now having gone right as far as we go down one single level
+    
+    // first record current node as a revision point
+    if (aPriorVec)
+      aPriorVec[iLevel] = pPriorNode;
+       
+    // now go down one level on scan node
+    goDownLevel(iLevel);
+    
+    // and repeat till we have a complete revision vector
+  } while (iLevel >= 0);
+  
+  return pPriorNode;
+}
+
+#endif
+
+
 
 /*----------------------------------------------------------------------------*/
 /* choose a random level for new node                                         */

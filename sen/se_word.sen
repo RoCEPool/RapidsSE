@@ -90,7 +90,7 @@
 
     object@ locals| pWord |
 
-    pWord word.category@ pCatg eql if
+    pWord word.category@ pCatg equal if
       pWord word.show
     then
 
@@ -125,7 +125,7 @@
 
   iterate-words
 
-    word@ word.category@ pCatg eql if
+    word@ word.category@ pCatg equal if
       word@ word.name@ word@ pArrange arrange.insert
     then
 

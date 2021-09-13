@@ -179,6 +179,9 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   // who delete's the job in these cases?
   //
   
+  if (!pSelfTask->bIsLocked())
+    AM::SE::vWhereAmI();
+  
   RASSERT(pSelfTask->bIsLocked());
   RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition());
   RASSERT(TS_DESISTED == pSelfTask->eState());
@@ -196,7 +199,10 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   
   pSelfTask->vDropTaskLock((Stz*)__func__);
   
-  delete pSelfTask; // note: this is the only point where tasks get deleted
+  //delete pSelfTask;
+  
+  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+                            CN_SCHEDULER,nullptr,(Stz*)__func__);
 
   /** do not touch task **/
 }
@@ -220,20 +226,14 @@ void Scheduler::vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread)
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
 
-  // add assert on entry point
-
   pSelfTask->vTranstionClear();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete case: task is to be deleted
-
-  pSelfTask->vState(TS_RETIRED);
+  pSelfTask->vRetire();
   
+  RASSERT(TS_RETIRED == pSelfTask->eState());
+
   pSelfTask->vDropTaskLock((Stz*)__func__);
-  
-  delete pSelfTask; // note: this is the only point where tasks get deleted
-
-  /** do not touch task **/
+  /* do not touch task */
 }
 
 /*----------------------------------------------------------------------------*/

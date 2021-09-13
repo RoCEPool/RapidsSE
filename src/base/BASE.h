@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <string.h>
+#include <functional> // for std::function
+
 //typedef unsigned long size_t;
 
 #define EndDefine
@@ -17,6 +19,10 @@
 #define _noPreconditions_ EndDefine
 #define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
+
+#define TRUE(condition)  true
+#define FALSE(condition) false
+
 
 //------------------------------------------------------------------------------
 
@@ -162,6 +168,8 @@ extern d8 C_D8_MID;
 #include "Shell.hpp"
 
 #include "Gid_t.hpp"
+#include "JobId.hpp"
+#include "PtnId.hpp"
 #include "Lock.hpp"
 #include "MasterLock.hpp"
 #include "DdlLock.hpp"
@@ -193,6 +201,7 @@ extern d8 C_D8_MID;
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
+#include "FreedNot.hpp"
 #include "BufferPool.hpp"
 #include "PoolHelper.hpp"
 #include "ResourceHelper.hpp"
@@ -230,6 +239,7 @@ extern d8 C_D8_MID;
 #include "Timer.hpp"
 #include "AggTimer.hpp"
 #include "Gizmos.hpp"
+#include "Stats.hpp"
 
 #include "ByteRate.hpp"
 #include "Peruse.hpp"

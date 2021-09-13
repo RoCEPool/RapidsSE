@@ -9,12 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::termination ( -- )
 
-  _lu_finalise_
+  DdlLock[].testDrop
 
-  _job_finalise_
+  JobRef[].none
 
-  task[] task.grabLock
-  TR_DELETE_THIS_TASK task::transition!
+  Job[].addRetired
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -26,23 +27,41 @@
 
   job::assertCorrectness
 
-  task[] locals| pTask |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   
-  <cmd> Pipeline::compileStmt dup
-  EC_NONE != if
+  <cmd> Dynamo::compileStmt dup
+  EC_NONE == if
+    // clean compile
+    
+  else
     //"got error" .
-    job::error!
-    job[] job.signalSession
+    Job[].error!
+    
+    DdlLock[].testDrop
+
+    PipelineSpec[].delete
+        
+    // cross check
+    PipelineSpec[] not assert
+
+    JS_SIGNALLED Job[].state!
+      
+    Task[].grabLock
+    Session[].signal
+    Task[].dropLock
+    
     pipelineLocal::termination
+    
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  Pipeline::create
-  Pipeline::spawnOpTasks
+  
+  PipelineSpec[] assert
+
+  Pipeline[].create
+  Pipeline[].spawnOpTasks
 
   // run <pre_execute>
 
@@ -63,13 +82,13 @@
   then
 
   // add job to the local job list
-  job[] job.jobList@ JL_DEMON == not if
-    job[] job.addLocal
+  Job[] job.jobList@ JL_DEMON == not if
+    Job[].addLocal
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
-  pTask task.grabLock
+  Task[].grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
@@ -78,25 +97,32 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
-    task::wait
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on Task[].wait" .printf
+    Task[].wait
     //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
   else
     //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    pTask task.dropLock
+    Task[].dropLock
   then
 
   // remove job from the local job list
-  job[] job.jobList@ JL_DEMON == not if
-    job[] job.removeLocal
+  Job[] job.jobList@ JL_DEMON == not if
+    Job[].removeLocal
   then
 
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
   
-  job[] job.addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else job[] job.removeRetired ?]
-  job[] job.signalSession
-  pipelineLocal::termination
+  
+  DdlLock[].testDrop
+  JobRef[].none
+
+  Job[].addRetired
+  
+  JS_SIGNALLED Job[].state!
+    Session[].signal
+
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

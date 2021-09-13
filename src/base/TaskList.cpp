@@ -125,7 +125,7 @@ bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
        pTask;
        pTask = pTask->pNextItem()) {
     
-    if (! (pTask->pJob() && AM::eJobClass(pTask->pJob()) == eJobClass))
+    if (! (pTask->pJob_task() && AM::eJobClass(pTask->pJob_task()) == eJobClass))
       continue;
 
     if (! bWasReceived) {
@@ -133,7 +133,7 @@ bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
       break;
     }
     
-    if (AM::bJobWasReceived(pTask->pJob())) {
+    if (AM::bJobWasReceived(pTask->pJob_task())) {
       bHasJob = true;
       break;
     }

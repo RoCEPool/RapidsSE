@@ -109,6 +109,8 @@ void Step::vWordBreakPtStore(void)
   
   pWord->vBreakPt(iBreakPt);
   
+  vDebugPoint();
+  
   EXIT();
 }
 

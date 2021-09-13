@@ -63,7 +63,7 @@ PtnStream::~PtnStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the ptnStream                                                       */
 /*----------------------------------------------------------------------------*/
-void PtnStream::vRepair(Object* pObject, eRF eRepair)
+void PtnStream::vRepair(Object* pObject)
 {
   _static_
 

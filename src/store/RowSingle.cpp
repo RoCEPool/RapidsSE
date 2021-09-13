@@ -88,7 +88,7 @@ RowSingle::~RowSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the rowSingle                                                       */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vRepair(Object* pObject, eRF eRepair)
+void RowSingle::vRepair(Object* pObject)
 {
   _static_
 

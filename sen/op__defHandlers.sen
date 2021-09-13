@@ -134,6 +134,9 @@
   
   PipeIn[].pipeOut
   
+  Job[] assert
+  Task[] assert
+
   Op.ackPipelineJob
   
   false // calling op_loop exits

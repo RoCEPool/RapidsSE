@@ -43,6 +43,7 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
   void vAM_Show_Dir_Failure(void);
@@ -336,6 +337,8 @@ public:
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  void vDynamoCompileStmt(void);
+
   // encode
   void vEncodeCurrentCall(void);
   void vEncodeCurrentPush(void);
@@ -442,8 +445,12 @@ public:
 
   // filter
   void vFilterGet(void);
+  void vFilterDelete(void);
   void vFilterNew(void);
-  void vFilterRows(void);
+  void vFilterEvaluate(void);
+  void vFilterEvaluateIndexScan(void);
+  void vFilterEvaluateIndexJoin(void);
+  void vFilterEvaluateLoopJoin(void);
   void vFilterSet(void);
 
   // grid
@@ -672,7 +679,7 @@ public:
   void vJobClass(void);
 
   void vJobDec2pcAcksRmg(void);
-  void vJobDelete(void);
+  void vJobDelete2pc(void);
 
   void vJobTagSetFetch(void);
   void vJobErrorStore(void);
@@ -681,11 +688,8 @@ public:
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
 
-  void vJobHasError(void);
-
   void vJobIdFetch(void);
-  void vJobSingularOpFetch(void);
-  void vJobSingularOpStore(void);
+  void vJobIdFetch_other(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
@@ -698,17 +702,19 @@ public:
 
   void vJobOriginatingIdFetch(void);
   void vJobOriginatingIdStore(void);
-  void vJobOriginatingTaskFetch(void);
-  void vJobOriginatingTaskStore(void);
   void vJobOriginatorFetch(void);
 
 
   void vJobParticipantFetch(void);
+  void vJobParticipantFetch_other(void);
   void vJobParticipantStore(void);
   void vJobPhaseFetch(void);
+  void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
 
+  void vJobReapableFetch(void);
+  void vJobReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -722,14 +728,17 @@ public:
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
 
   void vJobTaskFetch(void);
+  void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
+  void vJobTaskStore_other(void);
+
+  void vJobWalk(void);
 
   // job ref
   void vJobRefHasTask(void);
@@ -737,6 +746,7 @@ public:
   void vJobRefNone(void);
   void vJobRefReturn(void);
   void vJobRefReferences(void);
+  void vJobRefTaskFetch(void);
 
   // job generic
   void vJob__BegunNew(void);
@@ -866,6 +876,7 @@ public:
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
+  void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
 
   // kbase
@@ -958,6 +969,7 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenFilterProject(void);
   void vLogicUnitGenHash(void);
   void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);
@@ -1144,6 +1156,10 @@ public:
   // operand
   void vOperandToParcel(void);
 
+  // operandCount
+  void vOperandCountInc(void);
+  void vOperandCountGet(void);
+
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);
@@ -1198,10 +1214,7 @@ public:
   void vPipelineCreate(void);
   void vPipelineSpawnOpTasks(void);
 
-
   void vPipelineCancelledStore(void);
-  void vPipelineCompileStmt(void);
-  void vPipelineDeleteSpec(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
@@ -1210,6 +1223,11 @@ public:
   void vPipelineErroredFetch(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
+
+  // pipelinespec
+
+  void vPipelineSpecDelete(void);
+  void vPipelineSpecGet(void);
 
 
   // plan
@@ -1385,6 +1403,7 @@ public:
   void vRegPathPush(void);
   void vRegPathSave(void);
   void vRegPathRestore(void);
+  void vRegPathRoot(void);
 
   // Parcel
   void vParcelDeleteOld(void);
@@ -1405,6 +1424,7 @@ public:
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
+  void vPipeinIsBuffer(void);
   void vPipeinIsNull(void);
   void vPipeinKind(void);
   void vPipeinNext(void);
@@ -1557,6 +1577,7 @@ public:
   void vSessionHasCascadeStore(void);
   void vSessionPid(void);
   void vSessionSee(void);
+  void vSessionSignal(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);
@@ -1630,6 +1651,18 @@ public:
 
   // steps
   void vExpressionsLockSample(void);
+
+  // stats
+  void vStatsBuffInInc(void);
+  void vStatsDelete(void);
+  void vStatsMicrosecs(void);
+  void vStatsMillisecs(void);
+  void vStatsNanosecs(void);
+  void vStatsNew(void);
+  void vStatsOperandsInc(void);
+  void vStatsSecs(void);
+  void vStatsStartTimer(void);
+  void vStatsUpdateTimer(void);
 
   // steps
   void vStepsReset(void);
@@ -1770,6 +1803,7 @@ public:
   // args
   void vSysArgsDefinedNodes(void);
   void vSysArgsPrint(void);
+  void vSysArgsTagSet(void);
 
   // system
   void vSystemActiveJobs(void);
@@ -1858,7 +1892,6 @@ public:
   void vTaskDestructorTraceStore(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
-  void vTaskDelete(void);
   void vTaskException(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);

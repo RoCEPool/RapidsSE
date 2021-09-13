@@ -133,7 +133,7 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
   // Walk each node from the bottom up and inspect each ProjectOp/AggregateOp.
   // We use a bottom-up walk because we may be modifying the children of
   // the current node. Can't do that with a top-down walk.
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, nullptr);
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, nullptr);
 }
 
 
@@ -148,6 +148,8 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
                                        QueryNodeList* pColumnExprList,
                                        PlanNode* pRootNode)
 {
+  UNUSED(nColumns);
+
   ASSERT(pAggList);
   ASSERT(pAggList->nItems() > 0);
   ASSERT(pParentNode);

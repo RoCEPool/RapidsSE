@@ -20,17 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder is ../tenants                                       */
 /*----------------------------------------------------------------------------*/
-: folder[].isTenants
+: Folder[].isTenants
 
-  folder[] dic.name@ "tenants" str.same
+  Folder[] dic.name@ "tenants" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../tenants                                         */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsTenants
+: Folder[].checkIsTenants
 
-  folder[].isTenants if true exit then
+  Folder[].isTenants if true exit then
   EC_NOT_IN_TENANTS false
 ;
 
@@ -39,8 +39,8 @@
 /*----------------------------------------------------------------------------*/
 : Path[].checkIsTenant ( word )
 
-  dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: \tenant eql if true exit then
+  dup word.category@ find: \folder equal not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ find: \tenant equal if true exit then
   EC_NOT_A_TENANT false
 ;
 
@@ -48,7 +48,7 @@
 /* check if word is a tenant                                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsTenant ( word )
-  folder[].findSymbol if true exit then
+  Folder[].findSymbol if true exit then
   EC_NOT_A_TENANT false
 ;
 
@@ -56,7 +56,7 @@
 /* check if word is not a tenant                                              */
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownTenant ( word )
-  folder[].findSymbol not if true exit then
+  Folder[].findSymbol not if true exit then
   EC_TENANT_EXISTS false
 ;
 

@@ -571,7 +571,7 @@ void Engine::vCreateAttachMap(void)
     vInfo("\n*\n* %lld) Create Attach Map\n*\n"_Stz,giProgressPoint++);
   
   // create the attach map (which records global pointers)
-  new AttachMap;
+  new AttachMap(gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE));
 
 
 }
@@ -1480,7 +1480,7 @@ void Engine::vStartSystem(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
-  
+    
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);

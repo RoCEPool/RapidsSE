@@ -85,7 +85,7 @@ Queue::~Queue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append object pointer to this queue                                        */
 /*----------------------------------------------------------------------------*/
-void Queue::vAppend(Object* pObject)
+i8 Queue::iAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -108,8 +108,10 @@ void Queue::vAppend(Object* pObject)
   }
   
   m_nItems++;
-  
+
   m_okLock.vDropWrite();
+
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/

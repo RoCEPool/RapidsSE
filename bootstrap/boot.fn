@@ -233,7 +233,7 @@ function startCluster() {
     done
 
     # Wait for all parallel jobs to finish.
-    wait
+    wait || true
   fi
 
   if [ "${#nodeNames[@]}" -gt 1 ]; then
@@ -468,7 +468,7 @@ function waitForClusterBoot() {
       if [ "${currentTime}" -ge "${targetTime}" ]; then
         kill -0 ${dotPid} &>/dev/null && kill -15 ${dotPid} &>/dev/null
         echo "Cluster boot timed out"
-        wait ${dotPid} 2>/dev/null
+        wait ${dotPid} 2>/dev/null || true
         false
         return
       fi
@@ -614,8 +614,9 @@ function localClusterXConnect() {
     # kill the process. If the process is killed then the exit status will be 124
     # so we can explicitly check for that.
     timeout -k 10s 10s "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
-    wait $!
-    local cmdExitStatus="$?"
+    local cmdExitStatus
+    cmdExitStatus=0
+    wait $! || cmdExitStatus="$?"
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
@@ -840,8 +841,9 @@ function runLocalPromptCommand() {
     # kill the process. If the process is killed then the exit status will be 124
     # so we can explicitly check for that.
     timeout -k "${timeout}s" "${timeout}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
-    wait $!
-    local cmdExitStatus="$?"
+    local cmdExitStatus
+    cmdExitStatus=0
+    wait $! || cmdExitStatus="$?"
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
@@ -1148,7 +1150,7 @@ function stopCluster() {
     done
 
     # Wait for all parallel jobs to finish.
-    wait
+    wait || true
   fi
 
   echo -n "Stopping all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to shutdown."

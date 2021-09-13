@@ -29,7 +29,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Executed job.delete
+  pJob__Executed job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : _Executed_run [ word::seed# ]
 
-  job[] locals| pJob__Executed |
+  Job[] locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
   0 0 0 locals| iParticipantNode error bAmDecider |
@@ -53,7 +53,7 @@
   iJobId olist::findJob discard
 
   // get the participant node from where this job__begun started
-  pJob__Executed job.participant@ to iParticipantNode
+  pJob__Executed job.participantNode@ to iParticipantNode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node
@@ -69,7 +69,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].return
+    JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
@@ -80,7 +80,7 @@
 
   // send a job__end to all participants
   JobRef[] Job__End::distribute
-  JobRef[].return
+  JobRef[].returnReference
 
   _job_2pc_delete_
 ;

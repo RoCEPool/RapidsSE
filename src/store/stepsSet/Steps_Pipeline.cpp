@@ -35,9 +35,6 @@ void Step::vAddSteps_Pipeline(void)
 {
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::compileStmt"_Stz,  &Step::vPipelineCompileStmt);
-  vAddStep("Pipeline::create"_Stz,       &Step::vPipelineCreate);
-  vAddStep("Pipeline::deleteSpec"_Stz,   &Step::vPipelineDeleteSpec);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline::enqueueStart"_Stz, &Step::vPipelineEnqueueStart);
@@ -47,8 +44,9 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
   
   vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
-  
-  vAddStep("Pipeline::spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+    
+  vAddStep("Pipeline[].create"_Stz,      &Step::vPipelineCreate);
+  vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,125 +84,9 @@ void Step::vPipelineCancelledStore(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Pipeline::compileStmt -- compile pipeline statement into a pipelines spec  */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineCompileStmt(void)
-{
-  ENTRY();
-    
-  sSTMT sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // use dynamo to compile the pipeline statement
-  
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
-    
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test compilation result
-  
-  if (pPipelineSpec) {
-    
-    eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
-    
-    if (EC_NONE == eError) {
-      
-      // a) clean compile, passes pre-execution requirments
-      
-      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        
-        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-      }
-      
-      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-      m_pDataStack->vPushInt(EC_NONE);
-      
-    }
-    else {
-      
-      // b) clean compile, but does not pass pre-execution requirments
-
-      delete pPipelineSpec;
-      m_pDataStack->vPushInt(eError);
-      
-    }
-
-  }
-  else {
-    
-    // c) failed to compile
-    
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-
-  }
-  
-  delete pDynamo;
-  
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-//void Step::vPipelineCompileStmt(void)
-//{
-//  ENTRY();
-//
-//  sSTMT sPipelineStmt;
-//  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-//
-//
-//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-//
-//  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
-//
-//  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-//
-//
-//  if (pPipelineSpec) {
-//
-//    if (AM::SYSTEM::bPassesLowMem(m_pJob)) {
-//
-//      // clean compile, passes low memory test
-//
-//      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-//
-//        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-//        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-//      }
-//
-//      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-//      m_pDataStack->vPushInt(EC_NONE);
-//
-//    }
-//    else {
-//
-//      // clean compile, but does not pass low memory test
-//
-//      delete pPipelineSpec;
-//      m_pDataStack->vPushInt(EC_LOW_MEMORY);
-//
-//    }
-//
-//  }
-//  else {
-//
-//    // failed to compile
-//
-//    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-//
-//  }
-//
-//  delete pDynamo;
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::create -- create the pipeline, stages, streams and ops           */
+/* Pipeline[].create -- create the pipeline, stages, streams and ops           */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCreate(void)
 {
@@ -212,19 +94,17 @@ void Step::vPipelineCreate(void)
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
   LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
+
+  PipelineSpec* pPipelineSpec = *pLogicUnit->m_xpPipelineSpec;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   
   pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob,
-                 *pLogicUnit->m_xpPipelineSpec,
-                 m_pJob->iOriginatorNode());
+    new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
   
   Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
-  
-  m_pJob->vPipeline_job(pPipeline);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
@@ -233,22 +113,6 @@ void Step::vPipelineCreate(void)
       vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
-  }
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline::deleteSpec -- delete the pipeline spec                           */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineDeleteSpec(void)
-{
-  ENTRY();
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  if (*pLogicUnit->m_xpPipelineSpec) {
-    pLogicUnit->m_xpPipelineSpec.vGuardedDeleteComponent(this,(Stz*)__func__);
   }
     
   EXIT();
@@ -277,7 +141,7 @@ void Step::vPipelineEnqueueStart(void)
   if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(m_pJob->pTask(),nOps);
+    AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);
@@ -416,7 +280,7 @@ void Step::vPipelinePulsedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
+/* Pipeline[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpawnOpTasks(void)
 {
@@ -429,7 +293,7 @@ void Step::vPipelineSpawnOpTasks(void)
   
   Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
   
-  pPipeline->vSpawnOpTasks(m_pJob->m_i_Session, iThisNode);
+  pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
   
   EXIT();
 }

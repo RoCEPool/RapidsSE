@@ -15,7 +15,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in tenants
-  folder[].checkIsTenants not if
+  Folder[].checkIsTenants not if
     to errorCode
     errorCode op__execErr
     true

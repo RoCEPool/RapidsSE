@@ -15,10 +15,10 @@
   Pipein[].pipeout
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
-  job[] streamDef::parse to StreamDefLft[]
+  Job[] streamDef::parse to StreamDefLft[]
 
   StreamDefLft[].isNull if
-    job[] job.error@ to errorCode
+    Job[].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -26,12 +26,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   StreamDefLft[].pipeout
 
   // should be in tables
-  folder[].isTables assert
+  Folder[].isTables assert
 
   true
 ;

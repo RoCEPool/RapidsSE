@@ -6,6 +6,10 @@
 /*                                                                            */
 /*============================================================================*/
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// SETUP
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 1) REGION table
 
@@ -180,9 +184,127 @@ print "*** Loading data for table part";
 
 load part "../demo/demoData/part.csv";
 
-/*----------------------------------------------------------------------------*/
 
-// tbd ...
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// DEMONSTRATION
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+// - - - - - - - - - - - - - - - - - - - - - -
+// join 2 tables
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+;
+
+// CROSS JOIN, self join, table aliases
+SELECT N1.n_name, N2.n_name
+  FROM nation N1, nation N2
+;
+
+ 
+// - - - - - - - - - - - - - - - - - - - - - -
+// join 4 tables
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+// join 6 tables
+
+SELECT count(*)
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN supplier ON s_nationkey = n_nationkey
+  JOIN customer ON c_nationkey = s_nationkey
+  JOIN orders   ON o_custkey   = c_custkey
+  JOIN lineitem ON l_orderkey  = o_orderkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+// large
+
+
+EXPLAIN
+STAGE transliterate
+
+SELECT o_orderstatus,
+       count(*) as cnt,
+       sum(o_totalprice),
+       avg(l_extendedprice),
+       max(l_partkey * c_custkey) - 1,
+       'literal'
+  FROM region
+  JOIN nation   ON n_regionkey = r_regionkey
+  JOIN customer ON c_nationkey = n_nationkey
+  JOIN orders   ON o_custkey   = c_custkey
+  JOIN lineitem ON l_orderkey  = o_orderkey
+ WHERE l_linenumber > 1 + 1
+   and o_orderdate  < DATE '1998-12-01'
+ GROUP BY o_orderstatus
+HAVING cnt > 1000
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+// Q3-like
+
+SELECT
+       l_orderkey,
+       sum(l_extendedprice*(1-l_discount)) as revenue,
+       o_orderdate,
+       o_shippriority
+  FROM
+       customer
+  JOIN
+       orders   ON o_custkey   = c_custkey
+  JOIN
+       lineitem ON l_orderkey  = o_orderkey
+ GROUP BY
+       l_orderkey,
+       o_orderdate,
+       o_shippriority
+;
+
+// - - - - - - - - - - - - - - - - - - - - - -
+// Out Of Memory (OOM)
+// This is currently commented out because the installer is not shipping the
+// SF10 lineitem.csv file referenced below. Leaving this code in here as it
+// was demonstrated and for reference.
+
+// _lineitem
+//
+// lscol lineitem
+//
+// /time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+//
+// space;
+//
+// /time truncate lineitem;
+//
+//
+// explain stage transliterate
+// select count(*)
+// from lineitem
+// where l_orderkey > 123;
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// CLEANUP
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+DROP TABLE region;
+DROP TABLE nation;
+DROP TABLE supplier;
+DROP TABLE customer;
+DROP TABLE orders;
+DROP TABLE lineitem;
+DROP TABLE partsupp;
+DROP TABLE part;
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,7 +5,7 @@ Routine QRY_301
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 301
@@ -153,7 +153,7 @@ Label END_SRC
   EO_CALL OUT_AGG
                        
 Label QRY_301_DONE
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

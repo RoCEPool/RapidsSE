@@ -4,7 +4,7 @@
 Routine QRY_102
 
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
   EO_SQL 102
 
   // check for ZK_M_START
@@ -396,7 +396,7 @@ Label QRY_102_DONE
   EO_PUSH_DEVROW_LFT
   EO_DEVROW_ROWBUF_NULL
 
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
 

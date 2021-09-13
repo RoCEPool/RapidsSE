@@ -101,6 +101,7 @@ static Stz* C_TAG_PAYLOAD_TO_BUFFER     = "<payLoadToBuffer>"_Stz;
 static Stz* C_TAG_PROJECT_ITEMS         = "<projectItems>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMN    = "<projectSrcColumn>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
+static Stz* C_TAG_PROJECT_ROUTINE       = "<projectRoutine>"_Stz;
 
 static Stz* C_TAG_ROW_OFFSET       = "<rowOffset>"_Stz;
 
@@ -151,6 +152,7 @@ static Stz* C_SHOW_SOCKET         = "<show_socket>"_Stz;
 static Stz* C_SHOW_SOCKET_FAILURE = "<show_socket_failure>"_Stz;
 //                                   0123456789012345678901234567890
 //                                   0         1         2         3
+static Stz* C_NO_FREE             = "<no_free>"_Stz;
 static Stz* C_NOSHOW_RECURRING    = "<noshow_recurring>"_Stz;
 
 /*============================================================================*/

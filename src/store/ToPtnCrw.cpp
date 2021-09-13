@@ -66,7 +66,7 @@ ToPtnCrw::~ToPtnCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the toPtnCrw                                                        */
 /*----------------------------------------------------------------------------*/
-void ToPtnCrw::vRepairHashSet(Object* pObject, eRF eRepair)
+void ToPtnCrw::vRepairHashSet(Object* pObject)
 {
   _static_
 

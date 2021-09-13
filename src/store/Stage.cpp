@@ -35,7 +35,7 @@ __aFooterFunction(Stage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
-: DeleteHelper_t<Stage>(CN_STAGE,typeid(Stage))
+: LifeGuard_t<Stage>(this,CN_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -59,6 +59,16 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  i8 nStreams = this->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
+    
+    pStream->vGuardedDelete(CN_STREAM,&pStream,
+                            CN_STAGE,this,(Stz*)__func__);
+  }
+
+  vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,6 +294,54 @@ bool Stage::bStartPipeline(void)
   
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stage::vWalk(void* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  eCN eClassNo = eGetClassNo();
+  
+  vTrace("Walk %8s:%ll03d %p\n"_Stz
+         
+         ,aCN[eClassNo]
+         ,(i8)eClassNo
+         ,this
+         );
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStreams = this->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
+    
+    pStream->vWalk(aArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* walk                                                                       */
+/*----------------------------------------------------------------------------*/
+void Stage::vWalkLambda(
+              i8 iDepth,
+              std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+
+  vfClosure(this,iDepth);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  i8 nStreams = this->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
+    
+    pStream->vWalkLambda(iDepth+1,vfClosure);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

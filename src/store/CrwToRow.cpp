@@ -66,7 +66,7 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the file                                                            */
 /*----------------------------------------------------------------------------*/
-void CrwToRow::vRepair(Object* pObject, eRF eRepair)
+void CrwToRow::vRepair(Object* pObject)
 {
   _static_
 

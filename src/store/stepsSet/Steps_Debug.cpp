@@ -23,7 +23,7 @@ void Step::vAddSteps_Debug(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug::trap -- call debug breakpoint                                       */
+/* debug::breakpoint -- debug breakpoint                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vDebugBreakpoint(void)
 {
@@ -33,8 +33,10 @@ void Step::vDebugBreakpoint(void)
   
   BASE::vDebugPoint();
   
+  
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* debug::flag@ -- fetch debug flag                                           */
 /*----------------------------------------------------------------------------*/

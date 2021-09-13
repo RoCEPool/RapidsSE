@@ -32,6 +32,7 @@
 #include "ProjectedColumn.hpp"
 #include "DataSource.hpp"
 #include "StatementMarker.hpp"
+#include "SubqueryMarker.hpp"
 #include "SqlOperator.hpp"
 #include "SetOp.hpp"
 #include "JoinOp.hpp"
@@ -72,10 +73,8 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
-  // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  // The plan node should have one child which is a SubqueryMarker node
+  ASSERT(pPlanNode->nChildren() > 0);
 
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and run the validation checks on each of them.
@@ -150,8 +149,8 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   // We do a bottom up walk for the column validation so that we can qualify
   // any columnRefs lower in the plan before we hit any aliases higher up that
   // then copy those expressions.
-  GraphNav::bGlobalWalk(pStatementMarker, false, true, fTableVisitor, pRootNode);
-  GraphNav::bGlobalWalkBottomUp(pStatementMarker, false, true, fColumnVisitor, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode, false, true, fTableVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fColumnVisitor, pRootNode);
 
   delete pSeApi;
 

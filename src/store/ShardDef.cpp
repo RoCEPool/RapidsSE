@@ -134,7 +134,7 @@ void ShardDef::vPostRecv(void* aShardDef)
 /*----------------------------------------------------------------------------*/
 /* repair the shardDef                                                        */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vRepair(Object* pObject, eRF eRepair)
+void ShardDef::vRepair(Object* pObject)
 {
   _static_
 

@@ -1,0 +1,46 @@
+--------------------------------------------------------------------------------
+-- create customer table
+--------------------------------------------------------------------------------
+
+// create a table
+create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on custkey
+CREATE INDEX customer_idx1 ON customer(c_custkey);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on nationkey
+CREATE INDEX customer_idx2 ON customer(c_nationkey);
+affected: 0
+
+// load the table
+load customer "../TPCH/SF_0001/customer.csv";
+success
+
+select count(*) from customer;
+rows: (150)
+
+compactidx customer customer_idx1;
+success
+
+compactidx customer customer_idx2;
+success
+
+CLEANUP {
+
+  bye;
+  mute
+}
+

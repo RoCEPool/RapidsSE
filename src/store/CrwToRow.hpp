@@ -22,7 +22,7 @@ namespace STORE
     CrwToRow(StreamDef* pStreamDef);
    ~CrwToRow(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object* pObject);
 
     bool bConvertCrwToRow(CrwBuffer* pCrwBuffer);
   

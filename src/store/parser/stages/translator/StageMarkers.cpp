@@ -13,6 +13,7 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "SetOp.hpp"
 #include "ExplainOp.hpp"
 #include "JoinOp.hpp"
@@ -91,10 +92,13 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
     UNUSED(pvArg);
 
     ASSERT(!StatementMarker::bIsOfType(pNode) || ExplainMarker::bIsOfType(pNode));
-    QueryNode* pQueryNode = _pQueryNode(pNode);
+    QueryNode *pQueryNode = _pQueryNode(pNode);
+
+    if (ShadowPlan::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
 
     // Rule: The children of a SetOp are always StageMarkers
-    if (SetOp::bIsOfType(pQueryNode)) {
+    } if (SetOp::bIsOfType(pQueryNode)) {
       ASSERT(pNode->nChildren() == 2);
 
       QueryNode* pChild1 = _pQueryNode(pQueryNode->pFirstChild());
@@ -107,12 +111,12 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
       pQueryNode->vInsertAsParentOfChild2(StageMarker::pCreate(eLocation2, Routing::RT_UNICAST));
 
 
-    // Rule: Add a StageMarker after an ExplainOp
-    } else if (ExplainOp::bIsOfType(pQueryNode)) {
-      QueryNode *pChild1 = _pQueryNode(pQueryNode->pFirstChild());
-      Location::eLO eLocation1 = PlanObject::eLocation(pChild1, true);
-
-      pQueryNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
+//    // Rule: Add a StageMarker after an ExplainOp
+//    } else if (ExplainOp::bIsOfType(pQueryNode)) {
+//      QueryNode *pChild1 = _pQueryNode(pQueryNode->pFirstChild());
+//      Location::eLO eLocation1 = PlanObject::eLocation(pChild1, true);
+//
+//      pQueryNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
 
 
     // Rule: We always move the left-side rows of a join to the location of the right-side rows
@@ -126,7 +130,7 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
       pQueryNode->vInsertAsParentOfChild1(StageMarker::pCreate(eLocation1, Routing::RT_BROADCAST));
 
 
-      // Rule: Add a StageMarker above a JoinOp, if one doesn't already exist
+    // Rule: Add a StageMarker above a JoinOp, if one doesn't already exist
     } else if (pQueryNode->nChildren() >= 1 && JoinOp::bIsOfType(pQueryNode->pFirstChild())) {
       Location::eLO eCurrentLoc = PlanObject::eLocation(pQueryNode, true);
       Location::eLO eJoinLoc   = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);
@@ -136,10 +140,22 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
       Routing::eRT eRouting = Routing::eDefaultRouting(eJoinLoc, eCurrentLoc);
       pQueryNode->vInsertAsParentOfChild1(StageMarker::pCreate(eJoinLoc, eRouting));
 
+    // Rule: The node under a SubqueryMarker node is always a StageMarker, unless it already
+    //       has an ExplainMarker, in which case we will leave it.
+    } else if (SubqueryMarker::bIsOfType(pQueryNode)) {
+      ASSERT(pQueryNode->nChildren() == 1);
+
+      if (!ExplainMarker::bIsOfType(pQueryNode->pFirstChild())) {
+        Location::eLO eLocation1 = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);
+
+        pQueryNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
+      }
 
     // Otherwise: If location of this node and its child don't match then add
     // a StageMarker with appropriate routing
-    } else if (pQueryNode->nChildren() == 1 && PlanObject::bNodeHasLocation(pQueryNode)) {
+    } else if (pQueryNode->nChildren() == 1 &&
+               PlanObject::bNodeHasLocation(pQueryNode) &&
+               !ExplainOp::bIsOfType(pQueryNode)) {
       Location::eLO eCurrentLoc = PlanObject::eLocation(pQueryNode, false);
       Location::eLO eChildLoc   = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);
       ASSERT(eChildLoc > Location::LO_NONE);
@@ -155,16 +171,7 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
   };
 
   // Walk each node and add in StageMarkers as appropriate
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
-
-  // Rule: The node under the plan node is always a StageMarker, unless it already
-  //       has an ExplainMarker, in which case we will leave it.
-  ASSERT(pPlanNode->nChildren() == 1);
-  if (!ExplainMarker::bIsOfType(pPlanNode->pFirstChild())) {
-    Location::eLO eLocation1 = PlanObject::eLocation(_pQueryNode(pPlanNode->pFirstChild()), true);
-
-    pPlanNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
-  }
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +218,7 @@ void StageMarkers::vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanN
   };
 
   // Walk each node and add in StageMarkers as appropriate
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*============================================================================*/

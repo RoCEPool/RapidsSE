@@ -99,7 +99,7 @@ ToRow::~ToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void ToRow::vRepairList(Object* pObject, eRF eRepair)
+void ToRow::vRepairList(Object* pObject)
 {
   _static_
 

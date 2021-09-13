@@ -5,7 +5,7 @@ Routine QRY_100
 
   // initialization
   EO_INIT
-  EO_ENTER
+  EO_ENTER_LU
 
   // set sql query no (debug)
   EO_SQL 100
@@ -191,7 +191,7 @@ Label CRWBUFFER_HANDLER
   EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_CRWBUF_NULL
 
-  EO_EXIT
+  EO_EXIT_LU
   EO_RETURN
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

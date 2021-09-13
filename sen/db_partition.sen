@@ -22,15 +22,15 @@
 /*----------------------------------------------------------------------------*/
 /* check within partitions folder                                             */
 /*----------------------------------------------------------------------------*/
-: folder[].isPartitions
-  folder[] dic.name@ "partitions" str.same
+: Folder[].isPartitions
+  Folder[] dic.name@ "partitions" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check in partitions folder                                                 */
 /*----------------------------------------------------------------------------*/
 : checkInPartitions
-  folder[].isPartitions if true exit then
+  Folder[].isPartitions if true exit then
   EC_NOT_IN_PARTITIONS false
 ;
 
@@ -60,7 +60,7 @@
 /* assert top of task dictionary stack is partitions                          */
 /*----------------------------------------------------------------------------*/
 : assertInPartitions ( -- t|f )
-  folder[].isPartitions assert
+  Folder[].isPartitions assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
   begin
     TablePtn[].attemptGrabRead
   not while
-    task::yield
+    Task[].yield 
   repeat
 ;
 
@@ -83,7 +83,7 @@
   begin
     TablePtn[].attemptGrabWrite
   not while
-    task::yield
+    Task[].yield 
   repeat
 ;
 

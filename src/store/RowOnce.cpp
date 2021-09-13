@@ -72,7 +72,7 @@ RowOnce::~RowOnce(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the logicCompiler                                                   */
 /*----------------------------------------------------------------------------*/
-void RowOnce::vRepair(Object* pObject, eRF eRepair)
+void RowOnce::vRepair(Object* pObject)
 {
   _static_
 

@@ -45,6 +45,7 @@
 #include "CorrBySquash.hpp"
 #include "PartitionPlan.hpp"
 #include "StageMarkers.hpp"
+#include "MainSubquery.hpp"
 
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "ExplainOp.hpp"
@@ -278,12 +279,18 @@ void Step::vSqlCompilerDoExplain(void) {
   // get the streamSet for explain
   InfoSet *pInfoSet = _pInfoSet(*(m_p_TaskLogicUnit)->m_xpStreamSet);
 
-  // Find the explainOp
+  // Find the explainOp. First get the /__root__/plan node
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanRoot);
   ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
+  // Get the main subquery
+  QueryNode* pMainSubqueryMarker = ShadowPlan::pMainSubquery(pPlanRoot);
+  ASSERT(pMainSubqueryMarker);
+  ASSERT(MainSubquery::bIsOfType(pMainSubqueryMarker));
+  ASSERT(pMainSubqueryMarker->nChildren() == 1);
+
+  QueryNode* pExplainMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -354,7 +361,13 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   ASSERT(pPlanRoot);
   ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
+  // Get the main subquery
+  QueryNode* pMainSubqueryMarker = ShadowPlan::pMainSubquery(pPlanRoot);
+  ASSERT(pMainSubqueryMarker);
+  ASSERT(MainSubquery::bIsOfType(pMainSubqueryMarker));
+  ASSERT(pMainSubqueryMarker->nChildren() == 1);
+
+  QueryNode* pExplainMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -410,7 +423,13 @@ void Step::vSqlCompilerExplainFormat(void) {
   ASSERT(pPlanRoot);
   ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
+  // Get the main subquery
+  QueryNode* pMainSubqueryMarker = ShadowPlan::pMainSubquery(pPlanRoot);
+  ASSERT(pMainSubqueryMarker);
+  ASSERT(MainSubquery::bIsOfType(pMainSubqueryMarker));
+  ASSERT(pMainSubqueryMarker->nChildren() == 1);
+
+  QueryNode* pExplainMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -607,9 +626,17 @@ void Step::vSqlCompilerHasExplain(void) {
   // Determine if there is an ExplainOp in this plan.
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
 
-  // pPlanRoot should have one child being an ExplainMarker.
+  // pPlanRoot should have a child which is a MainSubquery marker.
+  // This marker may have one child being an ExplainMarker.
   // The ExplainMarker should have one child being the ExplainOp
-  QueryNode* pMarker = _pQueryNode(pPlanRoot->pFirstChild());
+
+  // Get the main subquery
+  QueryNode* pMainSubqueryMarker = ShadowPlan::pMainSubquery(pPlanRoot);
+  ASSERT(pMainSubqueryMarker);
+  ASSERT(MainSubquery::bIsOfType(pMainSubqueryMarker));
+  ASSERT(pMainSubqueryMarker->nChildren() == 1);
+
+  QueryNode* pMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
   if (pMarker && ExplainMarker::bIsExactType(pMarker)) {
 
     QueryNode* pExplainOp = _pQueryNode(pMarker->pFirstChild());
