@@ -2075,6 +2075,7 @@ public:
   void vToRowCreate(void);
   void vToRowDangling(void);
   void vToRowDelete(void);
+  void vToRowFetch(void);
   void vToRowRowCountersFetch(void);
 
   // tokenVec
