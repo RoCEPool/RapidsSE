@@ -11,7 +11,7 @@ namespace BASE
                  public ListItem_t<Thread>
   {
   private:
-    Gid<CN_THREAD> m_xThreadId; // threads object id
+    Gid_t<CN_THREAD> m_xThreadId; // threads object id
     s32            m_sThreadNm; // name of this thread
   
     eCN      m_eDedicated;    // thread is dedicated to one specific job?

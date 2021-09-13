@@ -25,7 +25,7 @@ namespace STORE
     // operator
 
     // -- id, name and kind
-    Gid<CN_OP> m_xOpId;     // op id in grid
+    Gid_t<CN_OP> m_xOpId;     // op id in grid
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
   

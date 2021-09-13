@@ -35,7 +35,7 @@ namespace BASE
     // a)
 
     // -- id, name and kind
-    Gid<CN_TASK> m_xTaskId;  // task id in grid
+    Gid_t<CN_TASK> m_xTaskId;  // task id in grid
     s32          m_sTaskNm;  // name of this task
     // n/a                   // kind
 

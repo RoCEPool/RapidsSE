@@ -9,7 +9,7 @@ namespace BASE
   {
   protected:
   
-    Gid<CN_NONE> m_xResourceId;
+    Gid_t<CN_NONE> m_xResourceId;
   
     Object* m_pIsFor;
     
