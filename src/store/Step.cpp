@@ -140,7 +140,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
-  Step::vAddSteps_OperandCount();
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 

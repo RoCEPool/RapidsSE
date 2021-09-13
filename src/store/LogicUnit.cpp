@@ -183,8 +183,6 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
-  m_iOperandCount = 0;
-
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
