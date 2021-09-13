@@ -302,6 +302,7 @@ b1 PlanObject::bNodeHasLocation(QueryNode* pNode)
   Location::eLO eLocType = Location::eLocationType(pLocationNode);
   ASSERT(eLocType > Location::LO_NONE);
   ASSERT(eLocType < Location::LO_NENUMS);
+  UNUSED(eLocType); // in release
   return true;
 }
 

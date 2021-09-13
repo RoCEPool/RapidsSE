@@ -144,6 +144,7 @@ b1 MainSubquery::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 MainSubquery::bIsCorrelated(QueryNode* pNode)
 {
+  UNUSED(pNode); // in release
   ASSERT(bIsOfType(pNode));
 
   // All main subqueries are non-correlated

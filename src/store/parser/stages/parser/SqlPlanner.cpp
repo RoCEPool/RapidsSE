@@ -747,6 +747,10 @@ antlrcpp::Any SqlPlanner::visitNaturalJoin(sqlParser::NaturalJoinContext *pCtx)
   QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
   QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
 
+  UNUSED(eJoinType);   // for now...
+  UNUSED(pTableExpr1); // for now...
+  UNUSED(pTableExpr2); // for now...
+
   // TODO: Extract join hint
 
   // TODO: create a join predicate

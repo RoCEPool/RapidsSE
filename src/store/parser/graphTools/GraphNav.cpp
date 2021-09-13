@@ -37,6 +37,7 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
   ps = StrLib::acLast(szTypePath->azChar());
   b1 bFound = StrLib::bBackward(&ps, szTypePath->azChar(), '/');
   ASSERT(bFound);
+  UNUSED(bFound); // in release
 
   return (Stz*) (ps + 1);
 }
