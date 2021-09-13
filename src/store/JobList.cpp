@@ -86,18 +86,26 @@ void JobList::vAddJob(Job* pJob)
   
   ASSERT(bIsLocked());
   
-  //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eGetClassNo()], pJob->iJobId());
+//  vTrace("inserting %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
   
   ASSERT(JL_NONE == pJob->eJobList());
   ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
           (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
-          (JL_RETIRED       == m_eJobsList && ! pJob->bWasReceived())
+          (JL_RETIRED       == m_eJobsList)
          );
   pJob->vJobList(m_eJobsList);
   
-  m_pJobsSkipList->bInsert(pJob);
+  bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  RASSERT(bWasInserted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,8 +147,8 @@ Job* JobList::pFindJob(i8 iJobId)
 //  pJob__Find->vGuardedDeleteExplicit(CN_JOB,
 //                                     CN_JOBLIST,this,
 //                                     (Stz*)__func__);
-  pJob__Find->vGuardedDelete(CN_JOB,(Job**)&pJob__Find,
-                             CN_JOBLIST,this,(Stz*)__func__);
+//  pJob__Find->vGuardedDelete(CN_JOB,(Job**)&pJob__Find,
+//                             CN_JOBLIST,this,(Stz*)__func__);
   delete pJob__Find;
 
   return pJobFound;
@@ -256,9 +264,16 @@ bool JobList::bRemoveJob(Job* pJob)
   bool bRemoved;
   
   ASSERT(m_okLock.bIsLocked());
-  
-  //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eGetClassNo()], pJob->iJobId());
-  
+    
+//  vTrace("removing %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//         
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
+ 
   ASSERT(m_eJobsList == pJob->eJobList());
   
   bRemoved = m_pJobsSkipList->bRemove(pJob);
@@ -317,6 +332,11 @@ void JobList::vSee(void)
     vTrace("AcksRmg %lld (out of %lld)"_Stz
            ,pJob->iAcksRmg_printOnlyValue()
            ,pJob->iAcksOriginal()
+           );
+
+    vTrace("logicUnit %p task %p"_Stz
+           ,pJob->m_pJobLogicUnit
+           ,pJob->pJobTask()
            );
 
 

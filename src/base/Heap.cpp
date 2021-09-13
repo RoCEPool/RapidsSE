@@ -159,6 +159,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      vTrace("LOW MEMORY!!!\n"_Stz);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;

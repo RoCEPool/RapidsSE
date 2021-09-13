@@ -41,6 +41,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
+  //"pipeline::origin" .
+  
   Task[].job@ Job[] equal assert
 
   job::assertCorrectness
@@ -59,10 +61,13 @@
       DdlLock[].testDrop
       JobRef[].none
 
+      Job[].addRetired
+      
       JS_SIGNALLED Job[].state!
-      Session[].signal
+        Session[].signal
 
-      Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+      Task[].grabLock
+        TR_RETIRE_THIS_TASK Task[].transition!
       
       HAZARD
 
@@ -119,15 +124,31 @@
   // we're back as the originator
   
   Job[].removeOriginator
-  Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
   
-  JS_SIGNALLED Job[].state!
-  Session[].signal
+  session::hasCascade@ not
+  if
+      
+    DdlLock[].testDrop
+    JobRef[].none
+
+    Job[].addRetired
+    
+    JS_SIGNALLED Job[].state!
+      Session[].signal
+      
+    Task[].grabLock
+      TR_RETIRE_THIS_TASK Task[].transition!
+
+  else
+      
+    DdlLock[].testDrop
+    JS_SIGNALLED Job[].state!
+    Session[].signal
  
-  DdlLock[].testDrop
- 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  
+  then
+
   
   HAZARD
 ;
@@ -144,6 +165,10 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
+  // "pipeline::participant a" .
+
+  JobRef[].none
+  
   Task[].job@ Job[] equal assert
 
   JP_BEGINNING Job[].phase!
@@ -155,17 +180,21 @@
 
   // add job to participant job list
   Job[].addParticipant
-
   job::assertCorrectness
-
   Job[].phase@ JP_BEGINNING assert
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
   
-  <cmd> Dynamo::compileStmt
-  EC_NONE == assert
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> .
+    system::bpa
+  then
+  
 
+  <cmd> Dynamo::compileStmt EC_NONE == assert
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
@@ -174,16 +203,18 @@
 
   JP_BEGUN Job[].phase!
   nullptr Job[].seedWord!
-  
+     
   Job[] Job__Begun::replyToOrigin
   
   DdlLock[].testDrop
 
-  // unlink task and job
-  nullptr Job[].task!
-  nullptr Task[].job!
-
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock
+    
+    // about to delete task (but not this job) so unlink task and job
+    nullptr Job[].task!
+    nullptr Task[].job!
+    
+    TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -195,6 +226,8 @@
 
   // [ senCompiler::current@ word.name@ encode::push ] .
 
+  // "pipeline::execute" .
+  
   Task[].job@ Job[] equal assert
 
   JP_EXECUTING Job[].phase!
@@ -252,15 +285,18 @@
   JP_EXECUTED Job[].phase!
   nullptr Job[].seedWord!
 
+  DdlLock[].testDrop
+  JobRef[].none
+  
   Job[] Job__Executed::replyToOrigin
   
-  DdlLock[].testDrop
-
-  // unlink task and job
-  nullptr Job[].task!
-  nullptr Task[].job!
-
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock
+  
+    // about to delete task (but not this job) so unlink task and job
+    nullptr Job[].task!
+    nullptr Task[].job!
+  
+    TR_DELETE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -269,6 +305,8 @@
 /* end pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
+
+  // "pipeline::end" .
 
   Task[].job@ Job[] equal assert
 
@@ -288,16 +326,18 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  //Job[].addRetired
-  //[? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
-
-  Job[] Job__Ended::replyToOrigin
   
+
   DdlLock[].testDrop
+  
+  Job[] Job__Ended::replyToOrigin
 
   JS_DELETABLE Job[].state!
+  Job[].addRetired
   
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -307,6 +347,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
 
+  // "pipeline::cancel" .
+  
   Task[].job@ Job[] equal assert
 
   job::assertCorrectness
@@ -319,14 +361,15 @@
   nullptr Job[].seedWord!
 
   Job[].removeParticipant
-  //Job[].addRetired
-  //[? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
-
+    
   Job[] Job__Cancelled::replyToOrigin
-  
+
   JS_DELETABLE Job[].state!
-  
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+
+  Job[].addRetired
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;

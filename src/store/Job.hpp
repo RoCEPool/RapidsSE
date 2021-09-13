@@ -32,12 +32,14 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    Gid<CN_JOB> m_xJobId;    // this job's id
-    s32         m_sJobNm;    // name of job
-    eJK         m_eJobKind;  // job kind: (needs work)
+    Gid<CN_JOB> m_xJobId;     // this job's id
+    s32         m_sJobNm;     // name of job
+    eJK         m_eJobKind;   // job kind: (needs work)
 
-    eSS         m_eSeed;  // sen word to start execution
-    Word*       m_pSeedWord; // seed word of this job                  POST_RECV
+    b8          m_bReapable;  // can job be reaped?
+    Atomic      m_noActiveOps; // number of active ops
+    eSS         m_eSeed;      // sen word to start execution
+    Word*       m_pSeedWord;  // seed word of this job                  POST_RECV
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -87,14 +89,14 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job execution                                        execution
 
-    // -- tasking
-    Task* m_pTask;  // task executing this job                         POST_RECV
 
     // -- logic unit
     LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
 
   private:
-    
+    // -- tasking
+    Task* m_pTask;  // task executing this job                         POST_RECV
+
     // must be last
     Footer m_xFooter;
     
@@ -134,8 +136,10 @@ namespace STORE
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(i8& nAcksWereRemaining);
+    i8   nActiveOps(void);
     bool bByPromptTag(void);
     void vContentDump(void);
+    void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     void vOutline(s4K& sOutline);
@@ -143,7 +147,9 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
+    void vIncActiveOps(void);
     bool bIsPipeline(void);
+    bool bIsPipelineLocal(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
@@ -169,6 +175,8 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
+    bool bReapable(void);
+    void vReapable(bool bReapable);
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);
@@ -185,8 +193,8 @@ namespace STORE
     bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
-    Task* pTask(void);
-    void vTask(Task* pTask);
+    Task* pJobTask(void);
+    void vJobTask(Task* pTask);
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
@@ -216,7 +224,8 @@ namespace STORE
   eEC  eJob_checkCluster(void);
   void vJob_postRecv(Job* pJob);
 
-  bool bJobCompare(void* aJobInsert, void* aJobScan, bool& bMatch);
+  bool bJobCompare_addr(void* aJobInsert, void* aJobScan, bool& bMatch);
+  bool bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch);
 }
 
 

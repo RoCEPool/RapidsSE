@@ -52,7 +52,7 @@ void Step::vDynamoCompileStmt(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
   
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob);
+  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task);
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
 
@@ -61,7 +61,7 @@ void Step::vDynamoCompileStmt(void)
   
   if (pPipelineSpec) {
     
-    eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
+    eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
     
     if (EC_NONE == eError) {
       

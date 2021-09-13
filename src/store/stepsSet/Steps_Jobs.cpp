@@ -32,6 +32,7 @@ void Step::vAddSteps_Jobs(void)
   vAddStep("jobs::seeLlist"_Stz,       &Step::vJobsSeeLlist);
   vAddStep("jobs::seeOlist"_Stz,       &Step::vJobsSeeOlist);
   vAddStep("jobs::seePlist"_Stz,       &Step::vJobsSeePlist);
+  vAddStep("jobs::seeRlist"_Stz,       &Step::vJobsSeeRlist);
   vAddStep("jobs::seeSqueue"_Stz,      &Step::vJobsSeeSqueue);
 }
 
@@ -79,6 +80,18 @@ void Step::vJobsSeePlist(void)
   ENTRY();
   
   AM::pParticipatingJobs()->vSee();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::seeRlist -- see contents of m_pRetiredJobs                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsSeeRlist(void)
+{
+  ENTRY();
+  
+  AM::pRetiredJobs()->vSee();
 
   EXIT();
 }

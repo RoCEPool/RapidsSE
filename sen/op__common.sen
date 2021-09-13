@@ -547,7 +547,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

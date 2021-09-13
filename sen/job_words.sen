@@ -235,7 +235,11 @@
 
   JS_DELETABLE Job[].state!
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Job[].addRetired
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
+
   
   HAZARD
 ;

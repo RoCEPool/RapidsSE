@@ -1480,7 +1480,7 @@ void Engine::vStartSystem(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
-  
+    
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);

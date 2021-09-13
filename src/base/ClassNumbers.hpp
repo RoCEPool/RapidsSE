@@ -641,7 +641,7 @@ static Stz* aCN[]
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS
-  /* */ "STRAND"_Stz,               // CN_STREAM
+  /* */ "STREAM"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET

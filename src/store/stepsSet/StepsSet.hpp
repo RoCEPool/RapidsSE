@@ -687,7 +687,7 @@ public:
   void vJobClass(void);
 
   void vJobDec2pcAcksRmg(void);
-  void vJobDelete(void);
+  void vJobDelete2pc(void);
 
   void vJobTagSetFetch(void);
   void vJobErrorStore(void);
@@ -721,6 +721,8 @@ public:
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
 
+  void vJobReapableFetch(void);
+  void vJobReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -882,6 +884,7 @@ public:
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
+  void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
 
   // kbase
@@ -1795,6 +1798,7 @@ public:
   // args
   void vSysArgsDefinedNodes(void);
   void vSysArgsPrint(void);
+  void vSysArgsTagSet(void);
 
   // system
   void vSystemActiveJobs(void);

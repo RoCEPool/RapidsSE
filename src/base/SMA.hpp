@@ -5,19 +5,19 @@
 
 namespace BASE
 {
-  template <class CLASSNM>
+  template <class CLASS, eCN CLASSNO>
   class SMA
   {
   public:
   
-    CLASSNM* m_pObject; // pointer to the object
+    CLASS* m_pObject; // pointer to the object
   
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    SMA<CLASSNM>(void)
+    SMA<CLASS, CLASSNO>(void)
     {
       m_pObject = nullptr;
     }
@@ -25,11 +25,11 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    SMA<CLASSNM>(CLASSNM* pObject)
+    SMA<CLASS, CLASSNO>(CLASS* pObject)
     {
-      if ( pObject && ! AM::bInBufferPool(pObject) )
+      if ( pObject && ! AM::bInBufferPool(pObject) ) {
         THROW("SMA::SMA(pObject) : invalid pObject parameter"_Stz);
-    
+      }
       m_pObject = pObject;
     }
     
@@ -39,7 +39,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* assignment operator =                                (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASSNM* pObject)
+    void operator = (CLASS* pObject)
     {
       if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
         THROW("SMA::operator =() : invalid pObject parameter"_Stz);
@@ -50,15 +50,15 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* auto conversion operator                                               */
     /*------------------------------------------------------------------------*/
-    operator CLASSNM*(void)
+    operator CLASS*(void)
     {
-      return (CLASSNM*)m_pObject;
+      return (CLASS*)m_pObject;
     }
   
     /*------------------------------------------------------------------------*/
     /* dereference operator *                           (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASSNM* operator * (void)
+    CLASS* operator * (void)
     {
       if (! m_pObject)
         THROW("SMA::operator *() : m_pObject member is null"_Stz);
@@ -69,9 +69,11 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASSNM* operator -> (void)
+    CLASS* operator -> (void)
     {
       if (! m_pObject) {
+        vTrace("SMA -> : %p %lld:%s\n"_Stz
+               ,m_pObject,(i8)CLASSNO,aCN[CLASSNO]);
         vDebugPoint();
         THROW("SMA::operator ->() : m_pObject member is null"_Stz);
       }
@@ -82,7 +84,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* equal to operator ==                                                   */
     /*------------------------------------------------------------------------*/
-    bool operator == (CLASSNM* pObject)
+    bool operator == (CLASS* pObject)
     {
       return m_pObject == pObject;
     }
@@ -90,7 +92,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* not equal to operator !=                                               */
     /*------------------------------------------------------------------------*/
-    bool operator != (CLASSNM* pObject)
+    bool operator != (CLASS* pObject)
     {
       return m_pObject != pObject;
     }

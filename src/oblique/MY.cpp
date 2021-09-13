@@ -319,7 +319,7 @@ Job* MY::pJob(void)
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   if (pJob)
     return pJob;
 
@@ -344,7 +344,7 @@ LogicUnit* MY::pLogicUnit(void)
   
   Task* pTask = MY::pTask();
   
-  Job* pJob = pTask->pJob();
+  Job* pJob = pTask->pJob_task();
   if (pJob)
     return pJob->pJobLogicUnit();
 

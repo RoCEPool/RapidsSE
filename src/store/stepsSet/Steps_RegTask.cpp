@@ -102,7 +102,10 @@ void Step::vTaskJobFetch(void)
 //
 //  m_pDataStack->vPushPtr(pJob);
 
-  m_pDataStack->vPushPtr(* m_pJob);
+  if (m_pJob_task.bIsNull())
+    AM::SE::vWhereAmI();
+  
+  m_pDataStack->vPushPtr(* m_pJob_task);
 
   EXIT();
 }
@@ -119,10 +122,10 @@ void Step::vTaskJobStore(void)
 //  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 //
 //  pThatTask->m_pJob = pJob;
-   
+  
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pJob = pJob;
+  m_pJob_task = pJob;
 
   EXIT();
 }

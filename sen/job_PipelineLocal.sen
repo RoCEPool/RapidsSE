@@ -13,7 +13,9 @@
 
   JobRef[].none
 
-  Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+  Job[].addRetired
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -108,18 +110,19 @@
     Job[].removeLocal
   then
 
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
   
+  
+  DdlLock[].testDrop
+  JobRef[].none
+
   Job[].addRetired
-  [? WITH_JOB_REAPING ?if "reaping" . ?else Job[].removeRetired ?]
-      
+  
   JS_SIGNALLED Job[].state!
-      
+    Session[].signal
+
   Task[].grabLock
-  Session[].signal
-  Task[].dropLock
- 
-  pipelineLocal::termination
+    TR_RETIRE_THIS_TASK Task[].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

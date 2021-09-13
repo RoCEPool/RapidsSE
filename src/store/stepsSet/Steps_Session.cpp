@@ -322,12 +322,9 @@ void Step::vSessionSignal(void)
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
-  
-
-  
-  vJob(nullptr);
-
+    
   pSession->m_oMutex.vLock(this);
+  //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
   pSession->m_oMutex.vSignal(this);
   pSession->m_oMutex.vUnlock(this);
 
