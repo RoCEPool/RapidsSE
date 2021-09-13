@@ -474,7 +474,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
-  { sizeof(Stats),              HT_INVALID   ,0 }, // CN_STATS
+  { sizeof(Stats),              HT_T_SMALL   ,0 }, // CN_STATS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
   { 0,                          HT_INVALID   ,0 }, // CN_STEP
   { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS

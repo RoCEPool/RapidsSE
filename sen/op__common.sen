@@ -302,6 +302,7 @@
   op[].init
 
   BM_TimerNew
+  Stats_new
 
   "<diary>" job::tagSet@ tagSet.hasName if
     rluDiary_init
@@ -406,12 +407,14 @@
 
   // start timer
   BM_TimerBegin
+  Stats_TimerBegin
 
   LogicUnit[].handler@ execute
 
   dup if
     // update timer
     BM_TimerUpdate
+    Stats_TimerUpdate
   then
 ;
 

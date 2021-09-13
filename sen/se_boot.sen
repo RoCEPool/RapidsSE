@@ -66,6 +66,7 @@ assert::stack_0
         "op__defHandlers.sen"         include
         "op__EOCommon.sen"            include
         "op__CompilerCommon.sen"      include
+        "op__stats.sen"               include
         "op__common.sen"              include
         "reg__common.sen"             include
         "OP_failed.sen"               include

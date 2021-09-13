@@ -145,7 +145,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                 LR_SENDS)
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       LR_SHARDDEF)
 ,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 LR_SOCKET)
-,          m_xpStats(this,RF_SET_NULL, nullptr,                     LR_STATS)
+,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                 LR_STATS)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   LR_STREAMDEFRHT)
@@ -370,6 +370,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpSends.bIsNull());
   RASSERT(m_xpShardDef.bIsNull());
   RASSERT(m_xpSocket.bIsNull());
+  //RASSERT(m_xpStats.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());
   RASSERT(m_xpStreamDefRht.bIsNull());
   RASSERT(m_xpStreamDefOut.bIsNull());
@@ -398,6 +399,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // repair the timers here
   AggTimer::vRepair(m_xpAggTimer.m_pComponent);
   Timer::vRepair(m_xpTimer.m_pComponent);
+  Stats::vRepair(m_xpStats.m_pComponent);
 
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
@@ -526,20 +528,23 @@ void LogicUnit::vCleanup(void)
       
       if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
       vTrace("%16s: "
-             "cpu %8lldus "
+             "cpu %8lldus %8lldus "
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
              "\n"_Stz
              
              ,m_pOp->szOpNm()
              ,m_xpAggTimer->iMicroseconds()
+             ,m_xpStats->iMicroseconds()
              ,m_pOp->nMaxQueue()
              ,m_iOperandCount,m_iBuffersIn,m_iBuffersOut
              );
     }
     
     // execute register repair
-    if (p_Reg->m_eLogicUnitReg != LR_TIMER && p_Reg->m_eLogicUnitReg != LR_AGGTIMER)
+    if (p_Reg->m_eLogicUnitReg != LR_TIMER &&
+        p_Reg->m_eLogicUnitReg != LR_AGGTIMER &&
+        p_Reg->m_eLogicUnitReg != LR_STATS)
       p_Reg->vRepair();
   }
 }

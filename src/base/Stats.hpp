@@ -61,11 +61,11 @@ namespace BASE
     Stats(void);
    ~Stats(void) noexcept(false);
 
-    void vAdd(i8 iTicks);
-    void vAdd(Timer* pTimer);
-    void vReset(void);
-    void vSet(i8 iTicks);
-    
+    static void vRepair(Object* pObject);
+
+    void vStartTimer(void);
+    void vUpdateTimer(void);
+
     i8 iNanoseconds(void);
     i8 iMicroseconds(void);
     i8 iMilliseconds(void);
@@ -73,7 +73,7 @@ namespace BASE
     i8 iTicks(void);
     i8 nTimes(void);
 
-    d8 dRatePerSec(i8 nItems);
+    d8   dRatePerSec(i8 nItems);
 
     Footer* aFooter(void);
   };

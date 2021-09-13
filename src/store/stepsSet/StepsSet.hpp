@@ -1659,6 +1659,16 @@ public:
   // steps
   void vExpressionsLockSample(void);
 
+  // stats
+  void vStatsDelete(void);
+  void vStatsMicrosecs(void);
+  void vStatsMillisecs(void);
+  void vStatsNanosecs(void);
+  void vStatsNew(void);
+  void vStatsSecs(void);
+  void vStatsStartTimer(void);
+  void vStatsUpdateTimer(void);
+
   // steps
   void vStepsReset(void);
   void vStepsStart(void);
