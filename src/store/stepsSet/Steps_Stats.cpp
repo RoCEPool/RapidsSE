@@ -22,6 +22,7 @@ void Step::vAddSteps_Stats(void)
   vAddStep("stats[].millisecs"_Stz,      &Step::vStatsMillisecs);
   vAddStep("stats[].nanosecs"_Stz,       &Step::vStatsNanosecs);
   vAddStep("stats[].new"_Stz,            &Step::vStatsNew);
+  vAddStep("stats[].operandsInc"_Stz,    &Step::vStatsOperandsInc);
   vAddStep("stats[].secs"_Stz,           &Step::vStatsSecs);
   vAddStep("stats[].startTimer"_Stz,     &Step::vStatsStartTimer);
   vAddStep("stats[].updateTimer"_Stz,    &Step::vStatsUpdateTimer);
@@ -118,6 +119,18 @@ void Step::vStatsNew(void)
 
   m_p_TaskLogicUnit->m_xpStats = new Stats;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* stats[].operandsInc -- inc operands                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vStatsOperandsInc(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpStats->m_nOperands++;
+
   EXIT();
 }
 

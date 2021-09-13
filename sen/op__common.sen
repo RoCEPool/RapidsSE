@@ -401,8 +401,8 @@
 /*----------------------------------------------------------------------------*/
 : op__callHandler
 
-  // inc operand count
-  OperandCount[].inc
+  // inc operands
+  Stats_OperandsInc
 
   // start timer
   Stats_TimerBegin

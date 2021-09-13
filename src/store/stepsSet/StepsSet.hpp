@@ -1658,6 +1658,7 @@ public:
   void vStatsMillisecs(void);
   void vStatsNanosecs(void);
   void vStatsNew(void);
+  void vStatsOperandsInc(void);
   void vStatsSecs(void);
   void vStatsStartTimer(void);
   void vStatsUpdateTimer(void);

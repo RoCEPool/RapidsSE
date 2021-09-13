@@ -532,7 +532,7 @@ void LogicUnit::vCleanup(void)
              ,m_pOp->szOpNm()
              ,m_xpStats->iMicroseconds()
              ,m_xpStats->m_nMaxQs
-             ,m_iOperandCount
+             ,m_xpStats->m_nOperands
              ,m_xpStats->m_nBuffIn
              ,m_xpStats->m_nBuffOut
              );
