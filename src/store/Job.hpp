@@ -32,7 +32,7 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    Gid_t<CN_JOB> m_xJobId;     // this job's id
+    //Gid_t<CN_JOB> m_xJobId;     // this job's id
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
