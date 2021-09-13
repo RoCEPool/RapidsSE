@@ -72,7 +72,13 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
   }
 
   QueryNode* pPlan = ShadowRoot::pPlanRoot(pRootNode);
-  vPrintNode(pPlan->pFirstChild());
+
+  PlanNodeIter* pIter = pPlan->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    vPrintNode(pIter->pNext());
+  }
+
+  delete pIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1182,6 +1188,33 @@ PlanNode* GraphNav::pFindChild(Stz* szChildName, PlanNode* pNode)
     PlanNode* pItem = pIter->pNext();
 
     if (pItem->szName()->bEqual(szChildName)) {
+      delete pIter;
+      return pItem;
+    }
+  }
+
+  delete pIter;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Looks for a child which matches a given condition. Returns the first       */
+/* matching child, if found, otherwise nullptr.                               */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pFindChild(std::function<b1(PlanNode*)> fCondition, PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(fCondition);
+
+  if (!pNode->bHasChildren()) {
+    return nullptr;
+  }
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    PlanNode* pItem = pIter->pNext();
+
+    if (fCondition(pItem)) {
       delete pIter;
       return pItem;
     }

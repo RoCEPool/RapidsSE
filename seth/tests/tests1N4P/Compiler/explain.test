@@ -23,15 +23,17 @@ success
 
 EXPLAIN SELECT n_nationkey FROM nation;
 rows:
-  (*, 'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_nationkey FROM nation"
+  (*, 'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey FROM nation"
 
--> -> tableScanOp
-      » table: (rapidsse.public.nation)' )
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain with errors
@@ -44,15 +46,17 @@ failure contains: 'No such table: badTable'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 EXPLAIN FORMAT PRETTY SELECT n_nationkey FROM nation;
 rows:
-  ( *, 'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_nationkey FROM nation"
+  ( *, 'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey FROM nation"
 
--> -> tableScanOp
-      » table: (rapidsse.public.nation)' )
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain single stage
@@ -326,22 +330,26 @@ rows: 0
 
 EXPLAIN EXPLAIN SELECT n_nationkey FROM nation;
 rows:
-( *, 'explainPlan',
-'StatementMarker: explain
-» queryText: "EXPLAIN SELECT n_nationkey FROM nation"
+( *, 'explainPlan','
+∆ mainSubquery
 
--> explainOp
-   » stageRangeList: explainPlan
-   » format: PRETTY
+-> statementMarker: explain
+   » queryText: "EXPLAIN SELECT n_nationkey FROM nation"
 
--> -> StatementMarker: select
-      » queryText: "SELECT n_nationkey FROM nation"
+-> -> explainOp
+      » stageRangeList: explainPlan
+      » format: PRETTY
 
--> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+-> -> -> mainSubquery
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)' )
+-> -> -> -> statementMarker: select
+            » queryText: "SELECT n_nationkey FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)' )
 
 
 EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM nation;

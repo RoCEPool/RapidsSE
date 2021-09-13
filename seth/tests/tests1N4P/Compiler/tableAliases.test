@@ -25,135 +25,151 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN SELECT * FROM nation n;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM nation n"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
-   » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation n"
 
--> -> tableScanOp
-      » alias: (n)
-      » table: (rapidsse.public.nation)'
-)
-
-EXPLAIN SELECT n.* FROM nation n;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n.* FROM nation n"
-
--> projectOp
-   » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
-   » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
-
--> -> tableScanOp
-      » alias: (n)
-      » table: (rapidsse.public.nation)'
-)
-
-EXPLAIN SELECT n_name FROM nation n;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n_name FROM nation n"
-
--> projectOp
-   » column: (Expr = n.n_name ; Ordinal Expr = $2)
-
--> -> tableScanOp
-      » alias: (n)
-      » table: (rapidsse.public.nation)'
-)
-
--- Can we fully reference a column name in a SELECT list using a table reference?
-EXPLAIN SELECT n.n_name FROM nation n;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n.n_name FROM nation n"
-
--> projectOp
-   » column: (Expr = n.n_name ; Ordinal Expr = $2)
-
--> -> tableScanOp
-      » alias: (n)
-      » table: (rapidsse.public.nation)'
-)
-
--- Can we fully reference a column name in a WHERE clause using a table reference?
-EXPLAIN SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0"
-
--> projectOp
-   » column: (Expr = n.n_name ; Ordinal Expr = $2)
-
--> -> filterOp
-      » expr: (n.n_nationkey > 0)
-      » ordinal expr: ($1 > 0)
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » alias: (n)
          » table: (rapidsse.public.nation)'
 )
 
--- Can we fully reference a column name in an ORDER clause using a table reference?
-EXPLAIN SELECT n.n_name FROM nation n ORDER BY n.n_nationkey;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT n.n_name FROM nation n ORDER BY n.n_nationkey"
+EXPLAIN SELECT n.* FROM nation n;
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = n.n_name ; Ordinal Expr = $1)
+-> statementMarker: select
+   » queryText: "SELECT n.* FROM nation n"
 
--> -> orderOp
-      » order expr: ((n.n_nationkey) ASC)
-      » ordinal order expr: (($2) ASC)
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = n.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = n.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = n.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> projectOp
-         » column: (Expr = n.n_name ; Ordinal Expr = $2)
-         » column: (Expr = n.n_nationkey ; Ordinal Expr = $1)
+-> -> -> tableScanOp
+         » alias: (n)
+         » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT n_name FROM nation n;
+rows: (*,'explainPlan','
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation n"
+
+-> -> projectOp
+      » column: (Expr = n.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » alias: (n)
+         » table: (rapidsse.public.nation)'
+)
+
+-- Can we fully reference a column name in a SELECT list using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n;
+rows: (*,'explainPlan','
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT n.n_name FROM nation n"
+
+-> -> projectOp
+      » column: (Expr = n.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » alias: (n)
+         » table: (rapidsse.public.nation)'
+)
+
+-- Can we fully reference a column name in a WHERE clause using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0;
+rows: (*,'explainPlan','
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0"
+
+-> -> projectOp
+      » column: (Expr = n.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (n.n_nationkey > 0)
+         » ordinal expr: ($1 > 0)
 
 -> -> -> -> tableScanOp
             » alias: (n)
             » table: (rapidsse.public.nation)'
 )
 
+-- Can we fully reference a column name in an ORDER clause using a table reference?
+EXPLAIN SELECT n.n_name FROM nation n ORDER BY n.n_nationkey;
+rows: (*,'explainPlan','
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT n.n_name FROM nation n ORDER BY n.n_nationkey"
+
+-> -> projectOp
+      » column: (Expr = n.n_name ; Ordinal Expr = $1)
+
+-> -> -> orderOp
+         » order expr: ((n.n_nationkey) ASC)
+         » ordinal order expr: (($2) ASC)
+
+-> -> -> -> projectOp
+            » column: (Expr = n.n_name ; Ordinal Expr = $2)
+            » column: (Expr = n.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> tableScanOp
+               » alias: (n)
+               » table: (rapidsse.public.nation)'
+)
+
 
 -- Can have an alias that is the same as the table name
 EXPLAIN SELECT * FROM nation nation;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM nation nation"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Alias = N_NATIONKEY ; Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Alias = N_NAME ; Expr = nation.N_NAME ; Ordinal Expr = $2)
-   » column: (Alias = N_REGIONKEY ; Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Alias = N_COMMENT ; Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation nation"
 
--> -> tableScanOp
-      » alias: (nation)
-      » table: (rapidsse.public.nation)'
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » alias: (nation)
+         » table: (rapidsse.public.nation)'
 )
 
 -- Qualifying the column name with the alias name, which is the same as the
 -- underlying table name.
 EXPLAIN SELECT nation.n_name FROM nation nation;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT nation.n_name FROM nation nation"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = nation.n_name ; Ordinal Expr = $2)
+-> statementMarker: select
+   » queryText: "SELECT nation.n_name FROM nation nation"
 
--> -> tableScanOp
-      » alias: (nation)
-      » table: (rapidsse.public.nation)'
+-> -> projectOp
+      » column: (Expr = nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » alias: (nation)
+         » table: (rapidsse.public.nation)'
 )
 
 

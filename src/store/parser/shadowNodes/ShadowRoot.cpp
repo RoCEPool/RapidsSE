@@ -4,7 +4,8 @@
 
 #include "BASE.h"
 #include "ShadowRoot.hpp"
-#include "StatementMarker.hpp"
+#include "ShadowPlan.hpp"
+#include "SubqueryMarker.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -46,15 +47,20 @@ void ShadowRoot::vExplain(PlanNode* pRoot, s48K& sBuf, i8 iIndent)
 
   ASSERT(bIsOfType(pRoot));
 
-  // Get the first child of /__root__/plan
-  PlanNode* pPlan = GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pRoot);
+  // Explain all children of /__root__/plan
+  PlanNode* pPlan = ShadowRoot::pPlanRoot(pRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPlan));
   ASSERT(pPlan);
 
-  PlanNode* pStatement = pPlan->pFirstChild();
-  ASSERT(pStatement);
-  ASSERT(StatementMarker::bIsOfType(pStatement));
+  PlanNodeIter* pIter = pPlan->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    PlanNode* pChild = pPlan->pFirstChild();
+    ASSERT(pChild);
+    ASSERT(SubqueryMarker::bIsOfType(pChild));
 
-  StatementMarker::vExplain(pStatement, pRoot, nullptr, sBuf, iIndent);
+    SubqueryMarker::vExplain(pChild, pRoot, nullptr, sBuf, iIndent);
+  }
+  delete pIter;
 }
 
 /*----------------------------------------------------------------------------*/

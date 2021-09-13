@@ -72,7 +72,7 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
   // Walk each node and look for the StatementMarkers. We will start from the
   // bottom up so that we fix lower level dependencies before we deal with
   // nodes higher up the graph.
-  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(),
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot,
                                 false,
                                 true,
                                 fStmtMarkerVisitor,
