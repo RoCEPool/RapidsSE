@@ -210,6 +210,7 @@ namespace STORE
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
+    REG<Stats,          CN_STATS         > m_xpStats;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;

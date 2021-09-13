@@ -237,6 +237,7 @@ extern d8 C_D8_MID;
 #include "Timer.hpp"
 #include "AggTimer.hpp"
 #include "Gizmos.hpp"
+#include "Stats.hpp"
 
 #include "ByteRate.hpp"
 #include "Peruse.hpp"
