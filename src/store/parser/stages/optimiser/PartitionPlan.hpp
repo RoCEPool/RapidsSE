@@ -23,9 +23,11 @@ namespace Parser
     static void vPartitionPlan(PlanNode* pRootNode);
 
   private:
+    static void vPartitionSubquerySection(QueryNode* pSubqueryMarker,
+                                                PlanNode* pRootNode);
+
     static QueryNode* pPartitionStatementSection(QueryNode* pStatementMarker,
                                                  PlanNode* pRootNode,
-                                                 QueryNode* pPlanRoot,
                                                  QueryNodeStack* pStmtSectionStack);
 
     // Consolidates separate plain chains from the partition, node & origin level

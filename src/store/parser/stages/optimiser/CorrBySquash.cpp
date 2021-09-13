@@ -67,7 +67,7 @@ void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalk(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -129,8 +129,8 @@ class GraphNav
 
 
     // As per bGlobalWalk() above except a bounded walk will stop when it hits a
-    // StatementMarker node as this represents the start of another logical sub-graph.
-    // Starting on a StatementMarker will walk until the subsequent StatementMarker
+    // PlanMarker node as this represents the start of another logical sub-graph.
+    // Starting on a PlanMarker will walk until the subsequent PlanMarker
     // node is encountered.
     static b1 bBoundedWalk(PlanNode* pNode,
                            std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor,
@@ -167,8 +167,8 @@ class GraphNav
                                   std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
 
     // As per bGlobalWalkBottomUp() above except a bounded walk will stop when it hits a
-    // StatementMarker node as this represents the start of another logical sub-graph.
-    // Starting on a StatementMarker will walk until the subsequent StatementMarker
+    // PlanMarker node as this represents the start of another logical sub-graph.
+    // Starting on a PlanMarker will walk until the subsequent PlanMarker
     // node is encountered.
     static b1 bBoundedWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
     static b1 bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
@@ -196,6 +196,10 @@ class GraphNav
     // Looks for a child with a given name of the specified node and returns
     // it if found. Otherwise returns nullptr.
     static PlanNode* pFindChild(Stz* szChildName, PlanNode* pNode);
+
+    // Looks for a child which matches a given condition. Returns the first
+    // matching child, if found, otherwise nullptr.
+    static PlanNode* pFindChild(std::function<b1(PlanNode*)> fCondition, PlanNode* pNode);
 
     // Search for a node that matches a given condition. If found then the node*
     // is returned.
