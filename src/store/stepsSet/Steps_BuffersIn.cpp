@@ -34,7 +34,7 @@ void Step::vBuffersInGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_iBuffersIn);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStats->m_nBuffIn);
 
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vBuffersInInc(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_iBuffersIn++;
+  //m_p_TaskLogicUnit->m_p_TaskLogicUnit->m_xpStats->m_nBuffIn++;
   
   EXIT();
 }

@@ -491,7 +491,7 @@
     PipeIn[].bideNext
 
     PipeIn[].isBuffer if
-      BuffersIn[].inc
+      Stats[].BuffIninc
     then
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then

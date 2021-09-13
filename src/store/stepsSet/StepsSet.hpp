@@ -1660,6 +1660,7 @@ public:
   void vExpressionsLockSample(void);
 
   // stats
+  void vStatsBuffInInc(void);
   void vStatsDelete(void);
   void vStatsMicrosecs(void);
   void vStatsMillisecs(void);

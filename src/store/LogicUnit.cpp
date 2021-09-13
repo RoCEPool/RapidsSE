@@ -184,8 +184,6 @@ LogicUnit::LogicUnit(void)
   m_bIsLftCrwBuffer = false;
 
   m_iOperandCount = 0;
-  m_iBuffersIn    = 0;
-  m_iBuffersOut   = 0;
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;
@@ -534,7 +532,9 @@ void LogicUnit::vCleanup(void)
              ,m_pOp->szOpNm()
              ,m_xpStats->iMicroseconds()
              ,m_pOp->nMaxQueue()
-             ,m_iOperandCount,m_iBuffersIn,m_iBuffersOut
+             ,m_iOperandCount
+             ,m_xpStats->m_nBuffIn
+             ,m_xpStats->m_nBuffOut
              );
     }
     

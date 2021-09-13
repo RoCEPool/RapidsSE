@@ -24408,7 +24408,7 @@ void Task::vAddMunged(Task* )
     "    PipeIn[].bideNext\n"
     "\n"
     "    PipeIn[].isBuffer if\n"
-    "      BuffersIn[].inc\n"
+    "      Stats[].BuffIninc\n"
     "    then\n"
     "\n"
     "    //debug::flag@ if \"(Revised) Calling handler for NEXT operand\" . then\n"

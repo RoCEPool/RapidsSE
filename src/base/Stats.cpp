@@ -57,7 +57,10 @@ Stats::Stats(void)
   m_nTimes = 0;
 
   m_nOperands = 0;
-  m_nMaxQs = 0;
+  m_nMaxQs    = 0;
+
+  m_nBuffIn   = 0;
+  m_nBuffOut  = 0;
 
   // i/o
   m_nSends     = 0;

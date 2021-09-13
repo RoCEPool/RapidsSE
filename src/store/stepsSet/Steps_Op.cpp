@@ -189,7 +189,7 @@ void Step::vOpPipeOut(void)
 
   if (pOperand->bIsBuffer()) {
     LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-    pLogicUnit->m_iBuffersOut++;
+    pLogicUnit->m_xpStats->m_nBuffOut++;
   }
   pOp->vPipeToNextOp(pOperand,this);
 
