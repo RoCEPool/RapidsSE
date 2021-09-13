@@ -343,31 +343,36 @@
                     {
                       name: "subqueryMarker",
                       value: "Marks the start of some type of subquery. This is an abstract base type.",
-                      properties: [],
+                      properties: [
+                        {
+                          // Add a constraint that children of subqueryMarker objects must be
+                          // either a StatementMarker or StageMarker.
+                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {
+                            name: "childType",
+                            type: "/__root__/primitives/constraints/childType",
+                            children: [
+                              {
+                                name: "childTypeParam1",
+                                type: "/__root__/definitions/object/valueObject/stringObject",
+                                value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
+                              },
+                              {
+                                name: "childTypeParam2",
+                                type: "/__root__/definitions/object/valueObject/stringObject",
+                                value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
+                              }
+                            ]
+                          }]
+                        }
+                      ],
                       children: [
 
 // Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery
                         {
                           name: "mainSubquery",
                           value: "Identifies the primary subquery to be executed.",
-                          properties: [
-                            {
-                              // Add a constraint that children of mainSubquery objects must be
-                              // a PlanMarker of some type
-                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                              {
-                                name: "childType",
-                                type: "/__root__/primitives/constraints/childType",
-                                children: [
-                                  {
-                                    name: "childTypeParam",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker"
-                                  }
-                                ]
-                              }]
-                            }
-                          ],
+                          properties: [],
                         },
 
 // Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery
@@ -380,27 +385,6 @@
                               name: "tableAlias",
                               value: "The virtual table name that this tableSubquery is known as",
                               type: "/__root__/definitions/object/valueObject/stringObject"
-                            },
-                            {
-                              // Add a constraint that children of tableSubquery objects must be
-                              // either a StatementMarker or StageMarker.
-                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                              {
-                                name: "childType",
-                                type: "/__root__/primitives/constraints/childType",
-                                children: [
-                                  {
-                                    name: "childTypeParam1",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
-                                  }
-                                ]
-                              }]
                             }
                           ],
                         },
@@ -414,27 +398,6 @@
                               name: "correlatedColumns",
                               value: "A list of columnRef expressions representing the columns that are correlated with the parent query",
                               type: "/__root__/definitions/object/list/columnRefs"
-                            },
-                            {
-                              // Add a constraint that children of exprSubquery objects must be
-                              // either a StatementMarker or StageMarker.
-                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                              {
-                                name: "childType",
-                                type: "/__root__/primitives/constraints/childType",
-                                children: [
-                                  {
-                                    name: "childTypeParam1",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
-                                  }
-                                ]
-                              }]
                             }
                           ],
                         }
@@ -2230,7 +2193,7 @@
                 // Add a constraint that the children of a plan node must be a single statementMarker node
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/statementMarker" }
+                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
                   ]},
                   { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
                     { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }

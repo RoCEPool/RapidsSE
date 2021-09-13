@@ -11,6 +11,7 @@
 #include "ShadowRoot.hpp"
 #include "ShadowPlan.hpp"
 #include "StatementMarker.hpp"
+#include "SubqueryMarker.hpp"
 #include "SqlException.hpp"
 #include "ProjectedColumn.hpp"
 #include "StringObject.hpp"
@@ -67,10 +68,9 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
-  // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  // The plan node should have one or more children which are SubqueryMarker nodes
+  ASSERT(pPlanNode->nChildren() > 0);
+  ASSERT(SubqueryMarker::bIsOfType(pPlanNode->pFirstChild()));
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
@@ -94,7 +94,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
   // Walk the entire plan graph to look for StatementMarkers.
   // We must do so in a bottom up manner because if there are multiple
   // set operators then the top level ones will depend on the ones below it.
-  GraphNav::bGlobalWalkBottomUp(pStatementMarker, false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,10 +114,9 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
-  // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  // The plan node should have one or more children that are SubqueryMarker nodes
+  ASSERT(pPlanNode->nChildren() > 0);
+  ASSERT(SubqueryMarker::bIsOfType(pPlanNode->pFirstChild()));
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
@@ -141,7 +140,7 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
   // Walk the entire plan graph to look for StatementMarkers.
   // We must do so in a bottom up manner because if there are multiple
   // set operators then the top level ones will depend on the ones below it.
-  GraphNav::bGlobalWalkBottomUp(pStatementMarker, false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

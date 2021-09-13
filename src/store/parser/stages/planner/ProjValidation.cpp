@@ -10,6 +10,7 @@
 #include "GraphNav.hpp"
 #include "ShadowRoot.hpp"
 #include "StatementMarker.hpp"
+#include "SubqueryMarker.hpp"
 #include "SqlException.hpp"
 #include "ProjectOp.hpp"
 #include "FilterOp.hpp"
@@ -55,8 +56,8 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
   ASSERT(pPlanRoot);
 
   // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanRoot->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanRoot->pFirstChild()));
+  ASSERT(pPlanRoot->nChildren() > 0);
+  ASSERT(SubqueryMarker::bIsOfType(pPlanRoot->pFirstChild()));
 
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -85,7 +86,7 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
 
   // We do a bottom up walk because we want to catch errors at their incarnation,
   // not are a higher level where it has potentially compounded a few times.
-  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

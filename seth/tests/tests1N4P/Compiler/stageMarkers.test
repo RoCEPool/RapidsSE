@@ -28,20 +28,22 @@ success
 
 -- Test that a simple plan always starts with a StageMarker
 EXPLAIN STAGE stageMarkers SELECT * FROM nation;
-rows: (*,'stageMarkers',
-'stageMarker
-» location: all partitions
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> projectOp
-   » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-   » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-   » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-   » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
 
--> -> tableScanOp
-      » location: all partitions
-      » table: (rapidsse.public.nation)'
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)'
 )
 
 
@@ -50,46 +52,48 @@ EXPLAIN STAGE stageMarkers
 SELECT n_nationkey, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation;
-rows: (*,'stageMarkers',
-'stageMarker
-» location: origin
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> unionOp
+-> stageMarker
    » location: origin
-   » isDistinct: (false)
+   » routing: unicast
 
--> -> stageMarker
+-> -> unionOp
       » location: origin
-      » routing: unicast
+      » isDistinct: (false)
 
 -> -> -> stageMarker
-         » location: all partitions
+         » location: origin
          » routing: unicast
 
--> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: unicast
 
--> -> -> -> -> tableScanOp
-               » location: all partitions
-               » table: (rapidsse.public.nation)
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> stageMarker
-      » location: origin
-      » routing: unicast
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
 
 -> -> -> stageMarker
-         » location: all partitions
+         » location: origin
          » routing: unicast
 
--> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: unicast
 
--> -> -> -> -> tableScanOp
-               » location: all partitions
-               » table: (rapidsse.public.nation)'
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)'
 )
 
 
@@ -101,70 +105,72 @@ SELECT n_regionkey, n_name FROM nation
 UNION ALL
 SELECT n_nationkey, n_comment FROM nation;
 
-rows: (*,'stageMarkers',
-'stageMarker
-» location: origin
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> unionOp
+-> stageMarker
    » location: origin
-   » isDistinct: (false)
+   » routing: unicast
 
--> -> stageMarker
+-> -> unionOp
       » location: origin
-      » routing: unicast
-
--> -> -> unionOp
-         » location: origin
-         » isDistinct: (false)
-
--> -> -> -> stageMarker
-            » location: origin
-            » routing: unicast
-
--> -> -> -> -> stageMarker
-               » location: all partitions
-               » routing: unicast
-
--> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-
--> -> -> -> -> -> -> tableScanOp
-                     » location: all partitions
-                     » table: (rapidsse.public.nation)
-
--> -> -> -> stageMarker
-            » location: origin
-            » routing: unicast
-
--> -> -> -> -> stageMarker
-               » location: all partitions
-               » routing: unicast
-
--> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-
--> -> -> -> -> -> -> tableScanOp
-                     » location: all partitions
-                     » table: (rapidsse.public.nation)
-
--> -> stageMarker
-      » location: origin
-      » routing: unicast
+      » isDistinct: (false)
 
 -> -> -> stageMarker
-         » location: all partitions
+         » location: origin
          » routing: unicast
 
--> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
+-> -> -> -> unionOp
+            » location: origin
+            » isDistinct: (false)
 
--> -> -> -> -> tableScanOp
-               » location: all partitions
-               » table: (rapidsse.public.nation)')
+-> -> -> -> -> stageMarker
+               » location: origin
+               » routing: unicast
+
+-> -> -> -> -> -> stageMarker
+                  » location: all partitions
+                  » routing: unicast
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+                     » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.nation)
+
+-> -> -> -> -> stageMarker
+               » location: origin
+               » routing: unicast
+
+-> -> -> -> -> -> stageMarker
+                  » location: all partitions
+                  » routing: unicast
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+                     » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.nation)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> stageMarker
+            » location: all partitions
+            » routing: unicast
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)')
 
 
 
@@ -172,35 +178,37 @@ rows: (*,'stageMarkers',
 EXPLAIN STAGE stageMarkers
 SELECT n_name, r_name
 FROM region, nation;
-rows: (*,'stageMarkers',
-'stageMarker
-» location: all partitions
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
 
--> -> stageMarker
-      » location: all partitions
-      » routing: local partition
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
+      » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
--> -> -> nestedLoopJoinOp
-         » join type: Cross Join
-         » predicate: (true)
-         » ordinal predicate: (true)
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: local partition
 
--> -> -> -> stageMarker
-            » location: all partitions
-            » routing: broadcast
+-> -> -> -> nestedLoopJoinOp
+            » join type: Cross Join
+            » predicate: (true)
+            » ordinal predicate: (true)
+
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: broadcast
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.region)
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.region)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.nation)'
 )
 
 
@@ -210,49 +218,51 @@ EXPLAIN STAGE stageMarkers
 SELECT n_name, r_name, s_name
 FROM region, nation
 JOIN supplier ON s_nationkey = n_nationkey;
-rows: (*,'stageMarkers',
-'stageMarker
-» location: all partitions
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> projectOp
-   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
 
--> -> stageMarker
-      » location: all partitions
-      » routing: local partition
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
+      » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
 
--> -> -> nestedLoopJoinOp
-         » join type: Inner Join
-         » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
-         » ordinal predicate: ($11 = $4)
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: local partition
 
--> -> -> -> stageMarker
-            » location: all partitions
-            » routing: broadcast
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
+            » ordinal predicate: ($11 = $4)
 
--> -> -> -> -> nestedLoopJoinOp
-               » join type: Cross Join
-               » predicate: (true)
-               » ordinal predicate: (true)
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: broadcast
 
--> -> -> -> -> -> stageMarker
-                  » location: all partitions
-                  » routing: broadcast
+-> -> -> -> -> -> nestedLoopJoinOp
+                  » join type: Cross Join
+                  » predicate: (true)
+                  » ordinal predicate: (true)
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: broadcast
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.region)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
-                     » table: (rapidsse.public.region)
+                     » table: (rapidsse.public.nation)
 
--> -> -> -> -> -> tableScanOp
-                  » location: all partitions
-                  » table: (rapidsse.public.nation)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.supplier)'
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.supplier)'
 )
 
 -- Appropriate StageMarkers are set when we have a join with aggregates
@@ -260,56 +270,58 @@ EXPLAIN STAGE stageMarkers
 SELECT r_name, COUNT(n_name)
 FROM region JOIN nation ON r_regionkey = n_regionkey
 GROUP BY r_name;
-rows: (*,'stageMarkers',
-'stageMarker
-» location: origin
-» routing: unicast
+rows: (*,'stageMarkers','
+∆ mainSubquery
 
--> aggregateOp
+-> stageMarker
    » location: origin
-   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
-   » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_name))) ; Ordinal Expr = SUM($2))
-   » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+   » routing: unicast
 
--> -> stageMarker
-      » location: all nodes
-      » routing: unicast
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_name))) ; Ordinal Expr = SUM($2))
+      » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
 
--> -> -> aggregateOp
+-> -> -> stageMarker
          » location: all nodes
-         » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
-         » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_name)) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+         » routing: unicast
 
--> -> -> -> stageMarker
-            » location: all partitions
-            » routing: local node
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
+            » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_name)) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
 
--> -> -> -> -> aggregateOp
-               » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
-               » column: (Expr = COUNT(rapidsse.public.nation.n_name) ; Ordinal Expr = COUNT($5))
-               » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($2)
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: local node
 
--> -> -> -> -> -> stageMarker
-                  » location: all partitions
-                  » routing: local partition
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
+                  » column: (Expr = COUNT(rapidsse.public.nation.n_name) ; Ordinal Expr = COUNT($5))
+                  » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($2)
 
--> -> -> -> -> -> -> nestedLoopJoinOp
-                     » join type: Inner Join
-                     » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
-                     » ordinal predicate: ($1 = $6)
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local partition
 
--> -> -> -> -> -> -> -> stageMarker
-                        » location: all partitions
-                        » routing: broadcast
+-> -> -> -> -> -> -> -> nestedLoopJoinOp
+                        » join type: Inner Join
+                        » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+                        » ordinal predicate: ($1 = $6)
+
+-> -> -> -> -> -> -> -> -> stageMarker
+                           » location: all partitions
+                           » routing: broadcast
+
+-> -> -> -> -> -> -> -> -> -> tableScanOp
+                              » location: all partitions
+                              » table: (rapidsse.public.region)
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.region)
-
--> -> -> -> -> -> -> -> tableScanOp
-                        » location: all partitions
-                        » table: (rapidsse.public.nation)'
+                           » table: (rapidsse.public.nation)'
 )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

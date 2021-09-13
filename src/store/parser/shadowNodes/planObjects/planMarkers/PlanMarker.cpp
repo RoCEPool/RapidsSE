@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "StageMarker.hpp"
 
 #include "GraphNav.hpp"
@@ -41,6 +42,7 @@ void PlanMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vDescribe(pNode, sBuf); }
   else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vDescribe(pNode, sBuf); }
+  else if ( SubqueryMarker::bIsOfType(pNode))   {  SubqueryMarker::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -61,6 +63,7 @@ void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExpl
 
   if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if ( SubqueryMarker::bIsOfType(pNode))   {  SubqueryMarker::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -92,6 +95,7 @@ void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
 
   if      (StatementMarker::bIsOfType(szType))   { StatementMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
   else if (    StageMarker::bIsOfType(szType))   {     StageMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if ( SubqueryMarker::bIsOfType(pNode))    {  SubqueryMarker::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here

@@ -41,34 +41,36 @@ SELECT * FROM t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 SELECT * FROM t2;
 rows:
-(*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
+(*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t2"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t2"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 -- alias in first query
@@ -77,34 +79,36 @@ SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 SELECT * FROM t1;
 rows:
-(*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t1"
+(*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)'
 )
 
 -- alias in second query
@@ -113,34 +117,36 @@ SELECT * FROM t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4;
 rows:
-(*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+(*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)'
 )
 
 
@@ -149,34 +155,36 @@ EXPLAIN
 SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1
 UNION ALL CORRESPONDING BY (c2, c4, c6)
 SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1 UNION ALL CORRESPONDING BY (c2, c4, c6) SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1 UNION ALL CORRESPONDING BY (c2, c4, c6) SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)'
+-> -> -> -> projectOp
+            » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)'
 )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -188,44 +196,46 @@ EXPLAIN
 SELECT * FROM t1
 UNION ALL CORRESPONDING
 SELECT * FROM t2;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT * FROM t2"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT * FROM t2"
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col3 ; Expr = rapidsse.public.t1.col3 ; Ordinal Expr = $3)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col5 ; Expr = rapidsse.public.t1.col5 ; Ordinal Expr = $5)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
-         » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7 ; Ordinal Expr = $7)
-         » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8 ; Ordinal Expr = $8)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col3 ; Expr = rapidsse.public.t1.col3 ; Ordinal Expr = $3)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col5 ; Expr = rapidsse.public.t1.col5 ; Ordinal Expr = $5)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+            » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7 ; Ordinal Expr = $7)
+            » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8 ; Ordinal Expr = $8)
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t2"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col3 ; Expr = rapidsse.public.t2.col3 ; Ordinal Expr = $3)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col5 ; Expr = rapidsse.public.t2.col5 ; Ordinal Expr = $5)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
-         » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7 ; Ordinal Expr = $7)
-         » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8 ; Ordinal Expr = $8)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t2"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> projectOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col3 ; Expr = rapidsse.public.t2.col3 ; Ordinal Expr = $3)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col5 ; Expr = rapidsse.public.t2.col5 ; Ordinal Expr = $5)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+            » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7 ; Ordinal Expr = $7)
+            » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8 ; Ordinal Expr = $8)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 -- some aliases in first query
@@ -233,34 +243,36 @@ EXPLAIN
 SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4
 UNION ALL CORRESPONDING
 SELECT * FROM t1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4 UNION ALL CORRESPONDING SELECT * FROM t1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4 UNION ALL CORRESPONDING SELECT * FROM t1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)'
 )
 
 -- aliases in second query
@@ -268,34 +280,36 @@ EXPLAIN
 SELECT * FROM t1
 UNION ALL CORRESPONDING
 SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)'
 )
 
 -- aliases in both queries
@@ -303,34 +317,36 @@ EXPLAIN
 SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1
 UNION ALL CORRESPONDING
 SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1 UNION ALL CORRESPONDING SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1 UNION ALL CORRESPONDING SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t4)')
+-> -> -> -> projectOp
+            » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+            » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+            » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t4)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -345,65 +361,69 @@ EXPLAIN
 SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1
 UNION ALL CORRESPONDING
 SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> aggregateOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)')
+-> -> -> -> aggregateOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)')
 
 EXPLAIN
 SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1
 UNION ALL CORRESPONDING
 SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> aggregateOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> aggregateOp
+            » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 
@@ -414,32 +434,34 @@ EXPLAIN
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
 UNION ALL CORRESPONDING
 SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> aggregateOp
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> aggregateOp
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> aggregateOp
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> aggregateOp
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 -- AggregateOp with alias in the group by list in the first child query.
@@ -450,34 +472,36 @@ EXPLAIN
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
 UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-         » group by: (c1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> aggregateOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+            » group by: (c1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> aggregateOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 
@@ -490,43 +514,45 @@ EXPLAIN
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
 UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
 
--> -> -> -> filterOp
-            » expr: (s2 > 0)
-            » ordinal expr: ($2 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
-               » group by: (c1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: (s2 > 0)
+               » ordinal expr: ($2 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t1)
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+                  » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+                  » group by: (c1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t1)
 
--> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> aggregateOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 -- squashing above a filterOp in the first second child query
@@ -534,43 +560,45 @@ EXPLAIN
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
 UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-         » group by: (c1) ; Ordinal Exprs = ($1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> aggregateOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+            » group by: (c1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
--> -> -> -> filterOp
-            » expr: (s2 > 0)
-            » ordinal expr: ($2 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
-               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: (s2 > 0)
+               » ordinal expr: ($2 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t2)'
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+                  » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t2)'
 )
 
 
@@ -579,52 +607,54 @@ EXPLAIN
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
 UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
 
--> -> -> -> filterOp
-            » expr: (s2 > 0)
-            » ordinal expr: ($2 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
-               » group by: (c1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: (s2 > 0)
+               » ordinal expr: ($2 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t1)
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+                  » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+                  » group by: (c1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
--> -> -> -> filterOp
-            » expr: (s2 > 0)
-            » ordinal expr: ($2 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+            » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
-               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: (s2 > 0)
+               » ordinal expr: ($2 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t2)'
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+                  » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t2)'
 )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -640,50 +670,52 @@ EXPLAIN
 SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0
 UNION ALL CORRESPONDING
 SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0 UNION ALL CORRESPONDING SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0 UNION ALL CORRESPONDING SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0"
 
--> -> -> -> filterOp
-            » expr: ((SUM(rapidsse.public.t1.col2)) > 0)
-            » ordinal expr: ($3 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
-               » column: (Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-               » group by: (c1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: ((SUM(rapidsse.public.t1.col2)) > 0)
+               » ordinal expr: ($3 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t1)
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+                  » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+                  » column: (Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+                  » group by: (c1) ; Ordinal Exprs = ($1)
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t1)
 
--> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
 
--> -> -> -> filterOp
-            » expr: ((SUM(rapidsse.public.t2.col2)) > 0)
-            » ordinal expr: ($3 > 0)
+-> -> -> -> projectOp
+            » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
-               » column: (Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+-> -> -> -> -> filterOp
+               » expr: ((SUM(rapidsse.public.t2.col2)) > 0)
+               » ordinal expr: ($3 > 0)
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t2)'
+-> -> -> -> -> -> aggregateOp
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+                  » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+                  » column: (Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t2)'
 )
 
 
@@ -705,51 +737,53 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)
   SELECT * FROM t2
 );
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2 )"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2 )"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> unionOp
-         » isDistinct: (false)
+-> -> -> statementMarker: select
+         » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2"
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> -> -> unionOp
+            » isDistinct: (false)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t4)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT * FROM t2"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t4)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT * FROM t2"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t2)'
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t2)'
 )
 
 
@@ -763,51 +797,53 @@ SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as c
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 SELECT * FROM t2
 ;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> unionOp
-         » isDistinct: (false)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+-> -> -> -> unionOp
+            » isDistinct: (false)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t1)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t1)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t4)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT * FROM t2"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t4)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t2"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t2)'
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t2)'
 )
 
 
@@ -823,51 +859,53 @@ SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as c
 UNION ALL
 SELECT colB, colD, colF FROM t5
 ;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL SELECT colB, colD, colF FROM t5"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL SELECT colB, colD, colF FROM t5"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> unionOp
-         » isDistinct: (false)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+-> -> -> -> unionOp
+            » isDistinct: (false)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t1)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t1)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t4)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT colB, colD, colF FROM t5"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t4)
 
--> -> -> projectOp
-         » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
-         » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
-         » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT colB, colD, colF FROM t5"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t5)'
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+            » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t5)'
 )
 
 
@@ -884,51 +922,53 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
   FROM t5
 )
 ;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4   UNION ALL   SELECT colB, colD, colF, colH   FROM t5 )"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4   UNION ALL   SELECT colB, colD, colF, colH   FROM t5 )"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4   UNION ALL   SELECT colB, colD, colF, colH   FROM t5"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> unionOp
-         » isDistinct: (false)
+-> -> -> statementMarker: select
+         » queryText: "SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4   UNION ALL   SELECT colB, colD, colF, colH   FROM t5"
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4"
+-> -> -> -> unionOp
+            » isDistinct: (false)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t4)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT colB, colD, colF, colH   FROM t5"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t4)
 
--> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
-               » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
-               » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT colB, colD, colF, colH   FROM t5"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t5)'
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+                  » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t5)'
 )
 
 
@@ -946,51 +986,53 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
   FROM t5
 )
 ;
-rows: (*,'explainPlan',
-'StatementMarker: select
-» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4   UNION ALL   SELECT colB, colC, colD, colF   FROM t5 )"
+rows: (*,'explainPlan','
+∆ mainSubquery
 
--> unionOp
-   » isDistinct: (false)
+-> statementMarker: select
+   » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4   UNION ALL   SELECT colB, colC, colD, colF   FROM t5 )"
 
--> -> StatementMarker: select
-      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+-> -> unionOp
+      » isDistinct: (false)
 
--> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+-> -> -> statementMarker: select
+         » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.t1)
+-> -> -> -> projectOp
+            » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+            » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+            » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> StatementMarker: select
-      » queryText: "SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4   UNION ALL   SELECT colB, colC, colD, colF   FROM t5"
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.t1)
 
--> -> -> unionOp
-         » isDistinct: (false)
+-> -> -> statementMarker: select
+         » queryText: "SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4   UNION ALL   SELECT colB, colC, colD, colF   FROM t5"
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4"
+-> -> -> -> unionOp
+            » isDistinct: (false)
 
--> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t4)
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+                  » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+                  » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> StatementMarker: select
-            » queryText: "SELECT colB, colC, colD, colF   FROM t5"
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t4)
 
--> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
-               » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
-               » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+-> -> -> -> -> statementMarker: select
+               » queryText: "SELECT colB, colC, colD, colF   FROM t5"
 
--> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.t5)'
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+                  » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.t5)'
 )
 
 

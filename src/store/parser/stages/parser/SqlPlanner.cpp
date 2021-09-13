@@ -22,6 +22,8 @@
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/SelectMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -216,6 +218,8 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
 
   // Attach the statement plan we created
   ASSERT(m_pStatementStack->nItems() == 1);
+  // TODO: Validate that there is only one mainSubquery on the m_pStatementStack
+  //       and all others are tableSubqueries
   QueryNode* pStatementNode = m_pStatementStack->pPop();
   pQueryNode->vAppendChild(pStatementNode);
 
@@ -242,6 +246,28 @@ antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *pCtx)
   m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
 
   return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Statement choice node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitStatementChoice(sqlParser::StatementChoiceContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // The last item on the stack is the main subquery. We need to add
+  // a MainSubquery marker to the top of it and then put it back
+  // onto the statement stack.
+  ASSERT(m_pStatementStack->nItems() > 0);
+
+  QueryNode* pNode = m_pStatementStack->pPop();
+  ASSERT(!SubqueryMarker::bIsOfType(pNode));
+
+  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  pMainSubquery->vAppendChild(pNode);
+  m_pStatementStack->vPush(pMainSubquery);
+
+  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/

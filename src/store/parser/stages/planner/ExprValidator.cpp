@@ -53,10 +53,8 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
-  // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  // The plan node should have one or more children that are SubqueryMarker nodes
+  ASSERT(pPlanNode->nChildren() > 0);
 
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and run the validation checks on each of them.
@@ -108,7 +106,7 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   };
 
   // Walk the entire plan graph to look for StatementMarkers
-  GraphNav::bGlobalWalk(pStatementMarker, false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +139,7 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
     return GraphNav::WALK_SKIP_SUBTREE;
   };
 
-  // Walk the /plan node, it's properties and its children
+  // Walk the node, it's properties and its children
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), true, true, fVisitor, pRootNode);
 }
 
@@ -188,7 +186,7 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
     return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
   };
 
-  // Walk the /plan node and its children. We're not interested in walking
+  // Walk the node and its children. We're not interested in walking
   // the properties because we are looking for filterOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
@@ -235,7 +233,7 @@ void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, Query
     return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
   };
 
-  // Walk the /plan node and its children. We're not interested in walking
+  // Walk the node and its children. We're not interested in walking
   // the properties because we are looking for JoinOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
@@ -294,7 +292,7 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
     return GraphNav::WALK_CONTINUE;
   };
 
-  // Walk the /plan node and its children. We're not interested in walking
+  // Walk the node and its children. We're not interested in walking
   // the properties because we are looking for JoinOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
