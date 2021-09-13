@@ -711,7 +711,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return * m_xJobId;
+  return * m_tJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1119,7 +1119,7 @@ void Job::vSee(void)
 
          ""_Stz
          
-         ,spJobId.sz(* m_xJobId)     // 0
+         ,spJobId.sz(* m_tJobId)     // 0
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,m_sCmd.szStz()             // 3

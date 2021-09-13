@@ -126,7 +126,7 @@ Job* JobList::pFindJob(i8 iJobId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   Job__Find* pJob__Find = new Job__Find;
-  pJob__Find->m_xJobId = iJobId;
+  pJob__Find->m_tJobId.vAsI8(iJobId);
   
   vGrabLock();
   Job* pJobFound = pFindJob(pJob__Find);
