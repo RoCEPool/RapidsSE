@@ -9,11 +9,21 @@ namespace BASE
   {
   public:
   
-  private:
+  public:
 
     // cpu
     i8 m_iStart;      // starting ticks
     i8 m_iUpdate;     // update point
+
+    // work
+    i8 m_iTicks;      // total ticks
+    i8 m_nTimes;      // ntimes
+
+    i8 m_nOperands;   // total operands processed
+    i8 m_nMaxQs;      // max queue
+
+    i8 m_nBuffIn;     // buffers in
+    i8 m_nBuffOut;    // buffer out
 
     // i/o
     i8 m_nSends;      // send() count
@@ -43,13 +53,6 @@ namespace BASE
     i8 m_nBytesFree;     // bytes freed
     i8 m_nMaxBytes;      // max bytes allocated
     i8 m_nAvgBytes;      // avg bytes allocated
-
-    // work
-    i8 m_iTicks;      // total ticks
-    i8 m_nTimes;      // ntimes
-
-    i8 m_nOperands;   // total operands processed
-    i8 m_nMaxQs;      // max queue
 
     // must be last
     Footer m_xFooter;

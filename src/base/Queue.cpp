@@ -54,7 +54,6 @@ Queue::Queue(eCN eClass)
   _precondition_(_ADDRESS_,_MAGIC_,eClass);
   
   m_nItems = 0;
-  m_nMaxItems = 0;
   m_pTopBuffer = nullptr;
   m_pEndBuffer = nullptr;
 
@@ -86,7 +85,7 @@ Queue::~Queue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append object pointer to this queue                                        */
 /*----------------------------------------------------------------------------*/
-void Queue::vAppend(Object* pObject)
+i8 Queue::iAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -110,10 +109,9 @@ void Queue::vAppend(Object* pObject)
   
   m_nItems++;
 
-  if (m_nItems > m_nMaxItems)
-    m_nMaxItems = m_nItems;
-  
   m_okLock.vDropWrite();
+
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,16 +138,6 @@ i8 Queue::nItems(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get max number of items in queue                                           */
-/*----------------------------------------------------------------------------*/
-i8 Queue::nMaxItems(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_nMaxItems;
 }
 
 /*----------------------------------------------------------------------------*/

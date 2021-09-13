@@ -154,14 +154,6 @@ public:
   void vBuildHostName(void);
   void vBuildUserName(void);
 
-  // BuffersIn
-  void vBuffersInInc(void);
-  void vBuffersInGet(void);
-
-  // BuffersOut
-  void vBuffersOutInc(void);
-  void vBuffersOutGet(void);
-
   // class
   void vClassName(void);
   void vClassPostRecvWordStore(void);
@@ -1661,11 +1653,13 @@ public:
   void vExpressionsLockSample(void);
 
   // stats
+  void vStatsBuffInInc(void);
   void vStatsDelete(void);
   void vStatsMicrosecs(void);
   void vStatsMillisecs(void);
   void vStatsNanosecs(void);
   void vStatsNew(void);
+  void vStatsOperandsInc(void);
   void vStatsSecs(void);
   void vStatsStartTimer(void);
   void vStatsUpdateTimer(void);

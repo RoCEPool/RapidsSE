@@ -40,9 +40,6 @@ namespace STORE
     static void vAddSteps_BucketRecv(void);
     static void vAddSteps_BucketSend(void);
 
-    static void vAddSteps_BuffersIn(void);
-    static void vAddSteps_BuffersOut(void);
-
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
     static void vAddSteps_CoreWords(void);
@@ -127,7 +124,6 @@ namespace STORE
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
     static void vAddSteps_Operand(void);
-    static void vAddSteps_OperandCount(void);
     static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 

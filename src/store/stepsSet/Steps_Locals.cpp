@@ -186,16 +186,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("BuffersIn[]"_Stz)) {
-    pCurrentWord->vEncodeCall("BuffersIn[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("BuffersOut[]"_Stz)) {
-    pCurrentWord->vEncodeCall("BuffersOut[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Counter0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter0[].set"_Stz);
     EXIT();
@@ -308,11 +298,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("OperandCount[]"_Stz)) {
-    pCurrentWord->vEncodeCall("OperandCount[].set"_Stz);
     EXIT();
     return;
   }

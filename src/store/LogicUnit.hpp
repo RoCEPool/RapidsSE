@@ -229,10 +229,6 @@ namespace STORE
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tx,             CN_TX            > m_xpTx;
 
-    i8                  m_iOperandCount;
-    i8                  m_iBuffersIn;
-    i8                  m_iBuffersOut;
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool                m_bCompilerToExit;

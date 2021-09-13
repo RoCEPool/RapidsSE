@@ -6,6 +6,7 @@
 
 #include "RowBuffer.hpp"
 #include "EachRowBuffer.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -32,6 +33,11 @@ RowBuffer::RowBuffer(void)
 : DataBuffer(CN_ROWBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+
+  Task* pTask = MY::pTask();
+  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +47,10 @@ RowBuffer::RowBuffer(eCN eClassNo)
 : DataBuffer(eClassNo, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+
+  Task* pTask = MY::pTask();
+  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,6 +62,10 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   vResolveRowPix(pStreamDef);
+
+  Task* pTask = MY::pTask();
+  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +74,12 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+  Task* pTask = MY::pTask();
+  if (pTask) {
+    LogicUnit *pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+    pLogicUnit->m_xpStats->m_nDelRowBuffer++;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

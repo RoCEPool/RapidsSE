@@ -183,10 +183,6 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
-  m_iOperandCount = 0;
-  m_iBuffersIn    = 0;
-  m_iBuffersOut   = 0;
-
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
@@ -529,12 +525,17 @@ void LogicUnit::vCleanup(void)
              "cpu %8lldus "
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
+             "NewRowBuffers %6lld [DelRowBuffers %6lld] "
              "\n"_Stz
              
              ,m_pOp->szOpNm()
              ,m_xpStats->iMicroseconds()
-             ,m_pOp->nMaxQueue()
-             ,m_iOperandCount,m_iBuffersIn,m_iBuffersOut
+             ,m_xpStats->m_nMaxQs
+             ,m_xpStats->m_nOperands
+             ,m_xpStats->m_nBuffIn
+             ,m_xpStats->m_nBuffOut
+             ,m_xpStats->m_nNewRowBuffer
+             ,m_xpStats->m_nDelRowBuffer
              );
     }
     
