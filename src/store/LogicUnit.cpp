@@ -317,7 +317,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
 
   // registers should have been repaired
-  //RASSERT(m_xpAggTimer.bIsNull());
+  RASSERT(m_xpAggTimer.bIsNull());
   RASSERT(m_xpBucket.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
@@ -380,7 +380,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
-  //RASSERT(m_xpTimer.bIsNull());
+  RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToBktCrw.bIsNull());
   RASSERT(m_xpToBktRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
@@ -396,9 +396,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
 
-  // repair the timers here
-  AggTimer::vRepair(m_xpAggTimer.m_pComponent);
-  Timer::vRepair(m_xpTimer.m_pComponent);
+  // repair the stats here
   Stats::vRepair(m_xpStats.m_pComponent);
 
   // PROBLEM
@@ -528,13 +526,12 @@ void LogicUnit::vCleanup(void)
       
       if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
       vTrace("%16s: "
-             "cpu %8lldus %8lldus "
+             "cpu %8lldus "
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
              "\n"_Stz
              
              ,m_pOp->szOpNm()
-             ,m_xpAggTimer->iMicroseconds()
              ,m_xpStats->iMicroseconds()
              ,m_pOp->nMaxQueue()
              ,m_iOperandCount,m_iBuffersIn,m_iBuffersOut
@@ -542,9 +539,7 @@ void LogicUnit::vCleanup(void)
     }
     
     // execute register repair
-    if (p_Reg->m_eLogicUnitReg != LR_TIMER &&
-        p_Reg->m_eLogicUnitReg != LR_AGGTIMER &&
-        p_Reg->m_eLogicUnitReg != LR_STATS)
+    if (p_Reg->m_eLogicUnitReg != LR_STATS)
       p_Reg->vRepair();
   }
 }
