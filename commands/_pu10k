@@ -14,10 +14,12 @@ create table Pu10k (
 );
 create index idx_10k on Pu10k (pu10k_10k);
 
-puLoad Pu10k;
+/time puLoad Pu10k;
 
-select * from Pu10k;
-//select * from Pu10k where pu10k_10k < 10;
+//select * from Pu10k;
+select count(*) from Pu10k;
+select * from Pu10k where pu10k_10k < 10;
+select * from Pu10k where pu10k_10k > 10000 - 10;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* generate pu table data                                                     */
 /*----------------------------------------------------------------------------*/
 void PuGen::vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
 {
@@ -33,10 +33,12 @@ void PuGen::vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
   else
   if (szStreamDefNm->bSame("Pu10m"_Stz))
     vPu10m(pToRow,riNextKey);
+  else
+    NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* generate Pu10k data                                                        */
 /*----------------------------------------------------------------------------*/
 void PuGen::vPu10k(ToRow* pToRow, i8& riNextKey)
 {
@@ -61,7 +63,7 @@ void PuGen::vPu10k(ToRow* pToRow, i8& riNextKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* generate Pu100k data                                                       */
 /*----------------------------------------------------------------------------*/
 void PuGen::vPu100k(ToRow* pToRow, i8& riNextKey)
 {
@@ -87,7 +89,7 @@ void PuGen::vPu100k(ToRow* pToRow, i8& riNextKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* generate Pu1m data                                                         */
 /*----------------------------------------------------------------------------*/
 void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
 {
@@ -100,7 +102,7 @@ void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
     
     pRowBuffer->vDepositColVal(riNextKey);               // pu1m_1m
     pRowBuffer->vDepositColVal(riNextKey % C_100K + 1);  // pu1m_100k
-    pRowBuffer->vDepositColVal(riNextKey % C_10K + 1);   // pu1m_10k
+    pRowBuffer->vDepositColVal(riNextKey % C_10K  + 1);  // pu1m_10k
 
     vPrePst(pRowBuffer);
     vOther(pRowBuffer,riNextKey);
@@ -115,7 +117,7 @@ void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* generate Pu10m data                                                        */
 /*----------------------------------------------------------------------------*/
 void PuGen::vPu10m(ToRow* pToRow, i8& riNextKey)
 {
@@ -127,9 +129,9 @@ void PuGen::vPu10m(ToRow* pToRow, i8& riNextKey)
     i8 iPtnKeyHash = 0;
     
     pRowBuffer->vDepositColVal(riNextKey);               // pu10m_10m
-    pRowBuffer->vDepositColVal(riNextKey % C_1M + 1);    // pu10m_1m
+    pRowBuffer->vDepositColVal(riNextKey % C_1M   + 1);  // pu10m_1m
     pRowBuffer->vDepositColVal(riNextKey % C_100K + 1);  // pu10m_100k
-    pRowBuffer->vDepositColVal(riNextKey % C_10K + 1);   // pu10m_10k
+    pRowBuffer->vDepositColVal(riNextKey % C_10K  + 1);  // pu10m_10k
 
     vPrePst(pRowBuffer);
     vOther(pRowBuffer,riNextKey);
@@ -171,8 +173,8 @@ void PuGen::vOther(RowBuffer* pRowBuffer, i8 iKey)
 /*----------------------------------------------------------------------------*/
 void PuGen::vPrePst(RowBuffer* pRowBuffer)
 {
-  pRowBuffer->vDepositColVal(RndLib::iInteger(1000));  // _pre
-  pRowBuffer->vDepositColVal(RndLib::iInteger(1000));  // _pst
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1,1000));  // _pre
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1,1000));  // _pst
 }
 
 /*============================================================================*/

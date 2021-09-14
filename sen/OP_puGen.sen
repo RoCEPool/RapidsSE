@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : puGen_DataPulse \handler
 
-  ": puGen_DataPulse" .
-
   // pipeout the (DataPulse)
   PipeIn[].pipeOut
 
@@ -41,50 +39,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                            */
-/*----------------------------------------------------------------------------*/
-: puGen_EosMarker \handler
-
-  ": puGen_EosMarker" .
-  
-  // test for any remainders
-  ToRow[].dangling to RowBuffer[]
-  begin
-    RowBuffer[].isNull not
-  while
-    RowBuffer[].pipeOut
-    ToRow[].dangling to RowBuffer[]
-  repeat
-
-
-  // -- -- -- -- -- --
-  // pipeout load results
-  
-  infoSetTable[] InfoSet[].new
-  OI_LOADRESULT InfoSet[].opInfoset!
-  
-  ToRow[].rowCounters@@ 3 InfoSet[].addRowVargs
-
-  InfoSet[].pipeOut
-
-
-  // -- -- -- -- -- --
-
-  // delete ToRow
-  ToRow[].delete
-
-  // pipeout the (EosMarker)
-  PipeIn[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : puGen_StartMarker \handler
-
-  ": puGen_StartMarker" .
   
   // pipeout the (StartMarker)
   PipeIn[].pipeOut
@@ -120,7 +77,6 @@
   op__topology
 
   find: puGen_DataPulse   ZK_M_DATAPULSE op[].handler!
-  find: puGen_EosMarker   ZK_M_EOS       op[].handler!
   find: puGen_StartMarker ZK_M_START     op[].handler!
 
   op__loop
