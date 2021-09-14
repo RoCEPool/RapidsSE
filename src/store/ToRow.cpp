@@ -2995,8 +2995,7 @@ L_RecordEndLineEnd:
     //tPtnNo = tPtnNo_byBkt;
     
 #ifdef WITH_KEEP_ROW_HASH
-    m_pRowBuffer->vDepositColVal(iPtnKeyHash);
-#else
+ #else
     m_pRowBuffer->vDepositColVal(tPtnNo);
 #endif
     

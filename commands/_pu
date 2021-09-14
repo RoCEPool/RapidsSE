@@ -6,9 +6,9 @@
 create table Pu10k (
     pu10k_10k integer not null
     
-  , pu10k_int integer not null
-  , pu10k_dte date    not null
-  , pu10k_str varchar not null
+//  , pu10k_int integer not null
+//  , pu10k_dte date    not null
+//  , pu10k_str varchar not null
 );
 
 

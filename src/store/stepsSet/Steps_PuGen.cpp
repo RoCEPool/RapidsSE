@@ -11,6 +11,7 @@
 
 #include "StreamDef.hpp"
 #include "ToRow.hpp"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -39,8 +40,27 @@ void Step::vPuGenX(void)
   vTrace("vPuGenX: %p ; %s ; %lld\n"_Stz
          ,pToRow,szStreamDefNm,iNextKey);
   
-  if (10 == ++iNextKey)
-    iNextKey = 0;
+  //  create a new buffer
+  RowBuffer* pRowBuffer = new RowBuffer;
+  
+  // initialise the row slab inside the new row buffer
+  pRowBuffer->vInitPix(pStreamDef,true);
+  
+  while (iNextKey && pRowBuffer->pAllotRow()) {
+  
+    i8 iPtnKeyHash = 0;
+    
+    pRowBuffer->vDepositColVal(iNextKey);
+    
+    
+    
+    
+    HshLib::vRunningHash(&iPtnKeyHash,iNextKey);
+    pRowBuffer->vDepositColVal(iPtnKeyHash);
+
+    if (10001 == ++iNextKey)
+      iNextKey = 0;
+  }
   
   m_pDataStack->vPushInt(iNextKey);
   
