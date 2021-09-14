@@ -7,23 +7,25 @@
 Path[].save
 Path[].root
   
-"pre_0_1" CONSTANT pre_0_1
-"pre_0_3" CONSTANT pre_0_3
-"pre_0_6" CONSTANT pre_0_6
-"pre_0_9" CONSTANT pre_0_9
-"EQUAL $I1 $L1 ==" CONSTANT <join_key>
-"pst_0_1" CONSTANT pst_0_1
-"pst_0_3" CONSTANT pst_0_3
-"pst_0_6" CONSTANT pst_0_6
-"pst_0_9" CONSTANT pst_0_9
-"" CONSTANT <agg>
-"" CONSTANT <gby_1>
-"" CONSTANT <gby_10>
-"" CONSTANT <gby_100>
-"" CONSTANT <gby_1000>
+"pre_0_1"  CONSTANT pre_0_1
+"pre_0_3"  CONSTANT pre_0_3
+"pre_0_6"  CONSTANT pre_0_6
+"pre_0_9"  CONSTANT pre_0_9
 
+"EQUAL $I1 $L1 ==" CONSTANT join_key
 
-: pu_bump params| iTest | iTest 10 * ;
+"pst_0_1"  CONSTANT pst_0_1
+"pst_0_3"  CONSTANT pst_0_3
+"pst_0_6"  CONSTANT pst_0_6
+"pst_0_9"  CONSTANT pst_0_9
+
+"agg"      CONSTANT agg
+
+"gby_1"    CONSTANT gby_1
+"gby_10"   CONSTANT gby_10
+"gby_100"  CONSTANT gby_100
+"gby_1000" CONSTANT gby_1000
+
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
