@@ -1,70 +1,63 @@
 /*============================================================================*/
-/* OP_puGen.sen -- Convert csv buffers to row buffers                         */
+/* OP_puGen.sen -- genrate row buffers for a pu table                         */
 /*============================================================================*/
 
 " OP_puGen.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: puGen_StartMarker \handler
+: puGen_DataPulse \handler
 
-  // pipeout the (StartMarker)
+  ": puGen_DataPulse" .
+
+  // pipeout the (DataPulse)
   PipeIn[].pipeOut
 
-  // test and create Table[] using <tableNm>
-  <tableNm> op__table if
 
-    // create a ToRow using Table[].streamDef
-    ToRow[].create
+  1 locals| iNextKey |
+  begin
+    iNextKey Table[].streamDef@ ToRow[] puGen::x to iNextKey
+  iNextKey while
+  
+    // test for any completed
+    ToRow[].completed to RowBuffer[]
+    begin
+      RowBuffer[].isNull not
+    while
+      RowBuffer[].pipeOut
+      ToRow[].completed to RowBuffer[]
+    repeat
 
-    // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
-    Table[] StreamDefOut[].newFromTable
-    StreamDefOut[].pipeOut
+    RowBuffer[].isNull assert
 
-  then
+  repeat
 
-  // find the __loadResult table def
-  C_TDEF_LOADRESULT op__tableDef_infoSet assert
 
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: puGen_CsvBuffer \handler
-
-  PipeIn[]\clear to CsvBuffer[]
-
-  //Operand[]
-  //profile.start
-
-  CsvBuffer[].csvToRow
-
-  //profile.end
-
-  // test for any completed
-  ToRow[].completed to RowBuffer[]
+  // test for any dangling
+  ToRow[].dangling to RowBuffer[]
   begin
     RowBuffer[].isNull not
   while
     RowBuffer[].pipeOut
-    ToRow[].completed to RowBuffer[]
+    ToRow[].dangling to RowBuffer[]
   repeat
-
+  
   RowBuffer[].isNull assert
 
-  CsvBuffer[].delete
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                            */
 /*----------------------------------------------------------------------------*/
 : puGen_EosMarker \handler
 
+  ": puGen_EosMarker" .
+  
   // test for any remainders
   ToRow[].dangling to RowBuffer[]
   begin
@@ -91,13 +84,36 @@
   // delete ToRow
   ToRow[].delete
 
-  // get the profile from the task
-  //Task[] task.profile@ to Operand[]
-  //nullptr Task[] task.profile!
-  //Operand[].pipeOut
-
   // pipeout the (EosMarker)
   PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                          */
+/*----------------------------------------------------------------------------*/
+: puGen_StartMarker \handler
+
+  ": puGen_StartMarker" .
+  
+  // pipeout the (StartMarker)
+  PipeIn[].pipeOut
+
+  // test and create Table[] using <tableNm>
+  <tableNm> op__table if
+
+    // create a ToRow using Table[].streamDef
+    ToRow[].create
+
+    // new SteamDefOut and pipe out
+    Table[] StreamDefOut[].newFromTable
+    StreamDefOut[].pipeOut
+
+  then
+
+  // find the __loadResult table def
+  //C_TDEF_LOADRESULT op__tableDef_infoSet assert
 
   true
 ;
@@ -106,7 +122,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* puGen request                                                        SPAWN */
+/* puGen request                                                              */
 /*----------------------------------------------------------------------------*/
 : puGen_req \operator
 
@@ -114,9 +130,9 @@
 
   op__topology
 
-  find: puGen_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: puGen_EosMarker   ZK_M_EOS   op[].handler!
-  find: puGen_StartMarker ZK_M_START op[].handler!
+  find: puGen_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: puGen_EosMarker   ZK_M_EOS       op[].handler!
+  find: puGen_StartMarker ZK_M_START     op[].handler!
 
   op__loop
 

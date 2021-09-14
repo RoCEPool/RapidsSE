@@ -1,15 +1,26 @@
 /*============================================================================*/
-/* _d4_pu -- performance unit test                                            */
+/* _pu -- performance unit test                                               */
 /*============================================================================*/
 
 // - - - - - - - - - - - - - - - - - - -
 create table Pu10k (
     pu10k_10k integer not null
     
-  , pu10k_int integer not null
-  , pu10k_dte date    not null
-  , pu10k_str varchar not null
+//  , pu10k_int integer not null
+//  , pu10k_dte date    not null
+//  , pu10k_str varchar not null
 );
+
+
+puLoad Pu10k;
+
+select * from Pu10k;
+
+
+
+
+
+/*
 create index idx_10k on Pu10k (pu10k_10k);
 
 
@@ -56,6 +67,10 @@ create index idx_10m  on Pu10m (pu10m_10m);
 create index idx_1m   on Pu10m (pu10m_1m);
 create index idx_100k on Pu10m (pu10m_100k);
 create index idx_10k  on Pu10m (pu10m_10k);
+
+// - - - - - - - - - - - - - - - - - - -
+
+*/
 
 /*============================================================================*/
 /* end                                                                        */

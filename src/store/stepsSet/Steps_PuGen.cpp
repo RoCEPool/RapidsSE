@@ -9,6 +9,12 @@
 #include "Steps.hpp"
 
 
+#include "StreamDef.hpp"
+#include "ToRow.hpp"
+#include "RowBuffer.hpp"
+
+#include "PuGen.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -25,6 +31,15 @@ void Step::vPuGenX(void)
 {
   ENTRY();
   
+  ToRow* pToRow = _pToRow(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  i8 iNextKey = m_pDataStack->iPopInt(__func__);
+
+  PuGen::vGen(iNextKey,pToRow,pStreamDef);
+  
+  m_pDataStack->vPushInt(iNextKey);
   
   EXIT();
 }

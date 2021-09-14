@@ -12,15 +12,24 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
 /*----------------------------------------------------------------------------*/
-: pu_pipeline params| iTest sFrag |
+: pu_pipeline params| iTest sStream |
   
   "pipeline pu0"
-    iTest >str                    str.cat
-  " begin"                        str.cat
-    " stage stageA on origin : "  str.cat
-    sFrag                         str.cat
-    " | stageA"                   str.cat
-  " end ;"                        str.cat
+    iTest >str                            str.cat
+    
+  " begin"                                str.cat
+  
+    " stage stageA on origin : "          str.cat
+    " start "                             str.cat
+    " | pulse once "                      str.cat
+    " | stageB "                          str.cat
+
+    " stage stageB on all partitions : "  str.cat
+
+    sStream                               str.cat
+    " | stageA"                           str.cat
+    
+  " end ;"                                str.cat
 
   .
   
@@ -45,25 +54,34 @@ Path[].root
 
   iTest 1 + to iTest
   sFrag
-    " | project" str.cat
+
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
+
     " <1 group>"   str.cat
+
     iTest pu_sink
 
   iTest 1 + to iTest
   sFrag
-    " | project" str.cat
+
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
+
     " <10 groups>"   str.cat
     iTest pu_sink
 
   iTest 1 + to iTest
   sFrag
-    " | project" str.cat
+
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
+
     " <100 groups>"   str.cat
     iTest pu_sink
 
   iTest 1 + to iTest
   sFrag
-    " | project" str.cat
+
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
+
     " <1000 groups>"   str.cat
     iTest pu_sink
 ;
@@ -77,25 +95,25 @@ Path[].root
 
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.1>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.3>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.6>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.9>"   str.cat
     iTest pu_agggby
 ;
@@ -109,22 +127,22 @@ Path[].root
   
   iTest 1 + to iTest
   sFrag
-    " | join T10k <key>" str.cat
+    " | indexJoin 1 T10k idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | join T100k <key>" str.cat
+    " | indexJoin 1 T100k idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | join T1m <key>" str.cat
+    " | indexJoin 1 T1m idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | join T10m <key>" str.cat
+    " | indexJoin 1 T10m idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
 ;
 
@@ -137,25 +155,25 @@ Path[].root
   
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.1>"        str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.3>"        str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.6>"       str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter" str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.9>"        str.cat
     iTest pu_join
 ;
@@ -192,70 +210,70 @@ Path[].root
   iTest 100 * to iTest
   
   iTest 1 + to iTest
-    sFrag "<0.01>" str.cat
+    sFrag " <0.01>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.03>" str.cat
+    sFrag " <0.03>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.06>" str.cat
+    sFrag " <0.06>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.09>" str.cat
+    sFrag " <0.09>" str.cat
     iTest pu_preFilter
     
   // - - - - - - - - - - -
   iTest 1 + to iTest
-    sFrag "<0.10>" str.cat
+    sFrag " <0.10>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.30>" str.cat
+    sFrag " <0.30>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.60>" str.cat
+    sFrag " <0.60>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<0.90>" str.cat
+    sFrag " <0.90>" str.cat
     iTest pu_preFilter
     
   // - - - - - - - - - - -
   iTest 1 + to iTest
-    sFrag "<1.00>" str.cat
+    sFrag " <1.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<3.00>" str.cat
+    sFrag " <3.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<6.00>" str.cat
+    sFrag " <6.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<9.00>" str.cat
+    sFrag " <9.00>" str.cat
     iTest pu_preFilter
     
   // - - - - - - - - - - -
   iTest 1 + to iTest
-    sFrag "<10.00>" str.cat
+    sFrag " <10.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<30.00>" str.cat
+    sFrag " <30.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<60.00>" str.cat
+    sFrag " <60.00>" str.cat
     iTest pu_preFilter
 
   iTest 1 + to iTest
-    sFrag "<90.00>" str.cat
+    sFrag " <90.00>" str.cat
     iTest pu_preFilter
     
 
@@ -269,19 +287,19 @@ Path[].root
   iTest 100 * to iTest
   
   iTest 1 + to iTest
-    sFrag "range T10k" str.cat
+    sFrag "indexScan 1 T10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "range T100k" str.cat
+    sFrag "indexScan 1 T100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "range T1m" str.cat
+    sFrag "indexScan 1 T1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "range T10m" str.cat
+    sFrag "indexScan 1 T10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 ;
 
@@ -292,7 +310,7 @@ Path[].root
 
   "" 1 pu_scan
   
-  "" 2 pu_range
+  // "" 2 pu_range
 
   counter0[] .
 ;

@@ -29,6 +29,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRow(void)
 {
+  vAddStep("toRow[]"_Stz,               &Step::vToRowFetch);
   vAddStep("toRow[].completed"_Stz,     &Step::vToRowCompleted);
   vAddStep("toRow[].create"_Stz,        &Step::vToRowCreate);
   vAddStep("toRow[].dangling"_Stz,      &Step::vToRowDangling);
@@ -116,6 +117,20 @@ void Step::vToRowDelete(void)
   
   delete pToRow;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRow[] -- fetch toRow                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vToRowFetch(void)
+{
+  ENTRY();
+  
+  ToRow* pToRow = * m_p_TaskLogicUnit->m_xpToRow;
+
+  m_pDataStack->vPushPtr(pToRow);
+
   EXIT();
 }
 

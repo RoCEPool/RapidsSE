@@ -60,13 +60,14 @@ namespace STORE
 
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
-  
+    RowBuffer* pRowBuffer(void);
+
     i8 iRowsProcessed(void);
     i8 iRowsInvalid(void);
     i8 iRowsSkipped(void);
 
 
-  private:
+  //private:
     void vNewRowBuffer(void);
     Footer* aFooter(void);
   };

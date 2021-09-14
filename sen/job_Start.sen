@@ -44,6 +44,8 @@
   start::defineInfoSets3
   start::defineInternalTables
 
+  start::defProc_pu
+
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted
