@@ -34,8 +34,7 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
   pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
 }
@@ -48,8 +47,7 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
   pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
@@ -63,8 +61,7 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   
   vResolveRowPix(pStreamDef);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
   pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
@@ -75,11 +72,9 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Task* pTask = MY::pTask();
-  if (pTask) {
-    LogicUnit *pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+  if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

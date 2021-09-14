@@ -343,7 +343,10 @@ LogicUnit* MY::pLogicUnit(void)
   // revised job/op model
   
   Task* pTask = MY::pTask();
-  
+
+  if (!pTask)
+    return nullptr;
+
   Job* pJob = pTask->pJob_task();
   if (pJob)
     return pJob->pJobLogicUnit();
