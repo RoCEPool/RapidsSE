@@ -534,49 +534,49 @@ void LogicUnit::vCleanup(void)
       s32 sBytesWrite;
       MagLib::vByteMag(m_xpStats->m_nBytesWrite, sBytesWrite);
 
-      s32 sBytesSent;
-      MagLib::vByteMag(m_xpStats->m_nBytesSent, sBytesSent);
+      if (p_Reg->m_eLogicUnitReg == LR_STATS) {
+        vTrace("%10s %16s (P%02lld) : "
+               "cpu %8lldus "
+               "maxq %6lld "
+               "operands %6lld [buffIn %6lld buffOut %6lld] "
+               "NewRowBuffers %6lld [DelRowBuffers %6lld] "
+               "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
+               "Allocs %6lld [BytesAlloc %6s] "
+               "Frees %6lld [BytesFree %6s] "
+               "MaxBytes %6s "
+               "Reads %6lld [BytesRead %6s] "
+               "Writes %6lld [BytesWrite %6s] "
+               "ParcelSends %6lld [ObjectsSent %6lld] "
+               "ParcelRecvs %6lld [ObjectsRecv %6lld] "
+               "\n"_Stz
 
-
-      if (p_Reg->m_eLogicUnitReg == LR_STATS)
-      vTrace("%10s %16s (P%02lld) : "
-             "cpu %8lldus "
-             "maxq %6lld "
-             "operands %6lld [buffIn %6lld buffOut %6lld] "
-             "NewRowBuffers %6lld [DelRowBuffers %6lld] "
-             "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
-             "Allocs %6lld [BytesAlloc %6s] "
-             "Frees %6lld [BytesFree %6s] "
-             "MaxBytes %6s "
-             "Reads %6lld [BytesRead %6s] "
-             "Writes %6lld [BytesWrite %6s] "
-             "Sends %6lld [BytesSent %6s] "
-             "\n"_Stz
-
-             ,m_pOp->szStageName()
-             ,m_pOp->szOpNm()
-             ,m_pOp->tPtnNo()
-             ,m_xpStats->iMicroseconds()
-             ,m_xpStats->m_nMaxQs
-             ,m_xpStats->m_nOperands
-             ,m_xpStats->m_nBuffIn
-             ,m_xpStats->m_nBuffOut
-             ,m_xpStats->m_nNewRowBuffer
-             ,m_xpStats->m_nDelRowBuffer
-             ,m_xpStats->m_nNewCsvBuffer
-             ,m_xpStats->m_nDelCsvBuffer
-             ,m_xpStats->m_nAllocs
-             ,sBytesAlloc.azChar()
-             ,m_xpStats->m_nFrees
-             ,sBytesFree.azChar()
-             ,sMaxBytes.azChar()
-             ,m_xpStats->m_nReads
-             ,sBytesRead.azChar()
-             ,m_xpStats->m_nWrites
-             ,sBytesWrite.azChar()
-             ,m_xpStats->m_nSends
-             ,sBytesSent.azChar()
-             );
+               ,m_pOp->szStageName()
+               ,m_pOp->szOpNm()
+               ,m_pOp->tPtnNo()
+               ,m_xpStats->iMicroseconds()
+               ,m_xpStats->m_nMaxQs
+               ,m_xpStats->m_nOperands
+               ,m_xpStats->m_nBuffIn
+               ,m_xpStats->m_nBuffOut
+               ,m_xpStats->m_nNewRowBuffer
+               ,m_xpStats->m_nDelRowBuffer
+               ,m_xpStats->m_nNewCsvBuffer
+               ,m_xpStats->m_nDelCsvBuffer
+               ,m_xpStats->m_nAllocs
+               ,sBytesAlloc.azChar()
+               ,m_xpStats->m_nFrees
+               ,sBytesFree.azChar()
+               ,sMaxBytes.azChar()
+               ,m_xpStats->m_nReads
+               ,sBytesRead.azChar()
+               ,m_xpStats->m_nWrites
+               ,sBytesWrite.azChar()
+               ,m_xpStats->m_nParcelSends
+               ,m_xpStats->m_nObjectsSent
+               ,m_xpStats->m_nParcelRecvs
+               ,m_xpStats->m_nObjectsRecv
+               );
+        }
     }
     
     // execute register repair

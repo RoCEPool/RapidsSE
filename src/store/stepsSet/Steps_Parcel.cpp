@@ -113,6 +113,12 @@ void Step::vParcelPipeOut(void)
     }
   }
 
+  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  if (pLogicUnit) {
+    pLogicUnit->m_xpStats->m_nParcelRecvs++;
+    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
+  }
+
   /* Origin from master
     if (pParcel->pGetOperand()) {
       if (pParcel->bAppendRight())
@@ -141,6 +147,12 @@ void Step::vParcelSendOut(void)
     Op* pOp = *m_pOp;
 
   pParcel->vSendOut(pOp);
+
+  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  if (pLogicUnit) {
+    pLogicUnit->m_xpStats->m_nParcelSends++;
+    pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
+  }
 
   EXIT();
 }

@@ -21729,6 +21729,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": consumeOp_Cleaning \\handler\n"
     "\n"
+    "  LogicUnit[].cleanup\n"
+    "\n"
     "  //\"Operand:- ZK_M_CLEANING\" .verbose\n"
     "  Sends[].handleCleaning if\n"
     "    Pipein[].pipeout\n"
