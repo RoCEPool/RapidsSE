@@ -9,6 +9,11 @@ create table Pu100k (
   , pu100k_pre  integer not null
   , pu100k_pst  integer not null
     
+  , pu10k_1000g integer not null
+  , pu10k_100g  integer not null
+  , pu10k_10g   integer not null
+  , pu10k_1g    integer not null
+
   , pu100k_int  integer not null
   , pu100k_dte  date    not null
   , pu100k_str  varchar not null

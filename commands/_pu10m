@@ -3,17 +3,22 @@
 /*============================================================================*/
 
 create table Pu10m (
-    pu10m_10m  integer not null
-  , pu10m_1m   integer not null
-  , pu10m_100k integer not null
-  , pu10m_10k  integer not null
+    pu10m_10m   integer not null
+  , pu10m_1m    integer not null
+  , pu10m_100k  integer not null
+  , pu10m_10k   integer not null
     
-  , pu10m_pre  integer not null
-  , pu10m_pst  integer not null
+  , pu10m_pre   integer not null
+  , pu10m_pst   integer not null
     
-  , pu10m_int  integer not null
-  , pu10m_dte  date    not null
-  , pu10m_str  varchar not null
+  , pu10k_1000g integer not null
+  , pu10k_100g  integer not null
+  , pu10k_10g   integer not null
+  , pu10k_1g    integer not null
+
+  , pu10m_int   integer not null
+  , pu10m_dte   date    not null
+  , pu10m_str   varchar not null
 );
 create index idx_10m  on Pu10m (pu10m_10m);
 create index idx_1m   on Pu10m (pu10m_1m);
@@ -25,7 +30,7 @@ create index idx_10k  on Pu10m (pu10m_10k);
 //select * from Pu10m;
 select count(*) from Pu10m;
 select * from Pu10m where pu10m_10m < 10;
-select * from Pu10m where pu10m_10m > 10000000 - 10;
+select * from Pu10m where pu10m_10m > 9999990;
 
 /*============================================================================*/
 /* end                                                                        */

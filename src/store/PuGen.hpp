@@ -19,6 +19,7 @@ namespace STORE
 
   private:
   
+    static void vGroups(RowBuffer* pRowBuffer);
     static void vOther(RowBuffer* pRowBuffer, i8 iKey);
     static void vPrePst(RowBuffer* pRowBuffer);
 

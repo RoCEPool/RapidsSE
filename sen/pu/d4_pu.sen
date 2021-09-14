@@ -45,37 +45,46 @@ Path[].root
 
   iTest 100 * to iTest
 
+  "\"<agg><gby>\"" locals| sAggGby |
+  
+  // - - - - - - - - - - - -
+  // agg by 1 group
+  
   iTest 1 + to iTest
-  sFrag
-
-    "    | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \"" str.cat
-
-    " // 1 group\n"   str.cat
-
+    sFrag
+      "    | aggreg 1 "      str.cat
+                sAggGby      str.cat
+        " // 1 group\n"      str.cat
     iTest pu_pipeline
 
+  // - - - - - - - - - - - -
+  // agg by 10 groups
+  
   iTest 1 + to iTest
-  sFrag
-
-    "    | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \"" str.cat
-
-    " // 10 groups\n"   str.cat
+    sFrag
+      "    | aggreg 1 "      str.cat
+                sAggGby      str.cat
+      " // 10 groups\n"      str.cat
     iTest pu_pipeline
 
+  // - - - - - - - - - - - -
+  // agg by 100 groups
+  
   iTest 1 + to iTest
-  sFrag
-
-    "    | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \"" str.cat
-
-    " // 100 groups\n"   str.cat
+    sFrag
+      "    | aggreg 1 "      str.cat
+                sAggGby      str.cat
+        " // 100 groups\n"   str.cat
     iTest pu_pipeline
 
+  // - - - - - - - - - - - -
+  // agg by 1000 groups
+  
   iTest 1 + to iTest
-  sFrag
-
-    "    | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \"" str.cat
-
-    " // 1000 groups\n"   str.cat
+    sFrag
+      "    | aggreg 1 "      str.cat
+                sAggGby      str.cat
+        " // 1000 groups\n"  str.cat
     iTest pu_pipeline
 ;
 
@@ -86,28 +95,48 @@ Path[].root
 
   iTest 100 * to iTest
 
+  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
+  
+  "\"<pst-selectivity>\"" locals| sSelectivity |
+  
+  // - - - - - - - - - - - -
+  // filter selectivity 0.1
+  
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.1\n"   str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.1\n"  str.cat
     iTest pu_agggby
-
+    
+  // - - - - - - - - - - - -
+  // filter selectivity 0.3
+  
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.3\n"   str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.3\n"  str.cat
     iTest pu_agggby
-
+    
+  // - - - - - - - - - - - -
+  // filter selectivity 0.6
+  
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.6\n"   str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.6\n"  str.cat
     iTest pu_agggby
-
+    
+  // - - - - - - - - - - - -
+  // filter selectivity 0.9
+  
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.9\n"   str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.9\n"  str.cat
     iTest pu_agggby
 ;
 
@@ -118,24 +147,47 @@ Path[].root
 
   iTest 100 * to iTest
   
+  // EQUAL $I1 $L1 ==
+  "\"<join-key>\"" locals| sJoinKey |
+
+  // - - - - - - - - - - - -
+  // join T10k
+  
   iTest 1 + to iTest
-  sFrag
-    "    | indexJoin 1 T10k idx \"EQUAL $I1 $L1 == \"\n" str.cat
+    sFrag
+      "    | indexJoin 1 T10k idx "  str.cat
+                           sJoinKey  str.cat
+                               "\n"  str.cat
     iTest pu_postFilter
     
+  // - - - - - - - - - - - -
+  // join T10k
+
   iTest 1 + to iTest
-  sFrag
-    "    | indexJoin 1 T100k idx \"EQUAL $I1 $L1 == \"\n" str.cat
+    sFrag
+      "    | indexJoin 1 T100k idx " str.cat
+                            sJoinKey str.cat
+                                "\n" str.cat
     iTest pu_postFilter
     
+  // - - - - - - - - - - - -
+  // join T1m
+  
   iTest 1 + to iTest
-  sFrag
-    "    | indexJoin 1 T1m idx \"EQUAL $I1 $L1 == \"\n" str.cat
+    sFrag
+      "    | indexJoin 1 T1m idx "   str.cat
+                          sJoinKey   str.cat
+                              "\n"   str.cat
     iTest pu_postFilter
     
+  // - - - - - - - - - - - -
+  // join T1m
+  
   iTest 1 + to iTest
-  sFrag
-    "    | indexJoin 1 T10m idx \"EQUAL $I1 $L1 == \"\n" str.cat
+    sFrag
+      "    | indexJoin 1 T1m idx "  str.cat
+                           sJoinKey  str.cat
+                               "\n"  str.cat
     iTest pu_postFilter
 ;
 
@@ -146,28 +198,48 @@ Path[].root
 
   iTest 100 * to iTest
   
+  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
+  
+  "\"<pre-selectivity>\"" locals| sSelectivity |
+
+  // - - - - - - - - - - - -
+  // filter selectivity 0.1
+  
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.1\n"        str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.1\n"  str.cat
     iTest pu_join
     
+  // - - - - - - - - - - - -
+  // filter selectivity 0.3
+
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.3\n"        str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.3\n"  str.cat
     iTest pu_join
     
+  // - - - - - - - - - - - -
+  // filter selectivity 0.6
+
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.6\n"       str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.6\n"  str.cat
     iTest pu_join
     
+  // - - - - - - - - - - - -
+  // filter selectivity 0.9
+
   iTest 1 + to iTest
-  sFrag
-    "    | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\"" str.cat
-    " // selectivity 0.9\n"        str.cat
+    sFrag
+      "    | filter 1 "              str.cat
+                       sSelectivity  str.cat
+            " // selectivity 0.9\n"  str.cat
     iTest pu_join
 ;
 
@@ -178,20 +250,36 @@ Path[].root
   
   iTest 1000 * to iTest
   
-  iTest 1 + to iTest
-    sFrag "     scan T10k\n" str.cat
-    iTest pu_preFilter
+  // - - - - - - - - - - - -
+  // scan T10k
 
   iTest 1 + to iTest
-    sFrag "     scan T100k\n" str.cat
+    sFrag
+      "     scan T10k\n" str.cat
     iTest pu_preFilter
 
-  iTest 1 + to iTest
-    sFrag "     scan T1m\n" str.cat
-    iTest pu_preFilter
+  // - - - - - - - - - - - -
+  // scan T100k
 
   iTest 1 + to iTest
-    sFrag "     scan T10m\n" str.cat
+    sFrag
+      "     scan T100k\n" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // scan T100k
+
+  iTest 1 + to iTest
+    sFrag
+      "     scan T1m\n" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // scan T10m
+
+  iTest 1 + to iTest
+    sFrag
+      "     scan T10m\n" str.cat
     iTest pu_preFilter
 ;
 
@@ -202,80 +290,145 @@ Path[].root
   
   iTest 100 * to iTest
   
-  iTest 1 + to iTest
-    sFrag " // interval 0.001" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.003" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.006" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.009" str.cat
-    iTest pu_preFilter
-    
-   // - - - - - - - - - - - -
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.01" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.03" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.06" str.cat
-    iTest pu_preFilter
-
-  iTest 1 + to iTest
-    sFrag " // interval 0.09" str.cat
-    iTest pu_preFilter
-    
   // - - - - - - - - - - - -
+  // interval 0.001
   
   iTest 1 + to iTest
-    sFrag " // interval 0.1" str.cat
+    sFrag
+      " // interval 0.001" str.cat
     iTest pu_preFilter
 
+  // - - - - - - - - - - - -
+  // interval 0.003
+  
   iTest 1 + to iTest
-    sFrag " // interval 0.3" str.cat
+    sFrag
+      " // interval 0.003" str.cat
     iTest pu_preFilter
 
+  // - - - - - - - - - - - -
+  // interval 0.006
+  
   iTest 1 + to iTest
-    sFrag " // interval 0.6" str.cat
+    sFrag
+      " // interval 0.006" str.cat
     iTest pu_preFilter
 
+  // - - - - - - - - - - - -
+  // interval 0.009
+  
   iTest 1 + to iTest
-    sFrag " // interval 0.9" str.cat
+    sFrag
+      " // interval 0.009" str.cat
+    iTest pu_preFilter
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // - - - - - - - - - - - -
+  // interval 0.01
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.01" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.03
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.03" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.06
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.06" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.09
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.09" str.cat
+    iTest pu_preFilter
+    
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // - - - - - - - - - - - -
+  // interval 0.1
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.1" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.3
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.3" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.6
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.6" str.cat
+    iTest pu_preFilter
+
+  // - - - - - - - - - - - -
+  // interval 0.9
+
+  iTest 1 + to iTest
+    sFrag
+      " // interval 0.9" str.cat
     iTest pu_preFilter
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  range                                                                     */
+/*  indexScan                                                                 */
 /*----------------------------------------------------------------------------*/
-: pu_range params| iTest sFrag |
+: pu_indexScan params| iTest sFrag |
   
   iTest 100 * to iTest
   
+  // - - - - - - - - - - - -
+  // indexScan T10k
+  
   iTest 1 + to iTest
-    sFrag "indexScan 1 T10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+    sFrag
+      "indexScan 1 T10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+      iTest pu_interval
+
+  // - - - - - - - - - - - -
+  // indexScan T100k
+  
+  iTest 1 + to iTest
+    sFrag
+      "indexScan 1 T100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
+  // - - - - - - - - - - - -
+  // indexScan T1m
+  
   iTest 1 + to iTest
-    sFrag "indexScan 1 T100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+    sFrag
+      "indexScan 1 T1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
+  // - - - - - - - - - - - -
+  // indexScan T10m
+  
   iTest 1 + to iTest
-    sFrag "indexScan 1 T1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
-    iTest pu_interval
-
-  iTest 1 + to iTest
-    sFrag "indexScan 1 T10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+    sFrag
+      "indexScan 1 T10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 ;
 
@@ -286,7 +439,7 @@ Path[].root
 
   "" 1 pu_scan
   
-  // "" 2 pu_range
+  // "" 2 pu_indexScan
 
   counter0[] .
 ;
