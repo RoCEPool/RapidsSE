@@ -60,6 +60,7 @@ namespace Parser
 
     antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                       override;
     antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)           override;
+    antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *pCtx)               override;
     antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                 override;
     antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)             override;
     antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *pCtx)                   override;
@@ -103,7 +104,6 @@ namespace Parser
     antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *pCtx)        override { __NOT_IMPL("TRUNCATE")}
 
     // SelectQuery clauses not implemented
-    antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *pCtx)                override { __NOT_IMPL("WITH")}
     // distinct is handled in visitSelectExpr
 
     // tableExprs not implemented

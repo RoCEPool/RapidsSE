@@ -9,6 +9,8 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
+#include "IdList.hpp"
+
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 
@@ -22,6 +24,9 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 static Stz* C_TABLEALIAS_PROP = "tableAlias"_Stz;
 static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
 
+static Stz* C_COLUMNNAMES_PROP = "columnNames"_Stz;
+static Stz* C_COLUMNNAMES_DEFN = "/__root__/definitions/object/list/idList"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -29,9 +34,11 @@ static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/string
 /*----------------------------------------------------------------------------*/
 /* Helper function to create TableSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* TableSubquery::pCreate(Stz* szTableAlias)
+QueryNode* TableSubquery::pCreate(Text* pTableAlias, QueryNode* pColumnNames)
 {
-  ASSERT(szTableAlias);
+  ASSERT(pTableAlias);
+  ASSERT(pColumnNames);
+  ASSERT(IdList::bIsOfType(pColumnNames));
 
   // Create a unique name for this object
   s256 sName;
@@ -41,9 +48,12 @@ QueryNode* TableSubquery::pCreate(Stz* szTableAlias)
   QueryNode* pSubqueryNode = new QueryNode(sName, C_DEFN);
 
   // Create and add any properties
-  Value xAliasValue(szTableAlias);
+  Value xAliasValue(pTableAlias);
   QueryNode* pTableAliasNode = new QueryNode(C_TABLEALIAS_PROP, C_TABLEALIAS_DEFN, static_cast<Value&&>(xAliasValue));
   pSubqueryNode->vAppendProperty(pTableAliasNode);
+
+  pColumnNames->vSetName(C_COLUMNNAMES_PROP);
+  pSubqueryNode->vAppendProperty(pColumnNames);
 
   return pSubqueryNode;
 }
@@ -107,13 +117,16 @@ void TableSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     // Explain any local attributes of this object
 
     // Get the table alias
-    PlanNode* pTableAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEALIAS_PROP), pNode);
-    ASSERT(pTableAliasNode);
-    ASSERT(pTableAliasNode->szValue());
-
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table alias: %s"_Stz, pTableAliasNode->szValue());
+    sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
+
+    // Column names. Append this to the table alias line above.
+    s2K sColumnBuf;
+    QueryNode* pColumnNamesNode = pColumnNames(_pQueryNode(pNode));
+    ASSERT(pColumnNamesNode);
+    IdList::vDescribe(pColumnNamesNode, sColumnBuf);
+    sBuf.vCatSprint(" (%s)"_Stz, sColumnBuf.szStz());
 
     return;
   }
@@ -179,6 +192,19 @@ Stz* TableSubquery::szTableAlias(QueryNode *pNode)
   ASSERT(szTableAlias);
 
   return szTableAlias;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the internal node that contains the list of column names           */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableSubquery::pColumnNames(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnNamesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_COLUMNNAMES_PROP), pNode));
+  ASSERT(pColumnNamesNode);
+
+  return pColumnNamesNode;
 }
 
 /*============================================================================*/
