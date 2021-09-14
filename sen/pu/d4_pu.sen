@@ -26,6 +26,9 @@ Path[].root
 "gby_100"  CONSTANT gby_100
 "gby_1000" CONSTANT gby_1000
 
+: >> str.cat ;
+: nl "\n" str.cat ;
+: sp " "  str.cat ;
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
@@ -62,47 +65,33 @@ Path[].root
 : pu_agggby params| iTest sFrag |
 
   iTest 100 * to iTest
-
-  "\"<agg><gby>\"" locals| sAggGby |
   
   // - - - - - - - - - - - -
   // agg by 1 group
   
   iTest 1 + to iTest
-    sFrag
-      "    | aggreg 1 "      str.cat
-                sAggGby      str.cat
-        " // 1 group\n"      str.cat
+    sFrag "    | aggreg 1 " >> agg >> sp gby_1 >> nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 10 groups
   
   iTest 1 + to iTest
-    sFrag
-      "    | aggreg 1 "      str.cat
-                sAggGby      str.cat
-      " // 10 groups\n"      str.cat
+    sFrag "    | aggreg 1 " >> agg >> sp gby_10 >> nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 100 groups
   
   iTest 1 + to iTest
-    sFrag
-      "    | aggreg 1 "      str.cat
-                sAggGby      str.cat
-        " // 100 groups\n"   str.cat
+    sFrag "    | aggreg 1 " >> agg >> sp gby_100 >> nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 1000 groups
   
   iTest 1 + to iTest
-    sFrag
-      "    | aggreg 1 "      str.cat
-                sAggGby      str.cat
-        " // 1000 groups\n"  str.cat
+    sFrag "    | aggreg 1 " >> agg >> sp gby_1000  >> nl
     iTest pu_pipeline
 ;
 
@@ -121,40 +110,28 @@ Path[].root
   // filter selectivity 0.1
   
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pst_0_1    str.cat
-            " // selectivity 0.1\n"  str.cat
+    sFrag "    | filter 1 " >> pst_0_1 >> nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.3
   
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pst_0_3    str.cat
-            " // selectivity 0.3\n"  str.cat
+    sFrag "    | filter 1 " >> pst_0_3 >> nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.6
   
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pst_0_6    str.cat
-            " // selectivity 0.6\n"  str.cat
+    sFrag "    | filter 1 " >> pst_0_6 >> nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.9
   
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pst_0_9    str.cat
-            " // selectivity 0.9\n"  str.cat
+    sFrag "    | filter 1 " >> pst_0_9 >> nl
     iTest pu_agggby
 ;
 
@@ -172,40 +149,28 @@ Path[].root
   // join Pu10k
   
   iTest 1 + to iTest
-    sFrag
-      "    | indexJoin 1 Pu10k idx "  str.cat
-                           sJoinKey   str.cat
-                               "\n"   str.cat
+    sFrag "    | indexJoin 1 Pu10k idx " >> join_key >> nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu10k
 
   iTest 1 + to iTest
-    sFrag
-      "    | indexJoin 1 Pu100k idx " str.cat
-                            sJoinKey  str.cat
-                                "\n"  str.cat
+    sFrag "    | indexJoin 1 Pu100k idx " >> join_key >> nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu1m
   
   iTest 1 + to iTest
-    sFrag
-      "    | indexJoin 1 Pu1m idx "   str.cat
-                          sJoinKey    str.cat
-                              "\n"    str.cat
+    sFrag "    | indexJoin 1 Pu1m idx " >> join_key >> nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu1m
   
   iTest 1 + to iTest
-    sFrag
-      "    | indexJoin 1 Pu10m idx "  str.cat
-                           sJoinKey   str.cat
-                               "\n"   str.cat
+    sFrag "    | indexJoin 1 Pu10m idx " >> join_key >> nl
     iTest pu_postFilter
 ;
 
@@ -224,40 +189,28 @@ Path[].root
   // filter selectivity 0.1
   
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pre_0_1    str.cat
-            " // selectivity 0.1\n"  str.cat
+    sFrag "    | filter 1 " >> pre_0_1 >> nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.3
 
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pre_0_3    str.cat
-            " // selectivity 0.3\n"  str.cat
+    sFrag "    | filter 1 " >> pre_0_3 >> nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.6
 
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pre_0_6    str.cat
-            " // selectivity 0.6\n"  str.cat
+    sFrag "    | filter 1 " >> pre_0_6 >> nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.9
 
   iTest 1 + to iTest
-    sFrag
-      "    | filter 1 "              str.cat
-                          pre_0_9    str.cat
-            " // selectivity 0.9\n"  str.cat
+    sFrag "    | filter 1 " >> pre_0_9 >> nl
     iTest pu_join
 ;
 
@@ -272,32 +225,31 @@ Path[].root
   // scan Pu10k
 
   iTest 1 + to iTest
-    sFrag
-      "     scan Pu10k\n" str.cat
+    sFrag "     scan Pu10k" >> nl
     iTest pu_preFilter
+
 
   // - - - - - - - - - - - -
   // scan Pu100k
 
   iTest 1 + to iTest
-    sFrag
-      "     scan Pu100k\n" str.cat
+    sFrag "     scan Pu100k" >> nl
     iTest pu_preFilter
+
 
   // - - - - - - - - - - - -
   // scan Pu100k
 
   iTest 1 + to iTest
-    sFrag
-      "     scan Pu1m\n" str.cat
+    sFrag "     scan Pu1m" >> nl
     iTest pu_preFilter
+
 
   // - - - - - - - - - - - -
   // scan Pu10m
 
   iTest 1 + to iTest
-    sFrag
-      "     scan Pu10m\n" str.cat
+    sFrag "     scan Pu10m" >> nl
     iTest pu_preFilter
 ;
 
@@ -478,6 +430,8 @@ Path[].root
 ;
 
 Path[].Restore
+
+pu_gen
 
 /*============================================================================*/
 /* end                                                                        */

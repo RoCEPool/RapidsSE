@@ -16,7 +16,7 @@ namespace STORE
     i8     m_iActive;
 
     PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
-    PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> Ptn
+    PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> PtnId
 
     // must be last
     Footer m_xFooter;
