@@ -68,9 +68,9 @@ Stats::Stats(void)
   m_nRecvs     = 0;
   m_nBytesRecv = 0;
 
-  m_nRead       = 0;
+  m_nReads      = 0;
   m_nBytesRead  = 0;
-  m_nWrite      = 0;
+  m_nWrites     = 0;
   m_nBytesWrite = 0;
 
   // memory

@@ -31,9 +31,9 @@ namespace BASE
     i8 m_nRecvs;      // recv() count
     i8 m_nBytesRecv;  // total bytes recv
 
-    i8 m_nRead;       // read() count
+    i8 m_nReads;      // read() count
     i8 m_nBytesRead;  // total bytes read
-    i8 m_nWrite;      // write() count
+    i8 m_nWrites;     // write() count
     i8 m_nBytesWrite; // total bytes write
 
     // memory

@@ -528,8 +528,15 @@ void LogicUnit::vCleanup(void)
       s32 sMaxBytes;
       MagLib::vByteMag(m_xpStats->m_nMaxBytes, sMaxBytes);
 
+      s32 sBytesRead;
+      MagLib::vByteMag(m_xpStats->m_nBytesRead, sBytesRead);
+
+      s32 sBytesWrite;
+      MagLib::vByteMag(m_xpStats->m_nBytesWrite, sBytesWrite);
+
       s32 sBytesSent;
       MagLib::vByteMag(m_xpStats->m_nBytesSent, sBytesSent);
+
 
       if (p_Reg->m_eLogicUnitReg == LR_STATS)
       vTrace("%10s %16s (P%02lld) : "
@@ -541,6 +548,8 @@ void LogicUnit::vCleanup(void)
              "Allocs %6lld [BytesAlloc %6s] "
              "Frees %6lld [BytesFree %6s] "
              "MaxBytes %6s "
+             "Reads %6lld [BytesRead %6s] "
+             "Writes %6lld [BytesWrite %6s] "
              "Sends %6lld [BytesSent %6s] "
              "\n"_Stz
 
@@ -561,6 +570,10 @@ void LogicUnit::vCleanup(void)
              ,m_xpStats->m_nFrees
              ,sBytesFree.azChar()
              ,sMaxBytes.azChar()
+             ,m_xpStats->m_nReads
+             ,sBytesRead.azChar()
+             ,m_xpStats->m_nWrites
+             ,sBytesWrite.azChar()
              ,m_xpStats->m_nSends
              ,sBytesSent.azChar()
              );
