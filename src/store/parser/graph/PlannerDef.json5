@@ -385,6 +385,13 @@
                               name: "tableAlias",
                               value: "The virtual table name that this tableSubquery is known as",
                               type: "/__root__/definitions/object/valueObject/stringObject"
+                            },
+                            {
+                              // Table subqueries must also specify column names.
+                              // This will get filled in automatically if the user does not specify them.
+                              name: "columnNames",
+                              value: "The list of names for each column that this table subquery provides",
+                              type: "/__root__/definitions/object/list/idList"
                             }
                           ],
                         },
@@ -1754,7 +1761,28 @@
                     ]} // end __constraints container
                   ],
                   children: []
-                }, // EndPath: /__root__/definitions/object/list/exprList
+                }, // EndPath: /__root__/definitions/object/list/stringList
+
+// Path: /__root__/definitions/object/list/idList
+                {
+                  name: "idList",
+                  value: "A list of object name IDs represented as strings. Very similar to a stringlist but they are vDescribe()'ed differently",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/valueObject/stringObject
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/valueObject/stringObject"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/idList
 
 // Path: /__root__/definitions/object/list/catalogDefs
                 {

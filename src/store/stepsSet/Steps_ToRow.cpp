@@ -29,16 +29,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRow(void)
 {
-  vAddStep("toRow[]"_Stz,               &Step::vToRowFetch);
-  vAddStep("toRow[].completed"_Stz,     &Step::vToRowCompleted);
-  vAddStep("toRow[].create"_Stz,        &Step::vToRowCreate);
-  vAddStep("toRow[].dangling"_Stz,      &Step::vToRowDangling);
-  vAddStep("toRow[].delete"_Stz,        &Step::vToRowDelete);
-  vAddStep("toRow[].rowCounters@@"_Stz, &Step::vToRowRowCountersFetch);
+  vAddStep("ToRow[]"_Stz,               &Step::vToRowFetch);
+  vAddStep("ToRow[].completed"_Stz,     &Step::vToRowCompleted);
+  vAddStep("ToRow[].create"_Stz,        &Step::vToRowCreate);
+  vAddStep("ToRow[].dangling"_Stz,      &Step::vToRowDangling);
+  vAddStep("ToRow[].delete"_Stz,        &Step::vToRowDelete);
+  vAddStep("ToRow[].rowCounters@@"_Stz, &Step::vToRowRowCountersFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].completed -- full row buffer                                       */
+/* ToRow[].completed -- full row buffer                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCompleted(void)
 {
@@ -55,7 +55,7 @@ void Step::vToRowCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].create -- create toRow                                             */
+/* ToRow[].create -- create toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCreate(void)
 {
@@ -87,7 +87,7 @@ void Step::vToRowCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].dangling -- fetch row buffer                                       */
+/* ToRow[].dangling -- fetch row buffer                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowDangling(void)
 {
@@ -106,7 +106,7 @@ void Step::vToRowDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].delete -- delete toRow                                             */
+/* ToRow[].delete -- delete toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowDelete(void)
 {
@@ -121,7 +121,7 @@ void Step::vToRowDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[] -- fetch toRow                                                     */
+/* ToRow[] -- fetch toRow                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowFetch(void)
 {
@@ -135,7 +135,7 @@ void Step::vToRowFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].rowCounters@@ -- fetch row counters                                */
+/* ToRow[].rowCounters@@ -- fetch row counters                                */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowRowCountersFetch(void)
 {

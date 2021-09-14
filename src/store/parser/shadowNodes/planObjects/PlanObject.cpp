@@ -320,7 +320,11 @@ void PlanObject::vAppendIndent(s48K &sBuf, i8 iIndentLevel, eIndentFormat eForma
   if (iIndentLevel == 0) {
     if (eFormat == IF_ARROW) {
       // This just makes it clearer to identify the main subquery and any table subqueries
-      sBuf.vConcat("\n∆ "_Stz);
+      if (sBuf.nLength() == 0) {
+        sBuf.vConcat("\n∆ "_Stz);
+      } else {
+        sBuf.vConcat("∆ "_Stz);
+      }
     } else if (eFormat == IF_PLAIN) {
       sBuf.vConcat("  "_Stz);
     }

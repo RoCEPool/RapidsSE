@@ -27,7 +27,7 @@ static Stz* C_STRINGLIST_NAME = "stringList"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create a list of catalogDef nodes.                       */
+/* Helper function to create a list of stringobject nodes.                    */
 /*----------------------------------------------------------------------------*/
 QueryNode* StringList::pCreate()
 {

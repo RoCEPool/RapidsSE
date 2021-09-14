@@ -23,6 +23,8 @@
 /*----------------------------------------------------------------------------*/
 : consumeOp_Cleaning \handler
 
+  LogicUnit[].cleanup
+
   //"Operand:- ZK_M_CLEANING" .verbose
   Sends[].handleCleaning if
     Pipein[].pipeout

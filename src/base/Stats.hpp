@@ -26,10 +26,10 @@ namespace BASE
     i8 m_nBuffOut;    // buffer out
 
     // i/o
-    i8 m_nSends;      // send() count
-    i8 m_nBytesSent;  // total bytes sent
-    i8 m_nRecvs;      // recv() count
-    i8 m_nBytesRecv;  // total bytes recv
+    i8 m_nParcelSends;    // parcel sends
+    i8 m_nObjectsSent;    // total objects sent
+    i8 m_nParcelRecvs;    // parcel recvs
+    i8 m_nObjectsRecv;    // total objects recv
 
     i8 m_nReads;      // read() count
     i8 m_nBytesRead;  // total bytes read

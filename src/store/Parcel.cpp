@@ -339,9 +339,6 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   Object* pObject;
   Parcel* pParcel;
 
-  LogicUnit* pLogicUnit = pSrcOp->pOpLogicUnit();
-  pLogicUnit->m_xpStats->m_nSends++;
-
   // get preliminary information
   Node* pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
@@ -356,8 +353,6 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   pParcel = this;
   nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
-
-  pLogicUnit->m_xpStats->m_nBytesSent += nObjectSize;
 
   //if (!bResult) {
   //  vTrace("vSendOverSocket SENT FAILED\n"_Stz);
@@ -391,7 +386,6 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
     //vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
 
-    pLogicUnit->m_xpStats->m_nBytesSent += nObjectSize;
   }
   
   pSocket->vDropWrite();

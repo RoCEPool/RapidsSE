@@ -20,30 +20,19 @@
     iNextKey Table[].streamDef@ ToRow[] puGen::x to iNextKey
   iNextKey while
   
-    // test for any completed
-    ToRow[].completed to RowBuffer[]
-    begin
-      RowBuffer[].isNull not
-    while
-      RowBuffer[].pipeOut
-      ToRow[].completed to RowBuffer[]
-    repeat
-
-    RowBuffer[].isNull assert
-
-  repeat
-
-
-  // test for any dangling
-  ToRow[].dangling to RowBuffer[]
-  begin
-    RowBuffer[].isNull not
-  while
-    RowBuffer[].pipeOut
     ToRow[].dangling to RowBuffer[]
+    RowBuffer[].isNull not if
+      RowBuffer[].pipeOut
+      RowBuffer[].isNull assert
+    then
+    
   repeat
-  
-  RowBuffer[].isNull assert
+
+  ToRow[].dangling to RowBuffer[]
+  RowBuffer[].isNull not if
+    RowBuffer[].pipeOut
+    RowBuffer[].isNull assert
+  then
 
   Marker[].newEosMarker
   Marker[].pipeOut

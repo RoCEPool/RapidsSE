@@ -20,10 +20,13 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/SelectMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -38,6 +41,7 @@
 #include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
 #include "store/parser/shadowNodes/valueObjects/IntegerObject.hpp"
 #include "store/parser/shadowNodes/lists/StringList.hpp"
+#include "store/parser/shadowNodes/lists/IdList.hpp"
 #include "store/parser/shadowNodes/lists/StageRangeList.hpp"
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
 #include "store/parser/shadowNodes/compound/OrderItem.hpp"
@@ -211,17 +215,27 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
 
   // Find the subpath where we will attach the parsed query plan
-  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
-  ASSERT(pItem);
-  ASSERT(pItem->eGetClassNo() == CN_QUERYNODE);
-  QueryNode* pQueryNode = _pQueryNode(pItem);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRoot);
 
   // Attach the statement plan we created
-  ASSERT(m_pStatementStack->nItems() == 1);
-  // TODO: Validate that there is only one mainSubquery on the m_pStatementStack
-  //       and all others are tableSubqueries
-  QueryNode* pStatementNode = m_pStatementStack->pPop();
-  pQueryNode->vAppendChild(pStatementNode);
+  ASSERT(m_pStatementStack->nItems() >= 1);
+
+  b1 bGotMainSubquery = false;
+  QueryNode* pChildNode;
+  while ((pChildNode = m_pStatementStack->pPop()) != nullptr) {
+    ASSERT(SubqueryMarker::bIsOfType(pChildNode));
+
+    // There can only be one MainSubquery
+    if (MainSubquery::bIsOfType(pChildNode)) {
+      RASSERT(!bGotMainSubquery);
+      bGotMainSubquery = true;
+    }
+
+    pPlanRoot->vAppendChild(pChildNode);
+  }
+
+  // There must be a MainSubquery
+  RASSERT(bGotMainSubquery);
 
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
@@ -335,9 +349,12 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   pCtx->statementChoice()->accept(this);
 
   ASSERT(m_pStatementStack->nItems() >= 2);
-  QueryNode* pExplainableStatement = m_pStatementStack->pPop();
+
+  while (m_pStatementStack->nItems() > 0 && SubqueryMarker::bIsOfType(m_pStatementStack->pTop())) {
+    pExplainOp->vPushChild(m_pStatementStack->pPop());
+  }
+
   ASSERT(m_pStatementStack->pTop() == pExplainMarker);
-  pExplainOp->vAppendChild(pExplainableStatement);
 
   return nullptr;
 }
@@ -440,21 +457,35 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  // Get the statement string for this part of the query
-  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  // We don't call visitChildren() in this function because we need to control
+  // the order of execution. Specifically, we need to place a SelectMarker on
+  // the m_pStatementStack before we descend into the selectExpr rule (we cannot
+  // do that inside the selectExpr rule because it is reused in multiple places),
+  // but before we can do that we need to visit any WITH queries first.
+  // Calling visitChildren() doesn't allow us to do this.
+
+  // Call each WITH subquery first. The main subquery should be last.
+  for (sqlParser::WithQueryContext* pWithCtx : pCtx->withQuery()) {
+    pWithCtx->accept(this);
+  }
+
+  // Get the statement string for this part of the query. Ignore any WITH
+  // clauses at the start though.
+  antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
 
+  pCtx->selectExpr()->accept(this);
+
   if (pCtx->ORDER()) {
     ASSERT(!m_pOrderItems);
     m_pOrderItems = new QueryNodeList();
-  }
 
-  visitChildren(pCtx);
+    // Call the ORDER BY children
+    pCtx->orderBy->accept(this);
 
-  if (pCtx->ORDER()) {
     ASSERT(m_pOrderItems);
     ASSERT(m_pOrderItems->nItems() > 0);
 
@@ -502,6 +533,48 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
     QueryNode* pStatement = m_pStatementStack->pTop();
     pStatement->vInsertAsParentOfChildren(pLimitOp);
   }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* WITH query item (for each table subquery)                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  // Extract the mandatory table alias name
+  Text* pTblAlias = pCleanId(pCtx->name->id);
+  ASSERT(pTblAlias);
+
+  // Extract the optional list of column aliases
+  QueryNode* pIdList = IdList::pCreate();
+  for (sqlParser::ColumnAliasContext* pColAliasCtx : pCtx->columnAlias()) {
+    Text* pColName = pCleanId(pColAliasCtx->id);
+    QueryNode* pColNameNode = StringObject::pCreate(pColName);
+    pIdList->vAppendChild(pColNameNode);
+  }
+
+  // TODO: Check that the number of column aliases matches the num columns being projected.
+  //       Can't do that here though.
+  //       Postgres will automatically name any columns that haven't been specified, so you
+  //       can name a subset of the columns that a WITH clause provides.
+  //       But you cannot provide more names than there are columns.
+  // TODO: If no column aliases have been provided then make them up./
+
+  // The last item on the stack is the table subquery. We need to add
+  // a TableSubquery marker to the top of it and then put it back
+  // onto the statement stack.
+  ASSERT(m_pStatementStack->nItems() > 0);
+
+  QueryNode* pNode = m_pStatementStack->pPop();
+  ASSERT(!TableSubquery::bIsOfType(pNode));
+  ASSERT(SelectMarker::bIsOfType(pNode));
+
+  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, pIdList);
+  pTableSubquery->vAppendChild(pNode);
+  m_pStatementStack->vPush(pTableSubquery);
 
   return nullptr;
 }

@@ -16,7 +16,7 @@ namespace Parser
     TableSubquery();
 
   public:
-    static QueryNode* pCreate(Stz* szTableAlias);
+    static QueryNode* pCreate(Text* pTableAlias, QueryNode* pColumnNames);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -36,6 +36,9 @@ namespace Parser
 
     // Returns the name of the virtual table that this subquery is known as
     static Stz* szTableAlias(QueryNode* pNode);
+
+    // Returns the internal node that contains the list of column names
+    static QueryNode* pColumnNames(QueryNode* pNode);
   };
 
 }
