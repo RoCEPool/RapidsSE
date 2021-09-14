@@ -7,15 +7,15 @@
 Path[].save
 Path[].root
   
-"" CONSTANT <pre_0_1>
-"" CONSTANT <pre_0_3>
-"" CONSTANT <pre_0_6>
-"" CONSTANT <pre_0_9>
+"pre_0_1" CONSTANT pre_0_1
+"pre_0_3" CONSTANT pre_0_3
+"pre_0_6" CONSTANT pre_0_6
+"pre_0_9" CONSTANT pre_0_9
 "EQUAL $I1 $L1 ==" CONSTANT <join_key>
-"" CONSTANT <pst_0_1>
-"" CONSTANT <pst_0_3>
-"" CONSTANT <pst_0_6>
-"" CONSTANT <pst_0_9>
+"pst_0_1" CONSTANT pst_0_1
+"pst_0_3" CONSTANT pst_0_3
+"pst_0_6" CONSTANT pst_0_6
+"pst_0_9" CONSTANT pst_0_9
 "" CONSTANT <agg>
 "" CONSTANT <gby_1>
 "" CONSTANT <gby_10>
@@ -121,7 +121,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pst_0_1    str.cat
             " // selectivity 0.1\n"  str.cat
     iTest pu_agggby
     
@@ -131,7 +131,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pst_0_3    str.cat
             " // selectivity 0.3\n"  str.cat
     iTest pu_agggby
     
@@ -141,7 +141,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pst_0_6    str.cat
             " // selectivity 0.6\n"  str.cat
     iTest pu_agggby
     
@@ -151,7 +151,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pst_0_9    str.cat
             " // selectivity 0.9\n"  str.cat
     iTest pu_agggby
 ;
@@ -224,7 +224,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pre_0_1    str.cat
             " // selectivity 0.1\n"  str.cat
     iTest pu_join
     
@@ -234,7 +234,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pre_0_3    str.cat
             " // selectivity 0.3\n"  str.cat
     iTest pu_join
     
@@ -244,7 +244,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pre_0_6    str.cat
             " // selectivity 0.6\n"  str.cat
     iTest pu_join
     
@@ -254,7 +254,7 @@ Path[].root
   iTest 1 + to iTest
     sFrag
       "    | filter 1 "              str.cat
-                       sSelectivity  str.cat
+                          pre_0_9    str.cat
             " // selectivity 0.9\n"  str.cat
     iTest pu_join
 ;
