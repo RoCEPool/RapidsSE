@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _pu10k -- pu10k performance unit test                                      */
+/*============================================================================*/
+
+create table Pu10k (
+    pu10k_10k integer not null
+
+  , pu10k_pre integer not null
+  , pu10k_pst integer not null
+
+  , pu10k_int integer not null
+  , pu10k_dte date    not null
+  , pu10k_str varchar not null
+);
+create index idx_10k on Pu10k (pu10k_10k);
+
+puLoad Pu10k;
+
+select * from Pu10k;
+//select * from Pu10k where pu10k_10k < 10;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

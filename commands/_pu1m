@@ -1,0 +1,20 @@
+/*============================================================================*/
+/* _pu1m -- pu1m performance unit test                                        */
+/*============================================================================*/
+
+create table Pu1m (
+    pu1m_1m   integer not null
+  , pu1m_100k integer not null
+  , pu1m_10k  integer not null
+    
+  , pu10k_int integer not null
+  , pu10k_dte date    not null
+  , pu10k_str varchar not null
+);
+create index idx_1m   on Pu1m (pu1m_1m);
+create index idx_100k on Pu1m (pu1m_100k);
+create index idx_10k  on Pu1m (pu1m_10k);
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
