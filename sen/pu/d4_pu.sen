@@ -6,29 +6,40 @@
 
 Path[].save
 Path[].root
-  
-"pre_0_1"  CONSTANT pre_0_1
-"pre_0_3"  CONSTANT pre_0_3
-"pre_0_6"  CONSTANT pre_0_6
-"pre_0_9"  CONSTANT pre_0_9
-
-"EQUAL $I1 $L1 ==" CONSTANT join_key
-
-"pst_0_1"  CONSTANT pst_0_1
-"pst_0_3"  CONSTANT pst_0_3
-"pst_0_6"  CONSTANT pst_0_6
-"pst_0_9"  CONSTANT pst_0_9
-
-"agg"      CONSTANT agg
-
-"gby_1"    CONSTANT gby_1
-"gby_10"   CONSTANT gby_10
-"gby_100"  CONSTANT gby_100
-"gby_1000" CONSTANT gby_1000
 
 : >> str.cat ;
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
+
+: +scan   "      scan" ;
+
+: +Pu10k  " Pu10k"  >> ;
+: +Pu100k " Pu100k" >> ;
+: +Pu1m   " Pu1m"   >> ;
+: +Pu10m  " Pu10m"  >> ;
+
+: +filter  "    | filter 1" >> ;
+: +pre_0_1 " pre_0_1" >> ;
+: +pre_0_3 " pre_0_3" >> ;
+: +pre_0_6 " pre_0_6" >> ;
+: +pre_0_9 " pre_0_9" >> ;
+
+: +join_key " \"EQUAL $I1 $L1 ==\"" >> ;
+
+: +pst_0_1 " pst_0_1" >> ;
+: +pst_0_3 " pst_0_3" >> ;
+: +pst_0_6 " pst_0_6" >> ;
+: +pst_0_9 " pst_0_9" >> ;
+
+: +aggreg "    | aggreg 1" >> ;
+
+: +agg " agg" >> ;
+
+: +gby_1    " gby_1"    >> ;
+: +gby_10   " gby_10"   >> ;
+: +gby_100  " gby_100"  >> ;
+: +gby_1000 " gby_1000" >> ;
+
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
@@ -70,28 +81,28 @@ Path[].root
   // agg by 1 group
   
   iTest 1 + to iTest
-    sFrag "    | aggreg 1 " >> agg >> sp gby_1 >> nl
+    sFrag +aggreg +agg +gby_1 nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 10 groups
   
   iTest 1 + to iTest
-    sFrag "    | aggreg 1 " >> agg >> sp gby_10 >> nl
+    sFrag +aggreg +agg +gby_10 nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 100 groups
   
   iTest 1 + to iTest
-    sFrag "    | aggreg 1 " >> agg >> sp gby_100 >> nl
+    sFrag +aggreg +agg +gby_100 nl
     iTest pu_pipeline
 
   // - - - - - - - - - - - -
   // agg by 1000 groups
   
   iTest 1 + to iTest
-    sFrag "    | aggreg 1 " >> agg >> sp gby_1000  >> nl
+    sFrag +aggreg +agg +gby_1000 nl
     iTest pu_pipeline
 ;
 
@@ -110,28 +121,28 @@ Path[].root
   // filter selectivity 0.1
   
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pst_0_1 >> nl
+    sFrag +filter +pst_0_1 nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.3
   
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pst_0_3 >> nl
+    sFrag +filter +pst_0_3 nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.6
   
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pst_0_6 >> nl
+    sFrag +filter +pst_0_6 nl
     iTest pu_agggby
     
   // - - - - - - - - - - - -
   // filter selectivity 0.9
   
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pst_0_9 >> nl
+    sFrag +filter +pst_0_9 nl
     iTest pu_agggby
 ;
 
@@ -149,28 +160,28 @@ Path[].root
   // join Pu10k
   
   iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu10k idx " >> join_key >> nl
+    sFrag "    | indexJoin 1 Pu10k idx" >> +join_key nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu10k
 
   iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu100k idx " >> join_key >> nl
+    sFrag "    | indexJoin 1 Pu100k idx" >> +join_key nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu1m
   
   iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu1m idx " >> join_key >> nl
+    sFrag "    | indexJoin 1 Pu1m idx" >> +join_key nl
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
   // join Pu1m
   
   iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu10m idx " >> join_key >> nl
+    sFrag "    | indexJoin 1 Pu10m idx" >> +join_key nl
     iTest pu_postFilter
 ;
 
@@ -189,28 +200,28 @@ Path[].root
   // filter selectivity 0.1
   
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pre_0_1 >> nl
+    sFrag +filter +pre_0_1 nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.3
 
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pre_0_3 >> nl
+    sFrag +filter +pre_0_3 nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.6
 
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pre_0_6 >> nl
+    sFrag +filter +pre_0_6 nl
     iTest pu_join
     
   // - - - - - - - - - - - -
   // filter selectivity 0.9
 
   iTest 1 + to iTest
-    sFrag "    | filter 1 " >> pre_0_9 >> nl
+    sFrag +filter +pre_0_9 nl
     iTest pu_join
 ;
 
@@ -225,7 +236,7 @@ Path[].root
   // scan Pu10k
 
   iTest 1 + to iTest
-    sFrag "     scan Pu10k" >> nl
+    sFrag +scan +Pu10k nl
     iTest pu_preFilter
 
 
@@ -233,7 +244,7 @@ Path[].root
   // scan Pu100k
 
   iTest 1 + to iTest
-    sFrag "     scan Pu100k" >> nl
+    sFrag +scan +Pu100k nl
     iTest pu_preFilter
 
 
@@ -241,7 +252,7 @@ Path[].root
   // scan Pu100k
 
   iTest 1 + to iTest
-    sFrag "     scan Pu1m" >> nl
+    sFrag +scan +Pu1m nl
     iTest pu_preFilter
 
 
@@ -249,7 +260,7 @@ Path[].root
   // scan Pu10m
 
   iTest 1 + to iTest
-    sFrag "     scan Pu10m" >> nl
+    sFrag +scan +Pu10m nl
     iTest pu_preFilter
 ;
 
