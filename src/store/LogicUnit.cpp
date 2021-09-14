@@ -521,15 +521,17 @@ void LogicUnit::vCleanup(void)
     if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
       
       if (p_Reg->m_eLogicUnitReg == LR_STATS)
-      vTrace("%16s: "
+      vTrace("%10s %16s (P%02lld) : "
              "cpu %8lldus "
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
              "NewRowBuffers %6lld [DelRowBuffers %6lld] "
              "Sends %6lld [BytesSent %6lld] "
              "\n"_Stz
-             
+
+             ,m_pOp->szStageName()
              ,m_pOp->szOpNm()
+             ,m_pOp->tPtnNo()
              ,m_xpStats->iMicroseconds()
              ,m_xpStats->m_nMaxQs
              ,m_xpStats->m_nOperands
