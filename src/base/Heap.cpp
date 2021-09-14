@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "AM.hpp"
+#include "LogicUnit.hpp"
 
 extern BufferPool* gpBufferPool;
 
@@ -178,13 +179,27 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
   m_nCurrAllocated++;
-  
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vScribble(pObject,m_nObjectSize,eAllocClass);
 #endif
   
   m_okLock.vDropWrite();
-  
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit) {
+
+    if (pLogicUnit->m_xpStats.bIsNotNull()) {
+
+      pLogicUnit->m_xpStats->m_nAllocs++;
+      pLogicUnit->m_xpStats->m_nBytesAlloc += m_nObjectSize;
+
+      i8 nMaxBytes = pLogicUnit->m_xpStats->m_nBytesAlloc - pLogicUnit->m_xpStats->m_nBytesFree;
+      if (nMaxBytes > pLogicUnit->m_xpStats->m_nMaxBytes)
+        pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
+    }
+  }
+
   //bool bSetLogMemory = false;
   
 
@@ -391,6 +406,12 @@ void Heap::vFreeObject(Object* pObject)
       m_nCurrAllocated--;
       m_okLock.vDropWrite();
 
+      LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+      if (pLogicUnit) {
+        pLogicUnit->m_xpStats->m_nFrees++;
+        pLogicUnit->m_xpStats->m_nBytesFree += m_nObjectSize;
+      }
+
       return;
     }
   }
@@ -403,7 +424,13 @@ void Heap::vFreeObject(Object* pObject)
   m_nCurrAllocated--;
 
   m_okLock.vDropWrite();
-  
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit) {
+    pLogicUnit->m_xpStats->m_nFrees++;
+    pLogicUnit->m_xpStats->m_nBytesFree += m_nObjectSize;
+  }
+
   //vVerify();
 }
 

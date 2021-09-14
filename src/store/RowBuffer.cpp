@@ -34,8 +34,9 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
 }
 
@@ -47,8 +48,9 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,8 +63,9 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   
   vResolveRowPix(pStreamDef);
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +75,7 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
 }

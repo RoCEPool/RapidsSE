@@ -34,8 +34,9 @@ CsvBuffer::CsvBuffer(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
 
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
-  pLogicUnit->m_xpStats->m_nNewCsvBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewCsvBuffer++;
 
   _checkInitialised_(CN_CSVBUFFER);
 }
@@ -47,7 +48,7 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
 
-  LogicUnit* pLogicUnit = MY::pLogicUnit();
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelCsvBuffer++;
 }

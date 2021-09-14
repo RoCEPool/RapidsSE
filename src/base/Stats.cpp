@@ -77,19 +77,16 @@ Stats::Stats(void)
   m_nNewRowBuffer = 0;
   m_nDelRowBuffer = 0;
   m_nMaxRowBuffer = 0;
-  m_nAvgRowBuffer = 0;
 
   m_nNewCsvBuffer = 0;
   m_nDelCsvBuffer = 0;
   m_nMaxCsvBuffer = 0;
-  m_nAvgCsvBuffer = 0;
 
   m_nAllocs     = 0;
   m_nBytesAlloc = 0;
   m_nFrees      = 0;
   m_nBytesFree  = 0;
   m_nMaxBytes   = 0;
-  m_nAvgBytes   = 0;
 
   _checkInitialised_(CN_STATS);
 

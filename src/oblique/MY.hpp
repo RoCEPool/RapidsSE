@@ -51,6 +51,7 @@ namespace OBLIQUE
     static LogicUnit* pLogicUnit(void);
     static Node*      pNode(void);
     static Op*        pOp(void);
+    static LogicUnit* pOpLogicUnit(void);
     static eZK        eOperand(void);
     static Pipeline*  pPipeline(void);
     static Dic*       pSchemaDic(void);

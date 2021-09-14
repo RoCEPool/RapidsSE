@@ -519,7 +519,18 @@ void LogicUnit::vCleanup(void)
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
     if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
-      
+      s32 sBytesAlloc;
+      MagLib::vByteMag(m_xpStats->m_nBytesAlloc, sBytesAlloc);
+
+      s32 sBytesFree;
+      MagLib::vByteMag(m_xpStats->m_nFrees, sBytesFree);
+
+      s32 sMaxBytes;
+      MagLib::vByteMag(m_xpStats->m_nMaxBytes, sMaxBytes);
+
+      s32 sBytesSent;
+      MagLib::vByteMag(m_xpStats->m_nBytesSent, sBytesSent);
+
       if (p_Reg->m_eLogicUnitReg == LR_STATS)
       vTrace("%10s %16s (P%02lld) : "
              "cpu %8lldus "
@@ -527,7 +538,10 @@ void LogicUnit::vCleanup(void)
              "operands %6lld [buffIn %6lld buffOut %6lld] "
              "NewRowBuffers %6lld [DelRowBuffers %6lld] "
              "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
-             "Sends %6lld [BytesSent %6lld] "
+             "Allocs %6lld [BytesAlloc %6s] "
+             "Frees %6lld [BytesFree %6s] "
+             "MaxBytes %6s "
+             "Sends %6lld [BytesSent %6s] "
              "\n"_Stz
 
              ,m_pOp->szStageName()
@@ -542,8 +556,13 @@ void LogicUnit::vCleanup(void)
              ,m_xpStats->m_nDelRowBuffer
              ,m_xpStats->m_nNewCsvBuffer
              ,m_xpStats->m_nDelCsvBuffer
+             ,m_xpStats->m_nAllocs
+             ,sBytesAlloc.azChar()
+             ,m_xpStats->m_nFrees
+             ,sBytesFree.azChar()
+             ,sMaxBytes.azChar()
              ,m_xpStats->m_nSends
-             ,m_xpStats->m_nBytesSent
+             ,sBytesSent.azChar()
              );
     }
     

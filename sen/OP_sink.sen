@@ -30,16 +30,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                               */
+/* handler for ZK_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : sink_Cleaning \handler
 
   //"Operand:- ZK_M_CLEANING" .verbose
   PipeIn[].delete
+
+  LogicUnit[].cleanup
+
   Marker[].newCleanedupMarker
   Marker[].pipeOut
-  true
 
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
