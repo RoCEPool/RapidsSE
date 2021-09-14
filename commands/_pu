@@ -5,16 +5,20 @@
 // - - - - - - - - - - - - - - - - - - -
 create table Pu10k (
     pu10k_10k integer not null
-    
-//  , pu10k_int integer not null
-//  , pu10k_dte date    not null
-//  , pu10k_str varchar not null
+
+  , pu10k_pre integer not null
+  , pu10k_pst integer not null
+
+  , pu10k_int integer not null
+  , pu10k_dte date    not null
+  , pu10k_str varchar not null
 );
 
 
 puLoad Pu10k;
 
 select * from Pu10k;
+//select * from Pu10k where pu10k_10k < 10;
 
 
 

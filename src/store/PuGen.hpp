@@ -12,13 +12,16 @@ namespace STORE
   public:
     static void vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef);
   
-    static void vGen10k (i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef);
-    static void vGen100k(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef);
-    static void vGen1m  (i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef);
-    static void vGen10m (i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef);
+    static void vPu10k (ToRow* pToRow, i8& riNextKey);
+    static void vPu100k(ToRow* pToRow, i8& riNextKey);
+    static void vPu1m  (ToRow* pToRow, i8& riNextKey);
+    static void vPu10m (ToRow* pToRow, i8& riNextKey);
 
   private:
   
+    static void vOther(RowBuffer* pRowBuffer, i8 iKey);
+    static void vPrePst(RowBuffer* pRowBuffer);
+
   };
 }
 

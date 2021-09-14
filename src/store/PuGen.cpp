@@ -23,29 +23,23 @@ void PuGen::vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
   Stz* szStreamDefNm = pStreamDef->szStreamDefNm();
   
   if (szStreamDefNm->bSame("Pu10k"_Stz))
-    vGen10k(riNextKey,pToRow,pStreamDef);
+    vPu10k(pToRow,riNextKey);
   else
   if (szStreamDefNm->bSame("Pu100k"_Stz))
-    vGen100k(riNextKey,pToRow,pStreamDef);
+    vPu100k(pToRow,riNextKey);
   else
   if (szStreamDefNm->bSame("Pu1m"_Stz))
-    vGen1m(riNextKey,pToRow,pStreamDef);
+    vPu1m(pToRow,riNextKey);
   else
   if (szStreamDefNm->bSame("Pu10m"_Stz))
-    vGen10m(riNextKey,pToRow,pStreamDef);
+    vPu10m(pToRow,riNextKey);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PuGen::vGen10k(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
+void PuGen::vPu10k(ToRow* pToRow, i8& riNextKey)
 {
-  Stz* szStreamDefNm = pStreamDef->szStreamDefNm();
-
-  vTrace("vPuGenX: %p ; %s ; %lld\n"_Stz
-         ,pToRow,szStreamDefNm,riNextKey);
-  
-  //  create a new buffer
   pToRow->vNewRowBuffer();
   RowBuffer* pRowBuffer = pToRow->pRowBuffer();
   
@@ -54,39 +48,70 @@ void PuGen::vGen10k(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
     i8 iPtnKeyHash = 0;
     
     pRowBuffer->vDepositColVal(riNextKey);
-    
-    
-    
+
+    vPrePst(pRowBuffer);
+    vOther(pRowBuffer,riNextKey);
+
     HshLib::vRunningHash(&iPtnKeyHash,riNextKey);
     pRowBuffer->vDepositColVal(iPtnKeyHash);
 
     if (10001 == ++riNextKey)
       riNextKey = 0;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PuGen::vGen100k(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
+void PuGen::vPu100k(ToRow* pToRow, i8& riNextKey)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PuGen::vGen1m(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
+void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PuGen::vGen10m(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
+void PuGen::vPu10m(ToRow* pToRow, i8& riNextKey)
 {
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PuGen::vOther(RowBuffer* pRowBuffer, i8 iKey)
+{
+  pRowBuffer->vDepositColVal(RndLib::iInteger(iKey));
+  
+  Dte iColVal_date;
+  iColVal_date.m_uYearDelta = 2021 - C_YEAR_BASE;
+  iColVal_date.m_uMonth     = 9;
+  iColVal_date.m_uDay       = 14;
+  iColVal_date.m_uSpare     = 0;
+  pRowBuffer->vDepositColVal(iColVal_date);
+
+  s4K sRandom;
+  RndLib::vString(sRandom,RndLib::iInteger(1,128));
+  pRowBuffer->vDepositColVal(sRandom);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PuGen::vPrePst(RowBuffer* pRowBuffer)
+{
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1000));
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1000));
+}
 
 /*============================================================================*/
 /* end                                                                        */
