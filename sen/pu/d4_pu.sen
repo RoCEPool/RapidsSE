@@ -25,6 +25,7 @@ Path[].root
     " | stageB "                          str.cat
 
     " stage stageB on all partitions : "  str.cat
+
     sStream                               str.cat
     " | stageA"                           str.cat
     
@@ -54,7 +55,7 @@ Path[].root
   iTest 1 + to iTest
   sFrag
 
-    " | aggreg 1 ' type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 ' " str.cat
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
 
     " <1 group>"   str.cat
 
@@ -63,7 +64,7 @@ Path[].root
   iTest 1 + to iTest
   sFrag
 
-    " | aggreg 1 ' type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 ' " str.cat
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
 
     " <10 groups>"   str.cat
     iTest pu_sink
@@ -71,7 +72,7 @@ Path[].root
   iTest 1 + to iTest
   sFrag
 
-    " | aggreg 1 ' type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 ' " str.cat
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
 
     " <100 groups>"   str.cat
     iTest pu_sink
@@ -79,7 +80,7 @@ Path[].root
   iTest 1 + to iTest
   sFrag
 
-    " | aggreg 1 ' type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 ' " str.cat
+    " | aggreg 1 \" type INTEGER )  $1 sum  , type INTEGER as l_linenumber $2 groupBy  type INTEGER as l_linenumber $2 \" " str.cat
 
     " <1000 groups>"   str.cat
     iTest pu_sink
@@ -94,25 +95,25 @@ Path[].root
 
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.1>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.3>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.6>"   str.cat
     iTest pu_agggby
 
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.9>"   str.cat
     iTest pu_agggby
 ;
@@ -126,22 +127,22 @@ Path[].root
   
   iTest 1 + to iTest
   sFrag
-    " | indexJoin 1 T10k idx 'EQUAL $I1 $L1 == ' " str.cat
+    " | indexJoin 1 T10k idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | indexJoin 1 T100k idx 'EQUAL $I1 $L1 == ' " str.cat
+    " | indexJoin 1 T100k idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | indexJoin 1 T1m idx 'EQUAL $I1 $L1 == ' " str.cat
+    " | indexJoin 1 T1m idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
     
   iTest 1 + to iTest
   sFrag
-    " | indexJoin 1 T10m idx 'EQUAL $I1 $L1 == ' " str.cat
+    " | indexJoin 1 T10m idx \"EQUAL $I1 $L1 == \" " str.cat
     iTest pu_postFilter
 ;
 
@@ -154,25 +155,25 @@ Path[].root
   
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.1>"        str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.3>"        str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.6>"       str.cat
     iTest pu_join
     
   iTest 1 + to iTest
   sFrag
-    " | filter 1 'type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and' " str.cat
+    " | filter 1 \"type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and\" " str.cat
     " <0.9>"        str.cat
     iTest pu_join
 ;
@@ -286,19 +287,19 @@ Path[].root
   iTest 100 * to iTest
   
   iTest 1 + to iTest
-    sFrag "indexScan 1 T10k idx 'LBOUND $I1 1 > UBOUND $I1 10 <= ' " str.cat
+    sFrag "indexScan 1 T10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "indexScan 1 T100k idx 'LBOUND $I1 1 > UBOUND $I1 10 <= ' " str.cat
+    sFrag "indexScan 1 T100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "indexScan 1 T1m idx 'LBOUND $I1 1 > UBOUND $I1 10 <= ' " str.cat
+    sFrag "indexScan 1 T1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   iTest 1 + to iTest
-    sFrag "indexScan 1 T10m idx 'LBOUND $I1 1 > UBOUND $I1 10 <= ' " str.cat
+    sFrag "indexScan 1 T10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 ;
 
