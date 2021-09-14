@@ -526,6 +526,7 @@ void LogicUnit::vCleanup(void)
              "maxq %6lld "
              "operands %6lld [buffIn %6lld buffOut %6lld] "
              "NewRowBuffers %6lld [DelRowBuffers %6lld] "
+             "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
              "Sends %6lld [BytesSent %6lld] "
              "\n"_Stz
 
@@ -539,6 +540,8 @@ void LogicUnit::vCleanup(void)
              ,m_xpStats->m_nBuffOut
              ,m_xpStats->m_nNewRowBuffer
              ,m_xpStats->m_nDelRowBuffer
+             ,m_xpStats->m_nNewCsvBuffer
+             ,m_xpStats->m_nDelCsvBuffer
              ,m_xpStats->m_nSends
              ,m_xpStats->m_nBytesSent
              );
