@@ -74,6 +74,7 @@
 #include "PtnMap.hpp"
 
 #include "BucketMap.hpp"
+#include "BucketMap_dyn.hpp"
 #include "BufferMap.hpp"
 
 #include "CrwPacker.hpp"
@@ -221,6 +222,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 }, // CN_BUCKETGET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
+  { sizeof(BucketMap_dyn),      HT_T_LARGE   ,0 }, // CN_BUCKETMAP_dyn
   { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL

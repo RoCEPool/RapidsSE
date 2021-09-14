@@ -7,6 +7,22 @@
 Path[].save
 Path[].root
   
+"" CONSTANT <pre_0_1>
+"" CONSTANT <pre_0_3>
+"" CONSTANT <pre_0_6>
+"" CONSTANT <pre_0_9>
+"EQUAL $I1 $L1 ==" CONSTANT <join_key>
+"" CONSTANT <pst_0_1>
+"" CONSTANT <pst_0_3>
+"" CONSTANT <pst_0_6>
+"" CONSTANT <pst_0_9>
+"" CONSTANT <agg>
+"" CONSTANT <gby_1>
+"" CONSTANT <gby_10>
+"" CONSTANT <gby_100>
+"" CONSTANT <gby_1000>
+
+
 : pu_bump params| iTest | iTest 10 * ;
 
 /*----------------------------------------------------------------------------*/
@@ -151,43 +167,43 @@ Path[].root
   "\"<join-key>\"" locals| sJoinKey |
 
   // - - - - - - - - - - - -
-  // join T10k
+  // join Pu10k
   
   iTest 1 + to iTest
     sFrag
-      "    | indexJoin 1 T10k idx "  str.cat
-                           sJoinKey  str.cat
-                               "\n"  str.cat
+      "    | indexJoin 1 Pu10k idx "  str.cat
+                           sJoinKey   str.cat
+                               "\n"   str.cat
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
-  // join T10k
+  // join Pu10k
 
   iTest 1 + to iTest
     sFrag
-      "    | indexJoin 1 T100k idx " str.cat
-                            sJoinKey str.cat
-                                "\n" str.cat
+      "    | indexJoin 1 Pu100k idx " str.cat
+                            sJoinKey  str.cat
+                                "\n"  str.cat
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
-  // join T1m
+  // join Pu1m
   
   iTest 1 + to iTest
     sFrag
-      "    | indexJoin 1 T1m idx "   str.cat
-                          sJoinKey   str.cat
-                              "\n"   str.cat
+      "    | indexJoin 1 Pu1m idx "   str.cat
+                          sJoinKey    str.cat
+                              "\n"    str.cat
     iTest pu_postFilter
     
   // - - - - - - - - - - - -
-  // join T1m
+  // join Pu1m
   
   iTest 1 + to iTest
     sFrag
-      "    | indexJoin 1 T1m idx "  str.cat
-                           sJoinKey  str.cat
-                               "\n"  str.cat
+      "    | indexJoin 1 Pu10m idx "  str.cat
+                           sJoinKey   str.cat
+                               "\n"   str.cat
     iTest pu_postFilter
 ;
 
@@ -251,35 +267,35 @@ Path[].root
   iTest 1000 * to iTest
   
   // - - - - - - - - - - - -
-  // scan T10k
+  // scan Pu10k
 
   iTest 1 + to iTest
     sFrag
-      "     scan T10k\n" str.cat
+      "     scan Pu10k\n" str.cat
     iTest pu_preFilter
 
   // - - - - - - - - - - - -
-  // scan T100k
+  // scan Pu100k
 
   iTest 1 + to iTest
     sFrag
-      "     scan T100k\n" str.cat
+      "     scan Pu100k\n" str.cat
     iTest pu_preFilter
 
   // - - - - - - - - - - - -
-  // scan T100k
+  // scan Pu100k
 
   iTest 1 + to iTest
     sFrag
-      "     scan T1m\n" str.cat
+      "     scan Pu1m\n" str.cat
     iTest pu_preFilter
 
   // - - - - - - - - - - - -
-  // scan T10m
+  // scan Pu10m
 
   iTest 1 + to iTest
     sFrag
-      "     scan T10m\n" str.cat
+      "     scan Pu10m\n" str.cat
     iTest pu_preFilter
 ;
 
@@ -400,35 +416,35 @@ Path[].root
   iTest 100 * to iTest
   
   // - - - - - - - - - - - -
-  // indexScan T10k
+  // indexScan Pu10k
   
   iTest 1 + to iTest
     sFrag
-      "indexScan 1 T10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+      "indexScan 1 Pu10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
       iTest pu_interval
 
   // - - - - - - - - - - - -
-  // indexScan T100k
+  // indexScan Pu100k
   
   iTest 1 + to iTest
     sFrag
-      "indexScan 1 T100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+      "indexScan 1 Pu100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   // - - - - - - - - - - - -
-  // indexScan T1m
+  // indexScan Pu1m
   
   iTest 1 + to iTest
     sFrag
-      "indexScan 1 T1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+      "indexScan 1 Pu1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
   // - - - - - - - - - - - -
-  // indexScan T10m
+  // indexScan Pu10m
   
   iTest 1 + to iTest
     sFrag
-      "indexScan 1 T10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
+      "indexScan 1 Pu10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 ;
 
