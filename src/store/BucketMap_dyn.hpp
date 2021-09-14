@@ -11,9 +11,13 @@ namespace STORE
     Lock m_okLock;
   
     Location m_oLocation; // logical location of BucketMap_dyn
-
-    tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
+    PtnId* m_paPtnId;
+    i8     m_iActive;
+
+    PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
+    PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> Ptn
+
     // must be last
     Footer m_xFooter;
     
@@ -21,15 +25,15 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    BucketMap_dyn(i8 nPartitions);
+    BucketMap_dyn(void);
    ~BucketMap_dyn(void) noexcept(false);
   
-    static void vPostRecv(void* aBucketMap);
+    static void vPostRecv(void* aBucketMap_dyn);
   
     Location* pLocation(void);
   
-    void vResetPointers(void);
-    tPN  tWhichLglPtnNo(i8 iBucketId);
+    //?? void vResetPointers(void);
+    PtnId  tToPtnId(i8 iBucketId);
   
   private:
     Footer* aFooter(void);
