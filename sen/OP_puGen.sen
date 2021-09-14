@@ -45,6 +45,9 @@
   
   RowBuffer[].isNull assert
 
+  Marker[].newEosMarker
+  Marker[].pipeOut
+
   true
 ;
 

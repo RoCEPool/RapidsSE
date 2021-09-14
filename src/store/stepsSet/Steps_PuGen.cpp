@@ -41,17 +41,14 @@ void Step::vPuGenX(void)
          ,pToRow,szStreamDefNm,iNextKey);
   
   //  create a new buffer
-  RowBuffer* pRowBuffer = new RowBuffer;
-  
-  // initialise the row slab inside the new row buffer
-  pRowBuffer->vInitPix(pStreamDef,true);
+  pToRow->vNewRowBuffer();
+  RowBuffer* pRowBuffer = pToRow->pRowBuffer();
   
   while (iNextKey && pRowBuffer->pAllotRow()) {
   
     i8 iPtnKeyHash = 0;
     
     pRowBuffer->vDepositColVal(iNextKey);
-    
     
     
     

@@ -163,6 +163,16 @@ RowBuffer* ToRow::pFullRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return last remaining dangling rowBuffer (if any)                          */
+/*----------------------------------------------------------------------------*/
+RowBuffer* ToRow::pRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+    
+  return m_pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 i8 ToRow::iRowsProcessed(void)
