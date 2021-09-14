@@ -344,9 +344,6 @@ LogicUnit* MY::pLogicUnit(void)
   
   Task* pTask = MY::pTask();
 
-  if (!pTask)
-    return nullptr;
-
   Job* pJob = pTask->pJob_task();
   if (pJob)
     return pJob->pJobLogicUnit();
@@ -391,6 +388,24 @@ Op* MY::pOp(void)
   Op* pOp = pTask->pOp();
   
   return pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current Op logic unit                                                  */
+/*----------------------------------------------------------------------------*/
+LogicUnit* MY::pOpLogicUnit(void)
+{
+  _static_
+
+  Task* pTask = MY::pTask();
+  if (!pTask)
+    return nullptr;
+
+  Op* pOp = pTask->pOp();
+  if (pOp)
+    return pOp->pOpLogicUnit();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

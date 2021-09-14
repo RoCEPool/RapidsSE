@@ -31,28 +31,25 @@ namespace BASE
     i8 m_nRecvs;      // recv() count
     i8 m_nBytesRecv;  // total bytes recv
 
-    i8 m_nRead;       // read() count
+    i8 m_nReads;      // read() count
     i8 m_nBytesRead;  // total bytes read
-    i8 m_nWrite;      // write() count
+    i8 m_nWrites;     // write() count
     i8 m_nBytesWrite; // total bytes write
 
     // memory
     i8 m_nNewRowBuffer;  // new of row buffers
     i8 m_nDelRowBuffer;  // delete of row buffers
     i8 m_nMaxRowBuffer;  // max row buffers
-    i8 m_nAvgRowBuffer;  // avg row buffers
 
     i8 m_nNewCsvBuffer;  // new of csv buffers
     i8 m_nDelCsvBuffer;  // delete of csv buffers
     i8 m_nMaxCsvBuffer;  // max csv buffers
-    i8 m_nAvgCsvBuffer;  // avg csv buffers
 
     i8 m_nAllocs;        // no of allocs
     i8 m_nBytesAlloc;    // bytes allocated
     i8 m_nFrees;         // no of frees
     i8 m_nBytesFree;     // bytes freed
     i8 m_nMaxBytes;      // max bytes allocated
-    i8 m_nAvgBytes;      // avg bytes allocated
 
     // must be last
     Footer m_xFooter;
