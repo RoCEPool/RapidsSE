@@ -13,6 +13,8 @@
 #include "ToRow.hpp"
 #include "RowBuffer.hpp"
 
+#include "PuGen.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -33,31 +35,9 @@ void Step::vPuGenX(void)
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  Stz* szStreamDefNm = pStreamDef->szStreamDefNm();
-
   i8 iNextKey = m_pDataStack->iPopInt(__func__);
 
-  vTrace("vPuGenX: %p ; %s ; %lld\n"_Stz
-         ,pToRow,szStreamDefNm,iNextKey);
-  
-  //  create a new buffer
-  pToRow->vNewRowBuffer();
-  RowBuffer* pRowBuffer = pToRow->pRowBuffer();
-  
-  while (iNextKey && pRowBuffer->pAllotRow()) {
-  
-    i8 iPtnKeyHash = 0;
-    
-    pRowBuffer->vDepositColVal(iNextKey);
-    
-    
-    
-    HshLib::vRunningHash(&iPtnKeyHash,iNextKey);
-    pRowBuffer->vDepositColVal(iPtnKeyHash);
-
-    if (10001 == ++iNextKey)
-      iNextKey = 0;
-  }
+  PuGen::vGen(iNextKey,pToRow,pStreamDef);
   
   m_pDataStack->vPushInt(iNextKey);
   

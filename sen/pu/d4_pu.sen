@@ -15,19 +15,20 @@ Path[].root
 : pu_pipeline params| iTest sStream |
   
   "pipeline pu0"
-    iTest >str                    str.cat
+    iTest >str                            str.cat
     
-  " begin"                        str.cat
+  " begin"                                str.cat
   
-    " stage stageA on origin : "  str.cat
+    " stage stageA on origin : "          str.cat
+    " start "                             str.cat
+    " | pulse once "                      str.cat
+    " | stageB "                          str.cat
+
+    " stage stageB on all partitions : "  str.cat
+    sStream                               str.cat
+    " | stageA"                           str.cat
     
-    " start | pulse once | "      str.cat
-    
-    sStream                       str.cat
-    
-    " | stageA"                   str.cat
-    
-  " end ;"                        str.cat
+  " end ;"                                str.cat
 
   .
   
