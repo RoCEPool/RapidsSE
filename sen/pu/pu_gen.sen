@@ -11,11 +11,6 @@ Path[].root
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
 : +x " x " str.cat ;
-: gen a> 1 + >a ;
-: test_0 a0 10 * >a ;
-: test_00 a0 100 * >a ;
-: test_000 a0 1000 * >a ;
-: tested adiscard ;
 : fx find execute ;
 : _+ "+" swap >> ;
 : __ "_" swap >> >> ;
@@ -113,10 +108,10 @@ Path[].root
 : +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
 
 
-: pst_0_1 "pst_0_1" "post(0.1)" string4[].set ;
-: pst_0_3 "pst_0_3" "post(0.3)" string4[].set ;
-: pst_0_6 "pst_0_6" "post(0.6)" string4[].set ;
-: pst_0_9 "pst_0_9" "post(0.9)" string4[].set ;
+: pst_0_1 "pst_0_1" "p(0.1)" string4[].set ;
+: pst_0_3 "pst_0_3" "p(0.3)" string4[].set ;
+: pst_0_6 "pst_0_6" "p(0.6)" string4[].set ;
+: pst_0_9 "pst_0_9" "p(0.9)" string4[].set ;
 
 : +pst_0_1_Pu10k  " pst(0.1 x j:Pu10k)"  >> ;
 : +pst_0_3_Pu10k  " pst(0.3 x j:Pu10k)"  >> ;
@@ -186,10 +181,10 @@ Path[].root
 : +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
 
 
-: pre_0_1 "pre_0_1" "pre(0.1)" string2[].set ;
-: pre_0_3 "pre_0_3" "pre(0.3)" string2[].set ;
-: pre_0_6 "pre_0_6" "pre(0.6)" string2[].set ;
-: pre_0_9 "pre_0_9" "pre(0.9)" string2[].set ;
+: pre_0_1 "pre_0_1" "f(0.1)" string2[].set ;
+: pre_0_3 "pre_0_3" "f(0.3)" string2[].set ;
+: pre_0_6 "pre_0_6" "f(0.6)" string2[].set ;
+: pre_0_9 "pre_0_9" "f(0.9)" string2[].set ;
 
 : +pre_0_1_Pu10k  " pre(0.1 x t:Pu10k)"  >> ;
 : +pre_0_3_Pu10k  " pre(0.3 x t:Pu10k)"  >> ;
@@ -268,76 +263,71 @@ Path[].root
 /* append aggreg -- scan | filter | join | filter | agg gby Counter5[]        */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
-                                               test_0
+
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1g __ >> fx            g:1    ( ) nl 1 >c5 gen pu_pipeline
+    "+" gby j __ 1g __ >> fx            g:1    ( ) nl 1 >c5 pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 10g __ >> fx           g:10   ( ) nl 2 >c5 gen pu_pipeline
+    "+" gby j __ 10g __ >> fx           g:10   ( ) nl 2 >c5 pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 100g __ >> fx          g:100  ( ) nl 3 >c5 gen pu_pipeline
+    "+" gby j __ 100g __ >> fx          g:100  ( ) nl 3 >c5 pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl 4 >c5 gen pu_pipeline
-                                               tested
+    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl 4 >c5 pu_pipeline
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append post-filter -- scan | filter | join | filter Counter4[]             */
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
-                                               test_0
-  s +filter "+" pst_0_1 t __ >> fx             ( ) nl 1 >c4 gen t j pu_agggby
-  s +filter "+" pst_0_3 t __ >> fx             ( ) nl 2 >c4 gen t j pu_agggby
-  s +filter "+" pst_0_6 t __ >> fx             ( ) nl 3 >c4 gen t j pu_agggby
-  s +filter "+" pst_0_9 t __ >> fx             ( ) nl 4 >c4 gen t j pu_agggby
-                                               tested
+
+  s +filter "+" pst_0_1 t __ >> fx             ( ) nl 1 >c4 t j pu_agggby
+  s +filter "+" pst_0_3 t __ >> fx             ( ) nl 2 >c4 t j pu_agggby
+  s +filter "+" pst_0_6 t __ >> fx             ( ) nl 3 >c4 t j pu_agggby
+  s +filter "+" pst_0_9 t __ >> fx             ( ) nl 4 >c4 t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append join -- scan | filter | join Counter3[]                             */
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
-                                               test_0
+
   s +join +Pu10k
     "+" idx t __ Pu10k  __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl 1 >c3 gen t Pu10k  pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl 1 >c3 t Pu10k  pu_pstFilter
   s +join +Pu100k
     "+" idx t __ Pu100k __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl 2 >c3 gen t Pu100k pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl 2 >c3 t Pu100k pu_pstFilter
   s +join +Pu1m
     "+" idx t __ Pu1m   __ >> fx
-    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl 3 >c3 gen t Pu1m   pu_pstFilter
+    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl 3 >c3 t Pu1m   pu_pstFilter
   s +join +Pu10m
     "+" idx t __ Pu10m  __ >> fx
-    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl 4 >c3 gen t Pu10m  pu_pstFilter
-                                               tested
+    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl 4 >c3 t Pu10m  pu_pstFilter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append pre-filter -- scan | filter Counter2[]                              */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
-                                               test_0
-  s +filter "+" pre_0_1 t __ >> fx             ( ) nl 1 >c2 gen t pu_join
-  s +filter "+" pre_0_3 t __ >> fx             ( ) nl 2 >c2 gen t pu_join
-  s +filter "+" pre_0_6 t __ >> fx             ( ) nl 3 >c2 gen t pu_join
-  s +filter "+" pre_0_9 t __ >> fx             ( ) nl 4 >c2 gen t pu_join
-                                               tested
+  s +filter "+" pre_0_1 t __ >> fx             ( ) nl 1 >c2 t pu_join
+  s +filter "+" pre_0_3 t __ >> fx             ( ) nl 2 >c2 t pu_join
+  s +filter "+" pre_0_6 t __ >> fx             ( ) nl 3 >c2 t pu_join
+  s +filter "+" pre_0_9 t __ >> fx             ( ) nl 4 >c2 t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
 /*  append scan -- scan Counter0[] t Counter1[]                               */
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
-                                               test_0
-  scan +Pu10k                        t:Pu10k   ( ) nl 1 >c1 gen Pu10k  pu_preFilter
-  scan +Pu100k                       t:Pu100k  ( ) nl 2 >c1 gen Pu100k pu_preFilter
-  scan +Pu1m                         t:Pu1m    ( ) nl 3 >c1 gen Pu1m   pu_preFilter
-  scan +Pu10m                        t:Pu10m   ( ) nl 4 >c1 gen Pu10m  pu_preFilter
-                                               tested
+
+  scan +Pu10k                        t:Pu10k   ( ) nl 1 >c1 Pu10k  pu_preFilter
+  scan +Pu100k                       t:Pu100k  ( ) nl 2 >c1 Pu100k pu_preFilter
+  scan +Pu1m                         t:Pu1m    ( ) nl 3 >c1 Pu1m   pu_preFilter
+  scan +Pu10m                        t:Pu10m   ( ) nl 4 >c1 Pu10m  pu_preFilter
 ;
 
 /*----------------------------------------------------------------------------*/
