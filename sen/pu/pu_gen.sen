@@ -11,7 +11,8 @@ Path[].root
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
 : +x " x " str.cat ;
-: fx find execute ;
+: fx( "+" ;
+: )fx >> find execute ;
 : _+ "+" swap >> ;
 : __ "_" swap >> >> ;
 
@@ -108,10 +109,10 @@ Path[].root
 : +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
 
 
-: pst_0_1 "pst_0_1" "p(0.1)" string4[].set ;
-: pst_0_3 "pst_0_3" "p(0.3)" string4[].set ;
-: pst_0_6 "pst_0_6" "p(0.6)" string4[].set ;
-: pst_0_9 "pst_0_9" "p(0.9)" string4[].set ;
+: pst_0_1 "pst_0_1" "fj(0.1)" string4[].set ;
+: pst_0_3 "pst_0_3" "fj(0.3)" string4[].set ;
+: pst_0_6 "pst_0_6" "fj(0.6)" string4[].set ;
+: pst_0_9 "pst_0_9" "fj(0.9)" string4[].set ;
 
 : +pst_0_1_Pu10k  " pst(0.1 x j:Pu10k)"  >> ;
 : +pst_0_3_Pu10k  " pst(0.3 x j:Pu10k)"  >> ;
@@ -181,10 +182,10 @@ Path[].root
 : +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
 
 
-: pre_0_1 "pre_0_1" "f(0.1)" string2[].set ;
-: pre_0_3 "pre_0_3" "f(0.3)" string2[].set ;
-: pre_0_6 "pre_0_6" "f(0.6)" string2[].set ;
-: pre_0_9 "pre_0_9" "f(0.9)" string2[].set ;
+: pre_0_1 "pre_0_1" "ft(0.1)" string2[].set ;
+: pre_0_3 "pre_0_3" "ft(0.3)" string2[].set ;
+: pre_0_6 "pre_0_6" "ft(0.6)" string2[].set ;
+: pre_0_9 "pre_0_9" "ft(0.9)" string2[].set ;
 
 : +pre_0_1_Pu10k  " pre(0.1 x t:Pu10k)"  >> ;
 : +pre_0_3_Pu10k  " pre(0.3 x t:Pu10k)"  >> ;
@@ -220,8 +221,8 @@ Path[].root
 //  string3[] .
 
   "\n"
-  "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
-  " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
+  "// - - - - - - - - - - - - - - - - - - - - - -" >>
+  " - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   "// pu test "     >>
     counterA[] >str >>
@@ -234,8 +235,8 @@ Path[].root
     counter5[] [n] string5[] sp >>
     nl
     
-  "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
-  " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
+  "// - - - - - - - - - - - - - - - - - - - - - -" >>
+  " - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   
   "pipeline pu" >> counterA[] >str      >> nl
@@ -256,7 +257,6 @@ Path[].root
   dup .
   
   File0[] file.writeLine
-  
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -264,19 +264,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
 
-  s +aggreg
-    "+" agg t __ j  __ >> fx
-    "+" gby j __ 1g __ >> fx            g:1    ( ) nl 1 >c5 pu_pipeline
-  s +aggreg
-    "+" agg t __ j  __ >> fx
-    "+" gby j __ 10g __ >> fx           g:10   ( ) nl 2 >c5 pu_pipeline
-  s +aggreg
-    "+" agg t __ j  __ >> fx
-    "+" gby j __ 100g __ >> fx          g:100  ( ) nl 3 >c5 pu_pipeline
-  s +aggreg
-    "+" agg t __ j  __ >> fx
-    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl 4 >c5 pu_pipeline
-
+  s +aggreg fx( agg t __ j     __ )fx
+            fx( gby j __ 1g    __ )fx nl               1 >c5 g:1    pu_pipeline
+  s +aggreg fx( agg t __ j     __ )fx
+            fx( gby j __ 10g   __ )fx nl               2 >c5 g:10   pu_pipeline
+  s +aggreg fx( agg t __ j     __ )fx
+            fx( gby j __ 100g  __ )fx nl               3 >c5 g:100  pu_pipeline
+  s +aggreg fx( agg t __ j     __ )fx
+            fx( gby j __ 1000g __ )fx nl               4 >c5 g:1000 pu_pipeline
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -284,10 +279,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
 
-  s +filter "+" pst_0_1 t __ >> fx             ( ) nl 1 >c4 t j pu_agggby
-  s +filter "+" pst_0_3 t __ >> fx             ( ) nl 2 >c4 t j pu_agggby
-  s +filter "+" pst_0_6 t __ >> fx             ( ) nl 3 >c4 t j pu_agggby
-  s +filter "+" pst_0_9 t __ >> fx             ( ) nl 4 >c4 t j pu_agggby
+  s +filter fx( pst_0_1 t __ )fx nl                         1 >c4 t j pu_agggby
+  s +filter fx( pst_0_3 t __ )fx nl                         2 >c4 t j pu_agggby
+  s +filter fx( pst_0_6 t __ )fx nl                         3 >c4 t j pu_agggby
+  s +filter fx( pst_0_9 t __ )fx nl                         4 >c4 t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -296,27 +291,27 @@ Path[].root
 : pu_join params| t s |
 
   s +join +Pu10k
-    "+" idx t __ Pu10k  __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl 1 >c3 t Pu10k  pu_pstFilter
+    fx( idx t __ Pu10k  __ )fx
+    fx( key t __ Pu10k  __ )fx nl          1 >c3 j:Pu10k  Pu10k  t pu_pstFilter
   s +join +Pu100k
-    "+" idx t __ Pu100k __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl 2 >c3 t Pu100k pu_pstFilter
+    fx( idx t __ Pu100k __ )fx
+    fx( key t __ Pu10k  __ )fx nl          2 >c3 j:Pu100k Pu100k t pu_pstFilter
   s +join +Pu1m
-    "+" idx t __ Pu1m   __ >> fx
-    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl 3 >c3 t Pu1m   pu_pstFilter
+    fx( idx t __ Pu1m   __ )fx
+    fx( key t __ Pu1m   __ )fx nl          3 >c3 j:Pu1m   Pu1m   t pu_pstFilter
   s +join +Pu10m
-    "+" idx t __ Pu10m  __ >> fx
-    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl 4 >c3 t Pu10m  pu_pstFilter
+    fx( idx t __ Pu10m  __ )fx
+    fx( key t __ Pu10m  __ )fx nl          4 >c3 j:Pu10m  Pu10m  t pu_pstFilter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append pre-filter -- scan | filter Counter2[]                              */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
-  s +filter "+" pre_0_1 t __ >> fx             ( ) nl 1 >c2 t pu_join
-  s +filter "+" pre_0_3 t __ >> fx             ( ) nl 2 >c2 t pu_join
-  s +filter "+" pre_0_6 t __ >> fx             ( ) nl 3 >c2 t pu_join
-  s +filter "+" pre_0_9 t __ >> fx             ( ) nl 4 >c2 t pu_join
+  s +filter fx( pre_0_1 t __ )fx nl                             1 >c2 t pu_join
+  s +filter fx( pre_0_3 t __ )fx nl                             2 >c2 t pu_join
+  s +filter fx( pre_0_6 t __ )fx nl                             3 >c2 t pu_join
+  s +filter fx( pre_0_9 t __ )fx nl                             4 >c2 t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -324,10 +319,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
 
-  scan +Pu10k                        t:Pu10k   ( ) nl 1 >c1 Pu10k  pu_preFilter
-  scan +Pu100k                       t:Pu100k  ( ) nl 2 >c1 Pu100k pu_preFilter
-  scan +Pu1m                         t:Pu1m    ( ) nl 3 >c1 Pu1m   pu_preFilter
-  scan +Pu10m                        t:Pu10m   ( ) nl 4 >c1 Pu10m  pu_preFilter
+  scan +Pu10k  nl                            1 >c1 t:Pu10k  Pu10k  pu_preFilter
+  scan +Pu100k nl                            2 >c1 t:Pu100k Pu100k pu_preFilter
+  scan +Pu1m   nl                            3 >c1 t:Pu1m   Pu1m   pu_preFilter
+  scan +Pu10m  nl                            4 >c1 t:Pu10m  Pu10m  pu_preFilter
 ;
 
 /*----------------------------------------------------------------------------*/
