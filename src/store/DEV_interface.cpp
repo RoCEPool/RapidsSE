@@ -596,7 +596,7 @@ void vDev_IXT_IDX_INS(i8** aaiDstk)
   pDevIXT->m_aEnt =
       pDevIXT->m_pIdxTree->aInsertEntry(pEnt);
 
-  P_PushPtr(pDevIXT->m_aEnt);
+  //P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;
 }
 
@@ -2111,6 +2111,8 @@ void vDev_RLU_INDEXDEF_DELETE(i8** aaiDstk)
   IndexDef* pIndexDef = _pIndexDef(P_PopPtr());
   
   delete pIndexDef;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
