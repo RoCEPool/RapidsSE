@@ -1702,7 +1702,23 @@ public:
 
   // register stringA
   void vStringAGet(void);
+  void vString0Get(void);
+  void vString1Get(void);
+  void vString2Get(void);
+  void vString3Get(void);
+  void vString4Get(void);
+  void vString5Get(void);
+  void vString6Get(void);
+  void vString7Get(void);
   void vStringASet(void);
+  void vString0Set(void);
+  void vString1Set(void);
+  void vString2Set(void);
+  void vString3Set(void);
+  void vString4Set(void);
+  void vString5Set(void);
+  void vString6Set(void);
+  void vString7Set(void);
 
   // stream def Left
   void vStreamDefLftAsStr(void);

@@ -238,8 +238,16 @@ namespace STORE
     i8                  m_iCounter1;   // counter
     i8                  m_iCounter2;   // counter
         
-    s256                m_sStringA;    // string
-        
+    s4K                 m_sStringA;    // string
+    s256                m_sString0;    // string
+    s256                m_sString1;    // string
+    s256                m_sString2;    // string
+    s256                m_sString3;    // string
+    s256                m_sString4;    // string
+    s256                m_sString5;    // string
+    s256                m_sString6;    // string
+    s256                m_sString7;    // string
+
     Ent*                m_aLowerEntry;
     Ent*                m_aUpperEntry;
     EntBuffer*          m_pEntBufferOuter;

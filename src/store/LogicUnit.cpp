@@ -188,6 +188,13 @@ LogicUnit::LogicUnit(void)
   m_iCounter2 = 0;
   
   m_sStringA  = ""_Stz;
+  m_sString0  = ""_Stz;
+  m_sString1  = ""_Stz;
+  m_sString2  = ""_Stz;
+  m_sString3  = ""_Stz;
+  m_sString5  = ""_Stz;
+  m_sString6  = ""_Stz;
+  m_sString7  = ""_Stz;
 
   m_xRluCommon.m_iCtr0 = 0;
 

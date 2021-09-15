@@ -10,316 +10,314 @@ Path[].root
 : >> str.cat ;
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
+: gen a> 1 + >a ;
+: test_0 a0 10 * >a ;
+: test_00 a0 100 * >a ;
+: test_000 a0 1000 * >a ;
+: tested adiscard ;
+: fx find execute ;
+: _+ "+" swap >> ;
+: __ "_" swap >> >> ;
 
-: +scan   "      scan" ;
 
-: +Pu10k  " Pu10k"  >> ;
-: +Pu100k " Pu100k" >> ;
-: +Pu1m   " Pu1m"   >> ;
-: +Pu10m  " Pu10m"  >> ;
+: scan    "      scan"           ;
+: +filter "    | filter 1"    >> ;
+: +join   "    | indexJoin 1" >> ;
+: +aggreg "    | aggreg 1"    >> ;
 
-: +indexJoin "    | indexJoin 1" >> ;
+: Pu10k  "Pu10k"  ;
+: Pu100k "Pu100k" ;
+: Pu1m   "Pu1m"   ;
+: Pu10m  "Pu10m"  ;
 
-: +idx " idx"  >> ;
+: +Pu10k  " " >> Pu10k  >> ;
+: +Pu100k " " >> Pu100k >> ;
+: +Pu1m   " " >> Pu1m   >> ;
+: +Pu10m  " " >> Pu10m  >> ;
 
-: +Pu10k_idx  " Pu10k idx"  >> ;
-: +Pu100k_idx " Pu100k idx" >> ;
-: +Pu1m_idx   " Pu1m idx"   >> ;
-: +Pu10m_idx  " Pu10m idx"  >> ;
 
-: +filter  "    | filter 1" >> ;
-  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
+: gby "gby" ;
+: 1g    "1g" ;
+: 10g   "10g" ;
+: 100g  "100g" ;
+: 1000g "1000g" ;
 
-: +pre_0_1 " pre_0_1" >> ;
-: +pre_0_3 " pre_0_3" >> ;
-: +pre_0_6 " pre_0_6" >> ;
-: +pre_0_9 " pre_0_9" >> ;
+: +gby_Pu10k_1g      " gby(j:Pu10k_1g)"     >> ;
+: +gby_Pu10k_10g     " gby(j:Pu10k_10g)"    >> ;
+: +gby_Pu10k_100g    " gby(j:Pu10k_100g)"   >> ;
+: +gby_Pu10k_1000g   " gby(j:Pu10k_1000g)"  >> ;
 
-: +join_key " \"EQUAL $I1 $L1 ==\"" >> ;
+: +gby_Pu100k_1g     " gby(j:Pu100k_1g)"    >> ;
+: +gby_Pu100k_10g    " gby(j:Pu100k_10g)"   >> ;
+: +gby_Pu100k_100g   " gby(j:Pu100k_100g)"  >> ;
+: +gby_Pu100k_1000g  " gby(j:Pu100k_1000g)" >> ;
 
-: +pst_0_1 " pst_0_1" >> ;
-: +pst_0_3 " pst_0_3" >> ;
-: +pst_0_6 " pst_0_6" >> ;
-: +pst_0_9 " pst_0_9" >> ;
+: +gby_Pu1m_1g       " gby(j:Pu1m_1g)"      >> ;
+: +gby_Pu1m_10g      " gby(j:Pu1m_10g)"     >> ;
+: +gby_Pu1m_100g     " gby(j:Pu1m_100g)"    >> ;
+: +gby_Pu1m_1000g    " gby(j:Pu1m_1000g)"   >> ;
 
-: +aggreg "    | aggreg 1" >> ;
+: +gby_Pu10m_1g      " gby(j:Pu10m_1g)"     >> ;
+: +gby_Pu10m_10g     " gby(j:Pu10m_10g)"    >> ;
+: +gby_Pu10m_100g    " gby(j:Pu10m_100g)"   >> ;
+: +gby_Pu10m_1000g   " gby(j:Pu10m_1000g)"  >> ;
 
-: +agg " agg" >> ;
 
-: +gby_1    " gby_1"    >> ;
-: +gby_10   " gby_10"   >> ;
-: +gby_100  " gby_100"  >> ;
-: +gby_1000 " gby_1000" >> ;
+: agg "agg" ;
 
+: +agg_Pu10k_Pu10k   " agg(t:Pu10k,j:Pu10k)"   >> ;
+: +agg_Pu10k_Pu100k  " agg(t:Pu10k,j:Pu100k)"  >> ;
+: +agg_Pu10k_Pu1m    " agg(t:Pu10k,j:Pu1m)"    >> ;
+: +agg_Pu10k_Pu10m   " agg(t:Pu10k,j:Pu10m)"   >> ;
+
+: +agg_Pu100k_Pu10k  " agg(t:Pu100k,j:Pu10k)"  >> ;
+: +agg_Pu100k_Pu100k " agg(t:Pu100k,j:Pu100k)" >> ;
+: +agg_Pu100k_Pu1m   " agg(t:Pu100k,j:Pu1m)"   >> ;
+: +agg_Pu100k_Pu10m  " agg(t:Pu100k,j:Pu10m)"  >> ;
+
+: +agg_Pu1m_Pu10k    " agg(t:Pu1m,j:Pu10k)"    >> ;
+: +agg_Pu1m_Pu100k   " agg(t:Pu1m,j:Pu100k)"   >> ;
+: +agg_Pu1m_Pu1m     " agg(t:Pu1m,j:Pu1m)"     >> ;
+: +agg_Pu1m_Pu10m    " agg(t:Pu1m,j:Pu10m)"    >> ;
+
+: +agg_Pu10m_Pu10k   " agg(t:Pu10,j:Pu10k)"    >> ;
+: +agg_Pu10m_Pu100k  " agg(t:Pu10,j:Pu100k)"   >> ;
+: +agg_Pu10m_Pu1m    " agg(t:Pu10,j:Pu1m)"     >> ;
+: +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
+
+
+: pst_0_1 "pst_0_1" ;
+: pst_0_3 "pst_0_3" ;
+: pst_0_6 "pst_0_6" ;
+: pst_0_9 "pst_0_9" ;
+
+: +pst_0_1_Pu10k  " pst(0.1 x j:Pu10k)"  >> ;
+: +pst_0_3_Pu10k  " pst(0.3 x j:Pu10k)"  >> ;
+: +pst_0_6_Pu10k  " pst(0.6 x j:Pu10k)"  >> ;
+: +pst_0_9_Pu10k  " pst(0.9 x j:Pu10k)"  >> ;
+
+: +pst_0_1_Pu100k " pst(0.1 x j:Pu100k)" >> ;
+: +pst_0_3_Pu100k " pst(0.3 x j:Pu100k)" >> ;
+: +pst_0_6_Pu100k " pst(0.6 x j:Pu100k)" >> ;
+: +pst_0_9_Pu100k " pst(0.9 x j:Pu100k)" >> ;
+
+: +pst_0_1_Pu1m   " pst(0.1 x j:Pu1m)"   >> ;
+: +pst_0_3_Pu1m   " pst(0.3 x j:Pu1m)"   >> ;
+: +pst_0_6_Pu1m   " pst(0.6 x j:Pu1m)"   >> ;
+: +pst_0_9_Pu1m   " pst(0.9 x j:Pu1m)"   >> ;
+
+: +pst_0_1_Pu10m  " pst(0.1 x j:Pu10m)"  >> ;
+: +pst_0_3_Pu10m  " pst(0.3 x j:Pu10m)"  >> ;
+: +pst_0_6_Pu10m  " pst(0.6 x j:Pu10m)"  >> ;
+: +pst_0_9_Pu10m  " pst(0.9 x j:Pu10m)"  >> ;
+
+
+: key "key" ;
+
+: +key_Pu10k_Pu10k   " key(t:Pu10k=j:Pu10k)"   >> ;
+: +key_Pu10k_Pu100k  " key(t:Pu10k=j:Pu100k)"  >> ;
+: +key_Pu10k_Pu1m    " key(t:Pu10k=j:Pu1m)"    >> ;
+: +key_Pu10k_Pu10m   " key(t:Pu10k=j:Pu10m)"   >> ;
+
+: +key_Pu100k_Pu10k  " key(t:Pu100k=j:Pu10k)"  >> ;
+: +key_Pu100k_Pu100k " key(t:Pu100k=j:Pu100k)" >> ;
+: +key_Pu100k_Pu1m   " key(t:Pu100k=j:Pu1m)"   >> ;
+: +key_Pu100k_Pu10m  " key(t:Pu100k=j:Pu10m)"  >> ;
+
+: +key_Pu1m_Pu10k    " key(t:Pu1m=j:Pu10k)"    >> ;
+: +key_Pu1m_Pu100k   " key(t:Pu1m=j:Pu100k)"   >> ;
+: +key_Pu1m_Pu1m     " key(t:Pu1m=j:Pu1m)"     >> ;
+: +key_Pu1m_Pu10m    " key(t:Pu1m=j:Pu10m)"    >> ;
+
+: +key_Pu10m_Pu10k   " key(t:Pu10=j:Pu10k)"    >> ;
+: +key_Pu10m_Pu100k  " key(t:Pu10=j:Pu100k)"   >> ;
+: +key_Pu10m_Pu1m    " key(t:Pu10=j:Pu1m)"     >> ;
+: +key_Pu10m_Pu10m   " key(t:Pu10=j:Pu10m)"    >> ;
+//key example: " \"EQUAL $I1 $L1 ==\"" >> ;
+
+
+: idx "idx" ;
+
+: +idx_Pu10k_Pu10k   " idx(t:Pu10k->j:Pu10k)"   >> ;
+: +idx_Pu10k_Pu100k  " idx(t:Pu10k->j:Pu100k)"  >> ;
+: +idx_Pu10k_Pu1m    " idx(t:Pu10k->j:Pu1m)"    >> ;
+: +idx_Pu10k_Pu10m   " idx(t:Pu10k->j:Pu10m)"   >> ;
+
+: +idx_Pu100k_Pu10k  " idx(t:Pu100k->j:Pu10k)"  >> ;
+: +idx_Pu100k_Pu100k " idx(t:Pu100k->j:Pu100k)" >> ;
+: +idx_Pu100k_Pu1m   " idx(t:Pu100k->j:Pu1m)"   >> ;
+: +idx_Pu100k_Pu10m  " idx(t:Pu100k->j:Pu10m)"  >> ;
+
+: +idx_Pu1m_Pu10k    " idx(t:Pu1m->j:Pu10k)"    >> ;
+: +idx_Pu1m_Pu100k   " idx(t:Pu1m->j:Pu100k)"   >> ;
+: +idx_Pu1m_Pu1m     " idx(t:Pu1m->j:Pu1m)"     >> ;
+: +idx_Pu1m_Pu10m    " idx(t:Pu1m->j:Pu10m)"    >> ;
+
+: +idx_Pu10m_Pu10k   " idx(t:Pu10m->j:Pu10k)"   >> ;
+: +idx_Pu10m_Pu100k  " idx(t:Pu10m->j:Pu100k)"  >> ;
+: +idx_Pu10m_Pu1m    " idx(t:Pu10m->j:Pu1m)"    >> ;
+: +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
+
+
+: pre_0_1 "pre_0_1" ;
+: pre_0_3 "pre_0_3" ;
+: pre_0_6 "pre_0_6" ;
+: pre_0_9 "pre_0_9" ;
+
+: +pre_0_1_Pu10k  " pre(0.1 x t:Pu10k)"  >> ;
+: +pre_0_3_Pu10k  " pre(0.3 x t:Pu10k)"  >> ;
+: +pre_0_6_Pu10k  " pre(0.6 x t:Pu10k)"  >> ;
+: +pre_0_9_Pu10k  " pre(0.9 x t:Pu10k)"  >> ;
+
+: +pre_0_1_Pu100k " pre(0.1 x t:Pu100k)" >> ;
+: +pre_0_3_Pu100k " pre(0.3 x t:Pu100k)" >> ;
+: +pre_0_6_Pu100k " pre(0.6 x t:Pu100k)" >> ;
+: +pre_0_9_Pu100k " pre(0.9 x t:Pu100k)" >> ;
+
+: +pre_0_1_Pu1m   " pre(0.1 x t:Pu1m)"   >> ;
+: +pre_0_3_Pu1m   " pre(0.3 x t:Pu1m)"   >> ;
+: +pre_0_6_Pu1m   " pre(0.6 x t:Pu1m)"   >> ;
+: +pre_0_9_Pu1m   " pre(0.9 x t:Pu1m)"   >> ;
+
+: +pre_0_1_Pu10m  " pre(0.1 x t:Pu10m)"  >> ;
+: +pre_0_3_Pu10m  " pre(0.3 x t:Pu10m)"  >> ;
+: +pre_0_6_Pu10m  " pre(0.6 x t:Pu10m)"  >> ;
+: +pre_0_9_Pu10m  " pre(0.9 x t:Pu10m)"  >> ;
+
+//expr example: type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
 
 /*----------------------------------------------------------------------------*/
-/* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
+/* form full pipeline statement                                               */
 /*----------------------------------------------------------------------------*/
-: pu_pipeline params| iTest sStream |
+: pu_pipeline params| sStreamB |
   
-  "pipeline pu0" iTest >str            >> nl
-  "begin"                              >> nl
-  "  stage stageA on origin :"         >> nl
-  "      start"                        >> nl
-  "    | pulse once"                   >> nl
-  "    | stageB"                       >> nl
-  "  stage stageB on all partitions :" >> nl
-         sStream                       >>
-  "    | stageC"                       >> nl
-  "  stage stageC on origin :"         >> nl
-  "      sink"                         >> nl
-  "    | stageA"                       >> nl
-  " end ;"                             >> nl
+   counter0[] 1 + to counter0[]
 
-  .
-  
-  counter0[] 1 + to counter0[]
-;
+  "// - - - - - - - - - - - - - - - - "    nl
+  "// pu test " counter0[] >str >>      >> nl
+  "// - - - - - - - - - - - - - - - - " >> nl
 
-/*----------------------------------------------------------------------------*/
-/* scan | filter | join | filter | agggby                                     */
-/*----------------------------------------------------------------------------*/
-: pu_agggby params| iTest sStream |
-
-  iTest 100 * to iTest
+  "pipeline pu0" >> a0 >str             >> nl
+  "begin"                               >> nl
+  "  stage stageA on origin :"          >> nl
+  "      start"                         >> nl
+  "    | pulse once"                    >> nl
+  "    | stageB"                        >> nl
+  "  stage stageB on all partitions :"  >> nl
+         sStreamB                       >>
+  "    | stageC"                        >> nl
+  "  stage stageC on origin :"          >> nl
+  "      sink"                          >> nl
+  "    | stageA"                        >> nl
+  "end ;"                               >> nl
+  " "                                   >> nl
     
-  iTest 1 + to iTest sStream +aggreg +agg +gby_1  nl   iTest pu_pipeline
-  iTest 1 + to iTest sStream +aggreg +agg +gby_10 nl   iTest pu_pipeline
-  iTest 1 + to iTest sStream +aggreg +agg +gby_100 nl  iTest pu_pipeline
-  iTest 1 + to iTest sStream +aggreg +agg +gby_1000 nl iTest pu_pipeline
+  dup .
+  
+  File0[] file.writeLine
+  
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter | join | filter                                              */
+/* append aggreg -- scan | filter | join | filter | aggreg                    */
 /*----------------------------------------------------------------------------*/
-: pu_postFilter params| iTest sStream |
-
-  iTest 100 * to iTest
-  
-  iTest 1 + to iTest sStream +filter +pst_0_1 nl  iTest pu_agggby
-  iTest 1 + to iTest sStream +filter +pst_0_3 nl  iTest pu_agggby
-  iTest 1 + to iTest sStream +filter +pst_0_6 nl  iTest pu_agggby
-  iTest 1 + to iTest sStream +filter +pst_0_9 nl  iTest pu_agggby
+: pu_agggby params| j t s |
+                                               test_0
+  s +aggreg
+    "+" agg t __ j  __ >> fx
+    "+" gby j __ 1g __ >> fx                   ( ) nl gen pu_pipeline
+  s +aggreg
+    "+" agg t __ j  __ >> fx
+    "+" gby j __ 10g __ >> fx                  ( ) nl gen pu_pipeline
+  s +aggreg
+    "+" agg t __ j  __ >> fx
+    "+" gby j __ 100g __ >> fx                 ( ) nl gen pu_pipeline
+  s +aggreg
+    "+" agg t __ j  __ >> fx
+    "+" gby j __ 1000g __ >> fx                ( ) nl gen pu_pipeline
+                                               tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter | join                                                       */
+/* append post-filter -- scan | filter | join | filter                        */
 /*----------------------------------------------------------------------------*/
-: pu_join params| iTest sStream |
-
-  iTest 100 * to iTest
-  
-  iTest 1 + to iTest sStream +indexJoin +Pu10k  +idx +join_key nl iTest pu_postFilter
-  iTest 1 + to iTest sStream +indexJoin +Pu100k +idx +join_key nl iTest pu_postFilter
-  iTest 1 + to iTest sStream +indexJoin +Pu1m   +idx +join_key nl iTest pu_postFilter
-  iTest 1 + to iTest sStream +indexJoin +Pu10m  +idx +join_key nl iTest pu_postFilter
+: pu_pstFilter params| j t s |
+                                               test_0
+  s +filter "+" pst_0_1 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_3 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_6 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_9 t __ >> fx             ( ) nl gen t j pu_agggby
+                                               tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter                                                              */
+/* append join -- scan | filter | join                                        */
 /*----------------------------------------------------------------------------*/
-: pu_preFilter params| iTest sStream |
-
-  iTest 100 * to iTest
-  
-  iTest 1 + to iTest sStream +filter +pre_0_1 nl   iTest pu_join
-  iTest 1 + to iTest sStream +filter +pre_0_3 nl   iTest pu_join
-  iTest 1 + to iTest sStream +filter +pre_0_6 nl   iTest pu_join
-  iTest 1 + to iTest sStream +filter +pre_0_9 nl   iTest pu_join
+: pu_join params| t s |
+                                               test_0
+  s +join +Pu10k
+    "+" idx t __ Pu10k  __ >> fx
+    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu10k  pu_pstFilter
+  s +join +Pu100k
+    "+" idx t __ Pu100k __ >> fx
+    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu100k pu_pstFilter
+  s +join +Pu1m
+    "+" idx t __ Pu1m   __ >> fx
+    "+" key t __ Pu1m   __ >> fx               ( ) nl gen t Pu1m   pu_pstFilter
+  s +join +Pu10m
+    "+" idx t __ Pu10m  __ >> fx
+    "+" key t __ Pu10m  __ >> fx               ( ) nl gen t Pu10m  pu_pstFilter
+                                               tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  scan                                                                      */
+/* append pre-filter -- scan | filter                                         */
 /*----------------------------------------------------------------------------*/
-: pu_scan params| iTest sStream |
-  
-  iTest 1000 * to iTest
-  
-  iTest 1 + to iTest sStream +scan +Pu10k  nl    iTest pu_preFilter
-  iTest 1 + to iTest sStream +scan +Pu100k nl    iTest pu_preFilter
-  iTest 1 + to iTest sStream +scan +Pu1m   nl    iTest pu_preFilter
-  iTest 1 + to iTest sStream +scan +Pu10m  nl    iTest pu_preFilter
+: pu_preFilter params| t s |
+                                               test_0
+  s +filter "+" pre_0_1 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_3 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_6 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_9 t __ >> fx             ( ) nl gen t pu_join
+                                               tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* range interval                                                             */
+/*  append scan -- scan                                                       */
 /*----------------------------------------------------------------------------*/
-: pu_interval params| iTest sStream |
-  
-  iTest 100 * to iTest
-  
-  // - - - - - - - - - - - -
-  // interval 0.001
-  
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.001" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.003
-  
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.003" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.006
-  
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.006" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.009
-  
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.009" str.cat
-    iTest pu_preFilter
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - - - - - - - - - - - -
-  // interval 0.01
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.01" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.03
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.03" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.06
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.06" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.09
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.09" str.cat
-    iTest pu_preFilter
-    
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - - - - - - - - - - - -
-  // interval 0.1
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.1" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.3
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.3" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.6
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.6" str.cat
-    iTest pu_preFilter
-
-  // - - - - - - - - - - - -
-  // interval 0.9
-
-  iTest 1 + to iTest
-    sStream
-      " // interval 0.9" str.cat
-    iTest pu_preFilter
+: pu_scan
+                                               test_0
+  scan +Pu10k                                  ( ) nl gen Pu10k  pu_preFilter
+  scan +Pu100k                                 ( ) nl gen Pu100k pu_preFilter
+  scan +Pu1m                                   ( ) nl gen Pu1m   pu_preFilter
+  scan +Pu10m                                  ( ) nl gen Pu10m  pu_preFilter
+                                               tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  indexScan                                                                 */
 /*----------------------------------------------------------------------------*/
-: pu_indexScan params| iTest sStream |
-  
-  iTest 100 * to iTest
-  
-  // - - - - - - - - - - - -
-  // indexScan Pu10k
-  
-  iTest 1 + to iTest
-    sStream
-      "indexScan 1 Pu10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
-      iTest pu_interval
-
-  // - - - - - - - - - - - -
-  // indexScan Pu100k
-  
-  iTest 1 + to iTest
-    sStream
-      "indexScan 1 Pu100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
-    iTest pu_interval
-
-  // - - - - - - - - - - - -
-  // indexScan Pu1m
-  
-  iTest 1 + to iTest
-    sStream
-      "indexScan 1 Pu1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
-    iTest pu_interval
-
-  // - - - - - - - - - - - -
-  // indexScan Pu10m
-  
-  iTest 1 + to iTest
-    sStream
-      "indexScan 1 Pu10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
-    iTest pu_interval
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: pu_begin
-
-  "" 1 pu_scan
-  
-  // "" 2 pu_indexScan
-
-  counter0[] .
-;
 
 /*----------------------------------------------------------------------------*/
 /* generate pu tests                                                          */
 /*----------------------------------------------------------------------------*/
 : pu_gen \prompt
 
-  pu_begin
+  file::new to file0[]
+  
+  "/tmp/_pu_run" OPEN_WRITE file0[] file.open
+  
+  1 >a pu_scan adiscard
+  
+  // "" 2 pu_indexScan
+
+  file0[].get file.close
+  
+  counter0[] "pu_gen: %v pipelines generated\n" .printf
 ;
-
-/*----------------------------------------------------------------------------*/
-/* run pu tests                                                               */
-/*----------------------------------------------------------------------------*/
-: pu_run \prompt
-
-;
-
-Path[].Restore
 
 pu_gen
+
+Path[].Restore
 
 /*============================================================================*/
 /* end                                                                        */
