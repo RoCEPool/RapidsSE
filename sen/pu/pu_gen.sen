@@ -48,6 +48,15 @@ Path[].root
 : g:100    "g(100)"    string5[].set ;
 : g:1000   "g(1000)"   string5[].set ;
 
+: >c0 to Counter0[] ;
+: >c1 to Counter1[] ;
+: >c2 to Counter2[] ;
+: >c3 to Counter3[] ;
+: >c4 to Counter4[] ;
+: >c5 to Counter5[] ;
+: >c6 to Counter6[] ;
+: >c7 to Counter7[] ;
+
 : +Pu10k  " " >> Pu10k  >> ;
 : +Pu100k " " >> Pu100k >> ;
 : +Pu1m   " " >> Pu1m   >> ;
@@ -209,7 +218,7 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_pipeline params| sStreamB |
   
-   counter0[] 1 + to counter0[]
+   counterA[] 1 + to counterA[]
 
 //  string0[] .
 //  string1[] .
@@ -219,22 +228,22 @@ Path[].root
   "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
   " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
-  "// pu test "           >>
-    counter0[] >str       >>
-    " : "                 >>
-    0 [n] string0[] +x    >>
-    0 [n] string1[] +x    >>
-    0 [n] string2[] +x    >>
-    0 [n] string3[] +x    >>
-    0 [n] string4[] +x    >>
-    0 [n] string5[] sp    >>
+  "// pu test "     >>
+    counterA[] >str >>
+    " : "           >>
+    counter0[] [n] string0[] +x >>
+    counter1[] [n] string1[] +x >>
+    counter2[] [n] string2[] +x >>
+    counter3[] [n] string3[] +x >>
+    counter4[] [n] string4[] +x >>
+    counter5[] [n] string5[] sp >>
     nl
     
   "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
   " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   
-  "pipeline pu0" >> a0 >str             >> nl
+  "pipeline pu" >> counterA[] >str      >> nl
   "begin"                               >> nl
   "  stage stageA on origin :"          >> nl
   "      start"                         >> nl
@@ -256,78 +265,78 @@ Path[].root
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append aggreg -- scan | filter | join | filter | aggreg                    */
+/* append aggreg -- scan | filter | join | filter | agg gby Counter5[]        */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
                                                test_0
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1g __ >> fx            g:1    ( ) nl gen pu_pipeline
+    "+" gby j __ 1g __ >> fx            g:1    ( ) nl 1 >c5 gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 10g __ >> fx           g:10   ( ) nl gen pu_pipeline
+    "+" gby j __ 10g __ >> fx           g:10   ( ) nl 2 >c5 gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 100g __ >> fx          g:100  ( ) nl gen pu_pipeline
+    "+" gby j __ 100g __ >> fx          g:100  ( ) nl 3 >c5 gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl gen pu_pipeline
+    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl 4 >c5 gen pu_pipeline
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append post-filter -- scan | filter | join | filter                        */
+/* append post-filter -- scan | filter | join | filter Counter4[]             */
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
                                                test_0
-  s +filter "+" pst_0_1 t __ >> fx             ( ) nl gen t j pu_agggby
-  s +filter "+" pst_0_3 t __ >> fx             ( ) nl gen t j pu_agggby
-  s +filter "+" pst_0_6 t __ >> fx             ( ) nl gen t j pu_agggby
-  s +filter "+" pst_0_9 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_1 t __ >> fx             ( ) nl 1 >c4 gen t j pu_agggby
+  s +filter "+" pst_0_3 t __ >> fx             ( ) nl 2 >c4 gen t j pu_agggby
+  s +filter "+" pst_0_6 t __ >> fx             ( ) nl 3 >c4 gen t j pu_agggby
+  s +filter "+" pst_0_9 t __ >> fx             ( ) nl 4 >c4 gen t j pu_agggby
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append join -- scan | filter | join                                        */
+/* append join -- scan | filter | join Counter3[]                             */
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
                                                test_0
   s +join +Pu10k
     "+" idx t __ Pu10k  __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl gen t Pu10k  pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl 1 >c3 gen t Pu10k  pu_pstFilter
   s +join +Pu100k
     "+" idx t __ Pu100k __ >> fx
-    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl gen t Pu100k pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl 2 >c3 gen t Pu100k pu_pstFilter
   s +join +Pu1m
     "+" idx t __ Pu1m   __ >> fx
-    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl gen t Pu1m   pu_pstFilter
+    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl 3 >c3 gen t Pu1m   pu_pstFilter
   s +join +Pu10m
     "+" idx t __ Pu10m  __ >> fx
-    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl gen t Pu10m  pu_pstFilter
+    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl 4 >c3 gen t Pu10m  pu_pstFilter
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append pre-filter -- scan | filter                                         */
+/* append pre-filter -- scan | filter Counter2[]                              */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
                                                test_0
-  s +filter "+" pre_0_1 t __ >> fx             ( ) nl gen t pu_join
-  s +filter "+" pre_0_3 t __ >> fx             ( ) nl gen t pu_join
-  s +filter "+" pre_0_6 t __ >> fx             ( ) nl gen t pu_join
-  s +filter "+" pre_0_9 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_1 t __ >> fx             ( ) nl 1 >c2 gen t pu_join
+  s +filter "+" pre_0_3 t __ >> fx             ( ) nl 2 >c2 gen t pu_join
+  s +filter "+" pre_0_6 t __ >> fx             ( ) nl 3 >c2 gen t pu_join
+  s +filter "+" pre_0_9 t __ >> fx             ( ) nl 4 >c2 gen t pu_join
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  append scan -- scan                                                       */
+/*  append scan -- scan Counter0[] t Counter1[]                               */
 /*----------------------------------------------------------------------------*/
-: pu_scan "scan" string0[].set
+: pu_scan "scan" string0[].set 1 >c0
                                                test_0
-  scan +Pu10k                        t:Pu10k   ( ) nl gen Pu10k  pu_preFilter
-  scan +Pu100k                       t:Pu100k  ( ) nl gen Pu100k pu_preFilter
-  scan +Pu1m                         t:Pu1m    ( ) nl gen Pu1m   pu_preFilter
-  scan +Pu10m                        t:Pu10m   ( ) nl gen Pu10m  pu_preFilter
+  scan +Pu10k                        t:Pu10k   ( ) nl 1 >c1 gen Pu10k  pu_preFilter
+  scan +Pu100k                       t:Pu100k  ( ) nl 2 >c1 gen Pu100k pu_preFilter
+  scan +Pu1m                         t:Pu1m    ( ) nl 3 >c1 gen Pu1m   pu_preFilter
+  scan +Pu10m                        t:Pu10m   ( ) nl 4 >c1 gen Pu10m  pu_preFilter
                                                tested
 ;
 
@@ -349,7 +358,7 @@ Path[].root
 
   file0[].get file.close
   
-  counter0[] "pu_gen: %v pipelines generated\n" .printf
+  counterA[] "pu_gen: %v pipelines generated\n" .printf
 ;
 
 pu_gen
