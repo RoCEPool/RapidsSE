@@ -56,7 +56,7 @@ Path[].root
 : test_000  a0 1000 * >a ;
 : tested    adiscard ;
 
-: ncat 1 - dup >r 0 do >a loop   r> 0 do a> str.cat loop ;
+: catStrN 1 - dup >r 0 do >a loop   r> 0 do a> str.cat loop ;
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
@@ -167,7 +167,7 @@ Path[].root
   // "" 2 pu_indexScan
 
 
-  "a" "b" "c" 3 ncat .
+  "a" "b" "c" 3 catStrN .
   
   
   counter0[] .
