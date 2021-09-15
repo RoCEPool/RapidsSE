@@ -59,8 +59,6 @@ Path[].root
 : +pre_0_6_Pu10m  " pre_0_6_Pu10m"  >> ;
 : +pre_0_9_Pu10m  " pre_0_9_Pu10m"  >> ;
 
-: +idx " idx"  >> ;
-
 : idx "idx" ;
 
 : +idx_Pu10k_Pu10k   " idx_Pu10k_Pu10k"   >> ;
@@ -85,6 +83,27 @@ Path[].root
 
 : +key " \"EQUAL $I1 $L1 ==\"" >> ;
 
+: key "key" ;
+
+: +key_Pu10k_Pu10k   " key_Pu10k_Pu10k"   >> ;
+: +key_Pu10k_Pu100k  " key_Pu10k_Pu100k"  >> ;
+: +key_Pu10k_Pu1m    " key_Pu10k_Pu1m"    >> ;
+: +key_Pu10k_Pu10m   " key_Pu10k_Pu10m"   >> ;
+
+: +key_Pu100k_Pu10k  " key_Pu100k_Pu10k"  >> ;
+: +key_Pu100k_Pu100k " key_Pu100k_Pu100k" >> ;
+: +key_Pu100k_Pu1m   " key_Pu100k_Pu1m"   >> ;
+: +key_Pu100k_Pu10m  " key_Pu100k_Pu10m"  >> ;
+
+: +key_Pu1m_Pu10k    " key_Pu1m_Pu10k"    >> ;
+: +key_Pu1m_Pu100k   " key_Pu1m_Pu100k"   >> ;
+: +key_Pu1m_Pu1m     " key_Pu1m_Pu1m"     >> ;
+: +key_Pu1m_Pu10m    " key_Pu1m_Pu10m"    >> ;
+
+: +key_Pu10m_Pu10k   " key_Pu10m_Pu10k"   >> ;
+: +key_Pu10m_Pu100k  " key_Pu10m_Pu100k"  >> ;
+: +key_Pu10m_Pu1m    " key_Pu10m_Pu1m"    >> ;
+: +key_Pu10m_Pu10m   " key_Pu10m_Pu10m"   >> ;
 
 : pst_0_1 "pst_0_1" ;
 : pst_0_3 "pst_0_3" ;
@@ -119,6 +138,9 @@ Path[].root
 : +gby_10   " gby_10"   >> ;
 : +gby_100  " gby_100"  >> ;
 : +gby_1000 " gby_1000" >> ;
+
+
+
 
 : gen      a> 1 + >a ;
 : test_00   a0 100 * >a ;
@@ -161,10 +183,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
                                                test_00
-  s +aggreg +agg +gby_1    nl                  ( ) gen pu_pipeline
-  s +aggreg +agg +gby_10   nl                  ( ) gen pu_pipeline
-  s +aggreg +agg +gby_100  nl                  ( ) gen pu_pipeline
-  s +aggreg +agg +gby_1000 nl                  ( ) gen pu_pipeline
+  s +aggreg +agg +gby_1                        ( ) nl gen pu_pipeline
+  s +aggreg +agg +gby_10                       ( ) nl gen pu_pipeline
+  s +aggreg +agg +gby_100                      ( ) nl gen pu_pipeline
+  s +aggreg +agg +gby_1000                     ( ) nl gen pu_pipeline
                                                tested
 ;
 
@@ -173,10 +195,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
                                                test_00
-  s +filter "+" pst_0_1 t __ >> fx nl          ( ) gen t j pu_agggby
-  s +filter "+" pst_0_3 t __ >> fx nl          ( ) gen t j pu_agggby
-  s +filter "+" pst_0_6 t __ >> fx nl          ( ) gen t j pu_agggby
-  s +filter "+" pst_0_9 t __ >> fx nl          ( ) gen t j pu_agggby
+  s +filter "+" pst_0_1 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_3 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_6 t __ >> fx             ( ) nl gen t j pu_agggby
+  s +filter "+" pst_0_9 t __ >> fx             ( ) nl gen t j pu_agggby
                                                tested
 ;
 
@@ -187,16 +209,16 @@ Path[].root
                                                test_00
   s +join +Pu10k
     "+" idx t __ Pu10k  __ >> fx
-    +key nl                                    ( ) gen t Pu10k  pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu10k  pu_pstFilter
   s +join +Pu100k
     "+" idx t __ Pu100k __ >> fx
-    +key nl                                    ( ) gen t Pu100k pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu100k pu_pstFilter
   s +join +Pu1m
     "+" idx t __ Pu1m   __ >> fx
-    +key nl                                    ( ) gen t Pu1m   pu_pstFilter
+    "+" key t __ Pu1m   __ >> fx               ( ) nl gen t Pu1m   pu_pstFilter
   s +join +Pu10m
-    "+" idx t __ Pu10m  __ >>
-    fx +key nl                                 ( ) gen t Pu10m  pu_pstFilter
+    "+" idx t __ Pu10m  __ >> fx
+    "+" key t __ Pu10m  __ >> fx               ( ) nl gen t Pu10m  pu_pstFilter
                                                tested
 ;
 
@@ -205,10 +227,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
                                                test_00
-  s +filter "+" pre_0_1 t __ >> fx nl          ( ) gen t pu_join
-  s +filter "+" pre_0_3 t __ >> fx nl          ( ) gen t pu_join
-  s +filter "+" pre_0_6 t __ >> fx nl          ( ) gen t pu_join
-  s +filter "+" pre_0_9 t __ >> fx nl          ( ) gen t pu_join
+  s +filter "+" pre_0_1 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_3 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_6 t __ >> fx             ( ) nl gen t pu_join
+  s +filter "+" pre_0_9 t __ >> fx             ( ) nl gen t pu_join
                                                tested
 ;
 
@@ -217,10 +239,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_scan params| s |
                                                test_000
-  s +scan +Pu10k  nl                           ( ) gen Pu10k  pu_preFilter
-  s +scan +Pu100k nl                           ( ) gen Pu100k pu_preFilter
-  s +scan +Pu1m   nl                           ( ) gen Pu1m   pu_preFilter
-  s +scan +Pu10m  nl                           ( ) gen Pu10m  pu_preFilter
+  s +scan +Pu10k                               ( ) nl gen Pu10k  pu_preFilter
+  s +scan +Pu100k                              ( ) nl gen Pu100k pu_preFilter
+  s +scan +Pu1m                                ( ) nl gen Pu1m   pu_preFilter
+  s +scan +Pu10m                               ( ) nl gen Pu10m  pu_preFilter
                                                tested
 ;
 
