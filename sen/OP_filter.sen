@@ -47,6 +47,8 @@
 
   PotRlu[].pipeoutCompletedPtns
 
+  CrwBuffer[].delete
+
   true
 ;
 
@@ -78,9 +80,9 @@
   RowBuffer[] DevLftRow.rowBuffer!
   ZK_D_ROWBUFFER Counter0[] executeAsmArgs
 
-  RowBuffer[].delete
-
   PotRlu[].pipeoutCompletedPtns
+
+  RowBuffer[].delete
 
   true
 ;

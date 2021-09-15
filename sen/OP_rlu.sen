@@ -126,7 +126,7 @@
     exit
   then
 
-  // evaluate the project expression
+  // evaluate the filter expression
   Filter[].new
   <filter> StreamDefLft[] nullptr Filter[].evaluate to eError
 
