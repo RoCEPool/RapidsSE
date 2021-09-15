@@ -35,58 +35,57 @@ Path[].root
 : +filter  "    | filter 1" >> ;
   // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
 
-: +pre_0_1 " pre_0_1" >> ;
-: +pre_0_3 " pre_0_3" >> ;
-: +pre_0_6 " pre_0_6" >> ;
-: +pre_0_9 " pre_0_9" >> ;
+: pre_0_1 "pre_0_1" ;
+: pre_0_3 "pre_0_3" ;
+: pre_0_6 "pre_0_6" ;
+: pre_0_9 "pre_0_9" ;
 
-: +pre_0_1+10k  " pre_0_1+10k"  >> ;
-: +pre_0_3+10k  " pre_0_3+10k"  >> ;
-: +pre_0_6+10k  " pre_0_6+10k"  >> ;
-: +pre_0_9+10k  " pre_0_9+10k"  >> ;
+: +pre_0_1_Pu10k  " pre_0_1_Pu10k"  >> ;
+: +pre_0_3_Pu10k  " pre_0_3_Pu10k"  >> ;
+: +pre_0_6_Pu10k  " pre_0_6_Pu10k"  >> ;
+: +pre_0_9_Pu10k  " pre_0_9_Pu10k"  >> ;
 
-: +pre_0_1+100k " pre_0_1+100k" >> ;
-: +pre_0_3+100k " pre_0_3+100k" >> ;
-: +pre_0_6+100k " pre_0_6+100k" >> ;
-: +pre_0_9+100k " pre_0_9+100k" >> ;
+: +pre_0_1_Pu100k " pre_0_1_Pu100k" >> ;
+: +pre_0_3_Pu100k " pre_0_3_Pu100k" >> ;
+: +pre_0_6_Pu100k " pre_0_6_Pu100k" >> ;
+: +pre_0_9_Pu100k " pre_0_9_Pu100k" >> ;
 
-: +pre_0_1+1m   " pre_0_1+1m"   >> ;
-: +pre_0_3+1m   " pre_0_3+1m"   >> ;
-: +pre_0_6+1m   " pre_0_6+1m"   >> ;
-: +pre_0_9+1m   " pre_0_9+1m"   >> ;
+: +pre_0_1_Pu1m   " pre_0_1_Pu1m"   >> ;
+: +pre_0_3_Pu1m   " pre_0_3_Pu1m"   >> ;
+: +pre_0_6_Pu1m   " pre_0_6_Pu1m"   >> ;
+: +pre_0_9_Pu1m   " pre_0_9_Pu1m"   >> ;
 
-: +pre_1+10m    " pre_1+10m"    >> ;
-: +pre_3+10m    " pre_3+10m"    >> ;
-: +pre_6+10m    " pre_6+10m"    >> ;
-: +pre_9+10m    " pre_9+10m"    >> ;
+: +pre_0_1_Pu10m  " pre_0_1_Pu10m"  >> ;
+: +pre_0_3_Pu10m  " pre_0_3_Pu10m"  >> ;
+: +pre_0_6_Pu10m  " pre_0_6_Pu10m"  >> ;
+: +pre_0_9_Pu10m  " pre_0_9_Pu10m"  >> ;
 
 : +key " \"EQUAL $I1 $L1 ==\"" >> ;
 
-: +pst_0_1+10k  " pst_0_1+10k"  >> ;
-: +pst_0_3+10k  " pst_0_3+10k"  >> ;
-: +pst_0_6+10k  " pst_0_6+10k"  >> ;
-: +pst_0_9+10k  " pst_0_9+10k"  >> ;
+: pst_0_1 "pst_0_1" ;
+: pst_0_3 "pst_0_3" ;
+: pst_0_6 "pst_0_6" ;
+: pst_0_9 "pst_0_9" ;
 
-: +pst_0_1+100k " pst_0_1+100k" >> ;
-: +pst_0_3+100k " pst_0_3+100k" >> ;
-: +pst_0_6+100k " pst_0_6+100k" >> ;
-: +pst_0_9+100k " pst_0_9+100k" >> ;
+: +pst_0_1_Pu10k  " pst_0_1_Pu10k"  >> ;
+: +pst_0_3_Pu10k  " pst_0_3_Pu10k"  >> ;
+: +pst_0_6_Pu10k  " pst_0_6_Pu10k"  >> ;
+: +pst_0_9_Pu10k  " pst_0_9_Pu10k"  >> ;
 
-: +pst_0_1+1m   " pst_0_1+1m"   >> ;
-: +pst_0_3+1m   " pst_0_3+1m"   >> ;
-: +pst_0_6+1m   " pst_0_6+1m"   >> ;
-: +pst_0_9+1m   " pst_0_9+1m"   >> ;
+: +pst_0_1_Pu100k " pst_0_1_Pu100k" >> ;
+: +pst_0_3_Pu100k " pst_0_3_Pu100k" >> ;
+: +pst_0_6_Pu100k " pst_0_6_Pu100k" >> ;
+: +pst_0_9_Pu100k " pst_0_9_Pu100k" >> ;
 
-: +pst_0_1+10m  " pst_0_1+10m"  >> ;
-: +pst_0_3+10m  " pst_0_3+10m"  >> ;
-: +pst_0_6+10m  " pst_0_6+10m"  >> ;
-: +pst_0_9+10m  " pst_0_9+10m"  >> ;
+: +pst_0_1_Pu1m   " pst_0_1_Pu1m"   >> ;
+: +pst_0_3_Pu1m   " pst_0_3_Pu1m"   >> ;
+: +pst_0_6_Pu1m   " pst_0_6_Pu1m"   >> ;
+: +pst_0_9_Pu1m   " pst_0_9_Pu1m"   >> ;
 
-: +pst_0_1   " pst_0_1" >> ;
-: +pst_0_3   " pst_0_3" >> ;
-: +pst_0_6   " pst_0_6" >> ;
-: +pst_0_9   " pst_0_9" >> ;
-
+: +pst_0_1_Pu10m  " pst_0_1_Pu10m"  >> ;
+: +pst_0_3_Pu10m  " pst_0_3_Pu10m"  >> ;
+: +pst_0_6_Pu10m  " pst_0_6_Pu10m"  >> ;
+: +pst_0_9_Pu10m  " pst_0_9_Pu10m"  >> ;
 
 : +aggreg "    | aggreg 1" >> ;
 
@@ -97,12 +96,18 @@ Path[].root
 : +gby_100  " gby_100"  >> ;
 : +gby_1000 " gby_1000" >> ;
 
-: test    a> 1 + >a ;
+: gen      a> 1 + >a ;
 : test_00   a0 100 * >a ;
 : test_000  a0 1000 * >a ;
 : tested    adiscard ;
 
-: 2do >> find execute ;
+
+
+// "Pu10k" " pre_0_1"
+
+: dub stk "_" swap >> stk >> stk "+" swap stk >> stk find execute stk ;
+
+
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
@@ -132,12 +137,11 @@ Path[].root
 /* scan | filter | join | filter | agggby                                     */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
-
                                                test_00
-  s +aggreg +agg +gby_1    nl                  ( ) test pu_pipeline
-  s +aggreg +agg +gby_10   nl                  ( ) test pu_pipeline
-  s +aggreg +agg +gby_100  nl                  ( ) test pu_pipeline
-  s +aggreg +agg +gby_1000 nl                  ( ) test pu_pipeline
+  s +aggreg +agg +gby_1    nl                  ( ) gen pu_pipeline
+  s +aggreg +agg +gby_10   nl                  ( ) gen pu_pipeline
+  s +aggreg +agg +gby_100  nl                  ( ) gen pu_pipeline
+  s +aggreg +agg +gby_1000 nl                  ( ) gen pu_pipeline
                                                tested
 ;
 
@@ -145,12 +149,11 @@ Path[].root
 /* scan | filter | join | filter                                              */
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
-
                                                test_00
-  s +filter +pst_0_1 nl                        ( ) test t j pu_agggby
-  s +filter +pst_0_3 nl                        ( ) test t j pu_agggby
-  s +filter +pst_0_6 nl                        ( ) test t j pu_agggby
-  s +filter +pst_0_9 nl                        ( ) test t j pu_agggby
+  s +filter pst_0_1 t dub nl                   ( ) gen t j pu_agggby
+  s +filter pst_0_3 t dub nl                   ( ) gen t j pu_agggby
+  s +filter pst_0_6 t dub nl                   ( ) gen t j pu_agggby
+  s +filter pst_0_9 t dub nl                   ( ) gen t j pu_agggby
                                                tested
 ;
 
@@ -158,12 +161,11 @@ Path[].root
 /* scan | filter | join                                                       */
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
-
                                                test_00
-  s +join +Pu10k  +idx +key nl                 ( ) test t Pu10k  pu_pstFilter
-  s +join +Pu100k +idx +key nl                 ( ) test t Pu100k pu_pstFilter
-  s +join +Pu1m   +idx +key nl                 ( ) test t Pu1m   pu_pstFilter
-  s +join +Pu10m  +idx +key nl                 ( ) test t Pu10m  pu_pstFilter
+  s +join +Pu10k  +idx +key nl                 ( ) gen t Pu10k  pu_pstFilter
+  s +join +Pu100k +idx +key nl                 ( ) gen t Pu100k pu_pstFilter
+  s +join +Pu1m   +idx +key nl                 ( ) gen t Pu1m   pu_pstFilter
+  s +join +Pu10m  +idx +key nl                 ( ) gen t Pu10m  pu_pstFilter
                                                tested
 ;
 
@@ -171,12 +173,11 @@ Path[].root
 /* scan | filter                                                              */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
-
                                                test_00
-  s +filter +pre_0_1 nl                        ( ) test t pu_join
-  s +filter +pre_0_3 nl                        ( ) test t pu_join
-  s +filter +pre_0_6 nl                        ( ) test t pu_join
-  s +filter +pre_0_9 nl                        ( ) test t pu_join
+  s +filter pre_0_1 t dub nl                   ( ) gen t pu_join
+  s +filter pre_0_3 t dub nl                   ( ) gen t pu_join
+  s +filter pre_0_6 t dub nl                   ( ) gen t pu_join
+  s +filter pre_0_9 t dub nl                   ( ) gen t pu_join
                                                tested
 ;
 
@@ -184,12 +185,11 @@ Path[].root
 /*  scan                                                                      */
 /*----------------------------------------------------------------------------*/
 : pu_scan params| s |
-    
                                                test_000
-  s +scan +Pu10k  nl                           ( ) test Pu10k  pu_preFilter
-  s +scan +Pu100k nl                           ( ) test Pu100k pu_preFilter
-  s +scan +Pu1m   nl                           ( ) test Pu1m   pu_preFilter
-  s +scan +Pu10m  nl                           ( ) test Pu10m  pu_preFilter
+  s +scan +Pu10k  nl                           ( ) gen Pu10k  pu_preFilter
+  s +scan +Pu100k nl                           ( ) gen Pu100k pu_preFilter
+  s +scan +Pu1m   nl                           ( ) gen Pu1m   pu_preFilter
+  s +scan +Pu10m  nl                           ( ) gen Pu10m  pu_preFilter
                                                tested
 ;
 
@@ -221,9 +221,10 @@ Path[].root
 
 ;
 
-Path[].Restore
 
 pu_gen
+
+Path[].Restore
 
 /*============================================================================*/
 /* end                                                                        */
