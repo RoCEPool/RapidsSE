@@ -6,7 +6,12 @@
 
 : pu_inc \prompt
 
-  "./pu/d4_pu.sen" include
+  "./pu/pu_gen.sen" include
+;
+
+: pu_inc2 \prompt
+
+  "./pu/pu_gen2.sen" include
 ;
 
 /*============================================================================*/
