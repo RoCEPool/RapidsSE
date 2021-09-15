@@ -14,3 +14,4 @@ partitionPlan.test
 aggregateSplit.test
 tableAliases.test
 joins.test
+//tableSubqueries.test
