@@ -1339,7 +1339,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator ?
@@ -2202,6 +2202,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(sAggInit, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
     //StrLib::vSprintCat(sAggInit, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iProjectColumn);
@@ -2222,6 +2223,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
@@ -2251,6 +2253,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
