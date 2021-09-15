@@ -18,7 +18,18 @@ Path[].root
 : +Pu1m   " Pu1m"   >> ;
 : +Pu10m  " Pu10m"  >> ;
 
+: +indexJoin "    | indexJoin 1" >> ;
+
+: +idx " idx"  >> ;
+
+: +Pu10k_idx  " Pu10k idx"  >> ;
+: +Pu100k_idx " Pu100k idx" >> ;
+: +Pu1m_idx   " Pu1m idx"   >> ;
+: +Pu10m_idx  " Pu10m idx"  >> ;
+
 : +filter  "    | filter 1" >> ;
+  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
+
 : +pre_0_1 " pre_0_1" >> ;
 : +pre_0_3 " pre_0_3" >> ;
 : +pre_0_6 " pre_0_6" >> ;
@@ -46,24 +57,19 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_pipeline params| iTest sStream |
   
-  "pipeline pu0" iTest >str str.cat "\n"   str.cat
-    
-  "begin\n"                                str.cat
-  
-  "  stage stageA on origin :\n"           str.cat
-  "      start\n"                          str.cat
-  "    | pulse once\n"                     str.cat
-  "    | stageB\n"                         str.cat
-
-  "  stage stageB on all partitions :\n"   str.cat
-         sStream                           str.cat
-  "    | stageC\n"                         str.cat
-    
-  "  stage stageC on origin :\n"           str.cat
-  "      sink\n"                           str.cat
-  "    | stageA\n"                         str.cat
-
-  " end ;\n"                               str.cat
+  "pipeline pu0" iTest >str            >> nl
+  "begin"                              >> nl
+  "  stage stageA on origin :"         >> nl
+  "      start"                        >> nl
+  "    | pulse once"                   >> nl
+  "    | stageB"                       >> nl
+  "  stage stageB on all partitions :" >> nl
+         sStream                       >>
+  "    | stageC"                       >> nl
+  "  stage stageC on origin :"         >> nl
+  "      sink"                         >> nl
+  "    | stageA"                       >> nl
+  " end ;"                             >> nl
 
   .
   
@@ -73,201 +79,72 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /* scan | filter | join | filter | agggby                                     */
 /*----------------------------------------------------------------------------*/
-: pu_agggby params| iTest sFrag |
+: pu_agggby params| iTest sStream |
 
   iTest 100 * to iTest
-  
-  // - - - - - - - - - - - -
-  // agg by 1 group
-  
-  iTest 1 + to iTest
-    sFrag +aggreg +agg +gby_1 nl
-    iTest pu_pipeline
-
-  // - - - - - - - - - - - -
-  // agg by 10 groups
-  
-  iTest 1 + to iTest
-    sFrag +aggreg +agg +gby_10 nl
-    iTest pu_pipeline
-
-  // - - - - - - - - - - - -
-  // agg by 100 groups
-  
-  iTest 1 + to iTest
-    sFrag +aggreg +agg +gby_100 nl
-    iTest pu_pipeline
-
-  // - - - - - - - - - - - -
-  // agg by 1000 groups
-  
-  iTest 1 + to iTest
-    sFrag +aggreg +agg +gby_1000 nl
-    iTest pu_pipeline
+    
+  iTest 1 + to iTest sStream +aggreg +agg +gby_1  nl   iTest pu_pipeline
+  iTest 1 + to iTest sStream +aggreg +agg +gby_10 nl   iTest pu_pipeline
+  iTest 1 + to iTest sStream +aggreg +agg +gby_100 nl  iTest pu_pipeline
+  iTest 1 + to iTest sStream +aggreg +agg +gby_1000 nl iTest pu_pipeline
 ;
 
 /*----------------------------------------------------------------------------*/
 /* scan | filter | join | filter                                              */
 /*----------------------------------------------------------------------------*/
-: pu_postFilter params| iTest sFrag |
+: pu_postFilter params| iTest sStream |
 
   iTest 100 * to iTest
-
-  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
   
-  "\"<pst-selectivity>\"" locals| sSelectivity |
-  
-  // - - - - - - - - - - - -
-  // filter selectivity 0.1
-  
-  iTest 1 + to iTest
-    sFrag +filter +pst_0_1 nl
-    iTest pu_agggby
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.3
-  
-  iTest 1 + to iTest
-    sFrag +filter +pst_0_3 nl
-    iTest pu_agggby
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.6
-  
-  iTest 1 + to iTest
-    sFrag +filter +pst_0_6 nl
-    iTest pu_agggby
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.9
-  
-  iTest 1 + to iTest
-    sFrag +filter +pst_0_9 nl
-    iTest pu_agggby
+  iTest 1 + to iTest sStream +filter +pst_0_1 nl  iTest pu_agggby
+  iTest 1 + to iTest sStream +filter +pst_0_3 nl  iTest pu_agggby
+  iTest 1 + to iTest sStream +filter +pst_0_6 nl  iTest pu_agggby
+  iTest 1 + to iTest sStream +filter +pst_0_9 nl  iTest pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
 /* scan | filter | join                                                       */
 /*----------------------------------------------------------------------------*/
-: pu_join params| iTest sFrag |
+: pu_join params| iTest sStream |
 
   iTest 100 * to iTest
   
-  // EQUAL $I1 $L1 ==
-  "\"<join-key>\"" locals| sJoinKey |
-
-  // - - - - - - - - - - - -
-  // join Pu10k
-  
-  iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu10k idx" >> +join_key nl
-    iTest pu_postFilter
-    
-  // - - - - - - - - - - - -
-  // join Pu10k
-
-  iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu100k idx" >> +join_key nl
-    iTest pu_postFilter
-    
-  // - - - - - - - - - - - -
-  // join Pu1m
-  
-  iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu1m idx" >> +join_key nl
-    iTest pu_postFilter
-    
-  // - - - - - - - - - - - -
-  // join Pu1m
-  
-  iTest 1 + to iTest
-    sFrag "    | indexJoin 1 Pu10m idx" >> +join_key nl
-    iTest pu_postFilter
+  iTest 1 + to iTest sStream +indexJoin +Pu10k  +idx +join_key nl iTest pu_postFilter
+  iTest 1 + to iTest sStream +indexJoin +Pu100k +idx +join_key nl iTest pu_postFilter
+  iTest 1 + to iTest sStream +indexJoin +Pu1m   +idx +join_key nl iTest pu_postFilter
+  iTest 1 + to iTest sStream +indexJoin +Pu10m  +idx +join_key nl iTest pu_postFilter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* scan | filter                                                              */
 /*----------------------------------------------------------------------------*/
-: pu_preFilter params| iTest sFrag |
+: pu_preFilter params| iTest sStream |
 
   iTest 100 * to iTest
   
-  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
-  
-  "\"<pre-selectivity>\"" locals| sSelectivity |
-
-  // - - - - - - - - - - - -
-  // filter selectivity 0.1
-  
-  iTest 1 + to iTest
-    sFrag +filter +pre_0_1 nl
-    iTest pu_join
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.3
-
-  iTest 1 + to iTest
-    sFrag +filter +pre_0_3 nl
-    iTest pu_join
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.6
-
-  iTest 1 + to iTest
-    sFrag +filter +pre_0_6 nl
-    iTest pu_join
-    
-  // - - - - - - - - - - - -
-  // filter selectivity 0.9
-
-  iTest 1 + to iTest
-    sFrag +filter +pre_0_9 nl
-    iTest pu_join
+  iTest 1 + to iTest sStream +filter +pre_0_1 nl   iTest pu_join
+  iTest 1 + to iTest sStream +filter +pre_0_3 nl   iTest pu_join
+  iTest 1 + to iTest sStream +filter +pre_0_6 nl   iTest pu_join
+  iTest 1 + to iTest sStream +filter +pre_0_9 nl   iTest pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
 /*  scan                                                                      */
 /*----------------------------------------------------------------------------*/
-: pu_scan params| iTest sFrag |
+: pu_scan params| iTest sStream |
   
   iTest 1000 * to iTest
   
-  // - - - - - - - - - - - -
-  // scan Pu10k
-
-  iTest 1 + to iTest
-    sFrag +scan +Pu10k nl
-    iTest pu_preFilter
-
-
-  // - - - - - - - - - - - -
-  // scan Pu100k
-
-  iTest 1 + to iTest
-    sFrag +scan +Pu100k nl
-    iTest pu_preFilter
-
-
-  // - - - - - - - - - - - -
-  // scan Pu100k
-
-  iTest 1 + to iTest
-    sFrag +scan +Pu1m nl
-    iTest pu_preFilter
-
-
-  // - - - - - - - - - - - -
-  // scan Pu10m
-
-  iTest 1 + to iTest
-    sFrag +scan +Pu10m nl
-    iTest pu_preFilter
+  iTest 1 + to iTest sStream +scan +Pu10k  nl    iTest pu_preFilter
+  iTest 1 + to iTest sStream +scan +Pu100k nl    iTest pu_preFilter
+  iTest 1 + to iTest sStream +scan +Pu1m   nl    iTest pu_preFilter
+  iTest 1 + to iTest sStream +scan +Pu10m  nl    iTest pu_preFilter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* range interval                                                             */
 /*----------------------------------------------------------------------------*/
-: pu_interval params| iTest sFrag |
+: pu_interval params| iTest sStream |
   
   iTest 100 * to iTest
   
@@ -275,7 +152,7 @@ Path[].root
   // interval 0.001
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.001" str.cat
     iTest pu_preFilter
 
@@ -283,7 +160,7 @@ Path[].root
   // interval 0.003
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.003" str.cat
     iTest pu_preFilter
 
@@ -291,7 +168,7 @@ Path[].root
   // interval 0.006
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.006" str.cat
     iTest pu_preFilter
 
@@ -299,7 +176,7 @@ Path[].root
   // interval 0.009
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.009" str.cat
     iTest pu_preFilter
     
@@ -309,7 +186,7 @@ Path[].root
   // interval 0.01
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.01" str.cat
     iTest pu_preFilter
 
@@ -317,7 +194,7 @@ Path[].root
   // interval 0.03
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.03" str.cat
     iTest pu_preFilter
 
@@ -325,7 +202,7 @@ Path[].root
   // interval 0.06
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.06" str.cat
     iTest pu_preFilter
 
@@ -333,7 +210,7 @@ Path[].root
   // interval 0.09
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.09" str.cat
     iTest pu_preFilter
     
@@ -344,7 +221,7 @@ Path[].root
   // interval 0.1
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.1" str.cat
     iTest pu_preFilter
 
@@ -352,7 +229,7 @@ Path[].root
   // interval 0.3
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.3" str.cat
     iTest pu_preFilter
 
@@ -360,7 +237,7 @@ Path[].root
   // interval 0.6
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.6" str.cat
     iTest pu_preFilter
 
@@ -368,7 +245,7 @@ Path[].root
   // interval 0.9
 
   iTest 1 + to iTest
-    sFrag
+    sStream
       " // interval 0.9" str.cat
     iTest pu_preFilter
 ;
@@ -376,7 +253,7 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /*  indexScan                                                                 */
 /*----------------------------------------------------------------------------*/
-: pu_indexScan params| iTest sFrag |
+: pu_indexScan params| iTest sStream |
   
   iTest 100 * to iTest
   
@@ -384,7 +261,7 @@ Path[].root
   // indexScan Pu10k
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       "indexScan 1 Pu10k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
       iTest pu_interval
 
@@ -392,7 +269,7 @@ Path[].root
   // indexScan Pu100k
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       "indexScan 1 Pu100k idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
@@ -400,7 +277,7 @@ Path[].root
   // indexScan Pu1m
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       "indexScan 1 Pu1m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 
@@ -408,7 +285,7 @@ Path[].root
   // indexScan Pu10m
   
   iTest 1 + to iTest
-    sFrag
+    sStream
       "indexScan 1 Pu10m idx \"LBOUND $I1 1 > UBOUND $I1 10 <= \" " str.cat
     iTest pu_interval
 ;
