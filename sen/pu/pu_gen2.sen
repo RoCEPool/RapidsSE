@@ -10,6 +10,20 @@ Path[].root
 : >> str.cat ;
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
+: gen a> 1 + >a ;
+: test_0 a0 10 * >a ;
+: test_00 a0 100 * >a ;
+: test_000 a0 1000 * >a ;
+: tested adiscard ;
+: fx find execute ;
+: _+ "+" swap >> ;
+: __ "_" swap >> >> ;
+
+
+: scan    "      scan"           ;
+: +filter "    | filter 1"    >> ;
+: +join   "    | indexJoin 1" >> ;
+: +aggreg "    | aggreg 1"    >> ;
 
 : Pu10k  "Pu10k"  ;
 : Pu100k "Pu100k" ;
@@ -21,53 +35,12 @@ Path[].root
 : +Pu1m   " " >> Pu1m   >> ;
 : +Pu10m  " " >> Pu10m  >> ;
 
-: +scan   "      scan" ;
-: +filter "    | filter 1" >> ;
-: +join   "    | indexJoin 1" >> ;
-: +aggreg "    | aggreg 1" >> ;
-
-
-: +Pu10k_idx  " Pu10k idx"  >> ;
-: +Pu100k_idx " Pu100k idx" >> ;
-: +Pu1m_idx   " Pu1m idx"   >> ;
-: +Pu10m_idx  " Pu10m idx"  >> ;
-
-  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
-
-
-: +key " \"EQUAL $I1 $L1 ==\"" >> ;
-
-
-
-: +agg " agg" >> ;
-
-: +gby_1    " gby_1"    >> ;
-: +gby_10   " gby_10"   >> ;
-: +gby_100  " gby_100"  >> ;
-: +gby_1000 " gby_1000" >> ;
-
-
-
-
-: gen      a> 1 + >a ;
-: test_00   a0 100 * >a ;
-: test_000  a0 1000 * >a ;
-: tested    adiscard ;
-
-
-: fx find execute ;
-
-: _+ "+" swap >> ;
-
-: __ "_" swap >> >> ;
-
 
 : gby "gby" ;
 : 1g    "1g" ;
 : 10g   "10g" ;
 : 100g  "100g" ;
 : 1000g "1000g" ;
-
 
 : +gby_Pu10k_1g      " gby(j:Pu10k_1g)"     >> ;
 : +gby_Pu10k_10g     " gby(j:Pu10k_10g)"    >> ;
@@ -111,7 +84,6 @@ Path[].root
 : +agg_Pu10m_Pu100k  " agg(t:Pu10,j:Pu100k)"   >> ;
 : +agg_Pu10m_Pu1m    " agg(t:Pu10,j:Pu1m)"     >> ;
 : +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
-
 
 
 : pst_0_1 "pst_0_1" ;
@@ -161,6 +133,7 @@ Path[].root
 : +key_Pu10m_Pu100k  " key(t:Pu10=j:Pu100k)"   >> ;
 : +key_Pu10m_Pu1m    " key(t:Pu10=j:Pu1m)"     >> ;
 : +key_Pu10m_Pu10m   " key(t:Pu10=j:Pu10m)"    >> ;
+//key example: " \"EQUAL $I1 $L1 ==\"" >> ;
 
 
 : idx "idx" ;
@@ -211,27 +184,34 @@ Path[].root
 : +pre_0_6_Pu10m  " pre(0.6 x t:Pu10m)"  >> ;
 : +pre_0_9_Pu10m  " pre(0.9 x t:Pu10m)"  >> ;
 
+//expr example: type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
 
 /*----------------------------------------------------------------------------*/
 /* form full pipeline statement                                               */
 /*----------------------------------------------------------------------------*/
 : pu_pipeline params| sStreamB |
   
-  "pipeline pu0" a0 >str               >> nl
-  "begin"                              >> nl
-  "  stage stageA on origin :"         >> nl
-  "      start"                        >> nl
-  "    | pulse once"                   >> nl
-  "    | stageB"                       >> nl
-  "  stage stageB on all partitions :" >> nl
-         sStreamB                      >>
-  "    | stageC"                       >> nl
-  "  stage stageC on origin :"         >> nl
-  "      sink"                         >> nl
-  "    | stageA"                       >> nl
-  " end ;"                             >> nl
-
-  .
+  "// - - - - - - - - - - - - - - - - " nl
+  "pipeline pu0" >> a0 >str             >> nl
+  "begin"                               >> nl
+  "  stage stageA on origin :"          >> nl
+  "      start"                         >> nl
+  "    | pulse once"                    >> nl
+  "    | stageB"                        >> nl
+  "  stage stageB on all partitions :"  >> nl
+         sStreamB                       >>
+  "    | stageC"                        >> nl
+  "  stage stageC on origin :"          >> nl
+  "      sink"                          >> nl
+  "    | stageA"                        >> nl
+  "end ;"                               >> nl
+  " "                                   >> nl
+    
+  // dup .
+  
+  a0 .
+  
+  File0[] file.writeLine
   
   counter0[] 1 + to counter0[]
 ;
@@ -240,7 +220,7 @@ Path[].root
 /* append aggreg -- scan | filter | join | filter | aggreg                    */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
-                                               test_00
+                                               test_0
   s +aggreg
     "+" agg t __ j  __ >> fx
     "+" gby j __ 1g __ >> fx                   ( ) nl gen pu_pipeline
@@ -260,7 +240,7 @@ Path[].root
 /* append post-filter -- scan | filter | join | filter                        */
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
-                                               test_00
+                                               test_0
   s +filter "+" pst_0_1 t __ >> fx             ( ) nl gen t j pu_agggby
   s +filter "+" pst_0_3 t __ >> fx             ( ) nl gen t j pu_agggby
   s +filter "+" pst_0_6 t __ >> fx             ( ) nl gen t j pu_agggby
@@ -272,7 +252,7 @@ Path[].root
 /* append join -- scan | filter | join                                        */
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
-                                               test_00
+                                               test_0
   s +join +Pu10k
     "+" idx t __ Pu10k  __ >> fx
     "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu10k  pu_pstFilter
@@ -292,7 +272,7 @@ Path[].root
 /* append pre-filter -- scan | filter                                         */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
-                                               test_00
+                                               test_0
   s +filter "+" pre_0_1 t __ >> fx             ( ) nl gen t pu_join
   s +filter "+" pre_0_3 t __ >> fx             ( ) nl gen t pu_join
   s +filter "+" pre_0_6 t __ >> fx             ( ) nl gen t pu_join
@@ -303,43 +283,35 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /*  append scan -- scan                                                       */
 /*----------------------------------------------------------------------------*/
-: pu_scan params| s |
-                                               test_000
-  s +scan +Pu10k                               ( ) nl gen Pu10k  pu_preFilter
-  s +scan +Pu100k                              ( ) nl gen Pu100k pu_preFilter
-  s +scan +Pu1m                                ( ) nl gen Pu1m   pu_preFilter
-  s +scan +Pu10m                               ( ) nl gen Pu10m  pu_preFilter
+: pu_scan
+                                               test_0
+  scan +Pu10k                                  ( ) nl gen Pu10k  pu_preFilter
+  scan +Pu100k                                 ( ) nl gen Pu100k pu_preFilter
+  scan +Pu1m                                   ( ) nl gen Pu1m   pu_preFilter
+  scan +Pu10m                                  ( ) nl gen Pu10m  pu_preFilter
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
-: pu_begin
-
-  1 >a "" pu_scan adiscard
-  
-  // "" 2 pu_indexScan
-
-
-  counter0[] .
-;
 
 /*----------------------------------------------------------------------------*/
 /* generate pu tests                                                          */
 /*----------------------------------------------------------------------------*/
 : pu_gen \prompt
 
-  pu_begin
+  file::new to file0[]
+  
+  "/tmp/_pu_run" OPEN_WRITE file0[] file.open
+  
+  1 >a pu_scan adiscard
+  
+  // "" 2 pu_indexScan
+
+  file0[].get file.close
+  
+  counter0[] "pu_gen: %v pipelines generated\n" .printf
 ;
-
-/*----------------------------------------------------------------------------*/
-/* run pu tests                                                               */
-/*----------------------------------------------------------------------------*/
-: pu_run \prompt
-
-;
-
 
 pu_gen
 
