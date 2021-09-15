@@ -67,7 +67,7 @@ Path[].root
 
 
 
-: add "agg" ;
+: agg "agg" ;
 
 : +agg_Pu10k_Pu10k   " agg(t:Pu10k,j:Pu10k)"   >> ;
 : +agg_Pu10k_Pu100k  " agg(t:Pu10k,j:Pu100k)"  >> ;
@@ -219,16 +219,16 @@ Path[].root
 : pu_agggby params| j t s |
                                                test_00
   s +aggreg
-    +agg
+    "+" agg t __ j  __ >> fx
     +gby_1                                     ( ) nl gen pu_pipeline
   s +aggreg
-    +agg
+    "+" agg t __ j  __ >> fx
     +gby_10                                    ( ) nl gen pu_pipeline
   s +aggreg
-    +agg
+    "+" agg t __ j  __ >> fx
     +gby_100                                   ( ) nl gen pu_pipeline
   s +aggreg
-    +agg
+    "+" agg t __ j  __ >> fx
     +gby_1000                                  ( ) nl gen pu_pipeline
                                                tested
 ;
