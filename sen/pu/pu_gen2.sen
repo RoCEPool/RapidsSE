@@ -22,8 +22,9 @@ Path[].root
 : +Pu10m  " " >> Pu10m  >> ;
 
 : +scan   "      scan" ;
-
-: +join "    | indexJoin 1" >> ;
+: +filter "    | filter 1" >> ;
+: +join   "    | indexJoin 1" >> ;
+: +aggreg "    | aggreg 1" >> ;
 
 
 : +Pu10k_idx  " Pu10k idx"  >> ;
@@ -31,14 +32,12 @@ Path[].root
 : +Pu1m_idx   " Pu1m idx"   >> ;
 : +Pu10m_idx  " Pu10m idx"  >> ;
 
-: +filter  "    | filter 1" >> ;
   // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
 
 
 : +key " \"EQUAL $I1 $L1 ==\"" >> ;
 
 
-: +aggreg "    | aggreg 1" >> ;
 
 : +agg " agg" >> ;
 
@@ -63,8 +62,32 @@ Path[].root
 : __ "_" swap >> >> ;
 
 
+: gby "gby" ;
+: 1g    "1g" ;
+: 10g   "10g" ;
+: 100g  "100g" ;
+: 1000g "1000g" ;
 
 
+: +gby_Pu10k_1g      " gby(j:Pu10k_1g)"     >> ;
+: +gby_Pu10k_10g     " gby(j:Pu10k_10g)"    >> ;
+: +gby_Pu10k_100g    " gby(j:Pu10k_100g)"   >> ;
+: +gby_Pu10k_1000g   " gby(j:Pu10k_1000g)"  >> ;
+
+: +gby_Pu100k_1g     " gby(j:Pu100k_1g)"    >> ;
+: +gby_Pu100k_10g    " gby(j:Pu100k_10g)"   >> ;
+: +gby_Pu100k_100g   " gby(j:Pu100k_100g)"  >> ;
+: +gby_Pu100k_1000g  " gby(j:Pu100k_1000g)" >> ;
+
+: +gby_Pu1m_1g       " gby(j:Pu1m_1g)"      >> ;
+: +gby_Pu1m_10g      " gby(j:Pu1m_10g)"     >> ;
+: +gby_Pu1m_100g     " gby(j:Pu1m_100g)"    >> ;
+: +gby_Pu1m_1000g    " gby(j:Pu1m_1000g)"   >> ;
+
+: +gby_Pu10m_1g      " gby(j:Pu10m_1g)"     >> ;
+: +gby_Pu10m_10g     " gby(j:Pu10m_10g)"    >> ;
+: +gby_Pu10m_100g    " gby(j:Pu10m_100g)"   >> ;
+: +gby_Pu10m_1000g   " gby(j:Pu10m_1000g)"  >> ;
 
 
 : agg "agg" ;
@@ -220,16 +243,16 @@ Path[].root
                                                test_00
   s +aggreg
     "+" agg t __ j  __ >> fx
-    +gby_1                                     ( ) nl gen pu_pipeline
+    "+" gby j __ 1g __ >> fx                   ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    +gby_10                                    ( ) nl gen pu_pipeline
+    "+" gby j __ 10g __ >> fx                  ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    +gby_100                                   ( ) nl gen pu_pipeline
+    "+" gby j __ 100g __ >> fx                 ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    +gby_1000                                  ( ) nl gen pu_pipeline
+    "+" gby j __ 1000g __ >> fx                ( ) nl gen pu_pipeline
                                                tested
 ;
 
