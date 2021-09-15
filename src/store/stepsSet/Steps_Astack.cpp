@@ -22,6 +22,8 @@ void Step::vAddSteps_Astack(void)
   vAddStep("anip"_Stz,            &Step::vAstackNip);
   vAddStep("apick"_Stz,           &Step::vAstackPick);
   vAddStep("areverse"_Stz,        &Step::vAstackReverse);
+  vAddStep("arot"_Stz,            &Step::vDstackRot);
+  vAddStep("-arot"_Stz,           &Step::vDstackRotInv);
   vAddStep("astk"_Stz,            &Step::vAstackStk);
   vAddStep(">a"_Stz,              &Step::vAstackToA);
   vAddStep("a>"_Stz,              &Step::vAstackToD);
@@ -198,6 +200,49 @@ void Step::vAstackReverse(void)
     case 2:  m_pAuxStack->vPushItem(xVal2);
     case 1:  m_pAuxStack->vPushItem(xVal1);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* arot -- rotate top 3 values clockwise (rotate C to top) ( C B A -- B A C ) */
+/*----------------------------------------------------------------------------*/
+void Step::vAstackRot(void)
+{
+  ENTRY();
+  
+  CellSingle xVarA;
+  m_pAuxStack->vPopItem(xVarA,__func__);
+  CellSingle xVarB;
+  m_pAuxStack->vPopItem(xVarB,__func__);
+  CellSingle xVarC;
+  m_pAuxStack->vPopItem(xVarC,__func__);
+
+  
+  m_pAuxStack->vPushItem(xVarB);
+  m_pAuxStack->vPushItem(xVarA);
+  m_pAuxStack->vPushItem(xVarC);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -arot -- rotate top 3 values anticlockwise (A to bottom) ( C B A -- A C B )*/
+/*----------------------------------------------------------------------------*/
+void Step::vAstackRotInv(void)
+{
+  ENTRY();
+  
+  CellSingle xVarA;
+  m_pAuxStack->vPopItem(xVarA,__func__);
+  CellSingle xVarB;
+  m_pAuxStack->vPopItem(xVarB,__func__);
+  CellSingle xVarC;
+  m_pAuxStack->vPopItem(xVarC,__func__);
+
+  m_pAuxStack->vPushItem(xVarA);
+  m_pAuxStack->vPushItem(xVarC);
+  m_pAuxStack->vPushItem(xVarB);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

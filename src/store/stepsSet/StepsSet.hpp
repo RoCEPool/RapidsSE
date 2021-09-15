@@ -106,6 +106,8 @@ public:
   void vAstackNip(void);
   void vAstackPick(void);
   void vAstackReverse(void);
+  void vAstackRot(void);
+  void vAstackRotInv(void);
   void vAstackStk(void);
   void vAstackSwap(void);
   void vAstackToA(void);
