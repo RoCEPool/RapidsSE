@@ -105,18 +105,21 @@ void Step::vParcelPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 
+
+  // CAUTION NOTE: Cannot access LU of OP after piping out operand
+  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
+  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  if (pLogicUnit) {
+    pLogicUnit->m_xpStats->m_nParcelRecvs++;
+    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
+  }
+
   if (pParcel->bOriginalParcel()) {
     pOp->vAppendLeft(pParcel,this);
   } else {
     if (pParcel->pGetOperand()) {
         pOp->vAppendLeft(pOperand, this);
     }
-  }
-
-  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-  if (pLogicUnit) {
-    pLogicUnit->m_xpStats->m_nParcelRecvs++;
-    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
   }
 
   /* Origin from master
