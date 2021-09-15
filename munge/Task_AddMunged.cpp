@@ -12607,6 +12607,8 @@ void Task::vAddMunged(Task* )
     "  CrwBuffer[] DevLftIxt.crwBuffer!\n"
     "  ZK_D_CRWBUFFER Counter0[] executeAsmArgs\n"
     "\n"
+    "  CrwBuffer[].delete\n"
+    "\n"
     "  PotRlu[].pipeoutCompletedPtns\n"
     "\n"
     "  true\n"

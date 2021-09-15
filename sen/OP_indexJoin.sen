@@ -44,6 +44,8 @@
   CrwBuffer[] DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
+  CrwBuffer[].delete
+
   PotRlu[].pipeoutCompletedPtns
 
   true
