@@ -67,6 +67,28 @@ Path[].root
 
 
 
+: add "agg" ;
+
+: +agg_Pu10k_Pu10k   " agg(t:Pu10k,j:Pu10k)"   >> ;
+: +agg_Pu10k_Pu100k  " agg(t:Pu10k,j:Pu100k)"  >> ;
+: +agg_Pu10k_Pu1m    " agg(t:Pu10k,j:Pu1m)"    >> ;
+: +agg_Pu10k_Pu10m   " agg(t:Pu10k,j:Pu10m)"   >> ;
+
+: +agg_Pu100k_Pu10k  " agg(t:Pu100k,j:Pu10k)"  >> ;
+: +agg_Pu100k_Pu100k " agg(t:Pu100k,j:Pu100k)" >> ;
+: +agg_Pu100k_Pu1m   " agg(t:Pu100k,j:Pu1m)"   >> ;
+: +agg_Pu100k_Pu10m  " agg(t:Pu100k,j:Pu10m)"  >> ;
+
+: +agg_Pu1m_Pu10k    " agg(t:Pu1m,j:Pu10k)"    >> ;
+: +agg_Pu1m_Pu100k   " agg(t:Pu1m,j:Pu100k)"   >> ;
+: +agg_Pu1m_Pu1m     " agg(t:Pu1m,j:Pu1m)"     >> ;
+: +agg_Pu1m_Pu10m    " agg(t:Pu1m,j:Pu10m)"    >> ;
+
+: +agg_Pu10m_Pu10k   " agg(t:Pu10,j:Pu10k)"    >> ;
+: +agg_Pu10m_Pu100k  " agg(t:Pu10,j:Pu100k)"   >> ;
+: +agg_Pu10m_Pu1m    " agg(t:Pu10,j:Pu1m)"     >> ;
+: +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
+
 
 
 : pst_0_1 "pst_0_1" ;
@@ -74,71 +96,71 @@ Path[].root
 : pst_0_6 "pst_0_6" ;
 : pst_0_9 "pst_0_9" ;
 
-: +pst_0_1_Pu10k  " pst(0.1 x Pu10k)"  >> ;
-: +pst_0_3_Pu10k  " pst(0.3 x Pu10k)"  >> ;
-: +pst_0_6_Pu10k  " pst(0.6 x Pu10k)"  >> ;
-: +pst_0_9_Pu10k  " pst(0.9 x Pu10k)"  >> ;
+: +pst_0_1_Pu10k  " pst(0.1 x j:Pu10k)"  >> ;
+: +pst_0_3_Pu10k  " pst(0.3 x j:Pu10k)"  >> ;
+: +pst_0_6_Pu10k  " pst(0.6 x j:Pu10k)"  >> ;
+: +pst_0_9_Pu10k  " pst(0.9 x j:Pu10k)"  >> ;
 
-: +pst_0_1_Pu100k " pst(0.1 x Pu100k)" >> ;
-: +pst_0_3_Pu100k " pst(0.3 x Pu100k)" >> ;
-: +pst_0_6_Pu100k " pst(0.6 x Pu100k)" >> ;
-: +pst_0_9_Pu100k " pst(0.9 x Pu100k)" >> ;
+: +pst_0_1_Pu100k " pst(0.1 x j:Pu100k)" >> ;
+: +pst_0_3_Pu100k " pst(0.3 x j:Pu100k)" >> ;
+: +pst_0_6_Pu100k " pst(0.6 x j:Pu100k)" >> ;
+: +pst_0_9_Pu100k " pst(0.9 x j:Pu100k)" >> ;
 
-: +pst_0_1_Pu1m   " pst(0.1 x Pu1m)"   >> ;
-: +pst_0_3_Pu1m   " pst(0.3 x Pu1m)"   >> ;
-: +pst_0_6_Pu1m   " pst(0.6 x Pu1m)"   >> ;
-: +pst_0_9_Pu1m   " pst(0.9 x Pu1m)"   >> ;
+: +pst_0_1_Pu1m   " pst(0.1 x j:Pu1m)"   >> ;
+: +pst_0_3_Pu1m   " pst(0.3 x j:Pu1m)"   >> ;
+: +pst_0_6_Pu1m   " pst(0.6 x j:Pu1m)"   >> ;
+: +pst_0_9_Pu1m   " pst(0.9 x j:Pu1m)"   >> ;
 
-: +pst_0_1_Pu10m  " pst(0.1 x Pu10m)"  >> ;
-: +pst_0_3_Pu10m  " pst(0.3 x Pu10m)"  >> ;
-: +pst_0_6_Pu10m  " pst(0.6 x Pu10m)"  >> ;
-: +pst_0_9_Pu10m  " pst(0.9 x Pu10m)"  >> ;
+: +pst_0_1_Pu10m  " pst(0.1 x j:Pu10m)"  >> ;
+: +pst_0_3_Pu10m  " pst(0.3 x j:Pu10m)"  >> ;
+: +pst_0_6_Pu10m  " pst(0.6 x j:Pu10m)"  >> ;
+: +pst_0_9_Pu10m  " pst(0.9 x j:Pu10m)"  >> ;
 
 
 : key "key" ;
 
-: +key_Pu10k_Pu10k   " key(Pu10k=Pu10k)"   >> ;
-: +key_Pu10k_Pu100k  " key(Pu10k=Pu100k)"  >> ;
-: +key_Pu10k_Pu1m    " key(Pu10k=Pu1m)"    >> ;
-: +key_Pu10k_Pu10m   " key(Pu10k=Pu10m)"   >> ;
+: +key_Pu10k_Pu10k   " key(t:Pu10k=j:Pu10k)"   >> ;
+: +key_Pu10k_Pu100k  " key(t:Pu10k=j:Pu100k)"  >> ;
+: +key_Pu10k_Pu1m    " key(t:Pu10k=j:Pu1m)"    >> ;
+: +key_Pu10k_Pu10m   " key(t:Pu10k=j:Pu10m)"   >> ;
 
-: +key_Pu100k_Pu10k  " key(Pu100k=Pu10k)"  >> ;
-: +key_Pu100k_Pu100k " key(Pu100k=Pu100k)" >> ;
-: +key_Pu100k_Pu1m   " key(Pu100k=Pu1m)"   >> ;
-: +key_Pu100k_Pu10m  " key(Pu100k=Pu10m)"  >> ;
+: +key_Pu100k_Pu10k  " key(t:Pu100k=j:Pu10k)"  >> ;
+: +key_Pu100k_Pu100k " key(t:Pu100k=j:Pu100k)" >> ;
+: +key_Pu100k_Pu1m   " key(t:Pu100k=j:Pu1m)"   >> ;
+: +key_Pu100k_Pu10m  " key(t:Pu100k=j:Pu10m)"  >> ;
 
-: +key_Pu1m_Pu10k    " key(Pu1m=Pu10k)"    >> ;
-: +key_Pu1m_Pu100k   " key(Pu1m=Pu100k)"   >> ;
-: +key_Pu1m_Pu1m     " key(Pu1m=Pu1m)"     >> ;
-: +key_Pu1m_Pu10m    " key(Pu1m=Pu10m)"    >> ;
+: +key_Pu1m_Pu10k    " key(t:Pu1m=j:Pu10k)"    >> ;
+: +key_Pu1m_Pu100k   " key(t:Pu1m=j:Pu100k)"   >> ;
+: +key_Pu1m_Pu1m     " key(t:Pu1m=j:Pu1m)"     >> ;
+: +key_Pu1m_Pu10m    " key(t:Pu1m=j:Pu10m)"    >> ;
 
-: +key_Pu10m_Pu10k   " key(Pu10=Pu10k)"    >> ;
-: +key_Pu10m_Pu100k  " key(Pu10=Pu100k)"   >> ;
-: +key_Pu10m_Pu1m    " key(Pu10=Pu1m)"     >> ;
-: +key_Pu10m_Pu10m   " key(Pu10=Pu10m)"    >> ;
+: +key_Pu10m_Pu10k   " key(t:Pu10=j:Pu10k)"    >> ;
+: +key_Pu10m_Pu100k  " key(t:Pu10=j:Pu100k)"   >> ;
+: +key_Pu10m_Pu1m    " key(t:Pu10=j:Pu1m)"     >> ;
+: +key_Pu10m_Pu10m   " key(t:Pu10=j:Pu10m)"    >> ;
 
 
 : idx "idx" ;
 
-: +idx_Pu10k_Pu10k   " idx(Pu10k->Pu10k)"   >> ;
-: +idx_Pu10k_Pu100k  " idx(Pu10k->Pu100k)"  >> ;
-: +idx_Pu10k_Pu1m    " idx(Pu10k->Pu1m)"    >> ;
-: +idx_Pu10k_Pu10m   " idx(Pu10k->Pu10m)"   >> ;
+: +idx_Pu10k_Pu10k   " idx(t:Pu10k->j:Pu10k)"   >> ;
+: +idx_Pu10k_Pu100k  " idx(t:Pu10k->j:Pu100k)"  >> ;
+: +idx_Pu10k_Pu1m    " idx(t:Pu10k->j:Pu1m)"    >> ;
+: +idx_Pu10k_Pu10m   " idx(t:Pu10k->j:Pu10m)"   >> ;
 
-: +idx_Pu100k_Pu10k  " idx(Pu100k->Pu10k)"  >> ;
-: +idx_Pu100k_Pu100k " idx(Pu100k->Pu100k)" >> ;
-: +idx_Pu100k_Pu1m   " idx(Pu100k->Pu1m)"   >> ;
-: +idx_Pu100k_Pu10m  " idx(Pu100k->Pu10m)"  >> ;
+: +idx_Pu100k_Pu10k  " idx(t:Pu100k->j:Pu10k)"  >> ;
+: +idx_Pu100k_Pu100k " idx(t:Pu100k->j:Pu100k)" >> ;
+: +idx_Pu100k_Pu1m   " idx(t:Pu100k->j:Pu1m)"   >> ;
+: +idx_Pu100k_Pu10m  " idx(t:Pu100k->j:Pu10m)"  >> ;
 
-: +idx_Pu1m_Pu10k    " idx(Pu1m->Pu10k)"    >> ;
-: +idx_Pu1m_Pu100k   " idx(Pu1m->Pu100k)"   >> ;
-: +idx_Pu1m_Pu1m     " idx(Pu1m->Pu1m)"     >> ;
-: +idx_Pu1m_Pu10m    " idx(Pu1m->Pu10m)"    >> ;
+: +idx_Pu1m_Pu10k    " idx(t:Pu1m->j:Pu10k)"    >> ;
+: +idx_Pu1m_Pu100k   " idx(t:Pu1m->j:Pu100k)"   >> ;
+: +idx_Pu1m_Pu1m     " idx(t:Pu1m->j:Pu1m)"     >> ;
+: +idx_Pu1m_Pu10m    " idx(t:Pu1m->j:Pu10m)"    >> ;
 
-: +idx_Pu10m_Pu10k   " idx(Pu10m->Pu10k)"   >> ;
-: +idx_Pu10m_Pu100k  " idx(Pu10m->Pu100k)"  >> ;
-: +idx_Pu10m_Pu1m    " idx(Pu10m->Pu1m)"    >> ;
-: +idx_Pu10m_Pu10m   " idx(Pu10m->Pu10m)"   >> ;
+: +idx_Pu10m_Pu10k   " idx(t:Pu10m->j:Pu10k)"   >> ;
+: +idx_Pu10m_Pu100k  " idx(t:Pu10m->j:Pu100k)"  >> ;
+: +idx_Pu10m_Pu1m    " idx(t:Pu10m->j:Pu1m)"    >> ;
+: +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
 
 
 : pre_0_1 "pre_0_1" ;
@@ -146,25 +168,25 @@ Path[].root
 : pre_0_6 "pre_0_6" ;
 : pre_0_9 "pre_0_9" ;
 
-: +pre_0_1_Pu10k  " pre(0.1 x Pu10k)"  >> ;
-: +pre_0_3_Pu10k  " pre(0.3 x Pu10k)"  >> ;
-: +pre_0_6_Pu10k  " pre(0.6 x Pu10k)"  >> ;
-: +pre_0_9_Pu10k  " pre(0.9 x Pu10k)"  >> ;
+: +pre_0_1_Pu10k  " pre(0.1 x t:Pu10k)"  >> ;
+: +pre_0_3_Pu10k  " pre(0.3 x t:Pu10k)"  >> ;
+: +pre_0_6_Pu10k  " pre(0.6 x t:Pu10k)"  >> ;
+: +pre_0_9_Pu10k  " pre(0.9 x t:Pu10k)"  >> ;
 
-: +pre_0_1_Pu100k " pre(0.1 x Pu100k)" >> ;
-: +pre_0_3_Pu100k " pre(0.3 x Pu100k)" >> ;
-: +pre_0_6_Pu100k " pre(0.6 x Pu100k)" >> ;
-: +pre_0_9_Pu100k " pre(0.9 x Pu100k)" >> ;
+: +pre_0_1_Pu100k " pre(0.1 x t:Pu100k)" >> ;
+: +pre_0_3_Pu100k " pre(0.3 x t:Pu100k)" >> ;
+: +pre_0_6_Pu100k " pre(0.6 x t:Pu100k)" >> ;
+: +pre_0_9_Pu100k " pre(0.9 x t:Pu100k)" >> ;
 
-: +pre_0_1_Pu1m   " pre(0.1 x Pu1m)"   >> ;
-: +pre_0_3_Pu1m   " pre(0.3 x Pu1m)"   >> ;
-: +pre_0_6_Pu1m   " pre(0.6 x Pu1m)"   >> ;
-: +pre_0_9_Pu1m   " pre(0.9 x Pu1m)"   >> ;
+: +pre_0_1_Pu1m   " pre(0.1 x t:Pu1m)"   >> ;
+: +pre_0_3_Pu1m   " pre(0.3 x t:Pu1m)"   >> ;
+: +pre_0_6_Pu1m   " pre(0.6 x t:Pu1m)"   >> ;
+: +pre_0_9_Pu1m   " pre(0.9 x t:Pu1m)"   >> ;
 
-: +pre_0_1_Pu10m  " pre(0.1 x Pu10m)"  >> ;
-: +pre_0_3_Pu10m  " pre(0.3 x Pu10m)"  >> ;
-: +pre_0_6_Pu10m  " pre(0.6 x Pu10m)"  >> ;
-: +pre_0_9_Pu10m  " pre(0.9 x Pu10m)"  >> ;
+: +pre_0_1_Pu10m  " pre(0.1 x t:Pu10m)"  >> ;
+: +pre_0_3_Pu10m  " pre(0.3 x t:Pu10m)"  >> ;
+: +pre_0_6_Pu10m  " pre(0.6 x t:Pu10m)"  >> ;
+: +pre_0_9_Pu10m  " pre(0.9 x t:Pu10m)"  >> ;
 
 
 /*----------------------------------------------------------------------------*/
