@@ -25,7 +25,6 @@ Path[].root
 
 : +join "    | indexJoin 1" >> ;
 
-: +idx " idx"  >> ;
 
 : +Pu10k_idx  " Pu10k idx"  >> ;
 : +Pu100k_idx " Pu100k idx" >> ;
@@ -60,7 +59,32 @@ Path[].root
 : +pre_0_6_Pu10m  " pre_0_6_Pu10m"  >> ;
 : +pre_0_9_Pu10m  " pre_0_9_Pu10m"  >> ;
 
+: +idx " idx"  >> ;
+
+: idx "idx" ;
+
+: +idx_Pu10k_Pu10k   " idx_Pu10k_Pu10k"   >> ;
+: +idx_Pu10k_Pu100k  " idx_Pu10k_Pu100k"  >> ;
+: +idx_Pu10k_Pu1m    " idx_Pu10k_Pu1m"    >> ;
+: +idx_Pu10k_Pu10m   " idx_Pu10k_Pu10m"   >> ;
+
+: +idx_Pu100k_Pu10k  " idx_Pu100k_Pu10k"  >> ;
+: +idx_Pu100k_Pu100k " idx_Pu100k_Pu100k" >> ;
+: +idx_Pu100k_Pu1m   " idx_Pu100k_Pu1m"   >> ;
+: +idx_Pu100k_Pu10m  " idx_Pu100k_Pu10m"  >> ;
+
+: +idx_Pu1m_Pu10k    " idx_Pu1m_Pu10k"    >> ;
+: +idx_Pu1m_Pu100k   " idx_Pu1m_Pu100k"   >> ;
+: +idx_Pu1m_Pu1m     " idx_Pu1m_Pu1m"     >> ;
+: +idx_Pu1m_Pu10m    " idx_Pu1m_Pu10m"    >> ;
+
+: +idx_Pu10m_Pu10k   " idx_Pu10m_Pu10k"   >> ;
+: +idx_Pu10m_Pu100k  " idx_Pu10m_Pu100k"  >> ;
+: +idx_Pu10m_Pu1m    " idx_Pu10m_Pu1m"    >> ;
+: +idx_Pu10m_Pu10m   " idx_Pu10m_Pu10m"   >> ;
+
 : +key " \"EQUAL $I1 $L1 ==\"" >> ;
+
 
 : pst_0_1 "pst_0_1" ;
 : pst_0_3 "pst_0_3" ;
@@ -102,15 +126,14 @@ Path[].root
 : tested    adiscard ;
 
 
+: fx find execute ;
 
-// "Pu10k" " pre_0_1"
+: _+ "+" swap >> ;
 
-: dub stk "_" swap >> stk >> stk "+" swap stk >> stk find execute stk ;
-
-
+: __ "_" swap >> >> ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
+/* form full pipeline statement                                               */
 /*----------------------------------------------------------------------------*/
 : pu_pipeline params| sStream |
   
@@ -134,7 +157,7 @@ Path[].root
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter | join | filter | agggby                                     */
+/* append aggreg -- scan | filter | join | filter | aggreg                    */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
                                                test_00
@@ -146,19 +169,19 @@ Path[].root
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter | join | filter                                              */
+/* append post-filter -- scan | filter | join | filter                        */
 /*----------------------------------------------------------------------------*/
 : pu_pstFilter params| j t s |
                                                test_00
-  s +filter pst_0_1 t dub nl                   ( ) gen t j pu_agggby
-  s +filter pst_0_3 t dub nl                   ( ) gen t j pu_agggby
-  s +filter pst_0_6 t dub nl                   ( ) gen t j pu_agggby
-  s +filter pst_0_9 t dub nl                   ( ) gen t j pu_agggby
+  s +filter "+" pst_0_1 t __ >> fx nl          ( ) gen t j pu_agggby
+  s +filter "+" pst_0_3 t __ >> fx nl          ( ) gen t j pu_agggby
+  s +filter "+" pst_0_6 t __ >> fx nl          ( ) gen t j pu_agggby
+  s +filter "+" pst_0_9 t __ >> fx nl          ( ) gen t j pu_agggby
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter | join                                                       */
+/* append join -- scan | filter | join                                        */
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
                                                test_00
@@ -170,19 +193,19 @@ Path[].root
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan | filter                                                              */
+/* append pre-filter -- scan | filter                                         */
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| t s |
                                                test_00
-  s +filter pre_0_1 t dub nl                   ( ) gen t pu_join
-  s +filter pre_0_3 t dub nl                   ( ) gen t pu_join
-  s +filter pre_0_6 t dub nl                   ( ) gen t pu_join
-  s +filter pre_0_9 t dub nl                   ( ) gen t pu_join
+  s +filter "+" pre_0_1 t __ >> fx nl          ( ) gen t pu_join
+  s +filter "+" pre_0_3 t __ >> fx nl          ( ) gen t pu_join
+  s +filter "+" pre_0_6 t __ >> fx nl          ( ) gen t pu_join
+  s +filter "+" pre_0_9 t __ >> fx nl          ( ) gen t pu_join
                                                tested
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  scan                                                                      */
+/*  append scan -- scan                                                       */
 /*----------------------------------------------------------------------------*/
 : pu_scan params| s |
                                                test_000
