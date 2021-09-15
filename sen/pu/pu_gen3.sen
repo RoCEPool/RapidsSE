@@ -1,0 +1,197 @@
+/*============================================================================*/
+/* pu_gen3.sen -- Power Unit Testing                                          */
+/*============================================================================*/
+
+" pu_gen3.sen" .
+
+Path[].save
+Path[].root
+
+: >> str.cat ;
+: nl "\n" str.cat ;
+: sp " "  str.cat ;
+
+: +scan   "      scan" ;
+
+: +Pu10k  " Pu10k"  >> ;
+: +Pu100k " Pu100k" >> ;
+: +Pu1m   " Pu1m"   >> ;
+: +Pu10m  " Pu10m"  >> ;
+
+: +indexJoin "    | indexJoin 1" >> ;
+
+: +idx " idx"  >> ;
+
+: +Pu10k_idx  " Pu10k idx"  >> ;
+: +Pu100k_idx " Pu100k idx" >> ;
+: +Pu1m_idx   " Pu1m idx"   >> ;
+: +Pu10m_idx  " Pu10m idx"  >> ;
+
+: +filter  "    | filter 1" >> ;
+  // type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
+
+: +pre_0_1 " pre_0_1" >> ;
+: +pre_0_3 " pre_0_3" >> ;
+: +pre_0_6 " pre_0_6" >> ;
+: +pre_0_9 " pre_0_9" >> ;
+
+: +join_key " \"EQUAL $I1 $L1 ==\"" >> ;
+
+: +pst_0_1 " pst_0_1" >> ;
+: +pst_0_3 " pst_0_3" >> ;
+: +pst_0_6 " pst_0_6" >> ;
+: +pst_0_9 " pst_0_9" >> ;
+
+: +aggreg "    | aggreg 1" >> ;
+
+: +agg " agg" >> ;
+
+: +gby_1    " gby_1"    >> ;
+: +gby_10   " gby_10"   >> ;
+: +gby_100  " gby_100"  >> ;
+: +gby_1000 " gby_1000" >> ;
+
+: test++    a> 1 + >a ;
+: test_00   a0 100 * >a ;
+: test_000  a0 1000 * >a ;
+: tested    adiscard ;
+
+: ncat 1 - dup >r 0 do >a loop   r> 0 do a> str.cat loop ;
+
+/*----------------------------------------------------------------------------*/
+/* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
+/*----------------------------------------------------------------------------*/
+: pu_pipeline params| sStream |
+  
+  "pipeline pu0" a0 >str               >> nl
+  "begin"                              >> nl
+  "  stage stageA on origin :"         >> nl
+  "      start"                        >> nl
+  "    | pulse once"                   >> nl
+  "    | stageB"                       >> nl
+  "  stage stageB on all partitions :" >> nl
+         sStream                       >>
+  "    | stageC"                       >> nl
+  "  stage stageC on origin :"         >> nl
+  "      sink"                         >> nl
+  "    | stageA"                       >> nl
+  " end ;"                             >> nl
+
+  .
+  
+  counter0[] 1 + to counter0[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join | filter | agggby                                     */
+/*----------------------------------------------------------------------------*/
+: pu_agggby params| sStream |
+
+  test_00
+
+  sStream +aggreg +agg +gby_1  nl   test++ pu_pipeline
+  sStream +aggreg +agg +gby_10 nl   test++ pu_pipeline
+  sStream +aggreg +agg +gby_100 nl  test++ pu_pipeline
+  sStream +aggreg +agg +gby_1000 nl test++ pu_pipeline
+  
+  tested
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join | filter                                              */
+/*----------------------------------------------------------------------------*/
+: pu_postFilter params| sStream |
+
+  test_00
+  
+  sStream +filter +pst_0_1 nl  test++ pu_agggby
+  sStream +filter +pst_0_3 nl  test++ pu_agggby
+  sStream +filter +pst_0_6 nl  test++ pu_agggby
+  sStream +filter +pst_0_9 nl  test++ pu_agggby
+  
+  tested
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter | join                                                       */
+/*----------------------------------------------------------------------------*/
+: pu_join params| sStream |
+
+  test_00
+  
+  sStream +indexJoin +Pu10k  +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu100k +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu1m   +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu10m  +idx +join_key nl test++ pu_postFilter
+  
+  tested
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan | filter                                                              */
+/*----------------------------------------------------------------------------*/
+: pu_preFilter params| sStream |
+
+  test_00
+  
+  sStream +filter +pre_0_1 nl   test++ pu_join
+  sStream +filter +pre_0_3 nl   test++ pu_join
+  sStream +filter +pre_0_6 nl   test++ pu_join
+  sStream +filter +pre_0_9 nl   test++ pu_join
+  
+  tested
+;
+
+/*----------------------------------------------------------------------------*/
+/*  scan                                                                      */
+/*----------------------------------------------------------------------------*/
+: pu_scan params| sStream |
+    
+  test_000
+  
+  sStream +scan +Pu10k  nl   test++ pu_preFilter
+  sStream +scan +Pu100k nl   test++ pu_preFilter
+  sStream +scan +Pu1m   nl   test++ pu_preFilter
+  sStream +scan +Pu10m  nl   test++ pu_preFilter
+    
+  tested
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: pu_begin
+
+  // 1 >a "" pu_scan adiscard
+  
+  // "" 2 pu_indexScan
+
+
+  "a" "b" "c" 3 ncat .
+  
+  
+  counter0[] .
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate pu tests                                                          */
+/*----------------------------------------------------------------------------*/
+: pu_gen \prompt
+
+  pu_begin
+;
+
+/*----------------------------------------------------------------------------*/
+/* run pu tests                                                               */
+/*----------------------------------------------------------------------------*/
+: pu_run \prompt
+
+;
+
+Path[].Restore
+
+pu_gen
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
