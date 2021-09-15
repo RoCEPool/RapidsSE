@@ -51,6 +51,10 @@ Path[].root
 : +gby_100  " gby_100"  >> ;
 : +gby_1000 " gby_1000" >> ;
 
+: test++    a> 1 + >a ;
+: test_00   a0 100 * >a ;
+: test_000  a0 1000 * >a ;
+: tested    adiscard ;
 
 /*----------------------------------------------------------------------------*/
 /* pipeline pu<test> stageA on origin : <stage> | stageA ;                    */
@@ -81,14 +85,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| sStream |
 
-  a0 100 * >a
+  test_00
 
-  a> 1 + >a sStream +aggreg +agg +gby_1  nl   pu_pipeline
-  a> 1 + >a sStream +aggreg +agg +gby_10 nl   pu_pipeline
-  a> 1 + >a sStream +aggreg +agg +gby_100 nl  pu_pipeline
-  a> 1 + >a sStream +aggreg +agg +gby_1000 nl pu_pipeline
+  sStream +aggreg +agg +gby_1  nl   test++ pu_pipeline
+  sStream +aggreg +agg +gby_10 nl   test++ pu_pipeline
+  sStream +aggreg +agg +gby_100 nl  test++ pu_pipeline
+  sStream +aggreg +agg +gby_1000 nl test++ pu_pipeline
   
-  adiscard
+  tested
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,14 +100,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_postFilter params| sStream |
 
-  a0 100 * >a
+  test_00
   
-  a> 1 + >a sStream +filter +pst_0_1 nl  pu_agggby
-  a> 1 + >a sStream +filter +pst_0_3 nl  pu_agggby
-  a> 1 + >a sStream +filter +pst_0_6 nl  pu_agggby
-  a> 1 + >a sStream +filter +pst_0_9 nl  pu_agggby
+  sStream +filter +pst_0_1 nl  test++ pu_agggby
+  sStream +filter +pst_0_3 nl  test++ pu_agggby
+  sStream +filter +pst_0_6 nl  test++ pu_agggby
+  sStream +filter +pst_0_9 nl  test++ pu_agggby
   
-  adiscard
+  tested
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,14 +115,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_join params| sStream |
 
-  a0 100 * >a
+  test_00
   
-  a> 1 + >a sStream +indexJoin +Pu10k  +idx +join_key nl pu_postFilter
-  a> 1 + >a sStream +indexJoin +Pu100k +idx +join_key nl pu_postFilter
-  a> 1 + >a sStream +indexJoin +Pu1m   +idx +join_key nl pu_postFilter
-  a> 1 + >a sStream +indexJoin +Pu10m  +idx +join_key nl pu_postFilter
+  sStream +indexJoin +Pu10k  +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu100k +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu1m   +idx +join_key nl test++ pu_postFilter
+  sStream +indexJoin +Pu10m  +idx +join_key nl test++ pu_postFilter
   
-  adiscard
+  tested
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,14 +130,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_preFilter params| sStream |
 
-  a0 100 * >a
+  test_00
   
-  a> 1 + >a sStream +filter +pre_0_1 nl   pu_join
-  a> 1 + >a sStream +filter +pre_0_3 nl   pu_join
-  a> 1 + >a sStream +filter +pre_0_6 nl   pu_join
-  a> 1 + >a sStream +filter +pre_0_9 nl   pu_join
+  sStream +filter +pre_0_1 nl   test++ pu_join
+  sStream +filter +pre_0_3 nl   test++ pu_join
+  sStream +filter +pre_0_6 nl   test++ pu_join
+  sStream +filter +pre_0_9 nl   test++ pu_join
   
-  adiscard
+  tested
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,14 +145,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_scan params| sStream |
     
-  a0 1000 * >a
+  test_000
   
-  a> 1 + >a sStream +scan +Pu10k  nl    pu_preFilter
-  a> 1 + >a sStream +scan +Pu100k nl    pu_preFilter
-  a> 1 + >a sStream +scan +Pu1m   nl    pu_preFilter
-  a> 1 + >a sStream +scan +Pu10m  nl    pu_preFilter
-  
-  adiscard
+  sStream +scan +Pu10k  nl   test++ pu_preFilter
+  sStream +scan +Pu100k nl   test++ pu_preFilter
+  sStream +scan +Pu1m   nl   test++ pu_preFilter
+  sStream +scan +Pu10m  nl   test++ pu_preFilter
+    
+  tested
 ;
 
 /*----------------------------------------------------------------------------*/
