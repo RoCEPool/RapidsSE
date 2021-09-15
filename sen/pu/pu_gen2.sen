@@ -135,7 +135,7 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /* form full pipeline statement                                               */
 /*----------------------------------------------------------------------------*/
-: pu_pipeline params| sStream |
+: pu_pipeline params| sStreamB |
   
   "pipeline pu0" a0 >str               >> nl
   "begin"                              >> nl
@@ -144,7 +144,7 @@ Path[].root
   "    | pulse once"                   >> nl
   "    | stageB"                       >> nl
   "  stage stageB on all partitions :" >> nl
-         sStream                       >>
+         sStreamB                      >>
   "    | stageC"                       >> nl
   "  stage stageC on origin :"         >> nl
   "      sink"                         >> nl
@@ -185,10 +185,18 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
                                                test_00
-  s +join +Pu10k  +idx +key nl                 ( ) gen t Pu10k  pu_pstFilter
-  s +join +Pu100k +idx +key nl                 ( ) gen t Pu100k pu_pstFilter
-  s +join +Pu1m   +idx +key nl                 ( ) gen t Pu1m   pu_pstFilter
-  s +join +Pu10m  +idx +key nl                 ( ) gen t Pu10m  pu_pstFilter
+  s +join +Pu10k
+    "+" idx t __ Pu10k  __ >> fx
+    +key nl                                    ( ) gen t Pu10k  pu_pstFilter
+  s +join +Pu100k
+    "+" idx t __ Pu100k __ >> fx
+    +key nl                                    ( ) gen t Pu100k pu_pstFilter
+  s +join +Pu1m
+    "+" idx t __ Pu1m   __ >> fx
+    +key nl                                    ( ) gen t Pu1m   pu_pstFilter
+  s +join +Pu10m
+    "+" idx t __ Pu10m  __ >>
+    fx +key nl                                 ( ) gen t Pu10m  pu_pstFilter
                                                tested
 ;
 
