@@ -10,6 +10,7 @@ Path[].root
 : >> str.cat ;
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
+: +x " x " str.cat ;
 : gen a> 1 + >a ;
 : test_0 a0 10 * >a ;
 : test_00 a0 100 * >a ;
@@ -18,6 +19,8 @@ Path[].root
 : fx find execute ;
 : _+ "+" swap >> ;
 : __ "_" swap >> >> ;
+
+: [n] >str "[" swap >> >> "]" >> ;
 
 
 : scan    "      scan"           ;
@@ -29,6 +32,21 @@ Path[].root
 : Pu100k "Pu100k" ;
 : Pu1m   "Pu1m"   ;
 : Pu10m  "Pu10m"  ;
+
+: t:Pu10k  "t(Pu10k)"  string1[].set ;
+: t:Pu100k "t(Pu100k)" string1[].set ;
+: t:Pu1m   "t(Pu1m)"   string1[].set ;
+: t:Pu10m  "t(Pu10m)"  string1[].set ;
+
+: j:Pu10k  "j(Pu10k)"  string3[].set ;
+: j:Pu100k "j(Pu100k)" string3[].set ;
+: j:Pu1m   "j(Pu1m)"   string3[].set ;
+: j:Pu10m  "j(Pu10m)"  string3[].set ;
+
+: g:1      "g(1)"      string5[].set ;
+: g:10     "g(10)"     string5[].set ;
+: g:100    "g(100)"    string5[].set ;
+: g:1000   "g(1000)"   string5[].set ;
 
 : +Pu10k  " " >> Pu10k  >> ;
 : +Pu100k " " >> Pu100k >> ;
@@ -86,10 +104,10 @@ Path[].root
 : +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
 
 
-: pst_0_1 "pst_0_1" ;
-: pst_0_3 "pst_0_3" ;
-: pst_0_6 "pst_0_6" ;
-: pst_0_9 "pst_0_9" ;
+: pst_0_1 "pst_0_1" "post(0.1)" string4[].set ;
+: pst_0_3 "pst_0_3" "post(0.3)" string4[].set ;
+: pst_0_6 "pst_0_6" "post(0.6)" string4[].set ;
+: pst_0_9 "pst_0_9" "post(0.9)" string4[].set ;
 
 : +pst_0_1_Pu10k  " pst(0.1 x j:Pu10k)"  >> ;
 : +pst_0_3_Pu10k  " pst(0.3 x j:Pu10k)"  >> ;
@@ -159,10 +177,10 @@ Path[].root
 : +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
 
 
-: pre_0_1 "pre_0_1" ;
-: pre_0_3 "pre_0_3" ;
-: pre_0_6 "pre_0_6" ;
-: pre_0_9 "pre_0_9" ;
+: pre_0_1 "pre_0_1" "pre(0.1)" string2[].set ;
+: pre_0_3 "pre_0_3" "pre(0.3)" string2[].set ;
+: pre_0_6 "pre_0_6" "pre(0.6)" string2[].set ;
+: pre_0_9 "pre_0_9" "pre(0.9)" string2[].set ;
 
 : +pre_0_1_Pu10k  " pre(0.1 x t:Pu10k)"  >> ;
 : +pre_0_3_Pu10k  " pre(0.3 x t:Pu10k)"  >> ;
@@ -193,10 +211,29 @@ Path[].root
   
    counter0[] 1 + to counter0[]
 
-  "// - - - - - - - - - - - - - - - - "    nl
-  "// pu test " counter0[] >str >>      >> nl
-  "// - - - - - - - - - - - - - - - - " >> nl
+//  string0[] .
+//  string1[] .
+//  string3[] .
 
+  "\n"
+  "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
+  " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
+
+  "// pu test "           >>
+    counter0[] >str       >>
+    " : "                 >>
+    0 [n] string0[] +x    >>
+    0 [n] string1[] +x    >>
+    0 [n] string2[] +x    >>
+    0 [n] string3[] +x    >>
+    0 [n] string4[] +x    >>
+    0 [n] string5[] sp    >>
+    nl
+    
+  "// - - - - - - - - - - - - - - - - - - - - - - - - - -" >>
+  " - - - - - - - - - - - - - - - - - - - - - - - - - - -" >> nl
+
+  
   "pipeline pu0" >> a0 >str             >> nl
   "begin"                               >> nl
   "  stage stageA on origin :"          >> nl
@@ -225,16 +262,16 @@ Path[].root
                                                test_0
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1g __ >> fx                   ( ) nl gen pu_pipeline
+    "+" gby j __ 1g __ >> fx            g:1    ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 10g __ >> fx                  ( ) nl gen pu_pipeline
+    "+" gby j __ 10g __ >> fx           g:10   ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 100g __ >> fx                 ( ) nl gen pu_pipeline
+    "+" gby j __ 100g __ >> fx          g:100  ( ) nl gen pu_pipeline
   s +aggreg
     "+" agg t __ j  __ >> fx
-    "+" gby j __ 1000g __ >> fx                ( ) nl gen pu_pipeline
+    "+" gby j __ 1000g __ >> fx         g:1000 ( ) nl gen pu_pipeline
                                                tested
 ;
 
@@ -257,16 +294,16 @@ Path[].root
                                                test_0
   s +join +Pu10k
     "+" idx t __ Pu10k  __ >> fx
-    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu10k  pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu10k  ( ) nl gen t Pu10k  pu_pstFilter
   s +join +Pu100k
     "+" idx t __ Pu100k __ >> fx
-    "+" key t __ Pu10k  __ >> fx               ( ) nl gen t Pu100k pu_pstFilter
+    "+" key t __ Pu10k  __ >> fx      j:Pu100k ( ) nl gen t Pu100k pu_pstFilter
   s +join +Pu1m
     "+" idx t __ Pu1m   __ >> fx
-    "+" key t __ Pu1m   __ >> fx               ( ) nl gen t Pu1m   pu_pstFilter
+    "+" key t __ Pu1m   __ >> fx      j:Pu1m   ( ) nl gen t Pu1m   pu_pstFilter
   s +join +Pu10m
     "+" idx t __ Pu10m  __ >> fx
-    "+" key t __ Pu10m  __ >> fx               ( ) nl gen t Pu10m  pu_pstFilter
+    "+" key t __ Pu10m  __ >> fx      j:Pu10m  ( ) nl gen t Pu10m  pu_pstFilter
                                                tested
 ;
 
@@ -285,12 +322,12 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 /*  append scan -- scan                                                       */
 /*----------------------------------------------------------------------------*/
-: pu_scan
+: pu_scan "scan" string0[].set
                                                test_0
-  scan +Pu10k                                  ( ) nl gen Pu10k  pu_preFilter
-  scan +Pu100k                                 ( ) nl gen Pu100k pu_preFilter
-  scan +Pu1m                                   ( ) nl gen Pu1m   pu_preFilter
-  scan +Pu10m                                  ( ) nl gen Pu10m  pu_preFilter
+  scan +Pu10k                        t:Pu10k   ( ) nl gen Pu10k  pu_preFilter
+  scan +Pu100k                       t:Pu100k  ( ) nl gen Pu100k pu_preFilter
+  scan +Pu1m                         t:Pu1m    ( ) nl gen Pu1m   pu_preFilter
+  scan +Pu10m                        t:Pu10m   ( ) nl gen Pu10m  pu_preFilter
                                                tested
 ;
 

@@ -183,10 +183,16 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
+  m_iCounterA = 0;
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
-  
+  m_iCounter3 = 0;
+  m_iCounter4 = 0;
+  m_iCounter5 = 0;
+  m_iCounter6 = 0;
+  m_iCounter7 = 0;
+
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;
   m_sString1  = ""_Stz;

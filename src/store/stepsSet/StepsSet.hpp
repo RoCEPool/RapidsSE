@@ -1369,12 +1369,25 @@ public:
   void vRegSendsNew(void);
 
   // reg counter
-  void vRegCounter0Get(void);
-  void vRegCounter1Get(void);
-  void vRegCounter2Get(void);
-  void vRegCounter0Set(void);
-  void vRegCounter1Set(void);
-  void vRegCounter2Set(void);
+  void vCounterAGet(void);
+  void vCounter0Get(void);
+  void vCounter1Get(void);
+  void vCounter2Get(void);
+  void vCounter3Get(void);
+  void vCounter4Get(void);
+  void vCounter5Get(void);
+  void vCounter6Get(void);
+  void vCounter7Get(void);
+
+  void vCounterASet(void);
+  void vCounter0Set(void);
+  void vCounter1Set(void);
+  void vCounter2Set(void);
+  void vCounter3Set(void);
+  void vCounter4Set(void);
+  void vCounter5Set(void);
+  void vCounter6Set(void);
+  void vCounter7Set(void);
 
   // reg folder
   void vRegFolderFindSymbol(void);

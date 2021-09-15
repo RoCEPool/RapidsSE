@@ -234,10 +234,16 @@ namespace STORE
     bool                m_bCompilerToExit;
     bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
+    i8                  m_iCounterA;   // counter
     i8                  m_iCounter0;   // counter
     i8                  m_iCounter1;   // counter
     i8                  m_iCounter2;   // counter
-        
+    i8                  m_iCounter3;   // counter
+    i8                  m_iCounter4;   // counter
+    i8                  m_iCounter5;   // counter
+    i8                  m_iCounter6;   // counter
+    i8                  m_iCounter7;   // counter
+
     s4K                 m_sStringA;    // string
     s256                m_sString0;    // string
     s256                m_sString1;    // string
