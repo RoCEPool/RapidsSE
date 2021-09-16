@@ -25,8 +25,8 @@ assert::stack_0
         "se_dbg.sen"              include
 
 "se_boot 8" .verbose
-        "OP__tpl_lite.sen"          include
-        "OP__tpl_locallite.sen"     include
+        "OP__tpl_lite.sen"        include
+        "OP__tpl_locallite.sen"   include
         "cmd_cmdTags.sen"         include
         "cmd_compiler.sen"        include
 
@@ -43,17 +43,17 @@ assert::stack_0
         "db_tenant.sen"           include
 
 "se_boot 5" .verbose
-        "job_words.sen"           include
+        "job__words.sen"          include
 
         "job_Abstract.sen"        include
 
-        "job_ended.sen"          include
-        "job_end.sen"            include
-        "job_cancelled.sen"      include
-        "job_cancel.sen"         include
-        "job_executed.sen"       include
-        "job_execute.sen"        include
-        "job_begun.sen"          include
+        "job_ended.sen"           include
+        "job_end.sen"             include
+        "job_cancelled.sen"       include
+        "job_cancel.sen"          include
+        "job_executed.sen"        include
+        "job_execute.sen"         include
+        "job_begun.sen"           include
 
         "job_pipeline.sen"        include
         "job_pipelineLocal.sen"   include
@@ -61,45 +61,45 @@ assert::stack_0
 
 "se_boot 4" .verbose
 
-        "se_pipeline.sen"             include
+        "se_pipeline.sen"         include
         
-        "op__errors.sen"              include
-        "op__defHandlers.sen"         include
-        "op__EOCommon.sen"            include
-        "op__CompilerCommon.sen"      include
-        "op__stats.sen"               include
-        "op__common.sen"              include
-        "reg__common.sen"             include
-        "OP_failed.sen"               include
+        "op__errors.sen"          include
+        "op__defHandlers.sen"     include
+        "op__EOCommon.sen"        include
+        "op__CompilerCommon.sen"  include
+        "op__stats.sen"           include
+        "op__common.sen"          include
+        "reg__common.sen"         include
+        "OP_failed.sen"           include
 
-        "se_includeOps.sen"           include
+        "se_includeOps.sen"       include
 
 "se_boot 3" .verbose
-        "OP_EOAsm.sen"                include
-        "OP_EOAsm2.sen"               include
+        "OP_EOAsm.sen"            include
+        "OP_EOAsm2.sen"           include
 
 "se_boot 2" .verbose
-        "test_dData.sen"              include
-        "test_encodingData.sen"       include
-        "test_gGen.sen"               include
-        "test_iData.sen"              include
-        "test_jData.sen"              include
-        "test_misc.sen"               include
-        "test_pu.sen"                 include
-        "test_sleep.sen"              include
-        "test_str.sen"                include
-        "test_tData.sen"              include
-        "test_unit.sen"               include
-        "test_1m.sen"                 include
+        "test_dData.sen"          include
+        "test_encodingData.sen"   include
+        "test_gGen.sen"           include
+        "test_iData.sen"          include
+        "test_jData.sen"          include
+        "test_misc.sen"           include
+        "test_pu.sen"             include
+        "test_sleep.sen"          include
+        "test_str.sen"            include
+        "test_tData.sen"          include
+        "test_unit.sen"           include
+        "test_1m.sen"             include
 
 "se_boot 1" .verbose
-        "se_demons.sen"               include
-        "se_experiments.sen"          include
-        "se_llc.sen"                  include
-        "se_memoryStats.sen"          include
-        "se_munge.sen"                include
-        "se_stepTests.sen"            include
-        "se_stepTiming.sen"           include
+        "se_demons.sen"           include
+        "se_experiments.sen"      include
+        "se_llc.sen"              include
+        "se_memoryStats.sen"      include
+        "se_munge.sen"            include
+        "se_stepTests.sen"        include
+        "se_stepTiming.sen"       include
 
 //"BEFORE fillOut_allCmds" .
 
@@ -108,19 +108,19 @@ cmd::fillOut_allCmds
 //"AFTER fillOut_allCmds" .
 
 
-        "pp_close_system.sen"         include
-        "pp_open_system.sen"          include
+        "pp_close_system.sen"     include
+        "pp_open_system.sen"      include
 
       
-        "se_procedures.sen"           include //
+        "se_procedures.sen"       include //
         
-        "se_proceduresB.sen"          include //
+        "se_proceduresB.sen"      include //
 
-        "pp_puLoad.sen"               include //
+        "pp_puLoad.sen"           include //
         
-        "se_defineTables.sen"         include // second last
+        "se_defineTables.sen"     include // second last
         
-        "job_start.sen"               include // last last
+        "job_start.sen"           include // last last
 
 .\n
 
