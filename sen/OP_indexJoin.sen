@@ -94,6 +94,7 @@
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
+    Pipein[].delete
     true
     exit
   then

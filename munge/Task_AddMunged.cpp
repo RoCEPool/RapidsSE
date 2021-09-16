@@ -12657,6 +12657,7 @@ void Task::vAddMunged(Task* )
     "  0 ZK_M_START EG_ZK LogicUnit[].diaryNote\n"
     "\n"
     "  <tableNm> <indexNm> op__table_index not if\n"
+    "    Pipein[].delete\n"
     "    true\n"
     "    exit\n"
     "  then\n"

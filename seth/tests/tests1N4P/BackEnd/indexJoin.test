@@ -1,0 +1,907 @@
+--------------------------------------------------------------------------------
+-- INDEX JOIN tests --- PARTITIONED ON INDEX KEYJOINS (UNICAST)
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+//------------------------------------------------------------------------------
+// CO-PARTITIONED INDEXJOIN ( NO LEFT DATA )
+// T1.a = T2.a
+// PtnKey[T1] = a
+// PtnKey[T2] = a
+// IdxKey[T2] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_idx on T2 (a);
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 1 "type boolean $6 500 >= "
+    | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $4 500 >= "
+    | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// CO-PARTITIONED JOIN ( NO RIGHT DATA )
+// T1.a = T2.a
+// PtnKey[T1] = a
+// PtnKey[T2] = a
+// IdxKey[T2] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_idx on T2 (a);
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 1 "type boolean $6 500 >= "
+    | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $4 500 >= "
+    | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// CO-PARTITIONED JOIN (NO LEFT AND RIGHT DATA)
+// T1.a = T2.a
+// PtnKey[T1] = a
+// PtnKey[T2] = a
+// IdxKey[T2] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_idx on T2 (a);
+success
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 1 "type boolean $6 500 >= "
+    | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $4 500 >= "
+    | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+
+rows: 0
+
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// CO-PARTITIONED JOIN
+// T1.a = T2.a
+// PtnKey[T1] = a
+// PtnKey[T2] = a
+// IdxKey[T2] = a
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+load T1 "../DATA/Joins/T1.csv" ;
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_idx on T2 (a);
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows:
+  (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
+  (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
+  (3,303,33993,'T-ROW3',3,337,3339,'J-ROW3b')
+  (4,null,4344,'T-ROW4',4,464,444,'J-ROW4')
+  (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+  (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+  (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+  (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $6 500 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+ (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+  (6,'T-ROW6',6,null,666,'J-ROW6')
+  (7,'T-ROW7',7,7347,null,'J-ROW7')
+  (1,'T-ROW1',1,181,111,'J-ROW1')
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 1 "type boolean $6 500 >= "
+    | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+  (3,303,33993,'T-ROW3',3,'J-ROW3a')
+  (7,727,7377,'T-ROW7',7,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | filter 0 "type boolean $2 500 >= "
+    | project 0 "type integer $1 , type varchar $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 1 "type boolean $4 500 >= "
+    | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows:
+  (7,'T-ROW7',7,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop table T1;
+  mute
+
+  drop table T2;
+  mute
+
+  bye;
+  mute
+}
