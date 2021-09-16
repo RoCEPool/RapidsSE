@@ -2,7 +2,7 @@
 /* job_PipelineSeeds.sen -- Pipeline Job Seeds                                */
 /*============================================================================*/
 
-" job_seedPipeline.sen" .verbose
+" job_PipelineSeeds.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/

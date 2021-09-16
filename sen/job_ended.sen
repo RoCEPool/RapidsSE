@@ -1,35 +1,37 @@
 /*============================================================================*/
-/* job__Executed.sen -- generic job related words                             */
+/* job_ended.sen -- ended 2pc job (pipeline coordination)                     */
 /*============================================================================*/
 
-" job__Executed.sen" .verbose
+" job_ended.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on participating node                           //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Executed back to originating node                                */
+/* send Job_Ended back to originating node                                    */
 /*----------------------------------------------------------------------------*/
-: executed::replyToOrigin ( pJobParticipant -- )
+: ended::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
-  0 0 0 locals| pJob pJob__Executed error |
+  0 locals| pJob_Ended |
 
-  // new a temporary Job__Executed
-  pJobParticipant job__Executed::new to pJob__Executed
+  //grid::thisNodeName@ "(%v) ENDED::send" .printf
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // send the executed job
-  iJobId job::originator@ pJob__Executed job.reply
+  // new a temporary Job_Ended
+  pJobParticipant job_Ended::new to pJob_Ended
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Executed job.delete2pc
+  // send the ended job
+  iJobId job::originator@ pJob_Ended job.reply
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Ended job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,51 +39,55 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Executed on originating node    recv: job.spawn */
+/* run received Job_Ended on originating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Executed_run [ word::seed# ]
+: ended::ended [ word::seed# ]
 
-  Job[] locals| pJob__Executed |
-  pJob__Executed job.id@ locals| iJobId |
+  Job[] locals| pJob_Ended |
+  pJob_Ended job.id@ locals| iJobId |
 
-  0 0 0 locals| iParticipantNode error bAmDecider |
+  0 locals| bAmDecider |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __executed job
+  // get the context of this __ended job
 
   // find the originating job
   iJobId olist::findJob discard
 
-  // get the participant node from where this job__begun started
-  pJob__Executed job.participantNode@ to iParticipantNode
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __executed job on this originating node
+  // process __ended job on this originating node
 
-  // increment the number of __executed jobs received in api state
-  JobRef[] ssn::incExecuted
+  // increment the number of __ended jobs received in api state
+  JobRef[] ssn::incEnded
   JobRef[] ssn::traceSession
 
   // decrement the acks remaining
   JobRef[] job.dec2pcAcksRmg to bAmDecider
 
-  //grid::thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
-
+  //grid::thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
-  //grid::thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
+  //grid::thisNodeName@ "(%v) ENDED AM DECIDER" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __executed jobs have been received, so this job is the decider
+  // all __ended jobs have been received, so this job is the decider
 
-  // send a job__end to all participants
-  JobRef[] end::distribute
+  begin
+    JobRef[].references
+  1 > while
+  repeat
+
+  // remove the originating job from the originator jobs
+  //Job[].removeOriginator
+
+  // notify the originating task
+  JobRef[].task@ task.ack
   JobRef[].returnReference
-
+  
   _job_2pc_delete_
 ;
 
@@ -89,16 +95,15 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Executed :: _Executed ;
+cmdSyntax: _Ended :: _Ended ;
 
-: _Executed_cmdTags _cmdTags tagCopy: genericJob_tags
+: _Ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_executed_run"
+    <seedRun>  = "ended::ended"
     <path>     = "/"
   }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,59 +1,35 @@
 /*============================================================================*/
-/* job__Cancelled.sen -- generic job related words                            */
+/* job_begun.sen -- begun 2pc job (pipeline coordination)                     */
 /*============================================================================*/
 
-" job__Cancelled.sen" .verbose
-
-
-/*----------------------------------------------------------------------------*/
-/* done executing a rcv seed                                                  */
-/*----------------------------------------------------------------------------*/
-: DONE_RCV ( -- )
-
-  DdlLock[].testDrop
-  
-  // unlink task and job
-  Task[].job@ if
-    //nullptr Task[].job@ job.task!
-    //nullptr Task[].job!
-  then
-
-  Task[].grabLock
-    true Job[].reapable!
-    TR_RETIRE_THIS_TASK Task[].transition!
-
-  HAZARD
-;
+" job_begun.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on participating node                           //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Cancelled back to originating node                               */
+/* send Job_Begun back to originating node                                    */
 /*----------------------------------------------------------------------------*/
-: cancelled::replyToOrigin ( pJobParticipant -- )
+: begun::replyToOrigin params| pJobParticipant |
 
-  params| pJobParticipant |
-
+  // "begun::replyToOrigin" .
+  
   pJobParticipant job.id@ locals| iJobId |
 
-  0 0 0 locals| pJob pJob__Cancelled error |
+  0 locals| pJob_Begun |
 
-  // new a temporary Job__Cancelled
-  pJobParticipant job__Cancelled::new to pJob__Cancelled
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // send the cancelled job
-  iJobId job::originator@ locals| iOriginator |
-  //iOriginator pJob__Cancelled jobCancelled.cancelOriginator!
-
-  iOriginator pJob__Cancelled job.reply
+  // new a temporary Job_Executed
+  pJobParticipant job_Begun::new to pJob_Begun
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Cancelled job.delete2pc
+  // send the begun job
+  iJobId job::originator@ pJob_Begun job.reply
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Begun job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,36 +37,45 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run recieved Job__Cancelled on originating node   recv: job.spawn */
+/* run this received Job_Begun on originating node  recv: job.spawn           */
 /*----------------------------------------------------------------------------*/
-: _Cancelled_run [ word::seed# ]
+: begun::begun [ word::seed# ]
 
-  <path> str.toStrVec Path[].set
-  
-  
-  Job[] locals| pJob__Cancelled |
-  pJob__Cancelled job.id@ locals| iJobId |
+
+  // "begun::begun" .
+
+  //
+  // where:  On the originator node.
+  // event:  A Job_Begun has been received from a participating node
+  //         indicating the job has been received and put into the
+  //         participating jobs list.
+  // data:   The job will exist in the originating jobs list.
+  // action: 1) find the job in the originating list;
+  //         2) decrement its ack's remaining
+  //         3) if all acks received distribute Job_Execute
+  //
+
+  Job[] locals| pJob_Begun |
+
+  pJob_Begun job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __cancelled job
+  // get the context of this __begun job
 
   // find the originating job
   iJobId olist::findJob discard
 
-  // get the participant node from where this job__begun started
-  pJob__Cancelled job.participantNode@ to iParticipantNode
-
+  // get the participant node from where this job_begun started
+  pJob_Begun job.participantNode@ to iParticipantNode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
 
-  // increment the number of __cancelled jobs received in api state
-  JobRef[] ssn::incCancelled
+  // increment the number of __begun jobs received in api state
+  JobRef[] ssn::incBegun
   JobRef[] ssn::traceSession
-
-
 
   // decrement the acks remaining in the originating job
   JobRef[] job.dec2pcAcksRmg to bAmDecider
@@ -98,30 +83,16 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
-    DONE_RCV
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all job__cancelled's have been received, so this job is the decider
+  // all job_begun's have been received, so this job is the decider
 
-  begin
-    JobRef[].references
-  1 > while
-  repeat
-
-  // remove the originating job from the originator jobs
-  //Job[].removeOriginator
-
-  // notify the originating task
-  JobRef[].task@ task.ack
+  // distribute Job_Execute to all participants
+  JobRef[] execute::distribute
   JobRef[].returnReference
-
-  // delete this completed __cancelled job
-  DONE_RCV
-  
   _job_2pc_delete_
 ;
 
@@ -129,12 +100,12 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Cancelled :: _Cancelled ;
+cmdSyntax: _Begun :: _Begun ;
 
-: _Cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
+: _Begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_cancelled_run"
+    <seedRun>  = "begun::begun"
     <path>     = "/"
   }
 ;

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_Pipeline.sen -- Pipeline Job (being a distributed job)                 */
+/* job_pipeline.sen -- Distributed Pipeline Job                               */
 /*============================================================================*/
 
-" job_Pipeline.sen" .verbose
+" job_pipeline.sen" .verbose
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

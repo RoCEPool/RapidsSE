@@ -184,7 +184,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job__find)                                  TO BE REMOVED */
+/* constructor (for job_find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Object(eClassNo)

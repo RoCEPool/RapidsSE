@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_Abstract.sen -- Abstract/Common Job                                    */
+/* job_abstract.sen -- Abstract/Common Job                                    */
 /*============================================================================*/
 
-" job_Abstract.sen" .verbose
+" job_abstract.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distribute current originating job to all nodes as participating job       */

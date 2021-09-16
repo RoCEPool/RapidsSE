@@ -754,13 +754,13 @@ public:
   void vJobRefTaskFetch(void);
 
   // job generic
-  void vJob__BegunNew(void);
-  void vJob__CancelNew(void);
-  void vJob__CancelledNew(void);
-  void vJob__EndNew(void);
-  void vJob__EndedNew(void);
-  void vJob__ExecuteNew(void);
-  void vJob__ExecutedNew(void);
+  void vJob_BegunNew(void);
+  void vJob_CancelNew(void);
+  void vJob_CancelledNew(void);
+  void vJob_EndNew(void);
+  void vJob_EndedNew(void);
+  void vJob_ExecuteNew(void);
+  void vJob_ExecutedNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);

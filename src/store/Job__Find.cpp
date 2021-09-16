@@ -28,10 +28,10 @@ Job__Find* STORE::_pJob__Find(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job__Find::operator new(size_t)
 {
-  Job__Find* pJob__Executed =
+  Job__Find* pJob_Executed =
     static_cast<Job__Find*>(Heaps::pAllocate(CN_JOB__FIND));
   
-  return pJob__Executed;
+  return pJob_Executed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,9 +47,9 @@ void* Job__Find::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Job__Find::operator delete(void* aAddress)
 {
-  Job__Find* pJob__Executed = static_cast<Job__Find*>(aAddress);
+  Job__Find* pJob_Executed = static_cast<Job__Find*>(aAddress);
   
-  Heaps::vFree(pJob__Executed);
+  Heaps::vFree(pJob_Executed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,9 +86,9 @@ void Job__Find::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(aTab);
 
-  Job__Find* pJob__Executed = _pJob__Find(pObject);
+  Job__Find* pJob_Executed = _pJob__Find(pObject);
 
-  pJob__Executed->vShow();
+  pJob_Executed->vShow();
 }
 
 /*----------------------------------------------------------------------------*/

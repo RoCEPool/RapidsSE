@@ -47,16 +47,16 @@ assert::stack_0
 
         "job_Abstract.sen"        include
 
-        "job__Ended.sen"          include
-        "job__End.sen"            include
-        "job__Cancelled.sen"      include
-        "job__Cancel.sen"         include
-        "job__Executed.sen"       include
-        "job__Execute.sen"        include
-        "job__Begun.sen"          include
+        "job_ended.sen"          include
+        "job_end.sen"            include
+        "job_cancelled.sen"      include
+        "job_cancel.sen"         include
+        "job_executed.sen"       include
+        "job_execute.sen"        include
+        "job_begun.sen"          include
 
-        "job_Pipeline.sen"        include
-        "job_PipelineLocal.sen"   include
+        "job_pipeline.sen"        include
+        "job_pipelineLocal.sen"   include
         "job_PipelineSeeds.sen"   include
 
 "se_boot 4" .verbose
