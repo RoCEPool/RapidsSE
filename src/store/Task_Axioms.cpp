@@ -378,7 +378,7 @@ void Task::vAddAxioms(void)
         \"compiling munged dictionary...\" .    \
       then                                      \
                                                 \
-      \"se_boot.sen\" include                   \
+      \"se_include.sen\" include                \
                                                 \
       Job[].removeLocal                         \
       Job[].addRetired                          \

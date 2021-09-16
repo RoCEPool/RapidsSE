@@ -1,16 +1,17 @@
 /*============================================================================*/
-/* se_boot.sen -- compile the dictionary                                      */
+/* se_include.sen -- master include sequence (called from boot::boot)         */
 /*============================================================================*/
 
-"se_boot.sen" .verbose
+"se_include.sen" .verbose
 
 assert::stack_0
 
-"Sen Compilation Progress: " .verbose
+"Sen Master Include Sequence: " .verbose
 
         "se_core.sen"             include
         
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" constant STD_PATH
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  constant STD_PATH
 
 "se_boot 9" .verbose
         "se_word.sen"             include
@@ -73,7 +74,7 @@ assert::stack_0
         "reg__common.sen"             include
         "OP_failed.sen"               include
 
-        "se_bootOps.sen"              include
+        "se_includeOps.sen"           include
 
 "se_boot 3" .verbose
         "OP_EOAsm.sen"                include

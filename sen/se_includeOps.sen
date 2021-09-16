@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* se_bootOps.sen -- compile the OP_ .sen files                                */
+/* se_includeOps.sen -- include OP_ sequence                                  */
 /*============================================================================*/
 
-"se_bootOps.sen" .verbose
+"se_includeOps.sen" .verbose
 
 assert::stack_0
 
