@@ -143,6 +143,145 @@ rows:
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Name resolution tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Given this definition of a WITH clause...
+
+// selectQuery : [ <withClause> ] <selectExpr> ;
+// withClause : WITH <withElement> [ , <withElement> ... ] ;
+// withElement : <tableAlias> [ <columnList> ] AS '(' <selectQuery> ')' ;
+
+// ...a <selectQuery> of a given <withElement> can only refer to a <tableAlias>
+// of a prior sibling <withElement>. Here, "prior sibling" means another <withElement>
+// that shares the same parent as the current <withElement>.
+// In addition, the <selectExpr> can also only refer to a <tableAlias> of
+// a <withElement> that shares the same parent as the <selectExpr>.
+// Each reference must be a backwards reference (the table alias must already
+// have been defined), not a forward reference (the table alias is yet to be defined).
+
+// This is a base pattern that we will repeat.
+// This statement is ok. Each individual <withElement>
+// doesn't refer to any other <tableAlias>.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+success
+
+// In this statement the query for the <withElement> that defines t3
+// refers to t2 which is defined in a prior sibling <withElement>.
+// This statement is also ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT n_regionkey AS r_regionkey FROM t2)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+success
+
+// In this statement the select query for the <withElement> that defines t2
+// refers to the tableAlias t3, which is defined in a sibling <withElement>
+// but it is not a *prior* sibling <withElement>. Instead this is a forward reference.
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT r_regionkey AS n_regionkey FROM t3),
+    t3 AS (SELECT * FROM nation)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+failure contains: '???'
+
+// Here we are expanding the base pattern with another <withElement>
+// that defines the tableAlias t4 (which never gets used).
+// This statement is ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM nation)
+  SELECT * FROM t1;
+success
+
+// In this statement the <withElement> that defines t3 has a select
+// expression that references t4. However t4 is not defined in a
+// sibling <withElement> (it's actually an "uncle" <withElement>).
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM t4)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM nation)
+  SELECT * FROM t1;
+failure contains: '???'
+
+// In this statement the <withElement> that defines t4 has a select expr
+// that references t1. This is allowed because the <withElement>s that
+// define t4 and t1 are siblings and t1 is defined in a *prior* sibling.
+// This statement is ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t1)
+SELECT * FROM t1;
+success
+
+
+// In this statement the <withElement> that defines t4 has a select expr
+// that is referencing t2. However the <withElement> that defines t2 is
+// not a sibling of the <withElement> that defines t4 (it is a nephew/niece
+// relationship instead), even though t2 is defined prior to its use in t4.
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t2)
+  SELECT * FROM t1;
+failure contains: '???'
+
+// In this statement we see the main subquery refer to t2.
+// However t2 is not defined in a sibling <withElement> with respect
+// to the main subquery (again, it's defined in a nephew/niece relationship).
+// This statement is not ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t1)
+  SELECT * FROM t2;
+failure contains: '???'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

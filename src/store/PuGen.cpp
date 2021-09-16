@@ -169,7 +169,7 @@ void PuGen::vGroups(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 void PuGen::vOther(RowBuffer* pRowBuffer, i8 iKey)
 {
-  pRowBuffer->vDepositColVal(RndLib::iInteger(iKey));    // _int
+  pRowBuffer->vDepositColVal(IntLib::iPrime_10k(iKey % C_10K)); // _int
   
   Dte iColVal_date;
   iColVal_date.m_uYearDelta = 2021 - C_YEAR_BASE;
