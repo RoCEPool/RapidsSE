@@ -6,8 +6,8 @@ create table Pu100k (
     pu100k_100k integer not null
   , pu100k_10k  integer not null
   
-  , pu100k_pre  integer not null
-  , pu100k_pst  integer not null
+  , pu100k_ft   integer not null
+  , pu100k_fj   integer not null
     
   , pu10k_1000g integer not null
   , pu10k_100g  integer not null
@@ -18,8 +18,8 @@ create table Pu100k (
   , pu100k_dte  date    not null
   , pu100k_str  varchar not null
 );
-create index idx_100k on Pu100k (pu100k_100k);
-create index idx_10k  on Pu100k (pu100k_10k);
+create index Pu100k_100k on Pu100k (pu100k_100k);
+create index Pu100k_10k  on Pu100k (pu100k_10k);
 
 /time puLoad Pu100k;
 
