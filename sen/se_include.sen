@@ -6,8 +6,6 @@
 
 assert::stack_0
 
-"Sen Master Include Sequence: " .verbose
-
         "se_core.sen"             include
         
 "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"

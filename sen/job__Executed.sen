@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Executed back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::replyToOrigin ( pJobParticipant -- )
+: executed::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
@@ -79,7 +79,7 @@
   // all __executed jobs have been received, so this job is the decider
 
   // send a job__end to all participants
-  JobRef[] Job__End::distribute
+  JobRef[] end::distribute
   JobRef[].returnReference
 
   _job_2pc_delete_

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__End to all participants                                    */
 /*----------------------------------------------------------------------------*/
-: Job__End::distribute params| pJobOriginator |
+: end::distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.

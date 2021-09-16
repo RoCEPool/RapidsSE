@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::distribute params| pJobOriginator |
+: execute::distribute params| pJobOriginator |
 
-  // "Job__Execute::distribute" .
+  // "execute::distribute" .
 
   //
   // where: on the originator node

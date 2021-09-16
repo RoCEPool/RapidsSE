@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Cancel to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::distribute params| pJobOriginator |
+: cancel::distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.

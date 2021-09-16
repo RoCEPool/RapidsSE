@@ -177,7 +177,7 @@
   JP_BEGUN Job[].phase!
   nullptr Job[].seedWord!
      
-  Job[] Job__Begun::replyToOrigin
+  Job[] begun::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -261,7 +261,7 @@
   DdlLock[].testDrop
   JobRef[].none
   
-  Job[] Job__Executed::replyToOrigin
+  Job[] executed::replyToOrigin
   
   Task[].grabLock
   
@@ -303,7 +303,7 @@
 
   DdlLock[].testDrop
   
-  Job[] Job__Ended::replyToOrigin
+  Job[] ended::replyToOrigin
 
   JS_DELETABLE Job[].state!
   Job[].addRetired
@@ -335,7 +335,7 @@
 
   Job[].removeParticipant
     
-  Job[] Job__Cancelled::replyToOrigin
+  Job[] cancelled::replyToOrigin
 
   JS_DELETABLE Job[].state!
 

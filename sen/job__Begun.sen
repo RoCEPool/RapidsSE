@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Begun back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::replyToOrigin params| pJobParticipant |
+: begun::replyToOrigin params| pJobParticipant |
 
-  // "Job__Begun::replyToOrigin" .
+  // "begun::replyToOrigin" .
   
   pJobParticipant job.id@ locals| iJobId |
 
@@ -91,7 +91,7 @@
   // all job__begun's have been received, so this job is the decider
 
   // distribute Job__Execute to all participants
-  JobRef[] Job__Execute::distribute
+  JobRef[] execute::distribute
   JobRef[].returnReference
   _job_2pc_delete_
 ;
