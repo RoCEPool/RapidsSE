@@ -139,6 +139,9 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     //<ddlLock>  = DL_GRAB_READ
     
     <seedReq>   = "pipelineLocal_req"
+    
+    <entry>     = "pipelineLocal_req"
+
   }
 ;
 

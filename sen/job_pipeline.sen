@@ -364,6 +364,9 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <seedExe>  = "pipelineSeed_exe"
     <seedEnd>  = "pipelineSeed_end"
     <seedCan>  = "pipelineSeed_can"
+    
+    <entry>    = "pipeline::origin"
+
 
   }
 ;
