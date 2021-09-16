@@ -28,6 +28,29 @@ select * from Pu10k where pu10k_10k > 10000 - 10;
 //select avg(pu10k_10k) from Pu10k;
 //select avg(pu10k_10k) from Pu10k group by pu10k_10g;
 
+
+/*
+pipeline p
+begin
+
+  stage stageA on origin :
+      start
+    | pulse once
+    | stageB
+        
+  stage stageB on all partitions :
+      scan Pu10k
+    | indexJoin 1 Pu100k Pu100k_10k "EQUAL $I1 $L1 =="
+    | stageC
+    
+  stage stageC on origin :
+      sink
+    | stageA
+    
+end ;
+
+*/
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
