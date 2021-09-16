@@ -97,6 +97,8 @@ namespace STORE
   private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
+  
+    s4K m_sEntry;   // sen entry code
 
     // must be last
     Footer m_xFooter;
@@ -143,6 +145,8 @@ namespace STORE
     void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
+    Stz* szEntry(void);
+    void vEntry(Stz* szEntry);
     void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szTagNm);
     bool bHasTag_bg(void);
