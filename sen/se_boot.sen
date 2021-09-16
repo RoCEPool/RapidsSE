@@ -45,7 +45,9 @@ assert::stack_0
 
 "se_boot 5" .verbose
         "job_words.sen"           include
-    
+
+        "job_Abstract.sen"        include
+
         "job__Ended.sen"          include
         "job__End.sen"            include
         "job__Cancelled.sen"      include
