@@ -532,22 +532,24 @@ void LogicUnit::vCleanup(void)
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
     if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
-      s32 sBytesAlloc;
-      MagLib::vByteMag(m_xpStats->m_nBytesAlloc, sBytesAlloc);
-
-      s32 sBytesFree;
-      MagLib::vByteMag(m_xpStats->m_nFrees, sBytesFree);
-
-      s32 sMaxBytes;
-      MagLib::vByteMag(m_xpStats->m_nMaxBytes, sMaxBytes);
-
-      s32 sBytesRead;
-      MagLib::vByteMag(m_xpStats->m_nBytesRead, sBytesRead);
-
-      s32 sBytesWrite;
-      MagLib::vByteMag(m_xpStats->m_nBytesWrite, sBytesWrite);
 
       if (p_Reg->m_eLogicUnitReg == LR_STATS) {
+
+        s32 sBytesAlloc;
+        MagLib::vByteMag(m_xpStats->m_nBytesAlloc, sBytesAlloc);
+
+        s32 sBytesFree;
+        MagLib::vByteMag(m_xpStats->m_nFrees, sBytesFree);
+
+        s32 sMaxBytes;
+        MagLib::vByteMag(m_xpStats->m_nMaxBytes, sMaxBytes);
+
+        s32 sBytesRead;
+        MagLib::vByteMag(m_xpStats->m_nBytesRead, sBytesRead);
+
+        s32 sBytesWrite;
+        MagLib::vByteMag(m_xpStats->m_nBytesWrite, sBytesWrite);
+
         vTrace("%10s %16s (P%02lld) : "
                "cpu %8lldus "
                "maxq %6lld "
