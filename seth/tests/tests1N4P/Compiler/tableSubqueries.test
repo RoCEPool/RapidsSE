@@ -91,8 +91,6 @@ rows:
 // Basic positive test
 EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1;
 
-// TODO: Test the naming of the columns returned
-
 // Test that anonymous FROM subqueries are given a table alias name
 EXPLAIN SELECT * FROM ( SELECT * FROM nation );
 
@@ -140,6 +138,50 @@ rows:
 //  Nested table subqueries
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Simple, multiple <withElements>
+EXPLAIN
+  WITH
+  t10 AS (
+    SELECT * FROM nation
+  ),
+  t20 AS (
+    SELECT * FROM region
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
+
+// Nested table subqueries
+EXPLAIN
+  WITH
+  t10 AS (
+    WITH t11 AS (SELECT * FROM region)
+    SELECT * FROM nation, t11
+  ),
+  t20 AS (
+    WITH t21 AS (SELECT * FROM nation)
+    SELECT * FROM region JOIN t21 ON r_regionkey = n_regionkey
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
+
+
+// Multiple nested table subqueries
+EXPLAIN
+  WITH
+  t10 AS (
+    WITH
+    t11 AS (SELECT * FROM region),
+    t12 AS (SELECT * FROM nation),
+    SELECT * FROM t11, t12
+  ),
+  t20 AS (
+    WITH
+    t21 AS (SELECT * FROM nation),
+    t22 AS (SELECT * FROM region)
+    SELECT * FROM t21 JOIN t22 ON r_regionkey = n_regionkey
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -280,6 +322,72 @@ EXPLAIN
   t4 AS (SELECT * FROM t1)
   SELECT * FROM t2;
 failure contains: '???'
+
+
+// A table alias that is in scope and has the same name as a real table takes
+// precedence when it is referenced.
+EXPLAIN
+  WITH nation AS ( SELECT * FROM region)
+  SELECT * FROM nation;
+// TODO: We expect the output plan to contain the columns from region, not nation
+//       as the CTE alias "nation" is in scope from the main subquery and it
+//       takes precedence over the real table "nation".
+
+
+// A table alias that is not in scope and has the same name as a real table should
+// have no effect when it is referenced.
+// In this statement the outermost main subquery is reading all columns of "nation".
+// The only in-scope CTE alias is "t1", so the main subquery should end up reading
+// the real table "nation".
+// The inner-most CTE that has a table alias of "nation" is not in scope with respect
+// to the outer-most main subquery.
+EXPLAIN
+  WITH t1 AS (
+    WITH nation AS (SELECT * FROM region)
+    SELECT * FROM nation WHERE r_regionkey < 3;
+  )
+  SELECT * FROM nation;
+// TODO: We expect the outer-most subquery to read from the real table "nation",
+//       despite the inner-most CTE defined with the same name (it is not in scope
+//       with respect to the main subquery).
+
+
+// CTE table aliases cannot be qualified, so if the main subquery references a
+// table name that is qualified then it must not match with the CTE table alias
+EXPLAIN
+  WITH nation AS (SELECT * FROM region)
+  SELECT * FROM rapidsse.public.nation;
+// TODO: Expect to read the real table rapidsse.public.nation.
+
+// Same as previous, but only partially qualifying the real table name.
+EXPLAIN
+  WITH nation AS (SELECT * FROM region)
+  SELECT * FROM public.nation;
+// TODO: Expect to read the real table rapidsse.public.nation.
+
+// Here our main subquery is reading from the CTE alias "nation", which itself
+// is reading from the base table rapidsse.public.nation.
+EXPLAIN
+  WITH nation AS (SELECT * FROM rapidsse.public.nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation.
+
+// As above, but the CTE query is only partially qualified
+EXPLAIN
+  WITH nation AS (SELECT * FROM public.nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation.
+
+// In this statement the CTE is defining an alias "nation" but also reading
+// from "nation". Because this is not a recursive CTE, the CTE should resolve
+// the real table rapidsse.public.nation and then alias it as "nation".
+// The main subquery then reads from this aliased table.
+EXPLAIN
+  WITH nation AS (SELECT * FROM nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation, which is reading the real
+//       table rapidsse.public.nation
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
