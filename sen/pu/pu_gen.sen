@@ -65,25 +65,25 @@ Path[].root
 : 100g  "100g" ;
 : 1000g "1000g" ;
 
-: +gby_Pu10k_1g      " gb(j:Pu10k_1g)"     >> ;
-: +gby_Pu10k_10g     " gb(j:Pu10k_10g)"    >> ;
-: +gby_Pu10k_100g    " gb(j:Pu10k_100g)"   >> ;
-: +gby_Pu10k_1000g   " gb(j:Pu10k_1000g)"  >> ;
+: +gby_Pu10k_1g      " gby(j:Pu10k_1g)"     >> ;
+: +gby_Pu10k_10g     " gby(j:Pu10k_10g)"    >> ;
+: +gby_Pu10k_100g    " gby(j:Pu10k_100g)"   >> ;
+: +gby_Pu10k_1000g   " gby(j:Pu10k_1000g)"  >> ;
 
-: +gby_Pu100k_1g     " gb(j:Pu100k_1g)"    >> ;
-: +gby_Pu100k_10g    " gb(j:Pu100k_10g)"   >> ;
-: +gby_Pu100k_100g   " gb(j:Pu100k_100g)"  >> ;
-: +gby_Pu100k_1000g  " gb(j:Pu100k_1000g)" >> ;
+: +gby_Pu100k_1g     " gby(j:Pu100k_1g)"    >> ;
+: +gby_Pu100k_10g    " gby(j:Pu100k_10g)"   >> ;
+: +gby_Pu100k_100g   " gby(j:Pu100k_100g)"  >> ;
+: +gby_Pu100k_1000g  " gby(j:Pu100k_1000g)" >> ;
 
-: +gby_Pu1m_1g       " gb(j:Pu1m_1g)"      >> ;
-: +gby_Pu1m_10g      " gb(j:Pu1m_10g)"     >> ;
-: +gby_Pu1m_100g     " gb(j:Pu1m_100g)"    >> ;
-: +gby_Pu1m_1000g    " gb(j:Pu1m_1000g)"   >> ;
+: +gby_Pu1m_1g       " gby(j:Pu1m_1g)"      >> ;
+: +gby_Pu1m_10g      " gby(j:Pu1m_10g)"     >> ;
+: +gby_Pu1m_100g     " gby(j:Pu1m_100g)"    >> ;
+: +gby_Pu1m_1000g    " gby(j:Pu1m_1000g)"   >> ;
 
-: +gby_Pu10m_1g      " gb(j:Pu10m_1g)"     >> ;
-: +gby_Pu10m_10g     " gb(j:Pu10m_10g)"    >> ;
-: +gby_Pu10m_100g    " gb(j:Pu10m_100g)"   >> ;
-: +gby_Pu10m_1000g   " gb(j:Pu10m_1000g)"  >> ;
+: +gby_Pu10m_1g      " gby(j:Pu10m_1g)"     >> ;
+: +gby_Pu10m_10g     " gby(j:Pu10m_10g)"    >> ;
+: +gby_Pu10m_100g    " gby(j:Pu10m_100g)"   >> ;
+: +gby_Pu10m_1000g   " gby(j:Pu10m_1000g)"  >> ;
 
 
 : agg "agg" ;
@@ -109,30 +109,30 @@ Path[].root
 : +agg_Pu10m_Pu10m   " agg(t:Pu10,j:Pu10m)"    >> ;
 
 
-: pst_0_1 "pst_0_1" "fj(0.1)" string4[].set ;
-: pst_0_3 "pst_0_3" "fj(0.3)" string4[].set ;
-: pst_0_6 "pst_0_6" "fj(0.6)" string4[].set ;
-: pst_0_9 "pst_0_9" "fj(0.9)" string4[].set ;
+: fj_0_1 "fj_0_1" "fj(0.1)" string4[].set ;
+: fj_0_3 "fj_0_3" "fj(0.3)" string4[].set ;
+: fj_0_6 "fj_0_6" "fj(0.6)" string4[].set ;
+: fj_0_9 "fj_0_9" "fj(0.9)" string4[].set ;
 
-: +pst_0_1_Pu10k  " fj(0.1 x j:Pu10k)"  >> ;
-: +pst_0_3_Pu10k  " fj(0.3 x j:Pu10k)"  >> ;
-: +pst_0_6_Pu10k  " fj(0.6 x j:Pu10k)"  >> ;
-: +pst_0_9_Pu10k  " fj(0.9 x j:Pu10k)"  >> ;
+: +fj_0_1_Pu10k  " fj(0.1 x j:Pu10k)"  >> ;
+: +fj_0_3_Pu10k  " fj(0.3 x j:Pu10k)"  >> ;
+: +fj_0_6_Pu10k  " fj(0.6 x j:Pu10k)"  >> ;
+: +fj_0_9_Pu10k  " fj(0.9 x j:Pu10k)"  >> ;
 
-: +pst_0_1_Pu100k " fj(0.1 x j:Pu100k)" >> ;
-: +pst_0_3_Pu100k " fj(0.3 x j:Pu100k)" >> ;
-: +pst_0_6_Pu100k " fj(0.6 x j:Pu100k)" >> ;
-: +pst_0_9_Pu100k " fj(0.9 x j:Pu100k)" >> ;
+: +fj_0_1_Pu100k " fj(0.1 x j:Pu100k)" >> ;
+: +fj_0_3_Pu100k " fj(0.3 x j:Pu100k)" >> ;
+: +fj_0_6_Pu100k " fj(0.6 x j:Pu100k)" >> ;
+: +fj_0_9_Pu100k " fj(0.9 x j:Pu100k)" >> ;
 
-: +pst_0_1_Pu1m   " fj(0.1 x j:Pu1m)"   >> ;
-: +pst_0_3_Pu1m   " fj(0.3 x j:Pu1m)"   >> ;
-: +pst_0_6_Pu1m   " fj(0.6 x j:Pu1m)"   >> ;
-: +pst_0_9_Pu1m   " fj(0.9 x j:Pu1m)"   >> ;
+: +fj_0_1_Pu1m   " fj(0.1 x j:Pu1m)"   >> ;
+: +fj_0_3_Pu1m   " fj(0.3 x j:Pu1m)"   >> ;
+: +fj_0_6_Pu1m   " fj(0.6 x j:Pu1m)"   >> ;
+: +fj_0_9_Pu1m   " fj(0.9 x j:Pu1m)"   >> ;
 
-: +pst_0_1_Pu10m  " fj(0.1 x j:Pu10m)"  >> ;
-: +pst_0_3_Pu10m  " fj(0.3 x j:Pu10m)"  >> ;
-: +pst_0_6_Pu10m  " fj(0.6 x j:Pu10m)"  >> ;
-: +pst_0_9_Pu10m  " fj(0.9 x j:Pu10m)"  >> ;
+: +fj_0_1_Pu10m  " fj(0.1 x j:Pu10m)"  >> ;
+: +fj_0_3_Pu10m  " fj(0.3 x j:Pu10m)"  >> ;
+: +fj_0_6_Pu10m  " fj(0.6 x j:Pu10m)"  >> ;
+: +fj_0_9_Pu10m  " fj(0.9 x j:Pu10m)"  >> ;
 
 
 : key "key" ;
@@ -182,30 +182,30 @@ Path[].root
 : +idx_Pu10m_Pu10m   " idx(t:Pu10m->j:Pu10m)"   >> ;
 
 
-: pre_0_1 "pre_0_1" "ft(0.1)" string2[].set ;
-: pre_0_3 "pre_0_3" "ft(0.3)" string2[].set ;
-: pre_0_6 "pre_0_6" "ft(0.6)" string2[].set ;
-: pre_0_9 "pre_0_9" "ft(0.9)" string2[].set ;
+: ft_0_1 "ft_0_1" "ft(0.1)" string2[].set ;
+: ft_0_3 "ft_0_3" "ft(0.3)" string2[].set ;
+: ft_0_6 "ft_0_6" "ft(0.6)" string2[].set ;
+: ft_0_9 "ft_0_9" "ft(0.9)" string2[].set ;
 
-: +pre_0_1_Pu10k  " ft(0.1 x t:Pu10k)"  >> ;
-: +pre_0_3_Pu10k  " ft(0.3 x t:Pu10k)"  >> ;
-: +pre_0_6_Pu10k  " ft(0.6 x t:Pu10k)"  >> ;
-: +pre_0_9_Pu10k  " ft(0.9 x t:Pu10k)"  >> ;
+: +ft_0_1_Pu10k  " ft(0.1 x t:Pu10k)"  >> ;
+: +ft_0_3_Pu10k  " ft(0.3 x t:Pu10k)"  >> ;
+: +ft_0_6_Pu10k  " ft(0.6 x t:Pu10k)"  >> ;
+: +ft_0_9_Pu10k  " ft(0.9 x t:Pu10k)"  >> ;
 
-: +pre_0_1_Pu100k " ft(0.1 x t:Pu100k)" >> ;
-: +pre_0_3_Pu100k " ft(0.3 x t:Pu100k)" >> ;
-: +pre_0_6_Pu100k " ft(0.6 x t:Pu100k)" >> ;
-: +pre_0_9_Pu100k " ft(0.9 x t:Pu100k)" >> ;
+: +ft_0_1_Pu100k " ft(0.1 x t:Pu100k)" >> ;
+: +ft_0_3_Pu100k " ft(0.3 x t:Pu100k)" >> ;
+: +ft_0_6_Pu100k " ft(0.6 x t:Pu100k)" >> ;
+: +ft_0_9_Pu100k " ft(0.9 x t:Pu100k)" >> ;
 
-: +pre_0_1_Pu1m   " ft(0.1 x t:Pu1m)"   >> ;
-: +pre_0_3_Pu1m   " ft(0.3 x t:Pu1m)"   >> ;
-: +pre_0_6_Pu1m   " ft(0.6 x t:Pu1m)"   >> ;
-: +pre_0_9_Pu1m   " ft(0.9 x t:Pu1m)"   >> ;
+: +ft_0_1_Pu1m   " ft(0.1 x t:Pu1m)"   >> ;
+: +ft_0_3_Pu1m   " ft(0.3 x t:Pu1m)"   >> ;
+: +ft_0_6_Pu1m   " ft(0.6 x t:Pu1m)"   >> ;
+: +ft_0_9_Pu1m   " ft(0.9 x t:Pu1m)"   >> ;
 
-: +pre_0_1_Pu10m  " ft(0.1 x t:Pu10m)"  >> ;
-: +pre_0_3_Pu10m  " ft(0.3 x t:Pu10m)"  >> ;
-: +pre_0_6_Pu10m  " ft(0.6 x t:Pu10m)"  >> ;
-: +pre_0_9_Pu10m  " ft(0.9 x t:Pu10m)"  >> ;
+: +ft_0_1_Pu10m  " ft(0.1 x t:Pu10m)"  >> ;
+: +ft_0_3_Pu10m  " ft(0.3 x t:Pu10m)"  >> ;
+: +ft_0_6_Pu10m  " ft(0.6 x t:Pu10m)"  >> ;
+: +ft_0_9_Pu10m  " ft(0.9 x t:Pu10m)"  >> ;
 
 //expr example: type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and
 
@@ -279,10 +279,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_jFilter params| j t s |
 
-  s +filter +fx( pst_0_1 t __ )fx nl                        1 >c4 t j pu_agggby
-  s +filter +fx( pst_0_3 t __ )fx nl                        2 >c4 t j pu_agggby
-  s +filter +fx( pst_0_6 t __ )fx nl                        3 >c4 t j pu_agggby
-  s +filter +fx( pst_0_9 t __ )fx nl                        4 >c4 t j pu_agggby
+  s +filter +fx( fj_0_1 t __ )fx nl                         1 >c4 t j pu_agggby
+  s +filter +fx( fj_0_3 t __ )fx nl                         2 >c4 t j pu_agggby
+  s +filter +fx( fj_0_6 t __ )fx nl                         3 >c4 t j pu_agggby
+  s +filter +fx( fj_0_9 t __ )fx nl                         4 >c4 t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -309,10 +309,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
 
-  s +filter +fx( pre_0_1 t __ )fx nl                            1 >c2 t pu_join
-  s +filter +fx( pre_0_3 t __ )fx nl                            2 >c2 t pu_join
-  s +filter +fx( pre_0_6 t __ )fx nl                            3 >c2 t pu_join
-  s +filter +fx( pre_0_9 t __ )fx nl                            4 >c2 t pu_join
+  s +filter +fx( ft_0_1 t __ )fx nl                             1 >c2 t pu_join
+  s +filter +fx( ft_0_3 t __ )fx nl                             2 >c2 t pu_join
+  s +filter +fx( ft_0_6 t __ )fx nl                             3 >c2 t pu_join
+  s +filter +fx( ft_0_9 t __ )fx nl                             4 >c2 t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
