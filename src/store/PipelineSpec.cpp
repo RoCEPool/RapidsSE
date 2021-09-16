@@ -684,11 +684,12 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
-    tPN tPtnNo = sLocus.szStz()->iToI8();
-    if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
+    PtnId tPtnId;
+    tPtnId = sLocus.szStz()->iToI8();
+    if (tPtnId.iAsI8() >= AM::PTNMAP::nPtnsInGrid())
       return false;
     
-    p_StageSpec->vSpecificPtnNo(tPtnNo);
+    p_StageSpec->vSpecificPtnId(tPtnId);
     return true;
   }
   

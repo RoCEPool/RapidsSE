@@ -40,7 +40,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
   m_iBucketNo  = C_UNKNOWN;
-  m_tPtnNo     = C_UNKNOWN;
+  m_tPtnId     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
@@ -227,15 +227,15 @@ void DataBuffer::vBucketNo(i8 iBucketNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bucket no from a PtnNo                                                 */
+/* set bucket no from a PtnId                                                 */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vToBucketNo(tPN tPtnNo)
+void DataBuffer::vToBucketNo(PtnId tPtnId)
 {
   if (!m_pTable) {
     vTrace("DataBuffer::vToBucketNo No table from DataBuffer\n"_Stz);
   } else {
     vTrace("DataBuffer::vToBucketNo table from DataBuffer:%s\n"_Stz, m_pTable->szTableNm()->azChar());
-    m_iBucketNo = m_pTable->iPtnToBkt(tPtnNo);
+    m_iBucketNo = m_pTable->iPtnToBkt(tPtnId);
   }
 
 }
@@ -282,23 +282,33 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
+/* set partition Id                                                           */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnNo(i8 tPtnNo)
+void DataBuffer::vPtnId(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_tPtnNo = tPtnNo;
+  m_tPtnId = tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
+/* set partition Id                                                           */
 /*----------------------------------------------------------------------------*/
-i8 DataBuffer::tPtnNo(void)
+void DataBuffer::vPtnId(i8 tPtnId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_tPtnId = tPtnId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition Id                                                           */
+/*----------------------------------------------------------------------------*/
+PtnId DataBuffer::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_tPtnNo;
+  return m_tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/

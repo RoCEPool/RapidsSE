@@ -1140,7 +1140,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
   EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree);
   
   pNewBuffer->vBufferHeight(m_iBufferHeight+1);
-  pNewBuffer->vPtnNo(m_tPtnNo);
+  pNewBuffer->vPtnId(m_tPtnId);
   
   vHigherEntBuffer(pNewBuffer);
   
@@ -1449,7 +1449,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree);
   
   pNewBuffer->vBufferHeight(m_iBufferHeight);
-  pNewBuffer->vPtnNo(m_tPtnNo);
+  pNewBuffer->vPtnId(m_tPtnId);
   
   pNewBuffer->vHigherEntBuffer(_pEntBuffer(pHigherEntBuffer()));
   pNewBuffer->vPrevEntBuffer(this);

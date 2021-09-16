@@ -114,7 +114,7 @@ Stream* Stage::pGetPartitionStream(i8 i_Ptn)
     pStageSpec = pStream->pStageSpec();
     
     if ( ! pStageSpec->bNodeTopo() &&
-        pStream->tPtnNo() == i_Ptn)
+        pStream->tPtnId().iAsI8() == i_Ptn)
       return pStream;
   }
   
@@ -162,7 +162,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnNo());
+      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId().iAsI8());
       if (iNode_exe == iNode) {
         nOps += pStream->nItems();
       }
@@ -185,7 +185,7 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
+Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 {
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
@@ -206,14 +206,14 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGet(tDstPtnNo);
+      pPtnStream = pGet(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
@@ -223,18 +223,18 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
-      ASSERT(pPtnStream->tPtnNo() == tDstPtnNo);
+      ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
@@ -354,7 +354,7 @@ void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  tPN tPtnNo;
+  PtnId tPtnId;
   i8 i_Node;
   i8 i_Stream;
   Stream* pStream;
@@ -367,10 +367,10 @@ void Stage::vCreateStreams(void)
     case PO_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
-      tPtnNo = C_UNKNOWN;
+      tPtnId.vAsI8(C_UNKNOWN);
       for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
         i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
-        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_NodeNo); //i_Node);
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_NodeNo); //i_Node);
         vAdd(pStream);
       }
       break;
@@ -378,13 +378,13 @@ void Stage::vCreateStreams(void)
     case PO_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
-      tPtnNo = C_UNKNOWN;
+      tPtnId.vAsI8(C_UNKNOWN);
       i_Node = m_pPipeline->i_Origin();
       //if (i_Node < 100) {
       //  printf("BAD node\n");
       //  i_Node = AM::iGetNthNodeNo(i_Node);
       //}
-      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
       vAdd(pStream);
       break;
         
@@ -397,23 +397,26 @@ void Stage::vCreateStreams(void)
 
     case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+      for (i8 tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
+        tPtnId.vAsI8(tPtnNo);
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
         //if (i_Node < 100) printf("1 BAD node\n");
-        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
-        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+
+        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
         vAdd(pStream);
       }
       break;
       
     case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+      for (i8 tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
+        tPtnId.vAsI8(tPtnNo);
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
         //if (i_Node < 100) printf("2 BAD node\n");
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
-          pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+          pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
           vAdd(pStream);
         }
       }
@@ -421,11 +424,12 @@ void Stage::vCreateStreams(void)
       
     case PO_SPECIFIC_PARTITION: // create a stream for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
-      tPtnNo = m_pStageSpec->tSpecificPtnNo();
-      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+      tPtnId = m_pStageSpec->tSpecificPtnId();
+
+      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
       //if (i_Node < 100) printf("3 BAD node\n");
-      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
-      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
       vAdd(pStream);
       break;
       

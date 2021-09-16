@@ -38,17 +38,24 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_GID_PTNID
+TablePtn::TablePtn(Table *pTable, PtnId tPtnNo)
+: Object(CN_TABLEPTN), m_okLock(this) {
+#else
 TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
     : Object(CN_TABLEPTN), m_okLock(this) {
+#endif
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
   m_pTable = pTable;
-  m_tPtnNo = tPtnNo;
-
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
 
-  m_tMappedPtn = -1;
+#ifdef WITH_GID_PTNID
+  m_tPtnId= tPtnNo;
+#else
+  m_tPtnNo = tPtnNo;
+  m_tMappedPtn = -1; // this will not be used after the new type implemented
+#endif
 
   eTT eTableKind = m_pTable->eKind();
   switch (eTableKind) {
@@ -165,25 +172,25 @@ eCN TablePtn::eKind(void) {
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-tPN TablePtn::tPtnNo(void) {
+PtnId TablePtn::tPtnId(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  return m_tPtnNo;
+  return m_tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set a mapped ptn number to be used                                         */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vSetMappedPtn(tPN tPtn) {
+void TablePtn::vSetMappedPtn(PtnId tPtn) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   // Set the ptn to be used
-  m_tMappedPtn = tPtn;
+  //m_tMappedPtn = tPtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in bucket map) of this table partition           */
 /*----------------------------------------------------------------------------*/
-tPN  TablePtn::tMappedPtnNo(void)
+PtnId  TablePtn::tMappedPtnNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   return m_tMappedPtn;
@@ -205,11 +212,21 @@ Table *TablePtn::pTable(void) {
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_GID_PTNID
+void TablePtn::vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
+  m_pBucketVec->vAdd(pBucket);
+}
+#else
+
 void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo, eCN eKind) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
+#endif
+
 
 /*----------------------------------------------------------------------------*/
 /* remove bucket                                                              */
@@ -285,9 +302,9 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // append buffer first, then indexes
 
   // Convert partition to bucket
-  i8 iBktNo =  m_pTable->iPtnToBkt(pDataBuffer->tPtnNo());
+  i8 iBktNo =  m_pTable->iPtnToBkt(pDataBuffer->tPtnId());
   //i8 iBktNo = pDataBuffer->iBucketNo();
-  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnNo());
+  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId().iAsI8());
 
   i8 nItems = m_pBucketVec->nItems();
   Bucket *pBucket = nullptr;

@@ -32,7 +32,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
-               tPN tPtnNo, i8 i_Node)
+               PtnId tPtnId, i8 i_Node)
 : LifeGuard_t<Stream>(this,CN_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
@@ -44,7 +44,7 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
   m_pStage     = pStage;
   m_pPipeline  = pStage->pPipeline();
   
-  m_tPtnNo     = tPtnNo;
+  m_tPtnId     = tPtnId;
   m_i_Node     = i_Node;
   m_i_Stream   = i_Stream;
   
@@ -144,11 +144,11 @@ Pipeline* Stream::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
-i8 Stream::tPtnNo(void)
+PtnId Stream::tPtnId(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_tPtnNo;
+  return m_tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@ void Stream::vSpawnOpTasks(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     i_OnNode = m_i_Node;
   else
-    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnNo);
+    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId.iAsI8());
   
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn

@@ -296,7 +296,7 @@ void Op::vAckPipelineJob(void)
                szOpNm(),
                m_pStream->pStage()->szStageNm(),
                iNode(),
-               tPtnNo());
+               tPtnId().iAsI8());
       }
     }
 
@@ -323,7 +323,7 @@ void Op::vAckPipelineJob(void)
              szOpNm(),
              m_pStream->pStage()->szStageNm(),
              iNode(),
-             tPtnNo(),
+             tPtnId().iAsI8(),
              nAcksWereRemaining);
 }
 
@@ -539,7 +539,7 @@ void Op::vDump(void)
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_i_Node=%lld\n"_Stz,iNode());
-  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
+  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnId().iAsI8());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,7 +1071,7 @@ i8 Op::iNode(void)
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     i_Node = m_pStream->i_Node();
   else
-    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo());
+    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId().iAsI8());
 
   return i_Node;
 }
@@ -1184,7 +1184,7 @@ void Op::vOpTrace(Operand* pOperand
          m_sOpNm.szStz(),
          m_pStream->pStage()->szStageNm(),
          iNode(),
-         tPtnNo(),
+         tPtnId().iAsI8(),
          pPipelineJob(),
 
          szFunNm,
@@ -1389,7 +1389,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnNo(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnId(),iNextOp());
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
@@ -1612,18 +1612,18 @@ Operand* Op::pPopRight(void)
 /*----------------------------------------------------------------------------*/
 /* get partition from op                                                      */
 /*----------------------------------------------------------------------------*/
-tPN Op::tPtnNo(void)
+PtnId Op::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 tPtnNo;
+  PtnId tPtnId;
 
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    tPtnNo = C_UNKNOWN;
+    tPtnId.vAsI8(C_UNKNOWN);
   else
-    tPtnNo = m_pStream->tPtnNo();
+    tPtnId = m_pStream->tPtnId();
   
-  return tPtnNo;
+  return tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/

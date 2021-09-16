@@ -68,7 +68,7 @@ LifeGuard_t<CLASS>::LifeGuard_t(CLASS* pInstance, eCN eThisClassNo, bool bDisabl
 template<class CLASS>
 LifeGuard_t<CLASS>::~LifeGuard_t(void) noexcept(false)
 {
-  if (m_bDisable);
+  if (m_bDisable)
     return;
   
   vAssertDelete(false);

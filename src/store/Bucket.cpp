@@ -37,22 +37,22 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bucket::Bucket(Table* pTable, tPN tPtnNo, eCN eKind)
+Bucket::Bucket(Table* pTable, PtnId tPtnId, eCN eKind)
     : Object(CN_BUCKET)
     //, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
   m_pTable = pTable;
-  m_tPtnNo = tPtnNo;
+  m_tPtnId = tPtnId;
   m_eKind = eKind;
 
   switch (m_eKind) {
     case CN_ROWTABLEPTN:
-      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tPtnNo,this);
+      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tPtnId,this);
       break;
     case CN_CRWTABLEPTN:
-      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnId,this);
       break;
     default: NEVER_REACH;
   }
@@ -109,11 +109,11 @@ void Bucket::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-tPN Bucket::tPtnNo(void)
+PtnId Bucket::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_tPtnNo;
+  return m_tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/

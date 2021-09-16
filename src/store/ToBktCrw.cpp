@@ -98,19 +98,19 @@ void ToBktCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
   
-  i8 i_Ptn = pRowBuffer->tPtnNo();
+  PtnId tPtnId = pRowBuffer->tPtnId();
   
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
-  m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
-                  _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
+  m_pCrwBuffer = m_oHashSet.pBuffer(tPtnId.iAsI8()) ?
+      _pCrwBuffer(m_oHashSet.pBuffer(tPtnId.iAsI8())) : nullptr;
   
   if (! m_pCrwBuffer) {
-    m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+    m_pCrwBuffer = pNewCrwBuffer(tPtnId);
     vAddNst(pRowBuffer);
   }
   
-  vAddRowsToBuffer(i_Ptn,pRowBuffer);
+  vAddRowsToBuffer(tPtnId,pRowBuffer);
   
   //delete pRowBuffer;
   
@@ -177,7 +177,7 @@ void ToBktCrw::vAddNst(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToBktCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
+void ToBktCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
     
@@ -195,7 +195,7 @@ void ToBktCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
     
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
     
-    m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+    m_pCrwBuffer = pNewCrwBuffer(tPtnId);
     vAddNst(pRowBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRow(aRow);
@@ -206,7 +206,7 @@ void ToBktCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToBktCrw::pNewCrwBuffer(i8 i_Ptn)
+CrwBuffer* ToBktCrw::pNewCrwBuffer(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
   
@@ -214,20 +214,20 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
-  pCrwBuffer->vPtnNo(i_Ptn);
+  pCrwBuffer->vPtnId(tPtnId);
 
   // Set the bucket number
-  tPN tpn = pCrwBuffer->tPtnNo();
-  pCrwBuffer->vPtnToBkt(i_Ptn);
+  PtnId tpn = pCrwBuffer->tPtnId();
+  pCrwBuffer->vPtnToBkt(tPtnId);
 
 
   //i8 iBktNo = pCrwBuffer->pTable()-> //AM::BKTMAP::iToBkt(i_Ptn);   // HACK
   //pCrwBuffer->vBucketNo(iBktNo);
 
   // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[tPtnId.iAsI8()],false);
 
-  m_oHashSet.vAddBuffer(i_Ptn,pCrwBuffer);
+  m_oHashSet.vAddBuffer(tPtnId.iAsI8(),pCrwBuffer);
   
   return pCrwBuffer;
 }

@@ -64,13 +64,13 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pParcel      = nullptr;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      PtnId tPtnNo(Table::tTablePtnToPtnId(i_TablePtn));
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo);
+      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo.iAsI8());
       m_pTablePtnVec->vAdd(pTablePtn);
     }
   }
@@ -227,29 +227,48 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
+i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
 {
   _static_
   
-  i8 i_TablePtn = tPtnNo / AM::GRID::nKnownNodes();
+  i8 i_TablePtn = tPtnId.iAsI8() / AM::GRID::nKnownNodes();
   
   return i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert tablePtn to partition number (in grid)                             */
+/* convert tablePtn to partition Id (in grid)                                 */
 /*----------------------------------------------------------------------------*/
-tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
+PtnId Table::tTablePtnToPtnNo(i8 i_TablePtn)
+{
+  _static_
+  PtnId tPtnId;
+  i8 iPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
+  tPtnId = iPtnNo;
+  // This trace is to remind us that the grid-wide ptnNo is not the same as the local ptnNo
+  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz,
+         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnId.iAsI8());
+  
+  return tPtnId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tablePtn to partition ID (in grid)                                 */
+/*----------------------------------------------------------------------------*/
+PtnId Table::tTablePtnToPtnId(i8 i_TablePtn)
 {
   _static_
 
-  tPN tPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
+  PtnId tPtnId;
+
+  tPtnId.vAsI8((i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo());
+
 
   // This trace is to remind us that the grid-wide ptnNo is not the same as the local ptnNo
   vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz,
-         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnNo);
-  
-  return tPtnNo;
+         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnId.iAsI8());
+
+  return tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,15 +357,15 @@ void Table::vBucketMap(BucketMap* pBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-tPN  Table::tBktToPtn(i8 iBktNo)
+PtnId  Table::tBktToPtn(i8 iBktNo)
 {
-  return m_pBucketMap->tWhichLglPtnNo(iBktNo);
+  return m_pBucketMap->tWhichLglPtnId(iBktNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the Bucket No from partition No                                        */
 /*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBkt(tPN tPtnNo)
+i8  Table::iPtnToBkt(PtnId tPtnNo)
 {
   return m_pBucketMap->iWhichBucket(tPtnNo);
 }
@@ -354,7 +373,7 @@ i8  Table::iPtnToBkt(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* get the Next Bucket No from partition No                                   */
 /*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBktNext(tPN tPtnNo, i8 iBktNo)
+i8  Table::iPtnToBktNext(PtnId tPtnNo, i8 iBktNo)
 {
   return m_pBucketMap->iWhichBucketNext(tPtnNo, iBktNo);
 }
@@ -604,9 +623,9 @@ TablePtn* Table::pTablePtn(i8 i_TablePtn)
 #ifdef WITH_BKTMAP_2N4P
   // experiment on where we can map Bkt to Ptn
   // i_TablePtn could be a BktNo, gets mapped to PtnNo
-  i8 i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnNo(i_TablePtn);
-  vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt);
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TblPtnFromBkt);
+  PtnId i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnId(i_TablePtn);
+  vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt.iAsI8());
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TblPtnFromBkt.iAsI8());
   pTablePtn->vSetMappedPtn(i_TblPtnFromBkt);
   return pTablePtn;
   //return m_pTablePtnVec->pGet(i_TblPtnFromBkt);
@@ -998,6 +1017,18 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 
   m_pTablePtnVec = new TablePtnVec;
 
+#ifdef WITH_GID_PTNID
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
+
+      PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
+      TablePtn *pTablePtn = new TablePtn(this, tPtnId);
+
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+#else
+
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
@@ -1010,6 +1041,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
+#endif
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;

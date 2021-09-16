@@ -131,8 +131,8 @@ void Step::vIndexCompactPtn(void)
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  i8 i_Ptn  = m_pOp->tPtnNo();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
+  PtnId tPtn  = m_pOp->tPtnId();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
 
   
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
@@ -343,9 +343,9 @@ void Step::vIndexIndexTree(void)
   
   Table* pTable = pIndex->pTable();
  
-  i8 i_Ptn = m_pOp->tPtnNo();
+  PtnId tPtn = m_pOp->tPtnId();
 
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
 
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
@@ -593,8 +593,8 @@ void Step::vIndexVerifyPtn(void)
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  i8 i_Ptn  = m_pOp->tPtnNo();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
+  PtnId tPtn  = m_pOp->tPtnId();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
 
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
   

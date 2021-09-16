@@ -20,8 +20,14 @@ namespace STORE
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
 
     Table* m_pTable;  // table this partition belongs to
+
+#ifdef WITH_GID_PTNID
+    PtnId  m_tPtnId;
+    PtnId    m_tMappedPtn; // this will not be used after the new type implemented
+#else
     tPN    m_tPtnNo;  // partition number (in grid)
-    tPN    m_tMappedPtn;
+    tPN    m_tMappedPtn; // this will not be used after the new type implemented
+#endif
 
   
     // must be last
@@ -30,8 +36,12 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
+
+#ifdef WITH_GID_PTNID
+    TablePtn(Table* pTable, PtnId tPtnNo);
+#else
     TablePtn(Table* pTable, tPN tPtnNo);
+#endif
    ~TablePtn(void) noexcept(false);
   
     void vDropRead(void);
@@ -40,14 +50,19 @@ namespace STORE
     bool bGrabWrite(void);
     bool bIsLocked(void);
     eCN  eKind(void);
-    tPN  tPtnNo(void);
-    void vSetMappedPtn(tPN tPtn);
-    tPN  tMappedPtnNo(void);
+    PtnId  tPtnId(void);
+    void vSetMappedPtn(PtnId tPtn);
+    PtnId  tMappedPtnNo(void);
     Table* pTable(void);
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vSetBucket(i8 iBucket);
+
+#ifdef WITH_GID_PTNID
+    void vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind);
+#else
     void vAddBucket(Table* pTable, tPN tPtnNo, eCN eKind);
+#endif
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);

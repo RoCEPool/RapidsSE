@@ -85,13 +85,14 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
 /*----------------------------------------------------------------------------*/
 /* convert hash to distributed partition number                               */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToDtdPtnNo(i8 iHash)
+PtnId PtnMap::tHashToDtdPtnId(i8 iHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
+  PtnId tPtnId;
   i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
 
-  return tDtdPtnNo;
+  tPtnId = tDtdPtnNo;
+  return tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,19 +128,19 @@ i8 PtnMap::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToDtdPtnNo(i8 iRobin)
+PtnId PtnMap::tRobinToDtdPtnId(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  tPN tPtnNo = iRobin % m_nPtnsInGrid;
-  
-  return tPtnNo;
+  PtnId tPtnId;
+  i8 tPtnNo = iRobin % m_nPtnsInGrid;
+  tPtnId = tPtnNo;
+  return tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
+i8 PtnMap::tRobinToLclPtnNo(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -147,7 +148,7 @@ tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
 
   i8 i_Ptn = iRobin % m_nPtnsPerNode;
 
-  tPN tPtnNo = tToPtnNoOfThisNode(i_Ptn);
+  i8 tPtnNo = iToPtnNoOfThisNode(i_Ptn);
 
   return tPtnNo;
 }
@@ -155,7 +156,7 @@ tPN PtnMap::tRobinToLclPtnNo(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
+i8 PtnMap::iRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -163,7 +164,7 @@ tPN PtnMap::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
 
   i8 i_Ptn = iRobin % m_nPtnsPerNode;
 
-  tPN tPtnNo = tToPtnNoOfThisNode(i_Ptn);
+  i8 tPtnNo = iToPtnNoOfThisNode(i_Ptn);
 
   return tPtnNo;
 }
@@ -200,7 +201,7 @@ void PtnMap::vSee(void)
 /*----------------------------------------------------------------------------*/
 /* get which node a logical partition is mapped to                            */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iWhichNodeNo(tPN tPtnNo)
+i8 PtnMap::iWhichNodeNo(i8 tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
@@ -212,7 +213,7 @@ i8 PtnMap::iWhichNodeNo(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* get which node partition a logical partition is mapped to                  */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichPtn(tPN tPtnNo)
+i8 PtnMap::i_WhichPtn(i8 tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
@@ -224,11 +225,12 @@ i8 PtnMap::i_WhichPtn(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* convert given i_ptn to partition number of given node                      */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo)
+i8 PtnMap::iToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  tPN tPtnNo = C_UNKNOWN;
+  i8 tPtnNo;
+  tPtnNo = C_UNKNOWN;
   for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
     if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iNodeNo)
       continue;
@@ -248,15 +250,15 @@ tPN PtnMap::tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tToPtnNoOfThisNode(i8 i_Ptn)
+i8 PtnMap::iToPtnNoOfThisNode(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
   i8 iThisNodeNo = AM::GRID::iThisNodeNo();
 
-  tPN tPtnNo = tToPtnNoOfNode(i_Ptn,iThisNodeNo);
+  i8 iPtnNo = iToPtnNoOfNode(i_Ptn,iThisNodeNo);
 
-  return tPtnNo;
+  return iPtnNo;
 }
 
 
@@ -273,7 +275,7 @@ void PtnMap::vRepartition(void)
   
   vResetNodePtnArray();
     
-  for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
+  for (i8 tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     i4 i_Node = (i4)tPtnNo % m_nKnownNodes;
     
     m_xaNodePtn[tPtnNo].m_iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);

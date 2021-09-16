@@ -340,19 +340,22 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+    //class PtnId;
+
     class PTNMAP
     {
+      class PtnId;
     public:
-      static tPN tHashToDtdPtnNo(i8 iHash);
-      static i8  iToBkt(tPN tPtnNo);
-      static tPN  tToPtn(i8 iBktNo);
+      static i8 tHashToDtdPtnId(i8 iHash);
+      //static i8  iToBkt(PtnId tPtnNo);
+      //static PtnId  tToPtn(i8 iBktNo);
       static i8  nKnownNodes(void);
       static i8  nPtnsPerNode(void);
       static i8  nPtnsInGrid(void);
-      static tPN tPtnIDToPtnNo(tPN tPtnID);
-      static tPN tRobinToDtdPtnNo(i8 iRobin);
-      static tPN tRobinToLclPtnNo(i8 iRobin);
-      static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+      static i8 tPtnIDToPtnNo(i8 tPtnID);
+      static i8 tRobinToDtdPtnId(i8 iRobin);
+      static i8 iRobinToLclPtnNo(i8 iRobin);
+      static i8 tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
     };
 
     class SE

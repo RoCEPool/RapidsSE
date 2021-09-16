@@ -56,7 +56,7 @@ void SP_StageSpec::vStageSpec(StageSpec* pStageSpec)
         ,pStageSpec->szStageNm()
         ,aPO[pStageSpec->eTopology()]
         ,pStageSpec->iSpecificNode()
-        ,(i8)pStageSpec->tSpecificPtnNo()
+        ,(i8)pStageSpec->tSpecificPtnId().iAsI8()
         );
 }
 

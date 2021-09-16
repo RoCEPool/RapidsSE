@@ -775,7 +775,8 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
-  tPN tPtnNo = 0;
+  PtnId tPtnId;
+  tPtnId = 0;
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
@@ -2987,7 +2988,7 @@ L_RecordEndLineEnd:
   if (m_bPtnHash) {
         
     // now use the running hash to calc the partition
-    tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
+    tPtnId = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
     
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
@@ -3007,7 +3008,7 @@ L_RecordEndLineEnd:
     HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
            m_i_Rec,
-           m_bPtnHash ? tPtnNo : C_UNKNOWN,
+           m_bPtnHash ? tPtnId.iAsI8() : C_UNKNOWN,
            hvRecord->sz(m_pRowBuffer->pRowCurrent()));
   }
 

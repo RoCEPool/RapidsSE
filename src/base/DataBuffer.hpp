@@ -10,7 +10,7 @@ namespace BASE
   protected:
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
-    tPN    m_tPtnNo;        // partition no this buffer belongs to
+    PtnId  m_tPtnId;        // partition no this buffer belongs to
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
@@ -26,42 +26,59 @@ namespace BASE
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
-   ~DataBuffer(void) noexcept(false);
 
-    static DataBuffer* pRefdDataBuffer(Rrf& xRef);
-    static void        vRepairList(Object* pObject);
-    static DataBuffer* pToDataBuffer(void* aAddr);
+    ~DataBuffer(void)
 
-    void       vStreamDef(StreamDef* pStreamDef);
-    StreamDef* pStreamDef(void);
+    noexcept(false);
 
-    Table* pTable(void);
-    void   vTable(Table* pTable);
+    static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
-    tXN    tTxnNo(void);
-    void   vTxnNo(tXN tTxnNo);
+    static void vRepairList(Object *pObject);
 
-    i8     iAgeSec(void);
+    static DataBuffer *pToDataBuffer(void *aAddr);
 
-    i8     iBucketNo(void);
-    void   vBucketNo(i8 iBucketNo);
-    void   vToBucketNo(tPN tPtnNo);
-  
-    i8     iBufferHeight(void);
-    void   vBufferHeight(i8 iBufferHeight);
-  
-    void   vDropWrite(void);
-    void   vGrabWrite(void);
-  
-    void   vPtnNo(tPN tPtnNo);
-    tPN    tPtnNo(void);
-    
-    Birth& oWhenNewed(void);
-  
+    void vStreamDef(StreamDef *pStreamDef);
+
+    StreamDef *pStreamDef(void);
+
+    Table *pTable(void);
+
+    void vTable(Table *pTable);
+
+    tXN tTxnNo(void);
+
+    void vTxnNo(tXN tTxnNo);
+
+    i8 iAgeSec(void);
+
+    i8 iBucketNo(void);
+
+    void vBucketNo(i8 iBucketNo);
+
+    void vToBucketNo(PtnId tPtnId);
+
+    i8 iBufferHeight(void);
+
+    void vBufferHeight(i8 iBufferHeight);
+
+    void vDropWrite(void);
+
+    void vGrabWrite(void);
+
+    void vPtnId(PtnId tPtnId);
+
+    void vPtnId(i8 tPtnId);
+
+    PtnId tPtnId(void);
+
+    Birth &oWhenNewed(void);
+
     // - - - - - - - - - - - - - -
     bool bIsPermanent(void);
+
     void vIsPermanent(bool bIsPermanent);
-    i8   iBufferNo(void);
+
+    i8 iBufferNo(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

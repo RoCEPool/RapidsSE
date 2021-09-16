@@ -40,19 +40,20 @@ namespace STORE
     static i8   iHashToBucketId(i8 iHash);
   
     void vAdjustMap(i8 nKnownNodes);
-    tPN  tHashToDtdPtnNo(i8 iHash);
+    PtnId  tHashToDtdPtnId(i8 iHash);
     i8   nKnownNodes(void);
     i8   nPtnsInGrid(void);
     i8   nPtnsPerNode(void);
     void vSee(void);
-    tPN  tRobinToDtdPtnNo(i8 iRobin);
-    tPN  tRobinToLclPtnNo(i8 iRobin);
-    tPN  tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
-    i8   iWhichNodeNo(tPN tPtnNo);
-    i8   i_WhichPtn(tPN tPtnNo);
+    PtnId  tRobinToDtdPtnId(i8 iRobin);
+    i8  tRobinToLclPtnNo(i8 iRobin);
+    i8  iRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    i8   iWhichNodeNo(i8 tPtnNo);
+    i8   i_WhichPtn(i8 tPtnNo);
  
-    tPN  tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
-    tPN  tToPtnNoOfThisNode(i8 i_Ptn);
+    i8  iToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
+    i8  iToPtnNoOfThisNode(i8 i_Ptn);
+
 
   private:
     void vRepartition(void);

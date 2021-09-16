@@ -48,8 +48,9 @@ namespace STORE
   
     static void       vPostRecv(void* aTable);
     
-    i8      iPtnNoToTablePtn(tPN tPtnNo);
-    tPN     tTablePtnToPtnNo(i8 i_TablePtn);
+    i8      iPtnNoToTablePtn(PtnId tPtnNo);
+    PtnId   tTablePtnToPtnNo(i8 i_TablePtn);
+    PtnId   tTablePtnToPtnId(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
@@ -78,9 +79,9 @@ namespace STORE
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    tPN     tBktToPtn(i8 iBktNo);
-    i8      iPtnToBkt(tPN tPtnNo);
-    i8      iPtnToBktNext(tPN tPtnNo, i8 iBktNo);
+    PtnId     tBktToPtn(i8 iBktNo);
+    i8      iPtnToBkt(PtnId tPtnId);
+    i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
     i8      iToPartition(i8 iRowHash);
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);

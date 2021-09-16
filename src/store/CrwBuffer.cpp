@@ -199,9 +199,9 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 /* set bucket no from a PtnNo                                                 */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vPtnToBkt(tPN tPtnNo)
+void CrwBuffer::vPtnToBkt(PtnId tPtnId)
 {
-  vToBucketNo(tPtnNo);
+  vToBucketNo(tPtnId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -686,7 +686,7 @@ void CrwBuffer::vShow(void)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          pPrevLinkedBuffer(),pNextLinkedBuffer());
   
-  vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
+  vTrace("  partition: %lld \n"_Stz, m_tPtnId.iAsI8());
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);

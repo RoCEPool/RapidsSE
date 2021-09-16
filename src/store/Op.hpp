@@ -160,7 +160,7 @@ namespace STORE
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
-    tPN  tPtnNo(void);
+    PtnId  tPtnId(void);
     Operand* pPopLeft(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);

@@ -703,7 +703,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   ASSERT(! m_pRootEntBuffer);
   
   m_pRootEntBuffer = new EntBuffer(this);
-  m_pRootEntBuffer->vPtnNo(m_i_TablePtn);
+  m_pRootEntBuffer->vPtnId(m_i_TablePtn);
   
   return m_pRootEntBuffer;
 }

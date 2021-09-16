@@ -30,17 +30,17 @@ BucketMap::BucketMap(i8 nPartitions)
 #ifdef WITH_BKTMAP_2N4P
   if (nPartitions <= 8) {
     // Synthetic mapping, assign buckets to logical partitions
-    tPN tPtnNo = 0;
+    i8 tPtnId;
     i8 i_Bkt = 0;
 
 
     while (i_Bkt < C_MAX_BUCKETS)
     {
-      m_taInLglPtn[i_Bkt] = tPtnNo;
-      m_taInLglPtn[++i_Bkt] = tPtnNo;
+      m_taInLglPtn[i_Bkt].vAsI8(tPtnId);
+      m_taInLglPtn[++i_Bkt].vAsI8(tPtnId);
 
       i_Bkt++;
-      tPtnNo++;
+      tPtnId++;
       //tPtnNo = (++tPtnNo) % nPartitions;
 
     }
@@ -94,10 +94,10 @@ BucketMap::BucketMap(i8 nPartitions)
 
   } else {
     // this to take care of internal tables ?
-    tPN tPtnNo = 0;
+    i8 tPtnId = 0;
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      m_taInLglPtn[i_Bkt] = tPtnNo;
-      tPtnNo = (++tPtnNo) % nPartitions;
+      m_taInLglPtn[i_Bkt].vAsI8(tPtnId);
+      tPtnId = (++tPtnId) % nPartitions;
       //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
     }
   }
@@ -166,24 +166,24 @@ void BucketMap::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
+PtnId BucketMap::tWhichLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  tPN tPtnNo = m_taInLglPtn[iBucketId];
+  PtnId tPtnId = m_taInLglPtn[iBucketId];
   
-  return tPtnNo;
+  return tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get which bucket logical partition is currently mapped to                  */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::iWhichBucket(tPN tPtnNo)
+i8 BucketMap::iWhichBucket(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_taInLglPtn[i_Bkt] == tPtnNo) {
+    if (m_taInLglPtn[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       iBkt = i_Bkt;
       break;
     }
@@ -196,12 +196,12 @@ i8 BucketMap::iWhichBucket(tPN tPtnNo)
 /* get next bucket logical partition is currently mapped to                   */
 /* We can have a partition mapped into multiple buckets                       */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::iWhichBucketNext(tPN tPtnNo, i8 iBktNo)
+i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_taInLglPtn[i_Bkt] == tPtnNo) {
+    if (m_taInLglPtn[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt != iBktNo) {
         iBkt = i_Bkt;
         break;

@@ -153,7 +153,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     ASSERT(aDstRow);
   }
   
-  pDstRowBuffer->vPtnNo(i_Ptn);
+  pDstRowBuffer->vPtnId(i_Ptn);
     
   * ppRowBuffer = pDstRowBuffer;
   
@@ -190,7 +190,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
   
-  pAddBuffer->vPtnNo(i_Ptn);
+  pAddBuffer->vPtnId(i_Ptn);
   
   // link the old with this
   pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);

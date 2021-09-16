@@ -33,14 +33,14 @@ __aFooterFunction(CrwTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwTablePtn::CrwTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket)
+CrwTablePtn::CrwTablePtn(Table* pTable, PtnId tPtnNo, Bucket* pBucket)
     : Object(CN_CRWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   m_pTable    = pTable;
   m_pBucket = pBucket;
-  m_tPtnNo    = tPtnNo;
+  m_tPtnId    = tPtnNo;
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
@@ -221,11 +221,11 @@ void CrwTablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-tPN CrwTablePtn::tPtnNo(void)
+PtnId CrwTablePtn::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
-  return m_tPtnNo;
+  return m_tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/

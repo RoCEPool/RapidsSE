@@ -126,10 +126,10 @@ void PtnStm_cursor::vReset(void)
   vTrace("vReset\n"_Stz);
 
   // decrypting the partition ID into the partition number
-  tPN tPtnNo = AM::PTNMAP::tPtnIDToPtnNo(m_pTablePtn->tPtnNo());
+  i8 tPtnNo = AM::PTNMAP::tPtnIDToPtnNo(m_pTablePtn->tPtnId().iAsI8());
 
-  vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnNo());
-  vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo(), tPtnNo);
+  vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnId().iAsI8());
+  vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo().iAsI8(), tPtnNo);
 
   m_tCurPtnNo = tPtnNo; //m_pTablePtn->tMappedPtnNo(); //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
 
