@@ -683,9 +683,11 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete2pc(void);
 
-  void vJobTagSetFetch(void);
-  void vJobErrorStore(void);
+  void vJobEntryFetch(void);
+  void vJobEntryStore(void);
+
   void vJobErrorFetch(void);
+  void vJobErrorStore(void);
 
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
@@ -735,6 +737,7 @@ public:
   void vJobStateFetch(void);
   void vJobStateStore(void);
 
+  void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
   void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
