@@ -8,11 +8,9 @@
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
 
-" _Start" .verbose
+: start::start
 
-: _Start ( -- <R> )
-
-  "_Start" .verbose
+  "start::start" .verbose
 
   // define the apriori procedures
   start::defProc_Create

@@ -366,11 +366,12 @@ void Task::vAddAxioms(void)
 
   sDefinition =
   
-    "axiom: boot_run                            \
+    "axiom: boot::boot                          \
                                                 \
-      \"boot_run\" .verbose                     \
+      \"boot::boot\" .verbose                   \
                                                 \
       Job[] assert                              \
+                                                \
       Job[].addLocal                            \
                                                 \
       args.munged if                            \
@@ -379,11 +380,9 @@ void Task::vAddAxioms(void)
                                                 \
       \"se_boot.sen\" include                   \
                                                 \
-      \"boot_run exit_rt\" .verbose             \
-                                                \
       Job[].removeLocal                         \
-                                                \
       Job[].addRetired                          \
+                                                \
       Task[].grabLock                           \
         true Job[].reapable!                    \
         TR_RETIRE_THIS_TASK Task[].transition!  \

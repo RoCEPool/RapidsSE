@@ -838,7 +838,7 @@ void Api::vCallBoot(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"boot_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"boot::boot"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -900,6 +900,8 @@ void Api::RunStartJob(void)
                       1
                       );
   pJob->vSeed(SS_SEED_RUN);
+  
+  pJob->vEntry("start::start HAZARD"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -909,7 +911,7 @@ void Api::RunStartJob(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"_Start"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"start::start"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
