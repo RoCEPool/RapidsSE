@@ -85,9 +85,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Cancel :: _Cancel ;
+cmdSyntax: cancel :: cancel ;
 
-: _Cancel_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "cancel::cancel"

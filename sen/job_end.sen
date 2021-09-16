@@ -86,9 +86,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _End :: _End ;
+cmdSyntax: end :: end ;
 
-: _End_cmdTags _cmdTags tagCopy: genericJob_tags
+: end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "end::end"

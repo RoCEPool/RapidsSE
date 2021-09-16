@@ -93,9 +93,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Execute :: _Execute ;
+cmdSyntax: execute :: execute ;
 
-: _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
+: execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "execute::execute"

@@ -129,9 +129,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Cancelled :: _Cancelled ;
+cmdSyntax: cancelled :: cancelled ;
 
-: _Cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "cancelled::cancelled"

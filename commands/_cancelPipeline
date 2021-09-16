@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* _cancelPipeline.test -- cancel pipeline tests                              */
+/* cancelPipeline.test -- cancel pipeline tests                              */
 /*----------------------------------------------------------------------------*/
 
 // boot cluster

@@ -1117,7 +1117,7 @@ void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
   
-  // example: this job is _execute and the jobRef is bootcluster (in ptp list)
+  // example: this job is execute and the jobRef is bootcluster (in ptp list)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   

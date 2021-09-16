@@ -100,9 +100,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Begun :: _Begun ;
+cmdSyntax: begun :: begun ;
 
-: _Begun_cmdTags _cmdTags tagCopy: genericJob_tags
+: begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "begun::begun"
