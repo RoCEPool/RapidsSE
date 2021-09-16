@@ -1,0 +1,166 @@
+/*----------------------------------------------------------------------------*/
+/* table subquery syntax & semantics tests                                    */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_nation;
+  // N_NATIONKEY
+  // N_NAME
+  // N_REGIONKEY
+  // N_COMMENT
+
+_region
+  // R_REGIONKEY
+  // R_NAME
+  // R_COMMENT
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic table subquery examples from WITH clauses
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Basic positive test
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test the naming of the columns returned
+
+// Test a WITH clause that is never used
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM nation;
+
+// Test the main subquery specifying an incorrect table
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM badTable;
+
+// Test the table subquery specifying an incorrect table
+EXPLAIN WITH t1 AS (SELECT * FROM badTable) SELECT * FROM t1;
+
+// Test that column aliases are accepted
+EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test that column aliases are resolvable
+EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT c2, c3 FROM t1;
+
+// Test that unnamed columns are automatically named if not enough
+// column aliases are specified
+EXPLAIN WITH t1 (c1) AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test that too many column aliases is an error
+EXPLAIN WITH t1 (c1, c2, c3, c4, c5) AS (SELECT * FROM nation) SELECT * FROM t1;
+failure contains: 'too many column aliases for t1'
+
+// TODO: test when the table alias is the same as a real table
+EXPLAIN WITH nation AS (SELECT * FROM region) SELECT * FROM nation;
+// TODO: Does this read the CTE "nation" or the real table "nation"???
+
+// Test that a table subquery cannot reference itself
+EXPLAIN WITH t1 AS (SELECT * FROM t1) SELECT * FROM t1;
+failure contains: 'unknown table t1'
+
+// Test that two WITH clauses cannot circularly reference each other
+EXPLAIN WITH t1 AS (SELECT * FROM t2), t2 AS (SELECT * FROM t1) SELECT * FROM t1;
+failure contains: '???'
+
+// Cannot have two table subqueries with the same table alias
+EXPLAIN WITH t1 AS (SELECT * FROM nation), t1 AS (SELECT * FROM region) SELECT * FROM t1;
+failure contains: '???'
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 1)
+WITH t1 AS (SELECT * FROM nation) SELECT * from t1;
+rows:
+  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 2)
+WITH t1 AS (SELECT n_name, n_nationkey + 1 AS foobar FROM nation) SELECT * from t1;
+rows:
+  [ 'n_name', 'foobar' ]
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic table subquery examples from FROM clauses
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Subqueries in FROM clauses are translated to WITH clauses and
+// are represented as table subqueries
+
+// Basic positive test
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1;
+
+// TODO: Test the naming of the columns returned
+
+// Test that anonymous FROM subqueries are given a table alias name
+EXPLAIN SELECT * FROM ( SELECT * FROM nation );
+
+// Test the FROM subquery specifying an incorrect table
+EXPLAIN SELECT * FROM ( SELECT * FROM badTable ) AS t1;
+failure contains: 'No such table: badTable'
+
+// TODO: test what happens when the table alias is the same as a real table
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS region;
+
+// TODO: test what happens when the table alias is the same as the table being read
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS nation;
+failure contains: '???'
+
+// Test that the table alias for a FROM subquery cannot conflict with a table alias
+// from a WITH subquery
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM ( SELECT * FROM region ) AS t1;
+failure contains: '???'
+
+// Test that two unnamed FROM subqueries get different table aliases and don't conflict
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
+
+// Cannot have two FROM subqueries with the same table alias
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1 JOIN ( SELECT * FROM region ) AS t1 ON n_regionkey = r_regionkey;
+failure contains: '???'
+
+// Cannot have a circular reference between a FROM subquery and a WITH subquery
+WITH t1 AS (SELECT * FROM t2) SELECT * FROM ( SELECT * FROM t1 ) AS t2;
+failure contains: '???'
+
+// Test that unnamed columns in a FROM subquery will use the columnRef or column alias
+// if one exists for that column (part 1)
+SELECT * from (SELECT * FROM nation);
+rows:
+  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 2)
+SELECT * from (SELECT n_name, n_nationkey + 1 AS foobar FROM nation);
+rows:
+  [ 'n_name', 'foobar' ]
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Nested table subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  bye;
+  mute
+}
+

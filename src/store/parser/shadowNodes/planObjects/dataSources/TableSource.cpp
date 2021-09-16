@@ -47,7 +47,7 @@ QueryNode* TableSource::pCreate(Stz* szDefn, QueryNode* pTableRef)
   ASSERT(pTableRef);
   ASSERT(TableRef::bIsExactType(pTableRef));
 
-  // Create a unique name for this ProjectOp object
+  // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(szDefn, sName);
 
