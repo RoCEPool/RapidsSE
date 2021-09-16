@@ -3,19 +3,19 @@
 /*============================================================================*/
 
 create table Pu10k (
-    pu10k_10k   integer not null
+    pu10k_10k   integer not null // $1 1..10k
 
-  , pu10k_ft    integer not null
-  , pu10k_fj    integer not null
+  , pu10k_ft    integer not null // $2 rnd(1..1000)
+  , pu10k_fj    integer not null // $3 rnd(1..1000)
 
-  , pu10k_1000g integer not null
-  , pu10k_100g  integer not null
-  , pu10k_10g   integer not null
-  , pu10k_1g    integer not null
+  , pu10k_1000g integer not null // $4 rnd(1..1000)
+  , pu10k_100g  integer not null // $5 rnd(1..100)
+  , pu10k_10g   integer not null // $6 rnd(1..10)
+  , pu10k_1g    integer not null // $7 1
 
-  , pu10k_int   integer not null
-  , pu10k_dte   date    not null
-  , pu10k_str   varchar not null
+  , pu10k_int   integer not null // $8
+  , pu10k_dte   date    not null // $9
+  , pu10k_str   varchar not null // $10
 );
 create index Pu10k_10k on Pu10k (pu10k_10k);
 
