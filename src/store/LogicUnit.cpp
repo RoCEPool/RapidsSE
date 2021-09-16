@@ -1568,6 +1568,22 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* dump the rlu Dstk                                                          */
 /*----------------------------------------------------------------------------*/
+void LogicUnit::vRlu_ASSERTSTACK(void* aLU, i8* aiDstk) {
+  vDebugPoint();
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
+  i8 nStkUse = nDifference(aiDstk,pLogicUnit->m_xRluCommon.m_iaDataStack);
+
+  if (nStkUse != 0)
+    vRlu_DUMP(aLU,aiDstk );
+
+  RASSERT(nStkUse == 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the rlu Dstk                                                          */
+/*----------------------------------------------------------------------------*/
 void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 {
   vDebugPoint();
@@ -4697,6 +4713,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         aeCode = (char*)(* (--aeaRstk));
 #endif
+        //vRlu_ASSERTSTACK(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -5884,10 +5901,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PAY_STORE_COLS:
         EO_ENTER(eCode);
+        vRlu_DUMP(pLU, aiDstk);
         ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLS,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
+        vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 

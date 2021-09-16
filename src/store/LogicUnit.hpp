@@ -91,8 +91,9 @@ namespace STORE
 
 #define S_PopStr(__azDst) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  if (*aiDstk == C_DATUM_NULL)    {                                   \
-    *(i8*)__azDst = C_DATUM_NULL;  \
+  if (*aiDstk == C_DATUM_NULL)    {                                      \
+    *(i8*)__azDst = C_DATUM_NULL;                                        \
+    aiDstk--;                                                            \
   } \
   else { \
     nSize = *(aiDstk--); \

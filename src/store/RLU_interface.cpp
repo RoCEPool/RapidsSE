@@ -57,6 +57,16 @@ void vRlu_BEGINTMR(void* aLU)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assert RLU stack to be empty                                               */
+/*----------------------------------------------------------------------------*/
+void vRlu_ASSERTSTACK(void* pLU, i8* aiDstk)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+
+  pLogicUnit->vRlu_ASSERTSTACK(pLU,aiDstk);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin EO timer                                                             */
 /*----------------------------------------------------------------------------*/
 void vRlu_ENDTMR(void* aLU, i8 iCode)

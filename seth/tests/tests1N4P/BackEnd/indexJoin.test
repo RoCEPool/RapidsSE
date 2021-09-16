@@ -46,7 +46,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -73,7 +73,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -97,8 +97,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -122,8 +122,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -150,7 +150,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -175,8 +175,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
 
@@ -202,8 +202,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $4 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
 
@@ -262,7 +262,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -289,7 +289,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -313,8 +313,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -338,8 +338,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -366,7 +366,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -391,8 +391,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
 
@@ -418,8 +418,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $4 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
 
@@ -475,7 +475,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -502,7 +502,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -526,8 +526,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -551,8 +551,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -579,7 +579,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -604,8 +604,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
 
@@ -631,8 +631,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $4 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
 
@@ -696,7 +696,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -729,7 +729,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -756,8 +756,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -783,8 +783,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $6 500 >= "
     | stageD
 
   stage stageD on origin :
@@ -812,7 +812,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -840,8 +840,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 == "
-    | filter 1 "type boolean $6 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 == "
+    | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
 
@@ -869,8 +869,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 T2 T2_idx "EQUAL $I1 $L1 =="
-    | filter 1 "type boolean $4 500 >= "
+    indexJoin 0 T2 T2_idx "EQUAL $I1 $L1 =="
+    | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
 
@@ -895,12 +895,7 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  
-  drop table T1;
-  mute
 
-  drop table T2;
-  mute
 
   bye;
   mute

@@ -821,7 +821,7 @@ void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk)
     }
   }
 
-  //P_PushPtr(pDevIXT->m_aUpperEnt);
+  P_PushPtr(pDevIXT->m_aUpperEnt);
 
   *aaiDstk = aiDstk;
 }
@@ -859,7 +859,7 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
     }
   }
 
-  //P_PushPtr(pDevIXT->m_aUpperEnt);
+  P_PushPtr(pDevIXT->m_aUpperEnt);
   *aaiDstk = aiDstk;
 }
 
