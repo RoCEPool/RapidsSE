@@ -534,6 +534,9 @@ enum eEO : u2 // expression operators
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
 
+  /*  D  */ EO_DEVIXT_LBOUND_GE_OLD,    // position at lower bound (greater than equal)
+  /*  D  */ EO_DEVIXT_UBOUND_LT_OLD,    // get upper bound (less than)
+
   /*    */ EO_ENUMS
 };
 
@@ -1060,7 +1063,10 @@ static Stz* aEO[]
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
 
-  /*    */ "ENUMS"_Stz
+  /*  D  */ "EO_DEVIXT_LBOUND_GE_OLD"_Stz,
+  /*  D  */ "EO_DEVIXT_UBOUND_LT_OLD"_Stz,
+
+    /*    */ "ENUMS"_Stz
 };
 
 //----------------------------------------------------------------------------
@@ -1595,6 +1601,9 @@ static EoArg EoArgs[]
 
   // super
   { EA_NONE,    0 },  // super fragment Q100
+
+  { EA_NONE,    0 },  // EO_DEVIXT_LBOUND_GE
+  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND_LT
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS

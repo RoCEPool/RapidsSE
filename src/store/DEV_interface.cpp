@@ -692,13 +692,53 @@ void vDev_IXT_POS_LBOUND_GE(i8** aaiDstk)
   
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt =
-      pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
+        pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
+
+    if (pDevIXT->m_aEnt) {
+      pDevIXT->m_aEnt =
+          EntBuffer::pMoveToGreaterEqualEntry(pDevIXT->m_aEnt,
+                                              pEnt->aKey(),
+                                              &pDevIXT->m_pEntBuffer);
+    }
   }
 
   P_PushPtr(pDevIXT->m_aEnt);
 
   *aaiDstk = aiDstk;
 }
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry into the indexTree                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_POS_LBOUND_GE_OLD(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
+
+  pDevIXT->m_aEnt = nullptr;
+
+  pDevIXT->m_pEntBuffer =
+      pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
+
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt =
+        pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
+  }
+
+  P_PushPtr(pDevIXT->m_aEnt);
+
+  *aaiDstk = aiDstk;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
@@ -728,7 +768,7 @@ void vDev_IXT_POS_LBOUND_GT(i8** aaiDstk)
 
     if (pDevIXT->m_aEnt) {
       pDevIXT->m_aEnt =
-          EntBuffer::pMoveToGreaterEqualEntry(pDevIXT->m_aEnt,
+          EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aEnt,
                                              pEnt->aKey(),
                                              &pDevIXT->m_pEntBuffer);
     }
@@ -761,20 +801,27 @@ void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk)
     pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
   
   if (pUpperEntBuffer) {
-    
-    pDevIXT->m_aUpperEnt =
-      pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
-    
-    if (pDevIXT->m_aUpperEnt) {
-      pDevIXT->m_aUpperEnt =
-        EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
-                                           pEnt->aKey(),
-                                           &pUpperEntBuffer);
 
+    pDevIXT->m_aUpperEnt =
+        pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
+
+    if (pDevIXT->m_aUpperEnt) {
+
+      pDevIXT->m_aUpperEnt =
+          EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
+                                      &pUpperEntBuffer);
+
+      if (pDevIXT->m_aUpperEnt) {
+        pDevIXT->m_aUpperEnt =
+            EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
+                                               pEnt->aKey(),
+                                               &pUpperEntBuffer);
+
+      }
     }
   }
 
-  P_PushPtr(pDevIXT->m_aUpperEnt);
+  //P_PushPtr(pDevIXT->m_aUpperEnt);
 
   *aaiDstk = aiDstk;
 }
@@ -797,23 +844,61 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
   pDevIXT->m_aUpperEnt = nullptr;
 
   EntBuffer* pUpperEntBuffer =
-  pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
-  
+      pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
+
   if (pUpperEntBuffer) {
-    
+
     pDevIXT->m_aUpperEnt =
-    pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
-    
+        pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
+
+    if (pDevIXT->m_aUpperEnt) {
+
+      pDevIXT->m_aUpperEnt =
+          EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
+                                      &pUpperEntBuffer);
+    }
+  }
+
+  //P_PushPtr(pDevIXT->m_aUpperEnt);
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry into the indexTree                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_POS_UBOUND_LT_OLD(i8** aaiDstk)
+{
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
+
+  pDevIXT->m_aUpperEnt = nullptr;
+
+  EntBuffer* pUpperEntBuffer =
+      pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
+
+  if (pUpperEntBuffer) {
+
+    pDevIXT->m_aUpperEnt =
+        pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
+
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =
-      EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
-                                  &pUpperEntBuffer);
+          EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
+                                      &pUpperEntBuffer);
     }
   }
 
   P_PushPtr(pDevIXT->m_aUpperEnt);
   *aaiDstk = aiDstk;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* push entry of devixt                                                       */

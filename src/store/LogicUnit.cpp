@@ -6062,6 +6062,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
+      case EO_DEVIXT_LBOUND_GE_OLD:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry before LBOUND
+        dLU0(EO_DEVIXT_LBOUND_GE_OLD);
+        vDev_IXT_POS_LBOUND_GE_OLD(&aiDstk);  // entry / devixt
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      case EO_DEVIXT_UBOUND_LT_OLD:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_UBOUND_LT_OLD);
+        vDev_IXT_POS_UBOUND_LT_OLD(&aiDstk);  // entry / devixt
+        EO_EXIT(eCode);
+        break;//+endCase
+
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace("Unknown eo opcode %lld\n"_Stz,(i8)eCode);
