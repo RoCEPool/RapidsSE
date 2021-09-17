@@ -114,7 +114,7 @@ void Stream::vCreateOps(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    pOp->vTaskSeedWord();
+    pOp->vTaskEntryWord();
 
     vAdd(pOp);
   }

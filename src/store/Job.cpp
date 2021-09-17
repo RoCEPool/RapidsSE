@@ -373,7 +373,7 @@ void Job::vPostRecv(void* aReceivedJob)
   
   pReceivedJob->vJobList(JL_NONE);
   
-  pReceivedJob->vTaskSeedWord(nullptr);
+  pReceivedJob->vTaskEntryWord(nullptr);
   
   pReceivedJob->vJobTask(nullptr);
 
@@ -1222,7 +1222,7 @@ Word* Job::pTaskSeedWord(void)
 /*----------------------------------------------------------------------------*/
 /* set seed word                                                              */
 /*----------------------------------------------------------------------------*/
-void Job::vTaskSeedWord(Word* pSeedWord)
+void Job::vTaskEntryWord(Word* pSeedWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 

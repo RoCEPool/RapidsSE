@@ -192,7 +192,7 @@ namespace STORE
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
     Word* pTaskSeedWord(void);
-    void vTaskSeedWord(Word* pSeedWord);
+    void vTaskEntryWord(Word* pSeedWord);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);

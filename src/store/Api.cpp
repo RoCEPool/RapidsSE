@@ -443,7 +443,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
-  pPrepareJob->vTaskSeedWord(pSeedWord);
+  pPrepareJob->vTaskEntryWord(pSeedWord);
 
   
   return EC_NONE;
@@ -820,7 +820,7 @@ void Api::vCallBoot(void)
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
-  pJob->vTaskSeedWord(pSeedWord);
+  pJob->vTaskEntryWord(pSeedWord);
 
   pBootTask->vSetInxPtr();
 
@@ -885,7 +885,7 @@ void Api::RunStartJob(void)
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
-  pJob->vTaskSeedWord(pSeedWord);
+  pJob->vTaskEntryWord(pSeedWord);
   
   pStartTask->vSetInxPtr();
 
@@ -1173,7 +1173,7 @@ void Api::vCreateTaskForJob(Job* pJob)
            "Unable to find seed word: %s\n"_Stz,szSeed);
   }
 
-  pJob->vTaskSeedWord(pSeedWord);
+  pJob->vTaskEntryWord(pSeedWord);
 
   
   
