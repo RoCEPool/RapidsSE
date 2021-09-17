@@ -1586,7 +1586,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
       vCheckIsNull(m_sLowerBoundAsm, &m_xTypeStack);
 
       vPushLclCol(m_sUpperBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
-      vCheckIsNull(m_sUpperBoundAsm, &m_xTypeStack);
+      //vCheckIsNull(m_sUpperBoundAsm, &m_xTypeStack);
     }
 
     pTkn = pTknVec->pNextToken();
