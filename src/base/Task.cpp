@@ -106,7 +106,6 @@ Task::Task(void)
  
   m_nOperandYield = 10;
 
-  m_pSeedWord       = nullptr;
   m_pRecoveryWord  = nullptr;
   
   // m_oDicStack
@@ -398,7 +397,6 @@ void Task::vDumpOnException(void)
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
     
-    vTrace("m_pJob_task::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pJob_task->pSeedWord()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -407,7 +405,7 @@ void Task::vDumpOnException(void)
     vTrace("\n"_Stz);
     vTrace("2) Op\n"_Stz);
   
-    vTrace("m_pOp::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pOp->pTaskSeedWord()));
+
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -713,9 +711,6 @@ void Task::vDump(void)
          pWord ? pWord->szWordNm() : C_NO_WORD,
          m_aInxPtr);
 
-  vTrace("m_pSeedWord=%s %p\n"_Stz,
-         m_pSeedWord->szWordNm(),
-         m_pSeedWord);
   vTrace("m_pRecoveryWord=%s %p\n"_Stz,
          m_pRecoveryWord ? m_pRecoveryWord->szWordNm() : C_NO_NAME,
          m_pRecoveryWord);
@@ -1301,19 +1296,21 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
+  Word* pTaskSeedWord = nullptr;
+  
   if (m_pJob_task.bIsNotNull()) {
-    m_pSeedWord = m_pJob_task->pSeedWord();
+    pTaskSeedWord = m_pJob_task->pTaskSeedWord();
   }
   else
   if (m_pOp.bIsNotNull()) {
-    m_pSeedWord = m_pOp->pTaskSeedWord();
+    pTaskSeedWord = m_pOp->pTaskSeedWord();
   }
   else
     NEVER_REACH;
   
-  RASSERT(m_pSeedWord);
+  RASSERT(pTaskSeedWord);
 
-  m_aInxPtr = m_pSeedWord->aFirstCell();
+  m_aInxPtr = pTaskSeedWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
