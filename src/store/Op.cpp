@@ -74,9 +74,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   // m_oOpTags
   m_pTask = nullptr;
-  
-  m_pTaskSeedWord = nullptr;
-  
+    
   // -- -- -- -- -- --
 
   m_bPulsedLimit  = false;
@@ -140,8 +138,6 @@ Op::Op(Stz* szOpNm)
   m_sOpNm       = szOpNm;
   m_i_Op        = C_UNKNOWN;
   
-  m_pTaskSeedWord = nullptr;
-
   m_bTraceOp    = false;
   
   m_pOpSpec   = nullptr;
@@ -522,6 +518,27 @@ void Op::vDump(void)
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_i_Node=%lld\n"_Stz,iNode());
   vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the entry word for this op                                            */
+/*----------------------------------------------------------------------------*/
+Word* Op::pEntryWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+     
+  s32 sEntryWord(m_sOpNm);
+  sEntryWord.vConcat("_op"_Stz);
+  
+  Word* pEntryWord = pDicRoot->pFindWord(sEntryWord);
+  
+  if (! pEntryWord) {
+    RASSERT(pEntryWord);
+  }
+  
+  return pEntryWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1819,37 +1836,6 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task seed word                                                         */
-/*----------------------------------------------------------------------------*/
-Word* Op::pTaskSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return * m_pTaskSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find and set task seed word for this op                                    */
-/*----------------------------------------------------------------------------*/
-Word* Op::pTaskEntryWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-     
-  s32 sSeed(m_sOpNm);
-  sSeed.vConcat("_op"_Stz);
-  
-  m_pTaskSeedWord = pDicRoot->pFindWord(sSeed);
-  
-  if (! m_pTaskSeedWord) {
-    RASSERT(m_pTaskSeedWord);
-  }
-  
-  return m_pTaskSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/

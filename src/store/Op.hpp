@@ -40,7 +40,6 @@ namespace STORE
     // -- refers to
     SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
     SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
-    SMA<Word,CN_WORD>      m_pTaskSeedWord; // task seed word of this operator
 
     // -- owns
     SMA<LogicUnit,CN_LOGICUNIT> m_pOpLogicUnit;  // logic unit of op
@@ -113,6 +112,7 @@ namespace STORE
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
+    Word* pEntryWord(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(void);
     i8   iHandlerCount(i8 i_Handler);
@@ -176,8 +176,6 @@ namespace STORE
     Stream* pStream(void);
     Task* pTask(void);
     void vTask(Task* pTask);
-    Word* pTaskSeedWord(void);
-    Word* pTaskEntryWord(void);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
     void vWalk(void* aArg);
