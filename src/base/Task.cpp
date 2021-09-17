@@ -1100,7 +1100,7 @@ void Task::vReseed(void)
     
   vResetSenContext();
 
-  vSeedTask();
+  vSetInxPtr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1290,27 +1290,37 @@ bool Task::bSeeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task from it's job or op's seed word                                  */
+/* sleep for microseconds                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedTask(void)
+void Task::vSleepUsec(i8 iMicroseconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_oWakeup.vSleepFor(iMicroseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the tasks instruction pointer to run the entry word                    */
+/*----------------------------------------------------------------------------*/
+void Task::vSetInxPtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  Word* pTaskSeedWord = nullptr;
+  Word* pEntryWord = nullptr;
   
   if (m_pJob_task.bIsNotNull()) {
-    pTaskSeedWord = m_pJob_task->pTaskSeedWord();
+    pEntryWord = m_pJob_task->pTaskSeedWord();
   }
   else
   if (m_pOp.bIsNotNull()) {
-    pTaskSeedWord = m_pOp->pTaskSeedWord();
+    pEntryWord = m_pOp->pTaskSeedWord();
   }
   else
     NEVER_REACH;
   
-  RASSERT(pTaskSeedWord);
+  RASSERT(pEntryWord);
 
-  m_aInxPtr = pTaskSeedWord->aFirstCell();
+  m_aInxPtr = pEntryWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1322,16 +1332,6 @@ void Task::vSeedTask(void)
     return;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep for microseconds                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSleepUsec(i8 iMicroseconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_oWakeup.vSleepFor(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/

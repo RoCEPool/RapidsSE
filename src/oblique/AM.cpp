@@ -573,14 +573,6 @@ Stz* AM::JOB::szJobNm(Job* pJob)
   return pJob->szJobNm();
 }
 
-/*----------------------------------------------------------------------------*/
-/* get job seed                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* AM::JOB::szJobSeed(Job* pJob)
-{
-  return pJob->szSeed();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* test if the job passes all pre-execution requirements                      */

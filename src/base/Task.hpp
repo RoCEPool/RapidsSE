@@ -182,7 +182,7 @@ namespace BASE
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     bool bSeeded(void);
-    void vSeedTask(void);
+    void vSetInxPtr(void);
     void vSleepUsec(i8 iMicroSeconds);
     eTS  eState(void);
     void vState(eTS eState);
