@@ -180,7 +180,11 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: limit :: limit <compiled> <rows> ;
 
-: limit_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: limit_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

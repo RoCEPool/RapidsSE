@@ -191,7 +191,11 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: aggreg :: aggreg <compiled> <etc> ;
 
-: aggreg_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: aggreg_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

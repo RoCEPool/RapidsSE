@@ -113,7 +113,11 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toBktRow :: toBktRow ;
 
-: toBktRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toBktRow_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

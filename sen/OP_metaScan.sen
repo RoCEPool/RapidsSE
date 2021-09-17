@@ -130,7 +130,6 @@ cmdSyntax: metaScan :: metaScan <metaObjectNm> <metaSubNm> ;
     <cmdDesc>    = "--desc for op--"
     <streamDef>  = __listContents
   }
-
 ;
   
 /*============================================================================*/

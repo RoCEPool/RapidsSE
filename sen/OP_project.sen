@@ -194,7 +194,11 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: project :: project <compiled> <etc> ;
 
-: project_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: project_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

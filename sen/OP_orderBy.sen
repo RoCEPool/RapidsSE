@@ -77,7 +77,11 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: orderBy :: orderBy <compiled> <etc> ;
 
-: orderBy_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: orderBy_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */
