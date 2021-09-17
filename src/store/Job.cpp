@@ -128,7 +128,7 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_bReapable  = false;
   
   m_eSeed      = SS_ENUMS;
-  m_pSeedWord  = nullptr;
+  m_pTaskSeedWord  = nullptr;
   
   // -- a -------------------
   
@@ -202,7 +202,7 @@ Job::Job(eCN eClassNo)
   m_iCmdNo = C_UNKNOWN;
 
   m_eSeed      = SS_ENUMS;
-  m_pSeedWord  = nullptr;
+  m_pTaskSeedWord  = nullptr;
 
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -373,7 +373,7 @@ void Job::vPostRecv(void* aReceivedJob)
   
   pReceivedJob->vJobList(JL_NONE);
   
-  pReceivedJob->vSeedWord(nullptr);
+  pReceivedJob->vTaskSeedWord(nullptr);
   
   pReceivedJob->vJobTask(nullptr);
 
@@ -1076,7 +1076,7 @@ void Job::vResetForCascade(Session* pSession)
   // -- g -------------------
   m_oAcksRmg_job.vReset();
   m_eSeed      = SS_ENUMS;
-  m_pSeedWord = nullptr;
+
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
@@ -1212,21 +1212,21 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 /* get seed word                                                              */
 /*----------------------------------------------------------------------------*/
-Word* Job::pSeedWord(void)
+Word* Job::pTaskSeedWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_pSeedWord;
+  return m_pTaskSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set seed word                                                              */
 /*----------------------------------------------------------------------------*/
-void Job::vSeedWord(Word* pSeedWord)
+void Job::vTaskSeedWord(Word* pSeedWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pSeedWord = pSeedWord;
+  m_pTaskSeedWord = pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/

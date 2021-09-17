@@ -91,6 +91,7 @@ cmdSyntax: cancel :: cancel ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "cancel::cancel"
+    <entryPoint>    = "cancel::cancel"
     <path>     = "/"
   }
 ;

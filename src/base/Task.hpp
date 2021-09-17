@@ -49,8 +49,6 @@ namespace BASE
     // -- state
     eTS m_eState;  // task state (running, sleeping, ...)
 
-    // -- tags, seeding and tasking
-    Word* m_pSeedWord;  // seed
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // b)

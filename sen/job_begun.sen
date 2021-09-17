@@ -106,6 +106,7 @@ cmdSyntax: begun :: begun ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "begun::begun"
+    <entryPoint>    = "begun::begun"
     <path>     = "/"
   }
 ;
