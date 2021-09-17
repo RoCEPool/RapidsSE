@@ -39,7 +39,9 @@ namespace STORE
 
     b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
+  private:
     eSS         m_eSeed;      // sen word to start execution
+  public:
     Word*       m_pTaskSeedWord;  // seed word of this job                  POST_RECV
 
     // -- command and tags

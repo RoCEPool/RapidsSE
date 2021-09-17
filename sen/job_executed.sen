@@ -95,6 +95,7 @@ cmdSyntax: executed :: executed ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "executed::executed"
+    <entryPoint>    = "executed::executed"
     <path>     = "/"
   }
 ;

@@ -101,6 +101,7 @@ cmdSyntax: ended :: ended ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "ended::ended"
+    <entryPoint>    = "ended::ended"
     <path>     = "/"
   }
 ;
