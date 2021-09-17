@@ -30,7 +30,6 @@
 #include "Job.hpp"
 
 #include "EnumGroups.h"
-#include "eAN.h"
 #include "eAT.h"
 #include "eDL.h"
 #include "ePD.h"
@@ -257,35 +256,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("HW_PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // AN_ : action numbers
-  /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_CONSTRUCT"_Stz,          AN_CONSTRUCT);
-  /*  0 */ vAddConstant("AN_DESTRUCT"_Stz,           AN_DESTRUCT);
-  /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
-  /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
-  /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
-  /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
-  /*  0 */ vAddConstant("AN_JOB_PHASE"_Stz,          AN_JOB_PHASE);
-  /*  0 */ vAddConstant("AN_NEW_JOB"_Stz,            AN_NEW_JOB);
-  /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
-  /*  0 */ vAddConstant("AN_POST_RECV"_Stz,          AN_POST_RECV);
-  /*  0 */ vAddConstant("AN_PRE_PROMPT"_Stz,         AN_PRE_PROMPT);
-  /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
-  /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
-  /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
-  /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
-  /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);
-  /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
-  /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
-  /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
-  /*  0 */ vAddConstant("AN_SEED_RCV"_Stz,           AN_SEED_RCV);
-  /*  0 */ vAddConstant("AN_SEED_REQ"_Stz,           AN_SEED_REQ);
-  /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
-  /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
-  /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
-  /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
-  
+    
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,     AT_NONE);
   /*  1 */ vAddConstant("AT_EXACT"_Stz,    AT_EXACT);
