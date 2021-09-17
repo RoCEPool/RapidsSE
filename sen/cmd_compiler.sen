@@ -213,50 +213,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags required by a command (pipeline, generic, local)         */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_toCmdTags params| pwCmdTags |
-
-  // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
-
-  pwCmdTags _cmdTags.aboutPipelineJob if
-    //<jobKind> == JK_PIPELINE
-
-  else
-  pwCmdTags _cmdTags.aboutGenericJob if
-    //<jobKind> == JK_GENERIC
-
-  else
-  pwCmdTags _cmdTags.aboutLocalJob if
-    //<jobKind> == JK_LOCAL
-    
-    //pwCmdTags word.name@ "addSeedTags: %v is a local job" .printf
-    //"<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
-
-  else
-
-    // pwCmdTags word.name@ "addSeedTags: %v is an op" .printf
-    //"<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
-
-  then then then
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
-    word@ cmd::addSeedTags_toCmdTags
-  then next-word
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* add any settings that are missing in the command tags                      */
 /*----------------------------------------------------------------------------*/
 : cmd::addSettings_toCmdTagSet params| pwCmdTags |
@@ -313,7 +269,6 @@
   cmd::synthLiteOpProcs // synthesise procs for all lite and local-lite op's
   cmd::synthLiteOpWords // synthesise words for all lite and local-lite op's
 
-  cmd::addSeedTags      // add seed tags for all dist/local/generic jobs
   cmd::addSettings      // add missing settings for <ddlLock> etc
 
 //  ?else
