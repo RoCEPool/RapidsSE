@@ -175,7 +175,6 @@
   Pipeline[].spawnOpTasks
 
   JP_BEGUN Job[].phase!
-  nullptr Job[].seedWord!
      
   Job[] begun::replyToOrigin
   
@@ -256,7 +255,6 @@
   then
   
   JP_EXECUTED Job[].phase!
-  nullptr Job[].seedWord!
 
   DdlLock[].testDrop
   JobRef[].none
@@ -296,7 +294,6 @@
   JP_ENDING Job[].phase!
 
   JP_ENDED Job[].phase!
-  nullptr Job[].seedWord!
 
   Job[].removeParticipant
   
@@ -331,7 +328,7 @@
   JP_CANCELING Job[].phase!
 
   JP_CANCELED Job[].phase!
-  nullptr Job[].seedWord!
+
 
   Job[].removeParticipant
     

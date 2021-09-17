@@ -128,7 +128,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_bReapable  = false;
   
   m_eSeed      = SS_ENUMS;
-  m_pTaskSeedWord  = nullptr;
   
   // -- a -------------------
   
@@ -202,7 +201,6 @@ Job::Job(eCN eClassNo)
   m_iCmdNo = C_UNKNOWN;
 
   m_eSeed      = SS_ENUMS;
-  m_pTaskSeedWord  = nullptr;
 
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -372,9 +370,7 @@ void Job::vPostRecv(void* aReceivedJob)
   pReceivedJob->vWasReceived(true);
   
   pReceivedJob->vJobList(JL_NONE);
-  
-  pReceivedJob->vTaskEntryWord(nullptr);
-  
+    
   pReceivedJob->vJobTask(nullptr);
 
   // revised job/op model
@@ -1207,26 +1203,6 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eSeed = eSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get seed word                                                              */
-/*----------------------------------------------------------------------------*/
-Word* Job::pTaskSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_pTaskSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set seed word                                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vTaskEntryWord(Word* pSeedWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pTaskSeedWord = pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/

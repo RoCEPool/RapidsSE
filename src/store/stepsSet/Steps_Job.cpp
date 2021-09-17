@@ -104,10 +104,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
-  
-  vAddStep("Job[].seedWord@"_Stz,        &Step::vJobSeedWordFetch);
-  vAddStep("Job[].seedWord!"_Stz,        &Step::vJobSeedWordStore);
-  
+    
   vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
 
@@ -1024,38 +1021,6 @@ void Step::vJobSeedStore(void)
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
     
   pJob->vSeed((eSS)i_Seed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].seedWord@ -- fetch job seed word                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedWordFetch(void)
-{
-  ENTRY();
- 
-  Job* pJob = * m_pJob_task;
-
-  Word* pWord = pJob->pTaskSeedWord();
-  
-  m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].seedWord! -- set job seed word                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedWordStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-    
-  pJob->vTaskEntryWord(pWord);
   
   EXIT();
 }

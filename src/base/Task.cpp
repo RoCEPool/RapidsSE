@@ -1290,24 +1290,10 @@ void Task::vSleepUsec(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* set the tasks instruction pointer to run the entry word                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSetInxPtr(Word* pEntryWordCheck)
+void Task::vSetInxPtr(Word* pEntryWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  Word* pEntryWord = nullptr;
-  
-  if (m_pJob_task.bIsNotNull()) {
-    pEntryWord = m_pJob_task->pTaskSeedWord();
-  }
-  else
-  if (m_pOp.bIsNotNull()) {
-    pEntryWord = m_pOp->pTaskSeedWord();
-  }
-  else
-    NEVER_REACH;
-  
-  RASSERT(pEntryWord == pEntryWordCheck);
-
   m_aInxPtr = pEntryWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1317,9 +1303,7 @@ void Task::vSetInxPtr(Word* pEntryWordCheck)
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
     m_pRecoveryWord = pRecoveryWord;
-    return;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/

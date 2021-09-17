@@ -42,7 +42,7 @@ namespace STORE
   private:
     eSS         m_eSeed;      // sen word to start execution
   public:
-    Word*       m_pTaskSeedWord;  // seed word of this job                  POST_RECV
+
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -191,8 +191,6 @@ namespace STORE
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
-    Word* pTaskSeedWord(void);
-    void vTaskEntryWord(Word* pSeedWord);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);
