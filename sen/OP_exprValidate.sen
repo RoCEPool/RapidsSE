@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: exprValidate_req \operator
+: exprValidate_op \operator
 
   _lu_initialise_
 

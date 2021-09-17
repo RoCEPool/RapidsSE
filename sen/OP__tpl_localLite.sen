@@ -30,7 +30,7 @@
 : OP__tpl_locallite_ENTRY
 
 "
-  : /localLiteOp/_req \\operator
+  : /localLiteOp/_op \\operator
 
     _lu_initialise_
 

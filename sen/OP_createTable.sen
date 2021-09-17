@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createTable_req \operator
+: createTable_op \operator
 
   _lu_initialise_
 

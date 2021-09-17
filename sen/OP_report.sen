@@ -107,7 +107,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for report request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: report_req \operator
+: report_op \operator
 
   _lu_initialise_
 

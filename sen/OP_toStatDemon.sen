@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toStatDemon_req \operator
+: toStatDemon_op \operator
 
   _lu_initialise_
 

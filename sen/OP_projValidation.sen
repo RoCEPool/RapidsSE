@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: projValidation_req \operator
+: projValidation_op \operator
 
   _lu_initialise_
 

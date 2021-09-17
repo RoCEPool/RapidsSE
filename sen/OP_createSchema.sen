@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createSchema req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createSchema_req \operator
+: createSchema_op \operator
 
   _lu_initialise_
 

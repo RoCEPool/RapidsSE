@@ -1841,7 +1841,7 @@ void Op::vTaskSeedWord(void)
   Dic* pDicRoot = AM::DIC::pRoot();
      
   s32 sSeed(m_sOpNm);
-  sSeed.vConcat("_req"_Stz);
+  sSeed.vConcat("_op"_Stz);
   
   m_pTaskSeedWord = pDicRoot->pFindWord(sSeed);
   

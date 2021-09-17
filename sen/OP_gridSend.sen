@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridsend request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridSend_req \operator
+: gridSend_op \operator
 
   _lu_initialise_
   //"gridSend_req" .

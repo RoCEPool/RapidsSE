@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridSanity req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : gridSanity_req \operator
+ : gridSanity_op \operator
  
   _lu_initialise_
 

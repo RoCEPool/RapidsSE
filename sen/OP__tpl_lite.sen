@@ -30,7 +30,7 @@
 : OP__tpl_lite_ENTRY
 
 "
-: /liteOp/_req \\operator
+: /liteOp/_op \\operator
  
   _lu_initialise_
 
