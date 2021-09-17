@@ -321,32 +321,25 @@ macro AM_CRW_INDEXJOIN_NEXT
   // CRW_INDEXJOIN_NEXT
   Label CRW_INDEXJOIN_NEXT
 
-  // fetch next entry from index
-  //EO_PUSH_DEVIXT_RHT
-  //EO_DEVIXT_IDX_NEXT
-  //EO_RETURN_FALSE
-
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_PUSH
 
-  //EO_PUSH_DEVIXT_RHT
-  //EO_DEVIXT_ENT_PUSHUPPER
-
+  // reached upper bound ?
   EO_EQ_INTINT
   EO_RETURN_TRUE
 
-  // projection
-  //EO_CRW_SRC_DEREF
+  // deref index entry
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
-  //EO_ROW_DST_PRINT
 
+  // fetch next entry from index
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_IDX_NEXT
   EO_RETURN_FALSE
 
+  // push upper bound entry
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_PUSHUPPER
 
