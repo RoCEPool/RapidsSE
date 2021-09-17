@@ -964,10 +964,12 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
-    oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
+    vTrace("Left Outer not supported yet!"_Stz);
+    RASSERT(0);
+    //oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
   }
   else {
-    oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT\n"_Stz);
+    oFile.vPrint("  EO_RETURN_FALSE\n\n"_Stz);
   }
 
 
@@ -980,7 +982,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
-  oFile.vPrint("  EO_POP\n"_Stz);
+  //oFile.vPrint("  EO_POP\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
     oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_CRWLFT_ENTRHT"_Stz);
@@ -1027,10 +1029,12 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
-    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+    vTrace("Left Outer not supported yet!"_Stz);
+    RASSERT(0);
+    //oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
   }
   else {
-    oFile.vPrint("  EO_JMP_FALSE ROW_INDEXJOIN_NEXT\n"_Stz);
+    oFile.vPrint("  EO_RETURN_FALSE\n\n"_Stz);
   }
 
 //  oFile.vPrint("  // *** begin generated code: m_sLftRowCol *** //\n"_Stz);
@@ -1042,7 +1046,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
-  oFile.vPrint("  EO_POP\n"_Stz);
+  //oFile.vPrint("  EO_POP\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
     oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "JOINROWS_ROWLFT_ENTRHT"_Stz);
