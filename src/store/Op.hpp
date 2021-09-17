@@ -30,7 +30,6 @@ namespace STORE
     s256       m_sPath;     // operator path
   
     TagSet     m_oOpTags;   // tags for the op
-    eSS        m_eSeed;     // seed to spawn
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 

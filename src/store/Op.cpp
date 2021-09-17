@@ -75,7 +75,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // m_oOpTags
   m_pTask = nullptr;
   
-  m_eSeed = SS_SEED_REQ;
   m_pTaskSeedWord = nullptr;
   
   // -- -- -- -- -- --
@@ -1841,7 +1840,7 @@ void Op::vTaskSeedWord(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
    
-  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oOpTags);
+  Stz* szSeed = AM::SEED::szDecodeSeed(SS_SEED_REQ,&m_oOpTags);
 
   //vTrace("Op::vSetTaskSeedWord:szSeed = %s\n"_Stz,szSeed);
   
