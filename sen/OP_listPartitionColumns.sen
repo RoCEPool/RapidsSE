@@ -63,6 +63,7 @@ cmdSyntax: lsptncol :: lsptncol <tableNm> ;
     <streamDef>   = __listColumns
     <params>      = 1
     <seedReq>     = "lsptncol_req"
+    <opEntry> = "lsptncol_op"
   }
 ;
     

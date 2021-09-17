@@ -34,6 +34,7 @@ tags{
   <cmdDesc>   = "--desc for op--"
   <streamDef> = __nodeInfo
   <params>    = 0
+  <opEntry> = "nodeInfo_op"
   }
 ;
   

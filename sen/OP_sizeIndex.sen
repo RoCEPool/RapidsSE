@@ -47,6 +47,7 @@ cmdSyntax: szidx :: szidx <tableNm> <indexNm> ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __sizeIndex
     <params>    = 2
+    <opEntry> = "szidx_op"
   }
 ;
     

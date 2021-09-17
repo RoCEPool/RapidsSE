@@ -49,6 +49,7 @@ cmdSyntax: ping :: ping ;
     <params>      = 0
     <streamDef>   = __pingInfo
     <seedReq>     = "ping_req"
+    <opEntry> = "ping_op"
   }
 ;
     

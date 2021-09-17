@@ -47,6 +47,7 @@ cmdSyntax: sztbl :: sztbl <tableNm> ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __sizeTable
     <params>    = 1
+    <opEntry> = "sztbl_op"
   }
 ;
     

@@ -27,6 +27,7 @@ cmdSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 2
     <seedReq>     = "dumpIdx_req"
+    <opEntry> = "dumpIdx_op"
   }
 ;
   

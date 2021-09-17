@@ -30,6 +30,7 @@ cmdSyntax: docol :: docol <routineNm> ;
     <params>      = 1
     
     <seedReq>   = "docol_req"
+    <opEntry> = "docol_op"
   }
 ;
     

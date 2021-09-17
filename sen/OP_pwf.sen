@@ -57,6 +57,7 @@ cmdSyntax: pwf :: pwf ;
     <streamDef>   = __pwf
     <params>      = 0
     <seedReq>     = "pwf_req"
+    <opEntry> = "pwf_op"
 }
 ;
     

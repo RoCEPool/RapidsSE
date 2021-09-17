@@ -27,7 +27,8 @@ cmdSyntax: dumpTbl :: dumpTbl <tableNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
     <seedReq>     = "dumpTbl_req"
-  }
+    <opEntry> = "dumpTbl_op"
+}
 ;
     
 /*============================================================================*/

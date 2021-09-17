@@ -61,6 +61,7 @@ cmdSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
     <streamDef>   = __listColumns
     <params>      = 2
     <seedReq>     = "lsidxcol_req"
+    <opEntry> = "lsidxcol_op"
   }
 ;
 

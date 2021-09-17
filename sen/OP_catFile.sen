@@ -65,6 +65,7 @@ cmdSyntax: catFile :: catFile <FileNm> ;
     <params>      = 1
     
     <seedReq>   = "catFile_req"
+    <opEntry> = "catFile_op"
   }
 ;
 

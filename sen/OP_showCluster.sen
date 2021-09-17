@@ -61,6 +61,7 @@ cmdSyntax: showCluster :: showCluster ;
     <streamDef>   = __showCluster
     <params>      = 0
     <seedReq>     = "showCluster_req"
+    <opEntry> = "showCluster_op"
  }
 ;
     

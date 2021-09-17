@@ -27,6 +27,7 @@ cmdSyntax: visidx :: visidx <tableNm> <indexNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 2
     <seedReq>     = "visidx_req"
+    <opEntry> = "visidx_op"
   }
 ;
   
