@@ -1591,38 +1591,24 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
   if ( ! m_sLowerBoundAsm.bSame(""_Stz) ) {
     if (bLeftTable) {
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     }
     else {
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n"_Stz, aEO[m_eLowerBound]);
-    //StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_POP\n\n"_Stz);
   }
 
   if (  ! m_sUpperBoundAsm.bSame(""_Stz)  ) {
     if (bLeftTable) {
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     }
     else {
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_PRINT\n\n"_Stz);
       StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
     }
     StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
     StrLib::vSprintCat(m_sUpperBoundAsm, "  %s\n"_Stz, aEO[m_eUpperBound]);
-    //StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_POP\n\n"_Stz);
   }
 
   L_RETURN:
@@ -2180,24 +2166,16 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
 
   // pop the param type
   eDM eParamType = (eDM)pTypeStack->iPop();
-
-  // push result type
-  //pTypeStack->vPush(DM_INT);
+  eEO eCodeIsNull  = eMathOp_IsNullCode[eParamType];
+  eEO eCodePopNull = eMathOp_PopNullCode[eParamType];
 
   // generate code for agg initialization
   if (m_bHasGby) {
 
     // generate initialization code
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(sAggInit, "  EO_ISNULL_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(sAggInit, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  %s\n"_Stz, aEO[eCodeIsNull]);
     StrLib::vSprintCat(sAggInit, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
-
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(sAggInit, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(sAggInit, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  %s\n"_Stz, aEO[eCodePopNull]);
 
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER 0\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iProjectColumn);
@@ -2206,10 +2184,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(sAggInit, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(sAggInit, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(sAggInit, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  %s\n"_Stz, aEO[eCodePopNull]);
 
     //StrLib::vSprintCat(sAggInit, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER 1\n"_Stz);
@@ -2219,25 +2194,16 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_DONE\n"_Stz);
 
     // generate aggregation code
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodeIsNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
 
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP COUNT_DONE\n"_Stz);
 
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
@@ -2255,25 +2221,16 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iProjectColumn);
 
     // generate aggregation code
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodeIsNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
 
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP COUNT_DONE\n"_Stz);
 
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
-    if (eParamType == DM_VCH)
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
-    else
-      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iProjectColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
@@ -3279,16 +3236,17 @@ void ExprEval::vCheckIsNull(Stz* szAsmBuffer, IntStack* pTypeStack) {
 
   // pop one param type
   eDM eParamType1 = (eDM) pTypeStack->iPop();
-  eEO eCode = eMathOp_IsNullCode[eParamType1];
+  eEO eCodeIsNull = eMathOp_IsNullCode[eParamType1];
+  eEO eCodePopNull = eMathOp_PopNullCode[eParamType1];
 
   //StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+  StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodeIsNull]);
   StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE VALUE_IS_NOT_NULL\n"_Stz);
   if (m_bLeftOuter) {
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP INDEXJOIN_NEXT_LO_RETURN\n"_Stz);
   }
   else {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
   }
 

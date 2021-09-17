@@ -373,6 +373,10 @@ static eEO eMathOp_IsNullCode[DM_ENUMS] =
     // NONE     BOL        BCD         DTE         FLT         INT         IVL        IVY        TME        TSP         VCH            UNK
     { EO_NONE,  EO_ISNULL, EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL, EO_ISNULL, EO_ISNULL, EO_ISNULL,  EO_ISNULL_STR, EO_ISNULL    };
 
+static eEO eMathOp_PopNullCode[DM_ENUMS] =
+    // NONE     BOL        BCD         DTE         FLT         INT         IVL        IVY        TME        TSP         VCH            UNK
+    { EO_NONE,  EO_POP,    EO_POP,     EO_POP,     EO_POP,     EO_POP,     EO_POP,    EO_POP,    EO_POP,    EO_POP,     EO_POP_STR,    EO_POP    };
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MIN VALUE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
