@@ -99,6 +99,7 @@ cmdSyntax: execute :: execute ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "execute::execute"
+    <entryPoint>    = "execute::execute"
     <path>     = "/"
   }
 ;

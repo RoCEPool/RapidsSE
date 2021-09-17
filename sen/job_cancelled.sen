@@ -135,6 +135,7 @@ cmdSyntax: cancelled :: cancelled ;
   tags{
     <cmdDesc>  = "--desc for job--"
     <seedRun>  = "cancelled::cancelled"
+    <entryPoint>    = "cancelled::cancelled"
     <path>     = "/"
   }
 ;

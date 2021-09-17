@@ -39,8 +39,10 @@ namespace STORE
 
     b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
+  private:
     eSS         m_eSeed;      // sen word to start execution
-    Word*       m_pSeedWord;  // seed word of this job                  POST_RECV
+  public:
+    Word*       m_pTaskSeedWord;  // seed word of this job                  POST_RECV
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -189,8 +191,8 @@ namespace STORE
     eSS  eSeed(void);
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
-    Word* pSeedWord(void);
-    void vSeedWord(Word* pSeedWord);
+    Word* pTaskSeedWord(void);
+    void vTaskSeedWord(Word* pSeedWord);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);

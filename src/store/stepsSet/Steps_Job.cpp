@@ -1037,7 +1037,7 @@ void Step::vJobSeedWordFetch(void)
  
   Job* pJob = * m_pJob_task;
 
-  Word* pWord = pJob->pSeedWord();
+  Word* pWord = pJob->pTaskSeedWord();
   
   m_pDataStack->vPushPtr(pWord);
   
@@ -1055,7 +1055,7 @@ void Step::vJobSeedWordStore(void)
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  pJob->vSeedWord(pWord);
+  pJob->vTaskSeedWord(pWord);
   
   EXIT();
 }

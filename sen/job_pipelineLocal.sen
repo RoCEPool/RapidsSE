@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline request on origin                                     */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal_req ( -- )
+: pipelineLocal::entry ( -- )
 
   job::assertCorrectness
 
@@ -138,9 +138,9 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     <jobKind>  = JK_LOCAL
     //<ddlLock>  = DL_GRAB_READ
     
-    <seedReq>   = "pipelineLocal_req"
+    <seedReq>   = "pipelineLocal::entry"
     
-    <entry>     = "pipelineLocal_req"
+    <entryPoint> = "pipelineLocal::entry"
 
   }
 ;
