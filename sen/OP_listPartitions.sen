@@ -51,7 +51,7 @@ cmdSyntax: lsptn :: lsptn <tableNm> ;
     <streamDef>   = __promptOut
     <params>      = 1
     <seedReq>     = "lsptn_req"
-    <opEntry> = "lsptn_op"
+    <opEntry> = "lsptn_op"  <seedReq> = "lsptn_req"
   }
 ;
     

@@ -67,7 +67,7 @@ cmdSyntax: eachPath :: eachPath ;
 : eachPath_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "eachPath_op"
+    <opEntry> = "eachPath_op"  <seedReq> = "eachPath_req"
   }
 ;
 

@@ -68,7 +68,7 @@ cmdSyntax: supervisor :: supervisor ;
 : supervisor_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "supervisor_op"
+    <opEntry> = "supervisor_op"  <seedReq> = "supervisor_req"
   }
 ;
 

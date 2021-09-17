@@ -62,7 +62,7 @@ cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __analyzeIndex
     <params>    = 2
-    <opEntry> = "anidx_op"
+    <opEntry> = "anidx_op"  <seedReq> = "anidx_req"
   }
 
   // [ senCompiler::current@ word.TagSet@ tagSet.asStr . ]

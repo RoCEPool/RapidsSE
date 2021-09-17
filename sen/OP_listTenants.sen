@@ -65,7 +65,7 @@ cmdSyntax: lsten :: lsten ;
     <streamDef>   = __listContents
     <params>      = 0
     <seedReq>     = "lsten_req"
-    <opEntry> = "lsten_op"
+    <opEntry> = "lsten_op"  <seedReq> = "lsten_req"
   }
 ;
     

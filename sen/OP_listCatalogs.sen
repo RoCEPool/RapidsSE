@@ -64,7 +64,7 @@ cmdSyntax: lscat :: lscat ;
     <streamDef>   = __listContents
     <params>      = 0
     <seedReq>     = "lscat_req"
-    <opEntry> = "lscat_op"
+    <opEntry> = "lscat_op"  <seedReq> = "lscat_req"
   }
 ;
     

@@ -87,7 +87,7 @@ cmdSyntax: wrFile :: wrFile <fileNm> ;
 : wrFile_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "wrFile_op"
+    <opEntry> = "wrFile_op"  <seedReq> = "wrFile_req"
   }
 ;
 

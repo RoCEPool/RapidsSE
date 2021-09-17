@@ -110,7 +110,7 @@ cmdSyntax: send :: send <sendKind> ;
 : send_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "send_op"
+    <opEntry> = "send_op"  <seedReq> = "send_req"
   }
 ;
 

@@ -82,7 +82,7 @@ cmdSyntax: tableSizes :: tableSizes ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __tableSizes
     <params>    = 0
-    <opEntry> = "tableSizes_op"
+    <opEntry> = "tableSizes_op"  <seedReq> = "tableSizes_req"
   }
 ;
     

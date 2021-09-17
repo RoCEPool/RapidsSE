@@ -116,7 +116,7 @@ cmdSyntax: toPtnRow :: toPtnRow ;
 : toPtnRow_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toPtnRow_op"
+    <opEntry> = "toPtnRow_op"  <seedReq> = "toPtnRow_req"
   }
 ;
 

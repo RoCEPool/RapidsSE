@@ -154,7 +154,7 @@ cmdSyntax: insert :: insert <tableNm> ;
 : insert_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "insert_op"
+    <opEntry> = "insert_op"  <seedReq> = "insert_req"
   }
 ;
 

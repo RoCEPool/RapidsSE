@@ -100,7 +100,7 @@ cmdSyntax: cf :: cf <folderNm> ;
     <params>      = 1
     
     <seedReq>   = "cf_req"
-    <opEntry> = "cf_op"
+    <opEntry> = "cf_op"  <seedReq> = "cf_req"
   }
 ;
     

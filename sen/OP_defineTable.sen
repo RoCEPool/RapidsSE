@@ -96,7 +96,7 @@ cmdSyntax: defineTable :: defineTable <tableNm> ;
 : defineTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "defineTable_op"
+    <opEntry> = "defineTable_op"  <seedReq> = "defineTable_req"
   }
 ;
     

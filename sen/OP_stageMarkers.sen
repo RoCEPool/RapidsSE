@@ -64,7 +64,7 @@ cmdSyntax: stageMarkers :: stageMarkers ;
 : stageMarkers_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "stageMarkers_op"
+    <opEntry> = "stageMarkers_op"  <seedReq> = "stageMarkers_req"
   }
 ;
   

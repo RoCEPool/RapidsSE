@@ -61,7 +61,7 @@ cmdSyntax: waker :: waker ;
 : waker_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "waker_op"
+    <opEntry> = "waker_op"  <seedReq> = "waker_req"
   }
 ;
 

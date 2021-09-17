@@ -27,7 +27,7 @@ cmdSyntax: vistbl :: vistbl <tableNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
     <seedReq>     = "vistbl_req"
-    <opEntry> = "vistbl_op"
+    <opEntry> = "vistbl_op"  <seedReq> = "vistbl_req"
   }
 ;
     

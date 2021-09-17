@@ -121,7 +121,7 @@ cmdSyntax: chunk :: chunk <fileNm> ;
 : chunk_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "chunk_op"
+    <opEntry> = "chunk_op"  <seedReq> = "chunk_req"
   }
 ;
 

@@ -45,7 +45,7 @@ cmdSyntax: sysOpen :: sysOpen ;
 : sysOpen_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "sysOpen_op"
+    <opEntry> = "sysOpen_op"  <seedReq> = "sysOpen_req"
   }
 ;
 

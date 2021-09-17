@@ -137,7 +137,7 @@ cmdSyntax: report :: report <fileNm> ;
 : report_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "report_op"
+    <opEntry> = "report_op"  <seedReq> = "report_req"
   }
 ;
 

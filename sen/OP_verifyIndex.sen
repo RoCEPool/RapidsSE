@@ -47,7 +47,7 @@ cmdSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __verifyIndex
     <params>    = 2
-    <opEntry> = "vfyidx_op"
+    <opEntry> = "vfyidx_op"  <seedReq> = "vfyidx_req"
   }
 ;
     

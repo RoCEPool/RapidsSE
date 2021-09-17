@@ -40,7 +40,7 @@ cmdSyntax: space :: space ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __space
     <params>    = 0
-    <opEntry> = "space_op"
+    <opEntry> = "space_op"  <seedReq> = "space_req"
   }
 ;
     

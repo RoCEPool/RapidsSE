@@ -81,7 +81,7 @@ cmdSyntax: recurring :: recurring <nSeconds> ;
 : recurring_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "recurring_op"
+    <opEntry> = "recurring_op"  <seedReq> = "recurring_req"
   }
 ;
 

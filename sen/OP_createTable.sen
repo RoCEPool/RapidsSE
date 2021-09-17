@@ -109,7 +109,7 @@ cmdSyntax: createTable :: createTable <tableNm> ;
 : createTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "createTable_op"
+    <opEntry> = "createTable_op"  <seedReq> = "createTable_req"
   }
 ;
     

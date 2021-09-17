@@ -90,7 +90,7 @@ cmdSyntax: statWrite :: statWrite ;
 : statWrite_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "statWrite_op"
+    <opEntry> = "statWrite_op"  <seedReq> = "statWrite_req"
   }
 ;
 

@@ -236,7 +236,7 @@
   else
 
     // pwCmdTags word.name@ "addSeedTags: %v is an op" .printf
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
+    //"<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
 
   then then then
 ;

@@ -64,7 +64,7 @@ cmdSyntax: projValidation :: projValidation ;
 : projValidation_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "projValidation_op"
+    <opEntry> = "projValidation_op"  <seedReq> = "projValidation_req"
   }
 ;
   

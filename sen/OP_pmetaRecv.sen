@@ -70,7 +70,7 @@ cmdSyntax: pmetaRecv :: pmetaRecv ;
 : pmetaRecv_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "pmetaRecv_op"
+    <opEntry> = "pmetaRecv_op"  <seedReq> = "pmetaRecv_req"
   }
 ;
 

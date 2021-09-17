@@ -62,7 +62,7 @@ cmdSyntax: bufferGen :: bufferGen <nBuffers> ;
 : bufferGen_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "bufferGen_op"
+    <opEntry> = "bufferGen_op"  <seedReq> = "bufferGen_req"
   }
 ;
 

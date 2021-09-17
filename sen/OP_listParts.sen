@@ -50,7 +50,7 @@ cmdSyntax: lsPtns :: lsPtns ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __listPartitions
     <params>    = 0
-    <opEntry> = "lsPtns_op"
+    <opEntry> = "lsPtns_op"  <seedReq> = "lsPtns_req"
   }
 ;
     

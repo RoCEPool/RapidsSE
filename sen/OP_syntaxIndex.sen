@@ -144,7 +144,7 @@ cmdSyntax: syntaxIndex :: syntaxIndex <indexNm> <etc> ;
 : syntaxIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "syntaxIndex_op"
+    <opEntry> = "syntaxIndex_op"  <seedReq> = "syntaxIndex_req"
   }
 ;
     

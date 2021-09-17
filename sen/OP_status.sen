@@ -42,7 +42,7 @@ cmdSyntax: status :: status ;
     <params>    = 0
     
     <seedReq>   = "status_req"
-    <opEntry> = "status_op"
+    <opEntry> = "status_op"  <seedReq> = "status_req"
   }
 ;
     

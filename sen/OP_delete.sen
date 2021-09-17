@@ -296,7 +296,7 @@ cmdSyntax: delete :: delete <tableNm> <predicate> ;
 : delete_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "delete_op"
+    <opEntry> = "delete_op"  <seedReq> = "delete_req"
   }
 ;
 
