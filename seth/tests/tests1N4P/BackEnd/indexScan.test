@@ -46,9 +46,9 @@ range_I nation idx "UBOUND $I1 10 <= ";
 rows: 11
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// EQUAL (one column)
+// BOUND (one column)
 // select * from nation where n_nationKey == 2 ;
-range_I nation idx "EQUAL $I1 2 == ";
+range_I nation idx "BOUND $I1 2 == ";
 rows: 1
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 
 #include "IdList.hpp"
+#include "StringObject.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -26,6 +27,10 @@ static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/string
 
 static Stz* C_COLUMNNAMES_PROP = "columnNames"_Stz;
 static Stz* C_COLUMNNAMES_DEFN = "/__root__/definitions/object/list/idList"_Stz;
+
+static Stz* C_DEFNPATH_PROP = "defnPath"_Stz;
+static Stz* C_DEFNPATH_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -54,6 +59,10 @@ QueryNode* TableSubquery::pCreate(Text* pTableAlias, QueryNode* pColumnNames)
 
   pColumnNames->vSetName(C_COLUMNNAMES_PROP);
   pSubqueryNode->vAppendProperty(pColumnNames);
+
+  Value xDefnPathVal((Stz*) nullptr);
+  QueryNode* pDefnPath = new QueryNode(C_DEFNPATH_PROP, C_DEFNPATH_DEFN, static_cast<Value&&>(xDefnPathVal));
+  pSubqueryNode->vAppendProperty(pDefnPath);
 
   return pSubqueryNode;
 }
@@ -205,6 +214,38 @@ QueryNode* TableSubquery::pColumnNames(QueryNode *pNode)
   ASSERT(pColumnNamesNode);
 
   return pColumnNamesNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the path of the definition node of this table subquery. May be null*/
+/*----------------------------------------------------------------------------*/
+Stz* TableSubquery::szDefnPath(QueryNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+  ASSERT(pDefnPathNode);
+  ASSERT(StringObject::bIsOfType(pDefnPathNode));
+
+  return pDefnPathNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the path of the node that represents the metadata of this CTE         */
+/*----------------------------------------------------------------------------*/
+void TableSubquery::vSetDefnPath(QueryNode *pNode, Stz *szPath)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szPath);
+
+  QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+  ASSERT(pDefnPathNode);
+  ASSERT(StringObject::bIsOfType(pDefnPathNode));
+
+  Value xVal(szPath);
+  pDefnPathNode->vSetValue(static_cast<Value&&>(szPath));
 }
 
 /*============================================================================*/

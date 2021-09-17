@@ -194,6 +194,9 @@ namespace Parser
         return *this;
       }
 
+      ASSERT(!m_bMustFree); // must already have been deallocated
+      //vDealloc();
+
       m_eType = xOtherVal.m_eType;
       m_bMustFree = xOtherVal.m_bMustFree;
       m_bIsNull = xOtherVal.m_bIsNull;
