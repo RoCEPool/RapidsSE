@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: OP__tpl_locallite_req
+: OP__tpl_locallite_ENTRY
 
 "
   : /localLiteOp/_req \\operator
