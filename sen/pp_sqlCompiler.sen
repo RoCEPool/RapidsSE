@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* pp_sqlCompiler.sen -- SQL Compiler pipeline procedure                      */
+/*============================================================================*/
+
+" pp_sqlCompiler.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* sql compiler related procedures                                            */
+/*----------------------------------------------------------------------------*/
+
+: start::defProc_SqlCompiler
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sql Compiler
+  
+  STD_PATH
+  "
+  procedure sqlCompiler
+    parameters $sqlStatement
+
+  begin
+
+    // Where possible, try to name these operators in the format:  <noun><verb>
+    // e.g. exprValidate
+    // This makes it easier to glance through and categorise/identify transformations.
+    // For example, if all transformations of aggregates begin with aggregate or agg
+    // then it is easy to visually spot them.
+    // There are always exceptions though, e.g. explainPlan, partitionPlan, etc.
+
+    stage stageA on origin :
+      start
+      | pulse once
+// Parsing phase
+      | parser $sqlStatement    // Parses the SQL into a basic plan graph
+// Planning Phase
+      | nameValidate            // Resolves and qualifies all column and table names used within the plan. Expands SELECT *.
+      | exprValidate            // Checks that expr combinations are semantically correct. Checks aggregation and grouping semantics.
+      | setOpValidate           // Checks the CORRESPONDING BY column list of a set operation (UNION/INTERSECT/EXCEPT).
+      | postProject             // Checks if there are intermediate columns that need to be removed before data is returned to the user.
+      | exprPushdown            // Pushes down any exprs that need to be calculated (e.g. aggregates) from other operators into a ProjectOp/AggregateOp.
+      | projValidation          // Checks that there are no expressions in the plan that cannot be calculated from the row definition it receives.
+// Optimisation Phase
+      | corrBySquash            // Merges two adjacent (parent/child) Project/AggregateOps that can result from a CORRESPONDING BY clause
+      | explainPlan             // The default point at which point we stop a plan if it is to be explained. This operator does nothing else.
+      | partitionPlan           // Takes the single logical plan and splits it into one that is aware of partition/node/origin partitioning.
+      | projValidation          // A second sanity check after partitioning that all exprs can be formed from their input row definitions.
+      | partitionExplain        // Another common point at which point to stop a plan if it is to be explained post partitioning. This operator does nothing else.
+// Transliteration Phase
+      | stageMarkers            // Removes all StatementMarker nodes from the plan and adds in StageMarker nodes to help the transliteration know when to add a new stage.
+      | aggregateSplit          // Simplifies the RLU from needing to handle multiple aggregate calculations for a single projected column by separating the calculations into separate columns.
+      | transliterate           // Converts the plan from a graph structure to a pipeline statement.
+      | output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // sqlCompiler ;
+ ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
