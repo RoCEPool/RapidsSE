@@ -9,7 +9,7 @@ macro AM_LOOPJOIN_CRWLFT_CRWRHT
   // LOOPJOIN_CRWLFT_CRWRHT
   Label LOOPJOIN_CRWLFT_CRWRHT
   EO_PRINTF "**AM_LOOPJOIN_CRWLFT_CRWRHT**\n"
-  EO_POP
+  //EO_POP
 
   // For each row in the left buffer
   EO_PUSH_DEVIXT_LFT
@@ -286,11 +286,11 @@ macro AM_JOINTEST_ROWLFT_ROWRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_LOOPJOIN_END                                                      //
+// macro AM_JOINTEST_END                                                      //
 //----------------------------------------------------------------------------//
-macro AM_LOOPJOIN_END
-  // LOOPJOIN_END
-  EO_RETURN
+macro AM_JOINTEST_END
+  // JOINTEST_END
+  EO_RETURN_VALUE
 endMacro
 
 /*============================================================================*/

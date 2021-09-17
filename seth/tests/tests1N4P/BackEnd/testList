@@ -9,7 +9,7 @@ filterRows$_I.test
 //filterRows$.test
 
 indexJoin.test
-indexScan.test
+//indexScan.test
 
 limitRows.test
 limitRows_I.test

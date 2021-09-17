@@ -1571,6 +1571,7 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 void LogicUnit::vRlu_ASSERTSTACK(void* aLU, i8* aiDstk) {
   vDebugPoint();
 
+  //vTrace("vRlu_ASSERTSTACK\n"_Stz);
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
 
   i8 nStkUse = nDifference(aiDstk,pLogicUnit->m_xRluCommon.m_iaDataStack);
@@ -1783,6 +1784,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     aeCode += 2;
 
 #ifdef WITH_TRACE_LOGICUNIT
+    if(aRluCommon->m_iaDataStack[0] != -1)
+      vRlu_DUMP(pLU, aiDstk);
     vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
@@ -4701,6 +4704,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_ENTER(eCode);
         ArgNil(); // return from subroutine and
         dLU0(EO_RETURN);
+        //vRlu_ASSERTSTACK(pLU, aiDstk);
 #ifdef __TINYC__
         return aiDstk;
 #else
@@ -4713,7 +4717,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         aeCode = (char*)(* (--aeaRstk));
 #endif
-        //vRlu_ASSERTSTACK(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -4765,7 +4768,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_RETURN_VALUE:
+        EO_ENTER(eCode);
+        ArgNil(); // return from subroutine and
+        dLU0(EO_RETURN);
+        //vRlu_ASSERTSTACK(pLU, aiDstk);
+#ifdef __TINYC__
+        return aiDstk;
+#else
+        if (aeaRstk == &eaReturnStack[0]) {
+          iRes = *(aiDstk--);
+#ifdef WITH_TRACE_LOGICUNIT
+          vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
+#endif
+          return iRes;
+        }
+        aeCode = (char*)(* (--aeaRstk));
+#endif
+        EO_EXIT(eCode);
+        break;//+endCase
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
       case EO_ASSERT:
         EO_ENTER(eCode);
@@ -5713,8 +5736,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_ENTER(eCode);
         ArgNil(); // create new row
         dLU0(EO_DEVROW_ROW_NEW);
+        //vRlu_DUMP(pLU, aiDstk);
         vDev_ROW_ROW_NEW(&aiDstk);     // devrow / pot /ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -5939,6 +5964,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         ArgNil(); // push column value from dev
         vDev_IXT_COL_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
