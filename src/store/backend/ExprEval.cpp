@@ -1495,6 +1495,10 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     if (pTkn->bSame("BOUND"_Stz) ) {
       bLbound = true;
       bUbound = true;
+
+      // if BOUND (EQUAL) we can set entry kind only once in the lowerBoundAsm
+      // as entry kind remains the same
+
       if (m_sLowerBoundAsm.bSame(""_Stz) ) {
         if (bLeftTable)
           StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
@@ -1503,14 +1507,14 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
         StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
         StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_ENTWRK_SETENTKND\n\n"_Stz);
       }
-      if (m_sUpperBoundAsm.bSame(""_Stz) ) {
-        if (bLeftTable)
-          StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
-        else
-          StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
-        StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-        StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_SETENTKND\n\n"_Stz);
-      }
+//      if (m_sUpperBoundAsm.bSame(""_Stz) ) {
+//        if (bLeftTable)
+//          StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
+//        else
+//          StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_RHT\n"_Stz);
+//        StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+//        StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_ENTWRK_SETENTKND\n\n"_Stz);
+//      }
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -3243,14 +3247,14 @@ void ExprEval::vCheckIsNull(Stz* szAsmBuffer, IntStack* pTypeStack) {
   StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodeIsNull]);
   StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE VALUE_IS_NOT_NULL\n"_Stz);
   if (m_bLeftOuter) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP INDEXJOIN_NEXT_LO_RETURN\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP INDEXJOIN_NEXT_LO_RETURN\n\n"_Stz);
   }
   else {
     StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
     StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
   }
 
-  StrLib::vSprintCat(szAsmBuffer, "  Label VALUE_IS_NOT_NULL\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "\n  Label VALUE_IS_NOT_NULL\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  deleteLabel VALUE_IS_NOT_NULL\n"_Stz);
 
   pTypeStack->vPush(eParamType1);
