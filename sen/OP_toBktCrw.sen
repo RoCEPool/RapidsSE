@@ -125,7 +125,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toBktCrw :: toBktCrw ;
 
-: toBktCrw_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toBktCrw_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toBktCrw_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

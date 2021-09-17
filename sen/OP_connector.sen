@@ -147,9 +147,10 @@
 cmdSyntax: connector :: connector ;
 
 : connector_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "connector_op"
+  }
 ;
 
 /*============================================================================*/

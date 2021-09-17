@@ -77,11 +77,10 @@
 cmdSyntax: compilerOpEg :: compilerOpEg ;
 
 : compilerOpEg_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "compilerOpEg_op"
   }
-
 ;
   
 /*============================================================================*/

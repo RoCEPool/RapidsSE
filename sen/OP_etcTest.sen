@@ -45,10 +45,10 @@ cmdSyntax: etcTest :: etcTest <arg1> <arg2> <etc> ;
 : etcTest_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>     = "--desc for op--"
+    <opEntry> = "etcTest_op"
   }
 ;
     
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

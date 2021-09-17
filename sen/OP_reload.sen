@@ -67,7 +67,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: reload :: reload ;
 
-: reload_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: reload_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "reload_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -93,7 +93,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: puGen :: puGen <tableNm> ;
 
-: puGen_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: puGen_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "puGen_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

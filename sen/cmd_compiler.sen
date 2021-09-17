@@ -231,7 +231,7 @@
     //<jobKind> == JK_LOCAL
     
     //pwCmdTags word.name@ "addSeedTags: %v is a local job" .printf
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
+    //"<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
 
   else
 

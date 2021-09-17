@@ -138,9 +138,10 @@
 cmdSyntax: recv :: recv ;
 
 : recv_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "recv_op"
+  }
 ;
 
 /*============================================================================*/

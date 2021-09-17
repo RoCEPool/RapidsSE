@@ -69,7 +69,9 @@ cmdSyntax: dropIndex :: dropIndex <tableNm> <indexNm> ;
 
 : dropIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--desc for op--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "dropIndex_op"
+  }
 ;
     
 /*============================================================================*/

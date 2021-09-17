@@ -63,11 +63,10 @@
 cmdSyntax: corrBySquash :: corrBySquash ;
 
 : corrBySquash_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "corrBySquash_op"
   }
-
 ;
   
 /*============================================================================*/

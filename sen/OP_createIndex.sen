@@ -152,7 +152,9 @@ cmdSyntax: createIndex :: createIndex <indexNm> ;
 
 : createIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <jobDesc>   = "--description of operator--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "createIndex_op"
+  }
 ;
     
 /*============================================================================*/

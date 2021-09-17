@@ -195,7 +195,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: hash :: hash <compiled> <etc> ;
 
-: hash_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: hash_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "hash_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

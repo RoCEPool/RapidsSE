@@ -55,8 +55,10 @@
 cmdSyntax: reap :: reap ;
 
 : reap_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "reap_op"
+  }
 ;
 
 /*============================================================================*/

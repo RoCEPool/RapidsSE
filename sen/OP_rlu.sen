@@ -206,7 +206,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rlu :: rlu <compiled> filter <filter> , project <project> ;
 
-: rlu_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: rlu_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "rlu_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -49,7 +49,10 @@
 cmdSyntax: failed :: failed ;
 
 : failed_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "failed_op"
+  }
 ;
 
 /*============================================================================*/
