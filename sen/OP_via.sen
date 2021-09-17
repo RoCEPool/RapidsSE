@@ -33,7 +33,7 @@ cmdSyntax: via :: via ;
 : via_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "_op"
+    <opEntry> = "via_op"
   }
 ;
 

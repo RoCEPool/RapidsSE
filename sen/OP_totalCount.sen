@@ -101,7 +101,7 @@ cmdSyntax: totalCount :: totalCount ;
 : totalCount_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "_op"
+    <opEntry> = "totalCount_op"
   }
 ;
 

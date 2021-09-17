@@ -72,7 +72,7 @@ cmdSyntax: dropTable :: dropTable <tableNm> ;
   tags{
     <cmdDesc>   = "--desc for op--"
     <forceLog>  = 1
-    <opEntry> = "_op"
+    <opEntry> = "dropTable_op"
   }
 ;
     

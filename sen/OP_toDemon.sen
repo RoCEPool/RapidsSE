@@ -47,7 +47,7 @@ cmdSyntax: toDemonOp :: toDemonOp ;
 : toDemonOp_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "_op"
+    <opEntry> = "toDemonOp_op"
   }
 ;
 

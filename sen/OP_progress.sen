@@ -117,7 +117,7 @@ cmdSyntax: progress :: progress <string> ;
 : progress_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "_op"
+    <opEntry> = "progress_op"
   }
 ;
 
