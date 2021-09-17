@@ -2353,6 +2353,11 @@
                   value: "A list of catalogs used by the current plan",
                   type: "/__root__/definitions/object/list/catalogDefs"
                 },
+                {
+                  name: "ctes",
+                  value: "A list of Common Table Expression definitions used by the current plan",
+                  type: "/__root__/definitions/object/list/cteDefs"
+                },
                 // TODO: Add session information into the plan. e.g. current username, timezone, CURRENT_TIMESTAMP, etc
 //                {
 //                  name: "session",
