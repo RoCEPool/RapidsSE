@@ -1202,6 +1202,8 @@ void Api::vCreateTaskForOp(Op* pOp)
   pTask = AM::TASK::pNew(pOp);
   pOp->vTask(pTask);
   
+  pOp->vTaskEntryWord();
+
   pTask->vSetInxPtr();
 }
 
