@@ -1839,12 +1839,11 @@ void Op::vTaskSeedWord(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Dic* pDicRoot = AM::DIC::pRoot();
-   
-  Stz* szSeed = AM::SEED::szDecodeSeed(SS_SEED_REQ,&m_oOpTags);
-
-  //vTrace("Op::vSetTaskSeedWord:szSeed = %s\n"_Stz,szSeed);
+     
+  s32 sSeed(m_sOpNm);
+  sSeed.vConcat("_req"_Stz);
   
-  m_pTaskSeedWord = pDicRoot->pFindWord(szSeed);
+  m_pTaskSeedWord = pDicRoot->pFindWord(sSeed);
   
   if (! m_pTaskSeedWord) {
     RASSERT(m_pTaskSeedWord);
