@@ -19,6 +19,9 @@
 
 #include "ColumnRef.hpp"
 
+#include "CteDef.hpp"
+#include "CteDefs.hpp"
+
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -32,6 +35,9 @@ static Stz* C_METADATANODE_DEFN = "/__root__/definitions/object/metadataNode"_St
 static Stz* C_CATALOGS_PROP = "catalogs"_Stz;
 static Stz* C_CATALOGS_DEFN = "/__root__/definitions/object/list/catalogDefs"_Stz;
 
+static Stz* C_CTES_PROP = "ctes"_Stz;
+static Stz* C_CTES_DEFN = "/__root__/definitions/object/list/cteDefs"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -44,8 +50,10 @@ QueryNode* MetadataNode::pCreate()
 {
   QueryNode* pMetadataNode = new QueryNode(C_METADATANODE_NAME, C_METADATANODE_DEFN);
   QueryNode* pCatalogsNode = new QueryNode(C_CATALOGS_PROP, C_CATALOGS_DEFN);
+  QueryNode* pCtesNode     = new QueryNode(C_CTES_PROP, C_CTES_DEFN);
 
   pMetadataNode->vAppendProperty(pCatalogsNode);
+  pMetadataNode->vAppendProperty(pCtesNode);
 
   return pMetadataNode;
 }
@@ -329,6 +337,22 @@ PlanNodeIter* MetadataNode::pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatal
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get an iterator of PlanNodes that each represent a CteDef.                 */
+/* Iterator must be freed when finished.                                      */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* MetadataNode::pCteDefIter(QueryNode* pMetadataNode)
+{
+  ASSERT(bIsOfType(pMetadataNode));
+
+  // Get the ctes property
+  QueryNode* pCtesNode = _pQueryNode(GraphNav::pFindProperty(C_CTES_PROP, pMetadataNode));
+  ASSERT(pCtesNode);
+  ASSERT(CteDefs::bIsOfType(pCtesNode));
+
+  return pCtesNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return a list of TableDef nodes in the metadata that match a columnRef     */
 /*----------------------------------------------------------------------------*/
 QueryNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
@@ -405,6 +429,23 @@ QueryNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode
   delete pCatalogIter;
 
   return pTableDefList;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Add a CTE definition to the metadata                                       */
+/*----------------------------------------------------------------------------*/
+void MetadataNode::vAddCte(QueryNode* pMetadataNode, QueryNode* pCteDef)
+{
+  ASSERT(bIsOfType(pMetadataNode));
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  // Get the ctes property
+  QueryNode* pCtesNode = _pQueryNode(GraphNav::pFindProperty(C_CTES_PROP, pMetadataNode));
+  ASSERT(pCtesNode);
+
+  pCtesNode->vAppendChild(pCteDef);
 }
 
 /*============================================================================*/

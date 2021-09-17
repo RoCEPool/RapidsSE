@@ -394,6 +394,12 @@
                               type: "/__root__/definitions/object/list/idList"
                             },
                             {
+                              // Where the definition of this CTE may be found. Could be null.
+                              name: "defnPath",
+                              value: "The full path to the definition of this CTE",
+                              type: "/__root__/definitions/object/valueObject/stringObject"
+                            },
+                            {
                               // Add a constraint that children of a tableSubquery object must be
                               // either another tableSubquery (nested) or a mainSubquery
                               name: "__constraints", type: "/__root__/primitives/constraints", children: [
@@ -1963,6 +1969,27 @@
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/columnRefs
 
+// Path: /__root__/definitions/object/list/cteDefs
+                {
+                  name: "cteDefs",
+                  value: "A list of Common Table Expression definitions",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/cteDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/cteDef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/cteDefs
+
 // Path: /__root__/definitions/object/list/stageRangeList
                 {
                   name: "stageRangeList",
@@ -2222,6 +2249,41 @@
                     // TODO: is primary key?
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/indexDef
+// Path: /__root__/definitions/object/compound/cteDef
+                {
+                  name: "cteDef",
+                  value: "contains the definition of a Common Table Expression",
+                  properties: [
+                    {
+                      name: "aliasName",
+                      value: "The name of the virtual table that this CTE provides rows as",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "columns",
+                      value: "The definitions of the columns that make up the CTE",
+                      type: "/__root__/definitions/object/list/columnDefs"
+                    },
+                    // Add a constraint that any children of a cteDef must also be a cteDef.
+                    // This helps us establish a definition hierarchy which is important for
+                    // determining whether a name resolution of a CTE is in scope or not.
+                    {
+                      name: "__constraints",
+                      type: "/__root__/primitives/constraints",
+                      children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [
+                        {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject",
+                          value: "/__root__/definitions/object/compound/cteDef"
+                        }
+                      ]},
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/cteDef
 // Path: /__root__/definitions/object/compound/stageRange
                 {
                   name: "stageRange",
@@ -2290,6 +2352,11 @@
                   name: "catalogs",
                   value: "A list of catalogs used by the current plan",
                   type: "/__root__/definitions/object/list/catalogDefs"
+                },
+                {
+                  name: "ctes",
+                  value: "A list of Common Table Expression definitions used by the current plan",
+                  type: "/__root__/definitions/object/list/cteDefs"
                 },
                 // TODO: Add session information into the plan. e.g. current username, timezone, CURRENT_TIMESTAMP, etc
 //                {
