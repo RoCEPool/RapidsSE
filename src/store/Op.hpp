@@ -177,7 +177,7 @@ namespace STORE
     Task* pTask(void);
     void vTask(Task* pTask);
     Word* pTaskSeedWord(void);
-    void vTaskEntryWord(void);
+    Word* pTaskEntryWord(void);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
     void vWalk(void* aArg);

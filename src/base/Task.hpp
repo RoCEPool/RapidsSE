@@ -175,14 +175,13 @@ namespace BASE
     void vSetSenRecoverContext(void);
     void vReleaseLockSets(void);
     void vResetSenContext(void);
-    void vReseed(void);
     void vRetire(void);
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     bool bSeeded(void);
-    void vSetInxPtr(void);
+    void vSetInxPtr(Word* pEntryWordCheck);
     void vSleepUsec(i8 iMicroSeconds);
     eTS  eState(void);
     void vState(eTS eState);

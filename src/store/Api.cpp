@@ -822,7 +822,7 @@ void Api::vCallBoot(void)
 
   pJob->vTaskEntryWord(pSeedWord);
 
-  pBootTask->vSetInxPtr();
+  pBootTask->vSetInxPtr(pSeedWord);
 
   
   
@@ -887,7 +887,7 @@ void Api::RunStartJob(void)
 
   pJob->vTaskEntryWord(pSeedWord);
   
-  pStartTask->vSetInxPtr();
+  pStartTask->vSetInxPtr(pSeedWord);
 
   pJob->vTimerStart();
 
@@ -1179,7 +1179,7 @@ void Api::vCreateTaskForJob(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pTask->vSetInxPtr();
+  pTask->vSetInxPtr(pSeedWord);
 
   pJob->vTimerStart();
   
@@ -1202,9 +1202,9 @@ void Api::vCreateTaskForOp(Op* pOp)
   pTask = AM::TASK::pNew(pOp);
   pOp->vTask(pTask);
   
-  pOp->vTaskEntryWord();
+  Word* pEntryWord = pOp->pTaskEntryWord();
 
-  pTask->vSetInxPtr();
+  pTask->vSetInxPtr(pEntryWord);
 }
 
 /*----------------------------------------------------------------------------*/

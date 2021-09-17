@@ -1834,7 +1834,7 @@ Word* Op::pTaskSeedWord(void)
 /*----------------------------------------------------------------------------*/
 /* find and set task seed word for this op                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vTaskEntryWord(void)
+Word* Op::pTaskEntryWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1848,6 +1848,8 @@ void Op::vTaskEntryWord(void)
   if (! m_pTaskSeedWord) {
     RASSERT(m_pTaskSeedWord);
   }
+  
+  return m_pTaskSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/

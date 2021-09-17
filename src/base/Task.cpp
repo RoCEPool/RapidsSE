@@ -1092,18 +1092,6 @@ LockSet* Task::pReadLocks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reseed task                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vReseed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  vResetSenContext();
-
-  vSetInxPtr();
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset sen execution context                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vSetSenRecoverContext(void)
@@ -1302,7 +1290,7 @@ void Task::vSleepUsec(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* set the tasks instruction pointer to run the entry word                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSetInxPtr(void)
+void Task::vSetInxPtr(Word* pEntryWordCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
@@ -1318,7 +1306,7 @@ void Task::vSetInxPtr(void)
   else
     NEVER_REACH;
   
-  RASSERT(pEntryWord);
+  RASSERT(pEntryWord == pEntryWordCheck);
 
   m_aInxPtr = pEntryWord->aFirstCell();
   
