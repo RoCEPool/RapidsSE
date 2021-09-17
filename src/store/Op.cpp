@@ -75,8 +75,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // m_oOpTags
   m_pTask = nullptr;
   
-  m_eSeed = SS_SEED_REQ;
-  m_pSeedWord = nullptr;
+  m_pTaskSeedWord = nullptr;
   
   // -- -- -- -- -- --
 
@@ -124,23 +123,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   ++ gixOp;
   
-  
-
-  // ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
-  // seed experiment 1
-  /*
-  Dic* pDicRoot = AM::DIC::pRoot();
-
-  Stz* szSeed = AM::OP::szOpSeed(this);
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-  
-//  if (! pSeedWord)
-//    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-//           "Unable to find seed word: %s\n"_Stz,szSeed);
-
-  vSeedWord(pSeedWord);
-  */
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
@@ -158,7 +140,7 @@ Op::Op(Stz* szOpNm)
   m_sOpNm       = szOpNm;
   m_i_Op        = C_UNKNOWN;
   
-  m_pSeedWord = nullptr;
+  m_pTaskSeedWord = nullptr;
 
   m_bTraceOp    = false;
   
@@ -1672,49 +1654,6 @@ i8 Op::iRobinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oOpTags);
-    
-  return szSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get seed word                                                              */
-/*----------------------------------------------------------------------------*/
-Word* Op::pSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return * m_pSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set seed word                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSeedWord(Word* pSeedWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_pSeedWord.bIsNotNull() && (*m_pSeedWord) != pSeedWord ) {
-  
-    SP_Word spWord;
-  
-    vTrace("Cur Seed: %s\n"_Stz,spWord.sz(*m_pSeedWord));
-    vTrace("Rev Seed: %s\n"_Stz,spWord.sz(pSeedWord));
-   
-    NEVER_REACH;
-  }
-  
-  
-  m_pSeedWord = pSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
 eXK Op::eSendKind(void)
@@ -1754,25 +1693,6 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find and set seed word for this op                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vSetSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
- 
-  Stz* szSeed = AM::OP::szOpSeed(this);
-  //vTrace("Op::vSetSeedWord:szSeed = %s\n"_Stz,szSeed);
-  
-  m_pSeedWord = pDicRoot->pFindWord(szSeed);
-  
-  if (! m_pSeedWord) {
-    RASSERT(m_pSeedWord);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1899,6 +1819,35 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task seed word                                                         */
+/*----------------------------------------------------------------------------*/
+Word* Op::pTaskSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return * m_pTaskSeedWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find and set task seed word for this op                                    */
+/*----------------------------------------------------------------------------*/
+void Op::vTaskSeedWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+     
+  s32 sSeed(m_sOpNm);
+  sSeed.vConcat("_op"_Stz);
+  
+  m_pTaskSeedWord = pDicRoot->pFindWord(sSeed);
+  
+  if (! m_pTaskSeedWord) {
+    RASSERT(m_pTaskSeedWord);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

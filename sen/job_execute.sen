@@ -1,35 +1,35 @@
 /*============================================================================*/
-/* job__Execute.sen -- generic job related words                              */
+/* job_execute.sen -- execute 2pc job (pipeline coordination)                 */
 /*============================================================================*/
 
-" job__Execute.sen" .verbose
+" job_execute.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on originating node                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* distribute Job__Execute to all participants                                */
+/* distribute Job_Execute to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::distribute params| pJobOriginator |
+: execute::distribute params| pJobOriginator |
 
-  // "Job__Execute::distribute" .
+  // "execute::distribute" .
 
   //
   // where: on the originator node
   //
 
-  0 locals| pJob__Execute |
+  0 locals| pJob_Execute |
 
-  // create a temporary job__execute
-  pJobOriginator job__Execute::new to pJob__Execute
+  // create a temporary job_execute
+  pJobOriginator job_Execute::new to pJob_Execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
   grid::knownNodes pJobOriginator job.acksRemaining!
 
-  // send job__execute to all nodes
+  // send job_execute to all nodes
 
   0 locals| pNode |
 
@@ -39,7 +39,7 @@
     node_I[].node to pNode
 
     pNode node.isConnected if
-      pNode node.no pJob__Execute job.forward
+      pNode node.no pJob_Execute job.forward
     then
 
     node_I[].next
@@ -50,24 +50,24 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // delete the temporary job__execute
-  pJob__Execute job.delete2pc
+  // delete the temporary job_execute
+  pJob_Execute job.delete2pc
 ;
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Execute on participating node   recv: job.spawn */
+/* run received Job_Execute on participating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Execute_run [ word::seed# ]
+: execute::execute [ word::seed# ]
 
-  // "_Execute_run" .
+  // "execute::execute" .
 
   //
   // where: on the participating node
   //
-  Job[] locals| pJob__Execute |
+  Job[] locals| pJob_Execute |
 
   // find the job to be executed in the participating jobs
-  pJob__Execute job.id@ locals| iJobId |
+  pJob_Execute job.id@ locals| iJobId |
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
@@ -78,7 +78,7 @@
     Task[].yield
   repeat
   
-  // "_Execute_run" .
+  // "execute::execute" .
 
 
   // execute the job on this participating node
@@ -93,12 +93,12 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Execute :: _Execute ;
+cmdSyntax: execute :: execute ;
 
-: _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
+: execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_execute_run"
+    <seedRun>  = "execute::execute"
     <path>     = "/"
   }
 ;

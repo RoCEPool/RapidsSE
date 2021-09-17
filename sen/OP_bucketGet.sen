@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for bucketGet request                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketGet_req \operator
+: bucketGet_op \operator
 
   _lu_initialise_
   "bucketGet_req" .

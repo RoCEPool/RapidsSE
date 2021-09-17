@@ -1,20 +1,18 @@
 /*============================================================================*/
-/* job_Start.sen -- Start System                                              */
+/* job_start.sen -- Start System Job                                          */
 /*============================================================================*/
 
-" job_Start.sen" .verbose
+" job_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
 
-" _Start" .verbose
+: start::start
 
-: _Start ( -- <R> )
+  "start::start" .verbose
 
-  "_Start" .verbose
-
-  // define the apriori procedures
+  // define the system procedures
   start::defProc_Create
   start::defProc_Drop
   start::defProc_Scan
@@ -34,13 +32,13 @@
   start::defProc_Meta
   start::defProc_SqlCompiler
 
-  // define the apriori system tables
-  "define the apriori system tables" .verbose
+  // define the system tables
+  "define the system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
 
-  // define the apriori infoset tables
-  "define the apriori infoset tables" .verbose
+  // define the infoset tables
+  "define the infoset tables" .verbose
   start::defineInfoSets3
   start::defineInternalTables
 
@@ -113,13 +111,7 @@
     ": _Start completed" .boot
   //then
 
-  "end _Start" .
-
-  // unlink task and job
-  Task[].job@ if
-    //nullptr Task[].job@ job.task!
-    //nullptr Task[].job!
-  then
+  "end start::start" .verbose
 
   Job[].addRetired
   Task[].grabLock

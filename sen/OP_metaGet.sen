@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for metaGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaGet_req \operator
+: metaGet_op \operator
 
   _lu_initialise_
   "metaGet_req" .

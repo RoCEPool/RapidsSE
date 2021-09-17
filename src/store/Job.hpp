@@ -60,7 +60,7 @@ namespace STORE
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, begun, ...
     eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -192,7 +192,6 @@ namespace STORE
     Word* pSeedWord(void);
     void vSeedWord(Word* pSeedWord);
     Session* pSession(void);
-    void vSetSeedWord(void);
     void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);

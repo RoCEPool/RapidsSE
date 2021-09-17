@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* toDemon request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toDemonOp_req \operator
+: toDemonOp_op \operator
 
   _lu_initialise_
 

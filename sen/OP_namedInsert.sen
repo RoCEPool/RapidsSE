@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for namedInsert req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : namedInsert_req \operator
+ : namedInsert_op \operator
  
   _lu_initialise_
 

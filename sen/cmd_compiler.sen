@@ -162,7 +162,7 @@
   sText >interpret
 
   // synthesize word : sOpNm_req ... ;
-  "/liteOp/" sOpNm OP__tpl_lite_req str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_ENTRY str.replace to sText
   sText >interpret
 ;
 
@@ -186,7 +186,7 @@
   sText >interpret
 
   // synthesize : sOpNm_req
-  "/localLiteOp/" sOpNm OP__tpl_locallite_req str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_ENTRY str.replace to sText
   sText >interpret
 ;
 

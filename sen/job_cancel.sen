@@ -1,33 +1,33 @@
 /*============================================================================*/
-/* job__Cancel.sen -- generic job related words                               */
+/* job_cancel.sen -- cancel 2pc job (pipeline coordination)                   */
 /*============================================================================*/
 
-" job__Cancel.sen" .verbose
+" job_cancel.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on originating node                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* distribute Job__Cancel to all participants                                 */
+/* distribute Job_Cancel to all participants                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::distribute params| pJobOriginator |
+: cancel::distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.
   //
 
-  0 locals| pJob__Cancel |
+  0 locals| pJob_Cancel |
 
-  // create a temporary Job__Cancel
-  pJobOriginator job__cancel::new to pJob__Cancel
+  // create a temporary Job_Cancel
+  pJobOriginator job_cancel::new to pJob_Cancel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
   grid::knownNodes pJobOriginator job.acksRemaining!
 
-  // send job__cancel to all nodes
+  // send job_cancel to all nodes
 
   0 locals| pNode |
 
@@ -37,7 +37,7 @@
     node_I[].node to pNode
 
     pNode node.isConnected if
-      pNode node.no pJob__Cancel job.forward
+      pNode node.no pJob_Cancel job.forward
     then
 
     node_I[].next
@@ -48,22 +48,22 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // delete the temporary job__cancel
-  pJob__Cancel job.delete2pc
+  // delete the temporary job_cancel
+  pJob_Cancel job.delete2pc
 ;
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Cancel on participating node    recv: job.spawn */
+/* run received Job_Cancel on participating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Cancel_run [ word::seed# ]
+: cancel::cancel [ word::seed# ]
 
   //
   // where: on the participating node
   //
-  Job[] locals| pJob__Cancel |
+  Job[] locals| pJob_Cancel |
 
   // find the job to be executed in the participating jobs
-  pJob__Cancel job.id@ locals| iJobId |
+  pJob_Cancel job.id@ locals| iJobId |
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
@@ -85,12 +85,12 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Cancel :: _Cancel ;
+cmdSyntax: cancel :: cancel ;
 
-: _Cancel_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_cancel_run"
+    <seedRun>  = "cancel::cancel"
     <path>     = "/"
   }
 ;

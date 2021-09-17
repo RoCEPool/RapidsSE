@@ -10,7 +10,7 @@ based on the existing "nameValidate" stage.
    (e.g. sen/OP_nameValidate.sen) and rename it.
  4. In the new file, change all of the references to "nameValidate" to "exprValidate". Don't
     forget the literal value in the ZK_D_PLANOPERAND handler (around line 27).
- 5. Open the file sen/se_bootOps.sen.
+ 5. Open the file sen/se_includeOps.sen.
  6. Since the newly added sen file is called OP_exprValidate.sen, add a line under the "e" section:
     "OP_exprValidate.sen" include
  7. Open up store/stepsSet/Steps_SqlCompiler.cpp

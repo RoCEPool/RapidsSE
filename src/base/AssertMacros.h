@@ -116,6 +116,16 @@ EndDefine
                    szDescription); \
 EndDefine
 
+/*----------------------------------------------------------------------------*/
+/* TO_BE_REMOVED macro (code is being removed; should never be reached)       */
+/*----------------------------------------------------------------------------*/
+#define TO_BE_REMOVED \
+  BASE::vThrowReached(FK_REACHED,\
+                     __func__,__FILE__,__LINE__, \
+                     "TO_BE_REMOVED point in code was reached"_Stz); \
+EndDefine
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

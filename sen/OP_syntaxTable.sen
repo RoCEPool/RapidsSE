@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for syntaxTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: syntaxTable_req \operator
+: syntaxTable_op \operator
 
   _lu_initialise_
 

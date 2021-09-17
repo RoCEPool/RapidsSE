@@ -30,7 +30,6 @@ namespace STORE
     s256       m_sPath;     // operator path
   
     TagSet     m_oOpTags;   // tags for the op
-    eSS        m_eSeed;     // seed to spawn
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
@@ -41,7 +40,7 @@ namespace STORE
     // -- refers to
     SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
     SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
-    SMA<Word,CN_WORD>      m_pSeedWord; // seed word of this operator
+    SMA<Word,CN_WORD>      m_pTaskSeedWord; // task seed word of this operator
 
     // -- owns
     SMA<LogicUnit,CN_LOGICUNIT> m_pOpLogicUnit;  // logic unit of op
@@ -166,21 +165,19 @@ namespace STORE
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
     i8   iRobinNext(void);
-    Stz* szSeed(void);
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnOpTask(i8 iSessionId);
-    Word* pSeedWord(void);
-    void vSeedWord(Word* pSeedWord);
-    void vSetSeedWord(void);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
     Task* pTask(void);
     void vTask(Task* pTask);
+    Word* pTaskSeedWord(void);
+    void vTaskSeedWord(void);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
     void vWalk(void* aArg);

@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* job__Ended.sen -- generic job related words                                */
+/* job_ended.sen -- ended 2pc job (pipeline coordination)                     */
 /*============================================================================*/
 
-" job__Ended.sen" .verbose
+" job_ended.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on participating node                           //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Ended back to originating node                                   */
+/* send Job_Ended back to originating node                                    */
 /*----------------------------------------------------------------------------*/
-: Job__Ended::replyToOrigin ( pJobParticipant -- )
+: ended::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
-  0 locals| pJob__Ended |
+  0 locals| pJob_Ended |
 
   //grid::thisNodeName@ "(%v) ENDED::send" .printf
 
-  // new a temporary Job__Ended
-  pJobParticipant job__Ended::new to pJob__Ended
+  // new a temporary Job_Ended
+  pJobParticipant job_Ended::new to pJob_Ended
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the ended job
-  iJobId job::originator@ pJob__Ended job.reply
+  iJobId job::originator@ pJob_Ended job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Ended job.delete2pc
+  pJob_Ended job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,12 +39,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Ended on originating node       recv: job.spawn */
+/* run received Job_Ended on originating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Ended_run [ word::seed# ]
+: ended::ended [ word::seed# ]
 
-  Job[] locals| pJob__Ended |
-  pJob__Ended job.id@ locals| iJobId |
+  Job[] locals| pJob_Ended |
+  pJob_Ended job.id@ locals| iJobId |
 
   0 locals| bAmDecider |
 
@@ -95,12 +95,12 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Ended :: _Ended ;
+cmdSyntax: ended :: ended ;
 
-: _Ended_cmdTags _cmdTags tagCopy: genericJob_tags
+: ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_ended_run"
+    <seedRun>  = "ended::ended"
     <path>     = "/"
   }
 ;

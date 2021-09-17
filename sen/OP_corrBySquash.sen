@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: corrBySquash_req \operator
+: corrBySquash_op \operator
 
   _lu_initialise_
 

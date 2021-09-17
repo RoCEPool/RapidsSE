@@ -41,7 +41,7 @@ void Step::vJobFindOriginator(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
-  Job* pJobFound = AM::pJob_FindOriginating(iJobId);
+  Job* pJobFound = AM::pJob__FindOriginating(iJobId);
   RASSERT(pJobFound);
   
   
@@ -63,7 +63,7 @@ void Step::vJobFindParticipant(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
     
-  Job* pJobFound = AM::pJob_FindParticipating(iJobId);
+  Job* pJobFound = AM::pJob__FindParticipating(iJobId);
   RASSERT(pJobFound);
   
   

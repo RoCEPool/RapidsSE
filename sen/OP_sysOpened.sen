@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysOpened request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysOpened_req \operator
+: sysOpened_op \operator
 
   _lu_initialise_
 

@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTenant req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createTenant_req \operator
+: createTenant_op \operator
 
   _lu_initialise_
 

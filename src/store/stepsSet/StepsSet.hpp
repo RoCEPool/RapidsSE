@@ -683,9 +683,11 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete2pc(void);
 
-  void vJobTagSetFetch(void);
-  void vJobErrorStore(void);
+  void vJobEntryFetch(void);
+  void vJobEntryStore(void);
+
   void vJobErrorFetch(void);
+  void vJobErrorStore(void);
 
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
@@ -735,6 +737,7 @@ public:
   void vJobStateFetch(void);
   void vJobStateStore(void);
 
+  void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
   void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
@@ -751,13 +754,13 @@ public:
   void vJobRefTaskFetch(void);
 
   // job generic
-  void vJob__BegunNew(void);
-  void vJob__CancelNew(void);
-  void vJob__CancelledNew(void);
-  void vJob__EndNew(void);
-  void vJob__EndedNew(void);
-  void vJob__ExecuteNew(void);
-  void vJob__ExecutedNew(void);
+  void vJob_BegunNew(void);
+  void vJob_CancelNew(void);
+  void vJob_CancelledNew(void);
+  void vJob_EndNew(void);
+  void vJob_EndedNew(void);
+  void vJob_ExecuteNew(void);
+  void vJob_ExecutedNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);

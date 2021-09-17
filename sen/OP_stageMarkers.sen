@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: stageMarkers_req \operator
+: stageMarkers_op \operator
 
   _lu_initialise_
 
