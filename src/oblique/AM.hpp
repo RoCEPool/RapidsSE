@@ -317,7 +317,6 @@ namespace OBLIQUE
     class OP
     {
     public:
-      static Stz* szOpSeed(Op* pOp);
     };
 
     class OPERAND

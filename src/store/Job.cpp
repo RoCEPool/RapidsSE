@@ -1255,14 +1255,6 @@ void Job::vSetFromCascade(Stz* szCascade)
   //m_oJobTags.vDumpSet(true);
 }
 
-/*----------------------------------------------------------------------------*/
-/* find and set seed word for this job                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vSetSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-}
 
 
 

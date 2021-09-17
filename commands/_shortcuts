@@ -16,7 +16,7 @@ shortcut cm   sqlcompiler "select col1 as c, col2 as c2 from t;";
 shortcut cj   cascadeJob;
 shortcut cp   cancelPipeline;
 shortcut cr3 _cr3;
-shortcut ct   /flow create table t (a integer);
+shortcut ct   create table t (a integer);
 shortcut l    _loadPipeline;
 shortcut ld3  _ld3;
 shortcut d    _pipeline;
