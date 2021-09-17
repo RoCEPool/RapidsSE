@@ -28422,7 +28422,7 @@ void Task::vAddMunged(Task* )
     "    //<jobKind> == JK_LOCAL\n"
     "    \n"
     "    //pwCmdTags word.name@ \"addSeedTags: %v is a local job\" .printf\n"
-    "    \"<seedReq>\" \"**unknown**\" \"_req\" pwCmdTags _cmdTags.addSeedTag_local\n"
+    "    //\"<seedReq>\" \"**unknown**\" \"_req\" pwCmdTags _cmdTags.addSeedTag_local\n"
     "\n"
     "  else\n"
     "\n"
