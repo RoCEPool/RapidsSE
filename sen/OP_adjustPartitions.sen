@@ -44,6 +44,7 @@ cmdSyntax: adjustPtns :: adjustPtns ;
 : adjustPtns_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
+    <opEntry> = "_op"
   }
 ;
 
