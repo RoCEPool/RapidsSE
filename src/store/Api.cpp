@@ -33,34 +33,6 @@ extern pthread_key_t giTLS_StepKey;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a new instance of an operator/pipeline                                 */
-/*----------------------------------------------------------------------------*/
-//Op* Api::pGetOperator(Stz* szOpNm)
-//{
-//  _static_
-//  
-//  s32 sWordNm;
-//  Word* pOpWord = nullptr;
-//  Op* pOp = nullptr;
-//
-//  // find szOpNm in dictionary
-//  Dic* pRootDic = AM::DIC::pRoot();
-//  
-//  sWordNm = szOpNm;
-//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-//    pOp = Api::pOpCreate(pOpWord);
-//    return pOp;
-//  }
-//  
-//  sWordNm.vConcat("_req"_Stz);
-//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-//    pOp = Api::pOpCreate(pOpWord);
-//    return pOp;
-//  }
-//  return nullptr;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get a new instance of an operand                                           */
 /*----------------------------------------------------------------------------*/
 Operand* Api::pGetOperand(eZK eOperand)
@@ -633,21 +605,6 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
 
   return false;
   
-//  Token* pTkn0 = pCmdTknVec->pGet(0);
-//
-//  Dic* pDicRoot = AM::DIC::pRoot();
-//
-//  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
-//
-//  s32 sOpReq = pTkn0->szChars();
-//  sOpReq.vConcat("_req"_Stz);
-//
-//  Word* pOp_maybe = pDicRoot->pFindWord(sOpReq);
-//
-//  if (pOp_maybe && pOp_maybe->pCategory() == pOperatorCatg)
-//    return true;
-//  else
-//    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -838,7 +795,7 @@ void Api::vCallBoot(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"boot_run"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"boot::boot"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -900,6 +857,8 @@ void Api::RunStartJob(void)
                       1
                       );
   pJob->vSeed(SS_SEED_RUN);
+  
+  pJob->vEntry("start::start HAZARD"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -909,7 +868,7 @@ void Api::RunStartJob(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"_Start"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"start::start"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

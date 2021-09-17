@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_words.sen -- Job related words                                         */
+/* job__words.sen -- Job related words                                        */
 /*============================================================================*/
 
-" job_words.sen" .verbose
+" job__words.sen" .verbose
 
 0 constant JM_SEED_RUN
 1 constant JM_SEED_REQ

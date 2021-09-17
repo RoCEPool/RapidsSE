@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: aggregateSplit_req \operator
+: aggregateSplit_op \operator
 
   _lu_initialise_
 

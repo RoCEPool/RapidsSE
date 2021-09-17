@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for bucketsend request                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: bucketSend0_req \operator
+: bucketSend0_op \operator
 
   _lu_initialise_
   //"bucketSend0_req" .

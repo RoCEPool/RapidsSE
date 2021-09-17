@@ -391,7 +391,7 @@
     repeat
 
     // wait till the pipelinetask is in a WAIT state
-    // possibilty of _execute not have arrived yet
+    // possibilty of execute not have arrived yet
     pPipelineJob job.task@ locals| pPipelineTask |
     begin
       pPipelineTask task.isWaiting

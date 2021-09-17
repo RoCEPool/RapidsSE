@@ -372,10 +372,9 @@ void Task::vDumpOnException(void)
   if (m_pOp.bIsNotNull()) {
     vTrace("1) Task (for Op)\n"_Stz);
     SP_Op spOp;
-    vTrace("m_pOp=%p (%s); seed %s; %lld queued operands\n"_Stz
+    vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
            ,*m_pOp
            ,spOp.szPath(m_pOp)
-           ,m_pOp->szSeed()
            ,m_pOp->nQueuedOperands());
   }
 
@@ -408,7 +407,7 @@ void Task::vDumpOnException(void)
     vTrace("\n"_Stz);
     vTrace("2) Op\n"_Stz);
   
-    vTrace("m_pOp::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pOp->pSeedWord()));
+    vTrace("m_pOp::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pOp->pTaskSeedWord()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1307,7 +1306,7 @@ void Task::vSeedTask(void)
   }
   else
   if (m_pOp.bIsNotNull()) {
-    m_pSeedWord = m_pOp->pSeedWord();
+    m_pSeedWord = m_pOp->pTaskSeedWord();
   }
   else
     NEVER_REACH;

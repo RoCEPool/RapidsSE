@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PipelineLocal.sen -- Job Local Pipeline                                */
+/* job_PipelineLocal.sen -- Local Pipeline Job                                */
 /*============================================================================*/
 
-" job_PipelineLocal.sen" .verbose
+" job_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* terminate this pipeline                                                    */
@@ -139,6 +139,9 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     //<ddlLock>  = DL_GRAB_READ
     
     <seedReq>   = "pipelineLocal_req"
+    
+    <entry>     = "pipelineLocal_req"
+
   }
 ;
 

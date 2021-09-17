@@ -184,7 +184,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job__find)                                  TO BE REMOVED */
+/* constructor (for job_find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
@@ -1255,14 +1255,6 @@ void Job::vSetFromCascade(Stz* szCascade)
   //m_oJobTags.vDumpSet(true);
 }
 
-/*----------------------------------------------------------------------------*/
-/* find and set seed word for this job                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vSetSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-}
 
 
 

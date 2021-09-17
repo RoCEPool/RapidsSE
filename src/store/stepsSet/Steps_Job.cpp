@@ -81,8 +81,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("Job[].addRetired"_Stz,       &Step::vJobAddRetired);
   
-  vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
+  vAddStep("Job[].entry@"_Stz,           &Step::vJobEntryFetch);
+  vAddStep("Job[].entry!"_Stz,           &Step::vJobEntryStore);
+
   vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
+  vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
 
   vAddStep("Job[].id@"_Stz,              &Step::vJobIdFetch);
   
@@ -502,6 +505,50 @@ void Step::vJobDec2pcAcksRmg(void)
   bool bAmDecider = pJob->bAcksRmgDec(nAcksWereRemaining);
   
   m_pDataStack->vPushInt(bAmDecider);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].entry@ -- fetch the job sen entry code                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = nullptr;
+
+  if (m_pJob_task.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob_task;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob_task.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
+
+  m_pDataStack->vPushStz(pJob->szEntry());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].entry! -- store the job entry code                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+
+  s4K sEntry;
+  m_pDataStack->vPopStr(sEntry,__func__);
+  
+  pJob->vEntry(sEntry);
   
   EXIT();
 }
@@ -1070,7 +1117,7 @@ void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
   
-  // example: this job is _execute and the jobRef is bootcluster (in ptp list)
+  // example: this job is execute and the jobRef is bootcluster (in ptp list)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   

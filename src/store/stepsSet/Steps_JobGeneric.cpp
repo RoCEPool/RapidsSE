@@ -17,19 +17,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("job__Begun::new"_Stz,        &Step::vJob__BegunNew);
-  vAddStep("job__Cancel::new"_Stz,       &Step::vJob__CancelNew);
-  vAddStep("job__Cancelled::new"_Stz,    &Step::vJob__CancelledNew);
-  vAddStep("job__End::new"_Stz,          &Step::vJob__EndNew);
-  vAddStep("job__Ended::new"_Stz,        &Step::vJob__EndedNew);
-  vAddStep("job__Execute::new"_Stz,      &Step::vJob__ExecuteNew);
-  vAddStep("job__Executed::new"_Stz,     &Step::vJob__ExecutedNew);
+  vAddStep("job_Begun::new"_Stz,        &Step::vJob_BegunNew);
+  vAddStep("job_Cancel::new"_Stz,       &Step::vJob_CancelNew);
+  vAddStep("job_Cancelled::new"_Stz,    &Step::vJob_CancelledNew);
+  vAddStep("job_End::new"_Stz,          &Step::vJob_EndNew);
+  vAddStep("job_Ended::new"_Stz,        &Step::vJob_EndedNew);
+  vAddStep("job_Execute::new"_Stz,      &Step::vJob_ExecuteNew);
+  vAddStep("job_Executed::new"_Stz,     &Step::vJob_ExecutedNew);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_begun::new -- new a job__begun for this distributed 2pc job            */
+/* job_begun::new -- new a job_begun for this distributed 2pc job            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__BegunNew(void)
+void Step::vJob_BegunNew(void)
 {
   ENTRY();
   
@@ -44,19 +44,19 @@ void Step::vJob__BegunNew(void)
   pJobBegun->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobBegun->vJobKind(JK_GENERIC);
 
-  pJobBegun->vJobNm("_begun"_Stz);
+  pJobBegun->vJobNm("begun"_Stz);
   
   TagSet* pJobBegunTags = pJobBegun->pJobTags();
   
-  Word* pwCmdBegunTags = AM::WORD::pFind("_Begun_cmdTags"_Stz);
+  Word* pwCmdBegunTags = AM::WORD::pFind("begun_cmdTags"_Stz);
   TagSet* pCmdBegunTags = pwCmdBegunTags->pWrdTagSet();
   pJobBegunTags->vCopy(pCmdBegunTags);
   
-  pJobBegunTags->vInsert(C_TAG_JOBNM,"_begun"_Stz);
+  pJobBegunTags->vInsert(C_TAG_JOBNM,"begun"_Stz);
   //pJobBegunTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobBegunTags->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobBegunTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobBegunTags->vInsert(C_TAG_SEEDRUN,"_begun_run"_Stz);
+  //pJobBegunTags->vInsert(C_TAG_SEEDRUN,"begun::begun"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -67,9 +67,9 @@ void Step::vJob__BegunNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancel::new -- new a job__cancel for this distributed 2pc job         */
+/* job_cancel::new -- new a job_cancel for this distributed 2pc job         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelNew(void)
+void Step::vJob_CancelNew(void)
 {
   ENTRY();
   
@@ -86,16 +86,16 @@ void Step::vJob__CancelNew(void)
 
   TagSet* pJobCancelTags = pJobCancel->pJobTags();
 
-  Word* pwCmdCancelTags = AM::WORD::pFind("_Cancel_cmdTags"_Stz);
+  Word* pwCmdCancelTags = AM::WORD::pFind("cancel_cmdTags"_Stz);
   TagSet* pCmdCancelTags = pwCmdCancelTags->pWrdTagSet();
   pJobCancelTags->vCopy(pCmdCancelTags);
 
-  pJobCancel->vJobNm("_cancel"_Stz);
-  pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"_cancel"_Stz);
+  pJobCancel->vJobNm("cancel"_Stz);
+  pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"cancel"_Stz);
   //pJobCancel->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobCancel->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobCancel->pJobTags()->vInsert(C_TAG_SEEDRUN,"_cancel_run"_Stz);
+  //pJobCancel->pJobTags()->vInsert(C_TAG_SEEDRUN,"cancel::cancel"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -106,9 +106,9 @@ void Step::vJob__CancelNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancelled::new -- new a job__cancelled for this distributed 2pc job   */
+/* job_cancelled::new -- new a job_cancelled for this distributed 2pc job   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledNew(void)
+void Step::vJob_CancelledNew(void)
 {
   ENTRY();
   
@@ -125,18 +125,18 @@ void Step::vJob__CancelledNew(void)
   
   TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
 
-  Word* pwCmdCancelledTags = AM::WORD::pFind("_Cancelled_cmdTags"_Stz);
+  Word* pwCmdCancelledTags = AM::WORD::pFind("cancelled_cmdTags"_Stz);
   TagSet* pCmdCancelledTags = pwCmdCancelledTags->pWrdTagSet();
   pJobCancelledTags->vCopy(pCmdCancelledTags);
 
 
   
-  pJobCancelled->vJobNm("_cancelled"_Stz);
-  pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
+  pJobCancelled->vJobNm("cancelled"_Stz);
+  pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"cancelled"_Stz);
   //pJobCancelled->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobCancelled->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobCancelled->pJobTags()->vInsert(C_TAG_SEEDRUN,"_cancelled_run"_Stz);
+  //pJobCancelled->pJobTags()->vInsert(C_TAG_SEEDRUN,"cancelled::cancelled"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -147,9 +147,9 @@ void Step::vJob__CancelledNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__end::new - new a job__end for this distributed 2pc job                */
+/* job_end::new - new a job_end for this distributed 2pc job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndNew(void)
+void Step::vJob_EndNew(void)
 {
   ENTRY();
   
@@ -166,17 +166,17 @@ void Step::vJob__EndNew(void)
     
   TagSet* pJobEndTags = pJobEnd->pJobTags();
 
-  Word* pwCmdEndTags = AM::WORD::pFind("_End_cmdTags"_Stz);
+  Word* pwCmdEndTags = AM::WORD::pFind("end_cmdTags"_Stz);
   TagSet* pCmdEndTags = pwCmdEndTags->pWrdTagSet();
   pJobEndTags->vCopy(pCmdEndTags);
 
 
-  pJobEnd->vJobNm("_end"_Stz);
-  pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
+  pJobEnd->vJobNm("end"_Stz);
+  pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"end"_Stz);
   //pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobEnd->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobEnd->pJobTags()->vInsert(C_TAG_SEEDRUN,"_end_run"_Stz);
+  //pJobEnd->pJobTags()->vInsert(C_TAG_SEEDRUN,"end::end"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -187,9 +187,9 @@ void Step::vJob__EndNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__ended::new -- new a job__ended for this distributed 2pc job           */
+/* job_ended::new -- new a job_ended for this distributed 2pc job           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndedNew(void)
+void Step::vJob_EndedNew(void)
 {
   ENTRY();
   
@@ -207,18 +207,18 @@ void Step::vJob__EndedNew(void)
   
   TagSet* pJobEndedTags = pJobEnded->pJobTags();
 
-  Word* pwCmdEndedTags = AM::WORD::pFind("_Ended_cmdTags"_Stz);
+  Word* pwCmdEndedTags = AM::WORD::pFind("ended_cmdTags"_Stz);
   TagSet* pCmdEndedTags = pwCmdEndedTags->pWrdTagSet();
   pJobEndedTags->vCopy(pCmdEndedTags);
 
 
   
-  pJobEnded->vJobNm("_ended"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"_ended"_Stz);
+  pJobEnded->vJobNm("ended"_Stz);
+  pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
   //pJobEnded->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobEnded->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobEnded->pJobTags()->vInsert(C_TAG_SEEDRUN,"_ended_run"_Stz);
+  //pJobEnded->pJobTags()->vInsert(C_TAG_SEEDRUN,"ended::ended"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -229,9 +229,9 @@ void Step::vJob__EndedNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__execute::new -- new a job__execute for this distributed 2pc job       */
+/* job_execute::new -- new a job_execute for this distributed 2pc job       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecuteNew(void)
+void Step::vJob_ExecuteNew(void)
 {
   ENTRY();
   
@@ -249,18 +249,18 @@ void Step::vJob__ExecuteNew(void)
   
   TagSet* pJobExecuteTags = pJobExecute->pJobTags();
 
-  Word* pwCmdExecuteTags = AM::WORD::pFind("_Execute_cmdTags"_Stz);
+  Word* pwCmdExecuteTags = AM::WORD::pFind("execute_cmdTags"_Stz);
   TagSet* pCmdExecuteTags = pwCmdExecuteTags->pWrdTagSet();
   pJobExecuteTags->vCopy(pCmdExecuteTags);
 
 
     
-  pJobExecute->vJobNm("_execute"_Stz);
-  pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
+  pJobExecute->vJobNm("execute"_Stz);
+  pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"execute"_Stz);
   //pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobExecute->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobExecute->pJobTags()->vInsert(C_TAG_SEEDRUN,"_execute_run"_Stz);
+  //pJobExecute->pJobTags()->vInsert(C_TAG_SEEDRUN,"execute::execute"_Stz);
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -271,9 +271,9 @@ void Step::vJob__ExecuteNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__executed::new -- new a job__executed for this distributed 2pc job     */
+/* job_executed::new -- new a job_executed for this distributed 2pc job     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecutedNew(void)
+void Step::vJob_ExecutedNew(void)
 {
   ENTRY();
   
@@ -290,18 +290,18 @@ void Step::vJob__ExecutedNew(void)
   
   TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
 
-  Word* pwCmdExecutedTags = AM::WORD::pFind("_Executed_cmdTags"_Stz);
+  Word* pwCmdExecutedTags = AM::WORD::pFind("executed_cmdTags"_Stz);
   TagSet* pCmdExecutedTags = pwCmdExecutedTags->pWrdTagSet();
   pJobExecutedTags->vCopy(pCmdExecutedTags);
 
 
   
-  pJobExecuted->vJobNm("_executed"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"_executed"_Stz);
+  pJobExecuted->vJobNm("executed"_Stz);
+  pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
   //pJobExecuted->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
-  //pJobExecuted->pJobTags()->vInsert(C_TAG_SEEDRUN,"_executed_run"_Stz);
+  //pJobExecuted->pJobTags()->vInsert(C_TAG_SEEDRUN,"executed::executed"_Stz);
   
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);

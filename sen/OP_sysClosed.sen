@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysClosed request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysClosed_req \operator
+: sysClosed_op \operator
 
   _lu_initialise_
 

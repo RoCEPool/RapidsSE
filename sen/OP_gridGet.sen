@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridGet_req \operator
+: gridGet_op \operator
 
   _lu_initialise_
   //"gridGet_req" .

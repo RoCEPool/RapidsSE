@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_Pipeline.sen -- Pipeline Job (being a distributed job)                 */
+/* job_pipeline.sen -- Distributed Pipeline Job                               */
 /*============================================================================*/
 
-" job_Pipeline.sen" .verbose
+" job_pipeline.sen" .verbose
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -177,7 +177,7 @@
   JP_BEGUN Job[].phase!
   nullptr Job[].seedWord!
      
-  Job[] Job__Begun::replyToOrigin
+  Job[] begun::replyToOrigin
   
   DdlLock[].testDrop
 
@@ -261,7 +261,7 @@
   DdlLock[].testDrop
   JobRef[].none
   
-  Job[] Job__Executed::replyToOrigin
+  Job[] executed::replyToOrigin
   
   Task[].grabLock
   
@@ -287,7 +287,7 @@
   
   // [ senCompiler::current@ word.name@ encode::push ] .
 
-  //grid::thisNodeName@ "(%v) pipelineSeed _end" .printf
+  //grid::thisNodeName@ "(%v) pipelineSeed end" .printf
   
   //"<job_walk>" job::tagSet@ tagSet.hasName if
     //Job[].walk
@@ -303,7 +303,7 @@
 
   DdlLock[].testDrop
   
-  Job[] Job__Ended::replyToOrigin
+  Job[] ended::replyToOrigin
 
   JS_DELETABLE Job[].state!
   Job[].addRetired
@@ -335,7 +335,7 @@
 
   Job[].removeParticipant
     
-  Job[] Job__Cancelled::replyToOrigin
+  Job[] cancelled::replyToOrigin
 
   JS_DELETABLE Job[].state!
 
@@ -364,6 +364,9 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <seedExe>  = "pipelineSeed_exe"
     <seedEnd>  = "pipelineSeed_end"
     <seedCan>  = "pipelineSeed_can"
+    
+    <entry>    = "pipeline::origin"
+
 
   }
 ;

@@ -1,35 +1,59 @@
 /*============================================================================*/
-/* job__Executed.sen -- generic job related words                             */
+/* job_cancelled.sen -- cancelled 2pc job (pipeline coordination)             */
 /*============================================================================*/
 
-" job__Executed.sen" .verbose
+" job_cancelled.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* done executing a rcv seed                                                  */
+/*----------------------------------------------------------------------------*/
+: DONE_RCV ( -- )
+
+  DdlLock[].testDrop
+  
+  // unlink task and job
+  Task[].job@ if
+    //nullptr Task[].job@ job.task!
+    //nullptr Task[].job!
+  then
+
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
+
+  HAZARD
+;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on participating node                           //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Executed back to originating node                                */
+/* send Job_Cancelled back to originating node                               */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::replyToOrigin ( pJobParticipant -- )
+: cancelled::replyToOrigin ( pJobParticipant -- )
 
   params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
-  0 0 0 locals| pJob pJob__Executed error |
+  0 0 0 locals| pJob pJob_Cancelled error |
 
-  // new a temporary Job__Executed
-  pJobParticipant job__Executed::new to pJob__Executed
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // send the executed job
-  iJobId job::originator@ pJob__Executed job.reply
+  // new a temporary Job_Cancelled
+  pJobParticipant job_Cancelled::new to pJob_Cancelled
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob__Executed job.delete2pc
+  // send the cancelled job
+  iJobId job::originator@ locals| iOriginator |
+  //iOriginator pJob_Cancelled jobCancelled.cancelOriginator!
+
+  iOriginator pJob_Cancelled job.reply
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Cancelled job.delete2pc
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,51 +61,67 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Executed on originating node    recv: job.spawn */
+/* run recieved Job_Cancelled on originating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: _Executed_run [ word::seed# ]
+: cancelled::cancelled [ word::seed# ]
 
-  Job[] locals| pJob__Executed |
-  pJob__Executed job.id@ locals| iJobId |
+  <path> str.toStrVec Path[].set
+  
+  
+  Job[] locals| pJob_Cancelled |
+  pJob_Cancelled job.id@ locals| iJobId |
 
-  0 0 0 locals| iParticipantNode error bAmDecider |
+  0 0 0 0 locals| bAmDecider error iParticipantNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __executed job
+  // get the context of this __cancelled job
 
   // find the originating job
   iJobId olist::findJob discard
 
-  // get the participant node from where this job__begun started
-  pJob__Executed job.participantNode@ to iParticipantNode
+  // get the participant node from where this job_begun started
+  pJob_Cancelled job.participantNode@ to iParticipantNode
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __executed job on this originating node
+  // process __begun job on this originating node
 
-  // increment the number of __executed jobs received in api state
-  JobRef[] ssn::incExecuted
+  // increment the number of __cancelled jobs received in api state
+  JobRef[] ssn::incCancelled
   JobRef[] ssn::traceSession
 
-  // decrement the acks remaining
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
-  //grid::thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
+
+  // decrement the acks remaining in the originating job
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
+    DONE_RCV
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
-  //grid::thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __executed jobs have been received, so this job is the decider
+  // all job_cancelled's have been received, so this job is the decider
 
-  // send a job__end to all participants
-  JobRef[] Job__End::distribute
+  begin
+    JobRef[].references
+  1 > while
+  repeat
+
+  // remove the originating job from the originator jobs
+  //Job[].removeOriginator
+
+  // notify the originating task
+  JobRef[].task@ task.ack
   JobRef[].returnReference
 
+  // delete this completed __cancelled job
+  DONE_RCV
+  
   _job_2pc_delete_
 ;
 
@@ -89,16 +129,15 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: _Executed :: _Executed ;
+cmdSyntax: cancelled :: cancelled ;
 
-: _Executed_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "_executed_run"
+    <seedRun>  = "cancelled::cancelled"
     <path>     = "/"
   }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

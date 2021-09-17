@@ -29,7 +29,7 @@ void Step::vPlistFindJob(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
-  Job* pJobFound = AM::pJob_FindParticipating(iJobId);
+  Job* pJobFound = AM::pJob__FindParticipating(iJobId);
   RASSERT(pJobFound);
   
   
