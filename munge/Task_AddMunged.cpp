@@ -34546,7 +34546,7 @@ void Task::vAddMunged(Task* )
   gszaMungedText[252] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* se_include.sen -- master include sequence (called from boot::boot)         */\n"
+    "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
     "/*============================================================================*/\n"
     "\n"
     "\"se_include.sen\" .verbose\n"

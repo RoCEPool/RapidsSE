@@ -49,8 +49,8 @@ namespace STORE
   
   // internal
   
-  static void vCallBoot(void);
-  static void RunStartJob(void);
+  static void vCallBootSystem(void);
+  static void vCallStartSystem(void);
 
   static void vCallImmediate(Task* pImmediateTask);
   static void vDeleteImmediate(Task** ppTask);

@@ -1564,7 +1564,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Boot Job\n"_Stz);
-  Api::vCallBoot();
+  Api::vCallBootSystem();
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
@@ -1577,8 +1577,8 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Running Start Job\n"_Stz);
-  Api::RunStartJob();
+    vInfo("  Calling StartSystem job\n"_Stz);
+  Api::vCallStartSystem();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables

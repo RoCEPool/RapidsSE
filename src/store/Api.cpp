@@ -770,13 +770,13 @@ void Api::vIncStatistics(eAC eApiCall)
 
 
 /*----------------------------------------------------------------------------*/
-/* call the boot task to compile the main dictionary                          */
+/* call the system boot job to compile the main dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Api::vCallBoot(void)
+void Api::vCallBootSystem(void)
 {
   _static_
   
-  Job* pJob = new Job("boot"_Stz,
+  Job* pJob = new Job("bootSystem"_Stz,
                       AM::GRID::iThisNodeNo(),
                       AM::SESSION::iInternalSession(),
                       1
@@ -793,7 +793,7 @@ void Api::vCallBoot(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"boot::boot"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"bootSystem::bootSystem"_Stz);
   
   Stz* szSeed = pJob->szSeed();
   
@@ -827,9 +827,9 @@ void Api::vCallBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* run the start job                                                          */
+/* call the system start job                                                  */
 /*----------------------------------------------------------------------------*/
-void Api::RunStartJob(void)
+void Api::vCallStartSystem(void)
 {
   _static_
 
