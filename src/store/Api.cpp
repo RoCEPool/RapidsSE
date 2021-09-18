@@ -1224,7 +1224,8 @@ void Api::vCreateTaskForOp(Op* pOp)
   Word* pEntryWord = pOp->pEntryWord();
   
   
-  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   pTask = new Task;
 
   pTask->vOp(pOp);
@@ -1232,10 +1233,33 @@ void Api::vCreateTaskForOp(Op* pOp)
 
   pTask->vTaskNm(pOp->szOpNm());
 
-  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   
 
   pTask->vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set instruction pointer for task given entry point name                    */
+/*----------------------------------------------------------------------------*/
+void Api::vSetTaskInxPtr(Task* pTask, Stz* szEntryPt)
+{
+  _static_
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  
+  Word* pEntryWord = pDicRoot->pFindWord(szEntryPt);
+
+  if (! pEntryWord) {
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find task entry point: %s\n"_Stz,szEntryPt);
+  }
+  
+  pTask->vSetInxPtr(pEntryWord);
+
 }
 
 /*----------------------------------------------------------------------------*/
