@@ -795,9 +795,20 @@ void Api::vCallBoot(void)
   
   Stz* szSeed = pJob->szSeed();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  Task* pBootTask = AM::TASK::pNew(pJob);
+  //Task* pBootTask = AM::TASK::pNew(pJob);
+  
+  Task* pBootTask = new Task;
+
+  pBootTask->vJob_task(pJob);
+  pJob->vJobTask(pBootTask);
+  
+  pBootTask->vTaskNm(pJob->szJobNm());
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  
   
   pBootTask->vAddAxioms();
   pBootTask->vAddMunged();
@@ -867,10 +878,19 @@ void Api::RunStartJob(void)
 
   Stz* szSeed = pJob->szSeed();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  Task* pStartTask = AM::TASK::pNew(pJob);
+  //Task* pTask = AM::TASK::pNew(pJob);
   
+  Task* pStartTask = new Task;
+
+  pStartTask->vJob_task(pJob);
+  pJob->vJobTask(pStartTask);
+  
+  pStartTask->vTaskNm(pJob->szJobNm());
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   Dic* pDicRoot = AM::DIC::pRoot();
   
   
@@ -1156,8 +1176,19 @@ void Api::vCreateTaskForJob(Job* pJob)
   Task* pTask = pJob->pJobTask();
   RASSERT(! pTask);
 
-  pTask = AM::TASK::pNew(pJob);
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  //Task* pTask = AM::TASK::pNew(pJob);
   
+  pTask = new Task;
+
+  pTask->vJob_task(pJob);
+  pJob->vJobTask(pTask);
+  
+  pTask->vTaskNm(pJob->szJobNm());
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   Dic* pDicRoot = AM::DIC::pRoot();
   
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
@@ -1194,7 +1225,7 @@ void Api::vCreateTaskForOp(Op* pOp)
   
   
   
-  pTask = AM::TASK::pNew();
+  pTask = new Task;
 
   pTask->vOp(pOp);
   pOp->vTask(pTask);

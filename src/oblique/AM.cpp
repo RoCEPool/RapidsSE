@@ -1658,34 +1658,6 @@ DicStack* AM::TASK::pDicStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new task                                                                   */
-/*----------------------------------------------------------------------------*/
-Task* AM::TASK::pNew(void)
-{
-  Task* pTask = new Task;
-
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(TR_NONE == pTask->eTransition());
-
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new task (for job)                                                         */
-/*----------------------------------------------------------------------------*/
-Task* AM::TASK::pNew(Job* pJob)
-{
-  Task* pTask = AM::TASK::pNew();
-
-  pTask->vJob_task(pJob);
-  pJob->vJobTask(pTask);
-  
-  pTask->vTaskNm(pJob->szJobNm());
-  
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void AM::TASK::vRetire(Task* pTask)
