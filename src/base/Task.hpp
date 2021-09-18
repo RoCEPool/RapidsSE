@@ -113,7 +113,9 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(void);
+    Task(Stz* szTaskNm, Job* pJob);
+    Task(Stz* szTaskNm, Op* pOp);
+    void vTask(void);
    ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);

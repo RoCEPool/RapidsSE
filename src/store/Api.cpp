@@ -797,12 +797,10 @@ void Api::vCallBoot(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pBootTask = new Task;
+  Task* pBootTask = new Task(pJob->szJobNm(),pJob);
 
-  pBootTask->vJob_task(pJob);
   pJob->vJobTask(pBootTask);
   
-  pBootTask->vTaskNm(pJob->szJobNm());
   
   pBootTask->vAddAxioms();
   pBootTask->vAddMunged();
@@ -861,13 +859,10 @@ void Api::RunStartJob(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pStartTask = new Task;
+  Task* pStartTask = new Task(pJob->szJobNm(),pJob);
 
-  pStartTask->vJob_task(pJob);
   pJob->vJobTask(pStartTask);
-  
-  pStartTask->vTaskNm(pJob->szJobNm());
-  
+    
   vSetTaskInxPtr(pStartTask,szSeed);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1138,13 +1133,10 @@ void Api::vCreateTaskForJob(Job* pJob)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pTask = new Task;
+  Task* pTask = new Task(pJob->szJobNm(),pJob);
 
-  pTask->vJob_task(pJob);
   pJob->vJobTask(pTask);
-  
-  pTask->vTaskNm(pJob->szJobNm());
-  
+    
   vSetTaskInxPtr(pTask,szSeed);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1169,19 +1161,11 @@ void Api::vCreateTaskForOp(Op* pOp)
 
   Word* pEntryWord = pOp->pEntryWord();
   
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pTask = new Task;
+  pTask = new Task(pOp->szOpNm(),pOp);
 
-  pTask->vOp(pOp);
   pOp->vTask(pTask);
-
-  pTask->vTaskNm(pOp->szOpNm());
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  
 
   pTask->vSetInxPtr(pEntryWord);
 }
