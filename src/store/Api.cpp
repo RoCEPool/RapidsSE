@@ -793,9 +793,14 @@ void Api::vCallBoot(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"boot::boot"_Stz);
   
+  Stz* szSeed = pJob->szSeed();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pBootTask = AM::TASK::pNew(pJob);
+  Task* pBootTask = new Task(pJob->szJobNm(),pJob);
+
+  pJob->vJobTask(pBootTask);
+  
   
   pBootTask->vAddAxioms();
   pBootTask->vAddMunged();
@@ -803,24 +808,10 @@ void Api::vCallBoot(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
+  vSetTaskInxPtr(pBootTask,szSeed);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = pJob->szSeed();
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
-  if (! pSeedWord) {
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-
-  pBootTask->vSetInxPtr(pSeedWord);
-
-  
-  
   pJob->vTimerStart();
   
   vCallImmediate(pBootTask);
@@ -864,30 +855,21 @@ void Api::RunStartJob(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"start::start"_Stz);
 
+  Stz* szSeed = pJob->szSeed();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pStartTask = AM::TASK::pNew(pJob);
+  Task* pStartTask = new Task(pJob->szJobNm(),pJob);
+
+  pJob->vJobTask(pStartTask);
+    
+  vSetTaskInxPtr(pStartTask,szSeed);
   
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = pJob->szSeed();
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-
-  if (! pSeedWord) {
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-  
-  pStartTask->vSetInxPtr(pSeedWord);
-
-  pJob->vTimerStart();
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pStartTask->vIsStart(true);
+
+  pJob->vTimerStart();
 
   vCallImmediate(pStartTask);
 
@@ -1147,28 +1129,17 @@ void Api::vCreateTaskForJob(Job* pJob)
   
   ASSERT(SS_ENUMS != pJob->eSeed());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Task* pTask = pJob->pJobTask();
-  RASSERT(! pTask);
-
-  pTask = AM::TASK::pNew(pJob);
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
   Stz* szSeed = pJob->szSeed();
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
-  if (! pSeedWord) {
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pTask->vSetInxPtr(pSeedWord);
+  Task* pTask = new Task(pJob->szJobNm(),pJob);
+
+  pJob->vJobTask(pTask);
+    
+  vSetTaskInxPtr(pTask,szSeed);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vTimerStart();
   
@@ -1188,12 +1159,37 @@ void Api::vCreateTaskForOp(Op* pOp)
   Task* pTask = pOp->pTask();
   RASSERT(! pTask);
 
-  pTask = AM::TASK::pNew(pOp);
-  pOp->vTask(pTask);
-  
   Word* pEntryWord = pOp->pEntryWord();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask = new Task(pOp->szOpNm(),pOp);
+
+  pOp->vTask(pTask);
 
   pTask->vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set instruction pointer for task given entry point name                    */
+/*----------------------------------------------------------------------------*/
+void Api::vSetTaskInxPtr(Task* pTask, Stz* szEntryPt)
+{
+  _static_
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  
+  Word* pEntryWord = pDicRoot->pFindWord(szEntryPt);
+
+  if (! pEntryWord) {
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find task entry point: %s\n"_Stz,szEntryPt);
+  }
+  
+  pTask->vSetInxPtr(pEntryWord);
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -76,7 +76,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(void)
+Task::Task(Stz* szTaskNm, Job* pJob)
 : Object(CN_TASK)
 , LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
@@ -85,11 +85,40 @@ Task::Task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  vTask();
+  
+  m_sTaskNm = szTaskNm;
+  m_pJob_task    = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Task::Task(Stz* szTaskNm, Op* pOp)
+: Object(CN_TASK)
+, LifeGuard_t<Task>(this,CN_TASK)
+, m_okLock(this,false)
+, m_oReadLocks(this)
+, m_oWriteLocks(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  vTask();
+
+  m_sTaskNm = szTaskNm;
+  m_pOp     = pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* common init                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_pProfile     = nullptr;
 
   m_pThread      = nullptr;
-  m_pJob_task         = nullptr;
-  m_pOp          = nullptr;
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
