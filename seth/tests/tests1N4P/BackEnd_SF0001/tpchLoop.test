@@ -40,16 +40,20 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running index joins...';
+INCLUDE 'indexJoin.test';
+
+//------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
 //INCLUDE 'query1.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
-//INCLUDE 'tpchTruncate.test';
+INCLUDE 'tpchTruncate.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Dropping tpch schema...';
-//INCLUDE 'tpchSchemaDrop.test';
+INCLUDE 'tpchSchemaDrop.test';
 
 } -- end of loop
 

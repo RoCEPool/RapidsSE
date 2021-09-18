@@ -5926,12 +5926,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PAY_STORE_COLS:
         EO_ENTER(eCode);
-        vRlu_DUMP(pLU, aiDstk);
+        //vRlu_DUMP(pLU, aiDstk);
         ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLS,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
-        vRlu_DUMP(pLU, aiDstk);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 

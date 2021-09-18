@@ -5,6 +5,7 @@
 ../../tests/dummyTests/testList
 ../../tests/tests2N4P/Transliterate/testList
 ../../tests/tests1N4P/BackEnd/testList
+../../tests/tests1N4P/BackEnd_SF0001/testList
 ../../tests/tests1N4P/Compiler/testList
 ../../tests/tests1N4P/Demo/testList
 ../../tests/tests2N4P/Datums/testList
