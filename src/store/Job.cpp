@@ -113,7 +113,8 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(i8 i_Origin,     // originated on which node
+Job::Job(Stz* szJobNm,
+         i8 i_Origin,     // originated on which node
          i8 i_Session,    // which session in session array
          i8 iCmdNo        // the sequence no of the request from that session)
         )
@@ -124,10 +125,13 @@ Job::Job(i8 i_Origin,     // originated on which node
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
  
   m_tJobId.vNextJobId();
+  m_sJobNm   = szJobNm;
+  m_eJobKind = JK_NONE;
+
   
-  m_bReapable  = false;
+  m_bReapable = false;
   
-  m_eSeed      = SS_ENUMS;
+  m_eSeed     = SS_ENUMS;
   
   // -- a -------------------
   
@@ -143,7 +147,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_i_Participant = C_UNKNOWN;
   
   // -- c -------------------
-  m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;

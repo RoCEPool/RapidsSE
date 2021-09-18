@@ -111,9 +111,10 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(i8 i_Origin,     // originated on which node
-        i8 i_Session,    // which session in session array
-        i8 iCmdNo  // the sequence no of the request from that session
+    Job(Stz* szJobNm,
+        i8 i_Origin,   // originated on which node
+        i8 i_Session,  // which session in session array
+        i8 iCmdNo      // the sequence no of the request from that session
        );
 
     // FIND CASE -- TO BE REMOVED

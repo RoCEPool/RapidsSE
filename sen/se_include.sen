@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* se_include.sen -- master include sequence (called from boot::boot)         */
+/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */
 /*============================================================================*/
 
 "se_include.sen" .verbose
@@ -122,7 +122,7 @@ cmd::fillOut_allCmds
         
         "se_defineTables.sen"     include // second last
         
-        "job_start.sen"           include // last last
+        "job_startSystem.sen"     include // last last
 
 .\n
 

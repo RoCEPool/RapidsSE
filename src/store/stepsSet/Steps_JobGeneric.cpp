@@ -35,7 +35,8 @@ void Step::vJob_BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobBegun = new Job(pDistJob->m_i_Origin,
+  Job* pJobBegun = new Job("begun"_Stz,
+                           pDistJob->m_i_Origin,
                            pDistJob->m_i_Session,
                            pDistJob->m_iCmdNo
                            );
@@ -43,8 +44,6 @@ void Step::vJob_BegunNew(void)
   pJobBegun->m_tJobId = pDistJob->tJobId();
   pJobBegun->vParticipantNode(AM::pGrid()->iThisNodeNo());
   pJobBegun->vJobKind(JK_GENERIC);
-
-  pJobBegun->vJobNm("begun"_Stz);
   
   TagSet* pJobBegunTags = pJobBegun->pJobTags();
   
@@ -75,7 +74,8 @@ void Step::vJob_CancelNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobCancel = new Job(pDistJob->m_i_Origin,
+  Job* pJobCancel = new Job("cancel"_Stz,
+                            pDistJob->m_i_Origin,
                             pDistJob->m_i_Session,
                             pDistJob->m_iCmdNo
                             );
@@ -90,7 +90,6 @@ void Step::vJob_CancelNew(void)
   TagSet* pCmdCancelTags = pwCmdCancelTags->pWrdTagSet();
   pJobCancelTags->vCopy(pCmdCancelTags);
 
-  pJobCancel->vJobNm("cancel"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"cancel"_Stz);
   //pJobCancel->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
@@ -114,7 +113,8 @@ void Step::vJob_CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job(pDistJob->m_i_Origin,
+  Job* pJobCancelled = new Job("cancelled"_Stz,
+                               pDistJob->m_i_Origin,
                                pDistJob->m_i_Session,
                                pDistJob->m_iCmdNo
                                );
@@ -131,7 +131,6 @@ void Step::vJob_CancelledNew(void)
 
 
   
-  pJobCancelled->vJobNm("cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"cancelled"_Stz);
   //pJobCancelled->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
@@ -155,7 +154,8 @@ void Step::vJob_EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnd = new Job(pDistJob->m_i_Origin,
+  Job* pJobEnd = new Job("end"_Stz,
+                         pDistJob->m_i_Origin,
                          pDistJob->m_i_Session,
                          pDistJob->m_iCmdNo
                          );
@@ -171,7 +171,6 @@ void Step::vJob_EndNew(void)
   pJobEndTags->vCopy(pCmdEndTags);
 
 
-  pJobEnd->vJobNm("end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"end"_Stz);
   //pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
@@ -195,7 +194,8 @@ void Step::vJob_EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job(pDistJob->m_i_Origin,
+  Job* pJobEnded = new Job("ended"_Stz,
+                           pDistJob->m_i_Origin,
                            pDistJob->m_i_Session,
                            pDistJob->m_iCmdNo
                            );
@@ -212,8 +212,6 @@ void Step::vJob_EndedNew(void)
   pJobEndedTags->vCopy(pCmdEndedTags);
 
 
-  
-  pJobEnded->vJobNm("ended"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
   //pJobEnded->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
@@ -237,7 +235,8 @@ void Step::vJob_ExecuteNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecute = new Job(pDistJob->m_i_Origin,
+  Job* pJobExecute = new Job("execute"_Stz,
+                             pDistJob->m_i_Origin,
                              pDistJob->m_i_Session,
                              pDistJob->m_iCmdNo
                              );
@@ -254,8 +253,6 @@ void Step::vJob_ExecuteNew(void)
   pJobExecuteTags->vCopy(pCmdExecuteTags);
 
 
-    
-  pJobExecute->vJobNm("execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"execute"_Stz);
   //pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
@@ -279,7 +276,8 @@ void Step::vJob_ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job(pDistJob->m_i_Origin,
+  Job* pJobExecuted = new Job("executed"_Stz,
+                              pDistJob->m_i_Origin,
                               pDistJob->m_i_Session,
                               pDistJob->m_iCmdNo
                               );
@@ -295,8 +293,6 @@ void Step::vJob_ExecutedNew(void)
   pJobExecutedTags->vCopy(pCmdExecutedTags);
 
 
-  
-  pJobExecuted->vJobNm("executed"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
   //pJobExecuted->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
