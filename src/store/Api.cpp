@@ -340,10 +340,13 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  //pCmdTags->vDumpSet();
+
+  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+
   Job* pPrepareJob =
          pSession->m_pSsnJob =
-           new Job("(unknown)"_Stz,
+           new Job(szJobNm,
                    AM::GRID::iThisNodeNo(),
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
@@ -354,6 +357,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
   //pPrepareJobTags->vDumpSet();
+
 
   // parse cmd
     
@@ -422,10 +426,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
   pPrepareJob->vJobKind(eJobKind);
-  
-  Stz* szJobNm = pPrepareJobTags->szValue(C_TAG_JOBNM);
-  pPrepareJob->vJobNm(szJobNm);
-  
+    
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
     pPrepareJob->vSee();
   
