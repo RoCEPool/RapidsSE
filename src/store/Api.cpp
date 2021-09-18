@@ -793,6 +793,8 @@ void Api::vCallBoot(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"boot::boot"_Stz);
   
+  Stz* szSeed = pJob->szSeed();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Task* pBootTask = AM::TASK::pNew(pJob);
@@ -807,7 +809,6 @@ void Api::vCallBoot(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = pJob->szSeed();
   
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
@@ -864,13 +865,14 @@ void Api::RunStartJob(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_SEEDRUN,"start::start"_Stz);
 
+  Stz* szSeed = pJob->szSeed();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Task* pStartTask = AM::TASK::pNew(pJob);
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = pJob->szSeed();
   
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
@@ -1147,6 +1149,8 @@ void Api::vCreateTaskForJob(Job* pJob)
   
   ASSERT(SS_ENUMS != pJob->eSeed());
   
+  Stz* szSeed = pJob->szSeed();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = pJob->pJobTask();
@@ -1155,8 +1159,6 @@ void Api::vCreateTaskForJob(Job* pJob)
   pTask = AM::TASK::pNew(pJob);
   
   Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = pJob->szSeed();
   
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
@@ -1188,11 +1190,11 @@ void Api::vCreateTaskForOp(Op* pOp)
   Task* pTask = pOp->pTask();
   RASSERT(! pTask);
 
+  Word* pEntryWord = pOp->pEntryWord();
+  
   pTask = AM::TASK::pNew(pOp);
   pOp->vTask(pTask);
   
-  Word* pEntryWord = pOp->pEntryWord();
-
   pTask->vSetInxPtr(pEntryWord);
 }
 
