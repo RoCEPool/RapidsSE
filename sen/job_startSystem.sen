@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* job_start.sen -- Start System Job                                          */
+/* job_startSystem.sen -- Start System Job                                    */
 /*============================================================================*/
 
-" job_start.sen" .verbose
+" job_startSystem.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
 
-: start::start
+: startSystem::startSystem
 
-  "start::start" .verbose
+  "startSystem::startSystem" .verbose
 
   // define the system procedures
   start::defProc_Create
@@ -111,7 +111,7 @@
     ": _Start completed" .boot
   //then
 
-  "end start::start" .verbose
+  "end startSystem::startSystem" .verbose
 
   Job[].addRetired
   Task[].grabLock

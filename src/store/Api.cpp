@@ -343,7 +343,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   Job* pPrepareJob =
          pSession->m_pSsnJob =
-           new Job(AM::GRID::iThisNodeNo(),
+           new Job("(unknown)"_Stz,
+                   AM::GRID::iThisNodeNo(),
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
                    );
@@ -775,7 +776,8 @@ void Api::vCallBoot(void)
 {
   _static_
   
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+  Job* pJob = new Job("boot"_Stz,
+                      AM::GRID::iThisNodeNo(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
@@ -837,13 +839,14 @@ void Api::RunStartJob(void)
   // this is the main thread
   PsxThd::vMarkNonSeThread();
 
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+  Job* pJob = new Job("StartSys"_Stz,
+                      AM::GRID::iThisNodeNo(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
   pJob->vSeed(SS_SEED_RUN);
   
-  pJob->vEntry("start::start HAZARD"_Stz);
+  pJob->vEntry("startSystem::startSystem HAZARD"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -853,13 +856,13 @@ void Api::RunStartJob(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"start::start"_Stz);
+  pJobTags->vReplace(C_TAG_SEEDRUN,"startSystem::startSystem"_Stz);
 
   Stz* szSeed = pJob->szSeed();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pStartTask = new Task(pJob->szJobNm(),pJob);
+  Stz* szJobNm = pJob->szJobNm();
+  Task* pStartTask = new Task(szJobNm,pJob);
 
   pJob->vJobTask(pStartTask);
     
