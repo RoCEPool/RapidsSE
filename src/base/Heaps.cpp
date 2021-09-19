@@ -16,6 +16,8 @@ SubSysFn __Heaps("Heaps"_Stz,(fpSELFFN*)Heaps::vSubSystem,
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__aFooterFunction(Heaps)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -24,8 +26,10 @@ Heaps::Heaps(i8 bNoFree)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
   
-  m_bNoFree = bNoFree;
-  
+  m_bNoFree     = bNoFree;
+  m_bTraceAlloc = false;
+  m_bTraceFree  = false;
+
   Transient.m_pTiny   = nullptr;
   Transient.m_pSmall  = nullptr;
   Transient.m_pMedium = nullptr;
@@ -101,6 +105,11 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   
   if (pRU_Memory)
     AM::vAllocInc(pRU_Memory, eAllocClass);
+  
+  if (pHeaps->m_bTraceAlloc) {
+    vTrace("Alloc: %s %p in %s"_Stz
+           ,aCN[eAllocClass],pObject,aHT[eHeap]);
+  }
   
   return pObject;
 }
@@ -253,6 +262,11 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   pObject = aAdd<Object*>(pObject,gxaSizeHeap[eObjectClass].m_nVtableAdjust);
   
+  if (pHeaps->m_bTraceFree) {
+    vTrace("Alloc: %s %p in %s"_Stz
+           ,aCN[eObjectClass],pObject,aHT[eHeap]);
+  }
+
   pHeap->vFreeObject(pObject);
 }
 
@@ -264,6 +278,22 @@ void Heaps::vFree_NonObject(PoolBuffer* pBuffer)
   pBuffer->vSetMagic();
   
   AM::pHeaps()->Transient.m_pLarge->vFreeObject(pBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace alloc of objects                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceAlloc(bool bTraceAlloc)
+{
+  m_bTraceAlloc = bTraceAlloc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace free of objects                                                  */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceFree(bool bTraceFree)
+{
+  m_bTraceFree = bTraceFree;
 }
 
 /*----------------------------------------------------------------------------*/
