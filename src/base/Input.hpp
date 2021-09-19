@@ -44,6 +44,7 @@ namespace BASE
 
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
+    Input* pDeleteInput(void);
     i8   iDepth(void);
     void vDivision(Stz* szDivision);
     Stz* szDivision(void);

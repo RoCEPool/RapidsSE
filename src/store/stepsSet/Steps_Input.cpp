@@ -156,8 +156,6 @@ void Step::vInputPop(void)
 {
   ENTRY();
 
-  bool bPopped = m_pInput->bPopCharser();
-
   vDeleteInput();
 
   EXIT();
@@ -189,8 +187,6 @@ void Step::vInputPush(void)
   ENTRY();
 
   vNewInput();
-
-  m_pInput->vPushCharser();
 
   EXIT();
 }

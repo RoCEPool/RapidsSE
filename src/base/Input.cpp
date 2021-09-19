@@ -111,6 +111,20 @@ void Input::vDebugMode(i8 iDebugMode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete input                                                               */
+/*----------------------------------------------------------------------------*/
+Input* Input::pDeleteInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Input* pNext = m_pNext;
+  
+  delete this;
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of charser                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Input::iDepth(void)
