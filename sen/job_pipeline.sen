@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
-  //"pipeline::origin" .
+  // "pipeline::origin" .
   
   Task[].job@ Job[] equal assert
 
@@ -58,7 +58,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
-  
+    
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> "pipeline::origin: %v\n" .printf
+    //system::bpa
+  then
+
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // + clean compile
@@ -88,6 +94,8 @@
     // set acks for originator task
     1 Task[].acksRemaining!
 
+
+    "pipeline::participant" Job[].entry!
     job::distributeParticipants
     
     Task[].wait
@@ -136,9 +144,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::participant ( -- )
 
-  // [ senCompiler::current@ word.name@ encode::push ] .
-
-  // "pipeline::participant a" .
+  // "pipeline::participant" .
 
   JobRef[].none
   
@@ -158,13 +164,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
-  
-  "<show_command>" sysargs::tagSet@ tagSet.hasName
-  if
-    <cmd> .
-    system::bpa
-  then
-  
 
   <cmd> Dynamo::compileStmt EC_NONE == assert
   
@@ -176,6 +175,8 @@
 
   JP_BEGUN Job[].phase!
      
+  "pipeline::execute" Job[].entry!
+  
   Job[] begun::replyToOrigin
   
   DdlLock[].testDrop
@@ -195,8 +196,6 @@
 /* execute pipeline job                                                       */
 /*----------------------------------------------------------------------------*/
 : pipeline::execute ( -- )
-
-  // [ senCompiler::current@ word.name@ encode::push ] .
 
   // "pipeline::execute" .
   
@@ -255,6 +254,8 @@
   then
   
   JP_EXECUTED Job[].phase!
+  
+  "pipeline::end" Job[].entry!
 
   DdlLock[].testDrop
   JobRef[].none
@@ -356,7 +357,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <ddlLock>  = DL_GRAB_READ
     <preCheck> = bClusterStarted
     
-    <seedReq>  = "pipelineSeed_req"
+    //<seedReq>  = "pipelineSeed_req"
     <seedRcv>  = "pipelineSeed_beg"
     <seedExe>  = "pipelineSeed_exe"
     <seedEnd>  = "pipelineSeed_end"

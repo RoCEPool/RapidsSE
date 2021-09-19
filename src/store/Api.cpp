@@ -182,6 +182,10 @@ void Api::vExecuteJob(Session* pSession)
     
     pSession->vHasCascade(false);
     pSession->vCascade(""_Stz);
+    
+    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    
+    pJob->vEntry(szEntry);
   }
 }
 
@@ -431,12 +435,17 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     pPrepareJob->vSee();
   
   
-  
+  //pPrepareJobTags->vDumpSet(true);
+
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = pPrepareJob->szSeed();
+  //Stz* szSeed = pPrepareJob->szSeed();
+  Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
+  pPrepareJob->vEntry(szEntry);
+
+  Stz* szSeed = "job::job"_Stz;
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
   if (! pSeedWord) {
@@ -1131,9 +1140,10 @@ void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
   
-  ASSERT(SS_ENUMS != pJob->eSeed());
+  //ASSERT(SS_ENUMS != pJob->eSeed());
   
-  Stz* szSeed = pJob->szSeed();
+  //Stz* szSeed = pJob->szSeed();
+  Stz* szSeed = "job::job"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

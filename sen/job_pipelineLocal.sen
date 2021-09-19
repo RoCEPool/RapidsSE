@@ -30,6 +30,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> "pipelineLocal::origin: %v\n" .printf
+    //system::bpa
+  then
+
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // clean compile
@@ -138,7 +144,7 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     <jobKind>  = JK_LOCAL
     //<ddlLock>  = DL_GRAB_READ
     
-    <seedReq>   = "pipelineLocal::entry"
+    //<seedReq>   = "pipelineLocal::entry"
     
     <entryPoint> = "pipelineLocal::entry"
 

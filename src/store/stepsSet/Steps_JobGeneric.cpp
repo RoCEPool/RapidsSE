@@ -60,6 +60,8 @@ void Step::vJob_BegunNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
+  pJobBegun->vEntry("begun::begun"_Stz);
+  
   m_pDataStack->vPushPtr(pJobBegun);
   
   EXIT();
@@ -99,6 +101,8 @@ void Step::vJob_CancelNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
     
+  pJobCancel->vEntry("cancel::cancel"_Stz);
+  
   m_pDataStack->vPushPtr(pJobCancel);
   
   EXIT();
@@ -140,6 +144,8 @@ void Step::vJob_CancelledNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
   
+  pJobCancelled->vEntry("cancelled::cancelled"_Stz);
+  
   m_pDataStack->vPushPtr(pJobCancelled);
   
   EXIT();
@@ -179,6 +185,8 @@ void Step::vJob_EndNew(void)
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
+  
+  pJobEnd->vEntry("end::end"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnd);
   
@@ -221,6 +229,8 @@ void Step::vJob_EndedNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
     
+  pJobEnded->vEntry("ended::ended"_Stz);
+  
   m_pDataStack->vPushPtr(pJobEnded);
   
   EXIT();
@@ -262,6 +272,8 @@ void Step::vJob_ExecuteNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
   
+  pJobExecute->vEntry("execute::execute"_Stz);
+  
   m_pDataStack->vPushPtr(pJobExecute);
   
   EXIT();
@@ -301,6 +313,8 @@ void Step::vJob_ExecutedNew(void)
   
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
+  
+  pJobExecuted->vEntry("executed::executed"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecuted);
   
