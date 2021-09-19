@@ -151,16 +151,19 @@ void Step::vInputOpen(void)
 /*----------------------------------------------------------------------------*/
 /* input::pop -- pop to previous input stream                                 */
 /*----------------------------------------------------------------------------*/
-//void Step::vInputPop(void)
-//{
-//  ENTRY();
-//
-//  bool bPopped = m_pInput->bPopCharser();
-//
-//  vDeleteInput();
-//
-//  EXIT();
-//}
+#ifdef WITH_REVISED_INPUT
+void Step::vInputPop(void)
+{
+  ENTRY();
+
+  bool bPopped = m_pInput->bPopCharser();
+
+  vDeleteInput();
+
+  EXIT();
+}
+
+#else
 /*----------------------------------------------------------------------------*/
 void Step::vInputPop(void)
 {
@@ -175,20 +178,24 @@ void Step::vInputPop(void)
 
   EXIT();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* input::push -- push new input stream                                       */
 /*----------------------------------------------------------------------------*/
-//void Step::vInputPush(void)
-//{
-//  ENTRY();
-//
-//  vNewInput();
-//
-//  m_pInput->vPushCharser();
-//
-//  EXIT();
-//}
+#ifdef WITH_REVISED_INPUT
+void Step::vInputPush(void)
+{
+  ENTRY();
+
+  vNewInput();
+
+  m_pInput->vPushCharser();
+
+  EXIT();
+}
+
+#else
 /*----------------------------------------------------------------------------*/
 void Step::vInputPush(void)
 {
@@ -203,6 +210,7 @@ void Step::vInputPush(void)
 
   EXIT();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* input::pushVecAsStr -- push entire vector as one string                    */
