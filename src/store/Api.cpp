@@ -176,12 +176,17 @@ void Api::vExecuteJob(Session* pSession)
              ,pSession->m_sCascade.azChar());
     }
     
+    AM::pHeaps()->vSetTraceFree(true,MY::pTask());
+    
     pJob->vResetForCascade(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
     
     pSession->vHasCascade(false);
     pSession->vCascade(""_Stz);
+    
+    AM::pHeaps()->vSetTraceFree(false);
+
   }
 }
 

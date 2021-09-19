@@ -16,8 +16,11 @@ namespace BASE
   
     i8 m_bNoFree;
 
-    b8 m_bTraceAlloc;
-    b8 m_bTraceFree;
+    b8    m_bTraceAlloc;
+    Task* m_pTaskAlloc;
+  
+    b8    m_bTraceFree;
+    Task* m_pTaskFree;
 
     struct {
       Heap* m_pTiny;
@@ -59,8 +62,8 @@ namespace BASE
     Heap* pEachHeap(eHT& reLastHeap);
     Heap* pGetHeap(eHT eHeap);
     void vInit(void);
-    void vSetTraceAlloc(bool bTraceAlloc);
-    void vSetTraceFree(bool bTraceFree);
+    void vSetTraceAlloc(bool bTraceAlloc, Task* pTaskAlloc = nullptr);
+    void vSetTraceFree(bool bTraceFree, Task* pTaskFree = nullptr);
 
     Footer* aFooter(void);
   };
