@@ -1047,7 +1047,7 @@ void Task::vNewInput(void)
 
   RASSERT(! m_pInput);
     
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
 }
 
 /*----------------------------------------------------------------------------*/

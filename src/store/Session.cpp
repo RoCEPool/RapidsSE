@@ -415,7 +415,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
   
   m_pOutput = new Output;
 

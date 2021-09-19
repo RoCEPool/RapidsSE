@@ -993,7 +993,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   vSoftReset();
   vIntegrityCheck();
 
-  Input* pInput = new Input;
+  Input* pInput = new Input(nullptr);
   pInput->vUseString(szTokenStr);
   pInput->vFormSenTokens();
   pInput->vUseBegin();
@@ -1021,7 +1021,7 @@ void TokenVec::vTokeniseC(Stz* szTokenStr)
   vSoftReset();
   vIntegrityCheck();
   
-  Input* pInput = new Input;
+  Input* pInput = new Input(nullptr);
   pInput->vUseString(szTokenStr);
   pInput->vFormCppTokens();
   pInput->vUseBegin();

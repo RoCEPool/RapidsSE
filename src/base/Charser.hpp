@@ -13,8 +13,8 @@ namespace BASE
   class Charser : public Object
   {
   private:
-    i8       m_iDepth;    // depth of this parser
-    Charser* m_pNext;     // next parser in stack
+    i8       m_iDepth;    // depth of this charser
+    Charser* m_pNext;     // next charser in chain
     
     // source definition
     eIS      m_eSource;   // what source are we parsing? given file or string?
