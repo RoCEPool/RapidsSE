@@ -131,6 +131,8 @@ void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
+  // AM::pHeaps()->vSetTraceFree(CN_PIPELINE);
+
   pSession->m_pOutput->vAssertEmptyQueue();
 
   Job* pJob = pSession->m_pSsnJob;
@@ -176,6 +178,8 @@ void Api::vExecuteJob(Session* pSession)
              ,pSession->m_sCascade.azChar());
     }
     
+    //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
+    
     pJob->vResetForCascade(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
@@ -186,6 +190,10 @@ void Api::vExecuteJob(Session* pSession)
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     
     pJob->vEntry(szEntry);
+
+    //AM::pHeaps()->vSetTraceFree(false);
+
+>>>>>>> master
   }
 }
 
