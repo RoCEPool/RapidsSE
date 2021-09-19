@@ -192,8 +192,6 @@ void Api::vExecuteJob(Session* pSession)
     pJob->vEntry(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
-
->>>>>>> master
   }
 }
 
