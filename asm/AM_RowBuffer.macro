@@ -347,12 +347,13 @@ macro AM_ROW_INDEXJOIN_BEGIN
 //----------------------------------------------------------------------------//
   // ROW_INDEXJOIN_BEGIN
   Label ROW_INDEXJOIN_BEGIN
+  EO_RLU_RESET_JOINEDROW
 
 endMacro
 
 macro AM_ROW_INDEXJOIN_NEXT
 //----------------------------------------------------------------------------//
-// macro AM_ROW_INDEXJOIN_NEXT                                                 //
+// macro AM_ROW_INDEXJOIN_NEXT                                                //
 //----------------------------------------------------------------------------//
   // ROW_INDEXJOIN_NEXT
   Label ROW_INDEXJOIN_NEXT
@@ -364,11 +365,13 @@ macro AM_ROW_INDEXJOIN_NEXT
   EO_EQ_INTINT
   EO_RETURN_TRUE
 
+  Label ROW_INDEXJOIN_DEREF
   // deref index entry
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
+  EO_RLU_SET_JOINEDROW
 
   // fetch next entry from index
   EO_PUSH_DEVIXT_RHT
@@ -390,52 +393,36 @@ macro AM_ROW_INDEXJOIN_NEXT_LO
   // ROW_INDEXJOIN_NEXT_LO
   Label ROW_INDEXJOIN_NEXT_LO
 
-  // fetch next entry from index
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_IDX_NEXT
-
-  EO_JMP_FALSE INDEXJOIN_NEXT_LO_RETURN
-
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_PUSH
 
-  EO_PUSH_DEVIXT_RHT
-  EO_DEVIXT_ENT_PUSHUPPER
-
+  // reached upper bound ?
   EO_EQ_INTINT
-  EO_JMP_TRUE INDEXJOIN_NEXT_LO_RETURN
+  EO_JMP_FALSE ROW_INDEXJOIN_DEREF
+  EO_PUSH_RLU_JOINEDROW
+  EO_RETURN_TRUE
+  EO_CALL JOINROWS_ROWLFT_NULENT
+  EO_RETURN
 
-  // projection
-  //EO_CRW_SRC_DEREF
+  Label ROW_INDEXJOIN_DEREF
+  // deref index entry
   EO_PUSH_DEVIXT_RHT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
-  //EO_ROW_DST_PRINT
+  EO_RLU_SET_JOINEDROW
 
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_ROWBUF_ROWNO
-  EO_RLU_SET_JOINMAP_BYTE
+  // fetch next entry from index
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_IDX_NEXT
+  EO_RETURN_FALSE
+
+  // push upper bound entry
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSHUPPER
 
   EO_JMP ROW_INDEXJOIN_NEXT_LO
-
-  Label INDEXJOIN_NEXT_LO_RETURN
-  DeleteLabel INDEXJOIN_NEXT_LO_RETURN
-
-  // Left outer rows
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_ROWBUF_ROWNO
-  EO_PUSH_RLU_JOINMAP_BYTE
-  EO_RETURN_TRUE
-
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_ROWBUF_ROWNO
-  EO_CTR_0_POP
-  EO_PRINTF "**CALLING JOINROWS_CRWLFT_NULRHT\n"
-  EO_CALL JOINROWS_ROWLFT_NULRHT
-
   EO_RETURN
-
 endMacro
 
 macro AM_ROWBUFFER_TRAVERSAL

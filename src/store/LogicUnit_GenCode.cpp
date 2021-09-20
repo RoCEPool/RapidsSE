@@ -964,9 +964,10 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
-    vTrace("Left Outer not supported yet!"_Stz);
-    RASSERT(0);
-    //oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
+    oFile.vPrint("  EO_JMP_TRUE CRW_INDEXJOIN_UPPER\n"_Stz);
+    oFile.vPrint("  EO_CALL JOINROWS_CRWLFT_NULENT\n"_Stz);
+    oFile.vPrint("  EO_RETURN\n\n"_Stz);
+    oFile.vPrint("  Label CRW_INDEXJOIN_UPPER\n"_Stz);
   }
   else {
     oFile.vPrint("  EO_RETURN_FALSE\n\n"_Stz);
@@ -1006,7 +1007,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // JOINROW_CRWLFT_NULRHT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_CRWLFT_NULRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_CRWLFT_NULENT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1029,9 +1030,10 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
 
   if (pExprEval->m_bLeftOuter) {
-    vTrace("Left Outer not supported yet!"_Stz);
-    RASSERT(0);
-    //oFile.vPrint("  EO_JMP_FALSE CRW_INDEXJOIN_NEXT_LO\n"_Stz);
+    oFile.vPrint("  EO_JMP_TRUE ROW_INDEXJOIN_UPPER\n"_Stz);
+    oFile.vPrint("  EO_CALL JOINROWS_ROWLFT_NULENT\n"_Stz);
+    oFile.vPrint("  EO_RETURN\n\n"_Stz);
+    oFile.vPrint("  Label ROW_INDEXJOIN_UPPER\n"_Stz);
   }
   else {
     oFile.vPrint("  EO_RETURN_FALSE\n\n"_Stz);
@@ -1059,6 +1061,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
     oTagSet.vReset();
   }
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_JOIN_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1070,7 +1073,7 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // JOINROWS_ROWLFT_NULRHT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_NULRHT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_JOINROWS_ROWLFT_NULENT, &oTagSet, sMacro));
   oTagSet.vReset();
 
 

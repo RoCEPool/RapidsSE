@@ -3246,13 +3246,8 @@ void ExprEval::vCheckIsNull(Stz* szAsmBuffer, IntStack* pTypeStack) {
   //StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodeIsNull]);
   StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE VALUE_IS_NOT_NULL\n"_Stz);
-  if (m_bLeftOuter) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP INDEXJOIN_NEXT_LO_RETURN\n\n"_Stz);
-  }
-  else {
-    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
-  }
+  StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCodePopNull]);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
 
   StrLib::vSprintCat(szAsmBuffer, "\n  Label VALUE_IS_NOT_NULL\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  deleteLabel VALUE_IS_NOT_NULL\n"_Stz);

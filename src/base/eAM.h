@@ -66,10 +66,12 @@ enum eAM // ASM Macros
 
   /*    */ AM_JOINROWS_CRWLFT_CRWRHT,
   /*    */ AM_JOINROWS_CRWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_CRWLFT_NULENT,
   /*    */ AM_JOINROWS_CRWLFT_NULRHT,
   /*    */ AM_JOINROWS_CRWLFT_ROWRHT,
   /*    */ AM_JOINROWS_ROWLFT_CRWRHT,
   /*    */ AM_JOINROWS_ROWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_ROWLFT_NULENT,
   /*    */ AM_JOINROWS_ROWLFT_NULRHT,
   /*    */ AM_JOINROWS_ROWLFT_ROWRHT,
 
@@ -188,10 +190,12 @@ static Stz* aAM[]
 
     /*    */ "JOINROWS_CRWLFT_CRWRHT"_Stz,
     /*    */ "JOINROWS_CRWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_CRWLFT_NULENT"_Stz,
     /*    */ "JOINROWS_CRWLFT_NULRHT"_Stz,
     /*    */ "JOINROWS_CRWLFT_ROWRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_CRWRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_ROWLFT_NULENT"_Stz,
     /*    */ "JOINROWS_ROWLFT_NULRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_ROWRHT"_Stz,
 

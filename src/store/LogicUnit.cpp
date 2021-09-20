@@ -270,6 +270,7 @@ LogicUnit::LogicUnit(void)
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
+  m_xRluCommon.m_iJoinedRow = 0;
 
   m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
 
@@ -4490,6 +4491,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
+      case EO_PUSH_RLU_JOINEDROW:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu indexDef
+        dLU0(EO_PUSH_RLU_JOINEDROW);
+        P_PushPtr(aRluCommon->m_iJoinedRow);
+        EO_EXIT(eCode);
+        break;//+endCase
+
       // joinmap push
       case EO_PUSH_RLU_JOINMAP_BYTE:
         EO_ENTER(eCode);
@@ -5162,6 +5171,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinrow reset
+      case EO_RLU_RESET_JOINEDROW: // reset bJoinedRow in the RLU
+        EO_ENTER(eCode);
+        ArgNil();
+        dLU0(EO_RLU_RESET_JOINEDROW);
+        aRluCommon->m_iJoinedRow = 0;
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinrow set
+      case EO_RLU_SET_JOINEDROW: // set bJoinedRow in the RLU
+        EO_ENTER(eCode);
+        ArgNil();
+        dLU0(EO_RLU_SET_JOINEDROW);
+        aRluCommon->m_iJoinedRow = 1;
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu joinmap reset
       case EO_RLU_RESET_JOINMAP:
         EO_ENTER(eCode);
@@ -5624,7 +5653,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND_GE);
         vDev_IXT_POS_LBOUND_GE(&aiDstk);  // entry / devixt
-      EO_EXIT(eCode);
+        EO_EXIT(eCode);
         break;//+endCase
 
       case EO_DEVIXT_LBOUND_GT:
