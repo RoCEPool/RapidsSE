@@ -518,24 +518,26 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
-void Api::vReapAllJobs(void)
+void Api::vReapAllJobs(bool bForce)
 {
   _static_
   
-  while (AM::pRetiredJobs()->nJobs())
-    while (Api::bReapJob())
-      {;}
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
 }
 
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
-void Api::vReapJobsOnce(void)
+void Api::vReapJobsOnce(bool bForce)
 {
   _static_
   
-  while (Api::bReapJob())
-    {;}
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (Api::bReapJob())
+      {;}
 }
 
 /*----------------------------------------------------------------------------*/

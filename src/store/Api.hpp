@@ -38,9 +38,8 @@ namespace STORE
 
   static void vPushOperand(Session* pSession, Operand* pOperand);
  
-  static void vReapAllJobs(void);
-  static void vReapJobsOnce(void);
-  static bool bReapJob(void);
+  static void vReapAllJobs(bool bForce = false);
+  static void vReapJobsOnce(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -89,6 +88,8 @@ namespace STORE
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);
   static void vMutexWaitCond(Session* pSession, Job* pJob);
+
+  static bool bReapJob(void);
 
 
   };

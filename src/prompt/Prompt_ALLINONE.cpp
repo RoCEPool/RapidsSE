@@ -4008,7 +4008,7 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 
     vTrace("REAP FORCE\n"_Stz);
     
-    Api::vReapAllJobs();
+    Api::vReapAllJobs(true);
   }
   else
   if (pPrompt->pInpTknVec()->nItems() == 1) {
