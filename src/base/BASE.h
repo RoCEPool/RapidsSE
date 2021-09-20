@@ -226,6 +226,7 @@ extern d8 C_D8_MID;
 #include "ClassFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
+#include "JobReport.hpp"
 #include "MemTest.hpp"
 #include "Now.hpp"
 #include "Rand.hpp"
