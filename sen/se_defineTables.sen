@@ -23,7 +23,7 @@
       entries        INTEGER NOT NULL
     ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_ANALYZETABLE
@@ -36,7 +36,7 @@
      entries        INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COMMANDERRORS
@@ -50,7 +50,7 @@
     text           VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COUNT
@@ -58,7 +58,7 @@
   "
   define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COUNTINFO
@@ -66,7 +66,7 @@
   "
   define table __countInfo ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_EXECERRORS
@@ -78,7 +78,7 @@
     text           VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_EXPLAIN
@@ -90,7 +90,7 @@
       explain     VARCHAR NOT NULL
     ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_GRIDSANITY
@@ -101,7 +101,7 @@
     homogenous BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTCOLUMNS
@@ -116,7 +116,7 @@
     isPartitionKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTCONTENTS
@@ -126,7 +126,7 @@
     Name       VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTFOLDER
@@ -137,7 +137,7 @@
     Type       VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTINDEX
@@ -149,7 +149,7 @@
     isPrimaryKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTNODES
@@ -164,7 +164,7 @@
     state         VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTPARTITIONS
@@ -175,7 +175,7 @@
     nodeName      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PINGINFO
@@ -185,7 +185,7 @@
     pong      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROMPTOUT
@@ -195,7 +195,7 @@
     promptLine  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 ;
 
 
@@ -218,7 +218,7 @@
     Connected BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SIZEINDEX
@@ -229,7 +229,7 @@
     size      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SIZETABLE
@@ -240,7 +240,7 @@
     size      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SPACE
@@ -253,7 +253,7 @@
     freeSpace  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_STATUS
@@ -267,7 +267,7 @@
     isRecvSocket BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_TABLESIZES
@@ -279,7 +279,7 @@
     size      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_VERIFYINDEX
@@ -292,7 +292,7 @@
     status         VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_VERIFYTABLE
@@ -304,7 +304,7 @@
     status         VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
 ;
 
@@ -326,7 +326,7 @@
     requestOf      INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COLUMNDEFS
@@ -346,7 +346,7 @@
     isPartitionKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOADRESULT
@@ -358,7 +358,7 @@
     iRowsSkipped   INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOCKSTATS
@@ -380,7 +380,7 @@
     WritePercent   INTEGER        NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPCATALOG
@@ -390,7 +390,7 @@
     catalogName   VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPSCHEMA
@@ -401,7 +401,7 @@
     schemaName    VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPTABLE
@@ -413,7 +413,7 @@
     tableName     VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_NODEINFO
@@ -427,7 +427,7 @@
 
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PARTITIONKEY
@@ -441,7 +441,7 @@
     columnName     VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PATHINFO
@@ -453,7 +453,7 @@
     pathOf         INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROGRESSUNITS
@@ -463,7 +463,7 @@
     units      INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PWF
@@ -473,7 +473,7 @@
     folder   VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_RETURNPIPELINE
@@ -486,7 +486,7 @@
     assocText      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SEEKOFFSETS
@@ -498,7 +498,7 @@
     filename  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_TOTALUNITS
@@ -509,7 +509,7 @@
     UNITS      INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +539,7 @@
     
   ) < internal > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
@@ -558,7 +558,7 @@
 
   ) < internal > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_MEMORYLOG
@@ -579,7 +579,7 @@
     
   ) < internal > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_OPERANDLOG
@@ -600,7 +600,7 @@
     
   ) < internal > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_RESOURCELOG
@@ -623,7 +623,7 @@
     
   ) < internal > = 1 ;
   "
-  api::executeCommand
+  api::executeCommand 2discard
 ;
 
 /*============================================================================*/

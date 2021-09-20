@@ -281,7 +281,7 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-  STD_PATH sPipeline api::executeCommand
+  STD_PATH sPipeline api::executeCommand 2discard
   
   
   

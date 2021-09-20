@@ -174,6 +174,7 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //push result
   
+  m_pDataStack->vPushInt(0);
   m_pDataStack->vPushInt(true);
   
   //delete pReqTknVec;
