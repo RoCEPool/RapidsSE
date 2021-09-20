@@ -546,16 +546,14 @@
   STD_PATH
   "
   define table se__jobReport (
-
-    jobNm        VARCHAR NOT NULL ,
-    jobId        INTEGER NOT NULL ,
-    puSet        INTEGER NOT NULL ,
-    tlower       INTEGER ,
-    tupper       INTEGER ,
-    ft           INTEGER ,
-    index        INTEGER ,
-    jf           INTEGER ,
-    groups       INTEGER ,
+    
+    jobId        INTEGER NOT NULL , // pu
+    puSet        INTEGER NOT NULL , // puSet
+    t            INTEGER NOT NULL , // t
+    ft           INTEGER NOT NULL , // ft
+    j            INTEGER NOT NULL , // j
+    fj           INTEGER NOT NULL , // fj
+    groups       INTEGER NOT NULL , // groups
     responseMS   INTEGER
 
   ) < internal > = 1 ;

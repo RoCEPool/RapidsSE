@@ -223,20 +223,28 @@ Path[].root
 : pu_pipeline params| sStreamB |
   
    counterA[] 1 + to counterA[]
+   
+   counterA[] locals| iJobId  |
+   counter0[] locals| iPuSet  |
+   counter1[] locals| iT      |
+   counter2[] locals| iFt     |
+   counter3[] locals| iJ      |
+   counter4[] locals| iFj     |
+   counter5[] locals| iGroups |
 
   "\n"
   "// - - - - - - - - - - - - - - - - - - - - - -" >>
   " - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   "// pu test "     >>
-    counterA[] >str >>
-    " : "           >>
-    counter0[] [n] string0[] +x >>
-    counter1[] [n] string1[] +x >>
-    counter2[] [n] string2[] +x >>
-    counter3[] [n] string3[] +x >>
-    counter4[] [n] string4[] +x >>
-    counter5[] [n] string5[] sp >>
+    /* pu     */ iJobId >str >>
+                 " : "       >>
+    /* puSet  */ iPuSet  [n] string0[] +x >>
+    /* t      */ iT      [n] string1[] +x >>
+    /* ft     */ iFt     [n] string2[] +x >>
+    /* j      */ iJ      [n] string3[] +x >>
+    /* fj     */ iFj     [n] string4[] +x >>
+    /* groups */ iGroups [n] string5[] sp >>
     nl
     
   "// - - - - - - - - - - - - - - - - - - - - - -" >>
@@ -256,7 +264,15 @@ Path[].root
   "      output"                        >> nl
   "    | sink"                          >> nl
   "    | stageA"                        >> nl
-  "end ;"                               >> nl
+  "end"                                 >> nl
+  "    <pu_jobId> = "  iJobId  >str >>  >> nl
+  "    <pu_puSet> = "  iPuSet  >str >>  >> nl
+  "    <pu_t> = "      iT      >str >>  >> nl
+  "    <pu_ft> = "     iFt     >str >>  >> nl
+  "    <pu_j> = "      iJ      >str >>  >> nl
+  "    <pu_fj> = "     iFj     >str >>  >> nl
+  "    <pu_groups> = " iGroups >str >>  >> nl
+  ";"                                   >> nl
   " "                                   >> nl
     
   locals| sPipeline |
@@ -265,7 +281,7 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-  // STD_PATH sPipeline api::executeCommand
+  STD_PATH sPipeline api::executeCommand
   
   
   
