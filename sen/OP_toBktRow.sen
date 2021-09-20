@@ -116,7 +116,7 @@ cmdSyntax: toBktRow :: toBktRow ;
 : toBktRow_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toBktRow_op"  <seedReq> = "toBktRow_req"
+    <opEntry> = "toBktRow_op"
   }
 ;
 

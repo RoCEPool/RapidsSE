@@ -89,7 +89,7 @@ cmdSyntax: lsidx :: lsidx <tableNm> ;
     <streamDef>   = __listIndex
     <params>      = 1
 
-    <opEntry> = "lsidx_op"  <seedReq> = "lsidx_req"
+    <opEntry> = "lsidx_op"
   }
 ;
     

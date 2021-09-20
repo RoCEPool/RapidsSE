@@ -76,7 +76,7 @@ cmdSyntax: lstbldef :: lstbldef ;
     <streamDef>   = __listContents
     <params>      = 0
  
-    <opEntry> = "lstbldef_op"  <seedReq> = "lstbldef_req"
+    <opEntry> = "lstbldef_op"
   }
 ;
     

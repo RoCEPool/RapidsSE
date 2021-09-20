@@ -308,7 +308,7 @@ cmdSyntax: scanRight :: scanRight <catalogNm> <schemaNm> <tableNm> <rateSecs> ;
 : scanRight_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "scanRight_op"  <seedReq> = "scanRight_req"
+    <opEntry> = "scanRight_op"
   }
 ;
   

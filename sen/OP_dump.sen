@@ -91,7 +91,7 @@ cmdSyntax: dump :: dump <operand> <detail> ;
 : dump_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "dump_op"  <seedReq> = "dump_req"
+    <opEntry> = "dump_op"
   }
 ;
 

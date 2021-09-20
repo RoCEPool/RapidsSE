@@ -29,7 +29,7 @@ cmdSyntax: docol :: docol <routineNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
     
-    <opEntry> = "docol_op"  <seedReq> = "docol_req"
+    <opEntry> = "docol_op"
   }
 ;
     

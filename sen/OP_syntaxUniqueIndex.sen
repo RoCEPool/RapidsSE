@@ -138,7 +138,7 @@ cmdSyntax: syntaxUniqueIndex :: syntaxUniqueIndex <indexNm> <etc> ;
 : syntaxUniqueIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "syntaxUniqueIndex_op"  <seedReq> = "syntaxUniqueIndex_req"
+    <opEntry> = "syntaxUniqueIndex_op"
   }
 ;
     

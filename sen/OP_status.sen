@@ -41,7 +41,7 @@ cmdSyntax: status :: status ;
     <streamDef> = __status
     <params>    = 0
     
-    <opEntry> = "status_op"  <seedReq> = "status_req"
+    <opEntry> = "status_op"
   }
 ;
     

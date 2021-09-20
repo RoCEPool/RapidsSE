@@ -129,7 +129,7 @@ cmdSyntax: metaScan :: metaScan <metaObjectNm> <metaSubNm> ;
   tags{
     <cmdDesc>    = "--desc for op--"
     <streamDef>  = __listContents
-    <opEntry> = "metaScan_op"  <seedReq> = "metaScan_req"
+    <opEntry> = "metaScan_op"
   }
 ;
   

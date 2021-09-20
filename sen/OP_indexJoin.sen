@@ -215,7 +215,7 @@ cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
 : indexJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "indexJoin_op"  <seedReq> = "indexJoin_req"
+    <opEntry> = "indexJoin_op"
   }
 ;
 

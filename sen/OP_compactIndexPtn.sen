@@ -68,7 +68,7 @@ cmdSyntax: compactIndexPtn :: compactIndexPtn <tableNm> <indexNm> ;
 : compactIndexPtn_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "compactIndexPtn_op"  <seedReq> = "compactIndexPtn_req"
+    <opEntry> = "compactIndexPtn_op"
   }
 ;
 

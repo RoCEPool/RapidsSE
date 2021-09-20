@@ -197,7 +197,7 @@ cmdSyntax: project :: project <compiled> <etc> ;
 : project_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "project_op"  <seedReq> = "project_req"
+    <opEntry> = "project_op"
   }
 ;
 

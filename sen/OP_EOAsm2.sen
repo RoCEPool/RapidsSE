@@ -261,7 +261,7 @@ cmdSyntax: EOAsm2 :: EOAsm2 <queryText> <compiled> ;
 : EOAsm2_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "EOAsm2_op"  <seedReq> = "EOAsm2_req"
+    <opEntry> = "EOAsm2_op"
   }
 ;
 

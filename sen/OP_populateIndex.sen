@@ -96,7 +96,7 @@ cmdSyntax: populateIndex :: populateIndex <indexNm> ;
 : populateIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "populateIndex_op"  <seedReq> = "populateIndex_req"
+    <opEntry> = "populateIndex_op"
   }
 ;
     

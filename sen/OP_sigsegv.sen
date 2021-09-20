@@ -50,7 +50,7 @@ cmdSyntax: sigsegv :: sigsegv ;
 : sigsegv_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "sigsegv_op"  <seedReq> = "sigsegv_req"
+    <opEntry> = "sigsegv_op"
   }
 ;
 

@@ -64,7 +64,7 @@ cmdSyntax: explainPlan :: explainPlan ;
 : explainPlan_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "explainPlan_op"  <seedReq> = "explainPlan_req"
+    <opEntry> = "explainPlan_op"
   }
 ;
   

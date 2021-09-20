@@ -64,7 +64,7 @@ cmdSyntax: aggregateSplit :: aggregateSplit ;
 : aggregateSplit_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "aggregateSplit_op"  <seedReq> = "aggregateSplit_req"
+    <opEntry> = "aggregateSplit_op"
   }
 ;
   

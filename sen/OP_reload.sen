@@ -70,7 +70,7 @@ cmdSyntax: reload :: reload ;
 : reload_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "reload_op"  <seedReq> = "reload_req"
+    <opEntry> = "reload_op"
   }
 ;
 

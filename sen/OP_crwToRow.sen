@@ -107,7 +107,7 @@ cmdSyntax: crwToRow :: crwToRow ;
 : crwToRow_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "crwToRow_op"  <seedReq> = "crwToRow_req"
+    <opEntry> = "crwToRow_op"
   }
 ;
 

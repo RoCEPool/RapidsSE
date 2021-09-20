@@ -209,7 +209,7 @@ cmdSyntax: rluTest :: rluTest <compiled> filter <filter> , project <project> ;
 : rluTest_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "rluTest_op"  <seedReq> = "rluTest_req"
+    <opEntry> = "rluTest_op"
   }
 ;
 

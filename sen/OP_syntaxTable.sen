@@ -64,7 +64,7 @@ cmdSyntax: syntaxTable :: syntaxTable <tableNm> <etc> ;
 : syntaxTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "syntaxTable_op"  <seedReq> = "syntaxTable_req"
+    <opEntry> = "syntaxTable_op"
   }
 ;
     

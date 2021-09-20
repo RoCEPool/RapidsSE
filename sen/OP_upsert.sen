@@ -81,7 +81,7 @@ cmdSyntax: upsertOp :: upsertOp <tableNm> ;
 : upsertOp_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "upsertOp_op"  <seedReq> = "upsertOp_req"
+    <opEntry> = "upsertOp_op"
   }
 ;
 

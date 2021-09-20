@@ -66,7 +66,7 @@ cmdSyntax: dropTenant :: dropTenant <tenantNm> ;
 : dropTenant_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "dropTenant_op"  <seedReq> = "dropTenant_req"
+    <opEntry> = "dropTenant_op"
   }
 ;
     

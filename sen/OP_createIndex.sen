@@ -153,7 +153,7 @@ cmdSyntax: createIndex :: createIndex <indexNm> ;
 : createIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "createIndex_op"  <seedReq> = "createIndex_req"
+    <opEntry> = "createIndex_op"
   }
 ;
     

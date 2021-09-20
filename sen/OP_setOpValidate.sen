@@ -64,7 +64,7 @@ cmdSyntax: setOpValidate :: setOpValidate ;
 : setOpValidate_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "setOpValidate_op"  <seedReq> = "setOpValidate_req"
+    <opEntry> = "setOpValidate_op"
   }
 ;
   

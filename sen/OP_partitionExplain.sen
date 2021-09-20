@@ -64,7 +64,7 @@ cmdSyntax: partitionExplain :: partitionExplain ;
 : partitionExplain_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
-    <opEntry> = "partitionExplain_op"  <seedReq> = "partitionExplain_req"
+    <opEntry> = "partitionExplain_op"
   }
 ;
   

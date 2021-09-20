@@ -230,7 +230,7 @@ cmdSyntax: sink :: sink ;
 : sink_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "sink_op"  <seedReq> = "sink_req"
+    <opEntry> = "sink_op"
   }
 ;
 

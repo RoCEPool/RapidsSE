@@ -75,7 +75,7 @@ cmdSyntax: createTenant :: createTenant <tenantNm> ;
 : createTenant_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "createTenant_op"  <seedReq> = "createTenant_req"
+    <opEntry> = "createTenant_op"
   }
 ;
     

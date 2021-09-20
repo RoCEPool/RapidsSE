@@ -26,7 +26,7 @@ cmdSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
   tags{
     <cmdDesc>   = "--desc for op--"
     <params>    = 2
-    <opEntry> = "compactIdx_op"  <seedReq> = "compactIdx_req"
+    <opEntry> = "compactIdx_op"
   }
 ;
     

@@ -98,7 +98,7 @@ cmdSyntax: stats :: stats ;
 : stats_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "stats_op"  <seedReq> = "stats_req"
+    <opEntry> = "stats_op"
   }
 ;
 

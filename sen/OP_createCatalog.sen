@@ -75,7 +75,7 @@ cmdSyntax: createCatalog :: createCatalog <catalogNm> ;
 : createCatalog_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "createCatalog_op"  <seedReq> = "createCatalog_req"
+    <opEntry> = "createCatalog_op"
   }
 ;
     

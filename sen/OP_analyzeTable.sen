@@ -54,7 +54,7 @@ cmdSyntax: antbl :: antbl <tableNm> ;
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __analyzeTable
     <params>    = 1
-    <opEntry> = "antbl_op"  <seedReq> = "antbl_req"
+    <opEntry> = "antbl_op"
   }
 ;
     

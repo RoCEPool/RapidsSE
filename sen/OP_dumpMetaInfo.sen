@@ -33,7 +33,7 @@ cmdSyntax: dumpMetaInfo :: dumpMetaInfo <TableNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
 
-    <opEntry> = "dumpMetaInfo_op"  <seedReq> = "dumpMetaInfo_req"
+    <opEntry> = "dumpMetaInfo_op"
   }
 ;
 

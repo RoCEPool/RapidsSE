@@ -48,7 +48,7 @@ cmdSyntax: pmetaGet :: pmetaGet <tableNm> ;
 : pmetaGet_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "pmetaGet_op"  <seedReq> = "pmetaGet_req"
+    <opEntry> = "pmetaGet_op"
   }
 ;
 

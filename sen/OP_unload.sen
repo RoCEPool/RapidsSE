@@ -70,7 +70,7 @@ cmdSyntax: unload :: unload ;
 : unload_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "unload_op"  <seedReq> = "unload_req"
+    <opEntry> = "unload_op"
   }
 ;
 
