@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _rlu - RLU                                                                 */
 /*============================================================================*/
-
+/*
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
@@ -48,7 +48,7 @@ begin
 
   stage stageB on all partitions :
     scan T1
-    | rlu 0 filter "type boolean $2 500 >=" , project "type integer $2 , type varchar $4"
+    | rluTest 0 filter "type boolean $2 500 >=" , project "type integer $2 , type varchar $4"
     | stageC
 
   stage stageC on origin :
@@ -77,11 +77,14 @@ create table LineItem
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
-create index lineitem_idx1 on lineitem (l_shipdate);
-create index lineitem_idx2 on lineitem (l_orderkey);
+//create index lineitem_idx1 on lineitem (l_shipdate);
+//create index lineitem_idx2 on lineitem (l_orderkey);
 
-/time load lineitem "../TPCH/SF_0001/lineitem.csv";
+/time load lineitem "../TPCH/SF_0001/x.csv";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
+
+select L_SHIPINSTRUCT from lineitem;
+
 /*
 
 select sum(l_orderkey) from lineitem where l_shipdate >= DATE '1994-01-01';
