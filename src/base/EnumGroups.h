@@ -73,7 +73,6 @@ enum eEG // enum groups
   EG_NS,
 
   EG_OA,
-  EG_OC,
   EG_OI,
   EG_OK,
   EG_OM,

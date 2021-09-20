@@ -471,7 +471,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_NE"_Stz,   EG_NE);
   vAddConstant("EG_NS"_Stz,   EG_NS);
   vAddConstant("EG_OA"_Stz,   EG_OA);
-  vAddConstant("EG_OC"_Stz,   EG_OC);
   vAddConstant("EG_OI"_Stz,   EG_OI);
   vAddConstant("EG_OK"_Stz,   EG_OK);
   vAddConstant("EG_OM"_Stz,   EG_OM);

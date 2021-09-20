@@ -458,8 +458,6 @@ bool PROMPT::bPrompt_args(SePrompt* pPrompt)
 /* Prompt_ascii.cpp -- Ascii Helper                                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#include "eOC.h"
-
 PromptFun __Prompt_ascii (
   PF_ASCII,           // prompt function
   "Prompt_ascii"_Stz, // name of the prompt function
@@ -494,19 +492,6 @@ bool PROMPT::bPrompt_ascii(SePrompt* pPrompt)
       if (i_Char && 0 == (i_Char+1) % 8)
         vTrace("\n"_Stz);
     }
-
-//    vTrace("\n"_Stz);
-//    for (i4 i_Char = 0; i_Char < 32; i_Char++) {
-//      vTrace("%02x %-3s %c\n"_Stz,
-//             i_Char,
-//             StrLib::azAscii(i_Char),
-//             128 + i_Char);
-//    }
-
-    vTrace("\n"_Stz);
-    for (i4 i_Char = 0; i_Char < 32; i_Char++)
-      vTrace("%s"_Stz,aOC[i_Char]);
-    vTrace("\n"_Stz);
 
     return true;
   }
@@ -1100,8 +1085,6 @@ bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_describe.cpp -- Ascii Helper                                        */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "eOC.h"
 
 extern SubSysCatalog gxSubSysCatalog;
 
@@ -5548,8 +5531,6 @@ bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_tools.cpp -- System Tools                                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "eOC.h"
 
 PromptFun __Prompt_tools (
   PF_TOOLS,              // prompt function

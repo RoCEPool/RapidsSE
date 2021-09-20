@@ -22,7 +22,6 @@
 #include "eMM.h"
 #include "eMT.h"
 #include "eNE.h"
-#include "eOC.h"
 #include "eOK.h"
 
 #include "eOR.h"
@@ -3485,7 +3484,6 @@ static Stz* aEG[]
   "EG_NS"_Stz,
   
   "EG_OA"_Stz,
-  "EG_OC"_Stz,
   "EG_OI"_Stz,
   "EG_OK"_Stz,
   "EG_OM"_Stz,
@@ -3612,7 +3610,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_NS: return aNS[i_Enum];
       
     case EG_OA: return aOA[i_Enum];
-    case EG_OC: return aOC[i_Enum];
     case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
