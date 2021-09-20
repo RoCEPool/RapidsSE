@@ -3956,12 +3956,12 @@ bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_reap (
-  PF_MEMORYLEAKS,              // prompt function
+  PF_REAP,                     // prompt function
   "Prompt_reap"_Stz,           // name of the prompt function
   "reap retired job list"_Stz, // comment about the function
   "reap"_Stz,                  // the prompt command
   nullptr,                     // the second word
-  bPrompt_reap,               // prompt function
+  bPrompt_reap,                // prompt function
   true,                        // enabled
 
   true,                        // visible
