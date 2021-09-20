@@ -797,10 +797,21 @@ void Api::vCallBootSystem(void)
                       AM::SESSION::iInternalSession(),
                       1
                       );
-  pJob->vSeed(SS_SEED_RUN);
+  Stz* szJobNm = pJob->szJobNm();
+  Task* pBootTask = new Task(szJobNm,pJob);
 
-  pJob->m_sJobNm = "boot"_Stz;
+  pJob->vJobTask(pBootTask);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     
+  pBootTask->vAddAxioms();
+  pBootTask->vAddMunged();
   
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
+  
+  vSetTaskInxPtr(pBootTask,"bootSystem::bootSystem"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TagSet* pJobTags = pJob->pJobTags();
@@ -809,30 +820,13 @@ void Api::vCallBootSystem(void)
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"bootSystem::bootSystem"_Stz);
-  
-  Stz* szSeed = pJob->szSeed();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pBootTask = new Task(pJob->szJobNm(),pJob);
-
-  pJob->vJobTask(pBootTask);
-  
-  
-  pBootTask->vAddAxioms();
-  pBootTask->vAddMunged();
-  
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  vSetTaskInxPtr(pBootTask,szSeed);
-
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vTimerStart();
-  
   vCallImmediate(pBootTask);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pBootTask->vState(TS_RETIRED);
   pBootTask->vDropTaskLock((Stz*)__func__);
@@ -849,47 +843,37 @@ void Api::vCallStartSystem(void)
 {
   _static_
 
-//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-//    vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
-
   // this is the main thread
   PsxThd::vMarkNonSeThread();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Job* pJob = new Job("StartSys"_Stz,
                       AM::GRID::iThisNodeNo(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
-  pJob->vSeed(SS_SEED_RUN);
   
-  pJob->vEntry("startSystem::startSystem HAZARD"_Stz);
+  Stz* szJobNm = pJob->szJobNm();
+  Task* pStartTask = new Task(szJobNm,pJob);
+  pStartTask->vIsStart(true);
+
+  pJob->vJobTask(pStartTask);
+  
+  vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   TagSet* pJobTags = pJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"startSystem::startSystem"_Stz);
-
-  Stz* szSeed = pJob->szSeed();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Stz* szJobNm = pJob->szJobNm();
-  Task* pStartTask = new Task(szJobNm,pJob);
-
-  pJob->vJobTask(pStartTask);
-    
-  vSetTaskInxPtr(pStartTask,szSeed);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pStartTask->vIsStart(true);
-
   pJob->vTimerStart();
-
   vCallImmediate(pStartTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -897,8 +881,8 @@ void Api::vCallStartSystem(void)
   pStartTask->vState(TS_RETIRED);
   pStartTask->vDropTaskLock((Stz*)__func__);
   
-    while (Api::bReapJob())
-      {;}
+  while (Api::bReapJob())
+    {;}
 
 }
 
