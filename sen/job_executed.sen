@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Executed on originating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: executed::executed [ word::seed# ]
+: executed::executed
 
   Job[] locals| pJob_Executed |
   pJob_Executed job.id@ locals| iJobId |

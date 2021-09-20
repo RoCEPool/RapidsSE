@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Ended on originating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: ended::ended [ word::seed# ]
+: ended::ended
 
   Job[] locals| pJob_Ended |
   pJob_Ended job.id@ locals| iJobId |

@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Execute on participating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: execute::execute [ word::seed# ]
+: execute::execute
 
   // "execute::execute" .
 

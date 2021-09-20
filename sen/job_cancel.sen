@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Cancel on participating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: cancel::cancel [ word::seed# ]
+: cancel::cancel
 
   //
   // where: on the participating node
