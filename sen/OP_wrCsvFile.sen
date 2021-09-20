@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* OP_wrCsvFile.sen -- write csv file                                         */
+/*============================================================================*/
+
+" OP_wrCsvFile.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: wrCsvFile_Cleaning \handler
+
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_CRWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: wrCsvFile_CrwBuffer \handler
+
+  PipeIn[]\clear to CrwBuffer[]
+
+  // write the CRWBUFFER to file
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_CSVBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: wrCsvFile_CsvBuffer \handler
+
+  PipeIn[]\clear to CsvBuffer[]
+
+  // write the CSVBUFFER to file
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: wrCsvFile_RowBuffer \handler
+
+  PipeIn[]\clear to RowBuffer[]
+
+  // write the ROWBUFFER to file
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: wrCsvFile_StartMarker \handler
+
+  PipeIn[].pipeOut
+
+  // open the file for writing
+  <fileNm> OPEN_WRITE op__file discard
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for wrCsvFile req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : wrCsvFile_op \operator
+ 
+  _lu_initialise_
+
+  op__topology
+
+  find: wrCsvFile_Cleaning    ZK_M_CLEANING    op[].handler!
+  find: wrCsvFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
+  find: wrCsvFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
+  find: wrCsvFile_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
+  find: wrCsvFile_StartMarker ZK_M_START       op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: wrCsvFile :: wrCsvFile <fileNm> ;
+
+: wrCsvFile_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "wrCsvFile_op"  <seedReq> = "wrCsvFile_req"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

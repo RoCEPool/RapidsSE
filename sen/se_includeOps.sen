@@ -242,6 +242,7 @@ assert::stack_0
 
   "OP_waitPipeline.sen"         include
   "OP_waker.sen"                include
+  "OP_wrCsvFile.sen"            include
   "OP_wrFile.sen"               include
 
 "x" .verbose
