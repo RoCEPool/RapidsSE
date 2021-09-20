@@ -98,10 +98,6 @@
 
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
-#define WITH_JOB_ENTRY EndDefine        // use entry (not seed)
-
-#define WITH_REVISED_INPUT EndDefine        // use entry (not seed)
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

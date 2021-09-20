@@ -151,7 +151,6 @@ void Step::vInputOpen(void)
 /*----------------------------------------------------------------------------*/
 /* input::pop -- pop to previous input stream                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_REVISED_INPUT
 void Step::vInputPop(void)
 {
   ENTRY();
@@ -161,27 +160,9 @@ void Step::vInputPop(void)
   EXIT();
 }
 
-#else
-/*----------------------------------------------------------------------------*/
-void Step::vInputPop(void)
-{
-  ENTRY();
-
-  bool bPopped = m_pInput->bPopCharser();
-  ASSERT(bPopped);
-  UNUSED((bPopped));
-
-  if (-1 == m_pInput->iDepth())
-    vDeleteInput();
-
-  EXIT();
-}
-#endif
-
 /*----------------------------------------------------------------------------*/
 /* input::push -- push new input stream                                       */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_REVISED_INPUT
 void Step::vInputPush(void)
 {
   ENTRY();
@@ -190,23 +171,6 @@ void Step::vInputPush(void)
 
   EXIT();
 }
-
-#else
-/*----------------------------------------------------------------------------*/
-void Step::vInputPush(void)
-{
-  ENTRY();
-
-  if (! m_pInput) {
-    vNewInput();
-    ASSERT(0 == m_pInput->iDepth());
-  }
-
-  m_pInput->vPushCharser();
-
-  EXIT();
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* input::pushVecAsStr -- push entire vector as one string                    */
