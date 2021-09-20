@@ -8,7 +8,7 @@ namespace BASE
   template <class ITEM>
   class MiniHeap_t
   {
-    static const i8 C_WSP_MINIHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
+    static const i8 C_WSP_MINIHEAP = C_SIZE_LARGE_OBJECT - C_2KB;
   
   protected:
     

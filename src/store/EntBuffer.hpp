@@ -31,9 +31,10 @@ namespace STORE
   friend class IndexTree;
 
   protected:
-    eKE        m_eEntKind;   // what kind of entries are in this buffer?
+    eKE        m_eEntKind;          // what kind of entries are in this buffer?
+    char       m_cSpaceForTx[256];  // reserving space for tx/influx entries
 
-    IndexTree* m_pIndexTree; // indexDef this buffer belongs to
+    IndexTree* m_pIndexTree;        // indexDef this buffer belongs to
   
     SkipRoots  m_xSkipRoots; // skip roots
     Ent*       m_aLazyChain; // first lazy entry

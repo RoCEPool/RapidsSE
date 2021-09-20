@@ -90,6 +90,9 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
   m_pIndexTree  = pIndexTree;
   m_eEntKind    = pIndexTree->pIndexDef()->eKeyKind();
 
+  // zero the m_cSpaceForTx
+  MemLib::vZero(m_cSpaceForTx, sizeof(m_cSpaceForTx), CN_ENTBUFFER);
+
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
