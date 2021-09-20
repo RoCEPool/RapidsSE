@@ -131,8 +131,6 @@ Job::Job(Stz* szJobNm,
   
   m_bReapable = false;
   
-  m_eSeed     = SS_ENUMS;
-  
   // -- a -------------------
   
   m_i_Origin     = i_Origin;
@@ -202,8 +200,6 @@ Job::Job(eCN eClassNo)
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
-
-  m_eSeed      = SS_ENUMS;
 
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -1074,7 +1070,6 @@ void Job::vResetForCascade(Session* pSession)
 
   // -- g -------------------
   m_oAcksRmg_job.vReset();
-  m_eSeed      = SS_ENUMS;
 
   m_pTask = nullptr;
 
@@ -1141,7 +1136,6 @@ void Job::vSee(void)
 
          "    iOriginatingId "  "%lld"  " \n"  // 19
  
-         "             eSeed "  "%s"    " \n"  // 20
          "             pTask "  "%s"    " \n"  // 21
         
          "     pJobLogicUnit "  "%s"    " \n"  // 22
@@ -1165,7 +1159,6 @@ void Job::vSee(void)
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,m_iOriginatingId           // 19
-         ,aSS[m_eSeed]               // 20
          ,spvTask.sz(m_pTask)        // 21
          ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
          
@@ -1174,18 +1167,6 @@ void Job::vSee(void)
   m_oJobTags.vContentDump();
 
   vTrace(";;\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oJobTags);
-    
-  return szSeed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1231,10 +1212,9 @@ void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("%s %03lld seed %s "
+  vTrace("%s %03lld "
          "i_Session %03lld WasReceived %lld\n"_Stz,
          aCN[eGetClassNo()],
-         aSS[m_eSeed],
          
          m_i_Session,
          (i8)m_bWasReceived

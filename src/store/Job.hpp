@@ -39,8 +39,7 @@ namespace STORE
 
     b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
-  private:
-    eSS         m_eSeed;      // sen word to start execution
+
   public:
 
 
@@ -189,7 +188,6 @@ namespace STORE
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);
-    Stz* szSeed(void);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);
