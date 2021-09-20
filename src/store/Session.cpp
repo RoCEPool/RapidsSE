@@ -104,6 +104,9 @@ Session::Session(void)
   
   m_iCmdNo = 0;
 
+  
+  m_tLastJobId = 0;
+  
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
@@ -432,6 +435,26 @@ Job* Session::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* last job run                                                               */
+/*----------------------------------------------------------------------------*/
+JobId Session::tLastJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  return m_tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last job run                                                           */
+/*----------------------------------------------------------------------------*/
+void Session::vLastJobId(JobId tLastJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_tLastJobId = tLastJobId;
 }
 
 /*----------------------------------------------------------------------------*/

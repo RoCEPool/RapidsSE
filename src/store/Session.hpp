@@ -89,6 +89,7 @@ namespace STORE
       
   private:
 
+   JobId  m_tLastJobId;  // last job which was run
 
     // must be last
     Footer m_xFooter;
@@ -116,6 +117,8 @@ namespace STORE
     void vHasCascade(bool bHasCascade);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
+    JobId tLastJobId(void);
+    void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
     void vReport(void);
     void vSee(void);
