@@ -159,8 +159,11 @@ void Api::vExecuteJob(Session* pSession)
        vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
   }
 
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  JobId tJobId = pJob->tJobId();
+  pSession->vLastJobId(tJobId);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (;;) {
