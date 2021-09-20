@@ -182,7 +182,6 @@ namespace BASE
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
-    bool bSeeded(void);
     void vSetInxPtr(Word* pEntryWordCheck);
     void vSleepUsec(i8 iMicroSeconds);
     eTS  eState(void);

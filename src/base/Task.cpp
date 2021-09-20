@@ -336,8 +336,6 @@ void Task::vVerifyTaskComposition(void)
   else {
     NEVER_REACH;
   }
-  
-  RASSERT(bSeeded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1315,19 +1313,6 @@ void Task::vSeeLogicUnitRegisters(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   m_p_TaskLogicUnit->vDumpRegisters();
-}
-
-/*----------------------------------------------------------------------------*/
-/* is task seeded to run                                                      */
-/*----------------------------------------------------------------------------*/
-bool Task::bSeeded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_aInxPtr)
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/

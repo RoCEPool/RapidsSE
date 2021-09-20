@@ -24,7 +24,6 @@ enum eJA // job actions
   /*    */ JA_JOB_REMOVE_LOCAL,
   /*    */ JA_JOB_REMOVE_ORIGIN,
   /*    */ JA_JOB_REMOVE_PARTG,
-  /*    */ JA_JOB_SEED,
 
   /*    */ JA_ENUMS,
 };
@@ -48,7 +47,6 @@ static Stz* aJA[]
   /*  0 */ "JA_JOB_PHASE"_Stz,
   /*  0 */ "JA_JOB_REMOVE_ORIGIN"_Stz,
   /*  0 */ "JA_JOB_REMOVE_PARTG"_Stz,
-  /*  0 */ "JA_JOB_SEED"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
