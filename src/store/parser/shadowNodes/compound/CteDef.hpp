@@ -18,6 +18,7 @@ namespace Parser
     CteDef();
 
   public:
+    static QueryNode* pCreate(Stz* szAliasName);
     static QueryNode* pCreate(Stz* szAliasName, QueryNode* pColumnDefs);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 

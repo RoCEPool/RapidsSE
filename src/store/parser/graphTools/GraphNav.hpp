@@ -232,8 +232,18 @@ class GraphNav
     // the node that represents the parent of this path, or nullptr if not found.
     static PlanNode* pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode);
 
-    // Walks the plan graph to find the given query node. Saves the path and depth
-    static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth);
+    // Given a path, write the parent path to sParentBuf. Return false if there
+    // isn't a parent.
+    static b1 bParentPath(Stz* szPath, s2K& sParentBuf);
+
+    // Given a buffer containing a path, modify it to give the parent's path
+    static b1 bParentPath(s2K& sParentBuf);
+
+    // Walks the plan graph to find the given query node.
+    // Saves the path and depth. Returns true if found
+    static b1 bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth, b1 bPlanSubtree);
+    static b1 bGetPath(QueryNode* pSearchNode, PlanNode* pStartingNode, s2K& sPathBuf);
+
 
   private:
     // Visitor walk implementation
@@ -252,9 +262,7 @@ class GraphNav
 
     static i8 iNextSeparator(Stz* szPath);
 
-    // Given a path, write the parent path to sParentBuf. Return false if there
-    // isn't a parent.
-    static b1 bParentPath(Stz* szPath, s2K& sParentBuf);
+
   };
 
   GraphNav* _pGraphNav(void* aAddr);

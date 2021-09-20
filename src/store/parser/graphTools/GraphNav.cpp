@@ -1473,28 +1473,48 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Given a path, write the parent path to sParentBuf. Return false if there   */
+/* isn't a parent.                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bParentPath(s2K &sParentBuf)
+{
+  char* pChar = StrLib::acLast(sParentBuf.azChar());
+
+  while (pChar != sParentBuf.azChar()) {
+    if (*pChar == C_CHILD_SEPARATOR || *pChar == C_PROPERTY_SEPARATOR) {
+      *pChar = 0;
+      return true;
+    }
+
+    --pChar;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Walks the plan graph to find the given query node. Saves the path and depth*/
 /*----------------------------------------------------------------------------*/
-void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth)
+b1 GraphNav::bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth, b1 bPlanSubtree)
 {
   UNUSED(pRootNode);
 
-  ASSERT(pPlanNode);
+  ASSERT(pSearchNode);
   ASSERT(pRootNode);
 
   iDepth = -1;
 
-  auto fVisitor = [pPlanNode, &sPathBuf, &iDepth](Parser::PlanNode *pNode, s2K &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+  auto fVisitor = [pSearchNode, &sPathBuf, &iDepth, bPlanSubtree](Parser::PlanNode *pNode, s2K &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
 
     UNUSED(pvArg);
 
-    // Only interested in /__root__/plan subtree
-    if (iWalkDepth == 1 && !sWalkPath.bEqual(const_cast<Stz*>(C_PLAN_PATH))) {
+    // Only interested in /__root__/plan subtree?
+    if (bPlanSubtree && iWalkDepth == 1 && !sWalkPath.bEqual(const_cast<Stz*>(C_PLAN_PATH))) {
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
     // Did we get a match?
-    if (pNode == pPlanNode) {
+    if (pNode == pSearchNode) {
       iDepth = iWalkDepth;
       sPathBuf.vCopy(sWalkPath.szStz());
       return GraphNav::WALK_ABORT;
@@ -1505,12 +1525,37 @@ void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s2K& 
 
   GraphNav::bGlobalWalk(pRootNode, true, true, fVisitor, nullptr);
 
-  if (iDepth != -1) {
-    return;
-  }
+  return (iDepth != -1);
+}
 
-  // We couldn't find the node in the graph
-  NEVER_REACH
+/*----------------------------------------------------------------------------*/
+/* Walks the plan graph to find the given query node. Returns true if found   */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bGetPath(QueryNode* pSearchNode, PlanNode* pStartingNode, s2K& sPathBuf)
+{
+  ASSERT(pSearchNode);
+  ASSERT(pStartingNode);
+
+  b1 bFound = false;
+
+  auto fVisitor =
+      [pSearchNode, &sPathBuf, &bFound](Parser::PlanNode *pNode, s2K &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    UNUSED(pvArg);
+
+    // Did we get a match?
+    if (pNode == pSearchNode) {
+      sPathBuf.vCopy(sWalkPath.szStz());
+      bFound = true;
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pStartingNode, true, true, fVisitor, nullptr);
+
+  return bFound;
 }
 
 /*============================================================================*/

@@ -18,7 +18,7 @@ namespace Parser
     SubqueryRefOp();
 
   public:
-    static QueryNode* pCreate(Text* pSubqueryAlias);
+    static QueryNode* pCreate(Stz* pSubqueryAlias);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -37,6 +37,7 @@ namespace Parser
     static Stz* szAliasName(PlanNode* pNode);
 
     // TODO: add a method to look up and return the QueryNode* of the referenced subquery
+    //       static QueryNode* pSubqueryNode(QueryNode* pNode);
 
   protected:
 

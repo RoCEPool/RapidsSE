@@ -15,6 +15,7 @@
 #include "MainSubquery.hpp"
 #include "TableSubquery.hpp"
 #include "ExprSubquery.hpp"
+#include "StringObject.hpp"
 
 using namespace Parser;
 
@@ -24,6 +25,31 @@ using namespace Parser;
 
 static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subqueryMarker"_Stz;
 
+static Stz* C_DEFNPATH_PROP = "defnPath"_Stz;
+static Stz* C_DEFNPATH_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Protected----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryMarker::pCreate(Stz* szDefn)
+{
+  ASSERT(szDefn);
+
+  // Create a unique name for this object
+  s256 sName;
+  NodeNamer::vGenerateName(szDefn, sName);
+
+  // Create the subqueryMarker
+  QueryNode* pSubqueryNode = new QueryNode(sName, szDefn);
+
+  // add the defnPath property, empty for now
+  Value xDefnPathVal((Stz*) nullptr);
+  QueryNode* pDefnPath = new QueryNode(C_DEFNPATH_PROP, C_DEFNPATH_DEFN, static_cast<Value&&>(xDefnPathVal));
+  pSubqueryNode->vAppendProperty(pDefnPath);
+
+  return pSubqueryNode;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -146,6 +172,39 @@ b1 SubqueryMarker::bIsCorrelated(QueryNode* pNode)
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the path of the definition node of this table subquery. May be null*/
+/*----------------------------------------------------------------------------*/
+Stz* SubqueryMarker::szDefnPath(QueryNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+  ASSERT(pDefnPathNode);
+  ASSERT(StringObject::bIsOfType(pDefnPathNode));
+
+  return pDefnPathNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the path of the node that represents the metadata of this CTE         */
+/*----------------------------------------------------------------------------*/
+void SubqueryMarker::vSetDefnPath(QueryNode *pNode, Stz *szPath)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szPath);
+
+  QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+  ASSERT(pDefnPathNode);
+  ASSERT(StringObject::bIsOfType(pDefnPathNode));
+  ASSERT(pDefnPathNode->xValue().m_bIsNull);
+
+  Value xVal(szPath);
+  pDefnPathNode->vSetValue(static_cast<Value&&>(szPath));
 }
 
 /*============================================================================*/

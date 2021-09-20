@@ -448,6 +448,28 @@ void MetadataNode::vAddCte(QueryNode* pMetadataNode, QueryNode* pCteDef)
   pCtesNode->vAppendChild(pCteDef);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Looks for a particular CteDef node under this metadata path.               */
+/* Returns true if found & sBuf will contain an absolute path.                */
+/*----------------------------------------------------------------------------*/
+b1 MetadataNode::bGetCteDefPath(QueryNode* pMetadataNode, QueryNode* pCteDef, s2K& sBuf)
+{
+  ASSERT(pMetadataNode);
+  ASSERT(bIsOfType(pMetadataNode));
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  s2K sPathBuf;
+  b1 bFound = GraphNav::bGetPath(pCteDef, pMetadataNode, sPathBuf);
+
+  if (bFound) {
+    // Relative to absolute path
+    sBuf.vCatSprint("%s/%s"_Stz, C_ROOT_PATH, sPathBuf.szStz());
+  }
+
+  return bFound;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
