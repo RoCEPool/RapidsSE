@@ -99,7 +99,6 @@ cmdSyntax: cf :: cf <folderNm> ;
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
     
-    <seedReq>   = "cf_req"
     <opEntry> = "cf_op"  <seedReq> = "cf_req"
   }
 ;

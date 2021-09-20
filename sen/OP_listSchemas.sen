@@ -64,7 +64,7 @@ cmdSyntax: lssch :: lssch ;
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listContents
     <params>      = 0
-    <seedReq>     = "lssch_req"
+
     <opEntry> = "lssch_op"  <seedReq> = "lssch_req"
 }
 ;
