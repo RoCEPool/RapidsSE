@@ -54,61 +54,6 @@
   "<localLiteOp>" pTagSet tagSet.hasName if true else false then
 ;
 
-/*----------------------------------------------------------------------------*/
-/* does a seed by the name of Cmd_Suffix exist ?                              */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.doesSeedExist? params| pwCmdTags sSuffix |
-
-  pwCmdTags word.name_trunc locals| sCmdNm |
-
-  sCmdNm sSuffix str.cat locals| sTagNm |
-
-  sTagNm find if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
-/* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.addSeedTag_local params| pwCmdTags sSuffix sProper sTagNm |
-
-  pwCmdTags word.TagSet@ locals| pTagSet |
-  
-  0 locals| sTagValue |
-
-  sSuffix pwCmdTags _cmdTags.doesSeedExist? if
-    pwCmdTags word.name_trunc
-      sSuffix str.cat to sTagValue
-  else
-    sProper
-      sSuffix str.cat to sTagValue
-  then
-
-  //sTagValue  sTagNm "%v = %v" .printf
-    
-  sTagNm sTagValue pTagSet tagSet.insertStr
-;
-
-/*----------------------------------------------------------------------------*/
-/* add <seedNm> = Proper_Suffix to tag set of given cmd tags word             */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.addSeedTag_op params| pwCmdTags sSuffix sProper sTagNm |
-
-  pwCmdTags word.TagSet@ locals| pTagSet |
-  
-  0 locals| sTagValue |
-
-  sSuffix pwCmdTags _cmdTags.doesSeedExist? if
-    pwCmdTags word.name_trunc
-      sSuffix str.cat to sTagValue
-  else
-    sProper
-      sSuffix str.cat to sTagValue
-  then
-
-  //sTagValue  sTagNm "%v = %v" .printf
-    
-  sTagNm sTagValue pTagSet tagSet.insertStr
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
