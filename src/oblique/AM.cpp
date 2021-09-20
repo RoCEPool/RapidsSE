@@ -2708,7 +2708,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 
 }
 
-static TraceLock oTraceLock;
+//static TraceLock oTraceLock;
 
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
@@ -2721,7 +2721,9 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oTraceLock.vGrabWrite();
+    gpAttachMap->pTraceLock()->vGrabWrite();
+  else
+    printf("NOT LOCKING TRACE\n");
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -2731,6 +2733,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   fflush(stdout);
   
   if (gpTraceFile) {
+    gpTraceFile->vSeekEnd();
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
@@ -2738,7 +2741,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    oTraceLock.vDropWrite();
+    gpAttachMap->pTraceLock()->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2752,8 +2755,8 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oTraceLock.vGrabWrite();
-  
+    gpAttachMap->pTraceLock()->vGrabWrite();
+
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
   
@@ -2762,6 +2765,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   fflush(stdout);
   
   if (gpTraceFile) {
+    gpTraceFile->vSeekEnd();
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
@@ -2774,7 +2778,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    oTraceLock.vDropWrite();
+    gpAttachMap->pTraceLock()->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

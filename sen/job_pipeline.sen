@@ -61,7 +61,8 @@
     
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
-    <cmd> "pipeline::origin: %v\n" .printf
+    //<cmd> "pipeline::origin: %v\n" .printf
+    <cmd> .
     //system::bpa
   then
 

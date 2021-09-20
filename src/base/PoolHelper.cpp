@@ -257,15 +257,15 @@ void PoolHelper::vObjectSummary(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  printf("\n");
-  printf("  BufferPool Object Summary:\n");
+  vTrace("\n"_Stz);
+  vTrace("  BufferPool Object Summary:\n"_Stz);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
     
-    printf((char*)"  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,8 +277,8 @@ void PoolHelper::vObjectSummary(void)
   AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
   nObjInHeap = 0;
   
-  printf("\n");
-  printf((char*)"  Transient Tiny Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  vTrace("\n"_Stz);
+  vTrace("  Transient Tiny Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -298,11 +298,11 @@ void PoolHelper::vObjectSummary(void)
     else
       sFlag = ""_Stz;
 
-    printf((char*)"  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
            aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-  printf((char*)"  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -311,8 +311,8 @@ void PoolHelper::vObjectSummary(void)
   AM::pHeaps()->Transient.m_pSmall->vAnalyse(iCountObjects);
   nObjInHeap = 0;
   
-  printf("\n");
-  printf((char*)"  Transient Small Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  vTrace("\n"_Stz);
+  vTrace("  Transient Small Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -332,11 +332,11 @@ void PoolHelper::vObjectSummary(void)
     else
       sFlag = ""_Stz;
 
-    printf((char*)"  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
            aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-  printf((char*)"  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -366,11 +366,11 @@ void PoolHelper::vObjectSummary(void)
     else
       sFlag = ""_Stz;
     
-    printf((char*)"  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
            aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse);
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-  printf((char*)"  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -379,8 +379,8 @@ void PoolHelper::vObjectSummary(void)
   AM::pHeaps()->Transient.m_pLarge->vAnalyse(iCountObjects);
   nObjInHeap = 0;
 
-  printf("\n");
-  printf((char*)"  Transient Large Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  vTrace("\n"_Stz);
+  vTrace("  Transient Large Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -401,11 +401,11 @@ void PoolHelper::vObjectSummary(void)
       sFlag = ""_Stz;
     
 
-    printf((char*)"  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
            aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse);
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-  printf((char*)"  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,16 +509,16 @@ void PoolHelper::vPoolAnalyze(void)
   // increment the epoch
   AM::iNextEpoch();
   
-  printf("\n");
-  printf("****************************************************************\n");
-  printf("* Buffer Pool Analysis                                         *\n");
-  printf("****************************************************************\n");
+  vTrace("\n"_Stz);
+  vTrace("****************************************************************\n"_Stz);
+  vTrace("* Buffer Pool Analysis                                         *\n"_Stz);
+  vTrace("****************************************************************\n"_Stz);
   
   vRegionSummary();
   vObjectSummary();
   //vResourceSummary();
   
-  printf("\n");
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,65 +599,65 @@ void PoolHelper::vRegionSummary()
   s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
   s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
   
-  printf("\n");
-  printf((char*)"  Region %s %p size %lldB epoch %lld\n"_Stz,
+  vTrace("\n"_Stz);
+  vTrace("  Region %s %p size %lldB epoch %lld\n"_Stz,
          AM::szRegionName(),
          gpBufferPool,
          AM::iRegionSize(),
          AM::iEpoch());
   
-  printf("\n");
-  printf((char*)"  BufferPool buffer %6s buffers %lld alloc %lld free %lld \n"_Stz,
+  vTrace("\n"_Stz);
+  vTrace("  BufferPool buffer %6s buffers %lld alloc %lld free %lld \n"_Stz,
          sMagLarge.azChar(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_nAllocCount,
          gpBufferPool->m_nFreeCount
          );
   
-  printf("\n");
-  printf((char*)"   Transient TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("\n"_Stz);
+  vTrace("   Transient TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagTiny.azChar(),
          AM::pHeaps()->Transient.m_pTiny->nBufferCount(),
          AM::pHeaps()->Transient.m_pTiny->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pTiny->nFreeChunks());
   
-  printf((char*)"   Transient SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
          AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pSmall->nFreeChunks());
   
-  printf((char*)"   Transient MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
          AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
          AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pMedium->nFreeChunks());
   
-  printf((char*)"   Transient LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
          AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
   
-//  printf((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//  vTrace((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //         sMagTiny.azChar(),
 //         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
 //         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
 //         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
 //
-//  printf((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//  vTrace((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //         sMagSmall.azChar(),
 //         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
 //         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
 //         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
 //
-//  printf((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//  vTrace((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //         sMagMedium.azChar(),
 //         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
 //         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
 //         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
 //
-//  printf((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//  vTrace((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //         sMagLarge.azChar(),
 //         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
 //         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),

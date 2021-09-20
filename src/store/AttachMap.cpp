@@ -90,6 +90,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pPtnMap         = nullptr;
   m_pTxSet          = new TxSet;
 
+  m_pTraceFile      = nullptr;
   
   Step::vAddStep("\\word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));
@@ -386,6 +387,36 @@ void AttachMap::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get trace file                                                             */
+/*----------------------------------------------------------------------------*/
+File* AttachMap::pTraceFile(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_pTraceFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace file                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceFile(File* pTraceFile)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_pTraceFile = pTraceFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find api which matches given name                                          */
+/*----------------------------------------------------------------------------*/
+TraceLock* AttachMap::pTraceLock(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return & m_oTraceLock;
 }
 
 /*============================================================================*/

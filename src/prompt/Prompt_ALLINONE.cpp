@@ -615,9 +615,10 @@ PromptFun __Prompt_bpa (
 bool PROMPT::bPrompt_bpa(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
   
   PoolHelper::vPoolAnalyze();
+  
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }

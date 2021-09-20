@@ -1,0 +1,391 @@
+trackmemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1  INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9   FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+
+bpa;
+success
+
+load datums "../DATA/Transliterate/date.csv" ;
+failure contains: "invalid rows"
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND TRUE from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND FALSE from datums;
+rows:
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 OR TRUE from datums;
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 OR FALSE from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+ 
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT bol_col2 from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+/*
+//------------------------------------------------------------------------------
+select bol_col2 XOR TRUE from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+
+//------------------------------------------------------------------------------
+select bol_col2 XOR FALSE from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+*/
+//------------------------------------------------------------------------------
+select bol_col2 AND bol_col3 from datums;
+rows:
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND bol_col3 OR bol_col2 from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT(bol_col2 AND bol_col3) from datums;
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT(bol_col2 OR bol_col3) from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT bol_col2 AND NOT bol_col3 from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (NOT bol_col3 OR bol_col3) from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (bol_col3 OR bol_col3) from datums;
+rows:
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 OR bol_col3 OR bol_col2 from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+
+bpa;
+success
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+
+
+bpa;
+success
+
+memoryleaks;
+rows: 0
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
