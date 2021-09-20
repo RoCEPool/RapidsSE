@@ -14,7 +14,6 @@
 #include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
-#include "eJA.h"
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
