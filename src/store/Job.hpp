@@ -189,7 +189,6 @@ namespace STORE
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);
-    eSS  eSeed(void);
     Stz* szSeed(void);
     Session* pSession(void);
     void vShow(void);

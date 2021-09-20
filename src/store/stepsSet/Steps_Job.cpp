@@ -46,7 +46,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.entry!"_Stz,           &Step::vJobEntryStore_other);
   
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
-  vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
@@ -649,21 +648,6 @@ void Step::vJobIdFetch_other(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->iJobId());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.isExecuting -- is the job executing (SEED_EXE)                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIsExecuting(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iIsExecuting = pJob->eSeed() == SS_SEED_EXE ? 1 : 0;
-  m_pDataStack->vPushInt(iIsExecuting);
   
   EXIT();
 }
