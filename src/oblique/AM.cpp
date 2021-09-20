@@ -2691,8 +2691,8 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   
   if (bUseLock)
     gpAttachMap->pTraceLock()->vGrabWrite();
-  else
-    printf("NOT LOCKING TRACE\n");
+  //else
+  //  printf("NOT LOCKING TRACE\n");
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
