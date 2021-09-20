@@ -540,7 +540,28 @@
   ) < internal > = 1 ;
   "
   api::executeCommand
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBREPORT
+  STD_PATH
+  "
+  define table se__jobReport (
+
+    jobNm        VARCHAR NOT NULL ,
+    jobId        INTEGER NOT NULL ,
+    puSet        INTEGER NOT NULL ,
+    tlower       INTEGER ,
+    tupper       INTEGER ,
+    ft           INTEGER ,
+    index        INTEGER ,
+    jf           INTEGER ,
+    groups       INTEGER ,
+    responseMS   INTEGER
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_MEMORYLOG
   STD_PATH
