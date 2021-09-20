@@ -611,16 +611,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
   /*  0 */ vAddConstant("RS_LOCAL_RESPONSE"_Stz,       RS_LOCAL_RESPONSE);
   /*  0 */ vAddConstant("RS_DIS2PC_RESPONSE"_Stz,      RS_DIS2PC_RESPONSE);
-
-  // SS_ : seed strings
-  /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
-  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
-  /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
-  /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
-  /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);
-  /*  5 */ vAddConstant("SS_SEED_CAN"_Stz,    SS_SEED_CAN);
-  /*  6 */ vAddConstant("SS_SEED_BEG"_Stz,    SS_SEED_BEG);
-  /*  7 */ vAddConstant("SS_SEED_KID"_Stz,    SS_SEED_KID);
   
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
