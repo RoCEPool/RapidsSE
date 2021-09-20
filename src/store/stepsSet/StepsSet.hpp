@@ -726,9 +726,6 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
-  void vJobSeedDecode(void);
-  void vJobSeedFetch(void);
-  void vJobSeedStore(void);
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);

@@ -62,9 +62,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
-  vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
-  vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
@@ -1002,63 +999,6 @@ void Step::vJobRemoveRetired(void)
   EXIT();
 }
   
-/*----------------------------------------------------------------------------*/
-/* job.seedDecode -- decode seed for received job                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedDecode(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  eSS eSeed = SS_SEED_RCV;
-  
-  if (JK_GENERIC == pJob->eJobKind()) {
-    TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pJob->szJobNm());
-    
-    s32 sSeed = pCmdTagSet->szValue(C_TAG_SEEDRUN);
-    
-    eSeed = SS_SEED_RUN;
-    
-    vDebugPoint();
-  }
-  
-  
-  m_pDataStack->vPushInt(eSeed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.seed@ -- fetch job seed                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->eSeed());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.seed! -- seed the job                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Seed = m_pDataStack->iPopInt(__func__);
-    
-  pJob->vSeed((eSS)i_Seed);
-  
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* job.session@ -- fetch job session                                          */
 /*----------------------------------------------------------------------------*/
