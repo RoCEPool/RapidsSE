@@ -33,6 +33,32 @@ static Stz* C_COLUMNS_DEFN  = "/__root__/definitions/object/list/columnDefs"_Stz
 /*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
+/* Helper function to create CteDef nodes.                                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* CteDef::pCreate(Stz* szAliasName)
+{
+  _static_
+
+  ASSERT(szAliasName);
+  ASSERT(szAliasName->nLength() > 0);
+
+  // Create the CteDef object
+  QueryNode* pCteDef = new QueryNode(szAliasName, C_CTEDEF_DEFN);
+
+  // Create the aliasName property
+  Value xAliasNameVal(szAliasName);
+  QueryNode* pAliasName = new QueryNode(C_ALIASNAME_PROP, C_ALIASNAME_DEFN, static_cast<Value&&>(xAliasNameVal));
+  pCteDef->vAppendProperty(pAliasName);
+
+  // Create the columns property
+  QueryNode* pColumnDefs = ColumnDefs::pCreate();
+  pColumnDefs->vSetName(C_COLUMNS_PROP);
+  pCteDef->vAppendProperty(pColumnDefs);
+
+  return pCteDef;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Helper function to create CteDef nodes.                                  */

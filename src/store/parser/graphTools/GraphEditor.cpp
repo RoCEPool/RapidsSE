@@ -120,7 +120,7 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChil
   }
 
   // clean up
-  ASSERT(pOldChildList->nItems() == 0);
+  RASSERT(pOldChildList->nItems() == 0);
   delete pOldChildList;
 
   // Set the new list as the children list in the parent object
@@ -264,6 +264,29 @@ void GraphEditor::vConnectChains(QueryNode* pFirst, QueryNode* pSecond)
 
   ASSERT(pNode->nChildren() == 0);
   pNode->vAppendChild(pSecond);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Search for pExistingNode in the graph, starting at pStartingNode, and      */
+/* replace it with pNewNode. pExistingNode must exist in the graph.           */
+/*----------------------------------------------------------------------------*/
+void GraphEditor::vReplaceNode(PlanNode* pStartingNode, QueryNode* pExistingNode, QueryNode* pNewNode)
+{
+  ASSERT(pStartingNode);
+  ASSERT(pExistingNode);
+  ASSERT(pNewNode);
+
+  // Get the path of pStartingNode
+  s2K sPathBuf;
+  b1 bFound = GraphNav::bGetPath(pExistingNode, pStartingNode, sPathBuf);
+  RASSERT(bFound);
+
+  // Get the parent object of pStartingNode
+  QueryNode* pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPathBuf.szStz(), pStartingNode));
+  ASSERT(pParent);
+
+  vReplaceChild(pParent, pExistingNode, pNewNode);
 }
 
 /*============================================================================*/

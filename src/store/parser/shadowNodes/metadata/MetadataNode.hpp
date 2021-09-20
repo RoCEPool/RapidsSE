@@ -55,6 +55,9 @@ namespace Parser
     // Adds a top-level CTE definition to the metadata
     static void vAddCte(QueryNode* pMetadataNode, QueryNode* pCteDef);
 
+    // Looks for a particular CteDef node under this metadata path.
+    // Writes the path to sBuf and returns true if found, otherwise false.
+    static b1 bGetCteDefPath(QueryNode* pMetadataNode, QueryNode* pCteDef, s2K& sBuf);
   };
 
 }

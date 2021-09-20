@@ -30,12 +30,8 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 /*----------------------------------------------------------------------------*/
 QueryNode* MainSubquery::pCreate()
 {
-  // Create a unique name for this object
-  s256 sName;
-  NodeNamer::vGenerateName(C_DEFN, sName);
-
   // Create the object
-  QueryNode* pSubquery = new QueryNode(sName, C_DEFN);
+  QueryNode* pSubquery = SubqueryMarker::pCreate(C_DEFN);
 
   // Create and add any properties
 

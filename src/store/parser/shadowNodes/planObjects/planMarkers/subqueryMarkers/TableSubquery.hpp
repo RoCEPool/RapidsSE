@@ -39,13 +39,6 @@ namespace Parser
 
     // Returns the internal node that contains the list of column names
     static QueryNode* pColumnNames(QueryNode* pNode);
-
-    // Returns the path of the definition node of this table subquery (a CteDef object).
-    // Path may be null early in the plan.
-    static Stz* szDefnPath(QueryNode* pNode);
-
-    // Sets the path of the node that represents the metadata of this CTE.
-    static void vSetDefnPath(QueryNode* pNode, Stz* szPath);
   };
 
 }

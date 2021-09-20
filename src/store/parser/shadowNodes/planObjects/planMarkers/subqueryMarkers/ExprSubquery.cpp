@@ -32,12 +32,8 @@ static Stz* C_CORRELATEDCOLUMNS_DEFN = "/__root__/definitions/object/list/column
 /*----------------------------------------------------------------------------*/
 QueryNode* ExprSubquery::pCreate()
 {
-  // Create a unique name for this object
-  s256 sName;
-  NodeNamer::vGenerateName(C_DEFN, sName);
-
   // Create the object
-  QueryNode* pSubqueryNode = new QueryNode(sName, C_DEFN);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
 
   // Create and add any properties
 

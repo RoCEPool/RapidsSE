@@ -35,7 +35,7 @@ static Stz* C_SUBQUERY_ALIAS_DEFN = "/__root__/definitions/object/valueObject/st
 /*----------------------------------------------------------------------------*/
 /* Helper function to create ProjectOp nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryRefOp::pCreate(Text* pSubqueryAlias)
+QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
 {
   ASSERT(pSubqueryAlias);
 

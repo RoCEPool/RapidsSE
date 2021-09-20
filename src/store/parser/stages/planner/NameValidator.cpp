@@ -7,11 +7,13 @@
 #include "NameValidator.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "QueryNodeList.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "GraphEditor.hpp"
 #include "MetadataNode.hpp"
 #include "ShadowRoot.hpp"
+#include "ShadowPlan.hpp"
 #include "SqlException.hpp"
 
 #include "SeApi.hpp"
@@ -40,6 +42,13 @@
 #include "StringList.hpp"
 #include "EqExpr.hpp"
 #include "AndExpr.hpp"
+#include "MainSubquery.hpp"
+#include "TableSubquery.hpp"
+#include "ExprSubquery.hpp"
+#include "SubqueryRefOp.hpp"
+#include "CteDef.hpp"
+#include "CteDefs.hpp"
+#include "TableScanOp.hpp"
 
 
 using namespace Parser;
@@ -73,86 +82,40 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
-  // The plan node should have one child which is a SubqueryMarker node
+  // The plan node should have one or more children that are SubqueryMarker nodes
   ASSERT(pPlanNode->nChildren() > 0);
 
-  // We want to iterate over each logical subgraph, bounded by StatementMarkers,
-  // and run the validation checks on each of them.
-  //
-  // First we will validate all of the tables. Then we can validate all of the columns.
-  // This is because validating columns will do a global walk downwards (because operators
-  // like UNIONs hide tableRefs below them in a bounded walk). So we need all tables
-  // to be qualified first.
+  // TODO: Approach
+  //       * Walk the children graph (not properties) looking for SubqueryMarkers.
+  //       * Ignore any ExprSubqueries (shouldn't hit them anyway).
+  //       * On entry of a TableSubquery, validate its name against any sibling TableSubqueries
+  //         and create a metadata entry.
+  //       * On entry of a MainSubquery, fully validate the tables and columns.
+  //       * On exit of a TableSubquery, populate the column definitions of its metadata.
+  //       * Rewalk all nodes of the graph (properties included) looking for ExprSubqueries.
+  //       * An ExprSubquery contains Table/MainSubquery children. So repeat all of the above
+  //         for each ExprSubquery encountered.
 
-  auto fTableVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-    UNUSED(sPath);
-    UNUSED(iDepth);
-    UNUSED(pvArg);
-
-    if (!StatementMarker::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;
-    }
-
-    QueryNode* pStatementMarker = _pQueryNode(pNode);
-
-    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
-    try {
-      // First resolve all of the tables in the plan. We will need them to
-      // then resolve columns and indexes.
-      vValidateTables(pRootNode, pStatementMarker, pMetadataNode, pSeApi);
-
-    } catch (SqlException& e) {
-      delete pSeApi;
-      throw;
-    }
-
-    return GraphNav::WALK_CONTINUE;
-  };
+  // TODO: Problems:
+  //       * A TableSubquery could appear underneath an exprSubquery
+  //       * Could there be a correlated column inside a WITH clause???
+  //       * Where does a metadata entry go for a TableSubquery underneath an ExprSubquery?
 
 
-  auto fColumnVisitor = [pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  try {
+    vValidateTableAndMainSubqueries(pPlanNode, pRootNode, pMetadataNode, pSeApi);
 
-    UNUSED(sPath);
-    UNUSED(iDepth);
-    UNUSED(pvArg);
 
-    if (!StatementMarker::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;
-    }
+    // Now we want to visit expression subqueries, validate them and
+    // validate any child subqueries that they might contain.
+    vValidateExprSubqueries(pPlanNode, pRootNode, pMetadataNode, pSeApi);
 
-    QueryNode* pStatementMarker = _pQueryNode(pNode);
+    delete pSeApi;
 
-    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
-    try {
-      // Convert any column wildcards to column references
-      vResolveColumnWildcards(pRootNode, pStatementMarker, pMetadataNode);
-
-      // Now resolve the columns against the known tables in the plan.
-      vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
-
-      // Validate the column names of any join USING clauses
-      vValidateJoinUsingColumns(pRootNode, pStatementMarker);
-
-    } catch (SqlException& e) {
-      delete pSeApi;
-      throw;
-    }
-
-    return GraphNav::WALK_CONTINUE;
-  };
-
-  // Walk the entire plan graph to look for StatementMarkers.
-  // Validate the tables first, then the columns separately.
-  // We do a bottom up walk for the column validation so that we can qualify
-  // any columnRefs lower in the plan before we hit any aliases higher up that
-  // then copy those expressions.
-  GraphNav::bGlobalWalk(pPlanNode, false, true, fTableVisitor, pRootNode);
-  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fColumnVisitor, pRootNode);
-
-  delete pSeApi;
+  } catch (SqlException& e) {
+    delete pSeApi;
+    throw;
+  }
 
 #ifdef WITH_ASSERT_MACRO
   vAssertNamesResolved(pRootNode, pPlanNode);
@@ -160,16 +123,330 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Validates the table subquery initially. We can't complete the validation   */
+/* until the child MainSubquery underneath this is fully validated.           */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
+                                                    QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+{
+  // The callback lambda for qualifying table and main subqueries
+  auto fMainSubqueryVisitor = [pRootNode, pMetadataNode, pSeApi]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!SubqueryMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pSubquery = _pQueryNode(pNode);
+
+    // We should only hit table subqueries and main subqueries, and we should
+    // hit table subqueries before we hit main subqueries. We process table
+    // subqueries in two steps.
+
+    if (TableSubquery::bIsOfType(pSubquery)) {
+      switch (eWalkEvent) {
+        case GraphNav::EVENT_ENTER:
+          vValidateTableSubqueryEntry(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+          break;
+
+        case GraphNav::EVENT_EXIT:
+          vValidateTableSubqueryExit(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+          break;
+
+        default:
+          NEVER_REACH
+      }
+
+    } else if (MainSubquery::bIsOfType(pSubquery) && eWalkEvent == GraphNav::EVENT_ENTER) {
+      // We ignore exit event for main subqueries as we will fully process the main
+      // subquery in one go.
+      vValidateMainSubquery(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+
+    } else if (ExprSubquery::bIsOfType(pSubquery)) {
+      // We should never reach this point because we are not walking properties of nodes.
+      NEVER_REACH
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // We only want to walk children and not properties at this point as we're not
+  // ready to visit exprSubqueries yet.
+  GraphNav::bGlobalWalk(pStartingNode, false, true,
+                        fMainSubqueryVisitor, fMainSubqueryVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Walk the graph and validate expr subqueries and any subqueries they contain*/
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
+                                            QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+{
+  // Lambda for visiting expression subqueries.
+  auto fExprSubqueryVisitor = [pRootNode, pMetadataNode, pSeApi]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!ExprSubquery::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Validate this expression subquery and any subqueries it contains
+    QueryNode *pExprSubquery = _pQueryNode(pNode);
+    vValidateExprSubquery(pExprSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pStartingNode, true, true, fExprSubqueryVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validates the table subquery initially. We can't complete the validation   */
+/* until the child MainSubquery underneath this is fully validated.           */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateTableSubqueryEntry(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                                PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                                STORE::SeApi* pSeApi)
+{
+  // TODO: When visiting a TableSubquery we need to:
+  //       * Check if it is recursive or not. Only supporting non-recursive table subqueries.
+  //       * Check that it is uniquely named amongst its siblings.
+  //       * Create a metadata entry for this table subquery at the appropriate level.
+  //       * Update the cteDefn property of this node.
+  //       * AFTER completely validating the MainSubquery that is a child of the current tableSubquery:
+  //         - Get projected column information from the child MainSubquery.
+  //             (need all tables/columns resolved to do this)
+  //         - If the table subquery doesn't have a column name list then generate the column definitions
+  //           for the tableSubquery's metadata. Make up the column names.
+  //         - If the table subquery has a column name list then:
+  //             -- ensure that each column name is unique
+  //             -- augment these column names with the column definitions from the projected column list.
+  //             -- Ensure that the num of column names is not greater than number of projected columns.
+  //             -- Make up any missing column names and ensure they are unique.
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Completes the validation of the table subquery using main subquery col info*/
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateTableSubqueryExit(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                               PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                               STORE::SeApi* pSeApi)
+{
+  // TODO: When visiting a TableSubquery we need to:
+  //       * Check if it is recursive or not. Only supporting non-recursive table subqueries.
+  //       * Check that it is uniquely named amongst its siblings.
+  //       * Create a metadata entry for this table subquery at the appropriate level.
+  //       * AFTER completely validating the MainSubquery that is a child of the current tableSubquery:
+  //         - Get projected column information from the child MainSubquery.
+  //             (need all tables/columns resolved to do this)
+  //         - If the table subquery doesn't have a column name list then generate the column definitions
+  //           for the tableSubquery's metadata. Make up the column names.
+  //         - If the table subquery has a column name list then:
+  //             -- ensure that each column name is unique
+  //             -- augment these column names with the column definitions from the projected column list.
+  //             -- Ensure that the num of column names is not greater than number of projected columns.
+  //             -- Make up any missing column names and ensure they are unique.
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validates the main subquery                                                */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                          STORE::SeApi* pSeApi)
+{
+  // TODO: When visiting a MainSubquery we need to:
+
+  // Get a list of table subquery aliases (or nodes) that we could resolve to.
+  QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableSubqueries(pSubqueryNode, sSubqueryPath, pRootNode);
+
+  // TODO: * Try to resolve any unqualified tables against these aliases first.
+
+  // TODO: * If we do resolve against a table subquery then replace the TableScanOp
+  // TODO:   with a reference to the table subquery. Then skip the rest of the table validation.
+
+  // TODO: * If we don't resolve against a table subquery then try to resolve against real tables.
+  // TODO: * If we don't resolve against real tables are there any out of scope table subqueries
+  // TODO:   that match? We might be able to offer a more useful error message then "no such table".
+
+  // First we will validate all of the tables and either fully qualify them or turn
+  // them into references to CTEs.
+
+  // Finally we can validate and qualify all of the columns. We do this last so that we
+  // can correlate an unqualified column with a (now) qualified table definition. We can
+  // also detect ambiguous column names too. But we need all tables and CTEs to be qualified first.
+
+// The callback lambda for qualifying tables
+  auto fTableVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi, pResolvableSubqueries]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (SubqueryMarker::bIsOfType(pNode) && pNode != pSubqueryNode) {
+      // We're only interested in this subquery
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
+
+    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
+
+    // First resolve all of the tables in the plan. We will need them to
+    // then resolve columns and indexes.
+    vValidateTables(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode, pSeApi, pResolvableSubqueries);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // The callback lambda for qualifying columns
+  auto fColumnVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (eEvent == GraphNav::EVENT_ENTER && SubqueryMarker::bIsOfType(pNode) && pNode != pSubqueryNode) {
+      // We're only interested in this subquery
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (eEvent != GraphNav::EVENT_EXIT || !StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
+
+    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
+    // Convert any column wildcards to column references
+    vResolveColumnWildcards(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode);
+
+    // Now resolve the columns against the known tables in the plan.
+    vValidateColumns(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode);
+
+    // Validate the column names of any join USING clauses
+    vValidateJoinUsingColumns(pRootNode, pStatementMarker);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+
+  // Validate the CTEs first, then the tables, then the columns separately.
+  // We do a bottom up walk for the column validation so that we can qualify
+  // any columnRefs lower in the plan before we hit any aliases higher up that
+  // then copy those expressions.
+  try {
+    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
+    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fColumnVisitor, fColumnVisitor, pRootNode);
+
+  } catch (SqlException& e) {
+    if (pResolvableSubqueries) {
+      pResolvableSubqueries->vRemoveAll();
+      delete pResolvableSubqueries;
+    }
+
+    throw;
+  }
+
+  if (pResolvableSubqueries) {
+    pResolvableSubqueries->vRemoveAll();
+    delete pResolvableSubqueries;
+  }
+
+
+  // TODO: Factor this out into another function: vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
+  // Create a CteDef for the main subquery and populate it with information.
+  // The alias name is not important so let's just use the current node name
+  // with a couple of underscores prepended to it
+  s256 sBuf;
+  sBuf.vCatSprint("__%s"_Stz, pSubqueryNode->szName());
+  QueryNode* pCteDef = CteDef::pCreate(sBuf.szStz());
+  // TODO: Populate pCteDef with column information
+
+  // Get the node that represents the enclosing subquery's definition
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
+
+  // Add this CteDef to the metadata and get its full path string
+  if (pEnclosingSubqueryDefn) {
+    pEnclosingSubqueryDefn->vAppendChild(pCteDef);
+
+  } else {
+    MetadataNode::vAddCte(pMetadataNode, pCteDef);
+  }
+
+  s2K sCteDefPath;
+  MetadataNode::bGetCteDefPath(pMetadataNode, pCteDef, sCteDefPath);
+  ASSERT(sCteDefPath.nLength() > 0);
+
+  // Update the defnPath property of this subquery node.
+  SubqueryMarker::vSetDefnPath(pSubqueryNode, sCteDefPath.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validates an expression subquery                                           */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                          STORE::SeApi* pSeApi)
+{
+  // TODO: When visiting an ExprSubquery we need to:
+  // TODO: * Ensure all outer subqueries are fully validated, including column names.
+  // TODO:   (this is important for correlated columns)
+
+  // TODO: * Create a CteDef for this node and insert it into the metadata.
+  // TODO: * Populate the cteDefn property of this node and link the to above CteDef.
+
+  // TODO: * Process child table/main subqueries to:
+  // TODO:    - Validate/qualify table names
+  // TODO:    - Validate/qualify column names
+  vValidateTableAndMainSubqueries(pSubqueryNode, pRootNode, pMetadataNode, pSeApi);
+
+  // TODO: * Populate the remaining CteDef fields (can copy column info from the CteDef of the MainSubquery child).
+  // TODO: * Create a list of any correlated column names and populate this in the current exprSubquery node.
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Validate and qualify all of the tableRefs in the graph                     */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
+                                    QueryNode* pEnclosingSubqueryNode,
+                                    QueryNode* pMetadataNode, STORE::SeApi* pSeApi,
+                                    QueryNodeList* pResolvableSubqueries)
 {
   ASSERT(pRootNode);
+  ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
+  ASSERT(!pResolvableSubqueries || pResolvableSubqueries->nItems() > 0);
+
+  // A list of nodes to be replaced and their replacements. Can only do this after
+  // the walk has finished. The node to be replaced comes first, then the node
+  // that is replacing it comes second.
+  QueryNodeList* pOpReplacementList = nullptr;
 
   // Walk the graph looking for TableRefs
-  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, &pSeApi, pResolvableSubqueries, pStartNode, &pOpReplacementList]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -197,6 +474,48 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     }
 
     // Table is not in the plan's metadata.
+
+    // First we look up the table in the resolvable subqueries list.
+    // It must not have any qualifications.
+    if (szTableName && !szSchemaName && !szCatalogName && pResolvableSubqueries) {
+      QueryNodeIter* pIter = pResolvableSubqueries->pNewIter();
+
+      while (pIter->bHasNext()) {
+        QueryNode* pSubquery = pIter->pNext();
+        ASSERT(TableSubquery::bIsOfType(pSubquery));
+
+        Stz* szAlias = TableSubquery::szTableAlias(pSubquery);
+        if (!szAlias->bSame(szTableName)) {
+          continue;
+        }
+
+        // We've got a match on the table subquery.
+        // TODO: We now need to replace the operator that contains this TableRef
+        // with a SubqueryRefOp. Need to be careful doing this inside of a tree walk.
+
+        // Get the parent operator of the TableRef
+        PlanNode* pParent = GraphNav::pGetParentOfPath(sPath, pStartNode);
+        ASSERT(pParent);
+        ASSERT(TableScanOp::bIsOfType(pParent));
+
+        // Create the new SubqueryRefOp
+        QueryNode* pSubqueryRefOp = SubqueryRefOp::pCreate(szAlias);
+
+        // Add to the operator replacement list
+        if (!pOpReplacementList) {
+          pOpReplacementList = new QueryNodeList();
+        }
+
+        pOpReplacementList->vAppend(_pQueryNode(pParent));
+        pOpReplacementList->vAppend(pSubqueryRefOp);
+
+        delete pIter;
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      delete pIter;
+    }
+
     // Look up table in SE API
     STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
@@ -295,18 +614,49 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     return GraphNav::WALK_CONTINUE;   // Keep walking
   };
 
-  // Walk the /plan node, it's properties and its children
-  GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
+  // Walk the StatementMarker-bounded section, it's properties and its children
+  try {
+    GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
+
+  } catch (SqlException& e) {
+    if (pOpReplacementList) {
+      while (pOpReplacementList->pHead() != nullptr) {
+        QueryNode* pOp;
+        pOp = pOpReplacementList->pPop(); // ignore this one, it's still in the graph
+        pOp = pOpReplacementList->pPop(); // delete the replacement
+
+        delete pOp;
+      }
+
+      delete pOpReplacementList;
+    }
+
+    throw;
+  }
+
+  // Process any node replacements for table subqueries.
+  if (pOpReplacementList) {
+    while (pOpReplacementList->pHead() != nullptr) {
+      QueryNode* pOldOp = pOpReplacementList->pPop();
+      QueryNode* pNewOp = pOpReplacementList->pPop();
+
+      GraphEditor::vReplaceNode(pStartNode, pOldOp, pNewOp);
+    }
+
+    delete pOpReplacementList;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* Convert any column wildcards into column references                        */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode)
+void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pStartNode,
+                                            QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode)
 {
   UNUSED(pMetadataNode);
 
   ASSERT(pRootNode);
+  ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
 
@@ -473,9 +823,11 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
 /*----------------------------------------------------------------------------*/
 /* Validate and qualify all of the columnRefs using the known tables          */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode)
+void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
+                                     QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode)
 {
   ASSERT(pRootNode);
+  ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
 
@@ -1019,6 +1371,102 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
   delete pProjColIter;
   return pResolvedExpr;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* Given a subquery node&path, return a list of subqueries that are resolvable*/
+/* The returned list contains pointers to SubqueryMarker nodes.               */
+/* The returned list must be freed, but not its contents. List may be null.   */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* NameValidator::pResolvableSubqueries(QueryNode* pSubqueryNode, s2K& sSubqueryPath, PlanNode* pRootNode)
+{
+  ASSERT(pSubqueryNode);
+  ASSERT(SubqueryMarker::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+
+  // The resolvable list of subqueries (for a non-recursive subquery) is found by
+  // looking at the sibling subqueries that occur before the current subquery.
+  // So order is important.
+  // We look at siblings by getting the parent and then walking the children.
+
+  // Get the parent node of the subquery
+  PlanNode* pParentNode = GraphNav::pGetParentOfPath(sSubqueryPath.szStz(), ShadowRoot::pPlanRoot(pRootNode));
+
+  if (!pParentNode) {
+    return nullptr;
+  }
+
+  QueryNodeList* pNodeList = nullptr;
+
+  PlanNodeIter* pChildIter = pParentNode->pNewChildrenIter();
+  while (pChildIter->bHasNext()) {
+    PlanNode* pChild = pChildIter->pNext();
+
+    if (pChild == pSubqueryNode) {
+      // Got the current subquery. Not interested in anything after this.
+      break;
+    }
+
+    if (!TableSubquery::bIsOfType(pChild)) {
+      // This should probably not occur.
+      ASSERT(0);
+      continue;
+    }
+
+    if (!pNodeList) {
+      pNodeList = new QueryNodeList();
+    }
+
+    pNodeList->vAppend(_pQueryNode(pChild));
+  }
+
+  delete pChildIter;
+  return pNodeList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Given a root node and a path to a subquery marker, try to find the parent  */
+/* subquery marker and return that node, if one exists.                       */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode)
+{
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
+  ASSERT(sSubqueryPath.nLength() > 0);
+
+  // Walk up the parent tree
+  s2K sParentPath;
+  sParentPath.vCopy(sSubqueryPath.szStz());
+
+  while (GraphNav::bParentPath(sParentPath)) {
+    // Get the node for this path
+    PlanNode* pNode = GraphNav::pFind(sParentPath.szStz(), pPlanRoot);
+    ASSERT(pNode);
+
+    if (!SubqueryMarker::bIsOfType(pNode)) {
+      continue;
+    }
+
+    // Extract the path of this enclosing subquery's definition (if it has one)
+    // and lookup the actual node at this path.
+    QueryNode* pEnclosingSubquery = _pQueryNode(pNode);
+
+    Stz* szDefnPath = SubqueryMarker::szDefnPath(pEnclosingSubquery);
+    if (!szDefnPath) {
+      return nullptr;
+    }
+
+    QueryNode* pSubqueryDefnNode = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+    ASSERT(pSubqueryDefnNode);
+    ASSERT(CteDef::bIsOfType(pSubqueryDefnNode));
+
+    return pSubqueryDefnNode;
+  }
+
+  // Not found
+  return nullptr;
+}
+
 
 /*============================================================================*/
 
