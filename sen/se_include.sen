@@ -57,7 +57,6 @@ assert::stack_0
 
         "job_pipeline.sen"        include
         "job_pipelineLocal.sen"   include
-        "job_PipelineSeeds.sen"   include
 
 "se_boot 4" .verbose
 
