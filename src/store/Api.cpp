@@ -131,11 +131,7 @@ void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
-<<<<<<< HEAD
   //AM::pHeaps()->vSetTraceFree(CN_PLANNODEBUILDERLIST);
-=======
-  AM::pHeaps()->vSetTraceFree(CN_PLANNODEBUILDERLIST);
->>>>>>> seedless
 
   pSession->m_pOutput->vAssertEmptyQueue();
 

@@ -11231,7 +11231,7 @@ void Task::vAddMunged(Task* )
     "  if\n"
     "    //<cmd> \"pipeline::origin: %v\\n\" .printf\n"
     "    <cmd> .\n"
-    "    jobs::seeRlist\n"
+    "    //jobs::seeRlist\n"
     "\n"
     "    //system::bpa\n"
     "  then\n"
