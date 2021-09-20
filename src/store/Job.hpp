@@ -191,7 +191,6 @@ namespace STORE
     void vSee(void);
     eSS  eSeed(void);
     Stz* szSeed(void);
-    void vSeed(eSS eSeed);
     Session* pSession(void);
     void vShow(void);
     Op*  pSingularOp(void);

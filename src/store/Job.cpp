@@ -1199,16 +1199,6 @@ Stz* Job::szSeed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vSeed(eSS eSeed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eSeed = eSeed;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pSession                                                               */
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
@@ -1228,8 +1218,6 @@ void Job::vSetFromCascade(Stz* szCascade)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_oJobTags.vReplace(C_TAG_CMD,szCascade);
-
-  vSeed(SS_SEED_REQ);
 
   //m_oJobTags.vDumpSet(true);
 }

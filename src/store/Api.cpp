@@ -361,7 +361,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
                    );
-  pPrepareJob->vSeed(SS_SEED_REQ);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
