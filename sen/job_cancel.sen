@@ -75,6 +75,7 @@
 
   // execute the cancel seed of the job on this participating node
   JM_SEED_CAN JobRef[] job.seed!
+  "pipeline::cancel" JobRef[] job.entry!
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
   

@@ -15700,6 +15700,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // execute the cancel seed of the job on this participating node\n"
     "  JM_SEED_CAN JobRef[] job.seed!\n"
+    "  \"pipeline::cancel\" JobRef[] job.entry!\n"
     "  JobRef[] job.scheduleNextPhase\n"
     "  JobRef[].returnReference\n"
     "  \n"

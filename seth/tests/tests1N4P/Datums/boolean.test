@@ -30,7 +30,7 @@ success
 // check existence of index
 lsidx bolTbl;
 rows:
-dx1', false, false)
+  ('bol_idx1', false, false)
   ('bol_idx2', false, false)
 
 // check columns of index
