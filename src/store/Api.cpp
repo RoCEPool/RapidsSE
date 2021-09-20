@@ -1128,9 +1128,7 @@ void Api::vSpinTillAllJobsCompleted(void)
 void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
-  
-  //ASSERT(SS_ENUMS != pJob->eSeed());
-  
+    
   //Stz* szSeed = pJob->szSeed();
   Stz* szSeed = "job::job"_Stz;
 
