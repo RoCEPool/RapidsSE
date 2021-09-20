@@ -46,6 +46,7 @@
 #include "CmdLineArgs.hpp"
 #include "Locator.hpp"
 #include "LogicUnit.hpp"
+#include "SP_Job.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -1853,6 +1854,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_INDEXENTRIES);
   gxPromptCatalog.vFuns(PF_JOB);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
+  gxPromptCatalog.vFuns(PF_LASTJOB);
   gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
@@ -2313,6 +2315,42 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   
   pJob->vReport();
 
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_lastJob.cpp -- last job id                                          */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_lastJob (
+  PF_LASTJOB,           // prompt function
+  "Prompt_lastJob"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "lastJob"_Stz,        // the prompt command
+  nullptr,              // the second word
+  bPrompt_lastJob,      // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "lastJob"_Stz,        // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Session* pSession = pPrompt->pSession();
+
+  JobId tLastJobId = pSession->tLastJobId();
+  
+  vTrace("Last Job Id : %llu\n"_Stz
+         ,tLastJobId.uJobNo()
+         );
+  
   return true;
 }
 
