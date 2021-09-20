@@ -75,7 +75,6 @@
   repeat
 
   // execute the end seed of the job on this participating node
-  JM_SEED_END JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
   
