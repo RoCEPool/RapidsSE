@@ -34,7 +34,6 @@
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
-#include "eSS.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
@@ -3515,7 +3514,6 @@ static Stz* aEG[]
   "EG_SI"_Stz,
   "EG_SK"_Stz,
   "EG_SL"_Stz,
-  "EG_SS"_Stz,
   "EG_ST"_Stz,
 
   "EG_TA"_Stz,
@@ -3644,7 +3642,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_SI: return aSI[i_Enum];
     case EG_SK: return aSK[i_Enum];
     case EG_SL: return aSL[i_Enum];
-    case EG_SS: return aSS[i_Enum];
     case EG_ST: return aST[i_Enum];
 
     case EG_TA: return aTA[i_Enum];

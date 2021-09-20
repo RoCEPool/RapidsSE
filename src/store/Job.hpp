@@ -8,7 +8,6 @@
 #include "eJS.h"
 #include "eJP.h"
 #include "eRS.h"
-#include "eSS.h"
 
 #include "LifeGuard_t.hpp"
 
