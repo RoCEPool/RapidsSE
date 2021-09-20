@@ -445,19 +445,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  //Stz* szSeed = pPrepareJob->szSeed();
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
   pPrepareJob->vEntry(szEntry);
-
-  Stz* szSeed = "job::job"_Stz;
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-
-  if (! pSeedWord) {
- 
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
   
   return EC_NONE;
 }
@@ -1129,8 +1119,7 @@ void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
     
-  //Stz* szSeed = pJob->szSeed();
-  Stz* szSeed = "job::job"_Stz;
+  Stz* szEntry = "job::job"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1138,7 +1127,7 @@ void Api::vCreateTaskForJob(Job* pJob)
 
   pJob->vJobTask(pTask);
     
-  vSetTaskInxPtr(pTask,szSeed);
+  vSetTaskInxPtr(pTask,szEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
