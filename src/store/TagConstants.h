@@ -70,14 +70,6 @@ static Stz* C_TAG_LD_MAX_ERRORS           = "<max_errors>"_Stz;
 static Stz* C_TAG_LD_RECORD_TERMINATOR    = "<record_terminator>"_Stz;
 static Stz* C_TAG_LD_RECORD_ENDS          = "<record_ends>"_Stz;
 
-// job info tags
-static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;
-static Stz* C_TAG_SEEDEND  = "<seedEnd>"_Stz;
-static Stz* C_TAG_SEEDEXE  = "<seedExe>"_Stz;
-static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
-static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
-static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
-
 // ASM Tags
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
 static Stz* C_TAG_SUBQUERY_NO = "<subQueryNo>"_Stz;

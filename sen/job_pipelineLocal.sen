@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* terminate this pipeline                                                    */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal::termination ( -- )
+: pipelineLocal::termination
 
   DdlLock[].testDrop
 
@@ -21,9 +21,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Pipeline request on origin                                     */
+/* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal::entry ( -- )
+: pipelineLocal::local
 
   job::assertCorrectness
 
@@ -144,7 +144,7 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     <jobKind>  = JK_LOCAL
     //<ddlLock>  = DL_GRAB_READ
         
-    <entryPoint> = "pipelineLocal::entry"
+    <entryPoint> = "pipelineLocal::local"
 
   }
 ;

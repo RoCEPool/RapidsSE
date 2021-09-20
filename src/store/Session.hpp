@@ -30,21 +30,8 @@ namespace STORE
     // -- refers to
     Job* m_pSsnJob;  // job currently being executing
 
-    // -- state
-    // n/a
-
-    // -- tags, seeding and tasking
+    // -- tags
     TagSet m_oSsnTagSet;  // session level tags
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
   
     // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
