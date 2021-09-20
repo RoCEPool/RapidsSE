@@ -10,6 +10,9 @@ namespace BASE
   class Input : public Object
   {
   private:
+    i8        m_iDepth;    // depth of this input
+    Input*    m_pNext;     // next input in chain
+  
     eUF       m_eTknForm;   // form of tokens to be collected
     TokenVec* m_pTknVec;    // set of collected tokens
     Token*    m_pCurrTkn;   // current token
@@ -34,13 +37,14 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Input(void);
+    Input(Input* pNext);
    ~Input(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
+    Input* pDeleteInput(void);
     i8   iDepth(void);
     void vDivision(Stz* szDivision);
     Stz* szDivision(void);

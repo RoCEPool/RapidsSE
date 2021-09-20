@@ -566,7 +566,7 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPop(void)
   m_okLock.vDropWrite();
   vValidateList();
 
-  delete pWasHeadNode;
+  //delete pWasHeadNode;
 
   return pWasHeadItem;
 }
@@ -595,7 +595,7 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPopTail(void)
   m_okLock.vDropWrite();
   vValidateList();
 
-  delete pWasTailNode;
+  //delete pWasTailNode;
   
   return pWasTailItem;
 }
@@ -663,7 +663,7 @@ void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
   m_okLock.vDropWrite();
   vValidateList();
 
-  delete pRemovingNode;
+  //delete pRemovingNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,7 +693,7 @@ void ListExo_t<CLASSNO,ITEM>::vRemoveNode(ListExoNode_t<ITEM>* pRemovingNode)
   m_okLock.vDropWrite();
   vValidateList();
 
-  delete pRemovingNode;
+  //delete pRemovingNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,6 +784,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
   pCutThisNode->vNextNode(nullptr);
   pCutThisNode->vPrevNode(nullptr);
   
+  delete pCutThisNode;
   m_nItems--;
   ASSERT(m_nItems >= 0);
 }
@@ -1075,7 +1076,6 @@ template <class ITEM>
 ListExoIter_t<ITEM>::~ListExoIter_t(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/

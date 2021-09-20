@@ -285,9 +285,9 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   // -- -- -- -- -- --
   
-  if (m_pInput)
-    delete m_pInput;
-  m_pInput = nullptr;
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
+
 
   if (m_pOutput)
     delete m_pOutput;
@@ -415,7 +415,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
   
   m_pOutput = new Output;
 

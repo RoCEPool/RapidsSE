@@ -192,7 +192,9 @@ Task::~Task(void) noexcept(false)
   }
   
   delete m_pSenCompiler;
-  delete m_pInput;
+  while (m_pInput) {
+    vDeleteInput();
+  }
   
   delete m_pProfile;
   m_pProfile = nullptr;
@@ -675,6 +677,16 @@ void Task::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* delete input                                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_REVISED_INPUT
+void Task::vDeleteInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pInput = m_pInput->pDeleteInput();
+}
+
+#else
+/*----------------------------------------------------------------------------*/
 void Task::vDeleteInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -683,6 +695,7 @@ void Task::vDeleteInput(void)
   
   m_pInput = nullptr;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* . print                                                                    */
@@ -1041,14 +1054,25 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 /* new input                                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_REVISED_INPUT
+void Task::vNewInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  m_pInput = new Input(m_pInput);
+}
+
+#else
+/*----------------------------------------------------------------------------*/
 void Task::vNewInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   RASSERT(! m_pInput);
     
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the oo of this task                                                    */

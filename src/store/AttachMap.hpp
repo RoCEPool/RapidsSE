@@ -67,6 +67,8 @@ namespace STORE
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
+    File*         m_pTraceFile;
+    TraceLock     m_oTraceLock;
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
     Atomic        m_ixQueryNo;
@@ -98,6 +100,10 @@ namespace STORE
   
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
+  
+    File* pTraceFile(void);
+    void  vTraceFile(File* pTraceFile);
+    TraceLock* pTraceLock(void);
 
     Footer* aFooter(void);
   };

@@ -615,9 +615,10 @@ PromptFun __Prompt_bpa (
 bool PROMPT::bPrompt_bpa(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
   
   PoolHelper::vPoolAnalyze();
+  
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }
@@ -2858,7 +2859,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
-
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  i8 nRetired = pRetiredJobs->nJobs();
+  
   bool bFatal = false;
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
     bFatal = true;
@@ -2948,6 +2951,10 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  nRetired = pRetiredJobs->nJobs();
+  vTrace("Retired Jobs : %lld)\n"_Stz,nRetired);
+
   
   // attempted C_ATTEMPTS to see if memory leaks settle down, now time to report
   nLeaksDetected = 0;
@@ -4011,10 +4018,12 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  //while (AM::pRetiredJobs()->nJobs())
+  while (AM::pRetiredJobs()->nJobs())
     while (Api::bReapJob())
       {;}
       
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+
   return true;
 }
 

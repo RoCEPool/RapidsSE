@@ -42,6 +42,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete2pc"_Stz,        &Step::vJobDelete2pc);
   
+  vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
+  vAddStep("job.entry!"_Stz,           &Step::vJobEntryStore_other);
+  
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
@@ -534,6 +537,20 @@ void Step::vJobEntryFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.entry@ -- fetch the job sen entry code                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryFetch_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushStz(pJob->szEntry());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job[].entry! -- store the job entry code                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryStore(void)
@@ -541,6 +558,23 @@ void Step::vJobEntryStore(void)
   ENTRY();
   
   Job* pJob = * m_pJob_task;
+
+  s4K sEntry;
+  m_pDataStack->vPopStr(sEntry,__func__);
+  
+  pJob->vEntry(sEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.entry! -- store the job entry code                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryStore_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   s4K sEntry;
   m_pDataStack->vPopStr(sEntry,__func__);
