@@ -100,7 +100,6 @@ cmdSyntax: ended :: ended ;
 : ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "ended::ended"
     <entryPoint>    = "ended::ended"
     <path>     = "/"
   }

@@ -73,7 +73,6 @@
     Task[].yield 
   repeat
 
-  // execute the cancel seed of the job on this participating node
   "pipeline::cancel" JobRef[] job.entry!
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
@@ -90,7 +89,6 @@ cmdSyntax: cancel :: cancel ;
 : cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "cancel::cancel"
     <entryPoint>    = "cancel::cancel"
     <path>     = "/"
   }

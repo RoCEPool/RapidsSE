@@ -97,7 +97,6 @@ cmdSyntax: execute :: execute ;
 : execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "execute::execute"
     <entryPoint>    = "execute::execute"
     <path>     = "/"
   }

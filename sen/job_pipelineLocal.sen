@@ -143,9 +143,7 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
     <jobKind>  = JK_LOCAL
     //<ddlLock>  = DL_GRAB_READ
-    
-    //<seedReq>   = "pipelineLocal::entry"
-    
+        
     <entryPoint> = "pipelineLocal::entry"
 
   }

@@ -94,7 +94,6 @@ cmdSyntax: executed :: executed ;
 : executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "executed::executed"
     <entryPoint>    = "executed::executed"
     <path>     = "/"
   }

@@ -287,13 +287,6 @@
 
   job::assertCorrectness
   
-  // [ senCompiler::current@ word.name@ encode::push ] .
-
-  //grid::thisNodeName@ "(%v) pipelineSeed end" .printf
-  
-  //"<job_walk>" job::tagSet@ tagSet.hasName if
-    //Job[].walk
-  //then
   
   JP_ENDING Job[].phase!
 
@@ -359,13 +352,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <cmdDesc>  = "--desc for job--"
     <ddlLock>  = DL_GRAB_READ
     <preCheck> = bClusterStarted
-    
-    //<seedReq>  = "pipelineSeed_req"
-    <seedRcv>  = "pipelineSeed_beg"
-    <seedExe>  = "pipelineSeed_exe"
-    <seedEnd>  = "pipelineSeed_end"
-    <seedCan>  = "pipelineSeed_can"
-    
+      
     <entryPoint>    = "pipeline::origin"
 
 

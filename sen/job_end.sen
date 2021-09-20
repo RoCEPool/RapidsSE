@@ -74,7 +74,6 @@
     Task[].yield 
   repeat
 
-  // execute the end seed of the job on this participating node
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
   
@@ -90,7 +89,6 @@ cmdSyntax: end :: end ;
 : end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <seedRun>  = "end::end"
     <entryPoint>    = "end::end"
     <path>     = "/"
 }
