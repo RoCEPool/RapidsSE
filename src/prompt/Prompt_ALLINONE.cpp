@@ -1880,7 +1880,9 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_QUESTION);
   gxPromptCatalog.vFuns(PF_RASSERT);
   gxPromptCatalog.vFuns(PF_READY);
+  gxPromptCatalog.vFuns(PF_REAP);
   gxPromptCatalog.vFuns(PF_RESOURCES);
+  gxPromptCatalog.vFuns(PF_RETIRED);
   gxPromptCatalog.vFuns(PF_RMFIFO);
   gxPromptCatalog.vFuns(PF_RND);
   gxPromptCatalog.vFuns(PF_SE);
@@ -4012,6 +4014,36 @@ bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 
   if (AM::bAttached()) AM::pResources()->vReport();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_retired.cpp -- print retired list                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_retired (
+  PF_RETIRED,           // prompt function
+  "Prompt_retired"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "retired"_Stz,        // the prompt command
+  nullptr,              // the second word
+  bPrompt_retired,      // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "retired"_Stz,        // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  AM::pRetiredJobs()->vSee();
+
   return true;
 }
 
