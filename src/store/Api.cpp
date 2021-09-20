@@ -518,13 +518,33 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
+void Api::vReapAllJobs(void)
+{
+  _static_
+  
+  while (AM::pRetiredJobs()->nJobs())
+    while (Api::bReapJob())
+      {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Api::vReapJobsOnce(void)
+{
+  _static_
+  
+  while (Api::bReapJob())
+    {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
 bool Api::bReapJob(void)
 {
   _static_
    
-  
-  
-  
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
   if (! pRetiredJobs->nJobs()) {
@@ -823,9 +843,7 @@ void Api::vCallBootSystem(void)
   pBootTask->vState(TS_RETIRED);
   pBootTask->vDropTaskLock((Stz*)__func__);
 
-  while (Api::bReapJob())
-    {;}
-
+  Api::vReapJobsOnce();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -873,9 +891,7 @@ void Api::vCallStartSystem(void)
   pStartTask->vState(TS_RETIRED);
   pStartTask->vDropTaskLock((Stz*)__func__);
   
-  while (Api::bReapJob())
-    {;}
-
+  Api::vReapJobsOnce();
 }
 
 /*----------------------------------------------------------------------------*/
