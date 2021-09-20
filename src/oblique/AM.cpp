@@ -1247,35 +1247,6 @@ void AM::SE::vWhereAmI(void)
   vTrace("\n"_Stz);
 }
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                 SEED                                       */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
-{
-  Stz* szSeed;
-  
-  switch (eSeed) {
-    case SS_SEED_RUN: szSeed = pTags->szValue(C_TAG_SEEDRUN); break;
-    case SS_SEED_REQ: szSeed = pTags->szValue(C_TAG_SEEDREQ); break;
-    case SS_SEED_RCV: szSeed = pTags->szValue(C_TAG_SEEDRCV); break;
-    case SS_SEED_EXE: szSeed = pTags->szValue(C_TAG_SEEDEXE); break;
-    case SS_SEED_END: szSeed = pTags->szValue(C_TAG_SEEDEND); break;
-    case SS_SEED_CAN: szSeed = pTags->szValue(C_TAG_SEEDCAN); break;
-    default: NEVER_REACH;
-  }
-
-  ASSERT(szSeed)
-
-  if (szSeed->nLength() < 3)
-    pTags->vDumpSet(true);
-  
-  return szSeed;
-}
-
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SESSION                                     */

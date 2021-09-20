@@ -358,12 +358,6 @@ namespace OBLIQUE
       static void vWhereAmI(void);
     };
   
-    class SEED
-    {
-    public:
-      static Stz* szDecodeSeed(eSS eSeed, TagSet* pTags);
-    };
-
     class SESSION
     {
     public:

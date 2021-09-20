@@ -880,26 +880,6 @@ public:
   void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
 
-  // kbase
-  void vKbaseCallSchedule(void);
-  void vKbaseDelete(void);
-  void vKbaseFindFactNm(void);
-  void vKbaseFindFactNo(void);
-  void vKbaseGet(void);
-  void vKbaseMarkerFetch(void);
-  void vKbaseMarkerNew(void);
-  void vKbaseMarkerStore(void);
-  void vKbaseNew(void);
-  void vKbasePrint(void);
-  void vKbaseSeed(void);
-  void vKbaseSet(void);
-  void vKbaseTest(void);
-  void vKbaseTransformFetch(void);
-  void vKbaseTransformNew(void);
-  void vKbaseTransformStore(void);
-  void vKbaseTrim(void);
-  void vKbaseTroll(void);
-
   // list
   void vListAddRowBuffer(void);
   void vListDelete(void);
