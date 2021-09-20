@@ -1510,6 +1510,29 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bReapEnabled(void)
+{
+  _static_
+  
+  if (! gpAttachMap)
+    return false;
+
+  return gpAttachMap->m_bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vReapEnabled(bool bReapEnabled)
+{
+  _static_
+
+  gpAttachMap->m_bReapEnabled = bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)

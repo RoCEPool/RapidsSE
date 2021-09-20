@@ -88,6 +88,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pJobs           = new Jobs;
   m_pNumbering      = new Numbering;
   m_pPtnMap         = nullptr;
+  m_bReapEnabled    = true;
   m_pTxSet          = new TxSet;
 
   m_pTraceFile      = nullptr;
@@ -387,6 +388,26 @@ void AttachMap::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AttachMap::bReapEnabled(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapEnabled(bool bReapEnabled)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_bReapEnabled = bReapEnabled;
 }
 
 /*----------------------------------------------------------------------------*/

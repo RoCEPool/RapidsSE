@@ -55,6 +55,7 @@ namespace STORE
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;
     b8            m_bReady;
+    b8            m_bReapEnabled;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
@@ -97,6 +98,9 @@ namespace STORE
     i8   iPid(void);
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
+  
+    bool  bReapEnabled(void);
+    void  vReapEnabled(bool bReapEnabled);
   
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);

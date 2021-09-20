@@ -3978,10 +3978,52 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  while (AM::pRetiredJobs()->nJobs())
-    while (Api::bReapJob())
-      {;}
-      
+//  if (pPrompt->pInpTknVec()->nItems() == 1 &&
+//      pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))
+    
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
+    
+    vTrace("REAP DISABLE\n"_Stz);
+    AM::SYSTEM::vReapEnabled(false);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
+
+    vTrace("REAP ENABLE\n"_Stz);
+    AM::SYSTEM::vReapEnabled(true);
+
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("state"_Stz)) {
+
+    if (AM::SYSTEM::bReapEnabled())
+      vTrace("REAP IS ENABLED\n"_Stz);
+    else
+      vTrace("REAP IS DISABLED\n"_Stz);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("force"_Stz)) {
+
+    vTrace("REAP FORCE\n"_Stz);
+    
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 1) {
+    
+    vTrace("REAP LIST\n"_Stz);
+    
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
+  }
+  
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
 
   return true;
