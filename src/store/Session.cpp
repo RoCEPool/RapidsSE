@@ -285,9 +285,9 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   // -- -- -- -- -- --
   
-  if (m_pInput)
-    delete m_pInput;
-  m_pInput = nullptr;
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
+
 
   if (m_pOutput)
     delete m_pOutput;

@@ -1,5 +1,12 @@
+
+
 trackmemory;
 success
+reap;
+success
+bpa;
+success
+
 
 //------------------------------------------------------------------------------
 // create table
@@ -22,15 +29,15 @@ vch_col14  VARCHAR(32),
 vch_col15  VARCHAR(32)
 );
 success
-
-
+reap;
+success
 bpa;
 success
 
 load datums "../DATA/Transliterate/date.csv" ;
 failure contains: "invalid rows"
-
-
+reap;
+success
 bpa;
 success
 
@@ -49,7 +56,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -68,7 +76,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -87,7 +96,8 @@ rows:
 (FALSE)
 (FALSE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -106,7 +116,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -125,7 +136,8 @@ rows:
 (TRUE)
 (TRUE)
  
-
+reap;
+success
 bpa;
 success
 
@@ -144,7 +156,8 @@ rows:
 (FALSE)
 (FALSE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -195,7 +208,8 @@ rows:
 (FALSE)
 (FALSE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -214,7 +228,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -233,7 +248,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -252,7 +268,8 @@ rows:
 (FALSE)
 (FALSE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -271,7 +288,8 @@ rows:
 (FALSE)
 (FALSE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -290,7 +308,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -310,6 +329,8 @@ rows:
 (FALSE)
 
 
+reap;
+success
 bpa;
 success
 
@@ -328,7 +349,8 @@ rows:
 (TRUE)
 (TRUE)
 
-
+reap;
+success
 bpa;
 success
 
@@ -336,9 +358,8 @@ success
 // drop the table
 drop table datums;
 success;
-
-
-
+reap;
+success
 bpa;
 success
 

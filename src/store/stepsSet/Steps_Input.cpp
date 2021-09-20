@@ -308,7 +308,7 @@ void Step::vInputUseBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::useBegin -- begin using input                                       */
+/* input::useEnd -- end using input                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vInputUseEnd(void)
 {

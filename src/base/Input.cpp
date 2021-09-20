@@ -61,6 +61,8 @@ Input::~Input(void) noexcept(false)
   while (m_pCharser)
     RASSERT(bPopCharser());
   
+  RASSERT(! m_pNext);
+
   delete m_pTknVec;
 }
 
@@ -118,6 +120,8 @@ Input* Input::pDeleteInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   Input* pNext = m_pNext;
+  
+  m_pNext = nullptr;
   
   delete this;
   
@@ -296,11 +300,8 @@ bool Input::bPopCharser(void)
   if (! m_pCharser)
     return false;
   
-  Charser* pToBeDelete = m_pCharser;
-  m_pCharser = m_pCharser->pNext();
-  
-  delete pToBeDelete;
-  
+  m_pCharser = m_pCharser->pDeleteCharser();
+    
   return true;
 }
 

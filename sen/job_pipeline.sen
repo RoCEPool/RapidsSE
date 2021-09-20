@@ -63,6 +63,8 @@
   if
     //<cmd> "pipeline::origin: %v\n" .printf
     <cmd> .
+    jobs::seeRlist
+
     //system::bpa
   then
 

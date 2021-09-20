@@ -106,6 +106,7 @@ namespace BASE
     void vUseString(Stz* szString);
 
     // Charser TypedStack
+    Charser* pDeleteCharser(void);
     Charser* pNext(void);
     void     vNext(Charser* pNext);
     i8       iDepth(void);

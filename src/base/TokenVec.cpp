@@ -1008,7 +1008,8 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   }
   
   pInput->vUseEnd();
-  delete pInput;
+  while (pInput)
+    pInput = pInput->pDeleteInput();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1036,7 +1037,8 @@ void TokenVec::vTokeniseC(Stz* szTokenStr)
   }
   
   pInput->vUseEnd();
-  delete pInput;
+  while (pInput)
+    pInput = pInput->pDeleteInput();
 }
 
 /*----------------------------------------------------------------------------*/

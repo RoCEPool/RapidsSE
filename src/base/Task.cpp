@@ -192,7 +192,9 @@ Task::~Task(void) noexcept(false)
   }
   
   delete m_pSenCompiler;
-  delete m_pInput;
+  while (m_pInput) {
+    vDeleteInput();
+  }
   
   delete m_pProfile;
   m_pProfile = nullptr;
