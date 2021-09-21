@@ -15,6 +15,7 @@
 
 
 #include "Pot.hpp"
+#include "Tub.hpp"
 
 
 #include "EntWrk.hpp"
@@ -155,6 +156,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+  
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
 
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
@@ -231,6 +233,7 @@ namespace STORE
     REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
     REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
+    REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

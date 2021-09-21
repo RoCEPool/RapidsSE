@@ -88,6 +88,7 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -104,7 +105,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE0)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE1)
 ,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       LR_FILTER)
+
 ,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_GRID)
+
 ,        m_xpHandler(this,RF_REPAIR_NONE,  nullptr,                 LR_HANDLER)
 
 ,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 LR_INDEX)
@@ -162,6 +165,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
+,            m_xpTub(this,RF_REPAIR_DELETE,Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
 
 {

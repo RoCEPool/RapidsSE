@@ -20,6 +20,8 @@ namespace STORE
     Tub(void);
    ~Tub(void) noexcept(false);
     
+    static void vRepair(Object* pObject);
+
   public:
   
     void vAddBuffer(DataBuffer* pDataBuffer);
