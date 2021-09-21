@@ -13,7 +13,14 @@ namespace STORE
     Job*     m_pJob;
     TagSet*  m_pJobTags;
     i8       m_iReponseTime;
-  
+
+    i8       m_i_pu_puSet;
+    i8       m_i_pu_t;
+    i8       m_i_pu_ft;
+    i8       m_i_pu_j;
+    i8       m_i_pu_fj;
+    i8       m_i_pu_groups;
+
     // must be last
     Footer m_xFooter;
     

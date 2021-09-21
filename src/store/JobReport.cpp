@@ -29,6 +29,13 @@ JobReport::JobReport(i8 iJobNo)
   m_pJob     = nullptr;
   m_pJobTags = nullptr;
 
+  m_i_pu_puSet  = C_UNKNOWN;
+  m_i_pu_t      = C_UNKNOWN;
+  m_i_pu_ft     = C_UNKNOWN;
+  m_i_pu_j      = C_UNKNOWN;
+  m_i_pu_fj     = C_UNKNOWN;
+  m_i_pu_groups = C_UNKNOWN;
+
   m_iReponseTime = C_UNKNOWN;
   
   _checkInitialised_(CN_JOBREPORT);
@@ -132,8 +139,24 @@ bool JobReport::bFindParts(void)
   // get jobTags
   m_pJobTags = &m_pJob->m_oJobTags;
 
-  m_pJobTags->vContentDump();
-  
+  //m_pJobTags->vContentDump();
+
+  m_i_pu_puSet  = StrLib::iToI8(m_pJobTags->szValue("<pu_puSet>"_Stz)->azChar());
+  m_i_pu_t      = StrLib::iToI8(m_pJobTags->szValue("<pu_t>"_Stz)->azChar());
+  m_i_pu_ft     = StrLib::iToI8(m_pJobTags->szValue("<pu_ft>"_Stz)->azChar());
+  m_i_pu_j      = StrLib::iToI8(m_pJobTags->szValue("<pu_j>"_Stz)->azChar());
+  m_i_pu_fj     = StrLib::iToI8(m_pJobTags->szValue("<pu_fj>"_Stz)->azChar());
+  m_i_pu_groups = StrLib::iToI8(m_pJobTags->szValue("<pu_groups>"_Stz)->azChar());
+
+  vTrace("puTags: \n"
+    "pu_puSet=%lld;  pu_t=%lld; pu_ft=%lld; pu_j=%lld; pu_fj=%lld; pu_groups=%lld\n"_Stz
+    ,m_i_pu_puSet
+    ,m_i_pu_t
+    ,m_i_pu_ft
+    ,m_i_pu_j
+    ,m_i_pu_fj
+    ,m_i_pu_groups);
+
   // get response
 
   return true;
