@@ -215,6 +215,14 @@ void NameValidator::vValidateTableSubqueryEntry(QueryNode* pSubqueryNode, s2K& s
                                                 PlanNode* pRootNode, QueryNode* pMetadataNode,
                                                 STORE::SeApi* pSeApi)
 {
+  ASSERT(pSubqueryNode);
+  ASSERT(TableSubquery::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
   // TODO: When visiting a TableSubquery we need to:
   //       * Check if it is recursive or not. Only supporting non-recursive table subqueries.
   //       * Check that it is uniquely named amongst its siblings.
@@ -241,6 +249,14 @@ void NameValidator::vValidateTableSubqueryExit(QueryNode* pSubqueryNode, s2K& sS
                                                PlanNode* pRootNode, QueryNode* pMetadataNode,
                                                STORE::SeApi* pSeApi)
 {
+  ASSERT(pSubqueryNode);
+  ASSERT(TableSubquery::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
   // TODO: When visiting a TableSubquery we need to:
   //       * Check if it is recursive or not. Only supporting non-recursive table subqueries.
   //       * Check that it is uniquely named amongst its siblings.
@@ -266,6 +282,14 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
                                           STORE::SeApi* pSeApi)
 {
+  ASSERT(pSubqueryNode);
+  ASSERT(MainSubquery::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
   // TODO: When visiting a MainSubquery we need to:
 
   // Get a list of table subquery aliases (or nodes) that we could resolve to.
@@ -281,13 +305,13 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   // TODO:   that match? We might be able to offer a more useful error message then "no such table".
 
   // First we will validate all of the tables and either fully qualify them or turn
-  // them into references to CTEs.
+  // them into references to CTEs (as SubqueryRefOp instances).
 
   // Finally we can validate and qualify all of the columns. We do this last so that we
   // can correlate an unqualified column with a (now) qualified table definition. We can
   // also detect ambiguous column names too. But we need all tables and CTEs to be qualified first.
 
-// The callback lambda for qualifying tables
+  // The callback lambda for qualifying tables
   auto fTableVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi, pResolvableSubqueries]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
@@ -348,10 +372,12 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   };
 
 
-  // Validate the CTEs first, then the tables, then the columns separately.
-  // We do a bottom up walk for the column validation so that we can qualify
-  // any columnRefs lower in the plan before we hit any aliases higher up that
-  // then copy those expressions.
+  // Validate the tables first, then the columns separately.
+  // We use the enter/exit callback of the walk algorithm with the column visitor
+  // as we need to constrain the walk to the current subquery (which we detect in
+  // the enter event) but we validate/resolve the columns on a bottom-up approach
+  // (using the exit event) so that we can qualify any columnRefs lower in the plan
+  // before we hit any aliases higher up that then copy those expressions.
   try {
     GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
     GraphNav::bGlobalWalk(pSubqueryNode, false, true, fColumnVisitor, fColumnVisitor, pRootNode);
@@ -407,6 +433,14 @@ void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryNode, s2K& sSubque
                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
                                           STORE::SeApi* pSeApi)
 {
+  ASSERT(pSubqueryNode);
+  ASSERT(ExprSubquery::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
   // TODO: When visiting an ExprSubquery we need to:
   // TODO: * Ensure all outer subqueries are fully validated, including column names.
   // TODO:   (this is important for correlated columns)
@@ -442,7 +476,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
   // A list of nodes to be replaced and their replacements. Can only do this after
   // the walk has finished. The node to be replaced comes first, then the node
   // that is replacing it comes second.
-  QueryNodeList* pOpReplacementList = nullptr;
+  QueryNodeList* pOpReplacementList = new QueryNodeList();
 
   // Walk the graph looking for TableRefs
   auto fVisitor = [&pMetadataNode, &pSeApi, pResolvableSubqueries, pStartNode, &pOpReplacementList]
@@ -473,145 +507,28 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
       }
     }
 
-    // Table is not in the plan's metadata.
+    // Table is not fully qualified or not in the plan's metadata.
 
-    // First we look up the table in the resolvable subqueries list.
-    // It must not have any qualifications.
-    if (szTableName && !szSchemaName && !szCatalogName && pResolvableSubqueries) {
-      QueryNodeIter* pIter = pResolvableSubqueries->pNewIter();
-
-      while (pIter->bHasNext()) {
-        QueryNode* pSubquery = pIter->pNext();
-        ASSERT(TableSubquery::bIsOfType(pSubquery));
-
-        Stz* szAlias = TableSubquery::szTableAlias(pSubquery);
-        if (!szAlias->bSame(szTableName)) {
-          continue;
-        }
-
-        // We've got a match on the table subquery.
-        // TODO: We now need to replace the operator that contains this TableRef
-        // with a SubqueryRefOp. Need to be careful doing this inside of a tree walk.
-
-        // Get the parent operator of the TableRef
-        PlanNode* pParent = GraphNav::pGetParentOfPath(sPath, pStartNode);
-        ASSERT(pParent);
-        ASSERT(TableScanOp::bIsOfType(pParent));
-
-        // Create the new SubqueryRefOp
-        QueryNode* pSubqueryRefOp = SubqueryRefOp::pCreate(szAlias);
-
-        // Add to the operator replacement list
-        if (!pOpReplacementList) {
-          pOpReplacementList = new QueryNodeList();
-        }
-
-        pOpReplacementList->vAppend(_pQueryNode(pParent));
-        pOpReplacementList->vAppend(pSubqueryRefOp);
-
-        delete pIter;
-        return GraphNav::WALK_CONTINUE;
-      }
-
-      delete pIter;
-    }
-
-    // Look up table in SE API
-    STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
-    ASSERT(pTableInfoSet);
-
-    if (pTableInfoSet->nRows() == 0) {
-      // We couldn't resolve the table in the SE metadata
-      delete pTableInfoSet;
-      NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
-    }
-
-    if (pTableInfoSet->nRows() > 1) {
-      // We've resolved more than one table in the metadata. The table name is ambiguous.
-      NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
-    }
-
-    ASSERT(pTableInfoSet->nRows() == 1);
-    Row* pTblRow = pTableInfoSet->pFirstRow();
-    TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
-
-    // Get the full name from the metadata as we may not have had all of the details before
-    szCatalogName = pTableMeta->szCatalogName();
-    szSchemaName = pTableMeta->szSchemaName();
-    szTableName = pTableMeta->szTableName();
-
-    // Now that the table is fully qualified, check again if this is already in the metadata
-    QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
-    if (pTableDef) {
-      TableRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName, szTableName);
-      delete pTableInfoSet;
+    // First we try to resolve the name to a table subquery. This takes precedence over
+    // any real tables (following the approach used in Postgres here...can always be changed).
+    if (bResolveTableNameToSubquery(szCatalogName, szSchemaName, szTableName,
+                                    pResolvableSubqueries, sPath, pStartNode,
+                                    pOpReplacementList)) {
       return GraphNav::WALK_CONTINUE;
     }
 
-    // Retrieve the column definitions and make a node out of these
-    QueryNode* pColumnDefs = ColumnDefs::pCreate();
-    InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
 
-    for (Row* pColRow = pColumnInfoSet->pFirstRow();
-         pColRow;
-         pColRow = pColumnInfoSet->pNextRow(pColRow)) {
-
-      ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pColRow);
-
-      // Convert the metadata type string to an enum and use this to create
-      // a QueryNode of the correct type.
-      QueryNode* pTypeNode = SqlType::pCreate(static_cast<eCT>(pColMeta->iTypeEnum()));
-
-      // Make the column definition node and add it to the list of column definitions
-      QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szCatalogName(),
-                                                 pColMeta->szSchemaName(),
-                                                 pColMeta->szTableName(),
-                                                 pColMeta->szColumnName(),
-                                                 pTypeNode,
-                                                 !pColMeta->bIsNullable(),
-                                                 pColMeta->iColumnNumber(),
-                                                 pColMeta->iColumnLength(),
-                                                 pColMeta->iColumnScale());
-      ColumnDefs::vAddColumnDef(pColumnDefs, pColumnDef);
+    if (bResolveTableNameToBaseTable(szCatalogName, szSchemaName, szTableName,
+                                     pTableRef, pMetadataNode, pSeApi)) {
+      return GraphNav::WALK_CONTINUE;
     }
 
-    // TODO: Get the index definitions and make a node out of it.
-    // TODO: For now this is empty
-    QueryNode* pIndexDefs = IndexDefs::pCreate();
-
-    // Get the partitioning information and make a node out of it.
-    QueryNode* pPartitionDef = ColumnDefs::pCreate();
-    InfoSet* pPartitionKeySet = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
-    ASSERT(pPartitionKeySet);
-
-    for (Row* pPtnKeyRow = pPartitionKeySet->pFirstRow();
-         pPtnKeyRow;
-         pPtnKeyRow = pPartitionKeySet->pNextRow(pPtnKeyRow)) {
-
-      PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pPtnKeyRow);
-
-      QueryNode* pColumnDef = ColumnDefs::pFind(pColumnDefs, pPtnKeyMeta->iColumnNumber());
-      ASSERT(pColumnDef);
-
-      // Add a copy of this node to the partition definition.
-      ColumnDefs::vAddColumnDef(pPartitionDef, pColumnDef->pDeepCopy(true));
-    }
-
-
-    // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
-    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
-
-    // Add to the plan metadata
-    MetadataNode::vAddTable(pMetadataNode, pTableDef);
-
-    // Qualify the TableRef
-    TableRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName, szTableName);
-
-    delete pTableInfoSet;
-    delete pColumnInfoSet;
-    delete pPartitionKeySet;
-
-    return GraphNav::WALK_CONTINUE;   // Keep walking
+    // Unknown table, throw an exception
+    // TODO: Check if there are any table subqueries that are out of scope that could
+    //       be a match. Then we can generate a better error message. If not, then
+    //       simply issue the unknown table error.
+    NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
+    return GraphNav::WALK_ABORT; // Unnecessary, but for the compiler's benefit only
   };
 
   // Walk the StatementMarker-bounded section, it's properties and its children
@@ -645,6 +562,176 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
 
     delete pOpReplacementList;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to resolve a table name to a table subquery. If successful, returns  */
+/* true and writes the changes to pOpReplacmentList.                          */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bResolveTableNameToSubquery(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                              QueryNodeList* pResolvableSubqueries, s2K& sPath,
+                                              QueryNode* pStartNode, QueryNodeList* pOpReplacementList)
+{
+  ASSERT(szTableName);
+  ASSERT(sPath.nLength() > 0);
+  ASSERT(pStartNode);
+  ASSERT(pOpReplacementList);
+
+  if (pResolvableSubqueries && szTableName && !szSchemaName && !szCatalogName) {
+    QueryNodeIter* pIter = pResolvableSubqueries->pNewIter();
+
+    while (pIter->bHasNext()) {
+      QueryNode* pSubquery = pIter->pNext();
+      ASSERT(TableSubquery::bIsOfType(pSubquery));
+
+      Stz* szAlias = TableSubquery::szTableAlias(pSubquery);
+      if (!szAlias->bSame(szTableName)) {
+        continue;
+      }
+
+      // We've got a match on the table subquery.
+      // We now need to replace the operator that contains this TableRef
+      // with a SubqueryRefOp. We don't want to do this inside a walk so
+      // instead let's add the changes to a replacement list and we can
+      // replace the affected nodes after the walk is complete.
+
+      // Get the parent operator of the TableRef
+      PlanNode* pParent = GraphNav::pGetParentOfPath(sPath, pStartNode);
+      ASSERT(pParent);
+      ASSERT(TableScanOp::bIsOfType(pParent));
+
+      // Create the new SubqueryRefOp
+      QueryNode* pSubqueryRefOp = SubqueryRefOp::pCreate(szAlias);
+
+      // Add to the operator replacement list
+      pOpReplacementList->vAppend(_pQueryNode(pParent));
+      pOpReplacementList->vAppend(pSubqueryRefOp);
+
+      delete pIter;
+      return true;
+    }
+
+    delete pIter;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to resolve a table name to a base table. Returns true if successful  */
+/* and qualifies the tableRef.                                                */
+/* Will throw an exception if the name is ambiguous within base tables.       */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                              QueryNode* pTableRef, QueryNode* pMetadataNode, SeApi* pSeApi)
+{
+  ASSERT(szTableName);
+  ASSERT(pTableRef);
+  ASSERT(TableRef::bIsOfType(pTableRef));
+  ASSERT(pMetadataNode);
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
+  // Look up table in SE API
+  STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
+  ASSERT(pTableInfoSet);
+
+  if (pTableInfoSet->nRows() == 0) {
+    // We couldn't resolve the table in the SE metadata
+    delete pTableInfoSet;
+    return false;
+  }
+
+  if (pTableInfoSet->nRows() > 1) {
+    // We've resolved more than one table in the metadata. The table name is ambiguous.
+    delete pTableInfoSet;
+    NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
+  }
+
+  ASSERT(pTableInfoSet->nRows() == 1);
+
+  Row* pTblRow = pTableInfoSet->pFirstRow();
+  TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
+
+  // Get the full name from the metadata as we may not have had all of the details before
+  szCatalogName = pTableMeta->szCatalogName();
+  szSchemaName = pTableMeta->szSchemaName();
+  szTableName = pTableMeta->szTableName();
+
+  // Now that the table is fully qualified, check again if this is already in the metadata
+  QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+  if (pTableDef) {
+    TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
+    delete pTableInfoSet;
+    return true;
+  }
+
+  // We need to create the metadata definition for this table.
+
+  // Retrieve the column definitions and make a node out of these
+  QueryNode* pColumnDefs = ColumnDefs::pCreate();
+  InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
+
+  for (Row* pColRow = pColumnInfoSet->pFirstRow();
+       pColRow;
+       pColRow = pColumnInfoSet->pNextRow(pColRow)) {
+
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pColRow);
+
+    // Convert the metadata type string to an enum and use this to create
+    // a QueryNode of the correct type.
+    QueryNode* pTypeNode = SqlType::pCreate(static_cast<eCT>(pColMeta->iTypeEnum()));
+
+    // Make the column definition node and add it to the list of column definitions
+    QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szCatalogName(),
+                                               pColMeta->szSchemaName(),
+                                               pColMeta->szTableName(),
+                                               pColMeta->szColumnName(),
+                                               pTypeNode,
+                                               !pColMeta->bIsNullable(),
+                                               pColMeta->iColumnNumber(),
+                                               pColMeta->iColumnLength(),
+                                               pColMeta->iColumnScale());
+    ColumnDefs::vAddColumnDef(pColumnDefs, pColumnDef);
+  }
+
+  // TODO: Get the index definitions and make a node out of it.
+  // TODO: For now this is empty
+  QueryNode* pIndexDefs = IndexDefs::pCreate();
+
+  // Get the partitioning information and make a node out of it.
+  QueryNode* pPartitionDef = ColumnDefs::pCreate();
+  InfoSet* pPartitionKeySet = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
+  ASSERT(pPartitionKeySet);
+
+  for (Row* pPtnKeyRow = pPartitionKeySet->pFirstRow();
+       pPtnKeyRow;
+       pPtnKeyRow = pPartitionKeySet->pNextRow(pPtnKeyRow)) {
+
+    PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pPtnKeyRow);
+
+    QueryNode* pColumnDef = ColumnDefs::pFind(pColumnDefs, pPtnKeyMeta->iColumnNumber());
+    ASSERT(pColumnDef);
+
+    // Add a copy of this node to the partition definition.
+    ColumnDefs::vAddColumnDef(pPartitionDef, pColumnDef->pDeepCopy(true));
+  }
+
+
+  // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
+  pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
+
+  // Add to the plan metadata
+  MetadataNode::vAddTable(pMetadataNode, pTableDef);
+
+  // Qualify the TableRef
+  TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
+
+  delete pTableInfoSet;
+  delete pColumnInfoSet;
+  delete pPartitionKeySet;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

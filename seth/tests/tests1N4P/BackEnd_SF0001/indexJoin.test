@@ -41,6 +41,33 @@ end ;
 
 rows: 1500
 
+//------------------------------------------------------------------------------
+// LEFT OUTER INDEX JOIN
+// select * from customer left outer join orders on customer.c_custkey = orders.o_custkey;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1501
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
@@ -72,6 +99,35 @@ rows: 1220
 
 
 //------------------------------------------------------------------------------
+// LEFT OUTER WITH LEFT FILTER
+// select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//   where c_nationkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter 1 "type boolean $4 4 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 1221
+
+
+//------------------------------------------------------------------------------
 // RIGHT FILTER
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where orders.o_orderkey >= 4;
@@ -100,9 +156,40 @@ end ;
 
 rows: 1497
 
+
+//------------------------------------------------------------------------------
+// LEFT OUTER WITH RIGHT FILTER
+// select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//   where orders.o_orderkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 0 "type boolean $9 4 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 1497
+
+
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
-// select * from customer inner join orders on customer.c_custkey = orders.o_custkey
+// select * from customer join orders on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 pipeline indexJoinTest
@@ -117,6 +204,34 @@ begin
 
   stage stageC on all partitions :
     indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 0 "type boolean $9 4 >= "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 1218
+
+//------------------------------------------------------------------------------
+// LEFT OUTER WITH LEFT and RIGHT FILTER
+// select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter 1 "type boolean $4 4 >= "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter 0 "type boolean $9 4 >= "
     | stageD
 
@@ -168,6 +283,35 @@ contains rows :
   (148,11,298,148,'O',*,*,*,*,*,*)
   (148,11,148,148,'O',*,*,*,*,*,*)
 
+//------------------------------------------------------------------------------
+// LEFT OUTER WITH LEFT FILTER & PROJECT
+// select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//   where c_nationkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter 1 "type boolean $4 4 >= "
+    | project 0 "type integer $1 , type integer $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows : 1221
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT & POST PROJECT
@@ -210,10 +354,9 @@ contains rows :
   (148,148)
 
 //------------------------------------------------------------------------------
-// RIGHT FILTER & PROJECT
-// select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
-//   where o_orderkey >= 4;
-
+// LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
+// select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//   where c_nationkey >= 4;
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -223,12 +366,13 @@ begin
 
   stage stageB on all partitions :
     scan customer
+    | filter 1 "type boolean $4 4 >= "
+    | project 0 "type integer $1 , type integer $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
-    | project 1 "type integer $1 , type integer $9 , type integer $10 "
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | project 0 "type integer $1 , type integer $4 "
     | stageD
 
   stage stageD on origin :
@@ -237,8 +381,12 @@ begin
     | stageA
 end ;
 
-rows: 1497
+rows : 1221
 
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+// select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
+//   where o_orderkey >= 4;
 
 pipeline indexJoinTest
 begin
@@ -276,6 +424,36 @@ contains rows:
  (149,149,149)
 
 //------------------------------------------------------------------------------
+// LEFT OUTER WITH RIGHT FILTER & PROJECT
+// select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//   where o_orderkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 0 "type boolean $9 4 >= "
+    | project 1 "type integer $1 , type integer $9 , type integer $10 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 1497
+
+//------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //      where c_nationkey >= 4 and o_orderkey >= 4;
@@ -293,6 +471,36 @@ begin
 
   stage stageC on all partitions :
     indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 0 "type boolean $3 4 >= "
+    | project 1 "type integer $1 , type integer $3 , type integer $4 "
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+rows: 1218
+
+//------------------------------------------------------------------------------
+// LEFT OUTER AND LEFT and RIGHT FILTER & PROJECT
+// select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
+//      where c_nationkey >= 4 and o_orderkey >= 4;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter 1 "type boolean $4 4 >= "
+    | project 0 "type integer $1 , type integer $4 "
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter 0 "type boolean $3 4 >= "
     | project 1 "type integer $1 , type integer $3 , type integer $4 "
     | stageD
