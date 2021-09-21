@@ -514,6 +514,14 @@ char* RowBuffer::azStrArea(void)
 /*----------------------------------------------------------------------------*/
 /* convert this row buffer into one or more csv buffers                       */
 /*----------------------------------------------------------------------------*/
+void RowBuffer::vToCsv(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert this row buffer into one or more csv buffers                       */
+/*----------------------------------------------------------------------------*/
 CsvBuffer* RowBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

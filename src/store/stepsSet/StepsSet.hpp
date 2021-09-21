@@ -197,6 +197,7 @@ public:
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
+  void vCrwBufferToCsv_OLD(void);
   void vCrwBufferWriteToFile0(void);
 
   // crw to row
@@ -1454,6 +1455,7 @@ public:
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
+  void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor

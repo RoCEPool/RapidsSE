@@ -695,6 +695,14 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert this crw buffer into one or more csv buffers                       */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vToCsv(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate a CsvBuffer from a crw buffer with a csv row                      */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* CrwBuffer::pToCsvBuffer(void)

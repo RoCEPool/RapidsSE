@@ -39,6 +39,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   vAddStep("CrwBuffer[].toCsv"_Stz,       &Step::vCrwBufferToCsv);
+  vAddStep("CrwBuffer[].toCsv_OLD"_Stz,   &Step::vCrwBufferToCsv_OLD);
   vAddStep("CrwBuffer[].upsertIntoTable"_Stz,&Step::vCrwBufferUpsertIntoTable);
   vAddStep("CrwBuffer[].writeToFile0"_Stz, &Step::vCrwBufferWriteToFile0);
   
@@ -237,6 +238,22 @@ void Step::vCrwBufferSet(void)
 /* CrwBuffer[].toCsv -- convert CrwBuffer to Csv                              */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwBufferToCsv(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+ 
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  
+  pCrwBuffer->vToCsv(pTub);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].toCsv -- convert CrwBuffer to Csv                              */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferToCsv_OLD(void)
 {
   ENTRY();
 
