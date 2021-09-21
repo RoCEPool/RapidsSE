@@ -15,6 +15,7 @@ namespace STORE
     Job*     m_pJob;
     TagSet*  m_pJobTags;
     i8       m_iReponseTime;
+    i8       m_iMagnitude;
 
     i8       m_i_pu_test;
     i8       m_i_pu_subset;

@@ -46,6 +46,7 @@ JobReport::JobReport(i8 iJobNo)
   m_i_pu_groups = C_UNKNOWN;
 
   m_iReponseTime = C_UNKNOWN;
+  m_iMagnitude   = C_UNKNOWN;
   
   _checkInitialised_(CN_JOBREPORT);
 
@@ -90,6 +91,7 @@ NamedBuffer* JobReport::pReport(i8 iJobNo)
                                       pJobReport->m_i_pu_fj,
                                       pJobReport->m_i_pu_groups,
                                       pJobReport->m_iReponseTime,
+                                      pJobReport->m_iMagnitude,
                                       C_VARGS_END);
 
   delete pJobReport;
@@ -197,7 +199,8 @@ bool JobReport::bFindParts(void)
   // get response
 
   m_iReponseTime = m_pJob->m_oTimer.iMicroseconds();
-  
+  m_iMagnitude   = m_pJob->m_oTimer.iMagnitude();
+
   return true;
 }
 

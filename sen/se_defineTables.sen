@@ -554,7 +554,8 @@
     j            INTEGER NOT NULL , // j
     fj           INTEGER NOT NULL , // fj
     groups       INTEGER NOT NULL , // groups
-    responseMS   INTEGER
+    responseMS   INTEGER NOT NULL ,
+    magnitude    INTEGER NOT NULL
 
   ) < internal > = 1 ;
   "
