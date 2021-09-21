@@ -171,7 +171,9 @@ namespace STORE
     REG<File,           CN_FILE          > m_xpFile0;
     REG<File,           CN_FILE          > m_xpFile1;
     REG<ExprEval,       CN_EXPREVAL      > m_xpFilter;
+  
     REG<Grid,           CN_GRID          > m_xpGrid;
+  
     REG<Word,           CN_WORD          > m_xpHandler;
 
     REG<Index,          CN_INDEX         > m_xpIndex;
@@ -195,6 +197,7 @@ namespace STORE
 
     REG<Op,             CN_OP            > m_xpOp;
     REG<Operand,        CN_NONE          > m_xpOperandOoO;
+  
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;

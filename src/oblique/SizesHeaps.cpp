@@ -174,11 +174,11 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "TccLock.hpp"
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
-
-#include "TccLock.hpp"
 #include "TraceLock.hpp"
+#include "Tub.hpp"
 
 #include "Parcel.hpp"
 #include "Sends.hpp"
@@ -531,6 +531,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
+  { sizeof(Tub),                HT_T_LARGE   ,0 }, // CN_TUB
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET
 
