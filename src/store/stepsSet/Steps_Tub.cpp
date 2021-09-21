@@ -17,6 +17,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tub(void)
 {
+  vAddStep("tub[]"_Stz,               &Step::vTubGet);
   vAddStep("tub[].completed"_Stz,     &Step::vTubCompleted);
   vAddStep("tub[].dangling"_Stz,      &Step::vTubDangling);
   vAddStep("tub[].delete"_Stz,        &Step::vTubDelete);

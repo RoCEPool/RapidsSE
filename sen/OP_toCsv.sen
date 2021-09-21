@@ -5,17 +5,27 @@
 " OP_toCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-: toCsv_StreamDef \handler
+: Tub[].pipeOutRemainder
 
-  //"Operand:- ZK_D_STREAMDEF" .verbose
-  PipeIn[].delete
+;
 
-  StreamDefLft[].newtoCsvStream
-  StreamDefLft[].pipeOut
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Tub[].pipeOutCompleted
 
-  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                                   */
+/*----------------------------------------------------------------------------*/
+: toCsv_EosMarker \handler
+
+  Tub[].pipeOutRemainder
+  
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,10 +33,12 @@
 /*----------------------------------------------------------------------------*/
 : toCsv_CrwBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
-
   PipeIn[]\clear to CrwBuffer[]
 
+  Tub[] CrwBuffer[].toCsv
+  
+  Tub[].pipeOutCompleted
+  
   true
 ;
 
@@ -37,8 +49,32 @@
 
   PipeIn[]\clear to RowBuffer[]
 
+  Tub[] RowBuffer[].toCsv
+    
+  Tub[].pipeOutCompleted
+
   true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: toCsv_StreamDef \handler
+
+  PipeIn[]\clear to StreamDefLft[]
+
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  StreamDefOut[].pipeOut
+
+  // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
+ 
+  StreamDefLft[] Tub[].new
+
+  true
+;
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -53,6 +89,7 @@
   op__topology
 
   find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!
+  find: toCsv_EosMarker  ZK_M_EOS       op[].handler!
   find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!
   find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!
 
