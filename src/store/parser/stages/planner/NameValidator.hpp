@@ -67,6 +67,18 @@ namespace Parser
                                 QueryNode* pMetadataNode, STORE::SeApi* pSeApi,
                                 QueryNodeList* pResolvableSubqueries);
 
+    // Tries to resolve a table name to a table subquery. If successful, returns true
+    // and writes the changes to pOpReplacmentList.
+    static b1 bResolveTableNameToSubquery(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                          QueryNodeList* pResolvableSubqueries, s2K& sPath,
+                                          QueryNode* pStartNode, QueryNodeList* pOpReplacementList);
+
+    // Tries to resolve a table name to a base table. Returns true if successful
+    // and qualifies the tableRef.
+    // Will throw an exception if the name is ambiguous within base tables.
+    static b1 bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                           QueryNode* pTableRef, QueryNode* pMetadataNode, SeApi* pSeApi);
+
     // Convert any column wildcards into column references.
     static void vResolveColumnWildcards(PlanNode* pRootNode, QueryNode* pStartNode,
                                         QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode);
