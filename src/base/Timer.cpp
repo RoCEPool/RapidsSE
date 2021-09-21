@@ -131,21 +131,30 @@ void Timer::vUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* nanoseconds                                                                */
+/* magnitude                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Timer::iNanoseconds(void)
+i8 Timer::iMagnitude(i8 iBase)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  i8 iTicks = this->iTickDelta();
-
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
+  i8 iNs = iNanoseconds();
   
-  //i8 iNano = (iTicks * C_1G) / iTicksPerSec;
+  i8 iVal = iNs / iBase;
   
-  i16 iNano = ((i16)iTicks * (i16)C_1G) / (i16)iTicksPerSec;
+  i8 iMag = 0;
   
-  return (i8)iNano;
+       if (iVal < 1) iMag = 0;
+  else if (iVal < 10) iMag = 1;
+  else if (iVal < 100) iMag = 2;
+  else if (iVal < 1000) iMag = 3;
+  else if (iVal < 10000) iMag = 4;
+  else if (iVal < 100000) iMag = 5;
+  else if (iVal < 1000000) iMag = 6;
+  else if (iVal < 10000000) iMag = 7;
+  else if (iVal < 100000000) iMag = 8;
+  else                         iMag = 9;
+  
+  return iMag;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,6 +187,24 @@ i8 Timer::iMilliseconds(void)
   i8 iMilli = (iTicks * C_1K) / iTicksPerSec;
   
   return iMilli;
+}
+
+/*----------------------------------------------------------------------------*/
+/* nanoseconds                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Timer::iNanoseconds(void)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
+  i8 iTicks = this->iTickDelta();
+
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
+  
+  //i8 iNano = (iTicks * C_1G) / iTicksPerSec;
+  
+  i16 iNano = ((i16)iTicks * (i16)C_1G) / (i16)iTicksPerSec;
+  
+  return (i8)iNano;
 }
 
 /*----------------------------------------------------------------------------*/
