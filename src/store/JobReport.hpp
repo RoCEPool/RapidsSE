@@ -7,10 +7,12 @@ namespace STORE
 {
   class JobReport : public Object
   {
-  public:
-  
   private:
-    
+    i8       m_iJobNo;
+    JobId    m_tJobId;
+    Job*     m_pJob;
+    TagSet*  m_pJobTags;
+
     // must be last
     Footer m_xFooter;
     
@@ -18,11 +20,15 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void* pJobReportAddress);
   
-    JobReport(void);
+    JobReport(i8 iJobId);
    ~JobReport(void) noexcept(false);
 
     static void vReport(i8 iJobNo);
-  
+
+    void vCraftReport(void);
+    bool bFindParts(void);
+    void vReportJob(void);
+
     Footer* aFooter(void);
   };
   

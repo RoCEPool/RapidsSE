@@ -16,13 +16,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReport(void)
 {
-  vAddStep("jobReport::x"_Stz,  &Step::vJobReportX);
+  vAddStep("jobReport::report"_Stz,  &Step::vJobReportReport);
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobReport::x -- x                                                          */
+/* jobReport::report -- report on given job                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReportX(void)
+void Step::vJobReportReport(void)
 {
   ENTRY();
   

@@ -7515,7 +7515,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": jobReport_action\n"
     "  \n"
-    "  <jobno> >int jobReport::x\n"
+    "  <jobno> >int jobReport::report\n"
     "\n"
     "  true\n"
     " ;\n"

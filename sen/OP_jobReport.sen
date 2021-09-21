@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : jobReport_action
   
-  <jobno> >int jobReport::x
+  <jobno> >int jobReport::report
 
   true
 ;
