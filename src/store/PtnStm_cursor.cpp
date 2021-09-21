@@ -138,6 +138,8 @@ void PtnStm_cursor::vReset(void)
   vTrace("m_iCurBktNo:%lld\n"_Stz,m_iCurBktNo );
 
   m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
+  vTrace("To read from m_pCurBkt:%p\n"_Stz,m_pCurBkt);
+
   if (m_pCurBkt) {
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
   }

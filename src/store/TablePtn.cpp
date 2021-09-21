@@ -256,6 +256,7 @@ void TablePtn::vSetBucket(i8 iBucket) {
 /*----------------------------------------------------------------------------*/
 Bucket *TablePtn::pGetBucket(i8 i_Bucket) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  vTrace("TablePtn::pGetBucket from bucketvec %p \n"_Stz, m_pBucketVec);
   if (i_Bucket >= 0 && i_Bucket < m_pBucketVec->nItems())
     return m_pBucketVec->pGet(i_Bucket);
   else
@@ -304,7 +305,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // Convert partition to bucket
   i8 iBktNo =  m_pTable->iPtnToBkt(pDataBuffer->tPtnId());
   //i8 iBktNo = pDataBuffer->iBucketNo();
-  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId().iAsI8());
+  vTrace("TablePtn::vAppendBuffer  BucketNo:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId().iAsI8());
 
   i8 nItems = m_pBucketVec->nItems();
   Bucket *pBucket = nullptr;
@@ -316,16 +317,12 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
+    vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p \n"_Stz, m_pBucketVec , pBucket);
   } else {
     vTrace(">>>>>>>>>>>>>>>>> No bucket for BktNo:%lld available \n"_Stz, iBktNo);
   }
 
-  /*
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vAppendBuffer(pDataBuffer);
-  }*/
+
 
   // now insert entries from the buffer into the indexes
   switch (m_eKind) {
