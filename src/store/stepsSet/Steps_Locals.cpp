@@ -321,6 +321,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("NamedBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("NamedBuffer[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Node[]"_Stz)) {
     pCurrentWord->vEncodeCall("Node[].set"_Stz);
     EXIT();

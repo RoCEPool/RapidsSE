@@ -1,7 +1,9 @@
 /*============================================================================*/
-/* JobReport.hpp -- JobReport                                                */
+/* JobReport.hpp -- JobReport                                                 */
 /*============================================================================*/
 #pragma once
+
+#include "NamedBuffer.hpp"
 
 namespace STORE
 {
@@ -31,7 +33,7 @@ namespace STORE
     JobReport(i8 iJobId);
    ~JobReport(void) noexcept(false);
 
-    static void vReport(i8 iJobNo);
+    static NamedBuffer* pReport(i8 iJobNo);
 
     void vCraftReport(void);
     bool bFindParts(void);

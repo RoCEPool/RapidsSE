@@ -6,6 +6,14 @@
 #include "JobReport.hpp"
 #include "JobList.hpp"
 #include "Job.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "TablePtn.hpp"
+#include "RowOnce.hpp"
+#include "IndexStream.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -58,7 +66,7 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* report                                                                     */
 /*----------------------------------------------------------------------------*/
-void JobReport::vReport(i8 iJobNo)
+NamedBuffer* JobReport::pReport(i8 iJobNo)
 {
   _static_
 
@@ -67,8 +75,25 @@ void JobReport::vReport(i8 iJobNo)
   JobReport* pJobReport = new JobReport(iJobNo);
   
   pJobReport->vReportJob();
-  
+
+  Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
+  StreamDef* pStreamDef = pJobReportTable->pStreamDef();
+  NamedBuffer* pNamedBuffer = new NamedBuffer(pStreamDef);
+
+  Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
+                                      745,
+                                      pJobReport->m_i_pu_puSet,
+                                      pJobReport->m_i_pu_t,
+                                      pJobReport->m_i_pu_ft,
+                                      pJobReport->m_i_pu_j,
+                                      pJobReport->m_i_pu_fj,
+                                      pJobReport->m_i_pu_groups,
+                                      9999,
+                                      C_VARGS_END);
+
   delete pJobReport;
+
+  return pNamedBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -99,13 +99,13 @@
   debug::flag@ if "(Revised) scan_NextBuffer handler" . then
 
   // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to CrwBuffer[]
+  ptnStream[] ptnStream.read to DataBuffer[]
  
-  CrwBuffer[].isNotNull if
+  DataBuffer[].isNotNull if
     // read a next crw buffer
 
     // pipe out the read crw buffer
-    CrwBuffer[].pipeOut
+    DataBuffer[].pipeOut
 
     // requeue ZK_M_NEXTBUFFER
     Pipein[].pipeBackin

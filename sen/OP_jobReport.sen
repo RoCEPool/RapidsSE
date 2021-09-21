@@ -8,8 +8,15 @@
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
 : jobReport_action
-  
+
   <jobno> >int jobReport::report
+
+  "__eventDemon" find dup if
+    word.object@
+    pipeline.pipeout
+  else
+    discard discard
+  then
 
   true
 ;
