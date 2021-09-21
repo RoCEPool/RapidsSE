@@ -329,11 +329,6 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
     }
 
     QueryNode* pStatementMarker = _pQueryNode(pNode);
-
-    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
-
-    // First resolve all of the tables in the plan. We will need them to
-    // then resolve columns and indexes.
     vValidateTables(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode, pSeApi, pResolvableSubqueries);
 
     return GraphNav::WALK_CONTINUE;
@@ -348,11 +343,12 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
     UNUSED(pvArg);
 
     if (eEvent == GraphNav::EVENT_ENTER && SubqueryMarker::bIsOfType(pNode) && pNode != pSubqueryNode) {
-      // We're only interested in this subquery
+      // We're only interested in this subquery. Skip any others we encounter.
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
     if (eEvent != GraphNav::EVENT_EXIT || !StatementMarker::bIsOfType(pNode)) {
+      // We only want to process StatementMarker sections in a bottom up fashion.
       return GraphNav::WALK_CONTINUE;
     }
 
@@ -396,34 +392,8 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
     delete pResolvableSubqueries;
   }
 
-
-  // TODO: Factor this out into another function: vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
-  // Create a CteDef for the main subquery and populate it with information.
-  // The alias name is not important so let's just use the current node name
-  // with a couple of underscores prepended to it
-  s256 sBuf;
-  sBuf.vCatSprint("__%s"_Stz, pSubqueryNode->szName());
-  QueryNode* pCteDef = CteDef::pCreate(sBuf.szStz());
-  // TODO: Populate pCteDef with column information
-
-  // Get the node that represents the enclosing subquery's definition
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
-  ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
-
-  // Add this CteDef to the metadata and get its full path string
-  if (pEnclosingSubqueryDefn) {
-    pEnclosingSubqueryDefn->vAppendChild(pCteDef);
-
-  } else {
-    MetadataNode::vAddCte(pMetadataNode, pCteDef);
-  }
-
-  s2K sCteDefPath;
-  MetadataNode::bGetCteDefPath(pMetadataNode, pCteDef, sCteDefPath);
-  ASSERT(sCteDefPath.nLength() > 0);
-
-  // Update the defnPath property of this subquery node.
-  SubqueryMarker::vSetDefnPath(pSubqueryNode, sCteDefPath.szStz());
+  // Finally, create a CteDef for the main subquery and populate it with information.
+  vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1509,6 +1479,99 @@ QueryNodeList* NameValidator::pResolvableSubqueries(QueryNode* pSubqueryNode, s2
 
   delete pChildIter;
   return pNodeList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Create a CteDef that represents a main subquery and add it to the metadata */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                              PlanNode* pRootNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pSubqueryNode);
+  ASSERT(MainSubquery::bIsOfType(pSubqueryNode));
+  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(pMetadataNode);
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+
+  // The alias name of the CteDef is not important so let's just use the current
+  // node name of the main subquery with a couple of underscores prepended to it
+  s256 sBuf;
+  sBuf.vCatSprint("__%s"_Stz, pSubqueryNode->szName());
+  QueryNode* pCteDef = CteDef::pCreate(sBuf.szStz());
+
+  // Populate pCteDef with column information
+  // Get the list of projected columns of this main subquery
+  QueryNodeList* pProjectedColumns = MainSubquery::pColumnExprs(pSubqueryNode, pRootNode);
+
+  // Turn each projected column into a column definition
+  QueryNodeIter* pIter = pProjectedColumns->pNewIter();
+  i8 iOrdinal = -1;
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedCol = pIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedCol);
+    ASSERT(pColExpr);
+    ASSERT(Expr::bIsOfType(pColExpr));
+
+    s256 sColNameBuf;
+    Stz* szColName = ProjectedColumn::szAliasName(pProjectedCol);
+    if (!szColName) {
+      // If the projected expr is a columnRef or aliasRef then let's use
+      // that column name, otherwise we have to make one up.
+      if (ColumnRef::bIsOfType(pColExpr)) {
+        szColName = ColumnRef::szColumn(pColExpr);
+
+      } else if (AliasRef::bIsOfType(pColExpr)) {
+        szColName = AliasRef::szAlias(pColExpr);
+
+      } else {
+        sColNameBuf.vCatSprint("COL%lld"_Stz, iOrdinal + 1);
+        szColName = sColNameBuf.szStz();
+      }
+    }
+
+    QueryNode* pTypeNode = SqlType::pCreate(Expr::eType(pColExpr, pRootNode));
+    b1 bNotNull = false;
+    ++iOrdinal;
+    i8 iPrecision = -1;
+    i8 iScale = -1;
+
+    // Create the column definition. For a main subquery there is no qualifying
+    // catalog/schema/table name. Only a column name.
+    QueryNode* pColumnDef = ColumnDef::pCreate(nullptr, nullptr, nullptr,
+                                               szColName, pTypeNode, bNotNull,
+                                               iOrdinal, iPrecision, iScale);
+    CteDef::vAddColumnDef(pCteDef, pColumnDef);
+  }
+
+  delete pIter;
+  pProjectedColumns->vDeleteAll();
+  delete pProjectedColumns;
+  pProjectedColumns = nullptr;
+
+  // Get the CteDef node that represents the enclosing subquery's definition,
+  // if one exists.
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
+
+  // Add the CteDef of this main subquery to the metadata and get its full path string.
+  // If there is an enclosing subquery then we add it as a child.
+  if (pEnclosingSubqueryDefn) {
+    pEnclosingSubqueryDefn->vAppendChild(pCteDef);
+
+  } else {
+    MetadataNode::vAddCte(pMetadataNode, pCteDef);
+  }
+
+  s2K sCteDefPath;
+  MetadataNode::bGetCteDefPath(pMetadataNode, pCteDef, sCteDefPath);
+  ASSERT(sCteDefPath.nLength() > 0);
+
+  // Update the defnPath property of this main subquery node.
+  SubqueryMarker::vSetDefnPath(pSubqueryNode, sCteDefPath.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
