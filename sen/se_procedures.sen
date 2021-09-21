@@ -15,7 +15,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create catalog
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create catalog
     parameters $catalogNm
@@ -37,7 +37,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create index
     parameters $indexNm $etc
@@ -62,7 +62,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create unique index
     parameters $indexNm $etc
@@ -88,7 +88,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create index
     parameters $indexNm $etc
@@ -116,7 +116,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create unique index
     parameters $indexNm $etc
@@ -145,7 +145,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create schema
     parameters $schemaNm
@@ -167,7 +167,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create table
     parameters $tableNm $etc
@@ -189,7 +189,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create tenant
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure create tenant
     parameters $tenantNm
@@ -211,7 +211,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table as
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure ctas
     parameters $table1 $table2
@@ -236,7 +236,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define table
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedureLocal define table
     parameters $tableNm $etc
@@ -253,7 +253,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure delete
     parameters $table $predicate
@@ -285,7 +285,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure compact index
     parameters $tableNm $indexNm
@@ -307,7 +307,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure drop catalog
     tags <lowMemory>
@@ -330,7 +330,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure drop index
     tags <lowMemory>
@@ -356,7 +356,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop schema
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure drop schema
     tags <lowMemory>
@@ -379,7 +379,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop table
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure drop table
     tags <lowMemory>
@@ -405,7 +405,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure drop tenant
     tags <lowMemory>
@@ -428,7 +428,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify index
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure verify index
     parameters $tableNm $indexNm
@@ -459,7 +459,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // count
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure count
     tags <lowMemory>
@@ -482,7 +482,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure export
     parameters $Table $File
@@ -507,7 +507,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure gridSanity
     tags <lowMemory>
@@ -528,7 +528,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitionScan
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure partitionScan
     parameters $table $partition
@@ -551,7 +551,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure predicateFetch
     parameters $table $predicate
@@ -573,7 +573,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select table
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure select table
     parameters $Table
@@ -595,7 +595,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tableScan
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure tableScan
     parameters $table
@@ -617,7 +617,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure truncate
     tags <lowMemory>
@@ -649,7 +649,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // getRows
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure getRows
     parameters $Table
@@ -677,7 +677,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // putRows
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure putRows
     parameters $Table
@@ -720,7 +720,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure copyFile
     parameters $FileIn $FileOut
@@ -739,7 +739,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list file
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure listFile
     parameters $File
@@ -757,7 +757,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // xyz file
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure xyzFile
     parameters $Table $File $Ntimes
@@ -791,7 +791,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure cyclicRdFile
     parameters $FileIn $NTimes
@@ -821,7 +821,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add node
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure add node
     parameters $NodeNm $IpAddr $PortNo
@@ -850,7 +850,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // adjust partitions
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure adjust partitions
   begin
@@ -878,7 +878,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove node
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure remove node
     parameters $NodeNm
@@ -899,7 +899,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn node
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure spawn node
     parameters $NodeNm
@@ -920,7 +920,7 @@
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // prototype get meta object
 
-    STD_PATH
+    STD_PATH_TAG
     "
     procedure pgetMeta
       parameters $TableNm
@@ -942,7 +942,7 @@
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      // prototype assertGrid
 
-      STD_PATH
+      STD_PATH_TAG
       "
       procedure assertGrid
       begin
@@ -967,7 +967,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump grid info
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure dumpGrid
   begin
@@ -981,7 +981,7 @@
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //  dump table meta info
 
-    STD_PATH
+    STD_PATH_TAG
     "
     procedure dumpMeta
       parameters $TableNm
@@ -995,7 +995,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure getBucket
     parameters $TableNm1 $TableNm2
@@ -1020,7 +1020,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure getMeta
     parameters $TableNm
@@ -1053,7 +1053,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 1
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure steadyState_1
     parameters $Table $File $NTimes
@@ -1086,7 +1086,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 2
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure steadyState_2
     parameters $Table $File $NTimes
@@ -1119,7 +1119,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 3
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure steadyState_3
    parameters $Table $File $NTimes
@@ -1180,7 +1180,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unload
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure unload
     parameters $Table $File
@@ -1208,7 +1208,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reload
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure reload
     parameters $Table $File
@@ -1232,7 +1232,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reorder table
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure reorder
     parameters $table1 $table2 $predicate
@@ -1267,7 +1267,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forgetNode
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure forgetNode
     parameters $NodeNm $etc
@@ -1290,7 +1290,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // rebalance
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure rebalance
   begin

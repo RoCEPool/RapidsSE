@@ -1,7 +1,7 @@
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // prototype get meta object
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure pgetMeta
     parameters $TableNm
@@ -23,7 +23,7 @@
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // get meta object 2
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure getMeta2
     parameters $TableNm

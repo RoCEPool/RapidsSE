@@ -269,7 +269,7 @@ Path[].root
   locals| sPipeline |
 
 
-  STD_PATH
+  STD_PATH_TAG
   "    <pu_test> = "   iTest   >str >>  >> nl
   "    <pu_subset> = " iSubSet >str >>  >> nl
   "    <pu_t> = "      iT      >str >>  >> nl
@@ -288,7 +288,7 @@ Path[].root
     //2discard
      discard
        "JobRep %v " str.format
-         STD_PATH swap dup . api::executeCommand 2discard
+         STD_PATH_TAG swap dup . api::executeCommand 2discard
   
   true api::reapJobs
   
@@ -296,7 +296,7 @@ Path[].root
   
   
   
-//  STD_PATH
+//  STD_PATH_TAG
 //  "
 //  pipeline unnamed
 //  begin

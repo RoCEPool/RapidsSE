@@ -9,7 +9,7 @@ assert::stack_0
         "se_core.sen"             include
         
 "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  constant STD_PATH
+  constant STD_PATH_TAG
 
 "se_boot 9" .verbose
         "se_word.sen"             include

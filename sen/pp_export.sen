@@ -10,7 +10,7 @@
 
 : start::defProc_Export
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure export
     parameters $table $file

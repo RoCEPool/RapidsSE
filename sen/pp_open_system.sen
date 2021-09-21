@@ -4,7 +4,7 @@
 
 " pp_open_system.sen" .verbose
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure open system
   begin

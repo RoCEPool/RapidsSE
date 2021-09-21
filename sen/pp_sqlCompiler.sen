@@ -14,7 +14,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sql Compiler
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure sqlCompiler
     parameters $sqlStatement

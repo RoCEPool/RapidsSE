@@ -10,7 +10,7 @@
 
 : start::defProc_pu
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure puLoad
     parameters $table

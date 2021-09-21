@@ -10,7 +10,7 @@
 
 : start::defProc_Load
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure load
     parameters $table $file
@@ -50,7 +50,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load (bucket)
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure load_bkt
     parameters $table $file
@@ -88,7 +88,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure dfload
     parameters $table $file
@@ -153,7 +153,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure dload
     parameters $table

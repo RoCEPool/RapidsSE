@@ -14,7 +14,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_ANALYZEINDEX
-  STD_PATH
+  STD_PATH_TAG
   "
     define table __analyzeIndex (
       nodeName       VARCHAR NOT NULL ,
@@ -27,7 +27,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_ANALYZETABLE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __analyzeTable (
      nodeName       VARCHAR NOT NULL ,
@@ -40,7 +40,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COMMANDERRORS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __commandErrors (
     nodeName       VARCHAR NOT NULL ,
@@ -54,7 +54,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COUNT
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
@@ -62,7 +62,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COUNTINFO
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __countInfo ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
@@ -70,7 +70,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_EXECERRORS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __execErrors (
     nodeName       VARCHAR NOT NULL ,
@@ -82,7 +82,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_EXPLAIN
-  STD_PATH
+  STD_PATH_TAG
   "
     define table __explain (
       stageNum    INTEGER NOT NULL ,
@@ -94,7 +94,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_GRIDSANITY
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __gridSanity (
     nodeName   VARCHAR NOT NULL ,
@@ -105,7 +105,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTCOLUMNS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listColumns (
     columnName     VARCHAR NOT NULL ,
@@ -120,7 +120,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTCONTENTS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listContents (
     Name       VARCHAR NOT NULL
@@ -130,7 +130,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTFOLDER
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listFolder (
     Name       VARCHAR NOT NULL ,
@@ -141,7 +141,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTINDEX
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listIndex (
     indexName    VARCHAR NOT NULL ,
@@ -153,7 +153,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTNODES
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listNodes (
     node          INTEGER NOT NULL ,
@@ -168,7 +168,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTPARTITIONS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __listPartitions (
     partition     INTEGER NOT NULL ,
@@ -179,7 +179,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PINGINFO
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __pingInfo (
     pong      VARCHAR NOT NULL
@@ -189,7 +189,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROMPTOUT
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __promptOut (
     promptLine  VARCHAR NOT NULL
@@ -209,7 +209,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SHOWCLUSTER
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __showCluster (
     NodeName  VARCHAR NOT NULL ,
@@ -222,7 +222,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SIZEINDEX
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __sizeIndex (
     NodeName  VARCHAR NOT NULL ,
@@ -233,7 +233,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SIZETABLE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __sizeTable (
     NodeName  VARCHAR NOT NULL ,
@@ -244,7 +244,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SPACE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __space (
     nodeName   VARCHAR NOT NULL ,
@@ -257,7 +257,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_STATUS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __status (
     nodeName   VARCHAR NOT NULL ,
@@ -271,7 +271,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_TABLESIZES
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __tableSizes (
     NodeName  VARCHAR NOT NULL ,
@@ -283,7 +283,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_VERIFYINDEX
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __verifyIndex (
     nodeName       VARCHAR NOT NULL ,
@@ -296,7 +296,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_VERIFYTABLE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __verifyTable (
     nodeName       VARCHAR NOT NULL ,
@@ -318,7 +318,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_CALLPIPELINE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __callPipeline (
     request        VARCHAR NOT NULL ,
@@ -330,7 +330,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COLUMNDEFS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __columnDefs (
     catalogName    VARCHAR NOT NULL ,
@@ -350,7 +350,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOADRESULT
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __loadResult (
     iRowsProcessed INTEGER NOT NULL ,
@@ -362,7 +362,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOCKSTATS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __lockStats (
     nodeNo         INTEGER        NOT NULL ,
@@ -384,7 +384,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPCATALOG
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __lookupCatalog (
     catalogName   VARCHAR NOT NULL
@@ -394,7 +394,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPSCHEMA
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __lookupSchema (
     catalogName   VARCHAR NOT NULL ,
@@ -405,7 +405,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOOKUPTABLE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __lookupTable (
     catalogName   VARCHAR NOT NULL ,
@@ -417,7 +417,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_NODEINFO
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __nodeInfo (
     nodeName       VARCHAR NOT NULL ,
@@ -431,7 +431,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PARTITIONKEY
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __partitionKey (
     catalogName    VARCHAR NOT NULL ,
@@ -445,7 +445,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PATHINFO
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __pathInfo (
     path           VARCHAR NOT NULL ,
@@ -457,7 +457,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROGRESSUNITS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __progressUnits (
     units      INTEGER NOT NULL
@@ -467,7 +467,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PWF
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __pwf (
     folder   VARCHAR NOT NULL
@@ -477,7 +477,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_RETURNPIPELINE
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __returnPipeline (
     requestNo      INTEGER NOT NULL ,
@@ -490,7 +490,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SEEKOFFSETS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __seekOffsets (
     offset    INTEGER NOT NULL ,
@@ -502,7 +502,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_TOTALUNITS
-  STD_PATH
+  STD_PATH_TAG
   "
   define table __totalUnits (
     FILENAME   VARCHAR NOT NULL ,
@@ -522,7 +522,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_EVENTLOG
-  STD_PATH
+  STD_PATH_TAG
   "
   define table se__eventLog (
   
@@ -543,7 +543,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
-  STD_PATH
+  STD_PATH_TAG
   "
   define table se__jobReport (
     
@@ -563,7 +563,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_MEMORYLOG
-  STD_PATH
+  STD_PATH_TAG
   "
   define table se__memoryLog (
   
@@ -584,7 +584,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_OPERANDLOG
-  STD_PATH
+  STD_PATH_TAG
   "
   define table se__operandLog (
   
@@ -605,7 +605,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_RESOURCELOG
-  STD_PATH
+  STD_PATH_TAG
   "
   define table se__resourceLog (
   

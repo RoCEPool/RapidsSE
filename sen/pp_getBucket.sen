@@ -1,4 +1,4 @@
-STD_PATH
+STD_PATH_TAG
 "
 procedure getBucketA
   parameters $TableNm
@@ -41,7 +41,7 @@ api::addProcedure
 
 
 
-STD_PATH
+STD_PATH_TAG
 "
 procedure getBucketB
   parameters $TableNm
