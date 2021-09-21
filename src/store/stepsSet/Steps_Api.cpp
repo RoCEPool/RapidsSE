@@ -174,7 +174,9 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //push result
   
-  m_pDataStack->vPushInt(0);
+  i8 iJobNo = (i8)pJob->tJobId().uJobNo();
+  
+  m_pDataStack->vPushInt(iJobNo);
   m_pDataStack->vPushInt(true);
   
   //delete pReqTknVec;
@@ -191,7 +193,9 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  Api::vReapJobsOnce();
+  i8 iForce = (i8)m_pDataStack->iPopInt(__func__);
+
+  Api::vReapJobsOnce(iForce);
 
   EXIT();
 }

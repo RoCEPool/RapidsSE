@@ -280,9 +280,14 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-  STD_PATH sPipeline api::executeCommand 2discard
+  STD_PATH sPipeline api::executeCommand
   
+    2discard
+    // discard
+    // "JobReport %v ;" str.format
+    //  STD_PATH swap api::executeCommand 2discard
   
+  true api::reapJobs
   
   
   
