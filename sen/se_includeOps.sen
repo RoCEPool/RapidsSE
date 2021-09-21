@@ -96,6 +96,7 @@ assert::stack_0
   "OP_insert.sen"               include
 
 "j" .verbose
+  "OP_jobReport.sen"            include
 
 "k" .verbose
 
