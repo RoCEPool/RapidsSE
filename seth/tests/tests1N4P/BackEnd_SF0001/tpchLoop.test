@@ -44,6 +44,10 @@ LOG 'Running index joins...';
 INCLUDE 'indexJoin.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running index scans...';
+INCLUDE 'indexScan.test';
+
+//------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
 //INCLUDE 'query1.test';
 
@@ -58,7 +62,7 @@ INCLUDE 'tpchSchemaDrop.test';
 } -- end of loop
 
 CLEANUP {
-/*
+
   drop table customer;
   mute
 
@@ -82,7 +86,7 @@ CLEANUP {
 
   drop table nation;
   mute
-*/
+
   bye;
   mute
 }
