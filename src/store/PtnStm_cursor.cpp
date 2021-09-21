@@ -123,23 +123,24 @@ bool PtnStm_cursor::bOpen(void)
 void PtnStm_cursor::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  vTrace("vReset\n"_Stz);
+  vTrace("PtnStm_cursor vReset\n"_Stz);
 
   // decrypting the partition ID into the partition number
   i8 tPtnNo = AM::PTNMAP::tPtnIDToPtnNo(m_pTablePtn->tPtnId().iAsI8());
 
   vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnId().iAsI8());
-  vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo().iAsI8(), tPtnNo);
+  //vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo().iAsI8(), tPtnNo);
 
-  m_tCurPtnNo = tPtnNo; //m_pTablePtn->tMappedPtnNo(); //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
+  m_tCurPtnNo = tPtnNo; //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
 
   m_iCurBktNo = m_pTablePtn->pTable()->iPtnToBkt(m_tCurPtnNo);
 
-  vTrace("BktNo:%lld\n"_Stz,m_iCurBktNo );
+  vTrace("m_iCurBktNo:%lld\n"_Stz,m_iCurBktNo );
 
   m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
-  if (m_pCurBkt)
+  if (m_pCurBkt) {
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
+  }
   else
     m_pCurBuffer = nullptr;
   //////
@@ -147,7 +148,7 @@ void PtnStm_cursor::vReset(void)
   m_iLglBufferNo = -1; // correct
 }
 
-#ifdef WITH_BKTMAP_2N4P
+
 /*----------------------------------------------------------------------------*/
 /* read next buffer                                                           */
 /*----------------------------------------------------------------------------*/
@@ -155,7 +156,23 @@ DataBuffer* PtnStm_cursor::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
 
-  vTrace("pRead\n"_Stz);
+  vTrace("PtnStm_cursor pRead\n"_Stz);
+
+#ifdef WITH_GID_PTNID
+  if (!m_pCurBuffer)
+    return nullptr;
+
+  DataBuffer *pReadBuffer = m_pCurBuffer;
+
+  m_pCurBuffer = _pDataBuffer(m_pCurBuffer->pNextLinkedBuffer());
+
+  if (pReadBuffer)
+    m_iLglBufferNo++;
+  else
+    m_iLglBufferNo = -1;
+
+  return pReadBuffer;
+#else
 
   if (!m_pCurBuffer) {
     // Do we have another bucket for this partition
@@ -183,35 +200,11 @@ DataBuffer* PtnStm_cursor::pRead(void)
     m_iLglBufferNo = -1;
 
   return pReadBuffer;
-}
-#else
-
-
-/*----------------------------------------------------------------------------*/
-/* read next buffer                                                           */
-/*----------------------------------------------------------------------------*/
-DataBuffer* PtnStm_cursor::pRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-
-  if (!m_pNextBuffer)
-    return nullptr;
-
-  DataBuffer *pReadBuffer = m_pNextBuffer;
-
-  m_pNextBuffer = _pDataBuffer(m_pNextBuffer->pNextLinkedBuffer());
-
-  if (pReadBuffer)
-    m_iLglBufferNo++;
-  else
-    m_iLglBufferNo = -1;
-
-  return pReadBuffer;
-}
 #endif
+}
 
 
-#ifdef WITH_BKTMAP_2N4P
+
 /*----------------------------------------------------------------------------*/
 /* seek                                                                       */
 /*----------------------------------------------------------------------------*/
@@ -235,29 +228,7 @@ bool PtnStm_cursor::bSeek(i8 iBufferNo) {
     return false;
 }
 
-#else
-/*----------------------------------------------------------------------------*/
-/* seek                                                                       */
-/*----------------------------------------------------------------------------*/
-bool PtnStm_cursor::bSeek(i8 iBufferNo) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PTNSTMCURSOR, _FOOTER_);
 
-  if (iBufferNo < m_iLglBufferNo)
-    vReset();
-
-  while (m_iLglBufferNo < iBufferNo) {
-    m_pNextBuffer = _pDataBuffer(m_pNextBuffer->pNextLinkedBuffer());
-    if (!m_pNextBuffer)
-      return false;
-    m_iLglBufferNo++;
-  }
-
-  if (iBufferNo == m_iLglBufferNo)
-    return true;
-  else
-    return false;
-}
-#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

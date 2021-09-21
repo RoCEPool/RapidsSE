@@ -84,7 +84,7 @@ i8 PtnStream::iBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   return m_pPtnStm_cursor->iBufferNo();
 #else
   return m_iLglBufferNo;
@@ -98,7 +98,7 @@ i8 PtnStream::iBufferNo(void)
 void PtnStream::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   m_pPtnStm_cursor->vClose();
 #else
   m_pNextBuffer = nullptr;
@@ -112,7 +112,7 @@ bool PtnStream::bOpen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   return m_pPtnStm_cursor->bOpen();;
 #else
   vReset();
@@ -127,7 +127,7 @@ DataBuffer* PtnStream::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   return m_pPtnStm_cursor->pRead();
 #else
 
@@ -154,7 +154,7 @@ void PtnStream::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   return m_pPtnStm_cursor->vReset();
 #else
   m_pNextBuffer  = m_pTablePtn->pRootBuffer();
@@ -168,7 +168,7 @@ void PtnStream::vReset(void)
 bool PtnStream::bSeek(i8 iBufferNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PTNSTREAM, _FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   return m_pPtnStm_cursor->bSeek(iBufferNo);
 #else
 

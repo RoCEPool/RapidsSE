@@ -30,7 +30,7 @@ BucketMap::BucketMap(i8 nPartitions)
 #ifdef WITH_BKTMAP_2N4P
   if (nPartitions <= 8) {
     // Synthetic mapping, assign buckets to logical partitions
-    i8 tPtnId;
+    i8 tPtnId = 0;
     i8 i_Bkt = 0;
 
 
@@ -44,6 +44,26 @@ BucketMap::BucketMap(i8 nPartitions)
       //tPtnNo = (++tPtnNo) % nPartitions;
 
     }
+
+    // 1 to 1 mapping
+    m_taInLglPtn[0] = 0;
+    m_taInLglPtn[1] = 1;
+    m_taInLglPtn[2] = 2;
+    m_taInLglPtn[3] = 3;
+    m_taInLglPtn[4] = 4;
+    m_taInLglPtn[5] = 5;
+    m_taInLglPtn[6] = 6;
+    m_taInLglPtn[7] = 7;
+    m_taInLglPtn[8] = 8;
+    m_taInLglPtn[9] = 9;
+    m_taInLglPtn[10] = 10;
+    m_taInLglPtn[11] = 11;
+    m_taInLglPtn[12] = 12;
+    m_taInLglPtn[13] = 13;
+    m_taInLglPtn[14] = 14;
+    m_taInLglPtn[15] = 15;
+
+
 
 
    // Random 1
@@ -89,7 +109,7 @@ BucketMap::BucketMap(i8 nPartitions)
 
 
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    //  vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
+      vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt].iAsI8());
     }
 
   } else {
@@ -105,11 +125,17 @@ BucketMap::BucketMap(i8 nPartitions)
 
 #else
   // assign buckets to logical partitions in a round-robin fashion
-  tPN tPtnNo = 0;
+  i8 tPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taInLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
     //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+  }
+
+
+
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  //  vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt].iAsI8());
   }
 #endif
  

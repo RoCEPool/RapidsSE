@@ -92,7 +92,7 @@
 
 #define WITH_MULTI_BUCKET EndDefine
 
-#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
+//#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
 
 #define WITH_GID_PTNID EndDefine           // code for grid wide and
 

@@ -157,17 +157,19 @@ PtnId Parcel::tDstPtn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   Operand* pOperand = pGetOperand();
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   if (CN_CRWBUFFER == pOperand->eGetClassNo()) {
 
-    CrwBuffer* pBuffer = (CrwBuffer*)m_pItems[0];
+    CrwBuffer *pBuffer = (CrwBuffer *) m_pItems[0];
     // Get the bucket number and partition number from buffer
-    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld  m_tDstPtn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnId().iAsI8(), (i8)m_tDstPtnId.iAsI8());
+    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld  m_tDstPtn:%lld\n"_Stz, pBuffer->iBucketNo(),
+           (i8) pBuffer->tPtnId().iAsI8(), (i8) m_tDstPtnId.iAsI8());
 
     //m_tDstPtn = pBuffer->iBucketNo();
     m_tDstPtnId = pBuffer->tPtnId();
   }
 #endif
+//vTrace("Parcel::tDstPtn CN_CRWBUFFER  Ptn:%lld  m_tDstPtn:%lld\n"_Stz,  (i8)m_tDstPtnId.iAsI8(), (i8)m_tDstPtnId.iAsI8());
   return m_tDstPtnId;
 }
 
@@ -802,9 +804,9 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-#ifdef WITH_BKTMAP_2N4P
-  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
-#endif
+
+  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   

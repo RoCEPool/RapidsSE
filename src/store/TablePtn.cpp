@@ -75,7 +75,7 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
       NEVER_REACH;
   }
 
-#ifdef WITH_BKTMAP_2N4P
+#ifdef WITH_GID_PTNID
   //for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
   {

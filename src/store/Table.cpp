@@ -70,7 +70,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
 
       PtnId tPtnNo(Table::tTablePtnToPtnId(i_TablePtn));
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo.iAsI8());
+      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld %lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo.iAsI8(), tPtnNo.uPtnNo());
       m_pTablePtnVec->vAdd(pTablePtn);
     }
   }
