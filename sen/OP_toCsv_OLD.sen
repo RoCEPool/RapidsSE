@@ -1,0 +1,143 @@
+/*============================================================================*/
+/* OP_toCsv.sen -- Operator toCsv                                             */
+/*============================================================================*/
+
+" OP_toCsv.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
+/*----------------------------------------------------------------------------*/
+: toCsv_StreamDef \handler
+
+  //"Operand:- ZK_D_STREAMDEF" .verbose
+  PipeIn[].delete
+
+  StreamDefLft[].newtoCsvStream
+  StreamDefLft[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: toCsv_CrwBuffer \handler
+
+  //"Operand:- ZK_D_CRWBUFFER" .verbose
+
+  PipeIn[]\clear to CrwBuffer[]
+
+  // check for low memory
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY op__execErr
+    CrwBuffer[].delete
+    true
+    exit
+  then
+
+  CrwBuffer[].toCsv to CsvBuffer[]
+  CsvBuffer[] to Subset[]
+
+  begin
+    CsvBuffer[].isNull
+
+  not while
+
+    assert::stack_0
+
+    // get the next buffer
+    Subset[].nextBuffer to Subset[]
+
+    // now pipeout the Operand
+    CsvBuffer[].pipeOut
+
+
+    // move Subset to Operand
+    Subset[] to CsvBuffer[]
+
+    assert::stack_0
+  repeat
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/*----------------------------------------------------------------------------*/
+: toCsv_RowBuffer \handler
+
+  // check for low memory
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY op__execErr
+    PipeIn[].delete
+    true
+    exit
+  then
+
+  PipeIn[]\clear to RowBuffer[]
+
+  RowBuffer[].toCsv to CsvBuffer[]
+  CsvBuffer[] to Subset[]
+
+  begin
+    RowBuffer[].isNull
+
+  not while
+
+    assert::stack_0
+
+    // get the next buffer
+    Subset[].nextBuffer to Subset[]
+
+    // now pipeout the RowBuffer
+    RowBuffer[].pipeOut
+
+    // move Subset to Operand
+    Subset[] to RowBuffer[]
+
+    assert::stack_0
+  repeat
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for toCsv req                                                SPAWN */
+/*----------------------------------------------------------------------------*/
+ : toCsv_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!
+  find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toCsv :: toCsv ;
+
+: toCsv_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toCsv_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

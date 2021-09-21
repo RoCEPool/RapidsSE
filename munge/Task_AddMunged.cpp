@@ -13183,27 +13183,15 @@ void Task::vAddMunged(Task* )
     "    stage stageA on origin :\n"
     "        start\n"
     "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | stageB robin\n"
+    "      | stageB\n"
     "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)\n"
-    "    //| toBktRow          //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "      | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)\n"
-    "    //| toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
-    "      | stageC hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | stageD\n"
-    "\n"
+    "    stage stageB on all partitions :\n"
+    "        scan $table\n"
+    "      | toCsv\n"
+    "      | stageC\n"
+    "      \n"
     "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
     "      | output\n"
-    "      | toStatDemon\n"
     "      | sink\n"
     "      | stageA\n"
     "\n"
@@ -17054,7 +17042,7 @@ void Task::vAddMunged(Task* )
     "\" OP_toCsv.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */\n"
+    "/* handler for ZK_D_STREAMDEF ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": toCsv_StreamDef \\handler\n"
     "\n"
@@ -17068,7 +17056,7 @@ void Task::vAddMunged(Task* )
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */\n"
+    "/* handler for ZK_D_CRWBUFFER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": toCsv_CrwBuffer \\handler\n"
     "\n"
@@ -17076,76 +17064,15 @@ void Task::vAddMunged(Task* )
     "\n"
     "  PipeIn[]\\clear to CrwBuffer[]\n"
     "\n"
-    "  // check for low memory\n"
-    "  attachMap::isLowMemory if\n"
-    "    EC_LOW_MEMORY op__execErr\n"
-    "    CrwBuffer[].delete\n"
-    "    true\n"
-    "    exit\n"
-    "  then\n"
-    "\n"
-    "  CrwBuffer[].toCsv to CsvBuffer[]\n"
-    "  CsvBuffer[] to Subset[]\n"
-    "\n"
-    "  begin\n"
-    "    CsvBuffer[].isNull\n"
-    "\n"
-    "  not while\n"
-    "\n"
-    "    assert::stack_0\n"
-    "\n"
-    "    // get the next buffer\n"
-    "    Subset[].nextBuffer to Subset[]\n"
-    "\n"
-    "    // now pipeout the Operand\n"
-    "    CsvBuffer[].pipeOut\n"
-    "\n"
-    "\n"
-    "    // move Subset to Operand\n"
-    "    Subset[] to CsvBuffer[]\n"
-    "\n"
-    "    assert::stack_0\n"
-    "  repeat\n"
-    "\n"
     "  true\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */\n"
+    "/* handler for ZK_D_ROWBUFFER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": toCsv_RowBuffer \\handler\n"
     "\n"
-    "  // check for low memory\n"
-    "  attachMap::isLowMemory if\n"
-    "    EC_LOW_MEMORY op__execErr\n"
-    "    PipeIn[].delete\n"
-    "    true\n"
-    "    exit\n"
-    "  then\n"
-    "\n"
     "  PipeIn[]\\clear to RowBuffer[]\n"
-    "\n"
-    "  RowBuffer[].toCsv to CsvBuffer[]\n"
-    "  CsvBuffer[] to Subset[]\n"
-    "\n"
-    "  begin\n"
-    "    RowBuffer[].isNull\n"
-    "\n"
-    "  not while\n"
-    "\n"
-    "    assert::stack_0\n"
-    "\n"
-    "    // get the next buffer\n"
-    "    Subset[].nextBuffer to Subset[]\n"
-    "\n"
-    "    // now pipeout the RowBuffer\n"
-    "    RowBuffer[].pipeOut\n"
-    "\n"
-    "    // move Subset to Operand\n"
-    "    Subset[] to RowBuffer[]\n"
-    "\n"
-    "    assert::stack_0\n"
-    "  repeat\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -17154,7 +17081,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for toCsv req                                                SPAWN */\n"
+    "/* execute for toCsv req                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
     " : toCsv_op \\operator\n"
     "\n"
@@ -33109,9 +33036,164 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [247] pp_load.sen
+  // munge of [247] OP_toCsv_OLD.sen
 
   gszaMungedText[247] =
+    "\" munged OP_toCsv_OLD.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_toCsv.sen -- Operator toCsv                                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_toCsv.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": toCsv_StreamDef \\handler\n"
+    "\n"
+    "  //\"Operand:- ZK_D_STREAMDEF\" .verbose\n"
+    "  PipeIn[].delete\n"
+    "\n"
+    "  StreamDefLft[].newtoCsvStream\n"
+    "  StreamDefLft[].pipeOut\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": toCsv_CrwBuffer \\handler\n"
+    "\n"
+    "  //\"Operand:- ZK_D_CRWBUFFER\" .verbose\n"
+    "\n"
+    "  PipeIn[]\\clear to CrwBuffer[]\n"
+    "\n"
+    "  // check for low memory\n"
+    "  attachMap::isLowMemory if\n"
+    "    EC_LOW_MEMORY op__execErr\n"
+    "    CrwBuffer[].delete\n"
+    "    true\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  CrwBuffer[].toCsv to CsvBuffer[]\n"
+    "  CsvBuffer[] to Subset[]\n"
+    "\n"
+    "  begin\n"
+    "    CsvBuffer[].isNull\n"
+    "\n"
+    "  not while\n"
+    "\n"
+    "    assert::stack_0\n"
+    "\n"
+    "    // get the next buffer\n"
+    "    Subset[].nextBuffer to Subset[]\n"
+    "\n"
+    "    // now pipeout the Operand\n"
+    "    CsvBuffer[].pipeOut\n"
+    "\n"
+    "\n"
+    "    // move Subset to Operand\n"
+    "    Subset[] to CsvBuffer[]\n"
+    "\n"
+    "    assert::stack_0\n"
+    "  repeat\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": toCsv_RowBuffer \\handler\n"
+    "\n"
+    "  // check for low memory\n"
+    "  attachMap::isLowMemory if\n"
+    "    EC_LOW_MEMORY op__execErr\n"
+    "    PipeIn[].delete\n"
+    "    true\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  PipeIn[]\\clear to RowBuffer[]\n"
+    "\n"
+    "  RowBuffer[].toCsv to CsvBuffer[]\n"
+    "  CsvBuffer[] to Subset[]\n"
+    "\n"
+    "  begin\n"
+    "    RowBuffer[].isNull\n"
+    "\n"
+    "  not while\n"
+    "\n"
+    "    assert::stack_0\n"
+    "\n"
+    "    // get the next buffer\n"
+    "    Subset[].nextBuffer to Subset[]\n"
+    "\n"
+    "    // now pipeout the RowBuffer\n"
+    "    RowBuffer[].pipeOut\n"
+    "\n"
+    "    // move Subset to Operand\n"
+    "    Subset[] to RowBuffer[]\n"
+    "\n"
+    "    assert::stack_0\n"
+    "  repeat\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for toCsv req                                                SPAWN */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : toCsv_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!\n"
+    "  find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
+    "  find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: toCsv :: toCsv ;\n"
+    "\n"
+    ": toCsv_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"toCsv_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 247 CONSTANT OP_toCsv_OLD.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [248] pp_load.sen
+
+  gszaMungedText[248] =
     "\" munged pp_load.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_load.sen -- load pipeline procedures                                    */\n"
@@ -33296,13 +33378,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 247 CONSTANT pp_load.sen "_Stz;
+  szSubScriptDef = " 248 CONSTANT pp_load.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [248] OP_limit.sen
+  // munge of [249] OP_limit.sen
 
-  gszaMungedText[248] =
+  gszaMungedText[249] =
     "\" munged OP_limit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_limit.sen -- Operator limit rows                                        */\n"
@@ -33500,13 +33582,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 248 CONSTANT OP_limit.sen "_Stz;
+  szSubScriptDef = " 249 CONSTANT OP_limit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [249] OP_pmetaRecv.sen
+  // munge of [250] OP_pmetaRecv.sen
 
-  gszaMungedText[249] =
+  gszaMungedText[250] =
     "\" munged OP_pmetaRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pmetaRecv.sen -- Operator meta recv                                      */\n"
@@ -33591,13 +33673,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 249 CONSTANT OP_pmetaRecv.sen "_Stz;
+  szSubScriptDef = " 250 CONSTANT OP_pmetaRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [250] OP_answer.sen
+  // munge of [251] OP_answer.sen
 
-  gszaMungedText[250] =
+  gszaMungedText[251] =
     "\" munged OP_answer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_answer.sen -- Operator answer                                           */\n"
@@ -33825,13 +33907,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 250 CONSTANT OP_answer.sen "_Stz;
+  szSubScriptDef = " 251 CONSTANT OP_answer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [251] OP__tpl_lite.sen
+  // munge of [252] OP__tpl_lite.sen
 
-  gszaMungedText[251] =
+  gszaMungedText[252] =
     "\" munged OP__tpl_lite.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP__tpl_lite.sen -- templates for lite op                                    */\n"
@@ -33963,13 +34045,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 251 CONSTANT OP__tpl_lite.sen "_Stz;
+  szSubScriptDef = " 252 CONSTANT OP__tpl_lite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [252] pp_pgetMeta.sen
+  // munge of [253] pp_pgetMeta.sen
 
-  gszaMungedText[252] =
+  gszaMungedText[253] =
     "\" munged pp_pgetMeta.sen \" .verbose \n"
     " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     " // prototype get meta object\n"
@@ -34019,13 +34101,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 252 CONSTANT pp_pgetMeta.sen "_Stz;
+  szSubScriptDef = " 253 CONSTANT pp_pgetMeta.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [253] OP_sigsegv.sen
+  // munge of [254] OP_sigsegv.sen
 
-  gszaMungedText[253] =
+  gszaMungedText[254] =
     "\" munged OP_sigsegv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sigsegv.sen -- inject a sigsegv process kill signal                     */\n"
@@ -34090,13 +34172,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 253 CONSTANT OP_sigsegv.sen "_Stz;
+  szSubScriptDef = " 254 CONSTANT OP_sigsegv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [254] OP_adjustPartitions.sen
+  // munge of [255] OP_adjustPartitions.sen
 
-  gszaMungedText[254] =
+  gszaMungedText[255] =
     "\" munged OP_adjustPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_adjustPartitions.sen -- Operator Adjust Partitions                      */\n"
@@ -34155,13 +34237,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 254 CONSTANT OP_adjustPartitions.sen "_Stz;
+  szSubScriptDef = " 255 CONSTANT OP_adjustPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [255] se_word.sen
+  // munge of [256] se_word.sen
 
-  gszaMungedText[255] =
+  gszaMungedText[256] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -34337,13 +34419,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 255 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 256 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [256] se_core.sen
+  // munge of [257] se_core.sen
 
-  gszaMungedText[256] =
+  gszaMungedText[257] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -34883,13 +34965,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 256 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 257 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [257] se_include.sen
+  // munge of [258] se_include.sen
 
-  gszaMungedText[257] =
+  gszaMungedText[258] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -35136,13 +35218,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 257 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 258 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [258] pp_close_system.sen
+  // munge of [259] pp_close_system.sen
 
-  gszaMungedText[258] =
+  gszaMungedText[259] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -35185,7 +35267,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 258 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 259 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

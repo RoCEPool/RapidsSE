@@ -5,7 +5,7 @@
 " OP_toCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
+/* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_StreamDef \handler
 
@@ -19,7 +19,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                     CRWBUFFER */
+/* handler for ZK_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_CrwBuffer \handler
 
@@ -27,76 +27,15 @@
 
   PipeIn[]\clear to CrwBuffer[]
 
-  // check for low memory
-  attachMap::isLowMemory if
-    EC_LOW_MEMORY op__execErr
-    CrwBuffer[].delete
-    true
-    exit
-  then
-
-  CrwBuffer[].toCsv to CsvBuffer[]
-  CsvBuffer[] to Subset[]
-
-  begin
-    CsvBuffer[].isNull
-
-  not while
-
-    assert::stack_0
-
-    // get the next buffer
-    Subset[].nextBuffer to Subset[]
-
-    // now pipeout the Operand
-    CsvBuffer[].pipeOut
-
-
-    // move Subset to Operand
-    Subset[] to CsvBuffer[]
-
-    assert::stack_0
-  repeat
-
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/* handler for ZK_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_RowBuffer \handler
 
-  // check for low memory
-  attachMap::isLowMemory if
-    EC_LOW_MEMORY op__execErr
-    PipeIn[].delete
-    true
-    exit
-  then
-
   PipeIn[]\clear to RowBuffer[]
-
-  RowBuffer[].toCsv to CsvBuffer[]
-  CsvBuffer[] to Subset[]
-
-  begin
-    RowBuffer[].isNull
-
-  not while
-
-    assert::stack_0
-
-    // get the next buffer
-    Subset[].nextBuffer to Subset[]
-
-    // now pipeout the RowBuffer
-    RowBuffer[].pipeOut
-
-    // move Subset to Operand
-    Subset[] to RowBuffer[]
-
-    assert::stack_0
-  repeat
 
   true
 ;
@@ -105,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute for toCsv req                                                SPAWN */
+/* execute for toCsv req                                                      */
 /*----------------------------------------------------------------------------*/
  : toCsv_op \operator
 
