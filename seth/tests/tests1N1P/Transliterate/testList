@@ -16,4 +16,4 @@ timestamp.test
 //union.test
 
 ../../tests1N4P/Backend/indexJoin.test
-//../../tests1N4P/Backend/indexScan.test
+../../tests1N4P/Backend/indexScan.test

@@ -1161,6 +1161,8 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
     oFile.vPrint("  // *** begin generated code: m_sLowerBoundAsm *** //\n"_Stz);
     oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
     oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
+
+    oFile.vPrint("  EO_RETURN_FALSE\n\n"_Stz);
   }
   else {
     oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_POSITION_AT_START, &oTagSet, sMacro));
@@ -1171,7 +1173,7 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
     oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
     oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
-    oFile.vPrint("  EO_POP\n"_Stz);
+    //oFile.vPrint("  EO_POP\n"_Stz);
 
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
     oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_TRAVERSE_TILL_UPPER, &oTagSet, sMacro));
