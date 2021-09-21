@@ -10,6 +10,9 @@
 #include "StageRangeList.hpp"
 #include "StageRange.hpp"
 #include "StringObject.hpp"
+#include "IntegerLiteral.hpp"
+#include "StringLiteral.hpp"
+
 
 #include "GraphNav.hpp"
 #include "SqlException.hpp"
@@ -46,6 +49,13 @@ static Stz* C_LAST_REGULAR_EXPLAIN_STAGE = "explainPlan"_Stz;
 
 // Name of the last stage that can be explained
 static Stz* C_LAST_EXPLAINABLE_STAGE = "transliterate"_Stz;
+
+// Explain virtual table columns.
+// TODO: It would be good to get this from the C_TDEF_EXPLAIN definition
+//       Refer to se_defineTables.sen
+static Stz* C_COL_STAGENUM_NAME  = "stageNum"_Stz;
+static Stz* C_COL_STAGENAME_NAME = "stageName"_Stz;
+static Stz* C_COL_EXPLAIN_NAME   = "explain"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -231,19 +241,32 @@ QueryNodeList* ExplainOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   UNUSED(pNode);
   UNUSED(pRootNode);
 
-  // There should never be a need to call this function on an ExplainOp,
-  // even if we were explaining an explained query.
-  NEVER_REACH
+  // Create a representation of the explain virtual table
+  QueryNodeList* pProjectedColumns = new QueryNodeList();
 
-//  _static_
-//  ASSERT(bIsOfType(pNode));
-//  ASSERT(pRootNode);
-//
-//  // The ExplainOp doesn't change the projected expressions, so ask its child.
-//  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
-//  ASSERT(pChild);
-//
-//  return PlanObject::pColumnExprs(pChild, pRootNode);
+  Text*      pAliasName;
+  QueryNode* pColExpr;
+  QueryNode* pProjectedColumn;
+
+  // stageNum column
+  pAliasName = new Text(C_COL_STAGENUM_NAME);
+  pColExpr = IntegerLiteral::pCreate(0);
+  pProjectedColumn = ProjectedColumn::pCreate(pColExpr, pAliasName);
+  pProjectedColumns->vAppend(pProjectedColumn);
+
+  // stageName column
+  pAliasName = new Text(C_COL_STAGENAME_NAME);
+  pColExpr = StringLiteral::pCreate(nullptr);
+  pProjectedColumn = ProjectedColumn::pCreate(pColExpr, pAliasName);
+  pProjectedColumns->vAppend(pProjectedColumn);
+
+  // explain column
+  pAliasName = new Text(C_COL_EXPLAIN_NAME);
+  pColExpr = StringLiteral::pCreate(nullptr);
+  pProjectedColumn = ProjectedColumn::pCreate(pColExpr, pAliasName);
+  pProjectedColumns->vAppend(pProjectedColumn);
+
+  return pProjectedColumns;
 }
 
 /*----------------------------------------------------------------------------*/

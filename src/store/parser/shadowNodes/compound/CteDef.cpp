@@ -190,6 +190,21 @@ PlanNodeIter* CteDef::pColumnDefIter(QueryNode *pNode)
   return pColumnsNode->pNewChildrenIter();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Adds a column definition to the list of column definitions                 */
+/*----------------------------------------------------------------------------*/
+void CteDef::vAddColumnDef(QueryNode *pNode, QueryNode *pColumnDef)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pColumnDef);
+  ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+  QueryNode* pColumnsNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  ASSERT(pColumnsNode);
+  pColumnsNode->vAppendChild(pColumnDef);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

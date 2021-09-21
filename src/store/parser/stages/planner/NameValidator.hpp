@@ -125,6 +125,9 @@ namespace Parser
     // The returned list must be freed, but not its contents. List may be null.
     static QueryNodeList* pResolvableSubqueries(QueryNode* pSubqueryNode, s2K& sSubqueryPath, PlanNode* pRootNode);
 
+    // Create a CteDef that represents a main subquery and add it to the metadata
+    static void vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode);
     // Given a root node and a path to a subquery marker, try to find the parent
     // subquery marker and return that node, if one exists.
     static QueryNode* pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode);
