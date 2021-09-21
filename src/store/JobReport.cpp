@@ -130,7 +130,9 @@ bool JobReport::bFindParts(void)
   }
   
   // get jobTags
-  
+  m_pJobTags = &m_pJob->m_oJobTags;
+
+  m_pJobTags->vContentDump();
   
   // get response
 
