@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class  JobReport : public Object
+  class JobReport : public Object
   {
   public:
   
@@ -18,9 +18,11 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void* pJobReportAddress);
   
-     JobReport(void);
-   ~ JobReport(void) noexcept(false);
+    JobReport(void);
+   ~JobReport(void) noexcept(false);
 
+    static void vReport(i8 iJobNo);
+  
     Footer* aFooter(void);
   };
   

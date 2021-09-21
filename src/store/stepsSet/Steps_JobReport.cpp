@@ -26,6 +26,9 @@ void Step::vJobReportX(void)
 {
   ENTRY();
   
+  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+    
+  JobReport::vReport(iJobNo);
   
   EXIT();
 }

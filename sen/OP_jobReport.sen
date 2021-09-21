@@ -8,8 +8,8 @@
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
 : jobReport_action
-
-  <jobNo> "Job Report : %v\n" .printf
+  
+  <jobno> >int jobReport::x
 
   true
 ;
