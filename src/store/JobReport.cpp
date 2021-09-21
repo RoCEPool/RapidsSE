@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 #include "JobReport.hpp"
+#include "JobList.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,6 +29,8 @@ JobReport::JobReport(i8 iJobNo)
   m_pJob     = nullptr;
   m_pJobTags = nullptr;
 
+  m_iReponseTime = C_UNKNOWN;
+  
   _checkInitialised_(CN_JOBREPORT);
 
   _postcondition_(_MAGIC_,CN_JOBREPORT,_FOOTER_);
@@ -72,6 +76,8 @@ void JobReport::vCraftReport(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
   
   vTrace("vCraftReport: %lld\n"_Stz,m_iJobNo);
+  
+  // insert into namedBuffer??
 
 }
 
@@ -83,6 +89,50 @@ bool JobReport::bFindParts(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
 
   vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
+  
+  
+  // form jobId from nodeNo.m_jobNo
+  
+  m_pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  
+  pRetiredJobs->vGrabLock();
+  
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+    
+    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+    vTrace("Scan %p %lld (%s)\n"_Stz
+           ,pJobScan
+           ,iJobNo
+           ,C_UNKNOWN == pJobScan->iParticipantNode()
+             ? "origin"_Stz
+             : "participant"_Stz
+           );
+    
+    if (iJobNo == m_iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
+      m_pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (m_pJob) {
+    vTrace("Found %p %lld (%s)\n"_Stz
+           ,m_pJob
+           ,(i8)m_pJob->tJobId().uJobNo()
+           ,C_UNKNOWN == m_pJob->iParticipantNode()
+             ? "origin"_Stz
+             : "participant"_Stz
+           );
+  }
+  
+  // get jobTags
+  
+  
+  // get response
 
   return true;
 }

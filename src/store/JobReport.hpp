@@ -12,7 +12,8 @@ namespace STORE
     JobId    m_tJobId;
     Job*     m_pJob;
     TagSet*  m_pJobTags;
-
+    i8       m_iReponseTime;
+  
     // must be last
     Footer m_xFooter;
     
