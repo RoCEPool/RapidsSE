@@ -829,6 +829,34 @@
   // scanTables ;
  ;
 
+
+
+/*----------------------------------------------------------------------------*/
+/* meta table related procedures                                              */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_JobRep" .verbose
+
+: start::defProc_JobRep
+  
+  STD_PATH
+  "
+  procedure JobRep
+    parameters $JobNo
+  begin
+
+  stage stageA on origin :
+    start | pulse once | jobRepOp $JobNo | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+ ;
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* proc: test                                                                 */
 /*----------------------------------------------------------------------------*/

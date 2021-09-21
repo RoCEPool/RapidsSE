@@ -119,6 +119,7 @@ void Step::vApiExecuteCommand(void)
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
+    return;
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -161,7 +162,14 @@ void Step::vApiExecuteCommand(void)
   
 //  bool bSpawned = Api::bSpawnTask_session(pJob);
 //  UNUSED(bSpawned);
+  pJob->vTimerStart();
+  
   Api::vExecuteJob(pSession);
+  
+  pJob->vTimerUpdate();
+
+  vTrace("Job Timer: %lldus\n"_Stz
+         ,pJob->m_oTimer.iMicroseconds());
   
   RASSERT(! pJob->bJobHasError() );
 
@@ -181,7 +189,6 @@ void Step::vApiExecuteCommand(void)
   
   //delete pReqTknVec;
   delete pWithTagStrTknVec;
-  
   
   EXIT();
 }

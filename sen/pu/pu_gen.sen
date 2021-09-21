@@ -224,7 +224,7 @@ Path[].root
   
    counterA[] 1 + to counterA[]
    
-   counterA[] locals| iJobId  |
+   counterA[] locals| iTest   |
    counter0[] locals| iPuSet  |
    counter1[] locals| iT      |
    counter2[] locals| iFt     |
@@ -237,7 +237,7 @@ Path[].root
   " - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   "// pu test "     >>
-    /* pu     */ iJobId >str >>
+    /* pu     */ iTest >str >>
                  " : "       >>
     /* puSet  */ iPuSet  [n] string0[] +x >>
     /* t      */ iT      [n] string1[] +x >>
@@ -265,7 +265,7 @@ Path[].root
   "    | sink"                          >> nl
   "    | stageA"                        >> nl
   "end"                                 >> nl
-  "    <pu_jobId> = "  iJobId  >str >>  >> nl
+  "    <pu_test> = "   iTest   >str >>  >> nl
   "    <pu_puSet> = "  iPuSet  >str >>  >> nl
   "    <pu_t> = "      iT      >str >>  >> nl
   "    <pu_ft> = "     iFt     >str >>  >> nl
@@ -282,10 +282,10 @@ Path[].root
   
   STD_PATH sPipeline api::executeCommand
   
-    2discard
-    // discard
-    // "JobReport %v ;" str.format
-    //  STD_PATH swap api::executeCommand 2discard
+    //2discard
+     discard
+       "JobRep %v " str.format
+         STD_PATH swap dup . api::executeCommand 2discard
   
   true api::reapJobs
   
