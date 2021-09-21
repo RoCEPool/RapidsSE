@@ -28,6 +28,7 @@ namespace STORE
 
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
+    bool        bIsEmpty(void);
     DataBuffer* pWorkingBuffer(void);
 
     Footer* aFooter(void);

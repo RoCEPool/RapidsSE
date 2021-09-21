@@ -2102,6 +2102,14 @@ public:
   void vTracePoint(void);
   void vTraceSet(void);
 
+  // tub
+  void vTubCompleted(void);
+  void vTubDangling(void);
+  void vTubDelete(void);
+  void vTubGet(void);
+  void vTubIsEmpty(void);
+  void vTubNew(void);
+
   // tx
   void vTx0Begin(void);
   void vTx0Commit(void);

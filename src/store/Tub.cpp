@@ -118,6 +118,18 @@ DataBuffer* Tub::pDanglingBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this tub empty?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Tub::bIsEmpty(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+  
+  bool bEmpty = m_pBufferChain ? false : true;
+    
+  return bEmpty;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first/working buffer                                                */
 /*----------------------------------------------------------------------------*/
 DataBuffer* Tub::pWorkingBuffer(void)
