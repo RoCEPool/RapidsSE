@@ -135,6 +135,9 @@ bool JobReport::bFindParts(void)
              : "participant"_Stz
            );
   }
+  else {
+    return false;
+  }
   
   // get jobTags
   m_pJobTags = &m_pJob->m_oJobTags;
@@ -159,6 +162,8 @@ bool JobReport::bFindParts(void)
 
   // get response
 
+  m_iReponseTime = m_pJob->m_oTimer.iMicroseconds();
+  
   return true;
 }
 
