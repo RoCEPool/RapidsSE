@@ -548,7 +548,7 @@
   define table se__jobReport (
     
     jobId        INTEGER NOT NULL , // pu
-    puSet        INTEGER NOT NULL , // puSet
+    subset       INTEGER NOT NULL , // puSet
     t            INTEGER NOT NULL , // t
     ft           INTEGER NOT NULL , // ft
     j            INTEGER NOT NULL , // j

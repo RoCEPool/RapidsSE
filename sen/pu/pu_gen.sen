@@ -225,7 +225,7 @@ Path[].root
    counterA[] 1 + to counterA[]
    
    counterA[] locals| iTest   |
-   counter0[] locals| iPuSet  |
+   counter0[] locals| iSubset |
    counter1[] locals| iT      |
    counter2[] locals| iFt     |
    counter3[] locals| iJ      |
@@ -239,7 +239,7 @@ Path[].root
   "// pu test "     >>
     /* pu     */ iTest >str >>
                  " : "       >>
-    /* puSet  */ iPuSet  [n] string0[] +x >>
+    /* puSet  */ iSubset [n] string0[] +x >>
     /* t      */ iT      [n] string1[] +x >>
     /* ft     */ iFt     [n] string2[] +x >>
     /* j      */ iJ      [n] string3[] +x >>
@@ -265,22 +265,25 @@ Path[].root
   "    | sink"                          >> nl
   "    | stageA"                        >> nl
   "end"                                 >> nl
+  ";"                                   >> nl
+  locals| sPipeline |
+
+
+  STD_PATH
   "    <pu_test> = "   iTest   >str >>  >> nl
-  "    <pu_puSet> = "  iPuSet  >str >>  >> nl
+  "    <pu_subset> = " iSubSet >str >>  >> nl
   "    <pu_t> = "      iT      >str >>  >> nl
   "    <pu_ft> = "     iFt     >str >>  >> nl
   "    <pu_j> = "      iJ      >str >>  >> nl
   "    <pu_fj> = "     iFj     >str >>  >> nl
   "    <pu_groups> = " iGroups >str >>  >> nl
-  ";"                                   >> nl
-    
-  locals| sPipeline |
-  
+  locals| sTags |
+
   sPipeline .
   
   sPipeline File0[] file.writeLine
   
-  STD_PATH sPipeline api::executeCommand
+  sTags sPipeline api::executeCommand
   
     //2discard
      discard

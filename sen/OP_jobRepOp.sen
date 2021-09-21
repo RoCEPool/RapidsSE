@@ -11,9 +11,15 @@
   
   <jobno> >int jobReport::report
 
-  PipeIn[].pipeOut
+  "__eventDemon" find dup if
+    word.object@
+    pipeline.pipeout
+  else
+    discard discard
+  then
 
-  true
+
+  ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/

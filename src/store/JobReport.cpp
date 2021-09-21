@@ -37,7 +37,8 @@ JobReport::JobReport(i8 iJobNo)
   m_pJob     = nullptr;
   m_pJobTags = nullptr;
 
-  m_i_pu_puSet  = C_UNKNOWN;
+  m_i_pu_test   = C_UNKNOWN;
+  m_i_pu_subset = C_UNKNOWN;
   m_i_pu_t      = C_UNKNOWN;
   m_i_pu_ft     = C_UNKNOWN;
   m_i_pu_j      = C_UNKNOWN;
@@ -81,14 +82,14 @@ NamedBuffer* JobReport::pReport(i8 iJobNo)
   NamedBuffer* pNamedBuffer = new NamedBuffer(pStreamDef);
 
   Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
-                                      745,
-                                      pJobReport->m_i_pu_puSet,
+                                      pJobReport->m_i_pu_test,
+                                      pJobReport->m_i_pu_subset,
                                       pJobReport->m_i_pu_t,
                                       pJobReport->m_i_pu_ft,
                                       pJobReport->m_i_pu_j,
                                       pJobReport->m_i_pu_fj,
                                       pJobReport->m_i_pu_groups,
-                                      9999,
+                                      pJobReport->m_iReponseTime,
                                       C_VARGS_END);
 
   delete pJobReport;
@@ -167,9 +168,10 @@ bool JobReport::bFindParts(void)
   // get jobTags
   m_pJobTags = &m_pJob->m_oJobTags;
 
-  //m_pJobTags->vContentDump();
+  m_pJobTags->vContentDump();
 
-  m_i_pu_puSet  = StrLib::iToI8(m_pJobTags->szValue("<pu_puSet>"_Stz)->azChar());
+  m_i_pu_test   = StrLib::iToI8(m_pJobTags->szValue("<pu_test>"_Stz)->azChar());
+  m_i_pu_subset = StrLib::iToI8(m_pJobTags->szValue("<pu_subset>"_Stz)->azChar());
   m_i_pu_t      = StrLib::iToI8(m_pJobTags->szValue("<pu_t>"_Stz)->azChar());
   m_i_pu_ft     = StrLib::iToI8(m_pJobTags->szValue("<pu_ft>"_Stz)->azChar());
   m_i_pu_j      = StrLib::iToI8(m_pJobTags->szValue("<pu_j>"_Stz)->azChar());
@@ -177,8 +179,15 @@ bool JobReport::bFindParts(void)
   m_i_pu_groups = StrLib::iToI8(m_pJobTags->szValue("<pu_groups>"_Stz)->azChar());
 
   vTrace("puTags: \n"
-    "pu_puSet=%lld;  pu_t=%lld; pu_ft=%lld; pu_j=%lld; pu_fj=%lld; pu_groups=%lld\n"_Stz
-    ,m_i_pu_puSet
+           "pu_test = %lld; "
+           "pu_subset=%lld; "
+           "pu_t=%lld; "
+           "pu_ft=%lld; "
+           "pu_j=%lld; "
+           "pu_fj=%lld; "
+           "pu_groups=%lld\n"_Stz
+    ,m_i_pu_test
+    ,m_i_pu_subset
     ,m_i_pu_t
     ,m_i_pu_ft
     ,m_i_pu_j
