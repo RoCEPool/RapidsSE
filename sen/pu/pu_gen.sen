@@ -273,7 +273,6 @@ Path[].root
   "    <pu_fj> = "     iFj     >str >>  >> nl
   "    <pu_groups> = " iGroups >str >>  >> nl
   ";"                                   >> nl
-  " "                                   >> nl
     
   locals| sPipeline |
   
@@ -323,6 +322,8 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
 
+  //j t s "pu_agggby: s=%v ; t %v j %v\n" .printf
+  
   s +aggreg +fx( agg t __ j     __ )fx
             +fx( gby j __ 1g    __ )fx nl              1 >c5 g:1    pu_pipeline
   s +aggreg +fx( agg t __ j     __ )fx
@@ -349,18 +350,20 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_join params| t s |
 
+  // t s "pu_join: s=%v ; t %v\n" .printf
+  
   s +join +Pu10k
     +fx( idx t __ Pu10k  __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  Pu10k  t pu_agggby
+    +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_agggby
   s +join +Pu100k
     +fx( idx t __ Pu100k __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k Pu100k t pu_agggby
+    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_agggby
   s +join +Pu1m
     +fx( idx t __ Pu1m   __ )fx
-    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   Pu1m   t pu_agggby
+    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_agggby
   s +join +Pu10m
     +fx( idx t __ Pu10m  __ )fx
-    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  Pu10m  t pu_agggby
+    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -368,6 +371,8 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
 
+  // t s "pu_tFilter: s=%v ; t %v\n" .printf
+  
   s +filter +fx( ft_0_1 t __ )fx nl                             1 >c2 t pu_join
   s +filter +fx( ft_0_3 t __ )fx nl                             2 >c2 t pu_join
   s +filter +fx( ft_0_6 t __ )fx nl                             3 >c2 t pu_join

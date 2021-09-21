@@ -1,9 +1,9 @@
 /*============================================================================*/
-/*  JobReport.hpp --  JobReport                                               */
+/* JobReport.hpp -- JobReport                                                */
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace STORE
 {
   class  JobReport : public Object
   {
