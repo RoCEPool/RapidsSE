@@ -30,6 +30,7 @@
   start::defProc_TPCH_ASM_I
   start::defProc_Planner
   start::defProc_Meta
+  start::defProc_JobRep
   start::defProc_SqlCompiler
 
   // define the system tables
