@@ -99,6 +99,8 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   }
 }
 
+#ifdef WITH_PTNID
+
 /*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
@@ -114,12 +116,35 @@ Stream* Stage::pGetPartitionStream(i8 i_Ptn)
     pStageSpec = pStream->pStageSpec();
     
     if ( ! pStageSpec->bNodeTopo() &&
-        pStream->tPtnNo() == i_Ptn)
+        pStream->tPtnNo().iAsI8() == i_Ptn)
       return pStream;
   }
   
   return pStream;
 }
+#else
+*----------------------------------------------------------------------------*/
+/* get stream for given partition                                             */
+/*----------------------------------------------------------------------------*/
+Stream* Stage::pGetPartitionStream(i8 i_Ptn)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+
+  Stream* pStream   = nullptr;
+  StageSpec* pStageSpec = nullptr;
+
+  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+    pStream  = pGet(i_Stream);
+    pStageSpec = pStream->pStageSpec();
+
+    if ( ! pStageSpec->bNodeTopo() &&
+    pStream->tPtnNo() == i_Ptn)
+      return pStream;
+  }
+
+  return pStream;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get stream for given node                                                  */
@@ -185,7 +210,11 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnNo, i8 i_DstOp)
+#else
 Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
+#endif
 {
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
@@ -206,14 +235,22 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+#ifdef WITH_PTNID
+      pPtnStream = pGet(tDstPtnNo.iAsI8());
+#else
       pPtnStream = pGet(tDstPtnNo);
+#endif
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+#ifdef WITH_PTNID
+      pPtnStream = pGetPartitionStream(tDstPtnNo.iAsI8());
+#else
       pPtnStream = pGetPartitionStream(tDstPtnNo);
+#endif
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
@@ -223,18 +260,31 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnNo);
+#ifdef WITH_PTNID
+        pPtnStream = pGetPartitionStream(tDstPtnNo.iAsI8());
+#else
+        pPtnStream = pGetPartitionStream(tDstPtnNo);
+#endif
+
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnNo);
+#ifdef WITH_PTNID
+        pPtnStream = pGetPartitionStream(tDstPtnNo.iAsI8());
+#else
+        pPtnStream = pGetPartitionStream(tDstPtnNo);
+#endif
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
+      #ifdef WITH_PTNID
+      ASSERT(pPtnStream->tPtnNo().iAsI8() == tDstPtnNo);
+      #else
       ASSERT(pPtnStream->tPtnNo() == tDstPtnNo);
+      #endif
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
@@ -353,8 +403,11 @@ void Stage::vWalkLambda(
 void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+#else
   tPN tPtnNo;
+#endif
   i8 i_Node;
   i8 i_Stream;
   Stream* pStream;
@@ -397,17 +450,40 @@ void Stage::vCreateStreams(void)
 
     case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
+#ifdef WITH_PTNID
+      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+        tPtnNo = iPtnNo;
         i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-        //if (i_Node < 100) printf("1 BAD node\n");
+
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
         vAdd(pStream);
       }
+#else
+      for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+
+        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+        vAdd(pStream);
+      }
+#endif
       break;
       
     case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
+      #ifdef WITH_PTNID
+      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+        tPtnNo = iPtnNo;
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+        //if (i_Node < 100) printf("2 BAD node\n");
+        if (i_Node == m_pPipeline->i_Origin()) {
+          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
+          pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+          vAdd(pStream);
+        }
+      }
+      #else
       for (tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         //if (i_Node < 100) printf("2 BAD node\n");
@@ -417,6 +493,7 @@ void Stage::vCreateStreams(void)
           vAdd(pStream);
         }
       }
+      #endif
       break;
       
     case PO_SPECIFIC_PARTITION: // create a stream for a specific partition

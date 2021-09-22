@@ -84,6 +84,19 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //if (AM::pGrid()->bHasStarted()) {
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
+
+      PtnId tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+  else {
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+  }
+  /*
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
@@ -93,7 +106,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   }
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
-  }
+  }*/
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -223,7 +236,37 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 }
 
 
+#ifdef WITH_PTNID
+/*----------------------------------------------------------------------------*/
+/* convert grid-wide partition number to table partition on its node          */
+/*----------------------------------------------------------------------------*/
+i8 Table::iPtnNoToTablePtn(PtnId tPtnNo)
+{
+  _static_
 
+  i8 i_TablePtn = tPtnNo.iAsI8() / AM::GRID::nKnownNodes();
+
+  return i_TablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tablePtn to partition number (in grid)                             */
+/*----------------------------------------------------------------------------*/
+PtnId Table::tTablePtnToPtnNo(i8 i_TablePtn)
+{
+  _static_
+
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
+
+  PtnId tPtnId;
+
+  tPtnId = iPtnId;
+
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
+
+  return tPtnId;
+}
+#else
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
@@ -249,6 +292,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
   
   return tPtnNo;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */

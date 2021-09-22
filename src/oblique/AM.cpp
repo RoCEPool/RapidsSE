@@ -73,9 +73,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 
-#include "Gid_t.hpp"
-#include "PtnId.hpp"
-
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
@@ -123,6 +120,9 @@
 #include "SP_Pointer.hpp"
 
 #include "HeadsUp.hpp"
+
+//#include "Gid_t.hpp"
+//#include "PtnId.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 

@@ -69,6 +69,8 @@ namespace BASE
     bool bIsPermanent(void);
     void vIsPermanent(bool bIsPermanent);
     i8   iBufferNo(void);
+
+
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

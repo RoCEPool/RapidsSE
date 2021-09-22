@@ -4,8 +4,8 @@
 
 #include "BASE.h"
 
-#include "Gid_t.hpp"
-#include "PtnId.hpp"
+//#include "Gid_t.hpp"
+//#include "PtnId.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 
@@ -105,7 +105,7 @@ i8 PtnMap::iToBkt(PtnId tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  return tPtnNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnNo.iAsI8()].m_i_Bkt : 0;
+  return tPtnNo.iAsI8() < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnNo.iAsI8()].m_i_Bkt : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,7 +230,7 @@ i8 PtnMap::iWhichNodeNo(PtnId tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iNodeNo = m_xaNodePtn[tPtnNo].m_iNodeNo;
+  i8 iNodeNo = m_xaNodePtn[tPtnNo.iAsI8()].m_iNodeNo;
 
   return iNodeNo;
 }

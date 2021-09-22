@@ -38,8 +38,13 @@ __aFooterFunction(RowTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+RowTablePtn::RowTablePtn(Table* pTable, PtnId tPtnNo, Bucket* pBucket)
+: Object(CN_ROWTABLEPTN)
+#else
 RowTablePtn::RowTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket)
     : Object(CN_ROWTABLEPTN)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 
@@ -140,12 +145,21 @@ void RowTablePtn::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-tPN RowTablePtn::tPtnNo(void)
+#ifdef WITH_PTNID
+PtnId RowTablePtn::tPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
   
   return m_tPtnNo;
 }
+#else
+tPN RowTablePtn::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+
+  return m_tPtnNo;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the root row buffer                                                    */

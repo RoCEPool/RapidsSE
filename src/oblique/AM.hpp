@@ -26,6 +26,11 @@
 #include "eXA.h"
 #include "eYA.h"
 
+
+//#include "Gid_t.hpp"
+//#include "PtnId.hpp"
+class PtnId;
+
 namespace OBLIQUE {
   class AM;
 }
@@ -338,7 +343,7 @@ namespace OBLIQUE
 #ifdef WITH_PTNID
 
     class PTNMAP {
-      class PtnId;
+
     public:
       static PtnId tHashToDtdPtnId(i8 iHash);
       static i8 iToBkt(PtnId tPtnId);

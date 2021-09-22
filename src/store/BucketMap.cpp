@@ -61,11 +61,22 @@ BucketMap::BucketMap(i8 nPartitions)
 
 #else
   // assign buckets to logical partitions in a round-robin fashion
+  /*
   tPN tPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taInLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
     //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+  }*/
+
+  PtnId tPtnNo;
+  tPtnNo = 0;
+  i8 iPtnNo = 0;
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    tPtnNo = iPtnNo;
+    m_taInLglPtn[i_Bkt] = tPtnNo;
+    iPtnNo = (++iPtnNo) % nPartitions;
+    //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, iPtnNo);
   }
 #endif
  
@@ -119,17 +130,31 @@ void BucketMap::vResetPointers(void)
   // no pointers need to be reset
 }
 
+#ifdef WITH_PTNID
+/*----------------------------------------------------------------------------*/
+/* get which logical partition a bucket is currently mapped to                */
+/*----------------------------------------------------------------------------*/
+PtnId BucketMap::tWhichLglPtnNo(i8 iBucketId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  PtnId tPtnNo;
+  tPtnNo = m_taInLglPtn[iBucketId];
+
+  return tPtnNo;
+}
+#else
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
 tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-  
+
   tPN tPtnNo = m_taInLglPtn[iBucketId];
-  
+
   return tPtnNo;
 }
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

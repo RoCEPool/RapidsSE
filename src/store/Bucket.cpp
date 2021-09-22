@@ -37,10 +37,17 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+Bucket::Bucket(Table* pTable, PtnId tPtnNo, eCN eKind)
+: Object(CN_BUCKET)
+//, m_okLock(this)
+{
+#else
 Bucket::Bucket(Table* pTable, tPN tPtnNo, eCN eKind)
     : Object(CN_BUCKET)
     //, m_okLock(this)
 {
+#endif
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
   m_pTable = pTable;
@@ -105,7 +112,17 @@ void Bucket::vRepair(Object* pObject)
 
 
 
+#ifdef WITH_PTNID
+/*----------------------------------------------------------------------------*/
+/* get the partition number (in grid) of this table partition                 */
+/*----------------------------------------------------------------------------*/
+PtnId Bucket::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
+  return m_tPtnNo;
+}
+#else
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
@@ -115,6 +132,7 @@ tPN Bucket::tPtnNo(void)
 
   return m_tPtnNo;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */

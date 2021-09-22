@@ -98,7 +98,7 @@ void ToBktCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
   
-  i8 i_Ptn = pRowBuffer->tPtnNo();
+  i8 i_Ptn = pRowBuffer->tPtnNo().iAsI8();
   
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
@@ -214,10 +214,12 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
-  pCrwBuffer->vPtnNo(i_Ptn);
+  PtnId tPtnId;
+  tPtnId = i_Ptn;
+  pCrwBuffer->vPtnNo(tPtnId);
 
   // Set the bucket number
-  i8 iBktNo = AM::PTNMAP::iToBkt(i_Ptn);
+  i8 iBktNo = AM::PTNMAP::iToBkt(tPtnId);
   pCrwBuffer->vBucketNo(iBktNo);
 
   // open buffer for append
