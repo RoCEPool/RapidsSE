@@ -144,6 +144,7 @@ namespace BASE
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsDecimalNo(char* ps);
     static bool  bIsDigit(const char c);
+    static bool  bIsEmpty(char* azArg);
     static bool  bIsEscapable(const char cArg);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);

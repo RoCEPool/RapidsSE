@@ -16,6 +16,7 @@ enum eEC // error code
   EC_AMBIGUOUS_COLUMN,              // SQL Compiler Subsystem
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
+  EC_AMBIGUOUS_WITH_QUERY,          // SQL Compiler Subsystem
   EC_ASSERT,
 
   /* _B_ */
@@ -202,6 +203,7 @@ enum eEC // error code
   EC_TABLE_NOT_EMPTY,
   EC_TABLE_IN_USE,
   EC_TENANT_EXISTS,
+  EC_TOO_MANY_NAMED_COLUMNS,
   EC_TX_BEGIN_FAILED,
   EC_TX_COMMIT_FAILED,
   EC_TX_END_FAILED,
@@ -243,6 +245,7 @@ static Stz* aEC[]
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,   // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_WITH_QUERY          */ "EC_AMBIGUOUS_WITH_QUERY"_Stz,     // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -428,6 +431,7 @@ static Stz* aEC[]
   /* EC_TABLE_NOT_EMPTY               */ "table not empty"_Stz,
   /* EC_TABLE_IN_USE                  */ "table in use"_Stz,
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
+  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "commit transaction failed"_Stz,
   /* EC_TX_END_FAILED                 */ "end transaction failed"_Stz,
@@ -469,6 +473,7 @@ static Stz* aEC2[] // error code
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,               // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ "EC_AMBIGUOUS_USING_COLUMN"_Stz,         // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_WITH_QUERY          */ "EC_AMBIGUOUS_WITH_QUERY"_Stz,           // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "EC_ASSERT"_Stz,
 
   /* _B_ */
@@ -655,6 +660,7 @@ static Stz* aEC2[] // error code
   /* EC_TABLE_NOT_EMPTY               */ "EC_TABLE_NOT_EMPTY"_Stz,
   /* EC_TABLE_IN_USE                  */ "EC_TABLE_IN_USE"_Stz,
   /* EC_TENANT_EXISTS                 */ "EC_TENANT_EXISTS"_Stz,
+  /* EC_TOO_MANY_NAMED_COLUMNS        */ "EC_TOO_MANY_NAMED_COLUMNS"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "EC_TX_BEGIN_FAILED"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "EC_TX_COMMIT_FAILED"_Stz,
   /* EC_TX_END_FAILED                 */ "EC_TX_END_FAILED"_Stz,
@@ -706,6 +712,7 @@ static Stz* aErrorMsg[]
   /* EC_AMBIGUOUS_COLUMN              */ "Ambiguous column name"_Stz,     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "Ambiguous table name"_Stz,      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ "Ambiguous column name in USING clause"_Stz,     // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_WITH_QUERY          */ "Ambiguous alias name in WITH clause"_Stz,       // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -891,6 +898,7 @@ static Stz* aErrorMsg[]
   /* EC_TABLE_NOT_EMPTY               */ "table not empty"_Stz,
   /* EC_TABLE_IN_USE                  */ "table in use"_Stz,
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
+  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in WITH clause"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "commit transaction failed"_Stz,
   /* EC_TX_END_FAILED                 */ "end transaction failed"_Stz,

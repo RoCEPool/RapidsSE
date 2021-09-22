@@ -6,8 +6,10 @@
 namespace Parser
 {
   // Separators
-  static const char C_PROPERTY_SEPARATOR  = ':';
   static const char C_CHILD_SEPARATOR     = '/';
+  static const char C_PROPERTY_SEPARATOR  = ':';
+  static       Stz* C_CHILD_SEPARATOR_STZ     = "/"_Stz;
+  static       Stz* C_PROPERTY_SEPARATOR_STZ  = ":"_Stz;
 
   // Names / identifiers
   static const Stz* C_ROOT_NAME         = "__root__"_Stz;

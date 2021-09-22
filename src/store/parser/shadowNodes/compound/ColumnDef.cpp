@@ -298,6 +298,22 @@ i8 ColumnDef::iScale(QueryNode* pNode)
   return pScaleNode->iValue();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Updates the column name of this column definition                          */
+/*----------------------------------------------------------------------------*/
+void ColumnDef::vSetColumnName(QueryNode* pNode, Stz* szNewName)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szNewName);
+
+  QueryNode* pColumnNameNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pNode));
+
+  ASSERT(pColumnNameNode);
+  Value xValue(szNewName);
+  pColumnNameNode->vSetValue(static_cast<Value&&>(xValue));
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -2530,6 +2530,16 @@ bool StrLib::bIsDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsEmpty: does the string have zero content?                               */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsEmpty(char* ps)
+{
+  _static_
+
+  return (*ps == 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsEscapable: test if char needs to be escaped                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsEscapable(const char cArg)

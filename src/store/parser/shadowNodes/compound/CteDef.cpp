@@ -191,6 +191,19 @@ PlanNodeIter* CteDef::pColumnDefIter(QueryNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the number of column definitions                                   */
+/*----------------------------------------------------------------------------*/
+i8 CteDef::nColumns(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnsNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  ASSERT(pColumnsNode);
+
+  return pColumnsNode->nChildren();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Adds a column definition to the list of column definitions                 */
 /*----------------------------------------------------------------------------*/
 void CteDef::vAddColumnDef(QueryNode *pNode, QueryNode *pColumnDef)
