@@ -7,15 +7,31 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeOutRemainder
+: Tub[].pipeOutCompleted
 
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeOutCompleted
+: Tub[].pipeOutRemainder
 
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
+
+  begin
+    Tub[].dangling dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +85,7 @@
 
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
  
-  StreamDefLft[] Tub[].new
+  Tub[].new
 
   true
 ;

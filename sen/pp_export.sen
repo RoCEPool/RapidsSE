@@ -26,8 +26,8 @@
       | toCsv
       | stageC
       
-    stage stageD on origin :
-      | output
+    stage stageC on origin :
+        output
       | sink
       | stageA
 

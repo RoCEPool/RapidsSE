@@ -512,11 +512,42 @@ char* RowBuffer::azStrArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert this row buffer into one or more csv buffers                       */
+/* convert this row buffer into one or more csv tub buffers                   */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vToCsv(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  HV_Record hvRecord(pRowPix());
+    
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+  
+  i8 nRows = this->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Row* aRow = pRowAddress(i_Row);
+    Stz* szRow = hvRecord->sz(aRow,true);
+    i8 nSize = szRow->nSize();
+    
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+  }
+  
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+
 }
 
 /*----------------------------------------------------------------------------*/
