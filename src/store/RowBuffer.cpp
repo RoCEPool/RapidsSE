@@ -534,7 +534,7 @@ void RowBuffer::vToCsv(Tub* pTub)
     
     Row* aRow = pRowAddress(i_Row);
     Stz* szRow = hvRecord->sz(aRow,true);
-    i8 nSize = szRow->nSize();
+    nSize = szRow->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
       pCsvBuffer = new CsvBuffer;
@@ -543,11 +543,17 @@ void RowBuffer::vToCsv(Tub* pTub)
 
     szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
     StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+    
+    //vTrace("At %lld : %s\n"_Stz,i_Row,pCsvBuffer->szRecords());
+    //vDebugPoint();
   }
+  
   
   if (szRecord)
     ((char*)szRecord)[nSize-1] = '\0';
 
+  //vTrace("End: %s\n"_Stz,pCsvBuffer->szRecords());
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
