@@ -125,12 +125,24 @@ namespace Parser
     // The returned list must be freed, but not its contents. List may be null.
     static QueryNodeList* pResolvableSubqueries(QueryNode* pSubqueryNode, s2K& sSubqueryPath, PlanNode* pRootNode);
 
-    // Create a CteDef that represents a main subquery and add it to the metadata
+    // Create a CteDef that represents a main subquery and add it to the metadata.
+    // Also updates the defnPath property of the subquery node.
     static void vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
                                           PlanNode* pRootNode, QueryNode* pMetadataNode);
+
+    // Create an initial CteDef representing a table subquery and add it to the metadata.
+    // This CteDef can be updated with column information later on.
+    // Also updates the defnPath property of the subquery node.
+    static void vCreateTableSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode);
+
     // Given a root node and a path to a subquery marker, try to find the parent
     // subquery marker and return that node, if one exists.
     static QueryNode* pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode);
+
+    // Checks that a table subquery has a unique name amongst its siblings.
+    // Throws an exception if it is not unique.
+    static void vCheckTableSubqueryIsUniquelyNamed(QueryNode* pTableSubquery, s2K& sSubqueryPath, PlanNode* pRootNode);
   };
 }
 

@@ -947,6 +947,18 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
     }
 
     if (eCtrl == WALK_SKIP_SUBTREE) {
+      // Still need to invoke the exit event before we return back up.
+      // Visit the current node for the EXIT event
+      if (fExitEvent) {
+        eCtrl = fExitEvent(pNode, sPath, iDepth, EVENT_EXIT, pvArg);
+      }
+
+      if (eCtrl == WALK_ABORT) {
+        return false;
+      }
+
+      // SKIP_SUBTREE, SKIP_PROPERTIES, SKIP_CHILDREN are meaningless when returned
+      // on an exit event as we have already processed the properties and children.
       return true;
     }
   }
@@ -1023,6 +1035,202 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
   // on an exit event as we have already processed the properties and children.
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Starting at pNode, walk the graph upwards until the walk is either aborted */
+/* or we hit the root node. Call the callback function for each node visited. */
+/* Params:                                                                    */
+/*  - pNode:     The node to begin walking upwards from.                      */
+/*  - pRootNode: The root node of the plan.                                   */
+/*  - fVisitor:  The callback function to invoke for each node visited.       */
+/*  - pvArg:     An argument to be passed to fVisitor when called.            */
+/* Returns: false if the function aborted the walk prematurely otherwise true.*/
+/* Notes:   This can be an expensive operation if called repeatedly because   */
+/*          we first need to find the path of pNode in the entire graph.      */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalkUp(QueryNode* pNode, PlanNode* pRootNode,
+                     std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fVisitor, void* pvArg)
+{
+  ASSERT(pNode);
+  ASSERT(pRootNode);
+
+  // First we need to find the path of pNode in the plan.
+  s2K sStartingPath;
+
+  b1 bResult = bGetPath(pNode, pRootNode, sStartingPath);
+  ASSERT(bResult);
+  ASSERT(sStartingPath.bBeginsWith("/"_Stz));
+
+  // Let's now do a bottom-up walk from this path back to the root node.
+  return bWalkPath(pRootNode, sStartingPath, nullptr, fVisitor, pvArg);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* From a given starting node (typically the root node), walk a path given by */
+/* a string and call callback functions for each node visited, both on descent*/
+/* of the path and ascent.                                                    */
+/* Params:                                                                    */
+/*  - pStartNode: The node to begin walking the path from (usually root node).*/
+/*  - sPathToWalk: The path to follow                                         */
+/*  - fEnterVisitor: the callback to invoke on the path descent               */
+/*  - fExitVisitor:  the callback to invoke on the path ascent                */
+/*  - pvArg:     An argument to be passed to fVisitor when called.            */
+/* Returns: false if the function aborted the walk prematurely otherwise true.*/
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalkPath(PlanNode* pStartNode, s2K& sPathToWalk,
+                       std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterVisitor,
+                       std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitVisitor,
+                       void* pvArg)
+{
+
+  s2K sCurrentPath;
+  s2K sPathToBeWalked(sPathToWalk.szStz());
+
+  // special handling for absolute paths?
+  if (sPathToWalk.bBeginsWith(const_cast<Stz*>(C_ROOT_PATH))) {
+    sCurrentPath.vCopy(const_cast<Stz*>(C_ROOT_PATH));
+    sPathToBeWalked.vCopy(sPathToWalk.szStz() + const_cast<Stz*>(C_ROOT_PATH)->nLength());
+  }
+
+  return bWalkPath(pStartNode, sPathToBeWalked, sCurrentPath,0,
+                   fEnterVisitor, fExitVisitor, pvArg);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Internal function for walking a specific path downwards and back up.       */
+/* Params:                                                                    */
+/*  - pCurrentNode: The current node being visited.                           */
+/*  - sPathToWalk: The path to follow relative to the current node            */
+/*  - sCurrentPath: The current path relative to the starting node            */
+/*  - iDepth: The depth of the current node relative to the starting node     */
+/*  - fEnterVisitor: the callback to invoke on the path descent               */
+/*  - fExitVisitor:  the callback to invoke on the path ascent                */
+/*  - pvArg:     An argument to be passed to fVisitor when called.            */
+/* Returns: false if the function aborted the walk prematurely otherwise true.*/
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurrentPath, i8 iDepth,
+                       std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterVisitor,
+                       std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitVisitor,
+                       void* pvArg)
+{
+  // Visit the current node for the ENTER event
+  eWalkCtrl eCtrl = WALK_CONTINUE;
+  if (fEnterVisitor) {
+    eCtrl = fEnterVisitor(pCurrentNode, sCurrentPath, iDepth, EVENT_ENTER, pvArg);
+
+    if (eCtrl == WALK_ABORT) {
+      return false;
+    }
+
+    if (eCtrl == WALK_SKIP_SUBTREE) {
+      // Still need to invoke the exit event before we return back up.
+      // Visit the current node for the EXIT event
+      if (fExitVisitor) {
+        eCtrl = fExitVisitor(pCurrentNode, sCurrentPath, iDepth, EVENT_EXIT, pvArg);
+      }
+
+      if (eCtrl == WALK_ABORT) {
+        return false;
+      }
+
+      // SKIP_SUBTREE, SKIP_PROPERTIES, SKIP_CHILDREN are meaningless when returned
+      // on an exit event as we have already processed the properties and children.
+      return true;
+    }
+  }
+
+  b1 bRetVal;
+
+  // Determine if the next element of the path to be walked is a child, a property, or
+  // if we have actually reached the end of the path.
+
+  if (sPathToBeWalked.bBeginsWith(C_CHILD_SEPARATOR_STZ)) {
+    // We've got a child to visit
+
+    s2K sNextPathToBeWalked;
+    s256 sChildName;
+    i8 iEnd = iNextSeparator(sPathToBeWalked.szStz() + 1);
+
+    if (iEnd == -1) {
+      // This will be the last node to be visited
+      sChildName.vCopy(sPathToBeWalked.szStz() + 1);
+      sNextPathToBeWalked.vReset();
+
+    } else {
+      sChildName.vCopy(sPathToBeWalked.szStz() + 1, iEnd);
+      sNextPathToBeWalked.vCopy(sPathToBeWalked.szStz() + 1 + iEnd);
+    }
+
+    s2K sNextCurrentPath;
+    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sChildName.szStz());
+
+    // Find the child node
+    PlanNode* pNextChild = GraphNav::pFindChild(sChildName.szStz(), pCurrentNode);
+    ASSERT(pNextChild);
+
+    // Recurse!
+    bRetVal = bWalkPath(pNextChild, sNextPathToBeWalked, sNextCurrentPath, iDepth+1, fEnterVisitor, fExitVisitor, pvArg);
+
+    if (!bRetVal) {
+      return false; // We are aborting
+    }
+
+  } else if (sPathToBeWalked.bBeginsWith(C_PROPERTY_SEPARATOR_STZ)) {
+    // We've got a property to visit
+
+    s2K sNextPathToBeWalked;
+    s256 sPropertyName;
+    i8 iEnd = iNextSeparator(sPathToBeWalked.szStz() + 1);
+
+    if (iEnd == -1) {
+      // This will be the last node to be visited
+      sPropertyName.vCopy(sPathToBeWalked.szStz() + 1);
+      sNextPathToBeWalked.vReset();
+
+    } else {
+      sPropertyName.vCopy(sPathToBeWalked.szStz() + 1, iEnd);
+      sNextPathToBeWalked.vCopy(sPathToBeWalked.szStz() + 1 + iEnd);
+    }
+
+    s2K sNextCurrentPath;
+    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sPropertyName.szStz());
+
+    // Find the property node
+    PlanNode* pNextProperty = GraphNav::pFindProperty(sPropertyName.szStz(), pCurrentNode);
+    ASSERT(pNextProperty);
+
+    // Recurse!
+    bRetVal = bWalkPath(pNextProperty, sNextPathToBeWalked, sNextCurrentPath, iDepth + 1, fEnterVisitor, fExitVisitor, pvArg);
+
+    if (!bRetVal) {
+      return false; // We are aborting
+    }
+
+  } else if (sPathToBeWalked.bIsEmpty()) {
+    // Reached the end of the walk. Don't return because we may have an exit visitor.
+    bRetVal = true;
+
+  } else {
+    NEVER_REACH
+  }
+
+
+  // Visit the current node for the EXIT event
+  if (fExitVisitor) {
+    eCtrl = fExitVisitor(pCurrentNode, sCurrentPath, iDepth, EVENT_EXIT, pvArg);
+  }
+
+  if (eCtrl == WALK_ABORT) {
+    return false;
+  }
+
+  // SKIP_SUBTREE, SKIP_PROPERTIES, SKIP_CHILDREN are meaningless when returned
+  // on an exit event as we have already processed the properties and children.
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Looks up and returns a PlanNode* for a given path string. Returns a nullptr*/

@@ -401,6 +401,11 @@
                               type: "/__root__/definitions/object/list/idList"
                             },
                             {
+                              name: "isRecursive",
+                              value: "Has a value of TRUE if this subquery has been defined with the RECURSIVE keyword.",
+                              type: "/__root__/definitions/object/valueObject/booleanObject"
+                            },
+                            {
                               // Add a constraint that children of a tableSubquery object must be
                               // either another tableSubquery (nested) or a mainSubquery
                               name: "__constraints", type: "/__root__/primitives/constraints", children: [

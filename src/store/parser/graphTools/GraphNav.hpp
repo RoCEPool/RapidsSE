@@ -174,6 +174,24 @@ class GraphNav
     static b1 bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                                    std::function<eWalkCtrl(PlanNode*, s2K&, i8, void*)> fVisitor, void* pvArg);
 
+    // Starting at pNode, walk the graph upwards until the walk is either aborted
+    // or we hit the root node. Call the callback function for each node visited.
+    // This is different from a bottom-up walk because a bottom-up walk specifies
+    // the top node to start from and it will likely visit other unrelated branches.
+    // This walk starts at a specified bottom node and only walks up its direct ancestors.
+    // The visitor function can only return WALK_CONTINUE or WALK_ABORT as the other
+    // enum values do not make sense for an upward walk.
+    static b1 bWalkUp(QueryNode* pNode, PlanNode* pRootNode,
+                      std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fVisitor, void* pvArg);
+
+    // From a given starting node (typically the root node), walk a path given by
+    // a string and call callback functions for each node visited, both on descent
+    // of the path and ascent.
+    static b1 bWalkPath(PlanNode* pStartNode, s2K& sPathToWalk,
+                        std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterVisitor,
+                        std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitVisitor,
+                        void* pvArg);
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     // -------------------------------------------
@@ -259,6 +277,12 @@ class GraphNav
                     std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterEvent,
                     std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitEvent,
                     void* pvArg, s2K& sPath, i8 iDepth, b1 bBoundedWalk);
+
+    // Walking a specific path
+    static b1 bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurrentPath, i8 iDepth,
+                        std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fEnterVisitor,
+                        std::function<eWalkCtrl(PlanNode*, s2K&, i8, eWalkEvent, void*)> fExitVisitor,
+                        void* pvArg);
 
     static i8 iNextSeparator(Stz* szPath);
 

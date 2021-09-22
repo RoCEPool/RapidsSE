@@ -32,6 +32,7 @@ namespace Parser
 
     static QueryNode* pColumnDef(QueryNode* pNode, Stz* szColumnName);
     static PlanNodeIter* pColumnDefIter(QueryNode* pNode);
+    static i8 nColumns(QueryNode* pNode);
     static void vAddColumnDef(QueryNode* pNode, QueryNode* pColumnDef);
 
   };

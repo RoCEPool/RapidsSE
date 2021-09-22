@@ -42,6 +42,8 @@ namespace Parser
     static i8   iPrecision(QueryNode* pNode); // returns -1 if not set or n/a
     static i8   iScale(QueryNode* pNode);     // returns -1 if not set or n/a
 
+    static void vSetColumnName(QueryNode* pNode, Stz* szNewName);
+
   };
 
 }
