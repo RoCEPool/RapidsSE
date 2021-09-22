@@ -75,7 +75,7 @@
     <etc> <indexNm> "create index %v %v ;" str.format to sSmt
   then
 
-  sSmt .
+  // sSmt .
 
   // parse the smt and get the table name
   sSmt Job[] indexDef::parseTableName to sTableNm

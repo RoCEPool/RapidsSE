@@ -288,41 +288,9 @@ Path[].root
     //2discard
      discard
        "JobRep %v " str.format
-         STD_PATH_TAG swap dup . api::executeCommand 2discard
+         STD_PATH_TAG swap api::executeCommand 2discard
   
   true api::reapJobs
-  
-  
-  
-  
-  
-//  STD_PATH_TAG
-//  "
-//  pipeline unnamed
-//  begin
-//  stage stageStart on origin :
-//    start
-//    | pulse once
-//    | stageMarker0861
-//  stage stageMarker0861 on all partitions :
-//    scan rapidsse public Pu10k
-//    | aggreg 0 \" type INTEGER )  $1 sum  , type INTEGER )  $1 count  , type INTEGER as pu10k_10g $6 groupBy  type INTEGER as pu10k_10g $6 \"
-//    | stageMarker0864
-//  stage stageMarker0864 on all nodes :
-//    aggreg 0 \" type INTEGER )  $1 sum  , type INTEGER )  $2 sum  , type INTEGER as pu10k_10g $3 groupBy  type INTEGER as pu10k_10g $3 \"
-//    | stageMarker0867
-//  stage stageMarker0867 on origin :
-//    aggreg 0 \" type INTEGER as pu10k_10g $3 , type INTEGER )  $2 sum  , type INTEGER )  $1 sum  groupBy  type INTEGER as pu10k_10g $3 \"
-//    | aggreg 0 \" type INTEGER $3 $2 /  , type INTEGER as pu10k_10g $1 groupBy  type INTEGER as pu10k_10g $1 \"
-//    | project 0 \" type INTEGER $1 \"
-//    | stageLast
-//  stage stageLast on origin :
-//    output
-//    | sink
-//    | stageStart
-//  end ;
-//  "
-//  api::executeCommand
 ;
 
 /*----------------------------------------------------------------------------*/

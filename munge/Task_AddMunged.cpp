@@ -8947,7 +8947,7 @@ void Task::vAddMunged(Task* )
     "    <etc> <indexNm> \"create index %v %v ;\" str.format to sSmt\n"
     "  then\n"
     "\n"
-    "  sSmt .\n"
+    "  // sSmt .\n"
     "\n"
     "  // parse the smt and get the table name\n"
     "  sSmt Job[] indexDef::parseTableName to sTableNm\n"

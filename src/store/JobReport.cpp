@@ -139,13 +139,13 @@ bool JobReport::bFindParts(void)
     Job* pJobScan = _pJob(pScan->m_pObject);
     
     i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
-    vTrace("Scan %p %lld (%s)\n"_Stz
-           ,pJobScan
-           ,iJobNo
-           ,C_UNKNOWN == pJobScan->iParticipantNode()
-             ? "origin"_Stz
-             : "participant"_Stz
-           );
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
     
     if (iJobNo == m_iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
       m_pJob = pJobScan;
@@ -155,13 +155,13 @@ bool JobReport::bFindParts(void)
   pRetiredJobs->vDropLock();
 
   if (m_pJob) {
-    vTrace("Found %p %lld (%s)\n"_Stz
-           ,m_pJob
-           ,(i8)m_pJob->tJobId().uJobNo()
-           ,C_UNKNOWN == m_pJob->iParticipantNode()
-             ? "origin"_Stz
-             : "participant"_Stz
-           );
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
   }
   else {
     return false;
@@ -180,21 +180,21 @@ bool JobReport::bFindParts(void)
   m_i_pu_fj     = StrLib::iToI8(m_pJobTags->szValue("<pu_fj>"_Stz)->azChar());
   m_i_pu_groups = StrLib::iToI8(m_pJobTags->szValue("<pu_groups>"_Stz)->azChar());
 
-  vTrace("puTags: \n"
-           "pu_test = %lld; "
-           "pu_subset=%lld; "
-           "pu_t=%lld; "
-           "pu_ft=%lld; "
-           "pu_j=%lld; "
-           "pu_fj=%lld; "
-           "pu_groups=%lld\n"_Stz
-    ,m_i_pu_test
-    ,m_i_pu_subset
-    ,m_i_pu_t
-    ,m_i_pu_ft
-    ,m_i_pu_j
-    ,m_i_pu_fj
-    ,m_i_pu_groups);
+//  vTrace("puTags: \n"
+//           "pu_test = %lld; "
+//           "pu_subset=%lld; "
+//           "pu_t=%lld; "
+//           "pu_ft=%lld; "
+//           "pu_j=%lld; "
+//           "pu_fj=%lld; "
+//           "pu_groups=%lld\n"_Stz
+//    ,m_i_pu_test
+//    ,m_i_pu_subset
+//    ,m_i_pu_t
+//    ,m_i_pu_ft
+//    ,m_i_pu_j
+//    ,m_i_pu_fj
+//    ,m_i_pu_groups);
 
   // get response
 
@@ -211,7 +211,7 @@ void JobReport::vReportJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
   
-  vTrace("vReportJob: %lld\n"_Stz,m_iJobNo);
+  //vTrace("vReportJob: %lld\n"_Stz,m_iJobNo);
 
   if (bFindParts())
     vCraftReport();

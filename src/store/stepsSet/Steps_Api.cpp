@@ -168,8 +168,8 @@ void Step::vApiExecuteCommand(void)
   
   pJob->vTimerUpdate();
 
-  vTrace("Job Timer: %lldus\n"_Stz
-         ,pJob->m_oTimer.iMicroseconds());
+//  vTrace("Job Timer: %lldus\n"_Stz
+//         ,pJob->m_oTimer.iMicroseconds());
   
   RASSERT(! pJob->bJobHasError() );
 
