@@ -13,7 +13,11 @@ namespace STORE
     ePX  m_eCrossTopo;      // cross topology
   
     i8   m_iDstNode;        // destination node id
+#ifdef WITH_PTNID
+    PtnId  m_tDstPtn;       // destination partition (in grid)
+#else
     tPN  m_tDstPtn;         // destination partition (in grid)
+#endif
     i8   m_iDstStage;       // destination stage
     i8   m_iDstOp;          // destination op in the destination stage
 
@@ -45,8 +49,14 @@ namespace STORE
     ePX  eCrossTopo(void);
     i8   iDstNode(void);
     i8   iDstOp(void);
+
+#ifdef WITH_PTNID
+    PtnId  tDstPtn(void);
+    PtnId  tDstPtn(i8 i_BktNo);
+#else
     tPN  tDstPtn(void);
     tPN  tDstPtn(i8 i_BktNo);
+#endif
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
@@ -61,16 +71,25 @@ namespace STORE
     void vSendOut(Op* pSrcOp);
 
   private:
+
+    void vSendOverSocket(Op* pSrcOp);
+
+#ifdef WITH_PTNID
+    void vAppraise(Op* pSrcOp, PtnId& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);
+    void vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextStage);
+    void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
+    void vSendToPartition(Op* pSrcOp, PtnId tDstPtn);
+#else
     void vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);
     void vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextStage);
-    void vSendOverSocket(Op* pSrcOp);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
+    void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
+#endif
     void vSendToAllNodes(Op* pSrcOp);
     void vSendToAllOriginPartitions(Op* pSrcOp);
     void vSendToAllPartitions(Op* pSrcOp);
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
     void vSendToOrigin(Op* pSrcOp);
-    void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
     void vSetItem(i8 i_Item, Object* pItem);
 
   public:

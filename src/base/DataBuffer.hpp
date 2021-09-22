@@ -10,7 +10,11 @@ namespace BASE
   protected:
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
+#ifdef WITH_PTNID
+    PtnId  m_tPtnNo;
+#else
     tPN    m_tPtnNo;        // partition no this buffer belongs to
+#endif
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
@@ -51,9 +55,13 @@ namespace BASE
   
     void   vDropWrite(void);
     void   vGrabWrite(void);
-  
+  #ifdef WITH_PTNID
+    void   vPtnNo(PtnId tPtnNo);
+    PtnId  tPtnNo(void);
+  #else
     void   vPtnNo(tPN tPtnNo);
     tPN    tPtnNo(void);
+  #endif
     
     Birth& oWhenNewed(void);
   

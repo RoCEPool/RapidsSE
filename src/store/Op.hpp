@@ -158,7 +158,12 @@ namespace STORE
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
+
+#ifdef WITH_PTNID
+    PtnId  tPtnNo(void);
+#else
     tPN  tPtnNo(void);
+#endif
     Operand* pPopLeft(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);

@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "Gid_t.hpp"
+#include "PtnId.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 
@@ -83,7 +85,233 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
 
   vRepartition();
 }
+#ifdef WITH_PTNID
+/*----------------------------------------------------------------------------*/
+/* convert hash to distributed partition number                               */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tHashToDtdPtnId(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  PtnId tPtnId;
+  i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
+  tPtnId = tDtdPtnNo;
+  return tPtnId;
+}
 
+/*----------------------------------------------------------------------------*/
+/* convert PtnId to Bkt No                                                      */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iToBkt(PtnId tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return tPtnNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnNo.iAsI8()].m_i_Bkt : 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert iBkt to PtnId                                                        */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tToPtn(i8 iBktNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  PtnId tPtnId;
+  iBktNo < C_MAX_PTNSINGRID ? tPtnId = m_xaBkt[(i8) iBktNo].m_i_Ptn : tPtnId=0;
+  return tPtnId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes known by partition map                                 */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nKnownNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return m_nKnownNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions in grid                                           */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nPtnsInGrid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return m_nPtnsInGrid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions per node                                          */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nPtnsPerNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  return m_nPtnsPerNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to distributed partition number                  */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tRobinToDtdPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  PtnId tPtnNo;
+  i8 iPtnNo = iRobin % m_nPtnsInGrid;
+  tPtnNo = iPtnNo;
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tRobinToLclPtnNo(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  i8 i_Ptn = iRobin % m_nPtnsPerNode;
+
+  PtnId tPtnNo;
+  tPtnNo = tToPtnNoOfThisNode(i_Ptn);
+
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  i8 i_Ptn = iRobin % m_nPtnsPerNode;
+
+  PtnId tPtnNo = tToPtnNoOfThisNode(i_Ptn);
+
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* see ptnmap                                                                 */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  vTrace("See PtnMap::\n"_Stz);
+
+  vTrace("  map change    %2lld\n"_Stz,m_iMapChange);
+  vTrace("  ptns per node %2lld\n"_Stz,m_nPtnsPerNode);
+  vTrace("  known nodes   %2lld\n"_Stz,m_nPtnsPerNode);
+  vTrace("  ptns in grid  %2lld\n"_Stz,m_nPtnsInGrid);
+
+  for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
+    i8 iNodeNo = m_xaNodePtn[i_Ptn].m_iNodeNo;
+
+    vTrace("  m_xaNodePtn[tPtnNo %lld] { m_iNodeNo=%lld %s, m_i_Ptn=%lld }\n"_Stz
+
+           ,i_Ptn
+           ,iNodeNo
+           ,AM::GRID::pGetNode(iNodeNo)->szNodeNm()
+           ,m_xaNodePtn[i_Ptn].m_i_Ptn
+           );
+  }
+
+  vTrace(";;\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which node a logical partition is mapped to                            */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iWhichNodeNo(PtnId tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iNodeNo = m_xaNodePtn[tPtnNo].m_iNodeNo;
+
+  return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which node partition a logical partition is mapped to                  */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_WhichPtn(PtnId tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 i_Ptn = m_xaNodePtn[tPtnNo.iAsI8()].m_i_Ptn;
+
+  return i_Ptn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given i_ptn to partition number of given node                      */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  PtnId tPtnNo;
+
+  tPtnNo = C_UNKNOWN;
+  for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
+    if (m_xaNodePtn[i_NodePtn].m_iNodeNo != iNodeNo)
+      continue;
+    if (m_xaNodePtn[i_NodePtn].m_i_Ptn != i_Ptn)
+      continue;
+    tPtnNo = i_NodePtn;
+    break;
+  }
+
+  RASSERT(C_UNKNOWN != tPtnNo.iAsI8());
+
+  return tPtnNo;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* convert given round robin to local partition number                        */
+/*----------------------------------------------------------------------------*/
+PtnId PtnMap::tToPtnNoOfThisNode(i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+
+  PtnId tPtnNo = tToPtnNoOfNode(i_Ptn,iThisNodeNo);
+
+  return tPtnNo;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repartition the map based on new known nodes                               */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vRepartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  vResetNodePtnArray();
+
+  for (i8 tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
+    i4 i_Node = (i4)tPtnNo % m_nKnownNodes;
+
+    m_xaNodePtn[tPtnNo].m_iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
+    m_xaNodePtn[tPtnNo].m_i_Ptn   = (i4)tPtnNo / m_nKnownNodes;
+  }
+
+  m_iMapChange++;
+}
+
+#else
 /*----------------------------------------------------------------------------*/
 /* convert hash to distributed partition number                               */
 /*----------------------------------------------------------------------------*/
@@ -304,7 +532,7 @@ void PtnMap::vRepartition(void)
   
   m_iMapChange++;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* reset the {node,nodePtn} array                                             */
 /*----------------------------------------------------------------------------*/

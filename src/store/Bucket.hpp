@@ -12,7 +12,11 @@ namespace STORE
   private:
     //Lock   m_okLock;  // lock on the partition
     Table* m_pTable;  // table this partition belongs to
+#ifdef WITH_PTNID
+    PtnId m_tPtnNo;  // partition number (in grid)
+#else
     tPN    m_tPtnNo;  // partition number (in grid)
+#endif
 
     eCN    m_eKind;   // what kind of table partition
 
@@ -27,13 +31,19 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-
+#ifdef WITH_PTNID
+    Bucket(Table* pTable, PtnId tPtnNo, eCN eKind);
+#else
     Bucket(Table* pTable, tPN tPtnNo, eCN eKind);
+#endif
     ~Bucket(void) noexcept(false);
 
     static void vRepair(Object* pObject);
-
+#ifdef WITH_PTNID
+    PtnId  tPtnNo(void);
+#else
     tPN  tPtnNo(void);
+#endif
     Table* pTable(void);
 
     void vAddIndex(IndexTree* pIndexTree);

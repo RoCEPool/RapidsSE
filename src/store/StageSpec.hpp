@@ -23,7 +23,11 @@ namespace STORE
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?
     i8   m_i_SpecificNode; // run on specific node
+#ifdef WITH_PTNID
+    PtnId m_tSpecificPtnNo; // run for specific ptn
+#else
     tPN  m_tSpecificPtnNo; // run for specific ptn
+#endif
     //i8  m_nThreads;      // threads
     
     // must be last
@@ -47,8 +51,15 @@ namespace STORE
     void vRenumberOpSpecs(void);
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
+
+#ifdef WITH_PTNID
+    PtnId tSpecificPtnNo(void);
+    void vSpecificPtnNo(PtnId tSpecificPtnNo);
+#else
     tPN  tSpecificPtnNo(void);
     void vSpecificPtnNo(tPN tSpecificPtnNo);
+#endif
+
     Stz* szStageNm(void);
     i8   i_StageSpec(void);
     //void vThreads(i8 iThreads);

@@ -335,6 +335,23 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
+#ifdef WITH_PTNID
+
+    class PTNMAP {
+      class PtnId;
+    public:
+      static PtnId tHashToDtdPtnId(i8 iHash);
+      static i8 iToBkt(PtnId tPtnId);
+      static PtnId tToPtn(i8 iBktNo);
+      static i8 nKnownNodes(void);
+      static i8 nPtnsPerNode(void);
+      static i8 nPtnsInGrid(void);
+      static PtnId tRobinToDtdPtnNo(i8 iRobin);
+      static PtnId tRobinToLclPtnNo(i8 iRobin);
+      static PtnId tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    };
+
+#else
     class PTNMAP
     {
     public:
@@ -348,6 +365,7 @@ namespace OBLIQUE
       static tPN tRobinToLclPtnNo(i8 iRobin);
       static tPN tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     };
+#endif
 
     class SE
     {

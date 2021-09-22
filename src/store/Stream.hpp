@@ -22,9 +22,13 @@ namespace STORE
     StageSpec* m_pStageSpec;  // stage specification for this stream
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
-
+#ifdef WITH_PTNID
+    PtnId m_tPtnNo; // this stream processes m_tPtnNo in grid
+//   will be C_UNKNOWN for stage with node topology
+#else
     tPN  m_tPtnNo; // this stream processes m_tPtnNo in grid
                    //   will be C_UNKNOWN for stage with node topology
+#endif
     i8   m_i_Node; // this stream processes m_i_Node in grid
                    //   is PtnMap::i_PtnNoToNode(m_tPtnNo);
  
@@ -36,16 +40,22 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
+
+#ifdef WITH_PTNID
+    Stream(StageSpec* pStageSpec, Stage* pStage,
+           i8 i_Stream, PtnId tPtnNo, i8 i_Node);
+#else
     Stream(StageSpec* pStageSpec, Stage* pStage,
            i8 i_Stream, tPN tPtnNo, i8 i_Node);
+#endif
    ~Stream(void) noexcept(false);
     
     i8   i_Node(void);
     i8   i_Stream(void);
 
     Pipeline* pPipeline(void);
-    tPN  tPtnNo(void);
+    //tPN  tPtnNo(void);
+    PtnId  tPtnNo(void);
   
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
