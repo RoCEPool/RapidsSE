@@ -40,7 +40,8 @@
 : toCsv_EosMarker \handler
 
   Tub[].pipeOutRemainder
-  
+  Tub[].delete
+
   ZK_M_EOS_handler
 ;
 
