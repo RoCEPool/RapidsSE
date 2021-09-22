@@ -122,7 +122,7 @@ Path[].root
 : +idx_Pu1m_Pu10k    " Pu10k_10k"    >> ;
 : +idx_Pu1m_Pu100k   " Pu100k_100k"   >> ;
 : +idx_Pu1m_Pu1m     " Pu1m_1m"     >> ;
-: +idx_Pu1m_Pu10m    " Pu1m_1m"    >> ;
+: +idx_Pu1m_Pu10m    " Pu10m_1m"    >> ;
 
 : +idx_Pu10m_Pu10k   " Pu10k_10k"   >> ;
 : +idx_Pu10m_Pu100k  " Pu100k_100k"  >> ;
@@ -331,15 +331,15 @@ Path[].root
   s +join +Pu10k
     +fx( idx t __ Pu10k  __ )fx
     +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_jFilter
-//  s +join +Pu100k
-//    +fx( idx t __ Pu100k __ )fx
-//    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_jFilter
-//  s +join +Pu1m
-//    +fx( idx t __ Pu1m   __ )fx
-//    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_jFilter
-//  s +join +Pu10m
-//    +fx( idx t __ Pu10m  __ )fx
-//    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_jFilter
+  s +join +Pu100k
+    +fx( idx t __ Pu100k __ )fx
+    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_jFilter
+  s +join +Pu1m
+    +fx( idx t __ Pu1m   __ )fx
+    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_jFilter
+  s +join +Pu10m
+    +fx( idx t __ Pu10m  __ )fx
+    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_jFilter
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -365,8 +365,6 @@ Path[].root
   scan +Pu1m   nl                              3 >c1 t:Pu1m   Pu1m   pu_tFilter
   scan +Pu10m  nl                              4 >c1 t:Pu10m  Pu10m  pu_tFilter
 ;
-
-// export se__jobReport "/Users/alka/rapidsse/report/report.csv";
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
