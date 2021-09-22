@@ -331,15 +331,15 @@ Path[].root
   s +join +Pu10k
     +fx( idx t __ Pu10k  __ )fx
     +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_agggby
-  s +join +Pu100k
-    +fx( idx t __ Pu100k __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_agggby
-  s +join +Pu1m
-    +fx( idx t __ Pu1m   __ )fx
-    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_agggby
-  s +join +Pu10m
-    +fx( idx t __ Pu10m  __ )fx
-    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_agggby
+//  s +join +Pu100k
+//    +fx( idx t __ Pu100k __ )fx
+//    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_agggby
+//  s +join +Pu1m
+//    +fx( idx t __ Pu1m   __ )fx
+//    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_agggby
+//  s +join +Pu10m
+//    +fx( idx t __ Pu10m  __ )fx
+//    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -361,9 +361,9 @@ Path[].root
 : pu_scan "scan" string0[].set 1 >c0
 
   scan +Pu10k  nl                              1 >c1 t:Pu10k  Pu10k  pu_tFilter
-  scan +Pu100k nl                              2 >c1 t:Pu100k Pu100k pu_tFilter
-  scan +Pu1m   nl                              3 >c1 t:Pu1m   Pu1m   pu_tFilter
-  scan +Pu10m  nl                              4 >c1 t:Pu10m  Pu10m  pu_tFilter
+//  scan +Pu100k nl                              2 >c1 t:Pu100k Pu100k pu_tFilter
+//  scan +Pu1m   nl                              3 >c1 t:Pu1m   Pu1m   pu_tFilter
+//  scan +Pu10m  nl                              4 >c1 t:Pu10m  Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/

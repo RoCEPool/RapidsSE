@@ -72,7 +72,7 @@ NamedBuffer* JobReport::pReport(i8 iJobNo)
 {
   _static_
 
-  vTrace("JobReport: %lld\n"_Stz,iJobNo);
+  //vTrace("JobReport: %lld\n"_Stz,iJobNo);
   
   JobReport* pJobReport = new JobReport(iJobNo);
   
@@ -110,7 +110,7 @@ void JobReport::vCraftReport(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
   
-  vTrace("vCraftReport: %lld\n"_Stz,m_iJobNo);
+  //vTrace("vCraftReport: %lld\n"_Stz,m_iJobNo);
   
   // insert into namedBuffer??
 
@@ -123,7 +123,7 @@ bool JobReport::bFindParts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
 
-  vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
+  //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
   
   
   // form jobId from nodeNo.m_jobNo
@@ -170,7 +170,7 @@ bool JobReport::bFindParts(void)
   // get jobTags
   m_pJobTags = &m_pJob->m_oJobTags;
 
-  m_pJobTags->vContentDump();
+  //m_pJobTags->vContentDump();
 
   m_i_pu_test   = StrLib::iToI8(m_pJobTags->szValue("<pu_test>"_Stz)->azChar());
   m_i_pu_subset = StrLib::iToI8(m_pJobTags->szValue("<pu_subset>"_Stz)->azChar());
