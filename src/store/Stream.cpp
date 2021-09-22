@@ -31,8 +31,13 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
+               PtnId tPtnNo, i8 i_Node)
+#else
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
                tPN tPtnNo, i8 i_Node)
+#endif
 : LifeGuard_t<Stream>(this,CN_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
@@ -143,13 +148,21 @@ Pipeline* Stream::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+PtnId Stream::tPtnNo(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  return m_tPtnNo;
+}
+#else
 i8 Stream::tPtnNo(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_tPtnNo;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* get stage for this stream                                                  */
 /*----------------------------------------------------------------------------*/

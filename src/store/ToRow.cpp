@@ -785,7 +785,11 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+#else
   tPN tPtnNo = 0;
+#endif
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
@@ -2997,7 +3001,11 @@ L_RecordEndLineEnd:
   if (m_bPtnHash) {
         
     // now use the running hash to calc the partition
+#ifdef WITH_PTNID
+    tPtnNo = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
+#else
     tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
+#endif
     
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
@@ -3012,7 +3020,15 @@ L_RecordEndLineEnd:
     
     iPtnKeyHash = 0;
   }
-  
+#ifdef WITH_PTNID
+  if (iTraceBits & C_BIT_EndRecord) {
+    HV_Record hvRecord(m_pStreamDef->pRowPix());
+    vTrace("[%lld : %lld] %s\n"_Stz,
+           m_i_Rec,
+           m_bPtnHash ? tPtnNo.iAsI8() : C_UNKNOWN,
+           hvRecord->sz(m_pRowBuffer->pRowCurrent()));
+  }
+#else
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
@@ -3020,6 +3036,7 @@ L_RecordEndLineEnd:
            m_bPtnHash ? tPtnNo : C_UNKNOWN,
            hvRecord->sz(m_pRowBuffer->pRowCurrent()));
   }
+#endif
 
   // increment records processed
   m_iRowsProcessed++;
@@ -3047,7 +3064,7 @@ L_ChunkEnd:
      | <LINE> <LINE_END> \0 |
      +----------------------+
    
-     n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
+     n.b. The \0 is guaranteed by the rdCsvChunk operator [check]
    
    */
 

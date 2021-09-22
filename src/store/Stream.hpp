@@ -54,8 +54,12 @@ namespace STORE
     i8   i_Stream(void);
 
     Pipeline* pPipeline(void);
-    //tPN  tPtnNo(void);
+
+#ifdef WITH_PTNID
     PtnId  tPtnNo(void);
+#else
+    tPN  tPtnNo(void);
+#endif
   
     Stage* pStage(void);
     StageSpec* pStageSpec(void);

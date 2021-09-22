@@ -56,7 +56,11 @@ void SP_StageSpec::vStageSpec(StageSpec* pStageSpec)
         ,pStageSpec->szStageNm()
         ,aPO[pStageSpec->eTopology()]
         ,pStageSpec->iSpecificNode()
+#ifdef WITH_PTNID
         ,(i8)pStageSpec->tSpecificPtnNo().iAsI8()
+#else
+        ,(i8)pStageSpec->tSpecificPtnNo()
+#endif
         );
 }
 

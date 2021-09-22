@@ -154,6 +154,25 @@ i8 Parcel::iDstOp(void)
 /*----------------------------------------------------------------------------*/
 /* get destination ptn                                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+PtnId Parcel::tDstPtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+#ifdef WITH_BKTMAP_2N4P
+  Operand* pOperand = pGetOperand();
+  if (CN_CRWBUFFER == pOperand->eGetClassNo()) {
+
+    CrwBuffer* pBuffer = (CrwBuffer*)m_pItems[0];
+    // Get the bucket number and partition number from buffer
+    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnNo());
+
+    m_tDstPtn = pBuffer->iBucketNo();
+  }
+#endif
+  return m_tDstPtn;
+}
+#else
 tPN Parcel::tDstPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -171,6 +190,7 @@ tPN Parcel::tDstPtn(void)
 #endif
   return m_tDstPtn;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get destination stage                                                      */
@@ -296,7 +316,30 @@ eXK Parcel::eSendKind(void)
 void Parcel::vSendOut(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
+#ifdef WITH_PTNID
+  PtnId tDstPtn;
+  ePX eCrossTopo;
+  Stage* pNextStage;
+
+  vAppraise(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
+
+  Operand* pOperand = pGetOperand();
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    // Send metaGet to other node, not to the origin node itself
+    vSendToNode(pSrcOp,6078); // HACK  hardcode to the existing node for debug
+    AM::vDeleteOperand(pOperand);
+    return;
+  }
+
+  vSendCross(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
+
+  if (pOperand->eGetClassNo()==CN_TABLE) {
+    vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
+  }
+
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
+#else
   tPN tDstPtn;
   ePX eCrossTopo;
   Stage* pNextStage;
@@ -312,13 +355,14 @@ void Parcel::vSendOut(Op* pSrcOp)
   }
 
   vSendCross(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
-  
+
   if (pOperand->eGetClassNo()==CN_TABLE) {
     vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
   }
 
   // delete the operand
   AM::vDeleteOperand(pOperand);
+#endif
 }
 
 
@@ -374,6 +418,16 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
       //nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize + (gxaSizeHeap[CN_INDEX].m_nClassSize * 2);
     }
 
+#ifdef WITH_PTNID
+    if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_SEND_CRWBUF)) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
+      vTrace("Sending a CrwBuffer (%lld rows) to node %s tPtnNo %lld\n"_Stz
+             ,pCrwBuffer->nRows()
+             ,pDstNode->szNodeNm()
+             ,pCrwBuffer->tPtnNo().iAsI8()
+             );
+    }
+#else
     if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_SEND_CRWBUF)) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
       vTrace("Sending a CrwBuffer (%lld rows) to node %s tPtnNo %lld\n"_Stz
@@ -382,6 +436,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
              ,pCrwBuffer->tPtnNo()
              );
     }
+#endif
 
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
     //vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
@@ -403,7 +458,11 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage)
+#else
 void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -434,7 +493,11 @@ void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextS
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextStage)
+#else
 void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextStage)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -472,9 +535,15 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       //vTrace("vSendToPartition  \n"_Stz);
+      #ifdef WITH_PTNID
+      Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn.iAsI8());
+      PtnId tDstPtnNo_stream = pStream->tPtnNo();
+      vSendToPartition(pSrcOp,tDstPtnNo_stream);
+      #else
       Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
       tPN tDstPtnNo_stream = pStream->tPtnNo();
       vSendToPartition(pSrcOp,tDstPtnNo_stream);
+      #endif
       break;
     }
       
@@ -525,7 +594,11 @@ void Parcel::vSendCross(Op* pSrcOp, tPN tDstPtn, ePX eCrossTopo, Stage* pNextSta
 /*----------------------------------------------------------------------------*/
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, PtnId tDstPtn)
+#else
 void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
@@ -571,13 +644,21 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
     //vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 
   i8 iDstNode = 0;
-
+#ifdef WITH_PTNID
+  PtnId tPtnId;
+  tPtnId = C_UNKNOWN;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    iDstNode = pNode->iNodeNo();
+    vSendParcel(pSrcOp, iDstNode, tPtnId);
+  }
+#else
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
-    // RAY vTrace("Node :%lld\n"_Stz, iDstNode);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -586,8 +667,11 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
 void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+#else
   tPN tPtnNo;
+#endif
   //i8 i_TablePtn;
   
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
@@ -705,9 +789,11 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 void Parcel::vSendToAllPartitions(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+#else
   tPN tPtnNo;
-  //i8 i_TablePtn;
+#endif
   
   Operand* pOperand = pGetOperand();
   
@@ -723,6 +809,16 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_BROADCAST : {
       ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
+#ifdef WITH_PTNID
+      PtnId tPtnId;
+      for (i8 iPtnNo = 0; iPtnNo < pNextStage->nItems(); iPtnNo++) {
+        tPtnId = iPtnNo;
+        // sendNode is the partition node
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+        pSrcOp->vSendNode(iDstNode);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
+      }
+#else
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
 
         // sendNode is the partition node
@@ -730,6 +826,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
         pSrcOp->vSendNode(iDstNode);
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
+#endif
       break;
     }
 
@@ -764,6 +861,16 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     case XK_UNICAST: {
       
       ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
+#ifdef WITH_PTNID
+      PtnId tPtnId;
+      for (i8 iPtnNo = 0; iPtnNo < pNextStage->nItems(); iPtnNo++) {
+        tPtnId = iPtnNo;
+        // sendNode is the partition node
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+        pSrcOp->vSendNode(iDstNode);
+        vSendParcel(pSrcOp,iDstNode,tPtnId);
+      }
+#else
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
@@ -771,6 +878,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
         pSrcOp->vSendNode(iDstNode);
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
+#endif
       break;
     }
       
@@ -809,8 +917,13 @@ void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
   RASSERT(pNextStage);
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
-  
+#ifdef WITH_PTNID
+  PtnId tPtnId;
+  tPtnId = C_UNKNOWN;
+  vSendParcel(pSrcOp,iDstNode,tPtnId);
+#else
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -825,13 +938,23 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
   //vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
+#ifdef WITH_PTNID
+  PtnId tPtnId;
+  tPtnId = C_UNKNOWN;
+  vSendParcel(pSrcOp, iDstNode, tPtnId);
+#else
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+void Parcel::vSendToPartition(Op* pSrcOp, PtnId tDstPtn)
+#else
 void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 

@@ -76,7 +76,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   }
 
 #else
-  
+  #ifdef WITH_PTNID
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
@@ -94,7 +94,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
-  /*
+  #else
+
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
       
@@ -106,7 +107,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   }
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
-  }*/
+  }
+  #endif
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1011,7 +1013,20 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   //        This must be fixed properly. Ray 14 Nov 2020
 
   m_pTablePtnVec = new TablePtnVec;
+#ifdef WITH_PTNID
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
+      PtnId tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+  else {
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+  }
+#else
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
@@ -1024,6 +1039,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
+#endif
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;

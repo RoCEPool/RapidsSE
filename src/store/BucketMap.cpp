@@ -61,13 +61,14 @@ BucketMap::BucketMap(i8 nPartitions)
 
 #else
   // assign buckets to logical partitions in a round-robin fashion
-  /*
+  #ifndef WITH_PTNID
   tPN tPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taInLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
     //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
-  }*/
+  }
+  #else
 
   PtnId tPtnNo;
   tPtnNo = 0;
@@ -78,6 +79,7 @@ BucketMap::BucketMap(i8 nPartitions)
     iPtnNo = (++iPtnNo) % nPartitions;
     //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, iPtnNo);
   }
+  #endif
 #endif
  
   _checkInitialised_(CN_BUCKETMAP);

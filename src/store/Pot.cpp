@@ -242,6 +242,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
+#ifdef WITH_PTNID
   PtnId tPtnId;
   tPtnId = i_Ptn;
   pAddBuffer->vPtnNo(tPtnId);
@@ -254,6 +255,20 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
     m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
   
   m_paBufferChain[i_Ptn] = pAddBuffer;
+#else
+
+  tPN tPtnId = i_Ptn;
+  pAddBuffer->vPtnNo(tPtnId);
+
+  // link the old with this
+  pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
+
+
+  if (m_paBufferChain[i_Ptn])
+    m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
+
+  m_paBufferChain[i_Ptn] = pAddBuffer;
+#endif
 }
 
 

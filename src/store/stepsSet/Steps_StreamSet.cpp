@@ -92,7 +92,16 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   i8 nEntries = 0;
   
   pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
-  
+
+#ifdef WITH_PTNID
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pStreamSetTable->tTablePtnToPtnNo(i_TablePtn).iAsI8(),
+                                    nBuffers,
+                                    nEntries,
+                                    C_VARGS_END);
+#else
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
@@ -100,6 +109,8 @@ void Step::vStreamSetAddAnalyzeIndex(void)
                                     nBuffers,
                                     nEntries,
                                     C_VARGS_END);
+
+#endif
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
@@ -134,7 +145,16 @@ void Step::vStreamSetAddAnalyzeTable(void)
   i8 nRows = 0;
   
   pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
-  
+
+#ifdef WITH_PTNID
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pStreamSetTable->tTablePtnToPtnNo(i_TablePtn).iAsI8(),
+                                    nBuffers,
+                                    nRows,
+                                    C_VARGS_END);
+#else
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
@@ -142,6 +162,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
                                     nBuffers,
                                     nRows,
                                     C_VARGS_END);
+#endif
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
@@ -340,8 +361,12 @@ void Step::vStreamSetAddListPartitions(void)
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
+  #ifdef WITH_PTNID
+  PtnId tPtnId;
+  tPtnId = m_pDataStack->iPopInt(__func__);
+  #else
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);
+  #endif
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
@@ -349,14 +374,25 @@ void Step::vStreamSetAddListPartitions(void)
   StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
+#ifdef WITH_PTNID
+  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+  Node* pNode = pGrid->pFindNode(i_Node);
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    tPtnId.iAsI8(),
+                                    pNode->szNodeNm(),
+                                    C_VARGS_END);
+#else
   i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
   Node* pNode = pGrid->pFindNode(i_Node);
-  
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     tPtnNo,
                                     pNode->szNodeNm(),
                                     C_VARGS_END);
+#endif
+  
+
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   

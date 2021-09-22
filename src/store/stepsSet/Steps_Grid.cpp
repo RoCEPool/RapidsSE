@@ -276,10 +276,14 @@ void Step::vGridTablePtnToPtnNo(void)
   ENTRY();
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+  tPtnNo = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
+  m_pDataStack->vPushInt(tPtnNo.iAsI8());
+#else
   tPN tPtnNo = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
-  
   m_pDataStack->vPushInt(tPtnNo);
+#endif
   
   EXIT();
 }
@@ -319,14 +323,22 @@ void Step::vGridThisNodeNameFetch(void)
 void Step::vGridToNode(void)
 {
   ENTRY();
-  
+#ifdef WITH_PTNID
+  PtnId tPtnNo;
+  tPtnNo = m_pDataStack->iPopInt(__func__);
+
+  // for the moment its always node 0                      //! DISCUSS WITH ALKA
+  //m_pDataStack->vPush((i8)0);
+
+  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
+#else
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
   
   i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-  
+#endif
   m_pDataStack->vPushInt(i_Node);
   
   EXIT();

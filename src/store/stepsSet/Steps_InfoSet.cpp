@@ -257,7 +257,7 @@ void Step::vInfoSetAddRowCount(void)
   Job* pJob = m_pJob_task;
 #ifdef WITH_PTNID
   PtnId tPtnNo = m_pOp->tPtnNo();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo.iAsI8());
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
 #else
   tPN tPtnNo = m_pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);

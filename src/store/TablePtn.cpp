@@ -38,8 +38,13 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+TablePtn::TablePtn(Table *pTable, PtnId tPtnNo)
+: Object(CN_TABLEPTN), m_okLock(this) {
+#else
 TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
     : Object(CN_TABLEPTN), m_okLock(this) {
+#endif
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   m_pTable = pTable;
@@ -161,10 +166,17 @@ eCN TablePtn::eKind(void) {
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+PtnId TablePtn::tPtnNo(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  return m_tPtnNo;
+}
+#else
 tPN TablePtn::tPtnNo(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   return m_tPtnNo;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */
@@ -182,11 +194,19 @@ Table *TablePtn::pTable(void) {
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_PTNID
+void TablePtn::vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
+  m_pBucketVec->vAdd(pBucket);
+}
+#else
 void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo, eCN eKind) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* remove bucket                                                              */
@@ -447,9 +467,6 @@ DataBuffer *TablePtn::pRootBuffer(void) {
 
   //vTrace("TablePtn::pRootBuffer \n"_Stz);
   //NEVER_REACH;
-
-
-
 
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY ?

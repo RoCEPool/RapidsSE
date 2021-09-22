@@ -20,10 +20,10 @@ namespace STORE
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
 
     Table* m_pTable;  // table this partition belongs to
-    #ifdef WITH_PTNID
+#ifdef WITH_PTNID
     PtnId m_tPtnNo;  // partition number (in grid)
 #else
-    tPN    m_tPtnNo;  // partition number (in grid)
+    tPN m_tPtnNo;  // partition number (in grid)
 #endif
 
   
@@ -46,14 +46,22 @@ namespace STORE
     bool bGrabWrite(void);
     bool bIsLocked(void);
     eCN  eKind(void);
+
+#ifdef WITH_PTNID
     PtnId  tPtnNo(void);
-    //tPN  tPtnNo(void);
+#else
+    tPN tPtnNo(void);
+#endif
     Table* pTable(void);
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vSetBucket(i8 iBucket);
+
+#ifdef WITH_PTNID
     void vAddBucket(Table* pTable, PtnId tPtnNo, eCN eKind);
-    //void vAddBucket(Table* pTable, tPN tPtnNo, eCN eKind);
+#else
+    void vAddBucket(Table* pTable, tPN tPtnNo, eCN eKind);
+#endif
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);
