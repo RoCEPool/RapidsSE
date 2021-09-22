@@ -114,10 +114,25 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // evaluate the project expression
-  ExprEval[].new
-  StreamDefOut[].new
-  <project> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+  // PROJECTION
+  "<project>" op[].tagSet@ tagSet.hasName if
+
+     // evaluate the project expression
+     ExprEval[].new
+     StreamDefOut[].new
+     <project> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+
+   else
+
+     // AGGREGATE
+     "<aggreg>" op[].tagSet@ tagSet.hasName if
+
+        // evaluate the aggregate expression
+        ExprEval[].new
+        StreamDefOut[].new
+        <aggreg> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+     then
+   then
 
   // check for error
   eError EC_NONE == not if
@@ -126,7 +141,7 @@
     exit
   then
 
-  // evaluate the filter expression
+  // FILTER
   Filter[].new
   <filter> StreamDefLft[] nullptr Filter[].evaluate to eError
 
@@ -205,6 +220,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rluTest :: rluTest <compiled> filter <filter> , project <project> ;
+cmdSyntax: rluTest :: rluTest <compiled> filter <filter> , aggreg <aggreg> ;
 
 : rluTest_cmdTags _cmdTags tagCopy: op_tags
   tags{
