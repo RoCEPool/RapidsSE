@@ -8,7 +8,7 @@ _nation
 
 select * from nation;
 
-export nation "/tmp/nation.csv";
+/time export nation "/tmp/nation.csv";
 
 /*============================================================================*/
 /* end                                                                        */

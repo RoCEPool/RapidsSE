@@ -27,7 +27,8 @@
       | stageC
       
     stage stageC on origin :
-        output
+        wrFile $file
+      | output
       | sink
       | stageA
 
