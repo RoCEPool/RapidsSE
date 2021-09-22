@@ -1582,10 +1582,11 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
       vPushLftCrwCol(m_sLftCrwCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
       vPushLftRowCol(m_sLftRowCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
 
-      vPushLclCol(m_sLowerBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
+      i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+      vPushLclCol(m_sLowerBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
       vCheckIsNull(m_sLowerBoundAsm, &m_xTypeStack);
 
-      vPushLclCol(m_sUpperBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
+      vPushLclCol(m_sUpperBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
       //vCheckIsNull(m_sUpperBoundAsm, &m_xTypeStack);
     }
 

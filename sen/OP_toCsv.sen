@@ -7,15 +7,31 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeOutRemainder
+: Tub[].pipeOutCompleted
 
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeOutCompleted
+: Tub[].pipeOutRemainder
 
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
+
+  begin
+    Tub[].dangling dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +40,8 @@
 : toCsv_EosMarker \handler
 
   Tub[].pipeOutRemainder
-  
+  Tub[].delete
+
   ZK_M_EOS_handler
 ;
 
@@ -39,6 +56,8 @@
   
   Tub[].pipeOutCompleted
   
+  nullptr to CrwBuffer[]
+
   true
 ;
 
@@ -53,6 +72,8 @@
     
   Tub[].pipeOutCompleted
 
+  nullptr to RowBuffer[]
+  
   true
 ;
 
@@ -69,7 +90,7 @@
 
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
  
-  StreamDefLft[] Tub[].new
+  Tub[].new
 
   true
 ;

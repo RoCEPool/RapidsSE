@@ -586,6 +586,10 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
     throw;
   }
 
+  if (pCtx->RECURSIVE()) {
+    __NOT_IMPL("RECURSIVE common table expression")
+  }
+
   // Extract the mandatory table alias name
   Text* pTblAlias = pCleanId(pCtx->name->id);
   ASSERT(pTblAlias);
@@ -598,19 +602,12 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
     pIdList->vAppendChild(pColNameNode);
   }
 
-  // TODO: Check that the number of column aliases matches the num columns being projected.
-  //       Can't do that here though.
-  //       Postgres will automatically name any columns that haven't been specified, so you
-  //       can name a subset of the columns that a WITH clause provides.
-  //       But you cannot provide more names than there are columns.
-  // TODO: If no column aliases have been provided then make them up./
-
   // The last item on the stack is the table subquery. We need to add
   // a TableSubquery marker to the top of it and then put it back
   // onto the statement stack.
   ASSERT(m_pStatementStack->nItems() > 0);
 
-  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, pIdList);
+  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, pIdList, pCtx->RECURSIVE() != nullptr);
 
   QueryNode* pNode;
   while ((pNode = m_pStatementStack->pPop()) != nullptr) {

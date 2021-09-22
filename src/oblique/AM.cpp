@@ -3126,8 +3126,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 i8 AM::iQueryNoInc(void)
 {
-  ++ gpAttachMap->m_ixQueryNo;
-  i8 iQueryNo = * gpAttachMap->m_ixQueryNo;
+  i8 iQueryNo = ++ gpAttachMap->m_ixQueryNo;
   return iQueryNo;
 }
 

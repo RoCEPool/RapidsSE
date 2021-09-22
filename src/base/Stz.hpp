@@ -35,6 +35,7 @@ namespace BASE
     void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
     bool  bGreater(Stz* szArg);
+    bool  bIsEmpty(void);
     bool  bIsNumeric(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);

@@ -26,7 +26,8 @@
       | toCsv
       | stageC
       
-    stage stageD on origin :
+    stage stageC on origin :
+        wrFile $file
       | output
       | sink
       | stageA

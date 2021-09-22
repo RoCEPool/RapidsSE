@@ -10,6 +10,7 @@
 #include "GraphNav.hpp"
 
 #include "TableScanOp.hpp"
+#include "SubqueryRefOp.hpp"
 #include "StringObject.hpp"
 
 using namespace Parser;
@@ -38,10 +39,8 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
   // TODO: manual polymorphism here
 
   // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))     { TableScanOp::vDescribe(pNode, sBuf);  }
-
-  // Others
-  //else if (IndexScanOp::bIsOfType(pNode))      { IndexScanOp::vDescribe(pNode, sBuf);   }
+  if      (  TableSource::bIsOfType(pNode))    {   TableSource::vDescribe(pNode, sBuf); }
+  else if (SubqueryRefOp::bIsOfType(pNode))    { SubqueryRefOp::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -60,10 +59,8 @@ void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExpl
   // Manual polymorphism here
 
   // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
-
-  // IndexScanOp
-  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  if      (  TableSource::bIsOfType(pNode))   {   TableSource::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (SubqueryRefOp::bIsOfType(pNode))   { SubqueryRefOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -105,8 +102,8 @@ void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
   }
 
   // Manual polymorphism here
-  if        (TableSource::bIsOfType(szType))   { TableSource::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
-  //else if (   Subquery::bIsOfType(szType))   {    Subquery::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+  if      (  TableSource::bIsOfType(szType))   {   TableSource::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (SubqueryRefOp::bIsOfType(szType))   { SubqueryRefOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
 
   else {
     // Need to add in manual polymorphism here
@@ -204,11 +201,9 @@ Stz* DataSource::szCatalogName(QueryNode* pNode)
 
   // TODO: manual polymorphism here
 
-  // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szCatalogName(pNode); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szCatalogName(pNode); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                           }
-  else                                     {  NEVER_REACH                              }
+  if      (  TableSource::bIsOfType(pNode))  { return TableSource::szCatalogName(pNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return nullptr;                           }
+  else                                       {  NEVER_REACH                              }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,11 +216,9 @@ Stz* DataSource::szSchemaName(QueryNode* pNode)
 
   // TODO: manual polymorphism here
 
-  // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szSchemaName(pNode); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szSchemaName(pNode); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                          }
-  else                                     {  NEVER_REACH                             }
+  if      (  TableSource::bIsOfType(pNode))  { return TableSource::szSchemaName(pNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return nullptr;                          }
+  else                                       {  NEVER_REACH                             }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,11 +231,9 @@ Stz* DataSource::szTableName(QueryNode* pNode)
 
   // TODO: manual polymorphism here
 
-  // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szTableName(pNode); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szTableName(pNode); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                         }
-  else                                     {  NEVER_REACH                            }
+  if      (  TableSource::bIsOfType(pNode))  { return TableSource::szTableName(pNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return nullptr;                         }
+  else                                       {  NEVER_REACH                            }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,10 +247,9 @@ QueryNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 
   // TODO: manual polymorphism here
 
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::pColumnDefs(pNode, pRootNode); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::pColumnDefs(pNode, pRootNode); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::pColumnDefs(pNode, pRootNode); }
-  else                                     {  NEVER_REACH                                       }
+  if      (  TableSource::bIsOfType(pNode))  { return    TableSource::pColumnDefs(pNode, pRootNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return  SubqueryRefOp::pColumnDefs(pNode, pRootNode); }
+  else                                       {  NEVER_REACH                                       }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,28 +264,26 @@ QueryNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 
   // manual polymorphism here
 
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::pColumnExprs(pNode, pRootNode); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::pColumnExprs(pNode, pRootNode); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::pColumnExprs(pNode, pRootNode); }
-  else                                     {  NEVER_REACH                                       }
+  if      (  TableSource::bIsOfType(pNode))  { return   TableSource::pColumnExprs(pNode, pRootNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return SubqueryRefOp::pColumnExprs(pNode, pRootNode); }
+  else                                       {  NEVER_REACH                                          }
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if this data source can resolve the given column reference    */
 /*----------------------------------------------------------------------------*/
 b1 DataSource::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
-                                  Stz* szColRefTableAliasName,
-                                  Stz* szCatalogName, Stz* szSchemaName,
-                                  Stz* szTableName, Stz* szColumnName)
+                                  PlanNode* pRootNode, Stz* szColRefTableAliasName,
+                                  Stz* szCatalogName,  Stz* szSchemaName,
+                                  Stz* szTableName,    Stz* szColumnName)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // manual polymorphism here
-  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
-//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
-//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::bResolvesColumnRef(pNode, pMetadataNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
-  else                                     {  NEVER_REACH                                       }
+  if      (  TableSource::bIsOfType(pNode))  { return   TableSource::bResolvesColumnRef(pNode, pMetadataNode, pRootNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName);    }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return SubqueryRefOp::bResolvesColumnRef(pNode, pMetadataNode, pRootNode, szColRefTableAliasName, szCatalogName, szSchemaName, szTableName, szColumnName); }
+  else                                       {  NEVER_REACH }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,8 +296,7 @@ void DataSource::vPrintName(QueryNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   // Partial manual polymorphism here
-  if      (TableScanOp::bIsOfType(pNode))  { TableScanOp::vPrintName(pNode, sBuf); }
-//else if (IndexScanOp::bIsOfType(pNode))  { IndexScanOp::vPrintName(pNode, sBuf); }
+  if (TableSource::bIsOfType(pNode))  { TableSource::vPrintName(pNode, sBuf); }
   else {
     Stz* szAlias = szAliasName(pNode);
     ASSERT(szAlias);

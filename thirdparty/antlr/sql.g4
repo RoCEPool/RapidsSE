@@ -69,7 +69,7 @@ setExpr           : selectExpr
 
 corrClause        : corr = CORRESPONDING (BY '(' corrList ')')? ;
 
-withQuery         : name = tableName
+withQuery         : (RECURSIVE)? name = tableName
                     (  '(' columnAlias (',' columnAlias)* ')'  )?
                     AS '(' query ')' ;
 
@@ -536,6 +536,7 @@ PARTITION             : P A R T I T I O N;
 PLACING               : P L A C I N G;
 PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;
+RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
 RIGHT                 : R I G H T;
 ROW                   : R O W;

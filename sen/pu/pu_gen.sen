@@ -122,7 +122,7 @@ Path[].root
 : +idx_Pu1m_Pu10k    " Pu10k_10k"    >> ;
 : +idx_Pu1m_Pu100k   " Pu100k_100k"   >> ;
 : +idx_Pu1m_Pu1m     " Pu1m_1m"     >> ;
-: +idx_Pu1m_Pu10m    " Pu1m_1m"    >> ;
+: +idx_Pu1m_Pu10m    " Pu10m_1m"    >> ;
 
 : +idx_Pu10m_Pu10k   " Pu10k_10k"   >> ;
 : +idx_Pu10m_Pu100k  " Pu100k_100k"  >> ;
@@ -153,25 +153,25 @@ Path[].root
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-: +fj_0_1_Pu10k  "  \"type boolean $13 100 <=\"" >> ; // allow 10% of (j.)Pu10K
-: +fj_0_3_Pu10k  "  \"type boolean $13 300 <=\"" >> ; // allow 30% of (j.)Pu10K
-: +fj_0_6_Pu10k  "  \"type boolean $13 600 <=\"" >> ; // allow 60% of (j.)Pu10K
-: +fj_0_9_Pu10k  "  \"type boolean $13 900 <=\"" >> ; // allow 90% of (j.)Pu10K
+: +fj_0_1_Pu10k  "  \"type boolean $3 100 <=\"" >> ; // allow 10% of (j.)Pu10K
+: +fj_0_3_Pu10k  "  \"type boolean $3 300 <=\"" >> ; // allow 30% of (j.)Pu10K
+: +fj_0_6_Pu10k  "  \"type boolean $3 600 <=\"" >> ; // allow 60% of (j.)Pu10K
+: +fj_0_9_Pu10k  "  \"type boolean $3 900 <=\"" >> ; // allow 90% of (j.)Pu10K
 
-: +fj_0_1_Pu100k "  \"type boolean $3 100 <=\"" >> ; // allow 10% of (j.)Pu100K
-: +fj_0_3_Pu100k "  \"type boolean $3 300 <=\"" >> ; // allow 30% of (j.)Pu100K
-: +fj_0_6_Pu100k "  \"type boolean $3 600 <=\"" >> ; // allow 60% of (j.)Pu100K
-: +fj_0_9_Pu100k "  \"type boolean $3 900 <=\"" >> ; // allow 90% of (j.)Pu100K
+: +fj_0_1_Pu100k "  \"type boolean $4 100 <=\"" >> ; // allow 10% of (j.)Pu100K
+: +fj_0_3_Pu100k "  \"type boolean $4 300 <=\"" >> ; // allow 30% of (j.)Pu100K
+: +fj_0_6_Pu100k "  \"type boolean $4 600 <=\"" >> ; // allow 60% of (j.)Pu100K
+: +fj_0_9_Pu100k "  \"type boolean $4 900 <=\"" >> ; // allow 90% of (j.)Pu100K
 
-: +fj_0_1_Pu1m   "  \"type boolean $4 100 <=\"" >> ; // allow 10% of (j.)Pu1m
-: +fj_0_3_Pu1m   "  \"type boolean $4 300 <=\"" >> ; // allow 30% of (j.)Pu1m
-: +fj_0_6_Pu1m   "  \"type boolean $4 600 <=\"" >> ; // allow 60% of (j.)Pu1m
-: +fj_0_9_Pu1m   "  \"type boolean $4 900 <=\"" >> ; // allow 90% of (j.)Pu1m
+: +fj_0_1_Pu1m   "  \"type boolean $5 100 <=\"" >> ; // allow 10% of (j.)Pu1m
+: +fj_0_3_Pu1m   "  \"type boolean $5 300 <=\"" >> ; // allow 30% of (j.)Pu1m
+: +fj_0_6_Pu1m   "  \"type boolean $5 600 <=\"" >> ; // allow 60% of (j.)Pu1m
+: +fj_0_9_Pu1m   "  \"type boolean $5 900 <=\"" >> ; // allow 90% of (j.)Pu1m
 
-: +fj_0_1_Pu10m  "  \"type boolean $5 100 <=\"" >> ; // allow 10% of (j.)Pu10m
-: +fj_0_3_Pu10m  "  \"type boolean $5 300 <=\"" >> ; // allow 30% of (j.)Pu10m
-: +fj_0_6_Pu10m  "  \"type boolean $5 600 <=\"" >> ; // allow 60% of (j.)Pu10m
-: +fj_0_9_Pu10m  "  \"type boolean $5 900 <=\"" >> ; // allow 90% of (j.)Pu10m
+: +fj_0_1_Pu10m  "  \"type boolean $6 100 <=\"" >> ; // allow 10% of (j.)Pu10m
+: +fj_0_3_Pu10m  "  \"type boolean $6 300 <=\"" >> ; // allow 30% of (j.)Pu10m
+: +fj_0_6_Pu10m  "  \"type boolean $6 600 <=\"" >> ; // allow 60% of (j.)Pu10m
+: +fj_0_9_Pu10m  "  \"type boolean $6 900 <=\"" >> ; // allow 90% of (j.)Pu10m
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -288,41 +288,9 @@ Path[].root
     //2discard
      discard
        "JobRep %v " str.format
-         STD_PATH_TAG swap dup . api::executeCommand 2discard
+         STD_PATH_TAG swap api::executeCommand 2discard
   
   true api::reapJobs
-  
-  
-  
-  
-  
-//  STD_PATH_TAG
-//  "
-//  pipeline unnamed
-//  begin
-//  stage stageStart on origin :
-//    start
-//    | pulse once
-//    | stageMarker0861
-//  stage stageMarker0861 on all partitions :
-//    scan rapidsse public Pu10k
-//    | aggreg 0 \" type INTEGER )  $1 sum  , type INTEGER )  $1 count  , type INTEGER as pu10k_10g $6 groupBy  type INTEGER as pu10k_10g $6 \"
-//    | stageMarker0864
-//  stage stageMarker0864 on all nodes :
-//    aggreg 0 \" type INTEGER )  $1 sum  , type INTEGER )  $2 sum  , type INTEGER as pu10k_10g $3 groupBy  type INTEGER as pu10k_10g $3 \"
-//    | stageMarker0867
-//  stage stageMarker0867 on origin :
-//    aggreg 0 \" type INTEGER as pu10k_10g $3 , type INTEGER )  $2 sum  , type INTEGER )  $1 sum  groupBy  type INTEGER as pu10k_10g $3 \"
-//    | aggreg 0 \" type INTEGER $3 $2 /  , type INTEGER as pu10k_10g $1 groupBy  type INTEGER as pu10k_10g $1 \"
-//    | project 0 \" type INTEGER $1 \"
-//    | stageLast
-//  stage stageLast on origin :
-//    output
-//    | sink
-//    | stageStart
-//  end ;
-//  "
-//  api::executeCommand
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -362,16 +330,16 @@ Path[].root
   
   s +join +Pu10k
     +fx( idx t __ Pu10k  __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_agggby
+    +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_jFilter
   s +join +Pu100k
     +fx( idx t __ Pu100k __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_agggby
+    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_jFilter
   s +join +Pu1m
     +fx( idx t __ Pu1m   __ )fx
-    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_agggby
+    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_jFilter
   s +join +Pu10m
     +fx( idx t __ Pu10m  __ )fx
-    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_agggby
+    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_jFilter
 ;
 
 /*----------------------------------------------------------------------------*/

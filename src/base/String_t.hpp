@@ -46,6 +46,7 @@ namespace BASE
     void vCopy(Stz* szArg, i8 iLen);
     void vCopyTill(Stz* szArg, char cTill);
     bool bEqual(Stz* szArg);
+    bool bIsEmpty(void);
     bool bIsNumeric(void);
     i8   nLength(void);
     void vMaxValue(void);
@@ -394,6 +395,18 @@ bool String_t<AREA>::bEqual(Stz* szArg)
   bool b = StrLib::bEqualTo(m_caCharArea,(const char*)szArg);
   
   return b;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is this an empty string (i.e. "". Not to be confused with a null ptr)      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool String_t<AREA>::bIsEmpty(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_caCharArea[0] == 0;
 }
 
 /*----------------------------------------------------------------------------*/

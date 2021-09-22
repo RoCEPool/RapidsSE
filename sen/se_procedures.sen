@@ -480,31 +480,6 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // export
-  
-  STD_PATH_TAG
-  "
-  procedure export
-    parameters $Table $File
-  begin
-
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan $Table | toCsv | stageC
-
-  stage stageC on origin :
-    wrFile $File | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
   
   STD_PATH_TAG

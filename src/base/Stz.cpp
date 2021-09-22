@@ -267,6 +267,16 @@ bool Stz::bIsSomeTrue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsEmpty: test if this Stz is "" (NB: not a null ptr)                      */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsEmpty(void)
+{
+  bool bIsEmpty = StrLib::bIsEmpty(azChar());
+
+  return bIsEmpty;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsNumeric: test if this Stz is numeric                                    */
 /*----------------------------------------------------------------------------*/
 bool Stz::bIsNumeric(void)
