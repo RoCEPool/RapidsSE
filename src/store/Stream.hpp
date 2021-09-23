@@ -24,7 +24,7 @@ namespace STORE
     Pipeline*  m_pPipeline;   // which pipeline
 #ifdef WITH_PTNID
     PtnId m_tPtnNo; // this stream processes m_tPtnNo in grid
-//   will be C_UNKNOWN for stage with node topology
+                    //   will be C_UNKNOWN for stage with node topology
 #else
     tPN  m_tPtnNo; // this stream processes m_tPtnNo in grid
                    //   will be C_UNKNOWN for stage with node topology

@@ -85,6 +85,7 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
 
   vRepartition();
 }
+
 #ifdef WITH_PTNID
 /*----------------------------------------------------------------------------*/
 /* convert hash to distributed partition number                               */
@@ -115,7 +116,8 @@ PtnId PtnMap::tToPtn(i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   PtnId tPtnId;
-  iBktNo < C_MAX_PTNSINGRID ? tPtnId = m_xaBkt[(i8) iBktNo].m_i_Ptn : tPtnId=0;
+
+  tPtnId = iBktNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) iBktNo].m_i_Ptn : 0;
   return tPtnId;
 }
 

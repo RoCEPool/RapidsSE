@@ -1125,7 +1125,6 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 {
-  _static_
   return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
 }
 
@@ -1134,7 +1133,6 @@ PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::iToBkt(PtnId tPtnNo)
 {
-  _static_
   return gpAttachMap->m_pPtnMap->iToBkt(tPtnNo);
 }
 

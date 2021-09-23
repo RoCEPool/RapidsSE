@@ -476,7 +476,7 @@ void Stage::vCreateStreams(void)
       for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
         tPtnNo = iPtnNo;
         i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
-        //if (i_Node < 100) printf("2 BAD node\n");
+
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnNo);
           pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);

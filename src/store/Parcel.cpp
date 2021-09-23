@@ -473,6 +473,11 @@ void Parcel::vAppraise(Op* pSrcOp, tPN& tDstPtn, ePX& eCrossTopo, Stage*& pNextS
   RASSERT(eCrossTopo == m_eCrossTopo);
   
   tDstPtn = pSrcOp->tPtnNo();
+  #ifdef WITH_PTNID
+  //vTrace(">>>>>> Parcel::vAppraise Ptn:%lld\n"_Stz, tDstPtn.iAsI8());
+  #else
+  //vTrace(">>>>>> Parcel::vAppraise Ptn:%lld\n"_Stz, tDstPtn);
+  #endif
 
   pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);

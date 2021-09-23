@@ -101,16 +101,16 @@ void ToPtnCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
 #ifdef WITH_PTNID
-  PtnId i_Ptn = pRowBuffer->tPtnNo();
-  m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn.iAsI8()) ?
-      _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn.iAsI8())) : nullptr;
+  PtnId tPtn = pRowBuffer->tPtnNo();
+  m_pCrwBuffer = m_oHashSet.pBuffer(tPtn.iAsI8()) ?
+      _pCrwBuffer(m_oHashSet.pBuffer(tPtn.iAsI8())) : nullptr;
 
   if (! m_pCrwBuffer) {
-    m_pCrwBuffer = pNewCrwBuffer(i_Ptn.iAsI8());
+    m_pCrwBuffer = pNewCrwBuffer(tPtn.iAsI8());
     vAddNst(pRowBuffer);
   }
 
-  vAddRowsToBuffer(i_Ptn.iAsI8(),pRowBuffer);
+  vAddRowsToBuffer(tPtn.iAsI8(),pRowBuffer);
 #else
   i8 i_Ptn = pRowBuffer->tPtnNo();
   //pRowBuffer->pRowBuffer()->vDumpNst();
