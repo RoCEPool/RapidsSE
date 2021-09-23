@@ -70,6 +70,8 @@ Sessions::Sessions(void)
   m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;
   
   m_iFirstFree = 0;
+  
+  m_pSsnSkipList = new SkipListNL(C_UNQIUE_KEY, nullptr);
 
   _checkInitialised_(CN_SESSIONS);
   

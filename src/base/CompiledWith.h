@@ -96,7 +96,7 @@
 
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
-#define WITH_SSNID EndDefine       // using SsnId
+#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
 
 /*============================================================================*/
 /* end                                                                        */

@@ -20,6 +20,8 @@ namespace STORE
 
     Session* m_paSession[C_MAX_SESSIONS];
   
+    SkipListNL* m_pSsnSkipList; // skip list of sessions (ordered by session id)
+
     Footer m_xFooter;
     
    public:
