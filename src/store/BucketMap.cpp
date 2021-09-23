@@ -66,7 +66,7 @@ BucketMap::BucketMap(i8 nPartitions)
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taInLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
-    vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+    //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
   }
   #else
 
