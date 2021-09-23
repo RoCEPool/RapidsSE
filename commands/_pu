@@ -12,9 +12,9 @@ tablesizes;
 
 reap disable;
 
-pu_inc;
+//pu_inc;
 
-export se__jobReport "/tmp/se__jobReport.csv" ;
+//export se__jobReport "/tmp/se__jobReport.csv" ;
 
 /*============================================================================*/
 /* end                                                                        */
