@@ -221,8 +221,9 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 
 /*----------------------------------------------------------------------------*/
 /* Return the CteDef node that represents this subquery's definition.         */
+/* If psPathBuf is not null then the path of the CteDef is written into it.   */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryRefOp::pDefnNode(QueryNode* pNode, PlanNode* pRootNode)
+QueryNode* SubqueryRefOp::pDefnNode(QueryNode* pNode, PlanNode* pRootNode, s2K* psPathBuf)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
@@ -235,6 +236,10 @@ QueryNode* SubqueryRefOp::pDefnNode(QueryNode* pNode, PlanNode* pRootNode)
 
   Stz* szDefnPath = TableSubquery::szDefnPath(pTableSubquery);
   ASSERT(szDefnPath);
+
+  if (psPathBuf) {
+    psPathBuf->vCopy(szDefnPath);
+  }
 
   QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
   ASSERT(pCteDef);
@@ -293,9 +298,12 @@ QueryNodeList* SubqueryRefOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
   // respect to the alias that the table subquery is known as. So let's use the
   // table subquery's CteDef to help us do that.
 
-  QueryNode* pCteDef = pDefnNode(pNode, pRootNode);
+  s2K sCteDefPath;
+
+  QueryNode* pCteDef = pDefnNode(pNode, pRootNode, &sCteDefPath);
   ASSERT(pCteDef);
   ASSERT(CteDef::bIsOfType(pCteDef));
+  ASSERT(sCteDefPath.nLength() > 0);
 
   // The (empty) list of projected columns
   QueryNodeList* pProjectedColumns = new QueryNodeList();
@@ -306,7 +314,8 @@ QueryNodeList* SubqueryRefOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
     ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
     QueryNode* pColRef = ColumnRef::pCreate(nullptr, nullptr, nullptr,
-                                            CteDef::szAliasName(pCteDef), ColumnDef::szColumnName(pColumnDef));
+                                            CteDef::szAliasName(pCteDef), ColumnDef::szColumnName(pColumnDef),
+                                            sCteDefPath.szStz());
 
     // Create a ProjectedColumn from this ColumnDef and add it to the list
     QueryNode* pProjectedCol = ProjectedColumn::pCreate(pColRef, nullptr);

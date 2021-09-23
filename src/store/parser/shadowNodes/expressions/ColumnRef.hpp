@@ -19,11 +19,13 @@ namespace Parser
   public:
     static QueryNode* pCreate(Text* pTableAliasName,
                               Text* pCatalogName, Text* pSchemaName,
-                              Text* pTableName, Text* pColumnName);
+                              Text* pTableName, Text* pColumnName,
+                              Text* pDefnPath = nullptr);
 
     static QueryNode* pCreate(Stz* szTableAliasName,
                               Stz* szCatalogName, Stz* szSchemaName,
-                              Stz* szTableName,   Stz* szColumnName);
+                              Stz* szTableName,   Stz* szColumnName,
+                              Stz* pDefnPath = nullptr);
 
     static void  vDescribe(PlanNode* pNode, s2K& sBuf);
 
@@ -41,6 +43,7 @@ namespace Parser
     static Stz*  szSchema(QueryNode* pColumnRef);
     static Stz*  szTable(QueryNode* pColumnRef);
     static Stz*  szColumn(QueryNode* pColumnRef);
+    static Stz*  szDefnPath(QueryNode* pColumnRef); // may be null
     static b1    bIsFullyQualified(QueryNode* pColumnRef);
     static void  vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
                           Stz* szCatalogName, Stz* szSchemaName,

@@ -129,15 +129,17 @@ void TableSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
 
     // Column names. Append this to the table alias line above.
-    s2K sColumnBuf;
     QueryNode* pColumnNamesNode = pColumnNames(_pQueryNode(pNode));
     ASSERT(pColumnNamesNode);
-    IdList::vDescribe(pColumnNamesNode, sColumnBuf);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint(" (%s)"_Stz, sColumnBuf.szStz());
+    if (pColumnNamesNode->nChildren() > 0) {
+      s2K sColumnBuf;
+      IdList::vDescribe(pColumnNamesNode, sColumnBuf);
+      sBuf.vCatSprint(" (%s)"_Stz, sColumnBuf.szStz());
+    }
 
     // isRecursive
     b1 bIsRecursive = TableSubquery::bIsRecursive(_pQueryNode(pNode));
+    sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
     sBuf.vCatSprint("recursive: %s"_Stz, bIsRecursive ? "true"_Stz : "false"_Stz);
 

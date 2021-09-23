@@ -53,7 +53,8 @@ namespace Parser
   protected:
 
     // Return the CteDef node that represents this subquery's definition.
-    static QueryNode* pDefnNode(QueryNode* pNode, PlanNode* pRootNode);
+    // If psPathBuf is not null then the path of the CteDef is written into it.
+    static QueryNode* pDefnNode(QueryNode* pNode, PlanNode* pRootNode, s2K* psPathBuf = nullptr);
   };
 
 }

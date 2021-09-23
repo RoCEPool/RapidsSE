@@ -857,6 +857,11 @@
                       name: "columnName",
                       value: "The name of the column. Must not be null.",
                       type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "defnPath",
+                      value: "The path to the definition of this object if it cannot be found from the above names. Used by columns of CTEs.",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnRef
