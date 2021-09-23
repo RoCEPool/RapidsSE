@@ -1584,6 +1584,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
     ASSERT(pColExpr);
     ASSERT(Expr::bIsOfType(pColExpr));
 
+    ++iOrdinal;
     s256 sColNameBuf;
     Stz* szColName = ProjectedColumn::szAliasName(pProjectedCol);
     if (!szColName) {
@@ -1603,7 +1604,6 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
     QueryNode* pTypeNode = SqlType::pCreate(Expr::eType(pColExpr, pRootNode));
     b1 bNotNull = false;
-    ++iOrdinal;
     i8 iPrecision = -1;
     i8 iScale = -1;
 

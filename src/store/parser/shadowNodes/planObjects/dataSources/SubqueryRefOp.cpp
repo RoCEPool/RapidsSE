@@ -313,8 +313,8 @@ QueryNodeList* SubqueryRefOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
     QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
     ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
-    QueryNode* pColRef = ColumnRef::pCreate(nullptr, nullptr, nullptr,
-                                            CteDef::szAliasName(pCteDef), ColumnDef::szColumnName(pColumnDef),
+    QueryNode* pColRef = ColumnRef::pCreate(CteDef::szAliasName(pCteDef), nullptr, nullptr,
+                                            nullptr, ColumnDef::szColumnName(pColumnDef),
                                             sCteDefPath.szStz());
 
     // Create a ProjectedColumn from this ColumnDef and add it to the list
