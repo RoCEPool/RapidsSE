@@ -59,7 +59,9 @@ Sessions::Sessions(void)
   m_iFirstFree = 0;
 
   m_pInternalSession = nullptr;
-  
+
+  m_pSsnSkipList = new SkipListNL(C_UNQIUE_KEY, STORE::bSsnCompare_id);
+
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     Session* pSession = new Session;
     
@@ -71,7 +73,6 @@ Sessions::Sessions(void)
   
   m_iFirstFree = 0;
   
-  m_pSsnSkipList = new SkipListNL(C_UNQIUE_KEY, nullptr);
 
   _checkInitialised_(CN_SESSIONS);
   
@@ -196,6 +197,9 @@ void Sessions::vAllocInternal(void)
 
   m_pInternalSession->m_eSession = SK_INTERNAL;
   
+  bool bInserted = m_pSsnSkipList->bInsert(m_pInternalSession);
+  RASSERT(bInserted);
+
   m_okLock.vDropWrite();
 }
 
@@ -219,6 +223,9 @@ Session* Sessions::pAllocSession(eSK eSession)
 
   pSession->m_eSession = eSession;
   
+  bool bInserted = m_pSsnSkipList->bInsert(pSession);
+  RASSERT(bInserted);
+
   m_okLock.vDropWrite();
   
   return pSession;
@@ -276,6 +283,10 @@ void Sessions::vFreeSession(Session* pSession)
   pSession->vFinaliseSession(m_iFirstFree);
   
   m_iFirstFree = i_FreedSession;
+  
+  bool bRemoved = m_pSsnSkipList->bRemove(pSession);
+  RASSERT(bRemoved);
+
   
   m_okLock.vDropWrite();
 }

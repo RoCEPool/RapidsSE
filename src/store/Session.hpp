@@ -132,6 +132,8 @@ namespace STORE
   
   Session* _pSession(void* aAddr);
   Session* _pSession(i8 iAddr);
+
+  bool bSsnCompare_id(void* aSsnInsert, void* aSsnScan, bool& bMatch);
 }
 
 /*============================================================================*/

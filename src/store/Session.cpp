@@ -584,6 +584,31 @@ void Session::vTx(Tx* pTx)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* compare two sessions by their sessionId                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bSsnCompare_id(void* aSsnInsert, void* aSsnScan, bool& bMatch)
+{
+  Session* pSsnInsert = _pSession(aSsnInsert);
+  Session* pSsnScan   = _pSession(aSsnScan);
+    
+  if (! pSsnScan)
+    return false;
+  
+  // do the id's match?
+  if (pSsnInsert->m_xSessionId == pSsnScan->m_xSessionId)
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this job to be inserted lexicography after the scan?
+  
+  if (pSsnInsert->m_xSessionId > pSsnScan->m_xSessionId)
+    return true;
+  else
+    return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
