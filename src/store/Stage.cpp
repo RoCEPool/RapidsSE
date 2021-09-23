@@ -219,7 +219,7 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
-  
+  vTrace("eCrossTopo:%s tDstPtnNo:%lld i_DstOp:%lld\n"_Stz, aPX[eCrossTopo], tDstPtnNo.iAsI8(), i_DstOp);
   i8 i_ThisNode = AM::iThisNodeNo();
   
   switch (eCrossTopo) {
