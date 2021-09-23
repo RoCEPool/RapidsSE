@@ -461,7 +461,7 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   // We don't compare names as they are allowed to be different
   // (except in the case of properties, but see below).
 
-  // The type of the expressions must must match
+  // The type of the expressions must match
   if (!pExpr1->szType()->bEqual(pExpr2->szType())) {
     // If the types are not equal, then are the at least comparable?
 
