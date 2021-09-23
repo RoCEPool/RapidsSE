@@ -49,7 +49,9 @@ namespace STORE
     void vDump(void);
     void vFreeSession(Session* pSession);
     Session* pGetSession(i8 i_Session);
-  
+
+    Session* pFindSession(SsnId xSessionId);
+
     Session* pInternalSession(void);
 
     

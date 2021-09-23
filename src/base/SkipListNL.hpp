@@ -57,6 +57,8 @@ namespace BASE
                 std::function<bool(void* aInsert,
                                    void* aScan,
                                    bool& bMatch)> bfCompareClosure = nullptr);
+    void* pFindByKey(std::function<bool(void* aInsert,
+                                        void* aScan)> bfKeyCompareClosure);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject, bool bTrace=false);
     i8    nItems(void);

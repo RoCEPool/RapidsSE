@@ -270,6 +270,18 @@ void* SkipListNL::pFind(void* pObject,
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* find first matching object                                                 */
+/*----------------------------------------------------------------------------*/
+
+void* SkipListNL::pFindByKey(std::function<bool(void* aInsert,
+                                                void* aScan)> bfKeyCompareClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first node                                                             */
 /*----------------------------------------------------------------------------*/
 SkipNode* SkipListNL::pFirst(i8 iLevel)
