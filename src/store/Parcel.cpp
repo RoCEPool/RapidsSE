@@ -815,11 +815,10 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
     case XK_BROADCAST : {
       ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
 #ifdef WITH_PTNID
-      PtnId tPtnId;
       for (i8 iPtnNo = 0; iPtnNo < pNextStage->nItems(); iPtnNo++) {
-        tPtnId = iPtnNo;
+        tPtnNo = iPtnNo;
         // sendNode is the partition node
-        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
@@ -867,13 +866,12 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       
       ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsInGrid());
 #ifdef WITH_PTNID
-      PtnId tPtnId;
       for (i8 iPtnNo = 0; iPtnNo < pNextStage->nItems(); iPtnNo++) {
-        tPtnId = iPtnNo;
+        tPtnNo = iPtnNo;
         // sendNode is the partition node
-        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
-        vSendParcel(pSrcOp,iDstNode,tPtnId);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
 #else
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
