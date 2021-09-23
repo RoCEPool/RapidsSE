@@ -11,7 +11,7 @@ success;
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey > 5;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -34,7 +34,7 @@ rows: 1495
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey >= 5;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -57,7 +57,7 @@ rows: 1496
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey > 0;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -80,7 +80,7 @@ rows: 1500
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey >= 0;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -103,7 +103,7 @@ rows: 1500
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey < 100;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -126,7 +126,7 @@ rows: 99
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey <= 100;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -149,7 +149,7 @@ rows: 100
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey >= 5 and o_orderkey < 1500;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -173,7 +173,7 @@ rows: 1495
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey >= 5 and o_orderkey <= 1500;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -196,7 +196,7 @@ rows: 1496
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey > 5 and o_orderkey <= 1500;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -219,7 +219,7 @@ rows: 1495
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey = 5;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -242,7 +242,7 @@ rows: 1
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey = 1600;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -265,7 +265,7 @@ rows: 0
 //------------------------------------------------------------------------------
 // select * from orders where o_orderkey = 1500;
 
-pipeline indexJoinTest
+pipeline indexScanTest
 begin
   stage stageA on origin :
     start
@@ -285,6 +285,216 @@ end ;
 
 rows:
  (1500,*,*,*,*,*,*,*,*)
+
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey > 5;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 >"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1440
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey >= 5;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 >="
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1450
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey > 0;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 0 >"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1500
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey < 100;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "UBOUND $I1 100 <"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1000
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey <= 100;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "UBOUND $I1 100 <="
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1010
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey >= 5 and o_custkey < 1500;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1450
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey >= 5 and o_custkey <= 1500;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <="
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1450
+
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey > 5 and o_custkey <= 1500;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <="
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1440
+
+
+//------------------------------------------------------------------------------
+// select * from orders where o_custkey > 5 and o_custkey < 1500;
+
+pipeline indexScanTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    indexScan 1 orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 1440
 
 MemoryLeaks;
 rows: 0
