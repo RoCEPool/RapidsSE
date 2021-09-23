@@ -19,9 +19,13 @@ namespace STORE
     // a)
   
     // -- id, name and kind
+#ifdef WITH_SSNID
+    SsnId m_xSessionId;  // session id in grid
+#else
     Gid_t<CN_SESSION> m_xSessionId;  // session id in grid
-    s32             m_sSessionNm;  // name of this session
-    eSK             m_eSession;    // session kind
+#endif
+    s32   m_sSessionNm;  // name of this session
+    eSK   m_eSession;    // session kind
 
     // -- belongs to
     i8 m_i_Session;  // which session in sessions on this node
