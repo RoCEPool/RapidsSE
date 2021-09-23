@@ -33,9 +33,6 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
-    // Returns the name of the virtual table that the table subquery is known as
-    static Stz* szAliasName(PlanNode* pNode);
-
     // Return the node that this SubqueryRefOp is referencing
     static QueryNode* pSubquery(QueryNode* pNode, PlanNode* pRootNode);
 
@@ -52,10 +49,6 @@ namespace Parser
                                  PlanNode* pRootNode, Stz* szColRefTableAliasName,
                                  Stz* szCatalogName,  Stz* szSchemaName,
                                  Stz* szTableName,    Stz* szColumnName);
-
-
-    // TODO: add a method to look up and return the QueryNode* of the referenced subquery
-    //       static QueryNode* pSubqueryNode(QueryNode* pNode);
 
   protected:
 

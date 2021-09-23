@@ -77,9 +77,9 @@ QueryNode* ColumnRef::pCreate(Stz* szTableAliasName,
 
   Text* pTableAliasName = (szTableAliasName ? new Text(szTableAliasName) : nullptr);
   Text* pCatalogName    = (szCatalogName    ? new Text(szCatalogName)    : nullptr);
-  Text* pSchemaName     = (szCatalogName    ? new Text(szSchemaName)     : nullptr);
-  Text* pTableName      = (szCatalogName    ? new Text(szTableName)      : nullptr);
-  Text* pColumnName     = (szCatalogName    ? new Text(szColumnName)     : nullptr);
+  Text* pSchemaName     = (szSchemaName     ? new Text(szSchemaName)     : nullptr);
+  Text* pTableName      = (szTableName      ? new Text(szTableName)      : nullptr);
+  Text* pColumnName     = (szColumnName     ? new Text(szColumnName)     : nullptr);
 
   return pCreate(pTableAliasName, pCatalogName, pSchemaName, pTableName, pColumnName);
 }

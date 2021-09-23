@@ -767,14 +767,7 @@
                         {
                           name: "subqueryRefOp",
                           value: "A reference to a table subquery elsewhere in the plan",
-                          properties: [
-                            {
-                              name: "subqueryAlias",
-                              value: "The name of the virtual table that the referenced subquery is imitating",
-                              type: "/__root__/definitions/object/valueObject/stringObject"
-                            }
-                          ]
-                        }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/subqueryRefOp
+                        },
                       ]
                     }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
 

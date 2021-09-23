@@ -17,7 +17,9 @@
 #include "TableSubquery.hpp"
 #include "SubqueryMarker.hpp"
 #include "CteDef.hpp"
-
+#include "ColumnDef.hpp"
+#include "ColumnRef.hpp"
+#include "ProjectedColumn.hpp"
 
 using namespace Parser;
 
@@ -26,10 +28,6 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 
 static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/subqueryRefOp"_Stz;
-
-static Stz* C_SUBQUERY_ALIAS_PROP = "subqueryAlias"_Stz;
-static Stz* C_SUBQUERY_ALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -50,9 +48,7 @@ QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
   QueryNode* pSubqueryRefOp = new QueryNode(sName, C_DEFN);
 
   // Add any extra properties here.
-  Value xValue(pSubqueryAlias);
-  QueryNode* pAliasNode = new QueryNode(C_SUBQUERY_ALIAS_PROP, C_SUBQUERY_ALIAS_DEFN, static_cast<Value&&>(xValue));
-  pSubqueryRefOp->vAppendProperty(pAliasNode);
+  vSetAlias(pSubqueryRefOp, new Text(pSubqueryAlias));
 
   return pSubqueryRefOp;
 }
@@ -63,9 +59,10 @@ QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
 void SubqueryRefOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
+  ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
-  Stz* szSubqueryAlias = szAliasName(pNode);
+  Stz* szSubqueryAlias = szAliasName(_pQueryNode(pNode));
 
   sBuf.vCatSprint("SubqueryRefOp : %s"_Stz, szSubqueryAlias);
 }
@@ -113,12 +110,6 @@ void SubqueryRefOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
 
     // Explain any local attributes of this object
 
-    // Subquery Alias
-    Stz* szSubqueryAlias = szAliasName(pNode);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("subquery alias: (%s)"_Stz, szSubqueryAlias);
-
     return;
   }
 
@@ -155,24 +146,6 @@ b1 SubqueryRefOp::bIsExactType(PlanNode *pNode)
 b1 SubqueryRefOp::bIsExactType(Stz* szType)
 {
   return ShadowNode::bIsExactType(szType, C_DEFN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the name of the virtual table that the table subquery is known as  */
-/*----------------------------------------------------------------------------*/
-Stz* SubqueryRefOp::szAliasName(PlanNode* pNode)
-{
-  ASSERT(pNode);
-  ASSERT(bIsOfType(pNode));
-
-  PlanNode* pSubqueryAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_SUBQUERY_ALIAS_PROP), pNode);
-  ASSERT(pSubqueryAliasNode);
-  ASSERT(StringObject::bIsOfType(pSubqueryAliasNode));
-
-  Stz* szSubqueryAlias = pSubqueryAliasNode->szValue();
-  ASSERT(szSubqueryAlias);
-
-  return szSubqueryAlias;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -314,19 +287,33 @@ QueryNodeList* SubqueryRefOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
-  // Get the table subquery that this SubqueryRefOp references
-  QueryNode* pTableSubquery = pSubquery(pNode, pRootNode);
-  ASSERT(pTableSubquery);
-  ASSERT(TableSubquery::bIsOfType(pTableSubquery));
+  // We could lookup the table subquery and ask it for its projected columns,
+  // however those columns would all be qualified with respect to the base tables
+  // used within that subquery. Instead we want all of the columns qualified with
+  // respect to the alias that the table subquery is known as. So let's use the
+  // table subquery's CteDef to help us do that.
 
-  QueryNodeList* pProjectedColumns = TableSubquery::pColumnExprs(pTableSubquery, pRootNode);
+  QueryNode* pCteDef = pDefnNode(pNode, pRootNode);
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
 
-  // TODO: All of the columns in pProjectedColumns are qualified according to the CTE,
-  //       NOT qualified according to the alias of the CTE.
-  //       Either modify the projected columns and re-qualify them,
-  //       or use the CteDef information to come up with our own pProjectedColumns list
-  //       instead of having to ask the table subquery (this would be quicker/cheaper).
+  // The (empty) list of projected columns
+  QueryNodeList* pProjectedColumns = new QueryNodeList();
 
+  PlanNodeIter* pIter = CteDef::pColumnDefIter(pCteDef);
+  while (pIter->bHasNext()) {
+    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
+    ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+    QueryNode* pColRef = ColumnRef::pCreate(nullptr, nullptr, nullptr,
+                                            CteDef::szAliasName(pCteDef), ColumnDef::szColumnName(pColumnDef));
+
+    // Create a ProjectedColumn from this ColumnDef and add it to the list
+    QueryNode* pProjectedCol = ProjectedColumn::pCreate(pColRef, nullptr);
+    pProjectedColumns->vAppend(pProjectedCol);
+  }
+
+  delete pIter;
   return pProjectedColumns;
 }
 
