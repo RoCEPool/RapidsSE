@@ -40,12 +40,16 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running index scans...';
+INCLUDE 'indexScan.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running index joins...';
 INCLUDE 'indexJoin.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running index scans...';
-INCLUDE 'indexScan.test';
+LOG 'Running index joins with hash...';
+INCLUDE 'indexJoinHash.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
