@@ -240,7 +240,7 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
-      ASSERT(pPtnStream->tPtnId().iAsI8() == tDstPtnId);
+      ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
