@@ -98,6 +98,8 @@
 
 //#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
 
+#define WITH_JOB_CLOSURE EndDefine       // using job skiplist with closure fn
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
