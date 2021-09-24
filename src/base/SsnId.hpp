@@ -13,6 +13,8 @@ class SsnId : public Gid_t<CN_SESSION>
   
   void operator =(i8 iAsI8);
   void operator =(SsnId tSsnId);
+  bool operator ==(SsnId tSsnId);
+  const bool operator >(SsnId tSsnId);
 
   i8   nSsnBits(void);
   u8   uSsnMask(void);

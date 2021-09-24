@@ -319,21 +319,22 @@ Session* Sessions::pFindSession(SsnId xSessionId)
   Session* pSession = nullptr;
   
   bool bMatch = false;
-  auto bfCmpByKey = [xSessionId, &bMatch](void* aSsnInsert, void* aSsnScan) {
+  auto bfCmpByKey = [xSessionId, &bMatch](void* aSsnScan) {
     
-    Session* pSsnInsert = _pSession(aSsnInsert);
     Session* pSsnScan   = _pSession(aSsnScan);
 
     if (! pSsnScan)
       return false;
 
     // do the id's match?
-    if (pSsnInsert->m_xSessionId == pSsnScan->m_xSessionId)
+    SsnId tSsnId = xSessionId;
+    //if (*const_cast<SsnId*>(&xSessionId) == pSsnScan->m_xSessionId)
+    if (tSsnId == pSsnScan->m_xSessionId)
       bMatch = true;
     else
       bMatch = false;
 
-    if (pSsnInsert->m_xSessionId > pSsnScan->m_xSessionId)
+    if (tSsnId > pSsnScan->m_xSessionId)
       return true;
     else
       return false;

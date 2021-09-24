@@ -211,8 +211,6 @@ bool SkipListNL::bExists(void* pObject)
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
 
-#if 1
-
 void* SkipListNL::pFind(void* pObject,
                         bool bTrace,
                         CompareFp fpCompare_alt)
@@ -237,48 +235,33 @@ void* SkipListNL::pFind(void* pObject,
     return nullptr;
 }
 
-#else
-
-/*----------------------------------------------------------------------------*/
-
-void* SkipListNL::pFind(void* pObject,
-                        bool bTrace,
-                        std::function<void(void* aInsert,
-                                           void* aScan,
-                                           bool& bMatch)> bfCompareClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  bool bEqualTo;
-  
-  SkipNode* pNode = pPosition(pObject,
-                              bEqualTo,
-                              nullptr,
-                              bTrace,
-                              fpCompare_alt ? fpCompare_alt : m_fpCompare
-                              );
-  ASSERT(pNode); // logic check
-  
-  if ( ! pNode->m_pRight[0] )
-    return nullptr;
-  else if (bEqualTo)
-    return pNode->m_pRight[0]->m_pObject;
-  else
-    return nullptr;
-}
-
-#endif
-
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
 
-void* SkipListNL::pFindByKey(std::function<bool(void* aInsert,
-                                                void* aScan)> bfKeyCompareClosure)
+void* SkipListNL::pFindByKey(
+                             std::function<bool(
+                                                void* aScan
+                                                )> bfKeyCompareClosure
+                             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  return nullptr;
+//  SkipNode* pNode = pPosition(pObject,
+//                              bEqualTo,
+//                              nullptr,
+//                              bTrace,
+//                              fpCompare_alt ? fpCompare_alt : m_fpCompare
+//                              );
+//  ASSERT(pNode); // logic check
+//
+//  if ( ! pNode->m_pRight[0] )
+//    return nullptr;
+//  else if (bEqualTo)
+//    return pNode->m_pRight[0]->m_pObject;
+//  else
+    return nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,8 +487,6 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 #define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 
-#if 1
-
 SkipNode* SkipListNL::pPosition(void* pSearchForObject,
                                 bool& bEqualTo,
                                 SkipNode** aPriorVec,
@@ -573,63 +554,40 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject,
   return pPriorNode;
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* position object to be inserted                                             */
 /*----------------------------------------------------------------------------*/
 
-#else
-
-SkipNode* SkipListNL::pPosition(void* pSearchForObject,
-                                bool& bEqualTo,
-                                SkipNode** aPriorVec,
-                                bool bTrace,
-                                std::function<void(void* aInsert,
-                                                   void* aScan,
-                                                   bool& bMatch)> bfCompareClosure))
+SkipNode* SkipListNL::pPositionByLambda
+           (
+            std::function<bool(void* aRightObject
+                               )> bfCompareClosure
+            , SkipNode** aPriorVec
+            )
 {
-  bEqualTo = false;
-
-  SkipNode* pPriorNode = m_pHead;
-  i8 iLevel = m_iHeight;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  do {
-    
+  SkipNode* pPriorNode = m_pHead;
+  
+  for (i8 iLevel = m_iHeight; ; iLevel >= 0) {
+      
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: go right a number of nodes until we find
-    //               ObjectInsert < ObjectNext at current level
+    //               LeftObjectt < RightObject at current level
     
-    bool bPosObjIsGT;
+    bool bLeftIsGT;
     
     while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
       
-      
-      // compare the object being searched for
-      if (fpCompare) {
-        
-        bPosObjIsGT = fpCompare(pSearchForObject,
-                                pRightNode->m_pObject,
-                                bEqualTo);
-      }
-      else {
-        bPosObjIsGT = bCompareAddr(pSearchForObject,
-                                   pRightNode->m_pObject,
-                                   bEqualTo);
-      }
-      
-      if (bTrace) {
-        vTrace("Pos ^%lld: "_Stz,iLevel);
-          m_fpPrint(pSearchForObject);
-          vTrace(" v "_Stz);
-          m_fpPrint(pRightNode->m_pObject);
-          vTrace(" : %s\n"_Stz,bPosObjIsGT ? "GT moveRight" : "LE goDown" );
-      }
-      
-      if (bPosObjIsGT) {
-        moveScanToRight(pPriorNode,iLevel);
-      }
-      else {
+      void* pRightObject = pRightNode->m_pObject;
+      bLeftIsGT = bfCompareClosure(pRightObject);
+            
+      if (! bLeftIsGT)
         break;
-      }
-    }
+      
+      moveScanToRight(pPriorNode,iLevel);
+      
+    } // while
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // outer loop: now having gone right as far as we go down one single level
@@ -641,15 +599,10 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject,
     // now go down one level on scan node
     goDownLevel(iLevel);
     
-    // and repeat till we have a complete revision vector
-  } while (iLevel >= 0);
+  } // for
   
   return pPriorNode;
 }
-
-#endif
-
-
 
 /*----------------------------------------------------------------------------*/
 /* choose a random level for new node                                         */
