@@ -177,6 +177,31 @@ Job* JobList::pFindJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
+bool JobList::bMoveRightTest(JobId tJobId, Job* pRightJob, bool& bFoundKey)
+{  
+  RASSERT(! bFoundKey);
+  RASSERT(pRightJob);
+
+  vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
+         ,(i8)tJobId.uJobNo()
+         ,pRightJob->m_tJobId.uJobNo());
+
+  // do the id's match?
+  if (tJobId == pRightJob->m_tJobId) {
+    bFoundKey = true;
+    return false;
+  }
+
+  RASSERT(! bFoundKey);
+  if (tJobId > pRightJob->m_tJobId)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(JobId tJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
@@ -185,30 +210,34 @@ Job* JobList::pFindJob(JobId tJobId)
   
   auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
     
-    RASSERT(! bFoundKey);
-    RASSERT(aRightJob);
-
-    Job* pRightJob  = _pJob(aRightJob);
-
-    //if (! pRightJob)
-    //  return false;
-
-    JobId tGivenJobId = tJobId;
-    vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
-           ,(i8)tGivenJobId.uJobNo()
-           ,pRightJob->m_tJobId.uJobNo());
-
-    // do the id's match?
-    if (pRightJob->m_tJobId == tGivenJobId) {
-      bFoundKey = true;
-      return false;
-    }
-
-    RASSERT(! bFoundKey);
-    if (tGivenJobId > pRightJob->m_tJobId)
-      return TRUE(move_right);
-    else
-      return FALSE(go_down);
+    bool bMoveRight = bMoveRightTest(tJobId,_pJob(aRightJob),bFoundKey);
+    
+    return bMoveRight;
+    
+//    RASSERT(! bFoundKey);
+//    RASSERT(aRightJob);
+//
+//    Job* pRightJob  = _pJob(aRightJob);
+//
+//    //if (! pRightJob)
+//    //  return false;
+//
+//    JobId tGivenJobId = tJobId;
+//    vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
+//           ,(i8)tGivenJobId.uJobNo()
+//           ,pRightJob->m_tJobId.uJobNo());
+//
+//    // do the id's match?
+//    if (pRightJob->m_tJobId == tGivenJobId) {
+//      bFoundKey = true;
+//      return false;
+//    }
+//
+//    RASSERT(! bFoundKey);
+//    if (tGivenJobId > pRightJob->m_tJobId)
+//      return TRUE(move_right);
+//    else
+//      return FALSE(go_down);
   };
 
   vGrabLock();
