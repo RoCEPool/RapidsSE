@@ -83,8 +83,14 @@ namespace BASE
   
     SkipNode* pLocateKey(std::function<bool(void* aRightObject,
                                             bool& bFoundKey
-                                           )> bfCompareClosure
-                        );
+                                           )> bfMoveRightTest
+                         );
+
+    SkipNode* pPositionPrior(std::function<bool(void* aRightObject,
+                                                bool& bFoundKey
+                                                )> bfMoveRightTest,
+                             SkipNode** paPriorVec
+                             );
 
     void vValidate(void);
   

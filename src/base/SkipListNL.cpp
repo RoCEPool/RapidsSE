@@ -546,9 +546,8 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject,
 }
 
 /*----------------------------------------------------------------------------*/
-/* position object to be inserted                                             */
+/* locate object using lambda                                                 */
 /*----------------------------------------------------------------------------*/
-
 SkipNode* SkipListNL::pLocateKey
            (
             std::function<bool(void* aRightObject,
@@ -588,6 +587,54 @@ SkipNode* SkipListNL::pLocateKey
   } // for each level downwards
   
   return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* position prior vector for insert/remove using lambda                       */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pPositionPrior
+           (
+            std::function<bool(void* aRightObject,
+                               bool& bFoundKey
+                               )> bfMoveRightTest,
+            SkipNode** paPriorVec
+            )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  SkipNode* pScanNode = m_pHead;
+  
+  bool bFoundKey = false;
+
+  for (i8 iLevel = m_iHeight; iLevel >= 0; iLevel--) {
+              
+    while (SkipNode* pRightNode = pScanNode->m_pRight[iLevel]) {
+      
+      // inner loop:
+      //   go right a number of nodes until we find
+      //     ScanObject < RightObject at current level
+      
+      void* pRightObject = pRightNode->m_pObject;
+      RASSERT(pRightObject);
+      
+      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundKey);
+            
+      if (bFoundKey)
+        break;
+      
+      if (! bMoveRightAgain)
+        break;
+      
+      pScanNode = pScanNode->m_pRight[iLevel];
+      
+    } // while able to go right as far as possible
+        
+    paPriorVec[iLevel] = pScanNode;
+
+  } // for each level downwards
+
+  return pScanNode;
 }
 
 /*----------------------------------------------------------------------------*/
