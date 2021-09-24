@@ -41,7 +41,8 @@ namespace STORE
     Job*   pPopJob(void);
     bool   bRemoveJob(Job* pJob);
     void   vSee(void);
-    static bool   bMoveRightTest(JobId tJobId, Job* pRightJob, bool& bFoundKey);
+    static bool   bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
+    static bool   bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

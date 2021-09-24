@@ -108,7 +108,36 @@ void JobList::vAddJob(Job* pJob)
          );
   pJob->vJobList(m_eJobsList);
   
-  bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  
+  
+  //bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  bool bWasInserted;
+  
+  if (m_pJobsSkipList->m_fpCompare) {
+    JobId tJobId = pJob->m_tJobId;
+    
+    auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobsSkipList->bInsertByKey(pJob,bfMoveRightTest);
+  }
+  else {
+    
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobsSkipList->bInsertByKey(pJob,bfMoveRightTest);
+  }
+  
+  
   RASSERT(bWasInserted);
 }
 
@@ -212,14 +241,40 @@ Job* JobList::pFindJob(i8 iJobId)
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job address                           */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey)
+{
+  RASSERT(! bFoundKey);
+  RASSERT(pJob);
+  RASSERT(pRightJob);
+
+  vTrace("bMoveRight_addr: given %p v. right %p\n"_Stz
+         ,pJob
+         ,pRightJob);
+
+  // do the id's match?
+  if (pJob == pRightJob) {
+    bFoundKey = true;
+    return false;
+  }
+
+  RASSERT(! bFoundKey);
+  if (pJob > pRightJob)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
-bool JobList::bMoveRightTest(JobId tJobId, Job* pRightJob, bool& bFoundKey)
+bool JobList::bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey)
 {
   RASSERT(! bFoundKey);
   RASSERT(pRightJob);
 
-  vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
+  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
          ,(i8)tJobId.uJobNo()
          ,pRightJob->m_tJobId.uJobNo());
 
@@ -247,7 +302,7 @@ Job* JobList::pFindJob(JobId tJobId)
   
   auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
     
-    bool bMoveRight = bMoveRightTest(tJobId,_pJob(aRightJob),bFoundKey);
+    bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
     
     return bMoveRight;
   };
