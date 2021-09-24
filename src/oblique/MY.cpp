@@ -30,12 +30,8 @@ i8 MY::iPtn(void)
   _static_
   
   Op* pOp = MY::pOp();
-#ifdef WITH_PTNID
-  i8 iPtn = pOp ? pOp->tPtnNo().iAsI8() : -1;
-#else
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
-#endif
-  
+  i8 iPtn = pOp ? pOp->tPtnId().iAsI8() : -1;
+
   return iPtn;
 }
 

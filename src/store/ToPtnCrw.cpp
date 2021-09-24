@@ -100,8 +100,8 @@ void ToPtnCrw::vRepairHashSet(Object* pObject)
 void ToPtnCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNCRW,_FOOTER_);
-#ifdef WITH_PTNID
-  PtnId tPtn = pRowBuffer->tPtnNo();
+
+  PtnId tPtn = pRowBuffer->tPtnId();
   m_pCrwBuffer = m_oHashSet.pBuffer(tPtn.iAsI8()) ?
       _pCrwBuffer(m_oHashSet.pBuffer(tPtn.iAsI8())) : nullptr;
 
@@ -111,20 +111,6 @@ void ToPtnCrw::vConvert(RowBuffer* pRowBuffer)
   }
 
   vAddRowsToBuffer(tPtn.iAsI8(),pRowBuffer);
-#else
-  i8 i_Ptn = pRowBuffer->tPtnNo();
-  //pRowBuffer->pRowBuffer()->vDumpNst();
-
-  m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
-      _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
-
-  if (! m_pCrwBuffer) {
-    m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
-    vAddNst(pRowBuffer);
-  }
-
-  vAddRowsToBuffer(i_Ptn,pRowBuffer);
-#endif
   
   //delete pRowBuffer;
   
@@ -228,21 +214,14 @@ CrwBuffer* ToPtnCrw::pNewCrwBuffer(i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
-#ifdef WITH_PTNID
+
   PtnId tPtnId;
   tPtnId = i_Ptn;
-  pCrwBuffer->vPtnNo(tPtnId);
+  pCrwBuffer->vPtnId(tPtnId);
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);
 
   m_oHashSet.vAddBuffer(i_Ptn,pCrwBuffer);
-#else
-  pCrwBuffer->vPtnNo(i_Ptn);
-  // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);
-
-  m_oHashSet.vAddBuffer(i_Ptn,pCrwBuffer);
-#endif
   
   return pCrwBuffer;
 }

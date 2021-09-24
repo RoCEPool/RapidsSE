@@ -39,27 +39,15 @@ Stz* SP_DataBuffer::sz(DataBuffer* pDataBuffer)
 {
   _precondition_(_MAGIC_,_FOOTER_)
 
-#ifdef WITH_PTNID
   StrLib::vSprint(m_caResult,
                   "%p Partition=%lld No=%lld Height=%lld Age=%llds Permanent=%lld"_Stz,
                   pDataBuffer,
-                  pDataBuffer->tPtnNo().iAsI8(),
+                  pDataBuffer->tPtnId().iAsI8(),
                   pDataBuffer->iBufferNo(),
                   pDataBuffer->iBufferHeight(),
                   pDataBuffer->iAgeSec(),
                   (i8) pDataBuffer->bIsPermanent()
   );
-#else
-  StrLib::vSprint(m_caResult,
-                  "%p Partition=%lld No=%lld Height=%lld Age=%llds Permanent=%lld"_Stz,
-                  pDataBuffer,
-                  pDataBuffer->tPtnNo(),
-                  pDataBuffer->iBufferNo(),
-                  pDataBuffer->iBufferHeight(),
-                  pDataBuffer->iAgeSec(),
-                  (i8)pDataBuffer->bIsPermanent()
-                  );
-#endif
  
   return (Stz*) &m_caResult[0];
 }

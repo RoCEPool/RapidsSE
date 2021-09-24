@@ -68,15 +68,15 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo);
+      PtnId tPtnId = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
+      vTrace("Table:%s i_TablePtn:%lld tPtnId:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnId);
       m_pTablePtnVec->vAdd(pTablePtn);
     }
   }
 
 #else
-  #ifdef WITH_PTNID
+
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
@@ -85,8 +85,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+      PtnId tPtnId = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
 
       m_pTablePtnVec->vAdd(pTablePtn);
     }
@@ -94,21 +94,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
-  #else
 
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-      
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      
-      m_pTablePtnVec->vAdd(pTablePtn);
-    }
-  }
-  else {
-    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
-  }
-  #endif
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -237,16 +223,14 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
   return pTable ? pTable->m_pStreamDef : nullptr;
 }
 
-
-#ifdef WITH_PTNID
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(PtnId tPtnNo)
+i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
 {
   _static_
 
-  i8 i_TablePtn = tPtnNo.iAsI8() / AM::GRID::nKnownNodes();
+  i8 i_TablePtn = tPtnId.iAsI8() / AM::GRID::nKnownNodes();
 
   return i_TablePtn;
 }
@@ -264,37 +248,10 @@ PtnId Table::tTablePtnToPtnNo(i8 i_TablePtn)
 
   tPtnId = iPtnId;
 
-  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnId:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnId);
 
   return tPtnId;
 }
-#else
-/*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to table partition on its node          */
-/*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
-{
-  _static_
-  
-  i8 i_TablePtn = tPtnNo / AM::GRID::nKnownNodes();
-  
-  return i_TablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert tablePtn to partition number (in grid)                             */
-/*----------------------------------------------------------------------------*/
-tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
-{
-  _static_
-
-  tPN tPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
-
-  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
-  
-  return tPtnNo;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
@@ -1013,7 +970,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   //        This must be fixed properly. Ray 14 Nov 2020
 
   m_pTablePtnVec = new TablePtnVec;
-#ifdef WITH_PTNID
+
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
@@ -1026,20 +983,6 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
-#else
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-
-      m_pTablePtnVec->vAdd(pTablePtn);
-    }
-  }
-  else {
-    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
-  }
-#endif
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;

@@ -40,7 +40,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
   m_iBucketNo  = C_UNKNOWN;
-  m_tPtnNo     = C_UNKNOWN;
+  m_tPtnId     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
@@ -266,47 +266,26 @@ void DataBuffer::vGrabWrite(void)
   m_okLock.vGrabWrite();
 }
 
-#ifdef WITH_PTNID
 /*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnNo(PtnId tPtnNo)
+void DataBuffer::vPtnId(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_tPtnNo = tPtnNo;
+  m_tPtnId = tPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get partition no                                                           */
 /*----------------------------------------------------------------------------*/
-PtnId DataBuffer::tPtnNo(void)
+PtnId DataBuffer::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_tPtnNo;
-}
-#else
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnNo(i8 tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_tPtnNo = tPtnNo;
+  return m_tPtnId;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 DataBuffer::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_tPtnNo;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* when was this buffer newed?                                                */
 /*----------------------------------------------------------------------------*/

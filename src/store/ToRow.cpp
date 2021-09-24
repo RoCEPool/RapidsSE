@@ -785,11 +785,9 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
-#ifdef WITH_PTNID
-  PtnId tPtnNo;
-#else
-  tPN tPtnNo = 0;
-#endif
+
+  PtnId tPtnId;
+
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
@@ -3001,42 +2999,30 @@ L_RecordEndLineEnd:
   if (m_bPtnHash) {
         
     // now use the running hash to calc the partition
-#ifdef WITH_PTNID
-    tPtnNo = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
-#else
-    tPtnNo = AM::PTNMAP::tHashToDtdPtnNo(iPtnKeyHash);
-#endif
-    
+
+    tPtnId = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
+
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
-    //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
-    //tPtnNo = tPtnNo_byBkt;
+    //tPtnId_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
+    //tPtnId = tPtnId_byBkt;
     
 #ifdef WITH_KEEP_ROW_HASH
     m_pRowBuffer->vDepositColVal(iPtnKeyHash);
 #else
-    m_pRowBuffer->vDepositColVal(tPtnNo);
+    m_pRowBuffer->vDepositColVal(tPtnId);
 #endif
     
     iPtnKeyHash = 0;
   }
-#ifdef WITH_PTNID
+
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
            m_i_Rec,
-           m_bPtnHash ? tPtnNo.iAsI8() : C_UNKNOWN,
+           m_bPtnHash ? tPtnId.iAsI8() : C_UNKNOWN,
            hvRecord->sz(m_pRowBuffer->pRowCurrent()));
   }
-#else
-  if (iTraceBits & C_BIT_EndRecord) {
-    HV_Record hvRecord(m_pStreamDef->pRowPix());
-    vTrace("[%lld : %lld] %s\n"_Stz,
-           m_i_Rec,
-           m_bPtnHash ? tPtnNo : C_UNKNOWN,
-           hvRecord->sz(m_pRowBuffer->pRowCurrent()));
-  }
-#endif
 
   // increment records processed
   m_iRowsProcessed++;

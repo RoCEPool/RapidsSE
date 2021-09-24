@@ -49,10 +49,9 @@ namespace STORE
   
     void vAdjustMap(i8 nKnownNodes);
     void vSee(void);
-#ifdef WITH_PTNID
 
     PtnId tHashToDtdPtnId(i8 iHash);
-    i8 iToBkt(PtnId tPtnNo);
+    i8 iToBkt(PtnId tPtnId);
     PtnId tToPtn(i8 iBktNo);
     i8 nKnownNodes(void);
     i8 nPtnsInGrid(void);
@@ -61,28 +60,10 @@ namespace STORE
     PtnId tRobinToDtdPtnNo(i8 iRobin);
     PtnId tRobinToLclPtnNo(i8 iRobin);
     PtnId tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
-    i8 iWhichNodeNo(PtnId tPtnNo);
-    i8 i_WhichPtn(PtnId tPtnNo);
+    i8 iWhichNodeNo(PtnId tPtnId);
+    i8 i_WhichPtn(PtnId tPtnId);
     PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
     PtnId tToPtnNoOfThisNode(i8 i_Ptn);
-
-#else
-    tPN  tHashToDtdPtnNo(i8 iHash);
-    i8   iToBkt(tPN tPtnNo);
-    tPN  tToPtn(i8 iBktNo);
-    i8   nKnownNodes(void);
-    i8   nPtnsInGrid(void);
-    i8   nPtnsPerNode(void);
-    tPN  tRobinToDtdPtnNo(i8 iRobin);
-    tPN  tRobinToLclPtnNo(i8 iRobin);
-    tPN  tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
-    i8   iWhichNodeNo(tPN tPtnNo);
-    i8   i_WhichPtn(tPN tPtnNo);
-
-    tPN  tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
-    tPN  tToPtnNoOfThisNode(i8 i_Ptn);
-#endif
-
 
   private:
     void vRepartition(void);

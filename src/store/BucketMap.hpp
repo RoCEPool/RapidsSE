@@ -12,12 +12,7 @@ namespace STORE
   
     Location m_oLocation; // logical location of bucketMap
 
-#ifdef WITH_PTNID
     PtnId m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
-#else
-    tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
-#endif
-
   
     // must be last
     Footer m_xFooter;
@@ -35,11 +30,7 @@ namespace STORE
   
     void vResetPointers(void);
 
-#ifdef WITH_PTNID
     PtnId tWhichLglPtnNo(i8 iBucketId);
-#else
-    tPN  tWhichLglPtnNo(i8 iBucketId);
-#endif
   
   private:
     Footer* aFooter(void);

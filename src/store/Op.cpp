@@ -260,7 +260,7 @@ void Op::vAckPipelineJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Task* pPipelineTask = AM::pExecutingTask(m_p_Pipeline_op->pPipelineJob());
-#ifdef WITH_PTNID
+
     if (m_bTraceOp) {
 
       if (AM::TRACE::bVBlong()) {
@@ -274,7 +274,7 @@ void Op::vAckPipelineJob(void)
                szOpNm(),
                m_pStream->pStage()->szStageNm(),
                iNode(),
-               tPtnNo().iAsI8());
+               tPtnId().iAsI8());
       }
     }
 
@@ -301,52 +301,9 @@ void Op::vAckPipelineJob(void)
              szOpNm(),
              m_pStream->pStage()->szStageNm(),
              iNode(),
-             tPtnNo().iAsI8(),
+             tPtnId().iAsI8(),
              nAcksWereRemaining);
-#else
-    if (m_bTraceOp) {
 
-      if (AM::TRACE::bVBlong()) {
-        SP_Op spOp;
-
-        vTraceM("%s "
-                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pPipelineJob()
-                );
-      } else {
-        vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-               szOpNm(),
-               m_pStream->pStage()->szStageNm(),
-               iNode(),
-               tPtnNo());
-      }
-    }
-
-    i8 nAcksWereRemaining;
-
-    SP_Op spOp;
-
-    if (m_bTraceOp && AM::TRACE::bVBlong())
-      spOp.szLeading(this);
-
-    AM::vAckWaitingTask(pPipelineTask, m_pTask, nAcksWereRemaining);
-
-    if (m_bTraceOp && AM::TRACE::bVBlong()) {
-      SP_Op spOp;
-
-      vTraceM("%s "
-              "%-18s nAcksWereRemaining=%lld\n"_Stz
-              , spOp.szAck(this), __func__, nAcksWereRemaining
-              );
-    }
-
-    if (m_bTraceAck)
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job (acksRemaining : %lld)\n"_Stz,
-             szOpNm(),
-             m_pStream->pStage()->szStageNm(),
-             iNode(),
-             tPtnNo(),
-             nAcksWereRemaining);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,11 +518,7 @@ void Op::vDump(void)
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_i_Node=%lld\n"_Stz,iNode());
-#ifdef WITH_PTNID
-  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo().iAsI8());
-#else
-  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
-#endif
+  vTrace("m_tPtnId=%lld\n"_Stz,tPtnId().iAsI8());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1118,7 +1071,7 @@ i8 Op::iNode(void)
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     i_Node = m_pStream->i_Node();
   else
-    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnNo());
+    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
 
   return i_Node;
 }
@@ -1224,36 +1177,21 @@ void Op::vOpTrace(Operand* pOperand
   
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
-#ifdef WITH_PTNID
+
   vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
 
          m_sOpNm.szStz(),
          m_pStream->pStage()->szStageNm(),
          iNode(),
-         tPtnNo().iAsI8(),
+         tPtnId().iAsI8(),
          pPipelineJob(),
 
          szFunNm,
          pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
          pOperand,
          szSupplemental);
-#else
-  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
-         "%18s %-15s %p %s\n"_Stz,
 
-         m_sOpNm.szStz(),
-         m_pStream->pStage()->szStageNm(),
-         iNode(),
-         tPtnNo(),
-         pPipelineJob(),
-
-         szFunNm,
-         pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
-         pOperand,
-         szSupplemental);
-#endif
-  
   return;
   
   L_Long_Form:
@@ -1451,7 +1389,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnNo(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnId(),iNextOp());
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
@@ -1674,8 +1612,7 @@ Operand* Op::pPopRight(void)
 /*----------------------------------------------------------------------------*/
 /* get partition from op                                                      */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_PTNID
-PtnId Op::tPtnNo(void)
+PtnId Op::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -1684,25 +1621,10 @@ PtnId Op::tPtnNo(void)
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     tPtnId = C_UNKNOWN;
   else
-    tPtnId = m_pStream->tPtnNo();
+    tPtnId = m_pStream->tPtnId();
 
   return tPtnId;
 }
-#else
-tPN Op::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  i8 tPtnNo;
-
-  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    tPtnNo = C_UNKNOWN;
-  else
-    tPtnNo = m_pStream->tPtnNo();
-  
-  return tPtnNo;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* is pulsed operator?                                                        */

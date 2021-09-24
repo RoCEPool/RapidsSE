@@ -116,7 +116,6 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_PTNID
 Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
@@ -157,10 +156,9 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     ASSERT(aDstRow);
   }
   tPtnId = i_Ptn;
-  pDstRowBuffer->vPtnNo(tPtnId);
+  pDstRowBuffer->vPtnId(tPtnId);
 
   * ppRowBuffer = pDstRowBuffer;
-
 
   //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
   //if (pDstRowBuffer->nRows() < 2)
@@ -168,56 +166,6 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   return aDstRow;
 }
-#else
-Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  //ASSERT(0 == i_Ptn);
-  
-  Row* aDstRow;
-  
-  *pbNewBuffer = false;
-  
-  bool bWasNewed = false;
-  
-  // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
-  if (! pDstRowBuffer) {
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    bWasNewed = true;
-    //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  }
-  else {
-    //vTrace("Exist: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  }
-  
-  // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->pAllotRow();
-  if (! aDstRow) {
-    *pbNewBuffer = true;
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    aDstRow = pDstRowBuffer->pAllotRow();
-    ASSERT(aDstRow);
-  }
-  
-  pDstRowBuffer->vPtnNo(i_Ptn);
-    
-  * ppRowBuffer = pDstRowBuffer;
-  
-  
-  //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  //if (pDstRowBuffer->nRows() < 2)
-  //  vDebugPoint();
-
-  return aDstRow;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* set stream pix                                                             */
 /*----------------------------------------------------------------------------*/
@@ -242,10 +190,9 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
-#ifdef WITH_PTNID
   PtnId tPtnId;
   tPtnId = i_Ptn;
-  pAddBuffer->vPtnNo(tPtnId);
+  pAddBuffer->vPtnId(tPtnId);
   
   // link the old with this
   pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
@@ -255,20 +202,6 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
     m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
   
   m_paBufferChain[i_Ptn] = pAddBuffer;
-#else
-
-  tPN tPtnId = i_Ptn;
-  pAddBuffer->vPtnNo(tPtnId);
-
-  // link the old with this
-  pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
-
-
-  if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
-
-  m_paBufferChain[i_Ptn] = pAddBuffer;
-#endif
 }
 
 
