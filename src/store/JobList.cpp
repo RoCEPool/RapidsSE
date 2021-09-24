@@ -77,8 +77,42 @@ JobList::~JobList(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* add job to the jobs skiplist                                               */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_JOB_CLOSURE
+
+void JobList::vAddJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  
+//  vTrace("inserting %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
+  
+  ASSERT(JL_NONE == pJob->eJobList());
+  ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
+          (JL_RETIRED       == m_eJobsList)
+         );
+  pJob->vJobList(m_eJobsList);
+  
+  bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  RASSERT(bWasInserted);
+}
+
+#else
 /*----------------------------------------------------------------------------*/
 void JobList::vAddJob(Job* pJob)
 {
@@ -107,6 +141,9 @@ void JobList::vAddJob(Job* pJob)
   bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
   RASSERT(bWasInserted);
 }
+
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
@@ -178,7 +215,7 @@ Job* JobList::pFindJob(i8 iJobId)
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
 bool JobList::bMoveRightTest(JobId tJobId, Job* pRightJob, bool& bFoundKey)
-{  
+{
   RASSERT(! bFoundKey);
   RASSERT(pRightJob);
 
@@ -213,31 +250,6 @@ Job* JobList::pFindJob(JobId tJobId)
     bool bMoveRight = bMoveRightTest(tJobId,_pJob(aRightJob),bFoundKey);
     
     return bMoveRight;
-    
-//    RASSERT(! bFoundKey);
-//    RASSERT(aRightJob);
-//
-//    Job* pRightJob  = _pJob(aRightJob);
-//
-//    //if (! pRightJob)
-//    //  return false;
-//
-//    JobId tGivenJobId = tJobId;
-//    vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
-//           ,(i8)tGivenJobId.uJobNo()
-//           ,pRightJob->m_tJobId.uJobNo());
-//
-//    // do the id's match?
-//    if (pRightJob->m_tJobId == tGivenJobId) {
-//      bFoundKey = true;
-//      return false;
-//    }
-//
-//    RASSERT(! bFoundKey);
-//    if (tGivenJobId > pRightJob->m_tJobId)
-//      return TRUE(move_right);
-//    else
-//      return FALSE(go_down);
   };
 
   vGrabLock();

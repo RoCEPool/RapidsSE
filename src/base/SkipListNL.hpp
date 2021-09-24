@@ -52,18 +52,22 @@ namespace BASE
                 bool bTrace=false,
                 CompareFp fpCompare_alt = nullptr);
   
-    void* pFind2(void* pObject,
-                bool bTrace=false,
-                std::function<bool(void* aInsert,
-                                   void* aScan,
-                                   bool& bMatch)> bfCompareClosure = nullptr);
-    void* pFindByKey(std::function<bool(
-                                        void* aScan
-                                        , bool& bFound
-                                        )> bfKeyCompareClosure
+    void* pFindByKey(std::function<bool(void* aScan,
+                                        bool& bFound
+                                        )> bfMoveRightTest
                      );
     SkipNode* pFirst(i8 iLevel);
-    bool  bInsert(void* pObject, bool bTrace=false);
+  
+  
+    bool bInsert(void* pObject, bool bTrace=false);
+  
+    bool bInsertByKey(void* pObject,
+                      std::function<bool(void* aScan,
+                                         bool& bFound
+                                         )> bfMoveRightTest
+                      );
+
+  
     i8    nItems(void);
     SkipNode* pNewly(void);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
