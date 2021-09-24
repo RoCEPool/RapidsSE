@@ -167,7 +167,7 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
   b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sNodePath, iNodeDepth, true);
   ASSERT(bFound);
 
-  // Find the main subquery that this SubqueryRefOp is a child of.
+  // First find the main subquery that this SubqueryRefOp is a child of.
   // If we walk the graph bottom-up along the path obtained above
   // then it will be the first main subquery that we come across.
   QueryNode* pMainSubquery = nullptr;
@@ -193,28 +193,78 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pMainSubquery);
   ASSERT(sMainSubqueryPath.nLength() > 0);
 
-  // Get the parent node of the main subquery
-  PlanNode* pParent = GraphNav::pGetParentOfPath(sMainSubqueryPath.szStz(), pRootNode);
-  ASSERT(pParent);
+  // From the main subquery we again walk the graph upwards looking for a matching TableSubquery.
+  // A MainSubquery can resolve aliases belonging to another TableSubquery, TS1, iff:
+  //  - the TableSubquery is a sibling of the MainSubquery (both have the same parent),
+  //  - The parent of the MainSubquery (and any immediate parents of that) is itself
+  //    a TableSubquery, TS2, and both TS1 and TS2 are both siblings, and TS1 is an
+  //    earlier child than TS2.
+  // The resolving order of subqueries (for a non-recursive subquery) is found by
+  // looking at the siblings of pMainSubquery to see if any of them are TableSubqueries.
+  // Thereafter, if the parent is itself a TableSubquery then check all siblings of the
+  // parent that occur before the parent. The first match is returned. Aliases for
+  // TableSubqueries can shadow (hide) one another.
+  //
+  // Also refer to NameValidator::pResolvableSubqueries()
 
-  // Search the children of pParent for table subqueries, comparing the alias name.
-  // First define a lambda to help us
-  auto fChildCondition = [szAlias](PlanNode* pItem) -> b1 {
-    if (!TableSubquery::bIsOfType(pItem)) {
-      return false; // not interested
+  QueryNode* pTableSubquery = nullptr;
+  QueryNode* pLastNode = nullptr;
+
+  auto fResolver = [&pTableSubquery, &pLastNode, pMainSubquery, szAlias]
+                   (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg)
+                   -> GraphNav::eWalkCtrl {
+    UNUSED(sCurrentPath);
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    if (pNode == pMainSubquery) {
+      // Nothing to be done for pMainSubquery. Instead we want to walk its siblings,
+      // but for that we need its parent.
+      pLastNode = _pQueryNode(pNode);
+      return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pTableSubquery = _pQueryNode(pItem);
-    Stz* szAlias2 = TableSubquery::szTableAlias(pTableSubquery);
-    ASSERT(szAlias2);
+    // Iterate the children of pNode up until the child equals pLastNode or until
+    // we find the matching TableSubquery
+    PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+    while (pChildIter->bHasNext()) {
+      QueryNode* pChild = _pQueryNode(pChildIter->pNext());
 
-    return (szAlias->bSame(szAlias2));
+      if (pChild == pLastNode) {
+        // We don't resolve past pLastNode otherwise it is a forward reference.
+        // This is not allowed for a non-recursive subquery.
+        break;
+      }
+
+      if (TableSubquery::bIsOfType(pChild)) {
+        Stz* szChildAlias = TableSubquery::szTableAlias(pChild);
+        ASSERT(szChildAlias);
+
+        if (szAlias->bSame(szChildAlias)) {
+          // We've got a match!
+          pTableSubquery = pChild;
+          delete pChildIter;
+          return GraphNav::WALK_ABORT;
+        }
+      }
+    }
+
+    delete pChildIter;
+
+    if (!TableSubquery::bIsOfType(pNode)) {
+      return GraphNav::WALK_ABORT;
+    }
+
+    pLastNode = _pQueryNode(pNode);
+    return GraphNav::WALK_CONTINUE;
   };
 
-  // Now use the lambda to search for this child
-  QueryNode* pTableSubquery = _pQueryNode(GraphNav::pFindChild(fChildCondition, pParent));
+  GraphNav::bWalkPath(pRootNode, sMainSubqueryPath, nullptr, fResolver, nullptr);
+
   ASSERT(pTableSubquery);
   ASSERT(TableSubquery::bIsOfType(pTableSubquery));
+  ASSERT(TableSubquery::szTableAlias(pTableSubquery)->bSame(szAlias));
 
   return pTableSubquery;
 }

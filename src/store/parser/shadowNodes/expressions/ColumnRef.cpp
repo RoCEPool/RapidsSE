@@ -310,19 +310,24 @@ b1 ColumnRef::bIsFullyQualified(QueryNode* pNode)
   QueryNode *pColumnNode = static_cast<QueryNode *>(
       GraphNav::pFindProperty(C_COLUMN_PROP, pNode));
 
+  QueryNode *pDefnPathNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_DEFNPATH_PROP, pNode));
+
   ASSERT(pTableAliasNode);
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
+  ASSERT(pDefnPathNode);
 
   Stz* szTableAliasName = pTableAliasNode->szValue();
   Stz* szCatalogName    = pCatalogNode->szValue();
   Stz* szSchemaName     = pSchemaNode->szValue();
   Stz* szTableName      = pTableNode->szValue();
   Stz* szColumnName     = pColumnNode->szValue();
+  Stz* szDefnPath       = pDefnPathNode->szValue();
 
-  return (szTableAliasName || (szCatalogName && szSchemaName && szTableName)) && szColumnName;
+  return ( (szTableAliasName && szDefnPath) || (szCatalogName && szSchemaName && szTableName && !szDefnPath)) && szColumnName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,7 +335,8 @@ b1 ColumnRef::bIsFullyQualified(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
                          Stz* szCatalogName, Stz* szSchemaName,
-                         Stz* szTableName, Stz* szColumnName)
+                         Stz* szTableName, Stz* szColumnName,
+                         Stz* szDefnPath)
 {
   ASSERT(bIsOfType(pColumnRef));
   ASSERT(szTableAliasName || (szCatalogName && szSchemaName && szTableName));
@@ -341,12 +347,14 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
   QueryNode* pSchemaNode     = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP,     pColumnRef));
   QueryNode* pTableNode      = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP,      pColumnRef));
   QueryNode* pColumnNode     = _pQueryNode(GraphNav::pFindProperty(C_COLUMN_PROP,     pColumnRef));
+  QueryNode* pDefnPath       = _pQueryNode(GraphNav::pFindProperty(C_DEFNPATH_PROP,   pColumnRef));
 
   ASSERT(pTableAliasNode);
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
+  ASSERT(pDefnPath);
 
   Value xTableAliasValue;
   xTableAliasValue.vSet(szTableAliasName);
@@ -367,6 +375,10 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
   Value xColValue;
   xColValue.vSet(szColumnName);
   pColumnNode->vSetValue(static_cast<Value&&>(xColValue));
+
+  Value xDefnPath;
+  xDefnPath.vSet(szDefnPath);
+  pDefnPath->vSetValue(static_cast<Value&&>(xDefnPath));
 
   ASSERT(bIsFullyQualified(pColumnRef));
 }
@@ -409,35 +421,35 @@ b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
   szStr1 = ColumnRef::szTableAlias(pColRef1);
   szStr2 = ColumnRef::szTableAlias(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szCatalog(pColRef1);
   szStr2 = ColumnRef::szCatalog(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szSchema(pColRef1);
   szStr2 = ColumnRef::szSchema(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szTable(pColRef1);
   szStr2 = ColumnRef::szTable(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szColumn(pColRef1);
   szStr2 = ColumnRef::szColumn(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
