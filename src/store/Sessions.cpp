@@ -318,8 +318,7 @@ Session* Sessions::pFindSession(SsnId xSessionId)
   
   Session* pSession = nullptr;
   
-  bool bMatch = false;
-  auto bfCmpByKey = [xSessionId, &bMatch](void* aSsnScan) {
+  auto bfCmpByKey = [xSessionId](void* aSsnScan, bool& bMatch) {
     
     Session* pSsnScan   = _pSession(aSsnScan);
 

@@ -238,30 +238,21 @@ void* SkipListNL::pFind(void* pObject,
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-
 void* SkipListNL::pFindByKey(
                              std::function<bool(
-                                                void* aScan
-                                                )> bfKeyCompareClosure
-                             )
+                                                void* aScan,
+                                                bool& bFoundKey
+                                                )> bfMoveRightTest
+                              )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-//  SkipNode* pNode = pPosition(pObject,
-//                              bEqualTo,
-//                              nullptr,
-//                              bTrace,
-//                              fpCompare_alt ? fpCompare_alt : m_fpCompare
-//                              );
-//  ASSERT(pNode); // logic check
-//
-//  if ( ! pNode->m_pRight[0] )
-//    return nullptr;
-//  else if (bEqualTo)
-//    return pNode->m_pRight[0]->m_pObject;
-//  else
-    return nullptr;
+  SkipNode* pNode = pLocateKey(bfMoveRightTest);
 
+  if (pNode)
+    return pNode->m_pObject;
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -558,50 +549,45 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject,
 /* position object to be inserted                                             */
 /*----------------------------------------------------------------------------*/
 
-SkipNode* SkipListNL::pPositionByLambda
+SkipNode* SkipListNL::pLocateKey
            (
-            std::function<bool(void* aRightObject
-                               )> bfCompareClosure
-            , SkipNode** aPriorVec
+            std::function<bool(void* aRightObject,
+                               bool& bFoundKey
+                               )> bfMoveRightTest
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  SkipNode* pPriorNode = m_pHead;
+  SkipNode* pScanNode = m_pHead;
   
-  for (i8 iLevel = m_iHeight; ; iLevel >= 0) {
+  bool bFoundKey = false;
+
+  for (i8 iLevel = m_iHeight; iLevel >= 0; iLevel--) {
+              
+    while (SkipNode* pRightNode = pScanNode->m_pRight[iLevel]) {
       
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of nodes until we find
-    //               LeftObjectt < RightObject at current level
-    
-    bool bLeftIsGT;
-    
-    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
+      // inner loop:
+      //   go right a number of nodes until we find
+      //     ScanObject < RightObject at current level
       
       void* pRightObject = pRightNode->m_pObject;
-      bLeftIsGT = bfCompareClosure(pRightObject);
+      RASSERT(pRightObject);
+      
+      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundKey);
             
-      if (! bLeftIsGT)
+      if (bFoundKey)
+        return pRightNode;
+      
+      if (! bMoveRightAgain)
         break;
       
-      moveScanToRight(pPriorNode,iLevel);
+      pScanNode = pScanNode->m_pRight[iLevel];
       
-    } // while
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: now having gone right as far as we go down one single level
-    
-    // first record current node as a revision point
-    if (aPriorVec)
-      aPriorVec[iLevel] = pPriorNode;
-       
-    // now go down one level on scan node
-    goDownLevel(iLevel);
-    
-  } // for
+    } // while able to go right as far as possible
+        
+  } // for each level downwards
   
-  return pPriorNode;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

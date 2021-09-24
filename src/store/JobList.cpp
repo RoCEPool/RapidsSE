@@ -155,6 +155,44 @@ Job* JobList::pFindJob(i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
+Job* JobList::pFindJob(JobId tJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  Job* pJob = nullptr;
+  
+  auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+    
+    RASSERT(! bFoundKey);
+    RASSERT(aRightJob);
+
+    Job* pRightJob  = _pJob(aRightJob);
+
+    //if (! pRightJob)
+    //  return false;
+
+    // do the id's match?
+    JobId tGivenJobId = tJobId;
+    if (pRightJob->m_tJobId == tGivenJobId) {
+      bFoundKey = true;
+      return false;
+    }
+
+    RASSERT(! bFoundKey);
+    if (tGivenJobId > pRightJob->m_tJobId)
+      return TRUE(move_right);
+    else
+      return FALSE(go_down);
+  };
+
+  pJob = _pJob(m_pJobsSkipList->pFindByKey(bfMoveRightTest));
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a job in the jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(Job* pJob__Find)
