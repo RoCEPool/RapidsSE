@@ -121,6 +121,25 @@ void JobList::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* find a job in the jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
+
+#ifdef WITH_JOB_CLOSURE
+
+Job* JobList::pFindJob(i8 iJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  JobId tJobId;
+  
+  tJobId = iJobId;
+  
+  Job* pJobFound = pFindJob(tJobId);
+  
+  return pJobFound;
+}
+
+#else
+
+/*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(i8 iJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
@@ -133,11 +152,11 @@ Job* JobList::pFindJob(i8 iJobId)
   vDropLock();
   
 //  if (! pJobFound) {
-//    
+//
 //    vTrace("------------------------------------\n"_Stz);
 //    vTrace("Looking for JobId %lld in %s\n"_Stz,iJobId,aJL[m_eJobsList]);
 //    vTrace("------------------------------------\n"_Stz);
-//    
+//
 //    vGrabLock();
 //    vContentDump();
 //    pJobFound = pFindJob(pJob__Find);
@@ -153,13 +172,14 @@ Job* JobList::pFindJob(i8 iJobId)
 
   return pJobFound;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(JobId tJobId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   Job* pJob = nullptr;
   
@@ -173,8 +193,12 @@ Job* JobList::pFindJob(JobId tJobId)
     //if (! pRightJob)
     //  return false;
 
-    // do the id's match?
     JobId tGivenJobId = tJobId;
+    vTrace("MoveRightTest: given %lld v. right %lld\n"_Stz
+           ,(i8)tGivenJobId.uJobNo()
+           ,pRightJob->m_tJobId.uJobNo());
+
+    // do the id's match?
     if (pRightJob->m_tJobId == tGivenJobId) {
       bFoundKey = true;
       return false;
@@ -187,8 +211,12 @@ Job* JobList::pFindJob(JobId tJobId)
       return FALSE(go_down);
   };
 
+  vGrabLock();
+
   pJob = _pJob(m_pJobsSkipList->pFindByKey(bfMoveRightTest));
-  
+
+  vDropLock();
+
   return pJob;
 }
 
