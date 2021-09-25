@@ -75,7 +75,7 @@ Job* STORE::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool STORE::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB && eClass <= CN_JOB__FIND)
+  if (eClass == CN_JOB)
     return true;
   else
     return false;

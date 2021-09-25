@@ -30,7 +30,7 @@ void Step::vOlistFindJob(void)
   JobId tJobId;
   tJobId = m_pDataStack->iPopAsInt(__func__);
 
-  Job* pJobFound = AM::pJob__FindOriginating(tJobId);
+  Job* pJobFound = AM::pJob_FindOriginating(tJobId);
   RASSERT(pJobFound);
   
   

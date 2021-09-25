@@ -90,7 +90,7 @@ void Step::vParcelPipeOut(void)
   // find the pipeline participant job
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
-  Job* pPipelineJob = AM::pJob__FindParticipating(tPipelineJob);
+  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
 
   // get the next stage the send is supposed to send to
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();

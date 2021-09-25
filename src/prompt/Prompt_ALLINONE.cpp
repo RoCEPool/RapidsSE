@@ -729,7 +729,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pPipelineJob = AM::pJob__FindParticipating(tJobId);
+  Job* pPipelineJob = AM::pJob_FindParticipating(tJobId);
   
   if ( ! pPipelineJob ) {
     vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());

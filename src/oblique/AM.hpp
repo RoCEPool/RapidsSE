@@ -724,8 +724,8 @@ namespace OBLIQUE
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob__FindOriginating(JobId tJobId);
-    static Job* pJob__FindParticipating(JobId tJobId);
+    static Job* pJob_FindOriginating(JobId tJobId);
+    static Job* pJob_FindParticipating(JobId tJobId);
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);

@@ -5,7 +5,6 @@
 #include "BASE.h"
 
 #include "Job.hpp"
-#include "Job__Find.hpp"
 #include "JobList.hpp"
 
 #include "PipelineSpec.hpp"
@@ -57,7 +56,7 @@ JobList::JobList(CompareFp fpCompare, eJL eJobsList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  m_eJobsList = eJobsList;
+  m_eJobList = eJobsList;
   m_pJobSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
   _checkInitialised_(CN_JOBLIST);
@@ -138,19 +137,19 @@ void JobList::vAddJob(Job* pJob)
 //         "job %p %s %lld "
 //         "task %p\n"_Stz
 //
-//         ,aJL[m_eJobsList]
+//         ,aJL[m_eJobList]
 //         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
 //         ,pJob->pJobTask()
 //         );
   
   ASSERT(JL_NONE == pJob->eJobList());
-  ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
-          (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
-          (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
-          (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
-          (JL_RETIRED       == m_eJobsList)
+  ASSERT( (JL_DEMON         == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_LOCAL         == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_ORIGINATING   == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_PARTICIPATING == m_eJobList &&   pJob->bWasReceived()) ||
+          (JL_RETIRED       == m_eJobList)
          );
-  pJob->vJobList(m_eJobsList);
+  pJob->vJobList(m_eJobList);
   
   
   
@@ -158,6 +157,8 @@ void JobList::vAddJob(Job* pJob)
   bool bWasInserted;
   
   if (m_pJobSkipList->m_fpCompare) {
+    
+    RASSERT(m_eJobList != JL_RETIRED);
     
     JobId tJobId = pJob->m_tJobId;
     
@@ -172,6 +173,8 @@ void JobList::vAddJob(Job* pJob)
     RASSERT(bWasInserted);
   }
   else {
+    
+    RASSERT(m_eJobList == JL_RETIRED);
     
     auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
       
@@ -207,6 +210,7 @@ Job* JobList::pFindJob(JobId tJobId)
   Job* pJob = nullptr;
   
   RASSERT(m_pJobSkipList->m_fpCompare);
+  RASSERT(m_eJobList != JL_RETIRED);
 
   auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
     
@@ -222,20 +226,6 @@ Job* JobList::pFindJob(JobId tJobId)
   vDropLock();
 
   return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find a job in the jobs skip list                                           */
-/*----------------------------------------------------------------------------*/
-Job* JobList::pFindJob(Job* pJob__Find)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  
-  Job* pJobFound = reinterpret_cast<Job*>(m_pJobSkipList->pFind((void*)pJob__Find));
-  
-  return pJobFound;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,10 +298,12 @@ bool JobList::bRemoveJob(Job* pJob)
   ASSERT(m_okLock.bIsLocked());
     
  
-  ASSERT(m_eJobsList == pJob->eJobList());
+  ASSERT(m_eJobList == pJob->eJobList());
     
   if (m_pJobSkipList->m_fpCompare) {
 
+    RASSERT(m_eJobList != JL_RETIRED);
+    
     JobId tJobId = pJob->m_tJobId;
     
     auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
@@ -326,6 +318,8 @@ bool JobList::bRemoveJob(Job* pJob)
 
   }
   else {
+    
+    RASSERT(m_eJobList == JL_RETIRED);
     
     auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
       
@@ -354,7 +348,7 @@ void JobList::vSee(void)
   
   SP_Gid spJobGid;
   
-  vTrace("See JobList %s::\n"_Stz,aJL[m_eJobsList]);
+  vTrace("See JobList %s::\n"_Stz,aJL[m_eJobList]);
   
   vGrabLock();
 

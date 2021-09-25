@@ -10,7 +10,7 @@ namespace STORE
   class JobList : public Object
   {
   private:
-    eJL  m_eJobsList;  // which job list
+    eJL  m_eJobList;  // which job list
     Lock m_okLock;     // lock
   
     SkipListNL* m_pJobSkipList; // skip list of jobs (ordered by job id)
@@ -32,7 +32,6 @@ namespace STORE
     void   vAddJob(Job* pJob);
     void   vDropLock(void);
     Job*   pFindJob(JobId tJobId);
-    Job*   pFindJob(Job* pJob__Find);
     SkipNode* pFirst(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);

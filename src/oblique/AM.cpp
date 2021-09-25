@@ -3943,7 +3943,7 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindOriginating(JobId tJobId)
+Job* AM::pJob_FindOriginating(JobId tJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
@@ -3955,7 +3955,7 @@ Job* AM::pJob__FindOriginating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindParticipating(JobId tJobId)
+Job* AM::pJob_FindParticipating(JobId tJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   

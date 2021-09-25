@@ -114,7 +114,6 @@
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
-#include "Job__Find.hpp"
 #include "JobList.hpp"
 #include "JobReport.hpp"
 #include "Jobs.hpp"
@@ -313,7 +312,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'J' - ('A' - 1),            HT_INVALID   ,0 }, // CN__J__
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
-  { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
   { sizeof(JobReport),          HT_T_TINY    ,0 }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
