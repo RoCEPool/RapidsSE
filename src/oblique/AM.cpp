@@ -2276,10 +2276,6 @@ Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->pJobTask();
   return pTask;
 }
-bool AM::bJobIsForeign(i8 iJobId) {
-  bool bForeign = Job::bIsForeign(iJobId);
-  return bForeign;
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;

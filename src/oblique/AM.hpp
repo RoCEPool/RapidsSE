@@ -562,7 +562,6 @@ namespace OBLIQUE
 
     //
     static Task* pExecutingTask(Job* pJob);
-    static bool bJobIsForeign(i8 iJobId);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);

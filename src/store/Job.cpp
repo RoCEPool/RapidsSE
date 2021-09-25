@@ -218,22 +218,6 @@ Job* Job::pThisTLSJob(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is this a foreign job?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Job::bIsForeign(i8 iJobId)
-{
-  if (C_UNKNOWN == iJobId)
-    return false;
-  
-  i8 iOrigin = Job::iOriginatorNode(iJobId);
-  
-  bool bIsForeign =
-   iOrigin == AM::iThisNodeNo() ? false : true;
-  
-  return bIsForeign;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the job no component this job                                          */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobNo(i8 iJobId)
