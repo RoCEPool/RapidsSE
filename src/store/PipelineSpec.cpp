@@ -12,9 +12,7 @@
 #include "Grid.hpp"
 #include "TagConstants.h"
 
-#ifdef WITH_NESTED_PIPELINES
 #include "SP_PipelineSpec.hpp"
-#endif
 
 static bool gbPipelineDebug = false;
 

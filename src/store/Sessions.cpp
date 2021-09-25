@@ -59,7 +59,9 @@ Sessions::Sessions(void)
   m_iFirstFree = 0;
 
   m_pInternalSession = nullptr;
-  
+
+  m_pSsnSkipList = new SkipListNL(C_UNQIUE_KEY, STORE::bSsnCompare_id);
+
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     Session* pSession = new Session;
     
@@ -70,6 +72,7 @@ Sessions::Sessions(void)
   m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;
   
   m_iFirstFree = 0;
+  
 
   _checkInitialised_(CN_SESSIONS);
   
@@ -194,6 +197,11 @@ void Sessions::vAllocInternal(void)
 
   m_pInternalSession->m_eSession = SK_INTERNAL;
   
+#ifdef WITH_SSN_SKIPLIST
+  bool bInserted = m_pSsnSkipList->bInsert(m_pInternalSession);
+  RASSERT(bInserted);
+#endif
+  
   m_okLock.vDropWrite();
 }
 
@@ -216,6 +224,11 @@ Session* Sessions::pAllocSession(eSK eSession)
   m_nSessionsSoFar++;
 
   pSession->m_eSession = eSession;
+  
+#ifdef WITH_SSN_SKIPLIST
+  bool bInserted = m_pSsnSkipList->bInsert(pSession);
+  RASSERT(bInserted);
+#endif
   
   m_okLock.vDropWrite();
   
@@ -275,6 +288,11 @@ void Sessions::vFreeSession(Session* pSession)
   
   m_iFirstFree = i_FreedSession;
   
+#ifdef WITH_SSN_SKIPLIST
+  bool bRemoved = m_pSsnSkipList->bRemove(pSession);
+  RASSERT(bRemoved);
+#endif
+  
   m_okLock.vDropWrite();
 }
 
@@ -287,6 +305,41 @@ Session* Sessions::pGetSession(i8 i_Session)
   
   ASSERT(i_Session >= 0 && i_Session < C_MAX_SESSIONS);
   Session* pSession = m_paSession[i_Session];
+  
+  return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a session in skip list                                                */
+/*----------------------------------------------------------------------------*/
+Session* Sessions::pFindSession(SsnId xSessionId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
+  
+  Session* pSession = nullptr;
+  
+  auto bfCmpByKey = [xSessionId](void* aSsnScan, bool& bMatch) {
+    
+    Session* pSsnScan   = _pSession(aSsnScan);
+
+    if (! pSsnScan)
+      return false;
+
+    // do the id's match?
+    SsnId tSsnId = xSessionId;
+    //if (*const_cast<SsnId*>(&xSessionId) == pSsnScan->m_xSessionId)
+    if (tSsnId == pSsnScan->m_xSessionId)
+      bMatch = true;
+    else
+      bMatch = false;
+
+    if (tSsnId > pSsnScan->m_xSessionId)
+      return true;
+    else
+      return false;
+  };
+
+  pSession = _pSession(m_pSsnSkipList->pFindByKey(bfCmpByKey));
   
   return pSession;
 }

@@ -20,6 +20,8 @@ namespace STORE
 
     Session* m_paSession[C_MAX_SESSIONS];
   
+    SkipListNL* m_pSsnSkipList; // skip list of sessions (ordered by session id)
+
     Footer m_xFooter;
     
    public:
@@ -47,7 +49,9 @@ namespace STORE
     void vDump(void);
     void vFreeSession(Session* pSession);
     Session* pGetSession(i8 i_Session);
-  
+
+    Session* pFindSession(SsnId xSessionId);
+
     Session* pInternalSession(void);
 
     

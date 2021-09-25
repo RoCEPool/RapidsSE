@@ -77,8 +77,72 @@ JobList::~JobList(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* add job to the jobs skiplist                                               */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_JOB_CLOSURE
+
+void JobList::vAddJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  
+//  vTrace("inserting %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
+  
+  ASSERT(JL_NONE == pJob->eJobList());
+  ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_LOCAL         == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_ORIGINATING   == m_eJobsList && ! pJob->bWasReceived()) ||
+          (JL_PARTICIPATING == m_eJobsList &&   pJob->bWasReceived()) ||
+          (JL_RETIRED       == m_eJobsList)
+         );
+  pJob->vJobList(m_eJobsList);
+  
+  
+  
+  //bool bWasInserted = m_pJobsSkipList->bInsert(pJob);
+  bool bWasInserted;
+  
+  if (m_pJobsSkipList->m_fpCompare) {
+    
+    JobId tJobId = pJob->m_tJobId;
+    
+    auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobsSkipList->bInsertByKey(pJob,bfMoveRightTest);
+  }
+  else {
+    
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobsSkipList->bInsertByKey(pJob,bfMoveRightTest);
+  }
+  
+  
+  RASSERT(bWasInserted);
+}
+
+#else
 /*----------------------------------------------------------------------------*/
 void JobList::vAddJob(Job* pJob)
 {
@@ -108,6 +172,9 @@ void JobList::vAddJob(Job* pJob)
   RASSERT(bWasInserted);
 }
 
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
@@ -121,6 +188,25 @@ void JobList::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* find a job in the jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
+
+#ifdef WITH_JOB_CLOSURE
+
+Job* JobList::pFindJob(i8 iJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  JobId tJobId;
+  
+  tJobId = iJobId;
+  
+  Job* pJobFound = pFindJob(tJobId);
+  
+  return pJobFound;
+}
+
+#else
+
+/*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(i8 iJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
@@ -133,11 +219,11 @@ Job* JobList::pFindJob(i8 iJobId)
   vDropLock();
   
 //  if (! pJobFound) {
-//    
+//
 //    vTrace("------------------------------------\n"_Stz);
 //    vTrace("Looking for JobId %lld in %s\n"_Stz,iJobId,aJL[m_eJobsList]);
 //    vTrace("------------------------------------\n"_Stz);
-//    
+//
 //    vGrabLock();
 //    vContentDump();
 //    pJobFound = pFindJob(pJob__Find);
@@ -152,6 +238,79 @@ Job* JobList::pFindJob(i8 iJobId)
   delete pJob__Find;
 
   return pJobFound;
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job address                           */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey)
+{
+  RASSERT(pJob);
+  RASSERT(pRightJob);
+
+//  vTrace("bMoveRight_addr: given %p v. right %p\n"_Stz
+//         ,pJob
+//         ,pRightJob);
+
+  // do the id's match?
+  if (pJob == pRightJob) {
+    bFoundKey = true;
+    return false;
+  }
+
+  if (pJob > pRightJob)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey)
+{
+  RASSERT(pRightJob);
+
+//  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
+//         ,(i8)tJobId.uJobNo()
+//         ,pRightJob->m_tJobId.uJobNo());
+
+  // do the id's match?
+  if (tJobId == pRightJob->m_tJobId) {
+    bFoundKey = true;
+    return false;
+  }
+
+  if (tJobId > pRightJob->m_tJobId)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
+Job* JobList::pFindJob(JobId tJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  Job* pJob = nullptr;
+  
+  auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+    
+    bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
+    
+    return bMoveRight;
+  };
+
+  vGrabLock();
+
+  pJob = _pJob(m_pJobsSkipList->pFindByKey(bfMoveRightTest));
+
+  vDropLock();
+
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,11 +416,14 @@ SkipNode* JobList::pNext(SkipNode* pPrev)
 /*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
+
+#ifdef WITH_JOB_CLOSURE
+
 bool JobList::bRemoveJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  bool bRemoved;
+  bool bWasRemoved;
   
   ASSERT(m_okLock.bIsLocked());
     
@@ -275,14 +437,76 @@ bool JobList::bRemoveJob(Job* pJob)
 //         );
  
   ASSERT(m_eJobsList == pJob->eJobList());
+    
+  if (m_pJobsSkipList->m_fpCompare) {
+
+    JobId tJobId = pJob->m_tJobId;
+    
+    auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+    
+    bWasRemoved = m_pJobsSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+
+  }
+  else {
+    
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasRemoved = m_pJobsSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+
+  }
+  
+  ASSERT(bWasRemoved);
+  
+  pJob->vJobList(JL_NONE);
+
+  return bWasRemoved;
+}
+
+#else
+/*----------------------------------------------------------------------------*/
+bool JobList::bRemoveJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  bool bRemoved;
+  
+  ASSERT(m_okLock.bIsLocked());
+    
+//  vTrace("removing %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobsList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
+ 
+  ASSERT(m_eJobsList == pJob->eJobList());
   
   bRemoved = m_pJobsSkipList->bRemove(pJob);
+  
+  
+  
+  
   ASSERT(bRemoved);
   pJob->vJobList(JL_NONE);
 
   return bRemoved;
 }
 
+
+
+#endif
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
