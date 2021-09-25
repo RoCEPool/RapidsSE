@@ -598,8 +598,7 @@ bool Api::bReapJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bWasRemoved = pRetiredJobs->bRemoveJob(pReapableJob);
-  RASSERT(bWasRemoved);
+  pRetiredJobs->vRemoveJob(pReapableJob);
   
   pRetiredJobs->vDropLock();
   

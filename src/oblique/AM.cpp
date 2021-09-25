@@ -3952,69 +3952,62 @@ Job* AM::pJob_FindParticipating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 /* remove job from local list                                                 */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
+void AM::vJob_RemoveLocal(Job* pJob, bool bDump)
 {
   AM::pLocalJobs()->vGrabLock();
   
   if (bDump)
     AM::pLocalJobs()->vContentDump();
   
-  bool bRemoved = AM::pLocalJobs()->bRemoveJob(pJob);
+  AM::pLocalJobs()->vRemoveJob(pJob);
   
   AM::pLocalJobs()->vDropLock();
-  
-  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
+void AM::vJob_RemoveOriginating(Job* pJob, bool bDump)
 {
   AM::pOriginatingJobs()->vGrabLock();
   
   if (bDump)
     AM::pOriginatingJobs()->vContentDump();
   
-  bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
+  AM::pOriginatingJobs()->vRemoveJob(pJob);
   
   AM::pOriginatingJobs()->vDropLock();
-    
-  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
+void AM::vJob_RemoveParticipating(Job* pJob, bool bDump)
 {
   AM::pParticipatingJobs()->vGrabLock();
   
   if (bDump)
     AM::pParticipatingJobs()->vContentDump();
 
-  bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
+  AM::pParticipatingJobs()->vRemoveJob(pJob);
   
   AM::pParticipatingJobs()->vDropLock();
-    
-  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from retired list                                               */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveRetired(Job* pJob, bool bDump)
+void AM::vJob_RemoveRetired(Job* pJob, bool bDump)
 {
   AM::pRetiredJobs()->vGrabLock();
   
   if (bDump)
     AM::pRetiredJobs()->vContentDump();
 
-  bool bRemoved = AM::pRetiredJobs()->bRemoveJob(pJob);
+  AM::pRetiredJobs()->vRemoveJob(pJob);
   
   AM::pRetiredJobs()->vDropLock();
-    
-  return bRemoved;
+
 }
 
 /*----------------------------------------------------------------------------*/

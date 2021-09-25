@@ -39,7 +39,7 @@ namespace STORE
     i8     nJobs(void);
     SkipNode* pNext(SkipNode* pPrev);
     Job*   pPopJob(void);
-    bool   bRemoveJob(Job* pJob);
+    void   vRemoveJob(Job* pJob);
     void   vSee(void);
   
   void vContentDump(void);

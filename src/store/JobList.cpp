@@ -286,7 +286,7 @@ SkipNode* JobList::pNext(SkipNode* pPrev)
 /*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
-bool JobList::bRemoveJob(Job* pJob)
+void JobList::vRemoveJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
@@ -305,7 +305,6 @@ bool JobList::bRemoveJob(Job* pJob)
     };
 
     bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
-    ASSERT(bWasRemoved);
   }
   else {
     JobId tJobId = pJob->m_tJobId;
@@ -318,14 +317,21 @@ bool JobList::bRemoveJob(Job* pJob)
     };
     
     bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
-    ASSERT(bWasRemoved);
   }
   
   pJob->vJobList(JL_NONE);
 
-  ASSERT(bWasRemoved);
+  if (! bWasRemoved) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld\n"_Stz,
+           aJL[m_eJobList],pJob->tJobId().iAsI8());
+    vTrace("------------------------------------\n"_Stz);
+    vContentDump();
+  }
   
-  return bWasRemoved;
+  
+  
+  ASSERT(bWasRemoved);
 }
 
 /*----------------------------------------------------------------------------*/

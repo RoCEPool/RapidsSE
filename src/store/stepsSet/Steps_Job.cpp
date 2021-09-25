@@ -870,17 +870,8 @@ void Step::vJobRemoveLocal(void)
   
   Job* pJob = * m_pJob_task;
   
-  bool bRemove = AM::bJob_RemoveLocal(pJob);
-  
-  if (! bRemove) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from local\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->tJobId().iAsI8());
-    vTrace("------------------------------------\n"_Stz);
-    
-    bRemove = AM::bJob_RemoveLocal(pJob,true);
-  }
-    
+  AM::vJob_RemoveLocal(pJob);
+      
   EXIT();
 }
 
@@ -893,16 +884,7 @@ void Step::vJobRemoveOriginator(void)
   
   Job* pJob = * m_pJob_task;
   
-  bool bRemove = AM::bJob_RemoveOriginating(pJob);
-
-  if (! bRemove) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->tJobId().iAsI8());
-    vTrace("------------------------------------\n"_Stz);
-    
-    bRemove = AM::bJob_RemoveOriginating(pJob,true);
-  }
+  AM::vJob_RemoveOriginating(pJob);
   
   EXIT();
 }
@@ -916,16 +898,7 @@ void Step::vJobRemoveParticipant(void)
   
   Job* pJob = * m_pJob_task;
   
-  bool bRemove = AM::bJob_RemoveParticipating(pJob);
-
-  if (! bRemove) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->tJobId().iAsI8());
-    vTrace("------------------------------------\n"_Stz);
-    
-    bRemove = AM::bJob_RemoveParticipating(pJob,true);
-  }
+  AM::vJob_RemoveParticipating(pJob);
      
   EXIT();
 }
@@ -939,16 +912,7 @@ void Step::vJobRemoveRetired(void)
   
   Job* pJob = * m_pJob_task;
   
-  bool bRemove = AM::bJob_RemoveRetired(pJob);
-
-  if (! bRemove) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from reited\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->tJobId().iAsI8());
-    vTrace("------------------------------------\n"_Stz);
-    
-    bRemove = AM::bJob_RemoveRetired(pJob,true);
-  }
+  AM::vJob_RemoveRetired(pJob);
      
   EXIT();
 }
