@@ -74,6 +74,53 @@ JobList::~JobList(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job address                           */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey)
+{
+  RASSERT(pJob);
+  RASSERT(pRightJob);
+
+//  vTrace("bMoveRight_addr: given %p v. right %p\n"_Stz
+//         ,pJob
+//         ,pRightJob);
+
+  // do the id's match?
+  if (pJob == pRightJob) {
+    bFoundKey = true;
+    return false;
+  }
+
+  if (pJob > pRightJob)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey)
+{
+  RASSERT(pRightJob);
+
+//  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
+//         ,(i8)tJobId.uJobNo()
+//         ,pRightJob->m_tJobId.uJobNo());
+
+  // do the id's match?
+  if (tJobId == pRightJob->m_tJobId) {
+    bFoundKey = true;
+    return false;
+  }
+
+  if (tJobId > pRightJob->m_tJobId)
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -163,53 +210,6 @@ Job* JobList::pFindJob(i8 iJobId)
   Job* pJobFound = pFindJob(tJobId);
   
   return pJobFound;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find job in skip list matching given job address                           */
-/*----------------------------------------------------------------------------*/
-bool JobList::bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey)
-{
-  RASSERT(pJob);
-  RASSERT(pRightJob);
-
-//  vTrace("bMoveRight_addr: given %p v. right %p\n"_Stz
-//         ,pJob
-//         ,pRightJob);
-
-  // do the id's match?
-  if (pJob == pRightJob) {
-    bFoundKey = true;
-    return false;
-  }
-
-  if (pJob > pRightJob)
-    return TRUE(move_right);
-  else
-    return FALSE(go_down);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find job in skip list matching given job id                                */
-/*----------------------------------------------------------------------------*/
-bool JobList::bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey)
-{
-  RASSERT(pRightJob);
-
-//  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
-//         ,(i8)tJobId.uJobNo()
-//         ,pRightJob->m_tJobId.uJobNo());
-
-  // do the id's match?
-  if (tJobId == pRightJob->m_tJobId) {
-    bFoundKey = true;
-    return false;
-  }
-
-  if (tJobId > pRightJob->m_tJobId)
-    return TRUE(move_right);
-  else
-    return FALSE(go_down);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,14 +320,6 @@ bool JobList::bRemoveJob(Job* pJob)
   
   ASSERT(m_okLock.bIsLocked());
     
-//  vTrace("removing %s "
-//         "job %p %s %lld "
-//         "task %p\n"_Stz
-//         
-//         ,aJL[m_eJobsList]
-//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
-//         ,pJob->pJobTask()
-//         );
  
   ASSERT(m_eJobsList == pJob->eJobList());
     
@@ -442,6 +434,8 @@ i8 JobList::nJobs(void)
   return nJobs;
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
@@ -472,47 +466,6 @@ void JobList::vContentDump(void)
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  UNUSED(eClass);
-  UNUSED(aTab);
-
-  JobList* pJobs = _pJobList(pObject);
-  //vSkipListDump(pJobs->m_pJobSkipList);
-  SkipListNL* pSkipList = pJobs->m_pJobSkipList;
-  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
-  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
-    if (pSkipList->m_pHead->m_pRight[i_Level])
-      vTrace("Level %lld: Node %p : %p (L%lld)\n"_Stz,i_Level, pSkipList->m_pHead->m_pRight[i_Level]);
-  
-  i8 iLevel = pSkipList->m_iHeight;
-  do {
-    //vTrace("LEVEL %lld\n"_Stz, iLevel);
-    
-    SkipNode* pNode = pSkipList->pFirst(iLevel);
-    while (pNode) {
-      Job* pJob = (Job*)(pNode->m_pObject);
-      vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
-             pJob,
-             pJob->szJobNm(),
-             aCN[pJob->eGetClassNo()],
-             pJob->iJobId(),
-             pJob->iParticipantNode(),
-             pNode->m_nRight);
-      
-      pJob->pJobTags()->vDumpSet();
-             
-      pNode = pSkipList->pNext(pNode, iLevel);
-    }
-  } while (--iLevel >= 0);
-  
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

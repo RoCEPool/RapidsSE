@@ -26,6 +26,9 @@ namespace STORE
     JobList(CompareFp fpCompare, eJL eJobsList);
     ~JobList(void) noexcept(false);
     
+    static bool bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
+    static bool bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
+
     void   vAddJob(Job* pJob);
     void   vDropLock(void);
     Job*   pFindJob(i8 iJobId);
@@ -40,13 +43,9 @@ namespace STORE
     Job*   pPopJob(void);
     bool   bRemoveJob(Job* pJob);
     void   vSee(void);
-    static bool   bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
-    static bool   bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
-
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void vContentDump(void);
   
+  void vContentDump(void);
+
     Footer* aFooter(void);
   };
   
