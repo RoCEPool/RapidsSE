@@ -103,7 +103,6 @@ namespace STORE
   public:
     
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
     Job(Stz* szJobNm,
@@ -213,10 +212,6 @@ namespace STORE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* _pJob(void* aAddr);
-  Job* _pJob(i8 iAddr);
-  bool _bIsValidJob(eCN eClass);
-
-  ////////////////////////////////////////////////////////////////////////////////
 
   void vJob_postRecv(Job* pJob);
 }

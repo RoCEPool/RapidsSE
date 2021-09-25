@@ -2309,7 +2309,7 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   
   i8 iNumber = sNumber.iToI8();
   
-  Job* pJob = _pJob(iNumber);
+  Job* pJob = _pJob((Job*)iNumber);
   
   if (! pJob) {
     vTrace("Not a job\n"_Stz);

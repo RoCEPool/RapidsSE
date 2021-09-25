@@ -31,84 +31,14 @@
 
 #include "SP_Pointer.hpp"
 
-Atomic gixJob;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Job* STORE::_pJob(void* aAddr)
-{
-  Job* pJob = reinterpret_cast<Job*>(aAddr);
-  
-  if (pJob && ! _bIsValidJob(pJob->eGetClassNo()) ) {
-      vTrace("_pJob %p got class %s\n"_Stz,
-             pJob,
-             aCN[pJob->eGetClassNo()]);
-    vDebugPoint();
-  }
-  //RASSERT( ! pJob || _bIsValidJob(pJob->eGetClassNo()) );
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Job* STORE::_pJob(i8 iAddr)
-{
-  Job* pJob = reinterpret_cast<Job*>(iAddr);
-  
-  //  if ( pJob && ! _bIsValidJob(pJob->eGetClassNo() )
-  //    i8 iDebug = 1;
-  
-  RASSERT( ! pJob || _bIsValidJob(pJob->eGetClassNo()) );
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given class a valid job?                                                */
-/*----------------------------------------------------------------------------*/
-bool STORE::_bIsValidJob(eCN eClass)
-{
-  if (eClass == CN_JOB)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
-/*----------------------------------------------------------------------------*/
-void* Job::operator new(size_t)
-{
-  Job* pJob =
-  static_cast<Job*>(Heaps::pAllocate(CN_JOB));
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* perform new of entry buffer for given address                              */
-/*----------------------------------------------------------------------------*/
-void* Job::operator new(size_t, void* aAddress)
-{
-  return aAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
-/*----------------------------------------------------------------------------*/
-void Job::operator delete(void* aAddress)
-{
-  Job* pJob = static_cast<Job*>(aAddress);
-  
-  Heaps::vFree(pJob);
-}
+__pCastFunction(STORE,Job,CN_JOB)
+__aNewFunction(Job,CN_JOB)
+__vDeleteFunction(Job,CN_JOB)
+__aFooterFunction(Job)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -119,8 +49,8 @@ Job::Job(Stz* szJobNm,
          i8 iCmdNo        // the sequence no of the request from that session)
         )
 : Object(CN_JOB)
-, LifeGuard_t<Job>(this,CN_JOB)
 , CRM<Job>(this)
+, LifeGuard_t<Job>(this,CN_JOB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
  
@@ -174,9 +104,6 @@ Job::Job(Stz* szJobNm,
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
-  
-  ++ gixJob;
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 }
 
@@ -222,9 +149,7 @@ Job::Job(eCN eClassNo)
  
   //m_xResult
   // -- -- -- -- -- --
-      
-  ++ gixJob;
-  
+        
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
@@ -1269,24 +1194,6 @@ void Job::vWasReceived(bool bWasReceived)
   m_bWasReceived = bWasReceived;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Job::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -388,25 +388,7 @@ void Step::vSocketSendObject(void)
   eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
-  //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
-  //       pObject,eClass,aCN[eClass],nObjectSize);
-  
-  
-  
-  if (_bIsValidJob(eClass)) {
-    Job* pJob = _pJob(pObject);
-        
-    SP_Job spJob;
-
-//    vTrace("%lld %p: vSocketSendObject: Job %s\n"_Stz,
-//           AM::iThisNodeNo(),
-//           pSocket,
-//           spJob.sz(pJob));
-
-  }
-
-  RASSERT(_bIsValidJob(eClass) ||
-          _bIsValidOperand(eClass));
+  RASSERT(CN_JOB == eClass || _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
