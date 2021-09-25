@@ -114,6 +114,9 @@ namespace STORE
     void  vTraceFile(File* pTraceFile);
     TraceLock* pTraceLock(void);
 
+    void vTraceLockDrop(void);
+    void vTraceLockGrab(void);
+
     Footer* aFooter(void);
   };
   

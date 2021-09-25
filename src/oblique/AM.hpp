@@ -299,6 +299,9 @@ namespace OBLIQUE
       static void vDropReap(LogicUnit* pLogicUnit);
       static void vGrabReap(LogicUnit* pLogicUnit);
     
+      static void vDropTraceLine(void);
+      static void vGrabTraceLine(void);
+    
       static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
       static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     
@@ -345,7 +348,8 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
-    class PTNMAP {
+    class PTNMAP
+    {
     public:
       static PtnId tHashToDtdPtnId(i8 iHash);
       static i8 iToBkt(PtnId tPtnId);

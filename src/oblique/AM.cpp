@@ -834,6 +834,23 @@ void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
   gpAttachMap->m_oReapLock.vGrabWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* drop traceLine lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropTraceLine(void)
+{
+  gpAttachMap->m_oTraceLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceLine lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabTraceLine(void)
+{
+  gpAttachMap->m_oTraceLock.vGrabWrite();
+}
+
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  NO                                        */
