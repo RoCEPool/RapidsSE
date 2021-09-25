@@ -730,9 +730,12 @@ void Step::vJobOriginatorFetch(void)
 {
   ENTRY();
   
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
+  JobId tJobId;
+  tJobId = m_pDataStack->iPopAsInt(__func__);
   
-  m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
+  i8 iNode = (i8)tJobId.uNodeNo();
+  
+  m_pDataStack->vPushInt(iNode);
   
   EXIT();
 }

@@ -162,17 +162,6 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the originator node no of this job from the job id                     */
-/*----------------------------------------------------------------------------*/
-i8 Job::iOriginatorNode(i8 iJobId)
-{
-  i8 iOriginatorNode = BitLib::uMaskOffLower48(iJobId);
-  iOriginatorNode >>= 48;
-  
-  return iOriginatorNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vPostRecv(void* aReceivedJob)

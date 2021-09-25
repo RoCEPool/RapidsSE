@@ -31,7 +31,6 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    //Gid_t<CN_JOB> m_xJobId;     // this job's id
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
@@ -80,12 +79,6 @@ namespace STORE
     // -- participating job maintains
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running as responder on origin                   RESPONDER
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job execution                                        execution
 
 
     // -- logic unit
@@ -113,16 +106,8 @@ namespace STORE
 
    ~Job(void) noexcept(false);
   
-    static i8   iOriginatorNode(i8 iJobId);
-
-    void vAssertEEDelete(eCN eClassNo,
-                         Object* pInstance,
-                         eCN eDeleterClassNo,
-                         Object* pDeleter,
-                         Stz* szDelFunc);
-
     static void vPostRecv(void* aJob);
-
+  
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
@@ -193,9 +178,6 @@ namespace STORE
            std::function<void(Object* pObject, i8 iDepth)> vfClosure);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
-
-  protected:
-    //void vShow(s48K& s);
   
   private:
     Footer* aFooter(void);
