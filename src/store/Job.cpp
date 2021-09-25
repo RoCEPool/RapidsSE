@@ -108,52 +108,6 @@ Job::Job(Stz* szJobNm,
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job_find)                                  TO BE REMOVED */
-/*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo)
-: Object(eClassNo)
-, CRM<Job>(this)
-, LifeGuard_t<Job>(this,CN_JOB,TRUE(disable_lifeGiard))
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-    
-  //m_tJobId.vNextJobId();
-
-  m_bReapable  = false;
-
-  m_i_Origin     = C_UNKNOWN;
-  m_i_Session    = C_UNKNOWN;
-  m_iCmdNo = C_UNKNOWN;
-
-  m_eJobKind  = JK_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_ACTIVE;
-  
-  m_bWasReceived = false;
-  
-  m_oTimer.vStart();
-  
-  //m_oAcksRmg_task
-  
-  m_pTask              = nullptr;
-
-  m_i_Participant = C_UNKNOWN;
-  m_oAcksRmg_job.vCheckInit();
-  
-  m_pSingularOp  = nullptr;
-  
-  
-  m_pJobLogicUnit = nullptr;
-  m_eError_job    = EC_NONE;
- 
-  //m_xResult
-  // -- -- -- -- -- --
-        
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Job::~Job(void) noexcept(false)

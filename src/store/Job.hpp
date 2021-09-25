@@ -111,9 +111,6 @@ namespace STORE
         i8 iCmdNo      // the sequence no of the request from that session
        );
 
-    // FIND CASE -- TO BE REMOVED
-    Job(eCN eClass);
-
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);
