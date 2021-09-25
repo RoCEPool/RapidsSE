@@ -162,8 +162,8 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
     
-#ifdef WITH_ENCODING_TRACE
-  if (szWith->bSame("WITH_ENCODING_TRACE"_Stz))
+#ifdef WITH_TRACE_ENCODING
+  if (szWith->bSame("WITH_TRACE_ENCODING"_Stz))
     return true;
 #endif
   
@@ -172,13 +172,13 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
     
-#ifdef WITH_INFLATE_TRACE
-  if (szWith->bSame("WITH_INFLATE_TRACE"_Stz))
+#ifdef WITH_TRACE_INFLATE
+  if (szWith->bSame("WITH_TRACE_INFLATE"_Stz))
     return true;
 #endif
   
-#ifdef WITH_IT_COMPACT_TRACE
-  if (szWith->bSame("WITH_IT_COMPACT_TRACE"_Stz))
+#ifdef WITH_TRACE_INDEX_COMPACTION
+  if (szWith->bSame("WITH_TRACE_INDEX_COMPACTION"_Stz))
     return true;
 #endif
   
@@ -196,12 +196,7 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
 #endif
-  
-#ifdef WITH_PULSING
-  if (szWith->bSame("WITH_PULSING"_Stz))
-    return true;
-#endif
-  
+    
 #ifdef WITH_PYTHON_SUPPORT
   if (szWith->bSame("WITH_PYTHON_SUPPORT"_Stz))
     return true;
@@ -211,12 +206,7 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
 #endif
-    
-#ifdef WITH_SHOCO_DUPLICATES
-  if (szWith->bSame("WITH_SHOCO_DUPLICATES"_Stz))
-    return true;
-#endif
-  
+      
 #ifdef WITH_STATISTICS_COUNTERS
   if (szWith->bSame("WITH_STATISTICS_COUNTERS"_Stz))
     return true;
@@ -227,12 +217,7 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-  
-#ifdef WITH_TRACE_PURGING
-  if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
-    return true;
-#endif
-    
+      
   return false;
 }
 
@@ -271,20 +256,20 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
-#ifdef WITH_ENCODING_TRACE
-  vTrace("  WITH_ENCODING_TRACE\n"_Stz);
+#ifdef WITH_TRACE_ENCODING
+  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
   
 #ifdef WITH_STEP_TIMING
   vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
-#ifdef WITH_INFLATE_TRACE
-  vTrace("  WITH_INFLATE_TRACE\n"_Stz);
+#ifdef WITH_TRACE_INFLATE
+  vTrace("  WITH_TRACE_INFLATE\n"_Stz);
 #endif
   
-#ifdef WITH_IT_COMPACT_TRACE
-  vTrace("  WITH_IT_COMPACT_TRACE\n"_Stz);
+#ifdef WITH_TRACE_INDEX_COMPACTION
+  vTrace("  WITH_TRACE_INDEX_COMPACTION\n"_Stz);
 #endif
   
 #ifdef WITH_LINUX
@@ -298,11 +283,7 @@ void BASE::vTraceWith(void)
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
-  
-#ifdef WITH_PULSING
-  vTrace("  WITH_PULSING\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_PYTHON_SUPPORT
   vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
 #endif
@@ -310,11 +291,7 @@ void BASE::vTraceWith(void)
 #ifdef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
-    
-#ifdef WITH_SHOCO_DUPLICATES
-  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
-#endif
-  
+      
 #ifdef WITH_STATISTICS_COUNTERS
   vTrace("  WITH_STATISTICS_COUNTERS\n"_Stz);
 #endif
@@ -322,11 +299,7 @@ void BASE::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
-    
-#ifdef WITH_TRACE_PURGING
-  vTrace("  WITH_TRACE_PURGING\n"_Stz);
-#endif
-  
+      
 }
 
 /*----------------------------------------------------------------------------*/
@@ -369,8 +342,8 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_ENCODING_TRACE
-  if (szWith->bSame("WITH_ENCODING_TRACE"_Stz))
+#ifndef WITH_TRACE_ENCODING
+  if (szWith->bSame("WITH_TRACE_ENCODING"_Stz))
     return true;
 #endif
   
@@ -379,13 +352,13 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
     
-#ifndef WITH_INFLATE_TRACE
-  if (szWith->bSame("WITH_INFLATE_TRACE"_Stz))
+#ifndef WITH_TRACE_INFLATE
+  if (szWith->bSame("WITH_TRACE_INFLATE"_Stz))
     return true;
 #endif
   
-#ifndef WITH_IT_COMPACT_TRACE
-  if (szWith->bSame("WITH_IT_COMPACT_TRACE"_Stz))
+#ifndef WITH_TRACE_INDEX_COMPACTION
+  if (szWith->bSame("WITH_TRACE_INDEX_COMPACTION"_Stz))
     return true;
 #endif
   
@@ -403,12 +376,7 @@ bool BASE::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
 #endif
-  
-#ifndef WITH_PULSING
-  if (szWith->bSame("WITH_PULSING"_Stz))
-    return true;
-#endif
-  
+    
 #ifndef WITH_PYTHON_SUPPORT
   if (szWith->bSame("WITH_PYTHON_SUPPORT"_Stz))
     return true;
@@ -418,12 +386,7 @@ bool BASE::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
 #endif
-    
-#ifndef WITH_SHOCO_DUPLICATES
-  if (szWith->bSame("WITH_SHOCO_DUPLICATES"_Stz))
-    return true;
-#endif
-  
+      
 #ifndef WITH_STATISTICS_COUNTERS
   if (szWith->bSame("WITH_STATISTICS_COUNTERS"_Stz))
     return true;
@@ -433,12 +396,7 @@ bool BASE::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_TRACE_API"_Stz))
     return true;
 #endif
-  
-#ifndef WITH_TRACE_PURGING
-  if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
-    return true;
-#endif
-    
+      
   return false;
 }
 
@@ -477,20 +435,20 @@ void BASE::vTraceWithout(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
     
-#ifndef WITH_ENCODING_TRACE
-  vTrace("  WITH_ENCODING_TRACE\n"_Stz);
+#ifndef WITH_TRACE_ENCODING
+  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
   
 #ifndef WITH_STEP_TIMING
   vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
-#ifndef WITH_INFLATE_TRACE
-  vTrace("  WITH_INFLATE_TRACE\n"_Stz);
+#ifndef WITH_TRACE_INFLATE
+  vTrace("  WITH_TRACE_INFLATE\n"_Stz);
 #endif
   
-#ifndef WITH_IT_COMPACT_TRACE
-  vTrace("  WITH_IT_COMPACT_TRACE\n"_Stz);
+#ifndef WITH_TRACE_INDEX_COMPACTION
+  vTrace("  WITH_TRACE_INDEX_COMPACTION\n"_Stz);
 #endif
   
 #ifndef WITH_LINUX
@@ -504,11 +462,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
-  
-#ifndef WITH_PULSING
-  vTrace("  WITH_PULSING\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_PYTHON_SUPPORT
   vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
 #endif
@@ -516,11 +470,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
-  
-#ifndef WITH_SHOCO_DUPLICATES
-  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_STATISTICS_COUNTERS
   vTrace("  WITH_STATISTICS_COUNTERS\n"_Stz);
 #endif
@@ -532,11 +482,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_TRACE_PROCEDURE
   vTrace("  WITH_TRACE_PROCEDURE\n"_Stz);
 #endif
-  
-#ifndef WITH_TRACE_PURGING
-  vTrace("  WITH_TRACE_PURGING\n"_Stz);
-#endif
- 
+   
 #ifndef WITH_TRACE_LOGICUNIT
   vTrace("  WITH_TRACE_LOGICUNIT\n"_Stz);
 #endif

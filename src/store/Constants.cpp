@@ -781,10 +781,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)false);
   #endif
         
-  #ifdef WITH_ENCODING_TRACE
-  vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)true);
+  #ifdef WITH_TRACE_ENCODING
+  vAddConstant("WITH_TRACE_ENCODING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)false);
+  vAddConstant("WITH_TRACE_ENCODING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_STEP_TIMING
@@ -793,16 +793,16 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_STEP_TIMING"_Stz,(i8)false);
   #endif
       
-  #ifdef WITH_INFLATE_TRACE
-  vAddConstant("WITH_INFLATE_TRACE"_Stz,(i8)true);
+  #ifdef WITH_TRACE_INFLATE
+  vAddConstant("WITH_TRACE_INFLATE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_INFLATE_TRACE"_Stz,(i8)false);
+  vAddConstant("WITH_TRACE_INFLATE"_Stz,(i8)false);
   #endif
     
-  #ifdef WITH_IT_COMPACT_TRACE
-  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,(i8)true);
+  #ifdef WITH_TRACE_INDEX_COMPACTION
+  vAddConstant("WITH_TRACE_INDEX_COMPACTION"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,(i8)false);
+  vAddConstant("WITH_TRACE_INDEX_COMPACTION"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_LINUX
@@ -822,13 +822,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
-        
-  #ifdef WITH_PULSING
-  vAddConstant("WITH_PULSING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_PULSING"_Stz,(i8)false);
-  #endif
-    
+            
   #ifdef WITH_PYTHON_SUPPORT
   vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)true);
   #else
@@ -840,13 +834,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-                
-  #ifdef WITH_SHOCO_DUPLICATES
-  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)false);
-  #endif
-    
+                    
   #ifdef WITH_STATISTICS_COUNTERS
   vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,(i8)true);
   #else
@@ -857,12 +845,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_TRACE_API"_Stz,(i8)true);
   #else
   vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
-  #endif
-        
-  #ifdef WITH_TRACE_PURGING
-  vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)false);
   #endif
 }
 

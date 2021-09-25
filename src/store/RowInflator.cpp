@@ -746,7 +746,7 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-#ifdef WITH_INFLATE_TRACE
+#ifdef WITH_TRACE_INFLATE
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
