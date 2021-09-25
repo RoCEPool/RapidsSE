@@ -169,6 +169,7 @@ void JobList::vAddJob(Job* pJob)
     };
 
     bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    RASSERT(bWasInserted);
   }
   else {
     
@@ -180,10 +181,10 @@ void JobList::vAddJob(Job* pJob)
     };
 
     bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    RASSERT(bWasInserted);
   }
   
   
-  RASSERT(bWasInserted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,6 +206,8 @@ Job* JobList::pFindJob(JobId tJobId)
   
   Job* pJob = nullptr;
   
+  RASSERT(m_pJobSkipList->m_fpCompare);
+
   auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
     
     bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
@@ -319,6 +322,7 @@ bool JobList::bRemoveJob(Job* pJob)
     };
     
     bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+    ASSERT(bWasRemoved);
 
   }
   else {
@@ -331,10 +335,10 @@ bool JobList::bRemoveJob(Job* pJob)
     };
 
     bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+    ASSERT(bWasRemoved);
 
   }
   
-  ASSERT(bWasRemoved);
   
   pJob->vJobList(JL_NONE);
 

@@ -161,9 +161,6 @@ Job::Job(Stz* szJobNm,
   // -- e -------------------
   m_pSingularOp  = nullptr;
 
-  // -- f -------------------
-  m_iOriginatingId     = C_UNKNOWN;
-
   // -- g -------------------
   m_oAcksRmg_job.vCheckInit();
   m_pTask     = nullptr;
@@ -213,7 +210,6 @@ Job::Job(eCN eClassNo)
   //m_oAcksRmg_task
   
   m_pTask              = nullptr;
-  m_iOriginatingId     = C_UNKNOWN;
 
   m_i_Participant = C_UNKNOWN;
   m_oAcksRmg_job.vCheckInit();
@@ -482,7 +478,6 @@ void Job::vContentDump(void)
          "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
          this,
          aCN[eGetClassNo()],
@@ -497,8 +492,6 @@ void Job::vContentDump(void)
          bByPromptTag(),
          bHasTag_noWait(),
          m_bWasReceived,
-         
-         m_iOriginatingId,
          
          nReferences(),
          C_VARGS_END
@@ -990,9 +983,6 @@ void Job::vResetForCascade(Session* pSession)
     m_pSingularOp  = nullptr;
   }
 
-  // -- f -------------------
-  m_iOriginatingId     = C_UNKNOWN;
-
   // -- g -------------------
   m_oAcksRmg_job.vReset();
 
@@ -1059,7 +1049,6 @@ void Job::vSee(void)
 
          "       pSingularOp "  "%s"    " \n"  // 17
 
-         "    iOriginatingId "  "%lld"  " \n"  // 19
  
          "             pTask "  "%s"    " \n"  // 21
         
@@ -1083,7 +1072,6 @@ void Job::vSee(void)
          ,m_oAcksRmg_job.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
-         ,m_iOriginatingId           // 19
          ,spvTask.sz(m_pTask)        // 21
          ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
          

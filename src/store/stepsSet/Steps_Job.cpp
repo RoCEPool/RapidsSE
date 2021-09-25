@@ -87,10 +87,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
 
   vAddStep("Job[].id@"_Stz,              &Step::vJobIdFetch);
-  
-  vAddStep("Job[].originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
-  vAddStep("Job[].originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
-  
+    
   vAddStep("Job[].participantNode@"_Stz, &Step::vJobParticipantFetch);
   vAddStep("Job[].participantNode!"_Stz, &Step::vJobParticipantStore);
   
@@ -722,36 +719,6 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->bHasTag_noWait());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].originatingId@ -- fetch originating id from job                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingIdFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  m_pDataStack->vPushInt(pJob->m_iOriginatingId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].originatingId! -- store originating id into job                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingIdStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  i8 iOriginatingId = m_pDataStack->iPopInt(__func__);
-  
-  pJob->m_iOriginatingId = iOriginatingId;
   
   EXIT();
 }

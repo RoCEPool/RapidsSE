@@ -84,9 +84,6 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as responder on origin                   RESPONDER
   
-    // -- responding to which originator
-    i8     m_iOriginatingId;     // job id of originating job
-
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job execution                                        execution
 
