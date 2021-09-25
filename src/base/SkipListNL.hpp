@@ -62,7 +62,7 @@ namespace BASE
     bool bInsert(void* pObject, bool bTrace=false);
   
     bool bInsertByKey(void* pObject,
-                      std::function<bool(void* aScan,
+                      std::function<bool(void* aRightObject,
                                          bool& bFound
                                          )> bfMoveRightTest
                       );
@@ -73,8 +73,15 @@ namespace BASE
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     void* pPop(void);
     i8    nRecount(void);
-    bool  bRemove(void* pObject);
   
+    bool  bRemove(void* pObject);
+
+    bool  bRemoveByKey(void* pObject,
+                       std::function<bool(void* aRightObject,
+                                          bool& bFound
+                                          )> bfMoveRightTest
+                       );
+
   private:
     i8 iRandomLevel(void);
   
@@ -93,7 +100,8 @@ namespace BASE
     SkipNode* pPositionPrior(std::function<bool(void* aRightObject,
                                                 bool& bFoundKey
                                                 )> bfMoveRightTest,
-                             SkipNode** paPriorVec
+                             SkipNode** paPriorVec,
+                             bool& bFoundInList
                              );
 
     void vValidate(void);

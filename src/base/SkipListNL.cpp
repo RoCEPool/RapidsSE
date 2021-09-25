@@ -340,7 +340,7 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPositionPrior(bfMoveRightTest,aPriorVec);
+  SkipNode* pNode = pPositionPrior(bfMoveRightTest,aPriorVec,bEqualTo);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -498,6 +498,59 @@ bool SkipListNL::bRemove(void* pObjectRemove)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove object from list                                                    */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bRemoveByKey(void* pObjectRemove,
+                              std::function<bool(void* aRightObject,
+                                                 bool& bFound
+                                                 )> bfMoveRightTest
+                              )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  // Remove iff UNIQUE KEY
+  RASSERT(m_bUniqueKey);
+  
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  SkipNode* aPrior;
+  
+  SkipNode* pNodePrev = pPositionPrior(bfMoveRightTest,aPriorVec,bEqualTo);
+  RASSERT(pNodePrev); // logic check
+  
+  if ( ! bEqualTo ) {
+    vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
+    vSkipListDump(this);
+    SkipNode* pNodePrev =
+      pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
+    UNUSED(pNodePrev);
+    return false;
+  }
+  
+  // get node to be removed
+  SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
+  RASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
+  
+  // cut out the node being removed
+  for (i8 i_Level = 0;
+       i_Level <= m_iHeight &&
+         (aPrior = aPriorVec[i_Level])->m_pRight[i_Level] == pNodeRemove;
+       i_Level++)
+    aPrior->m_pRight[i_Level] = pNodeRemove->m_pRight[i_Level];
+  
+  // correct the height if we have removed the last tallest node
+  while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
+    m_iHeight--;
+  
+  // one less object in the list
+  m_nItems--;
+
+  // delete the node
+  delete pNodeRemove;
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* get next node                                                              */
 /*----------------------------------------------------------------------------*/
 SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
@@ -654,43 +707,43 @@ SkipNode* SkipListNL::pPositionPrior
             std::function<bool(void* aRightObject,
                                bool& bFoundKey
                                )> bfMoveRightTest,
-            SkipNode** paPriorVec
+            SkipNode** paPriorVec,
+            bool& bFoundInList
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  SkipNode* pScanNode = m_pHead;
+  SkipNode* pPriorNode = m_pHead;
   
-  bool bFoundKey = false;
+  bFoundInList = false;
 
   for (i8 iLevel = m_iHeight; iLevel >= 0; iLevel--) {
               
-    while (SkipNode* pRightNode = pScanNode->m_pRight[iLevel]) {
+    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
       
       // inner loop:
-      //   go right a number of nodes until we find
-      //     ScanObject < RightObject at current level
+      //   move right along the nodes at this level
+      //     until we find
+      //       ScanObject < RightObject at current level
       
       void* pRightObject = pRightNode->m_pObject;
       RASSERT(pRightObject);
       
-      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundKey);
+      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundInList);
             
-      if (bFoundKey)
-        break;
-      
       if (! bMoveRightAgain)
         break;
-      
-      pScanNode = pScanNode->m_pRight[iLevel];
+            
+      pPriorNode = pPriorNode->m_pRight[iLevel];
       
     } // while able to go right as far as possible
         
-    paPriorVec[iLevel] = pScanNode;
+    paPriorVec[iLevel] = pPriorNode;
 
   } // for each level downwards
 
-  return pScanNode;
+  // return prior node as at level 0
+  return pPriorNode;
 }
 
 /*----------------------------------------------------------------------------*/
