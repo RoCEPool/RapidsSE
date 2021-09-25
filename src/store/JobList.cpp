@@ -516,27 +516,6 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operand queue report                                                       */
-/*----------------------------------------------------------------------------*/
-void JobList::vOperandQueueReport(File* pFile, bool bStdOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST);
-  
-  SkipListNL* pSkipList = m_pJobSkipList;
-  
-  i8 iLevelZero = 0;
-    
-  SkipNode* pNode = pSkipList->pFirst(iLevelZero);
-  while (pNode) {
-    Job* pJob = (Job*)(pNode->m_pObject);
-    
-    pJob->vOperandQueueReport(pFile,bStdOut);
-    
-    pNode = pSkipList->pNext(pNode,iLevelZero);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

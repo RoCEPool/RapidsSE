@@ -898,68 +898,6 @@ Stz* Job::szNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operand queue report                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vOperandQueueReport(File* pFile, bool bStdOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
-  Pipeline* pPipeline = this->pPipeline_job();
-
-  if (! pPipeline)
-    return;
-  
-  if (bStdOut)
-    vTrace("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
-  pFile->vPrint("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
-  
-  s48K sOpTags;
-  i8 nStages = pPipeline->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    
-    Stage* pStage = pPipeline->pGet(i_Stage);
-    
-    i8 nStreams = pStage->nItems();
-    for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
- 
-      Stream* pStream= pStage->pGet(i_Stream);
-      
-      i8 nOps = pStream->nItems();
-      for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-
-        Op* pOp = pStream->pGet(i_Op);
-                
-        i8 nOpdLeft = pOp->nQueuedOperands();
-        
-        pOp->pOpSpec()->pArgTags()->vSprint(sOpTags);
-
-        if (bStdOut)
-          vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz
-                 ,pPipeline->szPipelineNm()
-                 ,pStage->szStageNm()
-                 ,i_Stream
-                 
-                 ,pOp->szOpNm()
-                 ,sOpTags.szStz()
-                 ,nOpdLeft
-                 );
-        
-        pFile->vPrint("%s %s[%lld] : %s%s ___ %lld\n"_Stz
-          ,pPipeline->szPipelineNm()
-          ,pStage->szStageNm()
-          ,i_Stream
-          
-          ,pOp->szOpNm()
-          ,sOpTags.szStz()
-          ,nOpdLeft
-          );
-        
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(void)

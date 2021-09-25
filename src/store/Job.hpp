@@ -177,7 +177,6 @@ namespace STORE
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
-    void vOperandQueueReport(File* pFile, bool bStdOut);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);

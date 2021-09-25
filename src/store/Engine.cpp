@@ -907,30 +907,6 @@ void Engine::vNoMemoryLogging(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operand queue report                                                       */
-/*----------------------------------------------------------------------------*/
-void Engine::vOperandQueueReport(bool bStdOut)
-{
-  Now oNow;
-
-  s256 sPath;
-  
-  sPath.vSprint("../tmp/OpdqReport_%s.txt"_Stz,oNow.szPath());
-  
-  File* pFile = new File(nullptr);
-
-  pFile->bOpenMode(sPath,C_OPEN_WRITE);
-  
-  JobList* pJobPttList = AM::pParticipatingJobs();
-  pJobPttList->vGrabLock();
-  pJobPttList->vOperandQueueReport(pFile,bStdOut);
-  pJobPttList->vDropLock();
-
-  pFile->vClose();
-  delete pFile;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenPool(void)

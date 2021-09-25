@@ -87,8 +87,6 @@ enum ePF // prompt function
   /*    */ PF_OBJECTVALIDATE,
   /*    */ PF_OLIST,
   /*    */ PF_OPCAT,
-  /*    */ PF_OPDQ,
-  /*    */ PF_OPERANDS,
   /*    */ PF_OPS,
   /*    */ PF_OPSYS,
   
@@ -245,8 +243,6 @@ static Stz* aPF[]
   /*    */ "PF_OBJECTVALIDATE"_Stz,
   /*    */ "PF_OLIST"_Stz,
   /*    */ "PF_OPCAT"_Stz,
-  /*    */ "PF_OPDQ"_Stz,
-  /*    */ "PF_OPERANDS"_Stz,
   /*    */ "PF_OPS"_Stz,
   /*    */ "PF_OPSYS"_Stz,
   

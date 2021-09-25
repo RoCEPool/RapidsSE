@@ -46,7 +46,6 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);
-    void vOperandQueueReport(File* pFile, bool bStdOut);
   
     Footer* aFooter(void);
   };
