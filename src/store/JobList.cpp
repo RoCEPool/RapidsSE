@@ -292,6 +292,7 @@ void JobList::vRemoveJob(Job* pJob)
   
   bool bWasRemoved;
   
+  vGrabLock();
   ASSERT(m_okLock.bIsLocked());
  
   ASSERT(m_eJobList == pJob->eJobList());
@@ -329,7 +330,8 @@ void JobList::vRemoveJob(Job* pJob)
     vContentDump();
   }
   
-  
+  vDropLock();
+
   
   ASSERT(bWasRemoved);
 }

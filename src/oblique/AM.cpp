@@ -3954,14 +3954,10 @@ Job* AM::pJob_FindParticipating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveLocal(Job* pJob, bool bDump)
 {
-  AM::pLocalJobs()->vGrabLock();
-  
   if (bDump)
     AM::pLocalJobs()->vContentDump();
   
   AM::pLocalJobs()->vRemoveJob(pJob);
-  
-  AM::pLocalJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3969,14 +3965,10 @@ void AM::vJob_RemoveLocal(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveOriginating(Job* pJob, bool bDump)
 {
-  AM::pOriginatingJobs()->vGrabLock();
-  
   if (bDump)
     AM::pOriginatingJobs()->vContentDump();
   
   AM::pOriginatingJobs()->vRemoveJob(pJob);
-  
-  AM::pOriginatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3984,14 +3976,10 @@ void AM::vJob_RemoveOriginating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveParticipating(Job* pJob, bool bDump)
 {
-  AM::pParticipatingJobs()->vGrabLock();
-  
   if (bDump)
     AM::pParticipatingJobs()->vContentDump();
 
   AM::pParticipatingJobs()->vRemoveJob(pJob);
-  
-  AM::pParticipatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3999,15 +3987,10 @@ void AM::vJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveRetired(Job* pJob, bool bDump)
 {
-  AM::pRetiredJobs()->vGrabLock();
-  
   if (bDump)
     AM::pRetiredJobs()->vContentDump();
 
   AM::pRetiredJobs()->vRemoveJob(pJob);
-  
-  AM::pRetiredJobs()->vDropLock();
-
 }
 
 /*----------------------------------------------------------------------------*/

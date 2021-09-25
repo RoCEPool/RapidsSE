@@ -591,20 +591,20 @@ bool Api::bReapJob(void)
     }
   }
 
+  pRetiredJobs->vDropLock();
+  
   if (! pReapableJob) {
-    pRetiredJobs->vDropLock();
+    AM::MASTERLOCK::vDropReap(nullptr);
     return FALSE(nothing_to_reap);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pRetiredJobs->vRemoveJob(pReapableJob);
-  
-  pRetiredJobs->vDropLock();
-  
+
   AM::MASTERLOCK::vDropReap(nullptr);
 
-  // delete the retired job
+  // delete the reapavle job
   
   RASSERT(pReapableJob->pJobTask());
   pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
