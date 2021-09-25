@@ -411,6 +411,16 @@ void AttachMap::vReapEnabled(bool bReapEnabled)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get reap lock                                                              */
+/*----------------------------------------------------------------------------*/
+ReapLock* AttachMap::pReapLock(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return & m_oReapLock;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get trace file                                                             */
 /*----------------------------------------------------------------------------*/
 File* AttachMap::pTraceFile(void)
@@ -431,7 +441,7 @@ void AttachMap::vTraceFile(File* pTraceFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find api which matches given name                                          */
+/* get trace lock                                                             */
 /*----------------------------------------------------------------------------*/
 TraceLock* AttachMap::pTraceLock(void)
 {

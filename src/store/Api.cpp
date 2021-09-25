@@ -21,6 +21,7 @@
 
 #include "SP_TagSet.hpp"
 
+extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 
 extern pthread_key_t giTLS_ThreadKey;
@@ -554,6 +555,8 @@ bool Api::bReapJob(void)
     return FALSE(empty_list);
   }
   
+  AM::MASTERLOCK::vGrabReap(nullptr);
+  
   pRetiredJobs->vGrabLock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -600,6 +603,8 @@ bool Api::bReapJob(void)
   
   pRetiredJobs->vDropLock();
   
+  AM::MASTERLOCK::vDropReap(nullptr);
+
   // delete the retired job
   
   RASSERT(pReapableJob->pJobTask());

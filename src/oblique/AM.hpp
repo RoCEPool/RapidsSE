@@ -296,6 +296,9 @@ namespace OBLIQUE
       static void vDropDdlReadLock(LogicUnit* pLogicUnit);
       static void vGrabDdlReadLock(LogicUnit* pLogicUnit);
     
+      static void vDropReap(LogicUnit* pLogicUnit);
+      static void vGrabReap(LogicUnit* pLogicUnit);
+    
       static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
       static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     

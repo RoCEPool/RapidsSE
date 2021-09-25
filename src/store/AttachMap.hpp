@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Resources.hpp" //?
+#include "ReapLock.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -73,6 +74,9 @@ namespace STORE
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
     Atomic        m_ixQueryNo;
+  
+  private:
+    ReapLock      m_oReapLock;
 
     // must be last
     Footer m_xFooter;
@@ -101,7 +105,8 @@ namespace STORE
   
     bool  bReapEnabled(void);
     void  vReapEnabled(bool bReapEnabled);
-  
+    ReapLock* pReapLock(void);
+
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
   

@@ -140,6 +140,7 @@
 #include "Dynamo.hpp"
 #include "Optimus.hpp"
 
+#include "ReapLock.hpp"
 #include "RowTablePtn.hpp"
 
 #include "Scanner.hpp"
@@ -407,6 +408,7 @@ SizeHeap gxaSizeHeap[]
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
+  { sizeof(ReapLock),           HT_T_TINY    ,0 }, // CN_REAPLOCK
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
