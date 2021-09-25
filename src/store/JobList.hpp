@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t, JobList* pJobs);
     void  operator delete(void*);
     
-    JobList(CompareFp fpCompare, eJL eJobsList);
+    JobList(eJL eJobsList);
     ~JobList(void) noexcept(false);
     
     static bool bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);

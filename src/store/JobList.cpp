@@ -50,14 +50,14 @@ void JobList::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobList::JobList(CompareFp fpCompare, eJL eJobsList)
+JobList::JobList(eJL eJobsList)
 : Object(CN_JOBLIST)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   m_eJobList = eJobsList;
-  m_pJobSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
+  m_pJobSkipList = new SkipListNL(C_UNQIUE_KEY, nullptr);
   
   _checkInitialised_(CN_JOBLIST);
   
@@ -149,17 +149,25 @@ void JobList::vAddJob(Job* pJob)
           (JL_PARTICIPATING == m_eJobList &&   pJob->bWasReceived()) ||
           (JL_RETIRED       == m_eJobList)
          );
+  
   pJob->vJobList(m_eJobList);
   
   
-  
-  //bool bWasInserted = m_pJobSkipList->bInsert(pJob);
   bool bWasInserted;
   
-  if (m_pJobSkipList->m_fpCompare) {
+  if (JL_RETIRED == m_eJobList) {
     
-    RASSERT(m_eJobList != JL_RETIRED);
-    
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    RASSERT(bWasInserted);
+  }
+  else {
     JobId tJobId = pJob->m_tJobId;
     
     auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
@@ -172,22 +180,8 @@ void JobList::vAddJob(Job* pJob)
     bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
     RASSERT(bWasInserted);
   }
-  else {
-    
-    RASSERT(m_eJobList == JL_RETIRED);
-    
-    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
-      
-      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
-      
-      return bMoveRight;
-    };
-
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
-    RASSERT(bWasInserted);
-  }
   
-  
+  ASSERT(bIsLocked());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,7 +203,6 @@ Job* JobList::pFindJob(JobId tJobId)
   
   Job* pJob = nullptr;
   
-  RASSERT(m_pJobSkipList->m_fpCompare);
   RASSERT(m_eJobList != JL_RETIRED);
 
   auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
@@ -296,14 +289,21 @@ bool JobList::bRemoveJob(Job* pJob)
   bool bWasRemoved;
   
   ASSERT(m_okLock.bIsLocked());
-    
  
   ASSERT(m_eJobList == pJob->eJobList());
     
-  if (m_pJobSkipList->m_fpCompare) {
+  if (JL_RETIRED == m_eJobList) {
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
 
-    RASSERT(m_eJobList != JL_RETIRED);
-    
+    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+    ASSERT(bWasRemoved);
+  }
+  else {
     JobId tJobId = pJob->m_tJobId;
     
     auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
@@ -315,27 +315,12 @@ bool JobList::bRemoveJob(Job* pJob)
     
     bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
     ASSERT(bWasRemoved);
-
   }
-  else {
-    
-    RASSERT(m_eJobList == JL_RETIRED);
-    
-    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
-      
-      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
-      
-      return bMoveRight;
-    };
-
-    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
-    ASSERT(bWasRemoved);
-
-  }
-  
   
   pJob->vJobList(JL_NONE);
 
+  ASSERT(bWasRemoved);
+  
   return bWasRemoved;
 }
 

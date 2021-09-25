@@ -217,11 +217,8 @@ namespace STORE
   bool _bIsValidJob(eCN eClass);
 
   ////////////////////////////////////////////////////////////////////////////////
-  eEC  eJob_checkCluster(void);
-  void vJob_postRecv(Job* pJob);
 
-  bool bJobCompare_addr(void* aJobInsert, void* aJobScan, bool& bMatch);
-  bool bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch);
+  void vJob_postRecv(Job* pJob);
 }
 
 
