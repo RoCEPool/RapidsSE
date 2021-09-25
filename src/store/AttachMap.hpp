@@ -5,6 +5,7 @@
 
 #include "Resources.hpp" //?
 #include "ReapLock.hpp"
+#include "TraceMultiLock.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -75,8 +76,9 @@ namespace STORE
     Atomic        m_ixQueryNo;
   
   private:
-    ReapLock      m_oReapLock;
-    TraceLock     m_oTraceLock;
+    ReapLock       m_oReapLock;
+    TraceLock      m_oTraceLock;
+    TraceMultiLock m_oTraceMultiLock;
 
     // must be last
     Footer m_xFooter;
@@ -117,6 +119,9 @@ namespace STORE
 
     void vTraceLockDrop(void);
     void vTraceLockGrab(void);
+  
+    void vTraceMultiLockDrop(void);
+    void vTraceMultiLockGrab(void);
 
     Footer* aFooter(void);
   };

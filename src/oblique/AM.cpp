@@ -850,6 +850,22 @@ void AM::MASTERLOCK::vGrabTraceLine(void)
   gpAttachMap->vTraceLockDrop();
 }
 
+/*----------------------------------------------------------------------------*/
+/* drop traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropTraceMulti(void)
+{
+  gpAttachMap->vTraceMultiLockDrop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceLine lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabTraceLine(void)
+{
+  gpAttachMap->vTraceMultiLockDrop();
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

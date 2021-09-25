@@ -471,6 +471,26 @@ void AttachMap::vTraceLockGrab(void)
   m_oTraceLock.vGrabWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* drop traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceMultiLockDrop(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTraceMultiLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceMultiLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTraceMultiLock.vGrabWrite();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

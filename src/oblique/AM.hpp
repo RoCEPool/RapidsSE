@@ -300,6 +300,9 @@ namespace OBLIQUE
       static void vDropTraceLine(void);
       static void vGrabTraceLine(void);
     
+      static void vDropTraceMulti(void);
+      static void vGrabTraceMulti(void);
+    
       static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
       static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     

@@ -178,6 +178,7 @@
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
 #include "TraceLock.hpp"
+#include "TraceMultiLock.hpp"
 #include "Tub.hpp"
 
 #include "Parcel.hpp"
@@ -530,6 +531,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
+  { sizeof(TraceMultiLock),     HT_T_TINY    ,0 }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
   { sizeof(Tub),                HT_T_LARGE   ,0 }, // CN_TUB
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
