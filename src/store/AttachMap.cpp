@@ -411,14 +411,25 @@ void AttachMap::vReapEnabled(bool bReapEnabled)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get reap lock                                                              */
+/* drop reap lock                                                             */
 /*----------------------------------------------------------------------------*/
-ReapLock* AttachMap::pReapLock(void)
+void AttachMap::vReapLockDrop(void)
 {
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
-  return & m_oReapLock;
+  m_oReapLock.vDropWrite();
 }
+
+/*----------------------------------------------------------------------------*/
+/* grab reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oReapLock.vGrabWrite();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get trace file                                                             */
@@ -438,16 +449,6 @@ void AttachMap::vTraceFile(File* pTraceFile)
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   m_pTraceFile = pTraceFile;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get trace lock                                                             */
-/*----------------------------------------------------------------------------*/
-TraceLock* AttachMap::pTraceLock(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  return & m_oTraceLock;
 }
 
 /*----------------------------------------------------------------------------*/

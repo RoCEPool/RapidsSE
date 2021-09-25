@@ -27,8 +27,6 @@
 #include "eYA.h"
 
 
-//#include "Gid_t.hpp"
-//#include "PtnId.hpp"
 class PtnId;
 
 namespace OBLIQUE {

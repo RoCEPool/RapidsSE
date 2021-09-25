@@ -839,7 +839,7 @@ void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropTraceLine(void)
 {
-  gpAttachMap->m_oTraceLock.vDropWrite();
+  gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -847,7 +847,7 @@ void AM::MASTERLOCK::vDropTraceLine(void)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabTraceLine(void)
 {
-  gpAttachMap->m_oTraceLock.vGrabWrite();
+  gpAttachMap->vTraceLockDrop();
 }
 
 
@@ -2742,7 +2742,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vGrabWrite();
+    gpAttachMap->vTraceLockGrab();
   //else
   //  printf("NOT LOCKING TRACE\n");
   
@@ -2762,7 +2762,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vDropWrite();
+    gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2776,7 +2776,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vGrabWrite();
+    gpAttachMap->vTraceLockGrab();
 
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -2799,7 +2799,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vDropWrite();
+    gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
