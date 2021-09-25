@@ -131,6 +131,8 @@ void JobList::vAddJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
+  vGrabLock();
+  
   ASSERT(bIsLocked());
   
 //  vTrace("inserting %s "
@@ -182,6 +184,8 @@ void JobList::vAddJob(Job* pJob)
   }
   
   ASSERT(bIsLocked());
+  
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

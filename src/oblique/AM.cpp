@@ -3831,9 +3831,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddDemon(Job* pJob)
 {
-  AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
-  AM::pDemonJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3841,9 +3839,7 @@ void AM::vJob_AddDemon(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
 {
-  AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
-  AM::pLocalJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3851,9 +3847,7 @@ void AM::vJob_AddLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddOriginating(Job* pJob)
 {
-  AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
-  AM::pOriginatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3861,9 +3855,7 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
-  AM::pParticipatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3871,9 +3863,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vGrabLock();
   AM::pRetiredJobs()->vAddJob(pJob);
-  AM::pRetiredJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3881,8 +3871,6 @@ void AM::vJob_AddRetired(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vContentDump();
   AM::pDemonJobs()->vDropLock();
@@ -3893,8 +3881,6 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vContentDump();
   AM::pLocalJobs()->vDropLock();
@@ -3905,8 +3891,6 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vContentDump();
   AM::pOriginatingJobs()->vDropLock();
@@ -3917,8 +3901,6 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vContentDump();
   AM::pParticipatingJobs()->vDropLock();
@@ -3929,8 +3911,6 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindOriginating(JobId tJobId)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId);
     
   return pJob;
@@ -3941,8 +3921,6 @@ Job* AM::pJob_FindOriginating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindParticipating(JobId tJobId)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId);
   
   return pJob;
