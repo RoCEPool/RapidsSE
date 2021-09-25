@@ -162,28 +162,6 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the job no component this job                                          */
-/*----------------------------------------------------------------------------*/
-i8 Job::iJobNo(i8 iJobId)
-{
-  i8 iJobNo = BitLib::uMaskOffUpper16(iJobId);
-  
-  return iJobNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the originator node no of this job from the job id                     */
-/*----------------------------------------------------------------------------*/
-i8 Job::iNodeNo(i8 iJobId)
-{
-  i8 iNodeNo = BitLib::uMaskOffLower48(iJobId);
-  
-  iNodeNo >>= 48;
-  
-  return iNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(i8 iJobId)
@@ -192,16 +170,6 @@ i8 Job::iOriginatorNode(i8 iJobId)
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the originator node no of this job from the job id                     */
-/*----------------------------------------------------------------------------*/
-i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
-{
-  i8 NodeNo_Bits = iNodeNo << 48;
-  
-  return NodeNo_Bits;
 }
 
 /*----------------------------------------------------------------------------*/

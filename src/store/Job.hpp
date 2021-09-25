@@ -113,10 +113,7 @@ namespace STORE
 
    ~Job(void) noexcept(false);
   
-    static i8   iJobNo(i8 iJobId);
-    static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
-    static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
     void vAssertEEDelete(eCN eClassNo,
                          Object* pInstance,
