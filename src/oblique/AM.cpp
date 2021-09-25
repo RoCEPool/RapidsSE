@@ -2456,18 +2456,6 @@ i8 AM::iTaskState(Task* pTask) {
   eTS eState = pTask->eState();
   return eState;
 }
-Job* AM::pThisTLSJob(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  if (! pThread || C_UNKNOWN == (i8)pThread)
-    return nullptr;
-  
-  Task* pTask = pThread->pTask();
-  if (! pTask)
-    return nullptr;
-  
-  Job* pJob = pTask->pJob_task();
-  return pJob;
-}
 
 t8 AM::tThisTLSPespective(void)
 {

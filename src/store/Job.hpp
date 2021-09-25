@@ -113,8 +113,6 @@ namespace STORE
 
    ~Job(void) noexcept(false);
   
-    static Job* pThisTLSJob(void);
-
     static i8   iJobNo(i8 iJobId);
     static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);

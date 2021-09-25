@@ -566,7 +566,6 @@ namespace OBLIQUE
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
     static i8   nRndSkipLevel(void);
-    static Job* pThisTLSJob(void);
     static t8   tThisTLSPespective(void);
     static LogicUnit* pThisTLSLogicUnit(void);
     static Task* pThisTLSTask(void);
