@@ -861,7 +861,7 @@ void AM::MASTERLOCK::vDropTraceMulti(void)
 /*----------------------------------------------------------------------------*/
 /* grab traceLine lock                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::MASTERLOCK::vGrabTraceLine(void)
+void AM::MASTERLOCK::vGrabTraceMulti(void)
 {
   gpAttachMap->vTraceMultiLockDrop();
 }
@@ -2211,40 +2211,18 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
 */
     case CN_TABLE: {
-      Table* pTable = _pTable(pOperand);
-      vTraceDumpGrabLock();
-      //vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
-      vTrace(">>>>vDeleteOperand delete pTable:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pTable->szTableNm()->azChar());
-      //delete pTable; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
 
     case CN_GRID: {
-      Grid* pGrid = _pGrid(pOperand);
-      vTraceDumpGrabLock();
-      //vTrace(">>>>vDeleteOperand delete pGrid:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pGrid);
-      vTrace(">>>>vDeleteOperand delete pGrid:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pGrid->szGridNm()->azChar());
-      //delete pTable; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
-      break;
+     break;
     }
 
     case CN_BUCKETGET: {
-      //BucketGet* pBucketGet = _pBucketGet(pOperand);
-      vTraceDumpGrabLock();
-      vTrace(">>>>vDeleteOperand delete CN_BUCKET called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz);
-      //delete pBucket; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
 
     case CN_PTNSTREAM: {
-      //Bucket* pBucket = _pBucket(pOperand);
-      vTraceDumpGrabLock();
-      vTrace(">>>>vDeleteOperand delete CN_PTNSTREAM called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz);
-      //delete pBucket; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
       
@@ -2430,8 +2408,6 @@ StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   return pStreamDef;
 }
 
-static TraceLock oTraceDumpLock;
-
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {
   if (AM::pThisTLSTask())
@@ -2476,14 +2452,6 @@ LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   return pJob->pJobLogicUnit();
 }
 
-void AM::vTraceDumpGrabLock(void)
-{
-  oTraceDumpLock.vGrabWrite();
-}
-void AM::vTraceDumpDropLock(void)
-{
-  oTraceDumpLock.vDropWrite();
-}
 
 void AM::vTaskFullTrace(Task* pTask)
 {
@@ -2744,8 +2712,6 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
   va_end(xVarArgs);
 
 }
-
-//static TraceLock oTraceLock;
 
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
