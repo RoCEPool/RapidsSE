@@ -156,7 +156,6 @@ namespace STORE
     void vIncActiveOps(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
-    i8   iJobId(void);
     JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);

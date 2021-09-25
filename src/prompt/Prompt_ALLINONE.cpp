@@ -725,25 +725,26 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   
   ASSERT(pInpTknVec->pGet(0)->bSame("cancel"_Stz));
   
-  i8 iJobId = pInpTknVec->pGet(1)->iToI8();
+  JobId tJobId;
+  tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pPipelineJob = AM::pJob__FindParticipating(iJobId);
+  Job* pPipelineJob = AM::pJob__FindParticipating(tJobId);
   
   if ( ! pPipelineJob ) {
-    vTrace("job %lld not found\n"_Stz, iJobId);
+    vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
     AM::vJob_DumpParticipating();
     return false;
   }
   else
-    vTrace("Cancelling job %lld\n"_Stz, iJobId);
+    vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
   
   // get the pipeline from the job
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
-    vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, iJobId);
+    vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
     return false;
   }
   

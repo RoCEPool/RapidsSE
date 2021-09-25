@@ -175,7 +175,7 @@ Job::Job(Stz* szJobNm,
 
   vNewJobLogicUnit();
   
-  m_oJobTags.vInsert(C_TAG_DISTID,iJobId());
+  m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
   
   ++ gixJob;
@@ -722,16 +722,6 @@ bool Job::bJobHasError(void)
 /*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Job::iJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_tJobId.iAsI8();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job id                                                             */
-/*----------------------------------------------------------------------------*/
 JobId Job::tJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -903,11 +893,8 @@ Stz* Job::szNodeNm(void)
 i8 Job::iOriginatorNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iOriginatorNode = iJobId() & iMaskOffLower48Bits;
-  iOriginatorNode >>= 48;
+    
+  i8 iOriginatorNode = m_tJobId.uNodeNo();
   
   return iOriginatorNode;
 }
@@ -1025,7 +1012,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %s ackRemaining %lld\n"_Stz,
          this,
-         iJobId(),
+         m_tJobId.iAsI8(),
          m_oAcksRmg_job.iPrintOnlyValue());
 }
 
@@ -1356,7 +1343,7 @@ bool STORE::bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch)
     return false;
   
   // do the job id's match?
-  if (pJobInsert->iJobId() == pJobScan->iJobId())
+  if (pJobInsert->tJobId().iAsI8() == pJobScan->tJobId().iAsI8())
     bMatch = true;
   else
     bMatch = false;
@@ -1364,7 +1351,7 @@ bool STORE::bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is this job to be inserted lexicography after the scan?
   
-  if (pJobInsert->iJobId() > pJobScan->iJobId())
+  if (pJobInsert->tJobId().iAsI8() > pJobScan->tJobId().iAsI8())
     return true;
   else
     return false;

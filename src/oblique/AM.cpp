@@ -3204,7 +3204,6 @@ InternalTables* AM::pInternalTables(void) {
   return gpAttachMap->m_pInternalTables;
 }
 
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->iJobId();                     }
 
 void AM::vPrintGlobals(void)
 {
@@ -3944,11 +3943,11 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindOriginating(i8 iJobId)
+Job* AM::pJob__FindOriginating(JobId tJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
-  Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId);
     
   return pJob;
 }
@@ -3956,11 +3955,11 @@ Job* AM::pJob__FindOriginating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindParticipating(i8 iJobId)
+Job* AM::pJob__FindParticipating(JobId tJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
-  Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId);
   
   return pJob;
 }

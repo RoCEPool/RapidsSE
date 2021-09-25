@@ -197,22 +197,6 @@ void JobList::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a job in the jobs skip list                                           */
-/*----------------------------------------------------------------------------*/
-Job* JobList::pFindJob(i8 iJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  JobId tJobId;
-  
-  tJobId = iJobId;
-  
-  Job* pJobFound = pFindJob(tJobId);
-  
-  return pJobFound;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
 Job* JobList::pFindJob(JobId tJobId)
@@ -376,7 +360,7 @@ void JobList::vSee(void)
     Job* pJob = (Job*)(pNode->m_pObject);
     
     vTrace("  Job %s %s "_Stz
-           ,spJobGid.sz(pJob->iJobId())
+           ,spJobGid.sz(pJob->tJobId().iAsI8())
            ,pJob->szJobNm()
            );
 
@@ -454,7 +438,7 @@ void JobList::vContentDump(void)
            pJob,
            pJob->szJobNm(),
            aCN[pJob->eGetClassNo()],
-           pJob->iJobId(),
+           pJob->tJobId().iAsI8(),
            pJob->iParticipantNode(),
            pNode->m_nRight);
     

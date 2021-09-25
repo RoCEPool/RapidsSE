@@ -580,7 +580,7 @@ bool Api::bReapJob(void)
                "activeOps %lld %s "
                "\n"_Stz
                
-               ,pRetiredJob,pRetiredJob->iJobId() & 0xFFFFFF
+               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
                ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
                ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
                );

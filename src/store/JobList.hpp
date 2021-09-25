@@ -31,7 +31,6 @@ namespace STORE
 
     void   vAddJob(Job* pJob);
     void   vDropLock(void);
-    Job*   pFindJob(i8 iJobId);
     Job*   pFindJob(JobId tJobId);
     Job*   pFindJob(Job* pJob__Find);
     SkipNode* pFirst(void);

@@ -65,6 +65,8 @@ namespace BASE {
   class Input;
   class IvlLib;
 
+  class JobId;
+
   class Lock;
   class Locks;
 
@@ -604,7 +606,6 @@ namespace OBLIQUE
     static void vFilePrint(File* pFile, Stz* szFormat,...);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static void vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
@@ -723,8 +724,8 @@ namespace OBLIQUE
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob__FindOriginating(i8 iJobId);
-    static Job* pJob__FindParticipating(i8 iJobId);
+    static Job* pJob__FindOriginating(JobId tJobId);
+    static Job* pJob__FindParticipating(JobId tJobId);
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
