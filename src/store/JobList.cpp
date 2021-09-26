@@ -16,36 +16,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-JobList* STORE::_pJobList(void* aAddr)
-{
-  JobList* pJobs = reinterpret_cast<JobList*>(aAddr);
-  
-  RASSERT_TYPE(pJobs,CN_JOBLIST);
-  
-  return pJobs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a jobs from existing memory                                            */
-/*----------------------------------------------------------------------------*/
-void* JobList::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_JOBLIST);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* JobList are never deleted (for the moment)                                 */
-/*----------------------------------------------------------------------------*/
-void JobList::operator delete(void*)
-{
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: JobList class cannot be deleted"_Stz);
-}
+__pCastFunction(STORE,JobList,CN_JOBLIST)
+__aNewFunction(JobList,CN_JOBLIST)
+__vDeleteFunction(JobList,CN_JOBLIST)
+__aFooterFunction(JobList)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -448,20 +422,6 @@ void JobList::vListJobContents(void)
   vTrace("\n"_Stz);
   
   vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* JobList::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/
