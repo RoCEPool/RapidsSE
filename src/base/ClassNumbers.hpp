@@ -347,7 +347,8 @@ enum eCN : u2 // Class Number
   /* */ CN_TXSET,
   
   /* */ CN__U__,
-  
+  /* */ CN_UNITINT,
+
   /* */ CN__V__,
   /* */ CN_VERBOSE,
 
@@ -705,7 +706,8 @@ static Stz* aCN[]
   /* */ "TXSET"_Stz,                // CN_TXSET
    
   /* */ "_U__"_Stz,                 // CN__U__
-   
+  /* */ "UNITINT"_Stz,              // CN_UNITINT
+
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
 
