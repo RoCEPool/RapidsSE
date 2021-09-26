@@ -249,9 +249,7 @@ bool JobList::bIsLocked(void)
 void JobList::vListJobs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  SP_Gid spJobGid;
-  
+    
   vTrace("--------------------------------------\n"_Stz);
   vTrace("Job List %s::\n"_Stz,aJL[m_eJobList]);
   vTrace("--------------------------------------\n"_Stz);
@@ -261,48 +259,11 @@ void JobList::vListJobs(void)
   for (SkipNode* pNode = m_pJobSkipList->pFirst(0);
        pNode;
        pNode = m_pJobSkipList->pNext(pNode, 0)) {
+    
     Job* pJob = (Job*)(pNode->m_pObject);
     
-    vTrace("  Job %s %s "_Stz
-           ,spJobGid.sz(pJob->tJobId().iAsI8())
-           ,pJob->szJobNm()
-           );
-
-    vTrace("origin %lld session %lld command %lld "_Stz
-           ,pJob->m_i_Origin
-           ,pJob->m_i_Session
-           ,pJob->m_iCmdNo
-           );
-
-    if (C_UNKNOWN != pJob->iParticipantNode())
-      vTrace("partNode %lld "_Stz
-             ,pJob->iParticipantNode()
-             );
-
-    LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+    pJob->vPrintJob();
     
-    if (pLogicUnit) {
-      if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
-        vTrace("%s "_Stz
-               ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
-               );
-      vTrace("%s "_Stz
-             ,aLH[pLogicUnit->m_eDdlLocked]
-             );
-    }
-    
-    vTrace("AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->iAcksRmg_printOnlyValue()
-           ,pJob->iAcksOriginal()
-           );
-
-    vTrace("logicUnit %p task %p"_Stz
-           ,pJob->m_pJobLogicUnit
-           ,pJob->pJobTask()
-           );
-
-
-    vTrace("\n"_Stz);
   }
   
   vDropLock();

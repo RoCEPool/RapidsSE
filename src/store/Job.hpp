@@ -152,6 +152,7 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
+    void vPrintJob(void);
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReport(void);

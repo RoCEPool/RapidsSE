@@ -756,6 +756,56 @@ Pipeline* Job::pPipeline_job(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vPrintJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  SP_Gid spJobGid;
+      
+  vTrace("  Job %s %s "_Stz
+         ,spJobGid.sz(this->tJobId().iAsI8())
+         ,this->szJobNm()
+         );
+
+  vTrace("origin %lld session %lld command %lld "_Stz
+         ,this->m_i_Origin
+         ,this->m_i_Session
+         ,this->m_iCmdNo
+         );
+
+  if (C_UNKNOWN != this->iParticipantNode())
+    vTrace("partNode %lld "_Stz
+           ,this->iParticipantNode()
+           );
+
+  LogicUnit* pLogicUnit = this->pJobLogicUnit();
+  
+  if (pLogicUnit) {
+    if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+      vTrace("%s "_Stz
+             ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+             );
+    vTrace("%s "_Stz
+           ,aLH[pLogicUnit->m_eDdlLocked]
+           );
+  }
+  
+  vTrace("AcksRmg %lld (out of %lld)"_Stz
+         ,this->iAcksRmg_printOnlyValue()
+         ,this->iAcksOriginal()
+         );
+
+  vTrace("logicUnit %p task %p"_Stz
+         ,this->m_pJobLogicUnit
+         ,this->pJobTask()
+         );
+
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is job reapable?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job::bReapable(void)
