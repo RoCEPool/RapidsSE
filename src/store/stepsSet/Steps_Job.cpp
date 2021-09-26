@@ -718,7 +718,7 @@ void Step::vJobNoWaitFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->bHasTag_noWait());
+  m_pDataStack->vPushInt(pJob->bHasTag(C_TAG_NOWAIT));
   
   EXIT();
 }

@@ -303,14 +303,6 @@ void Step::vSessionSignal(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (pJob->bHasTag_noWait()) {
-//    //! this is incomplete ... memory leak; job & task need to be deleted
-//    EXIT();
-//    return;
-//  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 //  vGrabTaskLock((Stz*)__func__);
   
   //pJob->vJobState(JS_SIGNALLED);

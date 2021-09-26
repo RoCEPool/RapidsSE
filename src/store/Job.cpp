@@ -273,18 +273,6 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has a /diary ename tag                                    */
-/*----------------------------------------------------------------------------*/
-bool Job::bDiaryTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bDiary = bHasTag(C_TAG_DIARY);
-  
-  return bDiary;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sen . print                                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vDotPrint(Stz* szText)
@@ -340,42 +328,6 @@ bool Job::bHasTag(Stz* szTagNm)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /bg tag                                             */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasTag_bg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bHas = bHasTag(C_TAG_BG);
-  
-  return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /noWait tag                                         */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasTag_noWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bHas = bHasTag(C_TAG_NOWAIT);
-  
-  return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /time tag                                           */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasTag_time(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bHas = bHasTag(C_TAG_TIME);
-  
-  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -934,18 +886,6 @@ void Job::vSetFromCascade(Stz* szCascade)
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /summary ename tag                                  */
-/*----------------------------------------------------------------------------*/
-bool Job::bSummaryTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bSummary = bHasTag(C_TAG_SUMMARY);
-  
-  return bSummary;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get elapsed time in milliseconds                                           */

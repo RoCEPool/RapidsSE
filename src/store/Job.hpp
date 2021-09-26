@@ -115,14 +115,10 @@ namespace STORE
     i8   nActiveOps(void);
     bool bByPromptTag(void);
     void vDecActiveOps(void);
-    bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
     bool bHasTag(Stz* szTagNm);
-    bool bHasTag_bg(void);
-    bool bHasTag_time(void);
-    bool bHasTag_noWait(void);
     void vIncActiveOps(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
@@ -158,7 +154,6 @@ namespace STORE
     Session* pSession(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
-    bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
     Task* pJobTask(void);
