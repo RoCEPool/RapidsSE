@@ -13,7 +13,7 @@ namespace BASE
     Footer m_xFooter;
     
   public:
-    UT(void);
+    UT(eCN eClass);
    ~UT(void) noexcept(false);
   
     Footer* aFooter(void);

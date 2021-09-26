@@ -7,14 +7,27 @@
 #include "UT_SkipList.hpp"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(BASE,UT_SkipList,CN_UT_SKIPLIST)
+__aNewFunction(UT_SkipList,CN_UT_SKIPLIST)
+__vDeleteFunction(UT_SkipList,CN_UT_SKIPLIST)
+__aFooterFunction(UT_SkipList)
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 UT_SkipList::UT_SkipList(void)
+: UT(CN_UT_SKIPLIST)
 {
-  _precondition_(_MAGIC_,CN_UT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+
+  m_pIntSet = new IntSet;
   
+  m_pSkipList = new SkipListNL(true,nullptr);
   
-  _postcondition_(_MAGIC_,CN_UT,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +35,11 @@ UT_SkipList::UT_SkipList(void)
 /*----------------------------------------------------------------------------*/
 UT_SkipList::~UT_SkipList(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_UT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+
+  delete m_pIntSet;
+  
+  delete m_pSkipList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,14 +52,29 @@ UT_SkipList::~UT_SkipList(void) noexcept(false)
 bool UT_SkipList::bTest(void)
 {
   _static_
+
+  UT_SkipList* pUT_SkipList = new UT_SkipList;
   
-  return true;
+  bool bPassed = pUT_SkipList->bRunTests();
+  
+  delete pUT_SkipList;
+  
+  return bPassed;
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(UT_SkipList)
+
+/*----------------------------------------------------------------------------*/
+/* run all tests                                                              */
+/*----------------------------------------------------------------------------*/
+bool UT_SkipList::bRunTests(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */
