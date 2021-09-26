@@ -3893,7 +3893,7 @@ void AM::vJob_AddRetired(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  AM::pDemonJobs()->vListJobContents();
+  AM::pDemonJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3901,7 +3901,7 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  AM::pLocalJobs()->vListJobContents();
+  AM::pLocalJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3909,7 +3909,7 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  AM::pOriginatingJobs()->vListJobContents();
+  AM::pOriginatingJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3917,7 +3917,7 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  AM::pParticipatingJobs()->vListJobContents();
+  AM::pParticipatingJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/

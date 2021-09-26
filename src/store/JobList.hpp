@@ -36,13 +36,12 @@ namespace STORE
     bool   bGrabLock(void);
     void   vInsertJob(Job* pJob);
     bool   bIsLocked(void);
+    void   vListJobs(void);
     i8     nJobs(void);
     SkipNode* pNext(SkipNode* pPrev);
     Job*   pPopJob(void);
     void   vRemoveJob(Job* pJob);
-    void   vSee(void);
   
-    void   vListJobContents(void);
 
     Footer* aFooter(void);
   };

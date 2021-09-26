@@ -1140,12 +1140,8 @@ PromptFun __Prompt_dlist (
 bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Demon List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pDemonJobs()->vListJobContents();
+  AM::pDemonJobs()->vListJobs();
 
   return true;
 }
@@ -2415,12 +2411,8 @@ PromptFun __Prompt_llist (
 bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Local List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pLocalJobs()->vListJobContents();
+  AM::pLocalJobs()->vListJobs();
 
   return true;
 }
@@ -3215,12 +3207,8 @@ PromptFun __Prompt_olist (
 bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Originator List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pOriginatingJobs()->vListJobContents();
+  AM::pOriginatingJobs()->vListJobs();
 
   return true;
 }
@@ -3283,11 +3271,7 @@ bool PROMPT::bPrompt_plist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Participant List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
-  
-  AM::pParticipatingJobs()->vListJobContents();
+  AM::pParticipatingJobs()->vListJobs();
 
   return true;
 }
@@ -3985,7 +3969,7 @@ bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  AM::pRetiredJobs()->vSee();
+  AM::pRetiredJobs()->vListJobs();
 
   return true;
 }

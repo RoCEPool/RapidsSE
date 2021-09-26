@@ -244,6 +244,73 @@ bool JobList::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void JobList::vListJobs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  SP_Gid spJobGid;
+  
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("Job List %s::\n"_Stz,aJL[m_eJobList]);
+  vTrace("--------------------------------------\n"_Stz);
+
+  vGrabLock();
+
+  for (SkipNode* pNode = m_pJobSkipList->pFirst(0);
+       pNode;
+       pNode = m_pJobSkipList->pNext(pNode, 0)) {
+    Job* pJob = (Job*)(pNode->m_pObject);
+    
+    vTrace("  Job %s %s "_Stz
+           ,spJobGid.sz(pJob->tJobId().iAsI8())
+           ,pJob->szJobNm()
+           );
+
+    vTrace("origin %lld session %lld command %lld "_Stz
+           ,pJob->m_i_Origin
+           ,pJob->m_i_Session
+           ,pJob->m_iCmdNo
+           );
+
+    if (C_UNKNOWN != pJob->iParticipantNode())
+      vTrace("partNode %lld "_Stz
+             ,pJob->iParticipantNode()
+             );
+
+    LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+    
+    if (pLogicUnit) {
+      if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+        vTrace("%s "_Stz
+               ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+               );
+      vTrace("%s "_Stz
+             ,aLH[pLogicUnit->m_eDdlLocked]
+             );
+    }
+    
+    vTrace("AcksRmg %lld (out of %lld)"_Stz
+           ,pJob->iAcksRmg_printOnlyValue()
+           ,pJob->iAcksOriginal()
+           );
+
+    vTrace("logicUnit %p task %p"_Stz
+           ,pJob->m_pJobLogicUnit
+           ,pJob->pJobTask()
+           );
+
+
+    vTrace("\n"_Stz);
+  }
+  
+  vDropLock();
+
+  vTrace("--------------------------------------\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* next job in the jobs skip list                                             */
 /*----------------------------------------------------------------------------*/
 SkipNode* JobList::pNext(SkipNode* pPrev)
@@ -303,75 +370,10 @@ void JobList::vRemoveJob(Job* pJob)
     vTrace("%s Failed to Remove JobId %lld\n"_Stz,
            aJL[m_eJobList],pJob->tJobId().iAsI8());
     vTrace("------------------------------------\n"_Stz);
-    vListJobContents();
+    vListJobs();
   }
 
   ASSERT(bWasRemoved);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JobList::vSee(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  SP_Gid spJobGid;
-  
-  vTrace("See JobList %s::\n"_Stz,aJL[m_eJobList]);
-  
-  vGrabLock();
-
-  for (SkipNode* pNode = m_pJobSkipList->pFirst(0);
-       pNode;
-       pNode = m_pJobSkipList->pNext(pNode, 0)) {
-    Job* pJob = (Job*)(pNode->m_pObject);
-    
-    vTrace("  Job %s %s "_Stz
-           ,spJobGid.sz(pJob->tJobId().iAsI8())
-           ,pJob->szJobNm()
-           );
-
-    vTrace("origin %lld session %lld command %lld "_Stz
-           ,pJob->m_i_Origin
-           ,pJob->m_i_Session
-           ,pJob->m_iCmdNo
-           );
-
-    if (C_UNKNOWN != pJob->iParticipantNode())
-      vTrace("partNode %lld "_Stz
-             ,pJob->iParticipantNode()
-             );
-
-    LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
-    
-    if (pLogicUnit) {
-      if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
-        vTrace("%s "_Stz
-               ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
-               );
-      vTrace("%s "_Stz
-             ,aLH[pLogicUnit->m_eDdlLocked]
-             );
-    }
-    
-    vTrace("AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->iAcksRmg_printOnlyValue()
-           ,pJob->iAcksOriginal()
-           );
-
-    vTrace("logicUnit %p task %p"_Stz
-           ,pJob->m_pJobLogicUnit
-           ,pJob->pJobTask()
-           );
-
-
-    vTrace("\n"_Stz);
-  }
-  
-  vDropLock();
-
-  vTrace(";;\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,44 +386,6 @@ i8 JobList::nJobs(void)
   i8 nJobs = m_pJobSkipList->nItems();
   
   return nJobs;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* list contents of this job list                                             */
-/*----------------------------------------------------------------------------*/
-void JobList::vListJobContents(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  vGrabLock();
-
-
-  SkipListNL* pSkipList = m_pJobSkipList;
-  
-  i8 iLevel = 0;
-    
-  SkipNode* pNode = pSkipList->pFirst(iLevel);
-  while (pNode) {
-    Job* pJob = (Job*)(pNode->m_pObject);
-    vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
-           pJob,
-           pJob->szJobNm(),
-           aCN[pJob->eGetClassNo()],
-           pJob->tJobId().iAsI8(),
-           pJob->iParticipantNode(),
-           pNode->m_nRight);
-    
-    pJob->pJobTags()->vDumpSet();
-    
-    pNode = pSkipList->pNext(pNode, iLevel);
-  }
-  
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  
-  vDropLock();
 }
 
 /*============================================================================*/
