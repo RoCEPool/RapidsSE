@@ -403,25 +403,6 @@ void* SkipListNL::pPop(void)
 /*----------------------------------------------------------------------------*/
 /* print contents of the skiplist                                             */
 /*----------------------------------------------------------------------------*/
-#if 0
-void SkipListNL::vPrintList(
-                            std::function<void(SkipNode* pNode,
-                                              int i_Level
-                                              )> fPrintNode
-                            )
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2))
-    fPrintNode(pNode,2);
-  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1))
-    fPrintNode(pNode,1);
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    fPrintNode(pNode,0);
-}
-
-#else
-/*----------------------------------------------------------------------------*/
 void SkipListNL::vPrintList(
                             std::function<void(SkipNode* pNode,
                                               int i_Level
@@ -457,7 +438,6 @@ void SkipListNL::vPrintList(
   vTrace("----------------------------\n"_Stz);
   vTrace("\n"_Stz);
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* recount number of objects in list                                          */
