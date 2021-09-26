@@ -3893,9 +3893,7 @@ void AM::vJob_AddRetired(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vListJobContents();
-  AM::pDemonJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3903,9 +3901,7 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vListJobContents();
-  AM::pLocalJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3913,9 +3909,7 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vListJobContents();
-  AM::pOriginatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3923,9 +3917,7 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vListJobContents();
-  AM::pParticipatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

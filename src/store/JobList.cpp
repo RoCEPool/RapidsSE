@@ -322,6 +322,8 @@ void JobList::vRemoveJob(Job* pJob)
   
   pJob->vJobList(JL_NONE);
 
+  vDropLock();
+  
   if (! bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld\n"_Stz,
@@ -329,10 +331,7 @@ void JobList::vRemoveJob(Job* pJob)
     vTrace("------------------------------------\n"_Stz);
     vListJobContents();
   }
-  
-  vDropLock();
 
-  
   ASSERT(bWasRemoved);
 }
 
@@ -420,8 +419,11 @@ i8 JobList::nJobs(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vListJobContents(void)
 {
-  //vDump(CN_JOBLIST, this, aTab);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
+  vGrabLock();
+
+
   SkipListNL* pSkipList = m_pJobSkipList;
   
   i8 iLevel = 0;
@@ -445,6 +447,7 @@ void JobList::vListJobContents(void)
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

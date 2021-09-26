@@ -1145,9 +1145,7 @@ bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
   vTrace("Demon List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vListJobContents();
-  AM::pDemonJobs()->vDropLock();
 
   return true;
 }
@@ -2422,9 +2420,7 @@ bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
   vTrace("Local List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vListJobContents();
-  AM::pLocalJobs()->vDropLock();
 
   return true;
 }
@@ -3224,9 +3220,7 @@ bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
   vTrace("Originator List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vListJobContents();
-  AM::pOriginatingJobs()->vDropLock();
 
   return true;
 }
@@ -3293,9 +3287,7 @@ bool PROMPT::bPrompt_plist(SePrompt* pPrompt)
   vTrace("Participant List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vListJobContents();
-  AM::pParticipatingJobs()->vDropLock();
 
   return true;
 }
