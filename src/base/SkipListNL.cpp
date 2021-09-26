@@ -403,6 +403,7 @@ void* SkipListNL::pPop(void)
 /*----------------------------------------------------------------------------*/
 /* print contents of the skiplist                                             */
 /*----------------------------------------------------------------------------*/
+#if 0
 void SkipListNL::vPrintList(
                             std::function<void(SkipNode* pNode,
                                               int i_Level
@@ -418,6 +419,45 @@ void SkipListNL::vPrintList(
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
     fPrintNode(pNode,0);
 }
+
+#else
+/*----------------------------------------------------------------------------*/
+void SkipListNL::vPrintList(
+                            std::function<void(SkipNode* pNode,
+                                              int i_Level
+                                              )> fPrintNode
+                            )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  vTrace("----------------------------\n"_Stz);
+
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz
+         ,m_iHeight
+         ,m_pHead);
+
+  for (i8 i_Level = C_SKIPLIST_LEVELS - 1; i_Level >= 0; i_Level--) {
+    if (m_pHead->m_pRight[i_Level])
+      vTrace("Level %lld: Node %p\n"_Stz
+             ,i_Level
+             ,m_pHead->m_pRight[i_Level]);
+  }
+  
+  for (i8 i_Level = m_iHeight; i_Level >= 0; i_Level--) {
+
+    vTrace("LEVEL %lld\n"_Stz, i_Level);
+    
+    for (SkipNode* pNode = pFirst(i_Level);
+         pNode;
+         pNode = pNext(pNode,i_Level))  {
+      fPrintNode(pNode,i_Level);
+    }
+  }
+
+  vTrace("----------------------------\n"_Stz);
+  vTrace("\n"_Stz);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* recount number of objects in list                                          */

@@ -130,13 +130,26 @@ void UT_SkipList::vPrintUnitInt(SkipNode* pNode, int i_Level)
   
   UnitInt* pUnitInt = _pUnitInt(pNode->m_pObject);
 
+  SkipNode* pRightNode = pNode->m_pRight[i_Level];
+  
   i8 iInt = pUnitInt->iInt();
-  vTrace("@%lld %p : %lld -> %p\n"_Stz
+  vTrace("@%lld %p : %lld -> %p "_Stz
          ,i_Level
          ,pNode
          ,iInt
          ,pNode->m_pRight[i_Level]
          );
+  
+  if (pRightNode) {
+    UnitInt* pRightUnitInt = _pUnitInt(pRightNode->m_pObject);
+    i8 iRightInt = pRightUnitInt->iInt();
+    vTrace("(%lld)\n"_Stz
+           ,iRightInt
+           );
+  }
+  else {
+    vTrace("\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
