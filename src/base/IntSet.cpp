@@ -140,25 +140,6 @@ void IntSet::vDescending(i8 iStart, i8 iStride)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void IntSet::vPrint(bool bNewLine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
-  
-  i8 nItems = m_pIntAry->nItems();
-  
-  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
-    if (bNewLine)
-      vTrace("%lld\n"_Stz,iGet(i_Item));
-    else
-      vTrace("%lld "_Stz,iGet(i_Item));
-
-  if (! bNewLine)
-    vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* randomise the set                                                          */
 /*----------------------------------------------------------------------------*/
 void IntSet::vRandomise(void)
@@ -263,6 +244,18 @@ void IntSet::vSortDescend(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete int array                                                           */
+/*----------------------------------------------------------------------------*/
+void IntSet::vDeleteAry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  delete m_pIntAry;
+  
+  m_pIntAry = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the description                                                        */
 /*----------------------------------------------------------------------------*/
 Stz* IntSet::szDesc(void)
@@ -275,11 +268,11 @@ Stz* IntSet::szDesc(void)
 /*----------------------------------------------------------------------------*/
 /* reset the description                                                      */
 /*----------------------------------------------------------------------------*/
-void IntSet::vDescReset(void)
+void IntSet::vDesc(Stz* szDesc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-  m_sDesc = ""_Stz;
+  m_sDesc = szDesc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,6 +324,39 @@ i8 IntSet::nInts(void)
   i8 nInts = m_pIntAry->nItems();
   
   return nInts;
+}
+
+/*----------------------------------------------------------------------------*/
+/* a new int array                                                            */
+/*----------------------------------------------------------------------------*/
+void IntSet::vNewAry(i8 nInts)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  if (m_pIntAry)
+    vDeleteAry();
+  
+  m_pIntAry = new ArrayNL_t<CN_INTSET,i8,C_64KB>;
+  m_pIntAry->vItems(nInts);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void IntSet::vPrint(bool bNewLine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nItems = m_pIntAry->nItems();
+  
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
+    if (bNewLine)
+      vTrace("%lld\n"_Stz,iGet(i_Item));
+    else
+      vTrace("%lld "_Stz,iGet(i_Item));
+
+  if (! bNewLine)
+    vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

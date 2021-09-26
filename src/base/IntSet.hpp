@@ -33,12 +33,14 @@ namespace BASE
     void vSort(void);
     void vSortDescend(void);
 
+    void vDeleteAry(void);
     Stz* szDesc(void);
-    void vDescReset(void);
+    void vDesc(Stz* szDesc);
     bool bHas(i8 iInt);
-    i8 iFind(i8 iInt);
-    i8 iGet(i8 i_Item);
-    i8 nInts(void);
+    i8   iFind(i8 iInt);
+    i8   iGet(i8 i_Item);
+    i8   nInts(void);
+    void vNewAry(i8 nInts);
     void vPrint(bool bNewLine = true);
     bool bSearch(i8 iInt);
     void vSet(i8 i_Item, i8 iInt);

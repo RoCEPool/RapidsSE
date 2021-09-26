@@ -72,6 +72,14 @@ bool UT_SkipList::bTest(void)
 bool UT_SkipList::bRunTests(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+  
+  m_pIntSet->vNewAry(10);
+  m_pIntSet->vAscending();
+  m_pIntSet->vPrint();
+  m_pIntSet->vRandomise();
+  m_pIntSet->vPrint();
+
+  m_pIntSet->vDeleteAry();
 
   return true;
 }
