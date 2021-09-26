@@ -148,7 +148,8 @@ enum ePF // prompt function
   /*    */ PF_TRACKMEMORY,
   
   /*    */ PF_UPTIME,
-  
+  /*    */ PF_UT_SKIPLIST,
+
   /*    */ PF_VERSION,
   
   /*    */ PF_WAIT_BG,
@@ -304,7 +305,8 @@ static Stz* aPF[]
   /*    */ "PF_TRACKMEMORY"_Stz,
   
   /*    */ "PF_UPTIME"_Stz,
-  
+  /*    */ "PF_UT_SKIPLIST"_Stz,
+
   /*    */ "PF_VERSION"_Stz,
   
   /*    */ "PF_WAIT_BG"_Stz,

@@ -48,6 +48,8 @@
 #include "LogicUnit.hpp"
 #include "SP_Job.hpp"
 
+#include "UT_SkipList.hpp"
+
 extern CmdLineArgs gxCmdLineArgs;
 
 using namespace Parser;
@@ -5716,6 +5718,42 @@ bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 
   vTrace("  %llds\n"_Stz,iUpTimeSsec);
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_timerStart.cpp -- timer start                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_ut_skipList (
+  PF_UT_SKIPLIST,          // prompt function
+  "Prompt_ut_skipList"_Stz, // name of the prompt function
+  "comment"_Stz,           // comment about the function
+  "ut_skipList"_Stz,       // the prompt command
+  nullptr,                 // the second word
+  bPrompt_ut_skipList,     // prompt function
+  true,                    // enabled
+
+  true,                    // visible
+  "ut_skipList"_Stz,       // help
+  ""_Stz                   // description
+);
+
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_ut_skipList(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  bool bPassed = UT_SkipList::bTest();
+ 
+  if (bPassed)
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  else
+    vTrace("\nUT_SkipList failed\n"_Stz);
+
   return true;
 }
 

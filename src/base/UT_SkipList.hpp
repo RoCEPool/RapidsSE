@@ -17,8 +17,8 @@ namespace BASE
   public:
     UT_SkipList(void);
    ~UT_SkipList(void) noexcept(false);
-  
-    bool bTest(void);
+ 
+    static bool bTest(void);
   
   private:
     Footer* aFooter(void);
