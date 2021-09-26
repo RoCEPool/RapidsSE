@@ -730,10 +730,10 @@ namespace OBLIQUE
     static void vJob_DumpParticipating(void);
     static Job* pJob_FindOriginating(JobId tJobId);
     static Job* pJob_FindParticipating(JobId tJobId);
-    static void vJob_RemoveLocal(Job* pJob, bool bDump=false);
-    static void vJob_RemoveOriginating(Job* pJob, bool bDump=false);
-    static void vJob_RemoveParticipating(Job* pJob, bool bDump=false);
-    static void vJob_RemoveRetired(Job* pJob, bool bDump=false);
+    static void vJob_RemoveLocal(Job* pJob);
+    static void vJob_RemoveOriginating(Job* pJob);
+    static void vJob_RemoveParticipating(Job* pJob);
+    static void vJob_RemoveRetired(Job* pJob);
 
   };
 

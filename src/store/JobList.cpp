@@ -125,70 +125,6 @@ bool JobList::bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey)
 
 
 /*----------------------------------------------------------------------------*/
-/* add job to the jobs skiplist                                               */
-/*----------------------------------------------------------------------------*/
-void JobList::vAddJob(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  vGrabLock();
-  
-  ASSERT(bIsLocked());
-  
-//  vTrace("inserting %s "
-//         "job %p %s %lld "
-//         "task %p\n"_Stz
-//
-//         ,aJL[m_eJobList]
-//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
-//         ,pJob->pJobTask()
-//         );
-  
-  ASSERT(JL_NONE == pJob->eJobList());
-  ASSERT( (JL_DEMON         == m_eJobList && ! pJob->bWasReceived()) ||
-          (JL_LOCAL         == m_eJobList && ! pJob->bWasReceived()) ||
-          (JL_ORIGINATING   == m_eJobList && ! pJob->bWasReceived()) ||
-          (JL_PARTICIPATING == m_eJobList &&   pJob->bWasReceived()) ||
-          (JL_RETIRED       == m_eJobList)
-         );
-  
-  pJob->vJobList(m_eJobList);
-  
-  
-  bool bWasInserted;
-  
-  if (JL_RETIRED == m_eJobList) {
-    
-    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
-      
-      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
-      
-      return bMoveRight;
-    };
-
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
-    RASSERT(bWasInserted);
-  }
-  else {
-    JobId tJobId = pJob->m_tJobId;
-    
-    auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
-      
-      bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
-      
-      return bMoveRight;
-    };
-
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
-    RASSERT(bWasInserted);
-  }
-  
-  ASSERT(bIsLocked());
-  
-  vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void JobList::vDropLock(void)
@@ -260,6 +196,70 @@ bool JobList::bGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert job into the skiplist of jobs                                       */
+/*----------------------------------------------------------------------------*/
+void JobList::vInsertJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  
+  vGrabLock();
+  
+  ASSERT(bIsLocked());
+  
+//  vTrace("inserting %s "
+//         "job %p %s %lld "
+//         "task %p\n"_Stz
+//
+//         ,aJL[m_eJobList]
+//         ,pJob, aCN[pJob->eGetClassNo()], pJob->iJobId() & 0xFFFFFF
+//         ,pJob->pJobTask()
+//         );
+  
+  ASSERT(JL_NONE == pJob->eJobList());
+  ASSERT( (JL_DEMON         == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_LOCAL         == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_ORIGINATING   == m_eJobList && ! pJob->bWasReceived()) ||
+          (JL_PARTICIPATING == m_eJobList &&   pJob->bWasReceived()) ||
+          (JL_RETIRED       == m_eJobList)
+         );
+  
+  pJob->vJobList(m_eJobList);
+  
+  
+  bool bWasInserted;
+  
+  if (JL_RETIRED == m_eJobList) {
+    
+    auto bfMoveRightTest = [pJob](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_addr(pJob,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    RASSERT(bWasInserted);
+  }
+  else {
+    JobId tJobId = pJob->m_tJobId;
+    
+    auto bfMoveRightTest = [tJobId](void* aRightJob, bool& bFoundKey) {
+      
+      bool bMoveRight = bMoveRight_id(tJobId,_pJob(aRightJob),bFoundKey);
+      
+      return bMoveRight;
+    };
+
+    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    RASSERT(bWasInserted);
+  }
+  
+  ASSERT(bIsLocked());
+  
+  vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is locked ?                                                                */
 /*----------------------------------------------------------------------------*/
 bool JobList::bIsLocked(void)
@@ -327,7 +327,7 @@ void JobList::vRemoveJob(Job* pJob)
     vTrace("%s Failed to Remove JobId %lld\n"_Stz,
            aJL[m_eJobList],pJob->tJobId().iAsI8());
     vTrace("------------------------------------\n"_Stz);
-    vContentDump();
+    vListJobContents();
   }
   
   vDropLock();
@@ -416,9 +416,9 @@ i8 JobList::nJobs(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
+/* list contents of this job list                                             */
 /*----------------------------------------------------------------------------*/
-void JobList::vContentDump(void)
+void JobList::vListJobContents(void)
 {
   //vDump(CN_JOBLIST, this, aTab);
   

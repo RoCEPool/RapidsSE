@@ -3853,7 +3853,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddDemon(Job* pJob)
 {
-  AM::pDemonJobs()->vAddJob(pJob);
+  AM::pDemonJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3861,7 +3861,7 @@ void AM::vJob_AddDemon(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
 {
-  AM::pLocalJobs()->vAddJob(pJob);
+  AM::pLocalJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3869,7 +3869,7 @@ void AM::vJob_AddLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddOriginating(Job* pJob)
 {
-  AM::pOriginatingJobs()->vAddJob(pJob);
+  AM::pOriginatingJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3877,7 +3877,7 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  AM::pParticipatingJobs()->vAddJob(pJob);
+  AM::pParticipatingJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3885,7 +3885,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vAddJob(pJob);
+  AM::pRetiredJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3894,7 +3894,7 @@ void AM::vJob_AddRetired(Job* pJob)
 void AM::vJob_DumpDemon(void)
 {
   AM::pDemonJobs()->vGrabLock();
-  AM::pDemonJobs()->vContentDump();
+  AM::pDemonJobs()->vListJobContents();
   AM::pDemonJobs()->vDropLock();
 }
 
@@ -3904,7 +3904,7 @@ void AM::vJob_DumpDemon(void)
 void AM::vJob_DumpLocal(void)
 {
   AM::pLocalJobs()->vGrabLock();
-  AM::pLocalJobs()->vContentDump();
+  AM::pLocalJobs()->vListJobContents();
   AM::pLocalJobs()->vDropLock();
 }
 
@@ -3914,7 +3914,7 @@ void AM::vJob_DumpLocal(void)
 void AM::vJob_DumpOriginating(void)
 {
   AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vContentDump();
+  AM::pOriginatingJobs()->vListJobContents();
   AM::pOriginatingJobs()->vDropLock();
 }
 
@@ -3924,7 +3924,7 @@ void AM::vJob_DumpOriginating(void)
 void AM::vJob_DumpParticipating(void)
 {
   AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vContentDump();
+  AM::pParticipatingJobs()->vListJobContents();
   AM::pParticipatingJobs()->vDropLock();
 }
 
@@ -3951,44 +3951,32 @@ Job* AM::pJob_FindParticipating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 /* remove job from local list                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveLocal(Job* pJob, bool bDump)
+void AM::vJob_RemoveLocal(Job* pJob)
 {
-  if (bDump)
-    AM::pLocalJobs()->vContentDump();
-  
   AM::pLocalJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveOriginating(Job* pJob, bool bDump)
+void AM::vJob_RemoveOriginating(Job* pJob)
 {
-  if (bDump)
-    AM::pOriginatingJobs()->vContentDump();
-  
   AM::pOriginatingJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveParticipating(Job* pJob, bool bDump)
+void AM::vJob_RemoveParticipating(Job* pJob)
 {
-  if (bDump)
-    AM::pParticipatingJobs()->vContentDump();
-
   AM::pParticipatingJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from retired list                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveRetired(Job* pJob, bool bDump)
+void AM::vJob_RemoveRetired(Job* pJob)
 {
-  if (bDump)
-    AM::pRetiredJobs()->vContentDump();
-
   AM::pRetiredJobs()->vRemoveJob(pJob);
 }
 

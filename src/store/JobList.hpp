@@ -29,12 +29,12 @@ namespace STORE
     static bool bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
     static bool bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
 
-    void   vAddJob(Job* pJob);
     void   vDropLock(void);
     Job*   pFindJob(JobId tJobId);
     SkipNode* pFirst(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);
+    void   vInsertJob(Job* pJob);
     bool   bIsLocked(void);
     i8     nJobs(void);
     SkipNode* pNext(SkipNode* pPrev);
@@ -42,7 +42,7 @@ namespace STORE
     void   vRemoveJob(Job* pJob);
     void   vSee(void);
   
-  void vContentDump(void);
+    void   vListJobContents(void);
 
     Footer* aFooter(void);
   };
