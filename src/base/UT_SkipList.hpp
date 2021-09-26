@@ -39,7 +39,7 @@ namespace BASE
     void vRemoveUnitInts(void);
   
     void vPrintSkipList(void);
-    void vPrintSkipList(int i_Level);
+
 
     Footer* aFooter(void);
   };

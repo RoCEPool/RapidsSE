@@ -84,7 +84,7 @@ bool UT_SkipList::bRunTests(void)
   vPrintSkipList();
   
   vRemoveUnitInts();
-  vPrintSkipList();
+  //vPrintSkipList();
   
   m_pIntSet->vDeleteAry();
 
@@ -92,7 +92,7 @@ bool UT_SkipList::bRunTests(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/*-- Static -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -138,6 +138,10 @@ void UT_SkipList::vPrintUnitInt(SkipNode* pNode, int i_Level)
          ,pNode->m_pRight[i_Level]
          );
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* insert the int set as unitInt's into the skip list                         */
@@ -197,7 +201,7 @@ void UT_SkipList::vRemoveUnitInts(void)
     
     RASSERT(bRemoved);
     
-    vPrintSkipList();
+    delete pUnitInt;
   }
 }
 
@@ -214,31 +218,6 @@ void UT_SkipList::vPrintSkipList(void)
   };
 
   m_pSkipList->vPrintList(vfPrintNode);
-  
-  //vPrintSkipList(2);
-  //vPrintSkipList(1);
-  //vPrintSkipList(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print the skip list                                                        */
-/*----------------------------------------------------------------------------*/
-void UT_SkipList::vPrintSkipList(int i_Level)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
-  
-  vTrace("@%lld :\n"_Stz,i_Level);
-  
-  for (SkipNode* pNode = m_pSkipList->pFirst(i_Level);
-       pNode;
-       pNode = m_pSkipList->pNext(pNode,i_Level)) {
-    
-    UnitInt* pUnitInt = _pUnitInt(pNode->m_pObject);
-    
-    i8 iInt = pUnitInt->iInt();
-    
-    vTrace("  %lld\n"_Stz,iInt);
-  }
 }
 
 /*============================================================================*/
