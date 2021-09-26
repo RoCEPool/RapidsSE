@@ -273,45 +273,6 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* content dump                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vContentDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vTrace("\n"_Stz);
-  vTrace("Job\n"_Stz);
-  vTrace("---\n"_Stz);
-
-  vTrace("%p: %s\n"
-         
-         "m_eJobType=%s m_eJobKind=%s\n"
-         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
-         "m_nxReferences=%lld\n"_Stz,
-         this,
-         aCN[eGetClassNo()],
-         
-         m_sJobNm.azChar(),
-         aJK[m_eJobKind]->azChar(),
-         
-         aJL[m_eJobList],
-         aJP[m_eJobPhase],
-         aJS[m_eJobState],
-         
-         bByPromptTag(),
-         bHasTag_noWait(),
-         m_bWasReceived,
-         
-         nReferences(),
-         C_VARGS_END
-         );
-  
-  
-  m_oJobTags.vContentDump();
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this job has a /diary ename tag                                    */
 /*----------------------------------------------------------------------------*/
 bool Job::bDiaryTag(void)
@@ -366,16 +327,6 @@ void Job::vEntry(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntry = szEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* outline                                                                    */
-/*----------------------------------------------------------------------------*/
-void Job::vOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,9 +707,48 @@ Pipeline* Job::pPipeline_job(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print contents (multiple lines)                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vPrintJobContents(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("\n"_Stz);
+  vTrace("Job\n"_Stz);
+  vTrace("---\n"_Stz);
+
+  vTrace("%p: %s\n"
+         
+         "m_eJobType=%s m_eJobKind=%s\n"
+         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
+         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
+         "m_nxReferences=%lld\n"_Stz,
+         this,
+         aCN[eGetClassNo()],
+         
+         m_sJobNm.azChar(),
+         aJK[m_eJobKind]->azChar(),
+         
+         aJL[m_eJobList],
+         aJP[m_eJobPhase],
+         aJS[m_eJobState],
+         
+         bByPromptTag(),
+         bHasTag_noWait(),
+         m_bWasReceived,
+         
+         nReferences(),
+         C_VARGS_END
+         );
+  
+  
+  m_oJobTags.vContentDump();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Job::vPrintJob(void)
+void Job::vPrintJobLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
   

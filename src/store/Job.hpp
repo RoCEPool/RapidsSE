@@ -114,13 +114,11 @@ namespace STORE
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     i8   nActiveOps(void);
     bool bByPromptTag(void);
-    void vContentDump(void);
     void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
-    void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szTagNm);
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
@@ -152,7 +150,8 @@ namespace STORE
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     Pipeline* pPipeline_job(void);
-    void vPrintJob(void);
+    void vPrintJobContents(void);
+    void vPrintJobLine(void);
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReport(void);

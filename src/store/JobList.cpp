@@ -262,7 +262,7 @@ void JobList::vListJobs(void)
     
     Job* pJob = (Job*)(pNode->m_pObject);
     
-    pJob->vPrintJob();
+    pJob->vPrintJobLine();
     
   }
   
