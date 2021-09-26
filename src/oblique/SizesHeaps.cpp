@@ -182,6 +182,7 @@
 #include "Tub.hpp"
 
 #include "UnitInt.hpp"
+#include "UT.hpp"
 
 #include "Parcel.hpp"
 #include "Sends.hpp"
@@ -541,7 +542,8 @@ SizeHeap gxaSizeHeap[]
 
   { 'U' - ('A' - 1),            HT_INVALID   ,0 }, // CN__U__
   { sizeof(UnitInt),            HT_T_TINY    ,0 }, // CN_UNITINT
-  
+  { sizeof(UT),                 HT_T_LARGE   ,0 }, // CN_UT
+
   { 'V' - ('A' - 1),            HT_INVALID   ,0 }, // CN__V__
   { sizeof(Verbose),            HT_T_TINY    ,0 }, // CN_VERBOSE
 
