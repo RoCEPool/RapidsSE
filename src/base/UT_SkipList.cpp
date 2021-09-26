@@ -120,12 +120,37 @@ bool UT_SkipList::bMoveRight_int(i8 iLookForKey,
 }
 
 /*----------------------------------------------------------------------------*/
+/* if the key is greater than object on the right, then move right            */
+/*----------------------------------------------------------------------------*/
+void UT_SkipList::vPrintUnitInt(SkipNode* pNode, int i_Level)
+{
+  _static_
+
+  RASSERT(pNode);
+  
+  UnitInt* pUnitInt = _pUnitInt(pNode->m_pObject);
+
+  i8 iInt = pUnitInt->iInt();
+  vTrace("@%lld %p : %lld -> %p\n"_Stz
+         ,i_Level
+         ,pNode
+         ,iInt
+         ,pNode->m_pRight[i_Level]
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert the int set as unitInt's into the skip list                         */
 /*----------------------------------------------------------------------------*/
 void UT_SkipList::vInsertUnitInts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
+  auto vfPrintNode = [](SkipNode* pNode, int i_Level) {
+    
+    vPrintUnitInt(pNode,i_Level);
+  };
+
   i8 nInts = m_pIntSet->nInts();
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
     
@@ -139,7 +164,9 @@ void UT_SkipList::vInsertUnitInts(void)
       return bRight;
     };
     
-    bool bInserted = m_pSkipList->bInsertByKey(pUnitInt,bfMoveRightTest);
+    bool bInserted = m_pSkipList->bInsertByKey(pUnitInt,
+                                               bfMoveRightTest,
+                                               vfPrintNode);
     RASSERT(bInserted);
   }
 }
@@ -170,7 +197,7 @@ void UT_SkipList::vRemoveUnitInts(void)
     
     RASSERT(bRemoved);
     
-    vPrintSkipList(0);
+    vPrintSkipList();
   }
 }
 
@@ -181,9 +208,16 @@ void UT_SkipList::vPrintSkipList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
-  vPrintSkipList(2);
-  vPrintSkipList(1);
-  vPrintSkipList(0);
+  auto vfPrintNode = [](SkipNode* pNode, int i_Level) {
+    
+    vPrintUnitInt(pNode,i_Level);
+  };
+
+  m_pSkipList->vPrintList(vfPrintNode);
+  
+  //vPrintSkipList(2);
+  //vPrintSkipList(1);
+  //vPrintSkipList(0);
 }
 
 /*----------------------------------------------------------------------------*/

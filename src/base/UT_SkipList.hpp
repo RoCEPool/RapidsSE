@@ -33,7 +33,8 @@ namespace BASE
 
   private:
     static bool bMoveRight_int(i8 iVal, UnitInt* pUnitInt, bool& bFoundKey);
-  
+    static void vPrintUnitInt(SkipNode* pNode, int i_Level);
+
     void vInsertUnitInts(void);
     void vRemoveUnitInts(void);
   

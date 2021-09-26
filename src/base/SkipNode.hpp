@@ -11,6 +11,7 @@ namespace BASE
   {
   public:
     void*     m_pObject;    // ptr to object
+    char      m_caFlag[C_SKIPLIST_LEVELS];  // debug/validation flags
     i8        m_nRight;     // number of right pointers in the node
     SkipNode* m_pRight[1];  // variable set of right pointers
 

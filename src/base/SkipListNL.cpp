@@ -1,11 +1,26 @@
 /*============================================================================*/
-/* SkipListNL.cpp -- Skip List                                                  */
+/* SkipListNL.cpp -- Skip List                                                */
 /*============================================================================*/
 
 #include "BASE.h"
 
 // !DIC_AS_SKIPLIST
 //#define _VALIDATE_SKIPLIST
+
+/*
+ 
+                                 A Skip List
+                                 ===========
+ 
+           H
+           E [ ]--------------------->[ ]->[ ]----------->0
+           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->0
+           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
+              1    2    3    4    5    6    7    8    9
+ 
+ 
+ */
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -103,25 +118,6 @@ SkipListNL::~SkipListNL(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* check integrity of the list                                                */
-/*----------------------------------------------------------------------------*/
-void SkipListNL::vCheck(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  for (SkipNode* pNode = m_pHead->m_pRight[0];
-       pNode;
-       pNode = pNode->m_pRight[0])
-    {
-    //    if (n->m_pKey->iElem(0) != n->m_pKey->pObject()->iAttr(0))
-    //      vReportTrace("key <> OBJECT error\n");
-    //
-    //    if (n->m_pKey->iElem(0) > n->m_pNext[0]->m_pKey->iElem(0)) {
-    //      vReportTrace("sequence error\n");
-    //    }
-    }
-}
 
 /*----------------------------------------------------------------------------*/
 /* compare skip items by their address                                        */
@@ -162,55 +158,8 @@ void SkipListNL::vContents(void (*fvDump)(void* pObject))
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete all objects                                                         */
-/*----------------------------------------------------------------------------*/
-bool SkipListNL::bDeleteAll(void)
-{
-  //  bool bWasRemoved;
-  //
-  //  while (true)
-  //  {
-  //    Ent* aItem = (Ent*)pPop(&bWasRemoved,2);
-  //
-  //
-  //    if (!aItem)
-  //      break;
-  //
-  //    if ( ! bWasRemoved )
-  //      return false;
-  //
-  //    //m_pKey->m_pDelObjFun(pObject);
-  //    if (m_pKey->m_fDeleteObject)
-  //      m_pKey->m_fDeleteObject(aItem);
-  //    else
-  //      tDelete(&aItem);
-  //  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if object is in list                                                  */
-/*----------------------------------------------------------------------------*/
-bool SkipListNL::bExists(void* pObject)
-{  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  bool bEqualTo;
-  
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false,m_fpCompare);
-  ASSERT(pNode); // logic check
-  
-  if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-
 void* SkipListNL::pFind(void* pObject,
                         bool bTrace,
                         CompareFp fpCompare_alt)
@@ -242,8 +191,12 @@ void* SkipListNL::pFindByKey(
                              std::function<bool(
                                                 void* aScan,
                                                 bool& bFoundKey
-                                                )> bfMoveRightTest
-                              )
+                                                )> bfMoveRightTest,
+                             
+                             std::function<void(SkipNode* pNode,
+                                                int i_Level
+                                                )> fPrintNode
+                             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
@@ -330,9 +283,15 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 /* insert object into list                                                    */
 /*----------------------------------------------------------------------------*/
 bool SkipListNL::bInsertByKey(void* aObjectInsert,
+                              
                               std::function<bool(void* aScan,
                                                  bool& bFound
-                                                )> bfMoveRightTest)
+                                                )> bfMoveRightTest,
+                              
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                                                 )> fPrintNode
+                              )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
@@ -403,6 +362,19 @@ SkipNode* SkipListNL::pNewly(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next node                                                              */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  if (pPrev->m_pRight[iLevel])
+    return pPrev->m_pRight[iLevel];
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop first object from list                                                 */
 /*----------------------------------------------------------------------------*/
 void* SkipListNL::pPop(void)
@@ -426,6 +398,25 @@ void* SkipListNL::pPop(void)
   }
   
   return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print contents of the skiplist                                             */
+/*----------------------------------------------------------------------------*/
+void SkipListNL::vPrintList(
+                            std::function<void(SkipNode* pNode,
+                                              int i_Level
+                                              )> fPrintNode
+                            )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2))
+    fPrintNode(pNode,2);
+  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1))
+    fPrintNode(pNode,1);
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
+    fPrintNode(pNode,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -501,9 +492,14 @@ bool SkipListNL::bRemove(void* pObjectRemove)
 /* remove object from list                                                    */
 /*----------------------------------------------------------------------------*/
 bool SkipListNL::bRemoveByKey(void* pObjectRemove,
+                              
                               std::function<bool(void* aRightObject,
                                                  bool& bFound
-                                                 )> bfMoveRightTest
+                                                 )> bfMoveRightTest,
+                              
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                                                 )> fPrintNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -550,35 +546,43 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
   
   return true;
 }
+
 /*----------------------------------------------------------------------------*/
-/* get next node                                                              */
+/* validate the skiplist                                                      */
 /*----------------------------------------------------------------------------*/
-SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
+void SkipListNL::vValidate(std::function<bool(void* aRightObject,
+                                              bool& bFoundKey
+                                             )> bfMoveRightTest,
+                           
+                           std::function<void(SkipNode* pNode,
+                                              int i_Level
+                                              )> fPrintNode
+                           )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  if (pPrev->m_pRight[iLevel])
-    return pPrev->m_pRight[iLevel];
   
-  return nullptr;
+  i8 nItems = 0;
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
+    nItems++;
+  
+  ASSERT(nItems == m_nItems);
+
+  
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (!pFind(pNode->m_pObject)) {
+      vTrace("Cannot find : "_Stz);
+        m_fpPrint(pNode->m_pObject);
+        vTrace("\n"_Stz);
+      NEVER_REACH;
+    }
+  }
+           
+           
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- private: ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/******************************************************************************
- 
-                                 A Skip List
-                                 ===========
- 
-           H
-           E [ ]--------------------->[ ]->[ ]----------->0
-           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->0
-           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
-              1    2    3    4    5    6    7    8    9
- 
- ******************************************************************************/
 
 /*----------------------------------------------------------------------------*/
 /* position object to be inserted                                             */
@@ -661,7 +665,11 @@ SkipNode* SkipListNL::pLocateKey
            (
             std::function<bool(void* aRightObject,
                                bool& bFoundKey
-                               )> bfMoveRightTest
+                               )> bfMoveRightTest,
+            
+            std::function<void(SkipNode* pNode,
+                               int i_Level
+                               )> fPrintNode
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -707,8 +715,14 @@ SkipNode* SkipListNL::pPositionPrior
             std::function<bool(void* aRightObject,
                                bool& bFoundKey
                                )> bfMoveRightTest,
+            
             SkipNode** paPriorVec,
-            bool& bFoundInList
+            
+            bool& bFoundInList,
+            
+            std::function<void(SkipNode* pNode,
+                               int i_Level
+                               )> fPrintNode
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -771,32 +785,6 @@ i8 SkipListNL::iRandomLevel(void)
   } while (!b);
   
   return (level > C_SKIPLIST_LEVELS - 1) ? C_SKIPLIST_LEVELS - 1: level;
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate the skiplist                                                      */
-/*----------------------------------------------------------------------------*/
-void SkipListNL::vValidate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  i8 nItems = 0;
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    nItems++;
-  
-  ASSERT(nItems == m_nItems);
-
-  
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
-    if (!pFind(pNode->m_pObject)) {
-      vTrace("Cannot find : "_Stz);
-        m_fpPrint(pNode->m_pObject);
-        vTrace("\n"_Stz);
-      NEVER_REACH;
-    }
-  }
-           
-           
 }
 
 /*----------------------------------------------------------------------------*/
@@ -865,37 +853,6 @@ void BASE::vSkipListDump(SkipListNL* pSkipList)
   vTrace("\n"_Stz);
 }
 
-void BASE::vSkipListTest(void)
-{
-  vTrace("SkipListNL Tests\n"_Stz);
-  vTrace("\n"_Stz);
-
-  SkipListNL* pSkipList = new SkipListNL(C_UNQIUE_KEY,bI8Compare);
-  
-  pSkipList->bInsert((void*)3); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)1); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)8); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)2); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)7); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)9); vSkipListDump(pSkipList);
-  
-  ASSERT(4 == (i8)pSkipList->pFind((void*)4));
-  
-  pSkipList->bRemove((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bRemove((void*)5); vSkipListDump(pSkipList);
-  pSkipList->bRemove((void*)6); vSkipListDump(pSkipList);
-  
-  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
-  
-  vSkipListDump(pSkipList);
-  
-  return;
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -61,8 +61,11 @@ SkipNode::SkipNode(void* pObject)
   //m_nRight
   ASSERT(m_nRight >= 0 && m_nRight <= C_SKIPLIST_LEVELS);
   
-  for (i8 iForward = 0; iForward < m_nRight; iForward++)
-    m_pRight[iForward] = nullptr;
+  for (i8 i_Right = 0; i_Right < m_nRight; i_Right++)
+    m_pRight[i_Right] = nullptr;
+  
+  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
+    m_caFlag[i_Level] = 0;
   
   _setFooter_();
   
