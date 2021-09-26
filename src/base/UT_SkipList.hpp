@@ -4,6 +4,7 @@
 #pragma once
 
 #include "UT.hpp"
+#include "UnitInt.hpp"
 
 namespace BASE
 {
@@ -31,6 +32,14 @@ namespace BASE
     bool bRunTests(void);
 
   private:
+    static bool bMoveRight_int(i8 iVal, UnitInt* pUnitInt, bool& bFoundKey);
+  
+    void vInsertUnitInts(void);
+    void vRemoveUnitInts(void);
+  
+    void vPrintSkipList(void);
+    void vPrintSkipList(int i_Level);
+
     Footer* aFooter(void);
   };
 

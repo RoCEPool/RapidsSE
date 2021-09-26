@@ -8,7 +8,7 @@ namespace BASE
   class UnitInt : public Object
   {
   private:
-    i8  m_iVal;
+    i8  m_iInt;
    
     // must be last
     Footer m_xFooter;
@@ -18,11 +18,11 @@ namespace BASE
   void operator delete(void* aUnitInt);
 
     UnitInt(void);
-    UnitInt(i8 iVal);
+    UnitInt(i8 iInt);
    ~UnitInt(void) noexcept(false);
     
-    i8 iVal(void);
-    void vVal(i8 iVal);
+    i8 iInt(void);
+    void vInt(i8 iInt);
  
   private:
     Footer* aFooter(void);

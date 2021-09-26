@@ -27,7 +27,7 @@ UnitInt::UnitInt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UNITINT,_FOOTER_);
   
-  m_iVal = C_UNKNOWN;
+  m_iInt = C_UNKNOWN;
   
   _checkInitialised_(CN_UNITINT);
   
@@ -37,12 +37,12 @@ UnitInt::UnitInt(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-UnitInt::UnitInt(i8 iVal)
+UnitInt::UnitInt(i8 iInt)
 : Object(CN_UNITINT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UNITINT,_FOOTER_);
   
-  m_iVal = iVal;
+  m_iInt = iInt;
   
   _checkInitialised_(CN_UNITINT);
   
@@ -60,21 +60,21 @@ UnitInt::~UnitInt(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get iVal                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 UnitInt::iVal(void)
+i8 UnitInt::iInt(void)
 {
   _precondition_(_MAGIC_);
   
-  return m_iVal;
+  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set iVal                                                                   */
 /*----------------------------------------------------------------------------*/
-void UnitInt::vVal(i8 iVal)
+void UnitInt::vInt(i8 iInt)
 {
   _precondition_(_MAGIC_);
   
-  m_iVal = iVal;
+  m_iInt = iInt;
 }
 
 /*============================================================================*/

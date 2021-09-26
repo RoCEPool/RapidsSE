@@ -38,12 +38,12 @@ namespace BASE
     void vDesc(Stz* szDesc);
     bool bHas(i8 iInt);
     i8   iFind(i8 iInt);
-    i8   iGet(i8 i_Item);
+    i8   iInt(i8 i_Int);
+    void vInt(i8 i_Int, i8 iInt);
     i8   nInts(void);
     void vNewAry(i8 nInts);
     void vPrint(bool bNewLine = true);
     bool bSearch(i8 iInt);
-    void vSet(i8 i_Item, i8 iInt);
 
     Footer* aFooter(void);
   };
