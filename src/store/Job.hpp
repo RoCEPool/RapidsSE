@@ -148,17 +148,14 @@ namespace STORE
     Stz* szNodeNm(void);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
-    void vParticipantNode(i8 iNode);
+    void vParticipantNode(i8 i_Node);
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     bool bReapable(void);
     void vReapable(bool bReapable);
-    void vReport(void);
     void vResetForCascade(Session* pSession);
-    void vSee(void);
     Session* pSession(void);
-    void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     bool bSummaryTag(void);

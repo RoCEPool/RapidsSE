@@ -441,7 +441,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pPrepareJob->vJobKind(eJobKind);
     
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
-    pPrepareJob->vSee();
+    pPrepareJob->vPrintJobContents();
   
   
   //pPrepareJobTags->vDumpSet(true);

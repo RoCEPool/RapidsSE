@@ -2310,7 +2310,7 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
     return false;
   }
   
-  pJob->vReport();
+  pJob->vPrintJobContents();
 
   return true;
 }
