@@ -30,18 +30,20 @@ BucketMap::BucketMap(i8 nPartitions)
 #ifdef WITH_BKTMAP_2N4P
   if (nPartitions <= 8) {
     // Synthetic mapping, assign buckets to logical partitions
-    i8 tPtnId = 0;
+
+    PtnId tPtnId = 0;
+
     i8 i_Bkt = 0;
 
 
     while (i_Bkt < C_MAX_BUCKETS)
     {
-      m_taInLglPtn[i_Bkt].vAsI8(tPtnId);
-      m_taInLglPtn[++i_Bkt].vAsI8(tPtnId);
+      m_taInLglPtn[i_Bkt] = tPtnId;
+      m_taInLglPtn[++i_Bkt] = tPtnId;
 
       i_Bkt++;
       tPtnId++;
-      //tPtnNo = (++tPtnNo) % nPartitions;
+      //tPtnId = (++tPtnId) % nPartitions;
 
     }
 
@@ -109,34 +111,32 @@ BucketMap::BucketMap(i8 nPartitions)
 
 
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt].iAsI8());
+      vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
     }
 
   } else {
     // this to take care of internal tables ?
-    i8 tPtnId = 0;
+    PtnId tPtnId = 0;
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      m_taInLglPtn[i_Bkt].vAsI8(tPtnId);
+      m_taInLglPtn[i_Bkt] = tPtnId;
       tPtnId = (++tPtnId) % nPartitions;
-      //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+      //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId);
     }
   }
 
 
 #else
   // assign buckets to logical partitions in a round-robin fashion
-  i8 tPtnNo = 0;
+  PtnId tPtnId;
+  tPtnId = 0;
+  i8 iPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_taInLglPtn[i_Bkt] = tPtnNo;
-    tPtnNo = (++tPtnNo) % nPartitions;
-    vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+    tPtnId = iPtnNo;
+    m_taInLglPtn[i_Bkt] = tPtnId;
+    iPtnNo = (++iPtnNo) % nPartitions;
+    //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, iPtnNo);
   }
 
-
-
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-  //  vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt].iAsI8());
-  }
 #endif
  
   _checkInitialised_(CN_BUCKETMAP);
@@ -192,15 +192,15 @@ void BucketMap::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap::tWhichLglPtnId(i8 iBucketId)
+PtnId BucketMap::tWhichLglPtnNo(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-  
-  PtnId tPtnId = m_taInLglPtn[iBucketId];
-  
-  return tPtnId;
-}
+  PtnId tPtnId;
+  tPtnId = m_taInLglPtn[iBucketId];
 
+  return tPtnId;
+
+}
 /*----------------------------------------------------------------------------*/
 /* get which bucket logical partition is currently mapped to                  */
 /*----------------------------------------------------------------------------*/

@@ -29,9 +29,12 @@ namespace STORE
     Location* pLocation(void);
   
     void vResetPointers(void);
-    PtnId  tWhichLglPtnId(i8 iBucketId);
+
     i8   iWhichBucket(PtnId tPtnId);
     i8   iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
+
+    PtnId tWhichLglPtnNo(i8 iBucketId);
+
   
   private:
     Footer* aFooter(void);

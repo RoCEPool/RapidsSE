@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridRecv request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridRecv_req \operator
+: gridRecv_op \operator
 
   _lu_initialise_
   //"gridRecv_req" .
@@ -61,7 +61,10 @@
 cmdSyntax: gridRecv :: gridRecv ;
 
 : gridRecv_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "gridRecv_op"
+  }
 ;
 
 /*============================================================================*/

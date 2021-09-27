@@ -39,10 +39,12 @@ void Step::vDot(void)
   m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal()) {
-    vDotPrint("%lld"_Stz,xVariable.iGetColVal());
+    i8 iVal = xVariable.iGetColVal();
+    vDotPrint("%lld"_Stz,iVal);
   }
   else {
-    vDotPrint("%s"_Stz,xVariable.szStz());
+    Stz* szVal = xVariable.szStz();
+    vDotPrint("%s"_Stz,szVal);
   }
   
   EXIT();

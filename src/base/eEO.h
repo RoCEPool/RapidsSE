@@ -298,6 +298,7 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
+  /*  S  */ EO_PUSH_RLU_JOINEDROW,  // push joinedRow from rlu
   /*  S  */ EO_PUSH_RLU_JOINMAP_BYTE, // push joinmap byte from rlu
   /*  S  */ EO_PUSH_RLU_LOCALS,     // push locals pointer from the rlu
   /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
@@ -329,9 +330,10 @@ enum eEO : u2 // expression operators
 
   // subroutine operators
   /*  S  */ EO_CALL,             // call subroutine at location
-  /*  S  */ EO_RETURN,           // return from subroutine and
+  /*  S  */ EO_RETURN,           // return from subroutine
   /*  S  */ EO_RETURN_FALSE,     // return from subroutine on false
   /*  S  */ EO_RETURN_TRUE,      // return from subroutine on true
+  /*  S  */ EO_RETURN_VALUE,     // return a value from subroutine
 
   // misc
   /*  S  */ EO_ASSERT,           // pop top and assert
@@ -386,6 +388,10 @@ enum eEO : u2 // expression operators
   /*  M  */ EO_RLU_SET_COLUMN,       // add column to set
   /*  M  */ EO_RLU_SET_COLUMNS,      // add columns to set
   /*  M  */ EO_RLU_SET_ITEMS,        // set number of column items
+
+  // rlu index join
+  /*  M  */ EO_RLU_RESET_JOINEDROW,     // reset JoinedRow in RLU
+  /*  M  */ EO_RLU_SET_JOINEDROW,       // set JoinedRow in RLU
 
   // rlu joinmap set
   /*  M  */ EO_RLU_RESET_JOINMAP,      // reset the JOINMAP
@@ -533,6 +539,9 @@ enum eEO : u2 // expression operators
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
+
+  /*  D  */ EO_DEVIXT_LBOUND_GE_OLD,    // position at lower bound (greater than equal)
+  /*  D  */ EO_DEVIXT_UBOUND_LT_OLD,    // get upper bound (less than)
 
   /*    */ EO_ENUMS
 };
@@ -827,6 +836,7 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
+  /*    */ "EO_PUSH_RLU_JOINEDROW"_Stz,
   /*    */ "EO_PUSH_RLU_JOINMAP_BYTE"_Stz,
   /*    */ "EO_PUSH_RLU_LOCALS"_Stz,
   /*    */ "EO_PUSH_RLU_POT"_Stz,
@@ -861,6 +871,7 @@ static Stz* aEO[]
   /*    */ "EO_RETURN"_Stz,
   /*    */ "EO_RETURN_FALSE"_Stz,
   /*    */ "EO_RETURN_TRUE"_Stz,
+  /*    */ "EO_RETURN_VALUE"_Stz,
 
   // misc
   /*    */ "EO_ASSERT"_Stz,
@@ -914,6 +925,9 @@ static Stz* aEO[]
   /*    */ "EO_RLU_SET_COLUMN"_Stz,
   /*    */ "EO_RLU_SET_COLUMNS"_Stz,
   /*    */ "EO_RLU_SET_ITEMS"_Stz,
+
+  /*   */ "EO_RLU_RESET_JOINEDROW"_Stz,
+  /*   */ "EO_RLU_SET_JOINEDROW"_Stz,
 
   // rlu joinmap set
   /*    */ "EO_RLU_RESET_JOINMAP"_Stz,
@@ -1060,7 +1074,10 @@ static Stz* aEO[]
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
 
-  /*    */ "ENUMS"_Stz
+  /*  D  */ "EO_DEVIXT_LBOUND_GE_OLD"_Stz,
+  /*  D  */ "EO_DEVIXT_UBOUND_LT_OLD"_Stz,
+
+    /*    */ "ENUMS"_Stz
 };
 
 //----------------------------------------------------------------------------
@@ -1077,7 +1094,7 @@ struct EoArg
 static EoArg EoArgs[]
 {
   { EA_NONE,    0 },  // EO_NONE
-  
+
   // arithmetic operators
   // add
   { EA_NONE,    0 },  // EO_ADD_BCDBCD
@@ -1174,7 +1191,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CTR_0_INC
   { EA_NONE,    0 },  // EO_CTR_0_POP
   { EA_NONE,    0 },  // EO_CTR_0_PUSH
-  
+
   // jump operators
   { EA_LABEL,   8 },  // EO_JMP
   { EA_LABEL,   8 },  // EO_JMP_FALSE
@@ -1360,6 +1377,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
+  { EA_NONE,    0 },  // EO_PUSH_RLU_JOINEDROW
   { EA_NONE,    0 },  // EO_PUSH_RLU_JOINMAP_BYTE
   { EA_NONE,    0 },  // EO_PUSH_RLU_LOCALS
   { EA_NONE,    0 },  // EO_PUSH_RLU_POT
@@ -1381,19 +1399,20 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_POP_STR
   { EA_INT,     8 },  // EO_PUSH_LOCALI
   { EA_INT,     8 },  // EO_PUSH_LOCALS
-  
+
   // string operators
   { EA_NONE,    0 },  // EO_STR_COMPARE
   { EA_NONE,    0 },  // EO_STR_COMPARE_a
   { EA_NONE,    0 },  // EO_STR_PRINTADR
   { EA_NONE,    0 },  // EO_STR_PRINTSTK
   { EA_STRING, -1 },  // EO_STR_LITERAL
-  
+
   // subroutine operators
   { EA_LABEL,   8 },  // EO_CALL
   { EA_NONE,    0 },  // EO_RETURN
   { EA_NONE,    0 },  // EO_RETURN_FALSE
   { EA_NONE,    0 },  // EO_RETURN_TRUE
+  { EA_NONE,    0 },  // EO_RETURN_VALUE
 
   // misc
   { EA_NONE,    0 },  // EO_ASSERT
@@ -1422,7 +1441,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DTE_NOW
   { EA_NONE,    0 },  // EO_DTE_PRINT
   { EA_NONE,    0 },  // EO_DTE_YEAR
-  
+
   // hashing
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
@@ -1445,9 +1464,13 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
 
   // rlu column set
-  { EA_INT,     8 },  // EO_RLU_SET_COLUMN
-  { EA_INT,     8 },  // EO_RLU_SET_COLUMNS
-  { EA_INT,     8 },  // EO_RLU_SET_ITEMS
+  { EA_INT,      8 },  // EO_RLU_SET_COLUMN
+  { EA_INT,      8 },  // EO_RLU_SET_COLUMNS
+  { EA_INT,      8 },  // EO_RLU_SET_ITEMS
+
+    // rlu joinedRow
+  { EA_NONE,     0 },  // EO_RLU_RESET_JOINEDROW
+  { EA_NONE,     0 },  // EO_RLU_SET_JOINEDROW
 
   // rlu joinmap set
   { EA_NONE,     0 },  // EO_RLU_RESET_JOINMAP
@@ -1595,6 +1618,9 @@ static EoArg EoArgs[]
 
   // super
   { EA_NONE,    0 },  // super fragment Q100
+
+  { EA_NONE,    0 },  // EO_DEVIXT_LBOUND_GE
+  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND_LT
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS

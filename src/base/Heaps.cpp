@@ -16,6 +16,8 @@ SubSysFn __Heaps("Heaps"_Stz,(fpSELFFN*)Heaps::vSubSystem,
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__aFooterFunction(Heaps)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -24,8 +26,16 @@ Heaps::Heaps(i8 bNoFree)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
   
-  m_bNoFree = bNoFree;
+  m_bNoFree     = bNoFree;
   
+  m_bTraceAlloc = false;
+  m_eTraceAlloc = CN_NONE;
+  m_pTaskAlloc  = nullptr;
+  
+  m_bTraceFree  = false;
+  m_eTraceFree  = CN_NONE;
+  m_pTaskFree   = nullptr;
+
   Transient.m_pTiny   = nullptr;
   Transient.m_pSmall  = nullptr;
   Transient.m_pMedium = nullptr;
@@ -102,6 +112,12 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   if (pRU_Memory)
     AM::vAllocInc(pRU_Memory, eAllocClass);
   
+  if ((pHeaps->m_bTraceAlloc || eAllocClass == pHeaps->m_eTraceAlloc)
+      && (! pHeaps->m_pTaskAlloc || (MY::pTask() == pHeaps->m_pTaskAlloc))) {
+    vTrace("Alloc: %s %p from %s\n"_Stz
+           ,aCN[eAllocClass],pObject,aHT[eHeap]);
+  }
+  
   return pObject;
 }
 
@@ -127,19 +143,18 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 {  
   UNUSED(bPersistent);
   
+  eCN eFreeClass = pObject->eGetClassNo();
 
   Heaps* pHeaps = AM::pHeaps();
-  
-  eCN eObjectClass = pObject->eGetClassNo();
-  
-  if (! (eObjectClass > CN_NONE && eObjectClass < CN_ENUMS) ) {
+    
+  if (! (eFreeClass > CN_NONE && eFreeClass < CN_ENUMS) ) {
     vTrace("Heaps::vFree:: invalid class %lld\n"_Stz
-           ,(i8)eObjectClass
+           ,(i8)eFreeClass
            );
-    RASSERT(eObjectClass > CN_NONE && eObjectClass < CN_ENUMS);
+    RASSERT(eFreeClass > CN_NONE && eFreeClass < CN_ENUMS);
   }
 
-  if (! (CN_FREECHUNK != eObjectClass) ) {
+  if (! (CN_FREECHUNK != eFreeClass) ) {
     FreeChunk* pFreeChunk = (FreeChunk*)(pObject);
     eCN eWasClass = pFreeChunk->eWasClass();
 
@@ -151,20 +166,20 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            );
     
     
-    RASSERT(CN_FREECHUNK != eObjectClass);
+    RASSERT(CN_FREECHUNK != eFreeClass);
   }
 
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
-    AM::vFreeInc(pRU_Memory, eObjectClass);
+    AM::vFreeInc(pRU_Memory, eFreeClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pHeaps->m_bNoFree) {
-    if (   CN_PIPELINESPEC == eObjectClass
-        || CN_STAGESPEC    == eObjectClass
-        || CN_OPSPEC       == eObjectClass
+    if (   CN_PIPELINESPEC == eFreeClass
+        || CN_STAGESPEC    == eFreeClass
+        || CN_OPSPEC       == eFreeClass
         )
     return;
   }
@@ -199,9 +214,9 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 //        return;
 //      }
       
-      if ( CN_JOB       == eObjectClass ||
-           CN_LOGICUNIT == eObjectClass ||
-           CN_OP        == eObjectClass ) {
+      if ( CN_JOB       == eFreeClass ||
+           CN_LOGICUNIT == eFreeClass ||
+           CN_OP        == eFreeClass ) {
         
         pObject->vSetClassNo(CN_FREEDNOT);
         return;
@@ -221,7 +236,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
-  eHT eHeap = gxaSizeHeap[eObjectClass].m_eWhichHeap;
+  eHT eHeap = gxaSizeHeap[eFreeClass].m_eWhichHeap;
   
   if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
 
@@ -230,8 +245,8 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            ,(i8)eHeap
            
            ,pObject
-           ,(i8)eObjectClass
-           ,aCN[eObjectClass]
+           ,(i8)eFreeClass
+           ,aCN[eFreeClass]
            );
     RASSERT(eHeap > HT_INVALID && eHeap < HT_ENUMS);
   }
@@ -251,8 +266,14 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eObjectClass].m_nVtableAdjust);
+  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eFreeClass].m_nVtableAdjust);
   
+  if ((pHeaps->m_bTraceFree || eFreeClass == pHeaps->m_eTraceFree)
+      && (! pHeaps->m_pTaskFree || (MY::pTask() == pHeaps->m_pTaskFree))) {
+    vTrace("Free : %s %p into %s\n"_Stz
+           ,aCN[eFreeClass],pObject,aHT[eHeap]);
+  }
+
   pHeap->vFreeObject(pObject);
 }
 
@@ -265,6 +286,41 @@ void Heaps::vFree_NonObject(PoolBuffer* pBuffer)
   
   AM::pHeaps()->Transient.m_pLarge->vFreeObject(pBuffer);
 }
+
+/*----------------------------------------------------------------------------*/
+/* set trace alloc of objects                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceAlloc(bool bTraceAlloc, Task* pTaskAlloc)
+{
+  m_bTraceAlloc = bTraceAlloc;
+  m_pTaskAlloc  = pTaskAlloc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace alloc of objects                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceAlloc(eCN eTraceAlloc)
+{
+  m_eTraceAlloc = eTraceAlloc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace free of objects                                                  */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceFree(bool bTraceFree, Task* pTaskFree)
+{
+  m_bTraceFree = bTraceFree;
+  m_pTaskFree  = pTaskFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set trace free of objects                                                  */
+/*----------------------------------------------------------------------------*/
+void Heaps::vSetTraceFree(eCN eTraceFree)
+{
+  m_eTraceFree = eTraceFree;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

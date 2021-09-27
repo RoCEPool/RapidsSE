@@ -74,10 +74,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   // m_oOpTags
   m_pTask = nullptr;
-  
-  m_eSeed = SS_SEED_REQ;
-  m_pSeedWord = nullptr;
-  
+    
   // -- -- -- -- -- --
 
   m_bPulsedLimit  = false;
@@ -124,23 +121,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   ++ gixOp;
   
-  
-
-  // ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
-  // seed experiment 1
-  /*
-  Dic* pDicRoot = AM::DIC::pRoot();
-
-  Stz* szSeed = AM::OP::szOpSeed(this);
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-  
-//  if (! pSeedWord)
-//    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-//           "Unable to find seed word: %s\n"_Stz,szSeed);
-
-  vSeedWord(pSeedWord);
-  */
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
@@ -158,8 +138,6 @@ Op::Op(Stz* szOpNm)
   m_sOpNm       = szOpNm;
   m_i_Op        = C_UNKNOWN;
   
-  m_pSeedWord = nullptr;
-
   m_bTraceOp    = false;
   
   m_pOpSpec   = nullptr;
@@ -325,6 +303,7 @@ void Op::vAckPipelineJob(void)
              iNode(),
              tPtnId().iAsI8(),
              nAcksWereRemaining);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +518,28 @@ void Op::vDump(void)
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_i_Node=%lld\n"_Stz,iNode());
-  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnId().iAsI8());
+  vTrace("m_tPtnId=%lld\n"_Stz,tPtnId().iAsI8());
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the entry word for this op                                            */
+/*----------------------------------------------------------------------------*/
+Word* Op::pEntryWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+     
+  s32 sEntryWord(m_sOpNm);
+  sEntryWord.vConcat("_op"_Stz);
+  
+  Word* pEntryWord = pDicRoot->pFindWord(sEntryWord);
+  
+  if (! pEntryWord) {
+    RASSERT(pEntryWord);
+  }
+  
+  return pEntryWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,7 +1071,7 @@ i8 Op::iNode(void)
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
     i_Node = m_pStream->i_Node();
   else
-    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId().iAsI8());
+    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
 
   return i_Node;
 }
@@ -1191,7 +1191,7 @@ void Op::vOpTrace(Operand* pOperand
          pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
          pOperand,
          szSupplemental);
-  
+
   return;
   
   L_Long_Form:
@@ -1615,14 +1615,14 @@ Operand* Op::pPopRight(void)
 PtnId Op::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   PtnId tPtnId;
 
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    tPtnId.vAsI8(C_UNKNOWN);
+    tPtnId = C_UNKNOWN;
   else
     tPtnId = m_pStream->tPtnId();
-  
+
   return tPtnId;
 }
 
@@ -1672,49 +1672,6 @@ i8 Op::iRobinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oOpTags);
-    
-  return szSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get seed word                                                              */
-/*----------------------------------------------------------------------------*/
-Word* Op::pSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return * m_pSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set seed word                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSeedWord(Word* pSeedWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_pSeedWord.bIsNotNull() && (*m_pSeedWord) != pSeedWord ) {
-  
-    SP_Word spWord;
-  
-    vTrace("Cur Seed: %s\n"_Stz,spWord.sz(*m_pSeedWord));
-    vTrace("Rev Seed: %s\n"_Stz,spWord.sz(pSeedWord));
-   
-    NEVER_REACH;
-  }
-  
-  
-  m_pSeedWord = pSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
 eXK Op::eSendKind(void)
@@ -1754,25 +1711,6 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find and set seed word for this op                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vSetSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
- 
-  Stz* szSeed = AM::OP::szOpSeed(this);
-  //vTrace("Op::vSetSeedWord:szSeed = %s\n"_Stz,szSeed);
-  
-  m_pSeedWord = pDicRoot->pFindWord(szSeed);
-  
-  if (! m_pSeedWord) {
-    RASSERT(m_pSeedWord);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

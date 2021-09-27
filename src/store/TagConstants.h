@@ -14,6 +14,7 @@ static Stz* C_TAG_DEDICATEDTHD = "<dedicatedThd>"_Stz;
 static Stz* C_TAG_DIARY        = "<diary>"_Stz;
 static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
 static Stz* C_TAG_DIVISION     = "<division>"_Stz;
+static Stz* C_TAG_ENTRYPOINT   = "<entryPoint>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;
@@ -68,14 +69,6 @@ static Stz* C_TAG_LD_FIELD_DELIMITER      = "<field_delimiter>"_Stz;
 static Stz* C_TAG_LD_MAX_ERRORS           = "<max_errors>"_Stz;
 static Stz* C_TAG_LD_RECORD_TERMINATOR    = "<record_terminator>"_Stz;
 static Stz* C_TAG_LD_RECORD_ENDS          = "<record_ends>"_Stz;
-
-// job info tags
-static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;
-static Stz* C_TAG_SEEDEND  = "<seedEnd>"_Stz;
-static Stz* C_TAG_SEEDEXE  = "<seedExe>"_Stz;
-static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
-static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
-static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
 // ASM Tags
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;

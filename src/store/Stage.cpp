@@ -99,6 +99,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   }
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
@@ -162,7 +163,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId().iAsI8());
+      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
       if (iNode_exe == iNode) {
         nOps += pStream->nItems();
       }
@@ -190,7 +191,7 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
-  
+    
   i8 i_ThisNode = AM::iThisNodeNo();
   
   switch (eCrossTopo) {
@@ -353,7 +354,6 @@ void Stage::vWalkLambda(
 void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
   PtnId tPtnId;
   i8 i_Node;
   i8 i_Stream;
@@ -367,7 +367,7 @@ void Stage::vCreateStreams(void)
     case PO_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
-      tPtnId.vAsI8(C_UNKNOWN);
+      tPtnId = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
         i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_NodeNo); //i_Node);
@@ -378,12 +378,9 @@ void Stage::vCreateStreams(void)
     case PO_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
-      tPtnId.vAsI8(C_UNKNOWN);
+      tPtnId = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
-      //if (i_Node < 100) {
-      //  printf("BAD node\n");
-      //  i_Node = AM::iGetNthNodeNo(i_Node);
-      //}
+
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
       vAdd(pStream);
       break;
@@ -397,12 +394,12 @@ void Stage::vCreateStreams(void)
 
     case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (i8 tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
-        tPtnId.vAsI8(tPtnNo);
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
-        //if (i_Node < 100) printf("1 BAD node\n");
 
-        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+        tPtnId = iPtnNo;
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+
+        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
         vAdd(pStream);
       }
@@ -410,12 +407,13 @@ void Stage::vCreateStreams(void)
       
     case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (i8 tPtnNo = 0; tPtnNo < AM::PTNMAP::nPtnsInGrid(); tPtnNo++) {
-        tPtnId.vAsI8(tPtnNo);
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
-        //if (i_Node < 100) printf("2 BAD node\n");
+
+      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+        tPtnId = iPtnNo;
+        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
           vAdd(pStream);
         }
@@ -424,11 +422,10 @@ void Stage::vCreateStreams(void)
       
     case PO_SPECIFIC_PARTITION: // create a stream for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
-      tPtnId = m_pStageSpec->tSpecificPtnId();
-
-      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId.iAsI8());
+      tPtnId = m_pStageSpec->tSpecificPtnNo();
+      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
       //if (i_Node < 100) printf("3 BAD node\n");
-      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId.iAsI8());
+      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
       vAdd(pStream);
       break;

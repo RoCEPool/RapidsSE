@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : call_req \operator
+ : call_op \operator
 
   _lu_initialise_
 
@@ -53,7 +53,10 @@
 cmdSyntax: call :: call <nested> ;
 
 : call_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "call_op"
+  }
 ;
 
 /*============================================================================*/

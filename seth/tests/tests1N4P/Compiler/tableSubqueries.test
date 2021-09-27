@@ -1,0 +1,413 @@
+/*----------------------------------------------------------------------------*/
+/* table subquery syntax & semantics tests                                    */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_nation;
+  // N_NATIONKEY
+  // N_NAME
+  // N_REGIONKEY
+  // N_COMMENT
+
+_region
+  // R_REGIONKEY
+  // R_NAME
+  // R_COMMENT
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic table subquery examples from WITH clauses
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Basic positive test
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test the naming of the columns returned
+
+// Test a WITH clause that is never used
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM nation;
+
+// Test the main subquery specifying an incorrect table
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM badTable;
+
+// Test the table subquery specifying an incorrect table
+EXPLAIN WITH t1 AS (SELECT * FROM badTable) SELECT * FROM t1;
+
+// Test that column aliases are accepted
+EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test that column aliases are resolvable
+EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT c2, c3 FROM t1;
+
+// Test that unnamed columns are automatically named if not enough
+// column aliases are specified
+EXPLAIN WITH t1 (c1) AS (SELECT * FROM nation) SELECT * FROM t1;
+
+// Test that too many column aliases is an error
+EXPLAIN WITH t1 (c1, c2, c3, c4, c5) AS (SELECT * FROM nation) SELECT * FROM t1;
+failure contains: 'too many column aliases for t1'
+
+// TODO: test when the table alias is the same as a real table
+EXPLAIN WITH nation AS (SELECT * FROM region) SELECT * FROM nation;
+// TODO: Does this read the CTE "nation" or the real table "nation"???
+
+// Test that a table subquery cannot reference itself
+EXPLAIN WITH t1 AS (SELECT * FROM t1) SELECT * FROM t1;
+failure contains: 'unknown table t1'
+
+// Test that two WITH clauses cannot circularly reference each other
+EXPLAIN WITH t1 AS (SELECT * FROM t2), t2 AS (SELECT * FROM t1) SELECT * FROM t1;
+failure contains: '???'
+
+// Cannot have two table subqueries with the same table alias
+EXPLAIN WITH t1 AS (SELECT * FROM nation), t1 AS (SELECT * FROM region) SELECT * FROM t1;
+failure contains: '???'
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 1)
+WITH t1 AS (SELECT * FROM nation) SELECT * from t1;
+rows:
+  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 2)
+WITH t1 AS (SELECT n_name, n_nationkey + 1 AS foobar FROM nation) SELECT * from t1;
+rows:
+  [ 'n_name', 'foobar' ]
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic table subquery examples from FROM clauses
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Subqueries in FROM clauses are translated to WITH clauses and
+// are represented as table subqueries
+
+// Basic positive test
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1;
+
+// Test that anonymous FROM subqueries are given a table alias name
+EXPLAIN SELECT * FROM ( SELECT * FROM nation );
+
+// Test the FROM subquery specifying an incorrect table
+EXPLAIN SELECT * FROM ( SELECT * FROM badTable ) AS t1;
+failure contains: 'No such table: badTable'
+
+// TODO: test what happens when the table alias is the same as a real table
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS region;
+
+// TODO: test what happens when the table alias is the same as the table being read
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS nation;
+failure contains: '???'
+
+// Test that the table alias for a FROM subquery cannot conflict with a table alias
+// from a WITH subquery
+EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM ( SELECT * FROM region ) AS t1;
+failure contains: '???'
+
+// Test that two unnamed FROM subqueries get different table aliases and don't conflict
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
+
+// Cannot have two FROM subqueries with the same table alias
+EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1 JOIN ( SELECT * FROM region ) AS t1 ON n_regionkey = r_regionkey;
+failure contains: '???'
+
+// Cannot have a circular reference between a FROM subquery and a WITH subquery
+WITH t1 AS (SELECT * FROM t2) SELECT * FROM ( SELECT * FROM t1 ) AS t2;
+failure contains: '???'
+
+// Test that unnamed columns in a FROM subquery will use the columnRef or column alias
+// if one exists for that column (part 1)
+SELECT * from (SELECT * FROM nation);
+rows:
+  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+
+// Test that unnamed columns in a table subquery will use the columnRef or column alias
+// if one exists for that column (part 2)
+SELECT * from (SELECT n_name, n_nationkey + 1 AS foobar FROM nation);
+rows:
+  [ 'n_name', 'foobar' ]
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Nested table subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Simple, multiple <withElements>
+EXPLAIN
+  WITH
+  t10 AS (
+    SELECT * FROM nation
+  ),
+  t20 AS (
+    SELECT * FROM region
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
+
+// Nested table subqueries
+EXPLAIN
+  WITH
+  t10 AS (
+    WITH t11 AS (SELECT * FROM region)
+    SELECT * FROM nation, t11
+  ),
+  t20 AS (
+    WITH t21 AS (SELECT * FROM nation)
+    SELECT * FROM region JOIN t21 ON r_regionkey = n_regionkey
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
+
+
+// Multiple nested table subqueries
+EXPLAIN
+  WITH
+  t10 AS (
+    WITH
+    t11 AS (SELECT * FROM region),
+    t12 AS (SELECT * FROM nation),
+    SELECT * FROM t11, t12
+  ),
+  t20 AS (
+    WITH
+    t21 AS (SELECT * FROM nation),
+    t22 AS (SELECT * FROM region)
+    SELECT * FROM t21 JOIN t22 ON r_regionkey = n_regionkey
+  )
+  SELECT * FROM t10, t20;
+// TODO: result
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Name resolution tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Given this definition of a WITH clause...
+
+// selectQuery : [ <withClause> ] <selectExpr> ;
+// withClause : WITH <withElement> [ , <withElement> ... ] ;
+// withElement : <tableAlias> [ <columnList> ] AS '(' <selectQuery> ')' ;
+
+// ...a <selectQuery> of a given <withElement> can only refer to a <tableAlias>
+// of a prior sibling <withElement>. Here, "prior sibling" means another <withElement>
+// that shares the same parent as the current <withElement>.
+// In addition, the <selectExpr> can also only refer to a <tableAlias> of
+// a <withElement> that shares the same parent as the <selectExpr>.
+// Each reference must be a backwards reference (the table alias must already
+// have been defined), not a forward reference (the table alias is yet to be defined).
+
+// This is a base pattern that we will repeat.
+// This statement is ok. Each individual <withElement>
+// doesn't refer to any other <tableAlias>.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+success
+
+// In this statement the query for the <withElement> that defines t3
+// refers to t2 which is defined in a prior sibling <withElement>.
+// This statement is also ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT n_regionkey AS r_regionkey FROM t2)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+success
+
+// In this statement the select query for the <withElement> that defines t2
+// refers to the tableAlias t3, which is defined in a sibling <withElement>
+// but it is not a *prior* sibling <withElement>. Instead this is a forward reference.
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT r_regionkey AS n_regionkey FROM t3),
+    t3 AS (SELECT * FROM nation)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ) SELECT * FROM t1;
+failure contains: '???'
+
+// Here we are expanding the base pattern with another <withElement>
+// that defines the tableAlias t4 (which never gets used).
+// This statement is ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM nation)
+  SELECT * FROM t1;
+success
+
+// In this statement the <withElement> that defines t3 has a select
+// expression that references t4. However t4 is not defined in a
+// sibling <withElement> (it's actually an "uncle" <withElement>).
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM t4)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM nation)
+  SELECT * FROM t1;
+failure contains: '???'
+
+// In this statement the <withElement> that defines t4 has a select expr
+// that references t1. This is allowed because the <withElement>s that
+// define t4 and t1 are siblings and t1 is defined in a *prior* sibling.
+// This statement is ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t1)
+SELECT * FROM t1;
+success
+
+
+// In this statement the <withElement> that defines t4 has a select expr
+// that is referencing t2. However the <withElement> that defines t2 is
+// not a sibling of the <withElement> that defines t4 (it is a nephew/niece
+// relationship instead), even though t2 is defined prior to its use in t4.
+// This statement is NOT ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t2)
+  SELECT * FROM t1;
+failure contains: '???'
+
+// In this statement we see the main subquery refer to t2.
+// However t2 is not defined in a sibling <withElement> with respect
+// to the main subquery (again, it's defined in a nephew/niece relationship).
+// This statement is not ok.
+EXPLAIN
+  WITH
+  t1 AS (
+    WITH
+    t2 AS (SELECT * FROM nation),
+    t3 AS (SELECT * FROM region)
+    SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
+  ),
+  t4 AS (SELECT * FROM t1)
+  SELECT * FROM t2;
+failure contains: '???'
+
+
+// A table alias that is in scope and has the same name as a real table takes
+// precedence when it is referenced.
+EXPLAIN
+  WITH nation AS ( SELECT * FROM region)
+  SELECT * FROM nation;
+// TODO: We expect the output plan to contain the columns from region, not nation
+//       as the CTE alias "nation" is in scope from the main subquery and it
+//       takes precedence over the real table "nation".
+
+
+// A table alias that is not in scope and has the same name as a real table should
+// have no effect when it is referenced.
+// In this statement the outermost main subquery is reading all columns of "nation".
+// The only in-scope CTE alias is "t1", so the main subquery should end up reading
+// the real table "nation".
+// The inner-most CTE that has a table alias of "nation" is not in scope with respect
+// to the outer-most main subquery.
+EXPLAIN
+  WITH t1 AS (
+    WITH nation AS (SELECT * FROM region)
+    SELECT * FROM nation WHERE r_regionkey < 3;
+  )
+  SELECT * FROM nation;
+// TODO: We expect the outer-most subquery to read from the real table "nation",
+//       despite the inner-most CTE defined with the same name (it is not in scope
+//       with respect to the main subquery).
+
+
+// CTE table aliases cannot be qualified, so if the main subquery references a
+// table name that is qualified then it must not match with the CTE table alias
+EXPLAIN
+  WITH nation AS (SELECT * FROM region)
+  SELECT * FROM rapidsse.public.nation;
+// TODO: Expect to read the real table rapidsse.public.nation.
+
+// Same as previous, but only partially qualifying the real table name.
+EXPLAIN
+  WITH nation AS (SELECT * FROM region)
+  SELECT * FROM public.nation;
+// TODO: Expect to read the real table rapidsse.public.nation.
+
+// Here our main subquery is reading from the CTE alias "nation", which itself
+// is reading from the base table rapidsse.public.nation.
+EXPLAIN
+  WITH nation AS (SELECT * FROM rapidsse.public.nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation.
+
+// As above, but the CTE query is only partially qualified
+EXPLAIN
+  WITH nation AS (SELECT * FROM public.nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation.
+
+// In this statement the CTE is defining an alias "nation" but also reading
+// from "nation". Because this is not a recursive CTE, the CTE should resolve
+// the real table rapidsse.public.nation and then alias it as "nation".
+// The main subquery then reads from this aliased table.
+EXPLAIN
+  WITH nation AS (SELECT * FROM nation)
+  SELECT * FROM nation;
+// TODO: Expect to read the CTE aliased table nation, which is reading the real
+//       table rapidsse.public.nation
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  bye;
+  mute
+}
+

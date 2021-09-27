@@ -68,15 +68,15 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnNo(Table::tTablePtnToPtnId(i_TablePtn));
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      vTrace("Table:%s i_TablePtn:%lld tPtnNo:%lld %lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnNo.iAsI8(), tPtnNo.uPtnNo());
+      PtnId tPtnId = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
+      vTrace("Table:%s i_TablePtn:%lld tPtnId:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnId);
       m_pTablePtnVec->vAdd(pTablePtn);
     }
   }
 
 #else
-  
+
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
@@ -84,16 +84,17 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //if (AM::pGrid()->bHasStarted()) {
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-      
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-      
+
+      PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
+
       m_pTablePtnVec->vAdd(pTablePtn);
     }
   }
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
+
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -222,51 +223,35 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
   return pTable ? pTable->m_pStreamDef : nullptr;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
 i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
 {
   _static_
-  
+
   i8 i_TablePtn = tPtnId.iAsI8() / AM::GRID::nKnownNodes();
-  
+
   return i_TablePtn;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert tablePtn to partition Id (in grid)                                 */
-/*----------------------------------------------------------------------------*/
-PtnId Table::tTablePtnToPtnNo(i8 i_TablePtn)
-{
-  _static_
-  PtnId tPtnId;
-  i8 iPtnNo = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
-  tPtnId = iPtnNo;
-  // This trace is to remind us that the grid-wide ptnNo is not the same as the local ptnNo
-  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz,
-         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnId.iAsI8());
-  
-  return tPtnId;
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* convert tablePtn to partition ID (in grid)                                 */
 /*----------------------------------------------------------------------------*/
+
 PtnId Table::tTablePtnToPtnId(i8 i_TablePtn)
 {
   _static_
 
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
+
   PtnId tPtnId;
 
-  tPtnId.vAsI8((i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo());
+  tPtnId = iPtnId;
 
-
-  // This trace is to remind us that the grid-wide ptnNo is not the same as the local ptnNo
-  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz,
-         AM::iThisNodeNo(), i_TablePtn, AM::GRID::nKnownNodes(), tPtnId.iAsI8());
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnId:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnId);
 
   return tPtnId;
 }
@@ -359,7 +344,7 @@ void Table::vBucketMap(BucketMap* pBucketMap)
 /*----------------------------------------------------------------------------*/
 PtnId  Table::tBktToPtn(i8 iBktNo)
 {
-  return m_pBucketMap->tWhichLglPtnId(iBktNo);
+  return m_pBucketMap->tWhichLglPtnNo(iBktNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1032,7 +1017,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      PtnId tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
 
       m_pTablePtnVec->vAdd(pTablePtn);

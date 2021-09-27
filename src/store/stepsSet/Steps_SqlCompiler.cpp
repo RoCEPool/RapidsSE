@@ -302,9 +302,15 @@ void Step::vSqlCompilerDoExplain(void) {
   // may indicate otherwise.
   if (ExplainOp::bExplainStage(pExplainOp)) {
     // This stage does need explaining!
-    // Don't explain the explain node, but start from the first child under it.
+    // Don't explain the explain node, but do explain each child under it.
     s48K sExplainBuf;
-    Parser::PlanObject::vExplain(pExplainOp->pFirstChild(), pRootNode, pExplainOp, sExplainBuf, 0);
+
+    PlanNodeIter* pIter = pExplainOp->pNewChildrenIter();
+    while (pIter->bHasNext()) {
+      PlanNode* pExplainable = pIter->pNext();
+      Parser::PlanObject::vExplain(pExplainable, pRootNode, pExplainOp, sExplainBuf, 0);
+    }
+    delete pIter;
 
     i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
 

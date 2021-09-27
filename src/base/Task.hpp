@@ -49,8 +49,6 @@ namespace BASE
     // -- state
     eTS m_eState;  // task state (running, sleeping, ...)
 
-    // -- tags, seeding and tasking
-    Word* m_pSeedWord;  // seed
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // b)
@@ -115,7 +113,9 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(void);
+    Task(Stz* szTaskNm, Job* pJob);
+    Task(Stz* szTaskNm, Op* pOp);
+    void vTask(void);
    ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
@@ -177,14 +177,12 @@ namespace BASE
     void vSetSenRecoverContext(void);
     void vReleaseLockSets(void);
     void vResetSenContext(void);
-    void vReseed(void);
     void vRetire(void);
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
-    bool bSeeded(void);
-    void vSeedTask(void);
+    void vSetInxPtr(Word* pEntryWordCheck);
     void vSleepUsec(i8 iMicroSeconds);
     eTS  eState(void);
     void vState(eTS eState);

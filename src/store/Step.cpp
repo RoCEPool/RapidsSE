@@ -111,6 +111,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobRef();
+  Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
 
   Step::vAddSteps_List();
@@ -156,6 +157,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Profile();
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
+  Step::vAddSteps_PuGen();
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
@@ -217,6 +219,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ToRow();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
+  Step::vAddSteps_Tub();
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();
   

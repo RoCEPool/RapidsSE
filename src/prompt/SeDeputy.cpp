@@ -76,8 +76,8 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  delete m_pSession->m_pInput;
-  m_pSession->m_pInput = nullptr;
+  while (m_pSession->m_pInput)
+    m_pSession->m_pInput = m_pSession->m_pInput->pDeleteInput();
 
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;

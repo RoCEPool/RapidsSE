@@ -125,6 +125,7 @@ enum eCN : u2 // Class Number
   /* */ CN_JOB,
   /* */ CN_JOB__FIND,
   /* */ CN_JOBLIST,
+  /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
 
   /* */ CN__K__,
@@ -180,6 +181,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPSPEC,
+  /* */ CN_OPTIMUS,
   /* */ CN_OTHEROPERAND,
 
   /* */ CN__P__,
@@ -340,6 +342,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TOROW,
   /* */ CN_TRACELOCK,
   /* */ CN_TSPVAL,
+  /* */ CN_TUB,
   /* */ CN_TX,
   /* */ CN_TXSET,
   
@@ -480,6 +483,7 @@ static Stz* aCN[]
   /* */ "JOB"_Stz,                  // CN_JOB
   /* */ "JOB__FIND"_Stz,            // CN_JOB__FIND
   /* */ "JOBLIST"_Stz,              // CN_JOBLIST
+  /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
 
   /* */ "_K__"_Stz,                 // CN__K__
@@ -535,6 +539,7 @@ static Stz* aCN[]
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
+  /* */ "OPTIMUS"_Stz,              // CN_OPTIMUS
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
@@ -695,6 +700,7 @@ static Stz* aCN[]
   /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
+  /* */ "TUB"_Stz,                  // CN_TUB
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
    

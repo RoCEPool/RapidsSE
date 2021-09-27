@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for supervisor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: supervisor_req \operator
+: supervisor_op \operator
  
   _lu_initialise_
 
@@ -66,9 +66,10 @@
 cmdSyntax: supervisor :: supervisor ;
 
 : supervisor_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "supervisor_op"
+  }
 ;
 
 /*============================================================================*/

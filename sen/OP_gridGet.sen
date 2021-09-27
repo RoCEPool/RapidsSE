@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: gridGet_req \operator
+: gridGet_op \operator
 
   _lu_initialise_
   //"gridGet_req" .
@@ -55,7 +55,10 @@
 cmdSyntax: gridGet :: gridGet ;
 
 : gridGet_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "gridGet_op"
+  }
 ;
 
 /*============================================================================*/

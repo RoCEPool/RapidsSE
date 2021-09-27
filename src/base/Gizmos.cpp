@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "eOC.h"
-
 GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,""_Stz,nullptr);
 
 GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,nullptr);

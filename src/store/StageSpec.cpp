@@ -286,20 +286,20 @@ void StageSpec::vSpecificNode(i8 i_SpecificNode)
 /*----------------------------------------------------------------------------*/
 /* get specific partition                                                     */
 /*----------------------------------------------------------------------------*/
-PtnId StageSpec::tSpecificPtnId(void)
+PtnId StageSpec::tSpecificPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
+
   return m_tSpecificPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set specific partition                                                     */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vSpecificPtnId(PtnId tSpecificPtnNo)
+void StageSpec::vSpecificPtnNo(PtnId tSpecificPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
+
   m_tSpecificPtnNo = tSpecificPtnNo;
 }
 

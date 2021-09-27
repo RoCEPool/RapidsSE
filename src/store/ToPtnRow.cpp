@@ -93,16 +93,16 @@ void ToPtnRow::vConvert(RowBuffer* pRowBuffer)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
-    
+
 #ifdef WITH_KEEP_ROW_HASH
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-    
-    i8 i_Ptn = AM::PTNMAP::tHashToDtdPtnId(iHash);
 #else
     i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
 #endif
-    
-    vCopyRow(i_Ptn,aRowSrc);
+
+    PtnId tPtn = AM::PTNMAP::tHashToDtdPtnId(iHash);
+    vCopyRow(tPtn.iAsI8(),aRowSrc);
+
   }
 }
 
@@ -175,9 +175,11 @@ void ToPtnRow::vNewDstRow(i8 i_Ptn)
     aNewRow = pDstRowBuffer->pAllotRow();
     ASSERT(aNewRow);
   }
-  
-  pDstRowBuffer->vPtnId(i_Ptn);
-  
+
+  PtnId tPtnId;
+  tPtnId = i_Ptn;
+  pDstRowBuffer->vPtnId(tPtnId);
+
   m_pIntoRowBuffer = pDstRowBuffer;
 }
 

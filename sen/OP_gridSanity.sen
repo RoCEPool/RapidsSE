@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridSanity req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : gridSanity_req \operator
+ : gridSanity_op \operator
  
   _lu_initialise_
 
@@ -91,7 +91,10 @@
 cmdSyntax: gridSanity :: gridSanity ;
 
 : gridSanity_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "gridSanity_op"
+  }
 ;
 
 /*============================================================================*/

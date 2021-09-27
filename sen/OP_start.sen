@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for start request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : start_req \operator
+ : start_op \operator
  
   _lu_initialise_
 
@@ -221,7 +221,10 @@
 cmdSyntax: start :: start ;
 
 : start_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "start_op"
+  }
 ;
 
 /*============================================================================*/

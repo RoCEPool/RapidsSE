@@ -186,6 +186,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("CounterA[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Counter0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter0[].set"_Stz);
     EXIT();
@@ -198,6 +203,31 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Counter2[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter2[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter3[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter3[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter4[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter4[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter5[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter5[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter6[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter6[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter7[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter7[].set"_Stz);
     EXIT();
     return;
   }
@@ -288,6 +318,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Meta[]"_Stz)) {
     pCurrentWord->vEncodeCall("Meta[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("NamedBuffer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("NamedBuffer[].set"_Stz);
     EXIT();
     return;
   }

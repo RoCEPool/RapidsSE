@@ -66,7 +66,8 @@ cmdSyntax: lf :: lf ;
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listFolder
     <params>      = 0
-    <seedReq>     = "lf_req"
+
+    <opEntry> = "lf_op"
   }
 ;
     

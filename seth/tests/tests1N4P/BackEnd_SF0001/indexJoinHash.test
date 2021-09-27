@@ -1,0 +1,82 @@
+--------------------------------------------------------------------------------
+-- INDEX JOIN HASH tests --- PARTITIONED ON INDEX KEY (HASHCAST)
+-- verfied test results
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+//------------------------------------------------------------------------------
+// NOT CO-PARTITIONED INDEXJOIN
+// LINEITEM.L_ORDERKEY = ORDERS.O_CUSTKEY
+// PtnKey[ORDERS] = O_CUSTKEY
+// PtnKey[LINEITEM] = L_ORDERKEY
+// IdxKey[LINEITEM] = L_ORDERKEY  (lineitem_idx2)
+
+//------------------------------------------------------------------------------
+// INDEX JOIN
+// select * from orders join lineitem on lineitem.l_orderkey = orders.o_orderkey;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    indexJoin 1 lineitem lineitem_idx2 "BOUND $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 5996
+
+
+//------------------------------------------------------------------------------
+// LEFT OUTER INDEX JOIN
+// select * from orders left outer join lineitem on lineitem.l_orderkey = orders.o_orderkey;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    indexJoin 1 lineitem lineitem_idx2 "LEFTOUTER BOUND $I1 $L1 =="
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+rows: 5997
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}

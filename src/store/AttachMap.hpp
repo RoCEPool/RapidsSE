@@ -55,6 +55,7 @@ namespace STORE
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;
     b8            m_bReady;
+    b8            m_bReapEnabled;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
@@ -67,6 +68,8 @@ namespace STORE
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
+    File*         m_pTraceFile;
+    TraceLock     m_oTraceLock;
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
     Atomic        m_ixQueryNo;
@@ -96,8 +99,15 @@ namespace STORE
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   
+    bool  bReapEnabled(void);
+    void  vReapEnabled(bool bReapEnabled);
+  
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
+  
+    File* pTraceFile(void);
+    void  vTraceFile(File* pTraceFile);
+    TraceLock* pTraceLock(void);
 
     Footer* aFooter(void);
   };

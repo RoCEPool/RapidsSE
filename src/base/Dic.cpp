@@ -56,13 +56,6 @@ void Dic::vAddWord(Word* pWord)
   //vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
   
   bool bTrace = false;
-//  if (pWord->szWordNm()->bSame("pipelineSeed_beg"_Stz)) {
-//    vTrace("\n\n"_Stz);
-//    vListWords();
-//    vTrace("\n\n"_Stz);
-//    //vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
-//    bTrace = true;
-//  }
   
   m_okLock.vGrabWrite();
 

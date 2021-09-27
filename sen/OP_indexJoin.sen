@@ -34,7 +34,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                   EACH */
+/* on ZK_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : indexJoin_CrwBuffer \handler
 
@@ -44,13 +44,15 @@
   CrwBuffer[] DevLftIxt.crwBuffer!
   ZK_D_CRWBUFFER Counter0[] executeAsmArgs
 
+  CrwBuffer[].delete
+
   PotRlu[].pipeoutCompletedPtns
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : indexJoin_EosMarker \handler
 
@@ -67,7 +69,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : indexJoin_RowBuffer \handler
 
@@ -85,13 +87,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : indexJoin_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
+    Pipein[].delete
     true
     exit
   then
@@ -109,7 +112,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : indexJoin_StreamDef \handler
 
@@ -177,9 +180,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* filter request                                                       SPAWN */
+/* indexJoin request                                                    SPAWN */
 /*----------------------------------------------------------------------------*/
-: indexJoin_req \operator
+: indexJoin_op \operator
 
   _lu_initialise_
 
@@ -209,7 +212,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
 
-: indexJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: indexJoin_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "indexJoin_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

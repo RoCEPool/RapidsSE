@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropTable req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropTable_req \operator
+: dropTable_op \operator
 
   _lu_initialise_
 
@@ -72,6 +72,7 @@ cmdSyntax: dropTable :: dropTable <tableNm> ;
   tags{
     <cmdDesc>   = "--desc for op--"
     <forceLog>  = 1
+    <opEntry> = "dropTable_op"
   }
 ;
     

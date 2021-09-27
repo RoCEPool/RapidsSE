@@ -14,7 +14,6 @@
 #include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
-#include "eJA.h"
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
@@ -22,12 +21,15 @@
 #include "ePX.h"
 #include "eQA.h"
 #include "eRA.h"
-#include "eSL.h"
-#include "eSS.h"
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
 #include "eYA.h"
+
+
+//#include "Gid_t.hpp"
+//#include "PtnId.hpp"
+class PtnId;
 
 namespace OBLIQUE {
   class AM;
@@ -267,7 +269,6 @@ namespace OBLIQUE
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
-      static Stz* szJobSeed(Job* pJob);
       static eEC  ePreExecuteTest(Job* pJob);
     };
   
@@ -317,7 +318,6 @@ namespace OBLIQUE
     class OP
     {
     public:
-      static Stz* szOpSeed(Op* pOp);
     };
 
     class OPERAND
@@ -340,23 +340,21 @@ namespace OBLIQUE
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
-    //class PtnId;
 
-    class PTNMAP
-    {
-      class PtnId;
+    class PTNMAP {
     public:
-      static i8 tHashToDtdPtnId(i8 iHash);
-      //static i8  iToBkt(PtnId tPtnNo);
-      //static PtnId  tToPtn(i8 iBktNo);
-      static i8  nKnownNodes(void);
-      static i8  nPtnsPerNode(void);
-      static i8  nPtnsInGrid(void);
-      static i8 tPtnIDToPtnNo(i8 tPtnID);
-      static i8 tRobinToDtdPtnId(i8 iRobin);
-      static i8 iRobinToLclPtnNo(i8 iRobin);
-      static i8 tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
+      static PtnId tHashToDtdPtnId(i8 iHash);
+      static i8 iToBkt(PtnId tPtnId);
+      static PtnId tToPtn(i8 iBktNo);
+      static i8 nKnownNodes(void);
+      static i8 nPtnsPerNode(void);
+      static i8 nPtnsInGrid(void);
+      static PtnId tRobinToDtdPtnId(i8 iRobin);
+      static PtnId tRobinToLclPtnNo(i8 iRobin);
+      static i8 iPtnIdToPtnNo(i8 iPtnID);
+      static PtnId tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
     };
+
 
     class SE
     {
@@ -364,12 +362,6 @@ namespace OBLIQUE
       static void vWhereAmI(void);
     };
   
-    class SEED
-    {
-    public:
-      static Stz* szDecodeSeed(eSS eSeed, TagSet* pTags);
-    };
-
     class SESSION
     {
     public:
@@ -409,6 +401,8 @@ namespace OBLIQUE
       static i8   nNanoseconds(void);
       static bool bPassesLowMem(Job* pJob);
       static bool bPassesOpenSystem(Job* pJob);
+      static bool bReapEnabled(void);
+      static void vReapEnabled(bool bReapEnabled);
       static bool bStarted(void);
       static void vStarted(bool bStarted);
       static bool bSystemOpen(void);
@@ -421,9 +415,6 @@ namespace OBLIQUE
     {
     public:
       static DicStack* pDicStack(void);
-      static Task* pNew(void);
-      static Task* pNew(Job* pJob);
-      static Task* pNew(Op* pOp);
       static void vRetire(Task* pTask);
       static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
@@ -735,8 +726,8 @@ namespace OBLIQUE
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob_FindOriginating(i8 iJobId);
-    static Job* pJob_FindParticipating(i8 iJobId);
+    static Job* pJob__FindOriginating(i8 iJobId);
+    static Job* pJob__FindParticipating(i8 iJobId);
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);

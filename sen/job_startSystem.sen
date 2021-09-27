@@ -1,0 +1,128 @@
+/*============================================================================*/
+/* job_startSystem.sen -- Start System Job                                    */
+/*============================================================================*/
+
+" job_startSystem.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* start system                                                               */
+/*----------------------------------------------------------------------------*/
+
+: startSystem::startSystem
+
+  "startSystem::startSystem" .verbose
+
+  // define the system procedures
+  start::defProc_Create
+  start::defProc_Drop
+  start::defProc_Scan
+  start::defProc_Load
+  start::defProc_Export
+  start::defProc_Api
+  start::defProc_File
+  start::defProc_Elasticity
+  start::defProc_SteadyState
+  start::defProc_UnloadReload
+  start::defProc_ForgetRebalance
+  start::defProc_Query
+  start::defProc_DynCompiler
+  start::defProc_TPCH
+  start::defProc_TPCH_ASM
+  start::defProc_TPCH_ASM_I
+  start::defProc_Planner
+  start::defProc_Meta
+  start::defProc_JobRep
+  start::defProc_SqlCompiler
+
+  // define the system tables
+  "define the system tables" .verbose
+  start::defineInfoSets1
+  start::defineInfoSets2
+
+  // define the infoset tables
+  "define the infoset tables" .verbose
+  start::defineInfoSets3
+  start::defineInternalTables
+
+  start::defProc_pu
+
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+  // This point onwards the SE execution model has been fully booted
+  // and we can now spawn jobs
+  //
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  "spawning demons" .verbose
+
+  // spawn supervisor demon
+  "" false superDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn monitor demon
+  "" false monDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn reaper demon
+  "" false reaperDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  //spawn recurring demon
+  "" false recurDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn stat demon
+  "" false statDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn waker demon
+  "" false wakerDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn answer demon
+  "" false answerDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn connector demon
+  "" false connDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+
+  // spawn event demon
+  "" false eventDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn metadata demon
+//  "" false metaDemonPipeline api::spawnDemon not if
+//    "Error Code %v" .printf
+//  then
+
+
+  //system::started@ not if
+    grid::setStartNode
+    true system::started!
+    ": _Start completed" .boot
+  //then
+
+  "end startSystem::startSystem" .verbose
+
+  Job[].addRetired
+  Task[].grabLock
+    true Job[].reapable!
+    TR_RETIRE_THIS_TASK Task[].transition!
+
+  HAZARD
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

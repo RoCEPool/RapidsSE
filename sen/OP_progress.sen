@@ -90,7 +90,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for progress req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : progress_req \operator
+ : progress_op \operator
  
   _lu_initialise_
 
@@ -115,7 +115,10 @@
 cmdSyntax: progress :: progress <string> ;
 
 : progress_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "progress_op"
+  }
 ;
 
 /*============================================================================*/

@@ -33,34 +33,6 @@ extern pthread_key_t giTLS_StepKey;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a new instance of an operator/pipeline                                 */
-/*----------------------------------------------------------------------------*/
-//Op* Api::pGetOperator(Stz* szOpNm)
-//{
-//  _static_
-//  
-//  s32 sWordNm;
-//  Word* pOpWord = nullptr;
-//  Op* pOp = nullptr;
-//
-//  // find szOpNm in dictionary
-//  Dic* pRootDic = AM::DIC::pRoot();
-//  
-//  sWordNm = szOpNm;
-//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-//    pOp = Api::pOpCreate(pOpWord);
-//    return pOp;
-//  }
-//  
-//  sWordNm.vConcat("_req"_Stz);
-//  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
-//    pOp = Api::pOpCreate(pOpWord);
-//    return pOp;
-//  }
-//  return nullptr;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get a new instance of an operand                                           */
 /*----------------------------------------------------------------------------*/
 Operand* Api::pGetOperand(eZK eOperand)
@@ -159,6 +131,8 @@ void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
+  //AM::pHeaps()->vSetTraceFree(CN_PLANNODEBUILDERLIST);
+
   pSession->m_pOutput->vAssertEmptyQueue();
 
   Job* pJob = pSession->m_pSsnJob;
@@ -185,8 +159,11 @@ void Api::vExecuteJob(Session* pSession)
        vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
   }
 
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  JobId tJobId = pJob->tJobId();
+  pSession->vLastJobId(tJobId);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (;;) {
@@ -204,12 +181,20 @@ void Api::vExecuteJob(Session* pSession)
              ,pSession->m_sCascade.azChar());
     }
     
+    //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
+    
     pJob->vResetForCascade(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
     
     pSession->vHasCascade(false);
     pSession->vCascade(""_Stz);
+    
+    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    
+    pJob->vEntry(szEntry);
+
+    //AM::pHeaps()->vSetTraceFree(false);
   }
 }
 
@@ -368,19 +353,23 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  //pCmdTags->vDumpSet();
+
+  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+
   Job* pPrepareJob =
          pSession->m_pSsnJob =
-           new Job(AM::GRID::iThisNodeNo(),
+           new Job(szJobNm,
+                   AM::GRID::iThisNodeNo(),
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
                    );
-  pPrepareJob->vSeed(SS_SEED_REQ);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TagSet* pPrepareJobTags = pPrepareJob->pJobTags();
   //pPrepareJobTags->vDumpSet();
+
 
   // parse cmd
     
@@ -449,31 +438,19 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
   pPrepareJob->vJobKind(eJobKind);
-  
-  Stz* szJobNm = pPrepareJobTags->szValue(C_TAG_JOBNM);
-  pPrepareJob->vJobNm(szJobNm);
-  
+    
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
     pPrepareJob->vSee();
   
   
-  
+  //pPrepareJobTags->vDumpSet(true);
+
   
   Dic* pDicRoot = AM::DIC::pRoot();
   
-  Stz* szSeed = AM::JOB::szJobSeed(pPrepareJob);
+  Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-
-  if (! pSeedWord) {
-    AM::JOB::szJobSeed(pPrepareJob);
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-
-  pPrepareJob->vSeedWord(pSeedWord);
-
+  pPrepareJob->vEntry(szEntry);
   
   return EC_NONE;
 }
@@ -541,13 +518,35 @@ void Api::vPushOperand(Session* pSession, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
+void Api::vReapAllJobs(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Api::vReapJobsOnce(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (Api::bReapJob())
+      {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
 bool Api::bReapJob(void)
 {
   _static_
    
-  
-  
-  
   JobList* pRetiredJobs = AM::pRetiredJobs();
 
   if (! pRetiredJobs->nJobs()) {
@@ -633,21 +632,6 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
 
   return false;
   
-//  Token* pTkn0 = pCmdTknVec->pGet(0);
-//
-//  Dic* pDicRoot = AM::DIC::pRoot();
-//
-//  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
-//
-//  s32 sOpReq = pTkn0->szChars();
-//  sOpReq.vConcat("_req"_Stz);
-//
-//  Word* pOp_maybe = pDicRoot->pFindWord(sOpReq);
-//
-//  if (pOp_maybe && pOp_maybe->pCategory() == pOperatorCatg)
-//    return true;
-//  else
-//    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -816,138 +800,100 @@ void Api::vIncStatistics(eAC eApiCall)
 
 
 /*----------------------------------------------------------------------------*/
-/* call the boot task to compile the main dictionary                          */
+/* call the system boot job to compile the main dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Api::vCallBoot(void)
+void Api::vCallBootSystem(void)
 {
   _static_
   
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
+  Job* pJob = new Job("bootSystem"_Stz,
+                      AM::GRID::iThisNodeNo(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
-  pJob->vSeed(SS_SEED_RUN);
+  Stz* szJobNm = pJob->szJobNm();
+  Task* pBootTask = new Task(szJobNm,pJob);
 
-  pJob->m_sJobNm = "boot"_Stz;
-  
+  pJob->vJobTask(pBootTask);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TagSet* pJobTags = pJob->pJobTags();
-  //pJobTags->vDumpSet();
-
-  // (no cmd to parse)
-
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"boot_run"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pBootTask = AM::TASK::pNew(pJob);
-  
+     
   pBootTask->vAddAxioms();
   pBootTask->vAddMunged();
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = AM::JOB::szJobSeed(pJob);
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-
-  if (! pSeedWord) {
-    AM::JOB::szJobSeed(pJob);
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-
-  pJob->vSeedWord(pSeedWord);
-
-  
-  
-  
-  pJob->vTimerStart();
-  
-  vCallImmediate(pBootTask);
-  
-  pBootTask->vState(TS_RETIRED);
-  pBootTask->vDropTaskLock((Stz*)__func__);
-
-  while (Api::bReapJob())
-    {;}
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* run the start job                                                          */
-/*----------------------------------------------------------------------------*/
-void Api::RunStartJob(void)
-{
-  _static_
-
-//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-//    vInfo("\n+\n+ %lld) Start System Agents\n+\n"_Stz,giProgressPoint++);
-
-  // this is the main thread
-  PsxThd::vMarkNonSeThread();
-
-  Job* pJob = new Job(AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-  pJob->vSeed(SS_SEED_RUN);
+  vSetTaskInxPtr(pBootTask,"bootSystem::bootSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   TagSet* pJobTags = pJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
 
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_SEEDRUN,"_Start"_Stz);
-
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pStartTask = AM::TASK::pNew(pJob);
-  
-  pStartTask->vIsStart(true);
-  
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = AM::JOB::szJobSeed(pJob);
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
-
-  if (! pSeedWord) {
-    AM::JOB::szJobSeed(pJob);
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-
-  pJob->vSeedWord(pSeedWord);
-
-  
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   pJob->vTimerStart();
+  vCallImmediate(pBootTask);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pBootTask->vState(TS_RETIRED);
+  pBootTask->vDropTaskLock((Stz*)__func__);
 
+  Api::vReapJobsOnce();
+}
+
+/*----------------------------------------------------------------------------*/
+/* call the system start job                                                  */
+/*----------------------------------------------------------------------------*/
+void Api::vCallStartSystem(void)
+{
+  _static_
+
+  // this is the main thread
+  PsxThd::vMarkNonSeThread();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Job* pJob = new Job("StartSys"_Stz,
+                      AM::GRID::iThisNodeNo(),
+                      AM::SESSION::iInternalSession(),
+                      1
+                      );
+  
+  Stz* szJobNm = pJob->szJobNm();
+  Task* pStartTask = new Task(szJobNm,pJob);
+  pStartTask->vIsStart(true);
+
+  pJob->vJobTask(pStartTask);
+  
+  vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  TagSet* pJobTags = pJob->pJobTags();
+  //pJobTags->vDumpSet();
+
+  // (no cmd to parse)
+
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob->vTimerStart();
   vCallImmediate(pStartTask);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pStartTask->vState(TS_RETIRED);
   pStartTask->vDropTaskLock((Stz*)__func__);
   
-    while (Api::bReapJob())
-      {;}
-
+  Api::vReapJobsOnce();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -958,7 +904,6 @@ void Api::vCallImmediate(Task* pImmediateTask)
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
   pImmediateTask->vIsImmediate(true);
-  pImmediateTask->vSeedTask();
   
   pImmediateTask->vState(TS_EXECUTING);
   
@@ -1194,43 +1139,25 @@ void Api::vSpinTillAllJobsCompleted(void)
 void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
-  
-  ASSERT(SS_ENUMS != pJob->eSeed());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Task* pTask = pJob->pJobTask();
-  RASSERT(! pTask);
-
-  pTask = AM::TASK::pNew(pJob);
-  
     
+  Stz* szEntry = "job::job"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Task* pTask = new Task(pJob->szJobNm(),pJob);
+
+  pJob->vJobTask(pTask);
+    
+  vSetTaskInxPtr(pTask,szEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob->vTimerStart();
+  
   if (! pJob->pJobLogicUnit()) {
     pJob->vNewJobLogicUnit();
   }
-  
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szSeed = AM::JOB::szJobSeed(pJob);
-  
-  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
 
-  if (! pSeedWord) {
-    AM::JOB::szJobSeed(pJob);
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find seed word: %s\n"_Stz,szSeed);
-  }
-
-  pJob->vSeedWord(pSeedWord);
-
-  
-  
-  
-  pTask->vSeedTask();
-
-  pJob->vTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1243,10 +1170,37 @@ void Api::vCreateTaskForOp(Op* pOp)
   Task* pTask = pOp->pTask();
   RASSERT(! pTask);
 
-  pTask = AM::TASK::pNew(pOp);
-  pOp->vTask(pTask);
+  Word* pEntryWord = pOp->pEntryWord();
   
-  pTask->vSeedTask();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask = new Task(pOp->szOpNm(),pOp);
+
+  pOp->vTask(pTask);
+
+  pTask->vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set instruction pointer for task given entry point name                    */
+/*----------------------------------------------------------------------------*/
+void Api::vSetTaskInxPtr(Task* pTask, Stz* szEntryPt)
+{
+  _static_
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  
+  Word* pEntryWord = pDicRoot->pFindWord(szEntryPt);
+
+  if (! pEntryWord) {
+
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find task entry point: %s\n"_Stz,szEntryPt);
+  }
+  
+  pTask->vSetInxPtr(pEntryWord);
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,8 +11,8 @@ namespace STORE
   {
   private:
     //Lock   m_okLock;  // lock on the partition
-    Table *m_pTable;  // table this partition belongs to
-    PtnId  m_tPtnId;  // partition number (in grid)
+    Table* m_pTable;  // table this partition belongs to
+    PtnId m_tPtnId;  // partition number (in grid)
 
     eCN    m_eKind;   // what kind of table partition
 
@@ -28,12 +28,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Bucket(Table* pTable, PtnId tPtnNo, eCN eKind);
+
+    Bucket(Table* pTable, PtnId tPtnId, eCN eKind);
+
+
     ~Bucket(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
     PtnId  tPtnId(void);
+
     Table* pTable(void);
 
     void vAddIndex(IndexTree* pIndexTree);

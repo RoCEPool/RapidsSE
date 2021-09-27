@@ -38,8 +38,8 @@ __aFooterFunction(Bucket)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Bucket::Bucket(Table* pTable, PtnId tPtnId, eCN eKind)
-    : Object(CN_BUCKET)
-    //, m_okLock(this)
+: Object(CN_BUCKET)
+//, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
@@ -101,7 +101,6 @@ void Bucket::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 
 

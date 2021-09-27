@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dropIndex req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: dropIndex_req \operator
+: dropIndex_op \operator
 
   _lu_initialise_
 
@@ -69,7 +69,9 @@ cmdSyntax: dropIndex :: dropIndex <tableNm> <indexNm> ;
 
 : dropIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--desc for op--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "dropIndex_op"
+  }
 ;
     
 /*============================================================================*/

@@ -34,9 +34,9 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
 }
 
@@ -48,9 +48,9 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,9 +63,9 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   
   vResolveRowPix(pStreamDef);
 
-  Task* pTask = MY::pTask();
-  LogicUnit* pLogicUnit = AM::pTaskOpLogicUnit(pTask);
-  pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,11 +75,9 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Task* pTask = MY::pTask();
-  if (pTask) {
-    LogicUnit *pLogicUnit = AM::pTaskOpLogicUnit(pTask);
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -483,7 +481,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          pPrevLinkedBuffer(),pNextLinkedBuffer());
-  
+
   vTrace("  partition: %lld \n"_Stz, m_tPtnId.iAsI8());
   
   Row* pRow = pFirstRow();
@@ -511,6 +509,51 @@ char* RowBuffer::azStrArea(void)
   char* azArea = ((char*)ayLatterHead()) + 1;
 
   return azArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert this row buffer into one or more csv tub buffers                   */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vToCsv(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  HV_Record hvRecord(pRowPix());
+    
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+  
+  i8 nRows = this->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Row* aRow = pRowAddress(i_Row);
+    Stz* szRow = hvRecord->sz(aRow,true);
+    nSize = szRow->nSize();
+    
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+    
+    //vTrace("At %lld : %s\n"_Stz,i_Row,pCsvBuffer->szRecords());
+    //vDebugPoint();
+  }
+  
+  
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+
+  //vTrace("End: %s\n"_Stz,pCsvBuffer->szRecords());
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

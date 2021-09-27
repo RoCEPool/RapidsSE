@@ -126,7 +126,7 @@ void PtnStm_cursor::vReset(void)
   vTrace("PtnStm_cursor vReset\n"_Stz);
 
   // decrypting the partition ID into the partition number
-  i8 tPtnNo = AM::PTNMAP::tPtnIDToPtnNo(m_pTablePtn->tPtnId().iAsI8());
+  i8 tPtnNo = AM::PTNMAP::iPtnIdToPtnNo(m_pTablePtn->tPtnId().iAsI8());
 
   vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnId().iAsI8());
   //vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo().iAsI8(), tPtnNo);

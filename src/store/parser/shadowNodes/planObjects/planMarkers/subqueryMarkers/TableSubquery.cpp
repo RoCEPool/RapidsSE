@@ -9,6 +9,10 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
+#include "IdList.hpp"
+#include "StringObject.hpp"
+#include "MainSubquery.hpp"
+
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 
@@ -22,6 +26,13 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 static Stz* C_TABLEALIAS_PROP = "tableAlias"_Stz;
 static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
 
+static Stz* C_COLUMNNAMES_PROP = "columnNames"_Stz;
+static Stz* C_COLUMNNAMES_DEFN = "/__root__/definitions/object/list/idList"_Stz;
+
+static Stz* C_ISRECURSIVE_PROP = "isRecursive"_Stz;
+static Stz* C_ISRECURSIVE_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -29,21 +40,27 @@ static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/string
 /*----------------------------------------------------------------------------*/
 /* Helper function to create TableSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* TableSubquery::pCreate(Stz* szTableAlias)
+QueryNode* TableSubquery::pCreate(Text* pTableAlias, QueryNode* pColumnNames, b1 bIsRecursive)
 {
-  ASSERT(szTableAlias);
-
-  // Create a unique name for this object
-  s256 sName;
-  NodeNamer::vGenerateName(C_DEFN, sName);
+  ASSERT(pTableAlias);
+  ASSERT(pColumnNames);
+  ASSERT(IdList::bIsOfType(pColumnNames));
 
   // Create the object
-  QueryNode* pSubqueryNode = new QueryNode(sName, C_DEFN);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
 
   // Create and add any properties
-  Value xAliasValue(szTableAlias);
+
+  Value xAliasValue(pTableAlias);
   QueryNode* pTableAliasNode = new QueryNode(C_TABLEALIAS_PROP, C_TABLEALIAS_DEFN, static_cast<Value&&>(xAliasValue));
   pSubqueryNode->vAppendProperty(pTableAliasNode);
+
+  pColumnNames->vSetName(C_COLUMNNAMES_PROP);
+  pSubqueryNode->vAppendProperty(pColumnNames);
+
+  Value xIsRecursiveValue(bIsRecursive);
+  QueryNode* pIsRecursiveNode = new QueryNode(C_ISRECURSIVE_PROP, C_ISRECURSIVE_DEFN, static_cast<Value&&>(xIsRecursiveValue));
+  pSubqueryNode->vAppendProperty(pIsRecursiveNode);
 
   return pSubqueryNode;
 }
@@ -107,13 +124,24 @@ void TableSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     // Explain any local attributes of this object
 
     // Get the table alias
-    PlanNode* pTableAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEALIAS_PROP), pNode);
-    ASSERT(pTableAliasNode);
-    ASSERT(pTableAliasNode->szValue());
-
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table alias: %s"_Stz, pTableAliasNode->szValue());
+    sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
+
+    // Column names. Append this to the table alias line above.
+    QueryNode* pColumnNamesNode = pColumnNames(_pQueryNode(pNode));
+    ASSERT(pColumnNamesNode);
+    if (pColumnNamesNode->nChildren() > 0) {
+      s2K sColumnBuf;
+      IdList::vDescribe(pColumnNamesNode, sColumnBuf);
+      sBuf.vCatSprint(" (%s)"_Stz, sColumnBuf.szStz());
+    }
+
+    // isRecursive
+    b1 bIsRecursive = TableSubquery::bIsRecursive(_pQueryNode(pNode));
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("recursive: %s"_Stz, bIsRecursive ? "true"_Stz : "false"_Stz);
 
     return;
   }
@@ -154,6 +182,28 @@ b1 TableSubquery::bIsExactType(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedColumns that represent the column expressions      */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* TableSubquery::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TableSubqueries don't change the columns being returned. But instead of asking
+  // its first child, there might be more nested table subqueries. Instead we need
+  // to ask the main subquery child of this node instead.
+
+  auto fCondition = [](PlanNode* pItem) -> b1 { return MainSubquery::bIsOfType(pItem); };
+
+  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild( fCondition, pNode));
+  ASSERT(pMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+
+  return MainSubquery::pColumnExprs(pMainSubquery, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the subquery is correlated with respect to its parent      */
 /*----------------------------------------------------------------------------*/
 b1 TableSubquery::bIsCorrelated(QueryNode* pNode)
@@ -179,6 +229,65 @@ Stz* TableSubquery::szTableAlias(QueryNode *pNode)
   ASSERT(szTableAlias);
 
   return szTableAlias;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the internal node that contains the list of column names           */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableSubquery::pColumnNames(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnNamesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_COLUMNNAMES_PROP), pNode));
+  ASSERT(pColumnNamesNode);
+
+  return pColumnNamesNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of named column names                                   */
+/*----------------------------------------------------------------------------*/
+i8 TableSubquery::nColumnNames(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnNamesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_COLUMNNAMES_PROP), pNode));
+  ASSERT(pColumnNamesNode);
+
+  return pColumnNamesNode->nChildren();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this subquery has been defined to be recursive             */
+/*----------------------------------------------------------------------------*/
+b1 TableSubquery::bIsRecursive(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pRecursiveNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_ISRECURSIVE_PROP), pNode));
+  ASSERT(pRecursiveNode);
+
+  return pRecursiveNode->bValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Find and return the main subquery node that exists underneath this table   */
+/* subquery node.                                                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableSubquery::pChildMainSubquery(QueryNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  auto fCondition = [](PlanNode* pItem) -> b1 {
+    return MainSubquery::bIsOfType(pItem);
+  };
+
+  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pNode));
+  ASSERT(pMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+
+  return pMainSubquery;
 }
 
 /*============================================================================*/

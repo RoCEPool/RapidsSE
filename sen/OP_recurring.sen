@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for recurring req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : recurring_req \operator
+ : recurring_op \operator
  
   _lu_initialise_
 
@@ -79,9 +79,10 @@
 cmdSyntax: recurring :: recurring <nSeconds> ;
 
 : recurring_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "recurring_op"
+  }
 ;
 
 /*============================================================================*/

@@ -119,6 +119,7 @@ void Step::vApiExecuteCommand(void)
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
+    return;
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,8 +129,10 @@ void Step::vApiExecuteCommand(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pJob_task->pJobTags()->szValue(C_TAG_PATH);
-  pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  if (m_pJob_task) {
+    Stz* szTagPath = m_pJob_task->pJobTags()->szValue(C_TAG_PATH);
+    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  }
   
   TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
   Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
@@ -159,7 +162,14 @@ void Step::vApiExecuteCommand(void)
   
 //  bool bSpawned = Api::bSpawnTask_session(pJob);
 //  UNUSED(bSpawned);
+  pJob->vTimerStart();
+  
   Api::vExecuteJob(pSession);
+  
+  pJob->vTimerUpdate();
+
+//  vTrace("Job Timer: %lldus\n"_Stz
+//         ,pJob->m_oTimer.iMicroseconds());
   
   RASSERT(! pJob->bJobHasError() );
 
@@ -172,11 +182,13 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //push result
   
+  i8 iJobNo = (i8)pJob->tJobId().uJobNo();
+  
+  m_pDataStack->vPushInt(iJobNo);
   m_pDataStack->vPushInt(true);
   
   //delete pReqTknVec;
   delete pWithTagStrTknVec;
-  
   
   EXIT();
 }
@@ -188,9 +200,9 @@ void Step::vApiReapJobs(void)
 {
   ENTRY();
   
-  //while (AM::pRetiredJobs()->nJobs())
-    while (Api::bReapJob())
-      {;}
+  i8 iForce = (i8)m_pDataStack->iPopInt(__func__);
+
+  Api::vReapJobsOnce(iForce);
 
   EXIT();
 }

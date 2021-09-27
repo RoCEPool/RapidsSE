@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for waker req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : waker_req \operator
+ : waker_op \operator
  
   _lu_initialise_
 
@@ -59,9 +59,10 @@
 cmdSyntax: waker :: waker ;
 
 : waker_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "waker_op"
+  }
 ;
 
 /*============================================================================*/

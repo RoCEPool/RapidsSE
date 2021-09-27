@@ -1,0 +1,241 @@
+/*============================================================================*/
+/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */
+/*============================================================================*/
+
+"se_include.sen" .verbose
+
+assert::stack_0
+
+        "se_core.sen"             include
+        
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  constant STD_PATH_TAG
+
+"se_boot 9" .verbose
+        "se_word.sen"             include
+        "se_str.sen"              include
+
+        "se_categories.sen"       include
+        "se_cluster.sen"          include
+        "se_tags.sen"             include
+        "se_log.sen"              include
+        "se_path.sen"             include
+        "se_folder.sen"           include
+        "se_object.sen"           include
+        "se_dbg.sen"              include
+
+"se_boot 8" .verbose
+        "OP__tpl_lite.sen"        include
+        "OP__tpl_locallite.sen"   include
+        "cmd_cmdTags.sen"         include
+        "cmd_compiler.sen"        include
+
+"se_boot 7" .verbose
+        "grid_grid.sen"           include
+        "grid_node.sen"           include
+
+"se_boot 6" .verbose
+        "db_table.sen"            include
+        "db_partition.sen"        include
+        "db_index.sen"            include
+        "db_schema.sen"           include
+        "db_catalog.sen"          include
+        "db_tenant.sen"           include
+
+"se_boot 5" .verbose
+        "job__words.sen"          include
+
+        "job_abstract.sen"        include
+
+        "job_ended.sen"           include
+        "job_end.sen"             include
+        "job_cancelled.sen"       include
+        "job_cancel.sen"          include
+        "job_executed.sen"        include
+        "job_execute.sen"         include
+        "job_begun.sen"           include
+
+        "job_pipeline.sen"        include
+        "job_pipelineLocal.sen"   include
+
+"se_boot 4" .verbose
+
+        "se_pipeline.sen"         include
+        
+        "op__errors.sen"          include
+        "op__defHandlers.sen"     include
+        "op__EOCommon.sen"        include
+        "op__CompilerCommon.sen"  include
+        "op__stats.sen"           include
+        "op__common.sen"          include
+        "reg__common.sen"         include
+        "OP_failed.sen"           include
+
+        "se_includeOps.sen"       include
+
+"se_boot 3" .verbose
+        "OP_EOAsm.sen"            include
+        "OP_EOAsm2.sen"           include
+
+"se_boot 2" .verbose
+        "test_dData.sen"          include
+        "test_encodingData.sen"   include
+        "test_gGen.sen"           include
+        "test_iData.sen"          include
+        "test_jData.sen"          include
+        "test_misc.sen"           include
+        "test_pu.sen"             include
+        "test_sleep.sen"          include
+        "test_str.sen"            include
+        "test_tData.sen"          include
+        "test_unit.sen"           include
+        "test_1m.sen"             include
+
+"se_boot 1" .verbose
+        "se_demons.sen"           include
+        "se_experiments.sen"      include
+        "se_llc.sen"              include
+        "se_memoryStats.sen"      include
+        "se_munge.sen"            include
+        "se_stepTests.sen"        include
+        "se_stepTiming.sen"       include
+
+//"BEFORE fillOut_allCmds" .
+
+cmd::fillOut_allCmds
+
+//"AFTER fillOut_allCmds" .
+
+
+        "pp_close_system.sen"     include
+        "pp_open_system.sen"      include
+
+      
+        "se_procedures.sen"       include //
+        
+        "se_proceduresB.sen"      include //
+        
+        "pp_load.sen"             include //
+        "pp_export.sen"           include //
+
+        "pp_sqlCompiler.sen"      include //
+
+        "pp_puLoad.sen"           include //
+        
+        "se_defineTables.sen"     include // second last
+        
+        "job_startSystem.sen"     include // last last
+
+.\n
+
+assert::stack_0
+
+//............................................................................//
+//                            ...continues below...                           //
+//............................................................................//
+
+/*----------------------------------------------------------------------------*/
+/* make /tenants/boray/catalogs/rapidsse/schemas/public/tables                */
+/*----------------------------------------------------------------------------*/
+: makeDefaultFolders ( )
+
+  assert::stack_0
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  [ senCompiler::current@ encode::push ] word::xcheckInxPtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // make the tenants root folder"
+  //  /tenants
+  "tenants" folder::makeFolder attachMap::tenants!
+  //attachmap::tenants@ execute
+  attachmap::tenants@ /*dup word.see*/ execute
+  Path[].pushFolder
+
+    // make 'boray' tenant folder:
+    //  /tenants/boray
+    //  /tenants/boray/catalogs
+    "boray" :makeTenantFolder
+    "boray" Folder[].findSymbol execute
+    Path[].pushFolder
+
+      "catalogs" Folder[].findSymbol execute
+      Path[].pushFolder
+
+        // make 'rapidsse' catalog folder:
+        //  /tenants/boray/catalogs/rapidsse
+        //  /tenants/boray/catalogs/rapidsse/schemas
+        "rapidsse" :makeCatalogFolder
+        "rapidsse" Folder[].findSymbol execute
+        Path[].pushFolder
+
+          "schemas" Folder[].findSymbol execute
+          Path[].pushFolder
+
+            // make 'public' schema folder:
+            //  /tenants/boray/catalogs/rapidsse/schemas/public
+            //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
+            "public" :makeSchemaFolder
+
+          Path[].popFolder
+      Path[].popFolder
+    Path[].popFolder
+  Path[].popFolder
+
+  assert::stack_0
+;
+
+//............................................................................//
+//............................................................................//
+//............................................................................//
+
+"Creating default folders" .verbose
+makeDefaultFolders
+
+"Extracting EO_ fragments" .verbose
+LogicCompiler[].extract
+
+"Extracting AM_ ASM Macros" .verbose
+LogicCompiler[].extractAsm
+
+assert::stack_0
+
+"se_boot.sen completed" .boot
+
+"end of se_boot.sen" .verbose
+
+/*
+
+Sen Naming Notes
+----------------
+
+*) \catg is a \\category
+
+*) \folder , \table , \index
+
+*) We make a folder -- like we mkdir in Unix
+
+*) We remove a folder -- like we rmdir in Unix
+
+*) path[].pushFolder Folder[].popFolder as in pushd and popd shell commands
+
+  refer: https://en.wikipedia.org/wiki/Pushd_and_popd
+
+*) word.isaIndex , word.isaTable , word.isAFolder
+
+   should this pattern be word.isaIndex etc
+
+*) word.checkIsAFolder
+
+*) name::isNotKnownXyz
+
+-- END --
+
+*/
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -162,7 +162,7 @@
   sText >interpret
 
   // synthesize word : sOpNm_req ... ;
-  "/liteOp/" sOpNm OP__tpl_lite_req str.replace to sText
+  "/liteOp/" sOpNm OP__tpl_lite_ENTRY str.replace to sText
   sText >interpret
 ;
 
@@ -186,7 +186,7 @@
   sText >interpret
 
   // synthesize : sOpNm_req
-  "/localLiteOp/" sOpNm OP__tpl_locallite_req str.replace to sText
+  "/localLiteOp/" sOpNm OP__tpl_locallite_ENTRY str.replace to sText
   sText >interpret
 ;
 
@@ -213,112 +213,15 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add the seed tags required by a command (pipeline, generic, local)         */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_toCmdTags params| pwCmdTags |
-
-  // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
-
-  pwCmdTags _cmdTags.aboutPipelineJob if
-    //<jobKind> == JK_PIPELINE
-
-  else
-  pwCmdTags _cmdTags.aboutGenericJob if
-    //<jobKind> == JK_GENERIC
-
-  else
-  pwCmdTags _cmdTags.aboutLocalJob if
-    //<jobKind> == JK_LOCAL
-    
-    //pwCmdTags word.name@ "addSeedTags: %v is a local job" .printf
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_local
-
-  else
-
-    // pwCmdTags word.name@ "addSeedTags: %v is an op" .printf
-    "<seedReq>" "**unknown**" "_req" pwCmdTags _cmdTags.addSeedTag_op
-
-  then then then
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
-    word@ cmd::addSeedTags_toCmdTags
-  then next-word
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add any settings that are missing in the command tags                      */
-/*----------------------------------------------------------------------------*/
-: cmd::addSettings_toCmdTagSet params| pwCmdTags |
-
-  // pwCmdTags word.name@ "Adding default tags for : %v" .printf
-
-  // hello future Alka, you should be able to conjure up what this looks like
-
-  pwCmdTags word.tagSet@ locals| pCmdTagSet |
-
-  "<cmdDesc>" pCmdTagSet tagSet.hasName not if
-    "<cmdDesc>" "--description--" pCmdTagSet tagSet.addTag
-  then
-
-  "<cmdKind>" pCmdTagSet tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pCmdTagSet tagSet.addTag
-  then
-
-  "<ddlLock>" pCmdTagSet tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pCmdTagSet tagSet.addTag
-  then
-
-  //"<jobKind>" pCmdTagSet tagSet.hasName not if
-  //  "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
-  //then
-
-  "<priority>" pCmdTagSet tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pCmdTagSet tagSet.addTag
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::addSettings
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
-    word@ cmd::addSettings_toCmdTagSet
-  then next-word
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
 : cmd::fillOut_allCmds
-
-//  [? 1 ?if
   
   cmd::synthLiteOpProcs // synthesise procs for all lite and local-lite op's
   cmd::synthLiteOpWords // synthesise words for all lite and local-lite op's
-
-  cmd::addSeedTags      // add seed tags for all dist/local/generic jobs
-  cmd::addSettings      // add missing settings for <ddlLock> etc
-
-//  ?else
-   
-//  ?]
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -38,7 +38,8 @@ namespace STORE
 
   static void vPushOperand(Session* pSession, Operand* pOperand);
  
-  static bool bReapJob(void);
+  static void vReapAllJobs(bool bForce = false);
+  static void vReapJobsOnce(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -49,8 +50,8 @@ namespace STORE
   
   // internal
   
-  static void vCallBoot(void);
-  static void RunStartJob(void);
+  static void vCallBootSystem(void);
+  static void vCallStartSystem(void);
 
   static void vCallImmediate(Task* pImmediateTask);
   static void vDeleteImmediate(Task** ppTask);
@@ -82,10 +83,13 @@ namespace STORE
   
   static void vCreateTaskForJob(Job* pJob);
   static void vCreateTaskForOp(Op* pOp);
-  
+  static void vSetTaskInxPtr(Task* pTask, Stz* szEntryPt);
+
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);
   static void vMutexWaitCond(Session* pSession, Job* pJob);
+
+  static bool bReapJob(void);
 
 
   };

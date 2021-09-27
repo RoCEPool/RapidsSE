@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for insDel                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : insDel_req \operator
+ : insDel_op \operator
  
   _lu_initialise_
 
@@ -94,7 +94,10 @@
 cmdSyntax: insDel :: insDel <tableNm> ;
 
 : insDel_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "insDel_op"
+  }
 ;
 
 /*============================================================================*/

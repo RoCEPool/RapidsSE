@@ -75,7 +75,8 @@ cmdSyntax: lstbl :: lstbl ;
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listContents
     <params>      = 0
-    <seedReq>     = "lstbl_req"
+
+    <opEntry> = "lstbl_op"
   }
 ;
     

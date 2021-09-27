@@ -38,24 +38,14 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_GID_PTNID
-TablePtn::TablePtn(Table *pTable, PtnId tPtnNo)
+TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
 : Object(CN_TABLEPTN), m_okLock(this) {
-#else
-TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
-    : Object(CN_TABLEPTN), m_okLock(this) {
-#endif
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   m_pTable = pTable;
+  m_tPtnId = tPtnId;
+
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
-
-#ifdef WITH_GID_PTNID
-  m_tPtnId= tPtnNo;
-#else
-  m_tPtnNo = tPtnNo;
-  m_tMappedPtn = -1; // this will not be used after the new type implemented
-#endif
 
   eTT eTableKind = m_pTable->eKind();
   switch (eTableKind) {
@@ -79,10 +69,10 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
   //for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
   {
-    vAddBucket(pTable, tPtnNo, m_eKind);
+    vAddBucket(pTable, tPtnId, m_eKind);
   }
 #else
-  vAddBucket(pTable, tPtnNo, m_eKind);
+  vAddBucket(pTable, tPtnId, m_eKind);
 #endif
 
   _checkInitialised_(CN_TABLEPTN);
@@ -169,10 +159,8 @@ eCN TablePtn::eKind(void) {
   return m_eKind;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get the partition number (in grid) of this table partition                 */
-/*----------------------------------------------------------------------------*/
-PtnId TablePtn::tPtnId(void) {
+
+#if 0
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   return m_tPtnId;
 }
@@ -194,6 +182,15 @@ PtnId  TablePtn::tMappedPtnNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   return m_tMappedPtn;
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get the partition number (in grid) of this table partition                 */
+/*----------------------------------------------------------------------------*/
+PtnId TablePtn::tPtnId(void) {
+_precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+return m_tPtnId;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,9 +217,10 @@ void TablePtn::vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind) {
 }
 #else
 
-void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo, eCN eKind) {
+void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
+  Bucket *pBucket = new Bucket(pTable, tPtnId, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
 #endif
@@ -343,8 +341,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
   // eventually, we have to append the rowbuffer into the correct bucket
 
-  //i8 iBktNo = pDataBuffer->iBucketNo();
-  //vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnNo());
+  i8 iBktNo = pDataBuffer->iBucketNo();
+  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId());
 
   //Bucket *pBucket = pGetBucket(iBktNo);
   //pBucket->vAppendBuffer(pDataBuffer);
@@ -515,9 +513,6 @@ DataBuffer *TablePtn::pRootBuffer(void) {
 
   vTrace("===================TablePtn::pRootBuffer \n"_Stz);
   //NEVER_REACH;
-
-
-
 
 #ifdef WITH_MULTI_BUCKET
   // Which bucket ? RAY ?

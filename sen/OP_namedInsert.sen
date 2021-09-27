@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for namedInsert req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : namedInsert_req \operator
+ : namedInsert_op \operator
  
   _lu_initialise_
 
@@ -83,7 +83,10 @@
 cmdSyntax: namedInsert :: namedInsert ;
 
 : namedInsert_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc>  = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "namedInsert_op"
+  }
 ;
 
 /*============================================================================*/

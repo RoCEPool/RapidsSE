@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for progress req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : rowCount_req \operator
+ : rowCount_op \operator
  
   _lu_initialise_
 
@@ -72,7 +72,10 @@
 cmdSyntax: rowCount :: rowCount <tableNm> ;
 
 : rowCount_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "rowCount_op"
+  }
 ;
 
 /*============================================================================*/

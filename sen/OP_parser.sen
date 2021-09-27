@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: parser_req \operator
+: parser_op \operator
 
   _lu_initialise_
 
@@ -104,11 +104,10 @@
 cmdSyntax: parser :: parser <sqlStatement> ;
 
 : parser_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "parser_op"
   }
-
 ;
   
 /*============================================================================*/

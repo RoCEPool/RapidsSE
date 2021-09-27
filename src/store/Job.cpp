@@ -113,7 +113,8 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(i8 i_Origin,     // originated on which node
+Job::Job(Stz* szJobNm,
+         i8 i_Origin,     // originated on which node
          i8 i_Session,    // which session in session array
          i8 iCmdNo        // the sequence no of the request from that session)
         )
@@ -124,11 +125,11 @@ Job::Job(i8 i_Origin,     // originated on which node
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
  
   m_tJobId.vNextJobId();
+  m_sJobNm   = szJobNm;
+  m_eJobKind = JK_NONE;
+
   
-  m_bReapable  = false;
-  
-  m_eSeed      = SS_ENUMS;
-  m_pSeedWord  = nullptr;
+  m_bReapable = false;
   
   // -- a -------------------
   
@@ -144,7 +145,6 @@ Job::Job(i8 i_Origin,     // originated on which node
   m_i_Participant = C_UNKNOWN;
   
   // -- c -------------------
-  m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;
@@ -184,7 +184,7 @@ Job::Job(i8 i_Origin,     // originated on which node
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job__find)                                  TO BE REMOVED */
+/* constructor (for job_find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
@@ -200,9 +200,6 @@ Job::Job(eCN eClassNo)
   m_i_Origin     = C_UNKNOWN;
   m_i_Session    = C_UNKNOWN;
   m_iCmdNo = C_UNKNOWN;
-
-  m_eSeed      = SS_ENUMS;
-  m_pSeedWord  = nullptr;
 
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -372,9 +369,7 @@ void Job::vPostRecv(void* aReceivedJob)
   pReceivedJob->vWasReceived(true);
   
   pReceivedJob->vJobList(JL_NONE);
-  
-  pReceivedJob->vSeedWord(nullptr);
-  
+    
   pReceivedJob->vJobTask(nullptr);
 
   // revised job/op model
@@ -548,6 +543,26 @@ void Job::vDotPrint(Stz* szText)
          
          ,C_VARGS_END
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the sen entry code                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the sen entry code                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vEntry(Stz* szEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sEntry = szEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1055,8 +1070,7 @@ void Job::vResetForCascade(Session* pSession)
 
   // -- g -------------------
   m_oAcksRmg_job.vReset();
-  m_eSeed      = SS_ENUMS;
-  m_pSeedWord = nullptr;
+
   m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
@@ -1122,7 +1136,6 @@ void Job::vSee(void)
 
          "    iOriginatingId "  "%lld"  " \n"  // 19
  
-         "             eSeed "  "%s"    " \n"  // 20
          "             pTask "  "%s"    " \n"  // 21
         
          "     pJobLogicUnit "  "%s"    " \n"  // 22
@@ -1146,7 +1159,6 @@ void Job::vSee(void)
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,m_iOriginatingId           // 19
-         ,aSS[m_eSeed]               // 20
          ,spvTask.sz(m_pTask)        // 21
          ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
          
@@ -1155,58 +1167,6 @@ void Job::vSee(void)
   m_oJobTags.vContentDump();
 
   vTrace(";;\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-eSS Job::eSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Stz* szSeed = AM::SEED::szDecodeSeed(m_eSeed,&m_oJobTags);
-    
-  return szSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vSeed(eSS eSeed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eSeed = eSeed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get seed word                                                              */
-/*----------------------------------------------------------------------------*/
-Word* Job::pSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_pSeedWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set seed word                                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vSeedWord(Word* pSeedWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pSeedWord = pSeedWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,19 +1190,9 @@ void Job::vSetFromCascade(Stz* szCascade)
 
   m_oJobTags.vReplace(C_TAG_CMD,szCascade);
 
-  vSeed(SS_SEED_REQ);
-
   //m_oJobTags.vDumpSet(true);
 }
 
-/*----------------------------------------------------------------------------*/
-/* find and set seed word for this job                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vSetSeedWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-}
 
 
 
@@ -1262,10 +1212,9 @@ void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("%s %03lld seed %s "
+  vTrace("%s %03lld "
          "i_Session %03lld WasReceived %lld\n"_Stz,
          aCN[eGetClassNo()],
-         aSS[m_eSeed],
          
          m_i_Session,
          (i8)m_bWasReceived

@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: compilerOpEg_req \operator
+: compilerOpEg_op \operator
 
   _lu_initialise_
 
@@ -77,11 +77,10 @@
 cmdSyntax: compilerOpEg :: compilerOpEg ;
 
 : compilerOpEg_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "compilerOpEg_op"
   }
-
 ;
   
 /*============================================================================*/

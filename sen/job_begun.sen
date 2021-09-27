@@ -1,0 +1,115 @@
+/*============================================================================*/
+/* job_begun.sen -- begun 2pc job (pipeline coordination)                     */
+/*============================================================================*/
+
+" job_begun.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on participating node                           //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* send Job_Begun back to originating node                                    */
+/*----------------------------------------------------------------------------*/
+: begun::replyToOrigin params| pJobParticipant |
+
+  // "begun::replyToOrigin" .
+  
+  pJobParticipant job.id@ locals| iJobId |
+
+  0 locals| pJob_Begun |
+
+  // new a temporary Job_Executed
+  pJobParticipant job_Begun::new to pJob_Begun
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // send the begun job
+  iJobId job::originator@ pJob_Begun job.reply
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Begun job.delete2pc
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on originating node                             //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* run this received Job_Begun on originating node  recv: job.spawn           */
+/*----------------------------------------------------------------------------*/
+: begun::begun
+
+
+  // "begun::begun" .
+
+  //
+  // where:  On the originator node.
+  // event:  A Job_Begun has been received from a participating node
+  //         indicating the job has been received and put into the
+  //         participating jobs list.
+  // data:   The job will exist in the originating jobs list.
+  // action: 1) find the job in the originating list;
+  //         2) decrement its ack's remaining
+  //         3) if all acks received distribute Job_Execute
+  //
+
+  Job[] locals| pJob_Begun |
+
+  pJob_Begun job.id@ locals| iJobId |
+
+  0 0 0 0 locals| bAmDecider error iParticipantNode |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the context of this __begun job
+
+  // find the originating job
+  iJobId olist::findJob discard
+
+  // get the participant node from where this job_begun started
+  pJob_Begun job.participantNode@ to iParticipantNode
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process __begun job on this originating node
+
+  // increment the number of __begun jobs received in api state
+  JobRef[] ssn::incBegun
+  JobRef[] ssn::traceSession
+
+  // decrement the acks remaining in the originating job
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
+
+  // if there are acks remaining just exit
+  bAmDecider not if
+    JobRef[].returnReference
+    _job_2pc_delete_
+    exit                                                         // *EARLY EXIT*
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // all job_begun's have been received, so this job is the decider
+
+  // distribute Job_Execute to all participants
+  JobRef[] execute::distribute
+  JobRef[].returnReference
+  _job_2pc_delete_
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: begun :: begun ;
+
+: begun_cmdTags _cmdTags tagCopy: genericJob_tags
+  tags{
+    <cmdDesc>  = "--desc for job--"
+    <entryPoint>    = "begun::begun"
+    <path>     = "/"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

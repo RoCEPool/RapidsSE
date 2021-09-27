@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for syntaxTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: syntaxTable_req \operator
+: syntaxTable_op \operator
 
   _lu_initialise_
 
@@ -63,7 +63,9 @@ cmdSyntax: syntaxTable :: syntaxTable <tableNm> <etc> ;
 
 : syntaxTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--description of operator--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "syntaxTable_op"
+  }
 ;
     
 /*============================================================================*/

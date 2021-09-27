@@ -46,6 +46,7 @@
 #include "CmdLineArgs.hpp"
 #include "Locator.hpp"
 #include "LogicUnit.hpp"
+#include "SP_Job.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -458,8 +459,6 @@ bool PROMPT::bPrompt_args(SePrompt* pPrompt)
 /* Prompt_ascii.cpp -- Ascii Helper                                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#include "eOC.h"
-
 PromptFun __Prompt_ascii (
   PF_ASCII,           // prompt function
   "Prompt_ascii"_Stz, // name of the prompt function
@@ -494,19 +493,6 @@ bool PROMPT::bPrompt_ascii(SePrompt* pPrompt)
       if (i_Char && 0 == (i_Char+1) % 8)
         vTrace("\n"_Stz);
     }
-
-//    vTrace("\n"_Stz);
-//    for (i4 i_Char = 0; i_Char < 32; i_Char++) {
-//      vTrace("%02x %-3s %c\n"_Stz,
-//             i_Char,
-//             StrLib::azAscii(i_Char),
-//             128 + i_Char);
-//    }
-
-    vTrace("\n"_Stz);
-    for (i4 i_Char = 0; i_Char < 32; i_Char++)
-      vTrace("%s"_Stz,aOC[i_Char]);
-    vTrace("\n"_Stz);
 
     return true;
   }
@@ -615,9 +601,10 @@ PromptFun __Prompt_bpa (
 bool PROMPT::bPrompt_bpa(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
   
   PoolHelper::vPoolAnalyze();
+  
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }
@@ -741,7 +728,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   i8 iJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pPipelineJob = AM::pJob_FindParticipating(iJobId);
+  Job* pPipelineJob = AM::pJob__FindParticipating(iJobId);
   
   if ( ! pPipelineJob ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
@@ -1100,8 +1087,6 @@ bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 /* Prompt_describe.cpp -- Ascii Helper                                        */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#include "eOC.h"
-
 extern SubSysCatalog gxSubSysCatalog;
 
 PromptFun __Prompt_describe (
@@ -1241,69 +1226,6 @@ bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
   return true;
 }
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_enums.cpp -- enums list                                             */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_enums (
-  PF_ENUMS,             // prompt function
-  "Prompt_enums"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "enums"_Stz,          // the prompt command
-  nullptr,              // the second word
-  bPrompt_enums,        // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "enums"_Stz,          // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_enums(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  vTrace("Enums:\n"_Stz);
-
-  vTrace("  eAC: api call kind\n"_Stz);
-  vTrace("  eAK: arg kind\n"_Stz);
-  vTrace("  eAT: access technique\n"_Stz);
-  vTrace("  eCN: class number\n"_Stz);
-  vTrace("  eCT: column type\n"_Stz);
-  vTrace("  eCT: comment type\n"_Stz);
-  vTrace("  eDC: date components\n"_Stz);
-  vTrace("  eDM: datum type\n"_Stz);
-  vTrace("  eDS: data source\n"_Stz);
-  vTrace("  eEC: error code\n"_Stz);
-  vTrace("  eHT: heap type\n"_Stz);
-  //vTrace("  eIF: index form\n"_Stz);
-  vTrace("  eIS: input source\n"_Stz);
-  vTrace("  eIT: index type\n"_Stz);
-  vTrace("  eJK: job kind\n"_Stz);
-  vTrace("  eJL: job list\n"_Stz);
-  vTrace("  eJP: job phase\n"_Stz);
-  vTrace("  eJS: job state\n"_Stz);
-  vTrace("  eKC: key compare\n"_Stz);
-  vTrace("  eLK: lock kind\n"_Stz);
-  vTrace("  ePK: predicate kind\n"_Stz);
-  vTrace("  eQK: queue kinds\n"_Stz);
-  vTrace("  eLE: record end\n"_Stz);
-  vTrace("  eRO: relational op\n"_Stz);
-  vTrace("  eSC: system call\n"_Stz);
-  vTrace("  eRK: system resource\n"_Stz);
-  vTrace("  eSS: seed string\n"_Stz);
-  vTrace("  eHS: thread state\n"_Stz);
-  vTrace("  eTS: task state\n"_Stz);
-  vTrace("  eTN: token type\n"_Stz);
-  vTrace("  eXP: transaction phase\n"_Stz);
-  vTrace("  eTT: table type\n"_Stz);
-  vTrace("  eWK: word type\n"_Stz);
-
-  return true;
-}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_errno.cpp -- errno print                                            */
@@ -1932,6 +1854,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_INDEXENTRIES);
   gxPromptCatalog.vFuns(PF_JOB);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
+  gxPromptCatalog.vFuns(PF_LASTJOB);
   gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
@@ -1957,7 +1880,9 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_QUESTION);
   gxPromptCatalog.vFuns(PF_RASSERT);
   gxPromptCatalog.vFuns(PF_READY);
+  gxPromptCatalog.vFuns(PF_REAP);
   gxPromptCatalog.vFuns(PF_RESOURCES);
+  gxPromptCatalog.vFuns(PF_RETIRED);
   gxPromptCatalog.vFuns(PF_RMFIFO);
   gxPromptCatalog.vFuns(PF_RND);
   gxPromptCatalog.vFuns(PF_SE);
@@ -2392,6 +2317,42 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   
   pJob->vReport();
 
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_lastJob.cpp -- last job id                                          */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_lastJob (
+  PF_LASTJOB,           // prompt function
+  "Prompt_lastJob"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "lastJob"_Stz,        // the prompt command
+  nullptr,              // the second word
+  bPrompt_lastJob,      // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "lastJob"_Stz,        // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Session* pSession = pPrompt->pSession();
+
+  JobId tLastJobId = pSession->tLastJobId();
+  
+  vTrace("Last Job Id : %llu\n"_Stz
+         ,tLastJobId.uJobNo()
+         );
+  
   return true;
 }
 
@@ -2858,7 +2819,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
-
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  i8 nRetired = pRetiredJobs->nJobs();
+  
   bool bFatal = false;
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
     bFatal = true;
@@ -2903,9 +2866,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    //while (AM::pRetiredJobs()->nJobs())
-      while (Api::bReapJob())
-        {;}
+    Api::vReapJobsOnce();
     
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -2948,6 +2909,10 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  nRetired = pRetiredJobs->nJobs();
+  vTrace("Retired Jobs : %lld)\n"_Stz,nRetired);
+
   
   // attempted C_ATTEMPTS to see if memory leaks settle down, now time to report
   nLeaksDetected = 0;
@@ -3991,12 +3956,12 @@ bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_reap (
-  PF_MEMORYLEAKS,              // prompt function
+  PF_REAP,                     // prompt function
   "Prompt_reap"_Stz,           // name of the prompt function
   "reap retired job list"_Stz, // comment about the function
   "reap"_Stz,                  // the prompt command
   nullptr,                     // the second word
-  bPrompt_reap,               // prompt function
+  bPrompt_reap,                // prompt function
   true,                        // enabled
 
   true,                        // visible
@@ -4011,10 +3976,50 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  //while (AM::pRetiredJobs()->nJobs())
-    while (Api::bReapJob())
-      {;}
-      
+//  if (pPrompt->pInpTknVec()->nItems() == 1 &&
+//      pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))
+    
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
+    
+    vTrace("REAP DISABLE\n"_Stz);
+    AM::SYSTEM::vReapEnabled(false);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
+
+    vTrace("REAP ENABLE\n"_Stz);
+    AM::SYSTEM::vReapEnabled(true);
+
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("state"_Stz)) {
+
+    if (AM::SYSTEM::bReapEnabled())
+      vTrace("REAP IS ENABLED\n"_Stz);
+    else
+      vTrace("REAP IS DISABLED\n"_Stz);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("force"_Stz)) {
+
+    vTrace("REAP FORCE\n"_Stz);
+    
+    Api::vReapAllJobs(true);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 1) {
+    
+    vTrace("REAP LIST\n"_Stz);
+    
+    Api::vReapAllJobs();
+  }
+  
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+
   return true;
 }
 
@@ -4045,6 +4050,36 @@ bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 
   if (AM::bAttached()) AM::pResources()->vReport();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_retired.cpp -- print retired list                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_retired (
+  PF_RETIRED,           // prompt function
+  "Prompt_retired"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "retired"_Stz,        // the prompt command
+  nullptr,              // the second word
+  bPrompt_retired,      // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "retired"_Stz,        // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  AM::pRetiredJobs()->vSee();
+
   return true;
 }
 
@@ -5603,8 +5638,6 @@ bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
 /* Prompt_tools.cpp -- System Tools                                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#include "eOC.h"
-
 PromptFun __Prompt_tools (
   PF_TOOLS,              // prompt function
   "Prompt_tools"_Stz,    // name of the prompt function
@@ -5753,9 +5786,7 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  //while (AM::pRetiredJobs()->nJobs())
-    while (Api::bReapJob())
-      {;}
+  Api::vReapJobsOnce();
 
   pPrompt->vTrackMemory(true);
 

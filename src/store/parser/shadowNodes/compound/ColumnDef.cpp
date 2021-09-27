@@ -68,10 +68,9 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
   ASSERT(iOrdinal >= 0);
   ASSERT(iPrecision >= -1);
   ASSERT(iScale >= -1);
-
-  UNUSED(iOrdinal);
-  UNUSED(iPrecision);
-  UNUSED(iScale);
+  ASSERT(iOrdinal >= 0);
+  ASSERT(iPrecision >= -1);
+  ASSERT(iScale >= -1);
 
   // Create the columnDef object
   QueryNode* pColumnDef = new QueryNode(szColumnName, C_COLUMNDEF_DEFN);
@@ -297,6 +296,22 @@ i8 ColumnDef::iScale(QueryNode* pNode)
 
   ASSERT(pScaleNode);
   return pScaleNode->iValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Updates the column name of this column definition                          */
+/*----------------------------------------------------------------------------*/
+void ColumnDef::vSetColumnName(QueryNode* pNode, Stz* szNewName)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szNewName);
+
+  QueryNode* pColumnNameNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pNode));
+
+  ASSERT(pColumnNameNode);
+  Value xValue(szNewName);
+  pColumnNameNode->vSetValue(static_cast<Value&&>(xValue));
 }
 
 /*============================================================================*/

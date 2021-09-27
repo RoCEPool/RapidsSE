@@ -75,7 +75,7 @@
     <etc> <indexNm> "create index %v %v ;" str.format to sSmt
   then
 
-  sSmt .
+  // sSmt .
 
   // parse the smt and get the table name
   sSmt Job[] indexDef::parseTableName to sTableNm
@@ -119,7 +119,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for syntaxTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: syntaxIndex_req \operator
+: syntaxIndex_op \operator
 
   _lu_initialise_
 
@@ -143,7 +143,9 @@ cmdSyntax: syntaxIndex :: syntaxIndex <indexNm> <etc> ;
 
 : syntaxIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--description of operator--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "syntaxIndex_op"
+  }
 ;
     
 /*============================================================================*/

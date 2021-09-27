@@ -366,24 +366,23 @@ void Task::vAddAxioms(void)
 
   sDefinition =
   
-    "axiom: boot_run                            \
+    "axiom: bootSystem::bootSystem                          \
                                                 \
-      \"boot_run\" .verbose                     \
+      \"bootSystem::bootSystem\" .verbose                   \
                                                 \
       Job[] assert                              \
+                                                \
       Job[].addLocal                            \
                                                 \
       args.munged if                            \
         \"compiling munged dictionary...\" .    \
       then                                      \
                                                 \
-      \"se_boot.sen\" include                   \
-                                                \
-      \"boot_run exit_rt\" .verbose             \
+      \"se_include.sen\" include                \
                                                 \
       Job[].removeLocal                         \
-                                                \
       Job[].addRetired                          \
+                                                \
       Task[].grabLock                           \
         true Job[].reapable!                    \
         TR_RETIRE_THIS_TASK Task[].transition!  \

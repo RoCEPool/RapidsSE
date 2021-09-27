@@ -111,6 +111,7 @@ static Stz* C_TDEF_EVENTLOG         = "SE__eventLog"_Stz;
 static Stz* C_TDEF_EXECERRORS       = "__execErrors"_Stz;
 static Stz* C_TDEF_EXPLAIN          = "__explain"_Stz;
 static Stz* C_TDEF_GRIDSANITY       = "__gridSanity"_Stz;
+static Stz* C_TDEF_JOBREPORT        = "SE__jobReport"_Stz;
 static Stz* C_TDEF_LISTCOLUMNS      = "__listColumns"_Stz;
 static Stz* C_TDEF_LISTCONTENTS     = "__listContents"_Stz;
 static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;

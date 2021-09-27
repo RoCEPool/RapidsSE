@@ -8,7 +8,6 @@
 #include "eJS.h"
 #include "eJP.h"
 #include "eRS.h"
-#include "eSS.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -39,8 +38,9 @@ namespace STORE
 
     b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
-    eSS         m_eSeed;      // sen word to start execution
-    Word*       m_pSeedWord;  // seed word of this job                  POST_RECV
+
+  public:
+
 
     // -- command and tags
     s4K    m_sCmd;      // the command
@@ -60,7 +60,7 @@ namespace STORE
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, begun, ...
     eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -97,6 +97,8 @@ namespace STORE
   private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
+  
+    s4K m_sEntry;   // sen entry code
 
     // must be last
     Footer m_xFooter;
@@ -107,9 +109,10 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(i8 i_Origin,     // originated on which node
-        i8 i_Session,    // which session in session array
-        i8 iCmdNo  // the sequence no of the request from that session
+    Job(Stz* szJobNm,
+        i8 i_Origin,   // originated on which node
+        i8 i_Session,  // which session in session array
+        i8 iCmdNo      // the sequence no of the request from that session
        );
 
     // FIND CASE -- TO BE REMOVED
@@ -143,6 +146,8 @@ namespace STORE
     void vDecActiveOps(void);
     bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
+    Stz* szEntry(void);
+    void vEntry(Stz* szEntry);
     void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szTagNm);
     bool bHasTag_bg(void);
@@ -182,13 +187,7 @@ namespace STORE
     void vReport(void);
     void vResetForCascade(Session* pSession);
     void vSee(void);
-    eSS  eSeed(void);
-    Stz* szSeed(void);
-    void vSeed(eSS eSeed);
-    Word* pSeedWord(void);
-    void vSeedWord(Word* pSeedWord);
     Session* pSession(void);
-    void vSetSeedWord(void);
     void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);

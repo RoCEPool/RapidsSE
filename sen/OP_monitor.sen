@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for monitor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: monitor_req \operator
+: monitor_op \operator
  
   _lu_initialise_
 
@@ -61,9 +61,10 @@
 cmdSyntax: monitor :: monitor ;
 
 : monitor_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "monitor_op"
+  }
 ;
 
 /*============================================================================*/

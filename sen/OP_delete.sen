@@ -267,7 +267,7 @@
 /*----------------------------------------------------------------------------*/
 /* delete request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: delete_req \operator
+: delete_op \operator
 
   _lu_initialise_
   //<tableNm> <predicate> "PARAMETERS %v %v" str.format .
@@ -294,7 +294,10 @@
 cmdSyntax: delete :: delete <tableNm> <predicate> ;
 
 : delete_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "delete_op"
+  }
 ;
 
 /*============================================================================*/

@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : proc: immediate
 
-  STD_PATH
+  STD_PATH_TAG
   
   input::tillSemicolon
   

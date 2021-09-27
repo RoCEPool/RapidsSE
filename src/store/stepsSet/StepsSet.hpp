@@ -106,6 +106,8 @@ public:
   void vAstackNip(void);
   void vAstackPick(void);
   void vAstackReverse(void);
+  void vAstackRot(void);
+  void vAstackRotInv(void);
   void vAstackStk(void);
   void vAstackSwap(void);
   void vAstackToA(void);
@@ -195,6 +197,7 @@ public:
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
+  void vCrwBufferToCsv_OLD(void);
   void vCrwBufferWriteToFile0(void);
 
   // crw to row
@@ -681,16 +684,19 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete2pc(void);
 
-  void vJobTagSetFetch(void);
-  void vJobErrorStore(void);
+  void vJobEntryFetch(void);
+  void vJobEntryFetch_other(void);
+  void vJobEntryStore(void);
+  void vJobEntryStore_other(void);
+
   void vJobErrorFetch(void);
+  void vJobErrorStore(void);
 
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
-  void vJobIsExecuting(void);
 
   void vJobJobClass(void);
   void vJobJobListFetch(void);
@@ -720,11 +726,8 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
-  void vJobSeedDecode(void);
-  void vJobSeedFetch(void);
-  void vJobSeedStore(void);
-  void vJobSeedWordFetch(void);
-  void vJobSeedWordStore(void);
+  void vJobReportReport(void);
+
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
@@ -733,6 +736,7 @@ public:
   void vJobStateFetch(void);
   void vJobStateStore(void);
 
+  void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
   void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
@@ -749,13 +753,13 @@ public:
   void vJobRefTaskFetch(void);
 
   // job generic
-  void vJob__BegunNew(void);
-  void vJob__CancelNew(void);
-  void vJob__CancelledNew(void);
-  void vJob__EndNew(void);
-  void vJob__EndedNew(void);
-  void vJob__ExecuteNew(void);
-  void vJob__ExecutedNew(void);
+  void vJob_BegunNew(void);
+  void vJob_CancelNew(void);
+  void vJob_CancelledNew(void);
+  void vJob_EndNew(void);
+  void vJob_EndedNew(void);
+  void vJob_ExecuteNew(void);
+  void vJob_ExecutedNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);
@@ -878,26 +882,6 @@ public:
   void vJobsSeePlist(void);
   void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
-
-  // kbase
-  void vKbaseCallSchedule(void);
-  void vKbaseDelete(void);
-  void vKbaseFindFactNm(void);
-  void vKbaseFindFactNo(void);
-  void vKbaseGet(void);
-  void vKbaseMarkerFetch(void);
-  void vKbaseMarkerNew(void);
-  void vKbaseMarkerStore(void);
-  void vKbaseNew(void);
-  void vKbasePrint(void);
-  void vKbaseSeed(void);
-  void vKbaseSet(void);
-  void vKbaseTest(void);
-  void vKbaseTransformFetch(void);
-  void vKbaseTransformNew(void);
-  void vKbaseTransformStore(void);
-  void vKbaseTrim(void);
-  void vKbaseTroll(void);
 
   // list
   void vListAddRowBuffer(void);
@@ -1304,6 +1288,9 @@ public:
   void vPtnStreamSeek(void);
   void vPtnStreamSet(void);
 
+  // pu gen
+  void vPuGenX(void);
+
   // push
   void vPushI(void);
   void vPushJ(void);
@@ -1364,12 +1351,25 @@ public:
   void vRegSendsNew(void);
 
   // reg counter
-  void vRegCounter0Get(void);
-  void vRegCounter1Get(void);
-  void vRegCounter2Get(void);
-  void vRegCounter0Set(void);
-  void vRegCounter1Set(void);
-  void vRegCounter2Set(void);
+  void vCounterAGet(void);
+  void vCounter0Get(void);
+  void vCounter1Get(void);
+  void vCounter2Get(void);
+  void vCounter3Get(void);
+  void vCounter4Get(void);
+  void vCounter5Get(void);
+  void vCounter6Get(void);
+  void vCounter7Get(void);
+
+  void vCounterASet(void);
+  void vCounter0Set(void);
+  void vCounter1Set(void);
+  void vCounter2Set(void);
+  void vCounter3Set(void);
+  void vCounter4Set(void);
+  void vCounter5Set(void);
+  void vCounter6Set(void);
+  void vCounter7Set(void);
 
   // reg folder
   void vRegFolderFindSymbol(void);
@@ -1455,6 +1455,7 @@ public:
   void vRowBufferIsNull(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
+  void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor
@@ -1697,7 +1698,23 @@ public:
 
   // register stringA
   void vStringAGet(void);
+  void vString0Get(void);
+  void vString1Get(void);
+  void vString2Get(void);
+  void vString3Get(void);
+  void vString4Get(void);
+  void vString5Get(void);
+  void vString6Get(void);
+  void vString7Get(void);
   void vStringASet(void);
+  void vString0Set(void);
+  void vString1Set(void);
+  void vString2Set(void);
+  void vString3Set(void);
+  void vString4Set(void);
+  void vString5Set(void);
+  void vString6Set(void);
+  void vString7Set(void);
 
   // stream def Left
   void vStreamDefLftAsStr(void);
@@ -2072,6 +2089,7 @@ public:
   void vToRowCreate(void);
   void vToRowDangling(void);
   void vToRowDelete(void);
+  void vToRowFetch(void);
   void vToRowRowCountersFetch(void);
 
   // tokenVec
@@ -2085,6 +2103,14 @@ public:
   void vTraceOn(void);
   void vTracePoint(void);
   void vTraceSet(void);
+
+  // tub
+  void vTubCompleted(void);
+  void vTubDangling(void);
+  void vTubDelete(void);
+  void vTubGet(void);
+  void vTubIsEmpty(void);
+  void vTubNew(void);
 
   // tx
   void vTx0Begin(void);

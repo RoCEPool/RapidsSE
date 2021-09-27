@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for createTenant req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: createTenant_req \operator
+: createTenant_op \operator
 
   _lu_initialise_
 
@@ -74,7 +74,9 @@ cmdSyntax: createTenant :: createTenant <tenantNm> ;
 
 : createTenant_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--desc for op--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "createTenant_op"
+  }
 ;
     
 /*============================================================================*/

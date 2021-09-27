@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for defineTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: defineTable_req \operator
+: defineTable_op \operator
 
   _lu_initialise_
 
@@ -95,7 +95,9 @@ cmdSyntax: defineTable :: defineTable <tableNm> ;
 
 : defineTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--description of operator--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "defineTable_op"
+  }
 ;
     
 /*============================================================================*/

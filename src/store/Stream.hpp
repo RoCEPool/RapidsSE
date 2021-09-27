@@ -22,12 +22,12 @@ namespace STORE
     StageSpec* m_pStageSpec;  // stage specification for this stream
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
+    PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
+                              //   will be C_UNKNOWN for stage with node topology
 
-    PtnId  m_tPtnId; // this stream processes m_tPtnNo in grid
-                   //   will be C_UNKNOWN for stage with node topology
-    i8   m_i_Node; // this stream processes m_i_Node in grid
-                   //   is PtnMap::i_PtnNoToNode(m_tPtnNo);
- 
+    i8   m_i_Node;            // this stream processes m_i_Node in grid
+                              //   is PtnMap::i_PtnNoToNode(m_tPtnId);
+
     // -- -- -- -- -- --
 
     // must be last
@@ -36,17 +36,18 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
-    Stream(StageSpec* pStageSpec, Stage* pStage,
-           i8 i_Stream, PtnId tPtnNo, i8 i_Node);
+   Stream(StageSpec* pStageSpec, Stage* pStage,
+           i8 i_Stream, PtnId tPtnId, i8 i_Node);
+
    ~Stream(void) noexcept(false);
     
     i8   i_Node(void);
     i8   i_Stream(void);
 
     Pipeline* pPipeline(void);
+
     PtnId  tPtnId(void);
-  
+
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);

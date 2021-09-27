@@ -63,33 +63,30 @@ Stats::Stats(void)
   m_nBuffOut  = 0;
 
   // i/o
-  m_nSends     = 0;
-  m_nBytesSent = 0;
-  m_nRecvs     = 0;
-  m_nBytesRecv = 0;
+  m_nParcelSends = 0;
+  m_nObjectsSent = 0;
+  m_nParcelRecvs = 0;
+  m_nObjectsRecv = 0;
 
-  m_nRead       = 0;
+  m_nReads      = 0;
   m_nBytesRead  = 0;
-  m_nWrite      = 0;
+  m_nWrites     = 0;
   m_nBytesWrite = 0;
 
   // memory
   m_nNewRowBuffer = 0;
   m_nDelRowBuffer = 0;
   m_nMaxRowBuffer = 0;
-  m_nAvgRowBuffer = 0;
 
   m_nNewCsvBuffer = 0;
   m_nDelCsvBuffer = 0;
   m_nMaxCsvBuffer = 0;
-  m_nAvgCsvBuffer = 0;
 
   m_nAllocs     = 0;
   m_nBytesAlloc = 0;
   m_nFrees      = 0;
   m_nBytesFree  = 0;
   m_nMaxBytes   = 0;
-  m_nAvgBytes   = 0;
 
   _checkInitialised_(CN_STATS);
 

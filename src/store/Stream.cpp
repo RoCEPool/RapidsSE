@@ -114,7 +114,6 @@ void Stream::vCreateOps(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    pOp->vSetSeedWord();
 
     vAdd(pOp);
   }
@@ -147,7 +146,6 @@ Pipeline* Stream::pPipeline(void)
 PtnId Stream::tPtnId(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  
   return m_tPtnId;
 }
 
@@ -182,8 +180,8 @@ void Stream::vSpawnOpTasks(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     i_OnNode = m_i_Node;
   else
-    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId.iAsI8());
-  
+    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId);
+
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {

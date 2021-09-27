@@ -28,7 +28,9 @@ namespace STORE
     void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);
     void vDump(void);
+
     PtnId  tPtnId(void);
+
     RowBuffer* pRootRowBuffer(void);
     Table* pTable(void);
     void vTruncate(void);

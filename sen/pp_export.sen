@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* pp_export.sen -- export pipeline procedures                                */
+/*============================================================================*/
+
+" pp_export.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* export procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+: start::defProc_Export
+
+  STD_PATH_TAG
+  "
+  procedure export
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | stageB
+
+    stage stageB on all partitions :
+        scan $table
+      | toCsv
+      | stageC
+      
+    stage stageC on origin :
+        wrFile $file
+      | output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

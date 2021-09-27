@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "eOC.h"
-
 #include "SP_String.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +190,6 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   StrLib::vCopyLen(caSubStrAfter,szCursor->azChar(),iAfter);
   StrLib::vEscape(caEscapedAfter,caSubStrAfter);
   
-  StrLib::vConcat(m_caResult,aOC[OC_CURSOR]->azChar());
   StrLib::vConcat(m_caResult,caEscapedAfter);
 
   if (StrLib::nSize(szCursor->azChar()) < iAfter)

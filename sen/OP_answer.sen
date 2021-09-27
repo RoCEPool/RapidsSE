@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for answer req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : answer_req \operator
+ : answer_op \operator
  
   _lu_initialise_
 
@@ -211,9 +211,10 @@
 cmdSyntax: answer :: answer ;
 
 : answer_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "answer_op"
+  }
 ;
 
 /*============================================================================*/

@@ -1,0 +1,154 @@
+/*============================================================================*/
+/* job_PipelineLocal.sen -- Local Pipeline Job                                */
+/*============================================================================*/
+
+" job_pipelineLocal.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* terminate this pipeline                                                    */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::termination
+
+  DdlLock[].testDrop
+
+  JobRef[].none
+
+  Job[].addRetired
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute on local node                                                      */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::local
+
+  job::assertCorrectness
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline command
+  
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> "pipelineLocal::origin: %v\n" .printf
+    //system::bpa
+  then
+
+  <cmd> Dynamo::compileStmt dup
+  EC_NONE == if
+    // clean compile
+    
+  else
+    //"got error" .
+    Job[].error!
+    
+    DdlLock[].testDrop
+
+    PipelineSpec[].delete
+        
+    // cross check
+    PipelineSpec[] not assert
+
+    JS_SIGNALLED Job[].state!
+      
+    Task[].grabLock
+    Session[].signal
+    Task[].dropLock
+    
+    pipelineLocal::termination
+    
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // begin the pipeline job (spawning jobs for ops etc)
+  
+  PipelineSpec[] assert
+
+  Pipeline[].create
+  Pipeline[].spawnOpTasks
+
+  // run <pre_execute>
+
+  "<pre_execute>"
+  job::tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    job::tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    args.verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
+  then
+
+  // add job to the local job list
+  Job[] job.jobList@ JL_DEMON == not if
+    Job[].addLocal
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab the task lock
+  Task[].grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the pipeline job (send startmarker to start)
+  //<pipelineNm> "%v execute" .printf
+  Pipeline::enqueueStart if
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for operators to finish
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on Task[].wait" .printf
+    Task[].wait
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
+  else
+    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
+    Task[].dropLock
+  then
+
+  // remove job from the local job list
+  Job[] job.jobList@ JL_DEMON == not if
+    Job[].removeLocal
+  then
+
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
+  
+  
+  DdlLock[].testDrop
+  JobRef[].none
+
+  Job[].addRetired
+  
+  JS_SIGNALLED Job[].state!
+    Session[].signal
+
+  Task[].grabLock
+    TR_RETIRE_THIS_TASK Task[].transition!
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
+
+: pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
+  tags{
+    <cmdDesc>  = "--desc for job--"
+
+    <jobKind>  = JK_LOCAL
+    //<ddlLock>  = DL_GRAB_READ
+        
+    <entryPoint> = "pipelineLocal::local"
+
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

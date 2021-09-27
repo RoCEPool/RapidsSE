@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* pp_puLoad.sen -- puLoad procedure                                          */
+/*============================================================================*/
+
+" pp_puLoad.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate and load a pu table                                               */
+/*----------------------------------------------------------------------------*/
+
+: start::defProc_pu
+  
+  STD_PATH_TAG
+  "
+  procedure puLoad
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | puGen $table
+      | toPtnRow
+      | toNstRow
+      | toPtnCrw
+      | stageB hashcast
+
+    stage stageB on all partitions :
+        insert $table
+      | stageC
+
+    stage stageC on origin :
+        progress 'puLoad'
+      | output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -52,15 +52,19 @@ macro AM_INDEX_TRAVERSE_TILL_END
 //----------------------------------------------------------------------------//
   // no upper key traverse till end
   Label INDEX_TRAVERSE_TILL_END
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_IDX_NEXT
-  EO_JMP_FALSE INDEX_SCAN_END
+  //EO_PUSH_DEVIXT_LFT
+  //EO_DEVIXT_IDX_NEXT
+  //EO_JMP_FALSE INDEX_SCAN_END
 
-  // projection
+  // deref index entry
   EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE
+
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_IDX_NEXT
+  EO_RETURN_FALSE
 
   EO_JMP INDEX_TRAVERSE_TILL_END
 endMacro
@@ -73,26 +77,34 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
   Label INDEX_TRAVERSE_TILL_UPPER
 
   // fetch next entry from index
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_IDX_NEXT
-  EO_JMP_FALSE INDEX_SCAN_END
+  //EO_PUSH_DEVIXT_LFT
+  //EO_DEVIXT_IDX_NEXT
+  //EO_JMP_FALSE INDEX_SCAN_END
 
-    // have we reached the upper entry
+  // have we reached the upper entry
   EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_PUSH
 
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_ENT_PUSHUPPER
+  //EO_PUSH_DEVIXT_LFT
+  //EO_DEVIXT_ENT_PUSHUPPER
 
+  // reached upper bound ?
   EO_EQ_INTINT
   EO_JMP_TRUE INDEX_SCAN_END
 
-  // projection
-  //EO_CRW_SRC_DEREF
+  // deref index entry
   EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_DEREF
 
   EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE
+
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_IDX_NEXT
+  EO_RETURN_FALSE
+
+  // push upper bound entry
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_ENT_PUSHUPPER
 
   EO_JMP INDEX_TRAVERSE_TILL_UPPER
 endMacro

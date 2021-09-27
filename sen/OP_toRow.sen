@@ -31,7 +31,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                   EACH */
+/* on ZK_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : toRow_CsvBuffer \handler
 
@@ -108,15 +108,15 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toRow_req \operator
+: toRow_op \operator
 
   _lu_initialise_
 
   op__topology
 
   find: toRow_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: toRow_EosMarker   ZK_M_EOS   op[].handler!
-  find: toRow_StartMarker ZK_M_START op[].handler!
+  find: toRow_EosMarker   ZK_M_EOS         op[].handler!
+  find: toRow_StartMarker ZK_M_START       op[].handler!
 
   op__loop
 
@@ -132,7 +132,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toRow :: toRow <tableNm> ;
 
-: toRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toRow_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toRow_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

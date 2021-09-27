@@ -61,6 +61,7 @@ enum ePF // prompt function
   /*    */ PF_JOB,
   /*    */ PF_JOBCLASS,
   
+  /*    */ PF_LASTJOB,
   /*    */ PF_LET,
   /*    */ PF_LIMITS,
   /*    */ PF_LOCKS,
@@ -105,7 +106,9 @@ enum ePF // prompt function
   
   /*    */ PF_RASSERT,
   /*    */ PF_READY,
+  /*    */ PF_REAP,
   /*    */ PF_RESOURCES,
+  /*    */ PF_RETIRED,
   /*    */ PF_RMFIFO,
   /*    */ PF_RND,
   
@@ -216,6 +219,7 @@ static Stz* aPF[]
   /*    */ "PF_JOB"_Stz,
   /*    */ "PF_JOBCLASS"_Stz,
   
+  /*    */ "PF_LASTJOB"_Stz,
   /*    */ "PF_LET"_Stz,
   /*    */ "PF_LIMITS"_Stz,
   /*    */ "PF_LOCKS"_Stz,
@@ -260,7 +264,9 @@ static Stz* aPF[]
   
   /*    */ "PF_RASSERT"_Stz,
   /*    */ "PF_READY"_Stz,
+  /*    */ "PF_REAP"_Stz,
   /*    */ "PF_RESOURCES"_Stz,
+  /*    */ "PF_RETIRED"_Stz,
   /*    */ "PF_RMFIFO"_Stz,
   /*    */ "PF_RND"_Stz,
   

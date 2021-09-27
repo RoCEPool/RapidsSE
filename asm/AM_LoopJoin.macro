@@ -9,7 +9,6 @@ macro AM_LOOPJOIN_CRWLFT_CRWRHT
   // LOOPJOIN_CRWLFT_CRWRHT
   Label LOOPJOIN_CRWLFT_CRWRHT
   EO_PRINTF "**AM_LOOPJOIN_CRWLFT_CRWRHT**\n"
-  EO_POP
 
   // For each row in the left buffer
   EO_PUSH_DEVIXT_LFT
@@ -72,7 +71,6 @@ macro AM_LOOPJOIN_CRWLFT_ROWRHT
   // LOOPJOIN_CRWLFT_ROWRHT
   Label LOOPJOIN_CRWLFT_ROWRHT
   EO_PRINTF "**AM_LOOPJOIN_CRWLFT_ROWRHT**\n"
-  EO_POP
 
   // For each row in the left crw buffer
   EO_PUSH_DEVIXT_LFT
@@ -134,7 +132,6 @@ macro AM_LOOPJOIN_ROWLFT_CRWRHT
   // LOOPJOIN_ROWLFT_CRWRHT
   Label LOOPJOIN_ROWLFT_CRWRHT
   EO_PRINTF "**AM_LOOPJOIN_ROWLFT_CRWRHT**\n"
-  EO_POP
 
   // For each row in the left buffer
   EO_PUSH_DEVROW_LFT
@@ -195,7 +192,6 @@ macro AM_LOOPJOIN_ROWLFT_ROWRHT
   // LOOPJOIN_ROWLFT_ROWRHT
   Label LOOPJOIN_ROWLFT_ROWRHT
   EO_PRINTF "**AM_LOOPJOIN_ROWLFT_ROWRHT**\n"
-  EO_POP
 
   // For each row in the left buffer
   EO_PUSH_DEVROW_LFT
@@ -286,11 +282,11 @@ macro AM_JOINTEST_ROWLFT_ROWRHT
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_LOOPJOIN_END                                                      //
+// macro AM_JOINTEST_END                                                      //
 //----------------------------------------------------------------------------//
-macro AM_LOOPJOIN_END
-  // LOOPJOIN_END
-  EO_RETURN
+macro AM_JOINTEST_END
+  // JOINTEST_END
+  EO_RETURN_VALUE
 endMacro
 
 /*============================================================================*/

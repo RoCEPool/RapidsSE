@@ -47,7 +47,7 @@ QueryNode* TableSource::pCreate(Stz* szDefn, QueryNode* pTableRef)
   ASSERT(pTableRef);
   ASSERT(TableRef::bIsExactType(pTableRef));
 
-  // Create a unique name for this ProjectOp object
+  // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(szDefn, sName);
 
@@ -284,9 +284,9 @@ QueryNodeList* TableSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /* Returns true if this data source can resolve the given column reference    */
 /*----------------------------------------------------------------------------*/
 b1 TableSource::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
-                                  Stz* szColRefTableAliasName,
-                                  Stz* szCatalogName, Stz* szSchemaName,
-                                  Stz* szTableName, Stz* szColumnName)
+                                  PlanNode* pRootNode, Stz* szColRefTableAliasName,
+                                  Stz* szCatalogName,  Stz* szSchemaName,
+                                  Stz* szTableName,    Stz* szColumnName)
 {
   _static_
   ASSERT(bIsOfType(pNode));

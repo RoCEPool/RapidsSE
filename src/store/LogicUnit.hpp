@@ -15,6 +15,7 @@
 
 
 #include "Pot.hpp"
+#include "Tub.hpp"
 
 
 #include "EntWrk.hpp"
@@ -91,8 +92,9 @@ namespace STORE
 
 #define S_PopStr(__azDst) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  if (*aiDstk == C_DATUM_NULL)    {                                   \
-    *(i8*)__azDst = C_DATUM_NULL;  \
+  if (*aiDstk == C_DATUM_NULL)    {                                      \
+    *(i8*)__azDst = C_DATUM_NULL;                                        \
+    aiDstk--;                                                            \
   } \
   else { \
     nSize = *(aiDstk--); \
@@ -154,6 +156,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+  
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
 
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
@@ -170,7 +173,9 @@ namespace STORE
     REG<File,           CN_FILE          > m_xpFile0;
     REG<File,           CN_FILE          > m_xpFile1;
     REG<ExprEval,       CN_EXPREVAL      > m_xpFilter;
+  
     REG<Grid,           CN_GRID          > m_xpGrid;
+  
     REG<Word,           CN_WORD          > m_xpHandler;
 
     REG<Index,          CN_INDEX         > m_xpIndex;
@@ -194,6 +199,7 @@ namespace STORE
 
     REG<Op,             CN_OP            > m_xpOp;
     REG<Operand,        CN_NONE          > m_xpOperandOoO;
+  
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
@@ -227,6 +233,7 @@ namespace STORE
     REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
     REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
+    REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -234,12 +241,26 @@ namespace STORE
     bool                m_bCompilerToExit;
     bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
+    i8                  m_iCounterA;   // counter
     i8                  m_iCounter0;   // counter
     i8                  m_iCounter1;   // counter
     i8                  m_iCounter2;   // counter
-        
-    s256                m_sStringA;    // string
-        
+    i8                  m_iCounter3;   // counter
+    i8                  m_iCounter4;   // counter
+    i8                  m_iCounter5;   // counter
+    i8                  m_iCounter6;   // counter
+    i8                  m_iCounter7;   // counter
+
+    s4K                 m_sStringA;    // string
+    s256                m_sString0;    // string
+    s256                m_sString1;    // string
+    s256                m_sString2;    // string
+    s256                m_sString3;    // string
+    s256                m_sString4;    // string
+    s256                m_sString5;    // string
+    s256                m_sString6;    // string
+    s256                m_sString7;    // string
+
     Ent*                m_aLowerEntry;
     Ent*                m_aUpperEntry;
     EntBuffer*          m_pEntBufferOuter;

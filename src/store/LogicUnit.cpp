@@ -88,6 +88,7 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -104,7 +105,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE0)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE1)
 ,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       LR_FILTER)
+
 ,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_GRID)
+
 ,        m_xpHandler(this,RF_REPAIR_NONE,  nullptr,                 LR_HANDLER)
 
 ,          m_xpIndex(this,RF_SET_NULL,     nullptr,                 LR_INDEX)
@@ -162,6 +165,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
+,            m_xpTub(this,RF_REPAIR_DELETE,Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
 
 {
@@ -183,11 +187,24 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
+  m_iCounterA = 0;
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
-  
+  m_iCounter3 = 0;
+  m_iCounter4 = 0;
+  m_iCounter5 = 0;
+  m_iCounter6 = 0;
+  m_iCounter7 = 0;
+
   m_sStringA  = ""_Stz;
+  m_sString0  = ""_Stz;
+  m_sString1  = ""_Stz;
+  m_sString2  = ""_Stz;
+  m_sString3  = ""_Stz;
+  m_sString5  = ""_Stz;
+  m_sString6  = ""_Stz;
+  m_sString7  = ""_Stz;
 
   m_xRluCommon.m_iCtr0 = 0;
 
@@ -257,6 +274,7 @@ LogicUnit::LogicUnit(void)
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
+  m_xRluCommon.m_iJoinedRow = 0;
 
   m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
 
@@ -519,24 +537,66 @@ void LogicUnit::vCleanup(void)
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
     if (AM::SYSARGS::pTagSet()->bHasName("<show_op_report>"_Stz)) {
-      
-      if (p_Reg->m_eLogicUnitReg == LR_AGGTIMER)
-      vTrace("%16s: "
-             "cpu %8lldus "
-             "maxq %6lld "
-             "operands %6lld [buffIn %6lld buffOut %6lld] "
-             "NewRowBuffers %6lld [DelRowBuffers %6lld] "
-             "\n"_Stz
-             
-             ,m_pOp->szOpNm()
-             ,m_xpStats->iMicroseconds()
-             ,m_xpStats->m_nMaxQs
-             ,m_xpStats->m_nOperands
-             ,m_xpStats->m_nBuffIn
-             ,m_xpStats->m_nBuffOut
-             ,m_xpStats->m_nNewRowBuffer
-             ,m_xpStats->m_nDelRowBuffer
-             );
+
+      if (p_Reg->m_eLogicUnitReg == LR_STATS) {
+
+        s32 sBytesAlloc;
+        MagLib::vByteMag(m_xpStats->m_nBytesAlloc, sBytesAlloc);
+
+        s32 sBytesFree;
+        MagLib::vByteMag(m_xpStats->m_nFrees, sBytesFree);
+
+        s32 sMaxBytes;
+        MagLib::vByteMag(m_xpStats->m_nMaxBytes, sMaxBytes);
+
+        s32 sBytesRead;
+        MagLib::vByteMag(m_xpStats->m_nBytesRead, sBytesRead);
+
+        s32 sBytesWrite;
+        MagLib::vByteMag(m_xpStats->m_nBytesWrite, sBytesWrite);
+
+        vTrace("%10s %16s (P%02lld) : "
+               "cpu %8lldus "
+               "maxq %6lld "
+               "operands %6lld [buffIn %6lld buffOut %6lld] "
+               "NewRowBuffers %6lld [DelRowBuffers %6lld] "
+               "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
+               "Allocs %6lld [BytesAlloc %6s] "
+               "Frees %6lld [BytesFree %6s] "
+               "MaxBytes %6s "
+               "Reads %6lld [BytesRead %6s] "
+               "Writes %6lld [BytesWrite %6s] "
+               "ParcelSends %6lld [ObjectsSent %6lld] "
+               "ParcelRecvs %6lld [ObjectsRecv %6lld] "
+               "\n"_Stz
+
+               ,m_pOp->szStageName()
+               ,m_pOp->szOpNm()
+               ,m_pOp->tPtnId().iAsI8()
+               ,m_xpStats->iMicroseconds()
+               ,m_xpStats->m_nMaxQs
+               ,m_xpStats->m_nOperands
+               ,m_xpStats->m_nBuffIn
+               ,m_xpStats->m_nBuffOut
+               ,m_xpStats->m_nNewRowBuffer
+               ,m_xpStats->m_nDelRowBuffer
+               ,m_xpStats->m_nNewCsvBuffer
+               ,m_xpStats->m_nDelCsvBuffer
+               ,m_xpStats->m_nAllocs
+               ,sBytesAlloc.azChar()
+               ,m_xpStats->m_nFrees
+               ,sBytesFree.azChar()
+               ,sMaxBytes.azChar()
+               ,m_xpStats->m_nReads
+               ,sBytesRead.azChar()
+               ,m_xpStats->m_nWrites
+               ,sBytesWrite.azChar()
+               ,m_xpStats->m_nParcelSends
+               ,m_xpStats->m_nObjectsSent
+               ,m_xpStats->m_nParcelRecvs
+               ,m_xpStats->m_nObjectsRecv
+               );
+        }
     }
     
     // execute register repair
@@ -816,7 +876,6 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
 void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
   m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
 }
 
@@ -1513,6 +1572,23 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* dump the rlu Dstk                                                          */
 /*----------------------------------------------------------------------------*/
+void LogicUnit::vRlu_ASSERTSTACK(void* aLU, i8* aiDstk) {
+  vDebugPoint();
+
+  //vTrace("vRlu_ASSERTSTACK\n"_Stz);
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
+  i8 nStkUse = nDifference(aiDstk,pLogicUnit->m_xRluCommon.m_iaDataStack);
+
+  if (nStkUse != 0)
+    vRlu_DUMP(aLU,aiDstk );
+
+  RASSERT(nStkUse == 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the rlu Dstk                                                          */
+/*----------------------------------------------------------------------------*/
 void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 {
   vDebugPoint();
@@ -1678,8 +1754,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   if (nOuterArgs) {
     *(++aiDstk) = iOuterArg0;
   }
-  
+
   aRluCommon->m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
+
   aRluCommon->m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 
@@ -1712,6 +1789,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     aeCode += 2;
 
 #ifdef WITH_TRACE_LOGICUNIT
+    if(aRluCommon->m_iaDataStack[0] != -1)
+      vRlu_DUMP(pLU, aiDstk);
     vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
@@ -4416,6 +4495,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
+      case EO_PUSH_RLU_JOINEDROW:
+        EO_ENTER(eCode);
+        ArgNil(); // push rlu indexDef
+        dLU0(EO_PUSH_RLU_JOINEDROW);
+        P_PushPtr(aRluCommon->m_iJoinedRow);
+        EO_EXIT(eCode);
+        break;//+endCase
+
       // joinmap push
       case EO_PUSH_RLU_JOINMAP_BYTE:
         EO_ENTER(eCode);
@@ -4630,6 +4717,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_ENTER(eCode);
         ArgNil(); // return from subroutine and
         dLU0(EO_RETURN);
+        //vRlu_ASSERTSTACK(pLU, aiDstk);
 #ifdef __TINYC__
         return aiDstk;
 #else
@@ -4693,7 +4781,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_EXIT(eCode);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_RETURN_VALUE:
+        EO_ENTER(eCode);
+        ArgNil(); // return from subroutine and
+        dLU0(EO_RETURN);
+        //vRlu_ASSERTSTACK(pLU, aiDstk);
+#ifdef __TINYC__
+        return aiDstk;
+#else
+        if (aeaRstk == &eaReturnStack[0]) {
+          iRes = *(aiDstk--);
+#ifdef WITH_TRACE_LOGICUNIT
+          vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
+#endif
+          return iRes;
+        }
+        aeCode = (char*)(* (--aeaRstk));
+#endif
+        EO_EXIT(eCode);
+        break;//+endCase
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
       case EO_ASSERT:
         EO_ENTER(eCode);
@@ -5063,6 +5171,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_i_ColSet = iArg;
         aRluCommon->m_iaColSet[aRluCommon->m_i_ColSet] = C_UNKNOWN;
         //*(++aiDstk) = -1;
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinrow reset
+      case EO_RLU_RESET_JOINEDROW: // reset bJoinedRow in the RLU
+        EO_ENTER(eCode);
+        ArgNil();
+        dLU0(EO_RLU_RESET_JOINEDROW);
+        aRluCommon->m_iJoinedRow = 0;
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu joinrow set
+      case EO_RLU_SET_JOINEDROW: // set bJoinedRow in the RLU
+        EO_ENTER(eCode);
+        ArgNil();
+        dLU0(EO_RLU_SET_JOINEDROW);
+        aRluCommon->m_iJoinedRow = 1;
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -5529,7 +5657,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND_GE);
         vDev_IXT_POS_LBOUND_GE(&aiDstk);  // entry / devixt
-      EO_EXIT(eCode);
+        EO_EXIT(eCode);
         break;//+endCase
 
       case EO_DEVIXT_LBOUND_GT:
@@ -5641,8 +5769,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EO_ENTER(eCode);
         ArgNil(); // create new row
         dLU0(EO_DEVROW_ROW_NEW);
+        //vRlu_DUMP(pLU, aiDstk);
         vDev_ROW_ROW_NEW(&aiDstk);     // devrow / pot /ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -5829,10 +5959,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PAY_STORE_COLS:
         EO_ENTER(eCode);
+        //vRlu_DUMP(pLU, aiDstk);
         ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLS,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -5865,6 +5997,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         ArgNil(); // push column value from dev
         vDev_IXT_COL_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+        //vRlu_DUMP(pLU, aiDstk);
         EO_EXIT(eCode);
         break;//+endCase
 
@@ -6006,6 +6139,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         aiPayload[Q100_COUNT_ORDER]++;
       }
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      case EO_DEVIXT_LBOUND_GE_OLD:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry before LBOUND
+        dLU0(EO_DEVIXT_LBOUND_GE_OLD);
+        vDev_IXT_POS_LBOUND_GE_OLD(&aiDstk);  // entry / devixt
+        EO_EXIT(eCode);
+        break;//+endCase
+
+      case EO_DEVIXT_UBOUND_LT_OLD:
+        EO_ENTER(eCode);
+        ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_UBOUND_LT_OLD);
+        vDev_IXT_POS_UBOUND_LT_OLD(&aiDstk);  // entry / devixt
         EO_EXIT(eCode);
         break;//+endCase
 

@@ -82,7 +82,8 @@ void GraphValidator::vValidatePlanNode(QueryNode* pQueryNode, PlanNode* pRootNod
 
   s2K sPathBuf;
   i8 iDepth = 0;
-  GraphNav::vGetPathAndDepth(pQueryNode, pRootNode, sPathBuf, iDepth);
+  b1 bFound = GraphNav::bGetPathAndDepth(pQueryNode, pRootNode, sPathBuf, iDepth, true);
+  RASSERT(bFound);
 
   eValidatePlanNode(pQueryNode, sPathBuf, iDepth, pRootNode);
 }

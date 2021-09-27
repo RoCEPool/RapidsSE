@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-//typedef i8 tPN; // opaque type for partition number in grid
-//typedef PtnId tPN; // opaque type for partition number in grid
 typedef i8 tXN; // opaque type for transaction number
 
 

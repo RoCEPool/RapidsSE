@@ -50,10 +50,10 @@ namespace Parser
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if this data source can resolve the given column reference
-    static b1 bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
-                                 Stz* szColRefTableAliasName,
-                                 Stz* szCatalogName, Stz* szSchemaName,
-                                 Stz* szTableName, Stz* szColumnName);
+    static b1 bResolvesColumnRef(QueryNode* pNode,    QueryNode* pMetadataNode,
+                                 PlanNode* pRootNode, Stz* szColRefTableAliasName,
+                                 Stz* szCatalogName,  Stz* szSchemaName,
+                                 Stz* szTableName,    Stz* szColumnName);
 
     // Prints into the buffer the identifier for the data source.
     // If an alias is set then that is used. Otherwise it could be a table name.

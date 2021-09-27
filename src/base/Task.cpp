@@ -76,7 +76,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(void)
+Task::Task(Stz* szTaskNm, Job* pJob)
 : Object(CN_TASK)
 , LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
@@ -85,11 +85,40 @@ Task::Task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  vTask();
+  
+  m_sTaskNm = szTaskNm;
+  m_pJob_task    = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Task::Task(Stz* szTaskNm, Op* pOp)
+: Object(CN_TASK)
+, LifeGuard_t<Task>(this,CN_TASK)
+, m_okLock(this,false)
+, m_oReadLocks(this)
+, m_oWriteLocks(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  vTask();
+
+  m_sTaskNm = szTaskNm;
+  m_pOp     = pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* common init                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_pProfile     = nullptr;
 
   m_pThread      = nullptr;
-  m_pJob_task         = nullptr;
-  m_pOp          = nullptr;
   
   m_bIsStart     = false;
   m_bIsImmediate = false;
@@ -106,7 +135,6 @@ Task::Task(void)
  
   m_nOperandYield = 10;
 
-  m_pSeedWord       = nullptr;
   m_pRecoveryWord  = nullptr;
   
   // m_oDicStack
@@ -164,7 +192,9 @@ Task::~Task(void) noexcept(false)
   }
   
   delete m_pSenCompiler;
-  delete m_pInput;
+  while (m_pInput) {
+    vDeleteInput();
+  }
   
   delete m_pProfile;
   m_pProfile = nullptr;
@@ -306,8 +336,6 @@ void Task::vVerifyTaskComposition(void)
   else {
     NEVER_REACH;
   }
-  
-  RASSERT(bSeeded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,10 +400,9 @@ void Task::vDumpOnException(void)
   if (m_pOp.bIsNotNull()) {
     vTrace("1) Task (for Op)\n"_Stz);
     SP_Op spOp;
-    vTrace("m_pOp=%p (%s); seed %s; %lld queued operands\n"_Stz
+    vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
            ,*m_pOp
            ,spOp.szPath(m_pOp)
-           ,m_pOp->szSeed()
            ,m_pOp->nQueuedOperands());
   }
 
@@ -399,7 +426,6 @@ void Task::vDumpOnException(void)
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
     
-    vTrace("m_pJob_task::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pJob_task->pSeedWord()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -408,7 +434,7 @@ void Task::vDumpOnException(void)
     vTrace("\n"_Stz);
     vTrace("2) Op\n"_Stz);
   
-    vTrace("m_pOp::m_pSeedWord=%s\n"_Stz,spWord.sz(m_pOp->pSeedWord()));
+
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -653,9 +679,7 @@ void Task::vDeleteInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  delete m_pInput;
-  
-  m_pInput = nullptr;
+  m_pInput = m_pInput->pDeleteInput();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,9 +738,6 @@ void Task::vDump(void)
          pWord ? pWord->szWordNm() : C_NO_WORD,
          m_aInxPtr);
 
-  vTrace("m_pSeedWord=%s %p\n"_Stz,
-         m_pSeedWord->szWordNm(),
-         m_pSeedWord);
   vTrace("m_pRecoveryWord=%s %p\n"_Stz,
          m_pRecoveryWord ? m_pRecoveryWord->szWordNm() : C_NO_NAME,
          m_pRecoveryWord);
@@ -1021,10 +1042,8 @@ void Task::vLocalsPush(void)
 void Task::vNewInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  RASSERT(! m_pInput);
     
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1095,18 +1114,6 @@ LockSet* Task::pReadLocks(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
   return & m_oReadLocks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reseed task                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vReseed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  vResetSenContext();
-
-  vSeedTask();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1283,38 +1290,23 @@ void Task::vSeeLogicUnitRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is task seeded to run                                                      */
+/* sleep for microseconds                                                     */
 /*----------------------------------------------------------------------------*/
-bool Task::bSeeded(void)
+void Task::vSleepUsec(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_aInxPtr)
-    return true;
-  else
-    return false;
+  m_oWakeup.vSleepFor(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task from it's job or op's seed word                                  */
+/* set the tasks instruction pointer to run the entry word                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedTask(void)
+void Task::vSetInxPtr(Word* pEntryWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  if (m_pJob_task.bIsNotNull()) {
-    m_pSeedWord = m_pJob_task->pSeedWord();
-  }
-  else
-  if (m_pOp.bIsNotNull()) {
-    m_pSeedWord = m_pOp->pSeedWord();
-  }
-  else
-    NEVER_REACH;
-  
-  RASSERT(m_pSeedWord);
-
-  m_aInxPtr = m_pSeedWord->aFirstCell();
+  m_aInxPtr = pEntryWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1323,19 +1315,7 @@ void Task::vSeedTask(void)
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
     m_pRecoveryWord = pRecoveryWord;
-    return;
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep for microseconds                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSleepUsec(i8 iMicroseconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_oWakeup.vSleepFor(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/

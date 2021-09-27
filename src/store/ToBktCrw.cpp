@@ -97,9 +97,8 @@ void ToBktCrw::vRepairHashSet(Object* pObject)
 void ToBktCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
-  
-  PtnId tPtnId = pRowBuffer->tPtnId();
-  
+
+   PtnId tPtnId = pRowBuffer->tPtnId();
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
   m_pCrwBuffer = m_oHashSet.pBuffer(tPtnId.iAsI8()) ?
@@ -214,15 +213,13 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(PtnId tPtnId)
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
+
   pCrwBuffer->vPtnId(tPtnId);
 
   // Set the bucket number
-  PtnId tpn = pCrwBuffer->tPtnId();
-  pCrwBuffer->vPtnToBkt(tPtnId);
+  i8 iBktNo = AM::PTNMAP::iToBkt(tPtnId);
 
-
-  //i8 iBktNo = pCrwBuffer->pTable()-> //AM::BKTMAP::iToBkt(i_Ptn);   // HACK
-  //pCrwBuffer->vBucketNo(iBktNo);
+  pCrwBuffer->vBucketNo(iBktNo);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[tPtnId.iAsI8()],false);

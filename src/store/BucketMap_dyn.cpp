@@ -1,3 +1,4 @@
+
 #if 0
 
 
@@ -28,51 +29,50 @@ BucketMap_dyn::BucketMap_dyn(i8 nPartitions)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
-
   RASSERT(nPartitions);
 
 #ifdef WITH_BKTMAP_2N4P
   if (nPartitions == 8) {
     // Synthetic mapping, assign buckets to logical partitions
-    tPN tPtnNo = 0;
+    PtnId tPtnId = 0;
     i8 i_Bkt = 0;
 
     while (i_Bkt < C_MAX_BUCKETS)
     {
-      m_taInLglPtn[i_Bkt] = tPtnNo;
-      m_taInLglPtn[++i_Bkt] = tPtnNo;
+      m_taInLglPtn[i_Bkt] = tPtnId;
+      m_taInLglPtn[++i_Bkt] = tPtnId;
 
       i_Bkt++;
-      tPtnNo++;
-      //tPtnNo = (++tPtnNo) % nPartitions;
+      tPtnId++;
+      //tPtnId = (++tPtnId) % nPartitions;
 
     }
 
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
+      vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
     }
 
   } else {
     // this to take care of internal tables ?
-    tPN tPtnNo = 0;
+    PtnId tPtnId = 0;
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      m_taInLglPtn[i_Bkt] = tPtnNo;
-      tPtnNo = (++tPtnNo) % nPartitions;
-      //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+      m_taInLglPtn[i_Bkt] = tPtnId;
+      tPtnId = (++tPtnId) % nPartitions;
+      //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId);
     }
   }
 
 
 #else
-// assign buckets to logical partitions in a round-robin fashion
-tPN tPtnNo = 0;
+  // assign buckets to logical partitions in a round-robin fashion
+  PtnId tPtnId = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_taInLglPtn[i_Bkt] = tPtnNo;
-    tPtnNo = (++tPtnNo) % nPartitions;
-    //vTrace("i_Bkt:%lld tPtnNo:%lld\n"_Stz, i_Bkt, tPtnNo);
+    m_taInLglPtn[i_Bkt] = tPtnId;
+    tPtnId = (++tPtnId) % nPartitions;
+    //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId);
   }
 #endif
-
+ 
   _checkInitialised_(CN_BUCKETMAP_dyn);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
@@ -94,6 +94,7 @@ void BucketMap_dyn::vPostRecv(void* aBucketMap)
 {
   _static_
 
+  
   BucketMap_dyn* pBucketMap = _pBucketMap_dyn(aBucketMap);
 
   pBucketMap->vResetPointers();
@@ -126,13 +127,15 @@ void BucketMap_dyn::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-tPN BucketMap_dyn::tWhichLglPtnNo(i8 iBucketId)
+
+PtnId BucketMap_dyn::tWhichLglPtnNo(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  
+  PtnId tPtnId = m_taInLglPtn[iBucketId];
+  
+  return tPtnId;
 
-  tPN tPtnNo = m_taInLglPtn[iBucketId];
-
-  return tPtnNo;
 }
 
 /*============================================================================*/
@@ -142,5 +145,4 @@ tPN BucketMap_dyn::tWhichLglPtnNo(i8 iBucketId)
 
 
 #endif
-
 

@@ -30,7 +30,6 @@
 #include "Job.hpp"
 
 #include "EnumGroups.h"
-#include "eAN.h"
 #include "eAT.h"
 #include "eDL.h"
 #include "ePD.h"
@@ -257,35 +256,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("HW_PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // AN_ : action numbers
-  /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_CONSTRUCT"_Stz,          AN_CONSTRUCT);
-  /*  0 */ vAddConstant("AN_DESTRUCT"_Stz,           AN_DESTRUCT);
-  /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
-  /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
-  /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
-  /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
-  /*  0 */ vAddConstant("AN_JOB_PHASE"_Stz,          AN_JOB_PHASE);
-  /*  0 */ vAddConstant("AN_NEW_JOB"_Stz,            AN_NEW_JOB);
-  /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
-  /*  0 */ vAddConstant("AN_POST_RECV"_Stz,          AN_POST_RECV);
-  /*  0 */ vAddConstant("AN_PRE_PROMPT"_Stz,         AN_PRE_PROMPT);
-  /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
-  /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
-  /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
-  /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
-  /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);
-  /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
-  /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
-  /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
-  /*  0 */ vAddConstant("AN_SEED_RCV"_Stz,           AN_SEED_RCV);
-  /*  0 */ vAddConstant("AN_SEED_REQ"_Stz,           AN_SEED_REQ);
-  /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
-  /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
-  /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
-  /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
-  
+    
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,     AT_NONE);
   /*  1 */ vAddConstant("AT_EXACT"_Stz,    AT_EXACT);
@@ -481,7 +452,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_IK"_Stz,   EG_IK);
   vAddConstant("EG_IS"_Stz,   EG_IS);
   vAddConstant("EG_IT"_Stz,   EG_IT);
-  vAddConstant("EG_JA"_Stz,   EG_JA);
   vAddConstant("EG_JF"_Stz,   EG_JF);
   vAddConstant("EG_JK"_Stz,   EG_JK);
   vAddConstant("EG_JL"_Stz,   EG_JL);
@@ -500,7 +470,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_NE"_Stz,   EG_NE);
   vAddConstant("EG_NS"_Stz,   EG_NS);
   vAddConstant("EG_OA"_Stz,   EG_OA);
-  vAddConstant("EG_OC"_Stz,   EG_OC);
   vAddConstant("EG_OI"_Stz,   EG_OI);
   vAddConstant("EG_OK"_Stz,   EG_OK);
   vAddConstant("EG_OM"_Stz,   EG_OM);
@@ -524,8 +493,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_SC"_Stz,   EG_SC);
   vAddConstant("EG_SI"_Stz,   EG_SI);
   vAddConstant("EG_SK"_Stz,   EG_SK);
-  vAddConstant("EG_SL"_Stz,   EG_SL);
-  vAddConstant("EG_SS"_Stz,   EG_SS);
   vAddConstant("EG_ST"_Stz,   EG_ST);
   vAddConstant("EG_TA"_Stz,   EG_TA);
   vAddConstant("EG_TN"_Stz,   EG_TN);
@@ -640,16 +607,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
   /*  0 */ vAddConstant("RS_LOCAL_RESPONSE"_Stz,       RS_LOCAL_RESPONSE);
   /*  0 */ vAddConstant("RS_DIS2PC_RESPONSE"_Stz,      RS_DIS2PC_RESPONSE);
-
-  // SS_ : seed strings
-  /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
-  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
-  /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
-  /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
-  /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);
-  /*  5 */ vAddConstant("SS_SEED_CAN"_Stz,    SS_SEED_CAN);
-  /*  6 */ vAddConstant("SS_SEED_BEG"_Stz,    SS_SEED_BEG);
-  /*  7 */ vAddConstant("SS_SEED_KID"_Stz,    SS_SEED_KID);
   
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);

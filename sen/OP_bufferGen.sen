@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BufferGen_req \operator
+: BufferGen_op \operator
 
   _lu_initialise_
 
@@ -60,7 +60,10 @@
 cmdSyntax: bufferGen :: bufferGen <nBuffers> ;
 
 : bufferGen_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bufferGen_op"
+  }
 ;
 
 /*============================================================================*/

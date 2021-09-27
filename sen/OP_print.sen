@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* print request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: print_req \operator
+: print_op \operator
 
   _lu_initialise_
 
@@ -53,7 +53,10 @@
 cmdSyntax: print :: print ;
 
 : print_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "print_op"
+  }
 ;
 
 /*============================================================================*/

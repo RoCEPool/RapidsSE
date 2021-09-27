@@ -39,7 +39,7 @@ __aFooterFunction(RowTablePtn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowTablePtn::RowTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket)
-    : Object(CN_ROWTABLEPTN)
+: Object(CN_ROWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 

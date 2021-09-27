@@ -116,7 +116,7 @@ void Engine::vPreliminary(void)
   
   vCreateTmpDir();
   
-  vOpenTrace();
+  //vOpenTrace();
 
   vPrintWelcome();
   
@@ -213,25 +213,25 @@ void Engine::vRunCommandLine(void)
   
   eBO eBootOption = eDecodeCommandLine();
 
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-    vInfo("\n+\n+ %lld) Run Command Line\n+\n"_Stz,giProgressPoint++);
-    switch (eBootOption) {
-        
-      case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
-      case BO_PROMPT:       vInfo("BO_PROMPT\n"_Stz);       break;
-      case BO_SETH_PROMPT:  vInfo("BO_SETH_PROMPT\n"_Stz);  break;
-      case BO_START:        vInfo("BO_START\n"_Stz);        break;
-      case BO_START_PROMPT: vInfo("BO_START_PROMPT\n"_Stz); break;
-      case BO_STATUS:       vInfo("BO_STATUS\n"_Stz);       break;
-      case BO_STOP:         vInfo("BO_STOP\n"_Stz);         break;
-      case BO_UNLINK:       vInfo("BO_UNLINK\n"_Stz);       break;
-        
-      default:
-        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-               "Unknown command line argument\n"_Stz);
-    }
-
-  }
+//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
+//    vInfo("\n+\n+ %lld) Run Command Line\n+\n"_Stz,giProgressPoint++);
+//    switch (eBootOption) {
+//
+//      case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
+//      case BO_PROMPT:       vInfo("BO_PROMPT\n"_Stz);       break;
+//      case BO_SETH_PROMPT:  vInfo("BO_SETH_PROMPT\n"_Stz);  break;
+//      case BO_START:        vInfo("BO_START\n"_Stz);        break;
+//      case BO_START_PROMPT: vInfo("BO_START_PROMPT\n"_Stz); break;
+//      case BO_STATUS:       vInfo("BO_STATUS\n"_Stz);       break;
+//      case BO_STOP:         vInfo("BO_STOP\n"_Stz);         break;
+//      case BO_UNLINK:       vInfo("BO_UNLINK\n"_Stz);       break;
+//
+//      default:
+//        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//               "Unknown command line argument\n"_Stz);
+//    }
+//
+//  }
   
   try {
     switch (eBootOption) {
@@ -249,6 +249,7 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
+        vOpenTrace(true);
         vCallPrompt();
         break;
         
@@ -259,16 +260,19 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
+        vOpenTrace(true);
         vCallPrompt();
         break;
         
       case BO_START:
+        vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
       case BO_START_PROMPT:
+        vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
 #ifdef WITH_APPLE
@@ -746,7 +750,10 @@ void Engine::vInternalTables(void)
   
   pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
-  
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBREPORT);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBREPORT,pStreamDef);
+
   pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
 
@@ -1043,36 +1050,50 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 /* open trace file                                                            */
 /*----------------------------------------------------------------------------*/
-void Engine::vOpenTrace(void)
+void Engine::vOpenTrace(bool bPrompt)
 {
   s256 sTracePath;
-  
-  #ifdef WITH_DEBUG_VERSION
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                       "SEgrid"_Stz,
-                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-  #else
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                       "SEgrid"_Stz,
-                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-  #endif
-  //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-  //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
-  
-  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
-  
-  bool bOpened;
 
-  if (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace)
-    bOpened = gpTraceFile->bOpenAppend(sTracePath);
-  else
-    bOpened = gpTraceFile->bOpenWrite(sTracePath);
-  RASSERT(bOpened);
+#ifdef WITH_DEBUG_VERSION
+  sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+                     "SEgrid"_Stz,
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+#else
+  sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
+                     "SEgrid"_Stz,
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+#endif
+
+  if (bPrompt) {
+    gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
+
+    bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
+    RASSERT(bOpened);
+
+    vTrace("Opened trace file %s for append\n"_Stz
+
+           ,sTracePath.szStz()
+           );
+  }
+  else {
   
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("Opened trace file for %s: %s\n"_Stz,
-          (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace) ? "append" : "write",
-          sTracePath.szStz());
+    //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
+    
+    gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
+    
+    gpAttachMap->vTraceFile(gpTraceFile);
+    
+    bool bOpened;
+
+    bOpened = gpTraceFile->bOpenWrite(sTracePath);
+    RASSERT(bOpened);
+    
+    vTrace("Opened trace file %s for write\n"_Stz
+
+           ,sTracePath.szStz()
+           );
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1564,7 +1585,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vInfo("  Running Boot Job\n"_Stz);
-  Api::vCallBoot();
+  Api::vCallBootSystem();
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
@@ -1577,8 +1598,8 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Running Start Job\n"_Stz);
-  Api::RunStartJob();
+    vInfo("  Calling StartSystem job\n"_Stz);
+  Api::vCallStartSystem();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables

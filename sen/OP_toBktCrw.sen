@@ -99,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_req \operator
+: toBktCrw_op \operator
 
   _lu_initialise_
 
@@ -125,7 +125,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toBktCrw :: toBktCrw ;
 
-: toBktCrw_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toBktCrw_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toBktCrw_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

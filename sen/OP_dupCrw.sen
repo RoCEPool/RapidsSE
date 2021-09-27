@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for dupCrw req                                               SPAWN */
 /*----------------------------------------------------------------------------*/
- : dupCrw_req \operator
+ : dupCrw_op \operator
 
   _lu_initialise_
   "dupCrw_req" .
@@ -47,7 +47,10 @@
 cmdSyntax: dupCrw :: dupCrw ;
 
 : dupCrw_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "dupCrw_op"
+  }
 ;
 
 /*============================================================================*/

@@ -13,12 +13,12 @@
 
 : start::defProc_Query
 
-  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| STD_PATH |
+  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| STD_PATH_TAG |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query_3b
   begin
@@ -48,7 +48,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query_3b_I
   begin
@@ -79,7 +79,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query_4b
   begin
@@ -106,7 +106,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query_4b_I
   begin
@@ -142,7 +142,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3 prelim
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure dynCompiler
   begin
@@ -178,7 +178,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query1
     parameters $Table
@@ -209,7 +209,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query1_I
     parameters $Table
@@ -240,7 +240,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query6
     parameters $Table $Index
@@ -269,7 +269,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query6_I
     parameters $Table $Index
@@ -307,7 +307,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - compiled
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query1_ASM
     parameters $Table $QueryText_stageB $QueryText_stageC
@@ -337,7 +337,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- compiled
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query3_ASM
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -368,7 +368,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- compiled
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query4_ASM
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -399,7 +399,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - compiled
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query6_ASM
     parameters $QueryText_stageB $QueryText_stageC
@@ -437,7 +437,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - interpretive
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query1_ASM_I
   parameters $Table $QueryText_stageB $QueryText_stageC
@@ -467,7 +467,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- interpretive
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query3_ASM_I
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -498,7 +498,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- interpretive
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query4_ASM_I
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -529,7 +529,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - interpretive
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure Query6_ASM_I
     parameters $QueryText_stageB $QueryText_stageC
@@ -568,7 +568,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure aggregRows_I
     parameters $table $etc
@@ -592,7 +592,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure aggregRows
     parameters $table $etc
@@ -616,7 +616,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure filterRows_I
     parameters $table $etc
@@ -640,7 +640,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure filterRows
     parameters $table $etc
@@ -663,7 +663,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure limitRows_I
     parameters $table $rows
@@ -687,7 +687,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure limitRows
     parameters $table $rows
@@ -711,7 +711,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure projectColumns_I
     parameters $table $etc
@@ -735,7 +735,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure projectColumns
     parameters $table $etc
@@ -759,7 +759,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure range_I
     parameters $table $index $etc
@@ -782,7 +782,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure range
     parameters $table $index $etc
@@ -814,7 +814,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scan tables
   
-  STD_PATH
+  STD_PATH_TAG
   "
   procedure scanTables
   begin
@@ -829,63 +829,33 @@
   // scanTables ;
  ;
 
+
+
 /*----------------------------------------------------------------------------*/
-/* sql compiler related procedures                                            */
+/* meta table related procedures                                              */
 /*----------------------------------------------------------------------------*/
 
-"  start::defProc_SqlCompiler" .verbose
+"  start::defProc_JobRep" .verbose
 
-: start::defProc_SqlCompiler
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sql Compiler
+: start::defProc_JobRep
   
-  STD_PATH
+  STD_PATH_TAG
   "
-  procedure sqlCompiler
-    parameters $sqlStatement
-
+  procedure JobRep
+    parameters $JobNo
   begin
 
-    // Where possible, try to name these operators in the format:  <noun><verb>
-    // e.g. exprValidate
-    // This makes it easier to glance through and categorise/identify transformations.
-    // For example, if all transformations of aggregates begin with aggregate or agg
-    // then it is easy to visually spot them.
-    // There are always exceptions though, e.g. explainPlan, partitionPlan, etc.
-
-    stage stageA on origin :
-      start
-      | pulse once
-// Parsing phase
-      | parser $sqlStatement
-// Planning Phase
-      | nameValidate
-      | exprValidate
-      | setOpValidate
-      | postProject
-      | exprPushdown
-      | projValidation
-// Optimisation Phase
-      | corrBySquash
-      | explainPlan
-      | partitionPlan
-      | projValidation    // sanity check after partitioning
-      | partitionExplain
-// Transliteration Phase
-      | stageMarkers
-      | aggregateSplit 
-      | transliterate
-      | output
-      | sink
-      | stageA
+  stage stageA on origin :
+    start | pulse once | jobRepOp $JobNo | output | sink | stageA
 
   end ;
   "
   api::addProcedure
-
-  // sqlCompiler ;
  ;
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* proc: test                                                                 */

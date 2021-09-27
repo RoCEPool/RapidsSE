@@ -48,8 +48,7 @@ namespace STORE
   
     static void       vPostRecv(void* aTable);
     
-    i8      iPtnNoToTablePtn(PtnId tPtnNo);
-    PtnId   tTablePtnToPtnNo(i8 i_TablePtn);
+    i8      iPtnNoToTablePtn(PtnId tPtnId);
     PtnId   tTablePtnToPtnId(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);

@@ -43,18 +43,6 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_CANCELLING operand                                        */
 /*----------------------------------------------------------------------------*/
-/*
-: send_CANCELLING \handler
-
-  PipeIn[].sendTo discard
-
-  PipeIn[].drain
-
-  Op.ackPipelineJob
-  
-  false // calling op_loop exits
-;
-*/
 : send_CANCELLING \handler
 
   PipeIn[].sendTo discard
@@ -62,6 +50,15 @@
   PipeIn[].drain
 
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING operand                                          */
+/*----------------------------------------------------------------------------*/
+: send_CLEANING \handler
+
+  LogicUnit[].cleanup
+  PipeIn[].sendTo
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for send request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : send_req \operator
+ : send_op \operator
 
   _lu_initialise_
 
@@ -93,6 +90,7 @@
   find: PipeIn[].sendTo op[].handlerAll!
 
   find: send_CANCELLING  ZK_M_CANCELLING  op[].handler!
+  find: send_CLEANING    ZK_M_CLEANING    op[].handler!
   find: send_EXITING     ZK_M_EXITING     op[].handler!
 
   op__loop
@@ -110,7 +108,10 @@
 cmdSyntax: send :: send <sendKind> ;
 
 : send_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "send_op"
+  }
 ;
 
 /*============================================================================*/

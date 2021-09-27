@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for connector req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : connector_req \operator
+ : connector_op \operator
  
   _lu_initialise_
 
@@ -147,9 +147,10 @@
 cmdSyntax: connector :: connector ;
 
 : connector_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "connector_op"
+  }
 ;
 
 /*============================================================================*/

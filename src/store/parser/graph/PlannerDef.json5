@@ -345,25 +345,10 @@
                       value: "Marks the start of some type of subquery. This is an abstract base type.",
                       properties: [
                         {
-                          // Add a constraint that children of subqueryMarker objects must be
-                          // either a StatementMarker or StageMarker.
-                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                          {
-                            name: "childType",
-                            type: "/__root__/primitives/constraints/childType",
-                            children: [
-                              {
-                                name: "childTypeParam1",
-                                type: "/__root__/definitions/object/valueObject/stringObject",
-                                value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
-                              },
-                              {
-                                name: "childTypeParam2",
-                                type: "/__root__/definitions/object/valueObject/stringObject",
-                                value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
-                              }
-                            ]
-                          }]
+                          // Where the definition of this CTE may be found. Could be null temporarily.
+                          name: "defnPath",
+                          value: "The full path to the definition of this CTE",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
                         }
                       ],
                       children: [
@@ -372,7 +357,29 @@
                         {
                           name: "mainSubquery",
                           value: "Identifies the primary subquery to be executed.",
-                          properties: [],
+                          properties: [
+                            {
+                              // Add a constraint that children of a mainSubquery must be
+                              // either a StatementMarker or StageMarker.
+                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type: "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/statementMarker"
+                                  },
+                                  {
+                                    name: "childTypeParam2",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/stageMarker"
+                                  }
+                                ]
+                              }]
+                            }
+                          ],
                         },
 
 // Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery
@@ -385,6 +392,39 @@
                               name: "tableAlias",
                               value: "The virtual table name that this tableSubquery is known as",
                               type: "/__root__/definitions/object/valueObject/stringObject"
+                            },
+                            {
+                              // Table subqueries must also specify column names.
+                              // This will get filled in automatically if the user does not specify them.
+                              name: "columnNames",
+                              value: "The list of names for each column that this table subquery provides",
+                              type: "/__root__/definitions/object/list/idList"
+                            },
+                            {
+                              name: "isRecursive",
+                              value: "Has a value of TRUE if this subquery has been defined with the RECURSIVE keyword.",
+                              type: "/__root__/definitions/object/valueObject/booleanObject"
+                            },
+                            {
+                              // Add a constraint that children of a tableSubquery object must be
+                              // either another tableSubquery (nested) or a mainSubquery
+                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type: "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
+                                  },
+                                  {
+                                    name: "childTypeParam2",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                                  }
+                                ]
+                              }]
                             }
                           ],
                         },
@@ -398,6 +438,27 @@
                               name: "correlatedColumns",
                               value: "A list of columnRef expressions representing the columns that are correlated with the parent query",
                               type: "/__root__/definitions/object/list/columnRefs"
+                            },
+                            {
+                              // Add a constraint that children of an exprSubquery object must be
+                              // either another tableSubquery (nested) or a mainSubquery
+                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type: "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
+                                  },
+                                  {
+                                    name: "childTypeParam2",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                                  }
+                                ]
+                              }]
                             }
                           ],
                         }
@@ -701,9 +762,12 @@
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
                           ]
                         }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subqueryRefOp
+                        {
+                          name: "subqueryRefOp",
+                          value: "A reference to a table subquery elsewhere in the plan",
+                        },
                       ]
                     }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
 
@@ -793,6 +857,11 @@
                       name: "columnName",
                       value: "The name of the column. Must not be null.",
                       type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "defnPath",
+                      value: "The path to the definition of this object if it cannot be found from the above names. Used by columns of CTEs.",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnRef
@@ -1754,7 +1823,28 @@
                     ]} // end __constraints container
                   ],
                   children: []
-                }, // EndPath: /__root__/definitions/object/list/exprList
+                }, // EndPath: /__root__/definitions/object/list/stringList
+
+// Path: /__root__/definitions/object/list/idList
+                {
+                  name: "idList",
+                  value: "A list of object name IDs represented as strings. Very similar to a stringlist but they are vDescribe()'ed differently",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/valueObject/stringObject
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/valueObject/stringObject"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/idList
 
 // Path: /__root__/definitions/object/list/catalogDefs
                 {
@@ -1882,6 +1972,27 @@
                   ], // end properties
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/columnRefs
+
+// Path: /__root__/definitions/object/list/cteDefs
+                {
+                  name: "cteDefs",
+                  value: "A list of Common Table Expression definitions",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/cteDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/cteDef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/cteDefs
 
 // Path: /__root__/definitions/object/list/stageRangeList
                 {
@@ -2142,6 +2253,41 @@
                     // TODO: is primary key?
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/indexDef
+// Path: /__root__/definitions/object/compound/cteDef
+                {
+                  name: "cteDef",
+                  value: "contains the definition of a Common Table Expression",
+                  properties: [
+                    {
+                      name: "aliasName",
+                      value: "The name of the virtual table that this CTE provides rows as",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "columns",
+                      value: "The definitions of the columns that make up the CTE",
+                      type: "/__root__/definitions/object/list/columnDefs"
+                    },
+                    // Add a constraint that any children of a cteDef must also be a cteDef.
+                    // This helps us establish a definition hierarchy which is important for
+                    // determining whether a name resolution of a CTE is in scope or not.
+                    {
+                      name: "__constraints",
+                      type: "/__root__/primitives/constraints",
+                      children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [
+                        {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject",
+                          value: "/__root__/definitions/object/compound/cteDef"
+                        }
+                      ]},
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/cteDef
 // Path: /__root__/definitions/object/compound/stageRange
                 {
                   name: "stageRange",
@@ -2210,6 +2356,11 @@
                   name: "catalogs",
                   value: "A list of catalogs used by the current plan",
                   type: "/__root__/definitions/object/list/catalogDefs"
+                },
+                {
+                  name: "ctes",
+                  value: "A list of Common Table Expression definitions used by the current plan",
+                  type: "/__root__/definitions/object/list/cteDefs"
                 },
                 // TODO: Add session information into the plan. e.g. current username, timezone, CURRENT_TIMESTAMP, etc
 //                {

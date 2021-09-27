@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for upsert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : upsertOp_req \operator
+ : upsertOp_op \operator
  
   _lu_initialise_
 
@@ -79,7 +79,10 @@
 cmdSyntax: upsertOp :: upsertOp <tableNm> ;
 
 : upsertOp_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "upsertOp_op"
+  }
 ;
 
 /*============================================================================*/

@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* scan request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: metaScan_req \operator
+: metaScan_op \operator
 
   _lu_initialise_
 
@@ -129,8 +129,8 @@ cmdSyntax: metaScan :: metaScan <metaObjectNm> <metaSubNm> ;
   tags{
     <cmdDesc>    = "--desc for op--"
     <streamDef>  = __listContents
+    <opEntry> = "metaScan_op"
   }
-
 ;
   
 /*============================================================================*/

@@ -19,10 +19,13 @@ __aFooterFunction(Input)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Input::Input(void)
+Input::Input(Input* pNext)
 : Object(CN_INPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_pNext   = pNext;
+  m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
   
   m_pCharser = new Charser(nullptr);
   
@@ -58,6 +61,8 @@ Input::~Input(void) noexcept(false)
   while (m_pCharser)
     RASSERT(bPopCharser());
   
+  RASSERT(! m_pNext);
+
   delete m_pTknVec;
 }
 
@@ -108,18 +113,29 @@ void Input::vDebugMode(i8 iDebugMode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete input                                                               */
+/*----------------------------------------------------------------------------*/
+Input* Input::pDeleteInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Input* pNext = m_pNext;
+  
+  m_pNext = nullptr;
+  
+  delete this;
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of charser                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Input::iDepth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-
-  if (! m_pCharser)
-    return -1;
-
-  i8 iCharserDepth = m_pCharser->iDepth();
   
-  return iCharserDepth;
+  return m_iDepth;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,11 +300,8 @@ bool Input::bPopCharser(void)
   if (! m_pCharser)
     return false;
   
-  Charser* pToBeDelete = m_pCharser;
-  m_pCharser = m_pCharser->pNext();
-  
-  delete pToBeDelete;
-  
+  m_pCharser = m_pCharser->pDeleteCharser();
+    
   return true;
 }
 

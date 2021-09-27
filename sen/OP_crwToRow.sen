@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /* crwToRow request                                                     SPAWN */
 /*----------------------------------------------------------------------------*/
-: crwToRow_req \operator
+: crwToRow_op \operator
 
   _lu_initialise_
 
@@ -104,7 +104,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: crwToRow :: crwToRow ;
 
-: crwToRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: crwToRow_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "crwToRow_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

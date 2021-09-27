@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for statWrite req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : statWrite_req \operator
+ : statWrite_op \operator
  
   _lu_initialise_
 
@@ -88,7 +88,10 @@
 cmdSyntax: statWrite :: statWrite ;
 
 : statWrite_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc>  = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "statWrite_op"
+  }
 ;
 
 /*============================================================================*/

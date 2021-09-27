@@ -1,0 +1,101 @@
+/*============================================================================*/
+/* job_cancel.sen -- cancel 2pc job (pipeline coordination)                   */
+/*============================================================================*/
+
+" job_cancel.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on originating node                             //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* distribute Job_Cancel to all participants                                  */
+/*----------------------------------------------------------------------------*/
+: cancel::distribute params| pJobOriginator |
+
+  //
+  // where:  On the originator node.
+  //
+
+  0 locals| pJob_Cancel |
+
+  // create a temporary Job_Cancel
+  pJobOriginator job_cancel::new to pJob_Cancel
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the no of acks expected in originator job
+  grid::knownNodes pJobOriginator job.acksRemaining!
+
+  // send job_cancel to all nodes
+
+  0 locals| pNode |
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.isConnected if
+      pNode node.no pJob_Cancel job.forward
+    then
+
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // delete the temporary job_cancel
+  pJob_Cancel job.delete2pc
+;
+
+/*----------------------------------------------------------------------------*/
+/* run received Job_Cancel on participating node    recv: job.spawn */
+/*----------------------------------------------------------------------------*/
+: cancel::cancel
+
+  //
+  // where: on the participating node
+  //
+  Job[] locals| pJob_Cancel |
+
+  // find the job to be executed in the participating jobs
+  pJob_Cancel job.id@ locals| iJobId |
+  iJobId plist::findJob discard
+
+  // stall till job's previous phase (task) has completed
+  begin
+    JobRef[].hasTask
+  while
+    Task[].yield 
+  repeat
+
+  "pipeline::cancel" JobRef[] job.entry!
+  JobRef[] job.scheduleNextPhase
+  JobRef[].returnReference
+  
+  _job_2pc_delete_
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: cancel :: cancel ;
+
+: cancel_cmdTags _cmdTags tagCopy: genericJob_tags
+  tags{
+    <cmdDesc>  = "--desc for job--"
+    <entryPoint>    = "cancel::cancel"
+    <path>     = "/"
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

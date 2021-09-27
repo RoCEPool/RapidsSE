@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -32,7 +32,12 @@ CsvBuffer::CsvBuffer(void)
 #endif
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
+
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit)
+    pLogicUnit->m_xpStats->m_nNewCsvBuffer++;
+
   _checkInitialised_(CN_CSVBUFFER);
 }
 
@@ -42,6 +47,10 @@ CsvBuffer::CsvBuffer(void)
 CsvBuffer::~CsvBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if(pLogicUnit)
+    pLogicUnit->m_xpStats->m_nDelCsvBuffer++;
 }
 
 /*----------------------------------------------------------------------------*/

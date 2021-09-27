@@ -58,6 +58,9 @@ namespace Parser
     // as /a/b/c/d/e
     static void vConnectChains(QueryNode* pFirst, QueryNode* pSecond);
 
+    // Search for pExistingNode in the graph, starting at pStartingNode, and replace
+    // it with pNewNode. pExistingNode must exist in the graph.
+    static void vReplaceNode(PlanNode* pStartingNode, QueryNode* pExistingNode, QueryNode* pNewNode);
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.
 

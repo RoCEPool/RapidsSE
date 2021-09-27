@@ -97,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for receiver req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : recv_req \operator
+ : recv_op \operator
  
   _lu_initialise_
 
@@ -138,9 +138,10 @@
 cmdSyntax: recv :: recv ;
 
 : recv_cmdTags _cmdTags tagCopy: op_tags
-
-  tags{ <dedicatedThd> = 1 }
-
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "recv_op"
+  }
 ;
 
 /*============================================================================*/

@@ -90,6 +90,9 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
   m_pIndexTree  = pIndexTree;
   m_eEntKind    = pIndexTree->pIndexDef()->eKeyKind();
 
+  // zero the m_cSpaceForTx
+  MemLib::vZero(m_cSpaceForTx, sizeof(m_cSpaceForTx), CN_ENTBUFFER);
+
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
@@ -1505,10 +1508,9 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
          pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevEntBuffer(),pNextEntBuffer());
-  
+
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnId.iAsI8(),m_iBufferHeight);
-  
   SkipRoots* aSkipRoots = this->aSkipRoots();
   vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
          aSkipRoots,

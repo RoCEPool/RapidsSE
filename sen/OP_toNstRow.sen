@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* toNstRow request                                                    SPAWN */
 /*----------------------------------------------------------------------------*/
-: toNstRow_req \operator
+: toNstRow_op \operator
 
   _lu_initialise_
 
@@ -77,7 +77,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toNstRow :: toNstRow ;
 
-: toNstRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toNstRow_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toNstRow_op"
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

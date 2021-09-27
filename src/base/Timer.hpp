@@ -30,9 +30,10 @@ namespace BASE
     void vStart(void);
     void vUpdate(void);
     
-    i8 iNanoseconds(void);
+    i8 iMagnitude(i8 iBase = 1000);
     i8 iMicroseconds(void);
     i8 iMilliseconds(void);
+    i8 iNanoseconds(void);
     i8 iSeconds(void);
     i8 iTickDelta(void);
   

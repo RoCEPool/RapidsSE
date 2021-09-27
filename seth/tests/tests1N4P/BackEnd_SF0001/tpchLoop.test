@@ -40,21 +40,33 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running index scans...';
+INCLUDE 'indexScan.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running index joins...';
+INCLUDE 'indexJoin.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running index joins with hash...';
+INCLUDE 'indexJoinHash.test';
+
+//------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
 //INCLUDE 'query1.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
-//INCLUDE 'tpchTruncate.test';
+INCLUDE 'tpchTruncate.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Dropping tpch schema...';
-//INCLUDE 'tpchSchemaDrop.test';
+INCLUDE 'tpchSchemaDrop.test';
 
 } -- end of loop
 
 CLEANUP {
-/*
+
   drop table customer;
   mute
 
@@ -78,7 +90,7 @@ CLEANUP {
 
   drop table nation;
   mute
-*/
+
   bye;
   mute
 }

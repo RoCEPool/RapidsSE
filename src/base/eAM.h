@@ -66,15 +66,18 @@ enum eAM // ASM Macros
 
   /*    */ AM_JOINROWS_CRWLFT_CRWRHT,
   /*    */ AM_JOINROWS_CRWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_CRWLFT_NULENT,
   /*    */ AM_JOINROWS_CRWLFT_NULRHT,
   /*    */ AM_JOINROWS_CRWLFT_ROWRHT,
   /*    */ AM_JOINROWS_ROWLFT_CRWRHT,
   /*    */ AM_JOINROWS_ROWLFT_ENTRHT,
+  /*    */ AM_JOINROWS_ROWLFT_NULENT,
   /*    */ AM_JOINROWS_ROWLFT_NULRHT,
   /*    */ AM_JOINROWS_ROWLFT_ROWRHT,
 
   /*    */ AM_JOINTEST_CRWLFT_CRWRHT,
   /*    */ AM_JOINTEST_CRWLFT_ROWRHT,
+  /*    */ AM_JOINTEST_END,
   /*    */ AM_JOINTEST_ROWLFT_CRWRHT,
   /*    */ AM_JOINTEST_ROWLFT_ROWRHT,
 
@@ -82,8 +85,6 @@ enum eAM // ASM Macros
   /*    */ AM_LOOPJOIN_CRWLFT_ROWRHT,
   /*    */ AM_LOOPJOIN_ROWLFT_CRWRHT,
   /*    */ AM_LOOPJOIN_ROWLFT_ROWRHT,
-
-  /*    */ AM_LOOPJOIN_END,
 
   /*    */ AM_PAYLOAD_AGG,
   /*    */ AM_PAYLOAD_END,
@@ -189,15 +190,18 @@ static Stz* aAM[]
 
     /*    */ "JOINROWS_CRWLFT_CRWRHT"_Stz,
     /*    */ "JOINROWS_CRWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_CRWLFT_NULENT"_Stz,
     /*    */ "JOINROWS_CRWLFT_NULRHT"_Stz,
     /*    */ "JOINROWS_CRWLFT_ROWRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_CRWRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_ENTRHT"_Stz,
+    /*    */ "JOINROWS_ROWLFT_NULENT"_Stz,
     /*    */ "JOINROWS_ROWLFT_NULRHT"_Stz,
     /*    */ "JOINROWS_ROWLFT_ROWRHT"_Stz,
 
     /*    */ "JOINTEST_CRWLFT_CRWRHT"_Stz,
     /*    */ "JOINTEST_CRWLFT_ROWRHT"_Stz,
+    /*    */ "JOINTEST_END"_Stz,
     /*    */ "JOINTEST_ROWLFT_CRWRHT"_Stz,
     /*    */ "JOINTEST_ROWLFT_ROWRHT"_Stz,
 
@@ -205,8 +209,6 @@ static Stz* aAM[]
     /*    */ "LOOPJOIN_CRWLFT_ROWRHT"_Stz,
     /*    */ "LOOPJOIN_ROWLFT_CRWRHT"_Stz,
     /*    */ "LOOPJOIN_ROWLFT_ROWRHT"_Stz,
-
-    /*    */ "LOOPJOIN_END"_Stz,
 
     /*    */ "PAYLOAD_AGG"_Stz,
     /*    */ "PAYLOAD_END"_Stz,

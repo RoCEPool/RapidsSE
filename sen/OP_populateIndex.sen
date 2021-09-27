@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for populateIndex req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: populateIndex_req \operator
+: populateIndex_op \operator
 
   _lu_initialise_
 
@@ -95,7 +95,9 @@ cmdSyntax: populateIndex :: populateIndex <indexNm> ;
 
 : populateIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <jobDesc>   = "--description of operator--" }
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "populateIndex_op"
+  }
 ;
     
 /*============================================================================*/

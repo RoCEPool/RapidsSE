@@ -104,6 +104,9 @@ Session::Session(void)
   
   m_iCmdNo = 0;
 
+  
+  m_tLastJobId = 0;
+  
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
@@ -285,9 +288,9 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   // -- -- -- -- -- --
   
-  if (m_pInput)
-    delete m_pInput;
-  m_pInput = nullptr;
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
+
 
   if (m_pOutput)
     delete m_pOutput;
@@ -415,7 +418,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pInput = new Input;
+  m_pInput = new Input(m_pInput);
   
   m_pOutput = new Output;
 
@@ -432,6 +435,26 @@ Job* Session::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* last job run                                                               */
+/*----------------------------------------------------------------------------*/
+JobId Session::tLastJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  return m_tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last job run                                                           */
+/*----------------------------------------------------------------------------*/
+void Session::vLastJobId(JobId tLastJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_tLastJobId = tLastJobId;
 }
 
 /*----------------------------------------------------------------------------*/

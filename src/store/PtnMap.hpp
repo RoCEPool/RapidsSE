@@ -40,20 +40,23 @@ namespace STORE
     static i8   iHashToBucketId(i8 iHash);
   
     void vAdjustMap(i8 nKnownNodes);
-    PtnId  tHashToDtdPtnId(i8 iHash);
-    i8   nKnownNodes(void);
-    i8   nPtnsInGrid(void);
-    i8   nPtnsPerNode(void);
-    void vSee(void);
-    PtnId  tRobinToDtdPtnId(i8 iRobin);
-    i8  tRobinToLclPtnNo(i8 iRobin);
-    i8  iRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
-    i8   iWhichNodeNo(i8 tPtnNo);
-    i8   i_WhichPtn(i8 tPtnNo);
- 
-    i8  iToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
-    i8  iToPtnNoOfThisNode(i8 i_Ptn);
 
+    void vSee(void);
+
+    PtnId tHashToDtdPtnId(i8 iHash);
+    i8 iToBkt(PtnId tPtnId);
+    PtnId tToPtn(i8 iBktNo);
+    i8 nKnownNodes(void);
+    i8 nPtnsInGrid(void);
+    i8 nPtnsPerNode(void);
+
+    PtnId tRobinToDtdPtnId(i8 iRobin);
+    PtnId tRobinToLclPtnNo(i8 iRobin);
+    PtnId tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
+    i8 iWhichNodeNo(PtnId tPtnId);
+    i8 i_WhichPtn(PtnId tPtnId);
+    PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
+    PtnId tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:
     void vRepartition(void);

@@ -18,7 +18,6 @@
 #include "eMM.h"
 #include "eMT.h"
 #include "eNE.h"
-#include "eOC.h"
 #include "eOK.h"
 #include "eOR.h"
 #include "ePF.h"
@@ -118,6 +117,7 @@
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
+#include "JobReport.hpp"
 #include "Jobs.hpp"
 
 #include "Locator.hpp"
@@ -140,6 +140,7 @@
 #include "PlannerLock.hpp"
 
 #include "Dynamo.hpp"
+#include "Optimus.hpp"
 
 #include "RowTablePtn.hpp"
 
@@ -174,11 +175,11 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "TccLock.hpp"
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
-
-#include "TccLock.hpp"
 #include "TraceLock.hpp"
+#include "Tub.hpp"
 
 #include "Parcel.hpp"
 #include "Sends.hpp"
@@ -223,7 +224,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 }, // CN_BUCKETGET
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
-  { sizeof(BucketMap_dyn),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP_dyn
+  { sizeof(BucketMap_dyn),      HT_T_LARGE   ,0 }, // CN_BUCKETMAP_dyn
   { sizeof(BucketVec),          HT_T_SMALL   ,0 }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
@@ -315,6 +316,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
   { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
+  { sizeof(JobReport),          HT_T_TINY    ,0 }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
 
   { 'K' - ('A' - 1),            HT_INVALID   ,0 }, // CN__K__
@@ -370,6 +372,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
+  { sizeof(Optimus),            HT_T_TINY    ,0 }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
@@ -530,6 +533,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
+  { sizeof(Tub),                HT_T_LARGE   ,0 }, // CN_TUB
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET
 

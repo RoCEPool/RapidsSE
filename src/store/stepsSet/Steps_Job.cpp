@@ -42,8 +42,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete2pc"_Stz,        &Step::vJobDelete2pc);
   
+  vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
+  vAddStep("job.entry!"_Stz,           &Step::vJobEntryStore_other);
+  
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
-  vAddStep("job.isExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
@@ -59,9 +61,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
-  vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
-  vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
@@ -81,8 +80,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("Job[].addRetired"_Stz,       &Step::vJobAddRetired);
   
-  vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
+  vAddStep("Job[].entry@"_Stz,           &Step::vJobEntryFetch);
+  vAddStep("Job[].entry!"_Stz,           &Step::vJobEntryStore);
+
   vAddStep("Job[].error@"_Stz,           &Step::vJobErrorFetch);
+  vAddStep("Job[].error!"_Stz,           &Step::vJobErrorStore);
 
   vAddStep("Job[].id@"_Stz,              &Step::vJobIdFetch);
   
@@ -101,10 +103,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
-  
-  vAddStep("Job[].seedWord@"_Stz,        &Step::vJobSeedWordFetch);
-  vAddStep("Job[].seedWord!"_Stz,        &Step::vJobSeedWordStore);
-  
+    
   vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
 
@@ -507,6 +506,81 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job[].entry@ -- fetch the job sen entry code                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = nullptr;
+
+  if (m_pJob_task.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob_task;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob_task.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
+
+  m_pDataStack->vPushStz(pJob->szEntry());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.entry@ -- fetch the job sen entry code                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryFetch_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushStz(pJob->szEntry());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].entry! -- store the job entry code                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+
+  s4K sEntry;
+  m_pDataStack->vPopStr(sEntry,__func__);
+  
+  pJob->vEntry(sEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.entry! -- store the job entry code                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryStore_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  s4K sEntry;
+  m_pDataStack->vPopStr(sEntry,__func__);
+  
+  pJob->vEntry(sEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job[].error@ -- fetch the job error                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(void)
@@ -574,21 +648,6 @@ void Step::vJobIdFetch_other(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->iJobId());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.isExecuting -- is the job executing (SEED_EXE)                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIsExecuting(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iIsExecuting = pJob->eSeed() == SS_SEED_EXE ? 1 : 0;
-  m_pDataStack->vPushInt(iIsExecuting);
   
   EXIT();
 }
@@ -925,95 +984,6 @@ void Step::vJobRemoveRetired(void)
 }
   
 /*----------------------------------------------------------------------------*/
-/* job.seedDecode -- decode seed for received job                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedDecode(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  eSS eSeed = SS_SEED_RCV;
-  
-  if (JK_GENERIC == pJob->eJobKind()) {
-    TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pJob->szJobNm());
-    
-    s32 sSeed = pCmdTagSet->szValue(C_TAG_SEEDRUN);
-    
-    eSeed = SS_SEED_RUN;
-    
-    vDebugPoint();
-  }
-  
-  
-  m_pDataStack->vPushInt(eSeed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.seed@ -- fetch job seed                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->eSeed());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.seed! -- seed the job                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Seed = m_pDataStack->iPopInt(__func__);
-    
-  pJob->vSeed((eSS)i_Seed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].seedWord@ -- fetch job seed word                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedWordFetch(void)
-{
-  ENTRY();
- 
-  Job* pJob = * m_pJob_task;
-
-  Word* pWord = pJob->pSeedWord();
-  
-  m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].seedWord! -- set job seed word                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSeedWordStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-    
-  pJob->vSeedWord(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.session@ -- fetch job session                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSessionFetch(void)
@@ -1070,7 +1040,7 @@ void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
   
-  // example: this job is _execute and the jobRef is bootcluster (in ptp list)
+  // example: this job is execute and the jobRef is bootcluster (in ptp list)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   

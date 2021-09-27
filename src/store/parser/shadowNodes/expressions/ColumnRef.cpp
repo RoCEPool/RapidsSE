@@ -13,6 +13,8 @@
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
 #include "ColumnDef.hpp"
+#include "StringObject.hpp"
+#include "CteDef.hpp"
 
 #include "GraphNav.hpp"
 
@@ -30,6 +32,7 @@ static Stz* C_CATALOG_PROP    = "catalogName"_Stz;
 static Stz* C_SCHEMA_PROP     = "schemaName"_Stz;
 static Stz* C_TABLE_PROP      = "tableName"_Stz;
 static Stz* C_COLUMN_PROP     = "columnName"_Stz;
+static Stz* C_DEFNPATH_PROP   = "defnPath"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -41,7 +44,8 @@ static Stz* C_COLUMN_PROP     = "columnName"_Stz;
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnRef::pCreate(Text* pTableAliasName,
                               Text* pCatalogName, Text* pSchemaName,
-                              Text* pTableName, Text* pColumnName)
+                              Text* pTableName, Text* pColumnName,
+                              Text* pDefnPath)
 {
   _static_
 
@@ -55,6 +59,7 @@ QueryNode* ColumnRef::pCreate(Text* pTableAliasName,
   Value xSchemaName(pSchemaName);
   Value xTableName(pTableName);
   Value xColumnName(pColumnName);
+  Value xDefnPath(pDefnPath);
 
   QueryNode* pColRef = new QueryNode(sName, C_COLREF_DEFN);
   pColRef->vAppendProperty(new QueryNode(C_TABLEALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableAliasName)));
@@ -62,6 +67,7 @@ QueryNode* ColumnRef::pCreate(Text* pTableAliasName,
   pColRef->vAppendProperty(new QueryNode(C_SCHEMA_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaName)));
   pColRef->vAppendProperty(new QueryNode(C_TABLE_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableName)));
   pColRef->vAppendProperty(new QueryNode(C_COLUMN_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xColumnName)));
+  pColRef->vAppendProperty(new QueryNode(C_DEFNPATH_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xDefnPath)));
 
   return pColRef;
 }
@@ -71,17 +77,19 @@ QueryNode* ColumnRef::pCreate(Text* pTableAliasName,
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnRef::pCreate(Stz* szTableAliasName,
                               Stz* szCatalogName, Stz* szSchemaName,
-                              Stz* szTableName,   Stz* szColumnName)
+                              Stz* szTableName,   Stz* szColumnName,
+                              Stz* szDefnPath)
 {
   _static_
 
   Text* pTableAliasName = (szTableAliasName ? new Text(szTableAliasName) : nullptr);
   Text* pCatalogName    = (szCatalogName    ? new Text(szCatalogName)    : nullptr);
-  Text* pSchemaName     = (szCatalogName    ? new Text(szSchemaName)     : nullptr);
-  Text* pTableName      = (szCatalogName    ? new Text(szTableName)      : nullptr);
-  Text* pColumnName     = (szCatalogName    ? new Text(szColumnName)     : nullptr);
+  Text* pSchemaName     = (szSchemaName     ? new Text(szSchemaName)     : nullptr);
+  Text* pTableName      = (szTableName      ? new Text(szTableName)      : nullptr);
+  Text* pColumnName     = (szColumnName     ? new Text(szColumnName)     : nullptr);
+  Text* pDefnPath       = (szDefnPath       ? new Text(szDefnPath)       : nullptr);
 
-  return pCreate(pTableAliasName, pCatalogName, pSchemaName, pTableName, pColumnName);
+  return pCreate(pTableAliasName, pCatalogName, pSchemaName, pTableName, pColumnName, pDefnPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,16 +175,34 @@ eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pMetadata = ShadowRoot::pMetadataNode(pRootNode);
   ASSERT(pMetadata);
 
-  Stz* szCatalog = ColumnRef::szCatalog(pNode);
-  Stz* szSchema  = ColumnRef::szSchema(pNode);
-  Stz* szTable   = ColumnRef::szTable(pNode);
-  Stz* szColumn  = ColumnRef::szColumn(pNode);
+  Stz* szCatalog  = ColumnRef::szCatalog(pNode);
+  Stz* szSchema   = ColumnRef::szSchema(pNode);
+  Stz* szTable    = ColumnRef::szTable(pNode);
+  Stz* szColumn   = ColumnRef::szColumn(pNode);
+  Stz* szDefnPath = ColumnRef::szDefnPath(pNode);
+
+  ASSERT(szColumn);
 
   if (!szCatalog || !szSchema || !szTable) {
     // This can occur when we have columnRefs for named subqueries, such as
     // Common Table Expressions (CTEs), which have a (table) name but no
     // catalog or schema name.
-    NEVER_REACH
+    ASSERT(szDefnPath);
+
+    // Get the node for this path
+    QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+    ASSERT(pCteDef);
+    ASSERT(CteDef::bIsOfType(pCteDef));
+
+    QueryNode* pColumnDef = CteDef::pColumnDef(pCteDef, szColumn);
+    ASSERT(pColumnDef);
+    ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+    eCT eType = ColumnDef::eColumnType(pColumnDef);
+    ASSERT(eType > CT_NONE);
+    ASSERT(eType < CT_ENUMS);
+
+    return eType;
   }
 
   QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
@@ -249,6 +275,21 @@ Stz* ColumnRef::szColumn(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the path of the definition of this ColumnRef. Used by CTEs where   */
+/* it cannot be determined (easily) from just the tablename above.            */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szDefnPath(QueryNode* pNode)
+{
+  QueryNode *pDefnNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_DEFNPATH_PROP, pNode));
+
+  ASSERT(pDefnNode);
+  ASSERT(StringObject::bIsOfType(pDefnNode));
+
+  return pDefnNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the columnRef is fully qualified (has cat/sch/tbl names    */
 /* or an alias name)                                                          */
 /*----------------------------------------------------------------------------*/
@@ -269,19 +310,24 @@ b1 ColumnRef::bIsFullyQualified(QueryNode* pNode)
   QueryNode *pColumnNode = static_cast<QueryNode *>(
       GraphNav::pFindProperty(C_COLUMN_PROP, pNode));
 
+  QueryNode *pDefnPathNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_DEFNPATH_PROP, pNode));
+
   ASSERT(pTableAliasNode);
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
+  ASSERT(pDefnPathNode);
 
   Stz* szTableAliasName = pTableAliasNode->szValue();
   Stz* szCatalogName    = pCatalogNode->szValue();
   Stz* szSchemaName     = pSchemaNode->szValue();
   Stz* szTableName      = pTableNode->szValue();
   Stz* szColumnName     = pColumnNode->szValue();
+  Stz* szDefnPath       = pDefnPathNode->szValue();
 
-  return (szTableAliasName || (szCatalogName && szSchemaName && szTableName)) && szColumnName;
+  return ( (szTableAliasName && szDefnPath) || (szCatalogName && szSchemaName && szTableName && !szDefnPath)) && szColumnName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,7 +335,8 @@ b1 ColumnRef::bIsFullyQualified(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
                          Stz* szCatalogName, Stz* szSchemaName,
-                         Stz* szTableName, Stz* szColumnName)
+                         Stz* szTableName, Stz* szColumnName,
+                         Stz* szDefnPath)
 {
   ASSERT(bIsOfType(pColumnRef));
   ASSERT(szTableAliasName || (szCatalogName && szSchemaName && szTableName));
@@ -300,12 +347,14 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
   QueryNode* pSchemaNode     = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP,     pColumnRef));
   QueryNode* pTableNode      = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP,      pColumnRef));
   QueryNode* pColumnNode     = _pQueryNode(GraphNav::pFindProperty(C_COLUMN_PROP,     pColumnRef));
+  QueryNode* pDefnPath       = _pQueryNode(GraphNav::pFindProperty(C_DEFNPATH_PROP,   pColumnRef));
 
   ASSERT(pTableAliasNode);
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
+  ASSERT(pDefnPath);
 
   Value xTableAliasValue;
   xTableAliasValue.vSet(szTableAliasName);
@@ -326,6 +375,10 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
   Value xColValue;
   xColValue.vSet(szColumnName);
   pColumnNode->vSetValue(static_cast<Value&&>(xColValue));
+
+  Value xDefnPath;
+  xDefnPath.vSet(szDefnPath);
+  pDefnPath->vSetValue(static_cast<Value&&>(xDefnPath));
 
   ASSERT(bIsFullyQualified(pColumnRef));
 }
@@ -360,7 +413,7 @@ b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
   // All properties must match, but catalog/schema/table/column names
   // must be compared case insensitively.
   if (pColRef1->nProperties() != pColRef2->nProperties()) return false;
-  ASSERT(pColRef1->nProperties() == 5);
+  ASSERT(pColRef1->nProperties() == 6);
 
   Stz* szStr1;
   Stz* szStr2;
@@ -368,35 +421,35 @@ b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
   szStr1 = ColumnRef::szTableAlias(pColRef1);
   szStr2 = ColumnRef::szTableAlias(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szCatalog(pColRef1);
   szStr2 = ColumnRef::szCatalog(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szSchema(pColRef1);
   szStr2 = ColumnRef::szSchema(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szTable(pColRef1);
   szStr2 = ColumnRef::szTable(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 
   szStr1 = ColumnRef::szColumn(pColRef1);
   szStr2 = ColumnRef::szColumn(pColRef2);
   if (szStr1 || szStr2) {
-    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1 || !szStr2)       return false;
     if (!szStr1->bSame(szStr2))   return false;
   }
 

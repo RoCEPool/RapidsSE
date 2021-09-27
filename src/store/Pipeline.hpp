@@ -29,24 +29,6 @@ namespace STORE
     // -- refers to
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
 
-    // -- state
-    // n/a
-
-    // -- tags, seeding and tasking
-    // n/a
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
-
-    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-
   
     i8   m_i_Origin;    // originating node
 

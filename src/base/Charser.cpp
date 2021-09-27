@@ -61,6 +61,8 @@ Charser::~Charser(void) noexcept(false)
   if (m_pSrcFile->bIsOpen())
     m_pSrcFile->vClose();
   
+  RASSERT(! m_pNext);
+  
   delete m_pSrcFile;
 }
 
@@ -479,6 +481,22 @@ void Charser::vUseString(Stz* szString)
 //
 // Charser TypedStack ///////////////////////////////////////////////////////////////
 //
+
+/*----------------------------------------------------------------------------*/
+/* delete input                                                               */
+/*----------------------------------------------------------------------------*/
+Charser* Charser::pDeleteCharser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  Charser* pNext = m_pNext;
+  
+  m_pNext = nullptr;
+  
+  delete this;
+  
+  return pNext;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next charser in stack                                                  */

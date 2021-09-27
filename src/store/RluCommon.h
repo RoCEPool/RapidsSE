@@ -59,6 +59,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   struct Ent_int* m_aWrkEnt;
   void* m_pEntWrk;
+  int   m_iJoinedRow;
 
   void*  m_pRowPix;
 

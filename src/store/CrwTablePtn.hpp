@@ -25,7 +25,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CrwTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket);
+    CrwTablePtn(Table *pTable, PtnId tPtnId, Bucket *pBucket);
    ~CrwTablePtn(void) noexcept(false);
   
     void vAddIndex(IndexTree* pIndexTree);
@@ -35,7 +35,9 @@ namespace STORE
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
+
     PtnId tPtnId(void);
+
     bool bPopulateIndex(i8 iIndexNo);
     bool bPopulateIndexTree(IndexTree* pIndexTree);
     void vRemoveIndex(i8 iIndexNo);

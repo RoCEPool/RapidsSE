@@ -10,7 +10,7 @@ namespace BASE
   protected:
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
-    PtnId  m_tPtnId;        // partition no this buffer belongs to
+    PtnId  m_tPtnId;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
@@ -72,13 +72,12 @@ namespace BASE
     PtnId tPtnId(void);
 
     Birth &oWhenNewed(void);
-
     // - - - - - - - - - - - - - -
     bool bIsPermanent(void);
 
     void vIsPermanent(bool bIsPermanent);
 
-    i8 iBufferNo(void);
+    i8   iBufferNo(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

@@ -6,7 +6,9 @@ _nation
 
 /time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
 
-// select * from nation;
+select * from nation;
+
+/time export nation "/tmp/nation.csv";
 
 /*============================================================================*/
 /* end                                                                        */

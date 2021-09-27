@@ -284,7 +284,9 @@ void Step::vTableDumpMeta(void)
 
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
     sDumpBuffer.vCatSprint("\nPartition %lld  %lld"_Stz, i_TablePtn, pTable->pTablePtn(i_TablePtn)->tPtnId().iAsI8());
+
     //pTablePtn->vDump();
   }
 
@@ -363,28 +365,29 @@ void Step::vTableTablePtnFetch(void)
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
   
   Op* pOp = MY::pOp();
-  
+
   PtnId tPtnId = pOp->tPtnId();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-  
+
   m_pDataStack->vPushPtr(pTablePtn);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].tablePtnGet -- fetch given table partition[tPtnNo]                 */
+/* Table[].tablePtnGet -- fetch given table partition[tPtnId]                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnGet(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
   PtnId tPtnId;
-  i8 iPtnNo = m_pDataStack->iPopInt(__func__);;
-  tPtnId = iPtnNo;
+  tPtnId = m_pDataStack->iPopInt(__func__);
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
@@ -400,11 +403,9 @@ void Step::vTableTablePtnZero(void)
   ENTRY();
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
-    
+
   PtnId tPtnId;
 
-  tPtnId = 0;
-  
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
@@ -537,32 +538,31 @@ void Step::vTableListPartition(void)
 
   StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
 
-  
-  i8 iPtnNo = m_pDataStack->iPopAsInt(__func__);
+  PtnId tPtnId;
+  tPtnId = m_pDataStack->iPopAsInt(__func__);
 
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
 
   for (;;) {
-    i8 i_Node     = AM::pPtnMap()->iWhichNodeNo(iPtnNo);
-    PtnId tPtnId;
-    tPtnId = iPtnNo;
+    i8 i_Node     = AM::pPtnMap()->iWhichNodeNo(tPtnId);
     i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
 
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
-                    iPtnNo,i_Node,i_TablePtn);
-  
+                    tPtnId.iAsI8(),i_Node,i_TablePtn);
+
     Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       sOutput.azChar(),
                                       C_VARGS_END);
-  
+
     if (! pRow) {
       // call again
-      m_pDataStack->vPushInt(iPtnNo);
+      m_pDataStack->vPushInt(tPtnId.iAsI8());
       break;
     }
-    
-    if (++iPtnNo >= AM::PTNMAP::nPtnsInGrid()) {
+
+    i8 iPtnId = tPtnId.iAsI8();
+    if (++iPtnId >= AM::PTNMAP::nPtnsInGrid()) {
       // done
       m_pDataStack->vPushInt(false);
       break;

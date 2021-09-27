@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* sysClosed request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sysClosed_req \operator
+: sysClosed_op \operator
 
   _lu_initialise_
 
@@ -56,7 +56,10 @@
 cmdSyntax: sysClosed :: sysClosed ;
 
 : sysClosed_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "sysClosed_op"
+  }
 ;
 
 /*============================================================================*/

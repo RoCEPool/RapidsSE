@@ -20,10 +20,13 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/SelectMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -38,6 +41,7 @@
 #include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
 #include "store/parser/shadowNodes/valueObjects/IntegerObject.hpp"
 #include "store/parser/shadowNodes/lists/StringList.hpp"
+#include "store/parser/shadowNodes/lists/IdList.hpp"
 #include "store/parser/shadowNodes/lists/StageRangeList.hpp"
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
 #include "store/parser/shadowNodes/compound/OrderItem.hpp"
@@ -211,17 +215,27 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
 
   // Find the subpath where we will attach the parsed query plan
-  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
-  ASSERT(pItem);
-  ASSERT(pItem->eGetClassNo() == CN_QUERYNODE);
-  QueryNode* pQueryNode = _pQueryNode(pItem);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRoot);
 
   // Attach the statement plan we created
-  ASSERT(m_pStatementStack->nItems() == 1);
-  // TODO: Validate that there is only one mainSubquery on the m_pStatementStack
-  //       and all others are tableSubqueries
-  QueryNode* pStatementNode = m_pStatementStack->pPop();
-  pQueryNode->vAppendChild(pStatementNode);
+  ASSERT(m_pStatementStack->nItems() >= 1);
+
+  b1 bGotMainSubquery = false;
+  QueryNode* pChildNode;
+  while ((pChildNode = m_pStatementStack->pPop()) != nullptr) {
+    ASSERT(SubqueryMarker::bIsOfType(pChildNode));
+
+    // There can only be one MainSubquery
+    if (MainSubquery::bIsOfType(pChildNode)) {
+      RASSERT(!bGotMainSubquery);
+      bGotMainSubquery = true;
+    }
+
+    pPlanRoot->vAppendChild(pChildNode);
+  }
+
+  // There must be a MainSubquery
+  RASSERT(bGotMainSubquery);
 
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
@@ -255,18 +269,6 @@ antlrcpp::Any SqlPlanner::visitStatementChoice(sqlParser::StatementChoiceContext
 {
   visitChildren(pCtx);
 
-  // The last item on the stack is the main subquery. We need to add
-  // a MainSubquery marker to the top of it and then put it back
-  // onto the statement stack.
-  ASSERT(m_pStatementStack->nItems() > 0);
-
-  QueryNode* pNode = m_pStatementStack->pPop();
-  ASSERT(!SubqueryMarker::bIsOfType(pNode));
-
-  QueryNode* pMainSubquery = MainSubquery::pCreate();
-  pMainSubquery->vAppendChild(pNode);
-  m_pStatementStack->vPush(pMainSubquery);
-
   return nullptr;
 }
 
@@ -281,10 +283,15 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
-  // Create an explain StatementMarker and add it to the statement stack
-  QueryNode* pExplainMarker = ExplainMarker::pCreate((Stz*)(queryStlStr.c_str()));
-  m_pStatementStack->vPush(pExplainMarker);
+  // Start with a MainSubquery and add it to the statement stack
+  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  m_pStatementStack->vPush(pMainSubquery);
 
+  // Create an explainMarker as a child of the MainSubquery
+  QueryNode* pExplainMarker = ExplainMarker::pCreate((Stz*)(queryStlStr.c_str()));
+  pMainSubquery->vAppendChild(pExplainMarker);
+
+  // Extract the fields for the ExplainOp we need to create
   Text* pFormat = nullptr;
   QueryNode* pStageList = nullptr;
   b1 bWithNames = false;
@@ -330,14 +337,41 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   pExplainMarker->vAppendChild(pExplainOp);
   delete pFormat;
 
-  // Visit the statement choice node. This will add a new statementMarker to the statement list.
-  // We can then pop it off and add it as a child of the ExplainOp.
-  pCtx->statementChoice()->accept(this);
+  QueryNodeStack* pOrigStatementStack = m_pStatementStack;
+  m_pStatementStack = new QueryNodeStack();
 
-  ASSERT(m_pStatementStack->nItems() >= 2);
-  QueryNode* pExplainableStatement = m_pStatementStack->pPop();
-  ASSERT(m_pStatementStack->pTop() == pExplainMarker);
-  pExplainOp->vAppendChild(pExplainableStatement);
+  // Visit the statement choice node. This will add a new SubqueryMarker to the statement list.
+  // We can then pop it off and add it as a child of the ExplainOp.
+  try {
+    pCtx->statementChoice()->accept(this);
+
+  } catch (SqlException& e) {
+    // clean up the temporary m_pStatementStack
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pNode = m_pStatementStack->pPop();
+      delete pNode;
+    }
+
+    delete m_pStatementStack;
+    m_pStatementStack = pOrigStatementStack;
+
+    throw;
+  }
+
+  // Any nodes that have been added to the statement stack should now be made children
+  // of the ExplainOp.
+  QueryNode* pChild;
+  while ((pChild = m_pStatementStack->pPop()) != nullptr) {
+    pExplainOp->vPushChild(pChild);
+  }
+
+  // cleanup and restore the original statement stack
+  ASSERT(m_pStatementStack->nItems() == 0);
+  delete m_pStatementStack;
+  m_pStatementStack = pOrigStatementStack;
+  pOrigStatementStack = nullptr;
+
+  ASSERT(m_pStatementStack->pTop() == pMainSubquery);
 
   return nullptr;
 }
@@ -440,21 +474,41 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  // Get the statement string for this part of the query
-  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  // We don't call visitChildren() in this function because we need to control
+  // the order of execution. Specifically, we need to place a SelectMarker on
+  // the m_pStatementStack before we descend into the selectExpr rule (we cannot
+  // do that inside the selectExpr rule because it is reused in multiple places),
+  // but before we can do that we need to visit any WITH queries first.
+  // Calling visitChildren() doesn't allow us to do this.
+
+  // Call each WITH subquery first. The main subquery should be last.
+  for (sqlParser::WithQueryContext* pWithCtx : pCtx->withQuery()) {
+    pWithCtx->accept(this);
+  }
+
+  // Get the statement string for this part of the query. Ignore any WITH
+  // clauses at the start though.
+  antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
 
+  pCtx->selectExpr()->accept(this);
+
+  // Add a MainSubquery to the statement stack
+  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  ASSERT(m_pStatementStack->pTop() == pStmt);
+  pMainSubquery->vAppendChild(m_pStatementStack->pPop());
+  m_pStatementStack->vPush(pMainSubquery);
+
   if (pCtx->ORDER()) {
     ASSERT(!m_pOrderItems);
     m_pOrderItems = new QueryNodeList();
-  }
 
-  visitChildren(pCtx);
+    // Call the ORDER BY children
+    pCtx->orderBy->accept(this);
 
-  if (pCtx->ORDER()) {
     ASSERT(m_pOrderItems);
     ASSERT(m_pOrderItems->nItems() > 0);
 
@@ -470,8 +524,7 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
     // Insert the orderOp as the top-most child underneath the statement.
     // Need to make any current children of statement now children of orderOp.
-    QueryNode* pStatement = m_pStatementStack->pTop();
-    pStatement->vInsertAsParentOfChildren(pOrderOp);
+    pStmt->vInsertAsParentOfChildren(pOrderOp);
 
     ASSERT(m_pOrderItems->nItems() == 0);
     delete m_pOrderItems;
@@ -499,9 +552,77 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
     // Insert the limit op as the top-most child underneath the statement.
     // Need to make any current children of statement now children of limitOp.
-    QueryNode* pStatement = m_pStatementStack->pTop();
-    pStatement->vInsertAsParentOfChildren(pLimitOp);
+    pStmt->vInsertAsParentOfChildren(pLimitOp);
   }
+
+  // The last item on the stack is the main subquery
+  ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(MainSubquery::bIsOfType(m_pStatementStack->pTop()));
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* WITH query item (for each table subquery)                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
+{
+  QueryNodeStack* pOrigStatementStack = m_pStatementStack;
+  m_pStatementStack = new QueryNodeStack();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    // clean up the temporary m_pStatementStack
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pNode = m_pStatementStack->pPop();
+      delete pNode;
+    }
+
+    delete m_pStatementStack;
+    m_pStatementStack = pOrigStatementStack;
+
+    throw;
+  }
+
+  if (pCtx->RECURSIVE()) {
+    __NOT_IMPL("RECURSIVE common table expression")
+  }
+
+  // Extract the mandatory table alias name
+  Text* pTblAlias = pCleanId(pCtx->name->id);
+  ASSERT(pTblAlias);
+
+  // Extract the optional list of column aliases
+  QueryNode* pIdList = IdList::pCreate();
+  for (sqlParser::ColumnAliasContext* pColAliasCtx : pCtx->columnAlias()) {
+    Text* pColName = pCleanId(pColAliasCtx->id);
+    QueryNode* pColNameNode = StringObject::pCreate(pColName);
+    pIdList->vAppendChild(pColNameNode);
+  }
+
+  // The last item on the stack is the table subquery. We need to add
+  // a TableSubquery marker to the top of it and then put it back
+  // onto the statement stack.
+  ASSERT(m_pStatementStack->nItems() > 0);
+
+  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, pIdList, pCtx->RECURSIVE() != nullptr);
+
+  QueryNode* pNode;
+  while ((pNode = m_pStatementStack->pPop()) != nullptr) {
+    ASSERT(MainSubquery::bIsOfType(pNode) || TableSubquery::bIsOfType(pNode));
+
+    pTableSubquery->vPushChild(pNode);
+  }
+
+  // Restore the original statement stack
+  ASSERT(m_pStatementStack->nItems() == 0);
+  delete m_pStatementStack;
+  m_pStatementStack = pOrigStatementStack;
+
+  // And put this table subquery on the original statement stack
+  m_pStatementStack->vPush(pTableSubquery);
 
   return nullptr;
 }
@@ -511,18 +632,54 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 {
-  if (pCtx->ORDER()) {
-    ASSERT(!m_pOrderItems);
-    m_pOrderItems = new QueryNodeList();
+
+  // We don't call visitChildren() in this function because we need to control
+  // the order of execution.
+
+  // Call each WITH subquery first. The main subquery should be last.
+  for (sqlParser::WithQueryContext* pWithCtx : pCtx->withQuery()) {
+    pWithCtx->accept(this);
   }
 
-  visitChildren(pCtx);
 
-  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
-  ASSERT(m_pStatementStack->nItems() >= 1);
+
+  // Create a new statement stack before we descend into setExpr
+  QueryNodeStack* pOrigStatementStack = m_pStatementStack;
+  m_pStatementStack = new QueryNodeStack();
+
+  // Visit the setExpr node. This will add a single SelectMarker to the statement list.
+  // We can then pop it off and add it as a child of the MainSubquery.
+  try {
+    pCtx->setExpr()->accept(this);
+
+  } catch (SqlException& e) {
+    // clean up the temporary m_pStatementStack
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pNode = m_pStatementStack->pPop();
+      delete pNode;
+    }
+
+    delete m_pStatementStack;
+    m_pStatementStack = pOrigStatementStack;
+
+    throw;
+  }
+
+  ASSERT(m_pStatementStack->nItems() == 1);
+  QueryNode* pSetExprSelectMarker = m_pStatementStack->pPop();
+  ASSERT(SelectMarker::bIsOfType(pSetExprSelectMarker));
+
+  // cleanup and restore the original statement stack
+  ASSERT(m_pStatementStack->nItems() == 0);
+  delete m_pStatementStack;
+  m_pStatementStack = pOrigStatementStack;
+  pOrigStatementStack = nullptr;
+
+  // Put it on the original statement stack
+  m_pStatementStack->vPush(pSetExprSelectMarker);
 
   if (pCtx->ORDER() || pCtx->LIMIT()) {
-    // We need to stick another statementOp on top of the one currently on the stack
+    // We need to stick another statementOp on top of the one from setExpr
     QueryNode* pSubStatement = m_pStatementStack->pPop();
     ASSERT(pSubStatement);
 
@@ -530,60 +687,73 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
     antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
     std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
-    QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
-    pStatement->vAppendChild(pSubStatement);
-    m_pStatementStack->vPush(pStatement);
-  }
+    QueryNode *pOuterSelectStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+    pOuterSelectStatement->vAppendChild(pSubStatement);
+    m_pStatementStack->vPush(pOuterSelectStatement);
 
-  if (pCtx->ORDER()) {
-    ASSERT(m_pOrderItems);
-    ASSERT(m_pOrderItems->nItems() > 0);
 
-    // Convert the QueryNodeList to a OrderItemList
-    QueryNode* pOrderItemList = OrderItemList::pCreate();
-    QueryNode* pOrderItem;
-    while ((pOrderItem = m_pOrderItems->pPop()) != nullptr) {
-      pOrderItemList->vAppendChild(pOrderItem);
-    }
+    if (pCtx->ORDER()) {
+      ASSERT(!m_pOrderItems);
+      m_pOrderItems = new QueryNodeList();
 
-    // Create the OrderOp
-    QueryNode* pOrderOp = OrderOp::pCreate(pOrderItemList);
+      // Descend down into the order by children
+      pCtx->orderBy->accept(this);
 
-    // Insert the orderOp as the top-most child underneath the statement.
-    // Need to make any current children of statement now children of orderOp.
-    QueryNode* pStatement = m_pStatementStack->pTop();
-    pStatement->vInsertAsParentOfChildren(pOrderOp);
+      ASSERT(m_pOrderItems);
+      ASSERT(m_pOrderItems->nItems() > 0);
 
-    ASSERT(m_pOrderItems->nItems() == 0);
-    delete m_pOrderItems;
-    m_pOrderItems = nullptr;
-  }
-
-  if (pCtx->LIMIT()) {
-    i8 iLimit = iCleanInt(pCtx->limit);
-    i8 iOffset = -1;
-
-    if (iLimit < 0) {
-      SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
-    }
-
-    if (pCtx->OFFSET()) {
-      iOffset = iCleanInt(pCtx->offset);
-
-      if (iOffset < -1) {
-        SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
+      // Convert the QueryNodeList to a OrderItemList
+      QueryNode* pOrderItemList = OrderItemList::pCreate();
+      QueryNode* pOrderItem;
+      while ((pOrderItem = m_pOrderItems->pPop()) != nullptr) {
+        pOrderItemList->vAppendChild(pOrderItem);
       }
+
+      // Create the OrderOp
+      QueryNode* pOrderOp = OrderOp::pCreate(pOrderItemList);
+
+      // Insert the orderOp as the top-most child underneath the statement.
+      // Need to make any current children of statement now children of orderOp.
+      pOuterSelectStatement->vInsertAsParentOfChildren(pOrderOp);
+
+      ASSERT(m_pOrderItems->nItems() == 0);
+      delete m_pOrderItems;
+      m_pOrderItems = nullptr;
     }
 
-    // Create the limit op
-    QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+    if (pCtx->LIMIT()) {
+      i8 iLimit = iCleanInt(pCtx->limit);
+      i8 iOffset = -1;
 
-    // Insert the limit op as the top-most child underneath the statement.
-    // Need to make any current children of statement now children of limitOp.
-    QueryNode* pStatement = m_pStatementStack->pTop();
-    pStatement->vInsertAsParentOfChildren(pLimitOp);
+      if (iLimit < 0) {
+        SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
+      }
+
+      if (pCtx->OFFSET()) {
+        iOffset = iCleanInt(pCtx->offset);
+
+        if (iOffset < -1) {
+          SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
+        }
+      }
+
+      // Create the limit op
+      QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+
+      // Insert the limit op as the top-most child underneath the statement.
+      // Need to make any current children of statement now children of limitOp.
+      pOuterSelectStatement->vInsertAsParentOfChildren(pLimitOp);
+    }
   }
 
+
+  // Finally add a MainSubquery on top of the last thing on the statement stack
+  ASSERT(m_pStatementStack->nItems() >= 1);
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
+
+  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  pMainSubquery->vAppendChild(m_pStatementStack->pPop());
+  m_pStatementStack->vPush(pMainSubquery);
   return nullptr;
 }
 

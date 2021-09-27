@@ -94,6 +94,7 @@ namespace STORE
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
+    static void vAddSteps_JobReport(void);
     static void vAddSteps_Jobs(void);
 
     static void vAddSteps_List(void);
@@ -139,6 +140,7 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
+    static void vAddSteps_PuGen(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_Schedule(void);
@@ -201,6 +203,7 @@ namespace STORE
     static void vAddSteps_ToRow(void);
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);
+    static void vAddSteps_Tub(void);
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   

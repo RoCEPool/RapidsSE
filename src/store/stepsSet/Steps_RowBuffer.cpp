@@ -26,6 +26,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
+  vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,8 +98,8 @@ void Step::vRowBufferInsdelIntoTable(void)
 //  ASSERT(*m_p_TaskLogicUnit->m_xpRowBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  tPN tPtnNo = pOp->tPtnNo();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+//  PtnId tPtnId = pOp->tPtnId();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnId);
 //
 
 //  // will delete this buffer
@@ -153,6 +154,22 @@ void Step::vRowBufferSet(void)
 /* RowBuffer[].toCsv -- convert rowBuffer operand to csvBuffer                */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferToCsv(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpRowBuffer);
+  
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  
+  pRowBuffer->vToCsv(pTub);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].toCsv -- convert rowBuffer operand to csvBuffer                */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferToCsv_OLD(void)
 {
   ENTRY();
 

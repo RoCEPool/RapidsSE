@@ -1,15 +1,16 @@
 /*============================================================================*/
-/* _ray0 : crw to row 10 Dec 2020                                             */
+/*                                                                            */
 /*============================================================================*/
 
+select count(*) from se__jobreport;
 
-_lineitem_dates
+select max(responseMS), avg(responseMS), max(responseMS) from se__jobreport;
 
-load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" ;
+select magnitude, count(*) from se__jobReport group by magnitude;
 
-//tableScan lineitem;
+select magnitude, t, j, count(*) from se__jobReport group by magnitude, t, j;
 
-getRows lineitem;
+/time load se__jobReport "/Users/ray/Desktop/Folders/RapidsData/report.csv";
 
 /*============================================================================*/
 /* end                                                                        */

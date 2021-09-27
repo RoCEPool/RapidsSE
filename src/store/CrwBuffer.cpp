@@ -286,7 +286,7 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
 //                           AM::szNodeNm(),
-//                           pNextBuffer->m_tPtnNo,
+//                           pNextBuffer->m_tPtnId,
 //                           iBuffers,
 //                           pNextBuffer->nRows());
     
@@ -685,7 +685,7 @@ void CrwBuffer::vShow(void)
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          pPrevLinkedBuffer(),pNextLinkedBuffer());
-  
+
   vTrace("  partition: %lld \n"_Stz, m_tPtnId.iAsI8());
   
   vTrace("--------------------------------------------------"
@@ -700,6 +700,49 @@ void CrwBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert this crw buffer into one or more csv tub buffers                   */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vToCsv(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  StreamDef* pStreamDef = this->pStreamDef();
+  
+  HV_Record hvRecord(pStreamDef->pRowPix());
+  HV_RowSingle hvRowSingle(pStreamDef);
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+  
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+  
+  i8 nRows = this->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    vGetRow_single(hvRowSingle, i_Row);
+    
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
+    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
+    nSize = hvRecord->sz()->nSize();
+    
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+    
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nSize - 1);
+  }
+  
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +823,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 //  i8 nRowRefs = 1;
 //  
 //  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
-//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnId);
 //  
 //  i8 nRows = nRows();
 //  
@@ -791,7 +834,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 //    if ( ! pSrtSet ) {
 //      
 //      // create a new SrtBuffer
-//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnId);
 //      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
 //      pSrtBuffer = pNewSrtBuffer;
 //      pSrtSet = pSrtBuffer->aAllotSrtSet();

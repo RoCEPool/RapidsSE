@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: postProject_req \operator
+: postProject_op \operator
 
   _lu_initialise_
 
@@ -62,11 +62,10 @@
 cmdSyntax: postProject :: postProject ;
 
 : postProject_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "postProject_op"
   }
-
 ;
   
 /*============================================================================*/

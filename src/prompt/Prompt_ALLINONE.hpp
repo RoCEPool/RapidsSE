@@ -57,7 +57,6 @@ namespace PROMPT
   bool bPrompt_dlist(SePrompt* pPrompt);
   bool bPrompt_dsv(SePrompt* pPrompt);
   bool bPrompt_dumpTokens(SePrompt* pPrompt);
-  bool bPrompt_enums(SePrompt* pPrompt);
   bool bPrompt_errno(SePrompt* pPrompt);
   bool bPrompt_executing(SePrompt* pPrompt);
   bool bPrompt_fact(SePrompt* pPrompt);
@@ -79,6 +78,7 @@ namespace PROMPT
   bool bPrompt_hw(SePrompt* pPrompt);
   bool bPrompt_indexEntries(SePrompt* pPrompt);
   bool bPrompt_job(SePrompt* pPrompt);
+  bool bPrompt_lastJob(SePrompt* pPrompt);
   bool bPrompt_limits(SePrompt* pPrompt);
   bool bPrompt_llist(SePrompt* pPrompt);
   bool bPrompt_locks(SePrompt* pPrompt);
@@ -115,6 +115,7 @@ namespace PROMPT
   bool bPrompt_ready(SePrompt* pPrompt);
   bool bPrompt_reap(SePrompt* pPrompt);
   bool bPrompt_resources(SePrompt* pPrompt);
+  bool bPrompt_retired(SePrompt* pPrompt);
   bool bPrompt_rmfifo(SePrompt* pPrompt);
   bool bPrompt_rnd(SePrompt* pPrompt);
   bool bPrompt_scan(SePrompt* pPrompt);

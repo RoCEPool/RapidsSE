@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for wrFile req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : wrFile_req \operator
+ : wrFile_op \operator
  
   _lu_initialise_
 
@@ -85,7 +85,10 @@
 cmdSyntax: wrFile :: wrFile <fileNm> ;
 
 : wrFile_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc>  = "--desc for op--" }
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "wrFile_op"
+  }
 ;
 
 /*============================================================================*/

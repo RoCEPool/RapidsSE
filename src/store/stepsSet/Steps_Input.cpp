@@ -154,13 +154,8 @@ void Step::vInputOpen(void)
 void Step::vInputPop(void)
 {
   ENTRY();
-  
-  bool bPopped = m_pInput->bPopCharser();
-  ASSERT(bPopped);
-  UNUSED((bPopped));
 
-  if (-1 == m_pInput->iDepth())
-    vDeleteInput();
+  vDeleteInput();
 
   EXIT();
 }
@@ -171,13 +166,8 @@ void Step::vInputPop(void)
 void Step::vInputPush(void)
 {
   ENTRY();
-  
-  if (! m_pInput) {
-    vNewInput();
-    ASSERT(0 == m_pInput->iDepth());
-  }
-  
-  m_pInput->vPushCharser();
+
+  vNewInput();
 
   EXIT();
 }
@@ -282,7 +272,7 @@ void Step::vInputUseBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::useBegin -- begin using input                                       */
+/* input::useEnd -- end using input                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vInputUseEnd(void)
 {

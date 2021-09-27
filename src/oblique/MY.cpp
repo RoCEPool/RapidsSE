@@ -30,9 +30,7 @@ i8 MY::iPtn(void)
   _static_
   
   Op* pOp = MY::pOp();
-  
   i8 iPtn = pOp ? pOp->tPtnId().iAsI8() : -1;
-  
   return iPtn;
 }
 
@@ -343,7 +341,7 @@ LogicUnit* MY::pLogicUnit(void)
   // revised job/op model
   
   Task* pTask = MY::pTask();
-  
+
   Job* pJob = pTask->pJob_task();
   if (pJob)
     return pJob->pJobLogicUnit();
@@ -388,6 +386,24 @@ Op* MY::pOp(void)
   Op* pOp = pTask->pOp();
   
   return pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current Op logic unit                                                  */
+/*----------------------------------------------------------------------------*/
+LogicUnit* MY::pOpLogicUnit(void)
+{
+  _static_
+
+  Task* pTask = MY::pTask();
+  if (!pTask)
+    return nullptr;
+
+  Op* pOp = pTask->pOp();
+  if (pOp)
+    return pOp->pOpLogicUnit();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

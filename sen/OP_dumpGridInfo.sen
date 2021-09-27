@@ -29,7 +29,8 @@ cmdSyntax: dumpGridInfo :: dumpGridInfo  ;
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 0
-    <seedReq>     = "dumpGridInfo_req"
+
+    <opEntry> = "dumpGridInfo_op"
   }
 ;
 

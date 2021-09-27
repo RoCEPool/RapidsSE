@@ -163,6 +163,16 @@ RowBuffer* ToRow::pFullRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return last remaining dangling rowBuffer (if any)                          */
+/*----------------------------------------------------------------------------*/
+RowBuffer* ToRow::pRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+    
+  return m_pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 i8 ToRow::iRowsProcessed(void)
@@ -775,8 +785,9 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
+
   PtnId tPtnId;
-  tPtnId = 0;
+
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
@@ -2989,21 +3000,21 @@ L_RecordEndLineEnd:
         
     // now use the running hash to calc the partition
     tPtnId = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
-    
+
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);
-    //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
-    //tPtnNo = tPtnNo_byBkt;
+    //tPtnId_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
+    //tPtnId = tPtnId_byBkt;
     
 #ifdef WITH_KEEP_ROW_HASH
     m_pRowBuffer->vDepositColVal(iPtnKeyHash);
 #else
-    m_pRowBuffer->vDepositColVal(tPtnNo);
+    m_pRowBuffer->vDepositColVal(tPtnId);
 #endif
     
     iPtnKeyHash = 0;
   }
-  
+
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
@@ -3038,7 +3049,7 @@ L_ChunkEnd:
      | <LINE> <LINE_END> \0 |
      +----------------------+
    
-     n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
+     n.b. The \0 is guaranteed by the rdCsvChunk operator [check]
    
    */
 

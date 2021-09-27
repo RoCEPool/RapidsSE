@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* compiler op request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: setOpValidate_req \operator
+: setOpValidate_op \operator
 
   _lu_initialise_
 
@@ -62,11 +62,10 @@
 cmdSyntax: setOpValidate :: setOpValidate ;
 
 : setOpValidate_cmdTags _cmdTags tagCopy: op_tags
-
   tags{
     <cmdDesc>    = "--desc for op--"
+    <opEntry> = "setOpValidate_op"
   }
-
 ;
   
 /*============================================================================*/

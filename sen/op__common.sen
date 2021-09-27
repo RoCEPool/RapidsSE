@@ -32,6 +32,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* set path                                                                   */
+/*----------------------------------------------------------------------------*/
+: _lu_set_path_
+
+  // use the <path> from <ename-set>
+  <path> str.toStrVec Path[].set
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise the logic unit                                                  */
+/*----------------------------------------------------------------------------*/
+: _lu_initialise_
+
+  Stats_new
+
+  _lu_set_path_
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise the logic unit                                                  */
+/*----------------------------------------------------------------------------*/
+: _lu_finalise_
+
+  DdlLock[].testDrop
+
+  // check this task has no job reference
+  JobRef[].none
+
+  // check this task has no ddl lock
+  DdlLock[].none
+;
+
+/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
@@ -301,8 +334,6 @@
 
   op[].init
 
-  Stats_new
-
   "<diary>" job::tagSet@ tagSet.hasName if
     rluDiary_init
   then
@@ -360,7 +391,7 @@
     repeat
 
     // wait till the pipelinetask is in a WAIT state
-    // possibilty of _execute not have arrived yet
+    // possibilty of execute not have arrived yet
     pPipelineJob job.task@ locals| pPipelineTask |
     begin
       pPipelineTask task.isWaiting

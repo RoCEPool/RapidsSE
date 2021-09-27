@@ -12,6 +12,7 @@
 #include "eEV.h"
 
 #include "TagConstants.h"
+#include "LogicUnit.hpp"
 
 Atomic gixFile;
 
@@ -107,8 +108,8 @@ File::File(Object* pIsFor)
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   
-  if (! m_iViaMalloc)
-    gpOpenFiles->vAppend(this);
+  //if (! m_iViaMalloc)
+  //  gpOpenFiles->vAppend(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,8 +133,8 @@ File::~File(void) noexcept(false)
   if (m_iViaMalloc)
     vTrace("~File was via mallocs\n"_Stz);
   
-  if (! m_iViaMalloc)
-    gpOpenFiles->vRemove(this);
+  //if (! m_iViaMalloc)
+  //  gpOpenFiles->vRemove(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,8 +152,8 @@ void File::vInitGlobals(void)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("File::vInitGlobals\n"_Stz);
   
-   if (! gpOpenFiles)
-    gpOpenFiles = new OpenFiles;
+   //if (! gpOpenFiles)
+   // gpOpenFiles = new OpenFiles;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -792,7 +793,16 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
-  
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit) {
+
+    if (pLogicUnit->m_xpStats.bIsNotNull()) {
+      pLogicUnit->m_xpStats->m_nReads++;
+      pLogicUnit->m_xpStats->m_nBytesRead += nBytesRead;
+    }
+  }
+
   return nBytesRead;
 }
 
@@ -825,6 +835,15 @@ i8 File::nReadFile(String* aDst)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit) {
+
+    if (pLogicUnit->m_xpStats.bIsNotNull()) {
+      pLogicUnit->m_xpStats->m_nReads++;
+      pLogicUnit->m_xpStats->m_nBytesRead += nBytesRead;
+    }
+  }
 
   return nBytesRead;
 }
@@ -1149,7 +1168,16 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
     m_oSysCall.vError(errno);
     return false;
   }
-  
+
+  LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+  if (pLogicUnit) {
+
+    if (pLogicUnit->m_xpStats.bIsNotNull()) {
+      pLogicUnit->m_xpStats->m_nWrites++;
+      pLogicUnit->m_xpStats->m_nBytesWrite += nBytesWritten;
+    }
+  }
+
   return true;
 }
 

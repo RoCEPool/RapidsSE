@@ -30,21 +30,8 @@ namespace STORE
     // -- refers to
     Job* m_pSsnJob;  // job currently being executing
 
-    // -- state
-    // n/a
-
-    // -- tags, seeding and tasking
+    // -- tags
     TagSet m_oSsnTagSet;  // session level tags
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
   
     // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
@@ -102,6 +89,7 @@ namespace STORE
       
   private:
 
+   JobId  m_tLastJobId;  // last job which was run
 
     // must be last
     Footer m_xFooter;
@@ -129,6 +117,8 @@ namespace STORE
     void vHasCascade(bool bHasCascade);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
+    JobId tLastJobId(void);
+    void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
     void vReport(void);
     void vSee(void);

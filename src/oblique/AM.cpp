@@ -22,7 +22,6 @@
 #include "eMM.h"
 #include "eMT.h"
 #include "eNE.h"
-#include "eOC.h"
 #include "eOK.h"
 
 #include "eOR.h"
@@ -34,7 +33,6 @@
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
-#include "eSS.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
@@ -283,7 +281,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-            //|| bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
+            //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
             || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
            )
@@ -294,7 +292,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
 
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-            //|| bDELETE_RULE(CN_API,     "vCallBoot"_Stz)
+            //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
             || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
 
@@ -574,14 +572,6 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 Stz* AM::JOB::szJobNm(Job* pJob)
 {
   return pJob->szJobNm();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job seed                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* AM::JOB::szJobSeed(Job* pJob)
-{
-  return pJob->szSeed();
 }
 
 
@@ -889,13 +879,6 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 
-/*----------------------------------------------------------------------------*/
-/* get op seed                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* AM::OP::szOpSeed(Op* pOp)
-{
-  return pOp->szSeed();
-}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1140,28 +1123,29 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
+PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 {
-  return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash).iAsI8();
+  _static_
+  return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert PtnNo to Bkt No                                                    */
 /*----------------------------------------------------------------------------*/
-/*
-i8 AM::BKTMAP::iToBkt(tPN tPtnNo)
+i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
 {
-  return 0; //gpAttachMap->m_pBucketMap->iWhichBucket(tPtnNo);
-}*/
+  _static_
+  return gpAttachMap->m_pPtnMap->iToBkt(tPtnId);
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert Bkt No PtnNo                                                     */
 /*----------------------------------------------------------------------------*/
-/*
-tPN AM::BKTMAP::tToPtn(i8 iBktNo)
+PtnId AM::PTNMAP::tToPtn(i8 iBktNo)
 {
-  return 1;//gpAttachMap->m_pBucketMap->tWhichLglPtnNo(iBktNo);
-}*/
+  _static_
+  return gpAttachMap->m_pPtnMap->tToPtn(iBktNo);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */
@@ -1169,7 +1153,7 @@ tPN AM::BKTMAP::tToPtn(i8 iBktNo)
 i8 AM::PTNMAP::nKnownNodes(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pPtnMap->nKnownNodes();
 }
 
@@ -1179,7 +1163,7 @@ i8 AM::PTNMAP::nKnownNodes(void)
 i8 AM::PTNMAP::nPtnsInGrid(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
 
@@ -1194,7 +1178,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given Ptn ID to local partition number                             */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::tPtnIDToPtnNo(i8 iPtnID)
+i8 AM::PTNMAP::iPtnIdToPtnNo(i8 iPtnID)
 {
 
   // decrypting the partition ID into the partition number
@@ -1205,15 +1189,15 @@ i8 AM::PTNMAP::tPtnIDToPtnNo(i8 iPtnID)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnId(iRobin).iAsI8();
+  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnId(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iRobinToLclPtnNo(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
 {
   return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
 }
@@ -1221,11 +1205,10 @@ i8 AM::PTNMAP::iRobinToLclPtnNo(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::tRobinToNdePtnId(i8 iRobin, i8 iNodeNo)
+PtnId AM::PTNMAP::tRobinToNdePtnId(i8 iRobin, i8 iNodeNo)
 {
-  return gpAttachMap->m_pPtnMap->iRobinToNdePtnNo(iRobin,iNodeNo);
+  return gpAttachMap->m_pPtnMap->tRobinToNdePtnId(iRobin,iNodeNo);
 }
-
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  SE                                        */
@@ -1276,35 +1259,6 @@ void AM::SE::vWhereAmI(void)
   AM::pSchedule()->vThreadsReport();
 
   vTrace("\n"_Stz);
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                 SEED                                       */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* get the seed to be spawned                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* AM::SEED::szDecodeSeed(eSS eSeed, TagSet* pTags)
-{
-  Stz* szSeed;
-  
-  switch (eSeed) {
-    case SS_SEED_RUN: szSeed = pTags->szValue(C_TAG_SEEDRUN); break;
-    case SS_SEED_REQ: szSeed = pTags->szValue(C_TAG_SEEDREQ); break;
-    case SS_SEED_RCV: szSeed = pTags->szValue(C_TAG_SEEDRCV); break;
-    case SS_SEED_EXE: szSeed = pTags->szValue(C_TAG_SEEDEXE); break;
-    case SS_SEED_END: szSeed = pTags->szValue(C_TAG_SEEDEND); break;
-    case SS_SEED_CAN: szSeed = pTags->szValue(C_TAG_SEEDCAN); break;
-    default: NEVER_REACH;
-  }
-
-  ASSERT(szSeed)
-
-  if (szSeed->nLength() < 3)
-    pTags->vDumpSet(true);
-  
-  return szSeed;
 }
 
 
@@ -1572,6 +1526,29 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bReapEnabled(void)
+{
+  _static_
+  
+  if (! gpAttachMap)
+    return false;
+
+  return gpAttachMap->m_bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vReapEnabled(bool bReapEnabled)
+{
+  _static_
+
+  gpAttachMap->m_bReapEnabled = bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
@@ -1686,49 +1663,6 @@ DicStack* AM::TASK::pDicStack(void)
   DicStack* pDicStack = pTask->pDicStack();
   
   return pDicStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new task                                                                   */
-/*----------------------------------------------------------------------------*/
-Task* AM::TASK::pNew(void)
-{
-  Task* pTask = new Task;
-
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(TR_NONE == pTask->eTransition());
-
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new task (for job)                                                         */
-/*----------------------------------------------------------------------------*/
-Task* AM::TASK::pNew(Job* pJob)
-{
-  Task* pTask = AM::TASK::pNew();
-
-  pTask->vJob_task(pJob);
-  pJob->vJobTask(pTask);
-  
-  pTask->vTaskNm(pJob->szJobNm());
-  
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new task (for op)                                                          */
-/*----------------------------------------------------------------------------*/
-Task* AM::TASK::pNew(Op* pOp)
-{
-  Task* pTask = AM::TASK::pNew();
-
-  pTask->vOp(pOp);
-  pOp->vTask(pTask);
-
-  pTask->vTaskNm(pOp->szOpNm());
-
-  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2782,7 +2716,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 
 }
 
-static TraceLock oTraceLock;
+//static TraceLock oTraceLock;
 
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
@@ -2795,7 +2729,9 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oTraceLock.vGrabWrite();
+    gpAttachMap->pTraceLock()->vGrabWrite();
+  //else
+  //  printf("NOT LOCKING TRACE\n");
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -2805,6 +2741,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   fflush(stdout);
   
   if (gpTraceFile) {
+    gpTraceFile->vSeekEnd();
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
@@ -2812,7 +2749,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    oTraceLock.vDropWrite();
+    gpAttachMap->pTraceLock()->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2826,8 +2763,8 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oTraceLock.vGrabWrite();
-  
+    gpAttachMap->pTraceLock()->vGrabWrite();
+
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
   
@@ -2836,6 +2773,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   fflush(stdout);
   
   if (gpTraceFile) {
+    gpTraceFile->vSeekEnd();
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
@@ -2848,7 +2786,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    oTraceLock.vDropWrite();
+    gpAttachMap->pTraceLock()->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3123,8 +3061,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 i8 AM::iQueryNoInc(void)
 {
-  ++ gpAttachMap->m_ixQueryNo;
-  i8 iQueryNo = * gpAttachMap->m_ixQueryNo;
+  i8 iQueryNo = ++ gpAttachMap->m_ixQueryNo;
   return iQueryNo;
 }
 
@@ -3561,7 +3498,6 @@ static Stz* aEG[]
   "EG_IS"_Stz,
   "EG_IT"_Stz,
 
-  "EG_JA"_Stz,
   "EG_JF"_Stz,
   "EG_JK"_Stz,
   "EG_JL"_Stz,
@@ -3585,7 +3521,6 @@ static Stz* aEG[]
   "EG_NS"_Stz,
   
   "EG_OA"_Stz,
-  "EG_OC"_Stz,
   "EG_OI"_Stz,
   "EG_OK"_Stz,
   "EG_OM"_Stz,
@@ -3613,8 +3548,6 @@ static Stz* aEG[]
   "EG_SC"_Stz,
   "EG_SI"_Stz,
   "EG_SK"_Stz,
-  "EG_SL"_Stz,
-  "EG_SS"_Stz,
   "EG_ST"_Stz,
 
   "EG_TA"_Stz,
@@ -3690,7 +3623,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_IS: return aIS[i_Enum];
     case EG_IT: return aIT[i_Enum];
       
-    case EG_JA: return aJA[i_Enum];
     case EG_JF: return aJF[i_Enum];
     case EG_JK: return aJK[i_Enum];
     case EG_JL: return aJL[i_Enum];
@@ -3714,7 +3646,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_NS: return aNS[i_Enum];
       
     case EG_OA: return aOA[i_Enum];
-    case EG_OC: return aOC[i_Enum];
     case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
@@ -3742,8 +3673,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_SC: return aSC[i_Enum];
     case EG_SI: return aSI[i_Enum];
     case EG_SK: return aSK[i_Enum];
-    case EG_SL: return aSL[i_Enum];
-    case EG_SS: return aSS[i_Enum];
     case EG_ST: return aST[i_Enum];
 
     case EG_TA: return aTA[i_Enum];
@@ -4026,7 +3955,7 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindOriginating(i8 iJobId)
+Job* AM::pJob__FindOriginating(i8 iJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
@@ -4038,7 +3967,7 @@ Job* AM::pJob_FindOriginating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindParticipating(i8 iJobId)
+Job* AM::pJob__FindParticipating(i8 iJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
