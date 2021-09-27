@@ -15,10 +15,11 @@ namespace STORE
 #ifdef WITH_SPEC_LIST
           : public ListNL_t<StageSpec>
           , public LifeGuard_t<PipelineSpec>
+          , public ListItem_t<PipelineSpec>
 #else
           : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
           , public LifeGuard_t<PipelineSpec>
-
+          , public ListItem_t<PipelineSpec>
 #endif
   {
     friend class STORE::Dynamo;

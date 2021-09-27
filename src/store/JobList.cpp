@@ -167,12 +167,12 @@ void JobList::vInsertJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  vTrace("vInsertJob %s : %lld.%lld %p\n"_Stz
-         ,aJL[m_eJobList]
-         ,(i8)pJob->tJobId().uNodeNo()
-         ,(i8)pJob->tJobId().uJobNo()
-         ,pJob
-         );
+//  vTrace("vInsertJob %s : %lld.%lld %p\n"_Stz
+//         ,aJL[m_eJobList]
+//         ,(i8)pJob->tJobId().uNodeNo()
+//         ,(i8)pJob->tJobId().uJobNo()
+//         ,pJob
+//         );
 
   vGrabLock();
   
@@ -295,12 +295,12 @@ void JobList::vRemoveJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
-         ,aJL[m_eJobList]
-         ,(i8)pJob->tJobId().uNodeNo()
-         ,(i8)pJob->tJobId().uJobNo()
-         ,pJob
-         );
+//  vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
+//         ,aJL[m_eJobList]
+//         ,(i8)pJob->tJobId().uNodeNo()
+//         ,(i8)pJob->tJobId().uJobNo()
+//         ,pJob
+//         );
 
   bool bWasRemoved;
   
