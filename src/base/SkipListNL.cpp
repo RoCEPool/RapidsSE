@@ -536,10 +536,11 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
   
   if ( ! bEqualTo ) {
     vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
+    
+    vPrintList(fPrintNode);
+    
     vSkipListDump(this);
-    SkipNode* pNodePrev =
-      pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
-    UNUSED(pNodePrev);
+    
     return false;
   }
   
@@ -570,13 +571,13 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
 /*----------------------------------------------------------------------------*/
 /* validate the skiplist                                                      */
 /*----------------------------------------------------------------------------*/
-bool SkipListNL::bValidate(std::function<bool(void* aRightObject,
-                                              bool& bFoundKey
-                                             )> bfMoveRightTest,
+bool SkipListNL::bValidate(std::function<bool(SkipNode* aLeftNode,
+                                              SkipNode* aRightNode
+                                             )> bfCompareLR,
                            
                            std::function<void(SkipNode* pNode,
                                               int i_Level
-                                              )> fPrintNode
+                                              )> vfPrintNode
                            )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -588,18 +589,45 @@ bool SkipListNL::bValidate(std::function<bool(void* aRightObject,
   }
   RASSERT(nItems == m_nItems);
 
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    if (! (pNode->m_iHeight >= 0))
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (! (pNode->m_iHeight >= 0)) {
+      vTrace("Error: Node height 0 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
       return false;
-
-  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1))
-    if (! (pNode->m_iHeight >= 1))
+    }
+  }
+  
+  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1)) {
+    if (! (pNode->m_iHeight >= 1)) {
+      vTrace("Error: Node height 1 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
       return false;
-
-  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2))
-    if (! (pNode->m_iHeight == 2))
+    }
+  }
+ 
+  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2)) {
+    if (! (pNode->m_iHeight == 2)) {
+      vTrace("Error: Node height 2 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
       return false;
+    }
+  }
+  
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (! pNode->m_pRight[0])
+      break;
+    
+    SkipNode* pLeftNode  = pNode;
+    SkipNode* pRightNode = pNode->m_pRight[0];
+    
+    if (! bfCompareLR(pLeftNode,pRightNode)) {
+      vTrace("Error: left object %p not <= right object %p\n"_Stz
+             ,pLeftNode->m_pObject,pRightNode->m_pObject);
+    }
 
+  }
+  
+  
   return true;
 //  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
 //    if (!pFind(pNode->m_pObject)) {

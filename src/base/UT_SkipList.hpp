@@ -32,6 +32,7 @@ namespace BASE
     bool bRunTests(void);
 
   private:
+    static bool bCompareLR_int(UnitInt* pUnitIntLeft, UnitInt* pUnitIntRight);
     static bool bMoveRight_int(i8 iVal, UnitInt* pUnitInt, bool& bFoundKey);
     static void vPrintUnitInt(SkipNode* pNode, int i_Level);
 

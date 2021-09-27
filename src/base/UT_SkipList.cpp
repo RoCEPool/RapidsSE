@@ -104,6 +104,19 @@ bool UT_SkipList::bRunTests(void)
 /*----------------------------------------------------------------------------*/
 /* if the key is greater than object on the right, then move right            */
 /*----------------------------------------------------------------------------*/
+bool UT_SkipList::bCompareLR_int(UnitInt* pUnitIntLeft, UnitInt* pUnitIntRight)
+{
+  _static_
+
+  RASSERT(pUnitIntLeft);
+  RASSERT(pUnitIntRight);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* if the key is greater than object on the right, then move right            */
+/*----------------------------------------------------------------------------*/
 bool UT_SkipList::bMoveRight_int(i8 iLookForKey,
                                  UnitInt* pUnitInt,
                                  bool& bFoundKey)
@@ -258,7 +271,15 @@ bool UT_SkipList::bValidateSkipList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
-  bool bPassed = m_pSkipList->bValidate(nullptr,nullptr);
+  auto vfCompare = [](SkipNode* pLeftNode, SkipNode* pRightNode) {
+    
+    bool b = bCompareLR_int(_pUnitInt(pLeftNode->m_pObject),
+                            _pUnitInt(pRightNode->m_pObject));
+    
+    return b;
+  };
+
+  bool bPassed = m_pSkipList->bValidate(vfCompare,vPrintUnitInt);
   
   return bPassed;
 }

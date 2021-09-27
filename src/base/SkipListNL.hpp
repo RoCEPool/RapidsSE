@@ -73,7 +73,7 @@ namespace BASE
                       );
 
   
-    i8    nItems(void);
+    i8 nItems(void);
   
     SkipNode* pNewly(void);
   
@@ -86,11 +86,11 @@ namespace BASE
                                        )> fPrintNode
                     );
 
-    i8    nRecount(void);
+    i8 nRecount(void);
   
-    bool  bRemove(void* pObject);
+    bool bRemove(void* pObject);
 
-    bool  bRemoveByKey(void* pObject,
+    bool bRemoveByKey(void* pObject,
                        std::function<bool(void* aRightObject,
                                           bool& bFound
                                           )> bfMoveRightTest,
@@ -100,9 +100,9 @@ namespace BASE
                                           )> fPrintNode = nullptr
                        );
 
-    bool bValidate(std::function<bool(void* aRightObject,
-                                      bool& bFoundKey
-                                     )> bfMoveRightTest,
+    bool bValidate(std::function<bool(SkipNode* aLeftNode,
+                                      SkipNode* aRightNode
+                                     )> fCompareLR,
                    
                    std::function<void(SkipNode* pNode,
                                       int i_Level

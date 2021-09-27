@@ -38,6 +38,8 @@ namespace BASE
   //
   typedef void (Object::*fpMEMBERFN)(void);
 
+  Object* _pObject(void* aAddr);
+
 } // namespace BASE
 
 /*--------------------------------------------------------------------------*/
