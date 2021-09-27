@@ -502,6 +502,8 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
+  UNUSED(p_StageSpec);
+  
   for (i8 i_Arg = 0; /*none*/; i_Arg++) {
     
     if (! bTokenMaybeOpArg(pTkn()))
@@ -896,6 +898,7 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 void PipelineSpec::vMorphToCall(OpSpec* pOpSpec, PipelineSpec* pPipelineSpecCalled)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  UNUSED(pPipelineSpecCalled);
   
   s32 sName = pOpSpec->szOpNm();
 
@@ -939,6 +942,7 @@ void PipelineSpec::vNameIsPipeline(StageSpec*    pStageSpec,
                                    PipelineSpec* pPipelineSpecCalled)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  UNUSED(pStageSpec);
   
   vMorphToCall(pOpSpec,pPipelineSpecCalled);
 }
@@ -969,7 +973,7 @@ void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a consumeOp at the beginning of given stage spec                    */
+/* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 {
@@ -977,7 +981,7 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
   
   OpSpec* pConsumeOpSpec = new OpSpec("consumeOp"_Stz,0,pStageSpec);
   
-  pStageSpec->vInsert(pConsumeOpSpec);
+  pStageSpec->vAdd(pConsumeOpSpec);
   
   pStageSpec->vRenumberOpSpecs();
   
@@ -1043,7 +1047,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                                   StageSpec* pNextStageSpec, OpSpec* pOpSpecSend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  i8 i_Op = pOpSpec->iOpSpec();
+  //i8 i_Op = pOpSpec->iOpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
