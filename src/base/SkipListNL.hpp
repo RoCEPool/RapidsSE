@@ -100,7 +100,7 @@ namespace BASE
                                           )> fPrintNode = nullptr
                        );
 
-    void vValidate(std::function<bool(void* aRightObject,
+    bool bValidate(std::function<bool(void* aRightObject,
                                       bool& bFoundKey
                                      )> bfMoveRightTest,
                    

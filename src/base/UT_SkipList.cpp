@@ -80,12 +80,18 @@ bool UT_SkipList::bRunTests(void)
   m_pIntSet->vRandomise();
   //m_pIntSet->vPrint();
 
-  vInsertUnitInts();
+  bool bPassed = bInsertUnitInts();
+  if (! bPassed) {
+    return false;
+  }
+  
   vPrintSkipList();
 
-  vRemoveUnitInts();
-  //vPrintSkipList();
-  
+  bPassed = bRemoveUnitInts();
+  if (! bPassed) {
+    return false;
+  }
+
   m_pIntSet->vDeleteAry();
 
   return true;
@@ -159,7 +165,7 @@ void UT_SkipList::vPrintUnitInt(SkipNode* pNode, int i_Level)
 /*----------------------------------------------------------------------------*/
 /* insert the int set as unitInt's into the skip list                         */
 /*----------------------------------------------------------------------------*/
-void UT_SkipList::vInsertUnitInts(void)
+bool UT_SkipList::bInsertUnitInts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
@@ -186,14 +192,18 @@ void UT_SkipList::vInsertUnitInts(void)
                                                vfPrintNode);
     RASSERT(bInserted);
     
-    vValidateSkipList();
+    bool bPassed = bValidateSkipList();
+    if (! bPassed)
+      return false;
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert the int set as unitInt's into the skip list                         */
 /*----------------------------------------------------------------------------*/
-void UT_SkipList::vRemoveUnitInts(void)
+bool UT_SkipList::bRemoveUnitInts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
@@ -218,8 +228,12 @@ void UT_SkipList::vRemoveUnitInts(void)
     
     delete pUnitInt;
 
-    vValidateSkipList();
+    bool bPassed = bValidateSkipList();
+    if (! bPassed)
+      return false;
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,11 +254,13 @@ void UT_SkipList::vPrintSkipList(void)
 /*----------------------------------------------------------------------------*/
 /* validate the skip list                                                     */
 /*----------------------------------------------------------------------------*/
-void UT_SkipList::vValidateSkipList(void)
+bool UT_SkipList::bValidateSkipList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
-  m_pSkipList->vValidate(nullptr,nullptr);
+  bool bPassed = m_pSkipList->bValidate(nullptr,nullptr);
+  
+  return bPassed;
 }
 
 /*============================================================================*/

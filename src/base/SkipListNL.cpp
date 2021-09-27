@@ -570,7 +570,7 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
 /*----------------------------------------------------------------------------*/
 /* validate the skiplist                                                      */
 /*----------------------------------------------------------------------------*/
-void SkipListNL::vValidate(std::function<bool(void* aRightObject,
+bool SkipListNL::bValidate(std::function<bool(void* aRightObject,
                                               bool& bFoundKey
                                              )> bfMoveRightTest,
                            
@@ -589,15 +589,18 @@ void SkipListNL::vValidate(std::function<bool(void* aRightObject,
   RASSERT(nItems == m_nItems);
 
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    RASSERT(pNode->m_iHeight >= 0);
+    if (! (pNode->m_iHeight >= 0))
+      return false;
 
   for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1))
-    RASSERT(pNode->m_iHeight >= 1);
-  
+    if (! (pNode->m_iHeight >= 1))
+      return false;
+
   for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2))
-    RASSERT(pNode->m_iHeight == 2);
+    if (! (pNode->m_iHeight == 2))
+      return false;
 
-
+  return true;
 //  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
 //    if (!pFind(pNode->m_pObject)) {
 //      vTrace("Cannot find : "_Stz);
