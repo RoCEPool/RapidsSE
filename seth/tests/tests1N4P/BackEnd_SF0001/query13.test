@@ -3,16 +3,215 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
-select c_count, count(*) as custdist
-     from ( select c_custkey, count(o_orderkey) as c_count
-     from customer left outer join orders on c_custkey = o_custkey
-     and o_comment not like '%special%requests%'
-     group by c_custkey ) as c_orders
-     group by c_count
-     order by custdist desc, c_count desc;
+select
+       c_count,
+       count(*) as custdist
+from (
+       select
+              c_custkey,
+              count(o_orderkey) as c_count
+       from
+              customer left outer join orders on
+                      c_custkey = o_custkey
+                  and o_comment not like '%special%requests%'
+       group by
+              c_custkey
+     ) as c_orders (c_custkey, c_count)
+group by
+     c_count
+order by
+     custdist desc,
+     c_count desc
+;
+
+--verified
+rows:
+  (10,135)
+  (9,11)
+  (8,2)
+  (20,1)
+  (0,1)
+
+// without LIKE and order by
+select
+       c_count,
+       count(*) as custdist
+from (
+       select
+              c_custkey,
+              count(o_orderkey) as c_count
+       from
+              customer left outer join orders on
+                      c_custkey = o_custkey
+       group by
+              c_custkey
+     ) as c_orders (c_custkey, c_count)
+group by
+     c_count
+;
+
+-- verified
+rows:
+  (10,148)
+  (20,1)
+  (0,1)
 
 */
 
+// TRANSLITERATE Q13_0
+/*
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1940
+  stage stageMarker1940 on all partitions :
+    scan rapidsse public customer
+    | stageMarker1943 broadcast
+  stage stageMarker1943 on all partitions :
+    scanRight rapidsse public orders
+    | loopJoin 0 " $L1 $R2 ==  "
+    | stageMarker1946
+  stage stageMarker1946 on all partitions :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $9 count  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1949
+  stage stageMarker1949 on all nodes :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1952
+  stage stageMarker1952 on origin :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER as c_count )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+// Q13_0
+// converted to left outer index join
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1940
+  stage stageMarker1940 on all partitions :
+    scan rapidsse public customer
+    | stageMarker1943
+  stage stageMarker1943 on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | stageMarker1946
+  stage stageMarker1946 on all partitions :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $9 count  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1949
+  stage stageMarker1949 on all nodes :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1952
+  stage stageMarker1952 on origin :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER as c_count )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 150
+
+// TRANSLITERATE Q13_A
+
+/*
+// Q13_A create inner table
+create table c_orders (c_custkey integer, c_count integer);
+success;
+
+// TRANSLITERATE Q13_A outer query
+select
+       c_count,
+       count(*) as custdist
+from c_orders
+group by
+     c_count
+;
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker2410
+  stage stageMarker2410 on all partitions :
+    scan rapidsse public c_orders
+    | aggreg 0 " type INTEGER as c_count $2 , type INTEGER )  countAll  groupBy  type INTEGER as c_count $2 "
+    | stageMarker2413
+  stage stageMarker2413 on all nodes :
+    aggreg 0 " type INTEGER as c_count $1 , type INTEGER )  $2 sum  groupBy  type INTEGER as c_count $1 "
+    | stageMarker2416
+  stage stageMarker2416 on origin :
+    aggreg 0 " type INTEGER as c_count $1 , type INTEGER as custdist )  $2 sum  groupBy  type INTEGER as c_count $1 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+// Q13_0 piped to Q13_A
+// converted to left outer index join
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1940
+
+  // Q13_0
+  stage stageMarker1940 on all partitions :
+    scan rapidsse public customer
+    | stageMarker1943
+  stage stageMarker1943 on all partitions :
+    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | stageMarker1946
+  stage stageMarker1946 on all partitions :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $9 count  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1949
+  stage stageMarker1949 on all nodes :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+    | stageMarker1952
+  stage stageMarker1952 on origin :
+    aggreg 0 " type INTEGER as c_custkey $1 , type INTEGER as c_count )  $2 sum  groupBy  type INTEGER as c_custkey $1 "
+
+
+    | hash 0 "type INTEGER $1"
+    | stageMarker2410 hashcast
+
+  // Q13_A
+  stage stageMarker2410 on all partitions :
+    aggreg 0 " type INTEGER as c_count $2 , type INTEGER )  countAll  groupBy  type INTEGER as c_count $2 "
+    | stageMarker2413
+  stage stageMarker2413 on all nodes :
+    aggreg 0 " type INTEGER as c_count $1 , type INTEGER )  $2 sum  groupBy  type INTEGER as c_count $1 "
+    | stageMarker2416
+  stage stageMarker2416 on origin :
+    aggreg 0 " type INTEGER as c_count $1 , type INTEGER as custdist )  $2 sum  groupBy  type INTEGER as c_count $1 "
+    | stageLast
+
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows:
+  (10,148)
+  (20,1)
+  (0,1)
 
 CLEANUP {
   bye;
@@ -20,3 +219,27 @@ CLEANUP {
 }
 
 
+IRAN                      | 1996-12-04 | -29940.3408
+ IRAN                      | 1996-12-04 | -19079.3608
+ IRAN                      | 1996-12-04 | -26034.9908
+ IRAN                      | 1996-12-04 | -18513.6308
+
+
+
+
+ IRAN                      | 1996-08-03 | -27421.3600
+  IRAN                      | 1996-08-03 | -27609.5300
+  IRAN                      | 1996-08-03 |  -1442.1200
+  IRAN                      | 1996-08-03 |  -2470.7000
+  IRAN                      | 1992-03-28 | -21946.5050
+   IRAN                      | 1992-03-28 | -34295.9050
+   IRAN                      | 1992-03-28 | -21246.1550
+   IRAN                      | 1992-03-28 | -14920.9550
+IRAN                      | 1997-01-01 |  -1519.5378
+ IRAN                      | 1997-01-01 | -10388.6178
+ IRAN                      | 1997-01-01 | -13543.4178
+ IRAN                      | 1997-01-01 | -15907.2078
+ IRAN                      | 1997-04-10 | -13037.4028
+  IRAN                      | 1997-04-10 | -18492.0828
+  IRAN                      | 1997-04-10 | -23866.7228
+  IRAN                      | 1997-04-10 | -16334.2228
