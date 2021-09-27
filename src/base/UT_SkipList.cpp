@@ -73,7 +73,7 @@ bool UT_SkipList::bRunTests(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
   
-  m_pIntSet->vNewAry(32);
+  m_pIntSet->vNewAry(10000);
   m_pIntSet->vAscending();
   //m_pIntSet->vPrint();
   
@@ -132,7 +132,7 @@ bool UT_SkipList::bCompareLR_int(UnitInt* pUnitIntLeft, UnitInt* pUnitIntRight)
   i8 iLeft  = pUnitIntLeft->iInt();
   i8 iRight = pUnitIntRight->iInt();
 
-  vTrace("%lld v %lld\n"_Stz,iLeft,iRight);
+  //vTrace("%lld v %lld\n"_Stz,iLeft,iRight);
   
   if (iLeft <= iRight)
     return TRUE(valid);

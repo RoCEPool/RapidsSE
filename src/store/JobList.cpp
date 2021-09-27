@@ -161,22 +161,19 @@ void JobList::vGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-bool JobList::bGrabLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  return m_okLock.bGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert job into the skiplist of jobs                                       */
 /*----------------------------------------------------------------------------*/
 void JobList::vInsertJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
+  vTrace("vInsertJob %s : %lld.%lld %p\n"_Stz
+         ,aJL[m_eJobList]
+         ,(i8)pJob->tJobId().uNodeNo()
+         ,(i8)pJob->tJobId().uJobNo()
+         ,pJob
+         );
+
   vGrabLock();
   
   ASSERT(bIsLocked());
@@ -197,6 +194,7 @@ void JobList::vInsertJob(Job* pJob)
           (JL_PARTICIPATING == m_eJobList &&   pJob->bWasReceived()) ||
           (JL_RETIRED       == m_eJobList)
          );
+  
   
   pJob->vJobList(m_eJobList);
   
@@ -297,6 +295,13 @@ void JobList::vRemoveJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
+  vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
+         ,aJL[m_eJobList]
+         ,(i8)pJob->tJobId().uNodeNo()
+         ,(i8)pJob->tJobId().uJobNo()
+         ,pJob
+         );
+
   bool bWasRemoved;
   
   vGrabLock();
@@ -337,8 +342,10 @@ void JobList::vRemoveJob(Job* pJob)
   
   if (! bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld\n"_Stz,
-           aJL[m_eJobList],pJob->tJobId().iAsI8());
+    vTrace("%s Failed to Remove JobId %lld.%lld\n"_Stz
+           ,aJL[m_eJobList]
+           ,(i8)pJob->tJobId().uNodeNo()
+           ,(i8)pJob->tJobId().uJobNo());
     vTrace("------------------------------------\n"_Stz);
     vListJobs();
   }

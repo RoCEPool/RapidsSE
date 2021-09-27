@@ -596,6 +596,7 @@ bool SkipListNL::bValidate(std::function<bool(SkipNode* aLeftNode,
   }
   RASSERT(nItems == m_nItems);
 
+  /*
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
     if (! (pNode->m_iHeight >= 0)) {
       vTrace("Error: Node height 0 is %lld\n"_Stz,pNode->m_iHeight);
@@ -618,6 +619,22 @@ bool SkipListNL::bValidate(std::function<bool(SkipNode* aLeftNode,
       vPrintList(vfPrintNode);
       return false;
     }
+  }
+  */
+  
+  for (i8 i_Level = 0; i_Level < m_iHeight; i_Level++) {
+    for (SkipNode* pNode = pFirst(i_Level);
+         pNode;
+         pNode = pNext(pNode,i_Level)) {
+      
+      if (! (pNode->m_iHeight >= i_Level)) {
+        vTrace("Error: Node height %lld is %lld\n"_Stz
+               ,i_Level,pNode->m_iHeight);
+        vPrintList(vfPrintNode);
+        return false;
+      }
+    }
+
   }
   
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {

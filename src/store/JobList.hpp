@@ -33,7 +33,6 @@ namespace STORE
     Job*   pFindJob(JobId tJobId);
     SkipNode* pFirst(void);
     void   vGrabLock(void);
-    bool   bGrabLock(void);
     void   vInsertJob(Job* pJob);
     bool   bIsLocked(void);
     void   vListJobs(void);
