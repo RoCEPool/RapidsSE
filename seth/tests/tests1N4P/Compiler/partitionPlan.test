@@ -122,7 +122,6 @@ rows:
 ∆ mainSubquery
 
 -> statementMarker: select
-   » location: origin
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1"
 
 -> -> projectOp
@@ -147,7 +146,6 @@ rows:
 ∆ mainSubquery
 
 -> statementMarker: select
-   » location: origin
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0"
 
 -> -> projectOp
@@ -2777,7 +2775,6 @@ rows: (*,'partitionExplain','
       » isDistinct: (false)
 
 -> -> -> statementMarker: select
-         » location: origin
          » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
 
 -> -> -> -> projectOp
@@ -2790,7 +2787,6 @@ rows: (*,'partitionExplain','
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
-         » location: origin
          » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
 
 -> -> -> -> projectOp
@@ -2825,7 +2821,6 @@ rows: (*,'partitionExplain','
       » isDistinct: (false)
 
 -> -> -> statementMarker: select
-         » location: origin
          » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1   WHERE    c1 > 0"
 
 -> -> -> -> projectOp
@@ -2842,7 +2837,6 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
-         » location: origin
          » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2   WHERE    COLA > 0"
 
 -> -> -> -> projectOp
@@ -3548,7 +3542,6 @@ rows: (*,'partitionExplain','
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » location: origin
                » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
 
 -> -> -> -> -> -> projectOp
@@ -3561,7 +3554,6 @@ rows: (*,'partitionExplain','
                      » table: (rapidsse.public.t1)
 
 -> -> -> -> -> statementMarker: select
-               » location: origin
                » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
 
 -> -> -> -> -> -> projectOp
@@ -3602,7 +3594,6 @@ rows: (*,'partitionExplain','
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » location: origin
                » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
 
 -> -> -> -> -> -> projectOp
@@ -3615,7 +3606,6 @@ rows: (*,'partitionExplain','
                      » table: (rapidsse.public.t1)
 
 -> -> -> -> -> statementMarker: select
-               » location: origin
                » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
 
 -> -> -> -> -> -> projectOp
@@ -3661,7 +3651,6 @@ rows: (*,'partitionExplain','
                » isDistinct: (false)
 
 -> -> -> -> -> -> statementMarker: select
-                  » location: origin
                   » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
 
 -> -> -> -> -> -> -> projectOp
@@ -3674,7 +3663,6 @@ rows: (*,'partitionExplain','
                         » table: (rapidsse.public.t1)
 
 -> -> -> -> -> -> statementMarker: select
-                  » location: origin
                   » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
 
 -> -> -> -> -> -> -> projectOp
@@ -3984,7 +3972,6 @@ rows: (*,'partitionExplain','
 ∆ mainSubquery
 
 -> statementMarker: select
-   » location: origin
    » queryText: "SELECT 1, 2+3   FROM t1"
 
 -> -> projectOp

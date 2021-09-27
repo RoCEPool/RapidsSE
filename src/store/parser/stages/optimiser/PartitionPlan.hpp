@@ -23,8 +23,8 @@ namespace Parser
     static void vPartitionPlan(PlanNode* pRootNode);
 
   private:
-    static void vPartitionSubquerySection(QueryNode* pSubqueryMarker,
-                                                PlanNode* pRootNode);
+    static void vPartitionMainSubquery(QueryNode* pMainSubquery,
+                                       PlanNode* pRootNode);
 
     static QueryNode* pPartitionStatementSection(QueryNode* pStatementMarker,
                                                  PlanNode* pRootNode,
@@ -35,17 +35,18 @@ namespace Parser
                                          QueryNode* pNodeChain,
                                          QueryNode* pPartitionChain);
 
-    static void vPartitionStatementMarker(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionTableScanOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-//  static void vPartitionIndexScanOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionAggregateOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionExplainOp(      QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionFilterOp(       QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionLimitOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionOrderOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionProjectOp(      QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionUnionOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
-    static void vPartitionJoinOp(         QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack);
+    static void vPartitionStatementMarker(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionTableScanOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+//  static void vPartitionIndexScanOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionSubqueryRefOp(  QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionAggregateOp(    QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionExplainOp(      QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionFilterOp(       QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionLimitOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionOrderOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionProjectOp(      QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionUnionOp(        QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
+    static void vPartitionJoinOp(         QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode);
 
     // Returns true if a given ProjectOp is a "post-project" that simply
     // trims the select list
