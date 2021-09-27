@@ -20,11 +20,15 @@ namespace BASE
     ListNL_t__(void);
     
     void  vAppend(ITEM* pItem);
+    i8    iFind(ITEM* pItem);
+    ITEM* pGet(i8 i_Item);
     ITEM* pHead(void);
     void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
     void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
     i8    nItems(void);
+    ITEM* pNext(ITEM* pItem);
     ITEM* pPop(void);
+    ITEM* pPrev(ITEM* pItem);
     void  vPush(ITEM* pItem);
     void  vRemove(ITEM* pItem);
     ITEM* pTail(void);
@@ -75,6 +79,35 @@ void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
     m_pHead = pItem;
   
   m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find object in list                                                        */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+i8 ListNL_t__<ITEM>::iFind(ITEM* pItem)
+{
+  i8 iItemNo = 0;
+  for (ITEM* pScan = m_pHead;
+       pScan;
+       pScan = pScan->pNextItem(), iItemNo++)
+    if (pScan == pItem)
+      return iItemNo;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nth object of list                                                     */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pGet(i8 i_Item)
+{
+  ITEM* pScan = m_pHead;
+  for (i8 iItemNo = 0; pScan && iItemNo < i_Item; iItemNo++)
+  pScan = pScan->pNextItem();
+
+  return pScan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,6 +201,17 @@ i8 ListNL_t__<ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next object after given object                                         */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pNext(ITEM* pItem)
+{
+  ITEM* pNext = pItem->pNextItem();
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop object from head of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
@@ -200,6 +244,17 @@ ITEM* ListNL_t__<ITEM>::pPop(void)
   pItem->vNextItem(nullptr);
   
   return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next object after given object                                         */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pPrev(ITEM* pItem)
+{
+  ITEM* pPrev = pItem->pPrevItem();
+  
+  return pPrev;
 }
 
 /*----------------------------------------------------------------------------*/

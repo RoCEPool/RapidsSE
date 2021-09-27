@@ -13,7 +13,7 @@ namespace STORE
   class PipelineSpec
 
 #ifdef WITH_SPEC_LIST
-          : public ListNL_t<StageSpec>,
+          : public ListNL_t<StageSpec>
           , public LifeGuard_t<PipelineSpec>
 #else
           : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
