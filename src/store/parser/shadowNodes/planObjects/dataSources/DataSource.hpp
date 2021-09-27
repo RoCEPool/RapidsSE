@@ -58,6 +58,12 @@ namespace Parser
     // Prints into the buffer the identifier for the data source.
     // If an alias is set then that is used. Otherwise it could be a table name.
     static void vPrintName(QueryNode* pNode, s2K& sBuf);
+
+    // Returns true if this operator (and any expressions it may have) should be
+    // partitioned when the plan is partitioned. Most operators will simply ask
+    // this question of their child until we get to a data source. Most tables
+    // would answer true. A replicated table or data source would answer false.
+    static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

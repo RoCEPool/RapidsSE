@@ -373,6 +373,25 @@ void TableSource::vPrintName(QueryNode* pNode, s2K& sBuf)
                TableSource::szTableName(pNode) );
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 TableSource::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 0);
+
+  // TODO: When we support replicated tables we would check with the table
+  //       metadata to see if the table is replicated. For now, all tables
+  //       are partitioned, so we always return true.
+
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
