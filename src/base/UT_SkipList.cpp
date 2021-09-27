@@ -82,7 +82,7 @@ bool UT_SkipList::bRunTests(void)
 
   vInsertUnitInts();
   vPrintSkipList();
-  
+
   vRemoveUnitInts();
   //vPrintSkipList();
   
@@ -185,6 +185,8 @@ void UT_SkipList::vInsertUnitInts(void)
                                                bfMoveRightTest,
                                                vfPrintNode);
     RASSERT(bInserted);
+    
+    vValidateSkipList();
   }
 }
 
@@ -215,6 +217,8 @@ void UT_SkipList::vRemoveUnitInts(void)
     RASSERT(bRemoved);
     
     delete pUnitInt;
+
+    vValidateSkipList();
   }
 }
 
@@ -231,6 +235,16 @@ void UT_SkipList::vPrintSkipList(void)
   };
 
   m_pSkipList->vPrintList(vfPrintNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate the skip list                                                     */
+/*----------------------------------------------------------------------------*/
+void UT_SkipList::vValidateSkipList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+  
+  m_pSkipList->vValidate(nullptr,nullptr);
 }
 
 /*============================================================================*/

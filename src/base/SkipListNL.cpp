@@ -582,21 +582,30 @@ void SkipListNL::vValidate(std::function<bool(void* aRightObject,
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   i8 nItems = 0;
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    nItems++;
-  
-  ASSERT(nItems == m_nItems);
-
-  
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
-    if (!pFind(pNode->m_pObject)) {
-      vTrace("Cannot find : "_Stz);
-        m_fpPrint(pNode->m_pObject);
-        vTrace("\n"_Stz);
-      NEVER_REACH;
-    }
+    pNode->vResetFlags();
+    nItems++;
   }
-           
+  RASSERT(nItems == m_nItems);
+
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
+    RASSERT(pNode->m_iHeight >= 0);
+
+  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1))
+    RASSERT(pNode->m_iHeight >= 1);
+  
+  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2))
+    RASSERT(pNode->m_iHeight == 2);
+
+
+//  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+//    if (!pFind(pNode->m_pObject)) {
+//      vTrace("Cannot find : "_Stz);
+//        m_fpPrint(pNode->m_pObject);
+//        vTrace("\n"_Stz);
+//      NEVER_REACH;
+//    }
+//  }
            
 }
 
@@ -822,9 +831,9 @@ Footer* SkipListNL::aFooter(void)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*-- Test --------------------------------------------------------------------*/
@@ -865,7 +874,8 @@ void BASE::vSkipListDump(SkipListNL* pSkipList)
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
       UNUSED(i);
-      vTrace("Node %p : %p (L%lld)\n"_Stz,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
+      vTrace("Node %p : %p (L%lld)\n"_Stz
+             ,pNode,(i8)pNode->m_pObject, pNode->m_iHeight);
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);
