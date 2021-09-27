@@ -854,14 +854,22 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
     StrLib::vSprint(zCondition,
-                    "Expecting class %d %s; Got %d %s\n"_Stz,
-                    eExpectingClass, aCN[eExpectingClass]->azChar(),
-                    eGotClass,       aCN[eGotClass]->azChar());
+                    "Expecting class %d %s; "
+                    "Got %d %s "
+                    "object=%p\n"_Stz
+                    ,eExpectingClass, aCN[eExpectingClass]->azChar()
+                    ,eGotClass,       aCN[eGotClass]->azChar()
+                    ,aObject
+                    );
   else
     StrLib::vSprint(zCondition,
-                    "Expecting class %d %s; Got %d\n"_Stz,
-                    eExpectingClass, aCN[eExpectingClass]->azChar(),
-                    eGotClass);
+                    "Expecting class %d %s; "
+                    "Got %d "
+                    "object=%p\n"_Stz
+                    ,eExpectingClass, aCN[eExpectingClass]->azChar()
+                    ,eGotClass
+                    ,aObject
+                    );
   
   //  if (CN_FREECHUNK == eGotClass) {
   //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
@@ -900,15 +908,23 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
     StrLib::vSprint(zCondition,
-                    "Expecting class %d %s; Got %d %s\n"_Stz,
-                    eExpectingClass, aCN[eExpectingClass]->azChar(),
-                    eGotClass,       aCN[eGotClass]->azChar());
+                    "Expecting class %d %s; "
+                    "Got %d %s "
+                    "object=%p\n"_Stz
+                    ,eExpectingClass, aCN[eExpectingClass]->azChar()
+                    ,eGotClass,       aCN[eGotClass]->azChar()
+                    ,aObject
+                    );
   else
     StrLib::vSprint(zCondition,
-                    "Expecting class %d %s; Got %d\n"_Stz,
-                    eExpectingClass, aCN[eExpectingClass]->azChar(),
-                    eGotClass);
-  
+                    "Expecting class %d %s; "
+                    "Got %d "
+                    "object=%p\n"_Stz
+                    ,eExpectingClass, aCN[eExpectingClass]->azChar()
+                    ,eGotClass
+                    ,aObject
+                    );
+
   //  if (CN_FREECHUNK == eGotClass) {
   //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
   //    eCN eWasClass = aFreeChunk->eWasClass();

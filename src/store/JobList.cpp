@@ -350,7 +350,7 @@ void JobList::vRemoveJob(Job* pJob)
     vListJobs();
   }
 
-  ASSERT(bWasRemoved);
+  RASSERT(bWasRemoved);
 }
 
 /*----------------------------------------------------------------------------*/
