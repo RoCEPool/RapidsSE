@@ -88,6 +88,8 @@
 
 //#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
 
+//#define WITH_SPEC_LIST EndDefine       // use lists for spec's
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

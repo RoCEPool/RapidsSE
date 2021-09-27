@@ -11,14 +11,25 @@
 
 namespace STORE
 {
-  class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>,
-                    public LifeGuard_t<StageSpec>
+  class StageSpec
+
+#ifdef WITH_SPEC_LIST
+                  : public ListNL_t<OpSpec>
+                  , public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
+#else
+                  : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
+                  , public LifeGuard_t<StageSpec>
+#endif
+
   {
   private:
     s32  m_sStageNm;    // stage name
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
     i8   m_i_StageSpec; // this stage spec no
+  
+  
+    
 
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?

@@ -22,7 +22,13 @@ __aFooterFunction(StageSpec)
 StageSpec::StageSpec(i8 i_StageSpec,
                      Stz* szStageNm,
                      PipelineSpec* pPipelineSpec)
-: LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
+#ifdef WITH_SPEC_LIST
+: ListNL_t<OpSpec>(CN_STAGESPEC)
+, LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
+#else
+:LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
+#endif
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   

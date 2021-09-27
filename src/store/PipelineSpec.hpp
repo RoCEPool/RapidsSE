@@ -10,8 +10,16 @@ namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>,
-                      public LifeGuard_t<PipelineSpec>
+  class PipelineSpec
+
+#ifdef WITH_SPEC_LIST
+          : public ListNL_t<StageSpec>,
+          , public LifeGuard_t<PipelineSpec>
+#else
+          : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
+          , public LifeGuard_t<PipelineSpec>
+
+#endif
   {
     friend class STORE::Dynamo;
 
