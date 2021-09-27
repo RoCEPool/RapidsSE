@@ -54,7 +54,7 @@ namespace BASE
                      
                      std::function<void(SkipNode* pNode,
                                         int i_Level
-                                        )> fPrintNode = nullptr
+                                        )> vfPrintNode
                      );
     SkipNode* pFirst(i8 iLevel);
   
@@ -69,7 +69,7 @@ namespace BASE
                       
                       std::function<void(SkipNode* pNode,
                                          int i_Level
-                                         )> fPrintNode = nullptr
+                                         )> vfPrintNode
                       );
 
   
@@ -83,7 +83,7 @@ namespace BASE
   
     void vPrintList(std::function<void(SkipNode* pNode,
                                        int i_Level
-                                       )> fPrintNode
+                                       )> vfPrintNode
                     );
 
     i8 nRecount(void);
@@ -97,7 +97,7 @@ namespace BASE
                        
                        std::function<void(SkipNode* pNode,
                                           int i_Level
-                                          )> fPrintNode = nullptr
+                                          )> vfPrintNode
                        );
 
     bool bValidate(std::function<bool(SkipNode* aLeftNode,
@@ -106,7 +106,7 @@ namespace BASE
                    
                    std::function<void(SkipNode* pNode,
                                       int i_Level
-                                      )> fPrintNode
+                                      )> vfPrintNode
                    );
 
   private:
@@ -125,7 +125,7 @@ namespace BASE
                          
                          std::function<void(SkipNode* pNode,
                                             int i_Level
-                                            )> fPrintNode = nullptr
+                                            )> vfPrintNode
                          );
 
     SkipNode* pPositionPrior(std::function<bool(void* aRightObject,
@@ -138,7 +138,7 @@ namespace BASE
                              
                              std::function<void(SkipNode* pNode,
                                                 int i_Level
-                                                )> fPrintNode = nullptr
+                                                )> vfPrintNode
                              );
 
     Footer* aFooter(void);

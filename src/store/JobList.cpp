@@ -128,7 +128,8 @@ Job* JobList::pFindJob(JobId tJobId)
 
   vGrabLock();
 
-  pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest));
+  pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                          Job::vPrintJobNode));
 
   vDropLock();
 
@@ -211,7 +212,9 @@ void JobList::vInsertJob(Job* pJob)
       return bMoveRight;
     };
 
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                bfMoveRightTest,
+                                                Job::vPrintJobNode);
     RASSERT(bWasInserted);
   }
   else {
@@ -224,7 +227,9 @@ void JobList::vInsertJob(Job* pJob)
       return bMoveRight;
     };
 
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,bfMoveRightTest);
+    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                bfMoveRightTest,
+                                                Job::vPrintJobNode);
     RASSERT(bWasInserted);
   }
   
@@ -307,7 +312,9 @@ void JobList::vRemoveJob(Job* pJob)
       return bMoveRight;
     };
 
-    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                               bfMoveRightTest,
+                                               Job::vPrintJobNode);
   }
   else {
     JobId tJobId = pJob->m_tJobId;
@@ -319,7 +326,9 @@ void JobList::vRemoveJob(Job* pJob)
       return bMoveRight;
     };
     
-    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,bfMoveRightTest);
+    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                               bfMoveRightTest,
+                                               Job::vPrintJobNode);
   }
   
   pJob->vJobList(JL_NONE);

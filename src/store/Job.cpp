@@ -191,6 +191,27 @@ void Job::vPostRecv(void* aReceivedJob)
   vDebugPoint();
 }
 
+/*----------------------------------------------------------------------------*/
+/* if the key is greater than object on the right, then move right            */
+/*----------------------------------------------------------------------------*/
+void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
+{
+  _static_
+  
+  RASSERT(pNode);
+
+  Job* pJob = _pJob(pNode->m_pObject);
+  
+  JobId tJobId = pJob->tJobId();
+  
+  vTrace("@%lld %p : %lld.%lld -> %p\n"_Stz
+         ,i_Level
+         ,pNode
+         ,(i8)tJobId.uNodeNo()
+         ,(i8)tJobId.uJobNo()
+         ,pNode->m_pRight[i_Level]
+         );
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

@@ -107,7 +107,8 @@ namespace STORE
    ~Job(void) noexcept(false);
   
     static void vPostRecv(void* aJob);
-  
+    static void vPrintJobNode(SkipNode* pNode, int i_Level);
+
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);

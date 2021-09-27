@@ -282,10 +282,13 @@ bool UT_SkipList::bRemoveUnitInts(void)
       return bRight;
     };
     
-    UnitInt* pUnitInt = _pUnitInt(m_pSkipList->pFindByKey(bfMoveRightTest));
+    UnitInt* pUnitInt = _pUnitInt(m_pSkipList->pFindByKey(bfMoveRightTest,
+                                                          vPrintUnitInt));
     RASSERT(pUnitInt);
 
-    bool bRemoved = m_pSkipList->bRemoveByKey(pUnitInt,bfMoveRightTest);
+    bool bRemoved = m_pSkipList->bRemoveByKey(pUnitInt,
+                                              bfMoveRightTest,
+                                              vPrintUnitInt);
     
     RASSERT(bRemoved);
     

@@ -195,12 +195,12 @@ void* SkipListNL::pFindByKey(
                              
                              std::function<void(SkipNode* pNode,
                                                 int i_Level
-                                                )> fPrintNode
+                                                )> vfPrintNode
                              )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  SkipNode* pNode = pLocateKey(bfMoveRightTest);
+  SkipNode* pNode = pLocateKey(bfMoveRightTest,vfPrintNode);
 
   if (pNode)
     return pNode->m_pObject;
@@ -290,7 +290,7 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
                               
                               std::function<void(SkipNode* pNode,
                                                  int i_Level
-                                                 )> fPrintNode
+                                                 )> vfPrintNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -299,7 +299,10 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPositionPrior(bfMoveRightTest,aPriorVec,bEqualTo);
+  SkipNode* pNode = pPositionPrior(bfMoveRightTest,
+                                   aPriorVec,
+                                   bEqualTo,
+                                   vfPrintNode);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -406,7 +409,7 @@ void* SkipListNL::pPop(void)
 void SkipListNL::vPrintList(
                             std::function<void(SkipNode* pNode,
                                               int i_Level
-                                              )> fPrintNode
+                                              )> vfPrintNode
                             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -431,7 +434,7 @@ void SkipListNL::vPrintList(
     for (SkipNode* pNode = pFirst(i_Level);
          pNode;
          pNode = pNext(pNode,i_Level))  {
-      fPrintNode(pNode,i_Level);
+      vfPrintNode(pNode,i_Level);
     }
   }
 
@@ -519,7 +522,7 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
                               
                               std::function<void(SkipNode* pNode,
                                                  int i_Level
-                                                 )> fPrintNode
+                                                 )> vfPrintNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -531,13 +534,17 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   SkipNode* aPrior;
   
-  SkipNode* pNodePrev = pPositionPrior(bfMoveRightTest,aPriorVec,bEqualTo);
+  SkipNode* pNodePrev = pPositionPrior(bfMoveRightTest,
+                                       aPriorVec,
+                                       bEqualTo,
+                                       vfPrintNode);
   RASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
-    vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
+    vTrace("SkipListNL::bRemoveByKey: failed to position on %p\n"_Stz,
+           pObjectRemove);
     
-    vPrintList(fPrintNode);
+    vPrintList(vfPrintNode);
     
     vSkipListDump(this);
     
