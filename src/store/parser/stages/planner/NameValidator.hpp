@@ -143,6 +143,13 @@ namespace Parser
     // Checks that a table subquery has a unique name amongst its siblings.
     // Throws an exception if it is not unique.
     static void vCheckTableSubqueryIsUniquelyNamed(QueryNode* pTableSubquery, s2K& sSubqueryPath, PlanNode* pRootNode);
+
+    // Checks if the given table name can be resolved against any table subquery
+    // in the plan. If so, an error is thrown that an out-of-scope table alias
+    // has been referenced.
+    static void vCheckNameAgainstSubqueryNotInScope(Stz* szCatalogName, Stz* szSchemaName,
+                                                    Stz* szTableName, PlanNode* pRootNode,
+                                                    QueryNode* pEnclosingSubquery);
   };
 }
 

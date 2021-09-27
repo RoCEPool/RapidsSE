@@ -516,7 +516,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
   QueryNodeList* pOpReplacementList = new QueryNodeList();
 
   // Walk the graph looking for TableRefs
-  auto fVisitor = [&pMetadataNode, &pSeApi, pResolvableSubqueries, pStartNode, &pOpReplacementList]
+  auto fVisitor = [&pMetadataNode, &pSeApi, pResolvableSubqueries, pStartNode, &pOpReplacementList, pEnclosingSubqueryNode]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -561,9 +561,13 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
     }
 
     // Unknown table, throw an exception
-    // TODO: Check if there are any table subqueries that are out of scope that could
-    //       be a match. Then we can generate a better error message. If not, then
-    //       simply issue the unknown table error.
+    // Check if there are any table subqueries that are out of scope that could
+    // be a match. Then we can generate a better error message. If not, then
+    // simply issue the unknown table error.
+    vCheckNameAgainstSubqueryNotInScope(szCatalogName, szSchemaName, szTableName, pRootNode, pEnclosingSubqueryNode);
+
+    // Couldn't correlate the name to any out-of-scope table subqueries, so
+    // it is just an unknown table.
     NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
     return GraphNav::WALK_ABORT; // Unnecessary, but for the compiler's benefit only
   };
@@ -1817,6 +1821,64 @@ void NameValidator::vCheckTableSubqueryIsUniquelyNamed(QueryNode* pTableSubquery
   }
 
   delete pIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Checks if the given table name can be resolved against any table subquery  */
+/* in the plan. If so, an error is thrown that an out-of-scope table alias    */
+/* has been referenced.                                                       */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vCheckNameAgainstSubqueryNotInScope(Stz* szCatalogName, Stz* szSchemaName,
+                                                        Stz* szTableName, PlanNode* pRootNode,
+                                                        QueryNode* pEnclosingSubquery)
+{
+  ASSERT(pRootNode);
+  ASSERT(szTableName);
+  ASSERT(pEnclosingSubquery);
+  ASSERT(MainSubquery::bIsOfType(pEnclosingSubquery));
+
+  if (szCatalogName || szSchemaName) {
+    // Can't be trying to refer to a table subquery alias if these are set.
+    return;
+  }
+
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+
+  // Walk all child nodes in the graph and look for TableSubquery nodes.
+  // Don't care if we visit valid table subqueries - at this point we've been
+  // unable to validate this name, so anything it does match could be considered
+  // as out of scope.
+
+  auto fVisitor = [szTableName, pEnclosingSubquery](PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, void* pvArg)
+      -> GraphNav::eWalkCtrl {
+
+    UNUSED(sCurrentPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!TableSubquery::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    Stz* szAlias = TableSubquery::szTableAlias(_pQueryNode(pNode));
+
+    if (szTableName->bSame(szAlias)) {
+      // Make sure the table reference isn't referring to the table subquery
+      // it is a part of. Can't refer to itself if it is a non-recursive subquery.
+      QueryNode* pMainSubquery = TableSubquery::pChildMainSubquery(_pQueryNode(pNode));
+
+      if (pMainSubquery == pEnclosingSubquery && !TableSubquery::bIsRecursive(_pQueryNode(pNode))) {
+        SemanticException::vThrow(EC_SUBQUERY_SELF_REFERENCE, ": %s"_Stz, szTableName);
+      }
+
+      SemanticException::vThrow(EC_TABLE_SUBQUERY_OUT_OF_SCOPE, ": %s"_Stz, szTableName);
+      return GraphNav::WALK_ABORT;  // not required, except for compiler pickiness
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pPlanRoot, false, true, fVisitor, nullptr);
 }
 
 /*============================================================================*/

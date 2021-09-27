@@ -194,6 +194,7 @@ enum eEC // error code
   EC_SE_UNKNOWN_ERROR,
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
+  EC_SUBQUERY_SELF_REFERENCE,       // SQL Compiler Subsystem
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
   EC_SYSTEM_CLOSED,
 
@@ -202,6 +203,7 @@ enum eEC // error code
   EC_TABLE_EXISTS,
   EC_TABLE_NOT_EMPTY,
   EC_TABLE_IN_USE,
+  EC_TABLE_SUBQUERY_OUT_OF_SCOPE,   // SQL Compiler Subsystem
   EC_TENANT_EXISTS,
   EC_TOO_MANY_NAMED_COLUMNS,
   EC_TX_BEGIN_FAILED,
@@ -422,6 +424,7 @@ static Stz* aEC[]
   /* EC_SE_UNKNOWN_ERROR              */ "SE unknown error"_Stz,
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
+  /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,  // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "system is closed"_Stz,
 
@@ -430,6 +433,7 @@ static Stz* aEC[]
   /* EC_TABLE_EXISTS                  */ "table exists"_Stz,
   /* EC_TABLE_NOT_EMPTY               */ "table not empty"_Stz,
   /* EC_TABLE_IN_USE                  */ "table in use"_Stz,
+  /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "EC_TABLE_SUBQUERY_OUT_OF_SCOPE"_Stz,  // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
   /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
@@ -651,6 +655,7 @@ static Stz* aEC2[] // error code
   /* EC_SE_UNKNOWN_ERROR              */ "EC_SE_UNKNOWN_ERROR"_Stz,
   /* EC_SEMANTIC_ERROR                */ "EC_SEMANTIC_ERROR"_Stz,                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "EC_SEND_FAILURE"_Stz,
+  /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,        // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "EC_SYNTAX_ERROR"_Stz,                   // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "EC_SYSTEM_CLOSED"_Stz,
 
@@ -659,6 +664,7 @@ static Stz* aEC2[] // error code
   /* EC_TABLE_EXISTS                  */ "EC_TABLE_EXISTS"_Stz,
   /* EC_TABLE_NOT_EMPTY               */ "EC_TABLE_NOT_EMPTY"_Stz,
   /* EC_TABLE_IN_USE                  */ "EC_TABLE_IN_USE"_Stz,
+  /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "EC_TABLE_SUBQUERY_OUT_OF_SCOPE"_Stz,
   /* EC_TENANT_EXISTS                 */ "EC_TENANT_EXISTS"_Stz,
   /* EC_TOO_MANY_NAMED_COLUMNS        */ "EC_TOO_MANY_NAMED_COLUMNS"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "EC_TX_BEGIN_FAILED"_Stz,
@@ -889,6 +895,7 @@ static Stz* aErrorMsg[]
   /* EC_SE_UNKNOWN_ERROR              */ "SE unknown error"_Stz,
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
+  /* EC_SUBQUERY_SELF_REFERENCE       */ "Non-recursive subquery cannot refer to itself"_Stz,  // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem. Custom error string from ANTLR.
   /* EC_SYSTEM_CLOSED                 */ "system closed"_Stz,
 
@@ -897,6 +904,7 @@ static Stz* aErrorMsg[]
   /* EC_TABLE_EXISTS                  */ "table exists"_Stz,
   /* EC_TABLE_NOT_EMPTY               */ "table not empty"_Stz,
   /* EC_TABLE_IN_USE                  */ "table in use"_Stz,
+  /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "Table name refers to a table subquery alias that is not in scope"_Stz,    // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
   /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in WITH clause"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
