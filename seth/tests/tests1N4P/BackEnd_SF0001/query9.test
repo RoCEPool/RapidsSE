@@ -17,13 +17,381 @@ select nation, o_year, sum(amount) as sum_profit
     and p_name like '%green%' ) as profit
     group by nation, o_year
     order by nation, o_year desc;
+--verified
+rows: 41
+
+// REMOVED LIKE, EXTRACT and ORDERBY
+select nation, o_year, sum(amount) as sum_profit
+    from ( select n_name as nation,
+    o_orderdate as o_year,
+    l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+    from part, supplier, lineitem, partsupp, orders, nation
+    where s_suppkey = l_suppkey
+    and ps_suppkey = l_suppkey
+    and ps_partkey = l_partkey
+    and p_partkey = l_partkey
+    and o_orderkey = l_orderkey
+    and s_nationkey = n_nationkey
+    ) as profit
+    group by nation, o_year;
+--verified
+rows: 1428
+
+Q9_0
+select n_name as nation,
+    o_orderdate as o_year,
+    l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+    from part, supplier, lineitem, partsupp, orders, nation
+    where s_suppkey = l_suppkey
+    and ps_suppkey = l_suppkey
+    and ps_partkey = l_partkey
+    and p_partkey = l_partkey
+    and o_orderkey = l_orderkey
+    and s_nationkey = n_nationkey;
+--verfified
+rows: 23984
+
 
 */
 
+// Q9_0
+/* rewrite using joins
+select n_name as nation,
+    o_orderdate as o_year,
+    l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+    from nation
+    join supplier on s_nationkey = n_nationkey
+    join lineitem on s_suppkey = l_suppkey
+    join partsupp on l_suppkey = ps_suppkey and ps_partkey = l_partkey
+    join part on l_partkey = p_partkey
+    join orders on l_orderkey = o_orderkey;
+*/
+
+// TRANSLITERATE Q9_0
+/*
+explain stage transliterate
+  select n_name as nation,
+      o_orderdate as o_year,
+      l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+      from supplier
+      join nation on n_nationkey = s_nationkey
+      join lineitem on s_suppkey = l_suppkey
+      join partsupp on l_suppkey = ps_suppkey and ps_partkey = l_partkey
+      join part on l_partkey = p_partkey
+      join orders on l_orderkey = o_orderkey;
+
+explain stage transliterate
+  select n_name as nation,
+      o_orderdate as o_year,
+      l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+      from supplier
+      join nation on n_nationkey = s_nationkey
+      join lineitem on s_suppkey = l_suppkey
+      join partsupp on l_suppkey = ps_suppkey //and ps_partkey = l_partkey
+      join part on l_partkey = p_partkey
+      join orders on l_orderkey = o_orderkey;
+
+  pipeline unnamed
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker2481
+    stage stageMarker2481 on all partitions :
+      scan rapidsse public supplier
+      | stageMarker2484 broadcast
+    stage stageMarker2484 on all partitions :
+      scanRight rapidsse public nation
+      | loopJoin 0 " $R1 $L4 ==  "
+      | stageMarker2487 broadcast
+    stage stageMarker2487 on all partitions :
+      scanRight rapidsse public lineitem
+      | loopJoin 0 " $L1 $R3 ==  "
+      | stageMarker2490 broadcast
+    stage stageMarker2490 on all partitions :
+      scanRight rapidsse public partsupp
+      | loopJoin 0 " $L14 $R2 ==  "
+      | stageMarker2493 broadcast
+    stage stageMarker2493 on all partitions :
+      scanRight rapidsse public part
+      | loopJoin 0 " $L13 $R1 ==  "
+      | stageMarker2496 broadcast
+    stage stageMarker2496 on all partitions :
+      scanRight rapidsse public orders
+      | loopJoin 0 " $L12 $R1 ==  "
+      | stageMarker2499
+    stage stageMarker2499 on all partitions :
+      project 0 " type VARCHAR as nation $9 , type DATE as o_year $46 , type DECIMAL as amount $17 1  $18 -  *  $31 $16 *  -  "
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+
+*/
+  // convert loopJoins to indexJoins with projections
+  pipeline unnamed
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker2481
+
+    stage stageMarker2481 on all partitions :
+      scan rapidsse public supplier
+      | stageMarker2484
+
+    // n_nationkey = s_nationkey
+    stage stageMarker2484 on all partitions :
+       indexJoin 1 nation nation_idx1 "BOUND $I1 $L4 =="
+       | project 1 " type VARCHAR $9 , type INTEGER $1 "
+   | stageMarker2487
+
+   // projected n_name($1), s_suppkey($2)
+   // select n_name, s_suppkey from nation join supplier on n_nationkey = s_nationkey;
+
+    // s_suppkey = l_suppkey
+    stage stageMarker2487 on all partitions :
+      indexJoin 1 lineitem lineitem_idx3 "BOUND $I1 $L2 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $3 ,
+        type integer as l_partkey $4 ,
+        type integer as l_suppkey $5 ,
+        type DECIMAL as l_quantity $7 ,
+        type DECIMAL as l_entendedprice $8 ,
+        type DECIMAL as l_discount $9 "
+      | stageMarker2490
+
+    // projected n_name($1), l_orderkey($2), l_partkey($3), l_suppkey($4), l_quantity($5), l_entendedprice($6), l_discount($7)
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey;
+
+    // l_suppkey = ps_suppkey
+    stage stageMarker2490 on all partitions :
+      indexJoin 1 partsupp partsupp_idx1 "BOUND $I1 $L4 =="
+      | filter 1 "type boolean $8 $3 == "
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $2 ,
+        type integer as l_partkey $3 ,
+        type DECIMAL as l_quantity $5 ,
+        type DECIMAL as l_entendedprice $6 ,
+        type DECIMAL as l_discount $7 ,
+        type DECIMAL as ps_supplycost $11 "
+      | stageMarker2493
+
+    // projected n_name($1), l_orderkey($2), l_partkey($3), l_quantity($4), l_entendedprice($5), l_discount($6), ps_supplycost($7)
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey;
+
+    // l_partkey = p_partkey
+    stage stageMarker2493 on all partitions :
+      indexJoin 1 part part_idx1 "BOUND $I1 $L3 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $2 ,
+        type integer as l_partkey $3 ,
+        type DECIMAL as l_quantity $5 ,
+        type DECIMAL as l_entendedprice $6 ,
+        type DECIMAL as l_discount $7 "
+      | stageMarker2496
+
+    // projected n_name($1), l_orderkey($2), l_quantity($3), l_entendedprice($4), l_discount($5), ps_supplycost($6)
+
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey
+    //   join part on p_partkey = l_partkey;
+
+    // o_orderkey = l_orderkey
+    stage stageMarker2496 on all partitions :
+      indexJoin 1 orders orders_idx2 "BOUND $I1 $L2 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type DATE as o_year $11 ,
+        type DECIMAL $4 1  $5 -  *  $6  $3 *  - as amount "
+      | stageLast
+
+    // projected n_nation($1), o_orderdate($11) as o_year, l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+
+    // select n_name as nation,
+    //              o_orderdate as o_year,
+    //              l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey
+    //   join part on p_partkey = l_partkey
+    //   join orders on o_orderkey = l_orderkey;
+
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+
+rows: 23984
+
+// TRANSLITERATE Q9_A
+
+/*
+
+// Q13_A create inner table
+create table q9_inner (nation varchar, o_year date , amount decimal(15,2));
+success;
+
+// TRANSLITERATE Q9_A outer query
+
+explain stage transliterate select nation, o_year, sum(amount) as sum_profit
+  from q9_inner group by nation, o_year ;
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1467
+  stage stageMarker1467 on all partitions :
+    scan rapidsse public q9_inner
+    | aggreg 0 " type VARCHAR as nation $1 , type DATE as o_year $2 , type DECIMAL )  $3 sum  groupBy  type VARCHAR as nation $1 , type DATE as o_year $2 "
+    | stageMarker1470
+  stage stageMarker1470 on all nodes :
+    aggreg 0 " type VARCHAR as nation $1 , type DATE as o_year $2 , type DECIMAL )  $3 sum  groupBy  type VARCHAR as nation $1 , type DATE as o_year $2 "
+    | stageMarker1473
+  stage stageMarker1473 on origin :
+    aggreg 0 " type VARCHAR as nation $1 , type DATE as o_year $2 , type DECIMAL as sum_profit )  $3 sum  groupBy  type VARCHAR as nation $1 , type DATE as o_year $2 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+// Q9_0 piped to Q9_A
+
+ pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageMarker2481
+
+
+   // Q9_0
+    stage stageMarker2481 on all partitions :
+      scan rapidsse public supplier
+      | stageMarker2484
+
+    // n_nationkey = s_nationkey
+    stage stageMarker2484 on all partitions :
+       indexJoin 1 nation nation_idx1 "BOUND $I1 $L4 =="
+       | project 1 " type VARCHAR $9 , type INTEGER $1 "
+   | stageMarker2487
+
+   // projected n_name($1), s_suppkey($2)
+   // select n_name, s_suppkey from nation join supplier on n_nationkey = s_nationkey;
+
+    // s_suppkey = l_suppkey
+    stage stageMarker2487 on all partitions :
+      indexJoin 1 lineitem lineitem_idx3 "BOUND $I1 $L2 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $3 ,
+        type integer as l_partkey $4 ,
+        type integer as l_suppkey $5 ,
+        type DECIMAL as l_quantity $7 ,
+        type DECIMAL as l_extendedprice $8 ,
+        type DECIMAL as l_discount $9 "
+      | stageMarker2490
+
+    // projected n_name($1), l_orderkey($2), l_partkey($3), l_suppkey($4), l_quantity($5), l_extendedprice($6), l_discount($7)
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey;
+
+    // l_suppkey = ps_suppkey
+    stage stageMarker2490 on all partitions :
+      indexJoin 1 partsupp partsupp_idx1 "BOUND $I1 $L4 =="
+      | filter 1 "type boolean $8 $3 == "
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $2 ,
+        type integer as l_partkey $3 ,
+        type DECIMAL as l_quantity $5 ,
+        type DECIMAL as l_extendedprice $6 ,
+        type DECIMAL as l_discount $7 ,
+        type DECIMAL as ps_supplycost $11 "
+      | stageMarker2493
+
+    // projected n_name($1), l_orderkey($2), l_partkey($3), l_quantity($4), l_extendedprice($5), l_discount($6), ps_supplycost($7)
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey;
+
+    // l_partkey = p_partkey
+    stage stageMarker2493 on all partitions :
+      indexJoin 1 part part_idx1 "BOUND $I1 $L3 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type integer as l_orderkey $2 ,
+        type integer as l_partkey $3 ,
+        type DECIMAL as l_quantity $5 ,
+        type DECIMAL as l_entendedprice $6 ,
+        type DECIMAL as l_discount $7 "
+      | stageMarker2496
+
+    // projected n_name($1), l_orderkey($2), l_quantity($3), l_extendedprice($4), l_discount($5), ps_supplycost($6)
+
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = supplier.s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey
+    //   join part on p_partkey = l_partkey;
+
+    // o_orderkey = l_orderkey
+    stage stageMarker2496 on all partitions :
+      indexJoin 1 orders orders_idx2 "BOUND $I1 $L2 =="
+      | project 0 " type VARCHAR as nation $1 ,
+        type DATE as o_year $11 ,
+        type DECIMAL $4 1  $5 -  *  $6  $3 *  - as amount "
+      | stageMarker1467
+
+    // projected n_nation($1), o_orderdate($2) as o_year, l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount ($3)
+
+    // select n_name, s_suppkey from nation
+    //   join supplier on n_nationkey = s_nationkey
+    //   join lineitem on l_suppkey = s_suppkey
+    //   join partsupp on ps_suppkey = l_suppkey
+    //   join part on p_partkey = l_partkey
+    //   join orders on o_orderkey = l_orderkey;
+
+  // Q9_A
+  stage stageMarker1467 on all partitions :
+    aggreg 0 " type VARCHAR as nation $1 ,
+       type DATE as o_year $2 ,
+       type DECIMAL )  $3 sum
+       groupBy  type VARCHAR as nation $1 ,
+                type DATE as o_year $2 "
+    | stageMarker1470
+  stage stageMarker1470 on all nodes :
+    aggreg 0 " type VARCHAR as nation $1 ,
+      type DATE as o_year $2 ,
+      type DECIMAL )  $3 sum
+      groupBy  type VARCHAR as nation $1 ,
+               type DATE as o_year $2 "
+    | stageMarker1473
+  stage stageMarker1473 on origin :
+    aggreg 0 " type VARCHAR as nation $1 , type DATE as o_year $2 , type DECIMAL as sum_profit )  $3 sum  groupBy  type VARCHAR as nation $1 , type DATE as o_year $2 "
+    | stageLast
+
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
 
 CLEANUP {
   bye;
   mute
 }
-
-

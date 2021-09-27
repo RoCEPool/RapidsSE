@@ -19,9 +19,10 @@ namespace STORE
     // a)
   
     // -- id, name and kind
-    Gid_t<CN_SESSION> m_xSessionId;  // session id in grid
-    s32             m_sSessionNm;  // name of this session
-    eSK             m_eSession;    // session kind
+    SsnId m_xSessionId;  // session id in grid
+
+    s32   m_sSessionNm;  // name of this session
+    eSK   m_eSession;    // session kind
 
     // -- belongs to
     i8 m_i_Session;  // which session in sessions on this node
@@ -131,6 +132,8 @@ namespace STORE
   
   Session* _pSession(void* aAddr);
   Session* _pSession(i8 iAddr);
+
+  bool bSsnCompare_id(void* aSsnInsert, void* aSsnScan, bool& bMatch);
 }
 
 /*============================================================================*/

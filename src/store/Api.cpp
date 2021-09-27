@@ -21,6 +21,7 @@
 
 #include "SP_TagSet.hpp"
 
+extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 
 extern pthread_key_t giTLS_ThreadKey;
@@ -440,7 +441,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pPrepareJob->vJobKind(eJobKind);
     
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
-    pPrepareJob->vSee();
+    pPrepareJob->vPrintJobContents();
   
   
   //pPrepareJobTags->vDumpSet(true);
@@ -554,6 +555,8 @@ bool Api::bReapJob(void)
     return FALSE(empty_list);
   }
   
+  AM::MASTERLOCK::vGrabReap(nullptr);
+  
   pRetiredJobs->vGrabLock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -580,7 +583,7 @@ bool Api::bReapJob(void)
                "activeOps %lld %s "
                "\n"_Stz
                
-               ,pRetiredJob,pRetiredJob->iJobId() & 0xFFFFFF
+               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
                ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
                ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
                );
@@ -588,19 +591,20 @@ bool Api::bReapJob(void)
     }
   }
 
+  pRetiredJobs->vDropLock();
+  
   if (! pReapableJob) {
-    pRetiredJobs->vDropLock();
+    AM::MASTERLOCK::vDropReap(nullptr);
     return FALSE(nothing_to_reap);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bWasRemoved = pRetiredJobs->bRemoveJob(pReapableJob);
-  RASSERT(bWasRemoved);
-  
-  pRetiredJobs->vDropLock();
-  
-  // delete the retired job
+  pRetiredJobs->vRemoveJob(pReapableJob);
+
+  AM::MASTERLOCK::vDropReap(nullptr);
+
+  // delete the reapavle job
   
   RASSERT(pReapableJob->pJobTask());
   pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
@@ -1046,7 +1050,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   pJob->vTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pJobTask());
 
-  if (! pJob->bHasTag_noWait()) {
+  if (! pJob->bHasTag(C_TAG_NOWAIT)) {
     //pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vTimerUpdate();

@@ -1,11 +1,26 @@
 /*============================================================================*/
-/* SkipListNL.cpp -- Skip List                                                  */
+/* SkipListNL.cpp -- Skip List                                                */
 /*============================================================================*/
 
 #include "BASE.h"
 
 // !DIC_AS_SKIPLIST
 //#define _VALIDATE_SKIPLIST
+
+/*
+ 
+                                 A Skip List
+                                 ===========
+ 
+           H
+           E [ ]--------------------->[ ]->[ ]----------->0
+           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->0
+           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
+              1    2    3    4    5    6    7    8    9
+ 
+ 
+ */
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -103,25 +118,6 @@ SkipListNL::~SkipListNL(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* check integrity of the list                                                */
-/*----------------------------------------------------------------------------*/
-void SkipListNL::vCheck(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  for (SkipNode* pNode = m_pHead->m_pRight[0];
-       pNode;
-       pNode = pNode->m_pRight[0])
-    {
-    //    if (n->m_pKey->iElem(0) != n->m_pKey->pObject()->iAttr(0))
-    //      vReportTrace("key <> OBJECT error\n");
-    //
-    //    if (n->m_pKey->iElem(0) > n->m_pNext[0]->m_pKey->iElem(0)) {
-    //      vReportTrace("sequence error\n");
-    //    }
-    }
-}
 
 /*----------------------------------------------------------------------------*/
 /* compare skip items by their address                                        */
@@ -162,57 +158,8 @@ void SkipListNL::vContents(void (*fvDump)(void* pObject))
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete all objects                                                         */
-/*----------------------------------------------------------------------------*/
-bool SkipListNL::bDeleteAll(void)
-{
-  //  bool bWasRemoved;
-  //
-  //  while (true)
-  //  {
-  //    Ent* aItem = (Ent*)pPop(&bWasRemoved,2);
-  //
-  //
-  //    if (!aItem)
-  //      break;
-  //
-  //    if ( ! bWasRemoved )
-  //      return false;
-  //
-  //    //m_pKey->m_pDelObjFun(pObject);
-  //    if (m_pKey->m_fDeleteObject)
-  //      m_pKey->m_fDeleteObject(aItem);
-  //    else
-  //      tDelete(&aItem);
-  //  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if object is in list                                                  */
-/*----------------------------------------------------------------------------*/
-bool SkipListNL::bExists(void* pObject)
-{  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  bool bEqualTo;
-  
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false,m_fpCompare);
-  ASSERT(pNode); // logic check
-  
-  if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-
-#if 1
-
 void* SkipListNL::pFind(void* pObject,
                         bool bTrace,
                         CompareFp fpCompare_alt)
@@ -237,37 +184,29 @@ void* SkipListNL::pFind(void* pObject,
     return nullptr;
 }
 
-#else
-
 /*----------------------------------------------------------------------------*/
-
-void* SkipListNL::pFind(void* pObject,
-                        bool bTrace,
-                        std::function<void(void* aInsert,
-                                           void* aScan,
-                                           bool& bMatch)> bfCompareClosure)
+/* find first matching object                                                 */
+/*----------------------------------------------------------------------------*/
+void* SkipListNL::pFindByKey(
+                             std::function<bool(
+                                                void* aScan,
+                                                bool& bFoundKey
+                                                )> bfMoveRightTest,
+                             
+                             std::function<void(SkipNode* pNode,
+                                                int i_Level
+                                                )> vfPrintNode
+                             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  bool bEqualTo;
-  
-  SkipNode* pNode = pPosition(pObject,
-                              bEqualTo,
-                              nullptr,
-                              bTrace,
-                              fpCompare_alt ? fpCompare_alt : m_fpCompare
-                              );
-  ASSERT(pNode); // logic check
-  
-  if ( ! pNode->m_pRight[0] )
-    return nullptr;
-  else if (bEqualTo)
-    return pNode->m_pRight[0]->m_pObject;
-  else
-    return nullptr;
-}
+  SkipNode* pNode = pLocateKey(bfMoveRightTest,vfPrintNode);
 
-#endif
+  if (pNode)
+    return pNode->m_pObject;
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get first node                                                             */
@@ -341,6 +280,71 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert object into list                                                    */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bInsertByKey(void* aObjectInsert,
+                              
+                              std::function<bool(void* aScan,
+                                                 bool& bFound
+                                                )> bfMoveRightTest,
+                              
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                                                 )> vfPrintNode
+                              )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  
+  // get a positioned prior vector
+  SkipNode* pNode = pPositionPrior(bfMoveRightTest,
+                                   aPriorVec,
+                                   bEqualTo,
+                                   vfPrintNode);
+  RASSERT(pNode); // logic check
+  
+  Object* pObjectInsert = (Object*)aObjectInsert;
+  //RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eGetClassNo() == pObjectInsert->eGetClassNo() );
+  
+  // do not insert duplicates into a list of unique keys
+  if (bEqualTo && m_bUniqueKey) {
+    return false;
+  }
+  
+  // choose a random level for the new node
+  i8 iNodeLevel = iRandomLevel();
+  if (iNodeLevel > m_iHeight) {
+    iNodeLevel = ++m_iHeight;
+    aPriorVec[iNodeLevel] = m_pHead;
+  }
+    
+  //RJH vTrace("bInsert:position7\n"_Stz);
+  // create new node with inserted object
+  m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+  RASSERT(m_pNewly);
+  
+  // put new node into the list according the prior vector for random level
+  do {
+    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
+  } while (--iNodeLevel >= 0);
+  
+  // one more object in the list
+  m_nItems++;
+  
+  
+#ifdef _VALIDATE_SKIPLIST
+  vValidate();
+#endif
+  
+  
+  // succesful insert
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get numbr of objects in list                                               */
 /*----------------------------------------------------------------------------*/
 i8 SkipListNL::nItems(void)
@@ -358,6 +362,19 @@ SkipNode* SkipListNL::pNewly(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   return m_pNewly;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next node                                                              */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  if (pPrev->m_pRight[iLevel])
+    return pPrev->m_pRight[iLevel];
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,6 +401,45 @@ void* SkipListNL::pPop(void)
   }
   
   return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print contents of the skiplist                                             */
+/*----------------------------------------------------------------------------*/
+void SkipListNL::vPrintList(
+                            std::function<void(SkipNode* pNode,
+                                              int i_Level
+                                              )> vfPrintNode
+                            )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  vTrace("----------------------------\n"_Stz);
+
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz
+         ,m_iHeight
+         ,m_pHead);
+
+  for (i8 i_Level = C_SKIPLIST_LEVELS - 1; i_Level >= 0; i_Level--) {
+    if (m_pHead->m_pRight[i_Level])
+      vTrace("Level %lld: Node %p\n"_Stz
+             ,i_Level
+             ,m_pHead->m_pRight[i_Level]);
+  }
+  
+  for (i8 i_Level = m_iHeight; i_Level >= 0; i_Level--) {
+
+    vTrace("LEVEL %lld\n"_Stz, i_Level);
+    
+    for (SkipNode* pNode = pFirst(i_Level);
+         pNode;
+         pNode = pNext(pNode,i_Level))  {
+      vfPrintNode(pNode,i_Level);
+    }
+  }
+
+  vTrace("----------------------------\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,34 +512,161 @@ bool SkipListNL::bRemove(void* pObjectRemove)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next node                                                              */
+/* remove object from list                                                    */
 /*----------------------------------------------------------------------------*/
-SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
+bool SkipListNL::bRemoveByKey(void* pObjectRemove,
+                              
+                              std::function<bool(void* aRightObject,
+                                                 bool& bFound
+                                                 )> bfMoveRightTest,
+                              
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                                                 )> vfPrintNode
+                              )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  if (pPrev->m_pRight[iLevel])
-    return pPrev->m_pRight[iLevel];
+  // Remove iff UNIQUE KEY
+  RASSERT(m_bUniqueKey);
   
-  return nullptr;
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  SkipNode* aPrior;
+  
+  SkipNode* pNodePrev = pPositionPrior(bfMoveRightTest,
+                                       aPriorVec,
+                                       bEqualTo,
+                                       vfPrintNode);
+  RASSERT(pNodePrev); // logic check
+  
+  if ( ! bEqualTo ) {
+    vTrace("SkipListNL::bRemoveByKey: failed to position on %p\n"_Stz,
+           pObjectRemove);
+    
+    vPrintList(vfPrintNode);
+    
+    vSkipListDump(this);
+    
+    return false;
+  }
+  
+  // get node to be removed
+  SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
+  RASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
+  
+  // cut out the node being removed
+  for (i8 i_Level = 0;
+       i_Level <= m_iHeight &&
+         (aPrior = aPriorVec[i_Level])->m_pRight[i_Level] == pNodeRemove;
+       i_Level++)
+    aPrior->m_pRight[i_Level] = pNodeRemove->m_pRight[i_Level];
+  
+  // correct the height if we have removed the last tallest node
+  while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
+    m_iHeight--;
+  
+  // one less object in the list
+  m_nItems--;
+
+  // delete the node
+  delete pNodeRemove;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate the skiplist                                                      */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bValidate(std::function<bool(SkipNode* aLeftNode,
+                                              SkipNode* aRightNode
+                                             )> bfCompareLR,
+                           
+                           std::function<void(SkipNode* pNode,
+                                              int i_Level
+                                              )> vfPrintNode
+                           )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  i8 nItems = 0;
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    pNode->vResetFlags();
+    nItems++;
+  }
+  RASSERT(nItems == m_nItems);
+
+  /*
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (! (pNode->m_iHeight >= 0)) {
+      vTrace("Error: Node height 0 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
+      return false;
+    }
+  }
+  
+  for (SkipNode* pNode = pFirst(1); pNode; pNode = pNext(pNode,1)) {
+    if (! (pNode->m_iHeight >= 1)) {
+      vTrace("Error: Node height 1 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
+      return false;
+    }
+  }
+ 
+  for (SkipNode* pNode = pFirst(2); pNode; pNode = pNext(pNode,2)) {
+    if (! (pNode->m_iHeight == 2)) {
+      vTrace("Error: Node height 2 is %lld\n"_Stz,pNode->m_iHeight);
+      vPrintList(vfPrintNode);
+      return false;
+    }
+  }
+  */
+  
+  for (i8 i_Level = 0; i_Level < m_iHeight; i_Level++) {
+    for (SkipNode* pNode = pFirst(i_Level);
+         pNode;
+         pNode = pNext(pNode,i_Level)) {
+      
+      if (! (pNode->m_iHeight >= i_Level)) {
+        vTrace("Error: Node height %lld is %lld\n"_Stz
+               ,i_Level,pNode->m_iHeight);
+        vPrintList(vfPrintNode);
+        return false;
+      }
+    }
+
+  }
+  
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (! pNode->m_pRight[0])
+      break;
+    
+    SkipNode* pLeftNode  = pNode;
+    SkipNode* pRightNode = pNode->m_pRight[0];
+    
+    if (! bfCompareLR(pLeftNode,pRightNode)) {
+      vTrace("Error: left object %p not <= right object %p\n"_Stz
+             ,pLeftNode->m_pObject,pRightNode->m_pObject);
+    }
+
+  }
+  
+  
+  return true;
+//  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+//    if (!pFind(pNode->m_pObject)) {
+//      vTrace("Cannot find : "_Stz);
+//        m_fpPrint(pNode->m_pObject);
+//        vTrace("\n"_Stz);
+//      NEVER_REACH;
+//    }
+//  }
+           
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- private: ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/******************************************************************************
- 
-                                 A Skip List
-                                 ===========
- 
-           H
-           E [ ]--------------------->[ ]->[ ]----------->0
-           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->0
-           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
-              1    2    3    4    5    6    7    8    9
- 
- ******************************************************************************/
 
 /*----------------------------------------------------------------------------*/
 /* position object to be inserted                                             */
@@ -491,8 +674,6 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 
 #define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-
-#if 1
 
 SkipNode* SkipListNL::pPosition(void* pSearchForObject,
                                 bool& bEqualTo,
@@ -561,83 +742,107 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject,
   return pPriorNode;
 }
 
-
 /*----------------------------------------------------------------------------*/
-
-#else
-
-SkipNode* SkipListNL::pPosition(void* pSearchForObject,
-                                bool& bEqualTo,
-                                SkipNode** aPriorVec,
-                                bool bTrace,
-                                std::function<void(void* aInsert,
-                                                   void* aScan,
-                                                   bool& bMatch)> bfCompareClosure))
+/* locate object using lambda                                                 */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pLocateKey
+           (
+            std::function<bool(void* aRightObject,
+                               bool& bFoundKey
+                               )> bfMoveRightTest,
+            
+            std::function<void(SkipNode* pNode,
+                               int i_Level
+                               )> fPrintNode
+            )
 {
-  bEqualTo = false;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  SkipNode* pScanNode = m_pHead;
+  
+  bool bFoundKey = false;
 
-  SkipNode* pPriorNode = m_pHead;
-  i8 iLevel = m_iHeight;
-  
-  do {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of nodes until we find
-    //               ObjectInsert < ObjectNext at current level
-    
-    bool bPosObjIsGT;
-    
-    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
+  for (i8 iLevel = m_iHeight; iLevel >= 0; iLevel--) {
+              
+    while (SkipNode* pRightNode = pScanNode->m_pRight[iLevel]) {
       
+      // inner loop:
+      //   go right a number of nodes until we find
+      //     ScanObject < RightObject at current level
       
-      // compare the object being searched for
-      if (fpCompare) {
-        
-        bPosObjIsGT = fpCompare(pSearchForObject,
-                                pRightNode->m_pObject,
-                                bEqualTo);
-      }
-      else {
-        bPosObjIsGT = bCompareAddr(pSearchForObject,
-                                   pRightNode->m_pObject,
-                                   bEqualTo);
-      }
+      void* pRightObject = pRightNode->m_pObject;
+      RASSERT(pRightObject);
       
-      if (bTrace) {
-        vTrace("Pos ^%lld: "_Stz,iLevel);
-          m_fpPrint(pSearchForObject);
-          vTrace(" v "_Stz);
-          m_fpPrint(pRightNode->m_pObject);
-          vTrace(" : %s\n"_Stz,bPosObjIsGT ? "GT moveRight" : "LE goDown" );
-      }
+      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundKey);
+            
+      if (bFoundKey)
+        return pRightNode;
       
-      if (bPosObjIsGT) {
-        moveScanToRight(pPriorNode,iLevel);
-      }
-      else {
+      if (! bMoveRightAgain)
         break;
-      }
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: now having gone right as far as we go down one single level
-    
-    // first record current node as a revision point
-    if (aPriorVec)
-      aPriorVec[iLevel] = pPriorNode;
-       
-    // now go down one level on scan node
-    goDownLevel(iLevel);
-    
-    // and repeat till we have a complete revision vector
-  } while (iLevel >= 0);
+      
+      pScanNode = pScanNode->m_pRight[iLevel];
+      
+    } // while able to go right as far as possible
+        
+  } // for each level downwards
   
-  return pPriorNode;
+  return nullptr;
 }
 
-#endif
 
+/*----------------------------------------------------------------------------*/
+/* position prior vector for insert/remove using lambda                       */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pPositionPrior
+           (
+            std::function<bool(void* aRightObject,
+                               bool& bFoundKey
+                               )> bfMoveRightTest,
+            
+            SkipNode** paPriorVec,
+            
+            bool& bFoundInList,
+            
+            std::function<void(SkipNode* pNode,
+                               int i_Level
+                               )> fPrintNode
+            )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
+  SkipNode* pPriorNode = m_pHead;
+  
+  bFoundInList = false;
+
+  for (i8 iLevel = m_iHeight; iLevel >= 0; iLevel--) {
+              
+    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
+      
+      // inner loop:
+      //   move right along the nodes at this level
+      //     until we find
+      //       ScanObject < RightObject at current level
+      
+      void* pRightObject = pRightNode->m_pObject;
+      RASSERT(pRightObject);
+      
+      bool bMoveRightAgain = bfMoveRightTest(pRightObject,bFoundInList);
+            
+      if (! bMoveRightAgain)
+        break;
+            
+      pPriorNode = pPriorNode->m_pRight[iLevel];
+      
+    } // while able to go right as far as possible
+        
+    paPriorVec[iLevel] = pPriorNode;
+
+  } // for each level downwards
+
+  // return prior node as at level 0
+  return pPriorNode;
+}
 
 /*----------------------------------------------------------------------------*/
 /* choose a random level for new node                                         */
@@ -667,32 +872,6 @@ i8 SkipListNL::iRandomLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate the skiplist                                                      */
-/*----------------------------------------------------------------------------*/
-void SkipListNL::vValidate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-  
-  i8 nItems = 0;
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
-    nItems++;
-  
-  ASSERT(nItems == m_nItems);
-
-  
-  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
-    if (!pFind(pNode->m_pObject)) {
-      vTrace("Cannot find : "_Stz);
-        m_fpPrint(pNode->m_pObject);
-        vTrace("\n"_Stz);
-      NEVER_REACH;
-    }
-  }
-           
-           
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -707,9 +886,9 @@ Footer* SkipListNL::aFooter(void)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*-- Test --------------------------------------------------------------------*/
@@ -750,7 +929,8 @@ void BASE::vSkipListDump(SkipListNL* pSkipList)
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
       UNUSED(i);
-      vTrace("Node %p : %p (L%lld)\n"_Stz,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
+      vTrace("Node %p : %p (L%lld)\n"_Stz
+             ,pNode,(i8)pNode->m_pObject, pNode->m_iHeight);
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);
@@ -758,37 +938,6 @@ void BASE::vSkipListDump(SkipListNL* pSkipList)
   vTrace("\n"_Stz);
 }
 
-void BASE::vSkipListTest(void)
-{
-  vTrace("SkipListNL Tests\n"_Stz);
-  vTrace("\n"_Stz);
-
-  SkipListNL* pSkipList = new SkipListNL(C_UNQIUE_KEY,bI8Compare);
-  
-  pSkipList->bInsert((void*)3); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)1); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)8); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)2); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)7); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)9); vSkipListDump(pSkipList);
-  
-  ASSERT(4 == (i8)pSkipList->pFind((void*)4));
-  
-  pSkipList->bRemove((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bRemove((void*)5); vSkipListDump(pSkipList);
-  pSkipList->bRemove((void*)6); vSkipListDump(pSkipList);
-  
-  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
-  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
-  
-  vSkipListDump(pSkipList);
-  
-  return;
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -553,6 +553,26 @@ void JoinOp::vReplaceUsing(QueryNode* pNode, QueryNode* pJoinPredicate)
   pNode->vAppendProperty(pJoinPredicate);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 JoinOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 2);
+
+  // Ask both children
+  b1 bChild1Partitionable = PlanObject::bIsPartitionable(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  b1 bChild2Partitionable = PlanObject::bIsPartitionable(_pQueryNode(pNode->pSecondChild()), pRootNode);
+
+  // If either child is partitionable then the result is also partitionable.
+  return (bChild1Partitionable || bChild2Partitionable);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -27,8 +27,6 @@
 #include "eYA.h"
 
 
-//#include "Gid_t.hpp"
-//#include "PtnId.hpp"
 class PtnId;
 
 namespace OBLIQUE {
@@ -64,6 +62,8 @@ namespace BASE {
 
   class Input;
   class IvlLib;
+
+  class JobId;
 
   class Lock;
   class Locks;
@@ -294,6 +294,15 @@ namespace OBLIQUE
       static void vDropDdlReadLock(LogicUnit* pLogicUnit);
       static void vGrabDdlReadLock(LogicUnit* pLogicUnit);
     
+      static void vDropReap(LogicUnit* pLogicUnit);
+      static void vGrabReap(LogicUnit* pLogicUnit);
+    
+      static void vDropTraceLine(void);
+      static void vGrabTraceLine(void);
+    
+      static void vDropTraceMulti(void);
+      static void vGrabTraceMulti(void);
+    
       static void vDropDdlWriteLock(LogicUnit* pLogicUnit);
       static void vGrabDdlWriteLock(LogicUnit* pLogicUnit);
     
@@ -341,7 +350,8 @@ namespace OBLIQUE
     };
 
 
-    class PTNMAP {
+    class PTNMAP
+    {
     public:
       static PtnId tHashToDtdPtnId(i8 iHash);
       static i8 iToBkt(PtnId tPtnId);
@@ -562,12 +572,10 @@ namespace OBLIQUE
 
     //
     static Task* pExecutingTask(Job* pJob);
-    static bool bJobIsForeign(i8 iJobId);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
     static i8   nRndSkipLevel(void);
-    static Job* pThisTLSJob(void);
     static t8   tThisTLSPespective(void);
     static LogicUnit* pThisTLSLogicUnit(void);
     static Task* pThisTLSTask(void);
@@ -606,7 +614,6 @@ namespace OBLIQUE
     static void vFilePrint(File* pFile, Stz* szFormat,...);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static void vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
@@ -688,8 +695,6 @@ namespace OBLIQUE
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
-    static void vTraceDumpGrabLock(void);
-    static void vTraceDumpDropLock(void);
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
@@ -726,12 +731,12 @@ namespace OBLIQUE
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob__FindOriginating(i8 iJobId);
-    static Job* pJob__FindParticipating(i8 iJobId);
-    static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
-    static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
-    static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
-    static bool bJob_RemoveRetired(Job* pJob, bool bDump=false);
+    static Job* pJob_FindOriginating(JobId tJobId);
+    static Job* pJob_FindParticipating(JobId tJobId);
+    static void vJob_RemoveLocal(Job* pJob);
+    static void vJob_RemoveOriginating(Job* pJob);
+    static void vJob_RemoveParticipating(Job* pJob);
+    static void vJob_RemoveRetired(Job* pJob);
 
   };
 

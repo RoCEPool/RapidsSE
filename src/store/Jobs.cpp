@@ -57,12 +57,12 @@ void Jobs::vCreateJobLists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
 
-  m_pDemonJobs         = new JobList(STORE::bJobCompare_id, JL_DEMON);
-  m_pLocalJobs         = new JobList(STORE::bJobCompare_id, JL_LOCAL);
-  m_pOriginatingJobs   = new JobList(STORE::bJobCompare_id, JL_ORIGINATING);
-  m_pParticipatingJobs = new JobList(STORE::bJobCompare_id, JL_PARTICIPATING);
+  m_pDemonJobs         = new JobList(JL_DEMON);
+  m_pLocalJobs         = new JobList(JL_LOCAL);
+  m_pOriginatingJobs   = new JobList(JL_ORIGINATING);
+  m_pParticipatingJobs = new JobList(JL_PARTICIPATING);
   
-  m_pRetiredJobs       = new JobList(nullptr, JL_RETIRED);
+  m_pRetiredJobs       = new JobList(JL_RETIRED);
 }
 
 /*----------------------------------------------------------------------------*/

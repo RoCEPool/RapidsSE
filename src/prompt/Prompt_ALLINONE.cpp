@@ -48,6 +48,8 @@
 #include "LogicUnit.hpp"
 #include "SP_Job.hpp"
 
+#include "UT_SkipList.hpp"
+
 extern CmdLineArgs gxCmdLineArgs;
 
 using namespace Parser;
@@ -725,25 +727,26 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   
   ASSERT(pInpTknVec->pGet(0)->bSame("cancel"_Stz));
   
-  i8 iJobId = pInpTknVec->pGet(1)->iToI8();
+  JobId tJobId;
+  tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pPipelineJob = AM::pJob__FindParticipating(iJobId);
+  Job* pPipelineJob = AM::pJob_FindParticipating(tJobId);
   
   if ( ! pPipelineJob ) {
-    vTrace("job %lld not found\n"_Stz, iJobId);
+    vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
     AM::vJob_DumpParticipating();
     return false;
   }
   else
-    vTrace("Cancelling job %lld\n"_Stz, iJobId);
+    vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
   
   // get the pipeline from the job
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
-    vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, iJobId);
+    vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
     return false;
   }
   
@@ -1139,14 +1142,8 @@ PromptFun __Prompt_dlist (
 bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Demon List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pDemonJobs()->vGrabLock();
-  AM::pDemonJobs()->vContentDump();
-  AM::pDemonJobs()->vDropLock();
+  AM::pDemonJobs()->vListJobs();
 
   return true;
 }
@@ -2308,14 +2305,14 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   
   i8 iNumber = sNumber.iToI8();
   
-  Job* pJob = _pJob(iNumber);
+  Job* pJob = _pJob((Job*)iNumber);
   
   if (! pJob) {
     vTrace("Not a job\n"_Stz);
     return false;
   }
   
-  pJob->vReport();
+  pJob->vPrintJobContents();
 
   return true;
 }
@@ -2416,14 +2413,8 @@ PromptFun __Prompt_llist (
 bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Local List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pLocalJobs()->vGrabLock();
-  AM::pLocalJobs()->vContentDump();
-  AM::pLocalJobs()->vDropLock();
+  AM::pLocalJobs()->vListJobs();
 
   return true;
 }
@@ -3218,104 +3209,12 @@ PromptFun __Prompt_olist (
 bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Originator List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
   
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vContentDump();
-  AM::pOriginatingJobs()->vDropLock();
+  AM::pOriginatingJobs()->vListJobs();
 
   return true;
 }
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_opdq.cpp -- Operand Queue Repo                                      */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "Engine.hpp"
-
-
-PromptFun __Prompt_opdq (
-  PF_OPDQ,              // prompt function
-  "Prompt_opdq"_Stz,    // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "opdq"_Stz,           // the prompt command
-  nullptr,              // the second word
-  bPrompt_opdq,         // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "opdq"_Stz,           // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_opdq(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  vTrace("Operand Queue Report\n"_Stz);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-
-  bool bStdOut = false;
-  if (2 == iNumTokens)
-    bStdOut = StrLib::bToBool(pInpTknVec->pGet(1)->azChars());
-  
-  
-  Engine::vOperandQueueReport(bStdOut);
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_operands.cpp -- show / change max operands arg                      */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_operands (
-  PF_OPERANDS,       // prompt function
-  "Prompt_operands"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the function
-  "operands"_Stz,    // the prompt command
-  nullptr,           // the second word
-  bPrompt_operands,  // prompt function
-  true,              // enabled
-
-  true,              // visible
-  "operands"_Stz,    // help
-  ""_Stz             // description
-);
-
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_operands(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-
-  i8 iNumTokens = pInpTknVec->nItems();
-
-  if (1 == iNumTokens) {
-    vTrace("Operands %lld\n"_Stz,AM::nOperandsArg());
-  }
-  else {
-    if (pInpTknVec->pGet(1)->eToken() != TN_INTEGER)
-      return false;
-    
-    i8 nOperands = pInpTknVec->pGet(1)->iToI8();
-    
-    AM::vOperandsArg(nOperands);
-  }
-  return true;
-}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_opsys.cpp -- Print OS Information                                   */
@@ -3374,13 +3273,7 @@ bool PROMPT::bPrompt_plist(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Participant List\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
-  
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vContentDump();
-  AM::pParticipatingJobs()->vDropLock();
+  AM::pParticipatingJobs()->vListJobs();
 
   return true;
 }
@@ -4078,7 +3971,7 @@ bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  AM::pRetiredJobs()->vSee();
+  AM::pRetiredJobs()->vListJobs();
 
   return true;
 }
@@ -5825,6 +5718,42 @@ bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 
   vTrace("  %llds\n"_Stz,iUpTimeSsec);
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_timerStart.cpp -- timer start                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_ut_skipList (
+  PF_UT_SKIPLIST,          // prompt function
+  "Prompt_ut_skipList"_Stz, // name of the prompt function
+  "comment"_Stz,           // comment about the function
+  "ut_skipList"_Stz,       // the prompt command
+  nullptr,                 // the second word
+  bPrompt_ut_skipList,     // prompt function
+  true,                    // enabled
+
+  true,                    // visible
+  "ut_skipList"_Stz,       // help
+  ""_Stz                   // description
+);
+
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_ut_skipList(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  bool bPassed = UT_SkipList::bTest();
+ 
+  if (bPassed)
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  else
+    vTrace("\nUT_SkipList failed\n"_Stz);
+
   return true;
 }
 

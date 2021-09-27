@@ -12,6 +12,7 @@
 
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/dataSources/DataSource.hpp"
 #include "SqlOperator.hpp"
 #include "ExplainOp.hpp"
 #include "JoinOp.hpp"
@@ -304,6 +305,31 @@ b1 PlanObject::bNodeHasLocation(QueryNode* pNode)
   ASSERT(eLocType < Location::LO_NENUMS);
   UNUSED(eLocType); // in release
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 PlanObject::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+
+  // Specific overrides for data sources and joins
+  if (DataSource::bIsOfType(pNode)) {
+    return DataSource::bIsPartitionable(pNode, pRootNode);
+
+  } else if (JoinOp::bIsOfType(pNode)) {
+    return JoinOp::bIsPartitionable(pNode, pRootNode);
+  }
+
+  // Default implementation: ask the child.
+  ASSERT(pNode->nChildren() > 0);
+  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
+  return bIsPartitionable(pChild, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

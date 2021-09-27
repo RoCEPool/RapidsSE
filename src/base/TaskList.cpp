@@ -111,41 +111,6 @@ bool TaskList::bGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is there a task in the list with given job class?                          */
-/*----------------------------------------------------------------------------*/
-bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
-{
-  //vDump(CN_TASKLIST, this, Stz::szTab(1));
-  
-  bool bHasJob = false;
-  
-  vGrabLock();
-  
-  for (Task* pTask = ListNL_t<Task>::pHead();
-       pTask;
-       pTask = pTask->pNextItem()) {
-    
-    if (! (pTask->pJob_task() && AM::eJobClass(pTask->pJob_task()) == eJobClass))
-      continue;
-
-    if (! bWasReceived) {
-      bHasJob = true;
-      break;
-    }
-    
-    if (AM::bJobWasReceived(pTask->pJob_task())) {
-      bHasJob = true;
-      break;
-    }
- 
-  }
-
-  vDropLock();
-
-  return bHasJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is locked ?                                                                */
 /*----------------------------------------------------------------------------*/
 bool TaskList::bIsLocked(void)

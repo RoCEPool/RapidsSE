@@ -10,10 +10,10 @@ namespace STORE
   class JobList : public Object
   {
   private:
-    eJL  m_eJobsList;  // which job list
+    eJL  m_eJobList;  // which job list
     Lock m_okLock;     // lock
   
-    SkipListNL* m_pJobsSkipList; // skip list of jobs (ordered by job id)
+    SkipListNL* m_pJobSkipList; // skip list of jobs (ordered by job id)
   
     // must be last
     Footer m_xFooter;
@@ -23,29 +23,25 @@ namespace STORE
     void* operator new(size_t, JobList* pJobs);
     void  operator delete(void*);
     
-    JobList(CompareFp fpCompare, eJL eJobsList);
+    JobList(eJL eJobsList);
     ~JobList(void) noexcept(false);
     
-    void   vAddJob(Job* pJob);
+    static bool bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
+    static bool bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
+
     void   vDropLock(void);
-    Job*   pFindJob(i8 iJobId);
-    Job*   pFindJob(Job* pJob__Find);
+    Job*   pFindJob(JobId tJobId);
     SkipNode* pFirst(void);
     void   vGrabLock(void);
-    bool   bGrabLock(void);
-    bool   bHasJobClass(eCN eJobClass);
+    void   vInsertJob(Job* pJob);
     bool   bIsLocked(void);
+    void   vListJobs(void);
     i8     nJobs(void);
     SkipNode* pNext(SkipNode* pPrev);
     Job*   pPopJob(void);
-    bool   bRemoveJob(Job* pJob);
-    void   vSee(void);
-
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void vContentDump(void);
-    void vOperandQueueReport(File* pFile, bool bStdOut);
+    void   vRemoveJob(Job* pJob);
   
+
     Footer* aFooter(void);
   };
   

@@ -712,8 +712,11 @@ void Task::vDotPrint(Stz* szFormat, ...)
 void Task::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  AM::vTraceDumpGrabLock();
+  
+  AM::MASTERLOCK::vGrabTraceMulti();
+  
   _poolAddress_(this);
+  
   vTrace("\n"_Stz);
   vTrace("== Task Dump ================================================\n"_Stz);
   
@@ -758,7 +761,8 @@ void Task::vDump(void)
     m_pJob_task->pJobLogicUnit()->vDumpRegisters();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
-  AM::vTraceDumpDropLock();
+  
+  AM::MASTERLOCK::vGrabTraceMulti();
 }
 
 /*----------------------------------------------------------------------------*/

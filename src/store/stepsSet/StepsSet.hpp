@@ -706,8 +706,6 @@ public:
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOriginatingIdFetch(void);
-  void vJobOriginatingIdStore(void);
   void vJobOriginatorFetch(void);
 
 

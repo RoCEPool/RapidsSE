@@ -4,6 +4,8 @@
 #pragma once
 
 #include "Resources.hpp" //?
+#include "ReapLock.hpp"
+#include "TraceMultiLock.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -69,10 +71,14 @@ namespace STORE
     Word*         m_pTenants;
     TempName      m_oTempName;
     File*         m_pTraceFile;
-    TraceLock     m_oTraceLock;
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
     Atomic        m_ixQueryNo;
+  
+  private:
+    ReapLock       m_oReapLock;
+    TraceLock      m_oTraceLock;
+    TraceMultiLock m_oTraceMultiLock;
 
     // must be last
     Footer m_xFooter;
@@ -102,12 +108,20 @@ namespace STORE
     bool  bReapEnabled(void);
     void  vReapEnabled(bool bReapEnabled);
   
+    void vReapLockDrop(void);
+    void vReapLockGrab(void);
+
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
   
     File* pTraceFile(void);
     void  vTraceFile(File* pTraceFile);
-    TraceLock* pTraceLock(void);
+
+    void vTraceLockDrop(void);
+    void vTraceLockGrab(void);
+  
+    void vTraceMultiLockDrop(void);
+    void vTraceMultiLockGrab(void);
 
     Footer* aFooter(void);
   };

@@ -31,7 +31,6 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
-    //Gid_t<CN_JOB> m_xJobId;     // this job's id
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
@@ -80,15 +79,6 @@ namespace STORE
     // -- participating job maintains
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running as responder on origin                   RESPONDER
-  
-    // -- responding to which originator
-    i8     m_iOriginatingId;     // job id of originating job
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job execution                                        execution
 
 
     // -- logic unit
@@ -106,7 +96,6 @@ namespace STORE
   public:
     
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
     Job(Stz* szJobNm,
@@ -115,26 +104,10 @@ namespace STORE
         i8 iCmdNo      // the sequence no of the request from that session
        );
 
-    // FIND CASE -- TO BE REMOVED
-    Job(eCN eClass);
-
    ~Job(void) noexcept(false);
   
-    static Job* pThisTLSJob(void);
-
-    static bool bIsForeign(i8 iJobId);
-    static i8   iJobNo(i8 iJobId);
-    static i8   iNodeNo(i8 iJobId);
-    static i8   iOriginatorNode(i8 iJobId);
-    static i8   iAsNodeNo_Bits(i8 iNodeNo);
-
-    void vAssertEEDelete(eCN eClassNo,
-                         Object* pInstance,
-                         eCN eDeleterClassNo,
-                         Object* pDeleter,
-                         Stz* szDelFunc);
-
     static void vPostRecv(void* aJob);
+    static void vPrintJobNode(SkipNode* pNode, int i_Level);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
@@ -142,21 +115,14 @@ namespace STORE
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     i8   nActiveOps(void);
     bool bByPromptTag(void);
-    void vContentDump(void);
     void vDecActiveOps(void);
-    bool bDiaryTag(void);
     void vDotPrint(Stz* szText);
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
-    void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szTagNm);
-    bool bHasTag_bg(void);
-    bool bHasTag_time(void);
-    bool bHasTag_noWait(void);
     void vIncActiveOps(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
-    i8   iJobId(void);
     JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
@@ -177,21 +143,18 @@ namespace STORE
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
-    void vOperandQueueReport(File* pFile, bool bStdOut);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
-    void vParticipantNode(i8 iNode);
+    void vParticipantNode(i8 i_Node);
     Pipeline* pPipeline_job(void);
+    void vPrintJobContents(void);
+    void vPrintJobLine(void);
     bool bReapable(void);
     void vReapable(bool bReapable);
-    void vReport(void);
     void vResetForCascade(Session* pSession);
-    void vSee(void);
     Session* pSession(void);
-    void vShow(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
-    bool bSummaryTag(void);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
     Task* pJobTask(void);
@@ -208,9 +171,6 @@ namespace STORE
            std::function<void(Object* pObject, i8 iDepth)> vfClosure);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
-
-  protected:
-    //void vShow(s48K& s);
   
   private:
     Footer* aFooter(void);
@@ -218,15 +178,8 @@ namespace STORE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* _pJob(void* aAddr);
-  Job* _pJob(i8 iAddr);
-  bool _bIsValidJob(eCN eClass);
 
-  ////////////////////////////////////////////////////////////////////////////////
-  eEC  eJob_checkCluster(void);
   void vJob_postRecv(Job* pJob);
-
-  bool bJobCompare_addr(void* aJobInsert, void* aJobScan, bool& bMatch);
-  bool bJobCompare_id(void* aJobInsert, void* aJobScan, bool& bMatch);
 }
 
 

@@ -115,7 +115,6 @@
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
-#include "Job__Find.hpp"
 #include "JobList.hpp"
 #include "JobReport.hpp"
 #include "Jobs.hpp"
@@ -142,6 +141,7 @@
 #include "Dynamo.hpp"
 #include "Optimus.hpp"
 
+#include "ReapLock.hpp"
 #include "RowTablePtn.hpp"
 
 #include "Scanner.hpp"
@@ -179,7 +179,11 @@
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
 #include "TraceLock.hpp"
+#include "TraceMultiLock.hpp"
 #include "Tub.hpp"
+
+#include "UnitInt.hpp"
+#include "UT_SkipList.hpp"
 
 #include "Parcel.hpp"
 #include "Sends.hpp"
@@ -314,7 +318,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'J' - ('A' - 1),            HT_INVALID   ,0 }, // CN__J__
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
-  { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
   { sizeof(JobReport),          HT_T_TINY    ,0 }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
@@ -411,6 +414,7 @@ SizeHeap gxaSizeHeap[]
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
+  { sizeof(ReapLock),           HT_T_TINY    ,0 }, // CN_REAPLOCK
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
@@ -532,12 +536,15 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
   { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
+  { sizeof(TraceMultiLock),     HT_T_TINY    ,0 }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
   { sizeof(Tub),                HT_T_LARGE   ,0 }, // CN_TUB
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET
 
   { 'U' - ('A' - 1),            HT_INVALID   ,0 }, // CN__U__
+  { sizeof(UnitInt),            HT_T_TINY    ,0 }, // CN_UNITINT
+  { sizeof(UT_SkipList),        HT_T_LARGE   ,0 }, // CN_UT_SKIPLIST
 
   { 'V' - ('A' - 1),            HT_INVALID   ,0 }, // CN__V__
   { sizeof(Verbose),            HT_T_TINY    ,0 }, // CN_VERBOSE

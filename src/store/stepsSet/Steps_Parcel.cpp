@@ -46,9 +46,6 @@ void Step::vParcelDeleteOld(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   delete pParcel;
-  //AM::vTraceDumpGrabLock();
-  //vTrace(">>>>>>>>Step::vParcelDelete %p\n"_Stz, pParcel);
-  //AM::vTraceDumpDropLock();
 
   EXIT();
 }
@@ -68,7 +65,7 @@ void Step::vParcelLabel(void)
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
   pParcel->vLabel(pOp->eCrossTopo(),
-                  pOp->pPipelineJob()->iJobId()
+                  pOp->pPipelineJob()->tJobId().iAsI8()
                   );
 
   //m_pDataStack->vPushPtr(pParcel);
@@ -88,8 +85,9 @@ void Step::vParcelPipeOut(void)
   Operand* pOperand = pParcel->pGetOperand();
 
   // find the pipeline participant job
-  i8 iPipelineJob = pParcel->iPipelineJobId();
-  Job* pPipelineJob = AM::pJob__FindParticipating(iPipelineJob);
+  JobId tPipelineJob;
+  tPipelineJob = pParcel->iPipelineJobId();
+  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
 
   // get the next stage the send is supposed to send to
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();

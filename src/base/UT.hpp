@@ -1,8 +1,24 @@
 /*============================================================================*/
-/* pu_gen3.sen -- Power Unit Testing                                          */
+/* UT.hpp - Unit Test Utility                                                 */
 /*============================================================================*/
+#pragma once
 
-" pu_gen3.sen" .
+namespace BASE
+{
+  class UT : public StackObject
+  {
+  public:
+  
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    UT(eCN eClass);
+   ~UT(void) noexcept(false);
+  
+    Footer* aFooter(void);
+  };
+}
 
 /*============================================================================*/
 /* end                                                                        */

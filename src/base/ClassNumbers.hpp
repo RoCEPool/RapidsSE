@@ -123,7 +123,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__J__,
   /* */ CN_JOB,
-  /* */ CN_JOB__FIND,
   /* */ CN_JOBLIST,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
@@ -220,6 +219,7 @@ enum eCN : u2 // Class Number
   /* */ CN__R__,
   /* */ CN_RANGE,
   /* */ CN_READER,
+  /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
@@ -341,13 +341,16 @@ enum eCN : u2 // Class Number
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
   /* */ CN_TRACELOCK,
+  /* */ CN_TRACEMULTILOCK,
   /* */ CN_TSPVAL,
   /* */ CN_TUB,
   /* */ CN_TX,
   /* */ CN_TXSET,
   
   /* */ CN__U__,
-  
+  /* */ CN_UNITINT,
+  /* */ CN_UT_SKIPLIST,
+
   /* */ CN__V__,
   /* */ CN_VERBOSE,
 
@@ -481,7 +484,6 @@ static Stz* aCN[]
  
   /* */ "_J__"_Stz,                 // CN__J__
   /* */ "JOB"_Stz,                  // CN_JOB
-  /* */ "JOB__FIND"_Stz,            // CN_JOB__FIND
   /* */ "JOBLIST"_Stz,              // CN_JOBLIST
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
@@ -578,6 +580,7 @@ static Stz* aCN[]
   /* */ "_R__"_Stz,                 // CN__R__
   /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
+  /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
@@ -699,13 +702,16 @@ static Stz* aCN[]
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
+  /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TUB"_Stz,                  // CN_TUB
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
    
   /* */ "_U__"_Stz,                 // CN__U__
-   
+  /* */ "UNITINT"_Stz,              // CN_UNITINT
+  /* */ "UT_SKIPLIST"_Stz,          // CN_UT_SKIPLIST
+
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
 

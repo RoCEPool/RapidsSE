@@ -99,7 +99,6 @@ namespace PROMPT
   bool bPrompt_objectValidate(SePrompt* pPrompt);
   bool bPrompt_olist(SePrompt* pPrompt);
   bool bPrompt_opdq(SePrompt* pPrompt);
-  bool bPrompt_operands(SePrompt* pPrompt);
   bool bPrompt_opsys(SePrompt* pPrompt);
   bool bPrompt_plist(SePrompt* pPrompt);
   bool bPrompt_pmc(SePrompt* pPrompt);
@@ -152,6 +151,7 @@ namespace PROMPT
   bool bPrompt_tpch(SePrompt* pPrompt);
   bool bPrompt_trackMemory(SePrompt* pPrompt);
   bool bPrompt_uptime(SePrompt* pPrompt);
+  bool bPrompt_ut_skipList(SePrompt* pPrompt);
   bool bPrompt_version(SePrompt* pPrompt);
   bool bPrompt_wait_bg(SePrompt* pPrompt);
   bool bPrompt_waiting(SePrompt* pPrompt);

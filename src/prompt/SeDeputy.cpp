@@ -133,7 +133,7 @@ void SeDeputy::vDeputyLoop(void)
     
     vExecuteJob();
 
-    if (! m_pSession->m_pSsnJob->bHasTag_bg()) {
+    if (! m_pSession->m_pSsnJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
       m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
@@ -253,10 +253,10 @@ void SeDeputy::vReportTime(void)
   
   //m_pSession->m_pSsnJob->pTagSet()->vPrint();
   
-  if (! m_pSession->m_pSsnJob->bHasTag_time())
+  if (! m_pSession->m_pSsnJob->bHasTag(C_TAG_TIME))
     return;
   
-  if (m_pSession->m_pSsnJob->bSummaryTag()) {
+  if (m_pSession->m_pSsnJob->bHasTag(C_TAG_SUMMARY)) {
     
     Stz* szNote = m_pSession->m_pSsnJob->pJobTags()->szValue(C_TAG_NOTE);
     

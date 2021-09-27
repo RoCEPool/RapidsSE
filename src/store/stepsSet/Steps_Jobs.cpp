@@ -43,7 +43,7 @@ void Step::vJobsSeeDlist(void)
 {
   ENTRY();
   
-  AM::pDemonJobs()->vSee();
+  AM::pDemonJobs()->vListJobs();
 
   EXIT();
 }
@@ -55,7 +55,7 @@ void Step::vJobsSeeLlist(void)
 {
   ENTRY();
   
-  AM::pLocalJobs()->vSee();
+  AM::pLocalJobs()->vListJobs();
 
   EXIT();
 }
@@ -67,7 +67,7 @@ void Step::vJobsSeeOlist(void)
 {
   ENTRY();
   
-  AM::pOriginatingJobs()->vSee();
+  AM::pOriginatingJobs()->vListJobs();
 
   EXIT();
 }
@@ -79,7 +79,7 @@ void Step::vJobsSeePlist(void)
 {
   ENTRY();
   
-  AM::pParticipatingJobs()->vSee();
+  AM::pParticipatingJobs()->vListJobs();
 
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vJobsSeeRlist(void)
 {
   ENTRY();
   
-  AM::pRetiredJobs()->vSee();
+  AM::pRetiredJobs()->vListJobs();
 
   EXIT();
 }

@@ -33,15 +33,16 @@ void Step::vAddSteps_JobRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].findOriginator -- find job from originator job set                    */
+/* JobRef[].findOriginator -- find job from originator job set                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFindOriginator(void)
 {
   ENTRY();
   
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
+  JobId tJobId;
+  tJobId = m_pDataStack->iPopAsInt(__func__);
   
-  Job* pJobFound = AM::pJob__FindOriginating(iJobId);
+  Job* pJobFound = AM::pJob_FindOriginating(tJobId);
   RASSERT(pJobFound);
   
   
@@ -61,9 +62,10 @@ void Step::vJobFindParticipant(void)
 {
   ENTRY();
   
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-    
-  Job* pJobFound = AM::pJob__FindParticipating(iJobId);
+  JobId tJobId;
+  tJobId = m_pDataStack->iPopAsInt(__func__);
+
+  Job* pJobFound = AM::pJob_FindParticipating(tJobId);
   RASSERT(pJobFound);
   
   

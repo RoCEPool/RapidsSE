@@ -304,6 +304,24 @@ void DataSource::vPrintName(QueryNode* pNode, s2K& sBuf)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(PlanObject::bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 0);
+
+  // manual polymorphism here
+  if      (  TableSource::bIsOfType(pNode))  { return   TableSource::bIsPartitionable(pNode, pRootNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))  { return SubqueryRefOp::bIsPartitionable(pNode, pRootNode); }
+  else                                       {  NEVER_REACH }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
