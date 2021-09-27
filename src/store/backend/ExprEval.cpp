@@ -422,21 +422,45 @@ eEC ExprEval::eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVe
 
     pTkn = pTknVec->pGet(i_Tkn);
 
+    if (pTkn->bIsName() &&
+      (pTkn->bSame("LEFTOUTER"_Stz) ||
+       pTkn->bSame("BOUND"_Stz)  ||
+       pTkn->bSame("UBOUND"_Stz) ||
+       pTkn->bSame("LBOUND"_Stz))
+    )
+    continue;
+
+    if (pTkn->bIsName() && pTkn->bIsRelational())
+      continue;
+
+    if (pTkn->bIsName() && pTkn->bIsLogical())
+      continue;
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // set bit for ordinal columns not already encountered
+    // skip the index column
     if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 
-
-      // handle if column ordinal relative to the right join table
-      if (pTkn->szChars()->bContains("L"_Stz)) {
-        // get the column ordinal
-        sOrdinalColumn = pTkn->szChars() + 2;
-      }
-      else {
+      // skip index column
+      if (pTkn->szChars()->bContains("I"_Stz)) {
         continue;
       }
 
-      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      // skip right column
+      if (pTkn->szChars()->bContains("R"_Stz)) {
+        continue;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set bit for ordinal columns not already encountered
+
+      i8 i_ColumnOrdinal = C_UNKNOWN;
+
+      // handle column ordinal of left table
+      if (pTkn->szChars()->bContains("L"_Stz)) {
+        // get the column ordinal
+        sOrdinalColumn = pTkn->szChars() + 2;
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      }
 
       // look for the column in the streamDefIn
       i8 nColumns = pStreamDefLft->nColumns();
@@ -452,6 +476,26 @@ eEC ExprEval::eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVe
         BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
         m_iStreamInColumns++;
       }
+      continue;
+    }
+
+    // loop join can get a 1 for cross joins
+    if (pTkn->bIsNumeric())
+      continue;
+
+    // should be a left table symbolic column name
+    Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
+    if (! pColumn ) {
+      eError = EC_INVALID_COMMAND;
+      break;
+    }
+    i8 i_ColumnOrdinal = pColumn->iColumnNo();
+    // already selected column ?
+    if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
+
+      // set bit on for the column in m_uExprEvalColumns
+      BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
+      m_iStreamInColumns++;
     }
 
   }
@@ -1338,7 +1382,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     }
 
     i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-    
+
     switch (m_eProjectKind[m_iProjectColumn]) {
       case PK_GBY:
         vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
@@ -1487,9 +1531,9 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     // is it a string ?
     if (pTkn->bIsString()) {
       if (bLbound)
-        vPushDatum (DM_VCH, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
+        vPushDatum(DM_VCH, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
       if (bUbound)
-        vPushDatum (DM_VCH, m_sUpperBoundAsm, &m_xTypeStack, pTkn);
+        vPushDatum(DM_VCH, m_sUpperBoundAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1503,7 +1547,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a negate op ?
-    if (pTkn->bSame("negate"_Stz) ) {
+    if (pTkn->bSame("negate"_Stz)) {
       if (bLbound)
         vAddArithmetic(m_sLowerBoundAsm, &m_xTypeStack, pTkn);
       if (bUbound)
@@ -1514,7 +1558,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // it is a null value ?
-    if (pTkn->bSame("null"_Stz) ) {
+    if (pTkn->bSame("null"_Stz)) {
       if (bLbound)
         vPushDatum(DM_UNK, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
       if (bUbound)
@@ -1525,7 +1569,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a date ?
-    if (pTkn->bSame("DATE"_Stz) ) {
+    if (pTkn->bSame("DATE"_Stz)) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
 
@@ -1536,14 +1580,13 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
         pTkn = pTknVec->pNextToken();
         continue;
-      }
-      else
+      } else
         pTkn = pTknVec->pPrevToken();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a time ?
-    if (pTkn->bSame("TIME"_Stz) ) {
+    if (pTkn->bSame("TIME"_Stz)) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
 
@@ -1554,14 +1597,13 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
         pTkn = pTknVec->pNextToken();
         continue;
-      }
-      else
+      } else
         pTkn = pTknVec->pPrevToken();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a timestamp ?
-    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+    if (pTkn->bSame("TIMESTAMP"_Stz)) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
 
@@ -1572,21 +1614,20 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
         pTkn = pTknVec->pNextToken();
         continue;
-      }
-      else
+      } else
         pTkn = pTknVec->pPrevToken();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it an BOUND ?
-    if (pTkn->bSame("BOUND"_Stz) ) {
+    if (pTkn->bSame("BOUND"_Stz)) {
       bLbound = true;
       bUbound = true;
 
       // if BOUND (EQUAL) we can set entry kind only once in the lowerBoundAsm
       // as entry kind remains the same
 
-      if (m_sLowerBoundAsm.bSame(""_Stz) ) {
+      if (m_sLowerBoundAsm.bSame(""_Stz)) {
         if (bLeftTable)
           StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
         else
@@ -1608,10 +1649,10 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a lowerbound ?
-    if (pTkn->bSame("LBOUND"_Stz) ) {
+    if (pTkn->bSame("LBOUND"_Stz)) {
       bLbound = true;
       bUbound = false;
-      if (m_sLowerBoundAsm.bSame(""_Stz) ) {
+      if (m_sLowerBoundAsm.bSame(""_Stz)) {
         if (bLeftTable)
           StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
         else
@@ -1625,7 +1666,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it an upperbound ?
-    if (pTkn->bSame("UBOUND"_Stz) ) {
+    if (pTkn->bSame("UBOUND"_Stz)) {
       bLbound = false;
       bUbound = true;
       if (m_sUpperBoundAsm.bSame(""_Stz)) {
@@ -1649,22 +1690,37 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     }
 
     // found an index src column
-    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
+    if (pTkn->szChars()->bContains("$"_Stz)) {
 
-    if (pTkn->szChars()->bContains("I"_Stz)) {
+      if (pTkn->szChars()->bContains("I"_Stz)) {
+        Stz *sOrdinalColumn = pTkn->szChars() + 2;
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+        pColumn = pIndexDef->pGetColumn(i_ColumnOrdinal);
+      }
+      else if (pTkn->szChars()->bContains("L"_Stz)) {
+        // when it comes from a join
+        Stz *sOrdinalColumn = pTkn->szChars() + 2;
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+        pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
 
-      Stz *sOrdinalColumn = pTkn->szChars() + 2;
-      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-      pColumn = pIndexDef->pGetColumn(i_ColumnOrdinal);
+        vPushLftCrwCol(m_sLftCrwCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
+        vPushLftRowCol(m_sLftRowCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
+
+        i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+        vPushLclCol(m_sLowerBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+        vCheckIsNull(m_sLowerBoundAsm, &m_xTypeStack);
+
+        vPushLclCol(m_sUpperBoundAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+        //vCheckIsNull(m_sUpperBoundAsm, &m_xTypeStack);
+      }
     }
-    else if (pTkn->szChars()->bContains("L"_Stz)) {
-      // when it comes from a join
-      Stz *sOrdinalColumn = pTkn->szChars() + 2;
-      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-      Column* pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+    else {
+      pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
+      if (! pColumn ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      i_ColumnOrdinal = pColumn->iColumnNo();
 
       vPushLftCrwCol(m_sLftCrwCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
       vPushLftRowCol(m_sLftRowCol, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
