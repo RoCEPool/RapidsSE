@@ -21,6 +21,8 @@ namespace BASE
     
     void  vAdd(ITEM* pItem);
     void  vAppend(ITEM* pItem);
+    void  vClear(void);
+    bool  bContains(ITEM* pItem);
     i8    iFind(ITEM* pItem);
     ITEM* pGet(i8 i_Item);
     ITEM* pHead(void);
@@ -87,6 +89,29 @@ void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
     m_pHead = pItem;
   
   m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear out list                                                             */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vClear(void)
+{
+  m_nItems = 0;
+  m_pHead  = nullptr;
+  m_pTail  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if object in list                                                     */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+bool ListNL_t__<ITEM>::bContains(ITEM* pItem)
+{
+  if (C_UNKNOWN == iFind(pItem))
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
