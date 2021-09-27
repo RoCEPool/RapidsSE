@@ -13,13 +13,13 @@ namespace STORE
 {
   class StageSpec
 
-//#ifdef WITH_SPEC_LIST
-//                  : public ListNL_t<OpSpec>
-//                  , public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
-//#else
+#ifdef WITH_SPEC_LIST
+                  : public ListNL_t<OpSpec>
+                  , public LifeGuard_t<StageSpec>
+#else
                   : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
                   , public LifeGuard_t<StageSpec>
-//#endif
+#endif
 
   {
   private:

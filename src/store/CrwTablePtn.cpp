@@ -75,7 +75,7 @@ void CrwTablePtn::vAddIndex(IndexTree* pIndexTree)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
   ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
-  m_pIndexTreeVec->vAdd(pIndexTree);
+  m_pIndexTreeVec->vAppend(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/

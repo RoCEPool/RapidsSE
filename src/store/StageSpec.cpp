@@ -190,7 +190,7 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
   
   pOpSpec->vOpSpec(nItems());
   
-  vAdd(pOpSpec);
+  vAppend(pOpSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,7 +203,7 @@ void StageSpec::vCopyOps(StageSpec* pStageSpec_from)
   for (i8 i_Op = 0; i_Op < pStageSpec_from->nItems(); i_Op++) {
     OpSpec* pOpSpec_from = pStageSpec_from->pGet(i_Op);
     
-    vAdd(pOpSpec_from);
+    vAppend(pOpSpec_from);
   }
 }
 

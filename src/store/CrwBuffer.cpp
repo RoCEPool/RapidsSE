@@ -798,7 +798,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
   // get compact row
   Crw* aCrw = (Crw*)aGetHead(i_Row);
 
-  Row* pRow = pEachRowBuffer->pAllotRow();
+  //Row* pRow = pEachRowBuffer->pAllotRow();
 
   RowInflator::vInflate_AllColumns_into_EachRowBuffer(pEachRowBuffer,aCrw);
 

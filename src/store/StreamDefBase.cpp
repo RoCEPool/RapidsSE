@@ -799,6 +799,7 @@ eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(pCol);
 
   return EC_INTERVAL_NOT_SUPPORTED;
 

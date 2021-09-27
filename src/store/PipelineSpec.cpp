@@ -138,7 +138,7 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  vAdd(pStageSpec);
+  vAppend(pStageSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +539,7 @@ bool PipelineSpec::bCollectPipeline(void)
                                 p_PipelineSpecNested))
     return false;
 
-  m_oNestedPipelineSpecs.vAdd(p_PipelineSpecNested);
+  m_oNestedPipelineSpecs.vAppend(p_PipelineSpecNested);
   
   return true;
 }

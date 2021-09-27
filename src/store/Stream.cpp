@@ -115,7 +115,7 @@ void Stream::vCreateOps(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
 
-    vAdd(pOp);
+    vAppend(pOp);
   }
 
 }

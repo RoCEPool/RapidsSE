@@ -138,7 +138,7 @@ void Pipeline::vCreateStages(void)
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
-    vAdd(pStage);
+    vAppend(pStage);
   }
 }
 

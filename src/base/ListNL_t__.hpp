@@ -60,7 +60,7 @@ ListNL_t__<ITEM>::ListNL_t__(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add object to head of list                                                 */
+/* add item to head of list                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vAdd(ITEM* pItem)
@@ -69,7 +69,7 @@ void ListNL_t__<ITEM>::vAdd(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append object to end of list                                               */
+/* append item to end of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
@@ -103,7 +103,7 @@ void ListNL_t__<ITEM>::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if object in list                                                     */
+/* test if item in list                                                       */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 bool ListNL_t__<ITEM>::bContains(ITEM* pItem)
@@ -115,7 +115,7 @@ bool ListNL_t__<ITEM>::bContains(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find object in list                                                        */
+/* find item in list                                                          */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 i8 ListNL_t__<ITEM>::iFind(ITEM* pItem)
@@ -131,7 +131,7 @@ i8 ListNL_t__<ITEM>::iFind(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nth object of list                                                     */
+/* get nth item of list                                                       */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pGet(i8 i_Item)
@@ -144,7 +144,7 @@ ITEM* ListNL_t__<ITEM>::pGet(i8 i_Item)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head object in list                                                    */
+/* get head item in list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pHead(void)
@@ -153,7 +153,7 @@ ITEM* ListNL_t__<ITEM>::pHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert object after a given reference object                               */
+/* insert item after given item which is already in list                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vInsertAfter(ITEM* pInsertItem, ITEM* pAfter)
@@ -189,7 +189,7 @@ void ListNL_t__<ITEM>::vInsertAfter(ITEM* pInsertItem, ITEM* pAfter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert object before a given reference object                              */
+/* insert item before tem which is already in list                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vInsertBefore(ITEM* pInsertItem, ITEM* pBefore)
@@ -225,7 +225,7 @@ void ListNL_t__<ITEM>::vInsertBefore(ITEM* pInsertItem, ITEM* pBefore)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of objects in list                                              */
+/* get number of items in list                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 i8 ListNL_t__<ITEM>::nItems(void)
@@ -234,7 +234,7 @@ i8 ListNL_t__<ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next object after given object                                         */
+/* get next item after given item                                             */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pNext(ITEM* pItem)
@@ -245,7 +245,7 @@ ITEM* ListNL_t__<ITEM>::pNext(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop object from head of list                                               */
+/* pop item from head of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pPop(void)
@@ -280,7 +280,7 @@ ITEM* ListNL_t__<ITEM>::pPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next object after given object                                         */
+/* get next item after given item                                             */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pPrev(ITEM* pItem)
@@ -291,7 +291,7 @@ ITEM* ListNL_t__<ITEM>::pPrev(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push object on top of list                                                 */
+/* push item on top of list                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vPush(ITEM* pItem)
@@ -315,7 +315,7 @@ void ListNL_t__<ITEM>::vPush(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from list                                                    */
+/* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vRemove(ITEM* pRemoveItem)
@@ -342,7 +342,7 @@ void ListNL_t__<ITEM>::vRemove(ITEM* pRemoveItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last object in list                                                    */
+/* get last item in list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pTail(void)

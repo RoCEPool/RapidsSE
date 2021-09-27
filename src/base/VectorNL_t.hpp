@@ -25,7 +25,7 @@ namespace BASE
 
     //ITEM*& operator [](u8 i_Item);
 
-    void  vAdd(ITEM* pItem);
+    void  vAppend(ITEM* pItem);
     void  vClear(void);
     bool  bContains(ITEM* pItem);
     void  vDecItems(void);
@@ -144,10 +144,10 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::~VectorNL_t(void) noexcept(false)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* add an item                                                                */
+/* append item to end of vector                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vAdd(ITEM* pItem)
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vAppend(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   

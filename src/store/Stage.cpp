@@ -377,7 +377,7 @@ void Stage::vCreateStreams(void)
       for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
         i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_NodeNo); //i_Node);
-        vAdd(pStream);
+        vAppend(pStream);
       }
       break;
       
@@ -388,7 +388,7 @@ void Stage::vCreateStreams(void)
       i_Node = m_pPipeline->i_Origin();
 
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
-      vAdd(pStream);
+      vAppend(pStream);
       break;
         
     case PO_SPECIFIC_NODE: // create a stream for a specific node only
@@ -407,7 +407,7 @@ void Stage::vCreateStreams(void)
 
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
-        vAdd(pStream);
+        vAppend(pStream);
       }
       break;
       
@@ -421,7 +421,7 @@ void Stage::vCreateStreams(void)
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
-          vAdd(pStream);
+          vAppend(pStream);
         }
       }
       break;
@@ -433,7 +433,7 @@ void Stage::vCreateStreams(void)
       //if (i_Node < 100) printf("3 BAD node\n");
       i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnId,i_Node);
-      vAdd(pStream);
+      vAppend(pStream);
       break;
       
     default:

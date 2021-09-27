@@ -2474,7 +2474,7 @@ bool PROMPT::bPrompt_log(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  //TokenVec* pInpTknVec = pPrompt->pInpTknVec();
     
   return true;
 }
@@ -2504,7 +2504,7 @@ bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  //TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
   
@@ -4393,7 +4393,7 @@ bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
   
   ShortCut* pShortCut = new ShortCut(sNm,sCmd);
   
-  pPrompt->pShortCutVec()->vAdd(pShortCut);
+  pPrompt->pShortCutVec()->vAppend(pShortCut);
 
   return true;
 }

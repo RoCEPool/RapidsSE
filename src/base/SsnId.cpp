@@ -67,7 +67,7 @@ bool SsnId::operator ==(SsnId tSsnId)
 /*----------------------------------------------------------------------------*/
 /* equality operator : ???                                                    */
 /*----------------------------------------------------------------------------*/
-const bool SsnId::operator >(SsnId tSsnId)
+bool SsnId::operator >(SsnId tSsnId)
 {
   return m_iAsI8 > tSsnId.iAsI8();
 }

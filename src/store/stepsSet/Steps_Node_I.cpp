@@ -61,7 +61,7 @@ void Step::vNode_INew(void)
 {
   ENTRY();
   
-  i8 iStipulate = m_pDataStack->iPopInt(__func__);
+  //i8 iStipulate = m_pDataStack->iPopInt(__func__);
   
   Node_I* pNode_I = new Node_I;
       
