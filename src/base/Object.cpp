@@ -19,6 +19,18 @@ Object::Object(eCN eClassNo)
   _precondition_(_MAGIC_,eClassNo);
 }
 
+/*----------------------------------------------------------------------------*/
+/* macro for standard safe cast function                                      */
+/*----------------------------------------------------------------------------*/
+Object* BASE::_pObject(void* aAddr)
+{
+  Object* pObject = reinterpret_cast<Object*>(aAddr);
+
+  //RASSERT_TYPE(pObject,CN);
+  
+  return pObject;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

@@ -401,7 +401,7 @@ void SePrompt::vDeputiseJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_pCurrentDeputy->pJob()->bHasTag_bg()) {
+  if (! m_pCurrentDeputy->pJob()->bHasTag(C_TAG_BG)) {
     m_oMutex.vLock(this);
   
     m_pCurrentDeputy->vDeputiseJob();
@@ -866,7 +866,7 @@ void SePrompt::vMakeDiaryDir(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_pCurrentDeputy->pJob()->bDiaryTag())
+  if (! m_pCurrentDeputy->pJob()->bHasTag(C_TAG_DIARY))
     return;
   
   TagSet* pJobTagSet = m_pCurrentDeputy->pJob()->pJobTags();

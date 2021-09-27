@@ -339,7 +339,7 @@ Session* Sessions::pFindSession(SsnId xSessionId)
       return false;
   };
 
-  pSession = _pSession(m_pSsnSkipList->pFindByKey(bfCmpByKey));
+  pSession = _pSession(m_pSsnSkipList->pFindByKey(bfCmpByKey,nullptr));
   
   return pSession;
 }

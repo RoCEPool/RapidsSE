@@ -318,7 +318,7 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
     
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
   vTrace("Create Tail: %s\n"_Stz,szTailStr);
 #endif
   
@@ -359,7 +359,7 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
   m_pCrwNub->vDumpTails();
 #endif
   
@@ -377,7 +377,7 @@ void RowCompactor::vEncodeHeadForRow(Row* pRow)
   
   m_pEncoding->vEncodeRow(pRow);
 
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
   SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
@@ -421,7 +421,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     
     //TailStr xFindTail(azStr);
     
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
     vDumpTails();
 #endif
     
@@ -442,7 +442,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     m_pEncoding->vMorphEncoding(aColEnc);
   }
   
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
 }
@@ -585,7 +585,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
-#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_TRACE_ENCODING
   vDumpTails();
 #endif
   

@@ -303,17 +303,7 @@ void Step::vSessionSignal(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (pJob->bHasTag_noWait()) {
-//    //! this is incomplete ... memory leak; job & task need to be deleted
-//    EXIT();
-//    return;
-//  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 //  vGrabTaskLock((Stz*)__func__);
-
-  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
   //pJob->vJobState(JS_SIGNALLED);
 
@@ -321,7 +311,7 @@ void Step::vSessionSignal(void)
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);
-  RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
+
     
   pSession->m_oMutex.vLock(this);
   //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);

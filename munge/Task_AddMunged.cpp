@@ -11069,7 +11069,6 @@ void Task::vAddMunged(Task* )
     "  \n"
     "//       1         2         3\n"
     "//34567890123456789012345678901234567890\n"
-    "  Job[].id@ Job[].originatingId!  // this job id is propagated as the originator\n"
     "  Job[].addOriginator             // add this job to originator job list\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"

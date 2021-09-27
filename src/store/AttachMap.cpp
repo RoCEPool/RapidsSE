@@ -411,6 +411,27 @@ void AttachMap::vReapEnabled(bool bReapEnabled)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapLockDrop(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oReapLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oReapLock.vGrabWrite();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get trace file                                                             */
 /*----------------------------------------------------------------------------*/
 File* AttachMap::pTraceFile(void)
@@ -431,13 +452,43 @@ void AttachMap::vTraceFile(File* pTraceFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find api which matches given name                                          */
+/* drop trace lock                                                            */
 /*----------------------------------------------------------------------------*/
-TraceLock* AttachMap::pTraceLock(void)
+void AttachMap::vTraceLockDrop(void)
 {
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
-  return & m_oTraceLock;
+  m_oTraceLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab trace lock                                                            */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTraceLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceMultiLockDrop(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTraceMultiLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vTraceMultiLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTraceMultiLock.vGrabWrite();
 }
 
 /*============================================================================*/

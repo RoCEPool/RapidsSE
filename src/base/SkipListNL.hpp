@@ -39,22 +39,22 @@ namespace BASE
                PrintFp fpPrint= nullptr,
                bool bSlabAllocator=false);
    ~SkipListNL(void) noexcept(false);
-    
-    void  vCheck(void);
-  
+      
     bool  bCompareAddr(void* aInsert, void* aScan, bool& bMatch);
 
     void  vContents(void (*fvDump)(void* pObject));
-    bool  bDeleteAll(void);
-    bool  bExists(void* pObject);
-  
+    
     void* pFind(void* pObject,
                 bool bTrace=false,
                 CompareFp fpCompare_alt = nullptr);
   
-    void* pFindByKey(std::function<bool(void* aScan,
+    void* pFindByKey(std::function<bool(void* aRightObject,
                                         bool& bFound
-                                        )> bfMoveRightTest
+                                        )> bfMoveRightTest,
+                     
+                     std::function<void(SkipNode* pNode,
+                                        int i_Level
+                                        )> vfPrintNode
                      );
     SkipNode* pFirst(i8 iLevel);
   
@@ -62,25 +62,52 @@ namespace BASE
     bool bInsert(void* pObject, bool bTrace=false);
   
     bool bInsertByKey(void* pObject,
+                      
                       std::function<bool(void* aRightObject,
                                          bool& bFound
-                                         )> bfMoveRightTest
+                                         )> bfMoveRightTest,
+                      
+                      std::function<void(SkipNode* pNode,
+                                         int i_Level
+                                         )> vfPrintNode
                       );
 
   
-    i8    nItems(void);
-    SkipNode* pNewly(void);
-    SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
-    void* pPop(void);
-    i8    nRecount(void);
+    i8 nItems(void);
   
-    bool  bRemove(void* pObject);
+    SkipNode* pNewly(void);
+  
+    SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
+  
+    void* pPop(void);
+  
+    void vPrintList(std::function<void(SkipNode* pNode,
+                                       int i_Level
+                                       )> vfPrintNode
+                    );
 
-    bool  bRemoveByKey(void* pObject,
+    i8 nRecount(void);
+  
+    bool bRemove(void* pObject);
+
+    bool bRemoveByKey(void* pObject,
                        std::function<bool(void* aRightObject,
                                           bool& bFound
-                                          )> bfMoveRightTest
+                                          )> bfMoveRightTest,
+                       
+                       std::function<void(SkipNode* pNode,
+                                          int i_Level
+                                          )> vfPrintNode
                        );
+
+    bool bValidate(std::function<bool(SkipNode* aLeftNode,
+                                      SkipNode* aRightNode
+                                     )> fCompareLR,
+                   
+                   std::function<void(SkipNode* pNode,
+                                      int i_Level
+                                      )> vfPrintNode
+                   );
 
   private:
     i8 iRandomLevel(void);
@@ -94,24 +121,31 @@ namespace BASE
   
     SkipNode* pLocateKey(std::function<bool(void* aRightObject,
                                             bool& bFoundKey
-                                           )> bfMoveRightTest
+                                           )> bfMoveRightTest,
+                         
+                         std::function<void(SkipNode* pNode,
+                                            int i_Level
+                                            )> vfPrintNode
                          );
 
     SkipNode* pPositionPrior(std::function<bool(void* aRightObject,
                                                 bool& bFoundKey
                                                 )> bfMoveRightTest,
+                             
                              SkipNode** paPriorVec,
-                             bool& bFoundInList
+                             
+                             bool& bFoundInList,
+                             
+                             std::function<void(SkipNode* pNode,
+                                                int i_Level
+                                                )> vfPrintNode
                              );
 
-    void vValidate(void);
-  
     Footer* aFooter(void);
   };
   
   SkipListNL* _pSkipList(void* aAddr);
   
-  void vSkipListTest(void);
   void vSkipListDump(SkipListNL* pSkipList);
 }
 bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

@@ -42,7 +42,6 @@ namespace STORE
     static void vLowMemoryDiscard(void);
     static void vMungeCheck(void);
     static void vNoMemoryLogging(void);
-    static void vOperandQueueReport(bool bStdOut);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTrace(bool bPrompt);

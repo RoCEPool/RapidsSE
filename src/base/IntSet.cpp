@@ -94,7 +94,7 @@ void IntSet::vAscending(i8 iStart, i8 iStride)
   
   i8 iInt = iStart;
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
-    vSet(i_Item,iInt);
+    vInt(i_Item,iInt);
     iLast = iInt;
     iInt += iStride;
   }
@@ -129,7 +129,7 @@ void IntSet::vDescending(i8 iStart, i8 iStride)
   
   i8 iInt = iStart;
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
-    vSet(i_Item,iInt);
+    vInt(i_Item,iInt);
     iLast = iInt;
     iInt -= iStride;
   }
@@ -137,25 +137,6 @@ void IntSet::vDescending(i8 iStart, i8 iStride)
   //if (m_sDesc.nLength())
   //  m_sDesc.vAppend(' ');
   m_sDesc.vSprint("descending(%lld,%lld,%lld)"_Stz,iStart,iStride,iLast);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void IntSet::vPrint(bool bNewLine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
-  
-  i8 nItems = m_pIntAry->nItems();
-  
-  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
-    if (bNewLine)
-      vTrace("%lld\n"_Stz,iGet(i_Item));
-    else
-      vTrace("%lld "_Stz,iGet(i_Item));
-
-  if (! bNewLine)
-    vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,11 +153,11 @@ void IntSet::vRandomise(void)
     i8 i_Left  = RndLib::iInteger(nItems);
     i8 i_Right = RndLib::iInteger(nItems);
 
-    i8 iVal_left  = iGet(i_Left);
-    i8 iVal_right = iGet(i_Right);
+    i8 iVal_left  = iInt(i_Left);
+    i8 iVal_right = iInt(i_Right);
 
-    vSet(i_Left,iVal_right);
-    vSet(i_Right,iVal_left);
+    vInt(i_Left,iVal_right);
+    vInt(i_Right,iVal_left);
   }
   
   if (m_sDesc.nLength())
@@ -196,7 +177,7 @@ void IntSet::vRandoms(i8 iMin, i8 iMax)
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     i8 iRndInt = RndLib::iInteger(iMin,iMax);
     
-    vSet(i_Item,iRndInt);
+    vInt(i_Item,iRndInt);
   }
 
   if (m_sDesc.nLength())
@@ -221,7 +202,7 @@ void IntSet::vRandomsUnique(i8 iMin, i8 iMax)
       iRndInt = RndLib::iInteger(iMin,iMax);
     while (bHas(iRndInt));
     
-    vSet(i_Item,iRndInt);
+    vInt(i_Item,iRndInt);
   }
   
   if (m_sDesc.nLength())
@@ -263,6 +244,18 @@ void IntSet::vSortDescend(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete int array                                                           */
+/*----------------------------------------------------------------------------*/
+void IntSet::vDeleteAry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  delete m_pIntAry;
+  
+  m_pIntAry = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the description                                                        */
 /*----------------------------------------------------------------------------*/
 Stz* IntSet::szDesc(void)
@@ -275,11 +268,11 @@ Stz* IntSet::szDesc(void)
 /*----------------------------------------------------------------------------*/
 /* reset the description                                                      */
 /*----------------------------------------------------------------------------*/
-void IntSet::vDescReset(void)
+void IntSet::vDesc(Stz* szDesc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-  m_sDesc = ""_Stz;
+  m_sDesc = szDesc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,14 +291,14 @@ bool IntSet::bHas(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get an int                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 IntSet::iFind(i8 iInt)
+i8 IntSet::iFind(i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
   i8 nInts = m_pIntAry->nItems();
 
   for (i8 i_Item = 0; i_Item < nInts; i_Item++)
-    if (iInt == iGet(i_Item))
+    if (iVal == iInt(i_Item))
       return i_Item;
   
   return C_UNKNOWN;
@@ -314,7 +307,7 @@ i8 IntSet::iFind(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get an int                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 IntSet::iGet(i8 i_Item)
+i8 IntSet::iInt(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
@@ -331,6 +324,39 @@ i8 IntSet::nInts(void)
   i8 nInts = m_pIntAry->nItems();
   
   return nInts;
+}
+
+/*----------------------------------------------------------------------------*/
+/* a new int array                                                            */
+/*----------------------------------------------------------------------------*/
+void IntSet::vNewAry(i8 nInts)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  if (m_pIntAry)
+    vDeleteAry();
+  
+  m_pIntAry = new ArrayNL_t<CN_INTSET,i8,C_64KB>;
+  m_pIntAry->vItems(nInts);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void IntSet::vPrint(bool bNewLine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nItems = m_pIntAry->nItems();
+  
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
+    if (bNewLine)
+      vTrace("%lld\n"_Stz,iInt(i_Item));
+    else
+      vTrace("%lld "_Stz,iInt(i_Item));
+
+  if (! bNewLine)
+    vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,7 +382,7 @@ bool IntSet::bSearch(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* set an int                                                                 */
 /*----------------------------------------------------------------------------*/
-void IntSet::vSet(i8 i_Item, i8 iInt)
+void IntSet::vInt(i8 i_Item, i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   

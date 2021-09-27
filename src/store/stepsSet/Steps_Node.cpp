@@ -50,12 +50,7 @@ void Step::vAddSteps_Node(void)
 void Step::vNodeNew(void)
 {
   ENTRY();
-  
-  Job* pJob = AM::pThisTLSJob();
-  
-  //TagSet* pJobTags = pJob->pJobTags();
-  //pTagSet->vPrint();
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   m_pDataStack->vPopStr(sNodeNm,__func__);

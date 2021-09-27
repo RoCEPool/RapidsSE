@@ -98,7 +98,7 @@ void vTest1(void)
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
-  vSkipListTest();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1037,7 +1037,7 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
   
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
-    i8 iInt = pKeySamples->iGet(i_Int);
+    i8 iInt = pKeySamples->iInt(i_Int);
         
     // key
     xEntWrk.vAppendInt(iInt);
@@ -1075,7 +1075,7 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
   
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
-    i8 iInt = pKeySamples->iGet(i_Int);
+    i8 iInt = pKeySamples->iInt(i_Int);
     
     // ref
     xRef.vBuffer(0);
@@ -1118,7 +1118,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
   if (KE_INT == pEntBuffer->eEntKind()) {
     for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
-      i8 iInt = pKeySamples->iGet(i_Int);
+      i8 iInt = pKeySamples->iInt(i_Int);
       UNUSED(iInt);
       //Ent* aSearchedEnt = pEntBuffer->aFindEnt_IntOpt(iInt);
 
@@ -1132,7 +1132,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
 
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
-    i8 iInt = pKeySamples->iGet(i_Int);
+    i8 iInt = pKeySamples->iInt(i_Int);
         
     // key
     xEntWrk.vAppendInt(iInt);

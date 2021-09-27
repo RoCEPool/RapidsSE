@@ -817,6 +817,62 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
+{
+  UNUSED(pLogicUnit);
+  gpAttachMap->m_oReapLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
+{
+  UNUSED(pLogicUnit);
+  gpAttachMap->m_oReapLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop traceLine lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropTraceLine(void)
+{
+  gpAttachMap->vTraceLockDrop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceLine lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabTraceLine(void)
+{
+  gpAttachMap->vTraceLockDrop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop traceMulti lock                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vDropTraceMulti(void)
+{
+  gpAttachMap->vTraceMultiLockDrop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab traceLine lock                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::MASTERLOCK::vGrabTraceMulti(void)
+{
+  gpAttachMap->vTraceMultiLockDrop();
+}
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  NO                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
 /* <no_free>                                                                  */
 /*----------------------------------------------------------------------------*/
 bool AM::NO::bFree(void)
@@ -2155,40 +2211,18 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
 */
     case CN_TABLE: {
-      Table* pTable = _pTable(pOperand);
-      vTraceDumpGrabLock();
-      //vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
-      vTrace(">>>>vDeleteOperand delete pTable:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pTable->szTableNm()->azChar());
-      //delete pTable; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
 
     case CN_GRID: {
-      Grid* pGrid = _pGrid(pOperand);
-      vTraceDumpGrabLock();
-      //vTrace(">>>>vDeleteOperand delete pGrid:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pGrid);
-      vTrace(">>>>vDeleteOperand delete pGrid:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pGrid->szGridNm()->azChar());
-      //delete pTable; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
-      break;
+     break;
     }
 
     case CN_BUCKETGET: {
-      //BucketGet* pBucketGet = _pBucketGet(pOperand);
-      vTraceDumpGrabLock();
-      vTrace(">>>>vDeleteOperand delete CN_BUCKET called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz);
-      //delete pBucket; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
 
     case CN_PTNSTREAM: {
-      //Bucket* pBucket = _pBucket(pOperand);
-      vTraceDumpGrabLock();
-      vTrace(">>>>vDeleteOperand delete CN_PTNSTREAM called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz);
-      //delete pBucket; // Question for Ray: do we need to delete ?
-      vTraceDumpDropLock();
       break;
     }
       
@@ -2275,10 +2309,6 @@ void AM::vDumpApi(void) {
 Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->pJobTask();
   return pTask;
-}
-bool AM::bJobIsForeign(i8 iJobId) {
-  bool bForeign = Job::bIsForeign(iJobId);
-  return bForeign;
 }
 
 i8 AM::nLvlLevels(void) {
@@ -2378,8 +2408,6 @@ StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   return pStreamDef;
 }
 
-static TraceLock oTraceDumpLock;
-
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {
   if (AM::pThisTLSTask())
@@ -2424,14 +2452,6 @@ LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   return pJob->pJobLogicUnit();
 }
 
-void AM::vTraceDumpGrabLock(void)
-{
-  oTraceDumpLock.vGrabWrite();
-}
-void AM::vTraceDumpDropLock(void)
-{
-  oTraceDumpLock.vDropWrite();
-}
 
 void AM::vTaskFullTrace(Task* pTask)
 {
@@ -2459,18 +2479,6 @@ i8 AM::iTaskQueue(Task* pTask) {
 i8 AM::iTaskState(Task* pTask) {
   eTS eState = pTask->eState();
   return eState;
-}
-Job* AM::pThisTLSJob(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  if (! pThread || C_UNKNOWN == (i8)pThread)
-    return nullptr;
-  
-  Task* pTask = pThread->pTask();
-  if (! pTask)
-    return nullptr;
-  
-  Job* pJob = pTask->pJob_task();
-  return pJob;
 }
 
 t8 AM::tThisTLSPespective(void)
@@ -2705,8 +2713,6 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 
 }
 
-//static TraceLock oTraceLock;
-
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
@@ -2718,7 +2724,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vGrabWrite();
+    gpAttachMap->vTraceLockGrab();
   //else
   //  printf("NOT LOCKING TRACE\n");
   
@@ -2738,7 +2744,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vDropWrite();
+    gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2752,7 +2758,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vGrabWrite();
+    gpAttachMap->vTraceLockGrab();
 
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -2775,7 +2781,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   StrLib::vStrip(caFormatted,'\n');
     
   if (bUseLock)
-    gpAttachMap->pTraceLock()->vDropWrite();
+    gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3204,7 +3210,6 @@ InternalTables* AM::pInternalTables(void) {
   return gpAttachMap->m_pInternalTables;
 }
 
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->iJobId();                     }
 
 void AM::vPrintGlobals(void)
 {
@@ -3223,7 +3228,7 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
+void AM::vJobContentDump(Job* pJob) { pJob->vPrintJobContents(); }
 
 void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
   
@@ -3848,9 +3853,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddDemon(Job* pJob)
 {
-  AM::pDemonJobs()->vGrabLock();
-  AM::pDemonJobs()->vAddJob(pJob);
-  AM::pDemonJobs()->vDropLock();
+  AM::pDemonJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3858,9 +3861,7 @@ void AM::vJob_AddDemon(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
 {
-  AM::pLocalJobs()->vGrabLock();
-  AM::pLocalJobs()->vAddJob(pJob);
-  AM::pLocalJobs()->vDropLock();
+  AM::pLocalJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3868,9 +3869,7 @@ void AM::vJob_AddLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddOriginating(Job* pJob)
 {
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vAddJob(pJob);
-  AM::pOriginatingJobs()->vDropLock();
+  AM::pOriginatingJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3878,9 +3877,7 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vAddJob(pJob);
-  AM::pParticipatingJobs()->vDropLock();
+  AM::pParticipatingJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3888,9 +3885,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vGrabLock();
-  AM::pRetiredJobs()->vAddJob(pJob);
-  AM::pRetiredJobs()->vDropLock();
+  AM::pRetiredJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3898,11 +3893,7 @@ void AM::vJob_AddRetired(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
-  AM::pDemonJobs()->vGrabLock();
-  AM::pDemonJobs()->vContentDump();
-  AM::pDemonJobs()->vDropLock();
+  AM::pDemonJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3910,11 +3901,7 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
-  AM::pLocalJobs()->vGrabLock();
-  AM::pLocalJobs()->vContentDump();
-  AM::pLocalJobs()->vDropLock();
+  AM::pLocalJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3922,11 +3909,7 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vContentDump();
-  AM::pOriginatingJobs()->vDropLock();
+  AM::pOriginatingJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3934,21 +3917,15 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  Schedule* pSchedule = AM::pSchedule();
-    
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vContentDump();
-  AM::pParticipatingJobs()->vDropLock();
+  AM::pParticipatingJobs()->vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindOriginating(i8 iJobId)
+Job* AM::pJob_FindOriginating(JobId tJobId)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
-  Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId);
     
   return pJob;
 }
@@ -3956,11 +3933,9 @@ Job* AM::pJob__FindOriginating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob__FindParticipating(i8 iJobId)
+Job* AM::pJob_FindParticipating(JobId tJobId)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
-  Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId);
   
   return pJob;
 }
@@ -3968,69 +3943,33 @@ Job* AM::pJob__FindParticipating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* remove job from local list                                                 */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
+void AM::vJob_RemoveLocal(Job* pJob)
 {
-  AM::pLocalJobs()->vGrabLock();
-  
-  if (bDump)
-    AM::pLocalJobs()->vContentDump();
-  
-  bool bRemoved = AM::pLocalJobs()->bRemoveJob(pJob);
-  
-  AM::pLocalJobs()->vDropLock();
-  
-  return bRemoved;
+  AM::pLocalJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
+void AM::vJob_RemoveOriginating(Job* pJob)
 {
-  AM::pOriginatingJobs()->vGrabLock();
-  
-  if (bDump)
-    AM::pOriginatingJobs()->vContentDump();
-  
-  bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
-  
-  AM::pOriginatingJobs()->vDropLock();
-    
-  return bRemoved;
+  AM::pOriginatingJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
+void AM::vJob_RemoveParticipating(Job* pJob)
 {
-  AM::pParticipatingJobs()->vGrabLock();
-  
-  if (bDump)
-    AM::pParticipatingJobs()->vContentDump();
-
-  bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
-  
-  AM::pParticipatingJobs()->vDropLock();
-    
-  return bRemoved;
+  AM::pParticipatingJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from retired list                                               */
 /*----------------------------------------------------------------------------*/
-bool AM::bJob_RemoveRetired(Job* pJob, bool bDump)
+void AM::vJob_RemoveRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vGrabLock();
-  
-  if (bDump)
-    AM::pRetiredJobs()->vContentDump();
-
-  bool bRemoved = AM::pRetiredJobs()->bRemoveJob(pJob);
-  
-  AM::pRetiredJobs()->vDropLock();
-    
-  return bRemoved;
+  AM::pRetiredJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

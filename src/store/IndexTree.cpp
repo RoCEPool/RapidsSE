@@ -152,7 +152,7 @@ void IndexTree::vCompact(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the number of H1 buffers
   
-#ifdef WITH_IT_COMPACT_TRACE
+#ifdef WITH_TRACE_INDEX_COMPACTION
   EntBuffer* pH1First = pFirstH1Buffer();
   i8 nP1Buffers = pH1First ? pH1First->iLengthList() : 0;
 #endif
@@ -166,7 +166,7 @@ void IndexTree::vCompact(void)
     
     iH1BufferNo++;
     
-#ifdef WITH_IT_COMPACT_TRACE
+#ifdef WITH_TRACE_INDEX_COMPACTION
      if (0 == iH1BufferNo % 10)
       vTrace("Compaction Progress: Partition %lld: H1 Buffer %lld of %lld\n"_Stz,
              m_i_TablePtn,iH1BufferNo,nP1Buffers);

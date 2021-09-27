@@ -1,39 +1,31 @@
 /*============================================================================*/
-/* Job__Find.hpp -- Job for finding other jobs                                */
+/* TraceMultiLock.hpp -- Trace Multi-Line Lock                                */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+#include "MasterLock.hpp"
+
+namespace BASE
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job__Find : public Job
+  class TraceMultiLock : public MasterLock
   {
-  public:
-  
+  private:
+    
     // must be last
     Footer m_xFooter;
-  
+    
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
-  
-    Job__Find(void);
-    ~Job__Find(void) noexcept(false);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
-  public:
-    void vShow(void);
-  
-  public:
+    
+    TraceMultiLock(void);
+   ~TraceMultiLock(void) noexcept(false);
+    
+  private:
     Footer* aFooter(void);
-  
   };
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job__Find* _pJob__Find(void* aAddr);
-  
+  TraceMultiLock* _pTraceMultiLock(void* aAddr);
 }
 
 /*============================================================================*/
