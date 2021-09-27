@@ -37,8 +37,9 @@ namespace BASE
     static void vPrintUnitInt(SkipNode* pNode, int i_Level);
 
     bool bInsertUnitInts(void);
+    bool bPopUnitInts(void);
     bool bRemoveUnitInts(void);
-  
+
     void vPrintSkipList(void);
     bool bValidateSkipList(void);
 

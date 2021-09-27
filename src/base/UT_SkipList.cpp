@@ -80,17 +80,35 @@ bool UT_SkipList::bRunTests(void)
   m_pIntSet->vRandomise();
   //m_pIntSet->vPrint();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   bool bPassed = bInsertUnitInts();
   if (! bPassed) {
     return false;
   }
   
   vPrintSkipList();
-
+  
   bPassed = bRemoveUnitInts();
   if (! bPassed) {
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bPassed = bInsertUnitInts();
+  if (! bPassed) {
+    return false;
+  }
+  
+  vPrintSkipList();
+  
+  bPassed = bPopUnitInts();
+  if (! bPassed) {
+    return false;
+  }
+  
+
 
   m_pIntSet->vDeleteAry();
 
@@ -111,7 +129,15 @@ bool UT_SkipList::bCompareLR_int(UnitInt* pUnitIntLeft, UnitInt* pUnitIntRight)
   RASSERT(pUnitIntLeft);
   RASSERT(pUnitIntRight);
 
-  return true;
+  i8 iLeft  = pUnitIntLeft->iInt();
+  i8 iRight = pUnitIntRight->iInt();
+
+  vTrace("%lld v %lld\n"_Stz,iLeft,iRight);
+  
+  if (iLeft <= iRight)
+    return TRUE(valid);
+  else
+    return FALSE(valid);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +240,31 @@ bool UT_SkipList::bInsertUnitInts(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert the int set as unitInt's into the skip list                         */
+/* pop all unitInt's from the skip list                                       */
+/*----------------------------------------------------------------------------*/
+bool UT_SkipList::bPopUnitInts(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_UT_SKIPLIST,_FOOTER_);
+  
+  i8 nInts = m_pIntSet->nInts();
+  for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
+    
+    UnitInt* pUnitInt = _pUnitInt(m_pSkipList->pPop());
+    
+    RASSERT(pUnitInt);
+    
+    delete pUnitInt;
+
+    bool bPassed = bValidateSkipList();
+    if (! bPassed)
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove all unitInt's from the skip list                                    */
 /*----------------------------------------------------------------------------*/
 bool UT_SkipList::bRemoveUnitInts(void)
 {
