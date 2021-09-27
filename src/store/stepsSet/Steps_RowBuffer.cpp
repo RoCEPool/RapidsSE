@@ -98,8 +98,8 @@ void Step::vRowBufferInsdelIntoTable(void)
 //  ASSERT(*m_p_TaskLogicUnit->m_xpRowBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  tPN tPtnNo = pOp->tPtnNo();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+//  PtnId tPtnId = pOp->tPtnId();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnId);
 //
 
 //  // will delete this buffer

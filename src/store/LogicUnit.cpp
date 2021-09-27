@@ -572,11 +572,7 @@ void LogicUnit::vCleanup(void)
 
                ,m_pOp->szStageName()
                ,m_pOp->szOpNm()
-#ifdef WITH_PTNID
-               ,m_pOp->tPtnNo().iAsI8()
-#else
-               ,m_pOp->tPtnNo()
-#endif
+               ,m_pOp->tPtnId().iAsI8()
                ,m_xpStats->iMicroseconds()
                ,m_xpStats->m_nMaxQs
                ,m_xpStats->m_nOperands
@@ -880,11 +876,7 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
 void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-#ifdef WITH_PTNID
-  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnNo().iAsI8();
-#else
-  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnNo();
-#endif
+  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1762,11 +1754,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   if (nOuterArgs) {
     *(++aiDstk) = iOuterArg0;
   }
-#ifdef WITH_PTNID
-  aRluCommon->m_i_TablePtn = MY::pOp()->tPtnNo().iAsI8();
-#else
-  aRluCommon->m_i_TablePtn = MY::pOp()->tPtnNo();
-#endif
+
+  aRluCommon->m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
+
   aRluCommon->m_nPtns  = AM::PTNMAP::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 

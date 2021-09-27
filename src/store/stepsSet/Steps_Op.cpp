@@ -129,12 +129,9 @@ void Step::vOpPartitionFetch(void)
   
   // revised job/op model
     Op* pOp = *m_pOp;
-#ifdef WITH_PTNID
-    m_pDataStack->vPushInt(pOp->tPtnNo().iAsI8());
-#else
-  m_pDataStack->vPushInt(pOp->tPtnNo());
-#endif
-  
+
+    m_pDataStack->vPushInt(pOp->tPtnId().iAsI8());
+
   EXIT();
 }
 

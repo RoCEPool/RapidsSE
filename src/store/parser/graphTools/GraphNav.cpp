@@ -1091,6 +1091,23 @@ b1 GraphNav::bWalkPath(PlanNode* pStartNode, s2K& sPathToWalk,
   if (sPathToWalk.bBeginsWith(const_cast<Stz*>(C_ROOT_PATH))) {
     sCurrentPath.vCopy(const_cast<Stz*>(C_ROOT_PATH));
     sPathToBeWalked.vCopy(sPathToWalk.szStz() + const_cast<Stz*>(C_ROOT_PATH)->nLength());
+
+  } else {
+    // If the path is not absolute then the relative path might start with the name
+    // of the first node. This commonly occurs from walking the graph and being given
+    // the current path - it always starts with the name of the first node. If this is
+    // the case let's remove that first element before we call the base walk function
+    // so that it is clear about the remaining path **to be walked**.
+    s256 sBufChild;
+    s256 sBufProp;
+    sBufChild.vSprint("%s%s"_Stz, pStartNode->szName(), C_CHILD_SEPARATOR_STZ);
+    sBufProp.vSprint( "%s%s"_Stz, pStartNode->szName(), C_PROPERTY_SEPARATOR_STZ);
+
+    if (sPathToWalk.bBeginsWith(sBufChild.szStz()) ||
+        sPathToWalk.bBeginsWith(sBufProp.szStz()) ) {
+      sCurrentPath.vCopy(pStartNode->szName());
+      sPathToBeWalked.vCopy(sPathToWalk.szStz() + pStartNode->szName()->nLength());
+    }
   }
 
   return bWalkPath(pStartNode, sPathToBeWalked, sCurrentPath,0,

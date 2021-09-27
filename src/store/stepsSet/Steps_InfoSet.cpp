@@ -255,13 +255,9 @@ void Step::vInfoSetAddRowCount(void)
   
   // get the table partition
   Job* pJob = m_pJob_task;
-#ifdef WITH_PTNID
-  PtnId tPtnNo = m_pOp->tPtnNo();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
-#else
-  tPN tPtnNo = m_pOp->tPtnNo();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
-#endif
+
+  PtnId tPtnId = m_pOp->tPtnId();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
 
   InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);

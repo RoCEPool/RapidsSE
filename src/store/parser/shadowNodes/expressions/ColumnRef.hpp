@@ -46,8 +46,9 @@ namespace Parser
     static Stz*  szDefnPath(QueryNode* pColumnRef); // may be null
     static b1    bIsFullyQualified(QueryNode* pColumnRef);
     static void  vQualify(QueryNode* pColumnRef, Stz* szTableAliasName,
-                          Stz* szCatalogName, Stz* szSchemaName,
-                          Stz* szTableName, Stz* szColumnName);
+                          Stz* szCatalogName,    Stz* szSchemaName,
+                          Stz* szTableName,      Stz* szColumnName,
+                          Stz* szDefnPath);
 
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.

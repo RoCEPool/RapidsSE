@@ -123,7 +123,7 @@ namespace Parser
     // Given a subquery node and its path, return a list of subqueries that are resolvable.
     // The returned list contains pointers to SubqueryMarker nodes.
     // The returned list must be freed, but not its contents. List may be null.
-    static QueryNodeList* pResolvableSubqueries(QueryNode* pSubqueryNode, s2K& sSubqueryPath, PlanNode* pRootNode);
+    static QueryNodeList* pResolvableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode);
 
     // Create a CteDef that represents a main subquery and add it to the metadata.
     // Also updates the defnPath property of the subquery node.

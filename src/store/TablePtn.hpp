@@ -20,12 +20,8 @@ namespace STORE
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
 
     Table* m_pTable;  // table this partition belongs to
-#ifdef WITH_PTNID
-    PtnId m_tPtnNo;  // partition number (in grid)
-#else
-    tPN m_tPtnNo;  // partition number (in grid)
-#endif
 
+    PtnId m_tPtnId;  // partition number (in grid)
   
     // must be last
     Footer m_xFooter;
@@ -33,11 +29,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-#ifdef WITH_PTNID
-    TablePtn(Table* pTable, PtnId tPtnNo);
-#else
-    TablePtn(Table* pTable, tPN tPtnNo);
-#endif
+
+    TablePtn(Table* pTable, PtnId tPtnId);
    ~TablePtn(void) noexcept(false);
   
     void vDropRead(void);
@@ -47,21 +40,14 @@ namespace STORE
     bool bIsLocked(void);
     eCN  eKind(void);
 
-#ifdef WITH_PTNID
-    PtnId  tPtnNo(void);
-#else
-    tPN tPtnNo(void);
-#endif
+    PtnId  tPtnId(void);
     Table* pTable(void);
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vSetBucket(i8 iBucket);
 
-#ifdef WITH_PTNID
-    void vAddBucket(Table* pTable, PtnId tPtnNo, eCN eKind);
-#else
-    void vAddBucket(Table* pTable, tPN tPtnNo, eCN eKind);
-#endif
+    void vAddBucket(Table* pTable, PtnId tPtnId, eCN eKind);
+
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);

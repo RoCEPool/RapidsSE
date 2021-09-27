@@ -85,8 +85,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WIP
 
-#define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
-
 #define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
                                            //   instead of partition no
 
@@ -94,9 +92,11 @@
 
 //#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
 
-//#define WITH_PTNID EndDefine                 // Use the new type PtnId
-
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
+
+//#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
+
+#define WITH_JOB_CLOSURE EndDefine       // using job skiplist with closure fn
 
 /*============================================================================*/
 /* end                                                                        */

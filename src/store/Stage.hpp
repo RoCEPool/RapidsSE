@@ -38,11 +38,8 @@ namespace STORE
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
 
-#ifdef WITH_PTNID
-    Op*  pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnNo, i8 i_DstOp);
-#else
-    Op*  pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
-#endif
+    Op*  pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp);
+
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);

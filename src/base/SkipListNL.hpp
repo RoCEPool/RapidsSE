@@ -52,20 +52,36 @@ namespace BASE
                 bool bTrace=false,
                 CompareFp fpCompare_alt = nullptr);
   
-    void* pFind2(void* pObject,
-                bool bTrace=false,
-                std::function<bool(void* aInsert,
-                                   void* aScan,
-                                   bool& bMatch)> bfCompareClosure = nullptr);
+    void* pFindByKey(std::function<bool(void* aScan,
+                                        bool& bFound
+                                        )> bfMoveRightTest
+                     );
     SkipNode* pFirst(i8 iLevel);
-    bool  bInsert(void* pObject, bool bTrace=false);
+  
+  
+    bool bInsert(void* pObject, bool bTrace=false);
+  
+    bool bInsertByKey(void* pObject,
+                      std::function<bool(void* aRightObject,
+                                         bool& bFound
+                                         )> bfMoveRightTest
+                      );
+
+  
     i8    nItems(void);
     SkipNode* pNewly(void);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     void* pPop(void);
     i8    nRecount(void);
-    bool  bRemove(void* pObject);
   
+    bool  bRemove(void* pObject);
+
+    bool  bRemoveByKey(void* pObject,
+                       std::function<bool(void* aRightObject,
+                                          bool& bFound
+                                          )> bfMoveRightTest
+                       );
+
   private:
     i8 iRandomLevel(void);
   
@@ -76,14 +92,17 @@ namespace BASE
                         CompareFp fpCompare
                         );
   
-    SkipNode* pPosition2(void* Ent,
-                        bool& bEqualTo,
-                        SkipNode** pRevise,
-                        bool bTrace,
-                        std::function<bool(void* aInsert,
-                                           void* aScan,
-                                           bool& bMatch)> bfCompareClosure
-                        );
+    SkipNode* pLocateKey(std::function<bool(void* aRightObject,
+                                            bool& bFoundKey
+                                           )> bfMoveRightTest
+                         );
+
+    SkipNode* pPositionPrior(std::function<bool(void* aRightObject,
+                                                bool& bFoundKey
+                                                )> bfMoveRightTest,
+                             SkipNode** paPriorVec,
+                             bool& bFoundInList
+                             );
 
     void vValidate(void);
   

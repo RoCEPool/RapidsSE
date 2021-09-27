@@ -972,7 +972,8 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     Stz* szCatalogName    = ColumnRef::szCatalog(_pQueryNode(pNode));
     Stz* szSchemaName     = ColumnRef::szSchema(_pQueryNode(pNode));
     Stz* szTableName      = ColumnRef::szTable(_pQueryNode(pNode));
-    Stz* szColumnName     = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
+    Stz* szColumnName     = ColumnRef::szColumn(_pQueryNode(pNode));
+    Stz* szDefnPath       = ColumnRef::szDefnPath(_pQueryNode(pNode));
 
     // We cannot skip columns that appear to be fully qualified here. Even if a columnRef
     // has a catalog, schema and table specified AND all of this exists in the metadata
@@ -1021,9 +1022,17 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       szCatalogName    = DataSource::szCatalogName(pDataSource);
       szSchemaName     = DataSource::szSchemaName(pDataSource);
       szTableName      = DataSource::szTableName(pDataSource);
+      szDefnPath       = nullptr;
+
+      if (SubqueryRefOp::bIsOfType(pDataSource)) {
+        QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
+        ASSERT(pSubquery);
+        ASSERT(TableSubquery::bIsOfType(pSubquery));
+        szDefnPath = TableSubquery::szDefnPath(pSubquery);
+      }
 
       ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
-                          szSchemaName, szTableName, szColumnName);
+                          szSchemaName, szTableName, szColumnName, szDefnPath);
 
       delete pDataSourceList;
       return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
@@ -1084,9 +1093,17 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       szCatalogName    = DataSource::szCatalogName(pDataSource);
       szSchemaName     = DataSource::szSchemaName(pDataSource);
       szTableName      = DataSource::szTableName(pDataSource);
+      szDefnPath       = nullptr;
+
+      if (SubqueryRefOp::bIsOfType(pDataSource)) {
+        QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
+        ASSERT(pSubquery);
+        ASSERT(TableSubquery::bIsOfType(pSubquery));
+        szDefnPath = TableSubquery::szDefnPath(pSubquery);
+      }
 
       ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
-                          szSchemaName, szTableName, szColumnName);
+                          szSchemaName, szTableName, szColumnName, szDefnPath);
 
     } else if (pProjectedColList->nItems() == 1) {
       // We matched against an aliased (projected) expression
@@ -1502,50 +1519,78 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
 /* The returned list contains pointers to SubqueryMarker nodes.               */
 /* The returned list must be freed, but not its contents. List may be null.   */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* NameValidator::pResolvableSubqueries(QueryNode* pSubqueryNode, s2K& sSubqueryPath, PlanNode* pRootNode)
+QueryNodeList* NameValidator::pResolvableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode)
 {
-  ASSERT(pSubqueryNode);
-  ASSERT(SubqueryMarker::bIsOfType(pSubqueryNode));
-  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+  ASSERT(sMainSubqueryPath.nLength() > 0);
 
+  // A MainSubquery can resolve aliases belonging to another TableSubquery, TS1, iff:
+  //  - the TableSubquery is a sibling of the MainSubquery (both have the same parent),
+  //  - The parent of the MainSubquery (and any immediate parents of that) is itself
+  //    a TableSubquery, TS2, and both TS1 and TS2 are both siblings, and TS1 is an
+  //    earlier child than TS2.
   // The resolvable list of subqueries (for a non-recursive subquery) is found by
-  // looking at the sibling subqueries that occur before the current subquery.
-  // So order is important.
-  // We look at siblings by getting the parent and then walking the children.
+  // looking at the siblings of pMainSubquery to see if any of them are TableSubqueries.
+  // Thereafter, if the parent is itself a TableSubquery then check all siblings of the
+  // parent that occur before the parent.
 
-  // Get the parent node of the subquery
-  PlanNode* pParentNode = GraphNav::pGetParentOfPath(sSubqueryPath.szStz(), ShadowRoot::pPlanRoot(pRootNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  QueryNode* pLastNode = nullptr;
 
-  if (!pParentNode) {
-    return nullptr;
+  QueryNodeList* pResolvableSubqueryList = new QueryNodeList();
+
+  auto fVisitor = [pMainSubquery, &pLastNode, pResolvableSubqueryList]
+                  (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg)
+                  -> GraphNav::eWalkCtrl {
+
+    UNUSED(sCurrentPath);
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    if (pNode == pMainSubquery) {
+      // Nothing to be done for pMainSubquery. Instead we want to walk its siblings,
+      // but for that we need its parent.
+      pLastNode = _pQueryNode(pNode);
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Iterate the children of pNode up until the child equals pLastNode
+    PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+    while (pChildIter->bHasNext()) {
+      QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+
+      if (pChild == pLastNode) {
+        // We don't resolve past pLastNode otherwise it is a forward reference.
+        // This is not allowed for a non-recursive subquery.
+        break;
+      }
+
+      if (TableSubquery::bIsOfType(pChild)) {
+        // It's resolvable
+        pResolvableSubqueryList->vAppend(pChild);
+      }
+    }
+
+    delete pChildIter;
+
+    if (!TableSubquery::bIsOfType(pNode)) {
+      return GraphNav::WALK_ABORT;
+    }
+
+    pLastNode = _pQueryNode(pNode);
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalkPath(pPlanRoot, sMainSubqueryPath, nullptr, fVisitor, nullptr);
+
+  if (pResolvableSubqueryList->nItems() == 0) {
+    delete pResolvableSubqueryList;
+    pResolvableSubqueryList = nullptr;
   }
 
-  QueryNodeList* pNodeList = nullptr;
-
-  PlanNodeIter* pChildIter = pParentNode->pNewChildrenIter();
-  while (pChildIter->bHasNext()) {
-    PlanNode* pChild = pChildIter->pNext();
-
-    if (pChild == pSubqueryNode) {
-      // Got the current subquery. Not interested in anything after this.
-      break;
-    }
-
-    if (!TableSubquery::bIsOfType(pChild)) {
-      // This should probably not occur.
-      ASSERT(0);
-      continue;
-    }
-
-    if (!pNodeList) {
-      pNodeList = new QueryNodeList();
-    }
-
-    pNodeList->vAppend(_pQueryNode(pChild));
-  }
-
-  delete pChildIter;
-  return pNodeList;
+  return pResolvableSubqueryList;
 }
 
 /*----------------------------------------------------------------------------*/

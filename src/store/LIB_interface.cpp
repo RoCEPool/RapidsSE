@@ -153,13 +153,9 @@ void vLib_PTN_CALC(void* pLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
-#ifdef WITH_PTNID
-  aRluCommon->m_i_Ptn =
-      AM::PTNMAP::tHashToDtdPtnId(aRluCommon->m_iHash).iAsI8();
-#else
-  aRluCommon->m_i_Ptn =
-    AM::PTNMAP::tHashToDtdPtnNo(aRluCommon->m_iHash);
-#endif
+
+  //aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(aRluCommon->m_iHash);
+  aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnId(aRluCommon->m_iHash).iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/

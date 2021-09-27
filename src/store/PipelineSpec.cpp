@@ -12,9 +12,7 @@
 #include "Grid.hpp"
 #include "TagConstants.h"
 
-#ifdef WITH_NESTED_PIPELINES
 #include "SP_PipelineSpec.hpp"
-#endif
 
 static bool gbPipelineDebug = false;
 
@@ -687,13 +685,11 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
     i8 tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
       return false;
-#ifdef WITH_PTNID
+
     PtnId tPtnId;
     tPtnId = tPtnNo;
     p_StageSpec->vSpecificPtnNo(tPtnId);
-#else
-    p_StageSpec->vSpecificPtnNo(tPtnNo);
-#endif
+
     return true;
   }
   

@@ -1119,7 +1119,7 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                PTNMAP                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-#ifdef WITH_PTNID
+
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
@@ -1132,10 +1132,10 @@ PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 /*----------------------------------------------------------------------------*/
 /* convert PtnNo to Bkt No                                                    */
 /*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iToBkt(PtnId tPtnNo)
+i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
 {
   _static_
-  return gpAttachMap->m_pPtnMap->iToBkt(tPtnNo);
+  return gpAttachMap->m_pPtnMap->iToBkt(tPtnId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1143,6 +1143,7 @@ i8 AM::PTNMAP::iToBkt(PtnId tPtnNo)
 /*----------------------------------------------------------------------------*/
 PtnId AM::PTNMAP::tToPtn(i8 iBktNo)
 {
+  _static_
   return gpAttachMap->m_pPtnMap->tToPtn(iBktNo);
 }
 
@@ -1177,7 +1178,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
 {
   return gpAttachMap->m_pPtnMap->tRobinToDtdPtnNo(iRobin);
 }
@@ -1197,83 +1198,6 @@ PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
 {
   return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
 }
-#else
-/*----------------------------------------------------------------------------*/
-/* convert given hash to distributed partition number                         */
-/*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tHashToDtdPtnNo(i8 iHash)
-{
-  return gpAttachMap->m_pPtnMap->tHashToDtdPtnNo(iHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert PtnNo to Bkt No                                                    */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iToBkt(tPN tPtnNo)
-{
-  return gpAttachMap->m_pPtnMap->iToBkt(tPtnNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert Bkt No PtnNo                                                     */
-/*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tToPtn(i8 iBktNo)
-{
-  return gpAttachMap->m_pPtnMap->tToPtn(iBktNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nodes as known by ptnmap                                     */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::nKnownNodes(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pPtnMap->nKnownNodes();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nodes defined on command line                                */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::nPtnsInGrid(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nodes defined on command line                                */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::nPtnsPerNode(void)
-{
-  return gpAttachMap->m_pPtnMap->nPtnsPerNode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to distributed partition number                  */
-/*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tRobinToDtdPtnNo(i8 iRobin)
-{
-  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnNo(iRobin);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to local partition number                        */
-/*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
-{
-  return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given round robin to distributed partition number                  */
-/*----------------------------------------------------------------------------*/
-tPN AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
-{
-  return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
-}
-#endif
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  SE                                        */

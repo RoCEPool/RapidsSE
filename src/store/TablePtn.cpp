@@ -38,17 +38,12 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_PTNID
-TablePtn::TablePtn(Table *pTable, PtnId tPtnNo)
+TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
 : Object(CN_TABLEPTN), m_okLock(this) {
-#else
-TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
-    : Object(CN_TABLEPTN), m_okLock(this) {
-#endif
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   m_pTable = pTable;
-  m_tPtnNo = tPtnNo;
+  m_tPtnId = tPtnId;
 
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
@@ -74,10 +69,10 @@ TablePtn::TablePtn(Table *pTable, tPN tPtnNo)
 #ifdef WITH_BKTMAP_2N4P
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
   {
-    vAddBucket(pTable, tPtnNo, m_eKind);
+    vAddBucket(pTable, tPtnId, m_eKind);
   }
 #else
-  vAddBucket(pTable, tPtnNo, m_eKind);
+  vAddBucket(pTable, tPtnId, m_eKind);
 #endif
 
   _checkInitialised_(CN_TABLEPTN);
@@ -166,17 +161,10 @@ eCN TablePtn::eKind(void) {
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_PTNID
-PtnId TablePtn::tPtnNo(void) {
+PtnId TablePtn::tPtnId(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  return m_tPtnNo;
+  return m_tPtnId;
 }
-#else
-tPN TablePtn::tPtnNo(void) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  return m_tPtnNo;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */
@@ -194,19 +182,11 @@ Table *TablePtn::pTable(void) {
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_PTNID
-void TablePtn::vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind) {
+void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
+  Bucket *pBucket = new Bucket(pTable, tPtnId, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
-#else
-void TablePtn::vAddBucket(Table *pTable, tPN tPtnNo, eCN eKind) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
-  m_pBucketVec->vAdd(pBucket);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* remove bucket                                                              */
@@ -298,7 +278,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // eventually, we have to append the rowbuffer into the correct bucket
 
   i8 iBktNo = pDataBuffer->iBucketNo();
-  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnNo());
+  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId());
 
   Bucket *pBucket = pGetBucket(iBktNo);
   pBucket->vAppendBuffer(pDataBuffer);

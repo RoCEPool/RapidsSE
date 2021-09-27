@@ -10,11 +10,7 @@ namespace STORE
   private:
     Table* m_pTable;        // table this partition belongs to
     Bucket*   m_pBucket;    // bucket this partition belongs to
-#ifdef WITH_PTNID
-    PtnId    m_tPtnNo;        // partition number (in grid)
-#else
-    tPN    m_tPtnNo;        // partition number (in grid)
-#endif
+    PtnId    m_tPtnId;        // partition number (in grid)
 
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
@@ -29,11 +25,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-#ifdef WITH_PTNID
-    CrwTablePtn(Table *pTable, PtnId tPtnNo, Bucket *pBucket);
-#else
-    CrwTablePtn(Table* pTable, tPN tPtnNo, Bucket* pBucket);
-#endif
+    CrwTablePtn(Table *pTable, PtnId tPtnId, Bucket *pBucket);
+
    ~CrwTablePtn(void) noexcept(false);
   
     void vAddIndex(IndexTree* pIndexTree);
@@ -44,13 +37,8 @@ namespace STORE
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
 
-#ifdef WITH_PTNID
+    PtnId tPtnId(void);
 
-    PtnId tPtnNo(void);
-
-#else
-    tPN  tPtnNo(void);
-#endif
     bool bPopulateIndex(i8 iIndexNo);
     bool bPopulateIndexTree(IndexTree* pIndexTree);
     void vRemoveIndex(i8 iIndexNo);
