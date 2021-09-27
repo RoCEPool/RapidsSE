@@ -194,6 +194,7 @@ rows: (*,'stageMarkers','
          » routing: local partition
 
 -> -> -> -> nestedLoopJoinOp
+            » location: all partitions
             » join type: Cross Join
             » predicate: (true)
             » ordinal predicate: (true)
@@ -235,6 +236,7 @@ rows: (*,'stageMarkers','
          » routing: local partition
 
 -> -> -> -> nestedLoopJoinOp
+            » location: all partitions
             » join type: Inner Join
             » predicate: (rapidsse.public.supplier.s_nationkey = rapidsse.public.nation.n_nationkey)
             » ordinal predicate: ($11 = $4)
@@ -244,6 +246,7 @@ rows: (*,'stageMarkers','
                » routing: broadcast
 
 -> -> -> -> -> -> nestedLoopJoinOp
+                  » location: all partitions
                   » join type: Cross Join
                   » predicate: (true)
                   » ordinal predicate: (true)
@@ -307,6 +310,7 @@ rows: (*,'stageMarkers','
                      » routing: local partition
 
 -> -> -> -> -> -> -> -> nestedLoopJoinOp
+                        » location: all partitions
                         » join type: Inner Join
                         » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
                         » ordinal predicate: ($1 = $6)

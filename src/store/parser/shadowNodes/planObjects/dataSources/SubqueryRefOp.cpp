@@ -439,6 +439,42 @@ b1 SubqueryRefOp::bResolvesColumnRef(QueryNode* pNode,    QueryNode* pMetadataNo
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 SubqueryRefOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 0);
+
+  // We don't actually know if a SubqueryRefOp is partitionable until the
+  // underlying table subquery has itself been partitioned. This is because
+  // if the table subquery was really simple, e.g. SELECT col FROM table,
+  // then it's final location is still ALL_PARTITIONS. So any main subquery
+  // that uses it is still partitionable.
+  // However if the table subquery had some operator that brought all of the
+  // data back to the origin (e.g. an aggregation/ordering/limit/etc) then
+  // this data is no longer partitionable.
+
+  QueryNode* pTableSubquery = pSubquery(pNode, pRootNode);
+  ASSERT(pTableSubquery);
+  ASSERT(TableSubquery::bIsOfType(pTableSubquery));
+
+  Location::eLO eLocation = PlanObject::eLocation(pTableSubquery, true);
+  return (eLocation == Location::LO_ALL_PARTITIONS);
+
+  // All table subqueries are non-partitionable because they are emulating
+  // a single complete table. It would be wrong to stream them again on each
+  // partition as we would end up with multiple copies of the data - one for
+  // each partition.
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
