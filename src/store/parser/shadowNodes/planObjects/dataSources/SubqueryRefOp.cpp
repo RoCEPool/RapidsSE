@@ -35,9 +35,17 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSo
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectOp nodes.                                 */
+/* Helper function to create SubqueryRefOp nodes.                             */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
+QueryNode* SubqueryRefOp::pCreate(Stz* szSubqueryAlias)
+{
+  return pCreate(new Text(szSubqueryAlias));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create SubqueryRefOp nodes.                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryRefOp::pCreate(Text* pSubqueryAlias)
 {
   ASSERT(pSubqueryAlias);
 
@@ -48,7 +56,7 @@ QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
   QueryNode* pSubqueryRefOp = new QueryNode(sName, C_DEFN);
 
   // Add any extra properties here.
-  vSetAlias(pSubqueryRefOp, new Text(pSubqueryAlias));
+  vSetAlias(pSubqueryRefOp, pSubqueryAlias);
 
   return pSubqueryRefOp;
 }
