@@ -24,8 +24,6 @@
   "__eventDemon" find dup if
     word.object@ locals| eventDemon |
 
-   //eventDemon pipeline.pipeout
-
     // pipe out completed buffers to event demon
     begin
       Tub[].completed dup to DataBuffer[]
@@ -41,7 +39,25 @@
     repeat
 
   else
-    discard discard
+
+    discard
+
+    // pipe out completed buffers to event demon
+    begin
+      Tub[].completed dup to DataBuffer[]
+    while
+      DataBuffer[].delete
+    repeat
+
+    // pipe out remainder of the buffers to event demon
+    begin
+      Tub[].dangling dup to DataBuffer[]
+    while
+      DataBuffer[].delete
+    repeat
+
+    Tub[].delete
+
   then
 
   Tub[].delete

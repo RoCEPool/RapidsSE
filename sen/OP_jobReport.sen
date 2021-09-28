@@ -9,14 +9,62 @@
 /*----------------------------------------------------------------------------*/
 : jobReport_action
 
-  <jobno> >int jobReport::report
+  0 locals| eError |
+
+  Tub[].new
+
+  Tub[] <jobno> >int jobReport::report to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
 
   "__eventDemon" find dup if
-    word.object@
-    pipeline.pipeout
+    word.object@ locals| eventDemon |
+
+    // pipe out completed buffers to event demon
+    begin
+      Tub[].completed to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[] eventDemon pipeline.pipeout
+    repeat
+
+    // pipe out remainder of the buffers to event demon
+    begin
+      Tub[].dangling to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[] eventDemon pipeline.pipeout
+    repeat
+
   else
+
     discard discard
+
+    // pipe out completed buffers to event demon
+    begin
+      Tub[].completed to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[].delete
+    repeat
+
+    // pipe out remainder of the buffers to event demon
+    begin
+      Tub[].dangling to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[].delete
+    repeat
+
+    Tub[].delete
+
   then
+
+  Tub[].delete
 
   true
 ;

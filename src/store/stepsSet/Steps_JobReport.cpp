@@ -46,10 +46,11 @@ void Step::vJobReportReport(void)
   ENTRY();
   
   i8 iJobNo = m_pDataStack->iPopInt(__func__);
-    
-  NamedBuffer* pNamedBuffer = JobReport::pReport(iJobNo);
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushPtr(pNamedBuffer);
+  eEC eError = JobReport::eReport(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

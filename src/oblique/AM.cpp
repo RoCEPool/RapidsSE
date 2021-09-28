@@ -2159,6 +2159,15 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
+    case CN_NAMEDBUFFER: {
+      NamedBuffer* pNamedBuffer = _pNamedBuffer(pOperand);
+      // permament row buffers not to be deleted
+      if (pNamedBuffer->bIsPermanent())
+        break;
+      delete pNamedBuffer;
+      break;
+    }
+
     case CN_PLANOPERAND: {
       PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
       delete pPlanOperand;

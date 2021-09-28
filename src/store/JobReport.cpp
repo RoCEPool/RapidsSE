@@ -32,14 +32,14 @@ __aFooterFunction(JobReport)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobReport::JobReport(i8 iJobNo)
+JobReport::JobReport(i8 iJobNo, Job* pJob)
 : Object(CN_JOBREPORT)
 {
   _precondition_(_MAGIC_,CN_JOBREPORT,_FOOTER_);
 
   m_iJobNo   = iJobNo;
   m_tJobId   = C_UNKNOWN;
-  m_pJob     = nullptr;
+  m_pJob     = pJob;
   m_pJobTags = nullptr;
 
   m_i_pu_test   = C_UNKNOWN;
@@ -77,33 +77,47 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
 {
   _static_
 
-  //vTrace("JobReport: %lld\n"_Stz,iJobNo);
+  // find the participant job
+  Job* pJob = pFindParticipantJob(iJobNo);
 
-  JobReport* pJobReport = new JobReport(iJobNo);
-
-  if ( ! pJobReport->bFindParticipantJob() )
+  // no such job ?
+  if ( ! pJob )
     return EC_NO_SUCH_JOB;
 
+  // create the jobReport
+  JobReport* pJobReport = new JobReport(iJobNo, pJob);
+
+  // find the internal jobOperators table
   Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
   StreamDef* pStreamDef = pJobOperatorsTable->pStreamDef();
 
-  // new a named buffer
-  NamedBuffer* pNamedBuffer = new NamedBuffer(pStreamDef);
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
 
-  // add athe named buffer to the tub
-  pTub->vAddBuffer(pNamedBuffer);
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
 
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // get the pipeline
   Pipeline* pPipeline = *pJobReport->m_pJob->m_pJobLogicUnit->m_xpPipeline;
 
+  // each stage in the pipeline
   for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++) {
 
     Stage* pStage = pPipeline->pGet(i_Stage);
 
+    // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
 
+      // each op in each stream
       for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
 
+        // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
         Stats* pStats = *pOp->pOpLogicUnit()->m_xpStats;
 
@@ -122,7 +136,7 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
         s32 sBytesWrite;
         MagLib::vByteMag(pStats->m_nBytesWrite, sBytesWrite);
 
-
+        // is their space in the buffer ?
         if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
 
           // new a named buffer
@@ -132,6 +146,7 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
           pTub->vAddBuffer(pNamedBuffer);
         }
 
+        // allot a row for the stats in the named buffer
         Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN
                                           ,iJobNo
                                           ,pOp->szStageName()
@@ -160,14 +175,11 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
                                           ,pStats->m_nParcelRecvs
                                           ,pStats->m_nObjectsRecv
                                           ,C_VARGS_END);
-        if ( ! pRow ) {
-
-        }
-
       }
     }
   }
 
+  // delete the jobReport
   delete pJobReport;
 
   return EC_NONE;
@@ -176,20 +188,49 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* report                                                                     */
 /*----------------------------------------------------------------------------*/
-NamedBuffer* JobReport::pReport(i8 iJobNo)
+eEC JobReport::eReport(i8 iJobNo, Tub* pTub)
 {
   _static_
 
-  //vTrace("JobReport: %lld\n"_Stz,iJobNo);
-  
-  JobReport* pJobReport = new JobReport(iJobNo);
-  
-  pJobReport->vReportJob();
+  // find the participant job
+  Job* pJob = pFindOriginalJob(iJobNo);
 
+  // no such job ?
+  if ( ! pJob )
+    return EC_NO_SUCH_JOB;
+
+  // create the jobReport
+  JobReport* pJobReport = new JobReport(iJobNo, pJob);
+
+  // get stats from job tags of job
+  pJobReport->vStatsFromJobTags();
+
+  // find the internal jobReport table
   Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
   StreamDef* pStreamDef = pJobReportTable->pStreamDef();
-  NamedBuffer* pNamedBuffer = new NamedBuffer(pStreamDef);
 
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // is their space in the buffer ?
+  if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
+
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add athe named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // allot a row for the stats in the named buffer
   Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
                                       pJobReport->m_i_pu_test,
                                       pJobReport->m_i_pu_subset,
@@ -202,9 +243,108 @@ NamedBuffer* JobReport::pReport(i8 iJobNo)
                                       pJobReport->m_iMagnitude,
                                       C_VARGS_END);
 
+  // delete the jobReport
   delete pJobReport;
 
-  return pNamedBuffer;
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the job on the origin                                                 */
+/*----------------------------------------------------------------------------*/
+Job* JobReport::pFindOriginalJob(i8 iJobId)
+{
+  _static_
+
+  //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
+  
+  
+  // form jobId from nodeNo.m_jobNo
+  
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  
+  pRetiredJobs->vGrabLock();
+  
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+    
+    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+    
+    if (iJobNo == iJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+      pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the participant job on the origin                                     */
+/*----------------------------------------------------------------------------*/
+Job* JobReport::pFindParticipantJob(i8 iJobId)
+{
+  _static_
+
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+
+  pRetiredJobs->vGrabLock();
+
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+
+    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+
+    if (iJobNo == iJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+      if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
+        pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
+
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,141 +352,11 @@ NamedBuffer* JobReport::pReport(i8 iJobNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* craft the report for job                                                   */
+/* get stats from jobTags                                                     */
 /*----------------------------------------------------------------------------*/
-void JobReport::vCraftReport(void)
+void JobReport::vStatsFromJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-  
-  //vTrace("vCraftReport: %lld\n"_Stz,m_iJobNo);
-  
-  // insert into namedBuffer??
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* find the job on the origin                                                 */
-/*----------------------------------------------------------------------------*/
-bool JobReport::bFindOriginJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
-  
-  
-  // form jobId from nodeNo.m_jobNo
-  
-  m_pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-  
-  pRetiredJobs->vGrabLock();
-  
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
-       pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
-    Job* pJobScan = _pJob(pScan->m_pObject);
-    
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
-//           ,pJobScan
-//           ,iJobNo
-//           ,C_UNKNOWN == pJobScan->iParticipantNode()
-//             ? "origin"_Stz
-//             : "participant"_Stz
-//           );
-    
-    if (iJobNo == m_iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
-      m_pJob = pJobScan;
-    }
-  }
-
-  pRetiredJobs->vDropLock();
-
-  if (m_pJob) {
-//    vTrace("Found %p %lld (%s)\n"_Stz
-//           ,m_pJob
-//           ,(i8)m_pJob->tJobId().uJobNo()
-//           ,C_UNKNOWN == m_pJob->iParticipantNode()
-//             ? "origin"_Stz
-//             : "participant"_Stz
-//           );
-  }
-  else {
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find the participant job on the origin                                     */
-/*----------------------------------------------------------------------------*/
-bool JobReport::bFindParticipantJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
-
-
-  // form jobId from nodeNo.m_jobNo
-
-  m_pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-
-  pRetiredJobs->vGrabLock();
-
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
-       pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
-    Job* pJobScan = _pJob(pScan->m_pObject);
-
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
-//           ,pJobScan
-//           ,iJobNo
-//           ,C_UNKNOWN == pJobScan->iParticipantNode()
-//             ? "origin"_Stz
-//             : "participant"_Stz
-//           );
-
-    if (iJobNo == m_iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
-      if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
-        m_pJob = pJobScan;
-    }
-  }
-
-  pRetiredJobs->vDropLock();
-
-  if (m_pJob) {
-//    vTrace("Found %p %lld (%s)\n"_Stz
-//           ,m_pJob
-//           ,(i8)m_pJob->tJobId().uJobNo()
-//           ,C_UNKNOWN == m_pJob->iParticipantNode()
-//             ? "origin"_Stz
-//             : "participant"_Stz
-//           );
-  }
-  else {
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find all the parts                                                         */
-/*----------------------------------------------------------------------------*/
-bool JobReport::bFindParts(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
-
-
-  // form jobId from nodeNo.m_jobNo
-
-  if ( ! bFindOriginJob() )
-    return false;
 
   // get jobTags
   m_pJobTags = &m_pJob->m_oJobTags;
@@ -382,20 +392,6 @@ bool JobReport::bFindParts(void)
   m_iReponseTime = m_pJob->m_oTimer.iMicroseconds();
   m_iMagnitude   = m_pJob->m_oTimer.iMagnitude();
 
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* report on job                                                              */
-/*----------------------------------------------------------------------------*/
-void JobReport::vReportJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-  
-  //vTrace("vReportJob: %lld\n"_Stz,m_iJobNo);
-
-  if (bFindParts())
-    vCraftReport();
 }
 
 /*============================================================================*/
