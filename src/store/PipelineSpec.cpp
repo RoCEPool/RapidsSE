@@ -33,13 +33,8 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
                            PipelineSpec* p_ParentPipelineSpec,
                            TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
-#ifdef WITH_SPEC_LIST
 : ListNL_t<StageSpec>(CN_PIPELINESPEC)
 , LifeGuard_t<PipelineSpec>(this,CN_PIPELINESPEC)
-#else
-: LifeGuard_t<PipelineSpec>(this,CN_PIPELINESPEC)
-#endif
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -61,9 +56,6 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-
-#ifdef WITH_SPEC_LIST
-
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -74,24 +66,6 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
   vClear();
 }
-
-#else
-/*----------------------------------------------------------------------------*/
-PipelineSpec::~PipelineSpec(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-    
-  i8 nStageSpecs = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec* pStageSpec = pGet(i_Stage);
-    
-    pStageSpec->vGuardedDelete(CN_STAGESPEC,&pStageSpec,
-                               CN_PIPELINESPEC,this,(Stz*)__func__);
-  }
-
-  vClear();
-}
-#endif
 
 
 /*----------------------------------------------------------------------------*/
