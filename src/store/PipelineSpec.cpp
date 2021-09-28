@@ -348,10 +348,8 @@ bool PipelineSpec::bCollectStage(void)
   vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_StageSpec = this->nItems();
-  
-  StageSpec* p_StageSpec = new StageSpec(i_StageSpec,pTkn()->szChars(),this);
+    
+  StageSpec* p_StageSpec = new StageSpec(pTkn()->szChars(),this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
