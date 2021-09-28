@@ -114,7 +114,7 @@
   ExprEval[].new
   StreamDefOut[].new
 
-  <etc> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+  <expr> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -189,7 +189,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: aggreg :: aggreg <compiled> <etc> ;
+cmdSyntax: aggreg :: aggreg <compiled> <expr> ;
 
 : aggreg_cmdTags _cmdTags tagCopy: op_tags
   tags{

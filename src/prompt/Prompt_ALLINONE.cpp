@@ -2506,7 +2506,7 @@ bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 
   //TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
+  //ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
   
   return true;
 }

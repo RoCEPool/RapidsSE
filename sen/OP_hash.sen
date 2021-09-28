@@ -118,7 +118,7 @@
   ExprEval[].new
   StreamDefLft[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+  <expr> StreamDefLft[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -193,7 +193,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: hash :: hash <compiled> <etc> ;
+cmdSyntax: hash :: hash <compiled> <expr> ;
 
 : hash_cmdTags _cmdTags tagCopy: op_tags
   tags{

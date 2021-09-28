@@ -210,7 +210,7 @@
   ExprEval[].new
   StreamDefRht[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefRht[] nullptr ExprEval[].evaluate to eError
+  <expr> StreamDefRht[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -294,7 +294,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: hashRight :: hashRight <compiled> <etc> ;
+cmdSyntax: hashRight :: hashRight <compiled> <expr> ;
 
 : hashRight_cmdTags _cmdTags tagCopy: op_tags
   tags{

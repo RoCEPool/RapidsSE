@@ -60,7 +60,7 @@
   // evalute the expression
   ExprEval[].new
 
-  <etc> Index[].indexTree ExprEval[].evaluateIndexScan to eError
+  <expr> Index[].indexTree ExprEval[].evaluateIndexScan to eError
 
   // check for error
   eError EC_NONE == not if
@@ -179,7 +179,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: indexScan :: indexScan <compiled> <tableNm> <indexNm> <etc> ;
+cmdSyntax: indexScan :: indexScan <compiled> <tableNm> <indexNm> <expr> ;
 
 : indexScan_cmdTags _cmdTags tagCopy: op_tags
   tags{

@@ -208,7 +208,7 @@
   ExprEval[].new
   StreamDefRht[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefRht[] nullptr ExprEval[].evaluate to eError
+  <expr> StreamDefRht[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -291,7 +291,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: filterRight :: filterRight <compiled> <etc> ;
+cmdSyntax: filterRight :: filterRight <compiled> <expr> ;
 
 : filterRight_cmdTags _cmdTags tagCopy: op_tags
   tags{

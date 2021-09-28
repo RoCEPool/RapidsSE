@@ -209,7 +209,7 @@
   ExprEval[].new
   StreamDefOut[].new
 
-  <etc> StreamDefRht[] StreamDefOut[] ExprEval[].evaluate to eError
+  <expr> StreamDefRht[] StreamDefOut[] ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -290,7 +290,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: projectRight :: projectRight <compiled> <etc> ;
+cmdSyntax: projectRight :: projectRight <compiled> <expr> ;
 
 : projectRight_cmdTags _cmdTags tagCopy: op_tags
   tags{

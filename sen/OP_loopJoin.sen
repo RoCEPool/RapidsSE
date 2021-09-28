@@ -324,7 +324,7 @@
   ExprEval[].new
   StreamDefOut[].new
 
-  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateLoopJoin to eError
+  <expr> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateLoopJoin to eError
 
   // check for error
   eError EC_NONE == not if
@@ -412,7 +412,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: loopJoin :: loopJoin <compiled> <etc> ;
+cmdSyntax: loopJoin :: loopJoin <compiled> <expr> ;
 
 : loopJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{
