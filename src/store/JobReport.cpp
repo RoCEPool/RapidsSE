@@ -73,7 +73,7 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operators report                                                           */
 /*----------------------------------------------------------------------------*/
-void JobReport::vOperators(i8 iJobNo, Tub* pTub)
+eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
 {
   _static_
 
@@ -82,7 +82,7 @@ void JobReport::vOperators(i8 iJobNo, Tub* pTub)
   JobReport* pJobReport = new JobReport(iJobNo);
 
   if ( ! pJobReport->bFindParticipantJob() )
-    return;
+    return EC_NO_SUCH_JOB;
 
   Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
   StreamDef* pStreamDef = pJobOperatorsTable->pStreamDef();
@@ -169,6 +169,8 @@ void JobReport::vOperators(i8 iJobNo, Tub* pTub)
   }
 
   delete pJobReport;
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,9 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : jobOperators_action
 
+  0 locals| eError |
+
   Tub[].new
 
-  Tub[] <jobno> >int jobReport::operators
+  Tub[] <jobno> >int jobReport::operators to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
 
   "__eventDemon" find dup if
     word.object@ locals| eventDemon |

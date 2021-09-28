@@ -31,7 +31,9 @@ void Step::vJobReportOperators(void)
   i8 iJobNo = m_pDataStack->iPopInt(__func__);
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  JobReport::vOperators(iJobNo, pTub);
+  eEC eError = JobReport::eOperators(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
