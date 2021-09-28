@@ -35,9 +35,12 @@ namespace STORE
     JobReport(i8 iJobId);
    ~JobReport(void) noexcept(false);
 
+    static void vOperators(i8 iJobNo, Tub* pTub);
     static NamedBuffer* pReport(i8 iJobNo);
 
     void vCraftReport(void);
+    bool bFindOriginJob(void);
+    bool bFindParticipantJob(void);
     bool bFindParts(void);
     void vReportJob(void);
 

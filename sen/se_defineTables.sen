@@ -547,6 +547,7 @@
   "
   define table se__jobOperators (
 
+    jobId             INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
     ptnId             INTEGER NOT NULL ,
@@ -560,14 +561,14 @@
     newCsvBuffers     INTEGER NOT NULL ,
     delCsvBuffers     INTEGER NOT NULL ,
     numAllocs         INTEGER NOT NULL ,
-    bytesAllocated    INTEGER NOT NULL ,
+    bytesAllocated    VARCHAR NOT NULL ,
     numFrees          INTEGER NOT NULL ,
-    bytesFreed        INTEGER NOT NULL ,
-    maxBytes          INTEGER NOT NULL ,
+    bytesFreed        VARCHAR NOT NULL ,
+    maxBytes          VARCHAR NOT NULL ,
     numReads          INTEGER NOT NULL ,
-    bytesRead         INTEGER NOT NULL ,
+    bytesRead         VARCHAR NOT NULL ,
     numWrites         INTEGER NOT NULL ,
-    bytesWrite        INTEGER NOT NULL ,
+    bytesWrite        VARCHAR NOT NULL ,
     numParcelSends    INTEGER NOT NULL ,
     numObjectsSent    INTEGER NOT NULL ,
     numParcelRecvs    INTEGER NOT NULL ,

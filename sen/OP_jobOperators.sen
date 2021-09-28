@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* OP_jobOperators.sen -- Operator job operators                              */
+/*============================================================================*/
+
+" OP_jobOperators.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: jobOperators_action
+
+  Tub[].new
+
+  Tub[] <jobno> >int jobReport::operators
+
+  "__eventDemon" find dup if
+    word.object@ locals| eventDemon |
+
+   //eventDemon pipeline.pipeout
+
+    // pipe out completed buffers to event demon
+    begin
+      Tub[].completed dup to DataBuffer[]
+    while
+      DataBuffer[] eventDemon pipeline.pipeout
+    repeat
+
+    // pipe out remainder of the buffers to event demon
+    begin
+      Tub[].dangling dup to DataBuffer[]
+    while
+      DataBuffer[] eventDemon pipeline.pipeout
+    repeat
+
+  else
+    discard discard
+  then
+
+  Tub[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: jobOperators :: jobOperators <jobNo> ;
+
+: jobOperators_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <params>  = 1
+
+    <opEntry> = "jobOperators_op"
+}
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
