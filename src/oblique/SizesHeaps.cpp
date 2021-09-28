@@ -400,7 +400,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Predicate),            HT_T_TINY    ,0 FILL }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 FILL }, // CN_PREDICATEVEC
   { sizeof(PrimitiveNode),        HT_T_TINY    , -8 FILL }, // CN_PRIMITIVENODE
-  { sizeof(Procedure),            HT_T_TINY    ,0 FILL }, // CN_PROCEDURE
+  { sizeof(Procedure),            HT_T_MEDIUM  ,0 FILL }, // CN_PROCEDURE
   { sizeof(Profile),              HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
   { sizeof(PsxThd),               HT_T_TINY    ,0 FILL }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 FILL }, // CN_PTNMAP

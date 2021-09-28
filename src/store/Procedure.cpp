@@ -30,6 +30,8 @@ Procedure::Procedure(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
+  m_pProcWord;
+  
   m_pTokenVec = pTokenVec;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
@@ -371,20 +373,107 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+
+/*----------------------------------------------------------------------------*/
+/* add word for procedure in root dictionary                                  */
+/*----------------------------------------------------------------------------*/
+void Procedure::vParseAndAdd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_pTokenVec->vIntegrityCheck();
+  
+  Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
+  
+  m_sProcNm = pTkn1_ProcNm->szChars();
+  
+#ifdef WITH_TRACE_PROCEDURE
+  vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
+#endif
+  
+  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
+    m_sProcNm.vConcat("__"_Stz);
+    m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
+    
+#ifdef WITH_TRACE_PROCEDURE
+    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
+#endif
+    m_pTokenVec->vRemoveToken(2);
+    m_pTokenVec->vIntegrityCheck();
+
+    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+    m_pTokenVec->vIntegrityCheck();
+
+    //m_pTokenVec->vDumpTokens();
+  }
+
+  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
+    m_sProcNm.vConcat("__"_Stz);
+    m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
+    
+#ifdef WITH_TRACE_PROCEDURE
+    vTrace("vAddProcedure: three part name %s\n"_Stz,sProcNm.szStz());
+#endif
+    
+    m_pTokenVec->vRemoveToken(2);
+    m_pTokenVec->vIntegrityCheck();
+    
+    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+    m_pTokenVec->vIntegrityCheck();
+    
+    //m_pTokenVec->vDumpTokens();
+  }
+
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  
+  m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
+  if (m_pProcWord)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  m_pProcWord = new (pDicRoot) Word(m_sProcNm);
+  
+  m_pProcWord->vCategory(pProcCatg);
+  
+  if (! m_pProcWord->pWrdTagSet())
+    m_pProcWord->vWrdTagSet(new TagSet);
+
+  vParseTagSets(m_pProcWord);
+  vParseParameters(m_pProcWord);
+
+
+  m_pTokenVec->vVecToString(m_sProcText,0,false);
+  
+  m_pProcWord->pWrdTagSet()->vInsert("procText"_Stz,m_sProcText);
+}
+
+
 /*----------------------------------------------------------------------------*/
 /* parse parameters of procedure                                              */
 /*----------------------------------------------------------------------------*/
-void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
+void Procedure::vParseParameters(Word* pProcWord)
 {
-  _static_
-  
-  i8 nTokens = pTokenVec->nTokens();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  i8 nTokens = m_pTokenVec->nTokens();
 
   Token* pTkn = nullptr;
   
   i8 i_Tkn = 0;
   for (; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     if (pTkn->bSame("parameters"_Stz))
       break;
   }
@@ -395,7 +484,7 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
   TagSet* pTagSet = pProcWord->pWrdTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     
     if (pTkn->bSame("begin"_Stz))
       break;
@@ -412,17 +501,17 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* parse tagSets of procedure                                                 */
 /*----------------------------------------------------------------------------*/
-void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
+void Procedure::vParseTagSets(Word* pProcWord)
 {
-  _static_
-  
-  i8 nTokens = pTokenVec->nTokens();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  i8 nTokens = m_pTokenVec->nTokens();
   
   Token* pTkn = nullptr;
   
   i8 i_Tkn = 0;
   for (; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     if (pTkn->bSame("tags"_Stz))
       break;
   }
@@ -435,7 +524,7 @@ void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
   TagSet* pTagSet = pProcWord->pWrdTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     
     if (pTkn->bSame("parameters"_Stz) ||
         pTkn->bSame("begin"_Stz))
@@ -449,8 +538,8 @@ void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
   
   // remove the tags clause from the token vector
   for (;;) {
-    pTokenVec->vRemoveToken(i_Cut);
-    Token* pTest = pTokenVec->pGet(i_Cut);
+    m_pTokenVec->vRemoveToken(i_Cut);
+    Token* pTest = m_pTokenVec->pGet(i_Cut);
     if (pTest->bSame("parameters"_Stz) ||
         pTest->bSame("begin"_Stz))
       break;
@@ -459,91 +548,6 @@ void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
 }
 
 
-
-
-/*----------------------------------------------------------------------------*/
-/* add word for procedure in root dictionary                                  */
-/*----------------------------------------------------------------------------*/
-void Procedure::vParseAndAdd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
-
-  m_pTokenVec->vIntegrityCheck();
-  
-  Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
-  
-  s32 sProcNm = pTkn1_ProcNm->szChars();
-  
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
-#endif
-  
-  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
-          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
-          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
-    
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
-    
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
-#endif
-    m_pTokenVec->vRemoveToken(2);
-    m_pTokenVec->vIntegrityCheck();
-
-    pTkn1_ProcNm->vUpdateChars(sProcNm,m_pTokenVec);
-    m_pTokenVec->vIntegrityCheck();
-
-    //m_pTokenVec->vDumpTokens();
-  }
-
-  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
-          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
-          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
-    
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
-    
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("vAddProcedure: three part name %s\n"_Stz,sProcNm.szStz());
-#endif
-    
-    m_pTokenVec->vRemoveToken(2);
-    m_pTokenVec->vIntegrityCheck();
-    
-    pTkn1_ProcNm->vUpdateChars(sProcNm,m_pTokenVec);
-    m_pTokenVec->vIntegrityCheck();
-    
-    //m_pTokenVec->vDumpTokens();
-  }
-
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
-  
-  Word* pProcWord = pDicRoot->pFindWord(sProcNm);
-  if (pProcWord)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  pProcWord = new (pDicRoot) Word(sProcNm);
-  
-  pProcWord->vCategory(pProcCatg);
-  
-  if (! pProcWord->pWrdTagSet())
-    pProcWord->vWrdTagSet(new TagSet);
-
-  vParseTagSets(pProcWord,m_pTokenVec);
-  vParseParameters(pProcWord,m_pTokenVec);
-
-  s4K sProcText;
-  m_pTokenVec->vVecToString(sProcText,0,false);
-  
-  pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
-}
 
 /*============================================================================*/
 /* end                                                                        */
