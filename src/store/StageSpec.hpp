@@ -16,12 +16,11 @@ namespace STORE
 #ifdef WITH_SPEC_LIST
                   : public ListNL_t<OpSpec>
                   , public LifeGuard_t<StageSpec>
-                  , public ListItem_t<StageSpec>
 #else
                   : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
                   , public LifeGuard_t<StageSpec>
-                  , public ListItem_t<StageSpec>
 #endif
+                  , public ListItem_t<StageSpec>
 
   {
   private:
