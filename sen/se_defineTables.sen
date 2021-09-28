@@ -542,6 +542,42 @@
   api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBOPERATORS
+  STD_PATH_TAG
+  "
+  define table se__jobOperators (
+
+    opName            VARCHAR NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    ptnId             INTEGER NOT NULL ,
+    responseMS        INTEGER NOT NULL ,
+    maxQs             INTEGER NOT NULL ,
+    operands          INTEGER NOT NULL ,
+    buffIn            INTEGER NOT NULL ,
+    buffOut           INTEGER NOT NULL ,
+    newRowBuffers     INTEGER NOT NULL ,
+    delRowBuffers     INTEGER NOT NULL ,
+    newCsvBuffers     INTEGER NOT NULL ,
+    delCsvBuffers     INTEGER NOT NULL ,
+    numAllocs         INTEGER NOT NULL ,
+    bytesAllocated    INTEGER NOT NULL ,
+    numFrees          INTEGER NOT NULL ,
+    bytesFreed        INTEGER NOT NULL ,
+    maxBytes          INTEGER NOT NULL ,
+    numReads          INTEGER NOT NULL ,
+    bytesRead         INTEGER NOT NULL ,
+    numWrites         INTEGER NOT NULL ,
+    bytesWrite        INTEGER NOT NULL ,
+    numParcelSends    INTEGER NOT NULL ,
+    numObjectsSent    INTEGER NOT NULL ,
+    numParcelRecvs    INTEGER NOT NULL ,
+    numObjectsRecv    INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
   STD_PATH_TAG
   "
