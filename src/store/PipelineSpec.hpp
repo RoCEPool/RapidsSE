@@ -19,7 +19,6 @@ namespace STORE
 
   private:
     s32  m_sPipelineNm;    // pipeline name
-    i8   m_i_PipelineSpec; // this pipeline spec no
 
     PipelineSpec* m_p_ParentPipelineSpec;
   
@@ -39,8 +38,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(i8            i_PipelineSpec,
-                 Stz*          szPipelineNm,
+    PipelineSpec(Stz*          szPipelineNm,
                  PipelineSpec* p_ParentPipelineSpec,
                  TagSet*       p_JobTags,
                  Scanner*      p_Scanner);
@@ -58,7 +56,6 @@ namespace STORE
     i8   nNestedPipelineSpecs(void);
     PipelineSpec* pNestedPipelineSpec(i8 i_NestedPipeline);
     PipelineSpec* pParentPipelineSpec(void);
-    i8   i_PipelineSpec(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 

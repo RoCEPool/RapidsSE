@@ -21,7 +21,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | next robin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -30,18 +30,18 @@
       | toNstRow          //       (rowBuffer) => (nst rowBuffer)
       | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
     //| toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
-      | stageC hashcast
+      | next hashcast
 
     stage stageC on all partitions :
         insert $table     // (crwBuffer) inserted into table
-      | stageD
+      | next
 
     stage stageD on origin :
         progress 'Load'
       | output
       | toStatDemon
       | sink
-      | stageA
+      | first
 
   end ;
   "
