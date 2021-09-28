@@ -744,6 +744,31 @@ bool PipelineSpec::bPass2_staging(void)
       
       Stz* szName = pOpSpec->szOpNm();
       
+      // 0) is the name a special case?
+      if (szName->bSame("next"_Stz)) {
+        StageSpec* pStageSpecNext = this->pGet(i_Stage + 1);
+        if (! pStageSpecNext)
+          return false;
+        vNameIsStage(pStageSpec,pOpSpec,pStageSpecNext);
+        continue;
+      }
+      
+      if (szName->bSame("first"_Stz)) {
+        StageSpec* pStageSpecFirst = this->pGet(0);
+        if (! pStageSpecFirst)
+          return false;
+        vNameIsStage(pStageSpec,pOpSpec,pStageSpecFirst);
+        continue;
+      }
+      
+      if (szName->bSame("last"_Stz)) {
+        StageSpec* pStageSpecLast = this->pGet(nOpSpecs - 1);
+        if (! pStageSpecLast)
+          return false;
+        vNameIsStage(pStageSpec,pOpSpec,pStageSpecLast);
+        continue;
+      }
+      
       // 1) is the name in the opSpec actually a stage in this pipeline?
       StageSpec* pStageSpecSend = this->pFindStageSpec(szName);
       if (pStageSpecSend) {
