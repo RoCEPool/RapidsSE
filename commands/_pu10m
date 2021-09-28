@@ -11,10 +11,10 @@ create table Pu10m (
   , pu10m_ft    integer not null // $5 rnd(1..1000)
   , pu10m_fj    integer not null // $6 rnd(1..1000)
     
-  , pu10k_1000g integer not null // $7 rnd(1..1000)
-  , pu10k_100g  integer not null // $8 rnd(1..100)
-  , pu10k_10g   integer not null // $9 rnd(1..10)
-  , pu10k_1g    integer not null // $10 1
+  , pu10m_1000g integer not null // $7 rnd(1..1000)
+  , pu10m_100g  integer not null // $8 rnd(1..100)
+  , pu10m_10g   integer not null // $9 rnd(1..10)
+  , pu10m_1g    integer not null // $10 1
 
   , pu10m_int   integer not null // $11
   , pu10m_dte   date    not null // $12
