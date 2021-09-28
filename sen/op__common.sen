@@ -588,6 +588,73 @@
 
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Tub[].pipeOutCompleted
+
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Tub[].pipeOutRemainder
+
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
+
+  begin
+    Tub[].dangling dup to DataBuffer[]
+  while
+    DataBuffer[].pipeOut
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Tub[].pipeToJob ( pipelineJob )
+
+  params| pipelineJob |
+
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[] pipelineJob pipeline.pipeOut
+  repeat
+
+  begin
+    Tub[].dangling dup to DataBuffer[]
+  while
+    DataBuffer[] pipelineJob pipeline.pipeOut
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Tub[].deleteAllBuffers
+
+  begin
+    Tub[].completed dup to DataBuffer[]
+  while
+    DataBuffer[].delete
+  repeat
+
+  begin
+    Tub[].dangling dup to DataBuffer[]
+  while
+    DataBuffer[].delete
+  repeat
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
