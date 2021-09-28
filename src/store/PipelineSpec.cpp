@@ -33,13 +33,8 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
                            PipelineSpec* p_ParentPipelineSpec,
                            TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
-#ifdef WITH_SPEC_LIST
 : ListNL_t<StageSpec>(CN_PIPELINESPEC)
 , LifeGuard_t<PipelineSpec>(this,CN_PIPELINESPEC)
-#else
-: LifeGuard_t<PipelineSpec>(this,CN_PIPELINESPEC)
-#endif
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -61,9 +56,6 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-
-#ifdef WITH_SPEC_LIST
-
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -74,24 +66,6 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
   vClear();
 }
-
-#else
-/*----------------------------------------------------------------------------*/
-PipelineSpec::~PipelineSpec(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-    
-  i8 nStageSpecs = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec* pStageSpec = pGet(i_Stage);
-    
-    pStageSpec->vGuardedDelete(CN_STAGESPEC,&pStageSpec,
-                               CN_PIPELINESPEC,this,(Stz*)__func__);
-  }
-
-  vClear();
-}
-#endif
 
 
 /*----------------------------------------------------------------------------*/
@@ -374,10 +348,8 @@ bool PipelineSpec::bCollectStage(void)
   vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_StageSpec = this->nItems();
-  
-  StageSpec* p_StageSpec = new StageSpec(i_StageSpec,pTkn()->szChars(),this);
+    
+  StageSpec* p_StageSpec = new StageSpec(pTkn()->szChars(),this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
@@ -472,8 +444,7 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_OpSpec = p_StageSpec->nItems();
-  OpSpec* pOpSpec = new OpSpec(pTkn()->szChars(),i_OpSpec,p_StageSpec);
+  OpSpec* pOpSpec = new OpSpec(pTkn()->szChars(),p_StageSpec);
   vTokenAccept();
 
   p_StageSpec->vAddOpSpec(pOpSpec);
@@ -996,11 +967,10 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  OpSpec* pConsumeOpSpec = new OpSpec("consumeOp"_Stz,0,pStageSpec);
+  OpSpec* pConsumeOpSpec = new OpSpec("consumeOp"_Stz,pStageSpec);
   
   pStageSpec->vAdd(pConsumeOpSpec);
   
-  pStageSpec->vRenumberOpSpecs();
   
   vArgAdd_sends(pConsumeOpSpec,eCrossTopo);
 }

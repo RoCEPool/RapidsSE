@@ -19,23 +19,15 @@ __aFooterFunction(StageSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(i8 i_StageSpec,
-                     Stz* szStageNm,
+StageSpec::StageSpec(Stz* szStageNm,
                      PipelineSpec* pPipelineSpec)
-#ifdef WITH_SPEC_LIST
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
-#else
-:LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
-#endif
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm       = szStageNm;
-  
-  m_i_StageSpec    = i_StageSpec;
-  
+    
   m_pPipelineSpec  = pPipelineSpec;
 
   m_eTopology      = PO_NONE;
@@ -52,9 +44,6 @@ StageSpec::StageSpec(i8 i_StageSpec,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-
-#ifdef WITH_SPEC_LIST
-
 StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
@@ -65,24 +54,6 @@ StageSpec::~StageSpec(void) noexcept(false)
 
   vClear();
 }
-
-#else
-/*----------------------------------------------------------------------------*/
-StageSpec::~StageSpec(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-    
-  i8 nOpSpecs = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
-    OpSpec* pOpSpec = pGet(i_Op);
-    
-    pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
-                            CN_STAGESPEC,this,(Stz*)__func__);
-  }
-
-  vClear();
-}
-#endif
 
 
 /*----------------------------------------------------------------------------*/
@@ -205,9 +176,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec)
 void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  pOpSpec->vOpSpec(nItems());
-  
+    
   vAppend(pOpSpec);
 }
 
@@ -275,19 +244,6 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* renumber all the op specs                                                  */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vRenumberOpSpecs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
-    OpSpec* pOpSpec = pGet(i_OpSpec);
-    pOpSpec->vOpSpec(i_OpSpec);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
 /*----------------------------------------------------------------------------*/
 i8 StageSpec::iSpecificNode(void)
@@ -344,8 +300,9 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-
-  return m_i_StageSpec;
+  i8 i_StageSpec = m_pPipelineSpec->iFind(this);
+  
+  return i_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
