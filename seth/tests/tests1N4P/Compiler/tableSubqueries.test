@@ -7,12 +7,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 _nation;
+success
   // N_NATIONKEY
   // N_NAME
   // N_REGIONKEY
   // N_COMMENT
 
-_region
+_region;
+success
   // R_REGIONKEY
   // R_NAME
   // R_COMMENT
@@ -27,59 +29,477 @@ success
 // Basic positive test
 EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1;
 
-// Test the naming of the columns returned
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
+
+// TODO: Test the naming of the columns returned
 
 // Test a WITH clause that is never used
 EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM nation;
 
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
 // Test the main subquery specifying an incorrect table
 EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM badTable;
+failure contains: 'No such table: badTable'
 
 // Test the table subquery specifying an incorrect table
 EXPLAIN WITH t1 AS (SELECT * FROM badTable) SELECT * FROM t1;
+failure contains: 'No such table: badTable'
 
 // Test that column aliases are accepted
 EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT * FROM t1;
 
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1 (c1, c2, c3, c4)
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.c1 ; Ordinal Expr = $1)
+      » column: (Expr = t1.c2 ; Ordinal Expr = $2)
+      » column: (Expr = t1.c3 ; Ordinal Expr = $3)
+      » column: (Expr = t1.c4 ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 // Test that column aliases are resolvable
 EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT c2, c3 FROM t1;
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1 (c1, c2, c3, c4)
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT c2, c3 FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.c2 ; Ordinal Expr = $2)
+      » column: (Expr = t1.c3 ; Ordinal Expr = $3)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 
 // Test that unnamed columns are automatically named if not enough
 // column aliases are specified
 EXPLAIN WITH t1 (c1) AS (SELECT * FROM nation) SELECT * FROM t1;
 
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1 (c1)
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.c1 ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 // Test that too many column aliases is an error
 EXPLAIN WITH t1 (c1, c2, c3, c4, c5) AS (SELECT * FROM nation) SELECT * FROM t1;
-failure contains: 'too many column aliases for t1'
+failure contains: 'too many named columns in WITH clause: common table expression t1'
 
-// TODO: test when the table alias is the same as a real table
+
+// Test that when the table alias is the same as a real table, the table alias shadows the real table
 EXPLAIN WITH nation AS (SELECT * FROM region) SELECT * FROM nation;
-// TODO: Does this read the CTE "nation" or the real table "nation"???
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Expr = nation.R_REGIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = nation.R_NAME ; Ordinal Expr = $2)
+      » column: (Expr = nation.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> subqueryRefOp
+         » alias: (nation)')
+
 
 // Test that a table subquery cannot reference itself
 EXPLAIN WITH t1 AS (SELECT * FROM t1) SELECT * FROM t1;
-failure contains: 'unknown table t1'
+failure contains: 'Non-recursive subquery cannot refer to itself: t1'
 
 // Test that two WITH clauses cannot circularly reference each other
 EXPLAIN WITH t1 AS (SELECT * FROM t2), t2 AS (SELECT * FROM t1) SELECT * FROM t1;
-failure contains: '???'
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t2'
 
 // Cannot have two table subqueries with the same table alias
 EXPLAIN WITH t1 AS (SELECT * FROM nation), t1 AS (SELECT * FROM region) SELECT * FROM t1;
-failure contains: '???'
+failure contains: 'Ambiguous alias name in WITH clause: t1'
 
-// Test that unnamed columns in a table subquery will use the columnRef or column alias
-// if one exists for that column (part 1)
-WITH t1 AS (SELECT * FROM nation) SELECT * from t1;
-rows:
-  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+// TODO: Test that unnamed columns in a table subquery will use the columnRef or column alias
+// TODO: if one exists for that column (part 1)
+// WITH t1 AS (SELECT * FROM nation) SELECT * from t1;
+// rows:
+//   [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
 
-// Test that unnamed columns in a table subquery will use the columnRef or column alias
-// if one exists for that column (part 2)
-WITH t1 AS (SELECT n_name, n_nationkey + 1 AS foobar FROM nation) SELECT * from t1;
-rows:
-  [ 'n_name', 'foobar' ]
+// TODO: Test that unnamed columns in a table subquery will use the columnRef or column alias
+// TODO: if one exists for that column (part 2)
+// WITH t1 AS (SELECT n_name, n_nationkey + 1 AS foobar FROM nation) SELECT * from t1;
+// rows:
+//   [ 'n_name', 'foobar' ]
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Partitioning of basic table subquery
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// There are 4 main combinations to test:
+//  - Table subquery is partitionable & main subquery is partitionable.
+//  - Table subquery is not partitionable & main subquery is partitionable.
+//  - Table subquery is partitionable & main subquery is not partitionable.
+//  - Table subquery is not partitionable & main subquery is not partitionable.
+
+// Table subquery is partitionable & main subquery is partitionable.
+// Table subquery should finish on all partitions and main subquery should start on all partitions.
+EXPLAIN stage partitionExplain
+WITH t1 as (SELECT * FROM nation)
+SELECT n_nationkey FROM t1;
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> subqueryRefOp
+         » location: all partitions
+         » alias: (t1)')
+
+
+// Table subquery is not partitionable & main subquery is partitionable.
+// Table subquery should finish on origin and main subquery should start on origin.
+EXPLAIN stage partitionExplain
+WITH t1 as (SELECT COUNT(n_nationkey) FROM nation GROUP BY n_nationkey)
+SELECT * FROM t1;
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT COUNT(n_nationkey) FROM nation GROUP BY n_nationkey"
+
+-> -> -> projectOp
+         » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = $1)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
+            » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($2)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
+               » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($2)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+                  » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » location: origin
+      » column: (Expr = t1.COL1 ; Ordinal Expr = $1)
+
+-> -> -> subqueryRefOp
+         » location: origin
+         » alias: (t1)')
+
+
+// Table subquery is partitionable & main subquery is not partitionable.
+// Table subquery should finish on all partitions and main subquery should start on all partitions.
+EXPLAIN stage partitionExplain
+WITH t1 as (SELECT * FROM nation)
+SELECT COUNT(n_nationkey) FROM t1 GROUP BY n_nationkey;
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT COUNT(n_nationkey) FROM t1 GROUP BY n_nationkey"
+
+-> -> projectOp
+      » column: (Expr = SUM(SUM(COUNT(t1.n_nationkey))) ; Ordinal Expr = $1)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = SUM(SUM(COUNT(t1.n_nationkey))) ; Ordinal Expr = SUM($1))
+         » column: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
+         » group by: (t1.n_nationkey) ; Ordinal Exprs = ($2)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = SUM(COUNT(t1.n_nationkey)) ; Ordinal Expr = SUM($1))
+            » column: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
+            » group by: (t1.n_nationkey) ; Ordinal Exprs = ($2)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = COUNT(t1.n_nationkey) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = t1.n_nationkey ; Ordinal Expr = $1)
+               » group by: (t1.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> subqueryRefOp
+                  » location: all partitions
+                  » alias: (t1)')
+
+
+// Table subquery is not partitionable & main subquery is not partitionable.
+// Table subquery should finish on origin and main subquery should start on origin.
+EXPLAIN stage partitionExplain
+WITH t1 as (SELECT n_nationkey, COUNT(n_nationkey) AS nationCount FROM nation GROUP BY n_nationkey)
+SELECT nationCount FROM t1 ORDER BY nationCount LIMIT 3;
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_nationkey, COUNT(n_nationkey) AS nationCount FROM nation GROUP BY n_nationkey"
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Alias = nationCount ; Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+            » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+               » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT nationCount FROM t1 ORDER BY nationCount LIMIT 3"
+
+-> -> limitOp
+      » location: origin
+      » limit: (3)
+
+-> -> -> orderOp
+         » location: origin
+         » order expr: ((t1.nationCount) ASC)
+         » ordinal order expr: (($1) ASC)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = t1.nationCount ; Ordinal Expr = $2)
+
+-> -> -> -> -> subqueryRefOp
+               » location: origin
+               » alias: (t1)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic table subquery examples from FROM clauses
@@ -87,59 +507,59 @@ rows:
 
 // Subqueries in FROM clauses are translated to WITH clauses and
 // are represented as table subqueries
-
-// Basic positive test
-EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1;
-
-// Test that anonymous FROM subqueries are given a table alias name
-EXPLAIN SELECT * FROM ( SELECT * FROM nation );
-
-// Test the FROM subquery specifying an incorrect table
-EXPLAIN SELECT * FROM ( SELECT * FROM badTable ) AS t1;
-failure contains: 'No such table: badTable'
-
-// TODO: test what happens when the table alias is the same as a real table
-EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS region;
-
-// TODO: test what happens when the table alias is the same as the table being read
-EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS nation;
-failure contains: '???'
-
-// Test that the table alias for a FROM subquery cannot conflict with a table alias
-// from a WITH subquery
-EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM ( SELECT * FROM region ) AS t1;
-failure contains: '???'
-
-// Test that two unnamed FROM subqueries get different table aliases and don't conflict
-EXPLAIN SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
-
-// Cannot have two FROM subqueries with the same table alias
-EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1 JOIN ( SELECT * FROM region ) AS t1 ON n_regionkey = r_regionkey;
-failure contains: '???'
-
-// Cannot have a circular reference between a FROM subquery and a WITH subquery
-WITH t1 AS (SELECT * FROM t2) SELECT * FROM ( SELECT * FROM t1 ) AS t2;
-failure contains: '???'
-
-// Test that unnamed columns in a FROM subquery will use the columnRef or column alias
-// if one exists for that column (part 1)
-SELECT * from (SELECT * FROM nation);
-rows:
-  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
-
-// Test that unnamed columns in a table subquery will use the columnRef or column alias
-// if one exists for that column (part 2)
-SELECT * from (SELECT n_name, n_nationkey + 1 AS foobar FROM nation);
-rows:
-  [ 'n_name', 'foobar' ]
-
+//
+//// Basic positive test
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1;
+//
+//// Test that anonymous FROM subqueries are given a table alias name
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation );
+//
+//// Test the FROM subquery specifying an incorrect table
+//EXPLAIN SELECT * FROM ( SELECT * FROM badTable ) AS t1;
+//failure contains: 'No such table: badTable'
+//
+//// TODO: test what happens when the table alias is the same as a real table
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS region;
+//
+//// TODO: test what happens when the table alias is the same as the table being read
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS nation;
+//failure contains: '???'
+//
+//// Test that the table alias for a FROM subquery cannot conflict with a table alias
+//// from a WITH subquery
+//EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM ( SELECT * FROM region ) AS t1;
+//failure contains: '???'
+//
+//// Test that two unnamed FROM subqueries get different table aliases and don't conflict
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
+//
+//// Cannot have two FROM subqueries with the same table alias
+//EXPLAIN SELECT * FROM ( SELECT * FROM nation ) AS t1 JOIN ( SELECT * FROM region ) AS t1 ON n_regionkey = r_regionkey;
+//failure contains: '???'
+//
+//// Cannot have a circular reference between a FROM subquery and a WITH subquery
+//WITH t1 AS (SELECT * FROM t2) SELECT * FROM ( SELECT * FROM t1 ) AS t2;
+//failure contains: '???'
+//
+//// Test that unnamed columns in a FROM subquery will use the columnRef or column alias
+//// if one exists for that column (part 1)
+//SELECT * from (SELECT * FROM nation);
+//rows:
+//  [ 'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT' ]
+//
+//// Test that unnamed columns in a table subquery will use the columnRef or column alias
+//// if one exists for that column (part 2)
+//SELECT * from (SELECT n_name, n_nationkey + 1 AS foobar FROM nation);
+//rows:
+//  [ 'n_name', 'foobar' ]
+//
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Nested table subqueries
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Simple, multiple <withElements>
-EXPLAIN
+EXPLAIN STAGE partitionExplain
   WITH
   t10 AS (
     SELECT * FROM nation
@@ -148,10 +568,77 @@ EXPLAIN
     SELECT * FROM region
   )
   SELECT * FROM t10, t20;
-// TODO: result
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t10
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)
+
+∆ tableSubquery
+  » table alias: t20
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t10, t20"
+
+-> -> projectOp
+      » column: (Expr = t10.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t10.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t10.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t10.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t20.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = t20.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = t20.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> nestedLoopJoinOp
+         » location: all partitions
+         » join type: Cross Join
+         » predicate: (true)
+         » ordinal predicate: (true)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t10)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t20)')
+
+
 
 // Nested table subqueries
-EXPLAIN
+EXPLAIN STAGE partitionExplain
   WITH
   t10 AS (
     WITH t11 AS (SELECT * FROM region)
@@ -162,16 +649,152 @@ EXPLAIN
     SELECT * FROM region JOIN t21 ON r_regionkey = n_regionkey
   )
   SELECT * FROM t10, t20;
-// TODO: result
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t10
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t11
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation, t11"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t11.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t11.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t11.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » location: all partitions
+            » join type: Cross Join
+            » predicate: (true)
+            » ordinal predicate: (true)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t11)
+
+∆ tableSubquery
+  » table alias: t20
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t21
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region JOIN t21 ON r_regionkey = n_regionkey"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+         » column: (Expr = t21.N_NATIONKEY ; Ordinal Expr = $4)
+         » column: (Expr = t21.N_NAME ; Ordinal Expr = $5)
+         » column: (Expr = t21.N_REGIONKEY ; Ordinal Expr = $6)
+         » column: (Expr = t21.N_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » location: all partitions
+            » join type: Inner Join
+            » predicate: (rapidsse.public.region.r_regionkey = t21.n_regionkey)
+            » ordinal predicate: ($1 = $6)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t21)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t10, t20"
+
+-> -> projectOp
+      » column: (Expr = t10.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t10.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t10.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t10.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t10.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = t10.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = t10.R_COMMENT ; Ordinal Expr = $7)
+      » column: (Expr = t20.R_REGIONKEY ; Ordinal Expr = $8)
+      » column: (Expr = t20.R_NAME ; Ordinal Expr = $9)
+      » column: (Expr = t20.R_COMMENT ; Ordinal Expr = $10)
+      » column: (Expr = t20.N_NATIONKEY ; Ordinal Expr = $11)
+      » column: (Expr = t20.N_NAME ; Ordinal Expr = $12)
+      » column: (Expr = t20.N_REGIONKEY ; Ordinal Expr = $13)
+      » column: (Expr = t20.N_COMMENT ; Ordinal Expr = $14)
+
+-> -> -> nestedLoopJoinOp
+         » location: all partitions
+         » join type: Cross Join
+         » predicate: (true)
+         » ordinal predicate: (true)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t10)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t20)')
 
 
 // Multiple nested table subqueries
-EXPLAIN
+EXPLAIN STAGE partitionExplain
   WITH
   t10 AS (
     WITH
     t11 AS (SELECT * FROM region),
-    t12 AS (SELECT * FROM nation),
+    t12 AS (SELECT * FROM nation)
     SELECT * FROM t11, t12
   ),
   t20 AS (
@@ -181,7 +804,181 @@ EXPLAIN
     SELECT * FROM t21 JOIN t22 ON r_regionkey = n_regionkey
   )
   SELECT * FROM t10, t20;
-// TODO: result
+
+rows: (*,'partitionExplain','
+∆ tableSubquery
+  » table alias: t10
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t11
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)
+
+-> tableSubquery
+   » table alias: t12
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t11, t12"
+
+-> -> -> projectOp
+         » column: (Expr = t11.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t11.R_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t11.R_COMMENT ; Ordinal Expr = $3)
+         » column: (Expr = t12.N_NATIONKEY ; Ordinal Expr = $4)
+         » column: (Expr = t12.N_NAME ; Ordinal Expr = $5)
+         » column: (Expr = t12.N_REGIONKEY ; Ordinal Expr = $6)
+         » column: (Expr = t12.N_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » location: all partitions
+            » join type: Cross Join
+            » predicate: (true)
+            » ordinal predicate: (true)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t11)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t12)
+
+∆ tableSubquery
+  » table alias: t20
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t21
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
+
+-> tableSubquery
+   » table alias: t22
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t21 JOIN t22 ON r_regionkey = n_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = t21.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t21.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t21.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t21.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t22.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t22.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t22.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » location: all partitions
+            » join type: Inner Join
+            » predicate: (t22.r_regionkey = t21.n_regionkey)
+            » ordinal predicate: ($5 = $3)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t21)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t22)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t10, t20"
+
+-> -> projectOp
+      » column: (Expr = t10.R_REGIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t10.R_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t10.R_COMMENT ; Ordinal Expr = $3)
+      » column: (Expr = t10.N_NATIONKEY ; Ordinal Expr = $4)
+      » column: (Expr = t10.N_NAME ; Ordinal Expr = $5)
+      » column: (Expr = t10.N_REGIONKEY ; Ordinal Expr = $6)
+      » column: (Expr = t10.N_COMMENT ; Ordinal Expr = $7)
+      » column: (Expr = t20.N_NATIONKEY ; Ordinal Expr = $8)
+      » column: (Expr = t20.N_NAME ; Ordinal Expr = $9)
+      » column: (Expr = t20.N_REGIONKEY ; Ordinal Expr = $10)
+      » column: (Expr = t20.N_COMMENT ; Ordinal Expr = $11)
+      » column: (Expr = t20.R_REGIONKEY ; Ordinal Expr = $12)
+      » column: (Expr = t20.R_NAME ; Ordinal Expr = $13)
+      » column: (Expr = t20.R_COMMENT ; Ordinal Expr = $14)
+
+-> -> -> nestedLoopJoinOp
+         » location: all partitions
+         » join type: Cross Join
+         » predicate: (true)
+         » ordinal predicate: (true)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t10)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (t20)')
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -213,7 +1010,89 @@ EXPLAIN
     t3 AS (SELECT * FROM region)
     SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
   ) SELECT * FROM t1;
-success
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t2
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> tableSubquery
+   » table alias: t3
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = t2.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t2.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t2.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t3.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (t2.n_regionkey = t3.r_regionkey)
+            » ordinal predicate: ($3 = $5)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t2)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t3)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t1.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = t1.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 
 // In this statement the query for the <withElement> that defines t3
 // refers to t2 which is defined in a prior sibling <withElement>.
@@ -226,7 +1105,84 @@ EXPLAIN
     t3 AS (SELECT n_regionkey AS r_regionkey FROM t2)
     SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
   ) SELECT * FROM t1;
-success
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t2
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> tableSubquery
+   » table alias: t3
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT n_regionkey AS r_regionkey FROM t2"
+
+-> -> -> -> projectOp
+            » column: (Alias = r_regionkey ; Expr = t2.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t2)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = t2.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t2.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t2.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t3.r_regionkey ; Ordinal Expr = $5)
+
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (t2.n_regionkey = t3.r_regionkey)
+            » ordinal predicate: ($3 = $5)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t2)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t3)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t1.r_regionkey ; Ordinal Expr = $5)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
+
 
 // In this statement the select query for the <withElement> that defines t2
 // refers to the tableAlias t3, which is defined in a sibling <withElement>
@@ -240,7 +1196,9 @@ EXPLAIN
     t3 AS (SELECT * FROM nation)
     SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
   ) SELECT * FROM t1;
-failure contains: '???'
+
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t3'
+
 
 // Here we are expanding the base pattern with another <withElement>
 // that defines the tableAlias t4 (which never gets used).
@@ -255,7 +1213,107 @@ EXPLAIN
   ),
   t4 AS (SELECT * FROM nation)
   SELECT * FROM t1;
-success
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t2
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> tableSubquery
+   » table alias: t3
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = t2.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t2.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t2.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t3.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (t2.n_regionkey = t3.r_regionkey)
+            » ordinal predicate: ($3 = $5)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t2)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t3)
+
+∆ tableSubquery
+  » table alias: t4
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t1.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = t1.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 
 // In this statement the <withElement> that defines t3 has a select
 // expression that references t4. However t4 is not defined in a
@@ -271,7 +1329,9 @@ EXPLAIN
   ),
   t4 AS (SELECT * FROM nation)
   SELECT * FROM t1;
-failure contains: '???'
+
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t4'
+
 
 // In this statement the <withElement> that defines t4 has a select expr
 // that references t1. This is allowed because the <withElement>s that
@@ -287,7 +1347,110 @@ EXPLAIN
   ),
   t4 AS (SELECT * FROM t1)
 SELECT * FROM t1;
-success
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> tableSubquery
+   » table alias: t2
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> tableSubquery
+   » table alias: t3
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = t2.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t2.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t2.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t3.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (t2.n_regionkey = t3.r_regionkey)
+            » ordinal predicate: ($3 = $5)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t2)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t3)
+
+∆ tableSubquery
+  » table alias: t4
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+         » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Expr = t1.R_REGIONKEY ; Ordinal Expr = $5)
+         » column: (Expr = t1.R_NAME ; Ordinal Expr = $6)
+         » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> -> subqueryRefOp
+            » alias: (t1)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM t1"
+
+-> -> projectOp
+      » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = t1.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = t1.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> subqueryRefOp
+         » alias: (t1)')
+
 
 
 // In this statement the <withElement> that defines t4 has a select expr
@@ -305,7 +1468,9 @@ EXPLAIN
   ),
   t4 AS (SELECT * FROM t2)
   SELECT * FROM t1;
-failure contains: '???'
+
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t2'
+
 
 // In this statement we see the main subquery refer to t2.
 // However t2 is not defined in a sibling <withElement> with respect
@@ -321,7 +1486,8 @@ EXPLAIN
   ),
   t4 AS (SELECT * FROM t1)
   SELECT * FROM t2;
-failure contains: '???'
+
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t2'
 
 
 // A table alias that is in scope and has the same name as a real table takes
@@ -329,9 +1495,38 @@ failure contains: '???'
 EXPLAIN
   WITH nation AS ( SELECT * FROM region)
   SELECT * FROM nation;
-// TODO: We expect the output plan to contain the columns from region, not nation
-//       as the CTE alias "nation" is in scope from the main subquery and it
-//       takes precedence over the real table "nation".
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Expr = nation.R_REGIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = nation.R_NAME ; Ordinal Expr = $2)
+      » column: (Expr = nation.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> subqueryRefOp
+         » alias: (nation)')
+
 
 
 // A table alias that is not in scope and has the same name as a real table should
@@ -344,12 +1539,62 @@ EXPLAIN
 EXPLAIN
   WITH t1 AS (
     WITH nation AS (SELECT * FROM region)
-    SELECT * FROM nation WHERE r_regionkey < 3;
+    SELECT * FROM nation WHERE r_regionkey < 3
   )
   SELECT * FROM nation;
-// TODO: We expect the outer-most subquery to read from the real table "nation",
-//       despite the inner-most CTE defined with the same name (it is not in scope
-//       with respect to the main subquery).
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » recursive: false
+
+-> tableSubquery
+   » table alias: nation
+   » recursive: false
+
+-> -> mainSubquery
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM region"
+
+-> -> -> -> projectOp
+            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation WHERE r_regionkey < 3"
+
+-> -> -> projectOp
+         » column: (Expr = nation.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Expr = nation.R_NAME ; Ordinal Expr = $2)
+         » column: (Expr = nation.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> filterOp
+            » expr: (nation.r_regionkey < 3)
+            » ordinal expr: ($1 < 3)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 // CTE table aliases cannot be qualified, so if the main subquery references a
@@ -357,26 +1602,156 @@ EXPLAIN
 EXPLAIN
   WITH nation AS (SELECT * FROM region)
   SELECT * FROM rapidsse.public.nation;
-// TODO: Expect to read the real table rapidsse.public.nation.
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM rapidsse.public.nation"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 // Same as previous, but only partially qualifying the real table name.
 EXPLAIN
   WITH nation AS (SELECT * FROM region)
   SELECT * FROM public.nation;
-// TODO: Expect to read the real table rapidsse.public.nation.
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM public.nation"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 // Here our main subquery is reading from the CTE alias "nation", which itself
 // is reading from the base table rapidsse.public.nation.
 EXPLAIN
   WITH nation AS (SELECT * FROM rapidsse.public.nation)
   SELECT * FROM nation;
-// TODO: Expect to read the CTE aliased table nation.
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM rapidsse.public.nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (nation)')
+
 
 // As above, but the CTE query is only partially qualified
 EXPLAIN
   WITH nation AS (SELECT * FROM public.nation)
   SELECT * FROM nation;
-// TODO: Expect to read the CTE aliased table nation.
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM public.nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (nation)')
+
 
 // In this statement the CTE is defining an alias "nation" but also reading
 // from "nation". Because this is not a recursive CTE, the CTE should resolve
@@ -385,8 +1760,40 @@ EXPLAIN
 EXPLAIN
   WITH nation AS (SELECT * FROM nation)
   SELECT * FROM nation;
-// TODO: Expect to read the CTE aliased table nation, which is reading the real
-//       table rapidsse.public.nation
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: nation
+  » recursive: false
+
+-> mainSubquery
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation"
+
+-> -> projectOp
+      » column: (Expr = nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (nation)')
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

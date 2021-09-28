@@ -23,7 +23,7 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
+OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
 , LifeGuard_t<OpSpec>(this,CN_OPSPEC)
 {
@@ -32,7 +32,6 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_sOpNm         = szOpNm;
     
   m_pStageSpec    = pStageSpec;
-  m_i_OpSpec      = i_OpSpec;
 
   //m_oArgTags
   //m_oTopologyTags
@@ -215,17 +214,9 @@ i8 OpSpec::iOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_i_OpSpec;
-}
+  i8 i_OpSpec = m_pStageSpec->iFind(this);
 
-/*----------------------------------------------------------------------------*/
-/* set the i_opspec                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vOpSpec(i8 i_OpSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_OpSpec = i_OpSpec;
+  return i_OpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
