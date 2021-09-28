@@ -14,6 +14,8 @@
 
   // define the system procedures
   start::defProc_Create
+  
+  start::defProc_Create
   start::defProc_Drop
   start::defProc_Scan
   start::defProc_Load

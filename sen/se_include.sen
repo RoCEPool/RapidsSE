@@ -107,6 +107,9 @@ cmd::fillOut_allCmds
 //"AFTER fillOut_allCmds" .
 
 
+        "pp_std_first.sen"        include
+        "pp_std_last.sen"         include
+
         "pp_close_system.sen"     include
         "pp_open_system.sen"      include
 
