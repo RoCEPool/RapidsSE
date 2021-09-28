@@ -62,7 +62,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
  /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/
-Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
+Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
 {
   _static_
   
@@ -78,7 +78,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try one part name
   
-  Token* pTkn0_CalledProcNm_a = pInpTknVec->pGet(0);
+  Token* pTkn0_CalledProcNm_a = pTokenVec->pGet(0);
 
   s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
   
@@ -95,11 +95,11 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try two-part name
 
-  i8 nTokens = pInpTknVec->nTokens();
+  i8 nTokens = pTokenVec->nTokens();
   if (1 == nTokens)
     return nullptr;
 
-  Token* pTkn1_CalledProcNm_b = pInpTknVec->pGet(1);
+  Token* pTkn1_CalledProcNm_b = pTokenVec->pGet(1);
 
   s256 sProcNm_compound = sProcNm_single;
   sProcNm_compound.vConcat("__"_Stz);
@@ -115,12 +115,12 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // found two-part; correct the command token vector
     
-    pInpTknVec->vRemoveToken(1);
+    pTokenVec->vRemoveToken(1);
     
-    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pInpTknVec);
+    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pTokenVec);
     
     if (iJotDebug())
-      pInpTknVec->vListTokens();
+      pTokenVec->vListTokens();
 
     // found procedure which matches token0_token1
     return pwMatchedProc;
@@ -130,11 +130,11 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try three-part name
   
-  nTokens = pInpTknVec->nTokens();
+  nTokens = pTokenVec->nTokens();
   if (2 == nTokens)
     return nullptr;
   
-  Token* pTkn2_CalledProcNm_b = pInpTknVec->pGet(2);
+  Token* pTkn2_CalledProcNm_b = pTokenVec->pGet(2);
   
   s256 sProcNm_compound_3 = sProcNm_compound;
   sProcNm_compound_3.vConcat("__"_Stz);
@@ -150,12 +150,12 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // found two-part; correct the command token vector
-  pInpTknVec->vRemoveToken(1);
-  pInpTknVec->vRemoveToken(1);
-  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pInpTknVec);
+  pTokenVec->vRemoveToken(1);
+  pTokenVec->vRemoveToken(1);
+  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pTokenVec);
   
   if (iJotDebug())
-    pInpTknVec->vListTokens();
+    pTokenVec->vListTokens();
   
   // found procedure which matches token0_token1
   return pwMatchedProc;
@@ -174,20 +174,24 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
-                                     TokenVec* pInpTknVec,
-                                     Word* pwMatchedProc)
+                                     TokenVec* pTokenVec)
 {
   _static_
+
+  
+  Word* pwMatchedProc = pFindProcedure(pTokenVec);
+  if (! pwMatchedProc)
+    return false;
 
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
   }
-  
+
   i8 i_Cut;
-  i8 nInpTokens = pInpTknVec->nTokens();
+  i8 nInpTokens = pTokenVec->nTokens();
 
   sSTMT sOriginalCmd;
-  pInpTknVec->vVecToString(sOriginalCmd,0,false);
+  pTokenVec->vVecToString(sOriginalCmd,0,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the procedure text and tokenise it
@@ -228,9 +232,9 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   if (pPrdPrmVec) {
   
     // get the input arguments, e.g. : A B C
-    pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nInpTokens-1);
+    pInpArgVec = TokenVec::pGetSubVec(pTokenVec,1,nInpTokens-1);
     
-    dPV("pInpTknVec"_Stz,pInpTknVec);
+    dPV("pTokenVec"_Stz,pTokenVec);
     dPV("pInpArgVec"_Stz,pInpArgVec);
     dPV("pPrdTxtVec"_Stz,pPrdTxtVec);
     dPV("pPrdPrmVec"_Stz,pPrdPrmVec);
@@ -260,7 +264,7 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
       // etcTest a b c d e ;
       // substitute ($arg,a) ($etc,b c d e)
       
-      pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,1 + i_Etc,nInpTokens-1);
+      pEtcTknVec = TokenVec::pGetSubVec(pTokenVec,1 + i_Etc,nInpTokens-1);
       dPV("pEtcTknVec"_Stz,pEtcTknVec);
       
       sSTMT sEtcSubStr;

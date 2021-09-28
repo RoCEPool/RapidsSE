@@ -1433,19 +1433,11 @@ bool SePrompt::bTranslateProcedure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   sSTMT sPipelineSmt;
-
-  Word* pProcWord = Procedure::pFindProcedure(m_pInpTknVec);
-  //Word* pProcWord = nullptr;
-  
-  if (! pProcWord)
-    return false;
   
   if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-                                        m_pInpTknVec,
-                                        pProcWord))
+                                        m_pInpTknVec))
     return false;
-  
-  
+    
   m_pInpTknVec->vSoftReset();
   m_pInpTknVec->vTokenise(sPipelineSmt);
   
