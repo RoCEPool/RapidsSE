@@ -340,8 +340,8 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
     if (pProcWord) {
       sSTMT sPipelineSmt;
-      if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                         pCmdTknVec,pProcWord)) {
+      if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                          pCmdTknVec,pProcWord)) {
       
         pCmdTknVec->vSoftReset();
         pCmdTknVec->vTokenise(sPipelineSmt);

@@ -1440,8 +1440,9 @@ bool SePrompt::bTranslateProcedure(void)
   if (! pProcWord)
     return false;
   
-  if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                       m_pInpTknVec,pProcWord))
+  if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                        m_pInpTknVec,
+                                        pProcWord))
     return false;
   
   

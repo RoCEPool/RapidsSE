@@ -30,9 +30,9 @@ namespace STORE
 
     static Word* pFindProcedure(TokenVec* pCmdTokenVec);
 
-    static bool  bTranslateProcedure(String* pToPipelineStmt,
-                                     TokenVec* pCmdTokenVec,
-                                     Word* pProcWord);
+    static bool  bTranslateToPipeline(String* pToPipelineStmt,
+                                      TokenVec* pCmdTokenVec,
+                                      Word* pProcWord);
 
   private:
   

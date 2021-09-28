@@ -173,17 +173,14 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 /*----------------------------------------------------------------------------*/
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
-bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
-                                    TokenVec* pInpTknVec,
-                                    Word* pwMatchedProc)
+bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
+                                     TokenVec* pInpTknVec,
+                                     Word* pwMatchedProc)
 {
   _static_
 
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
-    
-    if (pwMatchedProc->szWordNm()->bSame("create__unique__index"_Stz))
-      vDebugPoint();
   }
   
   i8 i_Cut;
