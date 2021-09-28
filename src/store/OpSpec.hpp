@@ -20,7 +20,6 @@ namespace STORE
     s32  m_sOpNm;       // op name
   
     StageSpec*    m_pStageSpec;    // which stage spec
-    i8            m_i__OpSpec;      // which op in stage
   
     TagSet m_oArgTags;
     
@@ -40,7 +39,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec);
+    OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
     bool bAppendRight(void);
@@ -58,7 +57,6 @@ namespace STORE
     void vNextStage(i8 i_NextStage);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    void vOpSpec(i8 i_OpSpec);
     i8   iOtherOp(void);
     void vOtherOp(i8 i_OtherOp);
     i8   iOtherStage(void);

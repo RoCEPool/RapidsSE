@@ -446,8 +446,7 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_OpSpec = p_StageSpec->nItems();
-  OpSpec* pOpSpec = new OpSpec(pTkn()->szChars(),i_OpSpec,p_StageSpec);
+  OpSpec* pOpSpec = new OpSpec(pTkn()->szChars(),p_StageSpec);
   vTokenAccept();
 
   p_StageSpec->vAddOpSpec(pOpSpec);
@@ -970,13 +969,10 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  OpSpec* pConsumeOpSpec = new OpSpec("consumeOp"_Stz,0,pStageSpec);
+  OpSpec* pConsumeOpSpec = new OpSpec("consumeOp"_Stz,pStageSpec);
   
   pStageSpec->vAdd(pConsumeOpSpec);
   
-#ifdef WITH_SPEC_NUMBERING
-  pStageSpec->vRenumberOpSpecs();
-#endif
   
   vArgAdd_sends(pConsumeOpSpec,eCrossTopo);
 }

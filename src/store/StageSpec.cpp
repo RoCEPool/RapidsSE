@@ -179,9 +179,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec)
 void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  pOpSpec->vOpSpec(nItems());
-  
+    
   vAppend(pOpSpec);
 }
 
@@ -246,19 +244,6 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   return m_pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* renumber all the op specs                                                  */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vRenumberOpSpecs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
-    OpSpec* pOpSpec = pGet(i_OpSpec);
-    pOpSpec->vOpSpec(i_OpSpec);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
