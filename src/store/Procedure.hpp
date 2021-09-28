@@ -38,7 +38,7 @@ namespace STORE
   
     void vParseAndAdd(void);
 
-    void vParseParameters(Word* pProcWord);
+    void vParseParameters(void);
     void vParseTagSets(Word* pProcWord);
 
   private:
