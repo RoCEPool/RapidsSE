@@ -2340,9 +2340,6 @@
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
                     { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
-                  ]},
-                  { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
-                    { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
                   ]}
                 ]}
               ]

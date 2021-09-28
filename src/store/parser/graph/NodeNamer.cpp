@@ -39,10 +39,16 @@ void NodeNamer::vGenerateName(Stz* szNodeType, s256& sNameBuf)
   // Get the last leaf of the definition type. e.g. given /a/b/c this gets 'c'
   char* ps = StrLib::acLast(szNodeType->azChar());
   b1 bFound = StrLib::bBackward(&ps, szNodeType->azChar(), '/');
-  ASSERT(bFound);
-  UNUSED(bFound); // in release
 
-  Stz* szPrefix = (Stz*) (ps + 1);
+  Stz* szPrefix;
+
+  if (bFound) {
+    szPrefix = (Stz*) (ps + 1);
+
+  } else {
+    szPrefix = szNodeType;
+  }
+
   sNameBuf.vSprint("%s%04lld"_Stz, szPrefix, ms_pObjId->iInc());
 }
 

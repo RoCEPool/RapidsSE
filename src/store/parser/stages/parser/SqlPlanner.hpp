@@ -32,6 +32,7 @@ namespace Parser
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableExprStack;  // Could be DataSources, could be Joins, Subqueries, etc
+    QueryNodeList* m_pTableSubqueryList;
     QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;
@@ -70,6 +71,7 @@ namespace Parser
     antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *pCtx)               override;
     antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *pCtx)           override;
     antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)     override;
+    antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                 override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
     antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
     antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)               override;
@@ -107,7 +109,6 @@ namespace Parser
     // distinct is handled in visitSelectExpr
 
     // tableExprs not implemented
-    antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                  override { __NOT_IMPL("subqueries")}
     antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *pCtx)      override { __NOT_IMPL("VALUES")}
 
     // expressions not implemented
