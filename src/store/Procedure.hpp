@@ -28,14 +28,14 @@ namespace STORE
 
     static void  vAddProcedure(TokenVec* pTokenVec);
 
-    static Word* pFindProcedure(TokenVec* pCmdTokenVec);
 
     static bool  bTranslateToPipeline(String* pToPipelineStmt,
-                                      TokenVec* pCmdTokenVec,
-                                      Word* pProcWord);
+                                      TokenVec* pTokenVec);
 
   private:
-  
+
+    static Word* pFindProcedure(TokenVec* pTokenVec);
+
     void vParseAndAdd(void);
 
     void vParseParameters(void);

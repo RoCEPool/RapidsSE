@@ -30,10 +30,12 @@ Procedure::Procedure(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
-  m_pProcWord;
+  m_pProcWord = nullptr;
   
   m_pTokenVec = pTokenVec;
   
+  _checkInitialised_(CN_PROCEDURE);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 }
 
@@ -57,109 +59,6 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   pProcedure->vParseAndAdd();
   
   delete pProcedure;
-}
-
- /*----------------------------------------------------------------------------*/
-/* find word for procedure matching given name                                */
-/*----------------------------------------------------------------------------*/
-Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
-{
-  _static_
-  
-  // check we have procedure category defined
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
-  
-  if (! pProcCatg)
-    return nullptr;
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // try one part name
-  
-  Token* pTkn0_CalledProcNm_a = pTokenVec->pGet(0);
-
-  s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
-  
-  Word* pwMatchedProc = pDicRoot->pFindWord(sProcNm_single);
-  
-  if (pwMatchedProc) {
-    if (pwMatchedProc->pCategory() != pProcCatg)
-      return nullptr;
-
-    // found procedure which matches token0
-    return pwMatchedProc;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // try two-part name
-
-  i8 nTokens = pTokenVec->nTokens();
-  if (1 == nTokens)
-    return nullptr;
-
-  Token* pTkn1_CalledProcNm_b = pTokenVec->pGet(1);
-
-  s256 sProcNm_compound = sProcNm_single;
-  sProcNm_compound.vConcat("__"_Stz);
-  sProcNm_compound.vConcat(pTkn1_CalledProcNm_b->szChars());
-
-  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound);
-
-  if (pwMatchedProc) {
-
-    if (pwMatchedProc->pCategory() != pProcCatg)
-      return nullptr;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // found two-part; correct the command token vector
-    
-    pTokenVec->vRemoveToken(1);
-    
-    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pTokenVec);
-    
-    if (iJotDebug())
-      pTokenVec->vListTokens();
-
-    // found procedure which matches token0_token1
-    return pwMatchedProc;
-  }
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // try three-part name
-  
-  nTokens = pTokenVec->nTokens();
-  if (2 == nTokens)
-    return nullptr;
-  
-  Token* pTkn2_CalledProcNm_b = pTokenVec->pGet(2);
-  
-  s256 sProcNm_compound_3 = sProcNm_compound;
-  sProcNm_compound_3.vConcat("__"_Stz);
-  sProcNm_compound_3.vConcat(pTkn2_CalledProcNm_b->szChars());
-    
-  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound_3);
-  
-  if (! pwMatchedProc)
-    return nullptr;
-  
-  if (pwMatchedProc->pCategory() != pProcCatg)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // found two-part; correct the command token vector
-  pTokenVec->vRemoveToken(1);
-  pTokenVec->vRemoveToken(1);
-  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pTokenVec);
-  
-  if (iJotDebug())
-    pTokenVec->vListTokens();
-  
-  // found procedure which matches token0_token1
-  return pwMatchedProc;
-  
 }
 
 #define dPV(sNM,pTV) { \
@@ -361,6 +260,109 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find word for procedure matching given name                                */
+/*----------------------------------------------------------------------------*/
+Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
+{
+  _static_
+  
+  // check we have procedure category defined
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  
+  if (! pProcCatg)
+    return nullptr;
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // try one part name
+  
+  Token* pTkn0_CalledProcNm_a = pTokenVec->pGet(0);
+
+  s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
+  
+  Word* pwMatchedProc = pDicRoot->pFindWord(sProcNm_single);
+  
+  if (pwMatchedProc) {
+    if (pwMatchedProc->pCategory() != pProcCatg)
+      return nullptr;
+
+    // found procedure which matches token0
+    return pwMatchedProc;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // try two-part name
+
+  i8 nTokens = pTokenVec->nTokens();
+  if (1 == nTokens)
+    return nullptr;
+
+  Token* pTkn1_CalledProcNm_b = pTokenVec->pGet(1);
+
+  s256 sProcNm_compound = sProcNm_single;
+  sProcNm_compound.vConcat("__"_Stz);
+  sProcNm_compound.vConcat(pTkn1_CalledProcNm_b->szChars());
+
+  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound);
+
+  if (pwMatchedProc) {
+
+    if (pwMatchedProc->pCategory() != pProcCatg)
+      return nullptr;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found two-part; correct the command token vector
+    
+    pTokenVec->vRemoveToken(1);
+    
+    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pTokenVec);
+    
+    if (iJotDebug())
+      pTokenVec->vListTokens();
+
+    // found procedure which matches token0_token1
+    return pwMatchedProc;
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // try three-part name
+  
+  nTokens = pTokenVec->nTokens();
+  if (2 == nTokens)
+    return nullptr;
+  
+  Token* pTkn2_CalledProcNm_b = pTokenVec->pGet(2);
+  
+  s256 sProcNm_compound_3 = sProcNm_compound;
+  sProcNm_compound_3.vConcat("__"_Stz);
+  sProcNm_compound_3.vConcat(pTkn2_CalledProcNm_b->szChars());
+    
+  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound_3);
+  
+  if (! pwMatchedProc)
+    return nullptr;
+  
+  if (pwMatchedProc->pCategory() != pProcCatg)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // found two-part; correct the command token vector
+  pTokenVec->vRemoveToken(1);
+  pTokenVec->vRemoveToken(1);
+  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pTokenVec);
+  
+  if (iJotDebug())
+    pTokenVec->vListTokens();
+  
+  // found procedure which matches token0_token1
+  return pwMatchedProc;
+  
+}
 
 
 
