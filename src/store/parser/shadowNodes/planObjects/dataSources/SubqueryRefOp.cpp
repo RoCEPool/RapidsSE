@@ -405,12 +405,15 @@ b1 SubqueryRefOp::bResolvesColumnRef(QueryNode* pNode,    QueryNode* pMetadataNo
     //    source's alias name.
     // 2. The columnRef is not fully qualified and cannot specify a catalog or schema
     //    name to use this alias, but its tableName may match the alias or it may be left unqualified.
-    b1 bNameMatch =
-        (szColRefTableAliasName && szColRefTableAliasName->bSame(szDataSourceAliasName))  // (1)
-        ||
-        (!szCatalogName &&                                                                // (2)
-         !szSchemaName &&
-         (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) );
+    b1 bNameMatch = false;
+    if (szColRefTableAliasName) {
+      bNameMatch = szColRefTableAliasName->bSame(szDataSourceAliasName);
+
+    } else {
+      bNameMatch = (!szCatalogName &&                                                                // (2)
+                    !szSchemaName &&
+                    (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) );
+    }
 
     if (bNameMatch) {
       // ColumnRef partially or fully matches the alias of this data source. But we
