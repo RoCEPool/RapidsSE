@@ -20,6 +20,7 @@ namespace STORE
                   : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
                   , public LifeGuard_t<StageSpec>
 #endif
+                  , public ListItem_t<StageSpec>
 
   {
   private:

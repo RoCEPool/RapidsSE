@@ -18,8 +18,8 @@ namespace STORE
 #else
           : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
           , public LifeGuard_t<PipelineSpec>
-
 #endif
+          , public ListItem_t<PipelineSpec>
   {
     friend class STORE::Dynamo;
 

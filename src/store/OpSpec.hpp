@@ -11,8 +11,10 @@ namespace STORE { class PipelineSpec; class StageSpec; }
 
 namespace STORE
 {
-  class OpSpec : public Object,
-                 public LifeGuard_t<OpSpec>
+  class OpSpec : public Object
+               , public LifeGuard_t<OpSpec>
+
+               , public ListItem_t<OpSpec>
   {
   private:
     s32  m_sOpNm;       // op name
