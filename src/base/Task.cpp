@@ -19,11 +19,7 @@
 #include "MY.hpp"
 #include "HeadsUp.hpp"
 
-Atomic gixTask;
-
 extern pthread_key_t giTLS_TaskKey;
-
-// MARK: Life Cycle
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -155,10 +151,6 @@ void Task::vTask(void)
   
   _checkInitialised_(CN_TASK);
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ++ gixTask;
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
@@ -198,8 +190,6 @@ Task::~Task(void) noexcept(false)
   
   delete m_pProfile;
   m_pProfile = nullptr;
-  
-  -- gixTask;
 }
 
 /*----------------------------------------------------------------------------*/

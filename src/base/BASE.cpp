@@ -478,11 +478,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
-    
-#ifndef WITH_TRACE_PROCEDURE
-  vTrace("  WITH_TRACE_PROCEDURE\n"_Stz);
-#endif
-   
+       
 #ifndef WITH_TRACE_LOGICUNIT
   vTrace("  WITH_TRACE_LOGICUNIT\n"_Stz);
 #endif

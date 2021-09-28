@@ -8,10 +8,42 @@
 
 #include "TagConstants.h"
 
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,Procedure,CN_PROCEDURE)
+__aNewFunction(Procedure,CN_PROCEDURE)
+__vDeleteFunction(Procedure,CN_PROCEDURE)
+__aFooterFunction(Procedure)
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Procedure::Procedure(TokenVec* pTokenVec)
+: Object(CN_PROCEDURE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_pProcWord;
+  
+  m_pTokenVec = pTokenVec;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Procedure::~Procedure(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* add word for procedure in root dictionary                                  */
@@ -20,81 +52,11 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 {
   _static_
   
-  pTokenVec->vIntegrityCheck();
+  Procedure* pProcedure = new Procedure(pTokenVec);
   
-  Token* pTkn1_ProcNm = pTokenVec->pGet(1);
+  pProcedure->vParseAndAdd();
   
-  s32 sProcNm = pTkn1_ProcNm->szChars();
-  
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
-#endif
-  
-  if (! ( pTokenVec->pGet(2)->bSame("tags"_Stz) ||
-          pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
-          pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
-    
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
-    
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
-#endif
-    pTokenVec->vRemoveToken(2);
-    pTokenVec->vIntegrityCheck();
-
-    pTkn1_ProcNm->vUpdateChars(sProcNm,pTokenVec);
-    pTokenVec->vIntegrityCheck();
-
-    //pTokenVec->vDumpTokens();
-  }
-
-  if (! ( pTokenVec->pGet(2)->bSame("tags"_Stz) ||
-          pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
-          pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
-    
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
-    
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("vAddProcedure: three part name %s\n"_Stz,sProcNm.szStz());
-#endif
-    
-    pTokenVec->vRemoveToken(2);
-    pTokenVec->vIntegrityCheck();
-    
-    pTkn1_ProcNm->vUpdateChars(sProcNm,pTokenVec);
-    pTokenVec->vIntegrityCheck();
-    
-    //pTokenVec->vDumpTokens();
-  }
-
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
-  
-  Word* pProcWord = pDicRoot->pFindWord(sProcNm);
-  if (pProcWord)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  pProcWord = new (pDicRoot) Word(sProcNm);
-  
-  pProcWord->vCategory(pProcCatg);
-  
-  if (! pProcWord->pWrdTagSet())
-    pProcWord->vWrdTagSet(new TagSet);
-
-  vParseTagSets(pProcWord,pTokenVec);
-  vParseParameters(pProcWord,pTokenVec);
-
-  s4K sProcText;
-  pTokenVec->vVecToString(sProcText,0,false);
-  
-  pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
+  delete pProcedure;
 }
 
  /*----------------------------------------------------------------------------*/
@@ -113,10 +75,6 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   if (! pProcCatg)
     return nullptr;
  
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
-#endif
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try one part name
   
@@ -146,10 +104,6 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   s256 sProcNm_compound = sProcNm_single;
   sProcNm_compound.vConcat("__"_Stz);
   sProcNm_compound.vConcat(pTkn1_CalledProcNm_b->szChars());
-
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm_compound.szStz());
-#endif
 
   pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound);
 
@@ -185,11 +139,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   s256 sProcNm_compound_3 = sProcNm_compound;
   sProcNm_compound_3.vConcat("__"_Stz);
   sProcNm_compound_3.vConcat(pTkn2_CalledProcNm_b->szChars());
-  
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("bTranslateProcedure: three part name: %s\n"_Stz,sProcNm_compound.szStz());
-#endif
-  
+    
   pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound_3);
   
   if (! pwMatchedProc)
@@ -411,20 +361,96 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+
+/*----------------------------------------------------------------------------*/
+/* add word for procedure in root dictionary                                  */
+/*----------------------------------------------------------------------------*/
+void Procedure::vParseAndAdd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_pTokenVec->vIntegrityCheck();
+  
+  Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
+  
+  m_sProcNm = pTkn1_ProcNm->szChars();
+    
+  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
+    m_sProcNm.vConcat("__"_Stz);
+    m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
+    
+    m_pTokenVec->vRemoveToken(2);
+    m_pTokenVec->vIntegrityCheck();
+
+    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+    m_pTokenVec->vIntegrityCheck();
+
+    //m_pTokenVec->vDumpTokens();
+  }
+
+  if (! ( m_pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          m_pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
+    m_sProcNm.vConcat("__"_Stz);
+    m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
+        
+    m_pTokenVec->vRemoveToken(2);
+    m_pTokenVec->vIntegrityCheck();
+    
+    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+    m_pTokenVec->vIntegrityCheck();
+    
+    //m_pTokenVec->vDumpTokens();
+  }
+
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  
+  m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
+  if (m_pProcWord)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  m_pProcWord = new (pDicRoot) Word(m_sProcNm);
+  
+  m_pProcWord->vCategory(pProcCatg);
+  
+  if (! m_pProcWord->pWrdTagSet())
+    m_pProcWord->vWrdTagSet(new TagSet);
+
+  vParseTagSets(m_pProcWord);
+  vParseParameters();
+
+
+  m_pTokenVec->vVecToString(m_sProcText,0,false);
+  
+  m_pProcWord->pWrdTagSet()->vInsert("procText"_Stz,m_sProcText);
+}
+
+
 /*----------------------------------------------------------------------------*/
 /* parse parameters of procedure                                              */
 /*----------------------------------------------------------------------------*/
-void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
+void Procedure::vParseParameters(void)
 {
-  _static_
-  
-  i8 nTokens = pTokenVec->nTokens();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  i8 nTokens = m_pTokenVec->nTokens();
 
   Token* pTkn = nullptr;
   
   i8 i_Tkn = 0;
   for (; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     if (pTkn->bSame("parameters"_Stz))
       break;
   }
@@ -432,18 +458,14 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
   if (! pTkn)
     return;
   
-  TagSet* pTagSet = pProcWord->pWrdTagSet(true);
+  TagSet* pTagSet = m_pProcWord->pWrdTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     
     if (pTkn->bSame("begin"_Stz))
       break;
-    
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szChars());
-#endif
-    
+        
     pTagSet->vInsert(pTkn->szChars());
   }
 
@@ -452,17 +474,17 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* parse tagSets of procedure                                                 */
 /*----------------------------------------------------------------------------*/
-void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
+void Procedure::vParseTagSets(Word* pProcWord)
 {
-  _static_
-  
-  i8 nTokens = pTokenVec->nTokens();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  i8 nTokens = m_pTokenVec->nTokens();
   
   Token* pTkn = nullptr;
   
   i8 i_Tkn = 0;
   for (; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     if (pTkn->bSame("tags"_Stz))
       break;
   }
@@ -475,22 +497,19 @@ void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
   TagSet* pTagSet = pProcWord->pWrdTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
-    pTkn = pTokenVec->pGet(i_Tkn);
+    pTkn = m_pTokenVec->pGet(i_Tkn);
     
     if (pTkn->bSame("parameters"_Stz) ||
         pTkn->bSame("begin"_Stz))
       break;
     
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("%s: adding tag %s\n"_Stz,pProcWord->szWordNm(),pTkn->szChars());
-#endif
     pTagSet->vInsert(pTkn->szChars());
   }
   
   // remove the tags clause from the token vector
   for (;;) {
-    pTokenVec->vRemoveToken(i_Cut);
-    Token* pTest = pTokenVec->pGet(i_Cut);
+    m_pTokenVec->vRemoveToken(i_Cut);
+    Token* pTest = m_pTokenVec->pGet(i_Cut);
     if (pTest->bSame("parameters"_Stz) ||
         pTest->bSame("begin"_Stz))
       break;
