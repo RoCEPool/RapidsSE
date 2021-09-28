@@ -28,8 +28,7 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
-                           Stz*          szPipelineNm,
+PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
                            PipelineSpec* p_ParentPipelineSpec,
                            TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
@@ -39,7 +38,6 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
-  m_i_PipelineSpec = i_PipelineSpec;
   
   m_p_ParentPipelineSpec = p_ParentPipelineSpec;
   
@@ -90,8 +88,7 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
   
   Stz* szPipelineNm = p_Scanner->pTkn()->szChars();
   rp_PipelineSpec =
-    new PipelineSpec(0,
-                     szPipelineNm,
+    new PipelineSpec(szPipelineNm,
                      p_ParentPipelineSpec,
                      p_JobTags,
                      p_Scanner);
@@ -216,16 +213,6 @@ PipelineSpec* PipelineSpec::pParentPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
       
   return m_p_ParentPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get pipeline spec number                                                   */
-/*----------------------------------------------------------------------------*/
-i8 PipelineSpec::i_PipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  return m_i_PipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -63,8 +63,7 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
   
   if (iDepth)
     vCatf(iDepth,
-          "[%lld] PipelineSpec %s %p\n"_Stz
-          ,pPipelineSpec->i_PipelineSpec()
+          "PipelineSpec %s %p\n"_Stz
           ,pPipelineSpec->szPipelineNm()
           ,pPipelineSpec
           );
