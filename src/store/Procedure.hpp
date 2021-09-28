@@ -8,6 +8,7 @@ namespace STORE
   class Procedure : public Object
   {
   private:
+    TokenVec* m_pTokenVec;
   
     // always last
     Footer m_xFooter;
@@ -30,6 +31,9 @@ namespace STORE
   private:
     static void  vParseParameters(Word* pProcWord, TokenVec* pTokenVec);
     static void  vParseTagSets(Word* pProcWord, TokenVec* pTokenVec);
+  
+    void vParseAndAdd(void);
+
   
   private:
     Footer* aFooter(void);
