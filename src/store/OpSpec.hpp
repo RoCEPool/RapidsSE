@@ -20,7 +20,7 @@ namespace STORE
     s32  m_sOpNm;       // op name
   
     StageSpec*    m_pStageSpec;    // which stage spec
-    i8            m_i_OpSpec;      // which op in stage
+    i8            m_i__OpSpec;      // which op in stage
   
     TagSet m_oArgTags;
     

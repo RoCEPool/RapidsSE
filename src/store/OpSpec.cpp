@@ -32,7 +32,7 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_sOpNm         = szOpNm;
     
   m_pStageSpec    = pStageSpec;
-  m_i_OpSpec      = i_OpSpec;
+  m_i__OpSpec     = i_OpSpec;
 
   //m_oArgTags
   //m_oTopologyTags
@@ -215,7 +215,10 @@ i8 OpSpec::iOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_i_OpSpec;
+  i8 iCrossCheck = m_pStageSpec->iFind(this);
+  if (iCrossCheck != m_i__OpSpec)
+    vDebugPoint();
+  return iCrossCheck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,8 +227,15 @@ i8 OpSpec::iOpSpec(void)
 void OpSpec::vOpSpec(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+
+#ifdef WITH_NO_SPEC_NUMBERING
+  if (i_OpSpec != m_i__OpSpec)
+    vDebugPoint();
+    
+  RASSERT(i_OpSpec == m_i__OpSpec);
+#endif
   
-  m_i_OpSpec = i_OpSpec;
+  m_i__OpSpec = i_OpSpec;
 }
 
 /*----------------------------------------------------------------------------*/

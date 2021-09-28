@@ -974,7 +974,9 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
   
   pStageSpec->vAdd(pConsumeOpSpec);
   
+#ifdef WITH_SPEC_NUMBERING
   pStageSpec->vRenumberOpSpecs();
+#endif
   
   vArgAdd_sends(pConsumeOpSpec,eCrossTopo);
 }
