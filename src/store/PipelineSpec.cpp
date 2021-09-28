@@ -61,6 +61,22 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
+
+#ifdef WITH_SPEC_LIST
+
+PipelineSpec::~PipelineSpec(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  while (StageSpec* pStageSpec = pPop())
+    pStageSpec->vGuardedDelete(CN_STAGESPEC,&pStageSpec,
+                               CN_PIPELINESPEC,this,(Stz*)__func__);
+
+  vClear();
+}
+
+#else
+/*----------------------------------------------------------------------------*/
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -75,6 +91,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
   vClear();
 }
+#endif
 
 
 /*----------------------------------------------------------------------------*/
