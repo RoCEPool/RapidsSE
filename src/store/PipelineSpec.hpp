@@ -37,10 +37,7 @@ namespace STORE
                  Scanner*      p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
-    static bool bCompile(Stz*          szPipelineNm,
-                         Scanner*      pScanner,
-                         TagSet*       p_JobTags,
-                         PipelineSpec*& rp_PipelineSpec);
+    bool bCompile(void);
   
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm);

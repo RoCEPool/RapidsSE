@@ -20,12 +20,13 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Job* p_PipelineJob)
+Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  m_p_PipelineJob = p_PipelineJob;
+  m_szPipelineStmt = szPipelineStmt;
+  m_p_PipelineJob  = p_PipelineJob;
   m_p_PipelineSpec = nullptr;
       
   _checkInitialised_(CN_DYNAMO);
@@ -51,11 +52,11 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
+PipelineSpec* Dynamo::pCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
-  Scanner* pScanner = new Scanner(szPipelineStmt);
+  Scanner* pScanner = new Scanner(m_szPipelineStmt);
   
   if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
          pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
@@ -66,21 +67,23 @@ PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   
-      
+  m_p_PipelineSpec =
+    new PipelineSpec(szPipelineNm,
+                     m_p_PipelineJob->pJobTags(),
+                     pScanner);
+
   
-  if (PipelineSpec::bCompile(szPipelineNm,
-                             pScanner,
-                             m_p_PipelineJob->pJobTags(),
-                             m_p_PipelineSpec))
+  if (m_p_PipelineSpec->bCompile()) {
+    delete pScanner;
     return m_p_PipelineSpec;
-  
-  
+  }
   
   m_p_PipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_p_PipelineSpec,
                                         CN_DYNAMO,this,(Stz*)__func__);
   
-  m_p_PipelineSpec = nullptr;
+  ASSERT(! m_p_PipelineSpec);
   
+  delete pScanner;
   return nullptr;
 }
 

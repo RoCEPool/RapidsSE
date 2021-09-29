@@ -14,6 +14,7 @@ namespace STORE
     friend class STORE::PipelineSpec;
 
   private:
+    Stz*          m_szPipelineStmt;
     Job*          m_p_PipelineJob;   // job this dynamo is associated with
     PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
   
@@ -24,10 +25,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Job* p_PipelineJob);
+    Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
-    PipelineSpec* pCompile(Stz* szPipelineStmt);
+    PipelineSpec* pCompile(void);
 
     PipelineSpec* pPipelineSpec(void);
 

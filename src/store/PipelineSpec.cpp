@@ -66,34 +66,21 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* recursively compile a new pipeline                                         */
+/* compile pipeline                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(Stz*          szPipelineNm,
-                            Scanner*      pScanner,
-                            TagSet*       p_JobTags,
-                            PipelineSpec*& rp_PipelineSpec)
+bool PipelineSpec::bCompile(void)
 {
-  _static_
-    
-  
-  rp_PipelineSpec =
-    new PipelineSpec(szPipelineNm,
-                     p_JobTags,
-                     pScanner);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! rp_PipelineSpec->bPass1_collect()) {
-    delete pScanner;
+  if (! bPass1_collect()) {
+    m_p_Scanner = nullptr;
     return false;
   }
    
-  if (! rp_PipelineSpec->bPass2_staging()) {
-    delete pScanner;
+  if (! bPass2_staging()) {
+    m_p_Scanner = nullptr;
     return false;
   }
     
-  delete pScanner;
+  m_p_Scanner = nullptr;
   return true;
 }
 
