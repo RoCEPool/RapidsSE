@@ -101,6 +101,11 @@ namespace STORE
                               StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
 
     //
+    // Pass 3 : Includes
+    //
+    bool bPass3_includes(void);
+
+    //
     // token scanning
     //
     Token*     pTkn(void);

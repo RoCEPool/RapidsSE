@@ -13,23 +13,23 @@
 
   begin
 
-//    stage stageA on origin :
-//
-//        start
-//      | pulse once
-//      | stageB
+    stage stageA on origin :
+
+        start
+      | pulse once
+      | next
 
     stage unnamed on all nodes :
     
         sysClose
       | next
 
-//    stage stageC on origin :
-//
-//        sysClosed
-//      | output
-//      | sink
-//      | stageA
+    stage unamed2 on origin :
+
+        sysClosed
+      | output
+      | sink
+      | first
 
   end ;
   "

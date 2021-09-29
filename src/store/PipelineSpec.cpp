@@ -80,6 +80,11 @@ bool PipelineSpec::bCompile(void)
     return false;
   }
     
+  if (! bPass3_includes()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
   m_p_Scanner = nullptr;
   return true;
 }
@@ -923,6 +928,29 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
   vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                           Pass 3 : Includes                                */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pass 3: include other pipelines                                            */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  if (m_p_JobTags->bHasName("<include_0>"_Stz))
+    vTrace("Has Include 0\n"_Stz);
+  
+  if (m_p_JobTags->bHasName("<include_1>"_Stz))
+    vTrace("Has Include 1\n"_Stz);
+  
+  if (m_p_JobTags->bHasName("<include_2>"_Stz))
+    vTrace("Has Include 2\n"_Stz);
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                            Token Scanning                                  */
