@@ -52,9 +52,9 @@ void Step::vDynamoCompileStmt(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
   
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task);
+  Dynamo* pDynamo = new Dynamo(m_pJob_task);
     
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test compilation result

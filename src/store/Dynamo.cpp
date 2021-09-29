@@ -20,7 +20,7 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
+Dynamo::Dynamo(Job* p_PipelineJob)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -28,7 +28,7 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
   m_p_PipelineJob = p_PipelineJob;
   m_p_PipelineSpec_root = nullptr;
   
-  m_pScanner = new Scanner(szPipelineStmt);
+  m_pScanner = nullptr;
     
   _checkInitialised_(CN_DYNAMO);
   
@@ -53,10 +53,12 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pCompile(void)
+PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
+  m_pScanner = new Scanner(szPipelineStmt);
+
   m_pScanner->vTokenBegin(0);
       
   if (PipelineSpec::bCompile(m_p_PipelineJob->pJobTags(),

@@ -25,10 +25,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
+    Dynamo(Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
-    PipelineSpec* pCompile(void);
+    PipelineSpec* pCompile(Stz* szPipelineStmt);
 
     PipelineSpec* pPipelineSpec(void);
 
