@@ -41,10 +41,8 @@ namespace STORE
   public:
 
     u8       m_uExprEvalColumns;
-    u8       m_uExprEvalColumnsRht;
     i8       m_nPayLoadBytes;
     i8       m_iStreamInColumns;
-    i8       m_iStreamInColumnsRht;
     i8       m_iJoinStartColumn;
 
     bool     m_bHasAgg;
@@ -159,7 +157,6 @@ namespace STORE
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
 
     void vSelectLftColumn(i8 i_ColumnOrdinal);
-    void vSelectRhtColumn(i8 i_ColumnOrdinal);
 
     Footer* aFooter(void);
   };

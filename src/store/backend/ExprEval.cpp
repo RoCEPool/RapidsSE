@@ -53,10 +53,8 @@ ExprEval::ExprEval(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   m_uExprEvalColumns = 0;
-  m_uExprEvalColumnsRht = 0;
   m_nPayLoadBytes = 0;
   m_iStreamInColumns = 0;
-  m_iStreamInColumnsRht = 0;
   m_iJoinStartColumn = 0;
 
   m_bHasAgg = false;
@@ -563,6 +561,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, StreamDefBase*
       if (pTkn->szChars()->bContains("K"_Stz))
         continue;
 
+      // ignore right columns
+      if (pTkn->szChars()->bContains("R"_Stz)) {
+        continue;
+      }
+
       i8 i_ColumnOrdinal = C_UNKNOWN;
       // column ordinal relative to the left join table
       if (pTkn->szChars()->bContains("L"_Stz)) {
@@ -577,30 +580,12 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, StreamDefBase*
           break;
         }
 
-        // select right column
+        // select left column
         vSelectLftColumn(i_ColumnOrdinal);
         continue;
       }
-
-      // column ordinal relative to the right join table
-      if (pTkn->szChars()->bContains("R"_Stz)) {
-        // get the column ordinal
-        sOrdinalColumn = pTkn->szChars() + 2;
-        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-        // look for the column in the streamDefRht
-        i8 nColumns = pStreamDefRht->nColumns();
-        if (i_ColumnOrdinal > nColumns) {
-          eError = EC_INVALID_COMMAND;
-          break;
-        }
-
-        // select right column
-        vSelectRhtColumn(i_ColumnOrdinal);
-        continue;
-
-      } else {
-        // get the column ordinal
+      else {
+        // get the column ordinal from symbolic column name
         sOrdinalColumn = pTkn->szChars() + 1;
         i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
@@ -623,18 +608,10 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, StreamDefBase*
       Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
 
       if ( ! pColumn ) {
-        // look for the column in the streamDefRht
-        Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
         if (! pColumn ) {
           eError = EC_INVALID_COMMAND;
           break;
         }
-        i8 iColumn = pColumn->iColumnNo();
-
-        // select right column
-        vSelectRhtColumn(iColumn);
-      }
-      else {
         i8 iColumn = pColumn->iColumnNo();
 
         // select left column
@@ -3406,21 +3383,6 @@ void ExprEval::vSelectLftColumn(i8 i_ColumnOrdinal)
     // set bit on for the column in m_uExprEvalColumns
     BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
     m_iStreamInColumns++;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* select right column                                                        */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vSelectRhtColumn(i8 i_ColumnOrdinal) {
-  _static_
-
-  // already selected column ?
-  if (!BitLib::bIsOn(m_uExprEvalColumnsRht, i_ColumnOrdinal)) {
-
-    // set bit on for the column in m_uExprEvalColumns
-    BitLib::vSetOn(m_uExprEvalColumnsRht, i_ColumnOrdinal);
-    m_iStreamInColumnsRht++;
   }
 }
 
