@@ -55,8 +55,14 @@ class GraphNav
     // Returns the parent of the type definition path given.
     static void vParentType(Stz* szTypePath, s2K& buf);
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    // -----------------------------------
+    // Methods for debugging a plan graph.
+    // -----------------------------------
+
     // Print a graph structure to the console, starting from some node
     static void vPrintPlan(PlanNode* pRootNode);
+    static void vPrintCteMetadata(PlanNode* pRootNode);
 
     static void vPrintNode(PlanNode* pNode);
     static void vPrintNode(PlanNode* pNode, b1 bPrintProperties);

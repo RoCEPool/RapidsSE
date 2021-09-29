@@ -337,15 +337,12 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     }
   }
   else {
-    Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
-    if (pProcWord) {
-      sSTMT sPipelineSmt;
-      if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                         pCmdTknVec,pProcWord)) {
+    sSTMT sPipelineSmt;
+    if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                          pCmdTknVec)) {
       
-        pCmdTknVec->vSoftReset();
-        pCmdTknVec->vTokenise(sPipelineSmt);
-      }
+      pCmdTknVec->vSoftReset();
+      pCmdTknVec->vTokenise(sPipelineSmt);
     }
   }
     

@@ -492,6 +492,7 @@ void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 
   // TODO: * Populate the remaining CteDef fields (can copy column info from the CteDef of the MainSubquery child).
   // TODO: * Create a list of any correlated column names and populate this in the current exprSubquery node.
+  //         Note that a subquery can be correlated because its child subquery references a column in its grandparent.
 
 }
 

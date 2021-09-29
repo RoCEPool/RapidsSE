@@ -11,6 +11,8 @@
 #include "PlanConstants.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
+#include "CteDefs.hpp"
 
 using namespace Parser;
 
@@ -80,6 +82,24 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
   }
 
   delete pIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Prints the metadata for defined Common Table Expressions                   */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrintCteMetadata(PlanNode* pRootNode)
+{
+  if (!ShadowRoot::bIsOfType(pRootNode)) {
+    vTrace("GraphNav::vPrintCteMetadata() needs to be passed the root node of the plan"_Stz);
+    return;
+  }
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  QueryNode* pCteDefs = MetadataNode::pCteDefsNode(pMetadataNode);
+  ASSERT(pCteDefs);
+  ASSERT(CteDefs::bIsOfType(pCteDefs));
+
+  vPrintNode(pCteDefs, true);
 }
 
 /*----------------------------------------------------------------------------*/

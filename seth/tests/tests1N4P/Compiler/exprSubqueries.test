@@ -1,0 +1,192 @@
+/*----------------------------------------------------------------------------*/
+/* Expression subquery syntax & semantics tests                               */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_nation;
+success
+  // N_NATIONKEY
+  // N_NAME
+  // N_REGIONKEY
+  // N_COMMENT
+
+_region;
+success
+  // R_REGIONKEY
+  // R_NAME
+  // R_COMMENT
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic expression subquery examples
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Uncorrelated expression subqueries
+
+
+// Correlated expression subqueries
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Scalar subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test that comparison operators and IN/ANY/ALL operators only support
+// expression subqueries that project 1 column.
+
+// Uncorrelated subquery in WHERE clause
+SELECT * FROM nation WHERE n_nationkey > ( SELECT MAX(n_nationkey)/2 FROM nation );
+
+// Correlated subquery in WHERE clause
+SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+
+// Uncorrelated subquery in SELECT list
+SELECT
+  n_nationkey,
+  ( SELECT MAX(n_nationkey)/2 FROM nation )
+FROM
+  nation n1;
+
+// Correlated subquery in SELECT list
+SELECT
+  n_nationkey,
+  ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average
+FROM
+  nation n1;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Multiple-row scalar subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Uncorrelated subquery in WHERE clause
+SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 );
+
+// Correlated subquery in WHERE clause
+SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
+
+// Uncorrelated subquery in SELECT list
+SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
+
+// Correlated subquery in SELECT list
+SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Table subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test that EXISTS/NOT EXISTS operators do support subqueries that project multiple columns.
+
+// Uncorrelated subquery in WHERE clause
+SELECT * FROM nation WHERE EXISTS ( SELECT * FROM region );
+
+// Correlated subquery in WHERE clause
+SELECT * FROM nation n1 WHERE EXISTS ( SELECT * FROM region WHERE n1.n_name != r_name  );
+
+// Uncorrelated subquery in SELECT list
+SELECT
+  n_nationkey,
+  EXISTS ( SELECT * FROM nation )
+FROM
+  nation n1;
+
+// Correlated subquery in SELECT list
+SELECT
+  n_nationkey,
+  EXISTS ( SELECT * FROM nation WHERE n1.n_regionkey % 2 = 0 )
+FROM
+  nation n1;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Partitioning of basic expression subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// There are 4 main combinations to test:
+//  - Expression subquery is     partitionable & main subquery is     partitionable.
+//  - Expression subquery is not partitionable & main subquery is     partitionable.
+//  - Expression subquery is     partitionable & main subquery is not partitionable.
+//  - Expression subquery is not partitionable & main subquery is not partitionable.
+
+// Expression subquery is partitionable & main subquery is partitionable.
+
+
+// Expression subquery is not partitionable & main subquery is partitionable.
+
+
+// Expression subquery is partitionable & main subquery is not partitionable.
+
+
+// Expression subquery is not partitionable & main subquery is not partitionable.
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Nested expression subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Nested uncorrelated
+
+// Nested correlated
+
+// Nested correlated where the correlated column comes from a grandparent query
+// e.g.
+// SELECT n_name FROM nation n1 WHERE n_nationkey > (
+//   SELECT MAX(r_regionkey) FROM REGION WHERE r_regionkey IN (
+//     SELECT n_regionkey from nation n2 WHERE n1.n_name LIKE 'A%'
+//   )
+// );
+
+// Test that an expression subquery itself can contain a table subquery
+SELECT * FROM nation WHERE EXISTS ( WITH t1 AS (SELECT * FROM region) SELECT * FROM t1 );
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Name resolution tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test that an expression subquery can resolve appropriate WITH clauses
+// going back 1 or more levels.
+
+WITH t1 AS (SELECT * FROM region)
+SELECT * FROM nation WHERE EXISTS ( SELECT * FROM t1 );
+
+// TODO: add more
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  bye;
+  mute
+}
+
