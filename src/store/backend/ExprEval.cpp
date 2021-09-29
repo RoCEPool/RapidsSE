@@ -157,7 +157,7 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefO
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefIn's source columns needed for projected
 
-  eError = eCollectSourceColumns(pStreamDefLft, nullptr, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -199,8 +199,7 @@ eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
 
-  //eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
-  eError = eCollectSourceColumns(pStreamDefLft, nullptr, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -263,8 +262,8 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect all the StreamDefLft and streamDefRht source columns needed for the join
-  eError = eCollectSourceColumns(pStreamDefLft, pStreamDefRht, pTknVec);
+  // collect all the StreamDefLft source columns needed for the join
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -417,7 +416,7 @@ void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pC
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht, TokenVec* pTknVec)
+eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 

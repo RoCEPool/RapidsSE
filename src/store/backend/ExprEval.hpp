@@ -115,9 +115,7 @@ namespace STORE
 
     void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
 
-    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefLft,
-                               StreamDefBase* pStreamDefRht,
-                               TokenVec* pTknVec);
+    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
 
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
