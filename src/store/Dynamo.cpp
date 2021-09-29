@@ -58,8 +58,20 @@ PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   Scanner* pScanner = new Scanner(szPipelineStmt);
 
   pScanner->vTokenBegin(0);
+  
+  
+  
+  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
+      )
+    return nullptr;
+
+  Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
+
+  
       
-  if (PipelineSpec::bCompile(pScanner,
+  if (PipelineSpec::bCompile(szPipelineNm,
+                             pScanner,
                              m_p_PipelineJob->pJobTags(),
                              m_p_PipelineSpec))
     return m_p_PipelineSpec;

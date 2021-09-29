@@ -68,30 +68,18 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile a new pipeline                                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(Scanner*      pScanner,
+bool PipelineSpec::bCompile(Stz*          szPipelineNm,
+                            Scanner*      pScanner,
                             TagSet*       p_JobTags,
                             PipelineSpec*& rp_PipelineSpec)
 {
   _static_
-  
-  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
-      )
-    return false;
-  
-  Token* pPipNmTkn = pScanner->pTkn(1);
-  pScanner->vTokenAccept();
-  
-  Stz* szPipelineNm = pScanner->pTkn()->szChars();
-  
-  RASSERT(szPipelineNm->bSame(pPipNmTkn->szChars()));
-
+    
   
   rp_PipelineSpec =
     new PipelineSpec(szPipelineNm,
                      p_JobTags,
                      pScanner);
-  pScanner->vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -184,6 +172,9 @@ bool PipelineSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
       
+  if (! bCollectPipeline())
+    return false;
+  
   if (! (pTkn()->bSame("TAG"_Stz) ||
          pTkn()->bSame("BEGIN"_Stz))
       )
@@ -195,6 +186,24 @@ bool PipelineSpec::bPass1_collect(void)
   
   if (! bCollectBeginEnd())
     return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect pipeline <name>                                                    */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  if (! (pTkn()->bSame("PIPELINE"_Stz) ||
+         pTkn()->bSame("PIPELINELOCAL"_Stz))
+      )
+    return false;
+
+  vTokenAccept();
+  vTokenAccept();
   
   return true;
 }

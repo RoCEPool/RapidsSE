@@ -37,7 +37,8 @@ namespace STORE
                  Scanner*      p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
-    static bool bCompile(Scanner*      pScanner,
+    static bool bCompile(Stz*          szPipelineNm,
+                         Scanner*      pScanner,
                          TagSet*       p_JobTags,
                          PipelineSpec*& rp_PipelineSpec);
   
@@ -61,6 +62,7 @@ namespace STORE
     //
     bool bPass1_collect(void);
 
+    bool bCollectPipeline(void);
     bool bCollectTag(void);
     bool bCollectBeginEnd(void);
     bool bCollectStage(void);
