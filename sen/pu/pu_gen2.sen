@@ -153,25 +153,25 @@ Path[].root
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-: +fj_0_1_Pu10k  "  \"type boolean pu10k_fj 100 <=\"" >> ; // allow 10% of (j.)Pu10K
-: +fj_0_3_Pu10k  "  \"type boolean pu10k_fj 300 <=\"" >> ; // allow 30% of (j.)Pu10K
-: +fj_0_6_Pu10k  "  \"type boolean pu10k_fj 600 <=\"" >> ; // allow 60% of (j.)Pu10K
-: +fj_0_9_Pu10k  "  \"type boolean pu10k_fj 900 <=\"" >> ; // allow 90% of (j.)Pu10K
+: +fj_0_1_Pu10k  "  \"type boolean j1.pu10k_fj 100 <=\"" >> ; // allow 10% of (j.)Pu10K
+: +fj_0_3_Pu10k  "  \"type boolean j1.pu10k_fj 300 <=\"" >> ; // allow 30% of (j.)Pu10K
+: +fj_0_6_Pu10k  "  \"type boolean j1.pu10k_fj 600 <=\"" >> ; // allow 60% of (j.)Pu10K
+: +fj_0_9_Pu10k  "  \"type boolean j1.pu10k_fj 900 <=\"" >> ; // allow 90% of (j.)Pu10K
 
-: +fj_0_1_Pu100k "  \"type boolean pu100k_fj 100 <=\"" >> ; // allow 10% of (j.)Pu100K
-: +fj_0_3_Pu100k "  \"type boolean pu100k_fj 300 <=\"" >> ; // allow 30% of (j.)Pu100K
-: +fj_0_6_Pu100k "  \"type boolean pu100k_fj 600 <=\"" >> ; // allow 60% of (j.)Pu100K
-: +fj_0_9_Pu100k "  \"type boolean pu100k_fj 900 <=\"" >> ; // allow 90% of (j.)Pu100K
+: +fj_0_1_Pu100k "  \"type boolean j1.pu100k_fj 100 <=\"" >> ; // allow 10% of (j.)Pu100K
+: +fj_0_3_Pu100k "  \"type boolean j1.pu100k_fj 300 <=\"" >> ; // allow 30% of (j.)Pu100K
+: +fj_0_6_Pu100k "  \"type boolean j1.pu100k_fj 600 <=\"" >> ; // allow 60% of (j.)Pu100K
+: +fj_0_9_Pu100k "  \"type boolean j1.pu100k_fj 900 <=\"" >> ; // allow 90% of (j.)Pu100K
 
-: +fj_0_1_Pu1m   "  \"type boolean pu1m_fj 100 <=\"" >> ; // allow 10% of (j.)Pu1m
-: +fj_0_3_Pu1m   "  \"type boolean pu1m_fj 300 <=\"" >> ; // allow 30% of (j.)Pu1m
-: +fj_0_6_Pu1m   "  \"type boolean pu1m_fj 600 <=\"" >> ; // allow 60% of (j.)Pu1m
-: +fj_0_9_Pu1m   "  \"type boolean pu1m_fj 900 <=\"" >> ; // allow 90% of (j.)Pu1m
+: +fj_0_1_Pu1m   "  \"type boolean j1.pu1m_fj 100 <=\"" >> ; // allow 10% of (j.)Pu1m
+: +fj_0_3_Pu1m   "  \"type boolean j1.pu1m_fj 300 <=\"" >> ; // allow 30% of (j.)Pu1m
+: +fj_0_6_Pu1m   "  \"type boolean j1.pu1m_fj 600 <=\"" >> ; // allow 60% of (j.)Pu1m
+: +fj_0_9_Pu1m   "  \"type boolean j1.pu1m_fj 900 <=\"" >> ; // allow 90% of (j.)Pu1m
 
-: +fj_0_1_Pu10m  "  \"type boolean pu10m_fj 100 <=\"" >> ; // allow 10% of (j.)Pu10m
-: +fj_0_3_Pu10m  "  \"type boolean pu10m_fj 300 <=\"" >> ; // allow 30% of (j.)Pu10m
-: +fj_0_6_Pu10m  "  \"type boolean pu10m_fj 600 <=\"" >> ; // allow 60% of (j.)Pu10m
-: +fj_0_9_Pu10m  "  \"type boolean pu10m_fj 900 <=\"" >> ; // allow 90% of (j.)Pu10m
+: +fj_0_1_Pu10m  "  \"type boolean j1.pu10m_fj 100 <=\"" >> ; // allow 10% of (j.)Pu10m
+: +fj_0_3_Pu10m  "  \"type boolean j1.pu10m_fj 300 <=\"" >> ; // allow 30% of (j.)Pu10m
+: +fj_0_6_Pu10m  "  \"type boolean j1.pu10m_fj 600 <=\"" >> ; // allow 60% of (j.)Pu10m
+: +fj_0_9_Pu10m  "  \"type boolean j1.pu10m_fj 900 <=\"" >> ; // allow 90% of (j.)Pu10m
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
