@@ -40,6 +40,11 @@ namespace STORE
 
     void vParseParameters(void);
     void vParseTagSets(Word* pProcWord);
+  
+
+    void vParseAndAdd_2(void);
+
+  
 
   private:
     Footer* aFooter(void);

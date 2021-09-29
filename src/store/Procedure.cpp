@@ -56,7 +56,11 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   Procedure* pProcedure = new Procedure(pTokenVec);
   
+#ifdef WITH_PROCEDURE_2
+  pProcedure->vParseAndAdd_2();
+#else
   pProcedure->vParseAndAdd();
+#endif
   
   delete pProcedure;
 }
@@ -519,6 +523,24 @@ void Procedure::vParseTagSets(Word* pProcWord)
   }
   
 }
+
+
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+
+/*----------------------------------------------------------------------------*/
+/* add word for procedure in root dictionary                                  */
+/*----------------------------------------------------------------------------*/
+void Procedure::vParseAndAdd_2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_pTokenVec->vIntegrityCheck();
+
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
