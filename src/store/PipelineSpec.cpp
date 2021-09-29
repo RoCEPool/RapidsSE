@@ -79,9 +79,15 @@ bool PipelineSpec::bCompile(Stz*          szPipelineStmt,
          p_Scanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
       )
     return false;
+  
+  Token* pPipNmTkn = p_Scanner->pTkn(1);
   p_Scanner->vTokenAccept();
   
   Stz* szPipelineNm = p_Scanner->pTkn()->szChars();
+  
+  RASSERT(szPipelineNm->bSame(pPipNmTkn->szChars()));
+
+  
   rp_PipelineSpec =
     new PipelineSpec(szPipelineNm,
                      p_JobTags,
