@@ -23,8 +23,8 @@ namespace STORE
     PipelineSpec* m_p_ParentPipelineSpec;
   
     // optional set of nested pipelines
-    VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
-      m_oNestedPipelineSpecs;
+//    VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
+//      m_oNestedPipelineSpecs;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -52,10 +52,6 @@ namespace STORE
     void vAddStageSpec(StageSpec* pStageSpec);
     i8   iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
-    PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);
-    i8   nNestedPipelineSpecs(void);
-    PipelineSpec* pNestedPipelineSpec(i8 i_NestedPipeline);
-    PipelineSpec* pParentPipelineSpec(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 
@@ -81,7 +77,6 @@ namespace STORE
     bool bCollectOpSequence(StageSpec* p_StageSpec);
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
-    bool bCollectPipeline(void);
 
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);
@@ -102,13 +97,9 @@ namespace STORE
     void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
     void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
 
-    void vMorphToCall(OpSpec* pOpSpec, PipelineSpec* pPipelineSpecCalled);
     void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage);
 
     void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
-    void vNameIsPipeline(StageSpec*    pStageSpec,
-                         OpSpec*       pOpSpec,
-                         PipelineSpec* pPipelineSpecCalled);
     void vNameIsStage(StageSpec* pStageSpec,
                       OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);

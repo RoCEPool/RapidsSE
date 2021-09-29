@@ -163,59 +163,6 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find nested pipeline matching given name                                   */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* PipelineSpec::pFindNestedPipelineSpec(Stz* szFindNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  i8 nNested = m_oNestedPipelineSpecs.nItems();
-  for (i8 i_Nested = 0; i_Nested < nNested; i_Nested++) {
-    PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_Nested);
-    
-    if (pPipelineSpec->szPipelineNm()->bSame(szFindNm)) {
-      return pPipelineSpec;
-    }
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nested pipelines                                             */
-/*----------------------------------------------------------------------------*/
-i8 PipelineSpec::nNestedPipelineSpecs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  i8 nSpecs = m_oNestedPipelineSpecs.nItems();
-    
-  return nSpecs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get nested pipeline spec                                                   */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* PipelineSpec::pNestedPipelineSpec(i8 i_NestedPipeline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_NestedPipeline);
-    
-  return pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get parent pipeline spec                                                   */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* PipelineSpec::pParentPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-      
-  return m_p_ParentPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
 Stz* PipelineSpec::szPipelineNm(void)
@@ -311,11 +258,7 @@ bool PipelineSpec::bCollectBeginEnd(void)
   while (pTkn()->bSame("STAGE"_Stz))
     if (! bCollectStage())
       return false;
-  
-  while (pTkn()->bSame("PIPELINE"_Stz))
-    if (! bCollectPipeline())
-      return false;
-  
+    
   if (! pTkn()->bSame("END"_Stz) )
     return false;
   vTokenAccept();
@@ -493,30 +436,6 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
     
     vTokenAccept();
   }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect nested pipeline                                                    */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectPipeline(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-
-  if (! (pTkn()->bSame("PIPELINE"_Stz)) )
-    return false;
-
-  
-  PipelineSpec* p_PipelineSpecNested;
-  
-  if (!  PipelineSpec::bCompile(this,
-                                m_p_JobTags,
-                                m_p_Scanner,
-                                p_PipelineSpecNested))
-    return false;
-
-  m_oNestedPipelineSpecs.vAppend(p_PipelineSpecNested);
   
   return true;
 }
@@ -775,17 +694,8 @@ bool PipelineSpec::bPass2_staging(void)
         vNameIsStage(pStageSpec,pOpSpec,pStageSpecSend);
         continue;
       }
-      
-      //
-      // 2) is the name in the opSpec actually a nested pipeline?
-      //
-      PipelineSpec* pPipelineSpecCalled = this->pFindNestedPipelineSpec(szName);
-      if (pPipelineSpecCalled) {
-        vNameIsPipeline(pStageSpec,pOpSpec,pPipelineSpecCalled);
-        continue;
-      }
-      
-      // 3) the name in the opSpec is a known op
+            
+      // 2) the name in the opSpec is a known op
       vNameIsOp(pStageSpec,pOpSpec);
 
     } // each op
@@ -893,21 +803,6 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* morph the name of the opSpec to call ????                                  */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vMorphToCall(OpSpec* pOpSpec, PipelineSpec* pPipelineSpecCalled)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  UNUSED(pPipelineSpecCalled);
-  
-  s32 sName = pOpSpec->szOpNm();
-
-  pOpSpec->vOpNm("call"_Stz);
-
-  pOpSpec->vArgTagAdd("<nested>"_Stz,sName,TN_STRING);
-}
-
-/*----------------------------------------------------------------------------*/
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
@@ -932,19 +827,6 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
     
   pOpSpec_isOp->vCrossTopo(eCrossTopo,i_Stage,i_Op+1);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* name is a known pipeline                                                   */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsPipeline(StageSpec*    pStageSpec,
-                                   OpSpec*       pOpSpec,
-                                   PipelineSpec* pPipelineSpecCalled)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  UNUSED(pStageSpec);
-  
-  vMorphToCall(pOpSpec,pPipelineSpecCalled);
 }
 
 /*----------------------------------------------------------------------------*/
