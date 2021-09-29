@@ -146,7 +146,7 @@ void ExprEval::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* evalue the projection expression                                           */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns)
+eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -160,7 +160,7 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOu
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefIn's source columns needed for projected
 
-  eError = eCollectSourceColumns(pStreamDefIn, nullptr, nullptr, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, nullptr, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -174,9 +174,9 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOu
   // evaluate the projected expressions
 
   if (m_bHasGby)
-    eError = eExprEvalAggGby(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalAggGby(pStreamDefLft, pStreamDefOut, pTknVec);
   else
-    eError = eExprEvalProject(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalProject(pStreamDefLft, pStreamDefOut, pTknVec);
 
   L_RETRUN:
   delete pTknVec;
@@ -203,7 +203,7 @@ eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // collect all the StreamDefLft's source columns needed for the join
 
   //eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
-  eError = eCollectSourceColumns(nullptr, pStreamDefLft, nullptr, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, nullptr, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -269,7 +269,7 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   // collect all the StreamDefLft's source columns needed for the join
 
   //eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
-  eError = eCollectSourceColumns(nullptr,pStreamDefLft, pStreamDefRht, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, pStreamDefRht, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -580,7 +580,7 @@ eEC ExprEval::eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknV
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht, TokenVec* pTknVec)
+eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefRht, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -731,7 +731,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
         sOrdinalColumn = pTkn->szChars() + 2;
         i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
-        // look for the column in the streamDefIn
+        // look for the column in the streamDefLft
         i8 nColumns = pStreamDefLft->nColumns();
         if (i_ColumnOrdinal > nColumns) {
           eError = EC_INVALID_COMMAND;
@@ -754,7 +754,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
         sOrdinalColumn = pTkn->szChars() + 2;
         i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
-        // look for the column in the streamDefIn
+        // look for the column in the streamDefRht
         i8 nColumns = pStreamDefRht->nColumns();
         if (i_ColumnOrdinal > nColumns) {
           eError = EC_INVALID_COMMAND;
@@ -774,8 +774,8 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
         sOrdinalColumn = pTkn->szChars() + 1;
         i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
-        // look for the column in the streamDefIn
-        i8 nColumns = pStreamDefIn->nColumns();
+        // look for the column in the streamDefLft
+        i8 nColumns = pStreamDefLft->nColumns();
         if (i_ColumnOrdinal > nColumns) {
           eError = EC_INVALID_COMMAND;
           break;
@@ -794,8 +794,8 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
 
     if ( pTkn->bIsName()) {
       // should be a symbolic column name
-      // look for the column in the streamDefIn
-      Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+      // look for the column in the streamDefLft
+      Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
       if (! pColumn ) {
         eError = EC_INVALID_COMMAND;
         break;

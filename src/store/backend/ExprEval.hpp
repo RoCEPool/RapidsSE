@@ -119,8 +119,7 @@ namespace STORE
 
     eEC  eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
     eEC  eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec);
-    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefIn,
-                               StreamDefBase* pStreamDefLft,
+    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefLft,
                                StreamDefBase* pStreamDefRht,
                                TokenVec* pTknVec);
 
