@@ -68,22 +68,21 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile a new pipeline                                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(Stz*          szPipelineStmt,
+bool PipelineSpec::bCompile(Scanner*      pScanner,
                             TagSet*       p_JobTags,
-                            Scanner*      p_Scanner,
                             PipelineSpec*& rp_PipelineSpec)
 {
   _static_
   
-  if (! (p_Scanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         p_Scanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
+  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
       )
     return false;
   
-  Token* pPipNmTkn = p_Scanner->pTkn(1);
-  p_Scanner->vTokenAccept();
+  Token* pPipNmTkn = pScanner->pTkn(1);
+  pScanner->vTokenAccept();
   
-  Stz* szPipelineNm = p_Scanner->pTkn()->szChars();
+  Stz* szPipelineNm = pScanner->pTkn()->szChars();
   
   RASSERT(szPipelineNm->bSame(pPipNmTkn->szChars()));
 
@@ -91,16 +90,20 @@ bool PipelineSpec::bCompile(Stz*          szPipelineStmt,
   rp_PipelineSpec =
     new PipelineSpec(szPipelineNm,
                      p_JobTags,
-                     p_Scanner);
-  p_Scanner->vTokenAccept();
+                     pScanner);
+  pScanner->vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! rp_PipelineSpec->bPass1_collect())
+  if (! rp_PipelineSpec->bPass1_collect()) {
+    delete pScanner;
     return false;
+  }
    
-  if (! rp_PipelineSpec->bPass2_staging())
+  if (! rp_PipelineSpec->bPass2_staging()) {
+    delete pScanner;
     return false;
+  }
   
 //  if (gbPipelineDebug) {
 //    SP_PipelineSpec spPipelineSpec(rp_PipelineSpec);
@@ -108,6 +111,7 @@ bool PipelineSpec::bCompile(Stz*          szPipelineStmt,
 //    vDebugPoint();
 //  }
   
+  delete pScanner;
   return true;
 }
 

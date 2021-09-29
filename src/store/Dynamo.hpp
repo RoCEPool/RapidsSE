@@ -14,9 +14,8 @@ namespace STORE
     friend class STORE::PipelineSpec;
 
   private:
-    Job*          m_p_PipelineJob;       // job this dynamo is associated with
-    PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
-    Scanner*      m_pScanner;            // statement token scanner
+    Job*          m_p_PipelineJob;   // job this dynamo is associated with
+    PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
   
     // must be last
     Footer m_xFooter;
