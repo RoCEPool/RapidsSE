@@ -268,7 +268,8 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
 
-  eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
+  //eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
+  eError = eCollectSourceColumns(nullptr,pStreamDefLft, pStreamDefRht, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -276,10 +277,10 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefRht's source columns needed for the join
 
-  eError = eCollectRightColumns(pStreamDefRht, pTknVec);
+  //eError = eCollectRightColumns(pStreamDefRht, pTknVec);
 
-  if (eError != EC_NONE)
-    goto L_RETRUN;
+  //if (eError != EC_NONE)
+  //  goto L_RETRUN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the next token
@@ -761,11 +762,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
         }
 
         // already selected column ?
-        if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
+        if (!BitLib::bIsOn(m_uExprEvalColumnsRht, i_ColumnOrdinal)) {
 
           // set bit on for the column in m_uExprEvalColumns
-          BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-          m_iStreamInColumns++;
+          BitLib::vSetOn(m_uExprEvalColumnsRht, i_ColumnOrdinal);
+          m_iStreamInColumnsRht++;
         }
         continue;
       } else {
