@@ -106,6 +106,25 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
+{
+  _static_
+
+  i8 iTableNo = 1;
+
+  // extract the column name prefix upto .
+  StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+
+  // extract the table no from the column name prefix if any
+  if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
+    iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
+    iTableNo++;
+  }
+
+  // generate the new column prefix
+  StrLib::vSprint(szColPrefix, "J%d."_Stz, iTableNo);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* repair the exprEval                                                        */
@@ -1433,9 +1452,15 @@ eEC ExprEval::eExprEvalIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
 
   m_iJoinStartColumn = pStreamDefOut->m_nColumns;
 
+  // generate right table column prefix
+  s32 sColPrefix;
+  Column* pColumn = pStreamDefLft->pGetColumn(pStreamDefLft->nColumns() - 1);
+  Stz* szColumnNm = pColumn->szColNm();
+  vGenerateColPrefix(szColumnNm, sColPrefix);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add columns from StreamDefRht to StreamDefOut
-  pStreamDefOut->vAppendStreamDef(pStreamDefRht);
+  // add columns from StreamDefRht to StreamDefOut using colPrefix for right tablecolumns
+  pStreamDefOut->vAppendStreamDef(pStreamDefRht, sColPrefix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // evalute the index join columns

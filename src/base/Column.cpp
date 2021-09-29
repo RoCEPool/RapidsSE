@@ -259,6 +259,32 @@ void Column::vCopy(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void Column::vCopy(Column* pCol, Stz* sColPrefix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  m_iColumnNo       = pCol->m_iColumnNo;
+
+  m_sColumnNm       = sColPrefix;
+  m_sColumnNm.vConcat(pCol->m_sColumnNm);
+
+  m_eColumnType     = pCol->m_eColumnType;
+  m_iColumnLength   = pCol->m_iColumnLength;
+  m_iColumnScale    = pCol->m_iColumnScale;
+  m_eDatum          = pCol->m_eDatum;
+  m_bIsNullable     = pCol->m_bIsNullable;
+  m_bIsUnique       = pCol->m_bIsUnique;
+  m_bIsPtnKey       = pCol->m_bIsPtnKey;
+  m_bIsLastColumn   = pCol->m_bIsLastColumn;
+
+  _checkInitialised_(CN_COLUMN);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set datum type                                                             */
 /*----------------------------------------------------------------------------*/
 void Column::vDatum(eDM eDatum)
