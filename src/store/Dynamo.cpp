@@ -61,7 +61,8 @@ PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 
   m_pScanner->vTokenBegin(0);
       
-  if (PipelineSpec::bCompile(m_p_PipelineJob->pJobTags(),
+  if (PipelineSpec::bCompile(szPipelineStmt,
+                             m_p_PipelineJob->pJobTags(),
                              m_pScanner,                                
                              m_p_PipelineSpec_root))
     return m_p_PipelineSpec_root;

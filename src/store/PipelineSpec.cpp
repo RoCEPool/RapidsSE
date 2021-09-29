@@ -68,7 +68,8 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile a new pipeline                                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(TagSet*       p_JobTags,
+bool PipelineSpec::bCompile(Stz*          szPipelineStmt,
+                            TagSet*       p_JobTags,
                             Scanner*      p_Scanner,
                             PipelineSpec*& rp_PipelineSpec)
 {
