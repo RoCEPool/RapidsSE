@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* pp_std_last.sen -- standard last procedure                                 */
+/* pp_std_start.sen -- standard start stage                                   */
 /*============================================================================*/
 
-" pp_std_last.sen" .verbose
+" pp_std_start.sen" .verbose
   
   STD_PATH_TAG
   "
-  procedure std_last
-    tags <as_last>
+  procedure std_start
+    tag <as_first> = 1 endTag
   begin
 
-    stage ZZZ on origin :
+    stage stageStart on origin :
     
-        output
-      | sink
-      | first
+        start
+      | pulse once
+      | next
 
   end ;
   "
