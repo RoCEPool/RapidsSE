@@ -29,7 +29,6 @@ __aFooterFunction(PipelineSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
-                           PipelineSpec* p_ParentPipelineSpec,
                            TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
 : ListNL_t<StageSpec>(CN_PIPELINESPEC)
@@ -38,11 +37,7 @@ PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
-  
-  m_p_ParentPipelineSpec = p_ParentPipelineSpec;
-  
-  // m_oNestedPipeline
-  
+      
   m_p_Scanner = p_Scanner;
   m_p_JobTags = p_JobTags;
 
@@ -73,8 +68,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile a new pipeline                                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
-                            TagSet*       p_JobTags,
+bool PipelineSpec::bCompile(TagSet*       p_JobTags,
                             Scanner*      p_Scanner,
                             PipelineSpec*& rp_PipelineSpec)
 {
@@ -89,14 +83,10 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
   Stz* szPipelineNm = p_Scanner->pTkn()->szChars();
   rp_PipelineSpec =
     new PipelineSpec(szPipelineNm,
-                     p_ParentPipelineSpec,
                      p_JobTags,
                      p_Scanner);
   p_Scanner->vTokenAccept();
   
-  if (szPipelineNm->bSame("nestTest"_Stz))
-    gbPipelineDebug = true;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! rp_PipelineSpec->bPass1_collect())
@@ -127,19 +117,6 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   vAppend(pStageSpec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* recursively compute depth of this pipeline spec                            */
-/*----------------------------------------------------------------------------*/
-i8 PipelineSpec::iDepth(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  if (! m_p_ParentPipelineSpec)
-    return 0;
-  
-  return 1 + m_p_ParentPipelineSpec->iDepth();
 }
 
 /*----------------------------------------------------------------------------*/

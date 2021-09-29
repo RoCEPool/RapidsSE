@@ -19,13 +19,7 @@ namespace STORE
 
   private:
     s32  m_sPipelineNm;    // pipeline name
-
-    PipelineSpec* m_p_ParentPipelineSpec;
-  
-    // optional set of nested pipelines
-//    VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
-//      m_oNestedPipelineSpecs;
-  
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     TagSet*  m_p_JobTags; // job tag set
@@ -39,18 +33,15 @@ namespace STORE
     void  operator delete(void*);
   
     PipelineSpec(Stz*          szPipelineNm,
-                 PipelineSpec* p_ParentPipelineSpec,
                  TagSet*       p_JobTags,
                  Scanner*      p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
-    static bool bCompile(PipelineSpec* p_ParentPipelineSpec,
-                         TagSet*       p_JobTags,
+    static bool bCompile(TagSet*       p_JobTags,
                          Scanner*      p_Scanner,
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    i8   iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);

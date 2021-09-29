@@ -57,7 +57,7 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
   SP_StageSpec spStageSpec;
   SP_OpSpec spOpSpec;
 
-  i8 iDepth = pPipelineSpec->iDepth();
+  i8 iDepth = 0;
 
   vInit();
   
