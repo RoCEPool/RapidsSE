@@ -218,6 +218,21 @@ void CteDef::vAddColumnDef(QueryNode *pNode, QueryNode *pColumnDef)
   pColumnsNode->vAppendChild(pColumnDef);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return the first column definition                                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* CteDef::pFirstColumnDef(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnsNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  ASSERT(pColumnsNode);
+
+  QueryNode* pFirstChild = _pQueryNode(pColumnsNode->pFirstChild());
+  ASSERT(pFirstChild);
+
+  return pFirstChild;
+}
 
 /*============================================================================*/
 /* end                                                                        */
