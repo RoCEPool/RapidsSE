@@ -27,6 +27,8 @@ Scanner::Scanner(Stz* szStatement)
   
   _checkInitialised_(CN_SCANNER);
   
+  vTokenBegin(0);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
 }
 

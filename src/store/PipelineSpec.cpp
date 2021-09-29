@@ -92,13 +92,7 @@ bool PipelineSpec::bCompile(Stz*          szPipelineNm,
     delete pScanner;
     return false;
   }
-  
-//  if (gbPipelineDebug) {
-//    SP_PipelineSpec spPipelineSpec(rp_PipelineSpec);
-//    vTrace("\n\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
-//    vDebugPoint();
-//  }
-  
+    
   delete pScanner;
   return true;
 }

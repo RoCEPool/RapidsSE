@@ -56,25 +56,25 @@ PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
   Scanner* pScanner = new Scanner(szPipelineStmt);
-
-  pScanner->vTokenBegin(0);
-  
-  
   
   if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
-      )
+         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
+    delete pScanner;
     return nullptr;
-
+  }
+  
   Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   
       
+  
   if (PipelineSpec::bCompile(szPipelineNm,
                              pScanner,
                              m_p_PipelineJob->pJobTags(),
                              m_p_PipelineSpec))
     return m_p_PipelineSpec;
+  
+  
   
   m_p_PipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_p_PipelineSpec,
                                         CN_DYNAMO,this,(Stz*)__func__);
