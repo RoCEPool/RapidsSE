@@ -117,8 +117,6 @@ namespace STORE
 
     void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
 
-    eEC  eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
-    eEC  eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec);
     eEC  eCollectSourceColumns(StreamDefBase* pStreamDefLft,
                                StreamDefBase* pStreamDefRht,
                                TokenVec* pTknVec);
@@ -160,6 +158,8 @@ namespace STORE
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
 
+    void vSelectLftColumn(i8 i_ColumnOrdinal);
+    void vSelectRhtColumn(i8 i_ColumnOrdinal);
 
     Footer* aFooter(void);
   };
