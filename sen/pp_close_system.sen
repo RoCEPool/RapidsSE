@@ -7,25 +7,29 @@
   STD_PATH_TAG
   "
   procedure close system
+  
+    tag <include_0> = \"std_start\" endTag
+    tag <include_1> = \"std_output\" endTag
+
   begin
 
-    stage stageA on origin :
-    
-        start
-      | pulse once
-      | stageB
+//    stage stageA on origin :
+//
+//        start
+//      | pulse once
+//      | stageB
 
-    stage stageB on all nodes :
+    stage unnamed on all nodes :
     
         sysClose
-      | stageC
+      | next
 
-    stage stageC on origin :
-    
-        sysClosed
-      | output
-      | sink
-      | stageA
+//    stage stageC on origin :
+//
+//        sysClosed
+//      | output
+//      | sink
+//      | stageA
 
   end ;
   "
