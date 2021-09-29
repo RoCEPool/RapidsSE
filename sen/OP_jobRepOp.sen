@@ -9,15 +9,33 @@
 /*----------------------------------------------------------------------------*/
 : jobRepOp_report
   
-  <jobno> >int jobReport::report
+  0 locals| eError |
 
-  "__eventDemon" find dup if
-    word.object@
-    pipeline.pipeout
-  else
-    discard discard
+  Tub[].new
+
+  Tub[] <jobno> >int jobReport::report to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
   then
 
+  "__eventDemon" find dup if
+    word.object@ locals| eventDemon |
+
+    eventDemon Tub[].pipeToJob
+
+  else
+
+    discard
+
+    // delete all buffers in the TUB
+    Tub[].deleteAllBuffers
+
+  then
+
+  Tub[].delete
 
   ZK_M_DATAPULSE_handler
 ;
