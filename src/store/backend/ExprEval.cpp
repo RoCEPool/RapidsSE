@@ -850,7 +850,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
   Token* pTkn = pTknVec->pCurrToken();
 
   // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
   pColumnExpr->vColumnNm(sColumnNm);
 
   bool bPushedLocal = false;
@@ -899,7 +899,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       eAggType = AG_NONE;
 
       m_iProjectColumn++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
@@ -2020,7 +2020,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new columnExpr with col1 as the name
   Column *pColumnExpr =  new Column;
-  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
   pColumnExpr->vColumnNm(sColumnNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2047,7 +2047,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
 
       // move to next projected column
       m_iProjectColumn++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
