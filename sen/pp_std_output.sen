@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* pp_std_first.sen -- standard first procedure                               */
+/* pp_std_output.sen -- standard output stage                                 */
 /*============================================================================*/
 
-" pp_std_first.sen" .verbose
+" pp_std_output.sen" .verbose
   
   STD_PATH_TAG
   "
-  procedure std_first
-    tags <as_first>
+  procedure std_output
+    tag <as_last> = 1 endTag
   begin
 
-    stage stageA on origin :
+    stage stageOutput on origin :
     
-        start
-      | pulse once
-      | next
+        output
+      | sink
+      | first
 
   end ;
   "
