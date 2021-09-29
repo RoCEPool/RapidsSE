@@ -928,6 +928,74 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnOrdinal
 
+// Path: /__root__/definitions/object/expr/columnParameter
+                {
+                  name: "columnParameter",
+                  value: "A reference to a correlated column in an outer subquery by its parameter number (1-based)",
+                  properties: [
+                    {
+                      name: "columnExpr",
+                      value: "The column expression that this columnParameter refers to. Usually a columnRef, but could be an aliasRef",
+                      type: "/__root__/definitions/object/expr"
+                    },
+                    // The value field of an instance of a columnParameter object must be an integer type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [{
+                          name: "valueTypeParam",
+                          value: "/__root__/primitives/types/scalarType/integer",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        }]
+                      }
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnParameter
+
+// Path: /__root__/definitions/object/expr/subqueryExpr
+                {
+                  name: "subqueryExpr",
+                  value: "A node that acts like an expression but internally wraps a subquery",
+                  properties: [
+                    {
+                      // Where the definition of this expression subquery may be found. Could be null temporarily.
+                      // This is necessary because an expression subquery can itself contain subqueries, so this
+                      // provides the necessary nesting for its metadata.
+                      name: "defnPath",
+                      value: "The full path to the definition of this subquery",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      name: "correlatedExprs",
+                      value: "A list of expressions in this subquery that are correlated to a parent subquery",
+                      type: "/__root__/definitions/object/list/exprList"
+                    },
+                    {
+                      // Add a constraint that children of a subqueryExpr object must be
+                      // either a tableSubquery or a mainSubquery
+                      name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type: "/__root__/primitives/constraints/childType",
+                        children: [
+                          {
+                            name: "childTypeParam1",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
+                          },
+                          {
+                            name: "childTypeParam2",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                          }
+                        ]
+                      }]
+                    }
+
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/subqueryExpr
+
 // Path: /__root__/definitions/object/expr/literal
                 {
                   name: "literal",

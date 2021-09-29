@@ -35,6 +35,8 @@ namespace Parser
     static i8 nColumns(QueryNode* pNode);
     static void vAddColumnDef(QueryNode* pNode, QueryNode* pColumnDef);
 
+    // Return the first column definition
+    static QueryNode* pFirstColumnDef(QueryNode* pNode);
   };
 
 }
