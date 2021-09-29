@@ -31,10 +31,19 @@ Procedure::Procedure(TokenVec* pTokenVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
   m_pProcWord = nullptr;
+  m_pTagSet   = nullptr;
   
   m_pTokenVec = pTokenVec;
+  m_nTokens = m_pTokenVec->nItems();
+
+  m_i_Tkn = 0;
+  m_pToken = m_pTokenVec->pGet(m_i_Tkn);
+  m_pProcNmToken = nullptr;
   
   _checkInitialised_(CN_PROCEDURE);
+  
+  m_pTokenVec->vIntegrityCheck();
+
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 }
@@ -57,7 +66,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   Procedure* pProcedure = new Procedure(pTokenVec);
   
 #ifdef WITH_PROCEDURE_2
-  pProcedure->vParseAndAdd_2();
+  pProcedure->bParseAndAdd_2();
 #else
   pProcedure->vParseAndAdd();
 #endif
@@ -531,16 +540,221 @@ void Procedure::vParseTagSets(Word* pProcWord)
 
 
 /*----------------------------------------------------------------------------*/
-/* add word for procedure in root dictionary                                  */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Procedure::vParseAndAdd_2(void)
+bool Procedure::bParseAndAdd_2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  if (! bParse_Procedure()) return false;
+  
+  vAddProcedureWord();
+  
+  if (! bParse_Name())      return false;
+  if (! bParse_Tags())      return false;
+  if (! bParse_Begin())     return false;
+  if (! bParse_TagList())   return false;
+  if (! bParse_SemiColon()) return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_Procedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
-  m_pTokenVec->vIntegrityCheck();
+  if (! m_pToken->bSame("procedure"_Stz))
+    return false;
+  
+  if (! bAdvanceToken())
+    return false;
 
+  return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* parse name of procedure (maybe two or three parts)                         */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_Name(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_sProcNm = m_pToken->szChars();
+  
+  if (! bAdvanceToken())
+    return false;
+
+  // two part name
+  
+  if (m_pToken->bSame("tags"_Stz)       ||
+      m_pToken->bSame("parameters"_Stz) ||
+      m_pToken->bSame("begin"_Stz)        )
+    return true;
+  
+  m_sProcNm.vConcat("__"_Stz);
+  m_sProcNm.vConcat(m_pToken->szChars());
+  
+  if (! bRemoveToken())
+    return false;
+  vUpdateProcNmToken();
+  
+  // three part name
+
+  if (m_pToken->bSame("tags"_Stz)       ||
+      m_pToken->bSame("parameters"_Stz) ||
+      m_pToken->bSame("begin"_Stz)        )
+    return true;
+
+  m_sProcNm.vConcat("__"_Stz);
+  m_sProcNm.vConcat(m_pToken->szChars());
+  
+  if (! bRemoveToken())
+    return false;
+  vUpdateProcNmToken();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_Tags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse optional parameters                                                  */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_Parameters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  if (! m_pToken->bSame("parameters"_Stz))
+    return true;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_Begin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  if (! m_pToken->bSame("begin"_Stz))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_TagList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* should see a semicolon                                                     */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bParse_SemiColon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  if (! m_pToken->bSame(";"_Stz))
+    return false;
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add procedure word                                                         */
+/*----------------------------------------------------------------------------*/
+void Procedure::vAddProcedureWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  
+  m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
+  
+  if (m_pProcWord) {
+    m_pTagSet = m_pProcWord->pWrdTagSet(true);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pProcWord = new (pDicRoot) Word(m_sProcNm);
+  
+  m_pProcWord->vCategory(pProcCatg);
+  
+  m_pTagSet = m_pProcWord->pWrdTagSet(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next token                                                      */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bAdvanceToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  m_i_Tkn++;
+  
+  if (m_i_Tkn >= m_nTokens)
+    return false;
+  
+  m_pToken = m_pTokenVec->pGet(m_i_Tkn);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove current token from token vector; adjust cursor                      */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bRemoveToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  m_pTokenVec->vRemoveToken(m_i_Tkn);
+  
+  m_pTokenVec->vIntegrityCheck();
+  
+  m_nTokens = m_pTokenVec->nItems();
+  
+  if (m_i_Tkn >= m_nTokens)
+    return false;
+
+  m_pToken = m_pTokenVec->pGet(m_i_Tkn);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update token of multi-part name                                            */
+/*----------------------------------------------------------------------------*/
+void Procedure::vUpdateProcNmToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  m_pProcNmToken->vUpdateChars(m_sProcNm,m_pTokenVec);
+}
 
 /*============================================================================*/
 /* end                                                                        */
