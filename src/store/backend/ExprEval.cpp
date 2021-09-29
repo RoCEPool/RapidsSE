@@ -202,7 +202,8 @@ eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
 
-  eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
+  //eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
+  eError = eCollectSourceColumns(nullptr, pStreamDefLft, nullptr, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -712,6 +713,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // set bit for ordinal columns not already encountered
     if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+      // skip index column
+      if (pTkn->szChars()->bContains("I"_Stz)) {
+        continue;
+      }
 
       // ignore if column ordinal relative to the group by key
       if (pTkn->szChars()->bContains("K"_Stz))
