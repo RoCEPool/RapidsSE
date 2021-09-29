@@ -57,6 +57,7 @@ namespace STORE
     bool bParse_TagList(void);
     bool bParse_SemiColon(void);
   
+    void vAddProcedureText(void);
     void vAddProcedureWord(void);
     bool bAdvanceToken(void);
     bool bRemoveToken(void);

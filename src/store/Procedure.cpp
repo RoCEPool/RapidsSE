@@ -66,11 +66,12 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   Procedure* pProcedure = new Procedure(pTokenVec);
   
 #ifdef WITH_PROCEDURE_2
-  pProcedure->bParseAndAdd_2();
 #else
-  pProcedure->vParseAndAdd();
 #endif
   
+  //pProcedure->vParseAndAdd();
+  pProcedure->bParseAndAdd_2();
+
   delete pProcedure;
 }
 
@@ -386,6 +387,13 @@ void Procedure::vParseAndAdd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
+  
+  s4K sProc;
+  
+  m_pTokenVec->vToTknString(sProc);
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
+    vTrace("%s\n"_Stz,sProc.azChar());
+
   m_pTokenVec->vIntegrityCheck();
   
   Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
@@ -449,6 +457,9 @@ void Procedure::vParseAndAdd(void)
 
   m_pTokenVec->vVecToString(m_sProcText,0,false);
   
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
+    vTrace("%s\n"_Stz,m_sProcText.azChar());
+
   m_pProcWord->pWrdTagSet()->vInsert("procText"_Stz,m_sProcText);
 }
 
@@ -546,15 +557,24 @@ bool Procedure::bParseAndAdd_2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
   
-  if (! bParse_Procedure()) return false;
+  s4K sProc;
   
+  m_pTokenVec->vToTknString(sProc);
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
+    vTrace("%s\n"_Stz,sProc.azChar());
+  
+  if (! bParse_Procedure())  NEVER_REACH; //return false;
+  if (! bParse_Name())       NEVER_REACH; //return false;
+
   vAddProcedureWord();
   
-  if (! bParse_Name())      return false;
-  if (! bParse_Tags())      return false;
-  if (! bParse_Begin())     return false;
-  if (! bParse_TagList())   return false;
-  if (! bParse_SemiColon()) return false;
+  if (! bParse_Tags())       NEVER_REACH; //return false;
+  if (! bParse_Parameters()) NEVER_REACH; //return false;
+  if (! bParse_Begin())      NEVER_REACH; //return false;
+  if (! bParse_TagList())    NEVER_REACH; //return false;
+  if (! bParse_SemiColon())  NEVER_REACH; //return false;
+  
+  vAddProcedureText();
   
   return true;
 }
@@ -566,7 +586,8 @@ bool Procedure::bParse_Procedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
-  if (! m_pToken->bSame("procedure"_Stz))
+  if (! (m_pToken->bSame("procedure"_Stz) ||
+         m_pToken->bSame("procedureLocal"_Stz)))
     return false;
   
   if (! bAdvanceToken())
@@ -582,6 +603,7 @@ bool Procedure::bParse_Name(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
+  m_pProcNmToken = m_pToken;
   m_sProcNm = m_pToken->szChars();
   
   if (! bAdvanceToken())
@@ -625,6 +647,25 @@ bool Procedure::bParse_Tags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
+  if (! m_pToken->bSame("tags"_Stz))
+    return true;
+
+  if (! bRemoveToken())
+    return false;
+  
+  for (;;) {
+    
+    if (m_pToken->bSame("parameters"_Stz) ||
+        m_pToken->bSame("begin"_Stz)        )
+      break;
+
+    m_pTagSet->vInsert(m_pToken->szChars());
+    
+    if (! bRemoveToken())
+      return false;
+    
+  }
+  
   return true;
 }
 
@@ -638,6 +679,21 @@ bool Procedure::bParse_Parameters(void)
   if (! m_pToken->bSame("parameters"_Stz))
     return true;
   
+  if (! bAdvanceToken())
+    return false;
+
+  for (;;) {
+    
+    if (m_pToken->bSame("begin"_Stz))
+      break;
+    
+    m_pTagSet->vInsert(m_pToken->szChars());
+
+    if (! bAdvanceToken())
+      return false;
+
+  }
+  
   return true;
 }
 
@@ -650,6 +706,17 @@ bool Procedure::bParse_Begin(void)
 
   if (! m_pToken->bSame("begin"_Stz))
     return false;
+
+  for (;;) {
+
+    if (m_pToken->bSame("end"_Stz))
+      break;
+    
+    if (! bAdvanceToken())
+      return false;
+  }
+
+  IGNORE_RETURN(bAdvanceToken());
 
   return true;
 }
@@ -671,9 +738,16 @@ bool Procedure::bParse_SemiColon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
   
-  if (! m_pToken->bSame(";"_Stz))
-    return false;
+  //if (! m_pToken->bSame(";"_Stz))
+  //  return false;
   
+  // should be no more tokens
+  //if (bAdvanceToken())
+  //  return false;
+
+  while (m_pToken)
+    bAdvanceToken();
+
   return true;
 }
 
@@ -682,12 +756,29 @@ bool Procedure::bParse_SemiColon(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add procedure text                                                         */
+/*----------------------------------------------------------------------------*/
+void Procedure::vAddProcedureText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+  
+  m_pTokenVec->vVecToString(m_sProcText,0,false);
+  
+  if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
+    vTrace("%s\n"_Stz,m_sProcText.azChar());
+
+  m_pTagSet->vInsert("procText"_Stz,m_sProcText);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add procedure word                                                         */
 /*----------------------------------------------------------------------------*/
 void Procedure::vAddProcedureWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
   
+  //vTrace("%s\n"_Stz,m_sProcNm.azChar());
+
   Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
@@ -717,8 +808,10 @@ bool Procedure::bAdvanceToken(void)
 
   m_i_Tkn++;
   
-  if (m_i_Tkn >= m_nTokens)
+  if (m_i_Tkn >= m_nTokens) {
+    m_pToken = nullptr;
     return false;
+  }
   
   m_pToken = m_pTokenVec->pGet(m_i_Tkn);
   
