@@ -569,9 +569,9 @@ bool Procedure::bParseAndAdd_2(void)
   vAddProcedureWord();
   
   if (! bParse_Tags())       NEVER_REACH; //return false;
+  if (! bParse_TagList())    NEVER_REACH; //return false;
   if (! bParse_Parameters()) NEVER_REACH; //return false;
   if (! bParse_Begin())      NEVER_REACH; //return false;
-  if (! bParse_TagList())    NEVER_REACH; //return false;
   if (! bParse_SemiColon())  NEVER_REACH; //return false;
   
   vAddProcedureText();
@@ -612,6 +612,7 @@ bool Procedure::bParse_Name(void)
   // two part name
   
   if (m_pToken->bSame("tags"_Stz)       ||
+      m_pToken->bSame("tag"_Stz)        ||
       m_pToken->bSame("parameters"_Stz) ||
       m_pToken->bSame("begin"_Stz)        )
     return true;
@@ -626,6 +627,7 @@ bool Procedure::bParse_Name(void)
   // three part name
 
   if (m_pToken->bSame("tags"_Stz)       ||
+      m_pToken->bSame("tag"_Stz)        ||
       m_pToken->bSame("parameters"_Stz) ||
       m_pToken->bSame("begin"_Stz)        )
     return true;
@@ -655,7 +657,8 @@ bool Procedure::bParse_Tags(void)
   
   for (;;) {
     
-    if (m_pToken->bSame("parameters"_Stz) ||
+    if (m_pToken->bSame("tag"_Stz)        ||
+        m_pToken->bSame("parameters"_Stz) ||
         m_pToken->bSame("begin"_Stz)        )
       break;
 
@@ -722,11 +725,46 @@ bool Procedure::bParse_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* parse 0 or more: tag <tagNm> = val endTag                                  */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bParse_TagList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
+
+  if (! m_pToken->bSame("tag"_Stz))
+    return true;
+  if (! bAdvanceToken())
+    return false;
+
+  for (;;) {
+
+    // <tagNm>
+    s32 sTagNm = m_pToken->szChars();
+    if (! bAdvanceToken())
+      return false;
+
+    // =
+    if (! m_pToken->bSame("="_Stz))
+      return false;
+    if (! bAdvanceToken())
+      return false;
+
+    // value
+    sSTMT sTagValue = m_pToken->szChars();
+    m_pTagSet->vInsert(sTagNm,sTagValue);
+    if (! bAdvanceToken())
+      return false;
+
+    if (! m_pToken->bSame("endtag"_Stz))
+      return false;
+    if (! bAdvanceToken())
+      return false;
+    
+    if (! m_pToken->bSame("tag"_Stz))
+      break;
+    if (! bAdvanceToken())
+      return false;
+  }
 
   return true;
 }
