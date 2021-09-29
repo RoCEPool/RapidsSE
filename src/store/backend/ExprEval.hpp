@@ -119,7 +119,10 @@ namespace STORE
 
     eEC  eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
     eEC  eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec);
-    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknVec);
+    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefIn,
+                               StreamDefBase* pStreamDefLft,
+                               StreamDefBase* pStreamDefRht,
+                               TokenVec* pTknVec);
 
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
