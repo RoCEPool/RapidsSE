@@ -8,12 +8,17 @@ namespace STORE
   class Procedure : public Object
   {
   private:
-    s32   m_sProcNm;
+    s32     m_sProcNm;
   
-    Word* m_pProcWord;
+    Word*   m_pProcWord;
+    TagSet* m_pTagSet;
+    s4K     m_sProcText;
+  
+    i8      m_i_Tkn;
+    Token*  m_pToken;
+    Token*  m_pProcNmToken;
 
-    s4K   m_sProcText;
-  
+    i8        m_nTokens;
     TokenVec* m_pTokenVec;
 
     // always last
@@ -28,19 +33,36 @@ namespace STORE
 
     static void  vAddProcedure(TokenVec* pTokenVec);
 
-    static Word* pFindProcedure(TokenVec* pCmdTokenVec);
 
-    static bool  bTranslateProcedure(String* pToPipelineStmt,
-                                     TokenVec* pCmdTokenVec,
-                                     Word* pProcWord);
+    static bool  bTranslateToPipeline(String* pToPipelineStmt,
+                                      TokenVec* pTokenVec);
 
   private:
-  
+
+    static Word* pFindProcedure(TokenVec* pTokenVec);
+
     void vParseAndAdd(void);
 
     void vParseParameters(void);
     void vParseTagSets(Word* pProcWord);
+  
 
+    bool bParseAndAdd_2(void);
+
+    bool bParse_Procedure(void);
+    bool bParse_Name(void);
+    bool bParse_Tags(void);
+    bool bParse_Parameters(void);
+    bool bParse_Begin(void);
+    bool bParse_TagList(void);
+    bool bParse_SemiColon(void);
+  
+    void vAddProcedureText(void);
+    void vAddProcedureWord(void);
+    bool bAdvanceToken(void);
+    bool bRemoveToken(void);
+    void vUpdateProcNmToken();
+  
   private:
     Footer* aFooter(void);
   };
