@@ -43,6 +43,18 @@ Path[].root
 : Pu1m   "Pu1m"   ;
 : Pu10m  "Pu10m"  ;
 
+: t:Pu10k  "Pu10k"  ;
+: t:Pu100k "Pu100k" ;
+: t:Pu1m   "Pu1m"   ;
+: t:Pu10m  "Pu10m"  ;
+
+: j:Pu10k  "Pu10k"  ;
+: j:Pu100k "Pu100k" ;
+: j:Pu1m   "Pu1m"   ;
+: j:Pu10m  "Pu10m"  ;
+
+
+
 : +Pu10k  " " >> Pu10k  >> ;
 : +Pu100k " " >> Pu100k >> ;
 : +Pu1m   " " >> Pu1m   >> ;
@@ -374,10 +386,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
                          
-  t(Pu10k)     +scan +Pu10k  nl                                Pu10k  pu_tFilter
-//t(Pu100k)    +scan +Pu100k nl                                Pu100k pu_tFilter
-//t(Pu1m)      +scan +Pu1m   nl                                Pu1m   pu_tFilter
-//t(Pu10m)     +scan +Pu10m  nl                                Pu10m  pu_tFilter
+  t(Pu10k)     +scan +Pu10k  nl                              t:Pu10k  pu_tFilter
+//t(Pu100k)    +scan +Pu100k nl                              t:Pu100k pu_tFilter
+//t(Pu1m)      +scan +Pu1m   nl                              t:Pu1m   pu_tFilter
+//t(Pu10m)     +scan +Pu10m  nl                              t:Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/
