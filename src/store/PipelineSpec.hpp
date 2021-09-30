@@ -105,6 +105,8 @@ namespace STORE
     //
     bool bPass3_includes(void);
     bool bPass3_include(Stz* szIncludePipNm);
+    bool bPass3_includeFirst(void);
+    bool bPass3_includeLast(void);
 
     //
     // token scanning

@@ -1006,11 +1006,43 @@ bool PipelineSpec::bPass3_include(Stz* szIncludePipNm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (pWrdTagSet->bHasName("<as_first>"_Stz)) {
+    bool b = bPass3_includeFirst();
+  }
+  else
+  if (pWrdTagSet->bHasName("<as_last>"_Stz)) {
+    bool b = bPass3_includeLast();
+  }
+  else {
+    NEVER_REACH;
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   delete pIncludeTknVec;
   
   return true;
 }
   
+/*----------------------------------------------------------------------------*/
+/* include a stage from another pipeline as a first stage                     */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includeFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* include a stage from another pipeline as a last stage                      */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includeLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /*                            Token Scanning                                  */
 /*----------------------------------------------------------------------------*/
