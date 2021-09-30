@@ -200,16 +200,6 @@ i8 OpSpec::iOtherOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_OtherOp                                                        */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherOp(i8 i_OtherOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_OtherOp = i_OtherOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_OtherStage                                                         */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iOtherStage(void)
@@ -222,11 +212,12 @@ i8 OpSpec::iOtherStage(void)
 /*----------------------------------------------------------------------------*/
 /* set the m_i_OtherStage                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherStage(i8 i_OtherStage)
+void OpSpec:: vOtherStageOp(i8 i_OtherStage, i8 i_OtherOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_i_OtherStage = i_OtherStage;
+  m_i_OtherOp = i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/

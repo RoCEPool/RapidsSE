@@ -55,9 +55,8 @@ namespace STORE
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     i8   iOtherOp(void);
-    void vOtherOp(i8 i_OtherOp);
     i8   iOtherStage(void);
-    void vOtherStage(i8 i_OtherStage);
+    void vOtherStageOp(i8 i_OtherStage,i8 i_OtherOp);
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);

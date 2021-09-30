@@ -922,8 +922,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
   pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
                           CN_PIPELINESPEC,this,(Stz*)__func__);
 
-  pOpSpecSend->vOtherStage(i_NextStage);
-  pOpSpecSend->vOtherOp(0);
+  pOpSpecSend->vOtherStageOp(i_NextStage,0);
 
   // insert a consume op at the beginning of the stage
   vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
