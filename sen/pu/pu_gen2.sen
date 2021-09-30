@@ -112,6 +112,12 @@ Path[].root
 : g:100    "g(100)"    string5[].set ;
 : g:1000   "g(1000)"   string5[].set ;
 
+
+: g(1)      1 >c5 "g(1)"      string5[].set ;
+: g(10)     2 >c5 "g(10)"     string5[].set ;
+: g(100)    3 >c5 "g(100)"    string5[].set ;
+: g(1000)   4 >c5 "g(1000)"   string5[].set ;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 : +ft_0_1_Pu10k  " \"type boolean pu10k_ft 100 <=\"" >> ; // allow 10% of (t.)Pu10K
@@ -328,14 +334,14 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
   
-  1 >c5 g:1    s +aggreg +fx( agg t __ j     __ )fx
-                         +fx( gby j __ 1g    __ )fx nl               pu_pipeline
-  2 >c5 g:10   s +aggreg +fx( agg t __ j     __ )fx
-                         +fx( gby j __ 10g   __ )fx nl               pu_pipeline
-  3 >c5 g:100  s +aggreg +fx( agg t __ j     __ )fx
-                         +fx( gby j __ 100g  __ )fx nl               pu_pipeline
-  4 >c5 g:1000 s +aggreg +fx( agg t __ j     __ )fx
-                         +fx( gby j __ 1000g __ )fx nl               pu_pipeline
+  g(1)     s +aggreg +fx( agg t __ j     __ )fx
+                     +fx( gby j __ 1g    __ )fx nl                   pu_pipeline
+  g(10)    s +aggreg +fx( agg t __ j     __ )fx
+                     +fx( gby j __ 10g   __ )fx nl                   pu_pipeline
+  g(100)   s +aggreg +fx( agg t __ j     __ )fx
+                     +fx( gby j __ 100g  __ )fx nl                   pu_pipeline
+  g(1000)  s +aggreg +fx( agg t __ j     __ )fx
+                     +fx( gby j __ 1000g __ )fx nl                   pu_pipeline
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -343,10 +349,11 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_jFilter params| j t s |
 
-  fj(0.1)      s +filter +fx( fj_0_1 j __ )fx nl                   t j pu_agggby
-  fj(0.3)      s +filter +fx( fj_0_3 j __ )fx nl                   t j pu_agggby
-  fj(0.6)      s +filter +fx( fj_0_6 j __ )fx nl                   t j pu_agggby
-  fj(0.9)      s +filter +fx( fj_0_9 j __ )fx nl                   t j pu_agggby
+  //  part     op                                            args     next
+  fj(0.1)      s +filter +fx( fj_0_1 j __ )fx nl             t j      pu_agggby
+  fj(0.3)      s +filter +fx( fj_0_3 j __ )fx nl             t j      pu_agggby
+  fj(0.6)      s +filter +fx( fj_0_6 j __ )fx nl             t j      pu_agggby
+  fj(0.9)      s +filter +fx( fj_0_9 j __ )fx nl             t j      pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -358,16 +365,16 @@ Path[].root
   
   s +join +Pu10k
     +fx( idx t __ Pu10k  __ )fx
-    +fx( key t __ Pu10k  __ )fx nl           1 >c3 j:Pu10k  t Pu10k  pu_jFilter
+    +fx( key t __ Pu10k  __ )fx nl            1 >c3 j:Pu10k  t Pu10k  pu_jFilter
 //  s +join +Pu100k
 //    +fx( idx t __ Pu100k __ )fx
-//    +fx( key t __ Pu10k  __ )fx nl           2 >c3 j:Pu100k t Pu100k pu_jFilter
+//    +fx( key t __ Pu10k  __ )fx nl          2 >c3 j:Pu100k t Pu100k pu_jFilter
 //  s +join +Pu1m
 //    +fx( idx t __ Pu1m   __ )fx
-//    +fx( key t __ Pu1m   __ )fx nl           3 >c3 j:Pu1m   t Pu1m   pu_jFilter
+//    +fx( key t __ Pu1m   __ )fx nl          3 >c3 j:Pu1m   t Pu1m   pu_jFilter
 //  s +join +Pu10m
 //    +fx( idx t __ Pu10m  __ )fx
-//    +fx( key t __ Pu10m  __ )fx nl           4 >c3 j:Pu10m  t Pu10m  pu_jFilter
+//    +fx( key t __ Pu10m  __ )fx nl          4 >c3 j:Pu10m  t Pu10m  pu_jFilter
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -375,17 +382,19 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
   
-  ft(0.1)      s +filter +fx( ft_0_1 t __ )fx nl                       t pu_join
-  ft(0.3)      s +filter +fx( ft_0_3 t __ )fx nl                       t pu_join
-  ft(0.6)      s +filter +fx( ft_0_6 t __ )fx nl                       t pu_join
-  ft(0.9)      s +filter +fx( ft_0_9 t __ )fx nl                       t pu_join
+  //  part     op                                            args     next
+  ft(0.1)      s +filter +fx( ft_0_1 t __ )fx nl             t        pu_join
+  ft(0.3)      s +filter +fx( ft_0_3 t __ )fx nl             t        pu_join
+  ft(0.6)      s +filter +fx( ft_0_6 t __ )fx nl             t        pu_join
+  ft(0.9)      s +filter +fx( ft_0_9 t __ )fx nl             t        pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append scan -- scan t                                                      */
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
-                         
+               
+  //  part     op                                            args     next
   t(Pu10k)     +scan +Pu10k  nl                              t:Pu10k  pu_tFilter
 //t(Pu100k)    +scan +Pu100k nl                              t:Pu100k pu_tFilter
 //t(Pu1m)      +scan +Pu1m   nl                              t:Pu1m   pu_tFilter
