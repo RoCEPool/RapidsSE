@@ -100,6 +100,8 @@ namespace STORE
     void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                               StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
 
+    Stz* szStageNm(i8 i_Stage);
+  
     //
     // Pass 3 : Includes
     //

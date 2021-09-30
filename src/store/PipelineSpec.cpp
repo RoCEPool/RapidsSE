@@ -795,7 +795,8 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
   
   pOpSpec->vOpNm("send"_Stz);
   
-  pOpSpec->vCrossTopo(eCrossTopo,i_NextStage,0);
+  Stz* szStgNm = szStageNm(i_NextStage);
+  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -809,7 +810,8 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   i8 i_Stage = pStageSpec->i_StageSpec();
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
     
-  pOpSpec_isOp->vCrossTopo(eCrossTopo,i_Stage,i_Op+1);
+  Stz* szStgNm = szStageNm(i_Stage);
+  pOpSpec_isOp->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
 
 }
 
@@ -869,7 +871,8 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    pPrevOpSpec->vCrossTopo(eCrossTopo, i_NextStage, 0);
+    Stz* szStgNm = szStageNm(i_NextStage);
+    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -928,6 +931,19 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
   vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get name of given stage                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* PipelineSpec::szStageNm(i8 i_Stage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  StageSpec* pStageSpec = pGet(i_Stage);
+  Stz* szNm = pStageSpec->szStageNm();
+  
+  return szNm;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                           Pass 3 : Includes                                */
