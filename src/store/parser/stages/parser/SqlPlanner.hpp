@@ -83,9 +83,12 @@ namespace Parser
     antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)                 override;
     antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                 override;
     antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
+    antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)         override;
     antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
     antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
     antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
+
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -129,7 +132,6 @@ namespace Parser
     antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *pCtx)                  override { __NOT_IMPL("TRIM")}
     antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)            override { __NOT_IMPL("EXTRACT")}
     antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *pCtx)              override { __NOT_IMPL("scalar function")}
-    antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)          override { __NOT_IMPL("subquery expression")}
     antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                      override { __NOT_IMPL("LIKE")}
     antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)          override { __NOT_IMPL("LIKE")}
     antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)  override { __NOT_IMPL("EXISTS")}

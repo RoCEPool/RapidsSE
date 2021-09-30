@@ -103,12 +103,12 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
 
   try {
-    vValidateTableAndMainSubqueries(pPlanNode, pRootNode, pMetadataNode, pSeApi);
+    vValidateTableAndMainSubqueries(pPlanNode, const_cast<Stz*>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
 
 
     // Now we want to visit expression subqueries, validate them and
     // validate any child subqueries that they might contain.
-    vValidateExprSubqueries(pPlanNode, pRootNode, pMetadataNode, pSeApi);
+    vValidateExprSubqueries(pPlanNode, const_cast<Stz*>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
 
     delete pSeApi;
 
@@ -126,11 +126,17 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 /* Validates the table subquery initially. We can't complete the validation   */
 /* until the child MainSubquery underneath this is fully validated.           */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                                    QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                                    PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                                    STORE::SeApi* pSeApi)
 {
+  ASSERT(pStartingNode);
+  ASSERT(szStartingNodePath);
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+
   // The callback lambda for qualifying table and main subqueries
-  auto fMainSubqueryVisitor = [pRootNode, pMetadataNode, pSeApi]
+  auto fMainSubqueryVisitor = [szStartingNodePath, pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
@@ -139,6 +145,11 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Pl
     if (!SubqueryMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
+
+
+    s2K sFullPath(szStartingNodePath);
+    GraphNav::bParentPath(sFullPath);
+    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
 
     QueryNode* pSubquery = _pQueryNode(pNode);
 
@@ -149,11 +160,11 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Pl
     if (TableSubquery::bIsOfType(pSubquery)) {
       switch (eWalkEvent) {
         case GraphNav::EVENT_ENTER:
-          vValidateTableSubqueryEntry(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+          vValidateTableSubqueryEntry(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
           break;
 
         case GraphNav::EVENT_EXIT:
-          vValidateTableSubqueryExit(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+          vValidateTableSubqueryExit(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
           break;
 
         default:
@@ -164,7 +175,7 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Pl
       if (eWalkEvent == GraphNav::EVENT_ENTER) {
         // We ignore exit event for main subqueries as we will fully process the main
         // subquery in one go.
-        vValidateMainSubquery(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+        vValidateMainSubquery(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
       }
 
     } else {
@@ -184,11 +195,12 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Pl
 /*----------------------------------------------------------------------------*/
 /* Walk the graph and validate expr subqueries and any subqueries they contain*/
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                            QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                            PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                            STORE::SeApi* pSeApi)
 {
   // Lambda for visiting expression subqueries.
-  auto fExprSubqueryVisitor = [pRootNode, pMetadataNode, pSeApi]
+  auto fExprSubqueryVisitor = [szStartingNodePath, pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
@@ -198,9 +210,14 @@ void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* 
       return GraphNav::WALK_CONTINUE;
     }
 
+    s2K sFullPath(szStartingNodePath);
+    GraphNav::bParentPath(sFullPath);
+    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
+
+
     // Validate this expression subquery and any subqueries it contains
     QueryNode *pExprSubquery = _pQueryNode(pNode);
-    vValidateExprSubquery(pExprSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+    vValidateExprSubquery(pExprSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
 
     return GraphNav::WALK_CONTINUE;
   };
@@ -490,7 +507,7 @@ void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSu
   // Process child table/main subqueries underneath this expression subquery to:
   //  - Validate/qualify table names
   //  - Validate/qualify column names
-  vValidateTableAndMainSubqueries(pSubqueryExprNode, pRootNode, pMetadataNode, pSeApi);
+  vValidateTableAndMainSubqueries(pSubqueryExprNode, sSubqueryExprPath.szStz(), pRootNode, pMetadataNode, pSeApi);
 
   // Populate the remaining CteDef fields (we can copy column info from the CteDef of the
   // MainSubquery child that was processed above).
@@ -1794,7 +1811,7 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
                                               PlanNode* pRootNode, QueryNode* pMetadataNode)
 {
   ASSERT(pSubqueryExprNode);
-  ASSERT(TableSubquery::bIsOfType(pSubqueryExprNode));
+  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
   ASSERT(sSubqueryExprPath.nLength() > 0);
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
