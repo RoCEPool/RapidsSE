@@ -37,11 +37,6 @@ Path[].root
 : 100g  "100g" ;
 : 1000g "1000g" ;
 
-: fj_0_1 "fj_0_1" "fj(0.1)" string4[].set ;
-: fj_0_3 "fj_0_3" "fj(0.3)" string4[].set ;
-: fj_0_6 "fj_0_6" "fj(0.6)" string4[].set ;
-: fj_0_9 "fj_0_9" "fj(0.9)" string4[].set ;
-
 // the tables
 : Pu10k  "Pu10k"  ;
 : Pu100k "Pu100k" ;
@@ -66,16 +61,32 @@ Path[].root
 : t(Pu10m)  4 to Counter1[] "t(Pu10m)"  string1[].set ;
 
 // t filters
-: ft_0_1 "ft_0_1" "ft(0.1)" string2[].set ;
-: ft_0_3 "ft_0_3" "ft(0.3)" string2[].set ;
-: ft_0_6 "ft_0_6" "ft(0.6)" string2[].set ;
-: ft_0_9 "ft_0_9" "ft(0.9)" string2[].set ;
+: ft_0_1 "ft_0_1" ;
+: ft_0_3 "ft_0_3" ;
+: ft_0_6 "ft_0_6" ;
+: ft_0_9 "ft_0_9" ;
 
 // t filters
 : ft(0.1) 1 to Counter2[] "ft(0.1)" string2[].set ;
 : ft(0.3) 2 to Counter2[] "ft(0.3)" string2[].set ;
 : ft(0.6) 3 to Counter2[] "ft(0.6)" string2[].set ;
 : ft(0.9) 4 to Counter2[] "ft(0.9)" string2[].set ;
+
+
+// j filters
+: fj_0_1 "fj_0_1" ;
+: fj_0_3 "fj_0_3" ;
+: fj_0_6 "fj_0_6" ;
+: fj_0_9 "fj_0_9" ;
+
+// j filters
+: fj(0.1) 1 to Counter4[] "ft(0.1)" string4[].set ;
+: fj(0.3) 2 to Counter4[] "ft(0.3)" string4[].set ;
+: fj(0.6) 3 to Counter4[] "ft(0.6)" string4[].set ;
+: fj(0.9) 4 to Counter4[] "ft(0.9)" string4[].set ;
+
+
+
 
 // tables as j
 : j:Pu10k  "j(Pu10k)"  string3[].set ;
@@ -322,10 +333,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_jFilter params| j t s |
 
-  s +filter +fx( fj_0_1 t __ )fx nl                         1 >c4 t j pu_agggby
-  s +filter +fx( fj_0_3 t __ )fx nl                         2 >c4 t j pu_agggby
-  s +filter +fx( fj_0_6 t __ )fx nl                         3 >c4 t j pu_agggby
-  s +filter +fx( fj_0_9 t __ )fx nl                         4 >c4 t j pu_agggby
+  fj(0.1)    s +filter +fx( fj_0_1 j __ )fx nl                     t j pu_agggby
+  fj(0.3)    s +filter +fx( fj_0_3 j __ )fx nl                     t j pu_agggby
+  fj(0.6)    s +filter +fx( fj_0_6 j __ )fx nl                     t j pu_agggby
+  fj(0.9)    s +filter +fx( fj_0_9 j __ )fx nl                     t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
