@@ -283,14 +283,14 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-  sTags sPipeline api::executeCommand
-  
-    //2discard
-     discard
-       "JobRep %v " str.format
-         STD_PATH_TAG swap api::executeCommand 2discard
-  
-  true api::reapJobs
+//  sTags sPipeline api::executeCommand
+//
+//    //2discard
+//     discard
+//       "JobRep %v " str.format
+//         STD_PATH_TAG swap api::executeCommand 2discard
+//
+//  true api::reapJobs
 ;
 
 /*----------------------------------------------------------------------------*/

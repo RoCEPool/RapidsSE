@@ -3,21 +3,21 @@
 /*============================================================================*/
 
 create table Pu1m (
-    pu1m_1m     integer not null // $1 1..1m
-  , pu1m_100k   integer not null // $2 1..100k
-  , pu1m_10k    integer not null // $3 1..10k
+    pu1m_1m     integer not null // 1..1m
+  , pu1m_100k   integer not null // 1..100k
+  , pu1m_10k    integer not null // 1..10k
     
-  , pu1m_ft     integer not null // $4 rnd(1..1000)
-  , pu1m_fj     integer not null // $5 rnd(1..1000)
+  , pu1m_ft     integer not null // rnd(1..1000)
+  , pu1m_fj     integer not null // rnd(1..1000)
     
-  , pu1m_1000g  integer not null // $6 rnd(1..1000)
-  , pu1m_100g   integer not null // $7 rnd(1..100)
-  , pu1m_10g    integer not null // $8 rnd(1..10)
-  , pu1m_1g     integer not null // $9 1
+  , pu1m_1g     integer not null // 1
+  , pu1m_10g    integer not null // rnd(1..10)
+  , pu1m_100g   integer not null // rnd(1..100)
+  , pu1m_1000g  integer not null // rnd(1..1000)
 
-  , pu1m_int    integer not null // $10
-  , pu1m_dte    date    not null // $11
-  , pu1m_str    varchar not null // $12
+  , pu1m_int    integer not null //
+  , pu1m_dte    date    not null //
+  , pu1m_str    varchar not null // ]
 );
 create index Pu1m_1m   on Pu1m (pu1m_1m);
 create index Pu1m_100k on Pu1m (pu1m_100k);
