@@ -315,17 +315,15 @@ Path[].root
 /* append aggreg -- scan | filter | join | filter | agg gby Counter5[]        */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
-
-  //j t s "pu_agggby: s=%v ; t %v j %v\n" .printf
   
-  s +aggreg +fx( agg t __ j     __ )fx
-            +fx( gby j __ 1g    __ )fx nl              1 >c5 g:1    pu_pipeline
-  s +aggreg +fx( agg t __ j     __ )fx
-            +fx( gby j __ 10g   __ )fx nl              2 >c5 g:10   pu_pipeline
-  s +aggreg +fx( agg t __ j     __ )fx
-            +fx( gby j __ 100g  __ )fx nl              3 >c5 g:100  pu_pipeline
-  s +aggreg +fx( agg t __ j     __ )fx
-            +fx( gby j __ 1000g __ )fx nl              4 >c5 g:1000 pu_pipeline
+  1 >c5 g:1    s +aggreg +fx( agg t __ j     __ )fx
+                         +fx( gby j __ 1g    __ )fx nl               pu_pipeline
+  2 >c5 g:10   s +aggreg +fx( agg t __ j     __ )fx
+                         +fx( gby j __ 10g   __ )fx nl               pu_pipeline
+  3 >c5 g:100  s +aggreg +fx( agg t __ j     __ )fx
+                         +fx( gby j __ 100g  __ )fx nl               pu_pipeline
+  4 >c5 g:1000 s +aggreg +fx( agg t __ j     __ )fx
+                         +fx( gby j __ 1000g __ )fx nl               pu_pipeline
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -333,10 +331,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_jFilter params| j t s |
 
-  fj(0.1)    s +filter +fx( fj_0_1 j __ )fx nl                     t j pu_agggby
-  fj(0.3)    s +filter +fx( fj_0_3 j __ )fx nl                     t j pu_agggby
-  fj(0.6)    s +filter +fx( fj_0_6 j __ )fx nl                     t j pu_agggby
-  fj(0.9)    s +filter +fx( fj_0_9 j __ )fx nl                     t j pu_agggby
+  fj(0.1)      s +filter +fx( fj_0_1 j __ )fx nl                   t j pu_agggby
+  fj(0.3)      s +filter +fx( fj_0_3 j __ )fx nl                   t j pu_agggby
+  fj(0.6)      s +filter +fx( fj_0_6 j __ )fx nl                   t j pu_agggby
+  fj(0.9)      s +filter +fx( fj_0_9 j __ )fx nl                   t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -365,10 +363,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
   
-  ft(0.1)    s +filter +fx( ft_0_1 t __ )fx nl                         t pu_join
-  ft(0.3)    s +filter +fx( ft_0_3 t __ )fx nl                         t pu_join
-  ft(0.6)    s +filter +fx( ft_0_6 t __ )fx nl                         t pu_join
-  ft(0.9)    s +filter +fx( ft_0_9 t __ )fx nl                         t pu_join
+  ft(0.1)      s +filter +fx( ft_0_1 t __ )fx nl                       t pu_join
+  ft(0.3)      s +filter +fx( ft_0_3 t __ )fx nl                       t pu_join
+  ft(0.6)      s +filter +fx( ft_0_6 t __ )fx nl                       t pu_join
+  ft(0.9)      s +filter +fx( ft_0_9 t __ )fx nl                       t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -376,10 +374,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
                          
-  t(Pu10k)   +scan +Pu10k  nl                                  Pu10k  pu_tFilter
-//t(Pu100k)  +scan +Pu100k nl                                  Pu100k pu_tFilter
-//t(Pu1m)    +scan +Pu1m   nl                                  Pu1m   pu_tFilter
-//t(Pu10m)   +scan +Pu10m  nl                                  Pu10m  pu_tFilter
+  t(Pu10k)     +scan +Pu10k  nl                                Pu10k  pu_tFilter
+//t(Pu100k)    +scan +Pu100k nl                                Pu100k pu_tFilter
+//t(Pu1m)      +scan +Pu1m   nl                                Pu1m   pu_tFilter
+//t(Pu10m)     +scan +Pu10m  nl                                Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/
