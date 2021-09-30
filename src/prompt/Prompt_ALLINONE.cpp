@@ -1237,7 +1237,7 @@ PromptFun __Prompt_edit (
     true,                   // enabled
 
     true,                   // visible
-    "attachMap"_Stz,        // help
+    "edit"_Stz,        // help
     ""_Stz                  // description
 );
 
@@ -1274,22 +1274,17 @@ bool PROMPT::bPrompt_edit(SePrompt* pPrompt) {
   pFile->vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // shell command to edit the file
-  s256 sShellCommand;
-  sShellCommand.vSprint("vim %s"_Stz, sFilePath.szStz());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // open file via vim
   SysCall oSysCall;
-  i8 iExitStatus = Shell::iExecute(sShellCommand.szStz(),oSysCall);
-//  if ( ! iExitStatus ) {
-//    vTrace("Unable to vim file: %s\n"_Stz,pFile->sFilePath().szStz());
-//    return false;
-//  }
+  i8 iExitStatus = Shell::iEdit(pPrompt, sFilePath.szStz(),oSysCall);
+  if ( iExitStatus != 0 ) {
+    vTrace("Unable to edit file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // open file for reading
-  bOpened = pFile->bOpenRead(sFilePath.szStz());
+  bOpened = pFile->bOpenRead(sFilePath);
   if (! bOpened) {
     vTrace("Unable to open file: %s\n"_Stz,pFile->sFilePath().szStz());
     return false;
