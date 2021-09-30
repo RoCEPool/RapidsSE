@@ -54,16 +54,16 @@ Path[].root
 : +Pu10m  " " >> Pu10m  >> ;
 
 // the ops
-: scan    "      scan"           ;
+: +scan   "      scan"           ;
 : +filter "    | filter 1"    >> ;
 : +join   "    | indexJoin 1" >> ;
 : +aggreg "    | aggreg 1"    >> ;
 
 // t tables
-: t(Pu10k)  "t(Pu10k)"  string1[].set ;
-: t(Pu100k) "t(Pu100k)" string1[].set ;
-: t(Pu1m)   "t(Pu1m)"   string1[].set ;
-: t(Pu10m)  "t(Pu10m)"  string1[].set ;
+: t(Pu10k)  1 to Counter1[] "t(Pu10k)"  string1[].set ;
+: t(Pu100k) 2 to Counter1[] "t(Pu100k)" string1[].set ;
+: t(Pu1m)   3 to Counter1[] "t(Pu1m)"   string1[].set ;
+: t(Pu10m)  4 to Counter1[] "t(Pu10m)"  string1[].set ;
 
 // t filters
 : ft_0_1 "ft_0_1" "ft(0.1)" string2[].set ;
@@ -71,6 +71,11 @@ Path[].root
 : ft_0_6 "ft_0_6" "ft(0.6)" string2[].set ;
 : ft_0_9 "ft_0_9" "ft(0.9)" string2[].set ;
 
+// t filters
+: ft(0.1) 1 to Counter2[] "ft(0.1)" string2[].set ;
+: ft(0.3) 2 to Counter2[] "ft(0.3)" string2[].set ;
+: ft(0.6) 3 to Counter2[] "ft(0.6)" string2[].set ;
+: ft(0.9) 4 to Counter2[] "ft(0.9)" string2[].set ;
 
 // tables as j
 : j:Pu10k  "j(Pu10k)"  string3[].set ;
@@ -349,24 +354,21 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
   
-//  t filter#             ???                                              t arg
-    1 to Counter2[]       s +filter +fx( ft_0_1 t __ )fx nl            t pu_join
-    2 to Counter2[]       s +filter +fx( ft_0_3 t __ )fx nl            t pu_join
-    3 to Counter2[]       s +filter +fx( ft_0_6 t __ )fx nl            t pu_join
-    4 to Counter3[]       s +filter +fx( ft_0_9 t __ )fx nl            t pu_join
+  ft(0.1)    s +filter +fx( ft_0_1 t __ )fx nl                         t pu_join
+  ft(0.3)    s +filter +fx( ft_0_3 t __ )fx nl                         t pu_join
+  ft(0.6)    s +filter +fx( ft_0_6 t __ )fx nl                         t pu_join
+  ft(0.9)    s +filter +fx( ft_0_9 t __ )fx nl                         t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
 /* append scan -- scan t                                                      */
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
-
-//  t table#         t text     /**/  scan table               t arg
-
-    1 to Counter0[]  t(Pu10k)   /**/  scan +Pu10k  nl          Pu10k  pu_tFilter
-//  2 to Counter0[]  t(Pu100k)  /**/  scan +Pu100k nl          Pu100k pu_tFilter
-//  3 to Counter0[]  t(Pu1m)    /**/  scan +Pu1m   nl          Pu1m   pu_tFilter
-//  4 to Counter0[]  t(Pu10m)   /**/  scan +Pu10m  nl          Pu10m  pu_tFilter
+                         
+  t(Pu10k)   +scan +Pu10k  nl                                  Pu10k  pu_tFilter
+//t(Pu100k)  +scan +Pu100k nl                                  Pu100k pu_tFilter
+//t(Pu1m)    +scan +Pu1m   nl                                  Pu1m   pu_tFilter
+//t(Pu10m)   +scan +Pu10m  nl                                  Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/
