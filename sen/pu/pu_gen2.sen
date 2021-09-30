@@ -37,11 +37,6 @@ Path[].root
 : 100g  "100g" ;
 : 1000g "1000g" ;
 
-: ft_0_1 "ft_0_1" "ft(0.1)" string2[].set ;
-: ft_0_3 "ft_0_3" "ft(0.3)" string2[].set ;
-: ft_0_6 "ft_0_6" "ft(0.6)" string2[].set ;
-: ft_0_9 "ft_0_9" "ft(0.9)" string2[].set ;
-
 : fj_0_1 "fj_0_1" "fj(0.1)" string4[].set ;
 : fj_0_3 "fj_0_3" "fj(0.3)" string4[].set ;
 : fj_0_6 "fj_0_6" "fj(0.6)" string4[].set ;
@@ -64,11 +59,18 @@ Path[].root
 : +join   "    | indexJoin 1" >> ;
 : +aggreg "    | aggreg 1"    >> ;
 
-// tables as t
-: t:Pu10k  "t(Pu10k)"  string1[].set ;
-: t:Pu100k "t(Pu100k)" string1[].set ;
-: t:Pu1m   "t(Pu1m)"   string1[].set ;
-: t:Pu10m  "t(Pu10m)"  string1[].set ;
+// t tables
+: t(Pu10k)  "t(Pu10k)"  string1[].set ;
+: t(Pu100k) "t(Pu100k)" string1[].set ;
+: t(Pu1m)   "t(Pu1m)"   string1[].set ;
+: t(Pu10m)  "t(Pu10m)"  string1[].set ;
+
+// t filters
+: ft_0_1 "ft_0_1" "ft(0.1)" string2[].set ;
+: ft_0_3 "ft_0_3" "ft(0.3)" string2[].set ;
+: ft_0_6 "ft_0_6" "ft(0.6)" string2[].set ;
+: ft_0_9 "ft_0_9" "ft(0.9)" string2[].set ;
+
 
 // tables as j
 : j:Pu10k  "j(Pu10k)"  string3[].set ;
@@ -346,24 +348,25 @@ Path[].root
 /* append pre-filter -- scan | filter Counter2[]                              */
 /*----------------------------------------------------------------------------*/
 : pu_tFilter params| t s |
-
-  // t s "pu_tFilter: s=%v ; t %v\n" .printf
   
-  s +filter +fx( ft_0_1 t __ )fx nl                             1 >c2 t pu_join
-  s +filter +fx( ft_0_3 t __ )fx nl                             2 >c2 t pu_join
-  s +filter +fx( ft_0_6 t __ )fx nl                             3 >c2 t pu_join
-  s +filter +fx( ft_0_9 t __ )fx nl                             4 >c2 t pu_join
+//  t filter#             ???                                              t arg
+    1 to Counter2[]       s +filter +fx( ft_0_1 t __ )fx nl            t pu_join
+    2 to Counter2[]       s +filter +fx( ft_0_3 t __ )fx nl            t pu_join
+    3 to Counter2[]       s +filter +fx( ft_0_6 t __ )fx nl            t pu_join
+    4 to Counter3[]       s +filter +fx( ft_0_9 t __ )fx nl            t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
-/*  append scan -- scan Counter0[] t Counter1[]                               */
+/* append scan -- scan t                                                      */
 /*----------------------------------------------------------------------------*/
 : pu_scan "scan" string0[].set 1 >c0
 
-  scan +Pu10k  nl                              1 >c1 t:Pu10k  Pu10k  pu_tFilter
-  //scan +Pu100k nl                              2 >c1 t:Pu100k Pu100k pu_tFilter
-  //scan +Pu1m   nl                              3 >c1 t:Pu1m   Pu1m   pu_tFilter
-  //scan +Pu10m  nl                              4 >c1 t:Pu10m  Pu10m  pu_tFilter
+//  t table#         t text     /**/  scan table               t arg
+
+    1 to Counter0[]  t(Pu10k)   /**/  scan +Pu10k  nl          Pu10k  pu_tFilter
+//  2 to Counter0[]  t(Pu100k)  /**/  scan +Pu100k nl          Pu100k pu_tFilter
+//  3 to Counter0[]  t(Pu1m)    /**/  scan +Pu1m   nl          Pu1m   pu_tFilter
+//  4 to Counter0[]  t(Pu10m)   /**/  scan +Pu10m  nl          Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/
