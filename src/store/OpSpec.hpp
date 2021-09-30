@@ -49,12 +49,9 @@ namespace STORE
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
     ePX  eCrossTopo(void);
-    void vCrossTopo(ePX eCrossTopo);
     void vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
-    void vNextOp(i8 i_NextOp);
     i8   iNextStage(void);
-    void vNextStage(i8 i_NextStage);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     i8   iOtherOp(void);

@@ -128,16 +128,6 @@ ePX OpSpec::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_eCrossTopo = eCrossTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
-/*----------------------------------------------------------------------------*/
 void OpSpec::vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -158,16 +148,6 @@ i8 OpSpec::iNextOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_NextOp                                                         */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vNextOp(i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_NextOp = i_NextOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_NextStage                                                          */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iNextStage(void)
@@ -175,16 +155,6 @@ i8 OpSpec::iNextStage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_i_NextStage;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the m_i_NextStage                                                      */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vNextStage(i8 i_NextStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_NextStage = i_NextStage;
 }
 
 /*----------------------------------------------------------------------------*/
