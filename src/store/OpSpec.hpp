@@ -57,10 +57,12 @@ namespace STORE
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
     i8   iNextStage(void);
+    Stz* szNextStageNm(void);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
+    Stz* szOtherStageNm(void);
     void vOtherStageOp(Stz* szOtherStageNm, i8 i_OtherStage,i8 i_OtherOp);
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);

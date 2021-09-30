@@ -163,6 +163,16 @@ i8 OpSpec::iNextStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next stage name                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* OpSpec::szNextStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_sNextStageNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* OpSpec::szOpNm(void)
@@ -212,6 +222,16 @@ i8 OpSpec::iOtherStage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_i_OtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other stage name                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* OpSpec::szOtherStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_sOtherStageNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
