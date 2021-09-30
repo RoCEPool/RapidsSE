@@ -104,6 +104,7 @@ namespace STORE
     // Pass 3 : Includes
     //
     bool bPass3_includes(void);
+    bool bPass3_include(Stz* szIncludePipNm);
 
     //
     // token scanning

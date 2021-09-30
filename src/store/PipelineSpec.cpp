@@ -8,6 +8,7 @@
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Dynamo.hpp"
+#include "Procedure.hpp"
 #include "Job.hpp"
 #include "Grid.hpp"
 #include "TagConstants.h"
@@ -940,18 +941,53 @@ bool PipelineSpec::bPass3_includes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  if (m_p_JobTags->bHasName("<include_0>"_Stz))
-    vTrace("Has Include 0\n"_Stz);
+  Stz* szIncludePipNm;
   
-  if (m_p_JobTags->bHasName("<include_1>"_Stz))
-    vTrace("Has Include 1\n"_Stz);
+  TokenVec* pIncludeTknVec = nullptr;
   
-  if (m_p_JobTags->bHasName("<include_2>"_Stz))
-    vTrace("Has Include 2\n"_Stz);
+  if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
+    vTrace("Has Include 0: %lls\n"_Stz,szIncludePipNm);
+    bPass3_include(szIncludePipNm);
+  }
+  
+  if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
+    vTrace("Has Include 1: %lls\n"_Stz,szIncludePipNm);
+    bPass3_include(szIncludePipNm);
+  }
+  
+  if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
+    vTrace("Has Include 2: %lls\n"_Stz,szIncludePipNm);
+    bPass3_include(szIncludePipNm);
+  }
+  
   
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* include stage(s) from other pipeline                                       */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_include(Stz* szIncludePipNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  sSTMT sPipelineSmt;
+
+  TokenVec* pIncludeTknVec = nullptr;
+
+  pIncludeTknVec = TokenVec::pTokenise(szIncludePipNm);
+
+  bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                           pIncludeTknVec);
+  
+  vTrace("Including: %lls\n"_Stz,sPipelineSmt.szStz());
+  
+  delete pIncludeTknVec;
+}
+  
 /*----------------------------------------------------------------------------*/
 /*                            Token Scanning                                  */
 /*----------------------------------------------------------------------------*/
