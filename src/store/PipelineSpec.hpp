@@ -97,8 +97,8 @@ namespace STORE
     void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
     void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
-    void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                              StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
+    void vStageOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+                         StageSpec* pOtherStageSpec, OpSpec* pOtherOpSpec);
 
     Stz* szStageNm(i8 i_Stage);
   

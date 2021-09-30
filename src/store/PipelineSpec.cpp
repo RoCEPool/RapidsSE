@@ -836,7 +836,7 @@ void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
   else
   
     // spec for op send already exists in stage spec
-    vStageSubsequentSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
+    vStageOtherSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
 
 }
 
@@ -911,24 +911,28 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                                  StageSpec* pNextStageSpec, OpSpec* pOpSpecSend)
+void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
+                                   OpSpec*    pOpSpec,
+                                   StageSpec* pOtherStageSpec,
+                                   OpSpec*    pOtherOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  //i8 i_Op = pOpSpec->iOpSpec();
-  i8 i_NextStage = pNextStageSpec->i_StageSpec();
+  
+  i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pOtherStageSpec);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
   pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
                           CN_PIPELINESPEC,this,(Stz*)__func__);
 
-  pOpSpecSend->vOtherStageOp(i_NextStage,0);
+  Stz* szStgNm = szStageNm(i_OtherStage);
+  
+  pOtherOpSpec->vOtherStageOp(szStgNm,i_OtherStage,0);
 
   // insert a consume op at the beginning of the stage
-  vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
+  vStageConsumeOpInsert(pOtherStageSpec,eCrossTopo);
 }
 
 
