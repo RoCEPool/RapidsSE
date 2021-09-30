@@ -1223,6 +1223,85 @@ bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
   return true;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_edit -- Prompt edit function                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_edit (
+    PF_EDIT,                // prompt function
+    "Prompt_edit"_Stz,      // name of the prompt function
+    "comment"_Stz,          // comment about the function
+    "edit"_Stz,             // the prompt command
+    nullptr,                // the second word
+    bPrompt_edit,           // prompt function
+    true,                   // enabled
+
+    true,                   // visible
+    "attachMap"_Stz,        // help
+    ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_edit(SePrompt* pPrompt) {
+  RASSERT(pPrompt);
+
+  s16KB sSMT;
+  s256 sFilePath;
+
+  sSMT = "this is a pipeline"_Stz;
+  sFilePath = "../tmp/pipeline.txt"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a file
+  File* pFile = new File(pPrompt);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file for writing
+  bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
+  if (! bOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write sSMT to the file
+  pFile->vPrint(sSMT);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the file
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // shell command to edit the file
+  s256 sShellCommand;
+  sShellCommand.vSprint("vim %s"_Stz, sFilePath.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file via vim
+  SysCall oSysCall;
+  i8 iExitStatus = Shell::iExecute(sShellCommand.szStz(),oSysCall);
+//  if ( ! iExitStatus ) {
+//    vTrace("Unable to vim file: %s\n"_Stz,pFile->sFilePath().szStz());
+//    return false;
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file for reading
+  bOpened = pFile->bOpenRead(sFilePath.szStz());
+  if (! bOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read the file back in
+  i8 nBytes = pFile->nReadFile(sSMT);
+  vTrace("%s\n"_Stz, sSMT.azChar());
+
+  return true;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_errno.cpp -- errno print                                            */
