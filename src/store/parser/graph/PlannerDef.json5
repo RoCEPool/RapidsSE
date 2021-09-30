@@ -427,42 +427,7 @@
                               }]
                             }
                           ],
-                        },
-
-// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
-                        {
-                          name: "exprSubquery",
-                          value: "Identifies a subquery emanating from an expression",
-                          properties: [
-                            {
-                              name: "correlatedColumns",
-                              value: "A list of columnRef expressions representing the columns that are correlated with the parent query",
-                              type: "/__root__/definitions/object/list/columnRefs"
-                            },
-                            {
-                              // Add a constraint that children of an exprSubquery object must be
-                              // either another tableSubquery (nested) or a mainSubquery
-                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                              {
-                                name: "childType",
-                                type: "/__root__/primitives/constraints/childType",
-                                children: [
-                                  {
-                                    name: "childTypeParam1",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
-                                  }
-                                ]
-                              }]
-                            }
-                          ],
                         }
-
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker
 

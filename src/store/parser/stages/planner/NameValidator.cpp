@@ -44,8 +44,8 @@
 #include "AndExpr.hpp"
 #include "MainSubquery.hpp"
 #include "TableSubquery.hpp"
-#include "ExprSubquery.hpp"
 #include "SubqueryRefOp.hpp"
+#include "SubqueryExpr.hpp"
 #include "CteDef.hpp"
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
@@ -160,13 +160,14 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Pl
           NEVER_REACH
       }
 
-    } else if (MainSubquery::bIsOfType(pSubquery) && eWalkEvent == GraphNav::EVENT_ENTER) {
-      // We ignore exit event for main subqueries as we will fully process the main
-      // subquery in one go.
-      vValidateMainSubquery(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+    } else if (MainSubquery::bIsOfType(pSubquery)) {
+      if (eWalkEvent == GraphNav::EVENT_ENTER) {
+        // We ignore exit event for main subqueries as we will fully process the main
+        // subquery in one go.
+        vValidateMainSubquery(pSubquery, sPath, pRootNode, pMetadataNode, pSeApi);
+      }
 
-    } else if (ExprSubquery::bIsOfType(pSubquery)) {
-      // We should never reach this point because we are not walking properties of nodes.
+    } else {
       NEVER_REACH
     }
 
@@ -193,7 +194,7 @@ void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* 
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (!ExprSubquery::bIsOfType(pNode)) {
+    if (!SubqueryExpr::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
 
@@ -466,31 +467,35 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 /*----------------------------------------------------------------------------*/
 /* Validates an expression subquery                                           */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
                                           STORE::SeApi* pSeApi)
 {
-  ASSERT(pSubqueryNode);
-  ASSERT(ExprSubquery::bIsOfType(pSubqueryNode));
-  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pSubqueryExprNode);
+  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
+  ASSERT(sSubqueryExprPath.nLength() > 0);
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
 
-  // TODO: When visiting an ExprSubquery we need to:
-  // TODO: * Ensure all outer subqueries are fully validated, including column names.
-  // TODO:   (this is important for correlated columns)
+  // When this function is invoked we should have already validated and resolved
+  // the enclosing MainSubquery. This is important because then any correlated
+  // column names in the outer query will be fully qualified.
 
-  // TODO: * Create a CteDef for this node and insert it into the metadata.
-  // TODO: * Populate the cteDefn property of this node and link the to above CteDef.
+  // Create an initial CteDef for this node and insert it into the metadata.
+  // Save the path to this CteDef in this current node.
+  vCreateExprSubqueryCteDef(pSubqueryExprNode, sSubqueryExprPath, pRootNode, pMetadataNode);
 
-  // TODO: * Process child table/main subqueries to:
-  // TODO:    - Validate/qualify table names
-  // TODO:    - Validate/qualify column names
-  vValidateTableAndMainSubqueries(pSubqueryNode, pRootNode, pMetadataNode, pSeApi);
+  // Process child table/main subqueries underneath this expression subquery to:
+  //  - Validate/qualify table names
+  //  - Validate/qualify column names
+  vValidateTableAndMainSubqueries(pSubqueryExprNode, pRootNode, pMetadataNode, pSeApi);
 
-  // TODO: * Populate the remaining CteDef fields (can copy column info from the CteDef of the MainSubquery child).
+  // Populate the remaining CteDef fields (we can copy column info from the CteDef of the
+  // MainSubquery child that was processed above).
+  vUpdateExprSubqueryCteDef(pSubqueryExprNode, sSubqueryExprPath, pRootNode, pMetadataNode);
+
   // TODO: * Create a list of any correlated column names and populate this in the current exprSubquery node.
   //         Note that a subquery can be correlated because its child subquery references a column in its grandparent.
 
@@ -1734,6 +1739,118 @@ void NameValidator::vCreateTableSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sS
 
   // Update the defnPath property of this main subquery node.
   TableSubquery::vSetDefnPath(pSubqueryNode, sCteDefPath.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Create initial CteDef representing an expr subquery and add to the metadata*/
+/* This CteDef can be updated with column information later on.               */
+/* Also updates the defnPath property of the subquery node.                   */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                              PlanNode* pRootNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pSubqueryExprNode);
+  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
+  ASSERT(sSubqueryExprPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(pMetadataNode);
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+
+  // Create the CteDef.
+  // The alias name of the CteDef is not important so let's just use the current
+  // node name of the main subquery with a couple of underscores prepended to it.
+  s256 sBuf;
+  sBuf.vCatSprint("__%s"_Stz, pSubqueryExprNode->szName());
+  QueryNode* pCteDef = CteDef::pCreate(sBuf.szStz());
+
+  // We can't add column information yet because we haven't yet processed the
+  // MainSubquery that exists underneath this pSubqueryExprNode.
+
+  // Get the CteDef* node that represents the enclosing subquery's definition,
+  // if one exists.
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryExprPath, pRootNode);
+  ASSERT(pEnclosingSubqueryDefn);
+  ASSERT(CteDef::bIsOfType(pEnclosingSubqueryDefn));
+
+  // Add the CteDef of this expression subquery to the metadata
+  pEnclosingSubqueryDefn->vAppendChild(pCteDef);
+
+  // Get the full path string of this CteDef node so we can save it in the SubqueryExpr node
+  s2K sCteDefPath;
+  MetadataNode::bGetCteDefPath(pMetadataNode, pCteDef, sCteDefPath);
+  ASSERT(sCteDefPath.nLength() > 0);
+
+  // Update the defnPath property of this expression subquery node.
+  SubqueryExpr::vSetDefnPath(pSubqueryExprNode, sCteDefPath.szStz());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Update a previously created CteDef representing an expression subquery and */
+/* add in the missing column definition information.                          */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                              PlanNode* pRootNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pSubqueryExprNode);
+  ASSERT(TableSubquery::bIsOfType(pSubqueryExprNode));
+  ASSERT(sSubqueryExprPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+
+  // When we get here we have previously created the definition (CteDef) for this
+  // expression subquery and inserted it into the metadata in the appropriate spot.
+  // However we haven't filled in the column name list. We will do that here.
+
+  // Get the path of the definition we previously created.
+  Stz* szDefnPath = SubqueryExpr::szDefnPath(pSubqueryExprNode);
+  ASSERT(szDefnPath);
+  ASSERT(szDefnPath->bBeginsWith("/"_Stz));
+
+  // Get the node representing the definition.
+  QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  // The main subquery that is a child of this expression subquery should now have
+  // all its names validated. So we can extract out the columns it projects
+  // and insert this into the existing CteDef.
+
+  // We can cheat a bit because when the main subquery was processed we would
+  // have already produced the metadata for it, and the column information
+  // remains the same. So all we need to do is find the CteDef for the child
+  // main subquery and copy the column information from it.
+
+  // We can't assume that there is only one child of pCteDef, so best that we
+  // find the main subquery underneath pSubqueryExprNode, get its definition path
+  // and then lookup its CteDef that way.
+
+  QueryNode* pChildMainSubquery = SubqueryExpr::pChildMainSubquery(pSubqueryExprNode);
+  Stz* szMainSubqueryPath = MainSubquery::szDefnPath(pChildMainSubquery);
+  ASSERT(szMainSubqueryPath);
+
+  QueryNode* pMainSubqueryCteDef = _pQueryNode(GraphNav::pFind(szMainSubqueryPath, pRootNode));
+  ASSERT(pMainSubqueryCteDef);
+  ASSERT(CteDef::bIsOfType(pMainSubqueryCteDef));
+
+
+  // Copy each of the column definitions from the child mainSubquery.
+  PlanNodeIter* pColDefIter = CteDef::pColumnDefIter(pMainSubqueryCteDef);
+
+  while (pColDefIter->bHasNext()) {
+    QueryNode* pColDef = _pQueryNode(pColDefIter->pNext());
+    ASSERT(ColumnDef::bIsOfType(pColDef));
+
+    // Duplicate this column definition
+    QueryNode* pColDefDup = pColDef->pDeepCopy(true);
+
+    // Put it in the table subquery's CteDef
+    CteDef::vAddColumnDef(pCteDef, pColDefDup);
+  }
+
+  delete pColDefIter;
 }
 
 

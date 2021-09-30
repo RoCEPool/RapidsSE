@@ -26,7 +26,6 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
-#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -53,8 +52,9 @@
 #include "NodeNamer.hpp"
 
 // Expressions
-#include "ColumnRef.hpp"
-#include "ColumnWildcard.hpp"
+#include "store/parser/shadowNodes/expressions/ColumnRef.hpp"
+#include "store/parser/shadowNodes/expressions/ColumnWildcard.hpp"
+#include "store/parser/shadowNodes/expressions/SubqueryExpr.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"

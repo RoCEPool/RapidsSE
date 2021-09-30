@@ -16,6 +16,7 @@
 #include "ExprList.hpp"
 #include "CteDef.hpp"
 #include "ColumnDef.hpp"
+#include "MainSubquery.hpp"
 
 
 #include "GraphNav.hpp"
@@ -135,6 +136,23 @@ Stz* SubqueryExpr::szDefnPath(QueryNode* pNode)
   return pDefnPathNode->szValue();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Sets the path of the node that represents the metadata of this CTE         */
+/*----------------------------------------------------------------------------*/
+void SubqueryExpr::vSetDefnPath(QueryNode *pNode, Stz *szPath)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szPath);
+
+  QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+  ASSERT(pDefnPathNode);
+  ASSERT(StringObject::bIsOfType(pDefnPathNode));
+  ASSERT(pDefnPathNode->xValue().m_bIsNull);
+
+  Value xVal(szPath);
+  pDefnPathNode->vSetValue(static_cast<Value&&>(szPath));
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if this subquery is correlated or false if it is not.         */
@@ -165,6 +183,25 @@ PlanNodeIter* SubqueryExpr::pCorrelatedExprsIter(QueryNode* pNode)
   return pCorrelatedExprs->pNewChildrenIter();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Find and return the main subquery node that exists underneath this         */
+/* expression subquery node.                                                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryExpr::pChildMainSubquery(QueryNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  auto fCondition = [](PlanNode* pItem) -> b1 {
+    return MainSubquery::bIsOfType(pItem);
+  };
+
+  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pNode));
+  ASSERT(pMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+
+  return pMainSubquery;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -135,18 +135,6 @@ b1 MainSubquery::bIsExactType(Stz* szType)
   return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Returns true if the subquery is correlated with respect to its parent      */
-/*----------------------------------------------------------------------------*/
-b1 MainSubquery::bIsCorrelated(QueryNode* pNode)
-{
-  UNUSED(pNode); // in release
-  ASSERT(bIsOfType(pNode));
-
-  // All main subqueries are non-correlated
-  return false;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
