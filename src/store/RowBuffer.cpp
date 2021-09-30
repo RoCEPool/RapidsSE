@@ -292,6 +292,55 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a row and deposit given row into it                                  */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pAllotRow(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RowPix* pPix = pRowPix();
+
+  // allot a row
+  Row* pNewRow = RowBuffer::pAllotRow();
+
+  Stz* szDst;
+
+  if ( ! pNewRow )
+    return nullptr;
+
+  for (i8 i_Col = 0; i_Col < pPix->m_nColumns; i_Col++) {
+
+    ColPix xColPix = pPix->m_xaColPix[i_Col];
+
+    // STRING_DEPOSIT
+    if (DM_VCH == xColPix.m_uDatum) {
+      Stz* szVal = pRow->szColVal_ofs(i_Col);
+      if (szVal) {
+        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+
+        // return early if no more space for the string
+        if ( ! szDst )
+          return nullptr;
+
+        StrLib::vCopy((char*)szDst, szVal->azChar());
+
+        pNewRow->vColVal_ofs(i_Col,szDst);
+      }
+      else {
+        pNewRow->vSetColNull(i_Col);
+      }
+    }
+    else {
+      pNewRow->vColVal_int(i_Col,pRow->iColVal_int(i_Col));
+    }
+    // END STRING_DEPOSIT
+
+  }
+
+  return pNewRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iDecile(void)
