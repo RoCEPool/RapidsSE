@@ -87,7 +87,8 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
-                                     TokenVec* pTokenVec)
+                                     TokenVec* pTokenVec,
+                                     Word** ppwMatchedProc)
 {
   _static_
 
@@ -95,6 +96,9 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   Word* pwMatchedProc = pFindProcedure(pTokenVec);
   if (! pwMatchedProc)
     return false;
+  
+  if (ppwMatchedProc)
+    *ppwMatchedProc = pwMatchedProc;
 
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());

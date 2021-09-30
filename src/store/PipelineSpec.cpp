@@ -983,17 +983,22 @@ bool PipelineSpec::bPass3_include(Stz* szIncludePipNm)
   sSTMT sPipelineSmt;
 
   TokenVec* pIncludeTknVec = nullptr;
-
+  Word* pwMatchedProc = nullptr;
+  
   pIncludeTknVec = TokenVec::pTokenise(szIncludePipNm);
 
   bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-                                           pIncludeTknVec);
+                                           pIncludeTknVec,
+                                           &pwMatchedProc);
   
   vTrace("Including: %lls\n"_Stz,sPipelineSmt.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Dynamo* pDynamo = new Dynamo(sPipelineSmt.szStz(),m_p_JobTags);
+  TagSet* pWrdTagSet = pwMatchedProc->pWrdTagSet();
+  pWrdTagSet->vDumpSet();
+  
+  Dynamo* pDynamo = new Dynamo(sPipelineSmt.szStz(),pWrdTagSet);
 
   PipelineSpec* pIncludePipelineSpec = pDynamo->pCompile();
   
