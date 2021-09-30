@@ -24,8 +24,12 @@ namespace STORE
     TagSet m_oArgTags;
     
     ePX m_eCrossTopo;
+  
+    s32 m_sNextStageNm;    // next stage name
     i8  m_i_NextStage;
     i8  m_i_NextOp;
+  
+    s32 m_sOtherStageNm;   // next stage name
     i8  m_i_OtherStage;    // other stage in the cross topology
     i8  m_i_OtherOp;       // next Op in the other stage
 
