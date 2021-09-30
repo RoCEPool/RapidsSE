@@ -1829,6 +1829,87 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Expression subqueries                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)
+{
+  // Save the context of the member variables
+  QueryNodeStack* pOldStatementStack = m_pStatementStack;
+  m_pStatementStack = new QueryNodeStack();
+
+  QueryNodeStack* pOldTableExprStack = m_pTableExprStack;
+  m_pTableExprStack = new QueryNodeStack();
+
+  QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
+  m_pTableSubqueryList = nullptr;
+
+  QueryNodeList* pOldExprStack = m_pExprStack;
+  m_pExprStack = nullptr;
+
+  QueryNodeList* pOldSelectItems = m_pSelectItems;
+  m_pSelectItems = nullptr;
+
+  QueryNodeList* pOldOrderItems = m_pOrderItems;
+  m_pOrderItems = nullptr;
+
+  visitChildren(pCtx);
+
+  // Create a SubqueryExpr node
+  QueryNode* pSubqueryExpr = SubqueryExpr::pCreate();
+
+  // We expect there to be one or more nodes in m_pStatementStack,
+  // corresponding to a MainSubquery and zero or more TableSubquery nodes.
+  // Pop them off and add them as children of the SubqueryExpr node
+
+  ASSERT(m_pStatementStack);
+  while (m_pStatementStack->nItems() > 0) {
+    QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
+    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+
+    pSubqueryExpr->vPushChild(pSubqueryMarker);
+  }
+
+
+  // Restore the context of the member variables
+
+  ASSERT(m_pStatementStack->nItems() == 0);
+  delete m_pStatementStack;
+  m_pStatementStack = pOldStatementStack;
+  pOldStatementStack = nullptr;
+
+  ASSERT(m_pTableExprStack->nItems() == 0);
+  delete m_pTableExprStack;
+  m_pTableExprStack = pOldTableExprStack;
+  pOldTableExprStack = nullptr;
+
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  delete m_pTableSubqueryList;
+  m_pTableSubqueryList = pOldTableSubqueryList;
+  pOldTableSubqueryList = nullptr;
+
+  ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
+  delete m_pExprStack;
+  m_pExprStack = pOldExprStack;
+  pOldExprStack = nullptr;
+
+  ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
+  delete m_pSelectItems;
+  m_pSelectItems = pOldSelectItems;
+  pOldSelectItems = nullptr;
+
+  ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
+  delete m_pOrderItems;
+  m_pOrderItems = pOldOrderItems;
+  pOldOrderItems = nullptr;
+
+  // Now we can put the subqueryExpr onto the exprStack
+  m_pExprStack->vPush(pSubqueryExpr);
+
+  return nullptr;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Order by list                                                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitOrderByList(sqlParser::OrderByListContext *pCtx)

@@ -32,12 +32,14 @@ namespace Parser
 
   private:
     // Walks the graph and validates table subqueries and main subqueries only.
-    static void vValidateTableAndMainSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                                QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
+    static void vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                                PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                                STORE::SeApi* pSeApi);
 
     // Walk the graph and validate expression subqueries and any subqueries they contain.
-    static void vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                        QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
+    static void vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                        PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                        STORE::SeApi* pSeApi);
 
     // Validates a table subquery only. We separate validation as we descend
     // the graph (top-down) and when we ascend back up (bottom-up).

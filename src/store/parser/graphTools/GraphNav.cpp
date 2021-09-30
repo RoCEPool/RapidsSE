@@ -1201,7 +1201,7 @@ b1 GraphNav::bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurre
     }
 
     s2K sNextCurrentPath;
-    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sChildName.szStz());
+    sNextCurrentPath.vCatSprint("%s%s%s"_Stz, sCurrentPath.szStz(), C_CHILD_SEPARATOR_STZ, sChildName.szStz());
 
     // Find the child node
     PlanNode* pNextChild = GraphNav::pFindChild(sChildName.szStz(), pCurrentNode);
@@ -1232,7 +1232,7 @@ b1 GraphNav::bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurre
     }
 
     s2K sNextCurrentPath;
-    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sPropertyName.szStz());
+    sNextCurrentPath.vCatSprint("%s%s%s"_Stz, sCurrentPath.szStz(), C_PROPERTY_SEPARATOR_STZ, sPropertyName.szStz());
 
     // Find the property node
     PlanNode* pNextProperty = GraphNav::pFindProperty(sPropertyName.szStz(), pCurrentNode);
@@ -1701,6 +1701,10 @@ PlanNode* GraphNav::pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode)
 b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
 {
   ASSERT(szPath);
+  if (szPath->bIsEmpty()) {
+    return false;
+  }
+
   char* pChar = StrLib::acLast(szPath->azChar());
 
   while (pChar != szPath->azChar()) {
@@ -1714,6 +1718,8 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
     --pChar;
   }
 
+  // We're at the start of the string. Nothing to write to sParentBuf.
+  sParentBuf.vReset();
   return false;
 }
 
@@ -1725,6 +1731,10 @@ b1 GraphNav::bParentPath(s2K &sParentBuf)
 {
   char* pChar = StrLib::acLast(sParentBuf.azChar());
 
+  if (sParentBuf.bIsEmpty()) {
+    return false;
+  }
+
   while (pChar != sParentBuf.azChar()) {
     if (*pChar == C_CHILD_SEPARATOR || *pChar == C_PROPERTY_SEPARATOR) {
       *pChar = 0;
@@ -1734,6 +1744,8 @@ b1 GraphNav::bParentPath(s2K &sParentBuf)
     --pChar;
   }
 
+  // We're at the start of the string
+  *pChar = 0;
   return false;
 }
 
