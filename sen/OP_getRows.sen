@@ -22,9 +22,11 @@
   //"Operand:- ZK_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
-  rowBuffer[].getRows
+  rowBuffer[].getRows to DataBuffer[]
 
-  rowBuffer[].pipeOut
+  rowBuffer[].delete
+
+  DataBuffer[].pipeout
 
   Counter0[] 1 + to Counter0[]
 

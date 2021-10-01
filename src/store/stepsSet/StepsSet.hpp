@@ -1450,6 +1450,7 @@ public:
   void vRowBufferCopyIntoSame(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
+  void vRowBufferGetAndAllotRows(void);
   void vRowBufferGetRows(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);

@@ -81,6 +81,7 @@ assert::stack_0
 
 "g" .verbose
 
+  "OP_getAndAllotRows.sen"      include
   "OP_getRows.sen"              include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
