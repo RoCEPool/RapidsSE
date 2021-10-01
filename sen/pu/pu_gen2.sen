@@ -14,6 +14,7 @@ Path[].root
 : +x " x " str.cat ;
 : +fx( "+" ;
 : )fx >> find execute ;
+: ).fx >> dup . find execute ;
 : fx find execute ;
 : _+ "+" swap >> ;
 : __ "_" swap >> >> ;
@@ -398,8 +399,8 @@ Path[].root
   
   // X         +op                                        args       next
   j(Pu10k)     s +join +Pu10k sp
-                       t "_Pu10k" >> >>
-                       
+                   t "_Pu10k" >> >>
+                   "+key_" t >> "_Pu10k" >> fx
                  nl                                       j:Pu10k t  pu_jFilter
     
 //  s +join +Pu10k
