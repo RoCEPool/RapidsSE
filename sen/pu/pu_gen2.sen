@@ -14,15 +14,15 @@ Path[].root
 : fx find execute ;
 
 // fx >> -- find excute tokens
-: key "key" ;
-: agg "agg" ;
-: gby "gby" ;
-: idx "idx" ;
+//: key "key" ;
+//: agg "agg" ;
+//: gby "gby" ;
+//: idx "idx" ;
 
-: _Pu10k  "_Pu10k"  >> ;
-: _Pu100k "_Pu100k" >> ;
-: _Pu1m   "_Pu1m"   >> ;
-: _Pu10m  "_Pu10m"  >> ;
+: +Pu10k  " Pu10k"  >> ;
+: +Pu100k " Pu100k" >> ;
+: +Pu1m   " Pu1m"   >> ;
+: +Pu10m  " Pu10m"  >> ;
 
 : 1g    "1g"   ;
 : 10g   "10g"   ;
@@ -34,11 +34,6 @@ Path[].root
 : _100g  "_100g"  ;
 : _1000g "_1000g" ;
 
-// the tables
-: Pu10k  "Pu10k"  ;
-: Pu100k "Pu100k" ;
-: Pu1m   "Pu1m"   ;
-: Pu10m  "Pu10m"  ;
 
 : t:Pu10k  "Pu10k"  ;
 : t:Pu100k "Pu100k" ;
@@ -72,6 +67,7 @@ Path[].root
 : t(Pu100k) 2 to Counter1[] "t(Pu100k)" string1[].set ;
 : t(Pu1m)   3 to Counter1[] "t(Pu1m)"   string1[].set ;
 : t(Pu10m)  4 to Counter1[] "t(Pu10m)"  string1[].set ;
+
 
 // -- X tf -----------------------------------------------
 
@@ -221,10 +217,6 @@ Path[].root
 : !gby_Pu10m_1000g  " groupby type integer pu10m_1000g\"" ;
 
 
-: +Pu10k  " " >> Pu10k  >> ;
-: +Pu100k " " >> Pu100k >> ;
-: +Pu1m   " " >> Pu1m   >> ;
-: +Pu10m  " " >> Pu10m  >> ;
 
 
 /*----------------------------------------------------------------------------*/
