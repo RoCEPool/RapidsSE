@@ -14,6 +14,7 @@ Path[].root
 : +x " x " str.cat ;
 : +fx( "+" ;
 : )fx >> find execute ;
+: fx find execute ;
 : _+ "+" swap >> ;
 : __ "_" swap >> >> ;
 : [n] >str "[" swap >> >> "]" >> ;
@@ -31,6 +32,14 @@ Path[].root
 : agg "agg" ;
 : gby "gby" ;
 : idx "idx" ;
+
+: idx_ "+idx_" ;
+: >>> >> >> ;
+
+: _Pu10k  "_Pu10k"  >> ;
+: _Pu100k "_Pu100k" >> ;
+: _Pu1m   "_Pu1m"   >> ;
+: _Pu10m  "_Pu10m"  >>  ;
 
 : 1g    "1g" ;
 : 10g   "10g" ;
@@ -388,8 +397,9 @@ Path[].root
   t s "pu_join: s=%v ; t %v\n" .printf
   
   // X         +op                                        args       next
-  j(Pu10k)     s +join +Pu10k
-                       +fx( idx t __ Pu10k  __ )fx
+  j(Pu10k)     s +join +Pu10k sp
+                       t "_Pu10k" >> >>
+                       
                  nl                                       j:Pu10k t  pu_jFilter
     
 //  s +join +Pu10k
