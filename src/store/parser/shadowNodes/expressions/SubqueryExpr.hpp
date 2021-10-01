@@ -24,7 +24,7 @@ namespace Parser
     SubqueryExpr();
 
   public:
-    static QueryNode* pCreate();
+    static QueryNode* pCreate(QueryNode* pSubqueryContainer);
 
     static void  vDescribe(PlanNode* pNode, s2K& sBuf);
 
@@ -49,6 +49,12 @@ namespace Parser
     // Returns an iterator of the correlated expressions in this subquery.
     // Iterator must be freed after use.
     static PlanNodeIter* pCorrelatedExprsIter(QueryNode* pNode);
+
+    // Return the node that is the root of the subquery plan graph
+    static QueryNode* pSubqueryContainer(QueryNode* pNode);
+
+    // Return the name of the property that is the root of the subquery plan graph
+    static Stz* szSubqueryContainerProp(void);
 
     // Find and return the main subquery node that exists underneath this expression subquery node.
     static QueryNode* pChildMainSubquery(QueryNode* pNode);

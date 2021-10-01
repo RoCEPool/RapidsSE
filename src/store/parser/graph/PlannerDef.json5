@@ -304,7 +304,7 @@
 // Path: /__root__/definitions/object/planObject
             {
               name: "planObject",
-              value: "The root of all objects that appear in the main data path of the plan graph",
+              value: "The abstract root of all objects that appear in the main data path of the plan graph",
               properties: [
                 {
                   name:  "location",
@@ -319,6 +319,20 @@
                 }
               ],
               children: [
+// Path: /__root__/definitions/object/planObject/subqueryContainer
+                {
+                  name: "subqueryContainer",
+                  value: "A simple container of subqueries",
+                  properties: [
+                    // Add a constraint that the children of a subqueryContainer must be one or more subqueryMarker nodes
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "alwaysChildren", type: "/__root__/primitives/constraints/alwaysChildren" },
+                      { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
+                        { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
+                      ]}
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/planNode
 // Path: /__root__/definitions/object/planObject/planMarker
                 {
                   name: "planMarker",
@@ -935,6 +949,11 @@
                       name: "correlatedExprs",
                       value: "A list of expressions in this subquery that are correlated to a parent subquery",
                       type: "/__root__/definitions/object/list/exprList"
+                    },
+                    {
+                      name: "subqueryContainer",
+                      value: "A container of the subquery plan. Contains child subqueryMarker nodes, including a mainSubquery",
+                      type: "/__root__/definitions/object/planObject/subqueryContainer"
                     },
                     {
                       // Add a constraint that children of a subqueryExpr object must be
@@ -2369,7 +2388,7 @@
               name: "planNode",
               value: "A definition for the node that occurs at /__root__/plan.",
               properties: [
-                // Add a constraint that the children of a plan node must be a single statementMarker node
+                // Add a constraint that the children of a plan node must be subqueryMarker nodes
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
                     { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
