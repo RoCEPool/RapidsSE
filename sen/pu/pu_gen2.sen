@@ -12,14 +12,17 @@ Path[].root
 : sp " "  str.cat ;
 : fx find execute ;
 
-// -- ops -----------------------------------------------
-
 : +scan   "      scan"        >> ;
 : +filter "    | filter 1"    >> ;
 : +join   "    | indexJoin 1" >> ;
 : +aggreg "    | aggreg 1"    >> ;
 
-// -- scan ----------------------------------------------
+: +Pu10k  " Pu10k"  >> ;
+: +Pu100k " Pu100k" >> ;
+: +Pu1m   " Pu1m"   >> ;
+: +Pu10m  " Pu10m"  >> ;
+
+// -- 1[] scan -- -- -- -- -- --
 
 : (scan) "scan" string0[].set 1 to Counter0[] ;
 
@@ -33,22 +36,14 @@ Path[].root
 : t:Pu1m   "Pu1m"   ;
 : t:Pu10m  "Pu10m"  ;
 
-: +Pu10k  " Pu10k"  >> ;
-: +Pu100k " Pu100k" >> ;
-: +Pu1m   " Pu1m"   >> ;
-: +Pu10m  " Pu10m"  >> ;
-
-
-// -- t-filter --------------------------------------------
+// -- 2[] t-filter -- -- -- -- -- --
 
 : ft(0.1) 1 to Counter2[] "ft(0.1)" string2[].set ;
 : ft(0.3) 2 to Counter2[] "ft(0.3)" string2[].set ;
 : ft(0.6) 3 to Counter2[] "ft(0.6)" string2[].set ;
 : ft(0.9) 4 to Counter2[] "ft(0.9)" string2[].set ;
 
-
-
-// -- j-join ----------------------------------------------
+// -- 3[] j-join -- -- -- -- -- --
 
 : j(Pu10k)  1 to Counter3[] "j(Pu10k)"  string3[].set ;
 : j(Pu100k) 2 to Counter3[] "j(Pu100k)" string3[].set ;
@@ -60,97 +55,97 @@ Path[].root
 : j:Pu1m   "Pu1m"   ;
 : j:Pu10m  "Pu10m"  ;
 
+// -- 4[] j-filter -- -- -- -- -- --
 
-// -- t-filter --------------------------------------------
+: fj(0.1) 1 to Counter4[] "fj(0.1)" string4[].set ;
+: fj(0.3) 2 to Counter4[] "fj(0.3)" string4[].set ;
+: fj(0.6) 3 to Counter4[] "fj(0.6)" string4[].set ;
+: fj(0.9) 4 to Counter4[] "fj(0.9)" string4[].set ;
 
-: fj(0.1) 1 to Counter4[] "ft(0.1)" string4[].set ;
-: fj(0.3) 2 to Counter4[] "ft(0.3)" string4[].set ;
-: fj(0.6) 3 to Counter4[] "ft(0.6)" string4[].set ;
-: fj(0.9) 4 to Counter4[] "ft(0.9)" string4[].set ;
-
-
-// -- g-agggby --------------------------------------------
+// -- 5[] g-agggby -- -- -- -- -- --
 
 : g(1)    1 to Counter5[] "g(1)"    string5[].set ;
 : g(10)   2 to Counter5[] "g(10)"   string5[].set ;
 : g(100)  3 to Counter5[] "g(100)"  string5[].set ;
 : g(1000) 4 to Counter5[] "g(1000)" string5[].set ;
 
-: _1g    "_1g"   ;
+: _1g    "_1g"    ;
 : _10g   "_10g"   ;
 : _100g  "_100g"  ;
 : _1000g "_1000g" ;
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // ft filter expr
-: !ft_0_1_Pu10k  " \"type boolean pu10k_ft 100 <=\"" ;  // 10% of t.Pu10K
-: !ft_0_3_Pu10k  " \"type boolean pu10k_ft 300 <=\"" ;  // 30% of t.Pu10K
-: !ft_0_6_Pu10k  " \"type boolean pu10k_ft 600 <=\"" ;  // 60% of t.Pu10K
-: !ft_0_9_Pu10k  " \"type boolean pu10k_ft 900 <=\"" ;  // 90% of t.Pu10K
+: !ft_0_1_Pu10k  " \"type boolean pu10k_ft  100 <=\"" ; // 10% of t.Pu10K
+: !ft_0_3_Pu10k  " \"type boolean pu10k_ft  300 <=\"" ; // 30% of t.Pu10K
+: !ft_0_6_Pu10k  " \"type boolean pu10k_ft  600 <=\"" ; // 60% of t.Pu10K
+: !ft_0_9_Pu10k  " \"type boolean pu10k_ft  900 <=\"" ; // 90% of t.Pu10K
 
 : !ft_0_1_Pu100k " \"type boolean pu100k_ft 100 <=\"" ; // 10% of t.Pu100K
 : !ft_0_3_Pu100k " \"type boolean pu100k_ft 300 <=\"" ; // 30% of t.Pu100K
 : !ft_0_6_Pu100k " \"type boolean pu100k_ft 600 <=\"" ; // 60% of t.Pu100K
 : !ft_0_9_Pu100k " \"type boolean pu100k_ft 900 <=\"" ; // 90% of t.Pu100K
 
-: !ft_0_1_Pu1m   " \"type boolean pu1m_ft 100 <=\"" ;   // 10% of t.Pu1m
-: !ft_0_3_Pu1m   " \"type boolean pu1m_ft 300 <=\"" ;   // 30% of t.Pu1m
-: !ft_0_6_Pu1m   " \"type boolean pu1m_ft 600 <=\"" ;   // 60% of t.Pu1m
-: !ft_0_9_Pu1m   " \"type boolean pu1m_ft 900 <=\"" ;   // 90% of t.Pu1m
+: !ft_0_1_Pu1m   " \"type boolean pu1m_ft   100 <=\"" ; // 10% of t.Pu1m
+: !ft_0_3_Pu1m   " \"type boolean pu1m_ft   300 <=\"" ; // 30% of t.Pu1m
+: !ft_0_6_Pu1m   " \"type boolean pu1m_ft   600 <=\"" ; // 60% of t.Pu1m
+: !ft_0_9_Pu1m   " \"type boolean pu1m_ft   900 <=\"" ; // 90% of t.Pu1m
 
-: !ft_0_1_Pu10m  " \"type boolean pu10m_ft 100 <=\"" ;  // 10% of t.Pu10m
-: !ft_0_3_Pu10m  " \"type boolean pu10m_ft 300 <=\"" ;  // 30% of t.Pu10m
-: !ft_0_6_Pu10m  " \"type boolean pu10m_ft 600 <=\"" ;  // 60% of t.Pu10m
-: !ft_0_9_Pu10m  " \"type boolean pu10m_ft 900 <=\"" ;  // 90% of t.Pu10m
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-: !key_Pu10k_Pu10k   " \"BOUND $I1 pu10k_10k ==\""  ; // what key
-: !key_Pu10k_Pu100k  " \"BOUND $I1 pu10k_10k ==\""  ;
-: !key_Pu10k_Pu1m    " \"BOUND $I1 pu10k_10k ==\""  ;
-: !key_Pu10k_Pu10m   " \"BOUND $I1 pu10k_10k ==\""  ;
-
-: !key_Pu100k_Pu10k  " \"BOUND $I1 pu100k_10k ==\""  ;
-: !key_Pu100k_Pu100k " \"BOUND $I1 pu100k_100k ==\"" ;
-: !key_Pu100k_Pu1m   " \"BOUND $I1 pu100k_100k ==\"" ;
-: !key_Pu100k_Pu10m  " \"BOUND $I1 pu100k_100k ==\"" ;
-
-: !key_Pu1m_Pu10k    " \"BOUND $I1 pu1m_10k ==\""  ;
-: !key_Pu1m_Pu100k   " \"BOUND $I1 pu1m_100k ==\"" ;
-: !key_Pu1m_Pu1m     " \"BOUND $I1 pu1m_1m ==\""   ;
-: !key_Pu1m_Pu10m    " \"BOUND $I1 pu1m_1m ==\""   ;
-
-: !key_Pu10m_Pu10k   " \"BOUND $I1 pu10m_10k ==\""  ;
-: !key_Pu10m_Pu100k  " \"BOUND $I1 pu10m_100k ==\"" ;
-: !key_Pu10m_Pu1m    " \"BOUND $I1 pu10m_1m ==\""   ;
-: !key_Pu10m_Pu10m   " \"BOUND $I1 pu10m_10m ==\""  ;
+: !ft_0_1_Pu10m  " \"type boolean pu10m_ft  100 <=\"" ; // 10% of t.Pu10m
+: !ft_0_3_Pu10m  " \"type boolean pu10m_ft  300 <=\"" ; // 30% of t.Pu10m
+: !ft_0_6_Pu10m  " \"type boolean pu10m_ft  600 <=\"" ; // 60% of t.Pu10m
+: !ft_0_9_Pu10m  " \"type boolean pu10m_ft  900 <=\"" ; // 90% of t.Pu10m
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-: !fj_0_1_Pu10k  " \"type boolean j1.pu10k_fj 100 <=\"" ; // 10% of j.Pu10K
-: !fj_0_3_Pu10k  " \"type boolean j1.pu10k_fj 300 <=\"" ; // 30% of j.Pu10K
-: !fj_0_6_Pu10k  " \"type boolean j1.pu10k_fj 600 <=\"" ; // 60% of j.Pu10K
-: !fj_0_9_Pu10k  " \"type boolean j1.pu10k_fj 900 <=\"" ; // 90% of j.Pu10K
+// join key expr
+: !key_Pu10k_Pu10k   " \"BOUND $I1 pu10k_10k   ==\"" ; // $L1 == t.pu10k_10k
+: !key_Pu10k_Pu100k  " \"BOUND $I1 pu10k_10k   ==\"" ; // $L1 == t.pu10k_10k
+: !key_Pu10k_Pu1m    " \"BOUND $I1 pu10k_10k   ==\"" ; // $L1 == t.pu10k_10k
+: !key_Pu10k_Pu10m   " \"BOUND $I1 pu10k_10k   ==\"" ; // $L1 == t.pu10k_10k
+
+: !key_Pu100k_Pu10k  " \"BOUND $I1 pu100k_10k  ==\"" ; // $L1 == t.pu100k_Pu10k
+: !key_Pu100k_Pu100k " \"BOUND $I1 pu100k_100k ==\"" ; // $L1 == t.pu100k_Pu100k
+: !key_Pu100k_Pu1m   " \"BOUND $I1 pu100k_100k ==\"" ; // $L1 == t.pu100k_Pu100k
+: !key_Pu100k_Pu10m  " \"BOUND $I1 pu100k_100k ==\"" ; // $L1 == t.pu100k_Pu100k
+
+: !key_Pu1m_Pu10k    " \"BOUND $I1 pu1m_10k    ==\"" ; // $L1 == t.pu1m_pu10k
+: !key_Pu1m_Pu100k   " \"BOUND $I1 pu1m_100k   ==\"" ; // $L1 == t.pu1m_pu100k
+: !key_Pu1m_Pu1m     " \"BOUND $I1 pu1m_1m     ==\"" ; // $L1 == t.pu1m_pu1m
+: !key_Pu1m_Pu10m    " \"BOUND $I1 pu1m_1m     ==\"" ; // $L1 == t.pu1m_pu1m
+
+: !key_Pu10m_Pu10k   " \"BOUND $I1 pu10m_10k   ==\"" ; // $L1 == t.pu10m_pu10k
+: !key_Pu10m_Pu100k  " \"BOUND $I1 pu10m_100k  ==\"" ; // $L1 == t.pu10m_pu100k
+: !key_Pu10m_Pu1m    " \"BOUND $I1 pu10m_1m    ==\"" ; // $L1 == t.pu10m_pu1m
+: !key_Pu10m_Pu10m   " \"BOUND $I1 pu10m_10m   ==\"" ; // $L1 == t.pu10m_pu10m
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// fj filter expr
+: !fj_0_1_Pu10k  " \"type boolean j1.pu10k_fj  100 <=\"" ; // 10% of j.Pu10K
+: !fj_0_3_Pu10k  " \"type boolean j1.pu10k_fj  300 <=\"" ; // 30% of j.Pu10K
+: !fj_0_6_Pu10k  " \"type boolean j1.pu10k_fj  600 <=\"" ; // 60% of j.Pu10K
+: !fj_0_9_Pu10k  " \"type boolean j1.pu10k_fj  900 <=\"" ; // 90% of j.Pu10K
 
 : !fj_0_1_Pu100k " \"type boolean j1.pu100k_fj 100 <=\"" ; // 10% of j.Pu100K
 : !fj_0_3_Pu100k " \"type boolean j1.pu100k_fj 300 <=\"" ; // 30% of j.Pu100K
 : !fj_0_6_Pu100k " \"type boolean j1.pu100k_fj 600 <=\"" ; // 60% of j.Pu100K
 : !fj_0_9_Pu100k " \"type boolean j1.pu100k_fj 900 <=\"" ; // 90% of j.Pu100K
 
-: !fj_0_1_Pu1m   " \"type boolean j1.pu1m_fj 100 <=\"" ; // 10% of j.Pu1m
-: !fj_0_3_Pu1m   " \"type boolean j1.pu1m_fj 300 <=\"" ; // 30% of j.Pu1m
-: !fj_0_6_Pu1m   " \"type boolean j1.pu1m_fj 600 <=\"" ; // 60% of j.Pu1m
-: !fj_0_9_Pu1m   " \"type boolean j1.pu1m_fj 900 <=\"" ; // 90% of j.Pu1m
+: !fj_0_1_Pu1m   " \"type boolean j1.pu1m_fj   100 <=\"" ; // 10% of j.Pu1m
+: !fj_0_3_Pu1m   " \"type boolean j1.pu1m_fj   300 <=\"" ; // 30% of j.Pu1m
+: !fj_0_6_Pu1m   " \"type boolean j1.pu1m_fj   600 <=\"" ; // 60% of j.Pu1m
+: !fj_0_9_Pu1m   " \"type boolean j1.pu1m_fj   900 <=\"" ; // 90% of j.Pu1m
 
-: !fj_0_1_Pu10m  " \"type boolean j1.pu10m_fj 100 <=\"" ; // 10% of j.Pu10m
-: !fj_0_3_Pu10m  " \"type boolean j1.pu10m_fj 300 <=\"" ; // 30% of j.Pu10m
-: !fj_0_6_Pu10m  " \"type boolean j1.pu10m_fj 600 <=\"" ; // 60% of j.Pu10m
-: !fj_0_9_Pu10m  " \"type boolean j1.pu10m_fj 900 <=\"" ; // 90% of j.Pu10m
+: !fj_0_1_Pu10m  " \"type boolean j1.pu10m_fj  100 <=\"" ; // 10% of j.Pu10m
+: !fj_0_3_Pu10m  " \"type boolean j1.pu10m_fj  300 <=\"" ; // 30% of j.Pu10m
+: !fj_0_6_Pu10m  " \"type boolean j1.pu10m_fj  600 <=\"" ; // 60% of j.Pu10m
+: !fj_0_9_Pu10m  " \"type boolean j1.pu10m_fj  900 <=\"" ; // 90% of j.Pu10m
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// agg expr
 : !agg_Pu10k_1g     " \"type integer pu10k_1g , type integer ) pu10k_10k sum" ;
 : !agg_Pu10k_10g    " \"type integer pu10k_10g , type integer ) pu10k_10k sum" ;
 : !agg_Pu10k_100g   " \"type integer pu10k_100g , type integer ) pu10k_10k sum" ;
@@ -173,6 +168,7 @@ Path[].root
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// gby expr
 : !gby_Pu10k_1g     " groupby type integer pu10k_1g\"" ;
 : !gby_Pu10k_10g    " groupby type integer pu10k_10g\"" ;
 : !gby_Pu10k_100g   " groupby type integer pu10k_100g\"" ;
@@ -192,9 +188,6 @@ Path[].root
 : !gby_Pu10m_10g    " groupby type integer pu10m_10g\"" ;
 : !gby_Pu10m_100g   " groupby type integer pu10m_100g\"" ;
 : !gby_Pu10m_1000g  " groupby type integer pu10m_1000g\"" ;
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* form full pipeline statement                                               */
@@ -275,14 +268,12 @@ Path[].root
 /* 5[] each gby ...                                                           */
 /*----------------------------------------------------------------------------*/
 : pu_agggby params| j t s |
-  
-  // X         op                                                           next
+   
+  // X         +op                                                    -- next --
   g(1)         s +aggreg
                  "!agg_" t >> _1g >> fx >>
-                 "!gby_" t >> _1g >> fx >> nl                           pu_pipeline
-
-
-
+                 "!gby_" t >> _1g >> fx >> nl                        pu_pipeline
+                 
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -292,9 +283,9 @@ Path[].root
 
   //j t s "pu_jFilter: s=%v ; t %v; j %v\n" .printf
 
-  // X         +op                                                args      next
+  // X         +op                                                    -- next --
   fj(0.1)      s +filter
-                 "!fj_0_1_" j >> fx >> nl                             t j pu_agggby
+                 "!fj_0_1_" j >> fx >> nl                          t j pu_agggby
 //  fj(0.3)      s +filter "!fj_0_3_" j >> fx >> nl                   t j pu_agggby
 //  fj(0.6)      s +filter "!fj_0_6_" j >> fx >> nl                   t j pu_agggby
 //  fj(0.9)      s +filter "!fj_0_9_" j >> fx >> nl                   t j pu_agggby
@@ -307,10 +298,10 @@ Path[].root
 
   //t s "pu_join: s=%v ; t %v\n" .printf
   
-  // X         +op                                               args       next
+  // X         +op                                                    -- next --
   j(Pu10k)     s +join +Pu10k sp
                  t "_Pu10k" >> >>
-                 "!key_" t >> "_Pu10k" >> fx >> nl             j:Pu10k t pu_jFilter
+                 "!key_" t >> "_Pu10k" >> fx >> nl          j:Pu10k t pu_jFilter
     
 ;
 
@@ -321,8 +312,8 @@ Path[].root
   
   //t s "pu_jFilter: s=%v ; t %v\n" .printf
   
-  // X         +op                                                  args    next
-  ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                         t pu_join
+  // X         +op                                                    -- next --
+  ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                      t pu_join
 //  ft(0.3)      s +filter "!ft_0_3_" t >> fx >> nl                       t pu_join
 //  ft(0.6)      s +filter "!ft_0_6_" t >> fx >> nl                       t pu_join
 //  ft(0.9)      s +filter "!ft_0_9_" t >> fx >> nl                       t pu_join
@@ -333,7 +324,7 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_tScan params| s |
 
-  // X         + op                                              args       next
+  // X         +op                                                    -- next --
   t(Pu10k)     s +scan +Pu10k  nl                            t:Pu10k  pu_tFilter
 //t(Pu100k)    s +scan +Pu100k nl                            t:Pu100k pu_tFilter
 //t(Pu1m)      s +scan +Pu1m   nl                            t:Pu1m   pu_tFilter
