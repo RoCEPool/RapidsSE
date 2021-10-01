@@ -41,6 +41,8 @@ namespace STORE
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Row* pAllotRow(Row* pRow);
 
+    Row* pCopyIntoRow(Row* pFromRow, Row* pToRrow);
+
     i8   iDecile(void);
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);

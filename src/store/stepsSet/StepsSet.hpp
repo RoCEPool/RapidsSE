@@ -1447,8 +1447,10 @@ public:
 
   // row buffer
   void vRowBufferCopy(void);
+  void vRowBufferCopyIntoSame(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
+  void vRowBufferGetRows(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);

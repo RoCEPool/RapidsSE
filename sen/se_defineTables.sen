@@ -548,8 +548,8 @@
   define table se__jobOperators (
 
     jobId             INTEGER NOT NULL ,
-    opName            VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
+    opName            VARCHAR NOT NULL ,
     ptnId             INTEGER NOT NULL ,
     responseMS        INTEGER NOT NULL ,
     maxQs             INTEGER NOT NULL ,
