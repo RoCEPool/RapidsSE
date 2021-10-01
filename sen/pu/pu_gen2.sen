@@ -12,7 +12,6 @@ Path[].root
 : nl "\n" str.cat ;
 : sp " "  str.cat ;
 : fx find execute ;
-: [n] >str "[" swap >> >> "]" >> ;
 
 // fx >> -- find excute tokens
 : key "key" ;
@@ -248,13 +247,13 @@ Path[].root
   " - - - - - - - - - - - - - - - - - - - - - - -" >> nl
 
   "// pu test " >>
-    /* pu     */ iTest            >str >> " : " >>
-    /* puSet  */ iSubset [n] string0[] >> " x " >>
-    /* t      */ iT      [n] string1[] >> " x " >>
-    /* ft     */ iFt     [n] string2[] >> " x " >>
-    /* j      */ iJ      [n] string3[] >> " x " >>
-    /* fj     */ iFj     [n] string4[] >> " x " >>
-    /* groups */ iGroups [n] string5[] sp >>
+    /* pu     */ iTest  >str >> " : " >>
+    /* puSet  */ "[" >> iSubset >str >> "]" >> string0[] >> " x " >>
+    /* t      */ "[" >> iT      >str >> "]" >> string1[] >> " x " >>
+    /* ft     */ "[" >> iFt     >str >> "]" >> string2[] >> " x " >>
+    /* j      */ "[" >> iJ      >str >> "]" >> string3[] >> " x " >>
+    /* fj     */ "[" >> iFj     >str >> "]" >> string4[] >> " x " >>
+    /* groups */ "[" >> iGroups >str >> "]" >> string5[] >>
     nl
     
   "// - - - - - - - - - - - - - - - - - - - - - -" >>
