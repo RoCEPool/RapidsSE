@@ -77,7 +77,7 @@ Path[].root
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // ft filter expr
-: !ft_0_1_Pu10k  " \"type boolean pu10k_ft  100 <=\"" ; // 10% of t.Pu10K
+: !ft_0_1_Pu10k  " \" type boolean pu10k_ft  100 >= \"" ; // 10% of t.Pu10K
 : !ft_0_3_Pu10k  " \"type boolean pu10k_ft  300 <=\"" ; // 30% of t.Pu10K
 : !ft_0_6_Pu10k  " \"type boolean pu10k_ft  600 <=\"" ; // 60% of t.Pu10K
 : !ft_0_9_Pu10k  " \"type boolean pu10k_ft  900 <=\"" ; // 90% of t.Pu10K
@@ -254,14 +254,14 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-//  sTags sPipeline api::executeCommand
-//
-//    //2discard
-//     discard
-//       "JobRep %v " str.format
-//         STD_PATH_TAG swap api::executeCommand 2discard
-//
-//  true api::reapJobs
+  sTags sPipeline api::executeCommand
+
+    //2discard
+     discard
+       "JobRep %v " str.format
+         STD_PATH_TAG swap api::executeCommand 2discard
+
+  true api::reapJobs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -273,6 +273,19 @@ Path[].root
   g(1)         s +aggreg
                  "!agg_" t >> _1g >> fx >>
                  "!gby_" t >> _1g >> fx >> nl                        pu_pipeline
+                 
+//  g(10)        s +aggreg
+//                 "!agg_" t >> _10g >> fx >>
+//                 "!gby_" t >> _10g >> fx >> nl                       pu_pipeline
+//
+//  g(100)       s +aggreg
+//                 "!agg_" t >> _100g >> fx >>
+//                 "!gby_" t >> _100g >> fx >> nl                      pu_pipeline
+//
+//
+//  g(1000)      s +aggreg
+//                 "!agg_" t >> _1000g >> fx >>
+//                 "!gby_" t >> _1000g >> fx >> nl                     pu_pipeline
                  
 ;
 
@@ -299,10 +312,17 @@ Path[].root
   //t s "pu_join: s=%v ; t %v\n" .printf
   
   // X         +op                                                    -- next --
+  
   j(Pu10k)     s +join +Pu10k sp
-                 t "_Pu10k" >> >>
-                 "!key_" t >> "_Pu10k" >> fx >> nl          j:Pu10k t pu_jFilter
+                 t "_10k" >> >>
+                 "!key_" t >> "_Pu10k" >> fx >> nl                   pu_pipeline
     
+
+
+//  j(Pu10k)     s +join +Pu10k sp
+//                 t "_10k" >> >>
+//                 "!key_" t >> "_Pu10k" >> fx >> nl          j:Pu10k t pu_jFilter
+//
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -313,10 +333,15 @@ Path[].root
   //t s "pu_jFilter: s=%v ; t %v\n" .printf
   
   // X         +op                                                    -- next --
-  ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                      t pu_join
-//  ft(0.3)      s +filter "!ft_0_3_" t >> fx >> nl                       t pu_join
-//  ft(0.6)      s +filter "!ft_0_6_" t >> fx >> nl                       t pu_join
-//  ft(0.9)      s +filter "!ft_0_9_" t >> fx >> nl                       t pu_join
+  
+  
+  ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                      pu_pipeline
+  
+
+//  ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                      t pu_join
+//  ft(0.3)      s +filter "!ft_0_3_" t >> fx >> nl                      t pu_join
+//  ft(0.6)      s +filter "!ft_0_6_" t >> fx >> nl                      t pu_join
+//  ft(0.9)      s +filter "!ft_0_9_" t >> fx >> nl                      t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -325,10 +350,15 @@ Path[].root
 : pu_tScan params| s |
 
   // X         +op                                                    -- next --
+  
+  
   t(Pu10k)     s +scan +Pu10k  nl                            t:Pu10k  pu_tFilter
-//t(Pu100k)    s +scan +Pu100k nl                            t:Pu100k pu_tFilter
-//t(Pu1m)      s +scan +Pu1m   nl                            t:Pu1m   pu_tFilter
-//t(Pu10m)     s +scan +Pu10m  nl                            t:Pu10m  pu_tFilter
+
+
+//  t(Pu10k)     s +scan +Pu10k  nl                            t:Pu10k  pu_tFilter
+//  t(Pu100k)    s +scan +Pu100k nl                            t:Pu100k pu_tFilter
+//  t(Pu1m)      s +scan +Pu1m   nl                            t:Pu1m   pu_tFilter
+//  t(Pu10m)     s +scan +Pu10m  nl                            t:Pu10m  pu_tFilter
 ;
 
 /*----------------------------------------------------------------------------*/
