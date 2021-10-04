@@ -5,17 +5,30 @@
 " OP_copyRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                               EOS */
+/*----------------------------------------------------------------------------*/
+: copyRows_Eos \handler
+
+  Counter0[] "rowBuffers : %v" .printf
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : copyRows_RowBuffer \handler
 
   //"Operand:- ZK_D_ROWBUFFER" .verbose
 
-  //Pipein[] rowBuffer.duplicate to rowBuffer[]
+  Pipein[]\clear to rowBuffer[]
+  rowBuffer[].copy to DataBuffer[]
 
-  rowBuffer[].pipeOut
-  Pipein[].delete
+  rowBuffer[].delete
 
+  DataBuffer[].pipeout
+
+  Counter0[] 1 + to Counter0[]
   true
 ;
 
@@ -29,9 +42,12 @@
 
   _lu_initialise_
 
+  0 to Counter0[]
+
   op__topology
 
   find: copyRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  find: copyRows_Eos        ZK_M_EOS op[].handler!
  
   op__loop
 

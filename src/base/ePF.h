@@ -32,7 +32,8 @@ enum ePF // prompt function
   /*    */ PF_DESCRIBE,
   /*    */ PF_DSV,
   /*    */ PF_DUMPTOKENS,
-  
+
+  /*    */ PF_EDIT,
   /*    */ PF_ENUMS,
   /*    */ PF_ERRNO,
   /*    */ PF_EXECUTING,
@@ -189,7 +190,8 @@ static Stz* aPF[]
   /*    */ "PF_DESCRIBE"_Stz,
   /*    */ "PF_DSV"_Stz,
   /*    */ "PF_DUMPTOKENS"_Stz,
-  
+
+  /*    */ "PF_EDIT"_Stz,
   /*    */ "PF_ENUMS"_Stz,
   /*    */ "PF_ERRNO"_Stz,
   /*    */ "PF_EXECUTING"_Stz,

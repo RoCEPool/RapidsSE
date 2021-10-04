@@ -32,12 +32,14 @@ namespace Parser
 
   private:
     // Walks the graph and validates table subqueries and main subqueries only.
-    static void vValidateTableAndMainSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                                QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
+    static void vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                                PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                                STORE::SeApi* pSeApi);
 
     // Walk the graph and validate expression subqueries and any subqueries they contain.
-    static void vValidateExprSubqueries(QueryNode* pStartingNode, PlanNode* pRootNode,
-                                        QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
+    static void vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                        PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                        STORE::SeApi* pSeApi);
 
     // Validates a table subquery only. We separate validation as we descend
     // the graph (top-down) and when we ascend back up (bottom-up).
@@ -56,7 +58,7 @@ namespace Parser
                                       STORE::SeApi* pSeApi);
 
     // Validates an expression subquery only
-    static void vValidateExprSubquery(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+    static void vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
                                       PlanNode* pRootNode, QueryNode* pMetadataNode,
                                       STORE::SeApi* pSeApi);
 
@@ -134,6 +136,17 @@ namespace Parser
     // This CteDef can be updated with column information later on.
     // Also updates the defnPath property of the subquery node.
     static void vCreateTableSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSubqueryPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode);
+
+    // Create an initial CteDef representing an expression subquery and add it to the metadata.
+    // This CteDef can be updated with column information later on.
+    // Also updates the defnPath property of the SubqueryExpr node.
+    static void vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode);
+
+    // Update a previously created CteDef representing an expression subquery and add
+    // in the missing column definition information.
+    static void vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
                                           PlanNode* pRootNode, QueryNode* pMetadataNode);
 
     // Given a root node and a path to a subquery marker, try to find the parent

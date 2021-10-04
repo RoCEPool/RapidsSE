@@ -2,24 +2,24 @@
 -- tpch query2 (SF_0001)
 --------------------------------------------------------------------------------
 /*  (original Query)
-  select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
-     from part, supplier, partsupp, nation, region
-      where p_partkey = ps_partkey
-      and s_suppkey = ps_suppkey
-      and p_size = 15
-      and p_type like '%BRASS'
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = 'EUROPE'
-      and ps_supplycost = (
-      select min(ps_supplycost)
-      from partsupp, supplier, nation, region
-      where p_partkey = ps_partkey
-      and s_suppkey = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = 'EUROPE' )
-       order by s_acctbal desc, n_name, s_name, p_partkey;
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+   from part, supplier, partsupp, nation, region
+    where p_partkey = ps_partkey
+    and s_suppkey = ps_suppkey
+    and p_size = 15
+    and p_type like '%BRASS'
+    and s_nationkey = n_nationkey
+    and n_regionkey = r_regionkey
+    and r_name = 'EUROPE'
+    and ps_supplycost = (
+    select min(ps_supplycost)
+    from partsupp, supplier, nation, region
+    where p_partkey = ps_partkey
+    and s_suppkey = ps_suppkey
+    and s_nationkey = n_nationkey
+    and n_regionkey = r_regionkey
+    and r_name = 'EUROPE' )
+     order by s_acctbal desc, n_name, s_name, p_partkey;
 
   rows: 0
 */
@@ -81,6 +81,19 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
 /////////////////////
 // Q02_0           //
 /////////////////////
+select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE';
+rows:
+--verfified
+  (3.14)
+
+/////////////////////
+// Q02_1           //
+/////////////////////
 
 // loopJoin running OOM with 5-way join
 /*
@@ -128,19 +141,6 @@ select s_acctbal, s_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
 
 --verfified
 rows: 8
-
-/////////////////////
-// Q02_1           //
-/////////////////////
-select min(ps_supplycost)
-      from partsupp, supplier, nation, region
-      where s_suppkey = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = 'EUROPE';
-rows:
---verfified
-  (3.14)
 
 CLEANUP {
   bye;

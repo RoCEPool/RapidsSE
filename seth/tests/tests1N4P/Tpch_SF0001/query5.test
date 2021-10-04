@@ -3,9 +3,15 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
-  select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
-      from customer, orders, lineitem, supplier, nation, region
-      where c_custkey = o_custkey
+  select n_name,
+         sum(l_extendedprice * (1 - l_discount)) as revenue
+  from customer,
+       orders,
+       lineitem,
+       supplier,
+       nation,
+       region
+ where c_custkey = o_custkey
       and l_orderkey = o_orderkey
       and l_suppkey = s_suppkey
       and c_nationkey = s_nationkey
@@ -14,7 +20,7 @@
       and r_name = 'ASIA'
       and o_orderdate >= DATE '1994-01-01'
       and o_orderdate < DATE '1994-01-01' + interval '1' year
-      group by n_name
+group by n_name
       order by revenue desc;
 --verfied
 rows: 0
@@ -28,7 +34,6 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
       and c_nationkey = s_nationkey
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
-      //and r_name = 'ASIA'
       and o_orderdate >= DATE '1994-01-01'
       and o_orderdate < DATE '1994-01-01' + interval '1' year
       group by n_name
@@ -37,7 +42,29 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
 rows:
  (ARGENTINA,-8058.1735)
  (MOROCCO,-18621.1058)
- (UNITED KINGDOM,-14023.6842)
+ (ETHIOPIA, -10081.6400)
+ (IRAN,-11613.3572)
+ (PERU,-14237.8225)
+
+
+// removed check for r_name = 'ASIA' (no rows in SF0001 dataset)
+// removed interval
+select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
+      from customer, orders, lineitem, supplier, nation, region
+      where c_custkey = o_custkey
+      and l_orderkey = o_orderkey
+      and l_suppkey = s_suppkey
+      and c_nationkey = s_nationkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and o_orderdate >= DATE '1994-01-01'
+      and o_orderdate < DATE '1995-01-01'
+      group by n_name
+      order by revenue desc;
+--verfied
+rows:
+ (ARGENTINA,-8058.1735)
+ (MOROCCO,-18621.1058)
  (ETHIOPIA, -10081.6400)
  (IRAN,-11613.3572)
  (PERU,-14237.8225)

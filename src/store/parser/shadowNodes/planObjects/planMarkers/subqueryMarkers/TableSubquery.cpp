@@ -204,18 +204,6 @@ QueryNodeList* TableSubquery::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the subquery is correlated with respect to its parent      */
-/*----------------------------------------------------------------------------*/
-b1 TableSubquery::bIsCorrelated(QueryNode* pNode)
-{
-  UNUSED(pNode); // in release
-  ASSERT(bIsOfType(pNode));
-
-  // All table subqueries are non-correlated
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Returns the name of the virtual table that this subquery is known as       */
 /*----------------------------------------------------------------------------*/
 Stz* TableSubquery::szTableAlias(QueryNode *pNode)

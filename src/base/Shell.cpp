@@ -7,6 +7,26 @@
 #include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
+/* edit shell command (returns exit code)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Shell::iEdit(Object* pCaller, Stz* sFilePath, SysCall& oSysCall)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // shell command to edit the file
+  s256 sShellCommand;
+  sShellCommand.vSprint("vim %s"_Stz, sFilePath);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file via vim
+  i8 iExitStatus = Shell::iExecute(sShellCommand.szStz(),oSysCall);
+  if ( iExitStatus != 0 ) {
+    vTrace("Unable to vim file: %s\n"_Stz,sFilePath);
+    return false;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute shell command (returns exit code)                                  */
 /*----------------------------------------------------------------------------*/
 i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
@@ -29,9 +49,6 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
   
   oSysCall.vSuccess();
 
-
-
-  
   return iResult;
 }
 

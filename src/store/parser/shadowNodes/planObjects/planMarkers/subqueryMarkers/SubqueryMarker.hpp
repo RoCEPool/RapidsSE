@@ -35,9 +35,6 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
-    // Returns true if the subquery is correlated with respect to its parent subquery
-    static b1 bIsCorrelated(QueryNode* pNode);
-
     // Returns the path of the definition node of this table subquery (a CteDef object).
     // Path may be null early in the plan.
     static Stz* szDefnPath(QueryNode* pNode);

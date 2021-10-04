@@ -40,20 +40,20 @@ success
 // expression subqueries that project 1 column.
 
 // Uncorrelated subquery in WHERE clause
-SELECT * FROM nation WHERE n_nationkey > ( SELECT MAX(n_nationkey)/2 FROM nation );
+EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT MAX(n_nationkey)/2 FROM nation );
 
 // Correlated subquery in WHERE clause
-SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
 
 // Uncorrelated subquery in SELECT list
-SELECT
+EXPLAIN SELECT
   n_nationkey,
   ( SELECT MAX(n_nationkey)/2 FROM nation )
 FROM
   nation n1;
 
 // Correlated subquery in SELECT list
-SELECT
+EXPLAIN SELECT
   n_nationkey,
   ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average
 FROM

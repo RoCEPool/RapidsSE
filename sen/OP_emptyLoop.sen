@@ -5,6 +5,16 @@
 " OP_emptyLoop.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                               EOS */
+/*----------------------------------------------------------------------------*/
+: emptyLoop_Eos \handler
+
+  Counter0[] "rowBuffers : %v" .printf
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : emptyLoop_RowBuffer \handler
@@ -12,9 +22,11 @@
   //"Operand:- ZK_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
-  //rowBuffer[].iterate
+  rowBuffer[].iterate
 
   rowBuffer[].pipeOut
+
+  Counter0[] 1 + to Counter0[]
 
   true
 ;
@@ -29,10 +41,13 @@
 
   _lu_initialise_
 
+  0 to Counter0[]
+
   op__topology
 
   find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER op[].handler!
- 
+  find: emptyLoop_Eos        ZK_M_EOS op[].handler!
+
   op__loop
 
   _lu_finalise_

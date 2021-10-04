@@ -1446,12 +1446,14 @@ public:
   void vRegTimerSet(void);
 
   // row buffer
+  void vRowBufferCopy(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
+  void vRowBufferIterate(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);
