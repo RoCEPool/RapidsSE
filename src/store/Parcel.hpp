@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eXK.h"
+#include "ePZ.h"
 
 namespace STORE
 {
@@ -11,7 +12,8 @@ namespace STORE
   {
   private:
     ePX  m_eCrossTopo;      // cross topology
-  
+    ePZ  m_eOpTopology;     // op topology
+
     i8   m_iDstNode;        // destination node id
 
     PtnId  m_tDstPtn;       // destination partition (in grid)
@@ -54,7 +56,7 @@ namespace STORE
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-    void vLabel(ePX eCrossTopo, i8  iPipelineJobId);
+    void vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId);
     i8   nItems(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
