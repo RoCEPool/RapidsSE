@@ -97,35 +97,36 @@ void Step::vParcelPipeOut(void)
   // Where do we see the BktNo, so that we can map it to the partition?
 
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pParcel->eCrossTopo(),
-                               pParcel->tDstPtn(),
-                               pParcel->iDstOp());
+  Op* pDstOp = pStage->pPipeOutOp(nullptr,
+                                  pParcel->eCrossTopo(),
+                                  pParcel->tDstPtn(),
+                                  pParcel->iDstOp());
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 
 
   // CAUTION NOTE: Cannot access LU of OP after piping out operand
   // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
   if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
     pLogicUnit->m_xpStats->m_nParcelRecvs++;
     pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
   }
 
   if (pParcel->bOriginalParcel()) {
-    pOp->vAppendLeft(pParcel,this);
+    pDstOp->vAppendLeft(pParcel,this);
   } else {
     if (pParcel->pGetOperand()) {
-        pOp->vAppendLeft(pOperand, this);
+      pDstOp->vAppendLeft(pOperand, this);
     }
   }
 
   /* Origin from master
     if (pParcel->pGetOperand()) {
       if (pParcel->bAppendRight())
-        pOp->vAppendRight(pOperand, this);
+        pDstOp->vAppendRight(pOperand, this);
       else
-        pOp->vAppendLeft(pOperand, this);
+        pDstOp->vAppendLeft(pOperand, this);
     }
     */
   
