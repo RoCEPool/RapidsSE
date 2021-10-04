@@ -267,13 +267,9 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
   
   switch (eCrossTopo) {
       
-      
     // - - - - -
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pStream_one = this->pGetNodeStream(i_ThisNode);
-      break;
-
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_NODES_TO_ALL_NODES:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
@@ -283,33 +279,26 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
       pStream_one = this->pGetNodeStream(i_ThisNode);
       break;
       
-
-      
     // - - - - -
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
       pStream_one = pGet(tDstPtnId.iAsI8());
       break;
       
+    // - - - - -
+
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-      pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
-      break;
-      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
-      break;
-      
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
       break;
       
-      
-      
     // - - - - -
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+      NEVER_REACH;
       pStream_one = pGet(0);
       ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       break;
