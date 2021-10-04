@@ -1,0 +1,121 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 18
+--------------------------------------------------------------------------------
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  customer,
+  orders,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 300
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate;
+
+...
+ Customer#000010129 |     10129 |    5849444 | 1994-03-21  |    409129.85 | 309.00
+ Customer#000069904 |     69904 |    1742403 | 1996-10-19  |    408513.00 | 305.00
+ Customer#000017746 |     17746 |       6882 | 1997-04-09  |    408446.93 | 303.00
+ Customer#000013072 |     13072 |    1481925 | 1998-03-15  |    399195.47 | 301.00
+ Customer#000082441 |     82441 |     857959 | 1994-02-07  |    382579.74 | 305.00
+ Customer#000088703 |     88703 |    2995076 | 1994-01-30  |    363812.12 | 302.00
+(57 rows)
+
+
+ --------------------------------------------------------------------------------
+                                 QUERY PLAN
+ --------------------------------------------------------------------------------
+Finalize GroupAggregate  (cost=410056.72..487906.77 rows=573394 width=71)
+   Group Key: orders.o_totalprice, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+   ->  Gather Merge  (cost=410056.72..472377.35 rows=477828 width=71)
+         Workers Planned: 2
+         ->  Partial GroupAggregate  (cost=409056.70..416224.12 rows=238914 width=71)
+               Group Key: orders.o_totalprice, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+               ->  Sort  (cost=409056.70..409653.98 rows=238914 width=44)
+                     Sort Key: orders.o_totalprice DESC, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+                     ->  Nested Loop  (cost=309630.91..380364.35 rows=238914 width=44)
+                           ->  Parallel Hash Join  (cost=309630.48..314323.70 rows=59724 width=43)
+                                 Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                 ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=23)
+                                 ->  Parallel Hash  (cost=308883.93..308883.93 rows=59724 width=24)
+                                       ->  Hash Join  (cost=267012.30..308883.93 rows=59724 width=24)
+                                             Hash Cond: (orders.o_orderkey = lineitem_1.l_orderkey)
+                                             ->  Parallel Seq Scan on orders  (cost=0.00..32345.00 rows=625000 width=20)
+                                             ->  Hash  (cost=264660.59..264660.59 rows=143337 width=4)
+                                                   ->  GroupAggregate  (cost=0.43..263227.22 rows=143337 width=4)
+                                                         Group Key: lineitem_1.l_orderkey
+                                                         Filter: (sum(lineitem_1.l_quantity) > '300'::numeric)
+                                                         ->  Index Scan using lineitem_idx2 on lineitem lineitem_1  (cost=0.43..226774.66 rows=6000482 width=9)
+                           ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..0.97 rows=14 width=9)
+                                 Index Cond: (l_orderkey = orders.o_orderkey)
+ JIT:
+   Functions: 35
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(26 rows)
+
+ --------------------------------------------------------------------------------
+                                  ANALYSE PLAN
+ --------------------------------------------------------------------------------
+
+ Finalize GroupAggregate  (cost=410056.72..487906.77 rows=573394 width=71) (actual time=2240.224..2246.601 rows=57 loops=1)
+    Group Key: orders.o_totalprice, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+    ->  Gather Merge  (cost=410056.72..472377.35 rows=477828 width=71) (actual time=2240.216..2246.567 rows=57 loops=1)
+          Workers Planned: 2
+          Workers Launched: 2
+          ->  Partial GroupAggregate  (cost=409056.70..416224.12 rows=238914 width=71) (actual time=2229.809..2229.851 rows=19 loops=3)
+                Group Key: orders.o_totalprice, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+                ->  Sort  (cost=409056.70..409653.98 rows=238914 width=44) (actual time=2229.786..2229.796 rows=133 loops=3)
+                      Sort Key: orders.o_totalprice DESC, orders.o_orderdate, customer.c_name, customer.c_custkey, orders.o_orderkey
+                      Sort Method: quicksort  Memory: 35kB
+                      Worker 0:  Sort Method: quicksort  Memory: 33kB
+                      Worker 1:  Sort Method: quicksort  Memory: 37kB
+                      ->  Nested Loop  (cost=309630.91..380364.35 rows=238914 width=44) (actual time=2219.019..2229.654 rows=133 loops=3)
+                            ->  Parallel Hash Join  (cost=309630.48..314323.70 rows=59724 width=43) (actual time=2218.995..2229.432 rows=19 loops=3)
+                                  Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                  ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=23) (actual time=0.050..6.254 rows=50000 loops=3)
+                                  ->  Parallel Hash  (cost=308883.93..308883.93 rows=59724 width=24) (actual time=2217.810..2217.812 rows=19 loops=3)
+                                        Buckets: 262144  Batches: 1  Memory Usage: 2144kB
+                                        ->  Hash Join  (cost=267012.30..308883.93 rows=59724 width=24) (actual time=2058.161..2189.123 rows=19 loops=3)
+                                              Hash Cond: (orders.o_orderkey = lineitem_1.l_orderkey)
+                                              ->  Parallel Seq Scan on orders  (cost=0.00..32345.00 rows=625000 width=20) (actual time=15.492..73.878 rows=500000 loops=3)
+                                              ->  Hash  (cost=264660.59..264660.59 rows=143337 width=4) (actual time=2034.055..2034.056 rows=57 loops=3)
+                                                    Buckets: 131072  Batches: 2  Memory Usage: 1026kB
+                                                    ->  GroupAggregate  (cost=0.43..263227.22 rows=143337 width=4) (actual time=2.517..2033.888 rows=57 loops=3)
+                                                          Group Key: lineitem_1.l_orderkey
+                                                          Filter: (sum(lineitem_1.l_quantity) > '300'::numeric)
+                                                          Rows Removed by Filter: 1499943
+                                                          ->  Index Scan using lineitem_idx2 on lineitem lineitem_1  (cost=0.43..226774.66 rows=6000482 width=9) (actual time=0.032..1046.989 rows=6001215 loops=3)
+                            ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..0.97 rows=14 width=9) (actual time=0.009..0.010 rows=7 loops=57)
+                                  Index Cond: (l_orderkey = orders.o_orderkey)
+  Planning Time: 0.341 ms
+  JIT:
+    Functions: 102
+    Options: Inlining false, Optimization false, Expressions true, Deforming true
+    Timing: Generation 10.493 ms, Inlining 0.000 ms, Optimization 2.373 ms, Emission 43.594 ms, Total 56.459 ms
+  Execution Time: 2250.212 ms
+ (36 rows)
+

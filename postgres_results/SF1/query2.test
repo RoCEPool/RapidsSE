@@ -1,0 +1,152 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 2
+--------------------------------------------------------------------------------
+select
+  s_acctbal,
+  s_name,
+  n_name,
+  p_partkey,
+  p_mfgr,
+  s_address,
+  s_phone,
+  s_comment
+from
+  part,
+  supplier,
+  partsupp,
+  nation,
+  region
+where
+  p_partkey = ps_partkey
+  and s_suppkey = ps_suppkey
+  and p_size = 15
+  and p_type like '%BRASS'
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = 'EUROPE'
+  and ps_supplycost =
+(
+  select
+    min(ps_supplycost)
+  from
+    partsupp,
+    supplier,
+    nation,
+    region
+  where
+    p_partkey = ps_partkey
+    and s_suppkey = ps_suppkey
+    and s_nationkey = n_nationkey
+    and n_regionkey = r_regionkey
+    and r_name = 'EUROPE'
+  )
+order by
+  s_acctbal desc,
+  n_name,
+  s_name,
+  p_partkey;
+
+(460 rows)
+
+--------------------------------------------------------------------------------
+                                 QUERY PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=369656.10..369656.11 rows=1 width=263)
+   Sort Key: supplier.s_acctbal DESC, nation.n_name, supplier.s_name, part.p_partkey
+   ->  Hash Join  (cost=1032.36..369656.09 rows=1 width=263)
+         Hash Cond: ((part.p_partkey = partsupp.ps_partkey) AND ((SubPlan 1) = partsupp.ps_supplycost))
+         ->  Seq Scan on part  (cost=0.00..7097.00 rows=780 width=30)
+               Filter: (((p_type)::text ~~ '%BRASS'::text) AND (p_size = 15))
+         ->  Hash  (cost=961.77..961.77 rows=4706 width=243)
+               ->  Nested Loop  (cost=24.92..961.77 rows=4706 width=243)
+                     ->  Hash Join  (cost=24.50..375.59 rows=59 width=237)
+                           Hash Cond: (supplier.s_nationkey = nation.n_nationkey)
+                           ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=137)
+                           ->  Hash  (cost=24.48..24.48 rows=1 width=108)
+                                 ->  Hash Join  (cost=12.14..24.48 rows=1 width=108)
+                                       Hash Cond: (nation.n_regionkey = region.r_regionkey)
+                                       ->  Seq Scan on nation  (cost=0.00..11.70 rows=170 width=112)
+                                       ->  Hash  (cost=12.12..12.12 rows=1 width=4)
+                                             ->  Seq Scan on region  (cost=0.00..12.12 rows=1 width=4)
+                                                   Filter: (r_name = 'EUROPE'::bpchar)
+                     ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..9.14 rows=80 width=14)
+                           Index Cond: (ps_suppkey = supplier.s_suppkey)
+         SubPlan 1
+           ->  Aggregate  (cost=926.97..926.98 rows=1 width=32)
+                 ->  Nested Loop  (cost=24.92..926.96 rows=1 width=6)
+                       ->  Hash Join  (cost=24.50..375.59 rows=59 width=4)
+                             Hash Cond: (supplier_1.s_nationkey = nation_1.n_nationkey)
+                             ->  Seq Scan on supplier supplier_1  (cost=0.00..313.00 rows=10000 width=8)
+                             ->  Hash  (cost=24.48..24.48 rows=1 width=4)
+                                   ->  Hash Join  (cost=12.14..24.48 rows=1 width=4)
+                                         Hash Cond: (nation_1.n_regionkey = region_1.r_regionkey)
+                                         ->  Seq Scan on nation nation_1  (cost=0.00..11.70 rows=170 width=8)
+                                         ->  Hash  (cost=12.12..12.12 rows=1 width=4)
+                                               ->  Seq Scan on region region_1  (cost=0.00..12.12 rows=1 width=4)
+                                                     Filter: (r_name = 'EUROPE'::bpchar)
+                       ->  Index Scan using partsupp_idx1 on partsupp partsupp_1  (cost=0.42..9.34 rows=1 width=10)
+                             Index Cond: (ps_suppkey = supplier_1.s_suppkey)
+                             Filter: (part.p_partkey = ps_partkey)
+ JIT:
+   Functions: 71
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(39 rows)
+
+
+--------------------------------------------------------------------------------
+                                   ANALYSE PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=369656.10..369656.11 rows=1 width=263) (actual time=97807.169..97807.212 rows=460 loops=1)
+   Sort Key: supplier.s_acctbal DESC, nation.n_name, supplier.s_name, part.p_partkey
+   Sort Method: quicksort  Memory: 147kB
+   ->  Hash Join  (cost=1032.36..369656.09 rows=1 width=263) (actual time=3828.293..97806.227 rows=460 loops=1)
+         Hash Cond: ((part.p_partkey = partsupp.ps_partkey) AND ((SubPlan 1) = partsupp.ps_supplycost))
+         ->  Seq Scan on part  (cost=0.00..7097.00 rows=780 width=30) (actual time=27.878..55.973 rows=747 loops=1)
+               Filter: (((p_type)::text ~~ '%BRASS'::text) AND (p_size = 15))
+               Rows Removed by Filter: 199253
+         ->  Hash  (cost=961.77..961.77 rows=4706 width=243) (actual time=179.809..179.812 rows=158960 loops=1)
+               Buckets: 32768 (originally 8192)  Batches: 16 (originally 1)  Memory Usage: 3841kB
+               ->  Nested Loop  (cost=24.92..961.77 rows=4706 width=243) (actual time=0.050..113.232 rows=158960 loops=1)
+                     ->  Hash Join  (cost=24.50..375.59 rows=59 width=237) (actual time=0.036..3.214 rows=1987 loops=1)
+                           Hash Cond: (supplier.s_nationkey = nation.n_nationkey)
+                           ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=137) (actual time=0.007..1.197 rows=10000 loops=1)
+                           ->  Hash  (cost=24.48..24.48 rows=1 width=108) (actual time=0.024..0.025 rows=5 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                 ->  Hash Join  (cost=12.14..24.48 rows=1 width=108) (actual time=0.019..0.023 rows=5 loops=1)
+                                       Hash Cond: (nation.n_regionkey = region.r_regionkey)
+                                       ->  Seq Scan on nation  (cost=0.00..11.70 rows=170 width=112) (actual time=0.005..0.006 rows=25 loops=1)
+                                       ->  Hash  (cost=12.12..12.12 rows=1 width=4) (actual time=0.008..0.009 rows=1 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             ->  Seq Scan on region  (cost=0.00..12.12 rows=1 width=4) (actual time=0.007..0.007 rows=1 loops=1)
+                                                   Filter: (r_name = 'EUROPE'::bpchar)
+                                                   Rows Removed by Filter: 4
+                     ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..9.14 rows=80 width=14) (actual time=0.003..0.046 rows=80 loops=1987)
+                           Index Cond: (ps_suppkey = supplier.s_suppkey)
+         SubPlan 1
+           ->  Aggregate  (cost=926.97..926.98 rows=1 width=32) (actual time=80.795..80.795 rows=1 loops=1207)
+                 ->  Nested Loop  (cost=24.92..926.96 rows=1 width=6) (actual time=43.397..80.789 rows=1 loops=1207)
+                       ->  Hash Join  (cost=24.50..375.59 rows=59 width=4) (actual time=0.004..2.372 rows=1987 loops=1207)
+                             Hash Cond: (supplier_1.s_nationkey = nation_1.n_nationkey)
+                             ->  Seq Scan on supplier supplier_1  (cost=0.00..313.00 rows=10000 width=8) (actual time=0.003..1.125 rows=10000 loops=1207)
+                             ->  Hash  (cost=24.48..24.48 rows=1 width=4) (actual time=0.031..0.033 rows=5 loops=1)
+                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                   ->  Hash Join  (cost=12.14..24.48 rows=1 width=4) (actual time=0.026..0.030 rows=5 loops=1)
+                                         Hash Cond: (nation_1.n_regionkey = region_1.r_regionkey)
+                                         ->  Seq Scan on nation nation_1  (cost=0.00..11.70 rows=170 width=8) (actual time=0.005..0.007 rows=25 loops=1)
+                                         ->  Hash  (cost=12.12..12.12 rows=1 width=4) (actual time=0.011..0.012 rows=1 loops=1)
+                                               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                               ->  Seq Scan on region region_1  (cost=0.00..12.12 rows=1 width=4) (actual time=0.008..0.009 rows=1 loops=1)
+                                                     Filter: (r_name = 'EUROPE'::bpchar)
+                                                     Rows Removed by Filter: 4
+                       ->  Index Scan using partsupp_idx1 on partsupp partsupp_1  (cost=0.42..9.34 rows=1 width=10) (actual time=0.039..0.039 rows=0 loops=2398309)
+                             Index Cond: (ps_suppkey = supplier_1.s_suppkey)
+                             Filter: (part.p_partkey = ps_partkey)
+                             Rows Removed by Filter: 80
+ Planning Time: 0.373 ms
+ JIT:
+   Functions: 73
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 6.289 ms, Inlining 0.000 ms, Optimization 1.257 ms, Emission 26.373 ms, Total 33.918 ms
+ Execution Time: 97813.639 ms
+(52 rows)
+

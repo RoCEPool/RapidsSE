@@ -1,0 +1,143 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 1
+--------------------------------------------------------------------------------
+
+select
+  c_count,
+  count(*) as custdist
+from (
+  select
+    c_custkey,
+    count(o_orderkey) as c_count
+  from
+    customer left outer join orders on
+       c_custkey = o_custkey
+     and o_comment not like '%special%requests%'
+  group by
+    c_custkey
+) as c_orders (c_custkey, c_count)
+group by
+  c_count
+order by
+  custdist desc,
+  c_count desc;
+
+ c_count | custdist
+---------+----------
+       0 |    50005
+       9 |     6641
+      10 |     6532
+      11 |     6014
+       8 |     5937
+      12 |     5639
+      13 |     5024
+      19 |     4793
+       7 |     4687
+      17 |     4587
+      18 |     4529
+      20 |     4516
+      15 |     4505
+      14 |     4446
+      16 |     4273
+      21 |     4190
+      22 |     3623
+       6 |     3265
+      23 |     3225
+      24 |     2742
+      25 |     2086
+       5 |     1948
+      26 |     1612
+      27 |     1179
+       4 |     1007
+      28 |      893
+      29 |      593
+       3 |      415
+      30 |      376
+      31 |      226
+      32 |      148
+       2 |      134
+      33 |       75
+      34 |       50
+      35 |       37
+       1 |       17
+      36 |       14
+      38 |        5
+      37 |        5
+      40 |        4
+      41 |        2
+      39 |        1
+(42 rows)
+
+
+--------------------------------------------------------------------------------
+                                    QUERY PLAN
+--------------------------------------------------------------------------------
+ Sort  (cost=150018.33..150018.83 rows=200 width=16)
+   Sort Key: (count(*)) DESC, (count(orders.o_orderkey)) DESC
+   ->  HashAggregate  (cost=150008.68..150010.68 rows=200 width=16)
+         Group Key: count(orders.o_orderkey)
+         ->  Finalize GroupAggregate  (cost=109756.24..147758.68 rows=150000 width=12)
+               Group Key: customer.c_custkey
+               ->  Gather Merge  (cost=109756.24..144758.68 rows=300000 width=12)
+                     Workers Planned: 2
+                     ->  Sort  (cost=108756.22..109131.22 rows=150000 width=12)
+                           Sort Key: customer.c_custkey
+                           ->  Partial HashAggregate  (cost=87059.92..93294.76 rows=150000 width=12)
+                                 Group Key: customer.c_custkey
+                                 Planned Partitions: 4
+                                 ->  Parallel Hash Left Join  (cost=43851.67..52969.04 rows=606060 width=8)
+                                       Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                       ->  Parallel Index Only Scan using customer_idx1 on customer  (cost=0.42..3031.42 rows=62500 width=4)
+                                       ->  Parallel Hash  (cost=33907.50..33907.50 rows=606060 width=8)
+                                             ->  Parallel Seq Scan on orders  (cost=0.00..33907.50 rows=606060 width=8)
+                                                   Filter: ((o_comment)::text !~~ '%special%requests%'::text)
+ JIT:
+   Functions: 17
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(22 rows)
+
+
+--------------------------------------------------------------------------------
+                                     ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+ Sort  (cost=150018.33..150018.83 rows=200 width=16) (actual time=473.480..489.318 rows=42 loops=1)
+   Sort Key: (count(*)) DESC, (count(orders.o_orderkey)) DESC
+   Sort Method: quicksort  Memory: 26kB
+   ->  HashAggregate  (cost=150008.68..150010.68 rows=200 width=16) (actual time=473.467..489.307 rows=42 loops=1)
+         Group Key: count(orders.o_orderkey)
+         Batches: 1  Memory Usage: 40kB
+         ->  Finalize GroupAggregate  (cost=109756.24..147758.68 rows=150000 width=12) (actual time=412.810..475.309 rows=150000 loops=1)
+               Group Key: customer.c_custkey
+               ->  Gather Merge  (cost=109756.24..144758.68 rows=300000 width=12) (actual time=412.798..450.127 rows=150000 loops=1)
+                     Workers Planned: 2
+                     Workers Launched: 2
+                     ->  Sort  (cost=108756.22..109131.22 rows=150000 width=12) (actual time=402.690..406.229 rows=50000 loops=3)
+                           Sort Key: customer.c_custkey
+                           Sort Method: quicksort  Memory: 3697kB
+                           Worker 0:  Sort Method: quicksort  Memory: 3715kB
+                           Worker 1:  Sort Method: quicksort  Memory: 3716kB
+                           ->  Partial HashAggregate  (cost=87059.92..93294.76 rows=150000 width=12) (actual time=362.905..393.054 rows=50000 loops=3)
+                                 Group Key: customer.c_custkey
+                                 Planned Partitions: 4  Batches: 5  Memory Usage: 4145kB  Disk Usage: 7320kB
+                                 Worker 0:  Batches: 5  Memory Usage: 4145kB  Disk Usage: 7384kB
+                                 Worker 1:  Batches: 5  Memory Usage: 4145kB  Disk Usage: 7384kB
+                                 ->  Parallel Hash Left Join  (cost=43851.67..52969.04 rows=606060 width=8) (actual time=222.048..291.543 rows=511308 loops=3)
+                                       Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                       ->  Parallel Index Only Scan using customer_idx1 on customer  (cost=0.42..3031.42 rows=62500 width=4) (actual time=0.155..4.584 rows=50000 loops=3)
+                                             Heap Fetches: 0
+                                       ->  Parallel Hash  (cost=33907.50..33907.50 rows=606060 width=8) (actual time=198.838..198.838 rows=494639 loops=3)
+                                             Buckets: 131072  Batches: 32  Memory Usage: 2912kB
+                                             ->  Parallel Seq Scan on orders  (cost=0.00..33907.50 rows=606060 width=8) (actual time=7.797..123.398 rows=494639 loops=3)
+                                                   Filter: ((o_comment)::text !~~ '%special%requests%'::text)
+                                                   Rows Removed by Filter: 5361
+ Planning Time: 0.168 ms
+ JIT:
+   Functions: 62
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 6.519 ms, Inlining 0.000 ms, Optimization 1.704 ms, Emission 28.002 ms, Total 36.225 ms
+ Execution Time: 494.878 ms
+(36 rows)
+
+
+

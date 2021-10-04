@@ -1,0 +1,84 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 4
+--------------------------------------------------------------------------------
+select o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where o_orderdate >= DATE '1993-07-01'
+  and o_orderdate < DATE '1993-10-01' + interval '3' month
+  and
+exists (
+  select
+    *
+  from
+    lineitem
+  where
+    l_orderkey = o_orderkey
+    and l_commitdate < l_receiptdate
+  )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
+ o_orderpriority | order_count
+-----------------+-------------
+ 1-URGENT        |       21031
+ 2-HIGH          |       20852
+ 3-MEDIUM        |       20907
+ 4-NOT SPECIFIED |       21099
+ 5-LOW           |       21007
+(5 rows)
+
+
+--------------------------------------------------------------------------------
+                                   QUERY PLAN
+--------------------------------------------------------------------------------
+Finalize GroupAggregate  (cost=94092.71..94093.98 rows=5 width=24)
+   Group Key: orders.o_orderpriority
+   ->  Gather Merge  (cost=94092.71..94093.88 rows=10 width=24)
+         Workers Planned: 2
+         ->  Sort  (cost=93092.69..93092.70 rows=5 width=24)
+               Sort Key: orders.o_orderpriority
+               ->  Partial HashAggregate  (cost=93092.58..93092.63 rows=5 width=24)
+                     Group Key: orders.o_orderpriority
+                     ->  Nested Loop Semi Join  (cost=0.43..93024.09 rows=13697 width=16)
+                           ->  Parallel Seq Scan on orders  (cost=0.00..35470.00 rows=47778 width=20)
+                                 Filter: ((o_orderdate >= '1993-07-01'::date) AND (o_orderdate < '1994-01-01 00:00:00'::timestamp without time zone))
+                           ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..3.57 rows=5 width=4)
+                                 Index Cond: (l_orderkey = orders.o_orderkey)
+                                 Filter: (l_commitdate < l_receiptdate)
+(14 rows)
+
+
+--------------------------------------------------------------------------------
+                                   ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+ Finalize GroupAggregate  (cost=94092.71..94093.98 rows=5 width=24) (actual time=231.602..237.510 rows=5 loops=1)
+   Group Key: orders.o_orderpriority
+   ->  Gather Merge  (cost=94092.71..94093.88 rows=10 width=24) (actual time=231.597..237.503 rows=15 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Sort  (cost=93092.69..93092.70 rows=5 width=24) (actual time=224.224..224.225 rows=5 loops=3)
+               Sort Key: orders.o_orderpriority
+               Sort Method: quicksort  Memory: 25kB
+               Worker 0:  Sort Method: quicksort  Memory: 25kB
+               Worker 1:  Sort Method: quicksort  Memory: 25kB
+               ->  Partial HashAggregate  (cost=93092.58..93092.63 rows=5 width=24) (actual time=224.191..224.192 rows=5 loops=3)
+                     Group Key: orders.o_orderpriority
+                     Batches: 1  Memory Usage: 24kB
+                     Worker 0:  Batches: 1  Memory Usage: 24kB
+                     Worker 1:  Batches: 1  Memory Usage: 24kB
+                     ->  Nested Loop Semi Join  (cost=0.43..93024.09 rows=13697 width=16) (actual time=0.080..216.524 rows=34965 loops=3)
+                           ->  Parallel Seq Scan on orders  (cost=0.00..35470.00 rows=47778 width=20) (actual time=0.037..51.516 rows=38096 loops=3)
+                                 Filter: ((o_orderdate >= '1993-07-01'::date) AND (o_orderdate < '1994-01-01 00:00:00'::timestamp without time zone))
+                                 Rows Removed by Filter: 461904
+                           ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..3.57 rows=5 width=4) (actual time=0.004..0.004 rows=1 loops=114287)
+                                 Index Cond: (l_orderkey = orders.o_orderkey)
+                                 Filter: (l_commitdate < l_receiptdate)
+                                 Rows Removed by Filter: 1
+ Planning Time: 0.191 ms
+ Execution Time: 237.549 ms
+(25 rows)

@@ -1,0 +1,133 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 7
+--------------------------------------------------------------------------------
+select supp_nation,
+  cust_nation,
+  l_year,
+  sum(volume) as revenue
+from (
+  select
+    n1.n_name as supp_nation,
+    n2.n_name as cust_nation,
+    extract(year from l_shipdate) as l_year,
+    l_extendedprice * (1 - l_discount) as volume
+  from
+    supplier,
+    lineitem,
+    orders,
+    customer,
+    nation n1,
+    nation n2
+  where
+    s_suppkey = l_suppkey
+    and o_orderkey = l_orderkey
+    and c_custkey = o_custkey
+    and s_nationkey = n1.n_nationkey
+    and c_nationkey = n2.n_nationkey
+    and ( (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
+    or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE'))
+    and l_shipdate between '1995-01-01' and '1996-12-31'
+  )as shipping
+group by
+  supp_nation,
+  cust_nation,
+  l_year
+order by
+  supp_nation,
+  cust_nation,
+  l_year;
+
+        supp_nation        |        cust_nation        | l_year |    revenue
+---------------------------+---------------------------+--------+---------------
+ FRANCE                    | GERMANY                   |   1995 | 54639732.7336
+ FRANCE                    | GERMANY                   |   1996 | 54633083.3076
+ GERMANY                   | FRANCE                    |   1995 | 52531746.6697
+ GERMANY                   | FRANCE                    |   1996 | 52520549.0224
+(4 rows)
+
+--------------------------------------------------------------------------------
+                                 QUERY PLAN
+--------------------------------------------------------------------------------
+Finalize GroupAggregate  (cost=15010.14..15027.78 rows=127 width=248)
+   Group Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+   ->  Gather Merge  (cost=15010.14..15024.23 rows=106 width=248)
+         Workers Planned: 2
+         ->  Partial GroupAggregate  (cost=14010.12..14011.97 rows=53 width=248)
+               Group Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+               ->  Sort  (cost=14010.12..14010.25 rows=53 width=228)
+                     Sort Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+                     ->  Hash Join  (cost=379.17..14008.60 rows=53 width=228)
+                           Hash Cond: (lineitem.l_suppkey = supplier.s_suppkey)
+                           Join Filter: (((n1.n_name = 'FRANCE'::bpchar) AND (n2.n_name = 'GERMANY'::bpchar)) OR ((n1.n_name = 'GERMANY'::bpchar) AND (n2.n_name = 'FRANCE'::bpchar)))
+                           ->  Nested Loop  (cost=13.44..13607.01 rows=8931 width=124)
+                                 ->  Nested Loop  (cost=13.00..5696.92 rows=7353 width=108)
+                                       ->  Hash Join  (cost=12.58..4464.30 rows=735 width=108)
+                                             Hash Cond: (customer.c_nationkey = n2.n_nationkey)
+                                             ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=8)
+                                             ->  Hash  (cost=12.55..12.55 rows=2 width=108)
+                                                   ->  Seq Scan on nation n2  (cost=0.00..12.55 rows=2 width=108)
+                                                         Filter: ((n_name = 'GERMANY'::bpchar) OR (n_name = 'FRANCE'::bpchar))
+                                       ->  Index Scan using orders_idx1 on orders  (cost=0.43..1.50 rows=18 width=8)
+                                             Index Cond: (o_custkey = customer.c_custkey)
+                                 ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..1.04 rows=4 width=24)
+                                       Index Cond: (l_orderkey = orders.o_orderkey)
+                                       Filter: ((l_shipdate >= '1995-01-01'::date) AND (l_shipdate <= '1996-12-31'::date))
+                           ->  Hash  (cost=364.25..364.25 rows=118 width=108)
+                                 ->  Hash Join  (cost=12.58..364.25 rows=118 width=108)
+                                       Hash Cond: (supplier.s_nationkey = n1.n_nationkey)
+                                       ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8)
+                                       ->  Hash  (cost=12.55..12.55 rows=2 width=108)
+                                             ->  Seq Scan on nation n1  (cost=0.00..12.55 rows=2 width=108)
+                                                   Filter: ((n_name = 'FRANCE'::bpchar) OR (n_name = 'GERMANY'::bpchar))
+(31 rows)
+
+
+--------------------------------------------------------------------------------
+                                  ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Finalize GroupAggregate  (cost=15010.14..15027.78 rows=127 width=248) (actual time=431.006..437.299 rows=4 loops=1)
+   Group Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+   ->  Gather Merge  (cost=15010.14..15024.23 rows=106 width=248) (actual time=430.797..437.284 rows=12 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial GroupAggregate  (cost=14010.12..14011.97 rows=53 width=248) (actual time=422.636..423.224 rows=4 loops=3)
+               Group Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+               ->  Sort  (cost=14010.12..14010.25 rows=53 width=228) (actual time=422.442..422.538 rows=1975 loops=3)
+                     Sort Key: n1.n_name, n2.n_name, (date_part('year'::text, (lineitem.l_shipdate)::timestamp without time zone))
+                     Sort Method: quicksort  Memory: 408kB
+                     Worker 0:  Sort Method: quicksort  Memory: 314kB
+                     Worker 1:  Sort Method: quicksort  Memory: 305kB
+                     ->  Hash Join  (cost=379.17..14008.60 rows=53 width=228) (actual time=3.004..421.043 rows=1975 loops=3)
+                           Hash Cond: (lineitem.l_suppkey = supplier.s_suppkey)
+                           Join Filter: (((n1.n_name = 'FRANCE'::bpchar) AND (n2.n_name = 'GERMANY'::bpchar)) OR ((n1.n_name = 'GERMANY'::bpchar) AND (n2.n_name = 'FRANCE'::bpchar)))
+                           Rows Removed by Join Filter: 1933
+                           ->  Nested Loop  (cost=13.44..13607.01 rows=8931 width=124) (actual time=0.239..410.108 rows=49457 loops=3)
+                                 ->  Nested Loop  (cost=13.00..5696.92 rows=7353 width=108) (actual time=0.144..131.367 rows=40441 loops=3)
+                                       ->  Hash Join  (cost=12.58..4464.30 rows=735 width=108) (actual time=0.092..11.949 rows=4003 loops=3)
+                                             Hash Cond: (customer.c_nationkey = n2.n_nationkey)
+                                             ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=8) (actual time=0.028..6.776 rows=50000 loops=3)
+                                             ->  Hash  (cost=12.55..12.55 rows=2 width=108) (actual time=0.027..0.027 rows=2 loops=3)
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                   ->  Seq Scan on nation n2  (cost=0.00..12.55 rows=2 width=108) (actual time=0.020..0.023 rows=2 loops=3)
+                                                         Filter: ((n_name = 'GERMANY'::bpchar) OR (n_name = 'FRANCE'::bpchar))
+                                                         Rows Removed by Filter: 23
+                                       ->  Index Scan using orders_idx1 on orders  (cost=0.43..1.50 rows=18 width=8) (actual time=0.004..0.028 rows=10 loops=12008)
+                                             Index Cond: (o_custkey = customer.c_custkey)
+                                 ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..1.04 rows=4 width=24) (actual time=0.006..0.007 rows=1 loops=121324)
+                                       Index Cond: (l_orderkey = orders.o_orderkey)
+                                       Filter: ((l_shipdate >= '1995-01-01'::date) AND (l_shipdate <= '1996-12-31'::date))
+                                       Rows Removed by Filter: 3
+                           ->  Hash  (cost=364.25..364.25 rows=118 width=108) (actual time=2.332..2.333 rows=798 loops=3)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 57kB
+                                 ->  Hash Join  (cost=12.58..364.25 rows=118 width=108) (actual time=0.039..2.220 rows=798 loops=3)
+                                       Hash Cond: (supplier.s_nationkey = n1.n_nationkey)
+                                       ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8) (actual time=0.012..0.924 rows=10000 loops=3)
+                                       ->  Hash  (cost=12.55..12.55 rows=2 width=108) (actual time=0.014..0.014 rows=2 loops=3)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             ->  Seq Scan on nation n1  (cost=0.00..12.55 rows=2 width=108) (actual time=0.003..0.005 rows=2 loops=3)
+                                                   Filter: ((n_name = 'FRANCE'::bpchar) OR (n_name = 'GERMANY'::bpchar))
+                                                   Rows Removed by Filter: 23
+ Planning Time: 0.605 ms
+ Execution Time: 437.344 ms
+(44 rows)
