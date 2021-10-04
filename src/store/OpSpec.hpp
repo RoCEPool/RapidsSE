@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eXK.h"
+#include "ePZ.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -24,7 +25,8 @@ namespace STORE
     TagSet m_oArgTags;
     
     ePX m_eCrossTopo;
-  
+    ePZ m_eTopology;
+
     s32 m_sNextStageNm;    // next stage name
     i8  m_i_NextStage;
     i8  m_i_NextOp;

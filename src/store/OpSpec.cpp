@@ -37,6 +37,8 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oTopologyTags
 
   m_eCrossTopo    = PX_NONE;
+  m_eTopology     = PZ_NONE;
+
   m_i_NextStage   = C_UNKNOWN;
   m_i_NextOp      = C_UNKNOWN;
   m_i_OtherStage  = C_UNKNOWN;
