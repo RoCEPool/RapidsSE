@@ -24,8 +24,12 @@ namespace STORE
     TagSet m_oArgTags;
     
     ePX m_eCrossTopo;
+  
+    s32 m_sNextStageNm;    // next stage name
     i8  m_i_NextStage;
     i8  m_i_NextOp;
+  
+    s32 m_sOtherStageNm;   // next stage name
     i8  m_i_OtherStage;    // other stage in the cross topology
     i8  m_i_OtherOp;       // next Op in the other stage
 
@@ -49,18 +53,17 @@ namespace STORE
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
     ePX  eCrossTopo(void);
-    void vCrossTopo(ePX eCrossTopo);
-    void vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
+    void vCrossTopo(ePX eCrossTopo,
+                    Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
-    void vNextOp(i8 i_NextOp);
     i8   iNextStage(void);
-    void vNextStage(i8 i_NextStage);
+    Stz* szNextStageNm(void);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     i8   iOtherOp(void);
-    void vOtherOp(i8 i_OtherOp);
     i8   iOtherStage(void);
-    void vOtherStage(i8 i_OtherStage);
+    Stz* szOtherStageNm(void);
+    void vOtherStageOp(Stz* szOtherStageNm, i8 i_OtherStage,i8 i_OtherOp);
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);

@@ -87,7 +87,8 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
-                                     TokenVec* pTokenVec)
+                                     TokenVec* pTokenVec,
+                                     Word** ppwMatchedProc)
 {
   _static_
 
@@ -95,6 +96,9 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   Word* pwMatchedProc = pFindProcedure(pTokenVec);
   if (! pwMatchedProc)
     return false;
+  
+  if (ppwMatchedProc)
+    *ppwMatchedProc = pwMatchedProc;
 
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
@@ -252,6 +256,26 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
     pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
   }
   
+  if (pWrdTagSet->bHasName("<include_0>"_Stz)) {
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"<include_0>"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,
+                             pWrdTagSet->szValue("<include_0>"_Stz),
+                             TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  }
+
+  if (pWrdTagSet->bHasName("<include_1>"_Stz)) {
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"<include_1>"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,
+                             pWrdTagSet->szValue("<include_1>"_Stz),
+                             TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  }
+
   if (iJotDebug())
     pPrdTxtVec->vListTokens();
 
@@ -606,6 +630,9 @@ bool Procedure::bParse_Name(void)
   m_pProcNmToken = m_pToken;
   m_sProcNm = m_pToken->szChars();
   
+  if (m_sProcNm.bSame("std_start"_Stz))
+    vTrace("%s\n"_Stz,m_sProcNm.szStz());
+
   if (! bAdvanceToken())
     return false;
 
@@ -733,36 +760,36 @@ bool Procedure::bParse_TagList(void)
 
   if (! m_pToken->bSame("tag"_Stz))
     return true;
-  if (! bAdvanceToken())
+  if (! bRemoveToken())
     return false;
 
   for (;;) {
 
     // <tagNm>
     s32 sTagNm = m_pToken->szChars();
-    if (! bAdvanceToken())
+    if (! bRemoveToken())
       return false;
 
     // =
     if (! m_pToken->bSame("="_Stz))
       return false;
-    if (! bAdvanceToken())
+    if (! bRemoveToken())
       return false;
 
     // value
     sSTMT sTagValue = m_pToken->szChars();
     m_pTagSet->vInsert(sTagNm,sTagValue);
-    if (! bAdvanceToken())
+    if (! bRemoveToken())
       return false;
 
     if (! m_pToken->bSame("endtag"_Stz))
       return false;
-    if (! bAdvanceToken())
+    if (! bRemoveToken())
       return false;
-    
+
     if (! m_pToken->bSame("tag"_Stz))
       break;
-    if (! bAdvanceToken())
+    if (! bRemoveToken())
       return false;
   }
 

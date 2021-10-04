@@ -97,8 +97,18 @@ namespace STORE
     void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
     void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
-    void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                              StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
+    void vStageOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+                         StageSpec* pOtherStageSpec, OpSpec* pOtherOpSpec);
+
+    Stz* szStageNm(i8 i_Stage);
+  
+    //
+    // Pass 3 : Includes
+    //
+    bool bPass3_includes(void);
+    bool bPass3_include(Stz* szIncludePipNm);
+    bool bPass3_includeFirst(void);
+    bool bPass3_includeLast(void);
 
     //
     // token scanning

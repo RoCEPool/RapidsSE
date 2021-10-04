@@ -8,6 +8,7 @@
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Dynamo.hpp"
+#include "Procedure.hpp"
 #include "Job.hpp"
 #include "Grid.hpp"
 #include "TagConstants.h"
@@ -80,6 +81,11 @@ bool PipelineSpec::bCompile(void)
     return false;
   }
     
+  if (! bPass3_includes()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
   m_p_Scanner = nullptr;
   return true;
 }
@@ -789,7 +795,8 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
   
   pOpSpec->vOpNm("send"_Stz);
   
-  pOpSpec->vCrossTopo(eCrossTopo,i_NextStage,0);
+  Stz* szStgNm = szStageNm(i_NextStage);
+  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -803,7 +810,8 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   i8 i_Stage = pStageSpec->i_StageSpec();
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
     
-  pOpSpec_isOp->vCrossTopo(eCrossTopo,i_Stage,i_Op+1);
+  Stz* szStgNm = szStageNm(i_Stage);
+  pOpSpec_isOp->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
 
 }
 
@@ -828,7 +836,7 @@ void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
   else
   
     // spec for op send already exists in stage spec
-    vStageSubsequentSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
+    vStageOtherSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
 
 }
 
@@ -863,7 +871,8 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    pPrevOpSpec->vCrossTopo(eCrossTopo, i_NextStage, 0);
+    Stz* szStgNm = szStageNm(i_NextStage);
+    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -902,27 +911,156 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                                  StageSpec* pNextStageSpec, OpSpec* pOpSpecSend)
+void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
+                                   OpSpec*    pOpSpec,
+                                   StageSpec* pOtherStageSpec,
+                                   OpSpec*    pOtherOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  //i8 i_Op = pOpSpec->iOpSpec();
-  i8 i_NextStage = pNextStageSpec->i_StageSpec();
+  
+  i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pOtherStageSpec);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
   pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
                           CN_PIPELINESPEC,this,(Stz*)__func__);
 
-  pOpSpecSend->vOtherStage(i_NextStage);
-  pOpSpecSend->vOtherOp(0);
+  Stz* szStgNm = szStageNm(i_OtherStage);
+  
+  pOtherOpSpec->vOtherStageOp(szStgNm,i_OtherStage,0);
 
   // insert a consume op at the beginning of the stage
-  vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
+  vStageConsumeOpInsert(pOtherStageSpec,eCrossTopo);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get name of given stage                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* PipelineSpec::szStageNm(i8 i_Stage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  StageSpec* pStageSpec = pGet(i_Stage);
+  Stz* szNm = pStageSpec->szStageNm();
+  
+  return szNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                           Pass 3 : Includes                                */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pass 3: include other pipelines                                            */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  Stz* szIncludePipNm;
+  
+  TokenVec* pIncludeTknVec = nullptr;
+  
+  if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+      vTrace("Has Include 0: %lls\n"_Stz,szIncludePipNm);
+      bPass3_include(szIncludePipNm);
+    }
+  }
+  
+  if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+      vTrace("Has Include 1: %lls\n"_Stz,szIncludePipNm);
+      bPass3_include(szIncludePipNm);
+    }
+  }
+  
+  if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
+    szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+      vTrace("Has Include 2: %lls\n"_Stz,szIncludePipNm);
+      bPass3_include(szIncludePipNm);
+    }
+  }
+  
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* include stage(s) from other pipeline                                       */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_include(Stz* szIncludePipNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  sSTMT sPipelineSmt;
+
+  TokenVec* pIncludeTknVec = nullptr;
+  Word* pwMatchedProc = nullptr;
+  
+  pIncludeTknVec = TokenVec::pTokenise(szIncludePipNm);
+
+  bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                           pIncludeTknVec,
+                                           &pwMatchedProc);
+  
+  vTrace("Including: %lls\n"_Stz,sPipelineSmt.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TagSet* pWrdTagSet = pwMatchedProc->pWrdTagSet();
+  pWrdTagSet->vDumpSet();
+  
+  Dynamo* pDynamo = new Dynamo(sPipelineSmt.szStz(),pWrdTagSet);
+
+  PipelineSpec* pIncludePipelineSpec = pDynamo->pCompile();
+  
+  delete pDynamo;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pWrdTagSet->bHasName("<as_first>"_Stz)) {
+    bool b = bPass3_includeFirst();
+  }
+  else
+  if (pWrdTagSet->bHasName("<as_last>"_Stz)) {
+    bool b = bPass3_includeLast();
+  }
+  else {
+    NEVER_REACH;
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pIncludeTknVec;
+  
+  return true;
+}
+  
+/*----------------------------------------------------------------------------*/
+/* include a stage from another pipeline as a first stage                     */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includeFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* include a stage from another pipeline as a last stage                      */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bPass3_includeLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                            Token Scanning                                  */

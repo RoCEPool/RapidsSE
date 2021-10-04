@@ -35,7 +35,8 @@ namespace STORE
 
 
     static bool  bTranslateToPipeline(String* pToPipelineStmt,
-                                      TokenVec* pTokenVec);
+                                      TokenVec* pTokenVec,
+                                      Word** ppwMatchedProc = nullptr);
 
   private:
 

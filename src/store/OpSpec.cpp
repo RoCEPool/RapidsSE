@@ -128,23 +128,18 @@ ePX OpSpec::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo)
+void OpSpec::vCrossTopo(ePX eCrossTopo,
+                        Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+    
+  RASSERT(szNextStageNm);
   
-  m_eCrossTopo = eCrossTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  m_eCrossTopo   = eCrossTopo;
   
-  m_eCrossTopo = eCrossTopo;
-  m_i_NextStage = i_NextStage;
-  m_i_NextOp = i_NextOp;
+  m_sNextStageNm = szNextStageNm;
+  m_i_NextStage  = i_NextStage;
+  m_i_NextOp     = i_NextOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,16 +153,6 @@ i8 OpSpec::iNextOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_NextOp                                                         */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vNextOp(i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_NextOp = i_NextOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_NextStage                                                          */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iNextStage(void)
@@ -178,13 +163,13 @@ i8 OpSpec::iNextStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_NextStage                                                      */
+/* get next stage name                                                        */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vNextStage(i8 i_NextStage)
+Stz* OpSpec::szNextStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_i_NextStage = i_NextStage;
+  return m_sNextStageNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,16 +215,6 @@ i8 OpSpec::iOtherOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_OtherOp                                                        */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherOp(i8 i_OtherOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_OtherOp = i_OtherOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_OtherStage                                                         */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iOtherStage(void)
@@ -250,13 +225,27 @@ i8 OpSpec::iOtherStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_OtherStage                                                     */
+/* get other stage name                                                       */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherStage(i8 i_OtherStage)
+Stz* OpSpec::szOtherStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_i_OtherStage = i_OtherStage;
+  return m_sOtherStageNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_OtherStage                                                     */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: vOtherStageOp(Stz* szOtherStageNm,
+                            i8 i_OtherStage,
+                            i8 i_OtherOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sOtherStageNm = szOtherStageNm;
+  m_i_OtherStage  = i_OtherStage;
+  m_i_OtherOp     = i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/

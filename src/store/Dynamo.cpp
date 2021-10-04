@@ -20,13 +20,13 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
+Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   m_szPipelineStmt = szPipelineStmt;
-  m_p_PipelineJob  = p_PipelineJob;
+  m_p_JobTags      = p_JobTags;
   m_p_PipelineSpec = nullptr;
       
   _checkInitialised_(CN_DYNAMO);
@@ -67,10 +67,7 @@ PipelineSpec* Dynamo::pCompile(void)
   Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   
-  m_p_PipelineSpec =
-    new PipelineSpec(szPipelineNm,
-                     m_p_PipelineJob->pJobTags(),
-                     pScanner);
+  m_p_PipelineSpec = new PipelineSpec(szPipelineNm,m_p_JobTags,pScanner);
 
   
   if (m_p_PipelineSpec->bCompile()) {
