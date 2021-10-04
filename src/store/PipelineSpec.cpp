@@ -796,7 +796,8 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
   pOpSpec->vOpNm("send"_Stz);
   
   Stz* szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+  pOpSpec->vCrossTopo(eCrossTopo,PZ_NONE,
+                      szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -808,10 +809,14 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   
   i8 i_Op = pOpSpec_isOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
+  
+  ePZ eOpTopology;
+  
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pStageSpec,eOpTopology);
     
   Stz* szStgNm = szStageNm(i_Stage);
-  pOpSpec_isOp->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
+  pOpSpec_isOp->vCrossTopo(eCrossTopo,eOpTopology,
+                           szStgNm,i_Stage,i_Op+1);
 
 }
 
@@ -863,16 +868,20 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   i8 i_Op = pOpSpec_isStage->iOpSpec();
+  
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
+  ePZ eOpTopology;
+
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pNextStageSpec,eOpTopology);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz* szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+    pPrevOpSpec->vCrossTopo(eCrossTopo,PZ_NONE,
+                            szStgNm,i_NextStage,0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -920,7 +929,9 @@ void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
   
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pOtherStageSpec);
+  ePZ eOpTopology;
+
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pOtherStageSpec,eOpTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);

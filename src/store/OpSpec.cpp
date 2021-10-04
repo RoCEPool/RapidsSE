@@ -37,7 +37,7 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oTopologyTags
 
   m_eCrossTopo    = PX_NONE;
-  m_eTopology     = PZ_NONE;
+  m_eOpTopology   = PZ_NONE;
 
   m_i_NextStage   = C_UNKNOWN;
   m_i_NextOp      = C_UNKNOWN;
@@ -130,7 +130,7 @@ ePX OpSpec::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo,
+void OpSpec::vCrossTopo(ePX eCrossTopo, ePZ eOpTopology,
                         Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
