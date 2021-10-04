@@ -86,7 +86,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           return PX_ALL_NODES_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ALL_NODES_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
@@ -122,7 +122,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           return PX_ALL_PARTITIONS_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
@@ -158,11 +158,11 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case PO_ALL_PARTITIONS:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case PO_ORIGIN:
@@ -196,7 +196,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           return PX_ORIGIN_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
           
         case PO_ORIGIN:
@@ -209,7 +209,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           return PX_ORIGIN_TO_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
-          reOpTopology = PZ_PARITITION_STREAM;
+          reOpTopology = PZ_PARTITION_STREAM;
           return PX_ORIGIN_TO_SPECIFIC_PARTITION;
           
         default:
