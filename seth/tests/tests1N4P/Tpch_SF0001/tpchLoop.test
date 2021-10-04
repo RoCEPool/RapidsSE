@@ -52,11 +52,11 @@ INCLUDE 'query1.test';
 //INCLUDE 'query3.test';
 
 //------------------------------------------------------------------------------
-// 'truncating tpch tables...';
+LOG 'truncating tpch tables...';
 INCLUDE 'tpchTruncate.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Dropping tpch schema...';
+LOG 'Dropping tpch schema...';
 INCLUDE 'tpchSchemaDrop.test';
 
 } -- end of loop
