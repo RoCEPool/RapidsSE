@@ -46,41 +46,6 @@ order by
 //  QUERY HANGING
 
 --------------------------------------------------------------------------------
-                            QUERY PLAN
---------------------------------------------------------------------------------
-Sort  (cost=931068685.53..931068685.57 rows=16 width=44)
-   Sort Key: supplier.s_name
-   ->  Nested Loop Semi Join  (cost=1000.71..931068685.21 rows=16 width=44)
-         ->  Nested Loop  (cost=0.29..648.47 rows=59 width=48)
-               Join Filter: (supplier.s_nationkey = nation.n_nationkey)
-               ->  Index Scan using supplier_idx1 on supplier  (cost=0.29..486.34 rows=10000 width=52)
-               ->  Materialize  (cost=0.00..12.13 rows=1 width=4)
-                     ->  Seq Scan on nation  (cost=0.00..12.12 rows=1 width=4)
-                           Filter: (n_name = 'CANADA'::bpchar)
-         ->  Nested Loop Semi Join  (cost=1000.42..15780814.17 rows=1 width=4)
-               Join Filter: (partsupp.ps_partkey = part.p_partkey)
-               ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..15773650.36 rows=27 width=8)
-                     Index Cond: (ps_suppkey = supplier.s_suppkey)
-                     Filter: ((ps_availqty)::numeric > (SubPlan 1))
-                     SubPlan 1
-                       ->  Aggregate  (cost=197170.50..197170.51 rows=1 width=32)
-                             ->  Bitmap Heap Scan on lineitem  (cost=12369.17..197170.49 rows=1 width=5)
-                                   Recheck Cond: ((l_shipdate >= '1994-01-01'::date) AND (l_shipdate < '1995-01-01 00:00:00'::timestamp without time zone))
-                                   Filter: ((l_partkey = partsupp.ps_partkey) AND (l_suppkey = partsupp.ps_suppkey))
-                                   ->  Bitmap Index Scan on lineitem_idx1  (cost=0.00..12369.17 rows=925274 width=0)
-                                         Index Cond: ((l_shipdate >= '1994-01-01'::date) AND (l_shipdate < '1995-01-01 00:00:00'::timestamp without time zone))
-               ->  Materialize  (cost=1000.00..6350.77 rows=2020 width=4)
-                     ->  Gather  (cost=1000.00..6340.67 rows=2020 width=4)
-                           Workers Planned: 2
-                           ->  Parallel Seq Scan on part  (cost=0.00..5138.67 rows=842 width=4)
-                                 Filter: ((p_name)::text ~~ 'forest%'::text)
- JIT:
-   Functions: 34
-   Options: Inlining true, Optimization true, Expressions true, Deforming true
-(29 rows)
-
-
---------------------------------------------------------------------------------
 // REWRITTEN IN POSTGRES DOCUMENTATION
 // STILL NO RESULT RETURNED
 --------------------------------------------------------------------------------
@@ -125,104 +90,12 @@ where s_suppkey in (
 order by
 	s_name;
 
- ...
- Supplier#000009811 | E3iuyq7UnZxU7oPZIe2Gu6
- Supplier#000009812 | APFRMy3lCbgFga53n5t9DxzFPQPgnjrGt32
- Supplier#000009846 | 57sNwJJ3PtBDu,hMPP5QvpcOcSNRXn3PypJJrh
- Supplier#000009899 | 7XdpAHrzr1t,UQFZE
- Supplier#000009974 | 7wJ,J5DKcxSU4Kp1cQLpbcAvB5AsvKT
-(186 rows)
---------------------------------------------------------------------------------
-                            QUERY PLAN
---------------------------------------------------------------------------------
+  ...
+ Supplier#000099879 | YVoWulAwdZQ
+ Supplier#000099892 | bu8PEUEDsU0CeTeW8w4gDr5k
+ Supplier#000099942 | LJJzV6PR4YnaDm6LCRcw
+ Supplier#000099955 | 1P1DzqT1P MT0qrO0Vuc6 zk8
+ Supplier#000099980 | As8Iaeb75i1DfvXqnl0M6eQFeax4
+ Supplier#000099985 | 8NDclMS,EEJOa4kVqiNiilk3kPfvgOg3KY
+(1804 rows)
 
-Limit  (cost=280892.65..280892.65 rows=1 width=44)
-   ->  Sort  (cost=280892.65..280892.65 rows=1 width=44)
-         Sort Key: supplier.s_name
-         ->  Nested Loop Semi Join  (cost=244448.58..280892.64 rows=1 width=44)
-               Join Filter: (supplier.s_suppkey = lineitem.l_suppkey)
-               ->  Nested Loop  (cost=0.00..450.12 rows=59 width=48)
-                     Join Filter: (supplier.s_nationkey = nation.n_nationkey)
-                     ->  Seq Scan on nation  (cost=0.00..12.12 rows=1 width=4)
-                           Filter: (n_name = 'ARGENTINA'::bpchar)
-                     ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=52)
-               ->  Materialize  (cost=244448.58..280441.63 rows=1 width=8)
-                     ->  Nested Loop  (cost=244448.58..280441.62 rows=1 width=8)
-                           ->  Hash Join  (cost=244448.15..267672.01 rows=4941 width=44)
-                                 Hash Cond: (lineitem.l_partkey = part.p_partkey)
-                                 ->  HashAggregate  (cost=238056.99..254504.17 rows=489256 width=40)
-                                       Group Key: lineitem.l_partkey, lineitem.l_suppkey
-                                       Planned Partitions: 64
-                                       ->  Bitmap Heap Scan on lineitem  (cost=12700.55..175974.54 rows=932694 width=13)
-                                             Recheck Cond: ((l_shipdate >= '1997-01-01'::date) AND (l_shipdate < '1998-01-01 00:00:00'::timestamp without time zone))
-                                             ->  Bitmap Index Scan on lineitem_idx1  (cost=0.00..12467.37 rows=932694 width=0)
-                                                   Index Cond: ((l_shipdate >= '1997-01-01'::date) AND (l_shipdate < '1998-01-01 00:00:00'::timestamp without time zone))
-                                 ->  Hash  (cost=6365.92..6365.92 rows=2020 width=4)
-                                       ->  HashAggregate  (cost=6345.72..6365.92 rows=2020 width=4)
-                                             Group Key: part.p_partkey
-                                             ->  Gather  (cost=1000.00..6340.67 rows=2020 width=4)
-                                                   Workers Planned: 2
-                                                   ->  Parallel Seq Scan on part  (cost=0.00..5138.67 rows=842 width=4)
-                                                         Filter: ((p_name)::text ~~ 'powder%'::text)
-                           ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..2.57 rows=1 width=12)
-                                 Index Cond: (ps_suppkey = lineitem.l_suppkey)
-                                 Filter: ((lineitem.l_partkey = ps_partkey) AND ((ps_availqty)::numeric > ((0.5 * sum(lineitem.l_quantity)))))
- JIT:
-   Functions: 35
-   Options: Inlining false, Optimization false, Expressions true, Deforming true
-(34 rows)
-
-
---------------------------------------------------------------------------------
-                          ANALYSE PLAN
---------------------------------------------------------------------------------
-
-Limit  (cost=280892.65..280892.65 rows=1 width=44) (actual time=1617.522..1617.545 rows=1 loops=1)
-   ->  Sort  (cost=280892.65..280892.65 rows=1 width=44) (actual time=1602.028..1602.050 rows=1 loops=1)
-         Sort Key: supplier.s_name
-         Sort Method: top-N heapsort  Memory: 25kB
-         ->  Nested Loop Semi Join  (cost=244448.58..280892.64 rows=1 width=44) (actual time=1428.167..1601.998 rows=190 loops=1)
-               Join Filter: (supplier.s_suppkey = lineitem.l_suppkey)
-               Rows Removed by Join Filter: 1838409
-               ->  Nested Loop  (cost=0.00..450.12 rows=59 width=48) (actual time=0.013..1.884 rows=413 loops=1)
-                     Join Filter: (supplier.s_nationkey = nation.n_nationkey)
-                     Rows Removed by Join Filter: 9587
-                     ->  Seq Scan on nation  (cost=0.00..12.12 rows=1 width=4) (actual time=0.009..0.011 rows=1 loops=1)
-                           Filter: (n_name = 'ARGENTINA'::bpchar)
-                           Rows Removed by Filter: 24
-                     ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=52) (actual time=0.002..1.143 rows=10000 loops=1)
-               ->  Materialize  (cost=244448.58..280441.63 rows=1 width=8) (actual time=1.957..3.637 rows=4452 loops=413)
-                     ->  Nested Loop  (cost=244448.58..280441.62 rows=1 width=8) (actual time=808.290..1424.031 rows=5915 loops=1)
-                           ->  Hash Join  (cost=244448.15..267672.01 rows=4941 width=44) (actual time=808.217..1159.503 rows=5929 loops=1)
-                                 Hash Cond: (lineitem.l_partkey = part.p_partkey)
-                                 ->  HashAggregate  (cost=238056.99..254504.17 rows=489256 width=40) (actual time=790.596..1099.832 rows=543808 loops=1)
-                                       Group Key: lineitem.l_partkey, lineitem.l_suppkey
-                                       Planned Partitions: 64  Batches: 65  Memory Usage: 4241kB  Disk Usage: 61024kB
-                                       ->  Bitmap Heap Scan on lineitem  (cost=12700.55..175974.54 rows=932694 width=13) (actual time=37.827..462.018 rows=911395 loops=1)
-                                             Recheck Cond: ((l_shipdate >= '1997-01-01'::date) AND (l_shipdate < '1998-01-01 00:00:00'::timestamp without time zone))
-                                             Rows Removed by Index Recheck: 1667843
-                                             Heap Blocks: exact=60694 lossy=33267
-                                             ->  Bitmap Index Scan on lineitem_idx1  (cost=0.00..12467.37 rows=932694 width=0) (actual time=30.621..30.621 rows=911395 loops=1)
-                                                   Index Cond: ((l_shipdate >= '1997-01-01'::date) AND (l_shipdate < '1998-01-01 00:00:00'::timestamp without time zone))
-                                 ->  Hash  (cost=6365.92..6365.92 rows=2020 width=4) (actual time=17.577..17.596 rows=2184 loops=1)
-                                       Buckets: 4096 (originally 2048)  Batches: 1 (originally 1)  Memory Usage: 109kB
-                                       ->  HashAggregate  (cost=6345.72..6365.92 rows=2020 width=4) (actual time=17.146..17.405 rows=2184 loops=1)
-                                             Group Key: part.p_partkey
-                                             Batches: 1  Memory Usage: 241kB
-                                             ->  Gather  (cost=1000.00..6340.67 rows=2020 width=4) (actual time=0.105..16.701 rows=2184 loops=1)
-                                                   Workers Planned: 2
-                                                   Workers Launched: 2
-                                                   ->  Parallel Seq Scan on part  (cost=0.00..5138.67 rows=842 width=4) (actual time=1.934..8.253 rows=728 loops=3)
-                                                         Filter: ((p_name)::text ~~ 'powder%'::text)
-                                                         Rows Removed by Filter: 65939
-                           ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..2.57 rows=1 width=12) (actual time=0.024..0.044 rows=1 loops=5929)
-                                 Index Cond: (ps_suppkey = lineitem.l_suppkey)
-                                 Filter: ((lineitem.l_partkey = ps_partkey) AND ((ps_availqty)::numeric > ((0.5 * sum(lineitem.l_quantity)))))
-                                 Rows Removed by Filter: 79
- Planning Time: 0.268 ms
- JIT:
-   Functions: 54
-   Options: Inlining false, Optimization false, Expressions true, Deforming true
-   Timing: Generation 5.666 ms, Inlining 0.000 ms, Optimization 1.465 ms, Emission 22.631 ms, Total 29.762 ms
- Execution Time: 1638.768 ms
-(48 rows)

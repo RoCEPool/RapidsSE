@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 1
+--------------------------------------------------------------------------------
+select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
+  sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= DATE '1998-12-01' - interval '3' day
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+
+  l_returnflag | l_linestatus |   sum_qty   | sum_base_price  |  sum_disc_price   |     sum_charge      |       avg_qty       |     avg_price      |        avg_disc        | count_order
+  --------------+--------------+-------------+-----------------+-------------------+---------------------+---------------------+--------------------+------------------------+-------------
+   A            | F            | 37734107.00 |  56586554400.73 |  53758257134.8700 |  55909065222.827692 | 25.5220058532573370 | 38273.129734621672 | 0.04998529583839761162 |     1478493
+   N            | F            |   991417.00 |   1487504710.38 |   1413082168.0541 |   1469649223.194375 | 25.5164719205229835 | 38284.467760848304 | 0.05009342667421629691 |       38854
+   N            | O            | 76631223.00 | 114931741494.07 | 109186320121.3072 | 113557617182.748041 | 25.5020875902692269 | 38248.108587330693 | 0.05000004991846650471 |     3004900
+   R            | F            | 37719753.00 |  56568041380.90 |  53741292684.6040 |  55889619119.831932 | 25.5057936126907707 | 38250.854626099657 | 0.05000940583012705647 |     1478870
+  (4 rows)
+

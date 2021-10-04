@@ -1,0 +1,46 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 18
+--------------------------------------------------------------------------------
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  customer,
+  orders,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 300
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate;
+
+ ...
+ Customer#000203593 |    203593 |   20016800 | 1993-02-22  |    366897.41 | 301.00
+ Customer#001263409 |   1263409 |   31855814 | 1998-04-10  |    365844.60 | 309.00
+ Customer#001470748 |   1470748 |   47452993 | 1993-01-06  |    365823.23 | 301.00
+ Customer#000248779 |    248779 |   12563331 | 1993-06-02  |    365315.83 | 301.00
+ Customer#000653965 |    653965 |   27458500 | 1995-09-25  |    364945.75 | 304.00
+ Customer#000750967 |    750967 |   17612003 | 1996-02-05  |    359071.37 | 302.00
+(624 rows)
