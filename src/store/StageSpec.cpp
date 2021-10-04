@@ -151,7 +151,8 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec)
         case PO_ALL_PARTITIONS_ON_ORIGIN:  RASSERT(0);
         case PO_ORIGIN:             return PX_SPECIFIC_PARTITION_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
-        case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
+        case PO_SPECIFIC_PARTITION:
+          return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
         default:
           RASSERT(0);
       }
