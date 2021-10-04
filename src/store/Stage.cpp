@@ -189,7 +189,7 @@ Pipeline* Stage::pPipeline(void)
 Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
-  
+  /*
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
@@ -254,7 +254,7 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
     default:
       RASSERT(0);
   }
-
+*/
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -298,7 +298,6 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
     // - - - - -
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      NEVER_REACH;
       pStream_one = pGet(0);
       ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       break;
@@ -309,10 +308,10 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 
   pOp_one = pStream_one->pGet(i_DstOp);
 
-  RASSERT(pOp_one == pOp);
+  //RASSERT(pOp_one == pOp);
 
 
-  return pOp;
+  return pOp_one;
 }
 
 /*----------------------------------------------------------------------------*/
