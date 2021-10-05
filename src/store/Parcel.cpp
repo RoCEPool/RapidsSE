@@ -45,6 +45,8 @@ Parcel::Parcel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   m_eCrossTopo     = PX_NONE;
+  m_eOpTopology    = PZ_NONE;
+  
   m_eSendKind      = XK_NONE;
 
   m_iDstNode       = C_UNKNOWN;
@@ -219,12 +221,23 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(ePX eCrossTopo, i8  iPipelineJobId)
+void Parcel::vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
   m_eCrossTopo     = eCrossTopo;
+  m_eOpTopology    = eOpTopology;
   m_iPipelineJobId = iPipelineJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op topology                                                            */
+/*----------------------------------------------------------------------------*/
+ePZ Parcel::eOpTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_eOpTopology;
 }
 
 /*----------------------------------------------------------------------------*/

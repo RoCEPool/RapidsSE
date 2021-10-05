@@ -1161,6 +1161,16 @@ TagSet* Op::pOpTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op topology                                                            */
+/*----------------------------------------------------------------------------*/
+ePZ Op::eOpTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOpSpec->eOpTopology();
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
 void Op::vOpTrace(Operand* pOperand
@@ -1389,7 +1399,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnId(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeOutOp(eOpTopology(),eCrossTopo(),
+                                     tPtnId(),iNextOp());
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {

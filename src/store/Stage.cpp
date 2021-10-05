@@ -186,7 +186,7 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
+Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
   /*
@@ -268,38 +268,45 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
   switch (eCrossTopo) {
       
     // - - - - -
+    // by nodeStream
 
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
-    case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_NODES_TO_ALL_NODES:
+    case PX_ALL_NODES_TO_ORIGIN:
+    case PX_ALL_PARTITIONS_TO_ALL_NODES:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ALL_NODES:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+      RASSERT(PZ_NODE_STREAM == eOpTopology);
       pStream_one = this->pGetNodeStream(i_ThisNode);
       break;
       
     // - - - - -
+    // by partitionStream
+      
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+      RASSERT(PZ_PARTITION_STREAM == eOpTopology);
+      pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
+      break;
+        
+    // - - - - -
+    // by stageStream
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+      RASSERT(PZ_STAGE_STREAM == eOpTopology);
       pStream_one = pGet(tDstPtnId.iAsI8());
       break;
       
     // - - - - -
-
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
-      break;
-      
-    // - - - - -
+    // by stageStream0
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+      RASSERT(PZ_STAGE_STREAM_0 == eOpTopology);
       pStream_one = pGet(0);
-      ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       break;
       
     default:

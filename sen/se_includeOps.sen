@@ -34,7 +34,6 @@ assert::stack_0
   "OP_compilerOpEg.sen"         include
   "OP_connector.sen"            include
   "OP_consume.sen"              include
-  "OP_copyIntoSame.sen"         include
   "OP_copyRows.sen"             include
   "OP_corrBySquash.sen"         include
   "OP_createCatalog.sen"        include
@@ -81,8 +80,6 @@ assert::stack_0
 
 "g" .verbose
 
-  "OP_getAndAllotRows.sen"      include
-  "OP_getRows.sen"              include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
   "OP_gridSanity.sen"           include

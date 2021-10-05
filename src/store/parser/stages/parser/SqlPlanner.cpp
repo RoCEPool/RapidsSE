@@ -26,7 +26,6 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
-#include "store/parser/shadowNodes/planObjects/SubqueryContainer.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -1855,23 +1854,20 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
 
   visitChildren(pCtx);
 
-  // Create a SubqueryContainer node
-  QueryNode* pSubqueryContainer = SubqueryContainer::pCreate();
+  // Create a SubqueryExpr node
+  QueryNode* pSubqueryExpr = SubqueryExpr::pCreate();
 
   // We expect there to be one or more nodes in m_pStatementStack,
   // corresponding to a MainSubquery and zero or more TableSubquery nodes.
-  // Pop them off and add them as children of the SubqueryContainer node
+  // Pop them off and add them as children of the SubqueryExpr node
 
   ASSERT(m_pStatementStack);
   while (m_pStatementStack->nItems() > 0) {
     QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
     ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
-    pSubqueryContainer->vPushChild(pSubqueryMarker);
+    pSubqueryExpr->vPushChild(pSubqueryMarker);
   }
-
-  // Now create a SubqueryExpr node using the subquery container
-  QueryNode* pSubqueryExpr = SubqueryExpr::pCreate(pSubqueryContainer);
 
 
   // Restore the context of the member variables

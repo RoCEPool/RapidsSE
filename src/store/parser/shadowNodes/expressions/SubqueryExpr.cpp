@@ -17,7 +17,6 @@
 #include "CteDef.hpp"
 #include "ColumnDef.hpp"
 #include "MainSubquery.hpp"
-#include "SubqueryContainer.hpp"
 
 
 #include "GraphNav.hpp"
@@ -31,7 +30,7 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/subqueryExpr"_Stz;
 
 static Stz* C_DEFNPATH_PROP = "defnPath"_Stz;
 static Stz* C_CORRELATED_EXPRS_PROP = "correlatedExprs"_Stz;
-static Stz* C_SUBQUERYCONTAINER_PROP = "subqueryContainer"_Stz;
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -42,13 +41,9 @@ static Stz* C_SUBQUERYCONTAINER_PROP = "subqueryContainer"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression column reference nodes.               */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryExpr::pCreate(QueryNode* pSubqueryContainer)
+QueryNode* SubqueryExpr::pCreate()
 {
   _static_
-
-  ASSERT(pSubqueryContainer);
-  ASSERT(SubqueryContainer::bIsOfType(pSubqueryContainer));
-  ASSERT(pSubqueryContainer->nChildren() > 0);
 
   // Create a unique name for this object
   s256 sName;
@@ -66,10 +61,6 @@ QueryNode* SubqueryExpr::pCreate(QueryNode* pSubqueryContainer)
   // An empty correlated columns list
   QueryNode* pCorrelatedExprs = ExprList::pCreate(C_CORRELATED_EXPRS_PROP);
   pSubqueryExpr->vAppendProperty(pCorrelatedExprs);
-
-  // Add the subquery container
-  pSubqueryContainer->vSetName(C_SUBQUERYCONTAINER_PROP);
-  pSubqueryExpr->vAppendProperty(pSubqueryContainer);
 
   return pSubqueryExpr;
 }
@@ -193,31 +184,6 @@ PlanNodeIter* SubqueryExpr::pCorrelatedExprsIter(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return the node that is the root of the subquery plan graph                */
-/*----------------------------------------------------------------------------*/
-QueryNode* SubqueryExpr::pSubqueryContainer(QueryNode *pNode)
-{
-  ASSERT(pNode);
-  ASSERT(bIsOfType(pNode));
-
-  QueryNode *pSubqueryContainer = static_cast<QueryNode *>(
-      GraphNav::pFindProperty(C_SUBQUERYCONTAINER_PROP, pNode));
-
-  ASSERT(pSubqueryContainer);
-  ASSERT(SubqueryContainer::bIsOfType(pSubqueryContainer));
-
-  return pSubqueryContainer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return the name of the property that is the root of the subquery plan graph*/
-/*----------------------------------------------------------------------------*/
-Stz* SubqueryExpr::szSubqueryContainerProp(void)
-{
-  return C_SUBQUERYCONTAINER_PROP;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Find and return the main subquery node that exists underneath this         */
 /* expression subquery node.                                                  */
 /*----------------------------------------------------------------------------*/
@@ -226,11 +192,11 @@ QueryNode* SubqueryExpr::pChildMainSubquery(QueryNode *pNode)
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSubqueryContainer = SubqueryExpr::pSubqueryContainer(pNode);
-  ASSERT(pSubqueryContainer);
-  ASSERT(SubqueryContainer::bIsOfType(pSubqueryContainer));
+  auto fCondition = [](PlanNode* pItem) -> b1 {
+    return MainSubquery::bIsOfType(pItem);
+  };
 
-  QueryNode* pMainSubquery = SubqueryContainer::pMainSubquery(pSubqueryContainer);
+  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pNode));
   ASSERT(pMainSubquery);
   ASSERT(MainSubquery::bIsOfType(pMainSubquery));
 

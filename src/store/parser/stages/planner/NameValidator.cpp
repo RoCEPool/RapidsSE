@@ -46,7 +46,6 @@
 #include "TableSubquery.hpp"
 #include "SubqueryRefOp.hpp"
 #include "SubqueryExpr.hpp"
-#include "SubqueryContainer.hpp"
 #include "CteDef.hpp"
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
@@ -149,9 +148,8 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, St
 
 
     s2K sFullPath(szStartingNodePath);
-    Stz* szLeafSeparator = GraphNav::szLeafSeparator(szStartingNodePath);
     GraphNav::bParentPath(sFullPath);
-    sFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
+    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
 
     QueryNode* pSubquery = _pQueryNode(pNode);
 
@@ -213,9 +211,9 @@ void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szSta
     }
 
     s2K sFullPath(szStartingNodePath);
-    Stz* szLeafSeparator = GraphNav::szLeafSeparator(szStartingNodePath);
     GraphNav::bParentPath(sFullPath);
-    sFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
+    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
+
 
     // Validate this expression subquery and any subqueries it contains
     QueryNode *pExprSubquery = _pQueryNode(pNode);
@@ -506,19 +504,10 @@ void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSu
   // Save the path to this CteDef in this current node.
   vCreateExprSubqueryCteDef(pSubqueryExprNode, sSubqueryExprPath, pRootNode, pMetadataNode);
 
-  // Process subordinate table/main subqueries underneath this expression subquery to:
+  // Process child table/main subqueries underneath this expression subquery to:
   //  - Validate/qualify table names
   //  - Validate/qualify column names
-  // The table/main subqueries exist as children under the property node subqueryContainer.
-  QueryNode* pSubqueryContainer = SubqueryExpr::pSubqueryContainer(pSubqueryExprNode);
-  ASSERT(pSubqueryContainer);
-  ASSERT(SubqueryContainer::bIsOfType(pSubqueryContainer));
-
-  s2K sSubqueryContainerPath(sSubqueryExprPath.szStz());
-  sSubqueryContainerPath.vCatSprint("%s%s"_Stz,
-                                    C_PROPERTY_SEPARATOR_STZ,
-                                    SubqueryExpr::szSubqueryContainerProp());
-  vValidateTableAndMainSubqueries(pSubqueryContainer, sSubqueryContainerPath.szStz(), pRootNode, pMetadataNode, pSeApi);
+  vValidateTableAndMainSubqueries(pSubqueryExprNode, sSubqueryExprPath.szStz(), pRootNode, pMetadataNode, pSeApi);
 
   // Populate the remaining CteDef fields (we can copy column info from the CteDef of the
   // MainSubquery child that was processed above).

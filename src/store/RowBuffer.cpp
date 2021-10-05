@@ -341,49 +341,6 @@ Row* RowBuffer::pAllotRow(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy a row and into given row of this buffer                               */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::pCopyIntoRow(Row* pFromRow, Row* pToRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RowPix* pPix = pRowPix();
-
-  Stz* szDst;
-
-  for (i8 i_Col = 0; i_Col < pPix->m_nColumns; i_Col++) {
-
-    ColPix xColPix = pPix->m_xaColPix[i_Col];
-
-    // STRING_DEPOSIT
-    if (DM_VCH == xColPix.m_uDatum) {
-      Stz* szVal = pFromRow->szColVal_ofs(i_Col);
-      if (szVal) {
-        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
-
-        // return early if no more space for the string
-        if ( ! szDst )
-          return nullptr;
-
-        StrLib::vCopy((char*)szDst, szVal->azChar());
-
-        pToRow->vColVal_ofs(i_Col,szDst);
-      }
-      else {
-        pToRow->vSetColNull(i_Col);
-      }
-    }
-    else {
-      pToRow->vColVal_int(i_Col,pFromRow->iColVal_int(i_Col));
-    }
-    // END STRING_DEPOSIT
-
-  }
-
-  return pToRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iDecile(void)

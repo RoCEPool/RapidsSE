@@ -64,6 +64,7 @@ void Step::vOperandToParcel(void)
   pParcel->vAddItem(pOperand);
   
   pParcel->vLabel(pOp->eCrossTopo(),
+                  pOp->eOpTopology(),
                   pOp->pPipelineJob()->tJobId().iAsI8());
   
   m_pDataStack->vPushPtr(pParcel);

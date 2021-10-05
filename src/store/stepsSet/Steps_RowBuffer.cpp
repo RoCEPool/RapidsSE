@@ -20,11 +20,8 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
-  vAddStep("RowBuffer[].copyIntoSame"_Stz,   &Step::vRowBufferCopyIntoSame);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
-  vAddStep("RowBuffer[].getAndAllotRows"_Stz,&Step::vRowBufferGetAndAllotRows);
-  vAddStep("RowBuffer[].getRows"_Stz,        &Step::vRowBufferGetRows);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
@@ -80,36 +77,6 @@ void Step::vRowBufferCopy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].copyIntoSame -- copy the row buffer into same row              */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferCopyIntoSame(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
-  RowBuffer* pNewRowBuffer = new RowBuffer;
-
-  RowPix* pPix = pRowBuffer->pRowPix();
-  pNewRowBuffer->vCopyRowPix(pPix);
-
-  // get no of rows
-  i8 nRows = pRowBuffer->nRows();
-
-  // allot a row in the new rowBuffer
-  Row* pNewRow = pNewRowBuffer->pAllotRow();
-
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Row* pRow = pRowBuffer->pRowAddress(i_Row);
-    Row* pSameRow = pNewRowBuffer->pCopyIntoRow(pRow, pNewRow);
-    RASSERT(pNewRow == pSameRow);
-  }
-
-  m_pDataStack->vPushPtr(pNewRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* RowBuffer[].delete -- operand delete                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferDelete(void)
@@ -145,83 +112,6 @@ void Step::vRowBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRowBuffer);
 
   m_p_TaskLogicUnit->m_xpRowBuffer = nullptr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getAndAllotRows -- get and allot rows of the row buffer        */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetAndAllotRows(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
-  RowBuffer* pNewRowBuffer = new RowBuffer;
-
-  i8 nRows = pRowBuffer->nRows();
-  RowPix* pPix = pRowBuffer->pRowPix();
-  pNewRowBuffer->vCopyRowPix(pPix);
-
-  // get rows the buffer
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-
-    // allot a row in the new rowBuffer
-    Row* pNewRow = pNewRowBuffer->pAllotRow();
-    Row* pRow = pRowBuffer->pRowAddress(i_Row);
-
-    for (i8 i_Col = 0; i_Col < pPix->m_nColumns; i_Col++) {
-
-      ColPix xColPix = pPix->m_xaColPix[i_Col];
-      if (DM_VCH == xColPix.m_uDatum) {
-        IGNORE_RETURN(pRow->szColVal_ofs(i_Col));
-      }
-      else {
-        IGNORE_RETURN(pRow->iColVal_int(i_Col));
-      }
-
-    }
-
-  }
-
-  m_pDataStack->vPushPtr(pNewRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getRows -- getRows the row buffer                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetRows(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
-  RowBuffer* pNewRowBuffer = new RowBuffer;
-
-  i8 nRows = pRowBuffer->nRows();
-  RowPix* pPix = pRowBuffer->pRowPix();
-  pNewRowBuffer->vCopyRowPix(pPix);
-
-  // get rows the buffer
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Row* pRow = pRowBuffer->pRowAddress(i_Row);
-
-    for (i8 i_Col = 0; i_Col < pPix->m_nColumns; i_Col++) {
-
-      ColPix xColPix = pPix->m_xaColPix[i_Col];
-      if (DM_VCH == xColPix.m_uDatum) {
-        IGNORE_RETURN(pRow->szColVal_ofs(i_Col));
-      }
-      else {
-        IGNORE_RETURN(pRow->iColVal_int(i_Col));
-      }
-
-    }
-
-  }
-
-  m_pDataStack->vPushPtr(pNewRowBuffer);
 
   EXIT();
 }
@@ -280,18 +170,13 @@ void Step::vRowBufferIterate(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
-  RowBuffer* pNewRowBuffer = new RowBuffer;
 
   i8 nRows = pRowBuffer->nRows();
-  RowPix* pPix = pRowBuffer->pRowPix();
-  pNewRowBuffer->vCopyRowPix(pPix);
 
   // iterate the buffer
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     IGNORE_RETURN(pRowBuffer->pRowAddress(i_Row));
   }
-
-  m_pDataStack->vPushPtr(pNewRowBuffer);
 
   EXIT();
 }
