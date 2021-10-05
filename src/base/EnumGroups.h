@@ -120,8 +120,6 @@ enum eEG // enum groups
   EG_XK,
   EG_XP,
 
-  EG_YA,
-
   EG_ZK,
 
   EG_ENUMS
