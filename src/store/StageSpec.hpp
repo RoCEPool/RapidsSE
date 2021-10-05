@@ -38,9 +38,9 @@ namespace STORE
     StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
-    static eYX eCrossTopo(StageSpec* pFromStageSpec,
-                          StageSpec* pToStageSpec,
-                          eYO&       reOpTopology);
+    static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
+                              StageSpec* pToStageSpec,
+                              eYO&       reOpTopology);
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
