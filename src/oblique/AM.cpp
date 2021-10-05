@@ -1502,6 +1502,16 @@ TagSet* AM::SYSARGS::pTagSet(void)
   return & gpAttachMap->m_xSysArgs.m_oArgTags;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set verbose mode                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vVerbose(bool bVerbose)
+{
+  _static_
+
+  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 SYSTEM                                     */

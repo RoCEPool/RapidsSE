@@ -49,8 +49,10 @@
 #include "SP_Job.hpp"
 
 #include "UT_SkipList.hpp"
+#include "AttachMap.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
+extern AttachMap* gpAttachMap;
 
 using namespace Parser;
 
@@ -5827,6 +5829,54 @@ bool PROMPT::bPrompt_ut_skipList(SePrompt* pPrompt)
     vTrace("\nsuccess: 0 rows affected\n"_Stz);
   else
     vTrace("\nUT_SkipList failed\n"_Stz);
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_verbose -- enable / disable verbose mode                            */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_verbose (
+    PF_VERBOSE,                  // prompt function
+    "Prompt_verbose"_Stz,        // name of the prompt function
+    "enable / disable verbose mode"_Stz, // comment about the function
+    "verbose"_Stz,               // the prompt command
+    nullptr,                     // the second word
+    bPrompt_verbose,                // prompt function
+    true,                        // enabled
+
+    true,                        // visible
+    "reap"_Stz,                  // help
+    ""_Stz                       // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_verbose(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
+
+    vTrace("VERBOSE DISABLED\n"_Stz);
+    AM::SYSARGS::vVerbose(false);
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
+
+    vTrace("VERBOSE ENABLED\n"_Stz);
+    AM::SYSARGS::vVerbose(true);
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  }
+  else {
+    Stz* szCmd = pPrompt->pInpTknVec()->pGet(0)->szChars();
+    vTrace("error: %s : %s\n"_Stz,aEC[EC_INVALID_COMMAND],szCmd);
+  }
 
   return true;
 }

@@ -400,6 +400,7 @@ namespace OBLIQUE
       static i8 nDefinedNodes(void);
       static i8 nPtnsPerNode(void);
       static TagSet* pTagSet(void);
+      static void vVerbose(bool bVerbose);
     };
 
     class SYSTEM
