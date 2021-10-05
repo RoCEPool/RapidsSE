@@ -480,7 +480,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PO"_Stz,   EG_PO);
   vAddConstant("EG_PP"_Stz,   EG_PP);
   vAddConstant("EG_PT"_Stz,   EG_PT);
-  vAddConstant("EG_PX"_Stz,   EG_PX);
+  vAddConstant("EG_YX"_Stz,   EG_YX);
   vAddConstant("EG_PY"_Stz,   EG_PY);
   vAddConstant("EG_QA"_Stz,   EG_QA);
   vAddConstant("EG_QK"_Stz,   EG_QK);

@@ -24,7 +24,7 @@ namespace STORE
   
     TagSet m_oArgTags;
     
-    ePX m_eCrossTopo;
+    eYX m_eCrossTopo;
     ePZ m_eOpTopology;
 
     s32 m_sNextStageNm;    // next stage name
@@ -54,8 +54,8 @@ namespace STORE
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
-    ePX  eCrossTopo(void);
-    void vCrossTopo(ePX eCrossTopo, ePZ eOpTopology,
+    eYX  eCrossTopo(void);
+    void vCrossTopo(eYX eCrossTopo, ePZ eOpTopology,
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
     i8   iNextStage(void);

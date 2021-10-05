@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
@@ -36,7 +36,7 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oArgTags
   //m_oTopologyTags
 
-  m_eCrossTopo    = PX_NONE;
+  m_eCrossTopo    = YX_NONE;
   m_eOpTopology   = PZ_NONE;
 
   m_i_NextStage   = C_UNKNOWN;
@@ -120,7 +120,7 @@ TagSet* OpSpec::pArgTags(void)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-ePX OpSpec::eCrossTopo(void)
+eYX OpSpec::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -130,7 +130,7 @@ ePX OpSpec::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo, ePZ eOpTopology,
+void OpSpec::vCrossTopo(eYX eCrossTopo, ePZ eOpTopology,
                         Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);

@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Marker.hpp"
 
@@ -186,7 +186,7 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
+Op* Stage::pPipeOutOp(ePZ eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
   /*
@@ -200,17 +200,17 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
 
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
       pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_DstOp);
       break;
 
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_NODES_TO_ALL_NODES:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_DstOp);
       break;
@@ -219,24 +219,24 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
       pPtnStream = pGet(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
@@ -245,7 +245,7 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
       
-    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
       ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       pOp = pPtnStream->pGet(i_DstOp);
@@ -270,13 +270,13 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     // - - - - -
     // by nodeStream
 
-    case PX_ALL_NODES_TO_ALL_NODES:
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ALL_NODES:
+    case YX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       RASSERT(PZ_NODE_STREAM == eOpTopology);
       pStream_one = this->pGetNodeStream(i_ThisNode);
       break;
@@ -284,11 +284,11 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     // - - - - -
     // by partitionStream
       
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
       RASSERT(PZ_PARTITION_STREAM == eOpTopology);
       pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
       break;
@@ -296,7 +296,7 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     // - - - - -
     // by stageStream
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
       RASSERT(PZ_STAGE_STREAM == eOpTopology);
       pStream_one = pGet(tDstPtnId.iAsI8());
       break;
@@ -304,7 +304,7 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     // - - - - -
     // by stageStream0
       
-    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       RASSERT(PZ_STAGE_STREAM_0 == eOpTopology);
       pStream_one = pGet(0);
       break;

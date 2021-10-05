@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "ePX.h"
+#include "eYX.h"
 #include "ePZ.h"
 #include "eXK.h"
 #include "eZK.h"
@@ -104,7 +104,7 @@ namespace STORE
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    ePX  eCrossTopo(void);
+    eYX  eCrossTopo(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
     void vDotPrint(Stz* szText);

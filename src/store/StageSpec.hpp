@@ -4,7 +4,7 @@
 #pragma once
 
 #include "ePO.h"
-#include "ePX.h"
+#include "eYX.h"
 
 #include "OpSpec.hpp"
 #include "LifeGuard_t.hpp"
@@ -38,7 +38,7 @@ namespace STORE
     StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
-    static ePX eCrossTopo(StageSpec* pFromStageSpec,
+    static eYX eCrossTopo(StageSpec* pFromStageSpec,
                           StageSpec* pToStageSpec,
                           ePZ&       reOpTopology);
 

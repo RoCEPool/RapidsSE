@@ -12,7 +12,7 @@
 
 #include "InfoSet.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"

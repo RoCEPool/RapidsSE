@@ -85,11 +85,11 @@ namespace STORE
     //
     bool bPass2_staging(void);
 
-    void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
-    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
+    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
 
     void vMorphToSend(OpSpec* pOpSpec,
-                      ePX eCrossTopo,
+                      eYX eCrossTopo,
                       ePZ eOpTopology,
                       i8 i_NextStage);
 
@@ -98,7 +98,7 @@ namespace STORE
                       OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);
 
-    void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
+    void vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo);
     void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
     void vStageOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,

@@ -63,7 +63,7 @@ StageSpec::~StageSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */
 /*----------------------------------------------------------------------------*/
-ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
+eYX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
                           StageSpec* pToStageSpec,
                           ePZ&       reOpTopology)
 {
@@ -83,11 +83,11 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ALL_NODES_TO_ALL_NODES;
+          return YX_ALL_NODES_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ALL_NODES_TO_ALL_PARTITIONS;
+          return YX_ALL_NODES_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -95,17 +95,17 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ALL_NODES_TO_ORIGIN;
+          return YX_ALL_NODES_TO_ORIGIN;
           
         case PO_SPECIFIC_NODE:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_ALL_NODES_TO_SPECIFIC_NODE;
+          return YX_ALL_NODES_TO_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_ALL_NODES_TO_SPECIFIC_PARTITION;
+          return YX_ALL_NODES_TO_SPECIFIC_PARTITION;
           
         default:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -119,11 +119,11 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ALL_PARTITIONS_TO_ALL_NODES;
+          return YX_ALL_PARTITIONS_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+          return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -131,17 +131,17 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ALL_PARTITIONS_TO_ORIGIN;
+          return YX_ALL_PARTITIONS_TO_ORIGIN;
           
         case PO_SPECIFIC_NODE:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
+          return YX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
+          return YX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
           
         default:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -159,11 +159,11 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
+          return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+          return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case PO_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -189,28 +189,28 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ORIGIN_TO_ALL_NODES;
+          return YX_ORIGIN_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
           reOpTopology = PZ_STAGE_STREAM;
-          return PX_ORIGIN_TO_ALL_PARTITIONS;
+          return YX_ORIGIN_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
+          return YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
           
         case PO_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_ORIGIN_TO_ORIGIN;
+          return YX_ORIGIN_TO_ORIGIN;
           
         case PO_SPECIFIC_NODE:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_ORIGIN_TO_SPECIFIC_NODE;
+          return YX_ORIGIN_TO_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
           reOpTopology = PZ_PARTITION_STREAM;
-          return PX_ORIGIN_TO_SPECIFIC_PARTITION;
+          return YX_ORIGIN_TO_SPECIFIC_PARTITION;
           
         default:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -225,12 +225,12 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
         case PO_ALL_NODES:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_NODE_TO_ALL_NODES;
+          return YX_SPECIFIC_NODE_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
+          return YX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -239,17 +239,17 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
         case PO_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_NODE_TO_ORIGIN;
+          return YX_SPECIFIC_NODE_TO_ORIGIN;
           
         case PO_SPECIFIC_NODE:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
+          return YX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
+          return YX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
           
         default:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -264,12 +264,12 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
         case PO_ALL_NODES:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_PARTITION_TO_ALL_NODES;
+          return YX_SPECIFIC_PARTITION_TO_ALL_NODES;
           
         case PO_ALL_PARTITIONS:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
+          return YX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
           
         case PO_ALL_PARTITIONS_ON_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
@@ -277,16 +277,16 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
         case PO_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
-          return PX_SPECIFIC_PARTITION_TO_ORIGIN;
+          return YX_SPECIFIC_PARTITION_TO_ORIGIN;
           
         case PO_SPECIFIC_NODE:
           vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
           RASSERT(0);
-          return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
+          return YX_SPECIFIC_PARTITION_SPECIFIC_NODE;
           
         case PO_SPECIFIC_PARTITION:
           reOpTopology = PZ_STAGE_STREAM_0;
-          return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
+          return YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
           
         default:
           RASSERT(0);
@@ -298,7 +298,7 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
       RASSERT(0);
   }
   
-  return PX_NONE;
+  return YX_NONE;
 }
 
 

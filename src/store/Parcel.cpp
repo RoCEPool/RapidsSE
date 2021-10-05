@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Job.hpp"
 #include "Op.hpp"
@@ -44,7 +44,7 @@ Parcel::Parcel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_eCrossTopo     = PX_NONE;
+  m_eCrossTopo     = YX_NONE;
   m_eOpTopology    = PZ_NONE;
   
   m_eSendKind      = XK_NONE;
@@ -126,7 +126,7 @@ void Parcel::vAddItem(Object* pItem)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-ePX Parcel::eCrossTopo(void)
+eYX Parcel::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
@@ -221,7 +221,7 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
+void Parcel::vLabel(eYX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -312,7 +312,7 @@ void Parcel::vSendOut(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   PtnId tDstPtn;
-  ePX eCrossTopo;
+  eYX eCrossTopo;
   Stage* pNextStage;
 
   vAppraise(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
@@ -417,7 +417,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage)
+void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopo, Stage*& pNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -448,7 +448,7 @@ void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, ePX& eCrossTopo, Stage*& pNex
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextStage)
+void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopo, Stage* pNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -457,10 +457,10 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextS
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to the origin
       
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
+    case YX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN: {
       vSendToOrigin(pSrcOp);
       break;
     }
@@ -468,23 +468,23 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextS
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to all partitions
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       vSendToAllPartitions(pSrcOp);
       break;
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to all partitions on origin
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       vSendToAllOriginPartitions(pSrcOp);
       break;
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to a specific partition
       
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION: {
       //vTrace("vSendToPartition  \n"_Stz);
       Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn.iAsI8());
       PtnId tDstPtnId_stream = pStream->tPtnId();
@@ -495,7 +495,7 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextS
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to ???? ALKA
       
-    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
+    case YX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
       vSendToNode(pSrcOp,iDstNode);
       break;
@@ -504,7 +504,7 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextS
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to ???? ALKA
       
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
 
       if (m_eSendKind == XK_BROADCAST) {
         vSendToAllPartitions(pSrcOp);
@@ -524,7 +524,7 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextS
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to all nodes
       
-    case PX_ORIGIN_TO_ALL_NODES: {
+    case YX_ORIGIN_TO_ALL_NODES: {
       vSendToAllNodes(pSrcOp);
       break;
     }
