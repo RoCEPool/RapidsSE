@@ -99,8 +99,7 @@ assert::stack_0
 
 "j" .verbose
   "OP_jobOperators.sen"         include
-  "OP_jobRepOp.sen"             include
-  "OP_jobReport.sen"            include
+  "OP_jobReportId.sen"          include
 
 "k" .verbose
 

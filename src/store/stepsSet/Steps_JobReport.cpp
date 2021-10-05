@@ -17,8 +17,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReport(void)
 {
-  vAddStep("jobReport::operators"_Stz,  &Step::vJobReportOperators);
-  vAddStep("jobReport::report"_Stz,     &Step::vJobReportReport);
+  vAddStep("jobReport::operators"_Stz,       &Step::vJobReportOperators);
+  vAddStep("jobReport::reportJobId"_Stz,     &Step::vJobReportReportJobId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,9 +39,9 @@ void Step::vJobReportOperators(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobReport::report -- report on given job                                   */
+/* jobReport::reportJobId -- report on given job id                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReportReport(void)
+void Step::vJobReportReportJobId(void)
 {
   ENTRY();
   

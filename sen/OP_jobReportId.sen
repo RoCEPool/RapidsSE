@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* OP_jobRepOp.sen -- Operator job report                                     */
+/* OP_jobReportId.sen -- Operator job report given jobId                      */
 /*============================================================================*/
 
-" OP_jobRepOp.sen" .verbose
+" OP_jobReportId.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: jobRepOp_report
-  
+: jobReportId_action
+
   0 locals| eError |
 
   Tub[].new
 
-  Tub[] <jobno> >int jobReport::report to eError
+  Tub[] <jobno> >int jobReport::reportJobId to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -37,38 +37,20 @@
 
   Tub[].delete
 
-  ZK_M_DATAPULSE_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* sleep request                                      (on node where spawned) */
-/*----------------------------------------------------------------------------*/
-: jobRepOp_op \operator
-
-  _lu_initialise_
-
-  op__topology
-
-  find: jobRepOp_report  ZK_M_DATAPULSE  op[].handler!
-
-  op__loop
-
-  _lu_finalise_
-  
-  op__retires
-  
-  HAZARD
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: jobRepOp :: jobRepOp <jobNo> ;
+cmdSyntax: jobReportId :: jobReportId <jobNo> ;
 
-: jobRepOp_cmdTags _cmdTags tagCopy: op_tags
+: jobReportId_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "jobRepOp_op"
+    <params>  = 1
+
+    <opEntry> = "jobReportId_op"
 }
 ;
     
