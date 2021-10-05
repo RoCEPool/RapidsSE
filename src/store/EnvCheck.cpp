@@ -19,7 +19,7 @@ extern char giProgressPoint;
 void EnvCheck::vCheckManifest(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("\n*\n* %lld) Checking Resource Manifest\n*\n"_Stz,giProgressPoint++);
+    vTrace("\n*\n* %lld) Checking Resource Manifest\n*\n"_Stz,giProgressPoint++);
   
   vCheckDir("."_Stz,            C_EXIST_EXISTS,C_ACCESS_READ);
   vCheckDir("../commands"_Stz,  C_EXIST_EXISTS,C_ACCESS_READ);
@@ -34,7 +34,7 @@ void EnvCheck::vCheckManifest(void)
 void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iExist, i8 iPermissions)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("Checking dir: %s\n"_Stz,szDirPath);
+    vTrace("Checking dir: %s\n"_Stz,szDirPath);
   
   if (iExist == C_EXIST_EXISTS) {
     if (! Dir::bExists(szDirPath))
@@ -58,7 +58,7 @@ void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iExist, i8 iPermissions)
 void EnvCheck::vCheckFile(Stz* szFilePath, i8 iExist, i8 iPermissions)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("Checking file: %s\n"_Stz,szFilePath);
+    vTrace("Checking file: %s\n"_Stz,szFilePath);
   
   if (iExist == C_EXIST_EXISTS) {
     if (! File::bExists(szFilePath))

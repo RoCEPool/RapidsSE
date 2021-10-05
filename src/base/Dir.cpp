@@ -58,12 +58,12 @@ Dir::~Dir(void) noexcept(false)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   if (m_aDir) {
-    vWarn("Dir::~Dir dir not closed: %s\n"_Stz,m_sPath.azChar());
+    vTrace("Dir::~Dir dir not closed: %s\n"_Stz,m_sPath.azChar());
 
     vClose();
     
     if (m_oSysCall.bHadError())
-      vWarn("Dir::~Dir: dir could not be closed: %s"_Stz,m_sPath.azChar());
+      vTrace("Dir::~Dir: dir could not be closed: %s"_Stz,m_sPath.azChar());
   }
 
   
@@ -95,7 +95,7 @@ bool Dir::bChangeCurrent(Stz* szDirPath)
   i8 iResult = chdir(szDirPath->azChar());
   
   if (iResult) {
-    vWarn("chdir(%s) error; errno=%d\n"_Stz,szDirPath->azChar(),errno);
+    vTrace("chdir(%s) error; errno=%d\n"_Stz,szDirPath->azChar(),errno);
     return false;
   }
   
@@ -110,7 +110,7 @@ bool Dir::bGetCurrent(Stz* szDirPath)
   char* aCurrPath = getcwd(szDirPath->azChar(),C_MAX_PATH);
   
   if ( ! aCurrPath ) {
-    vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
+    vTrace("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -132,7 +132,7 @@ bool Dir::bExists(Stz* szDirPath)
   if (iResult && ENOENT == errno)
     return false;
     
-  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,szDirPath->azChar(),errno);
+  vTrace("Dir::bExists: stat(%s) error; errno=%d"_Stz,szDirPath->azChar(),errno);
   
   return false;
 }
@@ -145,7 +145,7 @@ bool Dir::bMake(Stz* szDirPath)
   char* aPath = szDirPath->azChar();
   
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
-    vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
+    vTrace("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -162,7 +162,7 @@ bool Dir::bRemove(Stz* szDirPath)
   int iResult = rmdir(aPath);
   
   if (-1 == iResult) {
-    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
+    vTrace("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -202,7 +202,7 @@ void Dir::vClose(void)
   i8 iResult = closedir(m_aDir);
   if (-1 == iResult) {
     m_oSysCall.vError(errno);
-    vWarn("Dir::vClose: closedir() error; errno=%d"_Stz,errno);
+    vTrace("Dir::vClose: closedir() error; errno=%d"_Stz,errno);
     return;
   }
 
@@ -291,7 +291,7 @@ bool Dir::bOpen(Stz* szDirPath)
   m_aDir = opendir(wPath);
   if (! m_aDir) {
     m_oSysCall.vError(errno);
-    vWarn("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
+    vTrace("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
     return false;
   }
   

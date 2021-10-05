@@ -41,7 +41,7 @@ i8 Hardware::iCacheLine(void)
   
   i8 iReturn = sysctlbyname("hw.cachelinesize", &iSize, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting cache line size %lld\n"_Stz, iReturn);
+    vTrace("Error while getting cache line size %lld\n"_Stz, iReturn);
     return 0;
   }
   return iSize;
@@ -51,7 +51,7 @@ i8 Hardware::iCacheLine(void)
   i8 iSize = sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
 
   if (iSize == -1) {
-    vWarn("sysconf(_SC_LEVEL1_DCACHE_LINESIZE)\n"_Stz, iSize);
+    vTrace("sysconf(_SC_LEVEL1_DCACHE_LINESIZE)\n"_Stz, iSize);
     return 0;
   }
 
@@ -85,7 +85,7 @@ i8 Hardware::iCoreCount(void)
   
   i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
   if (iCount == -1) {
-    vWarn("Error while getting cpu core count %lld\n"_Stz, iCount);
+    vTrace("Error while getting cpu core count %lld\n"_Stz, iCount);
     return 0;
   }
  
@@ -106,7 +106,7 @@ i8 Hardware::iCpuCount(void)
   
   i8 iReturn = sysctlbyname("machdep.cpu.core_count", &iCount, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting cpu count %lld\n"_Stz, iReturn);
+    vTrace("Error while getting cpu count %lld\n"_Stz, iReturn);
     return 0;
   }
   return iCount;
@@ -115,7 +115,7 @@ i8 Hardware::iCpuCount(void)
  
   i8 iCount = sysconf(_SC_NPROCESSORS_CONF);
    if (iCount == -1) {
-     vWarn("Error while getting cpu count %lld\n"_Stz, iCount);
+     vTrace("Error while getting cpu count %lld\n"_Stz, iCount);
      return 0;
    }
   
@@ -182,7 +182,7 @@ i8 Hardware::iCpuFrequency(void)
   // open the /Proc/cpuinfo file
   aFile = fopen("/proc/cpuinfo", "r");
   if (! aFile) {
-    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
+    vTrace("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
     return 0;
   }
   
@@ -223,7 +223,7 @@ i8 Hardware::iL1Cache(void)
   
   i8 iReturn = sysctlbyname("hw.l1dcachesize", &iSize, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting L1 cache size %lld\n"_Stz, iReturn);
+    vTrace("Error while getting L1 cache size %lld\n"_Stz, iReturn);
     return 0;
   }
   return iSize;
@@ -233,7 +233,7 @@ i8 Hardware::iL1Cache(void)
   i8 iSize = sysconf(_SC_LEVEL1_DCACHE_SIZE); 
 
   if (iSize == -1) {
-    vWarn("sysconf(_SC_LEVEL1_DCACHE_SIZE)\n"_Stz, iSize);
+    vTrace("sysconf(_SC_LEVEL1_DCACHE_SIZE)\n"_Stz, iSize);
     return 0;
   }
 
@@ -257,7 +257,7 @@ i8 Hardware::iL2Cache(void)
   
   i8 iReturn = sysctlbyname("hw.l2cachesize", &iSize, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting L2 cache size %lld\n"_Stz, iReturn);
+    vTrace("Error while getting L2 cache size %lld\n"_Stz, iReturn);
     return 0;
   }
   return iSize;
@@ -267,7 +267,7 @@ i8 Hardware::iL2Cache(void)
   i8 iSize = sysconf(_SC_LEVEL2_CACHE_SIZE);
 
   if (iSize == -1) {
-    vWarn("sysconf(_SC_LEVEL2_CACHE_SIZE)\n"_Stz, iSize);
+    vTrace("sysconf(_SC_LEVEL2_CACHE_SIZE)\n"_Stz, iSize);
     return 0;
   }
 
@@ -291,7 +291,7 @@ i8 Hardware::iL3Cache(void)
   
   i8 iReturn = sysctlbyname("hw.l3cachesize", &iSize, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting L3 cache size %lld\n"_Stz, iReturn);
+    vTrace("Error while getting L3 cache size %lld\n"_Stz, iReturn);
     return 0;
   }
   return iSize;
@@ -301,7 +301,7 @@ i8 Hardware::iL3Cache(void)
   i8 iSize = sysconf(_SC_LEVEL3_CACHE_SIZE);
 
   if (iSize == -1) {
-    vWarn("sysconf(_SC_LEVEL3_CACHE_SIZE)\n"_Stz, iSize);
+    vTrace("sysconf(_SC_LEVEL3_CACHE_SIZE)\n"_Stz, iSize);
     return 0;
   }
 
@@ -320,12 +320,12 @@ i8 Hardware::iPhysicalMemory(void)
 
   i8 iNumPages = sysconf(_SC_PHYS_PAGES);
   if (iNumPages == -1) {
-    vWarn("Error while getting physical memory %lld\n"_Stz, iNumPages);
+    vTrace("Error while getting physical memory %lld\n"_Stz, iNumPages);
     return 0;
   }
   i8 iPageSize = sysconf(_SC_PAGESIZE);
   if (iPageSize == -1) {
-    vWarn("Error while getting physical memory %lld\n"_Stz, iPageSize);
+    vTrace("Error while getting physical memory %lld\n"_Stz, iPageSize);
     return 0;
   }
 

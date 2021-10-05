@@ -19,7 +19,7 @@ extern Header* gaSeShmRegion;
 /*----------------------------------------------------------------------------*/
 void ShmUtility::vRun(int argc, Stz* argv[])
 {
-  vInfo("SHM...\n"_Stz);
+  vTrace("SHM...\n"_Stz);
   
   msRegionName = ""_Stz;
   
