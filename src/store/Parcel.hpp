@@ -4,7 +4,7 @@
 #pragma once
 
 #include "eXK.h"
-#include "ePZ.h"
+#include "eYO.h"
 
 namespace STORE
 {
@@ -12,7 +12,7 @@ namespace STORE
   {
   private:
     eYX  m_eCrossTopo;      // cross topology
-    ePZ  m_eOpTopology;     // op topology
+    eYO  m_eOpTopology;     // op topology
 
     i8   m_iDstNode;        // destination node id
 
@@ -56,9 +56,9 @@ namespace STORE
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-    void vLabel(eYX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId);
+    void vLabel(eYX eCrossTopo, eYO eOpTopology, i8  iPipelineJobId);
     i8   nItems(void);
-    ePZ  eOpTopology(void);
+    eYO  eOpTopology(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
     i8   iPipelineJobId(void);

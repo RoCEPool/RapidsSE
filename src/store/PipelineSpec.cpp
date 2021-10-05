@@ -791,7 +791,7 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
                                 eYX eCrossTopo,
-                                ePZ eOpTopology,
+                                eYO eOpTopology,
                                 i8 i_NextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -813,7 +813,7 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   i8 i_Op = pOpSpec_isOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   
-  ePZ eOpTopology;
+  eYO eOpTopology;
   
   eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pStageSpec,eOpTopology);
     
@@ -875,7 +875,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
   
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
-  ePZ eOpTopology;
+  eYO eOpTopology;
 
   eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pNextStageSpec,eOpTopology);
 
@@ -933,7 +933,7 @@ void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
   
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  ePZ eOpTopology;
+  eYO eOpTopology;
 
   eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pOtherStageSpec,eOpTopology);
 

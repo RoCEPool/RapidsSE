@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "ePZ.h"
+#include "eYO.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -40,7 +40,7 @@ namespace STORE
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
 
-    Op*  pPipeOutOp(ePZ eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp);
+    Op*  pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp);
 
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);

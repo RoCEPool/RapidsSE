@@ -45,7 +45,7 @@ Parcel::Parcel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   m_eCrossTopo     = YX_NONE;
-  m_eOpTopology    = PZ_NONE;
+  m_eOpTopology    = YO_NONE;
   
   m_eSendKind      = XK_NONE;
 
@@ -221,7 +221,7 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(eYX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
+void Parcel::vLabel(eYX eCrossTopo, eYO eOpTopology, i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -233,7 +233,7 @@ void Parcel::vLabel(eYX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
 /*----------------------------------------------------------------------------*/
 /* get op topology                                                            */
 /*----------------------------------------------------------------------------*/
-ePZ Parcel::eOpTopology(void)
+eYO Parcel::eOpTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 

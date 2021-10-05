@@ -4,7 +4,7 @@
 #pragma once
 
 #include "eXK.h"
-#include "ePZ.h"
+#include "eYO.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -25,7 +25,7 @@ namespace STORE
     TagSet m_oArgTags;
     
     eYX m_eCrossTopo;
-    ePZ m_eOpTopology;
+    eYO m_eOpTopology;
 
     s32 m_sNextStageNm;    // next stage name
     i8  m_i_NextStage;
@@ -55,14 +55,14 @@ namespace STORE
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
     eYX  eCrossTopo(void);
-    void vCrossTopo(eYX eCrossTopo, ePZ eOpTopology,
+    void vCrossTopo(eYX eCrossTopo, eYO eOpTopology,
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
     i8   iNextStage(void);
     Stz* szNextStageNm(void);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    ePZ  eOpTopology(void);
+    eYO  eOpTopology(void);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

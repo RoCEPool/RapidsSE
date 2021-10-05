@@ -40,7 +40,7 @@ namespace STORE
    
     static eYX eCrossTopo(StageSpec* pFromStageSpec,
                           StageSpec* pToStageSpec,
-                          ePZ&       reOpTopology);
+                          eYO&       reOpTopology);
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);

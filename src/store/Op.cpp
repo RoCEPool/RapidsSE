@@ -1163,7 +1163,7 @@ TagSet* Op::pOpTags(void)
 /*----------------------------------------------------------------------------*/
 /* get op topology                                                            */
 /*----------------------------------------------------------------------------*/
-ePZ Op::eOpTopology(void)
+eYO Op::eOpTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
