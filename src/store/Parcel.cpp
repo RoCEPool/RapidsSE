@@ -231,6 +231,16 @@ void Parcel::vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op topology                                                            */
+/*----------------------------------------------------------------------------*/
+ePZ Parcel::eOpTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_eOpTopology;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this parcel an original (T or F                                         */
 /*----------------------------------------------------------------------------*/
 bool Parcel::bOriginalParcel(void)

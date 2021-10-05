@@ -1399,7 +1399,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeOutOp(this,eCrossTopo(),tPtnId(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeOutOp(eOpTopology(),eCrossTopo(),
+                                     tPtnId(),iNextOp());
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {

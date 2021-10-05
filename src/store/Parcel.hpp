@@ -58,6 +58,7 @@ namespace STORE
     Operand* pGetOperand(void);
     void vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId);
     i8   nItems(void);
+    ePZ  eOpTopology(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
     i8   iPipelineJobId(void);
