@@ -572,7 +572,6 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   pMainSubquery->vAppendChild(pStmt);
   m_pStatementStack->vPush(pMainSubquery);
 
-
   if (pCtx->ORDER()) {
     ASSERT(!m_pOrderItems);
     m_pOrderItems = new QueryNodeList();
