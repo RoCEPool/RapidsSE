@@ -63,9 +63,9 @@ StageSpec::~StageSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */
 /*----------------------------------------------------------------------------*/
-eYX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
-                          StageSpec* pToStageSpec,
-                          eYO&       reOpTopology)
+eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
+                              StageSpec* pToStageSpec,
+                              eYO&       reOpTopology)
 {
   _static_
     

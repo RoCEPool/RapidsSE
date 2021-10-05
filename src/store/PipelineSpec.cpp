@@ -815,7 +815,9 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   
   eYO eOpTopology;
   
-  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,
+                                             pStageSpec,
+                                             eOpTopology);
     
   Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec_isOp->vCrossTopo(eCrossTopo,eOpTopology,
@@ -877,7 +879,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
 
   eYO eOpTopology;
 
-  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pNextStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pNextStageSpec,eOpTopology);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopo == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
@@ -935,7 +937,7 @@ void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
 
   eYO eOpTopology;
 
-  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pOtherStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pOtherStageSpec,eOpTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
