@@ -3548,7 +3548,6 @@ static Stz* aEG[]
   "EG_YX"_Stz,
   "EG_PY"_Stz,
   
-  "EG_QA"_Stz,
   "EG_QK"_Stz,
 
   "EG_RA"_Stz,
@@ -3669,7 +3668,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PT: return aPT[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
-    case EG_QA: return aQA[i_Enum];
     case EG_QK: return aQK[i_Enum];
 
     case EG_RA: return aRA[i_Enum];
