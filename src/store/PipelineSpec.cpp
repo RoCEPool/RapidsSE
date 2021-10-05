@@ -796,27 +796,47 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
   Stz* szStgNm = szStageNm(i_NextStage);
   pOpSpec->vOpTopology(eOpTopology);
   pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+  
+  StageSpec* pStageSpec = pOpSpec->pStageSpec();
+  
+  pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* name is a known operator                                                   */
 /*----------------------------------------------------------------------------*/
+//void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+//
+//  i8 i_Op    = pOpSpec->iOpSpec();
+//  i8 i_Stage = pStageSpec->i_StageSpec();
+//
+//  Stz* szStgNm = szStageNm(i_Stage);
+//
+//  pOpSpec->vNextStageOp(szStgNm,i_Stage,i_Op+1);
+//}
+/*----------------------------------------------------------------------------*/
 void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
+
   i8 i_Op = pOpSpec->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
-  
+
   eYO eOpTopology;
-  
+
   eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,
                                              pStageSpec,
                                              eOpTopology);
-    
+
   Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec->vOpTopology(eOpTopology);
   pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
+
+  RASSERT(pStageSpec == pOpSpec->pStageSpec());
+
+  pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
 
 }
 
@@ -884,6 +904,10 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
     pPrevOpSpec->vOpTopology(eOpTopology);
     pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 
+    RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
+
+    pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+    
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
     pStageSpec->vRemove(pOpSpec_isStage);

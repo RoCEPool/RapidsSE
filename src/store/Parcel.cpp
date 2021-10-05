@@ -486,7 +486,7 @@ void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopo, Stage* pNextS
       
     case YX_ORIGIN_TO_SPECIFIC_PARTITION: {
       //vTrace("vSendToPartition  \n"_Stz);
-      Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn.iAsI8());
+      Stream* pStream = pNextStage->pGetStream_byPtnNo(tDstPtn.iAsI8());
       PtnId tDstPtnId_stream = pStream->tPtnId();
       vSendToPartition(pSrcOp,tDstPtnId_stream);
       break;

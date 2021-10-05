@@ -23,9 +23,12 @@ namespace STORE
     StageSpec* m_pStageSpec;  // which stage spec
   
     TagSet m_oArgTags;
-    
-    eYX m_eCrossTopo;
+
     eYO m_eOpTopology;
+
+    // -- -- -- -- -- --
+  
+    eYX m_eCrossTopo;
 
     s32 m_sNextStageNm;  // next stage name
     i8  m_i_NextStage;
@@ -58,6 +61,7 @@ namespace STORE
     i8   iNextOp(void);
     i8   iNextStage(void);
     Stz* szNextStageNm(void);
+    void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     eYO  eOpTopology(void);
