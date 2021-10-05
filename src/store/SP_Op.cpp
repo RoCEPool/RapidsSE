@@ -188,7 +188,7 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
   i8 iNextStage = pOp->iNextStage();
   i8 iNextOp = pOp->iNextOp();
   Op* pNextOp = pOp->pNextOp();
-  ePX eCrossTopo = pOp->eCrossTopo();
+  eYX eCrossTopo = pOp->eCrossTopo();
 
   if (bDescend)
     vCatf("\n      "_Stz);
@@ -204,7 +204,7 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
-           ,aPX[eCrossTopo]
+           ,aYX[eCrossTopo]
         );
 
   if (XK_NONE != pOp->eSendKind())
@@ -229,7 +229,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   i8 iNextStage = pOp->iNextStage();
   i8 iNextOp = pOp->iNextOp();
   Op* pNextOp = pOp->pNextOp();
-  ePX eCrossTopo = pOp->eCrossTopo();
+  eYX eCrossTopo = pOp->eCrossTopo();
 
   if (bDescend)
     vCatf("\n      "_Stz);
@@ -245,7 +245,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
-           ,aPX[eCrossTopo]
+           ,aYX[eCrossTopo]
         );
 
   if (XK_NONE != pOp->eSendKind())

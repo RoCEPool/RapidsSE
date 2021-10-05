@@ -4,7 +4,7 @@
 #pragma once
 
 #include "LifeGuard_t.hpp"
-#include "ePZ.h"
+#include "eYO.h"
 
 
 namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
@@ -85,12 +85,12 @@ namespace STORE
     //
     bool bPass2_staging(void);
 
-    void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
-    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
+    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
 
     void vMorphToSend(OpSpec* pOpSpec,
-                      ePX eCrossTopo,
-                      ePZ eOpTopology,
+                      eYX eCrossTopo,
+                      eYO eOpTopology,
                       i8 i_NextStage);
 
     void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
@@ -98,7 +98,7 @@ namespace STORE
                       OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);
 
-    void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
+    void vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo);
     void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
     void vStageOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,

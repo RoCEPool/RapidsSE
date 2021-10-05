@@ -27,9 +27,9 @@
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
-#include "ePO.h"
+#include "eYG.h"
 #include "ePY.h"
-#include "ePX.h"
+#include "eYX.h"
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
@@ -3542,10 +3542,10 @@ static Stz* aEG[]
   "EG_PA"_Stz,
   "EG_PF"_Stz,
   "EG_PK"_Stz,
-  "EG_PO"_Stz,
+  "EG_YG"_Stz,
   "EG_PP"_Stz,
   "EG_PT"_Stz,
-  "EG_PX"_Stz,
+  "EG_YX"_Stz,
   "EG_PY"_Stz,
   
   "EG_QA"_Stz,
@@ -3665,10 +3665,8 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PA: return aPA[i_Enum];
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
-    case EG_PO: return aPO[i_Enum];
     case EG_PP: return aPP[i_Enum];
     case EG_PT: return aPT[i_Enum];
-    case EG_PX: return aPX[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
     case EG_QA: return aQA[i_Enum];
@@ -3698,12 +3696,14 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_VA: return aVA[i_Enum];
 
- 
     case EG_WK: return aWK[i_Enum];
 
     case EG_XA: return aXA[i_Enum];
     case EG_XK: return aXK[i_Enum];
     case EG_XP: return aXP[i_Enum];
+
+    case EG_YG: return aYG[i_Enum];
+    case EG_YX: return aYX[i_Enum];
 
     case EG_ZK: return aZK[i_Enum];
 

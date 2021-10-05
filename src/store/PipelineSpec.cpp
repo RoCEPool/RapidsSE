@@ -468,7 +468,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec* p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     
-    p_StageSpec->vStageTopology(PO_ALL_NODES);
+    p_StageSpec->vStageTopology(YG_ALL_NODES);
     return true;
   }
   
@@ -493,7 +493,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
       if (pTkn()->bSame(":"_Stz)) {
         vTokenAccept();
 
-        p_StageSpec->vStageTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+        p_StageSpec->vStageTopology(YG_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
     }
@@ -503,7 +503,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_ALL_PARTITIONS);
+    p_StageSpec->vStageTopology(YG_ALL_PARTITIONS);
     return true;
   }
   
@@ -522,7 +522,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_SPECIFIC_NODE);
+    p_StageSpec->vStageTopology(YG_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nKnownNodes() )
       return false;
@@ -544,7 +544,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec* p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     
-    p_StageSpec->vStageTopology(PO_ORIGIN);
+    p_StageSpec->vStageTopology(YG_ORIGIN);
     return true;
   }
   else {
@@ -567,7 +567,7 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_SPECIFIC_PARTITION);
+    p_StageSpec->vStageTopology(YG_SPECIFIC_PARTITION);
     i8 tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
       return false;
@@ -692,40 +692,40 @@ bool PipelineSpec::bPass2_staging(void)
 /*----------------------------------------------------------------------------*/
 /* add <sends> arg to consume op                                              */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
+void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   i8 iSends = C_UNKNOWN;
   
   switch (eCrossTopo) {
-    case PX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ORIGIN:
       iSends = AM::pGrid()->nKnownNodes();
       break;
       
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
       iSends = AM::pGrid()->nKnownNodes();
       break;
       
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
       iSends = AM::PTNMAP::nPtnsPerNode();
       break;
       
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       iSends = AM::PTNMAP::nPtnsPerNode();
       break;
      
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
       iSends = AM::PTNMAP::nPtnsInGrid();
       break;
       
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       iSends = 1;
       break;
       
@@ -739,40 +739,40 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* update the <sends> arg of consume op                                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
+void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
   i8 iIncSends = C_UNKNOWN;
 
   switch (eCrossTopo) {
-    case PX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ORIGIN:
       iIncSends = AM::pGrid()->nKnownNodes();
       break;
 
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
       iIncSends = AM::pGrid()->nKnownNodes();
       break;
 
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
       iIncSends = AM::PTNMAP::nPtnsPerNode();
       break;
 
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       iIncSends = AM::PTNMAP::nPtnsPerNode();
       break;
 
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
       iIncSends = AM::PTNMAP::nPtnsInGrid();
       break;
 
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       iIncSends = 1;
       break;
 
@@ -790,8 +790,8 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
-                                ePX eCrossTopo,
-                                ePZ eOpTopology,
+                                eYX eCrossTopo,
+                                eYO eOpTopology,
                                 i8 i_NextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -813,9 +813,9 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   i8 i_Op = pOpSpec_isOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   
-  ePZ eOpTopology;
+  eYO eOpTopology;
   
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pStageSpec,eOpTopology);
     
   Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec_isOp->vCrossTopo(eCrossTopo,eOpTopology,
@@ -851,7 +851,7 @@ void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
 /*----------------------------------------------------------------------------*/
 /* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
+void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -875,12 +875,12 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
   
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
-  ePZ eOpTopology;
+  eYO eOpTopology;
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pNextStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pNextStageSpec,eOpTopology);
 
   // SPECIAL CASE (to discuss with Alka)
-  if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
+  if (eCrossTopo == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz* szStgNm = szStageNm(i_NextStage);
@@ -933,9 +933,9 @@ void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
   
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  ePZ eOpTopology;
+  eYO eOpTopology;
 
-  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pOtherStageSpec,eOpTopology);
+  eYX eCrossTopo = StageSpec::eCrossTopo(pStageSpec,pOtherStageSpec,eOpTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);

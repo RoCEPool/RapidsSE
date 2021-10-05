@@ -4,15 +4,15 @@
 #pragma once
 
 #include "eXK.h"
-#include "ePZ.h"
+#include "eYO.h"
 
 namespace STORE
 {
   class Parcel : public Operand
   {
   private:
-    ePX  m_eCrossTopo;      // cross topology
-    ePZ  m_eOpTopology;     // op topology
+    eYX  m_eCrossTopo;      // cross topology
+    eYO  m_eOpTopology;     // op topology
 
     i8   m_iDstNode;        // destination node id
 
@@ -46,7 +46,7 @@ namespace STORE
     static void vPostRecv(void* aParcel);
 
     void vAddItem(Object* pItem);
-    ePX  eCrossTopo(void);
+    eYX  eCrossTopo(void);
     i8   iDstNode(void);
     i8   iDstOp(void);
 
@@ -56,9 +56,9 @@ namespace STORE
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-    void vLabel(ePX eCrossTopo, ePZ eOpTopology, i8  iPipelineJobId);
+    void vLabel(eYX eCrossTopo, eYO eOpTopology, i8  iPipelineJobId);
     i8   nItems(void);
-    ePZ  eOpTopology(void);
+    eYO  eOpTopology(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
     i8   iPipelineJobId(void);
@@ -71,8 +71,8 @@ namespace STORE
 
     void vSendOverSocket(Op* pSrcOp);
 
-    void vAppraise(Op* pSrcOp, PtnId& tDstPtn, ePX& eCrossTopo, Stage*& pNextStage);
-    void vSendCross(Op* pSrcOp, PtnId tDstPtn, ePX eCrossTopo, Stage* pNextStage);
+    void vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopo, Stage*& pNextStage);
+    void vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopo, Stage* pNextStage);
     void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
     void vSendToPartition(Op* pSrcOp, PtnId tDstPtn);
 

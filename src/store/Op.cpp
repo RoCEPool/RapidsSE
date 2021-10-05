@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "PtnMap.hpp"
 #include "Node.hpp"
@@ -425,7 +425,7 @@ bool Op::bAppendRight(void)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-ePX Op::eCrossTopo(void)
+eYX Op::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1163,7 +1163,7 @@ TagSet* Op::pOpTags(void)
 /*----------------------------------------------------------------------------*/
 /* get op topology                                                            */
 /*----------------------------------------------------------------------------*/
-ePZ Op::eOpTopology(void)
+eYO Op::eOpTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
