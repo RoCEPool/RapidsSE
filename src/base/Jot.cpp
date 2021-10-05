@@ -78,10 +78,10 @@ void BASE::vJot1(char cFlag, Stz* szFormat, ...)
     StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,szFormat);
 
   if (! _g_sPhrase)
-    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+    vTrace("%s\n"_Stz,caBuff);
   else
   if (szFormat->bContains((Stz*)_g_sPhrase))
-    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+    vTrace("%s\n"_Stz,caBuff);
 
   if ('>' == cFlag)
      _g_nDepth++;
@@ -144,48 +144,14 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
   }
   
   if (! _g_sPhrase)
-    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+    vTrace("%s\n"_Stz,caBuff);
   else
   if (szFun->bContains((Stz*)_g_sPhrase))
-    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+    vTrace("%s\n"_Stz,caBuff);
 
   if ('>' == cFlag)
      _g_nDepth++;
 }
-/*----------------------------------------------------------------------------*/
-//void BASE::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
-//{
-//  if (! _g_bJotting)
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
-//                  _g_sArea,
-//                  _g_sDivision,
-//                  _g_iDivision,
-//                  _g_iSection,
-//                  _g_iLine++,
-//                  _g_nDepth,
-//                  cFlag
-//                  );
-//
-//  if (_g_nDepth) {
-//    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
-//  }
-//
-//  AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz,szFun);
-//  if ('>' == cFlag || '<' == cFlag)
-//    AM::vWriteTrace(YA_SYS_TRACE,"()"_Stz,szFun);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  va_start(xVarArgs,aFormat);
-//  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
-//  va_end(xVarArgs);
-//
-//  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
@@ -204,7 +170,7 @@ i8 BASE::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
   
   _g_iSection++;
   
-//  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+//  vTrace("\n%s\n"_Stz,
 //    "- - - - - - - - - - - - - - - - - - - - "
 //    "- - - - - - - - - - - - - - - - - - - - "
 //    "- - - - - - - - - - - - - - - - - - - - "
@@ -239,7 +205,7 @@ i8 BASE::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
   _g_iSection++;
   _g_iSummary++;
   
-//  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+//  vTrace("\n%s\n"_Stz,
 //    "= = = = = = = = = = = = = = = = = = = = "
 //    "= = = = = = = = = = = = = = = = = = = = "
 //    "= = = = = = = = = = = = = = = = = = = = "
@@ -290,7 +256,7 @@ i8 BASE::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! _g_sPhrase) {
-    AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    vTrace("\n%s\n"_Stz,
       "////////////////////////////////////////"
       "////////////////////////////////////////"
       "////////////////////////////////////////"
@@ -378,7 +344,7 @@ void BASE::vJotDiv1(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "----------------------------------------"
     "----------------------------------------"
     "----------------------------------------"
@@ -393,7 +359,7 @@ void BASE::vJotDiv2(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "========================================"
     "========================================"
     "========================================"
@@ -408,7 +374,7 @@ void BASE::vJotDivES(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "= = = = = = = = = = = = = = = = = = = = "
     "= = = = = = = = = = = = = = = = = = = = "
     "= = = = = = = = = = = = = = = = = = = = "
@@ -423,7 +389,7 @@ void BASE::vJotDivMS(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "- - - - - - - - - - - - - - - - - - - - "
     "- - - - - - - - - - - - - - - - - - - - "
     "- - - - - - - - - - - - - - - - - - - - "
@@ -438,7 +404,7 @@ void BASE::vJotDivPS(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "+ + + + + + + + + + + + + + + + + + + + "
     "+ + + + + + + + + + + + + + + + + + + + "
     "+ + + + + + + + + + + + + + + + + + + + "
@@ -454,7 +420,7 @@ void BASE::vJotDivA(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "++++++++++++++++++++++++++++++++++++++++"
     "++++++++++++++++++++++++++++++++++++++++"
     "++++++++++++++++++++++++++++++++++++++++"
@@ -469,7 +435,7 @@ void BASE::vJotDivB(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "+ + + + + + + + + + + + + + + + + + + + "
     "+ + + + + + + + + + + + + + + + + + + + "
     "+ + + + + + + + + + + + + + + + + + + + "
@@ -484,7 +450,7 @@ void BASE::vJotDivC(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "########################################"
     "########################################"
     "########################################"
@@ -499,7 +465,7 @@ void BASE::vJotDivX(void)
   if (! _g_iDebug)
     return;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+  vTrace("\n%s\n"_Stz,
     "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
     "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
     "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
