@@ -27,6 +27,24 @@ namespace STORE
     i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
     //i8  m_nThreads;       // threads
+  
+  
+    // -- -- -- -- -- --
+
+    eYX m_eCrossTopo;
+
+    s32 m_sNextStageNm;  // next stage name
+    i8  m_i_NextStage;
+    i8  m_i_NextOp;
+
+    s32 m_sOtherStageNm; // next stage name
+    i8  m_i_OtherStage;  // other stage in the cross topology
+    i8  m_i_OtherOp;     // next Op in the other stage
+
+    eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
+                         //   if send op
+
+  
     
     // must be last
     Footer m_xFooter;
@@ -44,9 +62,16 @@ namespace STORE
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
+  
+    void vCrossTopo(eYX eCrossTopo,
+                    Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
+
     OpSpec* pFindOpSpec(Stz* szFindNm);
     bool bNodeTopo(void);
     OpSpec* pOpSpec(i8 i_Op);
+  
+    void vOtherStageOp(Stz* szOtherStageNm, i8 i_OtherStage,i8 i_OtherOp);
+
     PipelineSpec* pPipelineSpec(void);
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

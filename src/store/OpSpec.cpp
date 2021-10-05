@@ -238,7 +238,7 @@ Stz* OpSpec::szOtherStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* set the m_i_OtherStage                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherStageOp(Stz* szOtherStageNm,
+void OpSpec::vOtherStageOp(Stz* szOtherStageNm,
                             i8 i_OtherStage,
                             i8 i_OtherOp)
 {
