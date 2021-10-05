@@ -526,20 +526,19 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
   pCtx->selectExpr()->accept(this);
 
+  // Remove the statementMarker. We still have it in pStmt above.
+  ASSERT(m_pStatementStack->pTop() == pStmt);
+  m_pStatementStack->pPop();
+
   // Move any table subqueries encountered to the statement stack,
   // before the select marker that is currently on top of this stack.
   if (m_pTableSubqueryList->nItems() > 0) {
-    ASSERT(m_pStatementStack->pTop() == pStmt);
-    m_pStatementStack->pPop();
 
     while (m_pTableSubqueryList->nItems() > 0) {
       QueryNode *pTableSubquery = m_pTableSubqueryList->pPop();
       ASSERT(TableSubquery::bIsOfType(pTableSubquery));
       m_pStatementStack->vPush(pTableSubquery);
     }
-
-    // Put the select marker back at the top of the stack
-    m_pStatementStack->vPush(pStmt);
   }
 
   // Restore the original table subquery list. We will restore the
@@ -548,17 +547,12 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   delete m_pTableSubqueryList;
   m_pTableSubqueryList = pOldTableSubqueryList;
 
-
-  // Add a MainSubquery to the statement stack
-  QueryNode* pMainSubquery = MainSubquery::pCreate();
-  ASSERT(m_pStatementStack->pTop() == pStmt);
-  pMainSubquery->vAppendChild(m_pStatementStack->pPop());
-  m_pStatementStack->vPush(pMainSubquery);
-
   // Move any expr subqueries encountered to the statement stack,
-  // after the main subquery marker that is currently on top of this stack.
+  // before the main subquery marker that is currently on top of this stack.
+  // This is because an exprSubquery that appears in a SELECT list needs
+  // to be validated (and have a CteDef) before the MainSubquery is validated
+  // as the MainSubquery will look for this CteDef of the exprSubquery
   if (m_pExprSubqueryList->nItems() > 0) {
-    ASSERT(m_pStatementStack->pTop() == pMainSubquery);
 
     while (m_pExprSubqueryList->nItems() > 0) {
       QueryNode *pExprSubquery = m_pExprSubqueryList->pPop();
@@ -571,6 +565,13 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   ASSERT(m_pExprSubqueryList->nItems() == 0);
   delete m_pExprSubqueryList;
   m_pExprSubqueryList = pOldExprSubqueryList;
+
+
+  // Add a MainSubquery to the statement stack
+  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  pMainSubquery->vAppendChild(pStmt);
+  m_pStatementStack->vPush(pMainSubquery);
+
 
   if (pCtx->ORDER()) {
     ASSERT(!m_pOrderItems);
@@ -764,6 +765,20 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   delete m_pTableSubqueryList;
   m_pTableSubqueryList = pOldTableSubqueryList;
 
+  // Add any expr subqueries onto the statement stack. These need to go
+  // on before the MainSubquery because in the case of an ExprSubquery
+  // in a SELECT list we need to validate the subquery and create its
+  // CteDef before the MainSubquery is processed.
+  while (m_pExprSubqueryList->nItems() > 0) {
+    QueryNode* pExprSubquery = m_pExprSubqueryList->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+    m_pStatementStack->vPush(pExprSubquery);
+  }
+
+  ASSERT(m_pExprSubqueryList->nItems() == 0);
+  delete m_pExprSubqueryList;
+  m_pExprSubqueryList = pOldExprSubqueryList;
+
   // Now put the statement marker on the original statement stack
   m_pStatementStack->vPush(pSetExprSelectMarker);
 
@@ -837,24 +852,13 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   }
 
 
-  // Add a MainSubquery on top of the last thing on the statement stack
+  // Finally, add a MainSubquery on top of the last thing on the statement stack
   ASSERT(m_pStatementStack->nItems() >= 1);
   ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
 
   QueryNode* pMainSubquery = MainSubquery::pCreate();
   pMainSubquery->vAppendChild(m_pStatementStack->pPop());
   m_pStatementStack->vPush(pMainSubquery);
-
-  // Finally add any expr subqueries onto the statement stack
-  while (m_pExprSubqueryList->nItems() > 0) {
-    QueryNode* pExprSubquery = m_pExprSubqueryList->pPop();
-    ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
-    m_pStatementStack->vPush(pExprSubquery);
-  }
-
-  ASSERT(m_pExprSubqueryList->nItems() == 0);
-  delete m_pExprSubqueryList;
-  m_pExprSubqueryList = pOldExprSubqueryList;
 
   return nullptr;
 }

@@ -23,13 +23,35 @@ trackmemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Basic expression subquery examples
+//  Basic uncorrelated expression subquery examples
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Uncorrelated expression subqueries
+// Single expr subquery in WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+// Multiple expr subqueries in WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation
+WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM nation );
+
+// Single expr subquery in SELECT list
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
+FROM nation;
 
 
-// Correlated expression subqueries
+// Multiple expr subqueries in SELECT list
+
+
+// expr subquery in both SELECT list and WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
+FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic correlated expression subquery examples
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,8 +64,12 @@ success
 // Uncorrelated subquery in WHERE clause
 EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT MAX(n_nationkey)/2 FROM nation );
 
+// ---
+
 // Correlated subquery in WHERE clause
 EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+
+// ---
 
 // Uncorrelated subquery in SELECT list
 EXPLAIN SELECT
@@ -51,6 +77,8 @@ EXPLAIN SELECT
   ( SELECT MAX(n_nationkey)/2 FROM nation )
 FROM
   nation n1;
+
+// ---
 
 // Correlated subquery in SELECT list
 EXPLAIN SELECT
@@ -67,8 +95,12 @@ FROM
 // Uncorrelated subquery in WHERE clause
 SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 );
 
+// ---
+
 // Correlated subquery in WHERE clause
 SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
+
+// ---
 
 // Uncorrelated subquery in SELECT list
 SELECT
@@ -76,6 +108,8 @@ SELECT
   n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 )
 FROM
   nation n1;
+
+// ---
 
 // Correlated subquery in SELECT list
 SELECT
@@ -95,8 +129,12 @@ FROM
 // Uncorrelated subquery in WHERE clause
 SELECT * FROM nation WHERE EXISTS ( SELECT * FROM region );
 
+// ---
+
 // Correlated subquery in WHERE clause
 SELECT * FROM nation n1 WHERE EXISTS ( SELECT * FROM region WHERE n1.n_name != r_name  );
+
+// ---
 
 // Uncorrelated subquery in SELECT list
 SELECT
@@ -104,6 +142,8 @@ SELECT
   EXISTS ( SELECT * FROM nation )
 FROM
   nation n1;
+
+// ---
 
 // Correlated subquery in SELECT list
 SELECT

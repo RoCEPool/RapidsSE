@@ -145,53 +145,24 @@ QueryNode* SubqueryRefExpr::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 
   Stz* szAlias = szTableAlias(pNode);
 
-  // Get the path of the current node in the graph
-  s2K sNodePath;
-  i8 iNodeDepth;
+  // Previously we tried to find the path of the current node (pNode) in the graph,
+  // then find the enclosing MainSubquery and look for the ExprSubquery among its
+  // siblings. Thie approach doesn't work when pNode is not actually in the graph
+  // because it is a copy of a node that is in the graph (e.g. from calling soemthing
+  // like PlanObject::pColumnExprs()).
+  //
+  // Instead, expression Subquery names are unique, so we can search the graph children
+  // for a node that matches this. We don't need to search properties, so this should be
+  // fairly quick.
 
-  b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sNodePath, iNodeDepth, true);
-  ASSERT(bFound);
-
-  // First find the main subquery that this SubqueryRefExpr is a child of.
-  // If we walk the graph bottom-up along the path obtained above
-  // then it will be the first main subquery that we come across.
-  QueryNode* pMainSubquery = nullptr;
-  s2K sMainSubqueryPath;
-
-  // Lambda to call when we walk the graph upwards from the current node back to the root.
-  auto fVisitor =
-      [&pMainSubquery, &sMainSubqueryPath](PlanNode* pItem, s2K& sCurPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg) -> GraphNav::eWalkCtrl {
-
-        if (!MainSubquery::bIsOfType(pItem)) {
-          return GraphNav::WALK_CONTINUE;
-        }
-
-        pMainSubquery = _pQueryNode(pItem);
-        sMainSubqueryPath.vCopy(sCurPath.szStz());
-        return GraphNav::WALK_ABORT;
-      };
-
-  // Invoke the walk and check the results.
-  b1 bWalkResult = GraphNav::bWalkPath(pRootNode, sNodePath, nullptr, fVisitor, nullptr);
-
-  ASSERT(!bWalkResult); // we should have aborted the walk when we found the node
-  ASSERT(pMainSubquery);
-  ASSERT(sMainSubqueryPath.nLength() > 0);
-
-  // The ExprSubquery that we are looking for should be a sibling of the MainSubquery node
-  // that we just found. So we need to get the parent of the MainSubquery and search
-  // it's children.
-
-  QueryNode* pParent = _pQueryNode(GraphNav::pGetParentOfPath(sMainSubqueryPath, pRootNode));
-  ASSERT(pParent);
-  ASSERT(PlanObject::bIsOfType(pParent));
-
-  auto fCondition = [szAlias](PlanNode* pNode) -> b1 {
-    b1 bMatch = (ExprSubquery::bIsOfType(pNode) && ExprSubquery::szTableAlias(_pQueryNode(pNode))->bSame(szAlias));
-    return bMatch;
+  auto fSearch = [szAlias](PlanNode* pItem, void* pvArg) -> b1 {
+    b1 bFound = (ExprSubquery::bIsOfType(pItem) && ExprSubquery::szTableAlias(_pQueryNode(pItem))->bSame(szAlias));
+    return bFound;
   };
 
-  QueryNode* pExprSubqueryNode = _pQueryNode(GraphNav::pFindChild(fCondition, pParent));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  QueryNode* pExprSubqueryNode = _pQueryNode(GraphNav::pGlobalSearch(pPlanRoot, false, true, fSearch, nullptr));
+
   ASSERT(pExprSubqueryNode);
   ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
   ASSERT(ExprSubquery::szTableAlias(pExprSubqueryNode)->bSame(szAlias));
