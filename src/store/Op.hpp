@@ -3,8 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "ePX.h"
-#include "ePZ.h"
+#include "eYX.h"
+#include "eYO.h"
 #include "eXK.h"
 #include "eZK.h"
 
@@ -104,7 +104,7 @@ namespace STORE
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    ePX  eCrossTopo(void);
+    eYX  eCrossTopo(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
     void vDotPrint(Stz* szText);
@@ -137,7 +137,7 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
-    ePZ  eOpTopology(void);
+    eYO  eOpTopology(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true

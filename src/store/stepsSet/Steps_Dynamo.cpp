@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Grid.hpp"
 #include "Op.hpp"

@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Marker.hpp"
 
@@ -186,7 +186,7 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
+Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
   /*
@@ -200,17 +200,17 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
 
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
       pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_DstOp);
       break;
 
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_NODES_TO_ALL_NODES:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_NODES_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_DstOp);
       break;
@@ -219,24 +219,24 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
       pPtnStream = pGet(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
       
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
       pOp = pPtnStream->pGet(i_DstOp);
       break;
@@ -245,7 +245,7 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     // - - - - -
       
-    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
       ASSERT(pPtnStream->tPtnId() == tDstPtnId);
       pOp = pPtnStream->pGet(i_DstOp);
@@ -270,42 +270,42 @@ Op* Stage::pPipeOutOp(ePZ eOpTopology, ePX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     // - - - - -
     // by nodeStream
 
-    case PX_ALL_NODES_TO_ALL_NODES:
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      RASSERT(PZ_NODE_STREAM == eOpTopology);
+    case YX_ALL_NODES_TO_ALL_NODES:
+    case YX_ALL_NODES_TO_ORIGIN:
+    case YX_ALL_PARTITIONS_TO_ALL_NODES:
+    case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_ORIGIN_TO_ALL_NODES:
+    case YX_ORIGIN_TO_ORIGIN:
+    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
+      RASSERT(YO_NODE_STREAM == eOpTopology);
       pStream_one = this->pGetNodeStream(i_ThisNode);
       break;
       
     // - - - - -
     // by partitionStream
       
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-      RASSERT(PZ_PARTITION_STREAM == eOpTopology);
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
+      RASSERT(YO_PARTITION_STREAM == eOpTopology);
       pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
       break;
         
     // - - - - -
     // by stageStream
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-      RASSERT(PZ_STAGE_STREAM == eOpTopology);
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
+      RASSERT(YO_STAGE_STREAM == eOpTopology);
       pStream_one = pGet(tDstPtnId.iAsI8());
       break;
       
     // - - - - -
     // by stageStream0
       
-    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      RASSERT(PZ_STAGE_STREAM_0 == eOpTopology);
+    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+      RASSERT(YO_STAGE_STREAM_0 == eOpTopology);
       pStream_one = pGet(0);
       break;
       
@@ -440,7 +440,7 @@ void Stage::vCreateStreams(void)
             
     //                      -- node topologies --                             //
       
-    case PO_ALL_NODES: // create a stream for all nodes
+    case YG_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
@@ -451,7 +451,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_ORIGIN: // create a stream for origin node only
+    case YG_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
@@ -461,14 +461,14 @@ void Stage::vCreateStreams(void)
       vAppend(pStream);
       break;
         
-    case PO_SPECIFIC_NODE: // create a stream for a specific node only
+    case YG_SPECIFIC_NODE: // create a stream for a specific node only
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
         
     //                    -- partition topologies --                          //
 
-    case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
+    case YG_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
 
       for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
@@ -481,7 +481,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
+    case YG_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
 
       for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
@@ -496,7 +496,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_SPECIFIC_PARTITION: // create a stream for a specific partition
+    case YG_SPECIFIC_PARTITION: // create a stream for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnId = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);

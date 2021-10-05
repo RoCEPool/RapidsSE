@@ -81,13 +81,12 @@ enum eEG // enum groups
   EG_PA,
   EG_PF,
   EG_PK,
-  EG_PO,
+  EG_YG,
   EG_PP,
   EG_PT,
-  EG_PX,
+  EG_YX,
   EG_PY,
 
-  EG_QA,
   EG_QK,
 
   EG_RA,
