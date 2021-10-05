@@ -1038,7 +1038,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vTrace("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
   

@@ -3487,7 +3487,7 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
   i8 nTokens = pInpTknVec->nTokens();
   
   if (pInpTknVec->nTokens() == 1) {
-    vInfo("\n"_Stz);
+    vTrace("\n"_Stz);
     return true;
   }
 
@@ -3502,22 +3502,22 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 
       pPrompt->vDivision(szDivisionNm);
       
-      vInfo("\n"_Stz);
-      vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+      vTrace("\n"_Stz);
+      vTrace("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
             "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
             "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/"
             "\n"_Stz);
-      vInfo("§%s @line %lld Division %lld) "_Stz,
+      vTrace("§%s @line %lld Division %lld) "_Stz,
             pInput->szPath(),
             pInpTknVec->pGet(2)->iLineNo(),
             pPrompt->iNextDivisionNo()
             );
       
       for (i8 i_Tkn = 2; i_Tkn < nTokens; i_Tkn++)
-        vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+        vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
 
-      vInfo(":\n"_Stz);
-      vInfo("\n"_Stz);
+      vTrace(":\n"_Stz);
+      vTrace("\n"_Stz);
       
       return true;
     }
@@ -3528,12 +3528,12 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 
       pPrompt->vSection(szSectionNm);
       
-      vInfo("\n"_Stz);
-      vInfo("-- - -- - -- - -- - -- - -- - -- - -- - "
+      vTrace("\n"_Stz);
+      vTrace("-- - -- - -- - -- - -- - -- - -- - -- - "
             "-- - -- - -- - -- - -- - -- - -- - -- - "
             "-- - -- - -- - -- - -- - -- - -- - -- - "
             "--\n"_Stz);
-      vInfo("§%s @line %lld Section %lld.%lld) "_Stz,
+      vTrace("§%s @line %lld Section %lld.%lld) "_Stz,
             pInput->szPath(),
             pInpTknVec->pGet(2)->iLineNo(),
             pPrompt->iDivisionNo(),
@@ -3541,10 +3541,10 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
             );
       
       for (i8 i_Tkn = 2; i_Tkn < nTokens; i_Tkn++)
-        vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+        vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
 
-      vInfo(":\n"_Stz);
-      vInfo("\n"_Stz);
+      vTrace(":\n"_Stz);
+      vTrace("\n"_Stz);
       
       return true;
     }
@@ -3554,8 +3554,8 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
-    vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
-  vInfo("\n"_Stz);
+    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+  vTrace("\n"_Stz);
 
   return true;
 }
@@ -3571,13 +3571,13 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 //
 //  //
 //  if (pInpTknVec->nTokens() == 1) {
-//    vInfo("\n"_Stz);
+//    vTrace("\n"_Stz);
 //    return true;
 //
 //  }
 //
 //  if (pInpTknVec->nTokens() == 2) {
-//    vInfo("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
+//    vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
 //    return true;
 //  }
 //
@@ -3586,22 +3586,22 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 //    Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
 //    pPrompt->vSection(szSectionNm);
 //
-//    vInfo("\n"_Stz);
-//    vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+//    vTrace("\n"_Stz);
+//    vTrace("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/\n"_Stz);
-//    vInfo("§%s @line %lld Section %lld) %s : \n"_Stz,
+//    vTrace("§%s @line %lld Section %lld) %s : \n"_Stz,
 //          pInput->szPath(),
 //          pInpTknVec->pGet(2)->iLineNo(),
 //          pPrompt->iNextSectionNo(),
 //          pInpTknVec->pGet(2)->szChars()
 //          );
-//    vInfo("\n"_Stz);
+//    vTrace("\n"_Stz);
 //    return true;
 //  }
 //
-//  vInfo("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
+//  vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
 //  return true;
 //}
 
@@ -5920,11 +5920,11 @@ bool PROMPT::bPrompt_version(SePrompt* pPrompt)
   
   if (AM::bMetadata()) {
     vTrace("\nmetadata: (version VARCHAR)\n\n"_Stz);
-    vInfo("row: ('%s')\n"_Stz, AM::szVersionString());
+    vTrace("row: ('%s')\n"_Stz, AM::szVersionString());
     vTrace("\nsuccess: 1 rows affected\n"_Stz);
   }
   else
-    vInfo("%s\n"_Stz, AM::szVersionString());
+    vTrace("%s\n"_Stz, AM::szVersionString());
   
   return true;
 }

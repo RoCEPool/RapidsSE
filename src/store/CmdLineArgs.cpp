@@ -372,7 +372,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       i_HeartbeatNode++;
 
       if (i_HeartbeatNode > C_MAX_NODES) {
-        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+        vTrace("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
         return false;
       }
       continue;
@@ -427,11 +427,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_nLvlLevels < C_MIN_LVL_LEVELS) {
-        vWarn("Minimum number of levels allowed is %lld\n"_Stz,C_MIN_LVL_LEVELS);
+        vTrace("Minimum number of levels allowed is %lld\n"_Stz,C_MIN_LVL_LEVELS);
         return false;
       }
       if (m_xSysArgs.m_nLvlLevels > C_MAX_LVL_LEVELS) {
-        vWarn("Maximum number of levels allowed is %lld\n"_Stz,C_MAX_LVL_LEVELS);
+        vTrace("Maximum number of levels allowed is %lld\n"_Stz,C_MAX_LVL_LEVELS);
         return false;
       }
       continue;
@@ -441,11 +441,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--lvlRatio"_Stz)) {
       m_xSysArgs.m_iLvlRatio = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_iLvlRatio < C_MIN_LVL_RATIO) {
-        vWarn("Minimum ratio of levels allowed is %lld\n"_Stz,C_MIN_LVL_RATIO);
+        vTrace("Minimum ratio of levels allowed is %lld\n"_Stz,C_MIN_LVL_RATIO);
         return false;
       }
       if (m_xSysArgs.m_iLvlRatio > C_MAX_LVL_RATIO) {
-        vWarn("Maximum ratio of levels allowed is %lld\n"_Stz,C_MAX_LVL_RATIO);
+        vTrace("Maximum ratio of levels allowed is %lld\n"_Stz,C_MAX_LVL_RATIO);
         return false;
       }
       continue;
@@ -475,7 +475,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 #ifdef WITH_MUNGED_SEN
       continue;
 #else
-      vWarn("--munged specified but SE not compiled WITH_MUNGED_SEN\n"_Stz);
+      vTrace("--munged specified but SE not compiled WITH_MUNGED_SEN\n"_Stz);
       return false;
 #endif
     }
@@ -491,14 +491,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
-        vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vTrace("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
       if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
-        vWarn("Maximum number of nodes defineable nodes is %lld\n"_Stz,
+        vTrace("Maximum number of nodes defineable nodes is %lld\n"_Stz,
               C_MAX_NODES);
         return false;
       }
@@ -539,19 +539,19 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
 
       if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
-        vWarn("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vTrace("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
 
       m_xSysArgs.m_nPtnsPerNode = argv[i_Arg].iToI8();
       if (m_xSysArgs.m_nPtnsPerNode <= 0 ||
           m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE ) {
-        vWarn("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
+        vTrace("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
               m_xSysArgs.m_nPtnsPerNode, C_MAX_PTNSPERNODE);
         return false;
       }
       if (m_xSysArgs.m_nPtnsPerNode > C_MAX_PTNSPERNODE) {
-        vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
+        vTrace("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_MAX_PTNSPERNODE);
         return false;
       }
@@ -575,17 +575,17 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--prompt"_Stz)) {
       
       if (m_xSysArgs.m_bStop) {
-        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
       if (m_xSysArgs.m_bStatus) {
-        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
       if (m_xSysArgs.m_bSethScript) {
-        vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
@@ -638,15 +638,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
-        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bStatus) {
-        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bPrompt) {
-        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       m_xSysArgs.m_bSethScript = true;
@@ -671,16 +671,16 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       
       bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_xSysArgs.m_iRegionSize);
       if (!bResult) {
-        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
-        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
-        vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
+        vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
               C_MAX_SHM_PERCENT,
               sMag.azChar());
         return false;
@@ -693,7 +693,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       MagLib::vByteMag(m_xSysArgs.m_iRegionSize, sSize);
       
       if (m_xSysArgs.m_iRegionSize < C_MIN_SHM_REGION) {
-        vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
+        vTrace("Insufficient region size: %s. At least %s is required\n"_Stz,
               sSize.szStz(),
               sMinSize.szStz());
         return false;
@@ -706,11 +706,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--start"_Stz)) {
       
       if (m_xSysArgs.m_bStop) {
-        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bStatus) {
-        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
@@ -721,15 +721,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
       if (m_xSysArgs.m_bStop) {
-        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bStart) {
-        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bPrompt) {
-        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
@@ -741,15 +741,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--stop"_Stz)) {
       
       if (m_xSysArgs.m_bStart) {
-        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bStatus) {
-        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       if (m_xSysArgs.m_bPrompt) {
-        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
@@ -767,7 +767,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--threads"_Stz)) {
       m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_nThreads > C_MAX_THREADS) {
-        vWarn("Maximum number of thread allowed is %lld\n"_Stz,
+        vTrace("Maximum number of thread allowed is %lld\n"_Stz,
                C_MAX_THREADS);
         return false;
       }
@@ -850,7 +850,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
+    vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
   }
 
@@ -876,7 +876,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // there should be at aleast 2 nodes ina cluster
     // if (m_xSysArgs.m_nBootNodes < 2) {
-    //   vWarn("Minimum two nodes should be there in a cluster\n"_Stz);
+    //   vTrace("Minimum two nodes should be there in a cluster\n"_Stz);
     //   return false;
     // }
     
@@ -892,7 +892,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
 // RJH: moved this into Engine::vCheckNodes() 17 Mar 2020
 //    if ( ! bFound ) {
-//      vWarn("Add argument --name with name of this node from the --node definitions\n"_Stz);
+//      vTrace("Add argument --name with name of this node from the --node definitions\n"_Stz);
 //      return false;
 //    }
     
@@ -903,7 +903,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // m_xSysArgs.m_xNodeDefn[0].m_sIPAddress = ""_Stz;
     // m_xSysArgs.m_xNodeDefn[0].m_iPortNo =  -1;
 //    if ( m_xSysArgs.m_bStart ) {
-//      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
+//      vTrace("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
 //      return false;
 //    }
   }
@@ -914,7 +914,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   }
   else {
     if (m_xSysArgs.m_bStart && m_xSysArgs.m_nDefinedNodes > 1) {
-      vWarn("--region not allowed with --start in a cluster\n"_Stz);
+      vTrace("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
   }
@@ -1063,23 +1063,23 @@ void CmdLineArgs::vPrintHelp(void)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
-  vInfo("\n"_Stz);
+  vTrace("\n"_Stz);
   
-  vInfo("Help:\n"_Stz);
-  vInfo("--command <cmd>   (run given command)\n"_Stz);
-  vInfo("--help            (print this list)\n"_Stz);
-  vInfo("--list            (print list of available systems)\n"_Stz);
-  vInfo("--start           (start system)\n"_Stz);
-  vInfo("--status          (print status of system)\n"_Stz);
-  vInfo("--stop            (stop system)\n"_Stz);
+  vTrace("Help:\n"_Stz);
+  vTrace("--command <cmd>   (run given command)\n"_Stz);
+  vTrace("--help            (print this list)\n"_Stz);
+  vTrace("--list            (print list of available systems)\n"_Stz);
+  vTrace("--start           (start system)\n"_Stz);
+  vTrace("--status          (print status of system)\n"_Stz);
+  vTrace("--stop            (stop system)\n"_Stz);
   
-  vInfo("\n"_Stz);
-  //vInfo("--partitionsPerNode <i>  (number of partitions per node)\n"_Stz);
-  vInfo("--node <name> IP port (node information in the cluster)\n"_Stz);
-  vInfo("--regionPrefix <name>    (prefix of shm region name)\n"_Stz);
-  vInfo("--size <i>               (size in bytes of shm region)\n"_Stz);
+  vTrace("\n"_Stz);
+  //vTrace("--partitionsPerNode <i>  (number of partitions per node)\n"_Stz);
+  vTrace("--node <name> IP port (node information in the cluster)\n"_Stz);
+  vTrace("--regionPrefix <name>    (prefix of shm region name)\n"_Stz);
+  vTrace("--size <i>               (size in bytes of shm region)\n"_Stz);
 
-  vInfo("\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

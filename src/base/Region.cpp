@@ -108,7 +108,7 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
   // verbose
   MagLib::vByteMag(iRegionSize, sSizeMag);
   if (bVerbose)
-    vInfo("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
+    vTrace("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
            sRegionName.azChar(),
            sSizeMag.azChar(),
            iRegionSize);
@@ -202,7 +202,7 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   bool bResult;
   
   //if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
-  //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.azChar());
+  //  vTrace("Region::pOpen %s\n"_Stz,sRegionName.azChar());
   
   // open shm region
   bResult = ShmLib::bOpenExisting(iFD,sRegionName,oSysCall);

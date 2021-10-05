@@ -43,7 +43,7 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
   
   if (-1 == iResult || 127 == iResult) {
     oSysCall.vError(errno);
-    vWarn("Shell::iExecute : system() error; errno=%lld"_Stz,errno);
+    vTrace("Shell::iExecute : system() error; errno=%lld"_Stz,errno);
     return iResult;
   }
   

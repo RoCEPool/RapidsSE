@@ -54,7 +54,7 @@ void SP_StageSpec::vStageSpec(StageSpec* pStageSpec)
   vCatf("[%lld] StageSpec %s : %s N%lld P%lld\n"_Stz
         ,pStageSpec->i_StageSpec()
         ,pStageSpec->szStageNm()
-        ,aPO[pStageSpec->eTopology()]
+        ,aPO[pStageSpec->eStageTopology()]
         ,pStageSpec->iSpecificNode()
         ,(i8)pStageSpec->tSpecificPtnNo().iAsI8()
         );

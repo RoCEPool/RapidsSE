@@ -497,31 +497,31 @@ void Heaps::vInit(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     
-    //    vInfo("Created persistent tiny heap %p: %lldB objects\n"_Stz,
+    //    vTrace("Created persistent tiny heap %p: %lldB objects\n"_Stz,
     //          Persistent.m_pTiny, C_SIZE_TINY_OBJECT);
-    //    vInfo("Created persistent small heap %p: %lldB objects\n"_Stz,
+    //    vTrace("Created persistent small heap %p: %lldB objects\n"_Stz,
     //          Persistent.m_pSmall, C_SIZE_SMALL_OBJECT);
-    //    vInfo("Created persistent medium heap %p: %lldB objects\n"_Stz,
+    //    vTrace("Created persistent medium heap %p: %lldB objects\n"_Stz,
     //          Persistent.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    //    vInfo("Created persistent large heap %p: %lldB objects\n"_Stz,
+    //    vTrace("Created persistent large heap %p: %lldB objects\n"_Stz,
     //          Persistent.m_pLarge, C_SIZE_LARGE_OBJECT);
     
-    vInfo("Created transient tiny heap %p: %lldB objects\n"_Stz,
+    vTrace("Created transient tiny heap %p: %lldB objects\n"_Stz,
           Transient.m_pTiny, C_SIZE_TINY_OBJECT);
-    vInfo("Created transient small heap %p: %lldB objects\n"_Stz,
+    vTrace("Created transient small heap %p: %lldB objects\n"_Stz,
           Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
-    vInfo("Created transient medium heap %p: %lldB objects\n"_Stz,
+    vTrace("Created transient medium heap %p: %lldB objects\n"_Stz,
           Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created transient large heap %p: %lldB objects\n"_Stz,
+    vTrace("Created transient large heap %p: %lldB objects\n"_Stz,
           Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
     
-    vInfo("Created virtual tiny heap %p: %lldB objects\n"_Stz,
+    vTrace("Created virtual tiny heap %p: %lldB objects\n"_Stz,
           Virtual.m_pTiny, C_SIZE_TINY_OBJECT);
-    vInfo("Created virtual small heap %p: %lldB objects\n"_Stz,
+    vTrace("Created virtual small heap %p: %lldB objects\n"_Stz,
           Virtual.m_pSmall, C_SIZE_SMALL_OBJECT);
-    vInfo("Created virtual medium heap %p: %lldB objects\n"_Stz,
+    vTrace("Created virtual medium heap %p: %lldB objects\n"_Stz,
           Virtual.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created virtual large heap %p: %lldB objects\n"_Stz,
+    vTrace("Created virtual large heap %p: %lldB objects\n"_Stz,
           Virtual.m_pLarge, C_SIZE_LARGE_OBJECT);
   }
     

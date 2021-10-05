@@ -24,7 +24,6 @@
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
-#include "eYA.h"
 
 
 class PtnId;
@@ -703,9 +702,9 @@ namespace OBLIQUE
     static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,
                              DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
     static void vWriteLog(void);
-    static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
-    static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);
-    static void vWriteTrace(eYA eSysAct, Stz* szFormat, ...);
+    static void vWriteTrace_vargs(Stz* szFormat, va_list xArgs);
+    static void vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs);
+    static void vWriteTrace(Stz* szFormat, ...);
 
   
   
