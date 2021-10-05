@@ -35,8 +35,9 @@ namespace STORE
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
-    Stream* pGetPartitionStream(i8 i_Ptn);
-    Stream* pGetNodeStream(i8 i_Node);
+    Stream* pGetStream_byNodeNo(i8 i_Node);
+    Stream* pGetStream_byPtnNo(i8 i_Ptn);
+    Stream* pGetStream_byStreamNo(i8 i_Stream);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
 

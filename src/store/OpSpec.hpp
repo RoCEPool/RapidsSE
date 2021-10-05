@@ -61,6 +61,7 @@ namespace STORE
     i8   iNextOp(void);
     i8   iNextStage(void);
     Stz* szNextStageNm(void);
+    void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     eYO  eOpTopology(void);

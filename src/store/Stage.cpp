@@ -101,9 +101,31 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
 
 
 /*----------------------------------------------------------------------------*/
+/* get stream for given node                                                  */
+/*----------------------------------------------------------------------------*/
+Stream* Stage::pGetStream_byNodeNo(i8 i_Node)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream   = nullptr;
+  StageSpec* pStageSpec = nullptr;
+  
+  for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
+    pStream  = pGet(iNdeVec);
+    pStageSpec = pStream->pStageSpec();
+    
+    if (pStageSpec->bNodeTopo() &&
+        pStream->i_Node() == i_Node)
+      return pStream;
+  }
+  
+  return pStream;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
-Stream* Stage::pGetPartitionStream(i8 i_Ptn)
+Stream* Stage::pGetStream_byPtnNo(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -123,24 +145,14 @@ Stream* Stage::pGetPartitionStream(i8 i_Ptn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stream for given node                                                  */
+/* get stream by streamNo                                                     */
 /*----------------------------------------------------------------------------*/
-Stream* Stage::pGetNodeStream(i8 i_Node)
+Stream* Stage::pGetStream_byStreamNo(i8 i_Stream)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Stream* pStream   = nullptr;
-  StageSpec* pStageSpec = nullptr;
-  
-  for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
-    pStream  = pGet(iNdeVec);
-    pStageSpec = pStream->pStageSpec();
-    
-    if (pStageSpec->bNodeTopo() &&
-        pStream->i_Node() == i_Node)
-      return pStream;
-  }
-  
+  Stream* pStream = pGet(i_Stream);
+
   return pStream;
 }
 
@@ -278,7 +290,7 @@ Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     case YX_ORIGIN_TO_ORIGIN:
     case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       RASSERT(YO_NODE_STREAM == eOpTopology);
-      pStream_one = this->pGetNodeStream(i_ThisNode);
+      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
       break;
       
     // - - - - -
@@ -290,7 +302,7 @@ Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case YX_ORIGIN_TO_SPECIFIC_PARTITION:
       RASSERT(YO_PARTITION_STREAM == eOpTopology);
-      pStream_one = pGetPartitionStream(tDstPtnId.iAsI8());
+      pStream_one = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
         
     // - - - - -
@@ -298,7 +310,7 @@ Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     case YX_ORIGIN_TO_ALL_PARTITIONS:
       RASSERT(YO_STAGE_STREAM == eOpTopology);
-      pStream_one = pGet(tDstPtnId.iAsI8());
+      pStream_one = pGetStream_byStreamNo(tDstPtnId.iAsI8());
       break;
       
     // - - - - -
@@ -306,11 +318,14 @@ Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_Dst
       
     case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       RASSERT(YO_STAGE_STREAM_0 == eOpTopology);
-      pStream_one = pGet(0);
+      pStream_one = pGetStream_byStreamNo(0);
       break;
       
     default:
-      RASSERT(0);
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eCrossTopo : %lld\n"_Stz,(i8)eCrossTopo);
+      
+//      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
   }
 
   pOp_one = pStream_one->pGet(i_DstOp);
