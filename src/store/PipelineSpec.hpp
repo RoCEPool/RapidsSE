@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LifeGuard_t.hpp"
+#include "ePZ.h"
 
 
 namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
@@ -87,7 +88,10 @@ namespace STORE
     void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
     void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
 
-    void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage);
+    void vMorphToSend(OpSpec* pOpSpec,
+                      ePX eCrossTopo,
+                      ePZ eOpTopology,
+                      i8 i_NextStage);
 
     void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
     void vNameIsStage(StageSpec* pStageSpec,

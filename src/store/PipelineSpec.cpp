@@ -789,14 +789,17 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
+void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
+                                ePX eCrossTopo,
+                                ePZ eOpTopology,
+                                i8 i_NextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   pOpSpec->vOpNm("send"_Stz);
   
   Stz* szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vCrossTopo(eCrossTopo,PZ_NONE,
+  pOpSpec->vCrossTopo(eCrossTopo,eOpTopology,
                       szStgNm,i_NextStage,0);
 }
 
@@ -863,8 +866,9 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStage,
-                             StageSpec* pNextStageSpec)
+void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
+                                   OpSpec*    pOpSpec_isStage,
+                                   StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   i8 i_Op = pOpSpec_isStage->iOpSpec();
@@ -880,7 +884,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz* szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vCrossTopo(eCrossTopo,PZ_NONE,
+    pPrevOpSpec->vCrossTopo(eCrossTopo,eOpTopology,
                             szStgNm,i_NextStage,0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
@@ -895,7 +899,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // change the op to a send
-  vMorphToSend(pOpSpec_isStage,eCrossTopo,i_NextStage);
+  vMorphToSend(pOpSpec_isStage,eCrossTopo,eOpTopology,i_NextStage);
   
   // send op has <sendkind> argument
   pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec_isStage->eSendKind(),TN_INTEGER);

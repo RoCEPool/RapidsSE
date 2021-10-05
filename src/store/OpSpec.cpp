@@ -138,7 +138,8 @@ void OpSpec::vCrossTopo(ePX eCrossTopo, ePZ eOpTopology,
   RASSERT(szNextStageNm);
   
   m_eCrossTopo   = eCrossTopo;
-  
+  m_eOpTopology  = eOpTopology;
+
   m_sNextStageNm = szNextStageNm;
   m_i_NextStage  = i_NextStage;
   m_i_NextOp     = i_NextOp;
