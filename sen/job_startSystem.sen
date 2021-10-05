@@ -19,6 +19,7 @@
   start::defProc_Drop
   start::defProc_Scan
   start::defProc_Load
+  start::defProc_Dload
   start::defProc_Export
   start::defProc_Api
   start::defProc_File

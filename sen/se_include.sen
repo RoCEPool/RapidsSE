@@ -117,7 +117,8 @@ cmd::fillOut_allCmds
         "se_procedures.sen"       include //
         
         "se_proceduresB.sen"      include //
-        
+
+        "pp_dload.sen"            include //
         "pp_load.sen"             include //
         "pp_export.sen"           include //
 
