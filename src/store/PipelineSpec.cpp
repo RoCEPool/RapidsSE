@@ -67,7 +67,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile pipeline                                                           */
+/* pipeline compile                                                           */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bCompile(void)
 {
@@ -263,7 +263,8 @@ bool PipelineSpec::bCollectStage(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  StageSpec* p_StageSpec = new StageSpec(pTkn()->szChars(),this);
+  Stz* szStageNm = pTkn()->szChars();
+  StageSpec* p_StageSpec = new StageSpec(szStageNm,this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
@@ -382,12 +383,6 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
     vTokenAccept();
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pTkn()->bSame("RIGHT"_Stz)) {
-    pOpSpec->vAppendRight(true);
-    vTokenAccept();
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

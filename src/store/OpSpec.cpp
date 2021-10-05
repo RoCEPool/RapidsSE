@@ -44,7 +44,6 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   m_i_OtherStage  = C_UNKNOWN;
   m_i_OtherOp     = C_UNKNOWN;
 
-  m_bAppendRight  = false;
   m_eSendKind     = XK_UNICAST;
 
   _checkInitialised_(CN_OPSPEC);
@@ -64,26 +63,6 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set append right                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vAppendRight(bool bRight)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-
-  m_bAppendRight = bRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get append right                                                           */
-/*----------------------------------------------------------------------------*/
-bool OpSpec::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_bAppendRight;
-}
 
 /*----------------------------------------------------------------------------*/
 /* add an ename pair                                                          */

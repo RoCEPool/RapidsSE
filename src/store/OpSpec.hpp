@@ -18,25 +18,25 @@ namespace STORE
                , public ListItem_t<OpSpec>
   {
   private:
-    s32  m_sOpNm;       // op name
+    s32  m_sOpNm;  // op name
   
-    StageSpec*    m_pStageSpec;    // which stage spec
+    StageSpec* m_pStageSpec;  // which stage spec
   
     TagSet m_oArgTags;
     
     eYX m_eCrossTopo;
     eYO m_eOpTopology;
 
-    s32 m_sNextStageNm;    // next stage name
+    s32 m_sNextStageNm;  // next stage name
     i8  m_i_NextStage;
     i8  m_i_NextOp;
   
-    s32 m_sOtherStageNm;   // next stage name
-    i8  m_i_OtherStage;    // other stage in the cross topology
-    i8  m_i_OtherOp;       // next Op in the other stage
+    s32 m_sOtherStageNm; // next stage name
+    i8  m_i_OtherStage;  // other stage in the cross topology
+    i8  m_i_OtherOp;     // next Op in the other stage
 
-    bool   m_bAppendRight; // append to right queue of next operator
-    eXK    m_eSendKind;    // {normal, broadcast, hashcast, robin, local robin} if send op
+    eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
+                         //   if send op
 
     // must be last
     Footer m_xFooter;
@@ -48,8 +48,6 @@ namespace STORE
     OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
-    bool bAppendRight(void);
-    void vAppendRight(bool bRight);
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);

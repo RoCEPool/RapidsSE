@@ -383,46 +383,6 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to this op's right operand queue                            */
-/*----------------------------------------------------------------------------*/
-void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-  //         m_sOpNm(),
-  //         pOperand,
-  //         aCN[pOperand->eGetClassNo()]);
-    
-  vGrabTaskLock();
-  
-  i8 nOperands = m_pQueueRight->iAppendOperand(pOperand);
-  
-  AM::vOperandsInc();
-
-  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING != eTaskState) {
-    vDropTaskLock();
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append right ?                                                             */
-/*----------------------------------------------------------------------------*/
-bool Op::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpSpec->bAppendRight();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
 eYX Op::eCrossTopo(void)
@@ -1435,10 +1395,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
            );
   }
 
-  if (bAppendRight())
-    pDstOp->vAppendRight(pOperand,pTriggeringTask);
-  else
-    pDstOp->vAppendLeft(pOperand,pTriggeringTask);
+  pDstOp->vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1452,10 +1409,7 @@ void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
 
   RASSERT(! szOpNm()->bSame("send"_Stz));
 
-  if (bAppendRight())
-    vAppendRight(pOperand,pTriggeringTask);
-  else
-    vAppendLeft(pOperand,pTriggeringTask);
+  vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
