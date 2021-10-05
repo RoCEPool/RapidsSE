@@ -53,7 +53,7 @@ namespace STORE
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
     eYX  eCrossTopo(void);
-    void vCrossTopo(eYX eCrossTopo, eYO eOpTopology,
+    void vCrossTopo(eYX eCrossTopo,
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
     i8   iNextStage(void);
@@ -61,6 +61,7 @@ namespace STORE
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
     eYO  eOpTopology(void);
+    void vOpTopology(eYO eOpTopology);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

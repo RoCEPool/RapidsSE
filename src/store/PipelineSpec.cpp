@@ -794,18 +794,18 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
   pOpSpec->vOpNm("send"_Stz);
   
   Stz* szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vCrossTopo(eCrossTopo,eOpTopology,
-                      szStgNm,i_NextStage,0);
+  pOpSpec->vOpTopology(eOpTopology);
+  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* name is a known operator                                                   */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
+void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  i8 i_Op = pOpSpec_isOp->iOpSpec();
+  i8 i_Op = pOpSpec->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   
   eYO eOpTopology;
@@ -815,8 +815,8 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
                                              eOpTopology);
     
   Stz* szStgNm = szStageNm(i_Stage);
-  pOpSpec_isOp->vCrossTopo(eCrossTopo,eOpTopology,
-                           szStgNm,i_Stage,i_Op+1);
+  pOpSpec->vOpTopology(eOpTopology);
+  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
 
 }
 
@@ -881,8 +881,8 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz* szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vCrossTopo(eCrossTopo,eOpTopology,
-                            szStgNm,i_NextStage,0);
+    pPrevOpSpec->vOpTopology(eOpTopology);
+    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
