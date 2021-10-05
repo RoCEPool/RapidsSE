@@ -202,46 +202,27 @@ eEC JobReport::eReport(i8 iJobNo, Tub* pTub)
   // create the jobReport
   JobReport* pJobReport = new JobReport(iJobNo, pJob);
 
-  // get stats from job tags of job
-  pJobReport->vStatsFromJobTags();
+  // generate the report
+  pJobReport->vGenerateReport(pTub);
 
-  // find the internal jobReport table
-  Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
-  StreamDef* pStreamDef = pJobReportTable->pStreamDef();
+  // delete the jobReport
+  delete pJobReport;
 
-  // get a working buffer from the tub
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+  return EC_NONE;
+}
 
-  if (! pNamedBuffer) {
-    // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+/*----------------------------------------------------------------------------*/
+/* report                                                                     */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eReport(Job* pJob, Tub* pTub)
+{
+  _static_
 
-    // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
-  }
+  // create the jobReport
+  JobReport* pJobReport = new JobReport(pJob->tJobId().uJobNo(), pJob);
 
-  // is their space in the buffer ?
-  if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
-
-    // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
-
-    // add athe named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
-  }
-
-  // allot a row for the stats in the named buffer
-  Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
-                                      pJobReport->m_i_pu_test,
-                                      pJobReport->m_i_pu_subset,
-                                      pJobReport->m_i_pu_t,
-                                      pJobReport->m_i_pu_ft,
-                                      pJobReport->m_i_pu_j,
-                                      pJobReport->m_i_pu_fj,
-                                      pJobReport->m_i_pu_groups,
-                                      pJobReport->m_iReponseTime,
-                                      pJobReport->m_iMagnitude,
-                                      C_VARGS_END);
+  // generate the report
+  pJobReport->vGenerateReport(pTub);
 
   // delete the jobReport
   delete pJobReport;
@@ -348,8 +329,57 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Private ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* generate the job report                                                    */
+/*----------------------------------------------------------------------------*/
+void JobReport::vGenerateReport(Tub* pTub) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
+
+  // get stats from job tags of job
+  vStatsFromJobTags();
+
+  // find the internal jobReport table
+  Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
+  StreamDef* pStreamDef = pJobReportTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+  // new a named buffer
+  pNamedBuffer = new NamedBuffer(pStreamDef);
+
+  // add the named buffer to the tub
+  pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // is their space in the buffer ?
+  if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
+
+  // new a named buffer
+  pNamedBuffer = new NamedBuffer(pStreamDef);
+
+  // add athe named buffer to the tub
+  pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // allot a row for the stats in the named buffer
+  Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
+                                      m_i_pu_test,
+                                      m_i_pu_subset,
+                                      m_i_pu_t,
+                                      m_i_pu_ft,
+                                      m_i_pu_j,
+                                      m_i_pu_fj,
+                                      m_i_pu_groups,
+                                      m_iReponseTime,
+                                      m_iMagnitude,
+                                      C_VARGS_END);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get stats from jobTags                                                     */

@@ -18,6 +18,7 @@
 void Step::vAddSteps_JobReport(void)
 {
   vAddStep("jobReport::operators"_Stz,       &Step::vJobReportOperators);
+  vAddStep("jobReport::reportJob"_Stz,       &Step::vJobReportReportJob);
   vAddStep("jobReport::reportJobId"_Stz,     &Step::vJobReportReportJobId);
 }
 
@@ -32,6 +33,23 @@ void Step::vJobReportOperators(void)
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
   eEC eError = JobReport::eOperators(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobReport::reportJob -- report on given job                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReportReportJob(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = JobReport::eReport(pJob, pTub);
 
   m_pDataStack->vPushInt(eError);
 
