@@ -286,11 +286,13 @@ Path[].root
   sTags sPipeline api::executeCommand
   
     //2discard
+  /*
      discard
        "JobRep %v " str.format
          STD_PATH_TAG swap api::executeCommand 2discard
-  
-  true api::reapJobs
+
+     true api::reapJobs
+  */
 ;
 
 /*----------------------------------------------------------------------------*/

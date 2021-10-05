@@ -3000,7 +3000,9 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       }
       break;
     }
-      
+
+    case CN_JOB:                eOperand = ZK_D_JOB;            break;
+
     case CN_MARKER:
     {
       Marker* pMarker = _pMarker(pOperand);

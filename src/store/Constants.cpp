@@ -698,6 +698,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_GRID"_Stz,            ZK_D_GRID);
   /*  0 */ vAddConstant("ZK_D_INDEX"_Stz,           ZK_D_INDEX);
   /*  0 */ vAddConstant("ZK_D_INDEXDEF"_Stz,        ZK_D_INDEXDEF);
+  /*  0 */ vAddConstant("ZK_D_JOB"_Stz,       ZK_D_JOB);
   /*  0 */ vAddConstant("ZK_M_LEAVE"_Stz,     ZK_M_LEAVE);
   /*  0 */ vAddConstant("ZK_M_LEAVING"_Stz,  ZK_M_LEAVING);
   /*  0 */ vAddConstant("ZK_M_LEFT"_Stz,     ZK_M_LEFT);

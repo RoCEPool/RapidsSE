@@ -39,6 +39,7 @@
 : ZK_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : ZK_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : ZK_D_GRID_handler             \handler STANDARD_PIPEOUT ;
+: ZK_D_JOB_handler              \handler STANDARD_PIPEOUT ;
 : ZK_D_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_D_METAGET_handler          \handler STANDARD_PIPEOUT ;
 : ZK_D_OP_handler               \handler STANDARD_PIPEOUT ;
@@ -291,6 +292,7 @@
   abnormalHandler ZK_D_GRID             op[].handler!
   abnormalHandler ZK_D_INDEX            op[].handler!
   abnormalHandler ZK_D_INDEXDEF         op[].handler!
+  abnormalHandler ZK_D_JOB              op[].handler!
   abnormalHandler ZK_D_METAGET          op[].handler!
   abnormalHandler ZK_D_NAMEDBUFFER      op[].handler!
   abnormalHandler ZK_D_OP               op[].handler!
