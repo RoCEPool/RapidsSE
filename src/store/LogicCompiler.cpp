@@ -12,6 +12,8 @@
 
 #include "TagConstants.h"
 
+#include "TinyC.hpp"
+
 #ifdef __TINYC
 #include "libtcc.h"
 #endif
@@ -526,12 +528,8 @@ void LogicCompiler::vAcquire(void)
   RASSERT(! m_aTccState);
   
 #ifdef __TINYC
-  m_aTccState = tcc_new();
+  m_aTccState = TinyC::pInitialize(this, vTinyError);
   RASSERT(m_aTccState);
-  
-  tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
-  
-  tcc_set_error_func((TCCState*)m_aTccState, this, vTinyError);
 #endif
 }
 
@@ -557,24 +555,9 @@ bool LogicCompiler::bCompile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  // Compilation search path so that dynamically generated code can find include files for libtcc1.a
-  tcc_add_include_path((TCCState*)m_aTccState, "../thirdparty/tcc/lib/tcc/include");
-
-  // Library search path so that dynamically generated code can find the libtcc1.a library
-  tcc_add_library_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-
-  // Library search path so that dynamically generated code can find the libtcc1.a library
-  // It's not entirely clear if this is required in addition to
-  // the call to tcc_add_library_path above.
-  // Some reference here: https://lists.gnu.org/archive/html/tinycc-devel/2010-11/msg00023.html
-  tcc_set_lib_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-  
-  if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
-    return false;
-  
+  return TinyC::bCompile(m_aTccState, m_caSource);
 #endif
-  
-  return true;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,7 +568,7 @@ void LogicCompiler::vRelease(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  tcc_delete((TCCState*)m_aTccState);
+  TinyC::vFinalize(m_aTccState);
 #endif
 
   m_aTccState = nullptr;
@@ -600,12 +583,12 @@ void LogicCompiler::vRelocate(void)
   
 #ifdef __TINYC
   // relocate the code
-  if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+  if ( ! TinyC::bRelocate(m_aTccState) )
     RASSERT(0);
-  }
   
   m_pLogicUnit->m_afDynFun =
-    (i8 (*)(void*,i8,i8))tcc_get_symbol((TCCState*)m_aTccState,"aiDynFun");
+    (i8 (*)(void*,i8,i8))TinyC::pFindSymbol(m_aTccState,"aiDynFun");
+
   RASSERT(m_pLogicUnit->m_afDynFun);
   
 #endif
@@ -621,9 +604,9 @@ void LogicCompiler::vSymbols(void)
 #ifdef __TINYC
     
   for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
-    tcc_add_symbol((TCCState*)m_aTccState,
-                   (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
-                   gxaDynamicSymbol[i_Symbol].m_afSymbol);
+    TinyC::vAddSymbol(m_aTccState,
+       (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
+       (void*)gxaDynamicSymbol[i_Symbol].m_afSymbol);
   
 #endif
 }
