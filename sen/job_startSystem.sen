@@ -73,6 +73,11 @@
     "Error Code %v" .printf
   then
 
+  //spawn report demon
+  "" false reportDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   //spawn recurring demon
   "" false recurDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
