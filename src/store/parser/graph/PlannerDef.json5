@@ -304,7 +304,7 @@
 // Path: /__root__/definitions/object/planObject
             {
               name: "planObject",
-              value: "The root of all objects that appear in the main data path of the plan graph",
+              value: "The abstract root of all objects that appear in the main data path of the plan graph",
               properties: [
                 {
                   name:  "location",
@@ -319,6 +319,7 @@
                 }
               ],
               children: [
+
 // Path: /__root__/definitions/object/planObject/planMarker
                 {
                   name: "planMarker",
@@ -407,7 +408,7 @@
                             },
                             {
                               // Add a constraint that children of a tableSubquery object must be
-                              // either another tableSubquery (nested) or a mainSubquery
+                              // some type of subqueryMarker
                               name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childType",
@@ -416,18 +417,47 @@
                                   {
                                     name: "childTypeParam1",
                                     type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker"
                                   }
                                 ]
                               }]
                             }
                           ],
-                        }
+                        },
+// Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
+                        {
+                          name: "exprSubquery",
+                          value: "Identifies a subquery emanating from an expression. It is basically a container for child table subqueries and a main subquery",
+                          properties: [
+                            {
+                              // Expression subqueries must have a table alias for correlating with their subqueryRefExpr
+                              name: "tableAlias",
+                              value: "The virtual table name that this exprSubquery is known as",
+                              type: "/__root__/definitions/object/valueObject/stringObject"
+                            },
+                            {
+                              name: "correlatedExprs",
+                              value: "A list of expressions in this subquery that are correlated to a parent subquery",
+                              type: "/__root__/definitions/object/list/exprList"
+                            },
+                            {
+                              // Add a constraint that children of a tableSubquery object must be
+                              // some type of subqueryMarker
+                              name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type: "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker"
+                                  }
+                                ]
+                              }]
+                            }
+                          ],
+                        } // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker
 
@@ -918,48 +948,24 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnParameter
 
-// Path: /__root__/definitions/object/expr/subqueryExpr
+// Path: /__root__/definitions/object/expr/subqueryRefExpr
                 {
-                  name: "subqueryExpr",
-                  value: "A node that acts like an expression but internally wraps a subquery",
+                  name: "subqueryRefExpr",
+                  value: "A node that acts like an expression but is actually a proxy to an expression subquery",
                   properties: [
                     {
-                      // Where the definition of this expression subquery may be found. Could be null temporarily.
-                      // This is necessary because an expression subquery can itself contain subqueries, so this
-                      // provides the necessary nesting for its metadata.
-                      name: "defnPath",
-                      value: "The full path to the definition of this subquery",
+                      name: "tableAlias",
                       type: "/__root__/definitions/object/valueObject/stringObject"
                     },
                     {
-                      name: "correlatedExprs",
-                      value: "A list of expressions in this subquery that are correlated to a parent subquery",
-                      type: "/__root__/definitions/object/list/exprList"
-                    },
-                    {
-                      // Add a constraint that children of a subqueryExpr object must be
-                      // either a tableSubquery or a mainSubquery
+                      // Add a constraint that there are no children of a subqueryRefExpr
                       name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                      {
-                        name: "childType",
-                        type: "/__root__/primitives/constraints/childType",
-                        children: [
-                          {
-                            name: "childTypeParam1",
-                            type: "/__root__/definitions/object/valueObject/stringObject",
-                            value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
-                          },
-                          {
-                            name: "childTypeParam2",
-                            type: "/__root__/definitions/object/valueObject/stringObject",
-                            value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
-                          }
-                        ]
-                      }]
+                        { name: "noChildren", type: "/__root__/primitives/constraints/noChildren" }
+                      ]
                     }
 
                   ]
-                }, // EndPath: /__root__/definitions/object/expr/subqueryExpr
+                }, // EndPath: /__root__/definitions/object/expr/subqueryRefExpr
 
 // Path: /__root__/definitions/object/expr/literal
                 {
@@ -2369,7 +2375,7 @@
               name: "planNode",
               value: "A definition for the node that occurs at /__root__/plan.",
               properties: [
-                // Add a constraint that the children of a plan node must be a single statementMarker node
+                // Add a constraint that the children of a plan node must be subqueryMarker nodes
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
                     { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }

@@ -1,27 +1,22 @@
 /*============================================================================*/
-/* SubqueryContainer.hpp - A simple container whose children are subqueries   */
+/* ExprSubquery.hpp - Identifies a subquery emanating from an expression      */
 /*============================================================================*/
 #pragma once
 
-#include "PlanObject.hpp"
-#include "PlanNode.hpp"
-#include "QueryNodeList.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 
 namespace Parser
 {
   class QueryNode;
 
-  class SubqueryContainer : public PlanObject
+  class ExprSubquery : public SubqueryMarker
   {
-  public:
-
   private:
     // Shalt never be instantiated. Static functions only.
-    SubqueryContainer();
+    ExprSubquery();
 
   public:
-    static QueryNode* pCreate();
-
+    static QueryNode* pCreate(Stz* szAliasName);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -36,15 +31,14 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
-    // Return a list of ProjectedColumns that represent the column expressions
-    // that this PlanObject will return. All nodes and the list must be freed.
-    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    // Returns the name of the virtual table that this subquery is known as
+    static Stz* szTableAlias(QueryNode* pNode);
 
-    // Find and return the child that is the MainSubquery node.
-    static QueryNode* pMainSubquery(QueryNode* pNode);
+    // Returns true if the subquery is correlated with respect to its parent subquery
+    static b1 bIsCorrelated(QueryNode* pNode);
 
-  protected:
-
+    // Returns the internal list of correlated columns. May be an empty list.
+    static QueryNode* pCorrelatedColumns(QueryNode* pNode);
   };
 
 }

@@ -44,8 +44,8 @@
 #include "AndExpr.hpp"
 #include "MainSubquery.hpp"
 #include "TableSubquery.hpp"
+#include "ExprSubquery.hpp"
 #include "SubqueryRefOp.hpp"
-#include "SubqueryExpr.hpp"
 #include "CteDef.hpp"
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
@@ -96,20 +96,9 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   //   * An ExprSubquery contains Table/MainSubquery children. So repeat all of the above
   //     for each ExprSubquery encountered.
 
-  // TODO: Potential Problems:
-  //       * A TableSubquery could appear underneath an exprSubquery
-  //       * Could there be a correlated column inside a WITH clause???
-  //       * Where does a metadata entry go for a TableSubquery underneath an ExprSubquery?
-
 
   try {
-    vValidateTableAndMainSubqueries(pPlanNode, const_cast<Stz*>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
-
-
-    // Now we want to visit expression subqueries, validate them and
-    // validate any child subqueries that they might contain.
-    vValidateExprSubqueries(pPlanNode, const_cast<Stz*>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
-
+    vValidateAllSubqueries(pPlanNode, const_cast<Stz *>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
     delete pSeApi;
 
   } catch (SqlException& e) {
@@ -123,12 +112,11 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Validates the table subquery initially. We can't complete the validation   */
-/* until the child MainSubquery underneath this is fully validated.           */
+/* Walks the graph and validates table, main subqueries and expr subqueries.  */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
-                                                    PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                                    STORE::SeApi* pSeApi)
+void NameValidator::vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                           STORE::SeApi* pSeApi)
 {
   ASSERT(pStartingNode);
   ASSERT(szStartingNodePath);
@@ -148,8 +136,9 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, St
 
 
     s2K sFullPath(szStartingNodePath);
+    Stz* szLeafSeparator = GraphNav::szLeafSeparator(szStartingNodePath);
     GraphNav::bParentPath(sFullPath);
-    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
+    sFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
 
     QueryNode* pSubquery = _pQueryNode(pNode);
 
@@ -172,10 +161,24 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, St
       }
 
     } else if (MainSubquery::bIsOfType(pSubquery)) {
-      if (eWalkEvent == GraphNav::EVENT_ENTER) {
-        // We ignore exit event for main subqueries as we will fully process the main
-        // subquery in one go.
-        vValidateMainSubquery(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
+        if (eWalkEvent == GraphNav::EVENT_ENTER) {
+          // We ignore exit event for main subqueries as we will fully process the main
+          // subquery in one go.
+          vValidateMainSubquery(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
+        }
+
+    } else if (ExprSubquery::bIsOfType(pSubquery)) {
+      switch (eWalkEvent) {
+        case GraphNav::EVENT_ENTER:
+          vValidateExprSubqueryEntry(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
+          break;
+
+        case GraphNav::EVENT_EXIT:
+          vValidateExprSubqueryExit(pSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
+          break;
+
+        default:
+          NEVER_REACH
       }
 
     } else {
@@ -189,40 +192,6 @@ void NameValidator::vValidateTableAndMainSubqueries(QueryNode* pStartingNode, St
   // ready to visit exprSubqueries yet.
   GraphNav::bGlobalWalk(pStartingNode, false, true,
                         fMainSubqueryVisitor, fMainSubqueryVisitor, pRootNode);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* Walk the graph and validate expr subqueries and any subqueries they contain*/
-/*----------------------------------------------------------------------------*/
-void NameValidator::vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
-                                            PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                            STORE::SeApi* pSeApi)
-{
-  // Lambda for visiting expression subqueries.
-  auto fExprSubqueryVisitor = [szStartingNodePath, pRootNode, pMetadataNode, pSeApi]
-      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-    UNUSED(iDepth);
-    UNUSED(pvArg);
-
-    if (!SubqueryExpr::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;
-    }
-
-    s2K sFullPath(szStartingNodePath);
-    GraphNav::bParentPath(sFullPath);
-    sFullPath.vCatSprint("%s%s"_Stz, (sFullPath.bIsEmpty() ? ""_Stz : C_CHILD_SEPARATOR_STZ), sPath.szStz());
-
-
-    // Validate this expression subquery and any subqueries it contains
-    QueryNode *pExprSubquery = _pQueryNode(pNode);
-    vValidateExprSubquery(pExprSubquery, sFullPath, pRootNode, pMetadataNode, pSeApi);
-
-    return GraphNav::WALK_CONTINUE;
-  };
-
-  GraphNav::bGlobalWalk(pStartingNode, true, true, fExprSubqueryVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,14 +356,18 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(pSeApi);
 
   // Get a list of table subquery aliases (or nodes) that we could resolve to.
-  QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableSubqueries(pSubqueryNode, sSubqueryPath, pRootNode);
+  QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pSubqueryNode,
+                                                                                   sSubqueryPath,
+                                                                                   pRootNode);
 
-  // First we will validate all of the tables and either fully qualify them or turn
+  // First we will validate all of the tables are either fully qualify them or turn
   // them into references to CTEs (as SubqueryRefOp instances).
 
   // Finally we can validate and qualify all of the columns. We do this last so that we
   // can correlate an unqualified column with a (now) qualified table definition. We can
   // also detect ambiguous column names too. But we need all tables and CTEs to be qualified first.
+
+  // TODO: Validate that any SubqueryRefExprs can be resolved appropriately.
 
   // The callback lambda for qualifying tables
   auto fTableVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi, pResolvableSubqueries]
@@ -482,14 +455,14 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 }
 
 /*----------------------------------------------------------------------------*/
-/* Validates an expression subquery                                           */
+/* Validates an expression subquery on descent of the graph                   */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
-                                          PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                          STORE::SeApi* pSeApi)
+void NameValidator::vValidateExprSubqueryEntry(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                               PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                               STORE::SeApi* pSeApi)
 {
   ASSERT(pSubqueryExprNode);
-  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
+  ASSERT(ExprSubquery::bIsOfType(pSubqueryExprNode));
   ASSERT(sSubqueryExprPath.nLength() > 0);
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
@@ -497,25 +470,36 @@ void NameValidator::vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSu
   ASSERT(pSeApi);
 
   // When this function is invoked we should have already validated and resolved
-  // the enclosing MainSubquery. This is important because then any correlated
-  // column names in the outer query will be fully qualified.
+  // the sibling MainSubquery because the MainSubquery would occur before this node
+  // in the graph. This is important because then any correlated column names in the
+  // outer query will be fully qualified.
 
   // Create an initial CteDef for this node and insert it into the metadata.
   // Save the path to this CteDef in this current node.
   vCreateExprSubqueryCteDef(pSubqueryExprNode, sSubqueryExprPath, pRootNode, pMetadataNode);
+}
 
-  // Process child table/main subqueries underneath this expression subquery to:
-  //  - Validate/qualify table names
-  //  - Validate/qualify column names
-  vValidateTableAndMainSubqueries(pSubqueryExprNode, sSubqueryExprPath.szStz(), pRootNode, pMetadataNode, pSeApi);
+/*----------------------------------------------------------------------------*/
+/* Completes the validation of an expression subquery on ascent of the graph  */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateExprSubqueryExit(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                              PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                              STORE::SeApi* pSeApi)
+{
+  ASSERT(pSubqueryExprNode);
+  ASSERT(ExprSubquery::bIsOfType(pSubqueryExprNode));
+  ASSERT(sSubqueryExprPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
 
   // Populate the remaining CteDef fields (we can copy column info from the CteDef of the
-  // MainSubquery child that was processed above).
+  // MainSubquery child that was processed when we descended the graph).
   vUpdateExprSubqueryCteDef(pSubqueryExprNode, sSubqueryExprPath, pRootNode, pMetadataNode);
 
   // TODO: * Create a list of any correlated column names and populate this in the current exprSubquery node.
   //         Note that a subquery can be correlated because its child subquery references a column in its grandparent.
-
 }
 
 
@@ -1546,7 +1530,7 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
 /* The returned list contains pointers to SubqueryMarker nodes.               */
 /* The returned list must be freed, but not its contents. List may be null.   */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* NameValidator::pResolvableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode)
+QueryNodeList* NameValidator::pResolvableTableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode)
 {
   ASSERT(pMainSubquery);
   ASSERT(MainSubquery::bIsOfType(pMainSubquery));
@@ -1767,7 +1751,7 @@ void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
                                               PlanNode* pRootNode, QueryNode* pMetadataNode)
 {
   ASSERT(pSubqueryExprNode);
-  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
+  ASSERT(ExprSubquery::bIsOfType(pSubqueryExprNode));
   ASSERT(sSubqueryExprPath.nLength() > 0);
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
@@ -1799,7 +1783,7 @@ void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   ASSERT(sCteDefPath.nLength() > 0);
 
   // Update the defnPath property of this expression subquery node.
-  SubqueryExpr::vSetDefnPath(pSubqueryExprNode, sCteDefPath.szStz());
+  ExprSubquery::vSetDefnPath(pSubqueryExprNode, sCteDefPath.szStz());
 }
 
 
@@ -1811,7 +1795,7 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
                                               PlanNode* pRootNode, QueryNode* pMetadataNode)
 {
   ASSERT(pSubqueryExprNode);
-  ASSERT(SubqueryExpr::bIsOfType(pSubqueryExprNode));
+  ASSERT(ExprSubquery::bIsOfType(pSubqueryExprNode));
   ASSERT(sSubqueryExprPath.nLength() > 0);
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
@@ -1822,7 +1806,7 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   // However we haven't filled in the column name list. We will do that here.
 
   // Get the path of the definition we previously created.
-  Stz* szDefnPath = SubqueryExpr::szDefnPath(pSubqueryExprNode);
+  Stz* szDefnPath = ExprSubquery::szDefnPath(pSubqueryExprNode);
   ASSERT(szDefnPath);
   ASSERT(szDefnPath->bBeginsWith("/"_Stz));
 
@@ -1844,11 +1828,15 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   // find the main subquery underneath pSubqueryExprNode, get its definition path
   // and then lookup its CteDef that way.
 
-  QueryNode* pChildMainSubquery = SubqueryExpr::pChildMainSubquery(pSubqueryExprNode);
-  Stz* szMainSubqueryPath = MainSubquery::szDefnPath(pChildMainSubquery);
-  ASSERT(szMainSubqueryPath);
+  auto fCondition = [](PlanNode* pNode) -> b1 { return MainSubquery::bIsOfType(pNode); };
+  QueryNode* pChildMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pSubqueryExprNode));
+  ASSERT(pChildMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pChildMainSubquery));
 
-  QueryNode* pMainSubqueryCteDef = _pQueryNode(GraphNav::pFind(szMainSubqueryPath, pRootNode));
+  Stz* szMainSubqueryDefnPath = MainSubquery::szDefnPath(pChildMainSubquery);
+  ASSERT(szMainSubqueryDefnPath);
+
+  QueryNode* pMainSubqueryCteDef = _pQueryNode(GraphNav::pFind(szMainSubqueryDefnPath, pRootNode));
   ASSERT(pMainSubqueryCteDef);
   ASSERT(CteDef::bIsOfType(pMainSubqueryCteDef));
 

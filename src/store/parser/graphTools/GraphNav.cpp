@@ -45,6 +45,36 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns a string that represents the separator used between the leaf node  */
+/* and its parent. Returns either C_PROPERTY_SEPARATOR_STZ,                   */
+/* C_CHILD_SEPARATOR_STZ or nullptr in the case of an invalid path.           */
+/*----------------------------------------------------------------------------*/
+Stz* GraphNav::szLeafSeparator(Stz* szPath)
+{
+  ASSERT(szPath);
+  if (szPath->bIsEmpty()) {
+    return nullptr;
+  }
+
+  char* pChar = StrLib::acLast(szPath->azChar());
+
+  while (pChar != szPath->azChar()) {
+    if (*pChar == C_CHILD_SEPARATOR) {
+      return C_CHILD_SEPARATOR_STZ;
+    }
+
+    if (*pChar == C_PROPERTY_SEPARATOR) {
+      return C_PROPERTY_SEPARATOR_STZ;
+    }
+
+    --pChar;
+  }
+
+  // We're at the start of the string.
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the parent of the type definition path given.                      */
 /* e.g. given a defn path of /a/b/c this will write '/a/b' into the buffer.   */
 /* This path must not contain a property separator (':').                     */

@@ -33,7 +33,7 @@
 #include "MinExpr.hpp"
 #include "MaxExpr.hpp"
 #include "DivisionExpr.hpp"
-#include "SubqueryExpr.hpp"
+#include "SubqueryRefExpr.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -75,7 +75,7 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
   else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf); }
   else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf); }
   else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf); }
-  else if (   SubqueryExpr::bIsOfType(pNode))  {    SubqueryExpr::vDescribe(pNode, sBuf); }
+  else if (SubqueryRefExpr::bIsOfType(pNode))  {SubqueryRefExpr::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -116,7 +116,7 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::eType(pExprNode, pRootNode); }
   else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::eType(pExprNode, pRootNode); }
   else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::eType(pExprNode, pRootNode); }
-  else if (   SubqueryExpr::bIsOfType(pExprNode))  { return    SubqueryExpr::eType(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::eType(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

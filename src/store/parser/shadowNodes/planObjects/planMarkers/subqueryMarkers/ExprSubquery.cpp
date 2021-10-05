@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* SubqueryContainer.hpp - A simple container whose children are subqueries   */
+/* ExprSubquery.hpp - Identifies a subquery emanating from an expression      */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "SubqueryContainer.hpp"
+#include "ExprSubquery.hpp"
 
 #include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-
-#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
+#include "ColumnRefs.hpp"
+#include "ExprList.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -19,47 +19,61 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_DEFN = "/__root__/definitions/object/planObject/subqueryContainer"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery"_Stz;
 
+static Stz* C_TABLEALIAS_PROP = "tableAlias"_Stz;
+static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+
+static Stz* C_CORRELATEDEXPRS_PROP = "correlatedExprs"_Stz;
+static Stz* C_CORRELATEDEXPRS_DEFN = "/__root__/definitions/object/list/exprList"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create a list of string nodes as an idList.             */
+/* Helper function to create ExprSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryContainer::pCreate()
+QueryNode* ExprSubquery::pCreate(Stz* szAliasName)
 {
-  _static_
+  ASSERT(szAliasName);
 
-  // Create a unique name for this object
-  s256 sName;
-  NodeNamer::vGenerateName(C_DEFN, sName);
+  // Create the object
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
 
-  // Create an empty SubqueryContainer object
-  QueryNode* pSubqueryContainer = new QueryNode(sName.szStz(), C_DEFN);
+  // Create and add any properties
 
-  return pSubqueryContainer;
+  // Table alias
+  Value xAliasValue(szAliasName);
+  QueryNode* pTableAliasNode = new QueryNode(C_TABLEALIAS_PROP, C_TABLEALIAS_DEFN, static_cast<Value&&>(xAliasValue));
+  pSubqueryNode->vAppendProperty(pTableAliasNode);
+
+  // Create an empty correlated columns list. This can be added to later
+  // once column names have been resolved.
+  QueryNode* pCorrelatedColumns = ExprList::pCreate(C_CORRELATEDEXPRS_PROP);
+  pSubqueryNode->vAppendProperty(pCorrelatedColumns);
+
+  return pSubqueryNode;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SubqueryContainer::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ExprSubquery::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat("SubqueryContainer \n  "_Stz);
+  QueryNode* pStmt = _pQueryNode(pNode);
+
+  buf.vConcat(GraphNav::szLeafType(pStmt->szType()));
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/* Recurses down the query plan and writes the explain to the buf             */
 /*----------------------------------------------------------------------------*/
-void SubqueryContainer::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
+void ExprSubquery::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -67,7 +81,7 @@ void SubqueryContainer::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode
   // Add the object header and local properties
   vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
-  // Recurse any children of pNode
+  // Recurse any children
   if (pNode->bHasChildren()) {
     PlanNodeIter* pIter = pNode->pNewChildrenIter();
 
@@ -77,6 +91,7 @@ void SubqueryContainer::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode
 
       PlanObject::vExplain(pChild, pRootNode, pExplainNode, sBuf, iIndent + 1);
     }
+
     delete pIter;
   }
 }
@@ -84,7 +99,7 @@ void SubqueryContainer::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void SubqueryContainer::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
+void ExprSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExplainNode, Stz* szType, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -96,16 +111,42 @@ void SubqueryContainer::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Que
     GraphNav::vParentType(szType, sParentType);
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
+    // Location is explained in the common attributes above
     // Explain any local attributes of this object
+
+    // Table alias
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
+
+    // Get the list of correlated columns
+    QueryNode* pCorrColumnsNode = pCorrelatedColumns(_pQueryNode(pNode));
+    ASSERT(pCorrColumnsNode);
+    ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+    // Describe the list of expressions
+    s2K sColBuf;
+    if (pCorrColumnsNode->nChildren() > 0) {
+      ExprList::vDescribe(pCorrColumnsNode, sColBuf);
+
+    } else {
+      sColBuf = "none"_Stz;
+    }
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("correlated columns: (%s)"_Stz, sColBuf.szStz());
+
     return;
   }
 
+  // Manual polymorphism of subtypes here
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
-b1 SubqueryContainer::bIsOfType(PlanNode *pNode)
+b1 ExprSubquery::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
@@ -113,7 +154,7 @@ b1 SubqueryContainer::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given type str is derived from the objects definition  */
 /*----------------------------------------------------------------------------*/
-b1 SubqueryContainer::bIsOfType(Stz* szType)
+b1 ExprSubquery::bIsOfType(Stz* szType)
 {
   return ShadowNode::bIsOfType(szType, C_DEFN);
 }
@@ -121,7 +162,7 @@ b1 SubqueryContainer::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
-b1 SubqueryContainer::bIsExactType(PlanNode *pNode)
+b1 ExprSubquery::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
@@ -129,43 +170,51 @@ b1 SubqueryContainer::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
-b1 SubqueryContainer::bIsExactType(Stz* szType)
+b1 ExprSubquery::bIsExactType(Stz* szType)
 {
   return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that represent the column expressions    */
-/* that this PlanObject will return. All nodes and the list must be freed.    */
+/* Returns the name of the virtual table that this subquery is known as       */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* SubqueryContainer::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+Stz* ExprSubquery::szTableAlias(QueryNode *pNode)
 {
-  _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pMainSubquery = SubqueryContainer::pMainSubquery(pNode);
-  ASSERT(pMainSubquery);
-  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+  PlanNode* pTableAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEALIAS_PROP), pNode);
+  ASSERT(pTableAliasNode);
 
-  // SubqueryContainers don't change the columns being returned. So ask its main subquery.
-  return PlanObject::pColumnExprs(pMainSubquery, pRootNode);
+  Stz* szTableAlias = pTableAliasNode->szValue();
+  ASSERT(szTableAlias);
+
+  return szTableAlias;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* Find and return the child that is the MainSubquery node.                   */
+/* Returns true if the subquery is correlated with respect to its parent      */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryContainer::pMainSubquery(QueryNode* pNode)
+b1 ExprSubquery::bIsCorrelated(QueryNode* pNode)
 {
-  ASSERT(pNode);
+  UNUSED(pNode);
   ASSERT(bIsOfType(pNode));
 
-  auto fCondition = [](PlanNode* pChild) { return MainSubquery::bIsOfType(pChild); };
+  // All table subqueries are non-correlated
+  return false;
+}
 
-  QueryNode* pMainSubquery = _pQueryNode(GraphNav::pFindChild(fCondition, pNode));
-  ASSERT(pMainSubquery);
+/*----------------------------------------------------------------------------*/
+/* Returns the internal list of correlated columns. May be an empty list.     */
+/*----------------------------------------------------------------------------*/
+QueryNode* ExprSubquery::pCorrelatedColumns(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
 
-  return pMainSubquery;
+  PlanNode* pCorrColumnsNode = GraphNav::pFindProperty(const_cast<Stz*>(C_CORRELATEDEXPRS_PROP), pNode);
+  ASSERT(pCorrColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+  return _pQueryNode(pCorrColumnsNode);
 }
 
 /*============================================================================*/

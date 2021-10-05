@@ -52,7 +52,12 @@ class GraphNav
     // e.g. given a definition path of /a/b/c this will return 'c'.
     static Stz* szLeafType(Stz* szTypePath);
 
-    // Returns the parent of the type definition path given.
+    // Returns a string that represents the separator used between the leaf node
+    // and its parent. Returns either C_PROPERTY_SEPARATOR_STZ,
+    // C_CHILD_SEPARATOR_STZ or nullptr in the case of an invalid path.
+    static Stz* szLeafSeparator(Stz* szPath);
+
+  // Returns the parent of the type definition path given.
     static void vParentType(Stz* szTypePath, s2K& buf);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

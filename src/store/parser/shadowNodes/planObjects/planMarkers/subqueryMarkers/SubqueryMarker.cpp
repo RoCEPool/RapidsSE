@@ -14,6 +14,7 @@
 
 #include "MainSubquery.hpp"
 #include "TableSubquery.hpp"
+#include "ExprSubquery.hpp"
 #include "StringObject.hpp"
 
 using namespace Parser;
@@ -66,6 +67,7 @@ void SubqueryMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
   // Manual polymorphism of subtypes here
   if      (  MainSubquery::bIsOfType(pNode)) {  MainSubquery::vDescribe(pNode, sBuf); }
   else if ( TableSubquery::bIsOfType(pNode)) { TableSubquery::vDescribe(pNode, sBuf); }
+  else if (  ExprSubquery::bIsOfType(pNode)) {  ExprSubquery::vDescribe(pNode, sBuf); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -84,6 +86,7 @@ void SubqueryMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* p
   // Manual polymorphism of subtypes here
   if      (  MainSubquery::bIsOfType(pNode)) {  MainSubquery::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else if ( TableSubquery::bIsOfType(pNode)) { TableSubquery::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if (  ExprSubquery::bIsOfType(pNode)) {  ExprSubquery::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -115,6 +118,7 @@ void SubqueryMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryN
   // Manual polymorphism of subtypes here
   if      (  MainSubquery::bIsOfType(szType)) {  MainSubquery::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
   else if ( TableSubquery::bIsOfType(szType)) { TableSubquery::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
+  else if (  ExprSubquery::bIsOfType(szType)) {  ExprSubquery::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);    }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

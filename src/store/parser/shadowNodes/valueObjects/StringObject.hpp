@@ -18,6 +18,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(Text* pText);
+    static QueryNode* pCreate(Stz*  szText);
 
     // Describe the object and write it into the buffer
     static void vDescribe(PlanNode* pNode, s2K& sBuf);

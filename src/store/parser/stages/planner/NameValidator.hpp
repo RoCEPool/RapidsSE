@@ -31,15 +31,10 @@ namespace Parser
     static void vValidateNames(PlanNode* pRootNode);
 
   private:
-    // Walks the graph and validates table subqueries and main subqueries only.
-    static void vValidateTableAndMainSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
-                                                PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                                STORE::SeApi* pSeApi);
-
-    // Walk the graph and validate expression subqueries and any subqueries they contain.
-    static void vValidateExprSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
-                                        PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                        STORE::SeApi* pSeApi);
+    // Walks the graph and validates table subqueries, main subqueries and expr subqueries.
+    static void vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                       PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                       STORE::SeApi* pSeApi);
 
     // Validates a table subquery only. We separate validation as we descend
     // the graph (top-down) and when we ascend back up (bottom-up).
@@ -57,10 +52,15 @@ namespace Parser
                                       PlanNode* pRootNode, QueryNode* pMetadataNode,
                                       STORE::SeApi* pSeApi);
 
-    // Validates an expression subquery only
-    static void vValidateExprSubquery(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
-                                      PlanNode* pRootNode, QueryNode* pMetadataNode,
-                                      STORE::SeApi* pSeApi);
+    // Validates an expression subquery on descent of the graph
+    static void vValidateExprSubqueryEntry(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                           STORE::SeApi* pSeApi);
+
+    // Completes the validation of an expression subquery on ascent of the graph
+    static void vValidateExprSubqueryExit(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
+                                          PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                          STORE::SeApi* pSeApi);
 
     // Validate that all table names can be found in the system metadata.
     // Populate the plan metadata at the same time.
@@ -125,7 +125,7 @@ namespace Parser
     // Given a subquery node and its path, return a list of subqueries that are resolvable.
     // The returned list contains pointers to SubqueryMarker nodes.
     // The returned list must be freed, but not its contents. List may be null.
-    static QueryNodeList* pResolvableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode);
+    static QueryNodeList* pResolvableTableSubqueries(QueryNode* pMainSubquery, s2K& sMainSubqueryPath, PlanNode* pRootNode);
 
     // Create a CteDef that represents a main subquery and add it to the metadata.
     // Also updates the defnPath property of the subquery node.

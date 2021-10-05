@@ -33,6 +33,7 @@ namespace Parser
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableExprStack;  // Could be DataSources, could be Joins, Subqueries, etc
     QueryNodeList* m_pTableSubqueryList;
+    QueryNodeList* m_pExprSubqueryList;
     QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;

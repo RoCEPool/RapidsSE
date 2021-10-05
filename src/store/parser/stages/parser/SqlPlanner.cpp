@@ -26,6 +26,7 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -54,7 +55,7 @@
 // Expressions
 #include "store/parser/shadowNodes/expressions/ColumnRef.hpp"
 #include "store/parser/shadowNodes/expressions/ColumnWildcard.hpp"
-#include "store/parser/shadowNodes/expressions/SubqueryExpr.hpp"
+#include "store/parser/shadowNodes/expressions/SubqueryRefExpr.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
@@ -109,6 +110,7 @@ SqlPlanner::SqlPlanner(void)
   m_pStatementStack(new QueryNodeStack()),
   m_pTableExprStack(new QueryNodeStack()),
   m_pTableSubqueryList(nullptr),
+  m_pExprSubqueryList(nullptr),
   m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
   m_pOrderItems(nullptr)
@@ -153,6 +155,15 @@ SqlPlanner::~SqlPlanner(void) noexcept
     }
     delete m_pTableSubqueryList;
     m_pTableSubqueryList = nullptr;
+  }
+
+  if (m_pExprSubqueryList) {
+    while (m_pExprSubqueryList->nItems() > 0) {
+      QueryNode* pItem = m_pExprSubqueryList->pPop();
+      delete pItem;
+    }
+    delete m_pExprSubqueryList;
+    m_pExprSubqueryList = nullptr;
   }
 
   if (m_pExprStack) {
@@ -506,9 +517,12 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
 
-  // Save the current table subquery list (if any) and create a temporary new one
+  // Save the current table and expr subquery list (if any) and create a temporary new one
   QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
   m_pTableSubqueryList = new QueryNodeList();
+
+  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
+  m_pExprSubqueryList = new QueryNodeList();
 
   pCtx->selectExpr()->accept(this);
 
@@ -528,7 +542,8 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
     m_pStatementStack->vPush(pStmt);
   }
 
-  // restore the original table subquery list
+  // Restore the original table subquery list. We will restore the
+  // expr subquery list *after* the main subquery.
   ASSERT(m_pTableSubqueryList->nItems() == 0);
   delete m_pTableSubqueryList;
   m_pTableSubqueryList = pOldTableSubqueryList;
@@ -539,6 +554,23 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   ASSERT(m_pStatementStack->pTop() == pStmt);
   pMainSubquery->vAppendChild(m_pStatementStack->pPop());
   m_pStatementStack->vPush(pMainSubquery);
+
+  // Move any expr subqueries encountered to the statement stack,
+  // after the main subquery marker that is currently on top of this stack.
+  if (m_pExprSubqueryList->nItems() > 0) {
+    ASSERT(m_pStatementStack->pTop() == pMainSubquery);
+
+    while (m_pExprSubqueryList->nItems() > 0) {
+      QueryNode *pExprSubquery = m_pExprSubqueryList->pPop();
+      ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+      m_pStatementStack->vPush(pExprSubquery);
+    }
+  }
+
+  // Restore the original expr subquery list
+  ASSERT(m_pExprSubqueryList->nItems() == 0);
+  delete m_pExprSubqueryList;
+  m_pExprSubqueryList = pOldExprSubqueryList;
 
   if (pCtx->ORDER()) {
     ASSERT(!m_pOrderItems);
@@ -595,7 +627,7 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
   // The last item on the stack is the main subquery
   ASSERT(m_pStatementStack->nItems() > 0);
-  ASSERT(MainSubquery::bIsOfType(m_pStatementStack->pTop()));
+  ASSERT(SubqueryMarker::bIsOfType(m_pStatementStack->pTop()));
 
   return nullptr;
 }
@@ -684,9 +716,12 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   QueryNodeStack* pOrigStatementStack = m_pStatementStack;
   m_pStatementStack = new QueryNodeStack();
 
-  // Save the current table subquery list (if any) and create a temporary new one
+  // Save the current table and expr subquery lists (if any) and create temporary new ones
   QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
   m_pTableSubqueryList = new QueryNodeList();
+
+  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
+  m_pExprSubqueryList = new QueryNodeList();
 
   // Visit the setExpr node. This will add a single SelectMarker to the statement list.
   // We can then pop it off and add it as a child of the MainSubquery.
@@ -731,6 +766,7 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 
   // Now put the statement marker on the original statement stack
   m_pStatementStack->vPush(pSetExprSelectMarker);
+
 
   if (pCtx->ORDER() || pCtx->LIMIT()) {
     // We need to stick another statementOp on top of the one from setExpr
@@ -801,13 +837,25 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   }
 
 
-  // Finally add a MainSubquery on top of the last thing on the statement stack
+  // Add a MainSubquery on top of the last thing on the statement stack
   ASSERT(m_pStatementStack->nItems() >= 1);
   ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
 
   QueryNode* pMainSubquery = MainSubquery::pCreate();
   pMainSubquery->vAppendChild(m_pStatementStack->pPop());
   m_pStatementStack->vPush(pMainSubquery);
+
+  // Finally add any expr subqueries onto the statement stack
+  while (m_pExprSubqueryList->nItems() > 0) {
+    QueryNode* pExprSubquery = m_pExprSubqueryList->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+    m_pStatementStack->vPush(pExprSubquery);
+  }
+
+  ASSERT(m_pExprSubqueryList->nItems() == 0);
+  delete m_pExprSubqueryList;
+  m_pExprSubqueryList = pOldExprSubqueryList;
+
   return nullptr;
 }
 
@@ -1035,6 +1083,9 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
   m_pTableSubqueryList = nullptr;
 
+  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
+  m_pExprSubqueryList = nullptr;
+
   QueryNodeList* pOldExprStack = m_pExprStack;
   m_pExprStack = nullptr;
 
@@ -1052,8 +1103,15 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
     pOldTableSubqueryList->vAppend(pTableSubqueryNode);
   }
 
+  while (m_pExprSubqueryList && m_pExprSubqueryList->nItems() > 0) {
+    QueryNode* pExprSubqueryNode = m_pExprSubqueryList->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
+
+    pOldExprSubqueryList->vAppend(pExprSubqueryNode);
+  }
+
   // We should have precisely one main subquery on the statement stack
-  // and possibly some table subqueries too.
+  // and possibly some table and expr subqueries too.
   ASSERT(m_pStatementStack->nItems() >= 1);
 
   QueryNode* pMainSubqueryNode = nullptr;
@@ -1066,6 +1124,9 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
     } else if (MainSubquery::bIsOfType(pItem)) {
       pMainSubqueryNode = pItem;
+
+    } else if (ExprSubquery::bIsOfType(pItem)) {
+        pOldExprSubqueryList->vAppend(pItem);
 
     } else {
       NEVER_REACH
@@ -1094,6 +1155,11 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   m_pTableSubqueryList = pOldTableSubqueryList;
   pOldTableSubqueryList = nullptr;
 
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  delete m_pExprSubqueryList;
+  m_pExprSubqueryList = pOldExprSubqueryList;
+  pOldExprSubqueryList = nullptr;
+
   m_pExprStack = pOldExprStack;
   pOldExprStack = nullptr;
 
@@ -1106,7 +1172,7 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   } else {
     // Make up a unique table alias
     s256 sName;
-    NodeNamer::vGenerateName("__subquery"_Stz, sName);
+    NodeNamer::vGenerateName(C_SUBQUERY_NAME_PREFIX, sName);
     pTableAlias = new Text(sName);
   }
 
@@ -1843,6 +1909,9 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
   m_pTableSubqueryList = nullptr;
 
+  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
+  m_pExprSubqueryList = nullptr;
+
   QueryNodeList* pOldExprStack = m_pExprStack;
   m_pExprStack = nullptr;
 
@@ -1854,19 +1923,23 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
 
   visitChildren(pCtx);
 
-  // Create a SubqueryExpr node
-  QueryNode* pSubqueryExpr = SubqueryExpr::pCreate();
+  // Create a ExprSubquery node
+  // First make up a unique name for its table alias
+  s256 sSubqueryName;
+  NodeNamer::vGenerateName(C_SUBQUERY_NAME_PREFIX, sSubqueryName);
+
+  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz());
 
   // We expect there to be one or more nodes in m_pStatementStack,
   // corresponding to a MainSubquery and zero or more TableSubquery nodes.
-  // Pop them off and add them as children of the SubqueryExpr node
+  // Pop them off and add them as children of the ExprSubquery node
 
   ASSERT(m_pStatementStack);
   while (m_pStatementStack->nItems() > 0) {
     QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
     ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
-    pSubqueryExpr->vPushChild(pSubqueryMarker);
+    pExprSubquery->vPushChild(pSubqueryMarker);
   }
 
 
@@ -1887,6 +1960,11 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   m_pTableSubqueryList = pOldTableSubqueryList;
   pOldTableSubqueryList = nullptr;
 
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  delete m_pExprSubqueryList;
+  m_pExprSubqueryList = pOldExprSubqueryList;
+  pOldExprSubqueryList = nullptr;
+
   ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
   delete m_pExprStack;
   m_pExprStack = pOldExprStack;
@@ -1902,8 +1980,15 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   m_pOrderItems = pOldOrderItems;
   pOldOrderItems = nullptr;
 
-  // Now we can put the subqueryExpr onto the exprStack
-  m_pExprStack->vPush(pSubqueryExpr);
+  // Put the expression subquery marker onto the expression subquery list
+  // so that it will be picked up upstream.
+  m_pExprSubqueryList->vAppend(pExprSubquery);
+
+  // Now create a SubqueryRefExpr node and reference the ExprSubquery
+  QueryNode* pSubqueryRefExpr = SubqueryRefExpr::pCreate(ExprSubquery::szTableAlias(pExprSubquery));
+
+  // Put the SubqueryRefExpr onto the exprStack
+  m_pExprStack->vPush(pSubqueryRefExpr);
 
   return nullptr;
 }
