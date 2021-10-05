@@ -354,6 +354,8 @@ void StageSpec::vCrossTopo(eYX eCrossTopo,
     
   RASSERT(szNextStageNm);
   
+  //RASSERT(YX_NONE == m_eCrossTopo);
+  
   m_eCrossTopo   = eCrossTopo;
 
   m_sNextStageNm = szNextStageNm;

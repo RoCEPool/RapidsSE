@@ -103,6 +103,9 @@ eYX OpSpec::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
+  //eYX eCheck = m_pStageSpec->eCrossTopo();
+  //RASSERT(eCheck == m_eCrossTopo);
+  
   return m_eCrossTopo;
 }
 

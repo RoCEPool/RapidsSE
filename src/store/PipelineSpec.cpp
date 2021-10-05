@@ -821,6 +821,8 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
   Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec->vOpTopology(eOpTopology);
   pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
+  
+  RASSERT(pStageSpec == pOpSpec->pStageSpec());
 
   pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_Stage,i_Op+1);
 
@@ -889,6 +891,8 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
     Stz* szStgNm = szStageNm(i_NextStage);
     pPrevOpSpec->vOpTopology(eOpTopology);
     pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+
+    RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
 
     pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
     
