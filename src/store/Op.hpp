@@ -100,8 +100,6 @@ namespace STORE
     void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
-    void vAppendRight(Operand* pOperand, Task* pTriggeringTask);
-    bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     eYX  eCrossTopo(void);

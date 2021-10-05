@@ -44,7 +44,6 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   m_i_OtherStage  = C_UNKNOWN;
   m_i_OtherOp     = C_UNKNOWN;
 
-  m_bAppendRight  = false;
   m_eSendKind     = XK_UNICAST;
 
   _checkInitialised_(CN_OPSPEC);
@@ -64,26 +63,6 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set append right                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vAppendRight(bool bRight)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-
-  m_bAppendRight = bRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get append right                                                           */
-/*----------------------------------------------------------------------------*/
-bool OpSpec::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_bAppendRight;
-}
 
 /*----------------------------------------------------------------------------*/
 /* add an ename pair                                                          */
@@ -130,7 +109,7 @@ eYX OpSpec::eCrossTopo(void)
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(eYX eCrossTopo, eYO eOpTopology,
+void OpSpec::vCrossTopo(eYX eCrossTopo,
                         Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -138,7 +117,6 @@ void OpSpec::vCrossTopo(eYX eCrossTopo, eYO eOpTopology,
   RASSERT(szNextStageNm);
   
   m_eCrossTopo   = eCrossTopo;
-  m_eOpTopology  = eOpTopology;
 
   m_sNextStageNm = szNextStageNm;
   m_i_NextStage  = i_NextStage;
@@ -215,6 +193,16 @@ eYO OpSpec::eOpTopology(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_eOpTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op topology                                                            */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vOpTopology(eYO eOpTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eOpTopology = eOpTopology;
 }
 
 /*----------------------------------------------------------------------------*/

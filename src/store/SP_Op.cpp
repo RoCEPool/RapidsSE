@@ -194,13 +194,12 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
     vCatf("\n      "_Stz);
 
   vCatf("[%03lld] Op %-16s "
-        "|%s [%02lld.%03lld] Op %-16s "
+        "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
         
          ,pOp->iOp()
          ,pOp->szOpNm()
         
-         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
@@ -235,13 +234,12 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
     vCatf("\n      "_Stz);
 
   vCatf("[%03lld] Op %-16s "
-        "|%s [%02lld.%03lld] Op %-16s "
+        "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
 
          ,pOp->iOp()
          ,pOp->szOpNm()
 
-         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
