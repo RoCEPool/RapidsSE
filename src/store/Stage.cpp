@@ -440,7 +440,7 @@ void Stage::vCreateStreams(void)
             
     //                      -- node topologies --                             //
       
-    case PO_ALL_NODES: // create a stream for all nodes
+    case YG_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
@@ -451,7 +451,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_ORIGIN: // create a stream for origin node only
+    case YG_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
@@ -461,14 +461,14 @@ void Stage::vCreateStreams(void)
       vAppend(pStream);
       break;
         
-    case PO_SPECIFIC_NODE: // create a stream for a specific node only
+    case YG_SPECIFIC_NODE: // create a stream for a specific node only
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
         
     //                    -- partition topologies --                          //
 
-    case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
+    case YG_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
 
       for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
@@ -481,7 +481,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
+    case YG_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
 
       for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
@@ -496,7 +496,7 @@ void Stage::vCreateStreams(void)
       }
       break;
       
-    case PO_SPECIFIC_PARTITION: // create a stream for a specific partition
+    case YG_SPECIFIC_PARTITION: // create a stream for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnId = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);

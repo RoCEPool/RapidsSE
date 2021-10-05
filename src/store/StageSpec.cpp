@@ -30,7 +30,7 @@ StageSpec::StageSpec(Stz* szStageNm,
     
   m_pPipelineSpec  = pPipelineSpec;
 
-  m_eStageTopology = PO_NONE;
+  m_eStageTopology = YG_NONE;
   m_bNodeTopo      = true;
   m_i_SpecificNode = C_UNKNOWN;
   m_tSpecificPtnNo = C_UNKNOWN;
@@ -69,8 +69,8 @@ eYX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
 {
   _static_
     
-  ePO eFromTopo = pFromStageSpec->eStageTopology();
-  ePO eToTopo   = pToStageSpec->eStageTopology();
+  eYG eFromTopo = pFromStageSpec->eStageTopology();
+  eYG eToTopo   = pToStageSpec->eStageTopology();
   
   reOpTopology = PZ_NONE;
   
@@ -78,213 +78,213 @@ eYX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
           
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from all nodes to ...
-    case PO_ALL_NODES:
+    case YG_ALL_NODES:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
+        case YG_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ALL_NODES_TO_ALL_NODES;
           
-        case PO_ALL_PARTITIONS:
+        case YG_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ALL_NODES_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_ORIGIN:
+        case YG_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ALL_NODES_TO_ORIGIN;
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_ALL_NODES_TO_SPECIFIC_NODE;
           
-        case PO_SPECIFIC_PARTITION:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_PARTITION:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_ALL_NODES_TO_SPECIFIC_PARTITION;
           
         default:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from all partitions to ...
-    case PO_ALL_PARTITIONS:
+    case YG_ALL_PARTITIONS:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
+        case YG_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_NODES;
           
-        case PO_ALL_PARTITIONS:
+        case YG_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_ORIGIN:
+        case YG_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ALL_PARTITIONS_TO_ORIGIN;
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
           
-        case PO_SPECIFIC_PARTITION:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_PARTITION:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
           
         default:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from all partitions on origin to ...
-    case PO_ALL_PARTITIONS_ON_ORIGIN:
+    case YG_ALL_PARTITIONS_ON_ORIGIN:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_NODES:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_ALL_PARTITIONS:
+        case YG_ALL_PARTITIONS:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
-        case PO_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_SPECIFIC_PARTITION:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_PARTITION:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
         default:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from origin to ...
-    case PO_ORIGIN:
+    case YG_ORIGIN:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
+        case YG_ALL_NODES:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ORIGIN_TO_ALL_NODES;
           
-        case PO_ALL_PARTITIONS:
+        case YG_ALL_PARTITIONS:
           reOpTopology = PZ_STAGE_STREAM;
           return YX_ORIGIN_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
           
-        case PO_ORIGIN:
+        case YG_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
           return YX_ORIGIN_TO_ORIGIN;
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_ORIGIN_TO_SPECIFIC_NODE;
           
-        case PO_SPECIFIC_PARTITION:
+        case YG_SPECIFIC_PARTITION:
           reOpTopology = PZ_PARTITION_STREAM;
           return YX_ORIGIN_TO_SPECIFIC_PARTITION;
           
         default:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from specific node to ...
-    case PO_SPECIFIC_NODE:
+    case YG_SPECIFIC_NODE:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_NODES:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_NODE_TO_ALL_NODES;
           
-        case PO_ALL_PARTITIONS:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_NODE_TO_ORIGIN;
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
           
-        case PO_SPECIFIC_PARTITION:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_PARTITION:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
           
         default:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from specific partition to ...
-    case PO_SPECIFIC_PARTITION:
+    case YG_SPECIFIC_PARTITION:
       switch(eToTopo) {
           
-        case PO_ALL_NODES:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_NODES:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_PARTITION_TO_ALL_NODES;
           
-        case PO_ALL_PARTITIONS:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
           
-        case PO_ALL_PARTITIONS_ON_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_ALL_PARTITIONS_ON_ORIGIN:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case PO_ORIGIN:
+        case YG_ORIGIN:
           reOpTopology = PZ_NODE_STREAM;
           return YX_SPECIFIC_PARTITION_TO_ORIGIN;
           
-        case PO_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aPO[eFromTopo],aPO[eToTopo]);
+        case YG_SPECIFIC_NODE:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           return YX_SPECIFIC_PARTITION_SPECIFIC_NODE;
           
-        case PO_SPECIFIC_PARTITION:
+        case YG_SPECIFIC_PARTITION:
           reOpTopology = PZ_STAGE_STREAM_0;
           return YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
           
@@ -464,7 +464,7 @@ i8 StageSpec::i_StageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* get stage topology                                                        */
 /*----------------------------------------------------------------------------*/
-ePO StageSpec::eStageTopology(void)
+eYG StageSpec::eStageTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
@@ -474,19 +474,19 @@ ePO StageSpec::eStageTopology(void)
 /*----------------------------------------------------------------------------*/
 /* set stage topology                                                         */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vStageTopology(ePO eStageTopology)
+void StageSpec::vStageTopology(eYG eStageTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_eStageTopology = eStageTopology;
   
   switch (m_eStageTopology) {
-    case PO_ALL_NODES:                m_bNodeTopo = true;   break;
-    case PO_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
-    case PO_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
-    case PO_ORIGIN:                   m_bNodeTopo = true;   break;
-    case PO_SPECIFIC_NODE:            m_bNodeTopo = true;   break;
-    case PO_SPECIFIC_PARTITION:       m_bNodeTopo = false;  break;
+    case YG_ALL_NODES:                m_bNodeTopo = true;   break;
+    case YG_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
+    case YG_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
+    case YG_ORIGIN:                   m_bNodeTopo = true;   break;
+    case YG_SPECIFIC_NODE:            m_bNodeTopo = true;   break;
+    case YG_SPECIFIC_PARTITION:       m_bNodeTopo = false;  break;
     default:                          m_bNodeTopo = true;   break;
   }
 

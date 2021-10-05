@@ -468,7 +468,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec* p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     
-    p_StageSpec->vStageTopology(PO_ALL_NODES);
+    p_StageSpec->vStageTopology(YG_ALL_NODES);
     return true;
   }
   
@@ -493,7 +493,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
       if (pTkn()->bSame(":"_Stz)) {
         vTokenAccept();
 
-        p_StageSpec->vStageTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+        p_StageSpec->vStageTopology(YG_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
     }
@@ -503,7 +503,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_ALL_PARTITIONS);
+    p_StageSpec->vStageTopology(YG_ALL_PARTITIONS);
     return true;
   }
   
@@ -522,7 +522,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_SPECIFIC_NODE);
+    p_StageSpec->vStageTopology(YG_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nKnownNodes() )
       return false;
@@ -544,7 +544,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec* p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     
-    p_StageSpec->vStageTopology(PO_ORIGIN);
+    p_StageSpec->vStageTopology(YG_ORIGIN);
     return true;
   }
   else {
@@ -567,7 +567,7 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
   
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
-    p_StageSpec->vStageTopology(PO_SPECIFIC_PARTITION);
+    p_StageSpec->vStageTopology(YG_SPECIFIC_PARTITION);
     i8 tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
       return false;

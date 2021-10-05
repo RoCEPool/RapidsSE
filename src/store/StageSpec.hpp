@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "ePO.h"
+#include "eYG.h"
 #include "eYX.h"
 
 #include "OpSpec.hpp"
@@ -22,7 +22,7 @@ namespace STORE
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
 
-    ePO  m_eStageTopology;  // stage topoplogy
+    eYG  m_eStageTopology;  // stage topoplogy
     bool m_bNodeTopo;       // is node-level topology (or partition)?
     i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
@@ -58,8 +58,8 @@ namespace STORE
     i8   i_StageSpec(void);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
-    ePO  eStageTopology(void);
-    void vStageTopology(ePO eStageTopology);
+    eYG  eStageTopology(void);
+    void vStageTopology(eYG eStageTopology);
     void vToPipeStr(Stz* szPipeStr);
   
     Footer* aFooter(void);
