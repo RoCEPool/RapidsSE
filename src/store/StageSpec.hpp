@@ -22,11 +22,11 @@ namespace STORE
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
 
-    ePO  m_eTopology;      // stage topoplogy
-    bool m_bNodeTopo;      // is node-level topology (or partition)?
-    i8   m_i_SpecificNode; // run on specific node
+    ePO  m_eStageTopology;  // stage topoplogy
+    bool m_bNodeTopo;       // is node-level topology (or partition)?
+    i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
-    //i8  m_nThreads;      // threads
+    //i8  m_nThreads;       // threads
     
     // must be last
     Footer m_xFooter;
@@ -58,8 +58,8 @@ namespace STORE
     i8   i_StageSpec(void);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
-    ePO  eTopology(void);
-    void vTopology(ePO eTopology);
+    ePO  eStageTopology(void);
+    void vStageTopology(ePO eStageTopology);
     void vToPipeStr(Stz* szPipeStr);
   
     Footer* aFooter(void);

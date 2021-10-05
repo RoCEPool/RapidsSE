@@ -64,7 +64,7 @@ void SP_Stage::vStage(Stage* pStage, bool bDescend)
         ,i_Stage
         ,pStage->szStageNm()
         
-        ,aPO[pStageSpec->eTopology()]
+        ,aPO[pStageSpec->eStageTopology()]
         );
 
   if (bDescend) {
