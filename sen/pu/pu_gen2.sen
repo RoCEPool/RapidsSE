@@ -77,7 +77,7 @@ Path[].root
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // ft filter expr
-: !ft_0_1_Pu10k  " \" type boolean pu10k_ft  100 >= \"" ; // 10% of t.Pu10K
+: !ft_0_1_Pu10k  " \"type boolean pu10k_ft  100 <=\"" ; // 10% of t.Pu10K
 : !ft_0_3_Pu10k  " \"type boolean pu10k_ft  300 <=\"" ; // 30% of t.Pu10K
 : !ft_0_6_Pu10k  " \"type boolean pu10k_ft  600 <=\"" ; // 60% of t.Pu10K
 : !ft_0_9_Pu10k  " \"type boolean pu10k_ft  900 <=\"" ; // 90% of t.Pu10K
